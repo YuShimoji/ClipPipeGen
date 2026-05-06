@@ -42,10 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 検討（Slice 1 ソフト実装は完了）
-- **current_slice**: Slice 1 — done（ソフト DoD 完了、ユーザー acceptance step が残）
-- **next_action（assistant 側）**: Slice 2 候補を整理してユーザーに提示する。候補は (a) Editing core 着手（cut detection / 字幕案 / EDL）、(b) Publishing integration 設計（YouTube OAuth + private upload）、(c) GUI 最小着手（NLMYTGen GUI と整合）、(d) Slice 1 の end-to-end walkthrough と GUI 側ハーネス整備を先に。
-- **next_action（user 側）**: YMM4 で `thumb.text.*` / `thumb.image.*` Remark を持つ thumbnail base template `.ymmp` を 1 本 authoring し、`thumbnail_patch_input.json` を書いて `patch-thumbnail` を実走させる。これにより Slice 1 の end-to-end walkthrough が閉じる。
+- **current_lane**: Slice 2 (c) GUI 着手前のスコープ確認待ち
+- **current_slice**: Slice 2 — (d) walkthrough 補助 done、(c) GUI 最小は次
+- **next_action（assistant 側）**: (c) GUI スコープ確認をユーザーに依頼する。Electron 採用是非・MVP として表示するレーン・ClipPipeGen GUI と NLMYTGen GUI の整合方針の3点。承認後に着手。
+- **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。所要は YMM4 authoring 30〜60 分 + CLI 実行 5〜10 分。
+
+### Slice 2 (d) done（TH-W01: Slice 1 walkthrough 補助）
+
+- `docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md` — YMM4 上で `thumb.text.*` / `thumb.image.*` の Remark 規約を持つ base template を作る手順、トラブルシューティング、命名規約 (`^thumb\.(text|image|color|transform)\.[a-z0-9_]+$`)
+- `docs/walkthrough/SLICE1_WALKTHROUGH.md` — `init-episode` から `patch-thumbnail` までの 11 ステップ runbook、各段 fail パターンとリトライ手順
+- `samples/episode_example/{rights_manifest.json,material_ledger.json,thumbnail_patch_input.json}` と `samples/episode_example/materials/mat_001/sidecar.json` — illustrative example。**実素材は同梱しない**（第三者素材 repo 同梱の禁止）
+- 既存テスト 31 件は変更なし。docs only commit。
 
 ## 主成果物
 

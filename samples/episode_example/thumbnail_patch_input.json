@@ -1,0 +1,35 @@
+{
+  "schema_version": "v1",
+  "episode_id": "ep_example_hololive_001",
+  "rights_manifest_path": "samples/episode_example/rights_manifest.json",
+  "material_ledger_path": "samples/episode_example/material_ledger.json",
+  "base_template": {
+    "ymmp_path": "samples/episode_example/templates/thumbnail/base.ymmp",
+    "template_version": "v1",
+    "audited_at": "2026-05-07T08:30:00+09:00"
+  },
+  "slots": [
+    {
+      "slot_id": "thumb.text.title",
+      "kind": "text",
+      "value": "（メインコピーをここに記入：本文根拠のある具体性を優先する）",
+      "source_material_id": null
+    },
+    {
+      "slot_id": "thumb.text.subtitle",
+      "kind": "text",
+      "value": "#ホロライブ切り抜き",
+      "source_material_id": null
+    },
+    {
+      "slot_id": "thumb.image.character",
+      "kind": "image",
+      "value": null,
+      "source_material_id": "mat_001"
+    }
+  ],
+  "output": {
+    "ymmp_path": "samples/episode_example/_out/thumbnail_patched.ymmp",
+    "overwrite_existing": false
+  }
+}

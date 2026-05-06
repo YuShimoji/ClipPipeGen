@@ -31,9 +31,14 @@
 
 ## 現在のスライス
 
-**Slice 1: Material Sourcing + Thumbnail 最小実証** — 仮の `rights_manifest` から、透過PNG 受け入れ、出典 sidecar、YMM4 サムネ slot patch までを通す。
+**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。end-to-end walkthrough は `docs/walkthrough/` で支援。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
+
+## 1 episode 通し手順
+
+[docs/walkthrough/SLICE1_WALKTHROUGH.md](docs/walkthrough/SLICE1_WALKTHROUGH.md) — `init-episode` から `patch-thumbnail` までの 11 ステップ runbook。
+[docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md](docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md) — YMM4 上で `thumb.*` Remark 付き base template を authoring する手順。
 
 ## 入口
 

@@ -1,0 +1,53 @@
+{
+  "schema_version": "v1",
+  "episode_id": "ep_example_hololive_001",
+  "created_at": "2026-05-07T09:00:00+09:00",
+  "updated_at": "2026-05-07T09:30:00+09:00",
+  "source_video": {
+    "url": "https://www.youtube.com/watch?v=PLACEHOLDER_REPLACE_ME",
+    "platform": "youtube",
+    "title": "（元動画タイトルをここに記入）",
+    "channel": "（元配信者チャンネル名）",
+    "channel_id": "UCPLACEHOLDER",
+    "vod_status": "public",
+    "membership_only": false,
+    "is_archived_live": true,
+    "uploaded_at": "2026-04-30T20:00:00+09:00",
+    "duration_seconds": 7200
+  },
+  "talents": [
+    {
+      "name": "（タレント名）",
+      "agency": "hololive",
+      "guideline_url": "https://www.hololive.tv/terms",
+      "guideline_version_checked_at": "2026-05-07",
+      "individual_policy_notes": []
+    }
+  ],
+  "third_party_ip": [],
+  "prohibited_assets": [],
+  "required_disclosures": [
+    {
+      "kind": "source_link",
+      "text": "元動画: https://www.youtube.com/watch?v=PLACEHOLDER_REPLACE_ME"
+    },
+    {
+      "kind": "rights_credit",
+      "text": "© 2016 COVER Corp."
+    }
+  ],
+  "publication_constraints": {
+    "earliest_publish_at": "2026-05-08T00:00:00+09:00",
+    "monetization_allowed": true,
+    "platforms_allowed": ["youtube"],
+    "thumbnail_constraints": ["no_misleading_text"]
+  },
+  "compliance_check": {
+    "status": "passed",
+    "checked_at": "2026-05-07T09:30:00+09:00",
+    "checked_by": "user:example",
+    "errors": [],
+    "warnings": [],
+    "gate_version": "v1"
+  }
+}

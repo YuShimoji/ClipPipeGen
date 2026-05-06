@@ -38,6 +38,12 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 
 ## Slice 2 以降の候補（着手前、proposed のまま）
 
+### Walkthrough / docs
+
+| ID | 機能 | 状態 | 概要 |
+|---|---|---|---|
+| **TH-W01** | Slice 1 walkthrough 補助 | done | YMM4 thumbnail template authoring guide、samples/episode_example、SLICE1_WALKTHROUGH ランブック。Slice 2 (d) 完了 |
+
 ### Editing 系
 
 | ID | 機能 | 状態 | 概要 |
@@ -95,3 +101,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-06: `CR-01` を `done` に遷移。根拠: Slice 1.1 実装＋テスト（commit `5be5439`）
 - 2026-05-06: `MS-01 / MS-02 / MS-03` を `done` に遷移。根拠: Slice 1.2 実装＋テスト 23 件 pass
 - 2026-05-06: `TH-01 / SH-01` を `done` に遷移。根拠: Slice 1.3 実装＋テスト 31 件 pass（NLMYTGen subprocess は monkeypatch でモック）
+- 2026-05-07: Slice 2 (d) `TH-W01` を起票・即 done に遷移。根拠: docs/walkthrough/{YMM4_THUMBNAIL_TEMPLATE_AUTHORING,SLICE1_WALKTHROUGH}.md と samples/episode_example/* を配置（user owned acceptance step を docs で支援）
