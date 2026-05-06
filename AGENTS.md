@@ -29,7 +29,13 @@
 - `src/integrations/asset_fetch/` 経由での元動画ダウンロード（VOD 公開状態と利用条件チェック後）
 - `src/integrations/youtube/` 経由での upload（private/unlisted のみ。公開は永続手動 gate）
 - `src/integrations/bg_removal/` 経由での背景切り抜き API 呼び出し（外部サービスへの画像送信を伴う）
-- リモートへの push（本リポ／NLMYTGen どちらも）
+- destructive git 操作（force push / reset / 履歴改変 / 未確認の大量削除）
+
+## Git 運用
+
+- 通常の commit / push は、スライス区切り・論理的にまとまった変更ごとに assistant 判断で実行してよい。
+- main 直 push は許容する。ただし force push、履歴改変、他リポへの push、外部 API 実行を伴う変更は事前確認を取る。
+- テストは過剰に増やさず、実装リスクに対して必要な最小 smoke / critical negative を優先する。
 
 ## やってはいけないこと
 

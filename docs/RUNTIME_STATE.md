@@ -42,9 +42,9 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 (c) GUI 着手前のスコープ確認待ち
-- **current_slice**: Slice 2 — (d) walkthrough 補助 done、(c) GUI 最小は次
-- **next_action（assistant 側）**: (c) GUI スコープ確認をユーザーに依頼する。Electron 採用是非・MVP として表示するレーン・ClipPipeGen GUI と NLMYTGen GUI の整合方針の3点。承認後に着手。
+- **current_lane**: Slice 2 (c) GUI MVP（SH-03）着手
+- **current_slice**: Slice 2 — (d) walkthrough 補助 done、(c) GUI 最小は approved
+- **next_action（assistant 側）**: `docs/GUI_MVP_SCOPE.md` に従い、SH-02-lite episode status adapter と Electron GUI MVP skeleton を実装する。外部 API / upload / asset fetch / bg-removal API は触らない。
 - **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。所要は YMM4 authoring 30〜60 分 + CLI 実行 5〜10 分。
 
 ### Slice 2 (d) done（TH-W01: Slice 1 walkthrough 補助）
@@ -53,6 +53,13 @@
 - `docs/walkthrough/SLICE1_WALKTHROUGH.md` — `init-episode` から `patch-thumbnail` までの 11 ステップ runbook、各段 fail パターンとリトライ手順
 - `samples/episode_example/{rights_manifest.json,material_ledger.json,thumbnail_patch_input.json}` と `samples/episode_example/materials/mat_001/sidecar.json` — illustrative example。**実素材は同梱しない**（第三者素材 repo 同梱の禁止）
 - 既存テスト 31 件は変更なし。docs only commit。
+
+### Slice 2 (c) approved（SH-03: GUI MVP）
+
+- `docs/GUI_MVP_SCOPE.md` — Electron 採用、MVP タブ（Episode / Rights / Materials / Thumbnail / Settings）、SH-02-lite episode status adapter、dangerous operation exclusion を固定。
+- GUI は NLMYTGen とアプリ共有しない。見た目・操作感・タブ構造・readback 表示パターンだけ揃える。
+- MVP は Slice 1 artifact の操作面に限定し、Editing / Publishing は表示しない。
+- 次ブロックで実装着手する。
 
 ## 主成果物
 
@@ -75,6 +82,7 @@
 
 - 入口: [README.md](../README.md) / [AGENTS.md](../AGENTS.md)
 - 方針: [CLAUDE.md](../CLAUDE.md)（ルート）
+- GUI MVP: [GUI_MVP_SCOPE.md](GUI_MVP_SCOPE.md)
 - 不変条件: [INVARIANTS.md](INVARIANTS.md)
 - 自動化境界: [AUTOMATION_BOUNDARY.md](AUTOMATION_BOUNDARY.md)
 - レーン責務: [LANES.md](LANES.md)

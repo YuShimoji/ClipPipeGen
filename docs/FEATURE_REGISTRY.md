@@ -78,7 +78,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
 | SH-02 | episode_pack 統合 manifest | proposed | rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結 |
-| SH-03 | GUI（最小） | proposed | 4レーンを扱う最小 GUI。**NLMYTGen GUI（Electron）と操作感・タブ構造・配色・ナビゲーション規約を揃える**。技術スタックは NLMYTGen と同じ Electron を第1候補。Slice 1 では作らず、Slice 2 以降で着手 |
+| SH-03 | GUI（最小） | approved | 既存 Slice 1 CLI / manifest を操作する最小 GUI。**NLMYTGen GUI（Electron）と操作感・タブ構造・配色・ナビゲーション規約を揃える**。MVP scope は `docs/GUI_MVP_SCOPE.md`。Editing / Publishing はまだ表示しない |
 | SH-04 | NLMYTGen GUI への逆提案運用 | proposed | ClipPipeGen で得た GUI 知見（lane 分離・gate 強制 UI・readback 表示等）を NLMYTGen 側に doc／issue ベースで提案する運用。NLMYTGen 側ファイルの直接編集は行わない |
 
 ## 永続スコープ外（rejected / 永続）
@@ -102,3 +102,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-06: `MS-01 / MS-02 / MS-03` を `done` に遷移。根拠: Slice 1.2 実装＋テスト 23 件 pass
 - 2026-05-06: `TH-01 / SH-01` を `done` に遷移。根拠: Slice 1.3 実装＋テスト 31 件 pass（NLMYTGen subprocess は monkeypatch でモック）
 - 2026-05-07: Slice 2 (d) `TH-W01` を起票・即 done に遷移。根拠: docs/walkthrough/{YMM4_THUMBNAIL_TEMPLATE_AUTHORING,SLICE1_WALKTHROUGH}.md と samples/episode_example/* を配置（user owned acceptance step を docs で支援）
+- 2026-05-07: `SH-03` を `approved` に昇格。根拠: ユーザー指示（推奨対応で進行） + docs/GUI_MVP_SCOPE.md

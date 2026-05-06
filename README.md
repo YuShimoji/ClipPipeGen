@@ -45,4 +45,5 @@
 - 運用ルール正本: [docs/INVARIANTS.md](docs/INVARIANTS.md) / [docs/AUTOMATION_BOUNDARY.md](docs/AUTOMATION_BOUNDARY.md)
 - 機能一覧（全件把握）: [docs/FEATURE_REGISTRY.md](docs/FEATURE_REGISTRY.md)
 - 現在位置: [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
+- GUI MVP: [docs/GUI_MVP_SCOPE.md](docs/GUI_MVP_SCOPE.md)
 - AI エージェント入口: [AGENTS.md](AGENTS.md)
