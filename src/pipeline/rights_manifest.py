@@ -6,10 +6,11 @@
 from __future__ import annotations
 
 import json
-from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
+
+from .validation import ValidationIssue
 
 SCHEMA_VERSION = "v1"
 GATE_VERSION = "v1"
@@ -29,22 +30,6 @@ VALID_DISCLOSURE_KINDS = {
 
 # VOD 公開状態が以下なら compliance_check.status は passed にできない
 NON_PUBLIC_VOD_STATUS = {"private", "members_only", "deleted"}
-
-
-@dataclass
-class ValidationIssue:
-    code: str
-    field: str
-    message: str
-    severity: str = "error"  # "error" or "warning"
-
-    def to_dict(self) -> dict[str, str]:
-        return {
-            "code": self.code,
-            "field": self.field,
-            "message": self.message,
-            "severity": self.severity,
-        }
 
 
 class ComplianceGateError(Exception):

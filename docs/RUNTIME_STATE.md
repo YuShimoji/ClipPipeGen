@@ -4,16 +4,22 @@
 
 ## 現在位置
 
-### Slice 1.1 done（CR-01: rights_manifest schema＋validator＋CLI）
+### Slice 1.2 done（MS-01 / MS-02 / MS-03: material_ledger + sidecar + 透過PNG 受け入れ）
 
-- Bootstrap commit 済（`d5efd86`、main）
-- Slice 1 features 全て `approved` 昇格済（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）
-- 軽量 review 通過：CLI 命名統一（`audit-ledger` → `audit-material-ledger`）、schema 名・レーン境界・Gate 強制方式は変更なし
-- **CR-01 実装完了**：
-  - `src/pipeline/rights_manifest.py` — schema validator / auto-fail evaluator / `set_compliance_status` / `assert_compliance_passed` (gate)
-  - `src/cli/{main,init_episode,validate_rights,set_compliance}.py`
-  - `tests/test_rights_manifest.py` — 9 tests, all passing
-- gate enforcement 確認済：`status != passed` → `ComplianceGateError`、`vod_status in {private, members_only, deleted}` または `third_party_ip[].permitted == false` で `set-compliance --status passed` が拒否される
+- Bootstrap commit `d5efd86`、CR-01 commit `5be5439`、Slice 1.2 commit は本ブロック内
+- Slice 1 done 状態: `CR-01 / MS-01 / MS-02 / MS-03` (4/6)。残り `TH-01` / `SH-01` は Slice 1.3 で実装
+- **Slice 1.2 実装内容**：
+  - `src/pipeline/validation.py` — 共有 `ValidationIssue`（CR-01 の dataclass を抽出）
+  - `src/pipeline/material_sidecar.py` — schema validator / `assert_usable_for_thumbnail` gate / `restrictions_are_at_least_as_strict`（derived_from 厳格度継承）
+  - `src/pipeline/material_ledger.py` — `build_skeleton` / `register_material` / `audit_ledger` / `is_transparent_png` (MS-03) / `assert_thumbnail_usable` gate
+  - `src/cli/{register_material,audit_material_ledger}.py`
+  - `tests/test_material_sidecar.py` — 6 tests（positive 1 + critical negatives 5）
+  - `tests/test_material_ledger.py` — 8 tests（PNG 判定 2 + register 3 + audit 2 + CLI smoke 1）
+- 累計テスト: 23 件 all passing
+- gate enforcement 確認済：
+  - sidecar の `source.kind=unverified` / `license.kind in {unknown,fair_use_claimed}` / `restrictions.thumbnail_use=denied` で `assert_usable_for_thumbnail` が `SidecarUsageError`
+  - `register-material` で sidecar hash 不一致 / 透過PNG 宣言 vs 実 RGB の不整合 / sidecar 構造違反は `LedgerError`
+  - `audit-material-ledger` で hash mismatch / `intended_uses=thumbnail` ＋ thumbnail-blocked sidecar の組み合わせを検出
 
 ### project
 
@@ -24,10 +30,10 @@
 
 ### lane / slice
 
-- **current_lane**: Material Sourcing
+- **current_lane**: Thumbnail
 - **current_slice**: Slice 1 — Material Sourcing + Thumbnail 最小実証（[FIRST_SLICE.md](FIRST_SLICE.md)）
-- **current_sub_slice**: Slice 1.2 — MS-01 / MS-02 / MS-03（material_ledger + sidecar + 透過PNG 受け入れ）
-- **next_action**: Slice 1.2 着手。`material_ledger.py` + `material_sidecar.py` + `register-material` / `audit-material-ledger` CLI を実装し、CR-01 と同じ最小テスト方針（positive 1 + critical negatives）で検証する。完了後 Slice 1.3 = TH-01（NLMYTGen bridge）。
+- **current_sub_slice**: Slice 1.3 — TH-01 + SH-01（NLMYTGen `audit-thumbnail-template` / `patch-thumbnail-template` の CLI bridge と、`config/nlmytgen_path.json` 経由の subprocess wrapper）
+- **next_action**: NLMYTGen 側の正確な CLI コマンド名・引数仕様を `docs/dev/CLI_REFERENCE.md` で読み取り（read-only、配置問題なし）、`src/pipeline/nlmytgen_bridge.py` と `src/cli/{audit_thumbnail,patch_thumbnail}.py` を実装。実 NLMYTGen subprocess の初回呼び出し時のみユーザーへ通知する。
 
 ## 主成果物
 
