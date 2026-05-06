@@ -4,6 +4,18 @@
 
 ## 現在位置
 
+### Slice 1.3 done（TH-01 / SH-01: NLMYTGen bridge + thumbnail patch orchestrator）
+
+- Slice 1 ソフトウェア実装は **6/6 done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）
+- 累計テスト 31 件 all passing。NLMYTGen subprocess は monkeypatch でモック。
+- **実装内容**：
+  - `src/pipeline/nlmytgen_bridge.py` — `BridgeConfig.load` / `call_nlmytgen` (silent fallback 禁止) / `audit_thumbnail_template` / `patch_thumbnail_template`
+  - `src/pipeline/thumbnail_patch.py` — TH-01 5 段検証オーケストレータ：(1) compliance gate (2) material validation (3) NLMYTGen audit (4) NLMYTGen patch (5) readback
+  - `src/cli/{audit_thumbnail,patch_thumbnail}.py`
+  - `config/nlmytgen_path.json.example`（本体は `.gitignore` 対象）
+  - `tests/test_thumbnail_patch.py` — 8 件（bridge 3 + orchestrator 4 + input validator 1）
+- **保留中**：実 YMM4 base template `.ymmp`（`thumb.text.*` / `thumb.image.*` Remark 設定済み）に対する end-to-end walkthrough。これは user-owned acceptance step として `FIRST_SLICE.md` DoR に既に記載されている。テンプレ authoring は人手作業のため、ソフト側の DoD は閉じてよい。
+
 ### Slice 1.2 done（MS-01 / MS-02 / MS-03: material_ledger + sidecar + 透過PNG 受け入れ）
 
 - Bootstrap commit `d5efd86`、CR-01 commit `5be5439`、Slice 1.2 commit は本ブロック内
@@ -30,10 +42,10 @@
 
 ### lane / slice
 
-- **current_lane**: Thumbnail
-- **current_slice**: Slice 1 — Material Sourcing + Thumbnail 最小実証（[FIRST_SLICE.md](FIRST_SLICE.md)）
-- **current_sub_slice**: Slice 1.3 — TH-01 + SH-01（NLMYTGen `audit-thumbnail-template` / `patch-thumbnail-template` の CLI bridge と、`config/nlmytgen_path.json` 経由の subprocess wrapper）
-- **next_action**: NLMYTGen 側の正確な CLI コマンド名・引数仕様を `docs/dev/CLI_REFERENCE.md` で読み取り（read-only、配置問題なし）、`src/pipeline/nlmytgen_bridge.py` と `src/cli/{audit_thumbnail,patch_thumbnail}.py` を実装。実 NLMYTGen subprocess の初回呼び出し時のみユーザーへ通知する。
+- **current_lane**: Slice 2 検討（Slice 1 ソフト実装は完了）
+- **current_slice**: Slice 1 — done（ソフト DoD 完了、ユーザー acceptance step が残）
+- **next_action（assistant 側）**: Slice 2 候補を整理してユーザーに提示する。候補は (a) Editing core 着手（cut detection / 字幕案 / EDL）、(b) Publishing integration 設計（YouTube OAuth + private upload）、(c) GUI 最小着手（NLMYTGen GUI と整合）、(d) Slice 1 の end-to-end walkthrough と GUI 側ハーネス整備を先に。
+- **next_action（user 側）**: YMM4 で `thumb.text.*` / `thumb.image.*` Remark を持つ thumbnail base template `.ymmp` を 1 本 authoring し、`thumbnail_patch_input.json` を書いて `patch-thumbnail` を実走させる。これにより Slice 1 の end-to-end walkthrough が閉じる。
 
 ## 主成果物
 

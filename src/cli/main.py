@@ -9,6 +9,8 @@ Subcommands:
     set-compliance           Update compliance_check.status with auto-fail re-check.
     register-material        Register a material into the episode ledger (sidecar required).
     audit-material-ledger    Integrity check for an episode material_ledger.json.
+    audit-thumbnail          Audit YMM4 thumbnail template via NLMYTGen subprocess (read-only).
+    patch-thumbnail          Apply thumbnail_patch_input end-to-end (compliance + material + NLMYTGen patch).
 """
 
 from __future__ import annotations
@@ -18,7 +20,9 @@ from typing import Callable
 
 from . import (
     audit_material_ledger,
+    audit_thumbnail,
     init_episode,
+    patch_thumbnail,
     register_material,
     set_compliance,
     validate_rights,
@@ -30,6 +34,8 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "set-compliance": set_compliance.run,
     "register-material": register_material.run,
     "audit-material-ledger": audit_material_ledger.run,
+    "audit-thumbnail": audit_thumbnail.run,
+    "patch-thumbnail": patch_thumbnail.run,
 }
 
 

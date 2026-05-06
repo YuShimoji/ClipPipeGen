@@ -1,0 +1,6 @@
+{
+  "_comment": "Copy this file to config/nlmytgen_path.json and adjust paths to your environment. The real config/nlmytgen_path.json is gitignored.",
+  "nlmytgen_root": "c:/Users/<you>/Storage/Media Contents Projects/NLMYTGen",
+  "python_executable": "python",
+  "verified_at": "YYYY-MM-DD"
+}

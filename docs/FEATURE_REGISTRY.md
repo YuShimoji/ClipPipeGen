@@ -33,8 +33,8 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | **MS-01** | material_ledger schema v1 と CRUD CLI | done | 素材登録・索引・sidecar 紐付け。`register-material` / `audit-material-ledger` 実装。Slice 1.2 完了 |
 | **MS-02** | material_sidecar schema v1 と validator | done | 出典・ライセンス・利用条件の必須化、`assert_usable_for_thumbnail` gate、derived_from 厳格度継承チェック。Slice 1.2 完了 |
 | **MS-03** | 透過PNG 受け入れフロー | done | `is_transparent_png` で PNG color_type が 4/6 かを判定、`character_image` + `subkind=transparent_png` で強制。Slice 1.2 完了 |
-| **TH-01** | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | approved | NLMYTGen の `patch-thumbnail-template` / `audit-thumbnail-template` を subprocess 経由で呼び、`thumb.image.*` / `thumb.text.*` を patch、readback を返す |
-| **SH-01** | CLI runner と config（NLMYTGen path 設定含む） | approved | `config/nlmytgen_path.json`、subprocess wrapper、エラー伝搬。Slice 1.3 で TH-01 と同時着手 |
+| **TH-01** | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | done | `nlmytgen_bridge.py` + `thumbnail_patch.py` orchestrator + `audit-thumbnail` / `patch-thumbnail` CLI。compliance gate / material gate / bridge audit / bridge patch / readback の 5 段検証。Slice 1.3 完了。実 YMM4 base template に対する end-to-end walkthrough は user-owned acceptance step として保留 |
+| **SH-01** | CLI runner と config（NLMYTGen path 設定含む） | done | `config/nlmytgen_path.json` schema (例ファイル付き、本体 gitignored)、`BridgeConfig.load`、`call_nlmytgen` subprocess wrapper、`BridgeExecutionError` でのエラー伝搬。silent fallback 禁止。Slice 1.3 完了 |
 
 ## Slice 2 以降の候補（着手前、proposed のまま）
 
@@ -94,3 +94,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-06: Slice 1 の `CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01` を `approved` に昇格。根拠: ユーザー指示（軽量 review 後の着手承認）
 - 2026-05-06: `CR-01` を `done` に遷移。根拠: Slice 1.1 実装＋テスト（commit `5be5439`）
 - 2026-05-06: `MS-01 / MS-02 / MS-03` を `done` に遷移。根拠: Slice 1.2 実装＋テスト 23 件 pass
+- 2026-05-06: `TH-01 / SH-01` を `done` に遷移。根拠: Slice 1.3 実装＋テスト 31 件 pass（NLMYTGen subprocess は monkeypatch でモック）
