@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Local config (NLMYTGen path 等の環境固有)
+config/nlmytgen_path.json
+
+# Local episode work（権利確認前の素材を含む可能性）
+episodes/
+materials/
+
+# Local ymmp scratch
+templates/thumbnail/*_local.ymmp
+templates/thumbnail/_tmp/
+
+# Temporary
+_tmp/
+*.tmp
+*.bak
+*.log
+
+# YouTube tokens / OAuth secrets
+config/youtube_oauth_token.json
+config/youtube_client_secret.json
+.credentials/
