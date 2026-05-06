@@ -77,9 +77,11 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
+| SH-02L | episode status adapter（GUI MVP 用） | done | full `episode_pack` の前段として、Slice 1 artifact の存在・gate・next_action を返す `status-episode` CLI / `episode_status.py` を実装。GUI MVP が読む薄い背骨 |
 | SH-02 | episode_pack 統合 manifest | proposed | rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結 |
-| SH-03 | GUI（最小） | approved | 既存 Slice 1 CLI / manifest を操作する最小 GUI。**NLMYTGen GUI（Electron）と操作感・タブ構造・配色・ナビゲーション規約を揃える**。MVP scope は `docs/GUI_MVP_SCOPE.md`。Editing / Publishing はまだ表示しない |
-| SH-04 | NLMYTGen GUI への逆提案運用 | proposed | ClipPipeGen で得た GUI 知見（lane 分離・gate 強制 UI・readback 表示等）を NLMYTGen 側に doc／issue ベースで提案する運用。NLMYTGen 側ファイルの直接編集は行わない |
+| SH-03 | GUI MVP Phase 1（read-only operator console） | done | Electron skeleton（`gui/`）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。`status-episode` JSON を消費して状態表示。実行系・外部 API・upload は持たない。`docs/GUI_CONVENTIONS.md` に整合-A 規約 |
+| SH-03b | GUI Phase 2（action 導線） | proposed | `set-compliance` / `register-material` / `patch-thumbnail` を GUI から実行する form + 確認 dialog。upload / fetch / bg-removal API の button は永続的に置かない（INVARIANTS / GUI_CONVENTIONS §5） |
+| SH-04 | NLMYTGen GUI への逆提案運用 | proposed | ClipPipeGen で得た GUI 知見（lane 分離・gate 強制 UI・readback 表示等）を NLMYTGen 側に doc／issue ベースで提案する運用。NLMYTGen 側ファイルの直接編集は行わない。候補は `docs/GUI_CONVENTIONS.md §9` |
 
 ## 永続スコープ外（rejected / 永続）
 
@@ -103,3 +105,6 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-06: `TH-01 / SH-01` を `done` に遷移。根拠: Slice 1.3 実装＋テスト 31 件 pass（NLMYTGen subprocess は monkeypatch でモック）
 - 2026-05-07: Slice 2 (d) `TH-W01` を起票・即 done に遷移。根拠: docs/walkthrough/{YMM4_THUMBNAIL_TEMPLATE_AUTHORING,SLICE1_WALKTHROUGH}.md と samples/episode_example/* を配置（user owned acceptance step を docs で支援）
 - 2026-05-07: `SH-03` を `approved` に昇格。根拠: ユーザー指示（推奨対応で進行） + docs/GUI_MVP_SCOPE.md
+- 2026-05-07: `SH-02L` を起票・即 done に遷移。根拠: `src/pipeline/episode_status.py` / `src/cli/status_episode.py` / `tests/test_episode_status.py`（34 tests pass）
+- 2026-05-07: `SH-03` を Phase 1（read-only console）として `done` に遷移。根拠: `gui/` Electron skeleton + 5 タブ UI が `status-episode` JSON を消費して状態表示。Phase 2 は `SH-03b` として分離・proposed
+- 2026-05-07: `SH-03b` を起票（proposed）。根拠: GUI Phase 1 の DoD を狭く保ち、action 導線は別スライスで承認・実装する方が手戻りが少ない

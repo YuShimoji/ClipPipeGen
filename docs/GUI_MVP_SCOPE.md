@@ -38,7 +38,7 @@ Editing / Publishing はタブとして置かない。MVP では placeholder も
 
 ## SH-02-lite: Episode Status Adapter
 
-GUI 実装前に、最小の status adapter を置いてよい。これは full `episode_pack` ではなく、既存 artifact を読み取って GUI が必要な状態を返す薄い shared infra とする。
+GUI 実装前に、最小の status adapter を置く。これは full `episode_pack` ではなく、既存 artifact を読み取って GUI が必要な状態を返す薄い shared infra とする。
 
 含めるもの:
 
@@ -57,6 +57,14 @@ GUI 実装前に、最小の status adapter を置いてよい。これは full 
 - NLMYTGen と物理共有する manifest
 
 full `episode_pack` は Editing / Publishing が実装されてから再評価する。
+
+CLI:
+
+```bash
+python -m src.cli.main status-episode \
+  --episode-dir samples/episode_example \
+  --format json
+```
 
 ## Acceptance
 

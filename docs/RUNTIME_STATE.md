@@ -42,10 +42,20 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 (c) GUI MVP（SH-03）着手
-- **current_slice**: Slice 2 — (d) walkthrough 補助 done、(c) GUI 最小は approved
-- **next_action（assistant 側）**: `docs/GUI_MVP_SCOPE.md` に従い、SH-02-lite episode status adapter と Electron GUI MVP skeleton を実装する。外部 API / upload / asset fetch / bg-removal API は触らない。
-- **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。所要は YMM4 authoring 30〜60 分 + CLI 実行 5〜10 分。
+- **current_lane**: Slice 2 (c) GUI Phase 1 done、Phase 2 (SH-03b) は別スライスで承認待ち
+- **current_slice**: Slice 2 — SH-02L / SH-03 done。次は (a) Editing core 着手 か SH-03b GUI Phase 2 かを user が選ぶ
+- **next_action（assistant 側）**: ユーザーから方向指示を受けるまで idle。判断材料は `docs/RUNTIME_STATE.md` 「次に変えうる判断」と FEATURE_REGISTRY 内の proposed 候補（ED-01..06 / PB-01..04 / SH-03b / SH-04）
+- **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。完了後 GUI Phase 1 でも結果を確認できる。
+
+### Slice 2 (c) Phase 1 done（SH-03: GUI MVP read-only console）
+
+- `gui/` Electron skeleton — `package.json`（Electron `^30`）/ `main/index.js`（IPC `repoRoot` `listEpisodes` `getStatus` `revealPath`）/ `preload/index.js`（contextBridge）/ `renderer/{index.html,styles.css,index.js}`
+- 5 タブ MVP — Episode（dashboard table）/ Rights / Materials / Thumbnail（readback table 含む）/ Settings（bridge readiness）
+- `status-episode` JSON を spawn 経由で取得（cwd=リポ root）。Python は PATH または `CLIPPIPE_PYTHON` で指定
+- `docs/GUI_CONVENTIONS.md` — 整合-A 規約（配色・状態語彙・タブ命名・readback 表示・危険操作・逆提案運用）
+- Phase 2 = action 導線は **SH-03b** として proposed に分離。実行系 button は Phase 1 で意図的に出さない
+- 既存 Python tests 34 件は変更なし。GUI 側 smoke は Electron 起動を伴うため、後続スライスで Playwright/jest 系を入れるか判断
+- セキュリティ: `contextIsolation: true` / `nodeIntegration: false` / `sandbox: true` / 厳格 CSP（`default-src 'self'; script-src 'self'`）
 
 ### Slice 2 (d) done（TH-W01: Slice 1 walkthrough 補助）
 
@@ -54,12 +64,26 @@
 - `samples/episode_example/{rights_manifest.json,material_ledger.json,thumbnail_patch_input.json}` と `samples/episode_example/materials/mat_001/sidecar.json` — illustrative example。**実素材は同梱しない**（第三者素材 repo 同梱の禁止）
 - 既存テスト 31 件は変更なし。docs only commit。
 
-### Slice 2 (c) approved（SH-03: GUI MVP）
+### Slice 2 (c) approved → done（履歴）
 
 - `docs/GUI_MVP_SCOPE.md` — Electron 採用、MVP タブ（Episode / Rights / Materials / Thumbnail / Settings）、SH-02-lite episode status adapter、dangerous operation exclusion を固定。
 - GUI は NLMYTGen とアプリ共有しない。見た目・操作感・タブ構造・readback 表示パターンだけ揃える。
 - MVP は Slice 1 artifact の操作面に限定し、Editing / Publishing は表示しない。
-- 次ブロックで実装着手する。
+- Phase 1 実装は本ブロックで完了（上記 Phase 1 done セクション参照）。Phase 2 は SH-03b に分離。
+
+### Slice 2 (c) done（SH-02L: episode status adapter）
+
+- `src/pipeline/episode_status.py` — `rights_manifest` / `material_ledger` / `thumbnail_patch_input` / `thumbnail_patch_result` の存在、gate 状態、bridge config readiness、next_action を集約。
+- `src/cli/status_episode.py` — `status-episode --episode-dir ... --format json|text` を追加。
+- `tests/test_episode_status.py` — 3 tests。累計 34 tests passing。
+- full `episode_pack` は Editing / Publishing 実装後に再評価。
+
+### Slice 2 (c) in progress（SH-03: Electron GUI MVP skeleton）
+
+- `package.json` — Electron 42.0.0（2026-05-07 時点の npm registry 現行）を dev dependency として定義。
+- `gui/` — Electron main/preload/renderer/CSS/smoke を追加。
+- MVP は `status-episode` を IPC 経由で呼び、Episode / Rights / Materials / Thumbnail / Settings の状態を表示する。
+- GUI から upload / fetch / bg-removal API は実行しない。
 
 ## 主成果物
 

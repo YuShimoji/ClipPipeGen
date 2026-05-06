@@ -1,0 +1,15 @@
+{
+  "name": "clippipegen",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ClipPipeGen operator GUI",
+  "main": "gui/main.cjs",
+  "scripts": {
+    "start": "electron gui/main.cjs",
+    "smoke": "node gui/smoke.cjs",
+    "smoke:electron": "electron gui/main.cjs --smoke"
+  },
+  "devDependencies": {
+    "electron": "42.0.0"
+  }
+}

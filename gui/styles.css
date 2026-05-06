@@ -1,0 +1,305 @@
+:root {
+  color-scheme: light;
+  --bg: #f6f4ef;
+  --surface: #ffffff;
+  --surface-2: #eef4f1;
+  --ink: #20242a;
+  --muted: #68727d;
+  --line: #d8ddd9;
+  --ok: #28745a;
+  --manual: #9a6a17;
+  --blocked: #ad3d3a;
+  --missing: #617080;
+  --accent: #2768a6;
+  --accent-2: #1d7a83;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 960px;
+  min-height: 680px;
+  color: var(--ink);
+  background: var(--bg);
+  font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
+  letter-spacing: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 252px 1fr;
+  min-height: 100vh;
+}
+
+.rail {
+  border-right: 1px solid var(--line);
+  background: #fbfaf7;
+  padding: 22px 18px;
+}
+
+.brand {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 8px;
+  color: white;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.brand p,
+.muted,
+.eyebrow {
+  color: var(--muted);
+}
+
+.brand p {
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+.tabs {
+  display: grid;
+  gap: 6px;
+}
+
+.tab {
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 12px;
+  text-align: left;
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: var(--surface-2);
+}
+
+.tab.active {
+  color: white;
+  background: var(--accent);
+}
+
+.workspace {
+  padding: 24px;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr minmax(420px, 620px);
+  gap: 18px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin-bottom: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-size: 28px;
+}
+
+.episode-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.episode-form label {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.episode-form input {
+  min-width: 0;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0 10px;
+  background: white;
+}
+
+.episode-form button {
+  height: 38px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 16px;
+  color: white;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.status-card,
+.panel,
+.notice {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.status-card {
+  min-height: 118px;
+  padding: 14px;
+}
+
+.card-top,
+.panel-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.status-card h3,
+.panel h3 {
+  font-size: 15px;
+}
+
+.status-card p {
+  margin-top: 14px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.panel {
+  padding: 16px;
+}
+
+.badge {
+  display: inline-flex;
+  min-width: 72px;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 4px 9px;
+  color: white;
+  font-size: 12px;
+}
+
+.badge.ok {
+  background: var(--ok);
+}
+
+.badge.manual {
+  background: var(--manual);
+}
+
+.badge.blocked {
+  background: var(--blocked);
+}
+
+.badge.missing {
+  background: var(--missing);
+}
+
+.next-action {
+  margin-top: 16px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.detail-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 220px) 1fr;
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.detail-row span {
+  color: var(--muted);
+}
+
+.detail-row strong {
+  overflow-wrap: anywhere;
+  font-weight: 600;
+}
+
+.issue-row {
+  border-left: 4px solid var(--blocked);
+  padding: 8px 10px;
+  background: #fff6f3;
+  overflow-wrap: anywhere;
+  color: #68302e;
+  font-size: 13px;
+}
+
+.notice {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  color: #68302e;
+  background: #fff6f3;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .status-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topbar {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClipPipeGen</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="rail">
+        <div class="brand">
+          <div class="mark">CP</div>
+          <div>
+            <h1>ClipPipeGen</h1>
+            <p>Operator Console</p>
+          </div>
+        </div>
+        <nav class="tabs" aria-label="Primary">
+          <button class="tab active" data-tab="episode">Episode</button>
+          <button class="tab" data-tab="rights">Rights</button>
+          <button class="tab" data-tab="materials">Materials</button>
+          <button class="tab" data-tab="thumbnail">Thumbnail</button>
+          <button class="tab" data-tab="settings">Settings</button>
+        </nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Slice 2 / SH-03</p>
+            <h2 id="view-title">Episode</h2>
+          </div>
+          <form id="episode-form" class="episode-form">
+            <label for="episode-dir">Episode directory</label>
+            <input id="episode-dir" value="samples/episode_example" spellcheck="false" />
+            <button type="submit">Refresh</button>
+          </form>
+        </header>
+
+        <section id="error-panel" class="notice hidden"></section>
+
+        <section id="view-episode" class="view active">
+          <div class="status-grid" id="status-grid"></div>
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Next Action</h3>
+              <span id="next-owner" class="badge">unknown</span>
+            </div>
+            <p id="next-action" class="next-action">Loading...</p>
+            <p id="next-reason" class="muted"></p>
+          </section>
+        </section>
+
+        <section id="view-rights" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Compliance Gate</h3>
+              <span id="rights-state" class="badge">unknown</span>
+            </div>
+            <div id="rights-content" class="detail-list"></div>
+          </section>
+        </section>
+
+        <section id="view-materials" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Material Ledger</h3>
+              <span id="materials-state" class="badge">unknown</span>
+            </div>
+            <div id="materials-content" class="detail-list"></div>
+          </section>
+        </section>
+
+        <section id="view-thumbnail" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Thumbnail Patch</h3>
+              <span id="thumbnail-state" class="badge">unknown</span>
+            </div>
+            <div id="thumbnail-content" class="detail-list"></div>
+          </section>
+        </section>
+
+        <section id="view-settings" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>NLMYTGen Bridge</h3>
+              <span id="settings-state" class="badge">unknown</span>
+            </div>
+            <div id="settings-content" class="detail-list"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="./renderer.js"></script>
+  </body>
+</html>

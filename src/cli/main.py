@@ -11,6 +11,7 @@ Subcommands:
     audit-material-ledger    Integrity check for an episode material_ledger.json.
     audit-thumbnail          Audit YMM4 thumbnail template via NLMYTGen subprocess (read-only).
     patch-thumbnail          Apply thumbnail_patch_input end-to-end (compliance + material + NLMYTGen patch).
+    status-episode           Summarize one episode's Slice 1 artifact status for the GUI MVP.
 """
 
 from __future__ import annotations
@@ -25,6 +26,7 @@ from . import (
     patch_thumbnail,
     register_material,
     set_compliance,
+    status_episode,
     validate_rights,
 )
 
@@ -36,6 +38,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "audit-material-ledger": audit_material_ledger.run,
     "audit-thumbnail": audit_thumbnail.run,
     "patch-thumbnail": patch_thumbnail.run,
+    "status-episode": status_episode.run,
 }
 
 
