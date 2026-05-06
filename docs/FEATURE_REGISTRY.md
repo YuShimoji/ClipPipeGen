@@ -29,12 +29,12 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
-| **CR-01** | rights_manifest schema v1 と validator | proposed | `docs/SCHEMAS/v1/rights_manifest.md` の構造を実装。`compliance_check.status` を CLI gate として強制 |
-| **MS-01** | material_ledger schema v1 と CRUD CLI | proposed | 素材登録・索引・sidecar 紐付け |
-| **MS-02** | material_sidecar schema v1 と validator | proposed | 出典・ライセンス・利用条件の必須化 |
-| **MS-03** | 透過PNG 受け入れフロー | proposed | 外部処理（または人手）で生成された透過PNG を ledger に登録、sidecar 強制 |
-| **TH-01** | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | proposed | NLMYTGen の `patch-thumbnail-template` / `audit-thumbnail-template` を subprocess 経由で呼び、`thumb.image.*` / `thumb.text.*` を patch、readback を返す |
-| **SH-01** | CLI runner と config（NLMYTGen path 設定含む） | proposed | `config/nlmytgen_path.json`、subprocess wrapper、エラー伝搬 |
+| **CR-01** | rights_manifest schema v1 と validator | approved | `docs/SCHEMAS/v1/rights_manifest.md` の構造を実装。`compliance_check.status` を CLI gate として強制 |
+| **MS-01** | material_ledger schema v1 と CRUD CLI | approved | 素材登録・索引・sidecar 紐付け |
+| **MS-02** | material_sidecar schema v1 と validator | approved | 出典・ライセンス・利用条件の必須化 |
+| **MS-03** | 透過PNG 受け入れフロー | approved | 外部処理（または人手）で生成された透過PNG を ledger に登録、sidecar 強制 |
+| **TH-01** | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | approved | NLMYTGen の `patch-thumbnail-template` / `audit-thumbnail-template` を subprocess 経由で呼び、`thumb.image.*` / `thumb.text.*` を patch、readback を返す |
+| **SH-01** | CLI runner と config（NLMYTGen path 設定含む） | approved | `config/nlmytgen_path.json`、subprocess wrapper、エラー伝搬 |
 
 ## Slice 2 以降の候補（着手前、proposed のまま）
 
@@ -91,3 +91,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 （slice ごとに、状態遷移の根拠を1行で残す）
 
 - bootstrap: 全項目を `proposed` で起票。根拠: docs/FIRST_SLICE.md / docs/LANES.md
+- 2026-05-06: Slice 1 の `CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01` を `approved` に昇格。根拠: ユーザー指示（軽量 review 後の着手承認）

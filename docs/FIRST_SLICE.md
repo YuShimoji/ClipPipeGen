@@ -54,7 +54,7 @@ ClipPipeGen/
 │   │   ├── validate_rights.py     # rights_manifest validate
 │   │   ├── set_compliance.py      # compliance_check.status を更新（人手判断結果の記録）
 │   │   ├── register_material.py   # 素材登録（sidecar 必須）
-│   │   ├── audit_ledger.py        # material_ledger 整合性チェック
+│   │   ├── audit_material_ledger.py  # material_ledger 整合性チェック
 │   │   ├── audit_thumbnail.py     # NLMYTGen audit-thumbnail-template bridge
 │   │   └── patch_thumbnail.py     # NLMYTGen patch-thumbnail-template bridge
 │   ├── pipeline/
@@ -128,10 +128,10 @@ clippipe register-material \
 
 ledger に追加。sidecar 検証を含む。`source.kind == "unverified"` 等は登録自体は通るが、後段の thumbnail / publishing で fail する。
 
-### `audit-ledger`
+### `audit-material-ledger`
 
 ```
-clippipe audit-ledger --episode-id ep_20260506_hololive_sample_001
+clippipe audit-material-ledger --episode-id ep_20260506_hololive_sample_001
 ```
 
 ledger 全体の整合性（hash／sidecar／compliance_link）を検証。
@@ -218,7 +218,7 @@ NLMYTGen 側 CLI の正確なコマンド名は実装時に NLMYTGen の CLI 仕
 - [ ] `validate-rights` が schema 違反を検出する（unit test 含む）
 - [ ] `set-compliance --status passed` が auto-fail 条件で失敗する（VOD not public 等）
 - [ ] `register-material` が sidecar なしで失敗する
-- [ ] `audit-ledger` が hash 不一致／sidecar 違反を検出する
+- [ ] `audit-material-ledger` が hash 不一致／sidecar 違反を検出する
 - [ ] NLMYTGen の `audit-thumbnail-template` を subprocess で呼べる
 - [ ] NLMYTGen の `patch-thumbnail-template` を subprocess で呼べる
 - [ ] `patch-thumbnail` が compliance gate fail で早期失敗する

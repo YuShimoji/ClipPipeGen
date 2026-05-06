@@ -4,12 +4,16 @@
 
 ## 現在位置
 
-### Bootstrap（リポ初期化）
+### Slice 1.1 done（CR-01: rights_manifest schema＋validator＋CLI）
 
-- リポ作成済み（GitHub 上）
-- 初期方針書一式を配置（README / CLAUDE.md / AGENTS.md / .claude/CLAUDE.md / docs/INVARIANTS / LANES / AUTOMATION_BOUNDARY / FEATURE_REGISTRY / SCHEMAS/v1 / FIRST_SLICE）
-- まだコミット・プッシュしていない（ユーザー review 待ち）
-- 実装コードはまだ書いていない
+- Bootstrap commit 済（`d5efd86`、main）
+- Slice 1 features 全て `approved` 昇格済（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）
+- 軽量 review 通過：CLI 命名統一（`audit-ledger` → `audit-material-ledger`）、schema 名・レーン境界・Gate 強制方式は変更なし
+- **CR-01 実装完了**：
+  - `src/pipeline/rights_manifest.py` — schema validator / auto-fail evaluator / `set_compliance_status` / `assert_compliance_passed` (gate)
+  - `src/cli/{main,init_episode,validate_rights,set_compliance}.py`
+  - `tests/test_rights_manifest.py` — 9 tests, all passing
+- gate enforcement 確認済：`status != passed` → `ComplianceGateError`、`vod_status in {private, members_only, deleted}` または `third_party_ip[].permitted == false` で `set-compliance --status passed` が拒否される
 
 ### project
 
@@ -20,9 +24,10 @@
 
 ### lane / slice
 
-- **current_lane**: Bootstrap
+- **current_lane**: Material Sourcing
 - **current_slice**: Slice 1 — Material Sourcing + Thumbnail 最小実証（[FIRST_SLICE.md](FIRST_SLICE.md)）
-- **next_action**: ユーザーが初期ドラフトを review し、(a) リポへのコミット可否、(b) FEATURE_REGISTRY 内の Slice 1 関連項目（CR-01 / MS-01..03 / TH-01）の `proposed → approved` 昇格を判断する。承認後、Slice 1.1（rights_manifest schema 適用）から実装着手。
+- **current_sub_slice**: Slice 1.2 — MS-01 / MS-02 / MS-03（material_ledger + sidecar + 透過PNG 受け入れ）
+- **next_action**: Slice 1.2 着手。`material_ledger.py` + `material_sidecar.py` + `register-material` / `audit-material-ledger` CLI を実装し、CR-01 と同じ最小テスト方針（positive 1 + critical negatives）で検証する。完了後 Slice 1.3 = TH-01（NLMYTGen bridge）。
 
 ## 主成果物
 

@@ -110,7 +110,7 @@ MS-01 validator が以下を強制する：
 |---|---|
 | `register-material` | 素材を ledger に追加（sidecar 必須） |
 | `list-materials` | ledger を表示（filter: kind / intended_uses） |
-| `audit-material-ledger` | 整合性チェック（hash・sidecar・compliance_link） |
+| `audit-material-ledger` | 整合性チェック（hash・sidecar・compliance_link）。NLMYTGen の `audit-*` 命名規則に揃える |
 | `remove-material` | 物理削除はせず ledger entry を `archived` フラグで残す |
 
 ## 後続バージョンの予定
