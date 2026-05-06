@@ -14,6 +14,7 @@ Subcommands:
     status-episode           Summarize one episode's Slice 1 artifact status for the GUI MVP.
     init-edit-pack           Create an edit_pack skeleton for the Editing lane.
     validate-edit-pack       Validate edit_pack.json against schema v1.
+    add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ import sys
 from typing import Callable
 
 from . import (
+    add_cut_candidate,
     audit_material_ledger,
     audit_thumbnail,
     init_edit_pack,
@@ -45,6 +47,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "status-episode": status_episode.run,
     "init-edit-pack": init_edit_pack.run,
     "validate-edit-pack": validate_edit_pack.run,
+    "add-cut-candidate": add_cut_candidate.run,
 }
 
 

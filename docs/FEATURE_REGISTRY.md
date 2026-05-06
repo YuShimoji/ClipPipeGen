@@ -49,6 +49,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
 | ED-01 | edit_pack schema v1 | done | `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `init-edit-pack` / `validate-edit-pack`。cut 候補・選択 cut・字幕案・review 状態の器を実装。ED-02 以降の自動検出は未実装 |
+| ED-02a | 手動/インポート cut candidate 追加 CLI | done | `add-cut-candidate`。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を `edit_pack.cut_candidates[]` に追加し、必要なら `selected_cut_ids[]` に入れる安全スライス |
 | ED-02 | カット候補抽出（音声・字幕ベース） | proposed | 元動画から発話単位や字幕タイミングで cut 候補を出す |
 | ED-03 | 文脈チェック | proposed | カット境界が話者発話を不自然に切断していないか判定 |
 | ED-04 | 字幕案生成 | proposed | テキスト＋タイミング、burned-in 用 |
@@ -109,3 +110,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-07: `SH-03` を Phase 1（read-only console）として `done` に遷移。根拠: `gui/` Electron skeleton + 5 タブ UI が `status-episode` JSON を消費して状態表示。Phase 2 は `SH-03b` として分離・proposed
 - 2026-05-07: `SH-03b` を起票（proposed）。根拠: GUI Phase 1 の DoD を狭く保ち、action 導線は別スライスで承認・実装する方が手戻りが少ない
 - 2026-05-07: `ED-01` を `approved` 相当として実装し `done` に遷移。根拠: ユーザー指示（推奨対応で進行） + `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `tests/test_edit_pack.py`（43 tests pass）
+- 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する安全導線を確保するため

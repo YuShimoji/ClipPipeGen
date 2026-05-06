@@ -42,19 +42,19 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 (a) Editing core Phase 1 done（ED-01）
-- **current_slice**: Slice 2 — ED-01 done。次は ED-02（cut candidate input/import）か SH-03b（GUI action 導線）のどちらを先に厚くするかを判断する
-- **next_action（assistant 側）**: 推奨は ED-02 を外部 API なしの安全スライス（manual/import cut candidate CLI）から開始。speech-to-text / 自動検出 / NLE export は高位分岐のため、ED-02a の手入力・import 導線で運用形を見てから決める
+- **current_lane**: Slice 2 (a) Editing core Phase 1 done（ED-01 / ED-02a）
+- **current_slice**: Slice 2 — ED-01 / ED-02a done。次は ED-02 本体（音声・字幕ベースの自動 cut 候補）か SH-03b（GUI action 導線）のどちらを先に厚くするかを判断する
+- **next_action（assistant 側）**: 推奨は SH-03b のうち `init-edit-pack` / `add-cut-candidate` を GUI から操作する低リスク導線。speech-to-text / 自動検出 / NLE export は高位分岐のため、GUI 上で手動 cut 候補フローを見てから決める
 - **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。完了後 GUI Phase 1 でも結果を確認できる。
 
-### Slice 2 (a) Phase 1 done（ED-01: edit_pack schema）
+### Slice 2 (a) Phase 1 done（ED-01 / ED-02a: edit_pack schema + manual cut input）
 
 - `docs/SCHEMAS/v1/edit_pack.md` — cut 候補、選択 cut、字幕案、review 状態の schema を追加。
-- `src/pipeline/edit_pack.py` — skeleton / load / save / validator。時間範囲、cut/subtitle ID 一意性、選択 cut 参照、subtitle text、review approved 条件を検証。
-- `src/cli/{init_edit_pack,validate_edit_pack}.py` — `init-edit-pack` / `validate-edit-pack` を追加。
+- `src/pipeline/edit_pack.py` — skeleton / load / save / validator / `add_cut_candidate`。時間範囲、cut/subtitle ID 一意性、選択 cut 参照、subtitle text、review approved 条件を検証。
+- `src/cli/{init_edit_pack,validate_edit_pack,add_cut_candidate}.py` — `init-edit-pack` / `validate-edit-pack` / `add-cut-candidate` を追加。
 - `src/pipeline/episode_status.py` / `src/cli/status_episode.py` — `edit_pack.json` の存在と schema 状態を status JSON / text に反映。
 - `gui/renderer.js` — Episode dashboard に Editing status card を追加。ただし Editing tab はまだ出さない（操作可能に見せないため）。
-- 累計テスト 43 件 pass。外部 API・元動画ダウンロード・speech-to-text・動画レンダリングは未実行。
+- 累計テスト 46 件 pass。外部 API・元動画ダウンロード・speech-to-text・動画レンダリングは未実行。
 
 ### Slice 2 (c) Phase 1 done（SH-03: GUI MVP read-only console）
 
@@ -107,8 +107,8 @@
 
 ## 次に変えうる判断
 
-- ED-02 は外部 API なしの `add-cut-candidate` / `import-cut-candidates` から始めるのが安全。speech-to-text / 自動検出 provider / NLE export は、その後の高位分岐。
-- SH-03b は GUI action 導線（set-compliance / register-material / patch-thumbnail）だが、危険操作 button は置かない原則を維持する。
+- SH-03b は GUI action 導線（init-edit-pack / add-cut-candidate / set-compliance / register-material / patch-thumbnail）だが、危険操作 button は置かない原則を維持する。
+- ED-02 本体は speech-to-text / 自動検出 provider / NLE export を含む可能性があるため、着手前に provider と品質基準を決める。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

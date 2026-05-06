@@ -7,7 +7,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-from src.pipeline.edit_pack import build_skeleton, save_edit_pack, validate_edit_pack
+from src.pipeline.edit_pack import (
+    add_cut_candidate,
+    build_skeleton,
+    load_edit_pack,
+    save_edit_pack,
+    validate_edit_pack,
+)
 from src.pipeline.rights_manifest import (
     build_skeleton as build_rights_skeleton,
     save_rights_manifest,
@@ -53,6 +59,30 @@ def test_edit_pack_skeleton_is_valid():
 def test_edit_pack_with_manual_cut_and_subtitle_is_valid():
     pack = _pack_with_one_cut()
     assert validate_edit_pack(pack) == []
+
+
+def test_add_cut_candidate_appends_and_selects():
+    pack = build_skeleton("ep_ed_001")
+    updated = add_cut_candidate(
+        pack,
+        start_seconds=5.0,
+        end_seconds=12.5,
+        reason="manual highlight",
+        select=True,
+    )
+    assert updated["cut_candidates"][0]["id"] == "cut_001"
+    assert updated["selected_cut_ids"] == ["cut_001"]
+    assert validate_edit_pack(updated) == []
+
+
+def test_add_cut_candidate_rejects_invalid_time_range():
+    pack = build_skeleton("ep_ed_001")
+    try:
+        add_cut_candidate(pack, start_seconds=12.0, end_seconds=5.0)
+    except ValueError as exc:
+        assert "EDIT_CUT_TIME_RANGE_INVALID" in str(exc)
+    else:
+        raise AssertionError("invalid range should fail")
 
 
 def test_cut_time_range_must_be_ordered():
@@ -131,3 +161,33 @@ def test_cli_init_and_validate_edit_pack_roundtrip(tmp_path: Path):
     assert validate.returncode == 0, validate.stderr
     payload = json.loads(validate.stdout)
     assert payload["schema_ok"] is True
+
+
+def test_cli_add_cut_candidate_roundtrip(tmp_path: Path):
+    edit_pack_path = tmp_path / "edit_pack.json"
+    save_edit_pack(build_skeleton("ep_ed_cli"), edit_pack_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "add-cut-candidate",
+            "--edit-pack",
+            str(edit_pack_path),
+            "--start-seconds",
+            "10",
+            "--end-seconds",
+            "18.5",
+            "--reason",
+            "manual import",
+            "--select",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr
+    pack = load_edit_pack(edit_pack_path)
+    assert pack["cut_candidates"][0]["id"] == "cut_001"
+    assert pack["selected_cut_ids"] == ["cut_001"]

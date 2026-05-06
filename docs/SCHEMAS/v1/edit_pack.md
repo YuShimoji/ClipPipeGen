@@ -141,3 +141,18 @@ ED-01 validator が以下を強制する：
 - ED-01 では動画ファイルを作らない。
 - ED-01 では cut detection / speech-to-text / subtitle generation を呼ばない。
 - ED-01 は Editing レーンの **器** を確定するだけ。外部 API と元動画ダウンロードは発生しない。
+
+## CLI（ED-01 / ED-02a）
+
+```bash
+python -m src.cli.main init-edit-pack --episode-id ep_x
+python -m src.cli.main validate-edit-pack --edit-pack episodes/ep_x/edit_pack.json
+python -m src.cli.main add-cut-candidate \
+  --edit-pack episodes/ep_x/edit_pack.json \
+  --start-seconds 120.0 \
+  --end-seconds 185.0 \
+  --reason "manual highlight" \
+  --select
+```
+
+`add-cut-candidate` は ED-02a の安全スライス。元動画解析・speech-to-text・自動検出は行わず、人手または別ツールで得た秒数を `edit_pack` に記録するだけ。

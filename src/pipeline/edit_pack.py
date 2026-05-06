@@ -68,6 +68,57 @@ def build_skeleton(
     }
 
 
+def add_cut_candidate(
+    pack: dict[str, Any],
+    *,
+    start_seconds: float,
+    end_seconds: float,
+    source: str = "manual",
+    reason: str = "",
+    confidence: float | None = None,
+    context_status: str = "not_checked",
+    cut_id: str | None = None,
+    select: bool = False,
+) -> dict[str, Any]:
+    """Return a new edit_pack with one cut candidate appended.
+
+    This is ED-02a's safe input/import path. It does not analyze media; it only
+    records a candidate provided by a human or an importer.
+    """
+    new = dict(pack)
+    cuts = list(pack.get("cut_candidates") or [])
+    chosen_id = cut_id or _next_cut_id(cuts)
+    candidate = {
+        "id": chosen_id,
+        "start_seconds": float(start_seconds),
+        "end_seconds": float(end_seconds),
+        "source": source,
+        "reason": reason,
+        "confidence": confidence,
+        "context_check": {"status": context_status, "notes": []},
+    }
+    cuts.append(candidate)
+    new["cut_candidates"] = cuts
+    if select:
+        selected = list(pack.get("selected_cut_ids") or [])
+        if chosen_id not in selected:
+            selected.append(chosen_id)
+        new["selected_cut_ids"] = selected
+    new["updated_at"] = datetime.now(timezone.utc).isoformat()
+
+    issues = validate_edit_pack(new)
+    if issues:
+        raise ValueError(
+            "cut candidate would make edit_pack invalid: "
+            + ", ".join(f"{i.code}@{i.field}" for i in issues)
+        )
+    return new
+
+
+def _next_cut_id(cuts: list[dict[str, Any]]) -> str:
+    return f"cut_{len(cuts) + 1:03d}"
+
+
 def validate_edit_pack(pack: dict[str, Any]) -> list[ValidationIssue]:
     issues: list[ValidationIssue] = []
 
