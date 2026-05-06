@@ -20,6 +20,10 @@ Thumbs.db
 .idea/
 *.swp
 
+# MCP / IDE auto-generated workspace files
+.serena/
+.cursor/
+
 # Local config (NLMYTGen path 等の環境固有)
 config/nlmytgen_path.json
 
