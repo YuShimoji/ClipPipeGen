@@ -7,6 +7,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from src.pipeline.edit_pack import build_skeleton as build_edit_skeleton, save_edit_pack
+from src.pipeline.material_ledger import build_skeleton as build_ledger_skeleton, save_ledger
 from src.pipeline.episode_status import build_episode_status
 from src.pipeline.rights_manifest import (
     build_skeleton,
@@ -56,6 +58,30 @@ def test_status_reports_material_registration_next_after_passed_rights(tmp_path:
     assert status["rights"]["state"] == "ready"
     assert status["materials"]["state"] == "missing"
     assert status["next_action"]["action"].startswith("Register thumbnail material")
+
+
+def test_status_reports_edit_pack_next_after_empty_ledger_exists(tmp_path: Path):
+    ep_dir = tmp_path / "episodes" / "ep_edit_next"
+    ep_dir.mkdir(parents=True)
+    save_rights_manifest(_rights_passed("ep_edit_next"), ep_dir / "rights_manifest.json")
+    save_ledger(build_ledger_skeleton("ep_edit_next"), ep_dir / "material_ledger.json")
+
+    status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
+    assert status["editing"]["state"] == "missing"
+    # Empty material ledger is still treated as missing before editing can start.
+    assert status["next_action"]["action"].startswith("Register thumbnail material")
+
+
+def test_status_reads_edit_pack_when_present(tmp_path: Path):
+    ep_dir = tmp_path / "episodes" / "ep_edit_present"
+    ep_dir.mkdir(parents=True)
+    save_rights_manifest(_rights_passed("ep_edit_present"), ep_dir / "rights_manifest.json")
+    pack = build_edit_skeleton("ep_edit_present")
+    save_edit_pack(pack, ep_dir / "edit_pack.json")
+
+    status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
+    assert status["editing"]["state"] == "manual_needed"
+    assert status["editing"]["cut_candidates_count"] == 0
 
 
 def test_status_episode_cli_outputs_json(tmp_path: Path):

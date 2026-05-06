@@ -42,19 +42,28 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 (c) GUI Phase 1 done、Phase 2 (SH-03b) は別スライスで承認待ち
-- **current_slice**: Slice 2 — SH-02L / SH-03 done。次は (a) Editing core 着手 か SH-03b GUI Phase 2 かを user が選ぶ
-- **next_action（assistant 側）**: ユーザーから方向指示を受けるまで idle。判断材料は `docs/RUNTIME_STATE.md` 「次に変えうる判断」と FEATURE_REGISTRY 内の proposed 候補（ED-01..06 / PB-01..04 / SH-03b / SH-04）
+- **current_lane**: Slice 2 (a) Editing core Phase 1 done（ED-01）
+- **current_slice**: Slice 2 — ED-01 done。次は ED-02（cut candidate input/import）か SH-03b（GUI action 導線）のどちらを先に厚くするかを判断する
+- **next_action（assistant 側）**: 推奨は ED-02 を外部 API なしの安全スライス（manual/import cut candidate CLI）から開始。speech-to-text / 自動検出 / NLE export は高位分岐のため、ED-02a の手入力・import 導線で運用形を見てから決める
 - **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。完了後 GUI Phase 1 でも結果を確認できる。
+
+### Slice 2 (a) Phase 1 done（ED-01: edit_pack schema）
+
+- `docs/SCHEMAS/v1/edit_pack.md` — cut 候補、選択 cut、字幕案、review 状態の schema を追加。
+- `src/pipeline/edit_pack.py` — skeleton / load / save / validator。時間範囲、cut/subtitle ID 一意性、選択 cut 参照、subtitle text、review approved 条件を検証。
+- `src/cli/{init_edit_pack,validate_edit_pack}.py` — `init-edit-pack` / `validate-edit-pack` を追加。
+- `src/pipeline/episode_status.py` / `src/cli/status_episode.py` — `edit_pack.json` の存在と schema 状態を status JSON / text に反映。
+- `gui/renderer.js` — Episode dashboard に Editing status card を追加。ただし Editing tab はまだ出さない（操作可能に見せないため）。
+- 累計テスト 43 件 pass。外部 API・元動画ダウンロード・speech-to-text・動画レンダリングは未実行。
 
 ### Slice 2 (c) Phase 1 done（SH-03: GUI MVP read-only console）
 
-- `gui/` Electron skeleton — `package.json`（Electron `^30`）/ `main/index.js`（IPC `repoRoot` `listEpisodes` `getStatus` `revealPath`）/ `preload/index.js`（contextBridge）/ `renderer/{index.html,styles.css,index.js}`
+- `gui/` Electron skeleton — root `package.json`（Electron `42.0.0`）/ `gui/main.cjs`（IPC `episode:status`）/ `gui/preload.cjs`（contextBridge）/ `gui/{renderer.html,styles.css,renderer.js}`
 - 5 タブ MVP — Episode（dashboard table）/ Rights / Materials / Thumbnail（readback table 含む）/ Settings（bridge readiness）
 - `status-episode` JSON を spawn 経由で取得（cwd=リポ root）。Python は PATH または `CLIPPIPE_PYTHON` で指定
 - `docs/GUI_CONVENTIONS.md` — 整合-A 規約（配色・状態語彙・タブ命名・readback 表示・危険操作・逆提案運用）
 - Phase 2 = action 導線は **SH-03b** として proposed に分離。実行系 button は Phase 1 で意図的に出さない
-- 既存 Python tests 34 件は変更なし。GUI 側 smoke は Electron 起動を伴うため、後続スライスで Playwright/jest 系を入れるか判断
+- Python tests は 43 件 pass。GUI 側は `npm run smoke` / `npm run smoke:electron` で最小確認する。Playwright/jest 系は後続スライスで必要になってから判断。
 - セキュリティ: `contextIsolation: true` / `nodeIntegration: false` / `sandbox: true` / 厳格 CSP（`default-src 'self'; script-src 'self'`）
 
 ### Slice 2 (d) done（TH-W01: Slice 1 walkthrough 補助）
@@ -78,10 +87,10 @@
 - `tests/test_episode_status.py` — 3 tests。累計 34 tests passing。
 - full `episode_pack` は Editing / Publishing 実装後に再評価。
 
-### Slice 2 (c) in progress（SH-03: Electron GUI MVP skeleton）
+### Slice 2 (c) done（SH-03: Electron GUI MVP skeleton）
 
-- `package.json` — Electron 42.0.0（2026-05-07 時点の npm registry 現行）を dev dependency として定義。
-- `gui/` — Electron main/preload/renderer/CSS/smoke を追加。
+- `package.json` — Electron 42.0.0 を dev dependency として定義。
+- `gui/` — `main.cjs` / `preload.cjs` / `renderer.html` / `renderer.js` / `styles.css` / `smoke.cjs` を追加。
 - MVP は `status-episode` を IPC 経由で呼び、Episode / Rights / Materials / Thumbnail / Settings の状態を表示する。
 - GUI から upload / fetch / bg-removal API は実行しない。
 
@@ -98,7 +107,8 @@
 
 ## 次に変えうる判断
 
-- Slice 1 完了後、Slice 2 で **Editing core 着手** か **Publishing integration 着手** かを判断する
+- ED-02 は外部 API なしの `add-cut-candidate` / `import-cut-candidates` から始めるのが安全。speech-to-text / 自動検出 provider / NLE export は、その後の高位分岐。
+- SH-03b は GUI action 導線（set-compliance / register-material / patch-thumbnail）だが、危険操作 button は置かない原則を維持する。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

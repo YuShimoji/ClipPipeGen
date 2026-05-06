@@ -71,7 +71,7 @@ python -m src.cli.main status-episode \
 - `npm` / Electron dev server で GUI が起動する。
 - Episode / Rights / Materials / Thumbnail / Settings の MVP タブが表示される。
 - 少なくとも sample episode を読み、missing / blocked / ready の状態が破綻なく表示される。
-- 既存 31 Python tests は引き続き pass。GUI 側のテストは smoke 1-2 件に留める。
+- 既存 Python tests は引き続き pass。GUI 側のテストは smoke 1-2 件に留める。
 - 外部 API 呼び出し、YouTube upload、元動画ダウンロード、背景切り抜き API 呼び出しは発生しない。
 
 ## NLMYTGen への逆提案メモ

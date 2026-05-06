@@ -55,6 +55,11 @@ def _print_text(status: dict) -> None:
         f"({status['materials'].get('materials_count', 0)} materials)"
     )
     print(
+        "editing: "
+        f"{status['editing']['state']} "
+        f"({status['editing'].get('cut_candidates_count', 0)} cuts)"
+    )
+    print(
         "thumbnail: "
         f"{status['thumbnail']['state']} "
         f"({status['thumbnail'].get('slots_count', 0)} slots)"

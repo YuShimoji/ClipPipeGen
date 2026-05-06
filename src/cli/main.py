@@ -12,6 +12,8 @@ Subcommands:
     audit-thumbnail          Audit YMM4 thumbnail template via NLMYTGen subprocess (read-only).
     patch-thumbnail          Apply thumbnail_patch_input end-to-end (compliance + material + NLMYTGen patch).
     status-episode           Summarize one episode's Slice 1 artifact status for the GUI MVP.
+    init-edit-pack           Create an edit_pack skeleton for the Editing lane.
+    validate-edit-pack       Validate edit_pack.json against schema v1.
 """
 
 from __future__ import annotations
@@ -22,11 +24,13 @@ from typing import Callable
 from . import (
     audit_material_ledger,
     audit_thumbnail,
+    init_edit_pack,
     init_episode,
     patch_thumbnail,
     register_material,
     set_compliance,
     status_episode,
+    validate_edit_pack,
     validate_rights,
 )
 
@@ -39,6 +43,8 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "audit-thumbnail": audit_thumbnail.run,
     "patch-thumbnail": patch_thumbnail.run,
     "status-episode": status_episode.run,
+    "init-edit-pack": init_edit_pack.run,
+    "validate-edit-pack": validate_edit_pack.run,
 }
 
 

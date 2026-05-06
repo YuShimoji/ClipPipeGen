@@ -61,6 +61,7 @@ function renderEpisode(status) {
   grid.replaceChildren(
     statusCard("Rights", status.rights.state, status.artifacts.rights_manifest.path),
     statusCard("Materials", status.materials.state, status.artifacts.material_ledger.path),
+    statusCard("Editing", status.editing?.state || "missing", status.artifacts.edit_pack?.path),
     statusCard("Thumbnail", status.thumbnail.state, status.artifacts.thumbnail_patch_input.path),
     statusCard("Bridge", status.settings.bridge_config.ready ? "ready" : "missing", status.settings.bridge_config.path),
   );

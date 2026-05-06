@@ -23,6 +23,7 @@ from .thumbnail_patch import (
     load_thumbnail_patch_input,
     validate_thumbnail_patch_input,
 )
+from .edit_pack import load_edit_pack, validate_edit_pack
 
 SCHEMA_VERSION = "v1"
 
@@ -47,6 +48,7 @@ def build_episode_status(
         "artifacts": {},
         "rights": {"state": "missing"},
         "materials": {"state": "missing"},
+        "editing": {"state": "missing"},
         "thumbnail": {"state": "missing"},
         "settings": {"bridge_config": _bridge_config_status(bridge_config_path)},
         "next_action": {},
@@ -54,12 +56,14 @@ def build_episode_status(
 
     rights_path = ep_dir / "rights_manifest.json"
     ledger_path = ep_dir / "material_ledger.json"
+    edit_pack_path = ep_dir / "edit_pack.json"
     thumb_input_path = ep_dir / "thumbnail_patch_input.json"
     thumb_result_path = ep_dir / "thumbnail_patch_result.json"
 
     status["artifacts"] = {
         "rights_manifest": _artifact(rights_path, base),
         "material_ledger": _artifact(ledger_path, base),
+        "edit_pack": _artifact(edit_pack_path, base),
         "thumbnail_patch_input": _artifact(thumb_input_path, base),
         "thumbnail_patch_result": _artifact(thumb_result_path, base),
     }
@@ -68,6 +72,8 @@ def build_episode_status(
         _fill_rights_status(status, rights_path)
     if ledger_path.exists():
         _fill_material_status(status, ledger_path, base)
+    if edit_pack_path.exists():
+        _fill_editing_status(status, edit_pack_path)
     if thumb_input_path.exists():
         _fill_thumbnail_input_status(status, thumb_input_path)
     if thumb_result_path.exists():
@@ -151,6 +157,26 @@ def _fill_material_status(status: dict[str, Any], ledger_path: Path, base: Path)
     }
 
 
+def _fill_editing_status(status: dict[str, Any], edit_pack_path: Path) -> None:
+    pack = load_edit_pack(edit_pack_path)
+    issues = validate_edit_pack(pack)
+    selected = pack.get("selected_cut_ids") or []
+    candidates = pack.get("cut_candidates") or []
+    state = "ready"
+    if issues:
+        state = "blocked"
+    elif not candidates:
+        state = "manual_needed"
+
+    status["editing"] = {
+        "state": state,
+        "cut_candidates_count": len(candidates),
+        "selected_cuts_count": len(selected),
+        "schema_issues_count": len(issues),
+        "schema_issues": [i.to_dict() for i in issues],
+    }
+
+
 def _fill_thumbnail_input_status(status: dict[str, Any], input_path: Path) -> None:
     payload = load_thumbnail_patch_input(input_path)
     issues = validate_thumbnail_patch_input(payload)
@@ -201,11 +227,29 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
             "action": "Register thumbnail material with sidecar",
             "reason": "thumbnail image slots need a ledger material id",
         }
+    if status["materials"]["state"] == "missing":
+        return {
+            "owner": "assistant",
+            "action": "Register thumbnail material with sidecar",
+            "reason": "material_ledger exists but has no registered materials yet",
+        }
     if status["materials"]["state"] == "blocked":
         return {
             "owner": "both",
             "action": "Fix material ledger / sidecar issues",
             "reason": "thumbnail slots cannot use blocked or inconsistent materials",
+        }
+    if not status["artifacts"]["edit_pack"]["exists"]:
+        return {
+            "owner": "assistant",
+            "action": "Create edit_pack.json",
+            "reason": "Editing lane now has a schema for cut candidates and subtitle drafts",
+        }
+    if status["editing"]["state"] == "blocked":
+        return {
+            "owner": "both",
+            "action": "Fix edit_pack schema issues",
+            "reason": "cut candidates and subtitle drafts must validate before later detection/export work",
         }
     if not status["artifacts"]["thumbnail_patch_input"]["exists"]:
         return {

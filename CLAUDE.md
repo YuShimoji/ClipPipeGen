@@ -78,7 +78,7 @@
 | docs/RUNTIME_STATE.md | 現在位置・次の手 |
 | docs/FEATURE_REGISTRY.md | 機能一覧（全件） |
 | docs/FIRST_SLICE.md | Slice 1 設計 |
-| docs/SCHEMAS/v1/*.md | v1 schema 定義（rights_manifest / material_ledger / material_sidecar / thumbnail_patch_input） |
+| docs/SCHEMAS/v1/*.md | v1 schema 定義（rights_manifest / material_ledger / material_sidecar / thumbnail_patch_input / edit_pack） |
 
 ## スコープ外（v1）
 
