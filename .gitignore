@@ -30,7 +30,10 @@ config/nlmytgen_path.json
 
 # Local episode work（権利確認前の素材を含む可能性）
 episodes/
-materials/
+/materials/
+
+# samples/episode_example/materials/ の placeholder（assistant 自作・第三者素材ではない）は同梱する
+!samples/episode_example/materials/
 
 # Local ymmp scratch
 templates/thumbnail/*_local.ymmp

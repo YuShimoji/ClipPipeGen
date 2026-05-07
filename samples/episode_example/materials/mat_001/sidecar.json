@@ -1,0 +1,36 @@
+{
+  "schema_version": "v1",
+  "asset_id": "mat_001",
+  "asset_path": "samples/episode_example/materials/mat_001/x.png",
+  "asset_hash_sha256": "55a8010c754b207dc2c5859986bae957ef18f2e4c21bfd4aedd62d700665279e",
+  "source": {
+    "kind": "official_clip_permitted_source",
+    "url": "https://www.youtube.com/watch?v=PLACEHOLDER_REPLACE_ME",
+    "retrieved_at": "2026-05-07T08:00:00+09:00",
+    "retrieved_by": "user:example",
+    "retrieval_method": "manual_screenshot",
+    "notes": "official VOD frame at 01:23:45, exported as transparent PNG via external bg-removal"
+  },
+  "license": {
+    "kind": "guideline_permitted",
+    "guideline_url": "https://www.hololive.tv/terms",
+    "guideline_version_checked_at": "2026-05-07",
+    "url": null,
+    "spdx_id": null,
+    "notes": "ホロライブ二次創作ガイドラインに従う"
+  },
+  "usage_conditions": [
+    "credit_required",
+    "source_link_required",
+    "no_misleading_thumbnail",
+    "no_membership_only_content"
+  ],
+  "restrictions": {
+    "thumbnail_use": "allowed",
+    "commercial_use": "guideline_dependent",
+    "modification": "allowed_minor_only",
+    "redistribution": "denied"
+  },
+  "attribution_text": "© 2016 COVER Corp. / 元動画: https://www.youtube.com/watch?v=PLACEHOLDER_REPLACE_ME",
+  "derived_from": null
+}
