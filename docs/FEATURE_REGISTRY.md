@@ -53,7 +53,8 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ED-02 | カット候補抽出（音声・字幕ベース） | proposed | 元動画から発話単位や字幕タイミングで cut 候補を出す |
 | ED-03 | 文脈チェック | proposed | カット境界が話者発話を不自然に切断していないか判定 |
 | ED-04 | 字幕案生成 | proposed | テキスト＋タイミング、burned-in 用 |
-| ED-05 | 字幕表示幅計測（NLMYTGen CLI bridge） | proposed | NLMYTGen の text_measure を subprocess で利用 |
+| ED-05 | 字幕表示幅計測（EAW、stdlib のみ） | done | `src/pipeline/text_measure.py` に EAW unit 計算と折返し、`measure-subtitle-width` CLI を追加。NLMYTGen の `EastAsianWidthMeasurer` / `WpfTextMeasurer` を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は `docs/proposals/0002-standalone-measure-text-cli.md` の採否次第で `ED-05b` として再起票 |
+| ED-05b | text_measure bridge migration | proposed | NLMYTGen 側で `measure-text` standalone CLI が採用された段階で ClipPipeGen 側の `text_measure.py` を bridge に縮約する。詳細: `docs/proposals/0002` |
 | ED-06 | 外部 NLE 用 export（EDL／XML） | proposed | DaVinci Resolve / Premiere 向け export |
 
 ### Publishing 系
@@ -113,5 +114,6 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-07: `SH-04` を `done` に遷移。根拠: `docs/proposals/{README,0001-gui-alignment-from-clippipegen-mvp}.md` を配置（提案運用 + 初稿 1 本、state=draft）
 - 2026-05-07: `SH-03b` を `done` に遷移。根拠: `gui/main.cjs` に IPC `action:setCompliance` / `action:registerMaterial` / `action:patchThumbnail`、`gui/preload.cjs` に bridge methods、`gui/renderer.{html,js,smoke.cjs}` に form＋確認 dialog＋result。args builder は `gui/args.cjs` 分離。Electron 必要なし smoke pass、Python 46 件 pass
 - 2026-05-08: `SH-03c` を起票・即 `done` に遷移。根拠: GUI に Editing タブと `init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` action panel を追加（args.cjs / main.cjs IPC / preload bridge / renderer html+js / smoke 全更新）。samples/episode_example の dir 名と episode_id を harmonize し end-to-end status-episode が rights/materials/editing/thumbnail 全 ready で進行確認
+- 2026-05-08: `ED-05` を `done`、`ED-05b` を `proposed` で起票。根拠: NLMYTGen に standalone `measure-text` CLI が無いため bridge 不可、stdlib EAW measurer を ClipPipeGen 側に実装（`src/pipeline/text_measure.py` + `measure-subtitle-width` CLI、テスト 10 件 pass）。WPF 精度 bridge は `docs/proposals/0002-standalone-measure-text-cli.md` で逆提案、採用時に ED-05b で実装する
 - 2026-05-07: `ED-01` を `approved` 相当として実装し `done` に遷移。根拠: ユーザー指示（推奨対応で進行） + `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `tests/test_edit_pack.py`（43 tests pass）
 - 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する安全導線を確保するため

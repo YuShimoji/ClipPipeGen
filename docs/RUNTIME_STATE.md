@@ -42,9 +42,18 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / ED-01 / ED-02a / SH-03c done。samples runnable 化（v 完了）
-- **current_slice**: Slice 2 — 残るは (iii) ED-05（字幕表示幅計測 NLMYTGen bridge）→ (ii) ED-02 本体（自動 cut 候補、speech-to-text）→ (iv) PB-* / INT-*
-- **next_action（assistant 側）**: 推奨順 (iii) ED-05 から着手。NLMYTGen の `text_measure` 系を CLI bridge する小タスクで、字幕系 ED-04 の前段として再利用パターンを確立する
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 done。samples runnable
+- **current_slice**: Slice 2 — 残るは (ii) ED-02 本体（自動 cut 候補、speech-to-text 必要）→ (iii') ED-05b（NLMYTGen bridge migration、proposal 0002 採否次第）→ (iv) PB-* / INT-*
+- **next_action（assistant 側）**: ED-02 は speech-to-text engine 選定（外部 API か whisper.cpp ローカルか）が分岐ポイントなので idle until directed。低危険な前進としては ED-04（字幕案生成、ED-05 を消費する側）または ED-03（文脈チェック）の schema 起こしが候補
+
+### Slice 2 (iii) ED-05 done（subtitle width measurement, EAW）
+
+- 当初設計は NLMYTGen `text_measure` の CLI bridge だったが、NLMYTGen 側 `text_measure.py` は **class はあるが standalone CLI 無し**（measurement は `build-csv` 内 embed）。bridge 設計が結合できない構造ギャップを発見、**stdlib のみで EAW measurer を ClipPipeGen 側に実装**して閉じた
+- `src/pipeline/text_measure.py` — `char_eaw_width` / `text_eaw_width` / `wrap_by_eaw` / `measure_subtitle`。Ambiguous (`A`) は default 1、override 可能。空白あり= word break、CJK = char break
+- `src/cli/measure_subtitle_width.py` — `--text` / `--text-file` / `--wrap-eaw` / `--ambiguous-width` / `--format`。`needs_wrap` で exit code 1
+- `tests/test_text_measure.py` — 10 件（ASCII / Japanese / mixed / Ambiguous override / wrap below/above / whitespace word break / invalid input / CLI 2 件）
+- `docs/proposals/0002-standalone-measure-text-cli.md` — NLMYTGen 側に `measure-text` CLI を追加する逆提案（state=draft）。採用された場合は `ED-05b: text_measure bridge migration` で ClipPipeGen 側を bridge に縮約する
+- 既存 Python は 56 件（46 + 新規 10）pass、JS smoke 全通過、`status-episode` 出力は変化なし
 - **next_action（user 側）**: SLICE1_WALKTHROUGH.md の Quickstart で `samples/episode_example` を `npm start` 経由で開いてレーン状態を見られる。本走作業として YMM4 thumbnail base template の authoring → `patch-thumbnail` 実走
 
 ### Slice 2 (v) sample runnable + (i) Editing GUI tab done

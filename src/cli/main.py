@@ -12,6 +12,7 @@ Subcommands:
     audit-thumbnail          Audit YMM4 thumbnail template via NLMYTGen subprocess (read-only).
     patch-thumbnail          Apply thumbnail_patch_input end-to-end (compliance + material + NLMYTGen patch).
     status-episode           Summarize one episode's Slice 1 artifact status for the GUI MVP.
+    measure-subtitle-width   ED-05: measure subtitle text in EAW units (optional wrap).
     init-edit-pack           Create an edit_pack skeleton for the Editing lane.
     validate-edit-pack       Validate edit_pack.json against schema v1.
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
@@ -28,6 +29,7 @@ from . import (
     audit_thumbnail,
     init_edit_pack,
     init_episode,
+    measure_subtitle_width,
     patch_thumbnail,
     register_material,
     set_compliance,
@@ -45,6 +47,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "audit-thumbnail": audit_thumbnail.run,
     "patch-thumbnail": patch_thumbnail.run,
     "status-episode": status_episode.run,
+    "measure-subtitle-width": measure_subtitle_width.run,
     "init-edit-pack": init_edit_pack.run,
     "validate-edit-pack": validate_edit_pack.run,
     "add-cut-candidate": add_cut_candidate.run,
