@@ -32,7 +32,7 @@
       <main class="workspace">
         <header class="topbar">
           <div>
-            <p class="eyebrow">Slice 2 / SH-03</p>
+            <p class="eyebrow">Slice 2 / SH-03 + SH-03b</p>
             <h2 id="view-title">Episode</h2>
           </div>
           <form id="episode-form" class="episode-form">
@@ -64,6 +64,40 @@
             </div>
             <div id="rights-content" class="detail-list"></div>
           </section>
+
+          <section class="panel action-panel" data-action="set-compliance">
+            <div class="panel-head">
+              <h3>Run set-compliance</h3>
+              <span class="muted small">records human compliance judgement</span>
+            </div>
+            <p class="muted small">
+              Auto-fail conditions are re-checked: VOD non-public or
+              <code>third_party_ip[].permitted=false</code> blocks
+              <code>status=passed</code>. No bypass flag.
+            </p>
+            <form class="action-form" data-action-form="set-compliance">
+              <div class="field">
+                <label>rights_manifest <span class="muted small">(from current episode)</span></label>
+                <input data-field="rights_manifest" readonly />
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>status</label>
+                  <select data-field="status">
+                    <option value="passed">passed</option>
+                    <option value="pending">pending</option>
+                    <option value="failed">failed</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>checked_by</label>
+                  <input data-field="checked_by" placeholder="user:yourname" />
+                </div>
+              </div>
+              <button type="submit" class="btn-action">Run</button>
+            </form>
+            <pre class="action-result" data-action-result="set-compliance" hidden></pre>
+          </section>
         </section>
 
         <section id="view-materials" class="view">
@@ -73,6 +107,64 @@
               <span id="materials-state" class="badge">unknown</span>
             </div>
             <div id="materials-content" class="detail-list"></div>
+          </section>
+
+          <section class="panel action-panel" data-action="register-material">
+            <div class="panel-head">
+              <h3>Run register-material</h3>
+              <span class="muted small">sidecar required, hash + PNG transparency enforced</span>
+            </div>
+            <p class="muted small">
+              Files must already be on disk. Sidecar is validated against schema v1.
+              Hash mismatch and unverified source / unknown license / fair_use_claimed are blocked.
+            </p>
+            <form class="action-form" data-action-form="register-material">
+              <div class="field">
+                <label>episode_id <span class="muted small">(derived)</span></label>
+                <input data-field="episode_id" readonly />
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>kind</label>
+                  <select data-field="kind">
+                    <option value="character_image">character_image</option>
+                    <option value="background_image">background_image</option>
+                    <option value="logo">logo</option>
+                    <option value="bgm">bgm</option>
+                    <option value="se">se</option>
+                    <option value="other">other</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>subkind <span class="muted small">(optional)</span></label>
+                  <input data-field="subkind" placeholder="e.g. transparent_png" />
+                </div>
+              </div>
+              <div class="field">
+                <label>file</label>
+                <input data-field="file" placeholder="materials/mat_001/x.png" spellcheck="false" />
+              </div>
+              <div class="field">
+                <label>sidecar</label>
+                <input data-field="sidecar" placeholder="materials/mat_001/sidecar.json" spellcheck="false" />
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>intended_use(s) <span class="muted small">(comma-separated)</span></label>
+                  <input data-field="intended_uses" value="thumbnail" spellcheck="false" />
+                </div>
+                <div class="field">
+                  <label>registered_by</label>
+                  <input data-field="registered_by" placeholder="user:yourname" />
+                </div>
+              </div>
+              <div class="field">
+                <label>material_id <span class="muted small">(optional, override auto-id)</span></label>
+                <input data-field="material_id" placeholder="mat_001" spellcheck="false" />
+              </div>
+              <button type="submit" class="btn-action">Run</button>
+            </form>
+            <pre class="action-result" data-action-result="register-material" hidden></pre>
           </section>
         </section>
 
@@ -84,6 +176,30 @@
             </div>
             <div id="thumbnail-content" class="detail-list"></div>
           </section>
+
+          <section class="panel action-panel" data-action="patch-thumbnail">
+            <div class="panel-head">
+              <h3>Run patch-thumbnail</h3>
+              <span class="muted small">5-stage: compliance → material → audit → patch → readback</span>
+            </div>
+            <p class="muted small">
+              Requires a YMM4 base template with <code>thumb.*</code> Remarks and a
+              <code>thumbnail_patch_input.json</code> in the episode directory.
+              See <code>docs/walkthrough/SLICE1_WALKTHROUGH.md</code>.
+            </p>
+            <form class="action-form" data-action-form="patch-thumbnail">
+              <div class="field">
+                <label>input <span class="muted small">(thumbnail_patch_input.json)</span></label>
+                <input data-field="input" readonly />
+              </div>
+              <div class="field">
+                <label>output_result</label>
+                <input data-field="output_result" readonly />
+              </div>
+              <button type="submit" class="btn-action">Run</button>
+            </form>
+            <pre class="action-result" data-action-result="patch-thumbnail" hidden></pre>
+          </section>
         </section>
 
         <section id="view-settings" class="view">
@@ -94,9 +210,34 @@
             </div>
             <div id="settings-content" class="detail-list"></div>
           </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Phase 2 (SH-03b) action policy</h3>
+            </div>
+            <ul class="muted small">
+              <li>set-compliance / register-material / patch-thumbnail are local CLI calls; each opens a confirmation dialog before running.</li>
+              <li>No upload, asset fetch, or bg-removal API buttons (永続的に置かない).</li>
+              <li>YMM4 base template authoring stays in YMM4.</li>
+            </ul>
+          </section>
         </section>
       </main>
     </div>
+
+    <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div class="modal-box">
+        <h3 id="confirm-title">Confirm action</h3>
+        <p id="confirm-summary"></p>
+        <pre id="confirm-command" class="confirm-command"></pre>
+        <p id="confirm-reason" class="muted small"></p>
+        <div class="modal-actions">
+          <button id="confirm-cancel" type="button">Cancel</button>
+          <button id="confirm-ok" type="button" class="btn-action">Confirm and run</button>
+        </div>
+      </div>
+    </div>
+
     <script src="./renderer.js"></script>
   </body>
 </html>

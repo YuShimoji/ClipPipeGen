@@ -42,10 +42,22 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 (a) Editing core Phase 1 done（ED-01 / ED-02a）
-- **current_slice**: Slice 2 — ED-01 / ED-02a done。次は ED-02 本体（音声・字幕ベースの自動 cut 候補）か SH-03b（GUI action 導線）のどちらを先に厚くするかを判断する
-- **next_action（assistant 側）**: 推奨は SH-03b のうち `init-edit-pack` / `add-cut-candidate` を GUI から操作する低リスク導線。speech-to-text / 自動検出 / NLE export は高位分岐のため、GUI 上で手動 cut 候補フローを見てから決める
-- **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。完了後 GUI Phase 1 でも結果を確認できる。
+- **current_lane**: Slice 2 — SH-04 done / SH-03b done / ED-01 / ED-02a done（外部レーン）
+- **current_slice**: Slice 2 — 主要承認済 ID は出尽くした。次の意思決定は (i) SH-03b に edit_pack 操作（init-edit-pack / add-cut-candidate）を GUI 統合する Phase 2.5、(ii) ED-02 本体（音声・字幕ベース自動 cut 候補、speech-to-text 候補選定が要る）、(iii) PB / INT 着手のいずれか
+- **next_action（assistant 側）**: 上記 (i)〜(iii) の方向はユーザーの優先順次第。idle until directed。低危険・前進値ありで言えば (i) edit_pack の GUI 統合（既存 SH-03b の延長で UI/IPC 追加するだけ）が最小コスト
+- **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。SH-03b で GUI から実行可能になったので、CLI 直叩きより楽になっている
+
+### Slice 2 (c) Phase 2 done（SH-03b: GUI action 導線）
+
+- `gui/main.cjs` — IPC `action:setCompliance` / `action:registerMaterial` / `action:patchThumbnail` を追加。`safeRunCli` で argv 構築失敗を payload に丸めて renderer に返す
+- `gui/args.cjs` — argv builder を Electron 非依存モジュールとして分離。smoke から直接 import 可能
+- `gui/preload.cjs` — `setCompliance` / `registerMaterial` / `patchThumbnail` を contextBridge に追加
+- `gui/renderer.{html,js}` — Rights / Materials / Thumbnail に action panel を追加。`prefillActionForms` が現在 episode から rights_manifest / episode_id / thumbnail_patch_input / output_result を自動 prefill
+- 確認 dialog は単一の `#confirm-modal`。command 文字列 / summary / reason の 3 要素を表示。Esc=Cancel、Enter=Confirm。実行後は `action-result` 領域に exit / stdout tail / stderr tail を表示し、`status-episode` を自動 refresh
+- `gui/styles.css` — action panel / form / modal スタイルを追加
+- `gui/smoke.cjs` — Phase 2 マーカー（`data-action-form="..."` / `id="confirm-modal"`）の存在チェックと `args.cjs` の builder 検証を追加。Electron なしで完全 pass
+- 危険操作 button（upload / fetch / bg-removal API）は依然不在（GUI_CONVENTIONS §5）
+- 既存 Python 46 件 pass、JS syntax / smoke 全通過
 
 ### Slice 2 (a) Phase 1 done（ED-01 / ED-02a: edit_pack schema + manual cut input）
 

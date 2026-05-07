@@ -54,6 +54,7 @@ function renderStatus(status) {
   renderMaterials(status.materials);
   renderThumbnail(status.thumbnail);
   renderSettings(status.settings);
+  prefillActionForms(status);
 }
 
 function renderEpisode(status) {
@@ -171,5 +172,229 @@ function hideError() {
   errorPanel.textContent = "";
   errorPanel.classList.add("hidden");
 }
+
+// ---------- Phase 2 (SH-03b) — actions ----------
+
+const actionForms = {
+  "set-compliance": document.querySelector('[data-action-form="set-compliance"]'),
+  "register-material": document.querySelector('[data-action-form="register-material"]'),
+  "patch-thumbnail": document.querySelector('[data-action-form="patch-thumbnail"]'),
+};
+
+const actionResults = {
+  "set-compliance": document.querySelector('[data-action-result="set-compliance"]'),
+  "register-material": document.querySelector('[data-action-result="register-material"]'),
+  "patch-thumbnail": document.querySelector('[data-action-result="patch-thumbnail"]'),
+};
+
+function fieldValue(formEl, name) {
+  const el = formEl.querySelector(`[data-field="${name}"]`);
+  if (!el) return "";
+  return (el.value || "").trim();
+}
+
+function setFieldValue(formEl, name, value) {
+  const el = formEl.querySelector(`[data-field="${name}"]`);
+  if (!el) return;
+  if (!el.value || el.dataset.derived === "true") {
+    el.value = value;
+    el.dataset.derived = "true";
+  }
+}
+
+function prefillActionForms(status) {
+  const epDir = (episodeDirInput.value || "samples/episode_example").trim();
+  const epId = status.episode_id || epDir.split(/[\\/]/).pop() || "";
+  const rightsPath = status.artifacts?.rights_manifest?.path || `${epDir}/rights_manifest.json`;
+  const thumbInputPath =
+    status.artifacts?.thumbnail_patch_input?.path || `${epDir}/thumbnail_patch_input.json`;
+  const thumbResultPath = `${epDir}/thumbnail_patch_result.json`;
+
+  if (actionForms["set-compliance"]) {
+    setFieldValue(actionForms["set-compliance"], "rights_manifest", rightsPath);
+  }
+  if (actionForms["register-material"]) {
+    setFieldValue(actionForms["register-material"], "episode_id", epId);
+  }
+  if (actionForms["patch-thumbnail"]) {
+    setFieldValue(actionForms["patch-thumbnail"], "input", thumbInputPath);
+    setFieldValue(actionForms["patch-thumbnail"], "output_result", thumbResultPath);
+  }
+}
+
+// ---------- confirm modal ----------
+
+const confirmModal = document.querySelector("#confirm-modal");
+const confirmTitle = document.querySelector("#confirm-title");
+const confirmSummary = document.querySelector("#confirm-summary");
+const confirmCommand = document.querySelector("#confirm-command");
+const confirmReason = document.querySelector("#confirm-reason");
+const confirmCancel = document.querySelector("#confirm-cancel");
+const confirmOk = document.querySelector("#confirm-ok");
+
+function showConfirm({ title, summary, command, reason }) {
+  return new Promise((resolve) => {
+    confirmTitle.textContent = title;
+    confirmSummary.textContent = summary;
+    confirmCommand.textContent = command;
+    confirmReason.textContent = reason || "";
+    confirmModal.classList.remove("hidden");
+
+    function cleanup(result) {
+      confirmModal.classList.add("hidden");
+      confirmCancel.removeEventListener("click", onCancel);
+      confirmOk.removeEventListener("click", onOk);
+      document.removeEventListener("keydown", onKey);
+      resolve(result);
+    }
+    function onCancel() { cleanup(false); }
+    function onOk() { cleanup(true); }
+    function onKey(e) {
+      if (e.key === "Escape") cleanup(false);
+      if (e.key === "Enter") cleanup(true);
+    }
+    confirmCancel.addEventListener("click", onCancel);
+    confirmOk.addEventListener("click", onOk);
+    document.addEventListener("keydown", onKey);
+  });
+}
+
+// ---------- result rendering ----------
+
+function renderActionResult(actionKey, result) {
+  const pre = actionResults[actionKey];
+  if (!pre) return;
+  pre.hidden = false;
+  pre.classList.remove("ok", "fail");
+  pre.classList.add(result.ok ? "ok" : "fail");
+  const cmd = (result.command || []).join(" ") || "(command not built)";
+  const lines = [
+    `$ ${cmd}`,
+    `exit: ${result.code === null || result.code === undefined ? "(spawn error)" : result.code}`,
+  ];
+  if (result.error) lines.push(`error: ${result.error}`);
+  if (result.stdout) {
+    lines.push("--- stdout ---");
+    lines.push(tail(result.stdout, 30));
+  }
+  if (result.stderr) {
+    lines.push("--- stderr ---");
+    lines.push(tail(result.stderr, 30));
+  }
+  pre.textContent = lines.join("\n");
+}
+
+function tail(text, maxLines) {
+  const arr = (text || "").split(/\r?\n/);
+  if (arr.length <= maxLines) return arr.join("\n");
+  return ["…(truncated)", ...arr.slice(arr.length - maxLines)].join("\n");
+}
+
+// ---------- action submit handlers ----------
+
+const actionMeta = {
+  "set-compliance": {
+    title: "Run set-compliance",
+    reason:
+      "set-compliance records human compliance judgement. status=passed gates downstream upload/publish; bypass is forbidden by INVARIANTS.",
+    buildPayload(formEl) {
+      return {
+        rights_manifest: fieldValue(formEl, "rights_manifest"),
+        status: fieldValue(formEl, "status"),
+        checked_by: fieldValue(formEl, "checked_by"),
+      };
+    },
+    invoke: (payload) => window.clipPipe.setCompliance(payload),
+  },
+  "register-material": {
+    title: "Run register-material",
+    reason:
+      "register-material adds an entry to material_ledger.json. Sidecar is validated; hash must match; transparent_png subkind requires PNG color_type 4 or 6.",
+    buildPayload(formEl) {
+      const usesRaw = fieldValue(formEl, "intended_uses");
+      return {
+        episode_id: fieldValue(formEl, "episode_id"),
+        kind: fieldValue(formEl, "kind"),
+        subkind: fieldValue(formEl, "subkind"),
+        file: fieldValue(formEl, "file"),
+        sidecar: fieldValue(formEl, "sidecar"),
+        registered_by: fieldValue(formEl, "registered_by"),
+        material_id: fieldValue(formEl, "material_id"),
+        intended_uses: usesRaw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+      };
+    },
+    invoke: (payload) => window.clipPipe.registerMaterial(payload),
+  },
+  "patch-thumbnail": {
+    title: "Run patch-thumbnail",
+    reason:
+      "patch-thumbnail performs a 5-stage check (compliance → material → audit → patch → readback) and writes a patched .ymmp. Final visual acceptance still happens in YMM4.",
+    buildPayload(formEl) {
+      return {
+        input: fieldValue(formEl, "input"),
+        output_result: fieldValue(formEl, "output_result"),
+      };
+    },
+    invoke: (payload) => window.clipPipe.patchThumbnail(payload),
+  },
+};
+
+function summarisePayload(payload) {
+  return Object.entries(payload)
+    .filter(([, v]) => v !== "" && v !== undefined && v !== null && !(Array.isArray(v) && v.length === 0))
+    .map(([k, v]) => `  ${k} = ${Array.isArray(v) ? v.join(",") : v}`)
+    .join("\n");
+}
+
+Object.entries(actionForms).forEach(([key, formEl]) => {
+  if (!formEl) return;
+  formEl.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const meta = actionMeta[key];
+    const payload = meta.buildPayload(formEl);
+
+    // basic local validation
+    const missing = Object.entries(payload).filter(([, v]) => {
+      if (Array.isArray(v)) return v.length === 0;
+      return v === "" || v === undefined || v === null;
+    });
+    const optional = new Set(["subkind", "material_id"]);
+    const trulyMissing = missing
+      .map(([k]) => k)
+      .filter((k) => !optional.has(k));
+    if (trulyMissing.length > 0) {
+      const pre = actionResults[key];
+      pre.hidden = false;
+      pre.classList.remove("ok");
+      pre.classList.add("fail");
+      pre.textContent = `missing required fields: ${trulyMissing.join(", ")}`;
+      return;
+    }
+
+    const ok = await showConfirm({
+      title: meta.title,
+      summary: "About to run the following CLI in the repo. This is a local action only; no network calls.",
+      command: `python -m src.cli.main ${key}\n${summarisePayload(payload)}`,
+      reason: meta.reason,
+    });
+    if (!ok) return;
+
+    const submit = formEl.querySelector("button[type=submit]");
+    submit.disabled = true;
+    const original = submit.textContent;
+    submit.textContent = "Running…";
+    try {
+      const result = await meta.invoke(payload);
+      renderActionResult(key, result);
+      await refreshStatus();
+    } finally {
+      submit.disabled = false;
+      submit.textContent = original;
+    }
+  });
+});
 
 refreshStatus();

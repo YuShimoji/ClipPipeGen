@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const { spawn } = require("node:child_process");
+const argsBuilders = require("./args.cjs");
 
 const repoRoot = path.resolve(__dirname, "..");
 const smokeMode = process.argv.includes("--smoke");
@@ -28,20 +29,25 @@ ipcMain.handle("episode:status", async (_event, episodeDir) => {
   return runStatusEpisode(episodeDir || "samples/episode_example");
 });
 
-function runStatusEpisode(episodeDir) {
-  const python = process.env.CLIPPIPEGEN_PYTHON || "python";
-  const args = [
-    "-m",
-    "src.cli.main",
-    "status-episode",
-    "--episode-dir",
-    episodeDir,
-    "--format",
-    "json",
-  ];
+ipcMain.handle("action:setCompliance", async (_event, payload) =>
+  safeRunCli(() => argsBuilders.buildSetComplianceArgs(payload || {}))
+);
 
+ipcMain.handle("action:registerMaterial", async (_event, payload) =>
+  safeRunCli(() => argsBuilders.buildRegisterMaterialArgs(payload || {}))
+);
+
+ipcMain.handle("action:patchThumbnail", async (_event, payload) =>
+  safeRunCli(() => argsBuilders.buildPatchThumbnailArgs(payload || {}))
+);
+
+function pythonExecutable() {
+  return process.env.CLIPPIPEGEN_PYTHON || "python";
+}
+
+function spawnPython(args) {
   return new Promise((resolve) => {
-    const child = spawn(python, args, {
+    const child = spawn(pythonExecutable(), args, {
       cwd: repoRoot,
       windowsHide: true,
       env: { ...process.env, PYTHONIOENCODING: "utf-8" },
@@ -57,28 +63,81 @@ function runStatusEpisode(episodeDir) {
     child.on("error", (error) => {
       resolve({
         ok: false,
-        error: String(error.message || error),
-        stderr,
+        code: null,
         stdout,
+        stderr,
+        error: String(error.message || error),
+        argv: args,
       });
     });
     child.on("close", (code) => {
-      if (code !== 0) {
-        resolve({ ok: false, code, stderr, stdout });
-        return;
-      }
-      try {
-        resolve({ ok: true, status: JSON.parse(stdout) });
-      } catch (error) {
-        resolve({
-          ok: false,
-          error: `status-episode returned invalid JSON: ${error.message}`,
-          stdout,
-          stderr,
-        });
-      }
+      resolve({ ok: code === 0, code, stdout, stderr, argv: args });
     });
   });
+}
+
+function runStatusEpisode(episodeDir) {
+  const args = [
+    "-m",
+    "src.cli.main",
+    "status-episode",
+    "--episode-dir",
+    episodeDir,
+    "--format",
+    "json",
+  ];
+  return spawnPython(args).then((result) => {
+    if (!result.ok) {
+      return {
+        ok: false,
+        code: result.code,
+        error: result.error || result.stderr || "status-episode failed",
+        stdout: result.stdout,
+        stderr: result.stderr,
+      };
+    }
+    try {
+      return { ok: true, status: JSON.parse(result.stdout) };
+    } catch (error) {
+      return {
+        ok: false,
+        error: `status-episode returned invalid JSON: ${error.message}`,
+        stdout: result.stdout,
+        stderr: result.stderr,
+      };
+    }
+  });
+}
+
+async function runCli(args) {
+  const fullArgs = ["-m", "src.cli.main", ...args];
+  const result = await spawnPython(fullArgs);
+  return {
+    ok: result.ok,
+    code: result.code,
+    stdout: result.stdout,
+    stderr: result.stderr,
+    error: result.error,
+    argv: result.argv,
+    command: ["python", ...fullArgs],
+  };
+}
+
+async function safeRunCli(buildArgs) {
+  try {
+    const args = buildArgs();
+    return await runCli(args);
+  } catch (error) {
+    return {
+      ok: false,
+      code: null,
+      stdout: "",
+      stderr: "",
+      error: String((error && error.message) || error),
+      argv: [],
+      command: ["python", "-m", "src.cli.main"],
+    };
+  }
 }
 
 app.whenReady().then(() => {

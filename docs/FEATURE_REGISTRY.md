@@ -81,7 +81,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | SH-02L | episode status adapter（GUI MVP 用） | done | full `episode_pack` の前段として、Slice 1 artifact の存在・gate・next_action を返す `status-episode` CLI / `episode_status.py` を実装。GUI MVP が読む薄い背骨 |
 | SH-02 | episode_pack 統合 manifest | proposed | rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結 |
 | SH-03 | GUI MVP Phase 1（read-only operator console） | done | Electron skeleton（`gui/`）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。`status-episode` JSON を消費して状態表示。実行系・外部 API・upload は持たない。`docs/GUI_CONVENTIONS.md` に整合-A 規約 |
-| SH-03b | GUI Phase 2（action 導線） | proposed | `set-compliance` / `register-material` / `patch-thumbnail` を GUI から実行する form + 確認 dialog。upload / fetch / bg-removal API の button は永続的に置かない（INVARIANTS / GUI_CONVENTIONS §5） |
+| SH-03b | GUI Phase 2（action 導線） | done | Rights / Materials / Thumbnail タブに `set-compliance` / `register-material` / `patch-thumbnail` の form を追加。確認 dialog（command / summary / reason の 3 要素）必須。実行後は `status-episode` 自動 refresh で badge 更新。upload / fetch / bg-removal API の button は永続的に置かない（INVARIANTS / GUI_CONVENTIONS §5）。args builder は `gui/args.cjs` に分離して smoke が Electron なしで検証 |
 | SH-04 | NLMYTGen GUI への逆提案運用 | done | `docs/proposals/` に運用パターン (`README.md`) と最初の提案 (`0001-gui-alignment-from-clippipegen-mvp.md` / state=draft) を配置。NLMYTGen 側ファイルは編集せず、提案は doc／issue ベース。採否は NLMYTGen 側判断 |
 
 ## 永続スコープ外（rejected / 永続）
@@ -110,5 +110,6 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-07: `SH-03` を Phase 1（read-only console）として `done` に遷移。根拠: `gui/` Electron skeleton + 5 タブ UI が `status-episode` JSON を消費して状態表示。Phase 2 は `SH-03b` として分離・proposed
 - 2026-05-07: `SH-03b` を起票（proposed）。根拠: GUI Phase 1 の DoD を狭く保ち、action 導線は別スライスで承認・実装する方が手戻りが少ない
 - 2026-05-07: `SH-04` を `done` に遷移。根拠: `docs/proposals/{README,0001-gui-alignment-from-clippipegen-mvp}.md` を配置（提案運用 + 初稿 1 本、state=draft）
+- 2026-05-07: `SH-03b` を `done` に遷移。根拠: `gui/main.cjs` に IPC `action:setCompliance` / `action:registerMaterial` / `action:patchThumbnail`、`gui/preload.cjs` に bridge methods、`gui/renderer.{html,js,smoke.cjs}` に form＋確認 dialog＋result。args builder は `gui/args.cjs` 分離。Electron 必要なし smoke pass、Python 46 件 pass
 - 2026-05-07: `ED-01` を `approved` 相当として実装し `done` に遷移。根拠: ユーザー指示（推奨対応で進行） + `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `tests/test_edit_pack.py`（43 tests pass）
 - 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する安全導線を確保するため

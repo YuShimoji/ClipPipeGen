@@ -23,13 +23,13 @@ gui/
 - `status-episode` の `next_action`（owner / action / reason）
 - `bridge_config` の readiness（Settings タブ）
 
-## できないこと（意図的）
+## Phase 2（SH-03b）で追加された実行導線
 
-Phase 1 はあえて実行系を持たない。後続 SH-03b（Phase 2）で次の導線を追加予定：
+- `set-compliance` — Rights タブ（status select + checked_by）
+- `register-material` — Materials タブ（kind/subkind/file/sidecar/intended_uses/registered_by/material_id）
+- `patch-thumbnail` — Thumbnail タブ（input / output_result はエピソード状態から自動 prefill）
 
-- `set-compliance` 実行
-- `register-material` 入力 form
-- `patch-thumbnail` 実行 + readback 表示
+各実行ボタンは **確認 dialog を必ず経由**する（[docs/GUI_CONVENTIONS.md §5](../docs/GUI_CONVENTIONS.md)）。dialog には対象 command 文字列、summary、reason の 3 要素が表示される。実行後の結果（exit code / stdout tail / stderr tail）は form 直下の領域に出る。`status-episode` の自動 refresh により lane state badge も更新される。
 
 永続的にやらないこと（INVARIANTS / GUI_MVP_SCOPE）：
 
