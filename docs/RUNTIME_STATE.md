@@ -43,8 +43,15 @@
 ### lane / slice
 
 - **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 done。samples runnable
-- **current_slice**: Slice 2 — 残るは (ii) ED-02 本体（自動 cut 候補、speech-to-text 必要）→ (iii') ED-05b（NLMYTGen bridge migration、proposal 0002 採否次第）→ (iv) PB-* / INT-*
-- **next_action（assistant 側）**: ED-02 は speech-to-text engine 選定（外部 API か whisper.cpp ローカルか）が分岐ポイントなので idle until directed。先に進めるなら ED-04（字幕案生成、ED-05 を消費する側）または ED-03（文脈チェック）の schema 起こしが候補
+- **current_slice**: Slice 2 — Editing 自動化の次アンカーは ED-07 `transcript.json` / `transcribe-audio` と INT-02 `asset_fetch`。`transcribe-audio` はローカル音声ファイル → `transcript.json` に限定し、VOD / URL 取得は INT-02 に分離する
+- **next_action（assistant 側）**: 実装に進むなら (1) ED-07 validator + `transcribe-audio` CLI skeleton、(2) INT-02 fake downloader + preflight / receipt / material_ledger registration、(3) ED-04 字幕案生成（ED-05 消費）の順で着手する。STT engine は未確定で、初期候補は `whisper.cpp` subprocess
+
+### Slice 2 next anchor（ED-07 / INT-02）
+
+- `docs/SCHEMAS/v1/transcript.md` — `transcript.json` schema v1。ED-04 / ED-02 / ED-03 の入力 artifact
+- ED-07 `transcribe-audio` — 既存のローカル音声ファイルを入力にし、STT 実行 readback と `segments[]` を保存する。URL / VOD 取得は含めない
+- INT-02 `asset_fetch` — `fetch-source-audio` / `fetch-source-video`。URL / 出力先 / 推定サイズ / 目的の preflight、実行 log / receipt / rollback 情報、`material_ledger` 自動登録を持つ future integration
+- ED-07 と INT-02 は並列起票可能。接続点は `material_ledger` の source audio material と `transcript.source_audio.material_id`
 
 ### Slice 2 (iii) ED-05 done（subtitle width measurement, EAW）
 
@@ -85,7 +92,7 @@
 - `src/cli/{init_edit_pack,validate_edit_pack,add_cut_candidate}.py` — `init-edit-pack` / `validate-edit-pack` / `add-cut-candidate` を追加。
 - `src/pipeline/episode_status.py` / `src/cli/status_episode.py` — `edit_pack.json` の存在と schema 状態を status JSON / text に反映。
 - `gui/renderer.js` — Episode dashboard に Editing status card を追加。Editing タブは SH-03c で追加。
-- 累計テスト 46 件 pass。外部 API・元動画ダウンロード・speech-to-text・動画レンダリングは未実装/未実行。
+- 累計テスト 46 件 pass。外部 API・元動画ダウンロード・STT 実行・動画レンダリングは未実装/未実行。STT の artifact 境界は ED-07 `transcript.json` として後続で扱う。
 
 ### Slice 2 (c) Phase 1 done（SH-03: GUI MVP read-only console）
 
@@ -139,7 +146,8 @@
 ## 次に変えうる判断
 
 - SH-03b は GUI action 導線（init-edit-pack / add-cut-candidate / set-compliance / register-material / patch-thumbnail）。upload / fetch / bg-removal API は未実装のためまだ button がない。
-- ED-02 本体は speech-to-text / 自動検出 provider / NLE export を含む可能性があるため、着手前に provider と品質基準を決める。
+- ED-02 本体は `transcript.json` を入力にする。STT provider は ED-07 で決め、URL / VOD 取得は INT-02 として分離する。
+- INT-02 は取得 integration として、preflight / 実行 log / receipt / rollback 情報 / `material_ledger` 登録までを最初から surface に出す。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

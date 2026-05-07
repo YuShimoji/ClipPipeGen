@@ -28,6 +28,7 @@
 外部境界（隔離）:
   src/integrations/youtube/   ← Publishing から呼ばれる
   src/integrations/asset_fetch/ ← Material Sourcing から呼ばれる
+  future src/integrations/stt/  ← Editing から呼ばれる（engine wrapper。URL 取得は含めない）
   src/integrations/bg_removal/  ← Material Sourcing から呼ばれる（または外部処理結果を受領）
 ```
 
@@ -61,7 +62,7 @@
 
 ### 責務
 
-- 動画素材／サムネ素材／ロゴ／出典素材／人物画像／背景切り抜き結果を一元台帳化
+- 動画素材／音声素材／サムネ素材／ロゴ／出典素材／人物画像／背景切り抜き結果を一元台帳化
 - Editing／Thumbnail／Compliance からの素材要求の受付
 - 外部 integration（asset_fetch / bg_removal）の呼び出し境界
 
@@ -84,7 +85,8 @@
 
 ### 責務
 
-- 元動画からのカット候補抽出
+- ローカル音声ファイルからの transcript 生成（ED-07）
+- `transcript.json` からのカット候補抽出
 - 文脈チェック（カット境界が話者の発話を不自然に切断していないか）
 - 字幕案の生成（テキスト＋タイミング、burned-in は外部）
 - YMM4／外部 NLE への配置データ書き出し（cut EDL／字幕案／素材配置）
@@ -92,19 +94,22 @@
 ### Inputs
 
 - `rights_manifest`（状態と review notes の参照）
-- `material_ledger`（元動画素材）
+- `material_ledger`（元動画素材・source audio material）
+- `transcript.json`（ED-04 / ED-02 / ED-03 の入力。STT 実行後）
 - ユーザー指示（切り抜きの主旨、希望尺、対象話題）
 
 ### Outputs
 
+- `transcript.json`：STT segment と engine readback
 - `edit_pack.json`：cut EDL、字幕案、配置プラン
 - 外部 NLE 用 export（EDL／XML／CSV など、対象 NLE による）
 - YMM4 用 base ymmp の slot patch input（必要な場合）
 
 ### 境界
 
-- **やる**：カット候補・文脈チェック・字幕案・配置データ
+- **やる**：ローカル音声からの transcript 生成、カット候補・文脈チェック・字幕案・配置データ
 - **やらない**：実際のカット実行・concat・字幕焼き込み・動画レンダリング（YMM4／外部 NLE／人手）
+- **分離する**：URL / VOD からの素材取得は INT-02 `asset_fetch`。`transcribe-audio` の内部に fetch を混ぜない
 - **NLMYTGen 共通化しない**：NLMYTGen の S-3 CSV／S-6 Production IR／skit_group は構造が違うので使わない。共通化候補は字幕表示幅計測のみ。
 
 ## 4. Thumbnail
@@ -169,6 +174,7 @@
 
 - 渡すもの: `material_id`、素材ファイルパス、sidecar パス
 - 受け取り側 CLI は sidecar の構造とファイル解決を確認する。source/license/restriction は readback として扱う
+- Editing では source audio material を `transcribe-audio` に渡し、生成した `transcript.json` を ED-04 / ED-02 / ED-03 が参照する
 
 ### Editing / Thumbnail → Publishing
 

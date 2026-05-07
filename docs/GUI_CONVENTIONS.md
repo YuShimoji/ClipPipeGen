@@ -34,7 +34,7 @@ ClipPipeGen GUI MVP は warm light scheme を採用する。`gui/styles.css` の
 | `manual_needed` | 入力・素材・外部 artifact など次の材料が要る | 黄バッジ |
 | `missing` | 該当 artifact が未配置 | グレーバッジ |
 
-NLMYTGen 側にも同じ語彙を提案する（lane / gate 状態表示の共通化）。
+NLMYTGen 側にも同じ語彙を提案する（lane / readback 状態表示の共通化）。
 
 ## 3. タブ命名規約
 

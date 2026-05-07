@@ -36,7 +36,7 @@
 ## NLMYTGen との関係
 
 - 別リポ。**GUI アプリは共有しないが、見た目・操作感・タブ構造は NLMYTGen GUI に合わせる**。Electron スタック・配色・ナビゲーション規約・タブ構成・readback 表示パターンは揃える。理由: ユーザーが両ツールを同じ操作感で使えるようにする。
-- **双方向改善を許容**：ClipPipeGen 側で得た知見（lane 分離・gate 強制・readback 表示等）は NLMYTGen 側 GUI への逆提案として共有可能。逆も同じ。ただし NLMYTGen 側ファイルの直接編集はしない。提案は doc／issue ベースで行う。
+- **双方向改善を許容**：ClipPipeGen 側で得た知見（lane 分離・readback 表示・状態語彙等）は NLMYTGen 側 GUI への逆提案として共有可能。逆も同じ。ただし NLMYTGen 側ファイルの直接編集はしない。提案は doc／issue ベースで行う。
 - 再利用は CLI subprocess 経由：
   - `patch-thumbnail-template` / `audit-thumbnail-template`（サムネ slot patch）
   - 字幕表示幅計測（将来：Editing レーン burned-in 字幕の幅制御）
@@ -76,15 +76,16 @@
 | docs/RUNTIME_STATE.md | 現在位置・次の手 |
 | docs/FEATURE_REGISTRY.md | 機能一覧（全件） |
 | docs/FIRST_SLICE.md | Slice 1 設計 |
-| docs/SCHEMAS/v1/*.md | v1 schema 定義（rights_manifest / material_ledger / material_sidecar / thumbnail_patch_input / edit_pack） |
+| docs/SCHEMAS/v1/*.md | v1 schema 定義（rights_manifest / material_ledger / material_sidecar / thumbnail_patch_input / edit_pack / transcript） |
 
 ## 未実装の主要機能（実装対象、起票先 [docs/FEATURE_REGISTRY.md](docs/FEATURE_REGISTRY.md)）
 
 - 動画 cut detection（ED-02）
+- transcript schema / transcribe-audio（ED-07）
 - 文脈チェック（ED-03）
 - 字幕案生成（ED-04）
 - NLE export（ED-06）
-- 元動画ダウンロード integration（INT-02）
+- source audio / video 取得 integration（INT-02）
 - 背景切り抜き API integration（INT-04）
 - YouTube OAuth + upload + thumbnail 設定 + visibility 更新（INT-01 / PB-01..04）
 - 完全自動サムネ合成（OUT-04）

@@ -1,6 +1,6 @@
 # edit_pack.schema (v1)
 
-Editing レーンの中心 artifact。元動画からの cut 候補、選択 cut、字幕案、文脈チェック状態を 1 episode 単位で保持する。ED-01 では **schema / validator / skeleton CLI** までを扱い、cut detection・字幕生成・NLE export は後続 ED-02 以降に残す。
+Editing レーンの中心 artifact。元動画からの cut 候補、選択 cut、字幕案、文脈チェック状態を 1 episode 単位で保持する。ED-01 では **schema / validator / skeleton CLI** までを扱い、cut detection・字幕生成・NLE export は後続 ED-02 以降に残す。STT の出力は [transcript.schema](transcript.md) として分離し、`edit_pack` は transcript から生成・転記された cut / subtitle / review を保持する。
 
 ## ファイル形式
 
@@ -140,6 +140,7 @@ ED-01 validator が以下を強制する：
 
 - ED-01 では動画ファイルを作らない。
 - ED-01 では cut detection / speech-to-text / subtitle generation を呼ばない。
+- `transcribe-audio` は ED-07 の責務であり、既存のローカル音声ファイルから `transcript.json` を生成する。URL / VOD 取得は INT-02 `asset_fetch` の責務。
 - ED-01 は Editing レーンの **器** を確定するだけ。外部 API と元動画ダウンロードは発生しない。
 
 ## CLI（ED-01 / ED-02a）
@@ -155,4 +156,4 @@ python -m src.cli.main add-cut-candidate \
   --select
 ```
 
-`add-cut-candidate` は ED-02a の安全スライス。元動画解析・speech-to-text・自動検出は行わず、人手または別ツールで得た秒数を `edit_pack` に記録するだけ。
+`add-cut-candidate` は ED-02a の手動/インポート入力スライス。元動画解析・speech-to-text・自動検出は行わず、人手または別ツールで得た秒数を `edit_pack` に記録するだけ。後続の ED-02 / ED-04 は `transcript.json` を読んで同じ `edit_pack` に candidate / subtitle を追加する。

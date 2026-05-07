@@ -6,6 +6,7 @@
 
 - **Python は制作接着層**：元動画 URL／素材／rights 記録／EDL／字幕案／manifest／slot patch／publishing metadata を episode 単位でつなぐ。
 - **外部素材取得・背景切り抜き・upload は通常の integration 候補**。未実装なら未実装として扱い、方針上の禁止にしない。
+- **STT と素材取得を混ぜない**。`transcribe-audio` はローカル音声ファイルから `transcript.json` を作る。URL / VOD 取得は INT-02 `asset_fetch` として別に扱う。
 - **rights / license / restriction は readback**。`pending` / `unverified` / `unknown` / `fair_use_claimed` / `denied` などの値だけで local CLI を停止しない。
 - **外部ツール境界は明示する**。YMM4、外部 NLE、YouTube API、背景切り抜き API などは integration / bridge / handoff として扱う。
 
@@ -19,7 +20,7 @@
 
 - **Compliance / Rights は記録層**。`compliance_check.status` は判断材料として表示するが、他レーンの local CLI gate にしない。
 - **Material Sourcing は横断レイヤー**。Editing／Thumbnail／Compliance がそれぞれ素材要求を出し、Material Sourcing が一元的に台帳化する。動画編集配下に置かない。
-- **Editing は cut EDL／字幕案／配置データまで**。動画ファイルの cut 実行・concat・字幕焼き込みは外部 NLE／YMM4／人手で行う。
+- **Editing は transcript／cut EDL／字幕案／配置データまで**。動画ファイルの cut 実行・concat・字幕焼き込みは外部 NLE／YMM4／人手で行う。
 - **Thumbnail は YMM4 サムネテンプレへの slot patch を先行実装済み**。完全自動合成や画像レンダリングは必要になった時点で feature として起票する。
 - **Publishing は metadata／thumbnail 設定／upload receipt を扱う候補レーン**。visibility の扱いは CLI/GUI 実装時の引数仕様として決める。
 
@@ -29,6 +30,7 @@
 
 - `src/integrations/youtube/` — OAuth・videos.insert・thumbnails.set
 - `src/integrations/asset_fetch/` — 元動画／VOD 取得
+- future `src/integrations/stt/` — STT engine wrapper（URL / VOD 取得は含めない）
 - `src/integrations/bg_removal/` — 背景切り抜き API（外部送信を伴う）
 
 本体ロジックは integration 結果を受け取る。外部送信・認証・課金・provider 固有処理は integration 配下に寄せる。

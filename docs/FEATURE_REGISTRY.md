@@ -49,13 +49,14 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
 | ED-01 | edit_pack schema v1 | done | `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `init-edit-pack` / `validate-edit-pack`。cut 候補・選択 cut・字幕案・review 状態の器を実装。ED-02 以降の自動検出は未実装 |
-| ED-02a | 手動/インポート cut candidate 追加 CLI | done | `add-cut-candidate`。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を `edit_pack.cut_candidates[]` に追加し、必要なら `selected_cut_ids[]` に入れる安全スライス |
-| ED-02 | カット候補抽出（音声・字幕ベース） | proposed | 元動画から発話単位や字幕タイミングで cut 候補を出す |
-| ED-03 | 文脈チェック | proposed | カット境界が話者発話を不自然に切断していないか判定 |
-| ED-04 | 字幕案生成 | proposed | テキスト＋タイミング、burned-in 用 |
+| ED-02a | 手動/インポート cut candidate 追加 CLI | done | `add-cut-candidate`。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を `edit_pack.cut_candidates[]` に追加し、必要なら `selected_cut_ids[]` に入れる手動/インポート入力スライス |
+| ED-02 | カット候補抽出（音声・字幕ベース） | proposed | `transcript.json` の segment / keyword / timing を使って `edit_pack.cut_candidates[]` を生成する。VOD / URL 取得は含めず、必要な音声素材は INT-02 から受け取る |
+| ED-03 | 文脈チェック | proposed | `transcript.json` の隣接 segment を参照し、カット境界が話者発話や話題遷移を不自然に切断していないかを review note として返す |
+| ED-04 | 字幕案生成 | proposed | `transcript.json` の segment を字幕 draft に変換し、ED-05 の EAW 幅計測を消費して折返し候補を作る。burned-in は外部ツール / future renderer |
 | ED-05 | 字幕表示幅計測（EAW、stdlib のみ） | done | `src/pipeline/text_measure.py` に EAW unit 計算と折返し、`measure-subtitle-width` CLI を追加。NLMYTGen の `EastAsianWidthMeasurer` / `WpfTextMeasurer` を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は `docs/proposals/0002-standalone-measure-text-cli.md` の採否次第で `ED-05b` として再起票 |
 | ED-05b | text_measure bridge migration | proposed | NLMYTGen 側で `measure-text` standalone CLI が採用された段階で ClipPipeGen 側の `text_measure.py` を bridge に縮約する。詳細: `docs/proposals/0002` |
 | ED-06 | 外部 NLE 用 export（EDL／XML） | proposed | DaVinci Resolve / Premiere 向け export |
+| ED-07 | transcript schema v1 + transcribe-audio CLI | proposed | `docs/SCHEMAS/v1/transcript.md`。初期 `transcribe-audio` は既存のローカル音声ファイルを入力にして `transcript.json` を生成する責務に限定する。STT engine は未確定（初期候補: `whisper.cpp` subprocess）。URL / VOD 取得は INT-02 |
 
 ### Publishing 系
 
@@ -71,7 +72,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
 | INT-01 | YouTube OAuth flow | proposed | trusted application のセットアップ含む |
-| INT-02 | asset_fetch（VOD 取得） | proposed | yt-dlp 系ラッパー。rights status は readback に留め、取得そのものの hard gate にはしない |
+| INT-02 | asset_fetch（source audio / video 取得） | proposed | `fetch-source-audio` / `fetch-source-video` CLI。URL / 出力先 / 推定サイズ / 目的を preflight 表示し、実行 log / receipt / rollback 情報を残す。取得結果は `material_ledger` に自動登録できる。yt-dlp / ffmpeg は `src/integrations/asset_fetch/` に隔離し、CI は fake downloader を使う。rights status は readback に留め、値だけで取得そのものの hard gate にはしない |
 | INT-03 | bg_removal 受領フロー | proposed | 外部処理結果（透過PNG）の受け入れ。API 呼び出しは含めるか別途検討 |
 | INT-04 | bg_removal API 呼び出し | proposed | INT-03 の能動版。provider / 入出力 / receipt を integration として実装 |
 
@@ -79,7 +80,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
-| SH-02L | episode status adapter（GUI MVP 用） | done | full `episode_pack` の前段として、Slice 1 artifact の存在・gate・next_action を返す `status-episode` CLI / `episode_status.py` を実装。GUI MVP が読む薄い背骨 |
+| SH-02L | episode status adapter（GUI MVP 用） | done | full `episode_pack` の前段として、Slice 1 artifact の存在・readback・next_action を返す `status-episode` CLI / `episode_status.py` を実装。GUI MVP が読む薄い背骨 |
 | SH-02 | episode_pack 統合 manifest | proposed | rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結 |
 | SH-03 | GUI MVP Phase 1（read-only operator console） | done | Electron skeleton（`gui/`）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。`status-episode` JSON を消費して状態表示。外部 API・upload は未実装。`docs/GUI_CONVENTIONS.md` に整合-A 規約 |
 | SH-03b | GUI Phase 2（action 導線） | done | Rights / Materials / Thumbnail タブに `set-compliance` / `register-material` / `patch-thumbnail` の form を追加。確認 dialog（command / summary / reason の 3 要素）経由で実行。upload / fetch / bg-removal API は未実装であり、今後通常 integration として追加できる。args builder は `gui/args.cjs` に分離して smoke が Electron なしで検証 |
@@ -116,4 +117,5 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-08: `SH-03c` を起票・即 `done` に遷移。根拠: GUI に Editing タブと `init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` action panel を追加（args.cjs / main.cjs IPC / preload bridge / renderer html+js / smoke 全更新）。samples/episode_example の dir 名と episode_id を harmonize し end-to-end status-episode が rights/materials/editing/thumbnail 全 ready で進行確認
 - 2026-05-08: `ED-05` を `done`、`ED-05b` を `proposed` で起票。根拠: NLMYTGen に standalone `measure-text` CLI が無いため bridge 不可、stdlib EAW measurer を ClipPipeGen 側に実装（`src/pipeline/text_measure.py` + `measure-subtitle-width` CLI、テスト 10 件 pass）。WPF 精度 bridge は `docs/proposals/0002-standalone-measure-text-cli.md` で逆提案、採用時に ED-05b で実装する
 - 2026-05-07: `ED-01` を `approved` 相当として実装し `done` に遷移。根拠: ユーザー指示（推奨対応で進行） + `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `tests/test_edit_pack.py`（43 tests pass）
-- 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する安全導線を確保するため
+- 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する手動/インポート導線を確保するため
+- 2026-05-08: `ED-07` を `proposed` で起票し、`docs/SCHEMAS/v1/transcript.md` を追加。根拠: `transcribe-audio` はローカル音声ファイル → `transcript.json` に限定し、URL / VOD 取得は INT-02 `asset_fetch` として分離するユーザー判断

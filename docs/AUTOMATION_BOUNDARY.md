@@ -8,7 +8,8 @@
 |---|---|---|---|
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
-| External integration | 元動画ダウンロード | `src/integrations/asset_fetch/` | 通常の future integration |
+| Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07。URL / VOD 取得は含めない |
+| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02。`fetch-source-audio` / `fetch-source-video` として通常の future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
 
@@ -21,6 +22,7 @@
 - rights / sidecar status の readback（値は記録し、local CLI の hard gate にはしない）
 - 後続スライスで段階的に追加（FEATURE_REGISTRY 参照）：
   - 元動画ダウンロード integration
+  - ローカル音声ファイルからの transcript 生成（`transcribe-audio`）
   - カット候補抽出（`edit_pack.cut_candidates`）
   - 字幕案生成（`edit_pack.subtitles`）
   - upload / thumbnail 設定 / visibility 更新 integration
@@ -31,10 +33,21 @@
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
 - 元動画ダウンロード
+- speech-to-text 実行（`transcribe-audio`）
 - 背景切り抜き API 呼び出し
 - 完全自動サムネ合成 / サムネ画像レンダリング
 
 これらは未実装であり、必要になった時点で FEATURE_REGISTRY に起票し、integration / CLI / GUI として実装する。
+
+## Integration 実行 contract
+
+外部 tool / service を呼ぶ操作、または episode 配下の素材を増やす操作は、実装時に次を surface に出す。これは未実装機能を禁止するためではなく、operator が実行内容を readback できる形にするための contract。
+
+1. **preflight**: URL / 入力ファイル / 出力先 / 推定サイズ / 目的 / 使用 engine または provider を表示する。
+2. **confirmation**: GUI 実行時は既存の confirm dialog と同じく command / summary / reason を表示する。CLI 実行時は同等の dry-run または promptless preflight JSON を用意する。
+3. **log / receipt**: 実行 command、provider、開始終了時刻、生成 file、hash、warnings を保存する。
+4. **rollback 情報**: 生成 file、ledger 追加、receipt の対応関係を残し、operator が削除・再実行できる状態にする。
+5. **台帳登録**: INT-02 が音声・動画・画像素材を取得した場合、`material_ledger` へ自動登録できる導線を持つ。
 
 ## Review / Readback の所在
 
@@ -64,8 +77,9 @@
 |---|---|---|
 | `src/integrations/youtube/` | OAuth、videos.insert、thumbnails.set、playlist 操作、visibility 更新 | pipeline 本体ロジック |
 | `src/integrations/asset_fetch/` | yt-dlp 系ラッパー、VOD ダウンロード | 編集処理 |
+| future `src/integrations/stt/` | STT engine wrapper、engine-specific args / output parse | URL / VOD 取得、cut 候補抽出 |
 | `src/integrations/bg_removal/` | 背景切り抜き API クライアント、結果ファイル受領 | 元動画への適用、サムネ合成 |
-| `src/pipeline/` | manifest／schema／slot patch／validate | 外部送信、課金、認証 |
+| `src/pipeline/` | manifest／schema／slot patch／validate／transcript 構造変換 | 外部送信、課金、認証 |
 | `src/cli/` | コマンドライン entry points | 業務ロジック（pipeline 呼び出しのみ） |
 
 ## NLMYTGen GUI との整合方針

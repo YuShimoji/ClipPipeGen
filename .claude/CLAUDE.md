@@ -12,5 +12,6 @@
 - 通常再開は **README.md → docs/RUNTIME_STATE.md** で止める。INVARIANTS / LANES / FIRST_SLICE は必要時のみ。
 - `proposed` 機能は実装着手しない。承認後に `approved` へ昇格してから着手する。
 - 外部 API 呼び出し・upload・元動画ダウンロードは通常の integration 候補として扱う。未実装なら未実装と記録し、禁止扱いにしない。
+- `transcribe-audio` はローカル音声ファイル → `transcript.json` に限定する。URL / VOD 取得は INT-02 `asset_fetch` として分離する。
 - `compliance_check.status` と sidecar の source/license/restriction は readback であり、local CLI の hard gate にしない。
 - destructive git 操作や cross-project 書き込みだけは事前確認を取る。

@@ -31,7 +31,9 @@
 
 ## 現在のスライス
 
-**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。end-to-end walkthrough は `docs/walkthrough/` で支援。
+**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 では GUI action 導線、Editing tab、`edit_pack`、手動 cut 入力、字幕幅計測が実装済み。
+
+次の Editing 自動化アンカーは `transcript.json` / `transcribe-audio`（ED-07）と `asset_fetch`（INT-02）。`transcribe-audio` は既存のローカル音声ファイルを `transcript.json` にする責務に限定し、URL / VOD からの取得は INT-02 として分離する。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 
