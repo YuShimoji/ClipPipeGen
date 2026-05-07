@@ -1,0 +1,38 @@
+{
+  "schema_version": "v1",
+  "episode_id": "episode_example",
+  "rights_manifest_path": "samples/episode_example/rights_manifest.json",
+  "material_ledger_path": "samples/episode_example/material_ledger.json",
+  "created_at": "2026-05-07T15:12:24.151571+00:00",
+  "updated_at": "2026-05-07T15:13:36.280824+00:00",
+  "editing_intent": {
+    "target_duration_seconds": null,
+    "topic": "",
+    "audience_note": "",
+    "language": "ja"
+  },
+  "cut_candidates": [
+    {
+      "id": "cut_001",
+      "start_seconds": 65.0,
+      "end_seconds": 110.0,
+      "source": "manual",
+      "reason": "illustrative cut: 1m05s-1m50s of source VOD",
+      "confidence": 0.7,
+      "context_check": {
+        "status": "passed",
+        "notes": []
+      }
+    }
+  ],
+  "selected_cut_ids": [
+    "cut_001"
+  ],
+  "subtitles": [],
+  "review": {
+    "status": "draft",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "notes": []
+  }
+}

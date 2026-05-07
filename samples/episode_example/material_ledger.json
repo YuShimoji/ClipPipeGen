@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "episode_id": "ep_example_hololive_001",
+  "episode_id": "episode_example",
   "created_at": "2026-05-07T09:00:00+09:00",
   "updated_at": "2026-05-07T09:00:00+09:00",
   "materials": [
@@ -10,13 +10,13 @@
       "subkind": "transparent_png",
       "file_path": "samples/episode_example/materials/mat_001/x.png",
       "sidecar_path": "samples/episode_example/materials/mat_001/sidecar.json",
-      "hash_sha256": "REPLACE_ME_WITH_SHA256_OF_THE_REAL_PNG",
-      "byte_size": 0,
+      "hash_sha256": "55a8010c754b207dc2c5859986bae957ef18f2e4c21bfd4aedd62d700665279e",
+      "byte_size": 206,
       "intended_uses": ["thumbnail"],
       "registered_at": "2026-05-07T09:00:00+09:00",
       "registered_by": "user:example",
       "compliance_link": {
-        "rights_manifest_id": "ep_example_hololive_001",
+        "rights_manifest_id": "episode_example",
         "compliance_status_at_registration": "passed"
       }
     }

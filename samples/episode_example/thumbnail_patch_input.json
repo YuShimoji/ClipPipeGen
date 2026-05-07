@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "episode_id": "ep_example_hololive_001",
+  "episode_id": "episode_example",
   "rights_manifest_path": "samples/episode_example/rights_manifest.json",
   "material_ledger_path": "samples/episode_example/material_ledger.json",
   "base_template": {

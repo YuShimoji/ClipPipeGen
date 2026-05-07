@@ -2,6 +2,27 @@
 
 `init-episode` から `patch-thumbnail` までを通す happy path。終わると、YMM4 で開ける slot patch 済み `.ymmp` が手に入る。
 
+## Quickstart（サンプルだけで動く範囲）
+
+リポ root で次の 2 コマンドだけ：
+
+```bash
+python -m src.cli.main status-episode --episode-dir samples/episode_example --format text
+```
+
+これで `samples/episode_example/` 内の `rights / materials / editing / thumbnail` 4 レーンの状態が表示される。`next[assistant]: Run patch-thumbnail after YMM4 base template is ready` まで進めば、CLI 側のチェーンは閉じている。
+
+GUI で見るなら：
+
+```bash
+npm install
+npm start
+```
+
+Episode タブに同じ状態が出る。後はステップ 8（YMM4 base template authoring）以降を実エピソードで進める。
+
+サンプルの内訳と「なにが含まれていないか」は [`samples/episode_example/README.md`](../../samples/episode_example/README.md)。
+
 ## 前提
 
 | 項目 | 確認方法 |
