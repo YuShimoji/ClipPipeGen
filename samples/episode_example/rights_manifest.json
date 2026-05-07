@@ -48,6 +48,6 @@
     "checked_by": "user:example",
     "errors": [],
     "warnings": [],
-    "gate_version": "v1"
+    "review_version": "v1"
   }
 }
