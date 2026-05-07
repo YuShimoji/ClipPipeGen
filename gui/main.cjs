@@ -41,6 +41,18 @@ ipcMain.handle("action:patchThumbnail", async (_event, payload) =>
   safeRunCli(() => argsBuilders.buildPatchThumbnailArgs(payload || {}))
 );
 
+ipcMain.handle("action:initEditPack", async (_event, payload) =>
+  safeRunCli(() => argsBuilders.buildInitEditPackArgs(payload || {}))
+);
+
+ipcMain.handle("action:validateEditPack", async (_event, payload) =>
+  safeRunCli(() => argsBuilders.buildValidateEditPackArgs(payload || {}))
+);
+
+ipcMain.handle("action:addCutCandidate", async (_event, payload) =>
+  safeRunCli(() => argsBuilders.buildAddCutCandidateArgs(payload || {}))
+);
+
 function pythonExecutable() {
   return process.env.CLIPPIPEGEN_PYTHON || "python";
 }

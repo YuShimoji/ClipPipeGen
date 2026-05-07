@@ -63,8 +63,51 @@ function buildPatchThumbnailArgs(payload) {
   return args;
 }
 
+function buildInitEditPackArgs(payload) {
+  const args = [
+    "init-edit-pack",
+    "--episode-id",
+    requireField(payload, "episode_id"),
+  ];
+  if (payload.root) args.push("--root", String(payload.root));
+  if (payload.force) args.push("--force");
+  return args;
+}
+
+function buildValidateEditPackArgs(payload) {
+  return [
+    "validate-edit-pack",
+    "--edit-pack",
+    requireField(payload, "edit_pack"),
+  ];
+}
+
+function buildAddCutCandidateArgs(payload) {
+  const args = [
+    "add-cut-candidate",
+    "--edit-pack",
+    requireField(payload, "edit_pack"),
+    "--start-seconds",
+    String(requireField(payload, "start_seconds")),
+    "--end-seconds",
+    String(requireField(payload, "end_seconds")),
+  ];
+  if (payload.cut_id) args.push("--id", String(payload.cut_id));
+  if (payload.source) args.push("--source", String(payload.source));
+  if (payload.reason) args.push("--reason", String(payload.reason));
+  if (payload.confidence !== undefined && payload.confidence !== null && String(payload.confidence).length > 0) {
+    args.push("--confidence", String(payload.confidence));
+  }
+  if (payload.context_status) args.push("--context-status", String(payload.context_status));
+  if (payload.select) args.push("--select");
+  return args;
+}
+
 module.exports = {
   buildSetComplianceArgs,
   buildRegisterMaterialArgs,
   buildPatchThumbnailArgs,
+  buildInitEditPackArgs,
+  buildValidateEditPackArgs,
+  buildAddCutCandidateArgs,
 };

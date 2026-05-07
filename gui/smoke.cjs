@@ -19,16 +19,26 @@ for (const file of required) {
 }
 
 const html = fs.readFileSync(path.join(root, "gui/renderer.html"), "utf8");
-for (const id of ["view-episode", "view-rights", "view-materials", "view-thumbnail", "view-settings"]) {
+for (const id of [
+  "view-episode",
+  "view-rights",
+  "view-materials",
+  "view-editing",
+  "view-thumbnail",
+  "view-settings",
+]) {
   if (!html.includes(id)) {
     throw new Error(`renderer missing ${id}`);
   }
 }
-// Phase 2 (SH-03b) — action panels and confirm modal must be present.
+// Phase 2 (SH-03b) + Editing GUI — action panels and confirm modal must be present.
 for (const marker of [
   'data-action-form="set-compliance"',
   'data-action-form="register-material"',
   'data-action-form="patch-thumbnail"',
+  'data-action-form="init-edit-pack"',
+  'data-action-form="validate-edit-pack"',
+  'data-action-form="add-cut-candidate"',
   'id="confirm-modal"',
 ]) {
   if (!html.includes(marker)) {
@@ -82,6 +92,44 @@ try {
   threwOnMissing = true;
 }
 if (!threwOnMissing) throw new Error("set-compliance args should fail on missing fields");
+
+// ED action argv builders
+const initPack = argsBuilders.buildInitEditPackArgs({
+  episode_id: "ep_t",
+  root: "samples",
+  force: true,
+});
+if (!initPack.includes("--episode-id") || !initPack.includes("--root") || !initPack.includes("--force")) {
+  throw new Error("init-edit-pack args missing expected flags");
+}
+
+assertEqual(
+  argsBuilders.buildValidateEditPackArgs({ edit_pack: "p.json" }),
+  ["validate-edit-pack", "--edit-pack", "p.json"]
+);
+
+const addCut = argsBuilders.buildAddCutCandidateArgs({
+  edit_pack: "p.json",
+  start_seconds: 65.0,
+  end_seconds: 110.0,
+  cut_id: "cut_001",
+  source: "manual",
+  reason: "x",
+  confidence: 0.7,
+  context_status: "passed",
+  select: true,
+});
+for (const flag of ["--start-seconds", "--end-seconds", "--id", "--source", "--reason", "--confidence", "--context-status", "--select"]) {
+  if (!addCut.includes(flag)) throw new Error(`add-cut-candidate args missing ${flag}`);
+}
+
+let threwOnMissingED = false;
+try {
+  argsBuilders.buildAddCutCandidateArgs({ edit_pack: "p.json" });
+} catch (_e) {
+  threwOnMissingED = true;
+}
+if (!threwOnMissingED) throw new Error("add-cut-candidate args should fail on missing start/end seconds");
 
 console.log("gui smoke: OK");
 

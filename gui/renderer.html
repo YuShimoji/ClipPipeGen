@@ -24,6 +24,7 @@
           <button class="tab active" data-tab="episode">Episode</button>
           <button class="tab" data-tab="rights">Rights</button>
           <button class="tab" data-tab="materials">Materials</button>
+          <button class="tab" data-tab="editing">Editing</button>
           <button class="tab" data-tab="thumbnail">Thumbnail</button>
           <button class="tab" data-tab="settings">Settings</button>
         </nav>
@@ -165,6 +166,120 @@
               <button type="submit" class="btn-action">Run</button>
             </form>
             <pre class="action-result" data-action-result="register-material" hidden></pre>
+          </section>
+        </section>
+
+        <section id="view-editing" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Edit Pack</h3>
+              <span id="editing-state" class="badge">unknown</span>
+            </div>
+            <div id="editing-content" class="detail-list"></div>
+          </section>
+
+          <section class="panel action-panel" data-action="init-edit-pack">
+            <div class="panel-head">
+              <h3>Run init-edit-pack</h3>
+              <span class="muted small">creates episodes/&lt;id&gt;/edit_pack.json skeleton</span>
+            </div>
+            <p class="muted small">
+              Skeleton has empty <code>cut_candidates</code> / <code>subtitles</code> / <code>review</code>.
+              Use Add cut candidate below to populate. Auto cut detection (ED-02) is not in MVP.
+            </p>
+            <form class="action-form" data-action-form="init-edit-pack">
+              <div class="field-row">
+                <div class="field">
+                  <label>episode_id <span class="muted small">(derived)</span></label>
+                  <input data-field="episode_id" readonly />
+                </div>
+                <div class="field">
+                  <label>root</label>
+                  <input data-field="root" placeholder="episodes" spellcheck="false" />
+                </div>
+              </div>
+              <div class="field">
+                <label><input type="checkbox" data-field="force" /> overwrite if exists</label>
+              </div>
+              <button type="submit" class="btn-action">Run</button>
+            </form>
+            <pre class="action-result" data-action-result="init-edit-pack" hidden></pre>
+          </section>
+
+          <section class="panel action-panel" data-action="add-cut-candidate">
+            <div class="panel-head">
+              <h3>Run add-cut-candidate</h3>
+              <span class="muted small">manual cut entry; --select adds it to selected_cut_ids</span>
+            </div>
+            <form class="action-form" data-action-form="add-cut-candidate">
+              <div class="field">
+                <label>edit_pack <span class="muted small">(derived)</span></label>
+                <input data-field="edit_pack" readonly />
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>start_seconds</label>
+                  <input data-field="start_seconds" type="number" step="0.01" min="0" placeholder="65.0" />
+                </div>
+                <div class="field">
+                  <label>end_seconds</label>
+                  <input data-field="end_seconds" type="number" step="0.01" min="0" placeholder="110.0" />
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>cut id <span class="muted small">(optional)</span></label>
+                  <input data-field="cut_id" placeholder="cut_001" spellcheck="false" />
+                </div>
+                <div class="field">
+                  <label>source</label>
+                  <select data-field="source">
+                    <option value="manual">manual</option>
+                    <option value="auto">auto</option>
+                    <option value="imported">imported</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field">
+                  <label>confidence <span class="muted small">(0.0–1.0, optional)</span></label>
+                  <input data-field="confidence" type="number" step="0.01" min="0" max="1" placeholder="0.7" />
+                </div>
+                <div class="field">
+                  <label>context_status</label>
+                  <select data-field="context_status">
+                    <option value="not_checked">not_checked</option>
+                    <option value="passed">passed</option>
+                    <option value="needs_review">needs_review</option>
+                    <option value="failed">failed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label>reason <span class="muted small">(optional)</span></label>
+                <input data-field="reason" placeholder="why this cut" spellcheck="false" />
+              </div>
+              <div class="field">
+                <label><input type="checkbox" data-field="select" /> add to selected_cut_ids</label>
+              </div>
+              <button type="submit" class="btn-action">Run</button>
+            </form>
+            <pre class="action-result" data-action-result="add-cut-candidate" hidden></pre>
+          </section>
+
+          <section class="panel action-panel" data-action="validate-edit-pack">
+            <div class="panel-head">
+              <h3>Run validate-edit-pack</h3>
+              <span class="muted small">read-only schema check</span>
+            </div>
+            <form class="action-form" data-action-form="validate-edit-pack">
+              <div class="field">
+                <label>edit_pack <span class="muted small">(derived)</span></label>
+                <input data-field="edit_pack" readonly />
+              </div>
+              <button type="submit" class="btn-action">Run</button>
+            </form>
+            <pre class="action-result" data-action-result="validate-edit-pack" hidden></pre>
           </section>
         </section>
 

@@ -42,10 +42,20 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — SH-04 done / SH-03b done / ED-01 / ED-02a done（外部レーン）
-- **current_slice**: Slice 2 — 主要承認済 ID は出尽くした。次の意思決定は (i) SH-03b に edit_pack 操作（init-edit-pack / add-cut-candidate）を GUI 統合する Phase 2.5、(ii) ED-02 本体（音声・字幕ベース自動 cut 候補、speech-to-text 候補選定が要る）、(iii) PB / INT 着手のいずれか
-- **next_action（assistant 側）**: 上記 (i)〜(iii) の方向はユーザーの優先順次第。idle until directed。低危険・前進値ありで言えば (i) edit_pack の GUI 統合（既存 SH-03b の延長で UI/IPC 追加するだけ）が最小コスト
-- **next_action（user 側）**: 並行で SLICE1_WALKTHROUGH.md を辿り、YMM4 thumbnail base template の authoring と end-to-end の `patch-thumbnail` 実走。SH-03b で GUI から実行可能になったので、CLI 直叩きより楽になっている
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / ED-01 / ED-02a / SH-03c done。samples runnable 化（v 完了）
+- **current_slice**: Slice 2 — 残るは (iii) ED-05（字幕表示幅計測 NLMYTGen bridge）→ (ii) ED-02 本体（自動 cut 候補、speech-to-text）→ (iv) PB-* / INT-*
+- **next_action（assistant 側）**: 推奨順 (iii) ED-05 から着手。NLMYTGen の `text_measure` 系を CLI bridge する小タスクで、字幕系 ED-04 の前段として再利用パターンを確立する
+- **next_action（user 側）**: SLICE1_WALKTHROUGH.md の Quickstart で `samples/episode_example` を `npm start` 経由で開いてレーン状態を見られる。本走作業として YMM4 thumbnail base template の authoring → `patch-thumbnail` 実走
+
+### Slice 2 (v) sample runnable + (i) Editing GUI tab done
+
+- `samples/episode_example/materials/mat_001/x.png` — 64×64 半透明マゼンタ placeholder（assistant 自作、第三者素材ではない）。`is_transparent_png` pass、SHA256 = `55a8010c754b...`
+- `samples/episode_example/{rights_manifest,material_ledger,sidecar,thumbnail_patch_input}.json` の `episode_id` を dir 名 `episode_example` に harmonize（CLI 規約：`--episode-id` == dirname）
+- `samples/episode_example/edit_pack.json` を `init-edit-pack` で生成、`cut_001` を `add-cut-candidate --select` で追加
+- `.gitignore`: `materials/` を `/materials/`（root 限定）に変更し `!samples/episode_example/materials/` で sample 配下は同梱。これまで `sidecar.json` も silently dropped されていた構造的破綻を修正
+- `gui/`: Editing タブ追加。`init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` の action panel + confirm dialog 連動。args builder は `args.cjs` に追加して Electron なし smoke で検証
+- `gui/renderer.js`: `renderEditing` 追加、`prefillActionForms` で `epDir` から basename と parent root を分離し ED 系 form に prefill。type=number / checkbox 入力に対応する `optionalFieldsByAction` を導入
+- 端まで: `python -m src.cli.main status-episode --episode-dir samples/episode_example --format text` が rights/materials/editing/thumbnail 全 ready、`next[assistant]: Run patch-thumbnail after YMM4 base template is ready` を返す（実コマンド検証）。Python 46 件 pass、JS syntax / smoke 全通過
 
 ### Slice 2 (c) Phase 2 done（SH-03b: GUI action 導線）
 

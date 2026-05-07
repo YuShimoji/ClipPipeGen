@@ -14,6 +14,7 @@ const tabTitles = {
   episode: "Episode",
   rights: "Rights",
   materials: "Materials",
+  editing: "Editing",
   thumbnail: "Thumbnail",
   settings: "Settings",
 };
@@ -52,9 +53,22 @@ function renderStatus(status) {
   renderEpisode(status);
   renderRights(status.rights);
   renderMaterials(status.materials);
+  renderEditing(status.editing || {}, status.artifacts?.edit_pack || {});
   renderThumbnail(status.thumbnail);
   renderSettings(status.settings);
   prefillActionForms(status);
+}
+
+function renderEditing(editing, edit_pack_artifact) {
+  document.querySelector("#editing-state").textContent = editing.state || "missing";
+  document.querySelector("#editing-state").className = `badge ${stateClass(editing.state)}`;
+  const rows = [
+    ["edit_pack", edit_pack_artifact.path || "(missing)"],
+    ["cut_candidates_count", editing.cut_candidates_count ?? 0],
+    ["selected_cuts_count", editing.selected_cuts_count ?? 0],
+    ["schema_issues_count", editing.schema_issues_count ?? 0],
+  ];
+  renderDetails("#editing-content", rows, editing.schema_issues || []);
 }
 
 function renderEpisode(status) {
@@ -179,12 +193,18 @@ const actionForms = {
   "set-compliance": document.querySelector('[data-action-form="set-compliance"]'),
   "register-material": document.querySelector('[data-action-form="register-material"]'),
   "patch-thumbnail": document.querySelector('[data-action-form="patch-thumbnail"]'),
+  "init-edit-pack": document.querySelector('[data-action-form="init-edit-pack"]'),
+  "validate-edit-pack": document.querySelector('[data-action-form="validate-edit-pack"]'),
+  "add-cut-candidate": document.querySelector('[data-action-form="add-cut-candidate"]'),
 };
 
 const actionResults = {
   "set-compliance": document.querySelector('[data-action-result="set-compliance"]'),
   "register-material": document.querySelector('[data-action-result="register-material"]'),
   "patch-thumbnail": document.querySelector('[data-action-result="patch-thumbnail"]'),
+  "init-edit-pack": document.querySelector('[data-action-result="init-edit-pack"]'),
+  "validate-edit-pack": document.querySelector('[data-action-result="validate-edit-pack"]'),
+  "add-cut-candidate": document.querySelector('[data-action-result="add-cut-candidate"]'),
 };
 
 function fieldValue(formEl, name) {
@@ -204,8 +224,13 @@ function setFieldValue(formEl, name, value) {
 
 function prefillActionForms(status) {
   const epDir = (episodeDirInput.value || "samples/episode_example").trim();
-  const epId = status.episode_id || epDir.split(/[\\/]/).pop() || "";
+  // CLI convention: episode_id == dir basename. Prefer the basename so init-edit-pack
+  // (which writes to <root>/<episode_id>/) lands inside epDir rather than next to it.
+  const dirBase = epDir.split(/[\\/]/).pop() || "";
+  const epId = dirBase || status.episode_id || "";
+  const epRoot = epDir.split(/[\\/]/).slice(0, -1).join("/") || ".";
   const rightsPath = status.artifacts?.rights_manifest?.path || `${epDir}/rights_manifest.json`;
+  const editPackPath = status.artifacts?.edit_pack?.path || `${epDir}/edit_pack.json`;
   const thumbInputPath =
     status.artifacts?.thumbnail_patch_input?.path || `${epDir}/thumbnail_patch_input.json`;
   const thumbResultPath = `${epDir}/thumbnail_patch_result.json`;
@@ -219,6 +244,16 @@ function prefillActionForms(status) {
   if (actionForms["patch-thumbnail"]) {
     setFieldValue(actionForms["patch-thumbnail"], "input", thumbInputPath);
     setFieldValue(actionForms["patch-thumbnail"], "output_result", thumbResultPath);
+  }
+  if (actionForms["init-edit-pack"]) {
+    setFieldValue(actionForms["init-edit-pack"], "episode_id", epId);
+    setFieldValue(actionForms["init-edit-pack"], "root", epRoot);
+  }
+  if (actionForms["validate-edit-pack"]) {
+    setFieldValue(actionForms["validate-edit-pack"], "edit_pack", editPackPath);
+  }
+  if (actionForms["add-cut-candidate"]) {
+    setFieldValue(actionForms["add-cut-candidate"], "edit_pack", editPackPath);
   }
 }
 
@@ -340,14 +375,71 @@ const actionMeta = {
     },
     invoke: (payload) => window.clipPipe.patchThumbnail(payload),
   },
+  "init-edit-pack": {
+    title: "Run init-edit-pack",
+    reason:
+      "init-edit-pack writes <root>/<episode_id>/edit_pack.json skeleton. Manual; auto cut detection (ED-02) is not in MVP.",
+    buildPayload(formEl) {
+      return {
+        episode_id: fieldValue(formEl, "episode_id"),
+        root: fieldValue(formEl, "root"),
+        force: formEl.querySelector('[data-field="force"]').checked,
+      };
+    },
+    invoke: (payload) => window.clipPipe.initEditPack(payload),
+  },
+  "validate-edit-pack": {
+    title: "Run validate-edit-pack",
+    reason:
+      "validate-edit-pack is read-only schema check. exit 1 means schema/range/reference issues that block downstream Editing work.",
+    buildPayload(formEl) {
+      return { edit_pack: fieldValue(formEl, "edit_pack") };
+    },
+    invoke: (payload) => window.clipPipe.validateEditPack(payload),
+  },
+  "add-cut-candidate": {
+    title: "Run add-cut-candidate",
+    reason:
+      "add-cut-candidate appends one cut to edit_pack.json. context_status is recorded but not auto-checked here (manual judgement).",
+    buildPayload(formEl) {
+      return {
+        edit_pack: fieldValue(formEl, "edit_pack"),
+        start_seconds: fieldValue(formEl, "start_seconds"),
+        end_seconds: fieldValue(formEl, "end_seconds"),
+        cut_id: fieldValue(formEl, "cut_id"),
+        source: fieldValue(formEl, "source"),
+        reason: fieldValue(formEl, "reason"),
+        confidence: fieldValue(formEl, "confidence"),
+        context_status: fieldValue(formEl, "context_status"),
+        select: formEl.querySelector('[data-field="select"]').checked,
+      };
+    },
+    invoke: (payload) => window.clipPipe.addCutCandidate(payload),
+  },
 };
 
 function summarisePayload(payload) {
   return Object.entries(payload)
-    .filter(([, v]) => v !== "" && v !== undefined && v !== null && !(Array.isArray(v) && v.length === 0))
+    .filter(([, v]) => v !== "" && v !== undefined && v !== null && v !== false && !(Array.isArray(v) && v.length === 0))
     .map(([k, v]) => `  ${k} = ${Array.isArray(v) ? v.join(",") : v}`)
     .join("\n");
 }
+
+const optionalFieldsByAction = {
+  "set-compliance": new Set(),
+  "register-material": new Set(["subkind", "material_id"]),
+  "patch-thumbnail": new Set(),
+  "init-edit-pack": new Set(["root", "force"]),
+  "validate-edit-pack": new Set(),
+  "add-cut-candidate": new Set([
+    "cut_id",
+    "source",
+    "reason",
+    "confidence",
+    "context_status",
+    "select",
+  ]),
+};
 
 Object.entries(actionForms).forEach(([key, formEl]) => {
   if (!formEl) return;
@@ -359,9 +451,10 @@ Object.entries(actionForms).forEach(([key, formEl]) => {
     // basic local validation
     const missing = Object.entries(payload).filter(([, v]) => {
       if (Array.isArray(v)) return v.length === 0;
+      if (typeof v === "boolean") return false;
       return v === "" || v === undefined || v === null;
     });
-    const optional = new Set(["subkind", "material_id"]);
+    const optional = optionalFieldsByAction[key] || new Set();
     const trulyMissing = missing
       .map(([k]) => k)
       .filter((k) => !optional.has(k));
