@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-import pytest
-
 from src.pipeline.material_sidecar import (
-    SidecarUsageError,
     assert_usable_for_thumbnail,
     restrictions_are_at_least_as_strict,
     validate_sidecar,
@@ -46,25 +43,22 @@ def test_passable_sidecar_validates_clean():
     assert validate_sidecar(_passable_sidecar()) == []
 
 
-def test_unverified_source_blocks_thumbnail():
+def test_unverified_source_does_not_block_thumbnail():
     sc = _passable_sidecar()
     sc["source"]["kind"] = "unverified"
-    with pytest.raises(SidecarUsageError, match="unverified"):
-        assert_usable_for_thumbnail(sc)
+    assert_usable_for_thumbnail(sc)
 
 
-def test_unknown_license_blocks_thumbnail():
+def test_unknown_license_does_not_block_thumbnail():
     sc = _passable_sidecar()
     sc["license"]["kind"] = "unknown"
-    with pytest.raises(SidecarUsageError, match="unknown"):
-        assert_usable_for_thumbnail(sc)
+    assert_usable_for_thumbnail(sc)
 
 
-def test_thumbnail_use_denied_blocks_thumbnail():
+def test_thumbnail_use_denied_does_not_block_thumbnail():
     sc = _passable_sidecar()
     sc["restrictions"]["thumbnail_use"] = "denied"
-    with pytest.raises(SidecarUsageError, match="thumbnail_use"):
-        assert_usable_for_thumbnail(sc)
+    assert_usable_for_thumbnail(sc)
 
 
 def test_empty_usage_conditions_is_invalid():
@@ -74,7 +68,7 @@ def test_empty_usage_conditions_is_invalid():
     assert any(i.code == "SIDECAR_USAGE_CONDITIONS_EMPTY" for i in issues)
 
 
-def test_derived_restrictions_must_be_at_least_as_strict():
+def test_derived_restrictions_are_not_execution_blockers():
     original = _passable_sidecar()
     original["restrictions"]["thumbnail_use"] = "denied"
 
@@ -82,8 +76,4 @@ def test_derived_restrictions_must_be_at_least_as_strict():
     derived["restrictions"]["thumbnail_use"] = "allowed"  # 緩めている
 
     issues = restrictions_are_at_least_as_strict(derived, original)
-    assert any(
-        i.code == "DERIVED_RESTRICTION_LOOSER_THAN_ORIGINAL"
-        and i.field == "restrictions.thumbnail_use"
-        for i in issues
-    )
+    assert issues == []

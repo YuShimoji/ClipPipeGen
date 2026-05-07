@@ -254,7 +254,7 @@ def test_apply_thumbnail_patch_happy_path(monkeypatch, tmp_path: Path):
         ),
         work_dir=tmp_path / "_tmp" / "tp",
     )
-    assert result["compliance_gate"]["status"] == "passed"
+    assert result["rights_readback"]["status"] == "read"
     assert result["material_validation"]["all_resolved"] is True
     assert result["audit_result"]["passed"] is True
     assert not result["patch_result"]["errors"]
@@ -264,14 +264,14 @@ def test_apply_thumbnail_patch_happy_path(monkeypatch, tmp_path: Path):
     assert all(m is True for m in matches)
 
 
-def test_apply_thumbnail_patch_blocks_when_compliance_pending(monkeypatch, tmp_path: Path):
+def test_apply_thumbnail_patch_does_not_block_when_compliance_pending(monkeypatch, tmp_path: Path):
     paths = _build_passable_episode(tmp_path, monkeypatch)
     # Down-grade compliance to pending
     rights = json.loads(paths["rights_path"].read_text(encoding="utf-8"))
     rights["compliance_check"]["status"] = "pending"
     paths["rights_path"].write_text(json.dumps(rights, ensure_ascii=False), encoding="utf-8")
     payload = _passable_input(paths)
-    _mock_bridge_for_success(monkeypatch, [])
+    _mock_bridge_for_success(monkeypatch, [str(tmp_path / "materials/mat_001/x.png")])
 
     result = tp.apply_thumbnail_patch(
         payload,
@@ -281,11 +281,12 @@ def test_apply_thumbnail_patch_blocks_when_compliance_pending(monkeypatch, tmp_p
         ),
         work_dir=tmp_path / "_tmp" / "tp",
     )
-    assert result["compliance_gate"]["status"] == "failed"
-    assert "COMPLIANCE_GATE_FAILED" in result["patch_result"]["errors"]
+    assert result["rights_readback"]["status"] == "read"
+    assert result["rights_readback"]["rights_manifest_status"] == "pending"
+    assert not result["patch_result"]["errors"]
 
 
-def test_apply_thumbnail_patch_blocks_when_thumbnail_use_denied(
+def test_apply_thumbnail_patch_does_not_block_when_thumbnail_use_denied(
     monkeypatch, tmp_path: Path
 ):
     paths = _build_passable_episode(tmp_path, monkeypatch)
@@ -296,7 +297,7 @@ def test_apply_thumbnail_patch_blocks_when_thumbnail_use_denied(
     sc_path.write_text(json.dumps(sc, ensure_ascii=False), encoding="utf-8")
 
     payload = _passable_input(paths)
-    _mock_bridge_for_success(monkeypatch, [])
+    _mock_bridge_for_success(monkeypatch, [str(tmp_path / "materials/mat_001/x.png")])
 
     result = tp.apply_thumbnail_patch(
         payload,
@@ -306,9 +307,9 @@ def test_apply_thumbnail_patch_blocks_when_thumbnail_use_denied(
         ),
         work_dir=tmp_path / "_tmp" / "tp",
     )
-    assert result["compliance_gate"]["status"] == "passed"
-    assert result["material_validation"]["all_resolved"] is False
-    assert "MATERIAL_VALIDATION_FAILED" in result["patch_result"]["errors"]
+    assert result["rights_readback"]["status"] == "read"
+    assert result["material_validation"]["all_resolved"] is True
+    assert not result["patch_result"]["errors"]
 
 
 def test_apply_thumbnail_patch_detects_missing_slot(monkeypatch, tmp_path: Path):

@@ -19,7 +19,7 @@ gui/
 
 ## できること
 
-- 1 episode dir の `rights / materials / thumbnail` lane state（ready / blocked / manual_needed / missing）
+- 1 episode dir の `rights / materials / editing / thumbnail` lane state（ready / blocked / manual_needed / missing）
 - `status-episode` の `next_action`（owner / action / reason）
 - `bridge_config` の readiness（Settings タブ）
 
@@ -31,13 +31,14 @@ gui/
 
 各実行ボタンは **確認 dialog を必ず経由**する（[docs/GUI_CONVENTIONS.md §5](../docs/GUI_CONVENTIONS.md)）。dialog には対象 command 文字列、summary、reason の 3 要素が表示される。実行後の結果（exit code / stdout tail / stderr tail）は form 直下の領域に出る。`status-episode` の自動 refresh により lane state badge も更新される。
 
-永続的にやらないこと（INVARIANTS / GUI_MVP_SCOPE）：
+未実装のためまだ GUI にないこと：
 
 - YouTube upload や public 化
 - 元動画ダウンロード
 - 背景切り抜き API 呼び出し
 - `.ymmp` ゼロ生成
-- NLMYTGen 側ファイルの編集
+
+これらは必要になった時点で通常の integration / feature として追加する。
 
 ## セットアップ
 

@@ -60,7 +60,7 @@
         <section id="view-rights" class="view">
           <section class="panel">
             <div class="panel-head">
-              <h3>Compliance Gate</h3>
+              <h3>Rights Manifest</h3>
               <span id="rights-state" class="badge">unknown</span>
             </div>
             <div id="rights-content" class="detail-list"></div>
@@ -69,12 +69,11 @@
           <section class="panel action-panel" data-action="set-compliance">
             <div class="panel-head">
               <h3>Run set-compliance</h3>
-              <span class="muted small">records human compliance judgement</span>
+              <span class="muted small">records rights/compliance status</span>
             </div>
             <p class="muted small">
-              Auto-fail conditions are re-checked: VOD non-public or
-              <code>third_party_ip[].permitted=false</code> blocks
-              <code>status=passed</code>. No bypass flag.
+              VOD status and third-party IP flags are kept as review notes.
+              They do not block downstream local actions.
             </p>
             <form class="action-form" data-action-form="set-compliance">
               <div class="field">
@@ -113,11 +112,11 @@
           <section class="panel action-panel" data-action="register-material">
             <div class="panel-head">
               <h3>Run register-material</h3>
-              <span class="muted small">sidecar required, hash + PNG transparency enforced</span>
+              <span class="muted small">sidecar required, hash + PNG transparency checked</span>
             </div>
             <p class="muted small">
               Files must already be on disk. Sidecar is validated against schema v1.
-              Hash mismatch and unverified source / unknown license / fair_use_claimed are blocked.
+              Source/license/restriction fields are retained as metadata, not execution blockers.
             </p>
             <form class="action-form" data-action-form="register-material">
               <div class="field">
@@ -295,7 +294,7 @@
           <section class="panel action-panel" data-action="patch-thumbnail">
             <div class="panel-head">
               <h3>Run patch-thumbnail</h3>
-              <span class="muted small">5-stage: compliance → material → audit → patch → readback</span>
+              <span class="muted small">rights readback → material → audit → patch → readback</span>
             </div>
             <p class="muted small">
               Requires a YMM4 base template with <code>thumb.*</code> Remarks and a
@@ -332,7 +331,7 @@
             </div>
             <ul class="muted small">
               <li>set-compliance / register-material / patch-thumbnail are local CLI calls; each opens a confirmation dialog before running.</li>
-              <li>No upload, asset fetch, or bg-removal API buttons (永続的に置かない).</li>
+              <li>Upload, asset fetch, and bg-removal API actions are normal future integrations once their CLIs exist.</li>
               <li>YMM4 base template authoring stays in YMM4.</li>
             </ul>
           </section>

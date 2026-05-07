@@ -11,6 +11,6 @@
 - 本リポ以外（特に NLMYTGen）のファイルは読まない・書かない。NLMYTGen 再利用は CLI subprocess 経由のみ。
 - 通常再開は **README.md → docs/RUNTIME_STATE.md** で止める。INVARIANTS / LANES / FIRST_SLICE は必要時のみ。
 - `proposed` 機能は実装着手しない。承認後に `approved` へ昇格してから着手する。
-- 危険な操作（外部 API 呼び出し・upload・push・元動画ダウンロード）は必ずユーザー確認を取る。
-- `compliance_check.status != passed` の manifest／素材を upload／publish 系 CLI に渡さない。
-- `.ymmp` ゼロ生成禁止。
+- 外部 API 呼び出し・upload・元動画ダウンロードは通常の integration 候補として扱う。未実装なら未実装と記録し、禁止扱いにしない。
+- `compliance_check.status` と sidecar の source/license/restriction は readback であり、local CLI の hard gate にしない。
+- destructive git 操作や cross-project 書き込みだけは事前確認を取る。

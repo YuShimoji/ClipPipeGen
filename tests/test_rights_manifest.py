@@ -10,10 +10,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 from src.pipeline.rights_manifest import (
-    ComplianceGateError,
     assert_compliance_passed,
     build_skeleton,
     evaluate_compliance_auto_fail,
@@ -26,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def _hololive_passable() -> dict:
-    """auto-fail にならない最小 manifest。"""
+    """review notes が出ない最小 manifest。"""
     m = build_skeleton("ep_test_001")
     m["source_video"].update(
         url="https://www.youtube.com/watch?v=AAA",
@@ -65,27 +62,31 @@ def test_validation_detects_empty_talents():
     assert any(i.code == "TALENTS_EMPTY" for i in issues)
 
 
-def test_auto_fail_when_vod_is_members_only():
+def test_review_note_when_vod_is_members_only():
     m = _hololive_passable()
     m["source_video"]["vod_status"] = "members_only"
-    fails = evaluate_compliance_auto_fail(m)
-    assert any(i.code == "VOD_NOT_PUBLIC" for i in fails)
+    notes = evaluate_compliance_auto_fail(m)
+    assert any(i.code == "VOD_STATUS_REVIEW" for i in notes)
 
 
-def test_auto_fail_when_third_party_ip_not_permitted():
+def test_review_note_when_third_party_ip_not_permitted():
     m = _hololive_passable()
     m["third_party_ip"] = [
         {"kind": "music", "name": "X", "rights_holder": "Y", "permitted": False}
     ]
-    fails = evaluate_compliance_auto_fail(m)
-    assert any(i.code == "THIRD_PARTY_IP_NOT_PERMITTED" for i in fails)
+    notes = evaluate_compliance_auto_fail(m)
+    assert any(i.code == "THIRD_PARTY_IP_REVIEW" for i in notes)
 
 
-def test_set_compliance_passed_rejected_when_auto_fail_present():
+def test_set_compliance_passed_keeps_review_notes_as_warnings():
     m = _hololive_passable()
     m["source_video"]["vod_status"] = "private"
-    with pytest.raises(ValueError, match="VOD_NOT_PUBLIC"):
-        set_compliance_status(m, status="passed", checked_by="user:tester")
+    updated = set_compliance_status(m, status="passed", checked_by="user:tester")
+    assert updated["compliance_check"]["status"] == "passed"
+    assert any(
+        w["code"] == "VOD_STATUS_REVIEW"
+        for w in updated["compliance_check"]["warnings"]
+    )
 
 
 def test_set_compliance_passed_succeeds_when_clean():
@@ -94,14 +95,13 @@ def test_set_compliance_passed_succeeds_when_clean():
     assert updated["compliance_check"]["status"] == "passed"
     assert updated["compliance_check"]["checked_by"] == "user:tester"
     assert updated["compliance_check"]["checked_at"]
-    # gate enforcement passes
+    # legacy compatibility helper is a no-op
     assert_compliance_passed(updated)
 
 
-def test_assert_compliance_passed_raises_when_pending():
+def test_assert_compliance_passed_is_legacy_noop_when_pending():
     m = _hololive_passable()  # status=pending by default
-    with pytest.raises(ComplianceGateError):
-        assert_compliance_passed(m)
+    assert_compliance_passed(m)
 
 
 def test_hololive_talent_with_unrelated_guideline_url_is_flagged():

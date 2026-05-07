@@ -190,7 +190,7 @@ def test_audit_detects_hash_mismatch_after_file_modification(tmp_path: Path, mon
     assert any(i.code == "LEDGER_HASH_MISMATCH" for i in issues)
 
 
-def test_audit_flags_thumbnail_intent_with_blocked_sidecar(tmp_path: Path, monkeypatch):
+def test_audit_allows_thumbnail_intent_with_restrictive_sidecar(tmp_path: Path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     img = tmp_path / "materials/mat_001/x.png"
     img.parent.mkdir(parents=True, exist_ok=True)
@@ -213,7 +213,7 @@ def test_audit_flags_thumbnail_intent_with_blocked_sidecar(tmp_path: Path, monke
     )
 
     issues = audit_ledger(ledger, base_dir=tmp_path)
-    assert any(i.code == "LEDGER_THUMBNAIL_INTENT_BLOCKED" for i in issues)
+    assert not any(i.code == "LEDGER_THUMBNAIL_INTENT_BLOCKED" for i in issues)
 
 
 # --- CLI smoke ---

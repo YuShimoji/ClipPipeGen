@@ -1,27 +1,27 @@
 # Invariants
 
-破ってはいけない条件・責務境界を保持する正本。理由付きで残す。
+破ってはいけない条件・責務境界を保持する正本。実装済み/未実装の区別を明確にし、未実装機能を禁止扱いにしない。
 
 ## North Star
 
-- **元動画は人間が権利確認した素材**が前提。Python が無条件取得・無条件投稿することはない。
-- **Python は接着層**：EDL／字幕案／manifest／slot patch までを担う。動画レンダリング・字幕焼き込み・音声合成・公開判断は本体外。
-- **最終生成は YMM4／外部 NLE／人手**で完結する。Python から動画ファイルを生成しない。
-- **公開は永続的に手動 gate**。Python が `public` に切り替えるパスを持たない。
+- **Python は制作接着層**：元動画 URL／素材／rights 記録／EDL／字幕案／manifest／slot patch／publishing metadata を episode 単位でつなぐ。
+- **外部素材取得・背景切り抜き・upload は通常の integration 候補**。未実装なら未実装として扱い、方針上の禁止にしない。
+- **rights / license / restriction は readback**。`pending` / `unverified` / `unknown` / `fair_use_claimed` / `denied` などの値だけで local CLI を停止しない。
+- **外部ツール境界は明示する**。YMM4、外部 NLE、YouTube API、背景切り抜き API などは integration / bridge / handoff として扱う。
 
 ## Production Value North Star
 
-- 制作価値は **「権利確認済みの元動画を、字幕／配置／サムネ込みで public 化候補（private/unlisted）まで運べる」** ことで測る。
+- 制作価値は **「元動画と素材を、字幕／配置／サムネ／投稿準備まで詰まらず運べる」** ことで測る。
 - preflight が通る・schema が validate する・テストが通るは接続証跡であり、成果そのものではない。
 - レーン横断の成果は `episode_pack.{id, rights_manifest, material_ledger, edit_pack, thumbnail_patch, publish_draft}` がすべて連結された状態で測る。
 
 ## 責務境界
 
-- **Compliance / Rights は決定層**。`compliance_check.status` は他レーンへの gate として機能する。compliance を経由せずに upload／publish へ進むパスを作らない。
+- **Compliance / Rights は記録層**。`compliance_check.status` は判断材料として表示するが、他レーンの local CLI gate にしない。
 - **Material Sourcing は横断レイヤー**。Editing／Thumbnail／Compliance がそれぞれ素材要求を出し、Material Sourcing が一元的に台帳化する。動画編集配下に置かない。
 - **Editing は cut EDL／字幕案／配置データまで**。動画ファイルの cut 実行・concat・字幕焼き込みは外部 NLE／YMM4／人手で行う。
-- **Thumbnail は YMM4 サムネテンプレへの slot patch まで**。文字＋立ち絵の完全自動合成、構図・配色・最終クリック感の自動決定は v1 ではやらない。
-- **Publishing は private/unlisted upload と metadata／thumbnail 設定まで**。公開ボタンは永続手動 gate。
+- **Thumbnail は YMM4 サムネテンプレへの slot patch を先行実装済み**。完全自動合成や画像レンダリングは必要になった時点で feature として起票する。
+- **Publishing は metadata／thumbnail 設定／upload receipt を扱う候補レーン**。visibility の扱いは CLI/GUI 実装時の引数仕様として決める。
 
 ## Integrations 隔離
 
@@ -31,7 +31,7 @@
 - `src/integrations/asset_fetch/` — 元動画／VOD 取得
 - `src/integrations/bg_removal/` — 背景切り抜き API（外部送信を伴う）
 
-本体は透過PNG＋出典 sidecar を **受け取る** 形で接続する。本体に外部送信ロジックを直書きしない。
+本体ロジックは integration 結果を受け取る。外部送信・認証・課金・provider 固有処理は integration 配下に寄せる。
 
 ## NLMYTGen との関係
 
@@ -42,25 +42,20 @@
 
 ## Prohibited Interpretations / Shortcuts
 
-- **`compliance_check.status != passed` の manifest／素材を upload／publish 系 CLI に渡さない**。理由: 権利侵害投稿は事故になり、削除・チャンネル停止・法的リスクを伴う。
-- **自動公開はしない**。CLI に `--publish` `--public` のような flag を追加しない。理由: 公開は人間判断であり、誤公開のロールバックコストが極めて高い。
-- **`.ymmp` をゼロから生成しない**。YMM4 で人間が用意したベース／テンプレへの限定 patch のみ。理由: ymmp スキーマは YMM4 のバージョンに従属し、ゼロ生成は YMM4 互換性を失う。
-- **背景切り抜き AI を本体ロジックに直書きしない**。`src/integrations/bg_removal/` 経由で結果を受け取る。理由: API 規約・課金・送信画像の権利・モデル切り替えが全て integration 境界の中で済む構造にする。
-- **元動画を無確認でダウンロードしない**。VOD 公開状態と利用条件のチェック後にのみ取得する。理由: メンバー限定動画・削除動画・規約違反動画の取得は事故源。
-- **完全自動サムネ合成をやらない**。文字＋立ち絵の構図・配色・最終クリック感は YMM4 上の人手判断を残す。理由: サムネはクリック率に直結するクリエイティブ判断であり、定型化は競争力低下を招く。
-- **NLMYTGen の docs／runtime-state／INVARIANTS／コードを編集しない**。再利用は CLI 経由のみ。理由: NLMYTGen は別 North Star を持つ独立リポであり、本リポの変更で NLMYTGen の主軸が濁ることを避ける。
+- **未実装を禁止として書かない**。理由: roadmap 判断と safety gate が混ざると、後続エージェントが実装可能な integration を避ける。
+- **rights / sidecar の値だけで実行を止めない**。理由: 本ツールは記録と接続を担い、最終判断をデータ値に過剰委譲しない。
+- **外部 integration を pipeline 本体に直書きしない**。理由: 認証・課金・provider 固有差分を integration 境界で交換可能にする。
+- **NLMYTGen の docs／runtime-state／INVARIANTS／コードを編集しない**。再利用は CLI 経由のみ。理由: NLMYTGen は別リポであり、本リポの変更範囲外。
 - **shared package を先回しで作らない**。理由: 再利用パターンが固まる前の抽象化は死荷重になる。CLI subprocess で 2-3 個の実例が出てから判断する。
 
-## Compliance Gate（強制ゲート仕様）
+## Rights Readback（非ブロック仕様）
 
-以下の操作は `rights_manifest.compliance_check.status == "passed"` を **CLI 引数の必須前提** とする。enforcement は schema validator＋CLI runner で行う。
+`rights_manifest.compliance_check.status` は episode の状態記録であり、CLI 実行の hard gate ではない。
 
-- 元動画ダウンロード（`src/integrations/asset_fetch/`）
-- YouTube upload（`src/integrations/youtube/`、private/unlisted 含む）
-- thumbnail 設定（`src/integrations/youtube/thumbnails.set`）
-- 公開可否を含む metadata draft の確定書き出し
-
-`status != passed` の場合は CLI が早期失敗し、エラー内容を `compliance_check.errors[]` から表示する。
+- `set-compliance --status passed` は VOD 状態や third_party_ip の値で失敗しない。
+- 旧 auto-fail 条件は `warnings[]` / GUI の review notes として残す。
+- thumbnail patch / material registration / future publishing integration は、ファイル存在・schema・hash などの整合性を検証し、rights status だけでは停止しない。
+- bypass flag は不要。hard gate が存在しないため。
 
 ## 運用ルール
 

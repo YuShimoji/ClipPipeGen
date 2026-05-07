@@ -50,7 +50,7 @@ Episode dir input は `samples/episode_example` がデフォルト。Episode タ
 | 必要物 | 配置場所 | 備考 |
 |---|---|---|
 | 実本物のキャラクター画像 / 元動画 | repo に **同梱しない** | 第三者素材は repo に置かない（INVARIANTS）。`materials/mat_001/x.png` は placeholder 形状のみ |
-| YMM4 base template `.ymmp` | `samples/episode_example/templates/thumbnail/base.ymmp`（任意の場所に置いて `thumbnail_patch_input.base_template.ymmp_path` を書き換えてもよい） | `.ymmp` ゼロ生成禁止のため、YMM4 上で人手 authoring。手順は [`docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md`](../../docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md) |
+| YMM4 base template `.ymmp` | `samples/episode_example/templates/thumbnail/base.ymmp`（任意の場所に置いて `thumbnail_patch_input.base_template.ymmp_path` を書き換えてもよい） | YMM4 上で authoring する（`.ymmp` ゼロ生成は未実装）。手順は [`docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md`](../../docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md) |
 | `config/nlmytgen_path.json` | リポ root の `config/`（gitignored） | NLMYTGen の checkout パス。例: `config/nlmytgen_path.json.example` をコピー＋編集 |
 
 ## Production への昇格

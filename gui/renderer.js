@@ -111,9 +111,9 @@ function renderRights(rights) {
   const rows = [
     ["compliance_status", rights.compliance_status || "(none)"],
     ["schema_issues", (rights.schema_issues || []).length],
-    ["auto_fail", (rights.auto_fail || []).length],
+    ["review_notes", (rights.review_notes || []).length],
   ];
-  renderDetails("#rights-content", rows, [...(rights.schema_issues || []), ...(rights.auto_fail || [])]);
+  renderDetails("#rights-content", rows, [...(rights.schema_issues || []), ...(rights.review_notes || [])]);
 }
 
 function renderMaterials(materials) {
@@ -331,7 +331,7 @@ const actionMeta = {
   "set-compliance": {
     title: "Run set-compliance",
     reason:
-      "set-compliance records human compliance judgement. status=passed gates downstream upload/publish; bypass is forbidden by INVARIANTS.",
+      "set-compliance records rights/compliance status for readback. It does not gate downstream local processing.",
     buildPayload(formEl) {
       return {
         rights_manifest: fieldValue(formEl, "rights_manifest"),
@@ -366,7 +366,7 @@ const actionMeta = {
   "patch-thumbnail": {
     title: "Run patch-thumbnail",
     reason:
-      "patch-thumbnail performs a 5-stage check (compliance → material → audit → patch → readback) and writes a patched .ymmp. Final visual acceptance still happens in YMM4.",
+      "patch-thumbnail reads rights/material records, audits slots, patches the template, and writes readback.",
     buildPayload(formEl) {
       return {
         input: fieldValue(formEl, "input"),

@@ -1,6 +1,6 @@
 """patch-thumbnail subcommand: TH-01 オーケストレータ。
 
-compliance gate -> material validation -> NLMYTGen audit -> NLMYTGen patch -> readback。
+rights readback -> material validation -> NLMYTGen audit -> NLMYTGen patch -> readback。
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ def run(argv: list[str]) -> int:
         prog="patch-thumbnail",
         description=(
             "Apply a thumbnail_patch_input.json end-to-end: "
-            "compliance gate -> material validation -> NLMYTGen audit -> "
+            "rights readback -> material validation -> NLMYTGen audit -> "
             "NLMYTGen patch -> readback."
         ),
     )

@@ -121,21 +121,17 @@ def _fill_rights_status(status: dict[str, Any], rights_path: Path) -> None:
     manifest = load_rights_manifest(rights_path)
     status["episode_id"] = manifest.get("episode_id")
     schema_issues = validate_rights_manifest(manifest)
-    auto_fail = evaluate_compliance_auto_fail(manifest)
+    review_notes = evaluate_compliance_auto_fail(manifest)
     compliance = manifest.get("compliance_check") or {}
     state = "ready"
     if schema_issues:
-        state = "blocked"
-    elif compliance.get("status") != "passed":
-        state = "manual_needed"
-    elif auto_fail:
         state = "blocked"
 
     status["rights"] = {
         "state": state,
         "compliance_status": compliance.get("status"),
         "schema_issues": [i.to_dict() for i in schema_issues],
-        "auto_fail": [i.to_dict() for i in auto_fail],
+        "review_notes": [i.to_dict() for i in review_notes],
     }
 
 
@@ -207,19 +203,13 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
         return {
             "owner": "assistant",
             "action": "Run init-episode or create rights_manifest.json",
-            "reason": "rights_manifest is the first compliance gate artifact",
+            "reason": "rights_manifest is the first episode metadata artifact",
         }
     if status["rights"]["state"] == "blocked":
         return {
             "owner": "both",
-            "action": "Fix rights_manifest schema or auto-fail causes",
-            "reason": "downstream lanes must not run on invalid rights data",
-        }
-    if status["rights"]["state"] == "manual_needed":
-        return {
-            "owner": "user",
-            "action": "Review rights and run set-compliance when actually acceptable",
-            "reason": "status=passed records human compliance judgement",
+            "action": "Fix rights_manifest schema issues",
+            "reason": "downstream lanes need readable rights data",
         }
     if not status["artifacts"]["material_ledger"]["exists"]:
         return {
@@ -237,7 +227,7 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
         return {
             "owner": "both",
             "action": "Fix material ledger / sidecar issues",
-            "reason": "thumbnail slots cannot use blocked or inconsistent materials",
+            "reason": "thumbnail slots need resolvable material files and sidecars",
         }
     if not status["artifacts"]["edit_pack"]["exists"]:
         return {
@@ -272,5 +262,5 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
     return {
         "owner": "user",
         "action": "Open patched .ymmp in YMM4 and perform final visual acceptance",
-        "reason": "composition and final thumbnail judgement are manual gates",
+        "reason": "composition and final thumbnail judgement happen in the creative tool",
     }

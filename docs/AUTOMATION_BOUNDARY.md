@@ -1,63 +1,60 @@
 # Automation Boundary
 
-何を自動化し、何を人手・外部ツールに残すかの境界。手動 gate の所在と危険度マップが正本。
+何を自動化し、何を外部 integration / 外部ツールとして扱うかの境界。禁止リストではなく、実装面の分離を定義する。
 
-## 危険度マップ
+## Integration マップ
 
-| 危険度 | 操作 | 場所 | 制約 |
+| 種別 | 操作 | 場所 | 現在の扱い |
 |---|---|---|---|
-| **最高** | YouTube 動画の公開（public 化） | YouTube Studio（人手） | 永続手動 gate。Python は touch しない |
-| **高** | YouTube への upload | `src/integrations/youtube/` | private/unlisted のみ。`compliance_check.status==passed` 必須。ユーザー確認を取って実行 |
-| **高** | 元動画ダウンロード | `src/integrations/asset_fetch/` | VOD 公開状態と利用条件チェック後のみ。ユーザー確認を取って実行 |
-| **中** | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 外部 API へ画像を送信する。送信前にユーザー確認 |
-| **中** | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 上書きせずコピー先へ書く。元ファイル保持 |
-| **低** | manifest／schema validate | `src/pipeline/*` | ローカルファイル読み書きのみ |
+| Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
+| Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
+| External integration | 元動画ダウンロード | `src/integrations/asset_fetch/` | 通常の future integration |
+| External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
+| External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
 
 ## やる（v1 スコープ内）
 
-- 元動画 URL に対する `rights_manifest` 構造化（人手入力中心、整形と validate のみ自動）
+- 元動画 URL に対する `rights_manifest` 構造化（整形と validate）
 - 素材の台帳化（`material_ledger`）と sidecar 強制
 - 透過PNG（人物画像）の受け入れと slot 配置
 - YMM4 サムネテンプレへの `thumb.image.*` / `thumb.text.*` slot patch（NLMYTGen CLI bridge 経由）
-- Compliance gate 強制（`status != passed` の素材／manifest を upload／publish 系に渡せない CLI 設計）
+- rights / sidecar status の readback（値は記録し、local CLI の hard gate にはしない）
 - 後続スライスで段階的に追加（FEATURE_REGISTRY 参照）：
-  - 元動画ダウンロード integration（VOD 公開状態 gate 付き）
+  - 元動画ダウンロード integration
   - カット候補抽出（`edit_pack.cut_candidates`）
   - 字幕案生成（`edit_pack.subtitles`）
-  - private/unlisted upload integration
+  - upload / thumbnail 設定 / visibility 更新 integration
 
-## やらない（永続スコープ外）
+## 現時点で未実装
 
-- **動画レンダリング**：cut/concat/字幕焼き込み／エンコードは Python 本体で行わない。YMM4／外部 NLE／人手。
-- **音声合成**：本ツールは元動画の音声をそのまま使う。TTS は組み込まない。
-- **公開（public 化）**：永続手動 gate。CLI に `--publish` `--public` flag を追加しない。
-- **完全自動サムネ合成**：文字＋立ち絵の構図・配色・最終クリック感の自動決定はやらない。サムネは YMM4 上の人手判断を残す。
-- **`.ymmp` ゼロ生成**：YMM4 で人間が用意したベース／テンプレへの限定 patch のみ。
-- **NLMYTGen 側ファイルの編集**：再利用は CLI subprocess 経由のみ。
-- **他プラットフォーム投稿**（X／Bilibili 等）：v1 スコープ外。要件が出たら別途検討。
-- **コメント自動応答／タグ自動最適化／収益化設定切替**：投稿後の運用は人手。
-- **ライブ配信切り抜き以外の用途**（楽曲 MV 切り抜き等）：権利モデルが違うので別途検討。
+- 動画レンダリング / cut / concat / 字幕焼き込み / エンコード
+- 音声合成 / TTS
+- YouTube upload / thumbnail 設定 / visibility 更新
+- 元動画ダウンロード
+- 背景切り抜き API 呼び出し
+- 完全自動サムネ合成 / サムネ画像レンダリング
 
-## 手動 gate の所在
+これらは未実装であり、必要になった時点で FEATURE_REGISTRY に起票し、integration / CLI / GUI として実装する。
 
-ここに該当する操作は、**Python が自動で完了させない**：
+## Review / Readback の所在
 
-1. **公開（public 化）** — YouTube Studio で人手実行
-2. **元動画の利用可否最終判断** — `compliance_check.status` を `passed` にするのは人手判断（CLI は項目チェックのみ補助）
-3. **サムネの構図・配色・テキスト最終確認** — YMM4 上で人手調整
-4. **upload 前の動画ファイル確認** — YMM4／外部 NLE で書き出した動画を人手で確認後、ファイルパスを CLI に渡す
-5. **private → unlisted → public への昇格** — 各段階で人手確認
+これらは operator が見るべき状態だが、値だけで local CLI を止めない：
 
-## Compliance Gate の強制機構
+1. `rights_manifest.compliance_check.status`
+2. `rights_manifest.compliance_check.warnings[]`
+3. `material_sidecar.source.kind`
+4. `material_sidecar.license.kind`
+5. `material_sidecar.restrictions.*`
+6. `thumbnail_patch_result.patch_result.errors[]`
 
-以下の CLI は引数として `--rights-manifest PATH` を必須とし、`compliance_check.status == "passed"` を CLI runner 側で validate する：
+## Rights Readback の非ブロック機構
 
-- 元動画ダウンロード CLI（`fetch-source-video`）
-- private upload CLI（`upload-private`）
-- thumbnail 設定 CLI（`set-thumbnail`）
-- metadata 確定書き出し CLI（`finalize-metadata`）
+旧 Compliance Gate は廃止。以下を現在の正本とする：
 
-`status != passed` の場合、CLI は exit 1 で早期失敗し、`compliance_check.errors[]` を表示する。bypass flag は **追加しない**。
+- `set-compliance --status passed` は VOD 状態や third_party_ip の値で失敗しない。
+- 旧 auto-fail 相当は warnings / review notes として保持する。
+- `patch-thumbnail` は rights status を readback に残すが、`pending` / `failed` だけでは停止しない。
+- material sidecar の `unverified` / `unknown` / `fair_use_claimed` / `thumbnail_use=denied` は metadata として保持し、thumbnail patch を止めない。
 
 ## Integrations 隔離方針
 
@@ -65,8 +62,8 @@
 
 | ディレクトリ | 含むもの | 含まないもの |
 |---|---|---|
-| `src/integrations/youtube/` | OAuth、videos.insert、thumbnails.set、playlist 操作 | 公開（public 化） |
-| `src/integrations/asset_fetch/` | yt-dlp 系ラッパー、VOD ダウンロード | 編集処理、規約判定 |
+| `src/integrations/youtube/` | OAuth、videos.insert、thumbnails.set、playlist 操作、visibility 更新 | pipeline 本体ロジック |
+| `src/integrations/asset_fetch/` | yt-dlp 系ラッパー、VOD ダウンロード | 編集処理 |
 | `src/integrations/bg_removal/` | 背景切り抜き API クライアント、結果ファイル受領 | 元動画への適用、サムネ合成 |
 | `src/pipeline/` | manifest／schema／slot patch／validate | 外部送信、課金、認証 |
 | `src/cli/` | コマンドライン entry points | 業務ロジック（pipeline 呼び出しのみ） |
@@ -76,7 +73,7 @@
 - **GUI アプリは共有しない**が、見た目・操作感・タブ構造・readback 表示パターンは NLMYTGen GUI に合わせる
 - 技術スタックは NLMYTGen と同じ Electron を第1候補（GUI 着手時に再検討）
 - ClipPipeGen で得た GUI 知見は **NLMYTGen 側への逆提案として doc／issue ベースで共有**できる。NLMYTGen 側ファイルの直接編集はしない
-- GUI そのものは Slice 1 では作らない。CLI 運用感を見てから後続スライス（SH-03）で起票
+- GUI（SH-03 / SH-03b / SH-03c）は実装済み。CLI と同じ artifact を読み書きする操作面として位置付ける
 
 ## NLMYTGen CLI bridge 方針
 

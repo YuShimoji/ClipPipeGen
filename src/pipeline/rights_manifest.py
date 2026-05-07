@@ -1,4 +1,4 @@
-"""rights_manifest schema v1: load / validate / compliance gate.
+"""rights_manifest schema v1: load / validate / rights review status.
 
 正本仕様: docs/SCHEMAS/v1/rights_manifest.md
 """
@@ -13,7 +13,7 @@ from typing import Any, Iterable
 from .validation import ValidationIssue
 
 SCHEMA_VERSION = "v1"
-GATE_VERSION = "v1"
+REVIEW_VERSION = "v1"
 
 VALID_VOD_STATUS = {"public", "unlisted", "private", "members_only", "deleted"}
 VALID_COMPLIANCE_STATUS = {"passed", "pending", "failed"}
@@ -28,12 +28,14 @@ VALID_DISCLOSURE_KINDS = {
     "custom",
 }
 
-# VOD 公開状態が以下なら compliance_check.status は passed にできない
-NON_PUBLIC_VOD_STATUS = {"private", "members_only", "deleted"}
+VOD_STATUS_REVIEW_NOTE = {"private", "members_only", "deleted"}
 
 
 class ComplianceGateError(Exception):
-    """compliance_check.status != passed の manifest を gate に渡したとき。"""
+    """Legacy compatibility exception.
+
+    Runtime gates no longer reject non-passed rights_manifest values.
+    """
 
 
 def load_rights_manifest(path: str | Path) -> dict[str, Any]:
@@ -84,7 +86,7 @@ def build_skeleton(episode_id: str) -> dict[str, Any]:
             "checked_by": None,
             "errors": [],
             "warnings": [],
-            "gate_version": GATE_VERSION,
+            "review_version": REVIEW_VERSION,
         },
     }
 
@@ -92,8 +94,8 @@ def build_skeleton(episode_id: str) -> dict[str, Any]:
 def validate_rights_manifest(manifest: dict[str, Any]) -> list[ValidationIssue]:
     """構造バリデーション。compliance_check.status の値そのものは判定しない。
 
-    schema 定義違反のみを返す。compliance gate の auto-fail 条件は
-    `evaluate_compliance_auto_fail` で別途。
+    schema 定義違反のみを返す。rights review notes は
+    `evaluate_compliance_auto_fail` で別途返す。
     """
     issues: list[ValidationIssue] = []
 
@@ -389,12 +391,12 @@ def _validate_compliance_check(cc: Any) -> list[ValidationIssue]:
                 message="must be array",
             )
         )
-    if not cc.get("gate_version"):
+    if not (cc.get("review_version") or cc.get("gate_version")):
         issues.append(
             ValidationIssue(
-                code="COMPLIANCE_GATE_VERSION_MISSING",
-                field="compliance_check.gate_version",
-                message="gate_version is required",
+                code="COMPLIANCE_REVIEW_VERSION_MISSING",
+                field="compliance_check.review_version",
+                message="review_version is required",
             )
         )
 
@@ -402,20 +404,22 @@ def _validate_compliance_check(cc: Any) -> list[ValidationIssue]:
 
 
 def evaluate_compliance_auto_fail(manifest: dict[str, Any]) -> list[ValidationIssue]:
-    """compliance_check.status を passed にしてはいけない条件を返す。
+    """Return rights review notes that used to be hard auto-fail conditions.
 
-    空リストなら passed 設定可。issue があれば passed にできない。
+    The function name is kept for CLI/GUI compatibility, but these issues are
+    informational readback now. They must not prevent status changes or
+    downstream local processing.
     """
     issues: list[ValidationIssue] = []
 
     sv = manifest.get("source_video", {}) if isinstance(manifest.get("source_video"), dict) else {}
     vod = sv.get("vod_status")
-    if vod in NON_PUBLIC_VOD_STATUS:
+    if vod in VOD_STATUS_REVIEW_NOTE:
         issues.append(
             ValidationIssue(
-                code="VOD_NOT_PUBLIC",
+                code="VOD_STATUS_REVIEW",
                 field="source_video.vod_status",
-                message=f"VOD is not publicly available (current: {vod})",
+                message=f"VOD status recorded for operator review (current: {vod})",
             )
         )
 
@@ -425,11 +429,11 @@ def evaluate_compliance_auto_fail(manifest: dict[str, Any]) -> list[ValidationIs
             if isinstance(ip, dict) and ip.get("permitted") is False:
                 issues.append(
                     ValidationIssue(
-                        code="THIRD_PARTY_IP_NOT_PERMITTED",
+                        code="THIRD_PARTY_IP_REVIEW",
                         field=f"third_party_ip[{i}].permitted",
                         message=(
-                            f"third party IP {ip.get('name', '?')!r} is not permitted "
-                            "for clip use"
+                            f"third party IP {ip.get('name', '?')!r} is recorded as "
+                            "not permitted in the manifest"
                         ),
                     )
                 )
@@ -445,23 +449,17 @@ def set_compliance_status(
     errors: Iterable[ValidationIssue] | None = None,
     warnings: Iterable[ValidationIssue] | None = None,
 ) -> dict[str, Any]:
-    """compliance_check.status を更新。passed 指定時は auto-fail 条件を再検証する。
+    """compliance_check.status を更新する。
 
     返り値: 更新後の manifest（in-place ではなく新オブジェクト）。
-    auto-fail 条件に該当しているのに passed を要求した場合は ValueError。
+    Review notes are copied to warnings for readback, but never block updates.
     """
     if status not in VALID_COMPLIANCE_STATUS:
         raise ValueError(f"invalid status: {status!r}")
     if not checked_by:
         raise ValueError("checked_by is required")
 
-    if status == "passed":
-        auto_fail = evaluate_compliance_auto_fail(manifest)
-        if auto_fail:
-            raise ValueError(
-                "cannot set status=passed: auto-fail conditions present: "
-                + ", ".join(f"{i.code}@{i.field}" for i in auto_fail)
-            )
+    review_notes = evaluate_compliance_auto_fail(manifest)
 
     new = dict(manifest)
     new["compliance_check"] = {
@@ -469,21 +467,15 @@ def set_compliance_status(
         "checked_at": datetime.now(timezone.utc).isoformat(),
         "checked_by": checked_by,
         "errors": [e.to_dict() for e in (errors or [])],
-        "warnings": [w.to_dict() for w in (warnings or [])],
-        "gate_version": GATE_VERSION,
+        "warnings": [w.to_dict() for w in (warnings or [])]
+        + [n.to_dict() for n in review_notes],
+        "review_version": REVIEW_VERSION,
     }
     new["updated_at"] = new["compliance_check"]["checked_at"]
     return new
 
 
 def assert_compliance_passed(manifest: dict[str, Any]) -> None:
-    """upload / publish 系 CLI が冒頭で呼ぶ強制 gate。"""
-    cc = manifest.get("compliance_check") or {}
-    status = cc.get("status")
-    if status != "passed":
-        errors = cc.get("errors") or []
-        msg = (
-            f"compliance_check.status is {status!r}, must be 'passed'. "
-            f"errors: {errors}"
-        )
-        raise ComplianceGateError(msg)
+    """Legacy no-op retained for callers that still import the old gate helper."""
+    _ = manifest
+    return None

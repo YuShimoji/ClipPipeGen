@@ -64,7 +64,7 @@ JSON。配置は `episodes/<episode_id>/thumbnail_patch_input.json`。
 
 ### `rights_manifest_path`（必須）
 
-`rights_manifest.json` への相対パス。CLI runner が読み込み、`compliance_check.status == "passed"` を gate として強制する。
+`rights_manifest.json` への相対パス。CLI runner が読み込み、`compliance_check.status` を readback に残す。値だけでは hard gate にしない。
 
 ### `material_ledger_path`（必須）
 
@@ -128,13 +128,12 @@ JSON。配置は `episodes/<episode_id>/thumbnail_patch_input.json`。
 |   patch-thumbnail        |
 +------------+-------------+
              |
-             |  (1) compliance gate validate
-             |      rights_manifest.compliance_check.status == "passed"
+             |  (1) rights manifest readback
+             |      rights_manifest.compliance_check.status を記録
              |  (2) material_ledger validate
              |      ・source_material_id 解決
-             |      ・sidecar.restrictions.thumbnail_use != "denied"
-             |      ・sidecar.source.kind != "unverified"
-             |      ・sidecar.license.kind notin ("unknown","fair_use_claimed")
+             |      ・sidecar schema / file path 解決
+             |      ・source/license/restriction は metadata として保持
              |  (3) NLMYTGen subprocess:
              |      audit-thumbnail-template <base_template.ymmp_path>
              |      （slot の存在確認）
@@ -162,8 +161,8 @@ CLI 実行結果。`episodes/<episode_id>/thumbnail_patch_result.json` に書き
   "schema_version": "v1",
   "input_path": "episodes/.../thumbnail_patch_input.json",
   "executed_at": "2026-05-06T13:00:00+09:00",
-  "compliance_gate": {
-    "status": "passed",
+  "rights_readback": {
+    "status": "read",
     "rights_manifest_status": "passed"
   },
   "material_validation": {
@@ -201,11 +200,8 @@ TH-01 validator / CLI が以下を強制する：
 1. `slots[]` が空配列でない
 2. `slot_id` 形式が `thumb\.(text|image|color|transform)\.[a-z0-9_]+` に合致
 3. `kind == "image"` の slot は `source_material_id` 必須、material_ledger に存在
-4. 解決した素材の sidecar が以下を満たす:
-   - `restrictions.thumbnail_use != "denied"`
-   - `source.kind != "unverified"`
-   - `license.kind notin ("unknown", "fair_use_claimed")`
-5. `compliance_check.status == "passed"` が rights_manifest 側で取れる
+4. 解決した素材の sidecar が schema として valid
+5. `compliance_check.status` は rights_manifest 側から readback するが、値だけでは fail しない
 6. `audit-thumbnail-template` が pass する（slot が base template に存在する）
 7. `output.overwrite_existing == false` で既存ファイルがあれば fail
 

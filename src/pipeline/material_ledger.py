@@ -218,7 +218,7 @@ def audit_ledger(
     - sidecar が schema を満たすか
     - sidecar.asset_id が material.id と一致するか
     - derived_from がある場合、original_asset_id が ledger に存在し restrictions を継承しているか
-    - intended_uses=thumbnail の素材が thumbnail-blocked sidecar 状態にないか
+    - sidecar policy fields are read back but do not block thumbnail use
     """
     issues: list[ValidationIssue] = []
     base = Path(base_dir)
@@ -366,19 +366,6 @@ def audit_ledger(
                     )
                 sidecars_by_id[mid] = sc
 
-                # thumbnail intent と thumbnail_use=denied の組み合わせ警告
-                if "thumbnail" in intended:
-                    try:
-                        sidecar_mod.assert_usable_for_thumbnail(sc)
-                    except sidecar_mod.SidecarUsageError as exc:
-                        issues.append(
-                            ValidationIssue(
-                                code="LEDGER_THUMBNAIL_INTENT_BLOCKED",
-                                field=f"{prefix}",
-                                message=str(exc),
-                            )
-                        )
-
     # derived_from inheritance check
     for i, m in enumerate(materials):
         if not isinstance(m, dict):
@@ -417,7 +404,7 @@ def audit_ledger(
 
 
 def assert_thumbnail_usable(ledger: dict[str, Any], material_id: str, *, base_dir: str | Path = ".") -> None:
-    """thumbnail で使う直前の gate。"""
+    """Resolve thumbnail material existence and sidecar schema before use."""
     base = Path(base_dir)
     for m in ledger.get("materials", []):
         if m.get("id") != material_id:
@@ -426,6 +413,11 @@ def assert_thumbnail_usable(ledger: dict[str, Any], material_id: str, *, base_di
         if not sc_path.exists():
             raise LedgerError(f"sidecar not found for {material_id!r}: {sc_path}")
         sc = sidecar_mod.load_sidecar(sc_path)
-        sidecar_mod.assert_usable_for_thumbnail(sc)
+        issues = sidecar_mod.validate_sidecar(sc)
+        if issues:
+            raise LedgerError(
+                "sidecar invalid: "
+                + ", ".join(f"{i.code}@{i.field}" for i in issues)
+            )
         return
     raise LedgerError(f"material id not found: {material_id}")

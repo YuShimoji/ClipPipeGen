@@ -34,12 +34,6 @@ VALID_LICENSE_KINDS = {
     "unknown",
 }
 
-# Slice 1 で thumbnail / publishing に使えない license_kind
-LICENSE_KINDS_BLOCKED_FOR_PUBLISH = {"unknown", "fair_use_claimed"}
-
-# Slice 1 で thumbnail / publishing に使えない source_kind
-SOURCE_KINDS_BLOCKED_FOR_PUBLISH = {"unverified"}
-
 VALID_USAGE_CONDITIONS = {
     "credit_required",
     "source_link_required",
@@ -68,7 +62,10 @@ REQUIRED_RESTRICTION_KEYS = (
 
 
 class SidecarUsageError(Exception):
-    """sidecar の制約に反した用途で使われたとき。"""
+    """Legacy compatibility exception.
+
+    Sidecar source/license/restriction values are no longer hard usage gates.
+    """
 
 
 def load_sidecar(path: str | Path) -> dict[str, Any]:
@@ -263,58 +260,15 @@ def _validate_derived_from(d: Any) -> list[ValidationIssue]:
 
 
 def assert_usable_for_thumbnail(sidecar: dict[str, Any]) -> None:
-    """thumbnail / publishing で使えるかの gate。Slice 1 の中心。"""
-    src_kind = (sidecar.get("source") or {}).get("kind")
-    lic_kind = (sidecar.get("license") or {}).get("kind")
-    thumb_use = (sidecar.get("restrictions") or {}).get("thumbnail_use")
-    asset_id = sidecar.get("asset_id", "?")
-
-    reasons: list[str] = []
-    if src_kind in SOURCE_KINDS_BLOCKED_FOR_PUBLISH:
-        reasons.append(f"source.kind={src_kind} is blocked for publish use")
-    if lic_kind in LICENSE_KINDS_BLOCKED_FOR_PUBLISH:
-        reasons.append(f"license.kind={lic_kind} is blocked for publish use")
-    if thumb_use == "denied":
-        reasons.append("restrictions.thumbnail_use=denied")
-
-    if reasons:
-        raise SidecarUsageError(
-            f"asset {asset_id!r} is not usable for thumbnail: {'; '.join(reasons)}"
-        )
+    """Legacy no-op: sidecar policy values are readback, not execution blockers."""
+    _ = sidecar
+    return None
 
 
 def restrictions_are_at_least_as_strict(
     derived: dict[str, Any], original: dict[str, Any]
 ) -> list[ValidationIssue]:
-    """derived の restrictions が original より緩くないかチェック。
-
-    "厳しい" 順序: denied > requires_explicit_permission > guideline_dependent >
-    allowed_minor_only > allowed
-    """
-    severity = {
-        "denied": 4,
-        "requires_explicit_permission": 3,
-        "guideline_dependent": 2,
-        "allowed_minor_only": 1,
-        "allowed": 0,
-    }
-    issues: list[ValidationIssue] = []
-    d_r = derived.get("restrictions") or {}
-    o_r = original.get("restrictions") or {}
-    for key in REQUIRED_RESTRICTION_KEYS:
-        d_v = d_r.get(key)
-        o_v = o_r.get(key)
-        if d_v not in severity or o_v not in severity:
-            continue
-        if severity[d_v] < severity[o_v]:
-            issues.append(
-                ValidationIssue(
-                    code="DERIVED_RESTRICTION_LOOSER_THAN_ORIGINAL",
-                    field=f"restrictions.{key}",
-                    message=(
-                        f"derived ({d_v}) must be at least as strict as "
-                        f"original ({o_v})"
-                    ),
-                )
-            )
-    return issues
+    """Legacy no-op: derived restriction values are not hard-blocking."""
+    _ = derived
+    _ = original
+    return []

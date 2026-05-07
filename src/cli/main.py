@@ -6,11 +6,11 @@ Usage:
 Subcommands:
     init-episode             Create a new episode skeleton with rights_manifest.
     validate-rights          Validate a rights_manifest.json against schema v1.
-    set-compliance           Update compliance_check.status with auto-fail re-check.
+    set-compliance           Update compliance_check.status readback.
     register-material        Register a material into the episode ledger (sidecar required).
     audit-material-ledger    Integrity check for an episode material_ledger.json.
     audit-thumbnail          Audit YMM4 thumbnail template via NLMYTGen subprocess (read-only).
-    patch-thumbnail          Apply thumbnail_patch_input end-to-end (compliance + material + NLMYTGen patch).
+    patch-thumbnail          Apply thumbnail_patch_input end-to-end (rights readback + material + NLMYTGen patch).
     status-episode           Summarize one episode's Slice 1 artifact status for the GUI MVP.
     measure-subtitle-width   ED-05: measure subtitle text in EAW units (optional wrap).
     init-edit-pack           Create an edit_pack skeleton for the Editing lane.

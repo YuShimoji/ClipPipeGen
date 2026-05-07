@@ -1,6 +1,6 @@
 """register-material subcommand: add a material to the episode ledger.
 
-sidecar 必須・hash 一致・透過PNG check を強制する。
+sidecar 必須・hash 一致・透過PNG check は整合性検証として行う。
 """
 
 from __future__ import annotations

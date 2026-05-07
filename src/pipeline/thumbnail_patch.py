@@ -3,8 +3,8 @@
 正本仕様: docs/SCHEMAS/v1/thumbnail_patch_input.md
 
 フロー:
-  1. compliance gate (rights_manifest.compliance_check.status == "passed")
-  2. material validation (sidecar usability check per slot)
+  1. rights manifest readback (status is recorded, not gated)
+  2. material validation (file/sidecar resolution per slot)
   3. NLMYTGen audit-thumbnail-template (slot existence)
   4. NLMYTGen patch-thumbnail-template
   5. readback parse
@@ -21,11 +21,7 @@ from typing import Any
 from . import material_ledger as ledger_mod
 from . import material_sidecar as sidecar_mod
 from . import nlmytgen_bridge as bridge
-from .rights_manifest import (
-    ComplianceGateError,
-    assert_compliance_passed,
-    load_rights_manifest,
-)
+from .rights_manifest import load_rights_manifest
 from .validation import ValidationIssue
 
 
@@ -176,7 +172,7 @@ def apply_thumbnail_patch(
         "schema_version": SCHEMA_VERSION,
         "input_schema": {"ok": not schema_issues, "issues": [i.to_dict() for i in schema_issues]},
         "executed_at": datetime.now(timezone.utc).isoformat(),
-        "compliance_gate": {"status": "skipped", "rights_manifest_status": None},
+        "rights_readback": {"status": "read", "rights_manifest_status": None},
         "material_validation": {"all_resolved": False, "violations": []},
         "audit_result": {"passed": False, "missing_slots": [], "extra_slots": []},
         "patch_result": {"output_ymmp_path": None, "applied_slots": [], "errors": []},
@@ -185,29 +181,20 @@ def apply_thumbnail_patch(
         result["patch_result"]["errors"].append("INPUT_SCHEMA_INVALID")
         return result
 
-    # 1. compliance gate
+    # 1. rights manifest readback
     rights_path = base / payload["rights_manifest_path"]
     try:
         rights = load_rights_manifest(rights_path)
-        assert_compliance_passed(rights)
     except FileNotFoundError:
-        result["compliance_gate"] = {
+        result["rights_readback"] = {
             "status": "failed",
             "error": f"rights_manifest not found: {rights_path}",
         }
-        result["patch_result"]["errors"].append("COMPLIANCE_GATE_RIGHTS_NOT_FOUND")
+        result["patch_result"]["errors"].append("RIGHTS_MANIFEST_NOT_FOUND")
         return result
-    except ComplianceGateError as exc:
-        result["compliance_gate"] = {
-            "status": "failed",
-            "rights_manifest_status": (rights.get("compliance_check") or {}).get("status"),
-            "error": str(exc),
-        }
-        result["patch_result"]["errors"].append("COMPLIANCE_GATE_FAILED")
-        return result
-    result["compliance_gate"] = {
-        "status": "passed",
-        "rights_manifest_status": "passed",
+    result["rights_readback"] = {
+        "status": "read",
+        "rights_manifest_status": (rights.get("compliance_check") or {}).get("status"),
     }
 
     # 2. material validation

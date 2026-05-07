@@ -28,14 +28,14 @@ def run(argv: list[str]) -> int:
 
     manifest = load_rights_manifest(args.rights_manifest)
     schema_issues = validate_rights_manifest(manifest)
-    auto_fail_issues = evaluate_compliance_auto_fail(manifest)
+    review_notes = evaluate_compliance_auto_fail(manifest)
 
     if args.format == "json":
         payload = {
             "schema_issues": [i.to_dict() for i in schema_issues],
-            "compliance_auto_fail": [i.to_dict() for i in auto_fail_issues],
+            "review_notes": [i.to_dict() for i in review_notes],
             "schema_ok": not schema_issues,
-            "compliance_passable": not auto_fail_issues,
+            "compliance_passable": True,
         }
         json.dump(payload, sys.stdout, ensure_ascii=False, indent=2)
         sys.stdout.write("\n")
@@ -47,11 +47,11 @@ def run(argv: list[str]) -> int:
         else:
             print("schema: OK")
 
-        if auto_fail_issues:
-            print(f"compliance auto-fail conditions ({len(auto_fail_issues)}):")
-            for i in auto_fail_issues:
+        if review_notes:
+            print(f"rights review notes ({len(review_notes)}):")
+            for i in review_notes:
                 print(f"  [{i.severity}] {i.code} @ {i.field}: {i.message}")
         else:
-            print("compliance: passable (no auto-fail conditions)")
+            print("rights review: no notes")
 
     return 0 if not schema_issues else 1

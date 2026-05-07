@@ -4,7 +4,7 @@
 
 ## プロジェクト概要
 
-ホロライブ等の VTuber 切り抜き動画制作を、**権利・素材・編集・サムネ・投稿の4レーン**で半自動化する制作補助ツール。元動画 → rights → cut EDL → 字幕案 → サムネ slot patch → private upload までを Python で接着し、最終生成と公開判断は YMM4／外部 NLE／人手で行う。
+ホロライブ等の VTuber 切り抜き動画制作を、**rights・素材・編集・サムネ・投稿の4レーン**で半自動化する制作補助ツール。元動画 → 素材取得 → rights 記録 → cut EDL → 字幕案 → サムネ slot patch → upload までを Python で接着する。
 
 ## 技術スタック
 
@@ -15,23 +15,21 @@
 
 ## 成功定義（v1）
 
-1. 1本の元動画 URL に対して、`rights_manifest` が `compliance_check.status=passed` で確定できる
+1. 1本の元動画 URL に対して、`rights_manifest` が作成・更新・検証できる
 2. その動画用の素材（人物画像・背景・ロゴ・出典）が `material_ledger` に登録され、それぞれ出典・利用条件 sidecar を持つ
 3. 透過PNG として受領した人物素材が、YMM4 サムネテンプレの `thumb.image.*` slot に patch される
 4. `thumb.text.*` slot にテキストが patch される
 5. 上記の readback（どの素材がどの slot に入ったか）が manifest として残る
-6. **`compliance_check.status != passed` の素材／manifest は upload／publish 系 CLI に渡せない**（gate enforcement）
+6. `compliance_check.status` や sidecar の source/license/restriction は readback として残り、local CLI の hard gate にならない
 
-動画 cut detection・字幕生成・YouTube upload は v1 のスコープ外（後続 slice）。
+動画 cut detection・字幕生成・YouTube upload は後続 slice。
 
 ## 絶対的な制約
 
-- **動画レンダリング・字幕焼き込み・音声合成を Python 本体ではやらない**
-- **公開ボタンは永続的に手動 gate**。自動公開はスコープ外。private/unlisted upload までで止める
-- **`.ymmp` ゼロ生成は禁止**。YMM4 で人間が用意したベース／テンプレへの限定 patch に留める
-- **`compliance_check.status != passed` の素材は upload／publish 系に渡さない**
-- **背景切り抜き AI・元動画取得は integration 境界（`src/integrations/`）の中に隔離**。本体は透過PNG＋出典 sidecar を受け取る形で接続する
-- **文字＋立ち絵の完全自動合成・構図・配色・最終クリック感の自動決定は v1 ではやらない**。サムネは YMM4 上の人手判断を残す
+- **未実装機能を禁止として書かない**。必要なら FEATURE_REGISTRY に起票して実装する
+- **rights / sidecar の値だけで実行を止めない**。記録・警告・readback として扱う
+- **背景切り抜き AI・元動画取得・YouTube API は integration 境界（`src/integrations/`）の中に隔離**。本体は integration 結果を受け取る形で接続する
+- **動画レンダリング・字幕焼き込み・音声合成・完全自動サムネ合成は未実装**。必要になった時点で通常 feature として扱う
 - **NLMYTGen の docs／runtime-state／INVARIANTS／コードは触らない**。再利用は CLI subprocess 経由のみ
 - **shared package 化を先回しでやらない**。CLI bridge で運用感を見てから判断する
 
@@ -51,11 +49,11 @@
 
 | レーン | 責務 | 主成果物 |
 |---|---|---|
-| Compliance / Rights | 権利確認・公開可否ゲート | `rights_manifest.json` |
+| Compliance / Rights | 権利・出典・状態の記録 | `rights_manifest.json` |
 | Material Sourcing（横断） | 素材取得・背景切り抜き受領・素材台帳 | `material_ledger.json` / 透過PNG＋sidecar |
 | Editing | カット候補・字幕案・配置データ | `edit_pack.json` |
 | Thumbnail | YMM4 サムネ slot patch | patched `.ymmp` |
-| Publishing（Compliance 内 gate） | metadata draft・private upload | `publish_draft.json` |
+| Publishing | metadata draft・upload | `publish_draft.json` |
 
 ## 機能追加のルール
 
@@ -74,18 +72,22 @@
 | .claude/CLAUDE.md | Claude Code 用入口（薄いポインタ） |
 | docs/INVARIANTS.md | 非交渉条件・責務境界 |
 | docs/LANES.md | 4レーンの責務境界詳細 |
-| docs/AUTOMATION_BOUNDARY.md | やる／やらないの境界・手動 gate の所在 |
+| docs/AUTOMATION_BOUNDARY.md | integration マップ・実装済／未実装の区分・readback の所在 |
 | docs/RUNTIME_STATE.md | 現在位置・次の手 |
 | docs/FEATURE_REGISTRY.md | 機能一覧（全件） |
 | docs/FIRST_SLICE.md | Slice 1 設計 |
 | docs/SCHEMAS/v1/*.md | v1 schema 定義（rights_manifest / material_ledger / material_sidecar / thumbnail_patch_input / edit_pack） |
 
-## スコープ外（v1）
+## 未実装の主要機能（実装対象、起票先 [docs/FEATURE_REGISTRY.md](docs/FEATURE_REGISTRY.md)）
 
-- 動画 cut detection の実装（後続 slice）
-- 字幕生成・字幕焼き込み（後続 slice）
-- YouTube API 投稿（後続 slice。private/unlisted まで）
-- 完全自動サムネ合成（永続的にスコープ外）
-- 自動公開（永続的にスコープ外）
-- 他プラットフォーム（X／Bilibili 等）への投稿
-- ライブ配信切り抜き以外の用途（楽曲MV切り抜き等は権利モデルが違うので別途検討）
+- 動画 cut detection（ED-02）
+- 文脈チェック（ED-03）
+- 字幕案生成（ED-04）
+- NLE export（ED-06）
+- 元動画ダウンロード integration（INT-02）
+- 背景切り抜き API integration（INT-04）
+- YouTube OAuth + upload + thumbnail 設定 + visibility 更新（INT-01 / PB-01..04）
+- 完全自動サムネ合成（OUT-04）
+- 動画レンダリング / 音声合成（OUT-01 / OUT-02）
+
+未実装は実装対象として登録する。未実装イコール禁止ではない。

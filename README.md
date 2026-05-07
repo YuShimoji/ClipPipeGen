@@ -4,28 +4,28 @@
 
 ## このリポジトリの位置付け
 
-- 元動画 → 権利確認 → カット候補 → 字幕案 → サムネ slot patch → private upload までを接着する Python ツール群。
-- 動画レンダリング・字幕焼き込み・音声合成・公開判断は本体の責務外。最終生成は YMM4 / 外部 NLE / 人手で行う。
+- 元動画 → 素材取得 → rights 記録 → カット候補 → 字幕案 → サムネ slot patch → upload までを接着する Python ツール群。
+- 動画レンダリング・字幕焼き込み・音声合成・公開操作は、実装された integration / 外部ツール / GUI 導線で段階的に扱う。
 - [NLMYTGen](https://github.com/YuShimoji/NLMYTGen) とは別リポ。共有は CLI / schema / module 単位のみ。GUI は共有しない。
 
 ## 4レーン
 
 | レーン | 責務 | 主成果物 |
 |---|---|---|
-| Compliance / Rights | 権利確認・公開可否ゲート | `rights_manifest.json` |
+| Compliance / Rights | 権利・出典・状態の記録 | `rights_manifest.json` |
 | Material Sourcing | 素材取得・背景切り抜き受領・素材台帳（横断レイヤー） | `material_ledger.json` / 透過PNG＋sidecar |
 | Editing | カット候補・字幕案・YMM4/NLE 配置データ | `edit_pack.json` |
 | Thumbnail | YMM4 サムネテンプレ slot patch | patched `.ymmp` |
-| Publishing（Compliance 内 gate） | metadata draft・private/unlisted upload | `publish_draft.json` |
+| Publishing | metadata draft・upload | `publish_draft.json` |
 
 詳細: [docs/LANES.md](docs/LANES.md)
 
 ## North Star
 
-- 元動画は **人間が権利確認した素材** が前提。Python が無条件取得・無条件投稿を行うことはない。
-- Python は **EDL／字幕案／manifest／slot patch までの接着層**。動画生成・公開判断はしない。
-- **公開ボタンは永続的に手動 gate**。自動公開はスコープ外。
-- **`.ymmp` ゼロ生成は禁止**。YMM4 で人間が用意したベース／テンプレへの限定 patch に留める。
+- rights / material / edit / thumbnail / publishing の情報を episode 単位でつなぎ、制作作業を止めない。
+- 外部素材取得・背景切り抜き・upload は通常の integration 候補として扱う。未実装なら「未実装」と表示し、禁止扱いにしない。
+- 権利・出典・利用条件は readback と判断材料として残す。`pending` / `unverified` / `unknown` などの値だけで local CLI を止めない。
+- YMM4 / 外部 NLE / YouTube など外部ツールとの境界は integration として明示し、必要になった順に実装する。
 
 詳細: [docs/INVARIANTS.md](docs/INVARIANTS.md) / [docs/AUTOMATION_BOUNDARY.md](docs/AUTOMATION_BOUNDARY.md)
 

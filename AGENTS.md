@@ -13,7 +13,7 @@
 1. [README.md](README.md) — 何のプロジェクトか
 2. [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) — 現在のスライス・next_action
 3. [docs/INVARIANTS.md](docs/INVARIANTS.md) — 非交渉条件
-4. [docs/AUTOMATION_BOUNDARY.md](docs/AUTOMATION_BOUNDARY.md) — 何をやるか／やらないか
+4. [docs/AUTOMATION_BOUNDARY.md](docs/AUTOMATION_BOUNDARY.md) — integration マップ・実装済／未実装の区分
 
 これで足りない時のみ、必要な該当節だけ追加で読む：
 
@@ -22,28 +22,23 @@
 - [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) — 現スライスの実装計画
 - [docs/SCHEMAS/v1/*.md](docs/SCHEMAS/v1/) — schema 詳細
 
-## 危険な操作
+## 事前確認が必要な操作
 
-以下は **必ずユーザー確認を取ってから** 実行する：
+以下はリポジトリ破壊や範囲逸脱に直結するため、実行前にユーザー確認を取る：
 
-- `src/integrations/asset_fetch/` 経由での元動画ダウンロード（VOD 公開状態と利用条件チェック後）
-- `src/integrations/youtube/` 経由での upload（private/unlisted のみ。公開は永続手動 gate）
-- `src/integrations/bg_removal/` 経由での背景切り抜き API 呼び出し（外部サービスへの画像送信を伴う）
 - destructive git 操作（force push / reset / 履歴改変 / 未確認の大量削除）
 
 ## Git 運用
 
 - 通常の commit / push は、スライス区切り・論理的にまとまった変更ごとに assistant 判断で実行してよい。
-- main 直 push は許容する。ただし force push、履歴改変、他リポへの push、外部 API 実行を伴う変更は事前確認を取る。
+- main 直 push は許容する。ただし force push、履歴改変、他リポへの push は事前確認を取る。
 - テストは過剰に増やさず、実装リスクに対して必要な最小 smoke / critical negative を優先する。
 
 ## やってはいけないこと
 
 - NLMYTGen 側のファイル編集（CLI 呼び出しは可、編集は不可）
-- `.ymmp` ファイルのゼロ生成
-- `compliance_check.status != passed` の manifest／素材を upload／publish 系 CLI に渡す
-- 動画レンダリング・音声合成・字幕焼き込みを Python 本体に持ち込む
-- 自動公開（YouTube 上の動画を public にする）操作
+- cross-project 指示なしに他リポのファイルを読む・書く
+- 実装済み CLI/GUI の挙動を docs だけで禁止扱いにする
 
 ## 命名規則（FEATURE ID）
 

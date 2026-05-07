@@ -96,7 +96,7 @@ ledger と一致する。改竄検出用。
 | `creative_commons` | CC ライセンス素材 |
 | `user_created` | ユーザー自作 |
 | `derived_from_other_asset` | 他素材から加工生成（背景切り抜き等） |
-| `unverified` | 出典未確認（**この値の素材は thumbnail / publishing で使えない**） |
+| `unverified` | 出典未確認。local CLI の hard gate にはしない |
 
 ### `license`（必須）
 
@@ -119,8 +119,8 @@ ledger と一致する。改竄検出用。
 | `cc_by` / `cc_by_sa` / `cc0` | Creative Commons |
 | `commercial` | 商用ライセンス購入 |
 | `proprietary` | 自作・専用素材 |
-| `fair_use_claimed` | フェアユース主張（**v1 ではこの値は thumbnail / publishing で使えない**。要法務判断） |
-| `unknown` | 不明（**この値の素材は thumbnail / publishing で使えない**） |
+| `fair_use_claimed` | フェアユース主張。metadata として保持する |
+| `unknown` | 不明。metadata として保持する |
 
 ### `usage_conditions`（配列）
 
@@ -130,10 +130,10 @@ ledger と一致する。改竄検出用。
 |---|---|
 | `credit_required` | クレジット表記必須 |
 | `source_link_required` | 元動画リンク必須 |
-| `no_misleading_thumbnail` | 誤解を招くサムネ禁止 |
-| `no_membership_only_content` | メン限内容の使用禁止 |
-| `no_political_use` | 政治利用禁止 |
-| `no_adult_content` | 成人向け禁止 |
+| `no_misleading_thumbnail` | 誤解を招くサムネ注意 |
+| `no_membership_only_content` | メン限内容の使用注意 |
+| `no_political_use` | 政治利用注意 |
+| `no_adult_content` | 成人向け注意 |
 | `monetization_subject_to_guideline` | 収益化はガイドライン従属 |
 | `none` | 無制限（CC0 等） |
 
@@ -150,7 +150,7 @@ ledger と一致する。改竄検出用。
 
 各値: `allowed` / `denied` / `guideline_dependent` / `allowed_minor_only` / `requires_explicit_permission`
 
-`restrictions.thumbnail_use == "denied"` の素材は Thumbnail レーンの slot patch input から除外される（CLI が早期失敗）。
+`restrictions.thumbnail_use == "denied"` は readback 用 metadata。slot patch input からは除外しない。
 
 ### `attribution_text`（必須）
 
@@ -170,7 +170,7 @@ ledger と一致する。改竄検出用。
 ```
 
 - 背景切り抜きで生成された透過PNG は、必ず `derived_from.original_asset_id` を持つ
-- original 側の `restrictions` を継承する（厳しい方を優先）
+- original 側の `restrictions` は metadata として参照する。値の厳格度だけでは実行を止めない。
 
 ## バリデーション規則
 
@@ -178,10 +178,10 @@ MS-02 validator が以下を強制する：
 
 1. `asset_id` が ledger エントリと一致
 2. `asset_hash_sha256` がファイルと一致
-3. `source.kind == "unverified"` または `license.kind in ["fair_use_claimed", "unknown"]` の場合、Thumbnail / Publishing 系 CLI に渡した時点で fail
+3. `source.kind == "unverified"` または `license.kind in ["fair_use_claimed", "unknown"]` でも Thumbnail / Publishing 系 CLI は fail しない
 4. `usage_conditions[]` が空配列でない
-5. `restrictions.thumbnail_use == "denied"` の素材を thumbnail_patch_input に渡したら fail
-6. `derived_from` がある場合、`original_asset_id` の sidecar が存在し、本 sidecar の `restrictions` が original より緩くないこと（厳しい方を継承）
+5. `restrictions.thumbnail_use == "denied"` の素材を thumbnail_patch_input に渡しても fail しない
+6. `derived_from` がある場合、`original_asset_id` の存在は audit する。restriction の強弱だけでは fail しない
 
 ## 後続バージョンの予定
 

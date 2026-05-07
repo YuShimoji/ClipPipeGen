@@ -1,21 +1,21 @@
 # Lanes
 
-4レーン＋1 sub-gate の責務境界を明文化する。各レーンの inputs／outputs／隣接レーンとの境界が正本。
+4レーン＋Publishing の責務境界を明文化する。各レーンの inputs／outputs／隣接レーンとの境界が正本。
 
 ## 全体像
 
 ```
                     ┌─────────────────────┐
-                    │ Compliance / Rights │ ← 決定層（gate keeper）
+                    │ Compliance / Rights │ ← 記録・readback 層
                     │                     │
                     │   ┌──────────────┐  │
-                    │   │  Publishing  │  │ ← Compliance.gate=PASS が必要
+                    │   │  Publishing  │  │ ← rights readback を参照
                     │   └──────────────┘  │
                     └──────────┬──────────┘
                                │ 権利確認結果を要求／参照
                                ▼
                     ┌─────────────────────┐
-                    │  Material Sourcing  │ ← 横断取得層
+                    │  Material Sourcing  │ ← 横断取得・台帳層
                     └──────────┬──────────┘
                        要求    │    供給
               ┌────────────────┼────────────────┐
@@ -27,7 +27,7 @@
 
 外部境界（隔離）:
   src/integrations/youtube/   ← Publishing から呼ばれる
-  src/integrations/asset_fetch/ ← Material Sourcing から呼ばれる（Compliance ゲート後）
+  src/integrations/asset_fetch/ ← Material Sourcing から呼ばれる
   src/integrations/bg_removal/  ← Material Sourcing から呼ばれる（または外部処理結果を受領）
 ```
 
@@ -35,10 +35,10 @@
 
 ### 責務
 
-- 元動画 URL／VOD 公開状態／第三者 IP／利用条件／使用禁止素材／概要欄必須表記の収集と判定
+- 元動画 URL／VOD 公開状態／第三者 IP／利用条件／使用注意素材／概要欄表記の収集と記録
 - ホロライブ二次創作ガイドライン・YouTube 規約・各タレント個別方針の落とし込み
-- 公開可否ゲートの提供（他レーンへの `compliance_check.status` 出力）
-- Publishing への最終 gate
+- 他レーンへの `compliance_check.status` / warnings の readback
+- Publishing に必要な metadata / disclosure 情報の提供
 
 ### Inputs
 
@@ -49,13 +49,13 @@
 ### Outputs
 
 - `rights_manifest.json`（per-episode）
-- `compliance_check.{status, errors, checked_at, gate_version}`
+- `compliance_check.{status, errors, warnings, checked_at, review_version}`
 - 概要欄必須表記テキスト（Publishing が利用）
 
 ### 境界
 
-- **やる**：判定・ゲート提供・ガイドライン項目の構造化
-- **やらない**：自動取得（取得は Material Sourcing 経由）／自動投稿・公開（Publishing は private/unlisted まで、公開は人手）
+- **やる**：状態記録・ガイドライン項目の構造化・review notes の表示
+- **やらない**：rights 値だけで他レーンの local CLI を停止する
 
 ## 2. Material Sourcing（横断レイヤー）
 
@@ -77,8 +77,8 @@
 
 ### 境界
 
-- **やる**：台帳管理／sidecar 強制／integration 呼び出し境界の保持
-- **やらない**：素材の自動加工（背景切り抜きは integration 結果を受領するのみ）／用途判断（用途は要求元レーンが決める）
+- **やる**：台帳管理／sidecar 保持／integration 呼び出し境界の保持
+- **やらない**：source/license/restriction の値だけで素材利用を停止する
 
 ## 3. Editing
 
@@ -91,7 +91,7 @@
 
 ### Inputs
 
-- `rights_manifest`（compliance gate 通過確認）
+- `rights_manifest`（状態と review notes の参照）
 - `material_ledger`（元動画素材）
 - ユーザー指示（切り抜きの主旨、希望尺、対象話題）
 
@@ -129,21 +129,21 @@
 ### 境界
 
 - **やる**：slot patch、透過PNG 受け入れ、readback
-- **やらない**：テンプレ authoring（人手 in YMM4）、文字＋立ち絵の自動合成、構図・配色・最終クリック感の自動決定、サムネ画像のレンダリング（YMM4 で書き出し）
+- **やらない**：現スライスではテンプレ authoring、文字＋立ち絵の自動合成、サムネ画像のレンダリングは未実装。必要になったら別 feature として起票
 - **再利用**：NLMYTGen の `patch-thumbnail-template` / `audit-thumbnail-template` を CLI subprocess で呼ぶ
 
-## 5. Publishing（Compliance 内 gate）
+## 5. Publishing
 
 ### 責務
 
 - YouTube metadata draft（タイトル・説明・タグ・category）
-- private／unlisted upload（`src/integrations/youtube/` 経由）
+- upload / visibility 更新（`src/integrations/youtube/` 経由）
 - thumbnail 設定（`thumbnails.set`）
 - アップロード後の receipt 保存
 
 ### Inputs
 
-- `rights_manifest.compliance_check.status == "passed"`（必須）
+- `rights_manifest`（status / warnings / disclosure 情報）
 - 動画ファイル（YMM4／外部 NLE で書き出し済み、人手で配置）
 - `thumbnail_patch` で生成したサムネ画像（YMM4 で書き出し済み）
 - `edit_pack` の概要欄テキスト案＋Compliance の必須表記
@@ -151,35 +151,32 @@
 ### Outputs
 
 - `publish_draft.json`：metadata 確定版
-- `upload_receipt.json`：YouTube video ID、upload status、private/unlisted 状態
-- **公開は人手で YouTube Studio から実行**
+- `upload_receipt.json`：YouTube video ID、upload status、visibility 状態
 
 ### 境界
 
-- **やる**：metadata 整形、private/unlisted upload、thumbnail 設定、receipt 保存
-- **やらない**：公開（`status: public` への切替）、自動公開スケジューリング、コメント／タグ自動応答、収益化設定の自動切替
+- **やる**：metadata 整形、upload、thumbnail 設定、visibility 更新、receipt 保存
+- **やらない**：未実装の投稿後運用を docs だけで禁止扱いにする
 
 ## レーン間ハンドオフ
 
 ### Compliance → Editing / Thumbnail
 
-- gate: `rights_manifest.compliance_check.status == "passed"`
-- 渡すもの: `rights_manifest_id`、概要欄必須表記、使用禁止素材リスト、第三者 IP 配慮事項
-- 受け取り側 CLI は manifest を validate し、`status != passed` なら早期失敗
+- 渡すもの: `rights_manifest_id`、概要欄表記、使用注意素材リスト、第三者 IP notes
+- 受け取り側 CLI は manifest を validate するが、`status != passed` だけでは早期失敗しない
 
 ### Material Sourcing → Editing / Thumbnail
 
 - 渡すもの: `material_id`、素材ファイルパス、sidecar パス
-- 受け取り側 CLI は sidecar の利用条件を読み、用途と整合するか確認（例：「サムネ不可」素材が thumbnail に渡されたら失敗）
+- 受け取り側 CLI は sidecar の構造とファイル解決を確認する。source/license/restriction は readback として扱う
 
 ### Editing / Thumbnail → Publishing
 
-- 動画ファイル・サムネ画像は人手で YMM4／外部 NLE から書き出し、ファイルパスを CLI に渡す
-- Python は動画ファイルそのものを生成しない
+- 動画ファイル・サムネ画像は YMM4／外部 NLE／future renderer から渡す
 
 ### Publishing → 公開
 
-- 公開は YouTube Studio で人手実行。Python は upload までで止まる。
+- visibility 更新は future YouTube integration の一部として扱う。現時点では未実装。
 
 ## 関連ドキュメント
 

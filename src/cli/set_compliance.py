@@ -1,4 +1,4 @@
-"""set-compliance subcommand: update compliance_check.status with auto-fail re-check."""
+"""set-compliance subcommand: update compliance_check.status readback."""
 
 from __future__ import annotations
 
@@ -16,9 +16,8 @@ def run(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="set-compliance",
         description=(
-            "Record a human compliance decision. "
-            "When --status passed, auto-fail conditions are re-checked and "
-            "the operation fails if any are present."
+            "Record a rights/compliance status. Review notes are retained as "
+            "warnings but do not block status updates."
         ),
     )
     parser.add_argument("--rights-manifest", required=True)

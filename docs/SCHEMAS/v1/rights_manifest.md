@@ -1,6 +1,6 @@
 # rights_manifest.schema (v1)
 
-権利確認・公開可否ゲートの正本データ。1 episode に対して 1 manifest。Compliance / Rights レーンが書き、他レーンが gate として参照する。
+権利・出典・公開条件の readback データ。1 episode に対して 1 manifest。Compliance / Rights レーンが書き、他レーンは判断材料として参照する。
 
 ## ファイル形式
 
@@ -113,12 +113,12 @@ JSON。配置は `episodes/<episode_id>/rights_manifest.json`。
 | `name` | string | ✓ | タイトル名 |
 | `rights_holder` | string | ✓ | 権利者 |
 | `policy_url` | string | optional | 公式ポリシー URL |
-| `permitted` | boolean | ✓ | 二次利用可否（false なら `compliance_check.status` は `passed` にならない） |
+| `permitted` | boolean | ✓ | 二次利用可否の記録（false でも local CLI の hard gate にはしない） |
 | `conditions` | string[] | optional | 条件（出典明記・収益化可否等） |
 
 ### `prohibited_assets`（配列）
 
-使用禁止素材。なければ空配列。
+使用注意素材の記録。なければ空配列。
 
 ```json
 [
@@ -173,9 +173,9 @@ JSON。配置は `episodes/<episode_id>/rights_manifest.json`。
 | `earliest_publish_at` | 元動画 VOD 化後の遅延等を考慮した最早公開可能時刻 |
 | `monetization_allowed` | 収益化可否 |
 | `platforms_allowed` | 公開可能プラットフォーム |
-| `thumbnail_constraints` | サムネ制約（タレント顔必須・誤解を招く表記禁止等） |
+| `thumbnail_constraints` | サムネ制約（タレント顔必須・誤解を招く表記注意等） |
 
-### `compliance_check`（必須、gate 本体）
+### `compliance_check`（必須、readback 本体）
 
 ```json
 {
@@ -184,7 +184,7 @@ JSON。配置は `episodes/<episode_id>/rights_manifest.json`。
   "checked_by": "user:thankyoukass",
   "errors": [],
   "warnings": [],
-  "gate_version": "v1"
+  "review_version": "v1"
 }
 ```
 
@@ -192,19 +192,19 @@ JSON。配置は `episodes/<episode_id>/rights_manifest.json`。
 |---|---|---|---|
 | `status` | enum | ✓ | `passed` / `pending` / `failed` |
 | `checked_at` | string (ISO 8601) | ✓ if status != pending | 判定時刻 |
-| `checked_by` | string | ✓ if status != pending | 判定者（人手判断が前提） |
+| `checked_by` | string | ✓ if status != pending | 記録者 |
 | `errors` | object[] | ✓ | failed 理由（status=failed 時に必須） |
 | `warnings` | object[] | ✓ | passed でも記録すべき注意点 |
-| `gate_version` | string | ✓ | `compliance_check` ロジックのバージョン |
+| `review_version` | string | ✓ | `compliance_check` readback ロジックのバージョン |
 
 `errors[]` / `warnings[]` の項目構造:
 
 ```json
 {
-  "code": "VOD_NOT_PUBLIC",
+  "code": "VOD_STATUS_REVIEW",
   "field": "source_video.vod_status",
-  "message": "元動画が public でない（現在: members_only）",
-  "severity": "error"
+  "message": "VOD status recorded for operator review (current: members_only)",
+  "severity": "warning"
 }
 ```
 
@@ -213,11 +213,11 @@ JSON。配置は `episodes/<episode_id>/rights_manifest.json`。
 CR-01 validator が以下を強制する：
 
 1. `schema_version == "v1"` 必須
-2. `source_video.vod_status` が `private` / `members_only` / `deleted` の場合、`compliance_check.status` は `passed` にならない（自動 fail）
+2. `source_video.vod_status` が `private` / `members_only` / `deleted` の場合、review note として `warnings[]` に残せるが `status=passed` をブロックしない
 3. `talents[].agency == "hololive"` の場合、`talents[].guideline_url` がホロライブ公式ドメインを含むこと
-4. `third_party_ip[].permitted == false` の項目が1つでもあれば `compliance_check.status` は `passed` にならない
+4. `third_party_ip[].permitted == false` の項目は review note として扱い、`status=passed` をブロックしない
 5. `compliance_check.status == "passed"` には `checked_at` と `checked_by` が必須
-6. `prohibited_assets[]` に登録された素材 ID が material_ledger に登録されていれば warning（fail にはしない、確認用）
+6. `prohibited_assets[]` は readback / warning 用であり、local CLI の hard gate にはしない
 
 ## 後続バージョンの予定
 

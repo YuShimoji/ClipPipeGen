@@ -111,14 +111,14 @@ python -m src.cli.main set-compliance \
 
 成功すると `compliance_check.status=passed`、`checked_at` / `checked_by` が記録される。
 
-**fail する典型例**：
+**review note として残る典型例**（local CLI を止めない）：
 
-| エラー | 原因 |
+| code | 原因 |
 |---|---|
-| `VOD_NOT_PUBLIC` | `source_video.vod_status` が `private` / `members_only` / `deleted` |
-| `THIRD_PARTY_IP_NOT_PERMITTED` | `third_party_ip[]` のどれかが `permitted=false` |
+| `VOD_STATUS_REVIEW` | `source_video.vod_status` が `private` / `members_only` / `deleted` |
+| `THIRD_PARTY_IP_REVIEW` | `third_party_ip[]` のどれかが `permitted=false` |
 
-これらは bypass できない（INVARIANTS）。実際に解消できないなら、その episode は切り抜き対象にしない。
+これらは `compliance_check.warnings[]` に書き戻され、後段 CLI / GUI で readback として表示される。
 
 ### 5. 素材を配置
 
@@ -201,8 +201,8 @@ python -m src.cli.main patch-thumbnail \
 
 5 段検証：
 
-1. **compliance gate** — `rights_manifest.compliance_check.status==passed` でなければ `COMPLIANCE_GATE_FAILED`
-2. **material validation** — 各 image slot の sidecar が `thumbnail_use=denied` / `source.kind=unverified` / `license.kind in {unknown, fair_use_claimed}` ならその slot で fail
+1. **rights readback** — `rights_manifest.compliance_check.status` を結果に記録するが、値だけでは fail しない
+2. **material validation** — 各 image slot の material / sidecar / file path を解決する。source/license/restriction は metadata として保持する
 3. **NLMYTGen audit** — base template に該当 slot がなければ `BRIDGE_AUDIT_MISSING_SLOTS`
 4. **NLMYTGen patch** — `audit-thumbnail-template` 経由で slot 差し替え
 5. **readback** — patched ymmp の各 slot 値が input と一致するか確認
@@ -223,7 +223,7 @@ YMM4 で patched ymmp を開いて：
 
 各段の `errors[]` を読む：
 
-- `COMPLIANCE_GATE_*` — `rights_manifest.json` を見直して `set-compliance` を再実行
+- `RIGHTS_MANIFEST_NOT_FOUND` — `rights_manifest.json` の path を見直す
 - `MATERIAL_VALIDATION_FAILED` — `material_validation.violations[]` の `reason` を読み、sidecar を直して `register-material` を再実行（または別素材に切り替え）
 - `BRIDGE_AUDIT_*` — base template の `Remark` 設定を見直す
 - `BRIDGE_PATCH_FAILED` — `patch_result.bridge_error` と `stderr_tail` を読む

@@ -29,11 +29,11 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
-| **CR-01** | rights_manifest schema v1 と validator | done | `docs/SCHEMAS/v1/rights_manifest.md` の構造を実装。`compliance_check.status` を CLI gate として強制。Slice 1.1 完了（commit `5be5439`） |
+| **CR-01** | rights_manifest schema v1 と validator | done | `docs/SCHEMAS/v1/rights_manifest.md` の構造を実装。`compliance_check.status` は readback として保持し、local CLI の hard gate にはしない。Slice 1.1 完了（commit `5be5439`） |
 | **MS-01** | material_ledger schema v1 と CRUD CLI | done | 素材登録・索引・sidecar 紐付け。`register-material` / `audit-material-ledger` 実装。Slice 1.2 完了 |
-| **MS-02** | material_sidecar schema v1 と validator | done | 出典・ライセンス・利用条件の必須化、`assert_usable_for_thumbnail` gate、derived_from 厳格度継承チェック。Slice 1.2 完了 |
+| **MS-02** | material_sidecar schema v1 と validator | done | 出典・ライセンス・利用条件を metadata として検証・保持。source/license/restriction の値は thumbnail 実行を止めない。Slice 1.2 完了 |
 | **MS-03** | 透過PNG 受け入れフロー | done | `is_transparent_png` で PNG color_type が 4/6 かを判定、`character_image` + `subkind=transparent_png` で強制。Slice 1.2 完了 |
-| **TH-01** | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | done | `nlmytgen_bridge.py` + `thumbnail_patch.py` orchestrator + `audit-thumbnail` / `patch-thumbnail` CLI。compliance gate / material gate / bridge audit / bridge patch / readback の 5 段検証。Slice 1.3 完了。実 YMM4 base template に対する end-to-end walkthrough は user-owned acceptance step として保留 |
+| **TH-01** | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | done | `nlmytgen_bridge.py` + `thumbnail_patch.py` orchestrator + `audit-thumbnail` / `patch-thumbnail` CLI。rights readback / material resolution / bridge audit / bridge patch / readback の流れ。Slice 1.3 完了。実 YMM4 base template に対する end-to-end walkthrough は user-owned acceptance step として保留 |
 | **SH-01** | CLI runner と config（NLMYTGen path 設定含む） | done | `config/nlmytgen_path.json` schema (例ファイル付き、本体 gitignored)、`BridgeConfig.load`、`call_nlmytgen` subprocess wrapper、`BridgeExecutionError` でのエラー伝搬。silent fallback 禁止。Slice 1.3 完了 |
 
 ## Slice 2 以降の候補（着手前、proposed のまま）
@@ -71,9 +71,9 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
 | INT-01 | YouTube OAuth flow | proposed | trusted application のセットアップ含む |
-| INT-02 | asset_fetch（VOD 取得） | proposed | yt-dlp 系ラッパー、Compliance gate 必須 |
+| INT-02 | asset_fetch（VOD 取得） | proposed | yt-dlp 系ラッパー。rights status は readback に留め、取得そのものの hard gate にはしない |
 | INT-03 | bg_removal 受領フロー | proposed | 外部処理結果（透過PNG）の受け入れ。API 呼び出しは含めるか別途検討 |
-| INT-04 | bg_removal API 呼び出し | proposed | INT-03 の能動版。外部送信を伴うため危険度中、要ユーザー承認 |
+| INT-04 | bg_removal API 呼び出し | proposed | INT-03 の能動版。provider / 入出力 / receipt を integration として実装 |
 
 ### Shared infra
 
@@ -81,21 +81,21 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 |---|---|---|---|
 | SH-02L | episode status adapter（GUI MVP 用） | done | full `episode_pack` の前段として、Slice 1 artifact の存在・gate・next_action を返す `status-episode` CLI / `episode_status.py` を実装。GUI MVP が読む薄い背骨 |
 | SH-02 | episode_pack 統合 manifest | proposed | rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結 |
-| SH-03 | GUI MVP Phase 1（read-only operator console） | done | Electron skeleton（`gui/`）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。`status-episode` JSON を消費して状態表示。実行系・外部 API・upload は持たない。`docs/GUI_CONVENTIONS.md` に整合-A 規約 |
-| SH-03b | GUI Phase 2（action 導線） | done | Rights / Materials / Thumbnail タブに `set-compliance` / `register-material` / `patch-thumbnail` の form を追加。確認 dialog（command / summary / reason の 3 要素）必須。実行後は `status-episode` 自動 refresh で badge 更新。upload / fetch / bg-removal API の button は永続的に置かない（INVARIANTS / GUI_CONVENTIONS §5）。args builder は `gui/args.cjs` に分離して smoke が Electron なしで検証 |
-| SH-03c | GUI Editing tab（ED-01 / ED-02a 範囲のみ） | done | Editing タブを追加し `init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` の form を配置。confirm dialog 経由で実行、結果と `editing.state` badge を表示。**自動 cut detection / 文脈チェック / 字幕生成 / NLE export は表示しない**（実装されるまで gate 境界保護）。CLI 規約「episode_id == dirname」に合わせ prefill は dir basename を使用 |
+| SH-03 | GUI MVP Phase 1（read-only operator console） | done | Electron skeleton（`gui/`）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。`status-episode` JSON を消費して状態表示。外部 API・upload は未実装。`docs/GUI_CONVENTIONS.md` に整合-A 規約 |
+| SH-03b | GUI Phase 2（action 導線） | done | Rights / Materials / Thumbnail タブに `set-compliance` / `register-material` / `patch-thumbnail` の form を追加。確認 dialog（command / summary / reason の 3 要素）経由で実行。upload / fetch / bg-removal API は未実装であり、今後通常 integration として追加できる。args builder は `gui/args.cjs` に分離して smoke が Electron なしで検証 |
+| SH-03c | GUI Editing tab（ED-01 / ED-02a 範囲のみ） | done | Editing タブを追加し `init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` の form を配置。confirm dialog 経由で実行、結果と `editing.state` badge を表示。ED-02 / ED-03 / ED-04 / ED-06 は未実装のため form を持たず、実装と同時に追加する。CLI 規約「episode_id == dirname」に合わせ prefill は dir basename を使用 |
 | SH-04 | NLMYTGen GUI への逆提案運用 | done | `docs/proposals/` に運用パターン (`README.md`) と最初の提案 (`0001-gui-alignment-from-clippipegen-mvp.md` / state=draft) を配置。NLMYTGen 側ファイルは編集せず、提案は doc／issue ベース。採否は NLMYTGen 側判断 |
 
-## 永続スコープ外（rejected / 永続）
+## 未実装 / 必要時に再起票
 
 | ID | 機能 | 状態 | 理由 |
 |---|---|---|---|
-| OUT-01 | 動画レンダリング（cut/concat/字幕焼き込み／エンコード） | rejected（永続） | INVARIANTS：YMM4／外部 NLE／人手の責務 |
-| OUT-02 | 音声合成（TTS） | rejected（永続） | 元動画の音声を使うのが本ツールの前提 |
-| OUT-03 | 自動公開（public 化） | rejected（永続） | INVARIANTS：永続手動 gate |
-| OUT-04 | 完全自動サムネ合成 | rejected（永続） | INVARIANTS：構図・配色・最終クリック感は YMM4 上の人手判断 |
-| OUT-05 | `.ymmp` ゼロ生成 | rejected（永続） | INVARIANTS：YMM4 互換性を壊す |
-| OUT-06 | NLMYTGen 側ファイル編集 | rejected（永続） | INVARIANTS：別リポの North Star を濁さない |
+| OUT-01 | 動画レンダリング（cut/concat/字幕焼き込み／エンコード） | proposed | 未実装。必要になったら renderer / NLE integration として設計 |
+| OUT-02 | 音声合成（TTS） | proposed | 未実装。必要になったら provider integration として設計 |
+| OUT-03 | visibility 更新（public 化含む） | proposed | 未実装。YouTube integration の一部として設計 |
+| OUT-04 | 完全自動サムネ合成 | proposed | 未実装。必要になったら thumbnail renderer として設計 |
+| OUT-05 | `.ymmp` ゼロ生成 | proposed | 未実装。必要になったら YMM4 schema readback を伴う generator として設計 |
+| OUT-06 | NLMYTGen 側ファイル編集 | rejected | cross-project 指示なしには編集しない。再利用は CLI subprocess 経由 |
 
 ## 状態遷移ログ
 
