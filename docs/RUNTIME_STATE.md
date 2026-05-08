@@ -42,16 +42,18 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 done。samples runnable
-- **current_slice**: Slice 2 — Editing 自動化の次アンカーは ED-07 `transcript.json` / `transcribe-audio` と INT-02 `asset_fetch`。`transcribe-audio` はローカル音声ファイル → `transcript.json` に限定し、VOD / URL 取得は INT-02 に分離する
-- **next_action（assistant 側）**: 実装に進むなら (1) ED-07 validator + `transcribe-audio` CLI skeleton、(2) INT-02 fake downloader + preflight / receipt / material_ledger registration、(3) ED-04 字幕案生成（ED-05 消費）の順で着手する。STT engine は未確定で、初期候補は `whisper.cpp` subprocess
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 / ED-07 done。samples runnable
+- **current_slice**: Slice 2 — ED-07 `transcript.json` / `transcribe-audio` adapter surface は done。次アンカーは INT-02 `asset_fetch`、または ED-04 字幕案生成（ED-07 の fake transcript を入力にできる）
+- **next_action（assistant 側）**: 推奨は INT-02 fake downloader + preflight / receipt / material_ledger registration。別案として ED-04 字幕案生成（ED-05 消費）に進める。実 `whisper.cpp` 接続は ED-07 successor として別 slice
 
-### Slice 2 next anchor（ED-07 / INT-02）
+### Slice 2 (vi) ED-07 done（transcript schema + fake transcribe-audio adapter）
 
-- `docs/SCHEMAS/v1/transcript.md` — `transcript.json` schema v1。ED-04 / ED-02 / ED-03 の入力 artifact
-- ED-07 `transcribe-audio` — 既存のローカル音声ファイルを入力にし、STT 実行 readback と `segments[]` を保存する。URL / VOD 取得は含めない
-- INT-02 `asset_fetch` — `fetch-source-audio` / `fetch-source-video`。URL / 出力先 / 推定サイズ / 目的の preflight、実行 log / receipt / rollback 情報、`material_ledger` 自動登録を持つ future integration
-- ED-07 と INT-02 は並列起票可能。接続点は `material_ledger` の source audio material と `transcript.source_audio.material_id`
+- `src/pipeline/transcript.py` — `build_transcript` / `load_transcript` / `save_transcript` / `validate_transcript`。duplicate segment ID、時刻不正、空 text、空 segments の理由なし、approved review 不足を検出
+- `src/cli/transcribe_audio.py` — `transcribe-audio --engine fake --fixture-segments ...`。既存ローカル音声ファイルを読み、sha256 と fake STT readback を含む `transcript.json` を生成。URL / VOD は拒否
+- `src/cli/validate_transcript.py` — `validate-transcript --transcript ... --format text|json`
+- `status-episode` — `artifacts.transcript` と `editing.transcript` readback を追加。transcript missing は manual cut workflow を blocked にしない。invalid transcript は `editing.transcript.state=blocked` として表示
+- `tests/test_transcript.py` / `tests/test_episode_status.py` — transcript validator / fake transcribe CLI / status readback。累計 66 tests pass
+- 実 `whisper.cpp` binary/model config、INT-02 source fetch、ED-04 subtitle generation は未実装。次 feature として分離したまま
 
 ### Slice 2 (iii) ED-05 done（subtitle width measurement, EAW）
 

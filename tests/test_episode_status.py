@@ -15,6 +15,7 @@ from src.pipeline.rights_manifest import (
     save_rights_manifest,
     set_compliance_status,
 )
+from src.pipeline.transcript import build_transcript, save_transcript
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -82,6 +83,66 @@ def test_status_reads_edit_pack_when_present(tmp_path: Path):
     status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
     assert status["editing"]["state"] == "manual_needed"
     assert status["editing"]["cut_candidates_count"] == 0
+    assert status["artifacts"]["transcript"]["exists"] is False
+    assert status["editing"]["transcript"]["state"] == "missing"
+
+
+def test_status_reads_valid_transcript_when_present(tmp_path: Path):
+    ep_dir = tmp_path / "episodes" / "ep_transcript_present"
+    ep_dir.mkdir(parents=True)
+    save_rights_manifest(
+        _rights_passed("ep_transcript_present"),
+        ep_dir / "rights_manifest.json",
+    )
+    save_edit_pack(build_edit_skeleton("ep_transcript_present"), ep_dir / "edit_pack.json")
+    transcript = build_transcript(
+        "ep_transcript_present",
+        source_audio_path="episodes/ep_transcript_present/source.wav",
+        language="ja",
+        stt_engine="fake",
+        segments=[
+            {
+                "start_seconds": 1.0,
+                "end_seconds": 2.0,
+                "text": "ok",
+            }
+        ],
+    )
+    save_transcript(transcript, ep_dir / "transcript.json")
+
+    status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
+    assert status["artifacts"]["transcript"]["exists"] is True
+    assert status["editing"]["transcript"]["state"] == "ready"
+    assert status["editing"]["transcript"]["segments_count"] == 1
+
+
+def test_status_reports_invalid_transcript_readback(tmp_path: Path):
+    ep_dir = tmp_path / "episodes" / "ep_transcript_invalid"
+    ep_dir.mkdir(parents=True)
+    save_rights_manifest(
+        _rights_passed("ep_transcript_invalid"),
+        ep_dir / "rights_manifest.json",
+    )
+    save_edit_pack(build_edit_skeleton("ep_transcript_invalid"), ep_dir / "edit_pack.json")
+    transcript = build_transcript(
+        "ep_transcript_invalid",
+        source_audio_path="episodes/ep_transcript_invalid/source.wav",
+        language="ja",
+        stt_engine="fake",
+        segments=[
+            {
+                "start_seconds": 1.0,
+                "end_seconds": 2.0,
+                "text": "",
+            }
+        ],
+    )
+    save_transcript(transcript, ep_dir / "transcript.json")
+
+    status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
+    assert status["editing"]["state"] == "manual_needed"
+    assert status["editing"]["transcript"]["state"] == "blocked"
+    assert status["editing"]["transcript"]["schema_issues_count"] == 1
 
 
 def test_status_episode_cli_outputs_json(tmp_path: Path):

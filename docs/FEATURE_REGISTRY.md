@@ -56,7 +56,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ED-05 | 字幕表示幅計測（EAW、stdlib のみ） | done | `src/pipeline/text_measure.py` に EAW unit 計算と折返し、`measure-subtitle-width` CLI を追加。NLMYTGen の `EastAsianWidthMeasurer` / `WpfTextMeasurer` を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は `docs/proposals/0002-standalone-measure-text-cli.md` の採否次第で `ED-05b` として再起票 |
 | ED-05b | text_measure bridge migration | proposed | NLMYTGen 側で `measure-text` standalone CLI が採用された段階で ClipPipeGen 側の `text_measure.py` を bridge に縮約する。詳細: `docs/proposals/0002` |
 | ED-06 | 外部 NLE 用 export（EDL／XML） | proposed | DaVinci Resolve / Premiere 向け export |
-| ED-07 | transcript schema v1 + transcribe-audio CLI | proposed | `docs/SCHEMAS/v1/transcript.md`。初期 `transcribe-audio` は既存のローカル音声ファイルを入力にして `transcript.json` を生成する責務に限定する。STT engine は未確定（初期候補: `whisper.cpp` subprocess）。URL / VOD 取得は INT-02 |
+| ED-07 | transcript schema v1 + transcribe-audio CLI | done | `docs/SCHEMAS/v1/transcript.md` / `src/pipeline/transcript.py` / `transcribe-audio` / `validate-transcript`。初期 engine は `fake` adapter で、既存のローカル音声ファイル + fixture segments から `transcript.json` を生成する。実 `whisper.cpp` 接続と URL / VOD 取得は含めない |
 
 ### Publishing 系
 
@@ -119,3 +119,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-07: `ED-01` を `approved` 相当として実装し `done` に遷移。根拠: ユーザー指示（推奨対応で進行） + `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `tests/test_edit_pack.py`（43 tests pass）
 - 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する手動/インポート導線を確保するため
 - 2026-05-08: `ED-07` を `proposed` で起票し、`docs/SCHEMAS/v1/transcript.md` を追加。根拠: `transcribe-audio` はローカル音声ファイル → `transcript.json` に限定し、URL / VOD 取得は INT-02 `asset_fetch` として分離するユーザー判断
+- 2026-05-09: `ED-07` を `done` に遷移。根拠: `src/pipeline/transcript.py` / `transcribe-audio --engine fake` / `validate-transcript` / `status-episode` transcript readback / `tests/test_transcript.py` を実装。実 STT engine と asset fetch は次 feature のまま分離

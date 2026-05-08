@@ -24,6 +24,7 @@ from .thumbnail_patch import (
     validate_thumbnail_patch_input,
 )
 from .edit_pack import load_edit_pack, validate_edit_pack
+from .transcript import load_transcript, validate_transcript
 
 SCHEMA_VERSION = "v1"
 
@@ -57,6 +58,7 @@ def build_episode_status(
     rights_path = ep_dir / "rights_manifest.json"
     ledger_path = ep_dir / "material_ledger.json"
     edit_pack_path = ep_dir / "edit_pack.json"
+    transcript_path = ep_dir / "transcript.json"
     thumb_input_path = ep_dir / "thumbnail_patch_input.json"
     thumb_result_path = ep_dir / "thumbnail_patch_result.json"
 
@@ -64,6 +66,7 @@ def build_episode_status(
         "rights_manifest": _artifact(rights_path, base),
         "material_ledger": _artifact(ledger_path, base),
         "edit_pack": _artifact(edit_pack_path, base),
+        "transcript": _artifact(transcript_path, base),
         "thumbnail_patch_input": _artifact(thumb_input_path, base),
         "thumbnail_patch_result": _artifact(thumb_result_path, base),
     }
@@ -74,6 +77,7 @@ def build_episode_status(
         _fill_material_status(status, ledger_path, base)
     if edit_pack_path.exists():
         _fill_editing_status(status, edit_pack_path)
+    _fill_transcript_status(status, transcript_path)
     if thumb_input_path.exists():
         _fill_thumbnail_input_status(status, thumb_input_path)
     if thumb_result_path.exists():
@@ -171,6 +175,32 @@ def _fill_editing_status(status: dict[str, Any], edit_pack_path: Path) -> None:
         "schema_issues_count": len(issues),
         "schema_issues": [i.to_dict() for i in issues],
     }
+
+
+def _fill_transcript_status(status: dict[str, Any], transcript_path: Path) -> None:
+    editing = status.get("editing") or {}
+    if not transcript_path.exists():
+        editing["transcript"] = {
+            "state": "missing",
+            "segments_count": 0,
+            "schema_issues_count": 0,
+            "schema_issues": [],
+        }
+        status["editing"] = editing
+        return
+
+    transcript = load_transcript(transcript_path)
+    issues = validate_transcript(transcript)
+    segments = transcript.get("segments") if isinstance(transcript.get("segments"), list) else []
+    editing["transcript"] = {
+        "state": "ready" if not issues else "blocked",
+        "segments_count": len(segments),
+        "schema_issues_count": len(issues),
+        "schema_issues": [i.to_dict() for i in issues],
+        "engine": (transcript.get("stt") or {}).get("engine"),
+        "language": transcript.get("language"),
+    }
+    status["editing"] = editing
 
 
 def _fill_thumbnail_input_status(status: dict[str, Any], input_path: Path) -> None:

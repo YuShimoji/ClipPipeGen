@@ -16,6 +16,8 @@ Subcommands:
     init-edit-pack           Create an edit_pack skeleton for the Editing lane.
     validate-edit-pack       Validate edit_pack.json against schema v1.
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
+    validate-transcript      Validate transcript.json against schema v1.
+    transcribe-audio         ED-07: local audio -> transcript.json (fake engine in v1).
 """
 
 from __future__ import annotations
@@ -34,8 +36,10 @@ from . import (
     register_material,
     set_compliance,
     status_episode,
+    transcribe_audio,
     validate_edit_pack,
     validate_rights,
+    validate_transcript,
 )
 
 SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
@@ -51,6 +55,8 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "init-edit-pack": init_edit_pack.run,
     "validate-edit-pack": validate_edit_pack.run,
     "add-cut-candidate": add_cut_candidate.run,
+    "validate-transcript": validate_transcript.run,
+    "transcribe-audio": transcribe_audio.run,
 }
 
 

@@ -81,7 +81,7 @@
 ## 未実装の主要機能（実装対象、起票先 [docs/FEATURE_REGISTRY.md](docs/FEATURE_REGISTRY.md)）
 
 - 動画 cut detection（ED-02）
-- transcript schema / transcribe-audio（ED-07）
+- 実 STT engine 接続（ED-07 successor、whisper.cpp 等）
 - 文脈チェック（ED-03）
 - 字幕案生成（ED-04）
 - NLE export（ED-06）

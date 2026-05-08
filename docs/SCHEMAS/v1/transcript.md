@@ -8,7 +8,7 @@ Speech-to-text の出力 artifact。ローカル音声ファイルを `transcrib
 
 - `transcribe-audio` は **既存のローカル音声ファイル**を入力にして `transcript.json` を生成する。
 - VOD / URL からの音声・動画取得は `transcribe-audio` に含めない。取得は INT-02 `asset_fetch`（`fetch-source-audio` / `fetch-source-video`）の責務。
-- STT engine は未確定。初期候補は `whisper.cpp` subprocess だが、schema は engine に依存しない。
+- 実 STT engine は未確定。ED-07 初期実装は `fake` engine で adapter surface を固め、後続候補として `whisper.cpp` subprocess を扱う。schema は engine に依存しない。
 - source audio の rights / sidecar / ledger 情報は readback と判断材料であり、値だけで transcript 生成を止める hard gate にはしない。
 
 ## ファイル形式
@@ -148,14 +148,22 @@ transcript 全体の operator review 状態。
 - ED-02 は `segments[]` の時間範囲・密度・keywords を使って `edit_pack.cut_candidates[]` を生成する。
 - ED-03 は cut 前後の隣接 segment を見て、文脈切断や話者発話の途切れを review note として返す。
 
-## CLI（予定）
+## CLI（ED-07）
 
 ```bash
 python -m src.cli.main transcribe-audio \
   --episode-id episode_example \
   --source-audio samples/episode_example/materials/audio/source.wav \
   --output samples/episode_example/transcript.json \
-  --language ja
+  --language ja \
+  --engine fake \
+  --fixture-segments samples/episode_example/fixture_segments.json
+
+python -m src.cli.main validate-transcript \
+  --transcript samples/episode_example/transcript.json \
+  --format json
 ```
+
+ED-07 初期実装は `fake` engine のみ。fixture segments を読み、ローカル音声ファイルの存在確認・sha256・STT readback を付けて transcript を生成する。実 `whisper.cpp` 接続は後続 slice。
 
 URL / VOD を渡す CLI にはしない。URL 取得が必要な場合は、先に INT-02 `fetch-source-audio` または `fetch-source-video` でローカル素材を作り、必要なら `material_ledger` に登録してから `transcribe-audio` に渡す。

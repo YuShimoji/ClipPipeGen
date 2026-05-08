@@ -8,7 +8,7 @@
 |---|---|---|---|
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
-| Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07。URL / VOD 取得は含めない |
+| Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
 | External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02。`fetch-source-audio` / `fetch-source-video` として通常の future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
@@ -22,7 +22,7 @@
 - rights / sidecar status の readback（値は記録し、local CLI の hard gate にはしない）
 - 後続スライスで段階的に追加（FEATURE_REGISTRY 参照）：
   - 元動画ダウンロード integration
-  - ローカル音声ファイルからの transcript 生成（`transcribe-audio`）
+  - ローカル音声ファイルからの transcript 生成（`transcribe-audio --engine fake` は実装済み。実 STT engine は後続）
   - カット候補抽出（`edit_pack.cut_candidates`）
   - 字幕案生成（`edit_pack.subtitles`）
   - upload / thumbnail 設定 / visibility 更新 integration
@@ -33,7 +33,7 @@
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
 - 元動画ダウンロード
-- speech-to-text 実行（`transcribe-audio`）
+- 実 STT engine 接続（`whisper.cpp` 等）
 - 背景切り抜き API 呼び出し
 - 完全自動サムネ合成 / サムネ画像レンダリング
 
