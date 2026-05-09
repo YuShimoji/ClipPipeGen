@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-04 / ED-05 / ED-07 / INT-02a done。samples runnable
-- **current_slice**: Slice 2 — ED-04 `generate-subtitles` は done。`transcript.json` から `edit_pack.subtitles[]` を生成し、ED-05 EAW 折返しを消費できる
-- **next_action（assistant 側）**: 推奨は ED-02 transcript ベース cut candidate 生成。別案として ED-03 文脈チェック、INT-02 successor の実 downloader（yt-dlp / ffmpeg）、または ED-07 successor の実 `whisper.cpp` 接続
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-04 / ED-05 / ED-07 / INT-02a done。samples runnable
+- **current_slice**: Slice 2 — ED-02 `generate-cuts` は done。`transcript.json` から `edit_pack.cut_candidates[]` を生成できる
+- **next_action（assistant 側）**: 推奨は ED-03 文脈チェック。別案として INT-02 successor の実 downloader（yt-dlp / ffmpeg）または ED-07 successor の実 `whisper.cpp` 接続
+
+### Slice 2 (ix) ED-02 done（transcript-based cut candidate generation）
+
+- `src/pipeline/cut_generation.py` — transcript segment から contiguous speech island を作り、target duration / gap threshold / max candidates に基づいて `edit_pack.cut_candidates[]` を生成。`source="auto"`、`source_segment_ids`、`context_check.status="not_checked"` を付与
+- `src/cli/generate_cuts.py` — `generate-cuts --transcript ... --edit-pack ...` を追加。`--target-duration-seconds` / `--min-duration-seconds` / `--max-duration-seconds` / `--gap-threshold-seconds` / `--max-candidates` / `--select-generated` / `--dry-run` を持つ
+- 既存 auto cut は `--replace-auto` 指定時のみ refresh。manual/imported cut は保持する
+- `tests/test_cut_generation.py` — window 生成、gap split、replace-auto、select-generated、invalid options、CLI roundtrip、dry-run を検証。Python suite は 86 tests pass
+- 文脈妥当性は判定しない。ED-03 で隣接 segment と cut 境界を確認する
 
 ### Slice 2 (viii) ED-04 done（subtitle draft generation）
 
@@ -166,7 +174,7 @@
 ## 次に変えうる判断
 
 - SH-03b は GUI action 導線（init-edit-pack / add-cut-candidate / set-compliance / register-material / patch-thumbnail）。upload / fetch / bg-removal API は未実装のためまだ button がない。
-- ED-02 本体は `transcript.json` を入力にする。STT provider は ED-07 で決め、URL / VOD 取得は INT-02 として分離する。
+- ED-03 は `transcript.json` と auto/manual cut を入力にし、cut 境界の文脈妥当性を review note として返す。
 - INT-02a で source audio の fake fetch は実装済み。親 INT-02 の残りは実 downloader（yt-dlp / ffmpeg / network fetch）と source video 取得。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する

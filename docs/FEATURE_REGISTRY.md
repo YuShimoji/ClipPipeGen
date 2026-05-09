@@ -48,9 +48,9 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 
 | ID | 機能 | 状態 | 概要 |
 |---|---|---|---|
-| ED-01 | edit_pack schema v1 | done | `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `init-edit-pack` / `validate-edit-pack`。cut 候補・選択 cut・字幕案・review 状態の器を実装。ED-02 以降の自動検出は未実装 |
+| ED-01 | edit_pack schema v1 | done | `docs/SCHEMAS/v1/edit_pack.md` / `src/pipeline/edit_pack.py` / `init-edit-pack` / `validate-edit-pack`。cut 候補・選択 cut・字幕案・review 状態の器を実装。ED-02 / ED-04 は後続で実装済み |
 | ED-02a | 手動/インポート cut candidate 追加 CLI | done | `add-cut-candidate`。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を `edit_pack.cut_candidates[]` に追加し、必要なら `selected_cut_ids[]` に入れる手動/インポート入力スライス |
-| ED-02 | カット候補抽出（音声・字幕ベース） | proposed | `transcript.json` の segment / keyword / timing を使って `edit_pack.cut_candidates[]` を生成する。VOD / URL 取得は含めず、必要な音声素材は INT-02 から受け取る |
+| ED-02 | カット候補抽出（音声・字幕ベース） | done | `generate-cuts` CLI を実装。`transcript.json` の segment timing / text density / topic hint を使って `edit_pack.cut_candidates[]` を生成する。VOD / URL 取得は含めず、必要な音声素材は INT-02 から受け取る |
 | ED-03 | 文脈チェック | proposed | `transcript.json` の隣接 segment を参照し、カット境界が話者発話や話題遷移を不自然に切断していないかを review note として返す |
 | ED-04 | 字幕案生成 | done | `transcript.json` の segment を `edit_pack.subtitles[]` に変換する `generate-subtitles` CLI を実装。`--wrap-eaw` で ED-05 の EAW 折返しを消費し、`source_segment_id` で transcript 由来を readback する。burned-in は外部ツール / future renderer |
 | ED-05 | 字幕表示幅計測（EAW、stdlib のみ） | done | `src/pipeline/text_measure.py` に EAW unit 計算と折返し、`measure-subtitle-width` CLI を追加。NLMYTGen の `EastAsianWidthMeasurer` / `WpfTextMeasurer` を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は `docs/proposals/0002-standalone-measure-text-cli.md` の採否次第で `ED-05b` として再起票 |
@@ -85,7 +85,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | SH-02 | episode_pack 統合 manifest | proposed | rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結 |
 | SH-03 | GUI MVP Phase 1（read-only operator console） | done | Electron skeleton（`gui/`）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。`status-episode` JSON を消費して状態表示。外部 API・upload は未実装。`docs/GUI_CONVENTIONS.md` に整合-A 規約 |
 | SH-03b | GUI Phase 2（action 導線） | done | Rights / Materials / Thumbnail タブに `set-compliance` / `register-material` / `patch-thumbnail` の form を追加。確認 dialog（command / summary / reason の 3 要素）経由で実行。upload / fetch / bg-removal API は未実装であり、今後通常 integration として追加できる。args builder は `gui/args.cjs` に分離して smoke が Electron なしで検証 |
-| SH-03c | GUI Editing tab（ED-01 / ED-02a 範囲のみ） | done | Editing タブを追加し `init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` の form を配置。confirm dialog 経由で実行、結果と `editing.state` badge を表示。ED-02 / ED-03 / ED-04 / ED-06 は未実装のため form を持たず、実装と同時に追加する。CLI 規約「episode_id == dirname」に合わせ prefill は dir basename を使用 |
+| SH-03c | GUI Editing tab（ED-01 / ED-02a 範囲のみ） | done | Editing タブを追加し `init-edit-pack` / `add-cut-candidate` / `validate-edit-pack` の form を配置。confirm dialog 経由で実行、結果と `editing.state` badge を表示。ED-02 / ED-04 は CLI 実装済みだが GUI form は未追加。ED-03 / ED-06 は未実装。CLI 規約「episode_id == dirname」に合わせ prefill は dir basename を使用 |
 | SH-04 | NLMYTGen GUI への逆提案運用 | done | `docs/proposals/` に運用パターン (`README.md`) と最初の提案 (`0001-gui-alignment-from-clippipegen-mvp.md` / state=draft) を配置。NLMYTGen 側ファイルは編集せず、提案は doc／issue ベース。採否は NLMYTGen 側判断 |
 
 ## 未実装 / 必要時に再起票
@@ -123,3 +123,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-09: `ED-07` を `done` に遷移。根拠: `src/pipeline/transcript.py` / `transcribe-audio --engine fake` / `validate-transcript` / `status-episode` transcript readback / `tests/test_transcript.py` を実装。実 STT engine と asset fetch は次 feature のまま分離
 - 2026-05-10: `INT-02a` を `done` として追加。根拠: `fetch-source-audio --mode fake` / `src/integrations/asset_fetch/fake_audio.py` / `fetch_receipt.schema` / `tests/test_source_audio_fetch.py` を実装。親 `INT-02` は real fetch / video が残るため `proposed` のまま維持
 - 2026-05-10: `ED-04` を `done` に遷移。根拠: `src/pipeline/subtitle_generation.py` / `generate-subtitles` / ED-05 `measure_subtitle` 消費 / `tests/test_subtitle_generation.py` を実装。実 subtitle burn-in / renderer は OUT-01 後続
+- 2026-05-10: `ED-02` を `done` に遷移。根拠: `src/pipeline/cut_generation.py` / `generate-cuts` / transcript window heuristic / `tests/test_cut_generation.py` を実装。文脈妥当性の判定は ED-03 後続

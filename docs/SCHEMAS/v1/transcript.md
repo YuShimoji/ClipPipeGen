@@ -145,7 +145,7 @@ transcript 全体の operator review 状態。
 ## Downstream
 
 - ED-04 は `generate-subtitles` で `segments[]` を subtitle draft に変換し、ED-05 の表示幅計測を使って `edit_pack.subtitles[].text` に折返しを入れる。
-- ED-02 は `segments[]` の時間範囲・密度・keywords を使って `edit_pack.cut_candidates[]` を生成する。
+- ED-02 は `generate-cuts` で `segments[]` の時間範囲・密度・topic hint を使って `edit_pack.cut_candidates[]` を生成する。
 - ED-03 は cut 前後の隣接 segment を見て、文脈切断や話者発話の途切れを review note として返す。
 
 ## CLI（ED-07）

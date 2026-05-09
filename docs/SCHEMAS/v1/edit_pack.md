@@ -60,7 +60,8 @@ JSON。配置は `episodes/<episode_id>/edit_pack.json`。
   "context_check": {
     "status": "not_checked",
     "notes": []
-  }
+  },
+  "source_segment_ids": ["seg_000001", "seg_000002"]
 }
 ```
 
@@ -74,6 +75,7 @@ JSON。配置は `episodes/<episode_id>/edit_pack.json`。
 | `confidence` | number | optional | 0.0〜1.0。manual は 1.0 推奨 |
 | `context_check.status` | enum | ✓ | `not_checked` / `passed` / `needs_review` / `failed` |
 | `context_check.notes` | string[] | optional | 文脈上の懸念や判断メモ |
+| `source_segment_ids` | string[] | optional | `transcript.segments[]` 由来なら元 segment ID 群。ED-02 が付与する |
 
 ### `selected_cut_ids[]`
 
@@ -145,7 +147,7 @@ ED-01 validator が以下を強制する：
 - `transcribe-audio` は ED-07 の責務であり、既存のローカル音声ファイルから `transcript.json` を生成する。URL / VOD 取得は INT-02 `asset_fetch` の責務。
 - ED-01 は Editing レーンの **器** を確定するだけ。外部 API と元動画ダウンロードは発生しない。
 
-## CLI（ED-01 / ED-02a / ED-04）
+## CLI（ED-01 / ED-02a / ED-02 / ED-04）
 
 ```bash
 python -m src.cli.main init-edit-pack --episode-id ep_x
@@ -157,6 +159,12 @@ python -m src.cli.main add-cut-candidate \
   --reason "manual highlight" \
   --select
 
+python -m src.cli.main generate-cuts \
+  --transcript episodes/ep_x/transcript.json \
+  --edit-pack episodes/ep_x/edit_pack.json \
+  --target-duration-seconds 60 \
+  --select-generated
+
 python -m src.cli.main generate-subtitles \
   --transcript episodes/ep_x/transcript.json \
   --edit-pack episodes/ep_x/edit_pack.json \
@@ -164,5 +172,7 @@ python -m src.cli.main generate-subtitles \
 ```
 
 `add-cut-candidate` は ED-02a の手動/インポート入力スライス。元動画解析・speech-to-text・自動検出は行わず、人手または別ツールで得た秒数を `edit_pack` に記録するだけ。後続の ED-02 / ED-04 は `transcript.json` を読んで同じ `edit_pack` に candidate / subtitle を追加する。
+
+`generate-cuts` は ED-02 の自動 cut 候補生成スライス。`transcript.json` の segment timing / text density / topic hint を使って `edit_pack.cut_candidates[]` を追加する。文脈妥当性の判定はせず、`context_check.status="not_checked"` として ED-03 に渡す。
 
 `generate-subtitles` は ED-04 の subtitle draft 生成スライス。`transcript.json` の `segments[]` を `edit_pack.subtitles[]` に変換し、`--wrap-eaw` 指定時は ED-05 の EAW 折返しを使って `text` に改行を入れる。実 STT、URL/VOD 取得、動画レンダリング、字幕焼き込みは行わない。

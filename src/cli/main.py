@@ -19,6 +19,7 @@ Subcommands:
     validate-transcript      Validate transcript.json against schema v1.
     transcribe-audio         ED-07: local audio -> transcript.json (fake engine in v1).
     fetch-source-audio       INT-02a: create/register fake source_audio WAV material.
+    generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.
 """
 
@@ -32,6 +33,7 @@ from . import (
     audit_material_ledger,
     audit_thumbnail,
     fetch_source_audio,
+    generate_cuts,
     generate_subtitles,
     init_edit_pack,
     init_episode,
@@ -62,6 +64,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "validate-transcript": validate_transcript.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
+    "generate-cuts": generate_cuts.run,
     "generate-subtitles": generate_subtitles.run,
 }
 
