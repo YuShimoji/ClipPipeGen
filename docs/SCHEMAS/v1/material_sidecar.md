@@ -83,7 +83,7 @@ ledger と一致する。改竄検出用。
 | `url` | optional | 取得元 URL |
 | `retrieved_at` | ✓ | 取得時刻 |
 | `retrieved_by` | ✓ | 取得者 |
-| `retrieval_method` | ✓ | `manual_screenshot` / `manual_download` / `bg_removed_from_<asset_id>` / `created_by_user` / `purchased` 等 |
+| `retrieval_method` | ✓ | `manual_screenshot` / `manual_download` / `asset_fetch_fake` / `bg_removed_from_<asset_id>` / `created_by_user` / `purchased` 等 |
 | `notes` | optional | 補足 |
 
 `source.kind` 候補:

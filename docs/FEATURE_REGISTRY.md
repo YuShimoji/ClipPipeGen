@@ -73,6 +73,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 |---|---|---|---|
 | INT-01 | YouTube OAuth flow | proposed | trusted application のセットアップ含む |
 | INT-02 | asset_fetch（source audio / video 取得） | proposed | `fetch-source-audio` / `fetch-source-video` CLI。URL / 出力先 / 推定サイズ / 目的を preflight 表示し、実行 log / receipt / rollback 情報を残す。取得結果は `material_ledger` に自動登録できる。yt-dlp / ffmpeg は `src/integrations/asset_fetch/` に隔離し、CI は fake downloader を使う。rights status は readback に留め、値だけで取得そのものの hard gate にはしない |
+| INT-02a | source audio material contract + fake fetch | done | `fetch-source-audio --mode fake` を実装。標準音声は `source.wav`（PCM WAV / mono / 16kHz / 16-bit / 1秒 silent fixture）。`sidecar.json` / `fetch_receipt.json` / `material_ledger.json` を生成し、`kind=source_audio` / `subkind=wav_pcm_16k_mono` / `intended_uses=["editing_audio"]` で ED-07 `transcribe-audio` に接続する。実 yt-dlp / ffmpeg / `fetch-source-video` は親 INT-02 の後続 |
 | INT-03 | bg_removal 受領フロー | proposed | 外部処理結果（透過PNG）の受け入れ。API 呼び出しは含めるか別途検討 |
 | INT-04 | bg_removal API 呼び出し | proposed | INT-03 の能動版。provider / 入出力 / receipt を integration として実装 |
 
@@ -120,3 +121,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-07: `ED-02a` を起票・即 done に遷移。根拠: ED-02 本体（音声・字幕ベースの自動抽出）前に、外部 API なしで `edit_pack` へ cut 候補を投入する手動/インポート導線を確保するため
 - 2026-05-08: `ED-07` を `proposed` で起票し、`docs/SCHEMAS/v1/transcript.md` を追加。根拠: `transcribe-audio` はローカル音声ファイル → `transcript.json` に限定し、URL / VOD 取得は INT-02 `asset_fetch` として分離するユーザー判断
 - 2026-05-09: `ED-07` を `done` に遷移。根拠: `src/pipeline/transcript.py` / `transcribe-audio --engine fake` / `validate-transcript` / `status-episode` transcript readback / `tests/test_transcript.py` を実装。実 STT engine と asset fetch は次 feature のまま分離
+- 2026-05-10: `INT-02a` を `done` として追加。根拠: `fetch-source-audio --mode fake` / `src/integrations/asset_fetch/fake_audio.py` / `fetch_receipt.schema` / `tests/test_source_audio_fetch.py` を実装。親 `INT-02` は real fetch / video が残るため `proposed` のまま維持

@@ -68,6 +68,26 @@ JSON。配置は `episodes/<episode_id>/material_ledger.json`、または projec
 | `attribution_text` | 出典テキスト素材 |
 | `other` | その他（subkind で詳細） |
 
+### `source_audio` 標準（INT-02a）
+
+`fetch-source-audio --mode fake` が作る標準音声素材は次の形に固定する。
+
+```json
+{
+  "id": "src_audio_001",
+  "kind": "source_audio",
+  "subkind": "wav_pcm_16k_mono",
+  "file_path": "episodes/episode_example/materials/src_audio_001/source.wav",
+  "sidecar_path": "episodes/episode_example/materials/src_audio_001/sidecar.json",
+  "intended_uses": ["editing_audio"]
+}
+```
+
+- 音声ファイルは PCM WAV / mono / 16kHz / 16-bit。INT-02a fake では 1 秒 silent fixture。
+- `sidecar.json` は通常の `material_sidecar.schema` に従い、`source.retrieval_method="asset_fetch_fake"` を記録する。
+- `fetch_receipt.json` は同じ material directory に保存し、生成物・hash・rollback 対象を記録する。
+- ED-07 `transcribe-audio` はこの WAV を `--source-audio` に受け取り、`--material-id` で transcript と ledger を接続する。
+
 ### `intended_uses` 候補
 
 | 値 | 説明 |
@@ -109,6 +129,7 @@ MS-01 validator が以下を強制する：
 | コマンド | 操作 |
 |---|---|
 | `register-material` | 素材を ledger に追加（sidecar 必須） |
+| `fetch-source-audio` | source audio WAV を生成/取得し、sidecar・receipt・ledger entry をまとめて作成 |
 | `list-materials` | ledger を表示（filter: kind / intended_uses） |
 | `audit-material-ledger` | 整合性チェック（hash・sidecar・compliance_link）。NLMYTGen の `audit-*` 命名規則に揃える |
 | `remove-material` | 物理削除はせず ledger entry を `archived` フラグで残す |

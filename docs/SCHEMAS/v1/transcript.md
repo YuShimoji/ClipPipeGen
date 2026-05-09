@@ -167,3 +167,5 @@ python -m src.cli.main validate-transcript \
 ED-07 初期実装は `fake` engine のみ。fixture segments を読み、ローカル音声ファイルの存在確認・sha256・STT readback を付けて transcript を生成する。実 `whisper.cpp` 接続は後続 slice。
 
 URL / VOD を渡す CLI にはしない。URL 取得が必要な場合は、先に INT-02 `fetch-source-audio` または `fetch-source-video` でローカル素材を作り、必要なら `material_ledger` に登録してから `transcribe-audio` に渡す。
+
+INT-02a の標準 source audio は `episodes/<episode_id>/materials/<material_id>/source.wav`（PCM WAV / mono / 16kHz / 16-bit）で、ledger entry は `kind="source_audio"` / `subkind="wav_pcm_16k_mono"` / `intended_uses=["editing_audio"]` を持つ。`transcribe-audio --material-id <id>` はこの ledger entry を確認し、`transcript.source_audio.material_id` に接続する。

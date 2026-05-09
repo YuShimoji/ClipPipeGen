@@ -18,6 +18,7 @@ Subcommands:
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
     validate-transcript      Validate transcript.json against schema v1.
     transcribe-audio         ED-07: local audio -> transcript.json (fake engine in v1).
+    fetch-source-audio       INT-02a: create/register fake source_audio WAV material.
 """
 
 from __future__ import annotations
@@ -29,6 +30,7 @@ from . import (
     add_cut_candidate,
     audit_material_ledger,
     audit_thumbnail,
+    fetch_source_audio,
     init_edit_pack,
     init_episode,
     measure_subtitle_width,
@@ -57,6 +59,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "add-cut-candidate": add_cut_candidate.run,
     "validate-transcript": validate_transcript.run,
     "transcribe-audio": transcribe_audio.run,
+    "fetch-source-audio": fetch_source_audio.run,
 }
 
 

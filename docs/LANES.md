@@ -65,11 +65,12 @@
 - 動画素材／音声素材／サムネ素材／ロゴ／出典素材／人物画像／背景切り抜き結果を一元台帳化
 - Editing／Thumbnail／Compliance からの素材要求の受付
 - 外部 integration（asset_fetch / bg_removal）の呼び出し境界
+- INT-02a では source audio の標準形（PCM WAV / mono / 16kHz / 16-bit）を `fetch-source-audio --mode fake` で生成し、ledger / sidecar / receipt に接続する
 
 ### Inputs
 
 - 各レーンからの素材要求（種別・用途・必須条件）
-- 外部処理結果（`src/integrations/asset_fetch/` または人手で取得した素材＋sidecar）
+- 外部処理結果（`src/integrations/asset_fetch/`、または人手で取得した素材＋sidecar）
 
 ### Outputs
 
@@ -174,7 +175,7 @@
 
 - 渡すもの: `material_id`、素材ファイルパス、sidecar パス
 - 受け取り側 CLI は sidecar の構造とファイル解決を確認する。source/license/restriction は readback として扱う
-- Editing では source audio material を `transcribe-audio` に渡し、生成した `transcript.json` を ED-04 / ED-02 / ED-03 が参照する
+- Editing では source audio material（標準: `source.wav`, `subkind=wav_pcm_16k_mono`）を `transcribe-audio` に渡し、生成した `transcript.json` を ED-04 / ED-02 / ED-03 が参照する
 
 ### Editing / Thumbnail → Publishing
 

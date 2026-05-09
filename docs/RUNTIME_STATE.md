@@ -42,9 +42,19 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 / ED-07 done。samples runnable
-- **current_slice**: Slice 2 — ED-07 `transcript.json` / `transcribe-audio` adapter surface は done。次アンカーは INT-02 `asset_fetch`、または ED-04 字幕案生成（ED-07 の fake transcript を入力にできる）
-- **next_action（assistant 側）**: 推奨は INT-02 fake downloader + preflight / receipt / material_ledger registration。別案として ED-04 字幕案生成（ED-05 消費）に進める。実 `whisper.cpp` 接続は ED-07 successor として別 slice
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 / ED-07 / INT-02a done。samples runnable
+- **current_slice**: Slice 2 — INT-02a `fetch-source-audio --mode fake` source audio contract は done。標準 WAV / sidecar / receipt / ledger 自動登録まで実装済み
+- **next_action（assistant 側）**: 推奨は ED-04 字幕案生成（ED-07 transcript + ED-05 EAW を消費）。別案として INT-02 successor の実 downloader（yt-dlp / ffmpeg）または `fetch-source-video` に進める。実 `whisper.cpp` 接続は ED-07 successor として別 slice
+
+### Slice 2 (vii) INT-02a done（source audio material contract + fake fetch）
+
+- `src/integrations/asset_fetch/fake_audio.py` — fake downloader として PCM WAV / mono / 16kHz / 16-bit / 1秒 silent fixture を生成。network / yt-dlp / ffmpeg は呼ばない
+- `src/cli/fetch_source_audio.py` — `fetch-source-audio --mode fake`。`--dry-run` preflight JSON、既存 artifact / duplicate material ID の衝突検出、`--force` refresh、`rights_manifest` readback、`sidecar.json` / `fetch_receipt.json` / `material_ledger.json` 生成
+- `material_ledger` entry — `kind="source_audio"` / `subkind="wav_pcm_16k_mono"` / `intended_uses=["editing_audio"]`。`compliance_link` は `rights_manifest.compliance_check.status` の snapshot
+- `sidecar.json` — `source.kind="unverified"` / `source.retrieval_method="asset_fetch_fake"` / `license.kind="unknown"` / `usage_conditions=["source_link_required"]`。restriction は metadata として保持し、local CLI の hard gate にはしない
+- `docs/SCHEMAS/v1/fetch_receipt.md` — receipt schema と rollback files contract を追加
+- `tests/test_source_audio_fetch.py` — fake fetch roundtrip、dry-run、duplicate refusal、missing rights refusal、force refresh、ED-07 `transcribe-audio` 連携を検証。Python suite は 72 tests pass
+- 実 yt-dlp / ffmpeg / network fetch、`fetch-source-video`、GUI action button は未実装。親 `INT-02` の後続 slice として扱う
 
 ### Slice 2 (vi) ED-07 done（transcript schema + fake transcribe-audio adapter）
 
@@ -149,7 +159,7 @@
 
 - SH-03b は GUI action 導線（init-edit-pack / add-cut-candidate / set-compliance / register-material / patch-thumbnail）。upload / fetch / bg-removal API は未実装のためまだ button がない。
 - ED-02 本体は `transcript.json` を入力にする。STT provider は ED-07 で決め、URL / VOD 取得は INT-02 として分離する。
-- INT-02 は取得 integration として、preflight / 実行 log / receipt / rollback 情報 / `material_ledger` 登録までを最初から surface に出す。
+- INT-02a で source audio の fake fetch は実装済み。親 INT-02 の残りは実 downloader（yt-dlp / ffmpeg / network fetch）と source video 取得。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 
