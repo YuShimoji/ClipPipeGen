@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-05 / ED-07 / INT-02a done。samples runnable
-- **current_slice**: Slice 2 — INT-02a `fetch-source-audio --mode fake` source audio contract は done。標準 WAV / sidecar / receipt / ledger 自動登録まで実装済み
-- **next_action（assistant 側）**: 推奨は ED-04 字幕案生成（ED-07 transcript + ED-05 EAW を消費）。別案として INT-02 successor の実 downloader（yt-dlp / ffmpeg）または `fetch-source-video` に進める。実 `whisper.cpp` 接続は ED-07 successor として別 slice
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02a / ED-04 / ED-05 / ED-07 / INT-02a done。samples runnable
+- **current_slice**: Slice 2 — ED-04 `generate-subtitles` は done。`transcript.json` から `edit_pack.subtitles[]` を生成し、ED-05 EAW 折返しを消費できる
+- **next_action（assistant 側）**: 推奨は ED-02 transcript ベース cut candidate 生成。別案として ED-03 文脈チェック、INT-02 successor の実 downloader（yt-dlp / ffmpeg）、または ED-07 successor の実 `whisper.cpp` 接続
+
+### Slice 2 (viii) ED-04 done（subtitle draft generation）
+
+- `src/pipeline/subtitle_generation.py` — `transcript.segments[]` を `edit_pack.subtitles[]` に変換。`source="auto"`、`style_slot`、`source_segment_id` を付与し、既存 auto subtitle は `--replace-auto` 指定時のみ refresh
+- `src/cli/generate_subtitles.py` — `generate-subtitles --transcript ... --edit-pack ...` を追加。`--wrap-eaw` で ED-05 の EAW greedy wrap を使い、`--selected-cuts-only` / `--cut-id` で cut 範囲へ絞り込める。`--dry-run` は書き込みなし
+- `status-episode` / GUI Editing readback — `subtitles_count` を表示
+- `tests/test_subtitle_generation.py` — 全 segment 生成、EAW wrap、selected cut への紐付け、既存 auto subtitle refresh、CLI roundtrip、dry-run、invalid wrap を検証。Python suite は 79 tests pass
+- 実 subtitle burn-in、動画レンダリング、NLE export、GUI action button は未実装。OUT-01 / ED-06 / SH-03 successor として扱う
 
 ### Slice 2 (vii) INT-02a done（source audio material contract + fake fetch）
 

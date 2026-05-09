@@ -52,7 +52,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | ED-02a | 手動/インポート cut candidate 追加 CLI | done | `add-cut-candidate`。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を `edit_pack.cut_candidates[]` に追加し、必要なら `selected_cut_ids[]` に入れる手動/インポート入力スライス |
 | ED-02 | カット候補抽出（音声・字幕ベース） | proposed | `transcript.json` の segment / keyword / timing を使って `edit_pack.cut_candidates[]` を生成する。VOD / URL 取得は含めず、必要な音声素材は INT-02 から受け取る |
 | ED-03 | 文脈チェック | proposed | `transcript.json` の隣接 segment を参照し、カット境界が話者発話や話題遷移を不自然に切断していないかを review note として返す |
-| ED-04 | 字幕案生成 | proposed | `transcript.json` の segment を字幕 draft に変換し、ED-05 の EAW 幅計測を消費して折返し候補を作る。burned-in は外部ツール / future renderer |
+| ED-04 | 字幕案生成 | done | `transcript.json` の segment を `edit_pack.subtitles[]` に変換する `generate-subtitles` CLI を実装。`--wrap-eaw` で ED-05 の EAW 折返しを消費し、`source_segment_id` で transcript 由来を readback する。burned-in は外部ツール / future renderer |
 | ED-05 | 字幕表示幅計測（EAW、stdlib のみ） | done | `src/pipeline/text_measure.py` に EAW unit 計算と折返し、`measure-subtitle-width` CLI を追加。NLMYTGen の `EastAsianWidthMeasurer` / `WpfTextMeasurer` を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は `docs/proposals/0002-standalone-measure-text-cli.md` の採否次第で `ED-05b` として再起票 |
 | ED-05b | text_measure bridge migration | proposed | NLMYTGen 側で `measure-text` standalone CLI が採用された段階で ClipPipeGen 側の `text_measure.py` を bridge に縮約する。詳細: `docs/proposals/0002` |
 | ED-06 | 外部 NLE 用 export（EDL／XML） | proposed | DaVinci Resolve / Premiere 向け export |
@@ -122,3 +122,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-08: `ED-07` を `proposed` で起票し、`docs/SCHEMAS/v1/transcript.md` を追加。根拠: `transcribe-audio` はローカル音声ファイル → `transcript.json` に限定し、URL / VOD 取得は INT-02 `asset_fetch` として分離するユーザー判断
 - 2026-05-09: `ED-07` を `done` に遷移。根拠: `src/pipeline/transcript.py` / `transcribe-audio --engine fake` / `validate-transcript` / `status-episode` transcript readback / `tests/test_transcript.py` を実装。実 STT engine と asset fetch は次 feature のまま分離
 - 2026-05-10: `INT-02a` を `done` として追加。根拠: `fetch-source-audio --mode fake` / `src/integrations/asset_fetch/fake_audio.py` / `fetch_receipt.schema` / `tests/test_source_audio_fetch.py` を実装。親 `INT-02` は real fetch / video が残るため `proposed` のまま維持
+- 2026-05-10: `ED-04` を `done` に遷移。根拠: `src/pipeline/subtitle_generation.py` / `generate-subtitles` / ED-05 `measure_subtitle` 消費 / `tests/test_subtitle_generation.py` を実装。実 subtitle burn-in / renderer は OUT-01 後続

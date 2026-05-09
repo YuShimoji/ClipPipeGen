@@ -162,6 +162,7 @@ def _fill_editing_status(status: dict[str, Any], edit_pack_path: Path) -> None:
     issues = validate_edit_pack(pack)
     selected = pack.get("selected_cut_ids") or []
     candidates = pack.get("cut_candidates") or []
+    subtitles = pack.get("subtitles") or []
     state = "ready"
     if issues:
         state = "blocked"
@@ -172,6 +173,7 @@ def _fill_editing_status(status: dict[str, Any], edit_pack_path: Path) -> None:
         "state": state,
         "cut_candidates_count": len(candidates),
         "selected_cuts_count": len(selected),
+        "subtitles_count": len(subtitles),
         "schema_issues_count": len(issues),
         "schema_issues": [i.to_dict() for i in issues],
     }

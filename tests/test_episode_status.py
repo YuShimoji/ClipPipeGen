@@ -83,6 +83,7 @@ def test_status_reads_edit_pack_when_present(tmp_path: Path):
     status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
     assert status["editing"]["state"] == "manual_needed"
     assert status["editing"]["cut_candidates_count"] == 0
+    assert status["editing"]["subtitles_count"] == 0
     assert status["artifacts"]["transcript"]["exists"] is False
     assert status["editing"]["transcript"]["state"] == "missing"
 
