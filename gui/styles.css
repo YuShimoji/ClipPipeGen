@@ -345,6 +345,11 @@ h2 {
   background: #fff6f3;
 }
 
+.notice.loading {
+  color: #285170;
+  background: #f2f8fc;
+}
+
 .hidden {
   display: none;
 }

@@ -2,6 +2,14 @@ const state = {
   status: null,
   preview: null,
   currentTab: "episode",
+  errors: {
+    status: null,
+    preview: null,
+  },
+  loading: {
+    status: false,
+    preview: false,
+  },
 };
 
 const tabs = Array.from(document.querySelectorAll(".tab"));
@@ -37,28 +45,55 @@ function selectTab(tabName) {
   tabs.forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === tabName));
   views.forEach((view) => view.classList.toggle("active", view.id === `view-${tabName}`));
   title.textContent = tabTitles[tabName] || "Episode";
+  renderFeedbackPanel();
 }
 
 async function refreshStatus() {
-  hideError();
   const episodeDirRaw = episodeDirInput.value.trim() || "samples/episode_example";
   const episodeDir = stripPairedQuotes(episodeDirRaw);
   const manifestOnlyInput = episodeDir.toLowerCase().endsWith("preview_manifest.json");
   const shouldRunStatus = state.currentTab !== "preview" && !manifestOnlyInput;
+  if (shouldRunStatus) {
+    state.loading.status = true;
+    state.errors.status = null;
+  }
+  state.loading.preview = true;
+  state.errors.preview = null;
+  renderFeedbackPanel();
+
   const [response, previewResponse] = await Promise.all([
-    shouldRunStatus ? window.clipPipe.statusEpisode(episodeDir) : Promise.resolve({ ok: null }),
-    window.clipPipe.readPreviewPack(episodeDir),
+    shouldRunStatus
+      ? window.clipPipe.statusEpisode(episodeDir).catch((error) => ({
+          ok: false,
+          error: String(error?.message || error || "status-episode failed"),
+        }))
+      : Promise.resolve({ ok: null }),
+    window.clipPipe.readPreviewPack(episodeDir).catch((error) => ({
+      ok: false,
+      state: "blocked",
+      error: String(error?.message || error || "preview pack read failed"),
+      validationIssues: [],
+      artifacts: [],
+      warnings: [],
+    })),
   ]);
   if (response.ok === false) {
-    if (state.currentTab !== "preview") {
-      showError(response.error || response.stderr || "status-episode failed");
-    }
+    state.errors.status = response.error || response.stderr || "status-episode failed";
   } else if (response.ok === true) {
+    state.errors.status = null;
     state.status = response.status;
     renderStatus(response.status);
   }
+  if (!previewResponse) {
+    state.errors.preview = "preview pack read failed";
+  }
+  if (shouldRunStatus) {
+    state.loading.status = false;
+  }
+  state.loading.preview = false;
   state.preview = previewResponse;
   renderPreview(previewResponse);
+  renderFeedbackPanel();
 }
 
 function renderStatus(status) {
@@ -335,14 +370,22 @@ function stateClass(value) {
   return "missing";
 }
 
-function showError(message) {
-  errorPanel.textContent = message;
-  errorPanel.classList.remove("hidden");
+function activeFeedbackGroup() {
+  return state.currentTab === "preview" ? "preview" : "status";
 }
 
-function hideError() {
-  errorPanel.textContent = "";
-  errorPanel.classList.add("hidden");
+function renderFeedbackPanel() {
+  const group = activeFeedbackGroup();
+  const loadingMessage = group === "preview" ? "Loading preview pack..." : "Loading episode status...";
+  const message = state.loading[group] ? loadingMessage : state.errors[group];
+  errorPanel.classList.toggle("loading", Boolean(state.loading[group]));
+  if (!message) {
+    errorPanel.textContent = "";
+    errorPanel.classList.add("hidden");
+    return;
+  }
+  errorPanel.textContent = message;
+  errorPanel.classList.remove("hidden");
 }
 
 // ---------- Phase 2 (SH-03b) — actions ----------

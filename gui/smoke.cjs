@@ -98,6 +98,11 @@ for (const marker of [
   "renderPreview",
   "renderArtifactLinks",
   "previewReadbackRows",
+  "activeFeedbackGroup",
+  "renderFeedbackPanel",
+  "errors: {",
+  "loading: {",
+  'return state.currentTab === "preview" ? "preview" : "status"',
   "Transcript is visible for review flow only",
   'state.currentTab !== "preview"',
 ]) {
@@ -126,6 +131,11 @@ try {
   }
   if (path.normalize(quotedPreview.selectedPath) !== path.normalize(fixture.episodeDir)) {
     throw new Error("quoted absolute preview path should resolve to the episode directory");
+  }
+
+  const absolutePreview = reader.readPreviewPack(fixture.episodeDir);
+  if (!absolutePreview.ok || absolutePreview.state !== "ready") {
+    throw new Error("unquoted absolute repo-internal preview path should ingest");
   }
 
   const relativePreview = reader.readPreviewPack(fixture.relativeEpisodeDir);
