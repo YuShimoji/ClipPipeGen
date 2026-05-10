@@ -72,3 +72,45 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。混同しない。
 2. [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) の `current_slice` と `next_action` を確認
 3. 現スライスに直接関係する箇所だけ追加で読む
 4. 不明点があればユーザーに確認、推測で書かない
+
+## 報告コントラクト（workspace-wide、2026-05-11 設定）
+
+実作業の報告（commit / push / hotfix / slice 進捗 / 機能追加）は単なる activity log では不足。以下を含める：
+
+- **差分の焦点**：触った範囲と、意図的に触らなかった範囲
+- **最終形 / North Star からの逆算した現在地**：この差分でプロジェクトの終着点にどこまで近づいたか。「step N の次」という時系列ではなく、ゴールから逆算した位置
+- **検証 evidence**：readback、tests、smoke、push/sync 状態
+- **残存リスク・未確定の判断**：stale な evidence、保留中の判断、ユーザー確認が要る箇所
+- **次に推奨する hook**：assistant 視点で最も自然な次の一手
+- **選択肢の分岐**：意味のある 2〜3 方向。直線的 next step を 1 つだけ示すのは不可
+- **次の owner**：assistant / user / 両方
+
+スライス区切り・handoff・明示的な closeout では追加で **機能状態の表**（実装済 / 進行中 / 未実装 / 棚上げ）を、現スライスまたは feature registry の該当節のスコープで出す。registry 全体ではなく slice scope にとどめる。
+
+これは実作業の報告における既定の密度であり、機械的な template ではない。短い Q&A、lookup、方向性の探索質問はこれまで通り簡潔で良い。狙いはユーザーが追加プロンプト無しに次の move を判断できる前向きな文脈を渡すこと。Fixed audit form は引き続き anti-pattern だが、非自明な作業ではこの密度を default とする。
+
+### Drift / overfitting self-check
+
+スライス区切り・handoff・closeout では、以下の failure mode を自己診断し、該当するものは次の一手への影響と合わせて明示する（passive な脚注ではなく）：
+
+- **case overfitting**: 個別題材／個別台本／個別 asset の審美調整に寄りすぎ、一般化していない
+- **local optimization**: 工程内 artifact だけを磨いて North Star から外れている
+- **docs-only loop**: 契約文書／spec／README だけが増え、実装 smoke・GUI ingest・YMM4 readback に戻れていない
+- **standalone artifact completion**: 単発 HTML / PNG / JSON / fixture を、次工程への統合・proof path 無しで「完了」扱いしている
+- **user-as-governor dependency**: ユーザーが毎回方向転換を検知しないと進めない状態になっている
+- **next-artifact continuity**: 次工程の artifact・consumer・blocked reason が明確になっている
+
+どれも発火していない場合はその旨を簡潔に書く。silent な self-check は self-check とみなさない。
+
+### Recommended default path
+
+意味のある分岐 2〜3 個を出すときは、assistant の **recommended default** を 1 つ明示し、理由を 1 行で添える（典型: North Star への最短経路 / blast radius 最小 / 下流の最多 unblock / standing preference 合致）。次の一手を以下に分ける：
+
+- **assistant-owned**: standing approval の範囲内で assistant 単独で進められるもの
+- **user-owned**: ユーザー判断・creative authorship・外部操作（GUI / YMM4 / 外部ツール）が要るもの
+
+選択肢を等価な menu として並べてユーザーに丸投げするのは不可。
+
+### Cross-project scope declaration
+
+cross-project 作業では、報告冒頭に 1 行で scope を declare する（例: `Scope: NLMYTGen / WritingPage / ClipPipeGen`）。guardrails の cross-project pattern を満たす最小宣言にとどめ、毎回 cross-project の妥当性を再正当化しない。
