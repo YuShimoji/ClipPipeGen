@@ -58,6 +58,7 @@ uvx python -m src.cli.main build-local-preview-pack `
 - 運用ルール正本: [docs/INVARIANTS.md](docs/INVARIANTS.md) / [docs/AUTOMATION_BOUNDARY.md](docs/AUTOMATION_BOUNDARY.md)
 - asset_fetch 境界: [docs/ASSET_FETCH_BOUNDARY.md](docs/ASSET_FETCH_BOUNDARY.md)
 - local preview pack: [docs/PREVIEW_PACK.md](docs/PREVIEW_PACK.md)
+- 引き継ぎ: [docs/HANDOFF.md](docs/HANDOFF.md)
 - 機能一覧（全件把握）: [docs/FEATURE_REGISTRY.md](docs/FEATURE_REGISTRY.md)
 - 現在位置: [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 - GUI MVP: [docs/GUI_MVP_SCOPE.md](docs/GUI_MVP_SCOPE.md)
