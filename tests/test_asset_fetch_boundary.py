@@ -82,6 +82,25 @@ def test_fetch_source_audio_exposes_only_source_audio_modes():
     assert "fetch-source-video" not in result.stdout.lower()
 
 
+def test_build_local_preview_pack_exposes_no_external_fetch_or_output_generation():
+    result = subprocess.run(
+        [sys.executable, "-m", "src.cli.main", "build-local-preview-pack", "--help"],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    help_text = result.stdout.lower()
+    assert "--local-media" in help_text
+    assert "--transcript-fixture" in help_text
+    assert "yt-dlp" not in help_text
+    assert "fetch-source-video" not in help_text
+    assert "network" not in help_text
+    assert "render" not in help_text
+    assert "encode" not in help_text
+
+
 def test_ffmpeg_and_ytdlp_do_not_enter_pipeline_or_editing_cli():
     forbidden_terms = ("ffmpeg", "yt-dlp", "youtube-dl")
     checked_files = [
@@ -90,6 +109,7 @@ def test_ffmpeg_and_ytdlp_do_not_enter_pipeline_or_editing_cli():
         REPO_ROOT / "src" / "cli" / "generate_cuts.py",
         REPO_ROOT / "src" / "cli" / "check_cut_context.py",
         REPO_ROOT / "src" / "cli" / "generate_subtitles.py",
+        REPO_ROOT / "src" / "cli" / "build_local_preview_pack.py",
     ]
 
     violations: list[str] = []

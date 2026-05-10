@@ -42,9 +42,24 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
-- **current_slice**: Slice 2 — INT-02d yt-dlp-audio boundary spec only は done。URL fetch / network access / yt-dlp / FFmpeg 正規化 / receipt / rights / human / GUI / STT の責務を分離し、実 mode 追加と network fetch は行っていない
-- **next_action（assistant 側）**: 次の推奨は INT-02d の仕様に従い、`yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進めること。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
+- **current_slice**: Slice 2 — SH-05 local-preview-pack は done。ローカル media 1本から `source.wav`、fake/fixture transcript、cut candidates、context status、subtitle draft、`preview_manifest.json`、read-only `preview_report.html` までを 1 command で生成する artifact preview / review report を追加した
+- **next_action（assistant 側）**: 次の推奨は SH-05b として `preview_report.html` の operator review 結果を受けた report polish / GUI read-only ingest を小さく切ること。十分なら INT-02d の仕様に従い、`yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進める。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
+
+### Slice 2 (xiv) SH-05 done（local-preview-pack orchestrator）
+
+- `src/cli/build_local_preview_pack.py` — `build-local-preview-pack --episode-id ... --local-media ... --material-id ...` を追加。入力は local media file のみで、URL / VOD / network-like locator は拒否する
+- 1 command flow — episode 未作成時は pending `rights_manifest.json` を skeleton 作成し、既存 `fetch-source-audio --mode local-media-audio`、`transcribe-audio --engine fake`、`generate-cuts`、`check-cut-context`、`generate-subtitles` を順に接続する
+- fake / fixture transcript — `--transcript-fixture` 指定時は fixture、未指定時は `episodes/<episode_id>/_preview_pack/deterministic_fake_segments.json` を生成する。どちらも `transcript.not_for_acceptance=true` として preview manifest / report に明示する
+- `src/pipeline/preview_pack.py` — `preview_manifest.json` と read-only `preview_report.html` を生成。report は素材、source.wav link / audio controls、receipt、transcript、cut candidates、context status、subtitle draft、warnings、next actions を表示する
+- artifact layout — `episodes/<episode_id>/{transcript.json,edit_pack.json,preview_manifest.json,preview_report.html}` と `materials/<material_id>/{source.wav,sidecar.json,fetch_receipt.json}`。smoke 用 episode は ignored scratch の `episodes/` 配下で扱う
+- 境界維持 — SH-05 は rendered video preview ではなく artifact preview。yt-dlp / network fetch / `fetch-source-video` / GUI fetch button / cut / concat / subtitle burn-in / render / encode / creative acceptance は未実装のまま
+- `tests/test_preview_pack.py` / `tests/test_asset_fetch_boundary.py` — CI は fake fetch monkeypatch で実 FFmpeg に依存しない。URL input 拒否、fixture / deterministic fake、conflict / force、manifest/report、help 上の fetch / output 導線不在を検証
+- real local operator smoke — `episodes/sh05_operator_smoke_verify`（ignored）で Python `wave` 生成の 44.1kHz / stereo / 16-bit / 2.0秒 synthetic local WAV を入力し、`build-local-preview-pack` を fresh episode / `--force` なしで実行。実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` は既存 `local-media-audio` 経路でのみ使われ、`source.wav`、deterministic fake `transcript.json`、1 cut candidate、context `passed=1`、1 subtitle、`preview_manifest.json`、`preview_report.html` を生成
+- smoke readback — Python `wave` で `source.wav` が mono / 16kHz / 16-bit / 32000 frames / 2.0秒であることを確認。manifest は `transcript.source=deterministic_fake`、`not_for_acceptance=true`、`candidate_count=1`、`subtitle_count=1`、rights pending warning を保持。HTML report は `<audio controls>` あり、実行 button なし。`audit-material-ledger --format json` は `ok=true`
+- artifact hygiene — `git status --short` で smoke artifact は tracked に出ない。`git status --short --ignored episodes/sh05_operator_smoke episodes/sh05_operator_smoke_verify _tmp/sh05_operator_smoke` は `!! _tmp/` / `!! episodes/`
+
+### Slice 2 (xiii) INT-02d done（yt-dlp-audio boundary spec only）
 
 ### Slice 2 (xiii) INT-02d done（yt-dlp-audio boundary spec only）
 

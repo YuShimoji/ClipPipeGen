@@ -7,6 +7,7 @@
 | 種別 | 操作 | 場所 | 現在の扱い |
 |---|---|---|---|
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
+| Local | local preview pack（artifact preview / read-only report） | `src/cli/build_local_preview_pack.py` / `src/pipeline/preview_pack.py` | SH-05 実装済み。local media 1本から source audio / transcript / cut / context / subtitle / manifest / HTML report を接続。動画生成ではない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
 | External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。INT-02d: `yt-dlp-audio` は spec only。実 yt-dlp / network fetch / `fetch-source-video` は future integration |
@@ -27,11 +28,12 @@
   - transcript からの字幕案生成（`generate-subtitles` は実装済み。字幕焼き込みは後続）
   - transcript からのカット候補抽出（`generate-cuts` は実装済み）
   - transcript 隣接 segment による cut 文脈チェック（`check-cut-context` は実装済み。動画 preview / creative acceptance は後続）
+  - ローカル素材 1 本から operator-visible な artifact preview / read-only HTML report を生成（`build-local-preview-pack` は実装済み。rendered video preview ではない）
   - upload / thumbnail 設定 / visibility 更新 integration
 
 ## 現時点で未実装
 
-- 動画レンダリング / cut / concat / 字幕焼き込み / エンコード
+- 動画レンダリング / cut / concat / 字幕焼き込み / エンコード / rendered video preview
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
 - 実 source audio / video ダウンロード（yt-dlp / network fetch / `fetch-source-video`）
@@ -83,6 +85,16 @@
 | `src/integrations/bg_removal/` | 背景切り抜き API クライアント、結果ファイル受領 | 元動画への適用、サムネ合成 |
 | `src/pipeline/` | manifest／schema／slot patch／validate／transcript 構造変換 | 外部送信、課金、認証 |
 | `src/cli/` | コマンドライン entry points | 業務ロジック（pipeline 呼び出しのみ） |
+
+## SH-05 local-preview-pack 境界
+
+正本: [PREVIEW_PACK.md](PREVIEW_PACK.md)
+
+- `build-local-preview-pack` は local media file だけを入力に取り、URL / VOD / network-like locator を拒否する。
+- source audio 生成は既存 `fetch-source-audio --mode local-media-audio` 経路を使う。SH-05 の orchestrator / preview pipeline / GUI は FFmpeg を直接呼ばない。
+- transcript は fixture または deterministic fake。`transcript.not_for_acceptance=true` を manifest/report に出し、creative acceptance には使わない。
+- `preview_report.html` は read-only。実行 button、GUI fetch button、編集確定 button は置かない。
+- SH-05 は rendered video preview、cut / concat、subtitle burn-in、render / encode を実装しない。
 
 ## NLMYTGen GUI との整合方針
 

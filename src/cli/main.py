@@ -22,6 +22,7 @@ Subcommands:
     generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
     check-cut-context        ED-03: review cut boundaries against transcript context.
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.
+    build-local-preview-pack SH-05: local media -> read-only artifact preview pack.
 """
 
 from __future__ import annotations
@@ -33,6 +34,7 @@ from . import (
     add_cut_candidate,
     audit_material_ledger,
     audit_thumbnail,
+    build_local_preview_pack,
     check_cut_context,
     fetch_source_audio,
     generate_cuts,
@@ -69,6 +71,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "generate-cuts": generate_cuts.run,
     "check-cut-context": check_cut_context.run,
     "generate-subtitles": generate_subtitles.run,
+    "build-local-preview-pack": build_local_preview_pack.run,
 }
 
 
