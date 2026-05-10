@@ -1,4 +1,5 @@
 const fs = require("node:fs");
+const os = require("node:os");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
@@ -93,7 +94,13 @@ for (const marker of ["validatePreviewManifest", "createPreviewReader", "materia
 if (!preload.includes("readPreviewPack")) {
   throw new Error("preload missing readPreviewPack");
 }
-for (const marker of ["renderPreview", "renderArtifactLinks", "Transcript is visible for review flow only"]) {
+for (const marker of [
+  "renderPreview",
+  "renderArtifactLinks",
+  "previewReadbackRows",
+  "Transcript is visible for review flow only",
+  'state.currentTab !== "preview"',
+]) {
   if (!renderer.includes(marker)) {
     throw new Error(`renderer missing ${marker}`);
   }
@@ -103,6 +110,49 @@ const reader = createPreviewReader(root);
 const missingPreview = reader.readPreviewPack("__missing_preview_pack_for_smoke__");
 if (!missingPreview.ok || missingPreview.state !== "missing") {
   throw new Error("preview reader should report missing preview_manifest.json without failing");
+}
+if (!missingPreview.expectedManifestPath || !missingPreview.expectedManifestPath.endsWith("preview_manifest.json")) {
+  throw new Error("missing preview should report expected preview_manifest.json path");
+}
+
+const fixture = createPreviewPackFixture();
+try {
+  const quotedPreview = reader.readPreviewPack(`"${fixture.episodeDir}"`);
+  if (!quotedPreview.ok || quotedPreview.state !== "ready") {
+    throw new Error(`quoted absolute preview path should ingest: ${JSON.stringify(quotedPreview)}`);
+  }
+  if (quotedPreview.normalizedInputPath.includes('"')) {
+    throw new Error("quoted absolute preview path should strip paired quotes");
+  }
+  if (path.normalize(quotedPreview.selectedPath) !== path.normalize(fixture.episodeDir)) {
+    throw new Error("quoted absolute preview path should resolve to the episode directory");
+  }
+
+  const relativePreview = reader.readPreviewPack(fixture.relativeEpisodeDir);
+  if (!relativePreview.ok || relativePreview.state !== "ready") {
+    throw new Error("unquoted repo-relative preview path should ingest");
+  }
+
+  const parentPreview = reader.readPreviewPack("episodes");
+  if (!parentPreview.ok || parentPreview.state !== "blocked") {
+    throw new Error("episodes parent directory should be blocked with guidance");
+  }
+  if (!String(parentPreview.error).includes("individual episode directory")) {
+    throw new Error("episodes parent directory should explain expected input shape");
+  }
+  if (!(parentPreview.candidateManifests || []).some((candidate) => candidate.relativePath === fixture.relativeManifestPath)) {
+    throw new Error("episodes parent directory should include preview_manifest.json candidates");
+  }
+
+  const outsidePreview = reader.readPreviewPack(path.join(os.tmpdir(), "clippipegen-outside-preview-pack"));
+  if (outsidePreview.ok || outsidePreview.state !== "blocked") {
+    throw new Error("outside-repo preview path should be blocked");
+  }
+  if (!outsidePreview.repoRoot || !outsidePreview.selectedPath || !outsidePreview.relativePath) {
+    throw new Error("blocked outside-repo preview path should include repoRoot/selectedPath/relativePath");
+  }
+} finally {
+  fs.rmSync(fixture.episodeDir, { recursive: true, force: true });
 }
 const validManifestIssues = validatePreviewManifest({
   schema_version: "v1",
@@ -206,6 +256,61 @@ try {
 if (!threwOnMissingED) throw new Error("add-cut-candidate args should fail on missing start/end seconds");
 
 console.log("gui smoke: OK");
+
+function createPreviewPackFixture() {
+  const episodeId = `000_gui_smoke_preview_${Date.now()}`;
+  const episodeDir = path.join(root, "episodes", episodeId);
+  const materialDir = path.join(episodeDir, "materials", "src_audio_smoke");
+  fs.mkdirSync(materialDir, { recursive: true });
+  const previewReport = path.join(episodeDir, "preview_report.html");
+  const sourceWav = path.join(materialDir, "source.wav");
+  const fetchReceipt = path.join(materialDir, "fetch_receipt.json");
+  const transcript = path.join(episodeDir, "transcript.json");
+  const editPack = path.join(episodeDir, "edit_pack.json");
+  const manifestPath = path.join(episodeDir, "preview_manifest.json");
+  for (const file of [previewReport, sourceWav, fetchReceipt, transcript, editPack]) {
+    fs.writeFileSync(file, "{}");
+  }
+  const rel = (fullPath) => path.relative(root, fullPath).replace(/\\/g, "/");
+  fs.writeFileSync(
+    manifestPath,
+    JSON.stringify(
+      {
+        schema_version: "v1",
+        episode_id: episodeId,
+        created_at: "2026-05-11T00:00:00+00:00",
+        input: { kind: "local_media_file", path: "_tmp/input.wav" },
+        material: {
+          material_id: "src_audio_smoke",
+          source_wav: rel(sourceWav),
+          fetch_receipt: rel(fetchReceipt),
+        },
+        transcript: {
+          source: "fixture",
+          path: rel(transcript),
+          segment_count: 1,
+          not_for_acceptance: true,
+        },
+        cuts: {
+          path: rel(editPack),
+          candidate_count: 1,
+          context_counts: { passed: 1, needs_review: 0, failed: 0, not_checked: 0 },
+        },
+        subtitles: { path: rel(editPack), subtitle_count: 1 },
+        report: { path: rel(previewReport) },
+        warnings: [],
+        next_actions: [],
+      },
+      null,
+      2,
+    ),
+  );
+  return {
+    episodeDir,
+    relativeEpisodeDir: rel(episodeDir),
+    relativeManifestPath: rel(manifestPath),
+  };
+}
 
 function assertEqual(actual, expected) {
   const a = JSON.stringify(actual);

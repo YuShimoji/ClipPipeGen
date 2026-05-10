@@ -41,14 +41,18 @@ function selectTab(tabName) {
 
 async function refreshStatus() {
   hideError();
-  const episodeDir = episodeDirInput.value.trim() || "samples/episode_example";
+  const episodeDirRaw = episodeDirInput.value.trim() || "samples/episode_example";
+  const episodeDir = stripPairedQuotes(episodeDirRaw);
   const manifestOnlyInput = episodeDir.toLowerCase().endsWith("preview_manifest.json");
+  const shouldRunStatus = state.currentTab !== "preview" && !manifestOnlyInput;
   const [response, previewResponse] = await Promise.all([
-    manifestOnlyInput ? Promise.resolve({ ok: null }) : window.clipPipe.statusEpisode(episodeDir),
+    shouldRunStatus ? window.clipPipe.statusEpisode(episodeDir) : Promise.resolve({ ok: null }),
     window.clipPipe.readPreviewPack(episodeDir),
   ]);
   if (response.ok === false) {
-    showError(response.error || response.stderr || "status-episode failed");
+    if (state.currentTab !== "preview") {
+      showError(response.error || response.stderr || "status-episode failed");
+    }
   } else if (response.ok === true) {
     state.status = response.status;
     renderStatus(response.status);
@@ -170,7 +174,11 @@ function renderPreview(preview) {
   stateBadge.className = `badge ${stateClass(previewState)}`;
 
   if (!preview?.ok) {
-    renderDetails("#preview-summary", [["state", previewState], ["error", preview?.error || "preview pack read failed"]], preview?.validationIssues || []);
+    renderDetails(
+      "#preview-summary",
+      previewReadbackRows(preview, [["state", previewState], ["error", preview?.error || "preview pack read failed"]]),
+      preview?.validationIssues || [],
+    );
     renderWarningList([preview?.error || "preview pack read failed"]);
     renderArtifactLinks([]);
     return;
@@ -178,7 +186,7 @@ function renderPreview(preview) {
 
   const manifest = preview.manifest || {};
   const contextCounts = manifest.cuts?.context_counts || {};
-  const rows = [
+  const rows = previewReadbackRows(preview, [
     ["manifest", relativePath(preview.manifestPath || "")],
     ["validation_issues", (preview.validationIssues || []).length],
     ["episode_id", manifest.episode_id || "(missing)"],
@@ -195,16 +203,34 @@ function renderPreview(preview) {
     ],
     ["subtitle_count", manifest.subtitles?.subtitle_count ?? 0],
     ["report", manifest.report?.path || "(missing)"],
-  ];
+  ]);
   renderDetails("#preview-summary", rows, (preview.validationIssues || []).map((message) => ({ code: "SCHEMA", field: "preview_manifest", message })));
   renderWarningList(previewWarnings(preview));
   renderArtifactLinks(preview.artifacts || []);
+}
+
+function previewReadbackRows(preview, rows) {
+  const out = [...rows];
+  if (preview?.repoRoot) out.push(["repoRoot", relativePath(preview.repoRoot)]);
+  if (preview?.selectedPath) out.push(["selectedPath", relativePath(preview.selectedPath)]);
+  if (preview?.relativePath) out.push(["relativePath", preview.relativePath]);
+  if (preview?.expectedManifestPath) out.push(["expected_manifest", relativePath(preview.expectedManifestPath)]);
+  (preview?.candidateManifests || []).slice(0, 5).forEach((candidate, index) => {
+    out.push([`candidate_manifest_${index + 1}`, candidate.relativePath || relativePath(candidate.path)]);
+  });
+  return out;
 }
 
 function previewWarnings(preview) {
   const warnings = new Set();
   (preview.validationIssues || []).forEach((issue) => warnings.add(`Schema issue: ${issue}`));
   (preview.warnings || []).forEach((warning) => warnings.add(String(warning)));
+  if (preview.expectedManifestPath && preview.state === "missing") {
+    warnings.add(`Expected preview_manifest.json at ${relativePath(preview.expectedManifestPath)}.`);
+  }
+  if (preview.error) {
+    warnings.add(preview.error);
+  }
   if (preview.manifest?.transcript?.not_for_acceptance === true) {
     warnings.add("Transcript is visible for review flow only and is not acceptance material.");
   }
@@ -265,6 +291,18 @@ function relativePath(fullPath) {
   return value.replace(/\\/g, "/");
 }
 
+function stripPairedQuotes(value) {
+  const raw = String(value || "").trim();
+  if (raw.length >= 2) {
+    const first = raw[0];
+    const last = raw[raw.length - 1];
+    if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+      return raw.slice(1, -1).trim();
+    }
+  }
+  return raw;
+}
+
 function renderDetails(selector, rows, issues = []) {
   const container = document.querySelector(selector);
   container.replaceChildren();
@@ -281,7 +319,11 @@ function renderDetails(selector, rows, issues = []) {
   issues.slice(0, 6).forEach((issue) => {
     const row = document.createElement("div");
     row.className = "issue-row";
-    row.textContent = `${issue.code || "ISSUE"} @ ${issue.field || "?"}: ${issue.message || ""}`;
+    if (typeof issue === "string") {
+      row.textContent = issue;
+    } else {
+      row.textContent = `${issue.code || "ISSUE"} @ ${issue.field || "?"}: ${issue.message || ""}`;
+    }
     container.append(row);
   });
 }

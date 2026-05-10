@@ -3,16 +3,73 @@ const path = require("node:path");
 
 function createPreviewReader(repoRoot) {
   const root = path.resolve(repoRoot);
+  const maxCandidateCount = 5;
+
+  function normalizeInputPath(inputPath) {
+    const rawPath = String(inputPath || "").trim();
+    if (rawPath.length >= 2) {
+      const first = rawPath[0];
+      const last = rawPath[rawPath.length - 1];
+      if ((first === '"' && last === '"') || (first === "'" && last === "'")) {
+        return rawPath.slice(1, -1).trim();
+      }
+    }
+    return rawPath;
+  }
 
   function resolveRepoPath(inputPath) {
-    const rawPath = String(inputPath || "").trim();
-    if (!rawPath) return root;
-    return path.resolve(root, rawPath);
+    const normalizedPath = normalizeInputPath(inputPath);
+    if (!normalizedPath) return root;
+    return path.resolve(root, normalizedPath);
   }
 
   function isInsideRepo(fullPath) {
+    const rootCompare = path.normalize(root).replace(/[\\\/]+$/, "").toLowerCase();
+    const pathCompare = path.normalize(path.resolve(fullPath)).replace(/[\\\/]+$/, "").toLowerCase();
+    return pathCompare === rootCompare || pathCompare.startsWith(`${rootCompare}${path.sep}`);
+  }
+
+  function repoRelativePath(fullPath) {
     const relativePath = path.relative(root, fullPath);
-    return relativePath === "" || (!relativePath.startsWith("..") && !path.isAbsolute(relativePath));
+    return (relativePath || ".").replace(/\\/g, "/");
+  }
+
+  function readbackFor(inputPath, selectedPath, expectedManifestPath = null) {
+    const normalizedInputPath = normalizeInputPath(inputPath);
+    const payload = {
+      repoRoot: root,
+      inputPath: String(inputPath || "").trim(),
+      normalizedInputPath,
+      selectedPath,
+      relativePath: repoRelativePath(selectedPath),
+    };
+    if (expectedManifestPath) {
+      payload.expectedManifestPath = expectedManifestPath;
+    }
+    return payload;
+  }
+
+  function isEpisodesParent(fullPath) {
+    return repoRelativePath(fullPath).toLowerCase() === "episodes";
+  }
+
+  function candidatePreviewManifests() {
+    const episodesDir = path.join(root, "episodes");
+    if (!pathExists(episodesDir)) return [];
+    try {
+      return fs.readdirSync(episodesDir, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => path.join(episodesDir, entry.name, "preview_manifest.json"))
+        .filter((candidatePath) => pathExists(candidatePath))
+        .sort()
+        .slice(0, maxCandidateCount)
+        .map((candidatePath) => ({
+          path: candidatePath,
+          relativePath: repoRelativePath(candidatePath),
+        }));
+    } catch (_error) {
+      return [];
+    }
   }
 
   function pathExists(fullPath) {
@@ -63,7 +120,9 @@ function createPreviewReader(repoRoot) {
 
   function readPreviewPack(inputPath) {
     const selectedPath = resolveRepoPath(inputPath || "samples/episode_example");
+    const candidates = candidatePreviewManifests();
     if (!isInsideRepo(selectedPath)) {
+      const readback = readbackFor(inputPath || "samples/episode_example", selectedPath);
       return {
         ok: false,
         state: "blocked",
@@ -71,12 +130,30 @@ function createPreviewReader(repoRoot) {
         validationIssues: ["selected path is outside the repository"],
         artifacts: [],
         warnings: [],
+        candidateManifests: candidates,
+        ...readback,
       };
     }
 
     const manifestPath = selectedPath.toLowerCase().endsWith(".json")
       ? selectedPath
       : path.join(selectedPath, "preview_manifest.json");
+    const readback = readbackFor(inputPath || "samples/episode_example", selectedPath, manifestPath);
+
+    if (isEpisodesParent(selectedPath)) {
+      return {
+        ok: true,
+        state: "blocked",
+        error: "The episodes parent directory was selected. Choose an individual episode directory or preview_manifest.json.",
+        manifestPath,
+        episodeDir: selectedPath,
+        validationIssues: ["choose an individual episode directory or preview_manifest.json"],
+        artifacts: [],
+        warnings: ["Use a repo-relative path such as episodes/<episode_id> or episodes/<episode_id>/preview_manifest.json."],
+        candidateManifests: candidates,
+        ...readback,
+      };
+    }
 
     if (!pathExists(manifestPath)) {
       return {
@@ -84,9 +161,11 @@ function createPreviewReader(repoRoot) {
         state: "missing",
         manifestPath,
         episodeDir: path.dirname(manifestPath),
-        validationIssues: ["preview_manifest.json is missing"],
+        validationIssues: [`preview_manifest.json is missing at ${manifestPath}`],
         artifacts: [],
         warnings: [],
+        candidateManifests: candidates,
+        ...readback,
       };
     }
 
@@ -102,6 +181,8 @@ function createPreviewReader(repoRoot) {
         validationIssues: [`preview_manifest.json is not valid JSON: ${error.message}`],
         artifacts: [],
         warnings: [],
+        candidateManifests: candidates,
+        ...readback,
       };
     }
 
@@ -125,6 +206,8 @@ function createPreviewReader(repoRoot) {
       validationIssues,
       artifacts,
       warnings,
+      candidateManifests: candidates,
+      ...readback,
     };
   }
 
