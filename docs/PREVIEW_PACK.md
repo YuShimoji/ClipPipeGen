@@ -183,6 +183,39 @@ SH-05b+ では、DOM readback だけではなく実画面として `preview_repo
 
 SH-05b+ でも、yt-dlp / network fetch / `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / creative acceptance は扱わない。
 
+### SH-05c GUI Read-Only Ingest
+
+SH-05c adds a GUI read-only ingest surface for preview packs. It does not generate a preview pack and does not run fetch, build, render, upload, or external acquisition workflows.
+
+GUI behavior:
+
+| Area | Readback |
+|---|---|
+| Input | Existing episode directory or `preview_manifest.json` path |
+| Validation | Lightweight `preview_manifest.json` schema validation; missing / invalid / artifact missing are shown as warning states |
+| Status Summary | `episode_id`, input kind/path, material id, transcript source, `not_for_acceptance`, segment count, cut candidate count, context counts, subtitle count, report path |
+| Decision Warnings | Manifest warnings plus explicit not-for-acceptance and rights-readback-only messages |
+| Artifact Links | `preview_manifest.json`, `preview_report.html`, `source.wav`, `fetch_receipt.json`, `transcript.json`, `edit_pack.json` as local read-only links |
+
+Visual evidence was captured from the GUI Preview Pack tab against the SH-05b smoke episode `episodes/sh05b_visual_evidence_medium_ja_ok`:
+
+- `_tmp/sh05c_gui_visual_evidence/gui_preview_pack_tab.png`
+- `_tmp/sh05c_gui_visual_evidence/gui_preview_pack_artifacts.png`
+- `_tmp/sh05c_gui_visual_evidence/gui_preview_readback.json`
+
+Readback result:
+
+- `state=ready`
+- `validation_issues=0`
+- `transcript.source=fixture`
+- `transcript.not_for_acceptance=true`
+- `cut_candidate_count=1`
+- `subtitle_count=4`
+- artifact links 6件 all `exists`
+- Preview Pack panel has no form/button execution controls
+
+SH-05c keeps the SH-05 boundary: no yt-dlp, network fetch, `fetch-source-video`, GUI fetch button, GUI-triggered `build-local-preview-pack`, rendered video preview, cut / concat, subtitle burn-in, render / encode, creative acceptance, or rights hard gate.
+
 ## Fake Transcript
 
 `--transcript-fixture` 未指定時は deterministic fake segments を `episodes/<episode_id>/_preview_pack/deterministic_fake_segments.json` に生成し、既存 `transcribe-audio --engine fake` に渡す。

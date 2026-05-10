@@ -6,7 +6,7 @@ INT-02c はこの境界に従い、実 yt-dlp / network fetch へ進まず、既
 
 INT-02d は **spec only**。`yt-dlp-audio` の URL fetch contract を仕様化するが、yt-dlp 実行、network fetch、CLI mode 追加は行わない。詳細は [YTDLP_AUDIO_SPEC.md](YTDLP_AUDIO_SPEC.md) を正本とする。
 
-SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fetch-source-audio --mode local-media-audio` の出力を downstream artifact に接続し、`preview_manifest.json` / read-only `preview_report.html` を生成する review surface である。SH-05 は rendered video preview、network fetch、GUI fetch button、cut / concat、subtitle burn-in、render / encode を実装しない。詳細は [PREVIEW_PACK.md](PREVIEW_PACK.md) を正本とする。
+SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fetch-source-audio --mode local-media-audio` の出力を downstream artifact に接続し、`preview_manifest.json` / read-only `preview_report.html` を生成する review surface である。SH-05c GUI ingest は生成済み preview pack を読むだけで、GUI から build / fetch / render / upload を起動しない。SH-05 は rendered video preview、network fetch、GUI fetch button、cut / concat、subtitle burn-in、render / encode を実装しない。詳細は [PREVIEW_PACK.md](PREVIEW_PACK.md) を正本とする。
 
 ## 状態
 
@@ -29,7 +29,7 @@ SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fet
 | `build-local-preview-pack` | 既存 `local-media-audio` / transcript / cut / context / subtitle contract を順に接続し、manifest/report を生成する | yt-dlp / FFmpeg を直接呼ぶ、network fetch、fetch-source-video、render / encode、GUI fetch button |
 | `transcribe-audio` | 既存ローカル音声ファイルを `transcript.json` にする | URL / VOD 取得、yt-dlp / FFmpeg 呼び出し |
 | Editing core | transcript から cut / context / subtitle artifact を作る | downloader、FFmpeg、render、encode |
-| GUI | 実装済み safe action の readback を表示する | fetch button を追加する |
+| GUI | 実装済み safe action と既存 preview pack の readback を表示する | fetch button を追加する、GUI から `build-local-preview-pack` / render / upload を起動する |
 
 ## 出力 Contract
 
@@ -113,8 +113,8 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | URL fetch mode | `yt-dlp-audio` の exact CLI contract、intermediate media file の保存/削除 policy は未決 |
 | source video | `fetch-source-video` は未実装 |
 | real dependency acceptance | local operator smoke passed。実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で synthetic local WAV を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
-| GUI | fetch button は未実装。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
-| local preview pack | SH-05 実装済み。local media 1本から `preview_manifest.json` / read-only `preview_report.html` まで生成。これは artifact preview であり rendered video preview ではない |
+| GUI | fetch button は未実装。SH-05c では既存 preview pack の read-only ingest だけ実装済み。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
+| local preview pack | SH-05 / SH-05c 実装済み。local media 1本から `preview_manifest.json` / read-only `preview_report.html` まで生成し、GUI から既存 pack を read-only 表示できる。これは artifact preview であり rendered video preview ではない |
 
 ## INT-02d yt-dlp-audio spec only
 

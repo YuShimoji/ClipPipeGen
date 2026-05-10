@@ -25,6 +25,7 @@
           <button class="tab" data-tab="rights">Rights</button>
           <button class="tab" data-tab="materials">Materials</button>
           <button class="tab" data-tab="editing">Editing</button>
+          <button class="tab" data-tab="preview">Preview Pack</button>
           <button class="tab" data-tab="thumbnail">Thumbnail</button>
           <button class="tab" data-tab="settings">Settings</button>
         </nav>
@@ -33,11 +34,11 @@
       <main class="workspace">
         <header class="topbar">
           <div>
-            <p class="eyebrow">Slice 2 / SH-03 + SH-03b</p>
+            <p class="eyebrow">Slice 2 / SH-05c read-only ingest</p>
             <h2 id="view-title">Episode</h2>
           </div>
           <form id="episode-form" class="episode-form">
-            <label for="episode-dir">Episode directory</label>
+            <label for="episode-dir">Episode directory or preview_manifest.json</label>
             <input id="episode-dir" value="samples/episode_example" spellcheck="false" />
             <button type="submit">Refresh</button>
           </form>
@@ -279,6 +280,35 @@
               <button type="submit" class="btn-action">Run</button>
             </form>
             <pre class="action-result" data-action-result="validate-edit-pack" hidden></pre>
+          </section>
+        </section>
+
+        <section id="view-preview" class="view">
+          <section class="panel">
+            <div class="panel-head">
+              <h3>Status Summary</h3>
+              <span id="preview-state" class="badge">unknown</span>
+            </div>
+            <p class="muted small preview-intro">
+              Read-only ingest of an existing preview pack. This panel opens no fetch, build, or output workflow.
+            </p>
+            <div id="preview-summary" class="detail-list"></div>
+          </section>
+
+          <section class="panel preview-panel">
+            <div class="panel-head">
+              <h3>Decision Warnings</h3>
+              <span class="muted small">readback only; not acceptance</span>
+            </div>
+            <div id="preview-warnings" class="warning-list"></div>
+          </section>
+
+          <section class="panel preview-panel">
+            <div class="panel-head">
+              <h3>Artifact Links</h3>
+              <span class="muted small">local files only</span>
+            </div>
+            <div id="preview-artifacts" class="artifact-list"></div>
           </section>
         </section>
 

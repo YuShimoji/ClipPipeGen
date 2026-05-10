@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
-- **current_slice**: Slice 2 — SH-05b+ visual evidence hardening は done。medium 日本語 fixture transcript で `build-local-preview-pack` を実行し、`preview_report.html` を localhost 静的配信で開いて visible screenshot / DOM readback / manifest validation を確認した
-- **next_action（assistant 側）**: 次の推奨は SH-05c として GUI read-only preview pack ingest を小さく切ること。GUI に fetch button や実行 button は追加せず、既存 episode の `preview_manifest.json` / `preview_report.html` を読むだけに限定する。GUI surface が不要なら、INT-02d の仕様に従い `yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進める。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
+- **current_slice**: Slice 2 — SH-05c GUI read-only preview pack ingest は done。GUI の Preview Pack tab が既存 episode directory または `preview_manifest.json` を読み、manifest validation、Status Summary、Decision Warnings、Artifact Links を read-only 表示する
+- **next_action（assistant 側）**: 次の推奨は INT-02d の仕様に従い `yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進めること。`fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode はまだ未実装
+
+### Slice 2 (xvii) SH-05c done（GUI read-only preview pack ingest）
+
+- GUI surface — `gui/renderer.html` に Preview Pack tab を追加し、既存 episode directory または `preview_manifest.json` を読む read-only panel として Status Summary / Decision Warnings / Artifact Links を表示する
+- Preview reader — `gui/preview_reader.cjs` が `preview_manifest.json` の lightweight schema validation を行い、missing / invalid / artifact missing を warning state として返す。GUI から build / fetch / render / upload は実行しない
+- Readback fields — `transcript.source`、`transcript.not_for_acceptance`、cut candidate count、context counts、subtitle count、manifest/report/source.wav/fetch_receipt/transcript/edit_pack links を表示する
+- Visual evidence — ignored scratch `_tmp/sh05c_gui_visual_evidence/gui_preview_pack_tab.png` と `gui_preview_pack_artifacts.png` で SH-05b smoke episode `episodes/sh05b_visual_evidence_medium_ja_ok` を GUI Preview Pack tab から読めることを確認した。DOM readback は `state=ready`、`validation_issues=0`、artifact links 6件 exists、preview 内 form/button 0件
+- Boundary — SH-05c は read-only ingest のみ。yt-dlp、network fetch、`fetch-source-video`、GUI fetch button、GUI からの `build-local-preview-pack` 実行、cut / concat、subtitle burn-in、render / encode、creative acceptance、rights hard gate は未実装のまま
 
 ### Slice 2 (xvi) SH-05b+ done（visual evidence hardening）
 

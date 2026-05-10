@@ -1,5 +1,6 @@
 const state = {
   status: null,
+  preview: null,
   currentTab: "episode",
 };
 
@@ -15,6 +16,7 @@ const tabTitles = {
   rights: "Rights",
   materials: "Materials",
   editing: "Editing",
+  preview: "Preview Pack",
   thumbnail: "Thumbnail",
   settings: "Settings",
 };
@@ -40,13 +42,19 @@ function selectTab(tabName) {
 async function refreshStatus() {
   hideError();
   const episodeDir = episodeDirInput.value.trim() || "samples/episode_example";
-  const response = await window.clipPipe.statusEpisode(episodeDir);
-  if (!response.ok) {
+  const manifestOnlyInput = episodeDir.toLowerCase().endsWith("preview_manifest.json");
+  const [response, previewResponse] = await Promise.all([
+    manifestOnlyInput ? Promise.resolve({ ok: null }) : window.clipPipe.statusEpisode(episodeDir),
+    window.clipPipe.readPreviewPack(episodeDir),
+  ]);
+  if (response.ok === false) {
     showError(response.error || response.stderr || "status-episode failed");
-    return;
+  } else if (response.ok === true) {
+    state.status = response.status;
+    renderStatus(response.status);
   }
-  state.status = response.status;
-  renderStatus(response.status);
+  state.preview = previewResponse;
+  renderPreview(previewResponse);
 }
 
 function renderStatus(status) {
@@ -152,6 +160,109 @@ function renderSettings(settings) {
     ["ready", bridge.ready ? "yes" : "no"],
     ["message", bridge.message || ""],
   ]);
+}
+
+function renderPreview(preview) {
+  const stateBadge = document.querySelector("#preview-state");
+  if (!stateBadge) return;
+  const previewState = preview?.state || "missing";
+  stateBadge.textContent = previewState;
+  stateBadge.className = `badge ${stateClass(previewState)}`;
+
+  if (!preview?.ok) {
+    renderDetails("#preview-summary", [["state", previewState], ["error", preview?.error || "preview pack read failed"]], preview?.validationIssues || []);
+    renderWarningList([preview?.error || "preview pack read failed"]);
+    renderArtifactLinks([]);
+    return;
+  }
+
+  const manifest = preview.manifest || {};
+  const contextCounts = manifest.cuts?.context_counts || {};
+  const rows = [
+    ["manifest", relativePath(preview.manifestPath || "")],
+    ["validation_issues", (preview.validationIssues || []).length],
+    ["episode_id", manifest.episode_id || "(missing)"],
+    ["input_kind", manifest.input?.kind || "(missing)"],
+    ["input_path", manifest.input?.path || "(missing)"],
+    ["material_id", manifest.material?.material_id || "(missing)"],
+    ["transcript_source", manifest.transcript?.source || "(missing)"],
+    ["not_for_acceptance", manifest.transcript?.not_for_acceptance === true ? "yes" : "no"],
+    ["transcript_segments", manifest.transcript?.segment_count ?? 0],
+    ["cut_candidate_count", manifest.cuts?.candidate_count ?? 0],
+    [
+      "context_status",
+      `passed=${contextCounts.passed ?? 0}, needs_review=${contextCounts.needs_review ?? 0}, failed=${contextCounts.failed ?? 0}, not_checked=${contextCounts.not_checked ?? 0}`,
+    ],
+    ["subtitle_count", manifest.subtitles?.subtitle_count ?? 0],
+    ["report", manifest.report?.path || "(missing)"],
+  ];
+  renderDetails("#preview-summary", rows, (preview.validationIssues || []).map((message) => ({ code: "SCHEMA", field: "preview_manifest", message })));
+  renderWarningList(previewWarnings(preview));
+  renderArtifactLinks(preview.artifacts || []);
+}
+
+function previewWarnings(preview) {
+  const warnings = new Set();
+  (preview.validationIssues || []).forEach((issue) => warnings.add(`Schema issue: ${issue}`));
+  (preview.warnings || []).forEach((warning) => warnings.add(String(warning)));
+  if (preview.manifest?.transcript?.not_for_acceptance === true) {
+    warnings.add("Transcript is visible for review flow only and is not acceptance material.");
+  }
+  if ((preview.manifest?.warnings || []).some((warning) => String(warning).toLowerCase().includes("rights"))) {
+    warnings.add("Rights status is displayed as readback only; it is not a hard gate here.");
+  }
+  if (warnings.size === 0 && preview.state === "ready") {
+    warnings.add("No blocking preview pack issues were found.");
+  }
+  return Array.from(warnings);
+}
+
+function renderWarningList(warnings) {
+  const container = document.querySelector("#preview-warnings");
+  container.replaceChildren();
+  warnings.forEach((warning) => {
+    const row = document.createElement("div");
+    row.className = "warning-item";
+    row.textContent = warning;
+    container.append(row);
+  });
+}
+
+function renderArtifactLinks(artifacts) {
+  const container = document.querySelector("#preview-artifacts");
+  container.replaceChildren();
+  if (artifacts.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "muted small";
+    empty.textContent = "No preview artifacts are available.";
+    container.append(empty);
+    return;
+  }
+  artifacts.forEach((artifact) => {
+    const row = document.createElement("div");
+    row.className = "artifact-row";
+
+    const label = document.createElement("span");
+    label.textContent = artifact.label;
+
+    const link = document.createElement("a");
+    link.href = artifact.url || "#";
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = artifact.path || artifact.fullPath || "(missing path)";
+
+    const badge = document.createElement("span");
+    badge.className = `badge ${artifact.exists ? "ok" : "missing"}`;
+    badge.textContent = artifact.exists ? "exists" : "missing";
+
+    row.append(label, link, badge);
+    container.append(row);
+  });
+}
+
+function relativePath(fullPath) {
+  const value = String(fullPath || "");
+  return value.replace(/\\/g, "/");
 }
 
 function renderDetails(selector, rows, issues = []) {

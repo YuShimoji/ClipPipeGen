@@ -283,6 +283,55 @@ h2 {
   font-size: 13px;
 }
 
+.preview-intro {
+  margin-top: 8px;
+}
+
+.preview-panel {
+  margin-top: 14px;
+}
+
+.warning-list,
+.artifact-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.warning-item {
+  border-left: 4px solid var(--manual);
+  padding: 8px 10px;
+  background: #fffaf0;
+  color: #684b14;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.artifact-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) 1fr auto;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.artifact-row > span:first-child {
+  color: var(--muted);
+}
+
+.artifact-row a {
+  color: var(--accent);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-decoration: none;
+}
+
+.artifact-row a:hover {
+  text-decoration: underline;
+}
+
 .notice {
   margin-bottom: 16px;
   padding: 12px 14px;
@@ -385,6 +434,9 @@ h2 {
   align-items: center;
   justify-content: center;
   z-index: 100;
+}
+.modal.hidden {
+  display: none;
 }
 .modal-box {
   background: var(--surface);

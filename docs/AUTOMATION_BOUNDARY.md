@@ -8,6 +8,7 @@
 |---|---|---|---|
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local | local preview pack（artifact preview / read-only report） | `src/cli/build_local_preview_pack.py` / `src/pipeline/preview_pack.py` | SH-05 実装済み。local media 1本から source audio / transcript / cut / context / subtitle / manifest / HTML report を接続。動画生成ではない |
+| Local GUI | preview pack read-only ingest | `gui/preview_reader.cjs` / GUI Preview Pack tab | SH-05c 実装済み。既存 `preview_manifest.json` / `preview_report.html` を読み、validation / warning / artifact link を表示するだけ。build / fetch / render / upload は実行しない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
 | External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。INT-02d: `yt-dlp-audio` は spec only。実 yt-dlp / network fetch / `fetch-source-video` は future integration |
@@ -95,6 +96,7 @@
 - transcript は fixture または deterministic fake。`transcript.not_for_acceptance=true` を manifest/report に出し、creative acceptance には使わない。
 - `preview_report.html` は read-only。実行 button、GUI fetch button、編集確定 button は置かない。
 - SH-05 は rendered video preview、cut / concat、subtitle burn-in、render / encode を実装しない。
+- SH-05c GUI ingest は既存 preview pack を読むだけ。`build-local-preview-pack`、fetch、render、upload を GUI から起動しない。
 
 ## NLMYTGen GUI との整合方針
 

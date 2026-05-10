@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, "..");
 const required = [
   "gui/main.cjs",
   "gui/preload.cjs",
+  "gui/preview_reader.cjs",
   "gui/renderer.html",
   "gui/renderer.js",
   "gui/styles.css",
@@ -24,6 +25,7 @@ for (const id of [
   "view-rights",
   "view-materials",
   "view-editing",
+  "view-preview",
   "view-thumbnail",
   "view-settings",
 ]) {
@@ -46,9 +48,81 @@ for (const marker of [
   }
 }
 
+for (const marker of [
+  'data-tab="preview"',
+  'id="preview-state"',
+  'id="preview-summary"',
+  'id="preview-warnings"',
+  'id="preview-artifacts"',
+]) {
+  if (!html.includes(marker)) {
+    throw new Error(`renderer missing preview marker ${marker}`);
+  }
+}
+for (const forbidden of [
+  'data-action-form="build-local-preview-pack"',
+  'data-action-form="fetch-source-audio"',
+  'data-action-form="fetch-source-video"',
+  'data-action-form="render"',
+  'data-action-form="upload"',
+]) {
+  if (html.includes(forbidden)) {
+    throw new Error(`renderer must not expose preview-pack execution control ${forbidden}`);
+  }
+}
+
 const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 if (!pkg.devDependencies || !pkg.devDependencies.electron) {
   throw new Error("electron devDependency is missing");
+}
+
+const main = fs.readFileSync(path.join(root, "gui/main.cjs"), "utf8");
+const preload = fs.readFileSync(path.join(root, "gui/preload.cjs"), "utf8");
+const renderer = fs.readFileSync(path.join(root, "gui/renderer.js"), "utf8");
+const previewReaderSource = fs.readFileSync(path.join(root, "gui/preview_reader.cjs"), "utf8");
+for (const marker of ["preview:read", "createPreviewReader", "readPreviewPack"]) {
+  if (!main.includes(marker)) {
+    throw new Error(`main missing ${marker}`);
+  }
+}
+for (const marker of ["validatePreviewManifest", "createPreviewReader", "material.source_wav is required"]) {
+  if (!previewReaderSource.includes(marker)) {
+    throw new Error(`preview reader missing ${marker}`);
+  }
+}
+if (!preload.includes("readPreviewPack")) {
+  throw new Error("preload missing readPreviewPack");
+}
+for (const marker of ["renderPreview", "renderArtifactLinks", "Transcript is visible for review flow only"]) {
+  if (!renderer.includes(marker)) {
+    throw new Error(`renderer missing ${marker}`);
+  }
+}
+const { createPreviewReader, validatePreviewManifest } = require("./preview_reader.cjs");
+const reader = createPreviewReader(root);
+const missingPreview = reader.readPreviewPack("__missing_preview_pack_for_smoke__");
+if (!missingPreview.ok || missingPreview.state !== "missing") {
+  throw new Error("preview reader should report missing preview_manifest.json without failing");
+}
+const validManifestIssues = validatePreviewManifest({
+  schema_version: "v1",
+  episode_id: "ep",
+  created_at: "2026-05-11T00:00:00+00:00",
+  input: { kind: "local_media_file", path: "_tmp/input.wav" },
+  material: { material_id: "src", source_wav: "episodes/ep/materials/src/source.wav", fetch_receipt: "episodes/ep/materials/src/fetch_receipt.json" },
+  transcript: { source: "fixture", path: "episodes/ep/transcript.json", segment_count: 1, not_for_acceptance: true },
+  cuts: { path: "episodes/ep/edit_pack.json", candidate_count: 1, context_counts: { passed: 1, needs_review: 0, failed: 0, not_checked: 0 } },
+  subtitles: { path: "episodes/ep/edit_pack.json", subtitle_count: 1 },
+  report: { path: "episodes/ep/preview_report.html" },
+  warnings: [],
+  next_actions: [],
+});
+if (validManifestIssues.length !== 0) {
+  throw new Error(`valid preview manifest should pass validation: ${validManifestIssues.join(", ")}`);
+}
+const invalidManifestIssues = validatePreviewManifest({ schema_version: "v1" });
+if (!invalidManifestIssues.includes("episode_id is required") || !invalidManifestIssues.includes("input.kind must be local_media_file")) {
+  throw new Error("invalid preview manifest should report required field issues");
 }
 
 // Args builders are pure functions; verify their CLI shape without spawning python.

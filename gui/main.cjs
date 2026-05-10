@@ -2,9 +2,11 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const { spawn } = require("node:child_process");
 const argsBuilders = require("./args.cjs");
+const { createPreviewReader } = require("./preview_reader.cjs");
 
 const repoRoot = path.resolve(__dirname, "..");
 const smokeMode = process.argv.includes("--smoke");
+const previewReader = createPreviewReader(repoRoot);
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -27,6 +29,10 @@ function createWindow() {
 
 ipcMain.handle("episode:status", async (_event, episodeDir) => {
   return runStatusEpisode(episodeDir || "samples/episode_example");
+});
+
+ipcMain.handle("preview:read", async (_event, episodeDir) => {
+  return previewReader.readPreviewPack(episodeDir || "samples/episode_example");
 });
 
 ipcMain.handle("action:setCompliance", async (_event, payload) =>
