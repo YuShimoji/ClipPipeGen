@@ -42,9 +42,18 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
-- **current_slice**: Slice 2 — SH-05b local-preview-pack report QA / polish は done。`preview_report.html` 冒頭に status summary、decision warnings、artifact links を追加し、日本語 fixture transcript でも operator-visible な read-only review surface として読めることを localhost / DOM readback で確認した
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
+- **current_slice**: Slice 2 — SH-05b+ visual evidence hardening は done。medium 日本語 fixture transcript で `build-local-preview-pack` を実行し、`preview_report.html` を localhost 静的配信で開いて visible screenshot / DOM readback / manifest validation を確認した
 - **next_action（assistant 側）**: 次の推奨は SH-05c として GUI read-only preview pack ingest を小さく切ること。GUI に fetch button や実行 button は追加せず、既存 episode の `preview_manifest.json` / `preview_report.html` を読むだけに限定する。GUI surface が不要なら、INT-02d の仕様に従い `yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進める。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
+
+### Slice 2 (xvi) SH-05b+ done（visual evidence hardening）
+
+- `src/pipeline/preview_pack.py` — `validate_preview_manifest` を追加し、`preview_manifest.json` の lightweight schema check を明示。`schema_version`、input/material/transcript/cuts/subtitles/report、warnings、next_actions の最低構造を検査する
+- report visual polish — Decision Warnings / Warnings section を `warning-panel` として強調し、not-for-acceptance と rights pending readback が上部で視認しやすい状態にした
+- medium Japanese fixture smoke — ignored scratch `episodes/sh05b_visual_evidence_medium_ja_ok` で 4 segments の日本語 fixture transcript を使い、fresh episode / `--force` なしで `build-local-preview-pack` を実行。`source.wav`、`transcript.json`、1 cut candidate、context passed、4 subtitles、`preview_manifest.json`、`preview_report.html` を生成
+- manifest / wave readback — `validate_preview_manifest` は issues `[]`。Python `wave` で `source.wav` は mono / 16kHz / 16-bit / 8.0秒。manifest は `transcript.source=fixture`、`not_for_acceptance=true`、`segment_count=4`、`candidate_count=1`、`subtitle_count=4`、rights pending warning を保持
+- visual evidence — `localhost` 静的配信で `preview_report.html` を開き、`_tmp/sh05b_visual_evidence_medium_ja_ok/preview_report_visible_viewport.png` と `visual_readback.json` を ignored scratch に保存。画面上で Status Summary、Decision Warnings、Artifact Links、source.wav audio controls、日本語 transcript text を確認
+- forbidden surface readback — visual/DOM readback で `<button>` / `<form>` / `<video>` はなし。SH-05b+ では GUI ingest、yt-dlp、network fetch、`fetch-source-video`、render、encode、creative acceptance、rights hard gate は未実装のまま
 
 ### Slice 2 (xv) SH-05b done（local-preview-pack report QA / polish）
 

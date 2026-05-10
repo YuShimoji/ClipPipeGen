@@ -138,6 +138,9 @@ def run(argv: list[str]) -> int:
             next_actions=next_actions,
             base_dir=Path.cwd(),
         )
+        manifest_issues = preview_pack.validate_preview_manifest(manifest)
+        if manifest_issues:
+            raise PreviewPackError("preview_manifest validation failed: " + "; ".join(manifest_issues))
         preview_pack.write_json(manifest, paths["manifest"])
         report_html = preview_pack.make_preview_report_html(
             manifest=manifest,

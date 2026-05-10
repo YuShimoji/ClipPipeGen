@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from src.cli import build_local_preview_pack
+from src.pipeline import preview_pack
 from src.pipeline.material_ledger import compute_sha256
 
 
@@ -126,10 +127,12 @@ def test_build_local_preview_pack_creates_manifest_report_and_fake_transcript(
     assert manifest["transcript"]["not_for_acceptance"] is True
     assert manifest["cuts"]["candidate_count"] == 1
     assert manifest["subtitles"]["subtitle_count"] == 1
+    assert preview_pack.validate_preview_manifest(manifest) == []
     assert "rights status is pending; this is readback only" in manifest["warnings"]
     assert "Status Summary" in report
     assert "Artifact Links" in report
     assert "Decision Warnings" in report
+    assert "warning-panel" in report
     assert "deterministic_fake transcript is not acceptance material." in report
     assert "transcript.not_for_acceptance is true." in report
     assert "rights pending is readback only." in report
@@ -191,6 +194,107 @@ def test_build_local_preview_pack_accepts_fixture_transcript(
     assert "ここが見どころです" in report
     assert "Not for acceptance" in report
     assert "Rights status" in report
+
+
+def test_build_local_preview_pack_medium_japanese_fixture_keeps_report_readable(
+    tmp_path: Path,
+    monkeypatch,
+):
+    _install_fake_fetch(monkeypatch)
+    media = tmp_path / "input.wav"
+    fixture = tmp_path / "segments_medium_ja.json"
+    _write_input(media)
+    fixture.write_text(
+        json.dumps(
+            [
+                {
+                    "id": "seg_medium_001",
+                    "start_seconds": 0.0,
+                    "end_seconds": 1.0,
+                    "text": "冒頭で配信者が今日の企画を説明し、視聴者の反応を拾いながら期待感を作ります。",
+                    "confidence": 0.91,
+                },
+                {
+                    "id": "seg_medium_002",
+                    "start_seconds": 1.1,
+                    "end_seconds": 2.2,
+                    "text": "途中で予想外のコメントに気づき、笑いながら流れを変える場面があります。",
+                    "confidence": 0.88,
+                },
+                {
+                    "id": "seg_medium_003",
+                    "start_seconds": 2.4,
+                    "end_seconds": 3.5,
+                    "text": "ここは切り抜き候補として見せ場が明確で、字幕案でも意味が崩れにくい部分です。",
+                    "confidence": 0.9,
+                },
+                {
+                    "id": "seg_medium_004",
+                    "start_seconds": 3.6,
+                    "end_seconds": 4.8,
+                    "text": "最後に次の展開へつながる一言があり、文脈確認の材料としても使えます。",
+                    "confidence": 0.87,
+                },
+            ],
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    root = tmp_path / "episodes"
+
+    result = build_local_preview_pack.run(
+        [
+            "--episode-id",
+            "ep_medium_ja",
+            "--root",
+            str(root),
+            "--local-media",
+            str(media),
+            "--material-id",
+            "src_audio_medium_ja",
+            "--transcript-fixture",
+            str(fixture),
+        ]
+    )
+
+    assert result == 0
+    ep_dir = root / "ep_medium_ja"
+    manifest = json.loads((ep_dir / "preview_manifest.json").read_text(encoding="utf-8"))
+    report = (ep_dir / "preview_report.html").read_text(encoding="utf-8")
+
+    assert preview_pack.validate_preview_manifest(manifest) == []
+    assert manifest["transcript"]["source"] == "fixture"
+    assert manifest["transcript"]["segment_count"] == 4
+    assert manifest["transcript"]["not_for_acceptance"] is True
+    assert manifest["cuts"]["candidate_count"] >= 1
+    assert manifest["subtitles"]["subtitle_count"] == 4
+    assert "ここは切り抜き候補として見せ場が明確" in report
+    assert "fixture transcript is not acceptance material." in report
+    assert "rights pending is readback only." in report
+    assert "preview_manifest.json" in report
+    assert "fetch_receipt.json" in report
+    assert "<audio controls" in report
+    assert "<button" not in report.lower()
+    assert "<form" not in report.lower()
+    assert "<video" not in report.lower()
+
+
+def test_preview_manifest_validation_reports_schema_issues():
+    issues = preview_pack.validate_preview_manifest(
+        {
+            "schema_version": "v0",
+            "episode_id": "",
+            "input": {"kind": "url"},
+            "transcript": {"source": "fixture", "not_for_acceptance": False},
+            "warnings": "not-a-list",
+        }
+    )
+
+    assert "schema_version must be v1" in issues
+    assert "episode_id must be a non-empty string" in issues
+    assert "input.kind must be local_media_file" in issues
+    assert "transcript.not_for_acceptance must be true" in issues
+    assert "warnings must be a list" in issues
 
 
 def test_build_local_preview_pack_rejects_url_input(tmp_path: Path):

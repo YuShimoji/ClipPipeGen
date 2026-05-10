@@ -151,6 +151,38 @@ QA smoke は ignored scratch の `episodes/sh05b_fixture_smoke_ja` と `_tmp/sh0
 
 画面確認は `file://` 直開きがブラウザ安全ポリシーで扱いづらいため、`localhost` の静的サーバー経由で `preview_report.html` を開き、DOM readback を証跡とした。DOM readback では日本語 fixture text、not-for-acceptance 表示、rights pending readback、manifest / receipt link、audio controls が確認できた。
 
+### SH-05b+ Visual Evidence Hardening
+
+SH-05b+ では、DOM readback だけではなく実画面として `preview_report.html` が operator-visible な制作判断面になっていることを確認した。これは GUI ingest ではなく、HTML report の visual evidence hardening である。
+
+追加・確認した項目:
+
+| 項目 | 結果 |
+|---|---|
+| medium Japanese fixture | 4 segments の日本語 fixture transcript で `build-local-preview-pack` を fresh episode / `--force` なしで実行 |
+| visual evidence | `localhost` 静的配信で report を開き、visible screenshot と full-page screenshot を ignored scratch に保存 |
+| manifest validation | `validate_preview_manifest` の lightweight schema check を追加し、smoke manifest は issues `[]` |
+| report visibility | Status Summary、Decision Warnings、Artifact Links、Material Audio が実画面上で確認可能 |
+| warnings | `fixture transcript is not acceptance material`、`transcript.not_for_acceptance is true`、`rights pending is readback only` が上部 warning panel に表示 |
+| links / audio | `preview_manifest.json`、`fetch_receipt.json`、`source.wav` link と audio controls を確認 |
+| forbidden surface | `<button>` / `<form>` / `<video>` はなし |
+
+実測 readback:
+
+- episode: `episodes/sh05b_visual_evidence_medium_ja_ok`（ignored scratch）
+- source fixture: `_tmp/sh05b_visual_evidence_medium_ja_ok/input_44100_stereo.wav`（Python `wave` で生成）
+- visual evidence: `_tmp/sh05b_visual_evidence_medium_ja_ok/preview_report_visible_viewport.png`
+- `source.wav` は mono / 16kHz / 16-bit / 8.0秒
+- `transcript.source=fixture`
+- `transcript.not_for_acceptance=true`
+- `segment_count=4`
+- `candidate_count=1`
+- `context_counts.passed=1`
+- `subtitle_count=4`
+- `preview_manifest` validation issues: `[]`
+
+SH-05b+ でも、yt-dlp / network fetch / `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / creative acceptance は扱わない。
+
 ## Fake Transcript
 
 `--transcript-fixture` 未指定時は deterministic fake segments を `episodes/<episode_id>/_preview_pack/deterministic_fake_segments.json` に生成し、既存 `transcribe-audio --engine fake` に渡す。

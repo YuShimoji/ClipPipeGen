@@ -20,6 +20,7 @@ from .transcript import load_transcript
 SCHEMA_VERSION = "v1"
 PREVIEW_WORK_DIR = "_preview_pack"
 FAKE_SEGMENTS_FILENAME = "deterministic_fake_segments.json"
+TRANSCRIPT_SOURCES = {"fixture", "deterministic_fake"}
 
 
 def write_deterministic_fake_segments(
@@ -123,6 +124,57 @@ def build_preview_manifest(
     }
 
 
+def validate_preview_manifest(manifest: dict[str, Any]) -> list[str]:
+    """Return lightweight schema issues for SH-05 preview manifests."""
+    issues: list[str] = []
+    if manifest.get("schema_version") != SCHEMA_VERSION:
+        issues.append("schema_version must be v1")
+    _require_string(manifest, "episode_id", issues)
+    _require_string(manifest, "created_at", issues)
+
+    input_info = _require_dict(manifest, "input", issues)
+    if input_info:
+        if input_info.get("kind") != "local_media_file":
+            issues.append("input.kind must be local_media_file")
+        _require_string(input_info, "path", issues, "input.path")
+
+    material = _require_dict(manifest, "material", issues)
+    if material:
+        _require_string(material, "material_id", issues, "material.material_id")
+        _require_string(material, "source_wav", issues, "material.source_wav")
+        _require_string(material, "fetch_receipt", issues, "material.fetch_receipt")
+
+    transcript = _require_dict(manifest, "transcript", issues)
+    if transcript:
+        if transcript.get("source") not in TRANSCRIPT_SOURCES:
+            issues.append("transcript.source must be fixture or deterministic_fake")
+        _require_string(transcript, "path", issues, "transcript.path")
+        _require_int(transcript, "segment_count", issues, "transcript.segment_count")
+        if transcript.get("not_for_acceptance") is not True:
+            issues.append("transcript.not_for_acceptance must be true")
+
+    cuts = _require_dict(manifest, "cuts", issues)
+    if cuts:
+        _require_string(cuts, "path", issues, "cuts.path")
+        _require_int(cuts, "candidate_count", issues, "cuts.candidate_count")
+        _require_dict(cuts, "context_counts", issues, "cuts.context_counts")
+
+    subtitles = _require_dict(manifest, "subtitles", issues)
+    if subtitles:
+        _require_string(subtitles, "path", issues, "subtitles.path")
+        _require_int(subtitles, "subtitle_count", issues, "subtitles.subtitle_count")
+
+    report = _require_dict(manifest, "report", issues)
+    if report:
+        _require_string(report, "path", issues, "report.path")
+
+    if not isinstance(manifest.get("warnings"), list):
+        issues.append("warnings must be a list")
+    if not isinstance(manifest.get("next_actions"), list):
+        issues.append("next_actions must be a list")
+    return issues
+
+
 def make_preview_report_html(
     *,
     manifest: dict[str, Any],
@@ -173,6 +225,7 @@ def make_preview_report_html(
             ".badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #c9d2df;background:#eef3fa}.badge.warning{border-color:#e3b341;background:#fff7db;color:#6f4700}",
             "table{width:100%;border-collapse:collapse;font-size:14px}th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}",
             "code{background:#eef1f5;padding:2px 4px;border-radius:4px}.warning{color:#8a4b00}.muted{color:#5f6b7a}",
+            ".warning-panel{border-color:#e3b341;background:#fffaf0}.warning-panel h2{color:#6f4700}",
             "a{color:#075985}ul{padding-left:20px}",
             "audio{width:100%;max-width:520px}",
             "</style>",
@@ -241,6 +294,27 @@ def _load_json_optional(path: Path) -> dict[str, Any]:
         return payload if isinstance(payload, dict) else {}
     except (OSError, json.JSONDecodeError):
         return {}
+
+
+def _require_dict(payload: dict[str, Any], key: str, issues: list[str], label: str | None = None) -> dict[str, Any]:
+    value = payload.get(key)
+    name = label or key
+    if not isinstance(value, dict):
+        issues.append(f"{name} must be an object")
+        return {}
+    return value
+
+
+def _require_string(payload: dict[str, Any], key: str, issues: list[str], label: str | None = None) -> None:
+    value = payload.get(key)
+    if not isinstance(value, str) or not value:
+        issues.append(f"{label or key} must be a non-empty string")
+
+
+def _require_int(payload: dict[str, Any], key: str, issues: list[str], label: str | None = None) -> None:
+    value = payload.get(key)
+    if not isinstance(value, int) or value < 0:
+        issues.append(f"{label or key} must be a non-negative integer")
 
 
 def _summary_section(
@@ -381,8 +455,9 @@ def _list_section(title: str, items: list[Any], *, css_class: str = "") -> str:
     if not items:
         items = ["none"]
     cls = f' class="{css_class}"' if css_class else ""
+    section_cls = ' class="warning-panel"' if css_class == "warning" else ""
     rows = "".join(f"<li{cls}>{esc(item)}</li>" for item in items)
-    return f"<section><h2>{esc(title)}</h2><ul>{rows}</ul></section>"
+    return f"<section{section_cls}><h2>{esc(title)}</h2><ul>{rows}</ul></section>"
 
 
 def _decision_warnings(manifest: dict[str, Any], rights_status: str) -> list[str]:
