@@ -43,8 +43,8 @@
 ### lane / slice
 
 - **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c done。samples runnable
-- **current_slice**: Slice 2 — INT-02c local-media-audio normalize は done。URL / VOD / network fetch へ進まず、ローカル media file を FFmpeg で source audio contract に正規化する最小実装を追加した
-- **next_action（assistant 側）**: 推奨は実 FFmpeg がある環境で operator smoke（ローカル media file → `source.wav` / receipt / ledger readback）を行うこと。その後に進めるなら `yt-dlp-audio` の URL fetch だけを別 slice として仕様化・実装する。`fetch-source-video` / GUI fetch button はまだ未実装
+- **current_slice**: Slice 2 — INT-02c local-media-audio normalize と実 FFmpeg operator smoke は done。URL / VOD / network fetch へ進まず、ローカル media file を FFmpeg で source audio contract に正規化する実行証跡まで確認した
+- **next_action（assistant 側）**: 次の推奨は `yt-dlp-audio` の URL fetch だけを別 slice として仕様化・実装すること。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
 
 ### Slice 2 (xii) INT-02c done（local-media-audio normalize）
 
@@ -54,6 +54,9 @@
 - failure policy — version 取得失敗や normalize 失敗時は sidecar / receipt / ledger を書かない。partial `source.wav` は削除する
 - 境界維持 — `src/pipeline/*`、`transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles`、GUI から FFmpeg / yt-dlp を直接呼ばない。asset_fetch は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない
 - `tests/test_ffmpeg_audio_adapter.py` / `tests/test_source_audio_fetch.py` / `tests/test_asset_fetch_boundary.py` — fake runner / monkeypatch で CI が実 FFmpeg に依存しないこと、dry-run no subprocess、receipt / rollback、core 侵入防止を検証
+- real FFmpeg operator smoke — `episodes/int02c_operator_smoke`（ignored）で 44.1kHz / stereo / 16-bit / 2.0秒の synthetic local WAV を `local-media-audio` に入力し、実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で `source.wav` を生成。actual 実行は fresh episode で `--force` なし
+- independent readback — Python `wave` で実 `source.wav` が mono / 16kHz / 16-bit / 32000 frames / 2.0秒であることを確認。receipt は `provider=local-media`、`commands[0].exit_code=0`、`stderr_digest.algorithm=sha256`、rollback files を保持。ledger audit は `ok=true`、rights snapshot は `pending`
+- artifact hygiene — smoke artifact は `episodes/` と `_tmp/` 配下で git ignored。`git status --short` は clean、`git status --short --ignored episodes/int02c_operator_smoke _tmp/int02c_operator_smoke` は `!! _tmp/` / `!! episodes/`
 - 実 yt-dlp / network fetch、`fetch-source-video`、GUI fetch button は未実装のまま
 
 ### Slice 2 (xi) INT-02b done（asset_fetch boundary spec only）
@@ -202,7 +205,7 @@
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化は実装済み。次の推奨は実 FFmpeg がある環境でローカル media の operator smoke を行い、その後に `yt-dlp-audio` だけを別 slice として扱うこと。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke は実施済み。次の推奨は `yt-dlp-audio` だけを別 slice として扱うこと。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

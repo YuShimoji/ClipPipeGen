@@ -106,7 +106,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | yt-dlp discovery | `yt-dlp` path discovery、version failure、provider URL policy は未決 |
 | URL fetch mode | `yt-dlp-audio` の exact CLI contract、intermediate media file の保存/削除 policy は未決 |
 | source video | `fetch-source-video` は未実装 |
-| real dependency acceptance | 実 FFmpeg がある環境での operator smoke は未実施。CI は fake runner / monkeypatch に限定 |
+| real dependency acceptance | local operator smoke passed。実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で synthetic local WAV を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
 | GUI | fetch button は未実装。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
 
 ## Test 観点
@@ -124,4 +124,4 @@ receipt は INT-02a fields に加えて、以下を記録する。
 
 ## 次に進む条件
 
-INT-02c 後に次へ進む場合は、まず実 FFmpeg がある環境でローカル media file の operator smoke を行う。その後に進めるなら、次は `yt-dlp-audio` の URL fetch だけを別 slice として扱う。`fetch-source-video`、render、encode、GUI action はさらに別 slice に分ける。
+INT-02c 後に次へ進む場合は、`yt-dlp-audio` の URL fetch だけを別 slice として扱う。`fetch-source-video`、render、encode、GUI action はさらに別 slice に分ける。
