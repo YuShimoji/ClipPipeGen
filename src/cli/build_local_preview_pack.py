@@ -146,6 +146,7 @@ def run(argv: list[str]) -> int:
             transcript_path=paths["transcript"],
             fetch_receipt_path=paths["fetch_receipt"],
             rights_manifest_path=paths["rights_manifest"],
+            manifest_path=paths["manifest"],
             report_path=paths["report"],
         )
         preview_pack.write_text(report_html, paths["report"])

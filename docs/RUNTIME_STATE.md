@@ -42,9 +42,19 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
-- **current_slice**: Slice 2 — SH-05 local-preview-pack は done。ローカル media 1本から `source.wav`、fake/fixture transcript、cut candidates、context status、subtitle draft、`preview_manifest.json`、read-only `preview_report.html` までを 1 command で生成する artifact preview / review report を追加した
-- **next_action（assistant 側）**: 次の推奨は SH-05b として `preview_report.html` の operator review 結果を受けた report polish / GUI read-only ingest を小さく切ること。十分なら INT-02d の仕様に従い、`yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進める。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
+- **current_slice**: Slice 2 — SH-05b local-preview-pack report QA / polish は done。`preview_report.html` 冒頭に status summary、decision warnings、artifact links を追加し、日本語 fixture transcript でも operator-visible な read-only review surface として読めることを localhost / DOM readback で確認した
+- **next_action（assistant 側）**: 次の推奨は SH-05c として GUI read-only preview pack ingest を小さく切ること。GUI に fetch button や実行 button は追加せず、既存 episode の `preview_manifest.json` / `preview_report.html` を読むだけに限定する。GUI surface が不要なら、INT-02d の仕様に従い `yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進める。`fetch-source-video` / GUI fetch button / render / encode はまだ未実装
+
+### Slice 2 (xv) SH-05b done（local-preview-pack report QA / polish）
+
+- `src/pipeline/preview_pack.py` — `preview_report.html` 冒頭に Status Summary、Decision Warnings、Artifact Links を追加。`Transcript source`、`Not for acceptance`、`Rights status`、read-only artifact preview であることを一目で読めるようにした
+- report links — `source.wav` / `preview_manifest.json` / `fetch_receipt.json` / `transcript.json` / `edit_pack.json` を read-only link として表示。`source.wav` は既存 audio controls で確認できる
+- warning visibility — fake / fixture transcript は acceptance material ではないこと、rights pending は readback only で hard gate ではないことを独立 warning として表示
+- 日本語 fixture smoke — ignored scratch `episodes/sh05b_fixture_smoke_ja` で Python `wave` 生成の 44.1kHz / stereo / 16-bit / 3.0秒 local WAV と短い日本語 fixture transcript を使い、`build-local-preview-pack` を fresh episode / `--force` なしで実行。`transcript.source=fixture`、`not_for_acceptance=true`、1 cut candidate、2 subtitles、rights pending warning、manifest / receipt links を確認
+- independent readback — Python `wave` で `source.wav` が mono / 16kHz / 16-bit / 3.0秒であることを確認。HTML static readback は Status Summary / Decision Warnings / Artifact Links / audio controls / 日本語 transcript text を含み、`<button>` / `<form>` / `<video>` を含まない
+- browser evidence — `file://` 直開きではなく `localhost` 静的サーバー経由で `preview_report.html` を開き、DOM readback で日本語 fixture text、not-for-acceptance、rights readback、manifest / receipt link、audio controls を確認
+- 境界維持 — SH-05b は HTML report QA / polish のみ。yt-dlp / network fetch / `fetch-source-video` / GUI fetch button / cut / concat / subtitle burn-in / render / encode / creative acceptance は未実装のまま
 
 ### Slice 2 (xiv) SH-05 done（local-preview-pack orchestrator）
 

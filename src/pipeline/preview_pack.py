@@ -1,7 +1,7 @@
 """SH-05 local preview pack artifacts.
 
 The preview pack is a read-only review surface over generated artifacts. It
-does not acquire network media, modify timings, or create video output.
+does not acquire external media, modify timings, or create video output.
 """
 
 from __future__ import annotations
@@ -131,6 +131,7 @@ def make_preview_report_html(
     transcript_path: Path,
     fetch_receipt_path: Path,
     rights_manifest_path: Path,
+    manifest_path: Path,
     report_path: Path,
 ) -> str:
     edit_pack = load_edit_pack(edit_pack_path)
@@ -140,10 +141,18 @@ def make_preview_report_html(
     compliance = (rights.get("compliance_check") or {}) if isinstance(rights, dict) else {}
     rights_status = compliance.get("status", "unknown")
     audio_src = display_path(episode_dir / "materials" / manifest["material"]["material_id"] / "source.wav", report_path.parent)
+    artifact_paths = {
+        "Source WAV": episode_dir / "materials" / manifest["material"]["material_id"] / "source.wav",
+        "Preview manifest": manifest_path,
+        "Fetch receipt": fetch_receipt_path,
+        "Transcript": transcript_path,
+        "Edit pack": edit_pack_path,
+    }
 
     cuts = edit_pack.get("cut_candidates") or []
     subtitles = edit_pack.get("subtitles") or []
     segments = transcript.get("segments") or []
+    decision_warnings = _decision_warnings(manifest, rights_status)
 
     return "\n".join(
         [
@@ -151,22 +160,31 @@ def make_preview_report_html(
             '<html lang="en">',
             "<head>",
             '<meta charset="utf-8">',
+            '<meta name="viewport" content="width=device-width, initial-scale=1">',
             "<title>ClipPipeGen Local Preview Pack</title>",
             "<style>",
-            "body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;margin:24px;line-height:1.45;color:#1f2933;background:#f7f8fa}",
+            "body{font-family:system-ui,-apple-system,Segoe UI,'Yu Gothic','Meiryo',sans-serif;margin:24px;line-height:1.45;color:#1f2933;background:#f7f8fa}",
             "main{max-width:1120px;margin:0 auto}",
             "section{margin:18px 0;padding:16px;background:#fff;border:1px solid #d8dde5;border-radius:8px}",
             "h1{font-size:28px;margin:0 0 6px}h2{font-size:18px;margin:0 0 12px}",
-            "table{width:100%;border-collapse:collapse;font-size:14px}th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top}",
+            ".status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}",
+            ".status-item{border:1px solid #d8dde5;border-radius:6px;padding:10px;background:#fbfcfe}",
+            ".label{font-size:12px;color:#5f6b7a;text-transform:uppercase;letter-spacing:0}.value{font-weight:650;margin-top:4px}",
+            ".badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #c9d2df;background:#eef3fa}.badge.warning{border-color:#e3b341;background:#fff7db;color:#6f4700}",
+            "table{width:100%;border-collapse:collapse;font-size:14px}th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}",
             "code{background:#eef1f5;padding:2px 4px;border-radius:4px}.warning{color:#8a4b00}.muted{color:#5f6b7a}",
+            "a{color:#075985}ul{padding-left:20px}",
             "audio{width:100%;max-width:520px}",
             "</style>",
             "</head>",
             "<body>",
             "<main>",
             f"<h1>Local Preview Pack: {esc(manifest['episode_id'])}</h1>",
-            '<p class="muted">Read-only artifact preview. No video output is generated.</p>',
+            '<p class="muted">Read-only artifact preview. No video file is generated.</p>',
+            _status_summary_section(manifest, rights_status),
+            _list_section("Decision Warnings", decision_warnings, css_class="warning"),
             _summary_section(manifest, rights_status, receipt),
+            _artifact_links_section(artifact_paths, report_path.parent),
             _audio_section(audio_src),
             _segments_section(segments),
             _cuts_section(cuts),
@@ -243,6 +261,44 @@ def _summary_section(
     ]
     body = "".join(f"<tr><th>{esc(k)}</th><td><code>{esc(v)}</code></td></tr>" for k, v in rows)
     return f"<section><h2>Episode</h2><table>{body}</table></section>"
+
+
+def _status_summary_section(manifest: dict[str, Any], rights_status: str) -> str:
+    transcript = manifest.get("transcript") or {}
+    source = transcript.get("source", "unknown")
+    not_for_acceptance = transcript.get("not_for_acceptance") is True
+    rights_class = "badge warning" if rights_status != "passed" else "badge"
+    acceptance_class = "badge warning" if not_for_acceptance else "badge"
+    items = [
+        ("Report mode", '<span class="badge">Read-only artifact preview</span>'),
+        ("Transcript source", f'<span class="badge">{esc(source)}</span>'),
+        (
+            "Not for acceptance",
+            f'<span class="{acceptance_class}">{esc(str(not_for_acceptance).lower())}</span>',
+        ),
+        ("Rights status", f'<span class="{rights_class}">{esc(rights_status)}</span>'),
+    ]
+    body = "".join(
+        '<div class="status-item">'
+        f'<div class="label">{esc(label)}</div>'
+        f'<div class="value">{value}</div>'
+        "</div>"
+        for label, value in items
+    )
+    return f'<section><h2>Status Summary</h2><div class="status-grid">{body}</div></section>'
+
+
+def _artifact_links_section(paths: dict[str, Path], base: Path) -> str:
+    rows = []
+    for label, path in paths.items():
+        href = display_path(path, base)
+        rows.append(
+            "<tr>"
+            f"<th>{esc(label)}</th>"
+            f'<td><a href="{esc(href)}">{esc(href)}</a></td>'
+            "</tr>"
+        )
+    return f"<section><h2>Artifact Links</h2><table>{''.join(rows)}</table></section>"
 
 
 def _audio_section(audio_src: str) -> str:
@@ -327,3 +383,16 @@ def _list_section(title: str, items: list[Any], *, css_class: str = "") -> str:
     cls = f' class="{css_class}"' if css_class else ""
     rows = "".join(f"<li{cls}>{esc(item)}</li>" for item in items)
     return f"<section><h2>{esc(title)}</h2><ul>{rows}</ul></section>"
+
+
+def _decision_warnings(manifest: dict[str, Any], rights_status: str) -> list[str]:
+    transcript = manifest.get("transcript") or {}
+    source = transcript.get("source", "unknown")
+    warnings = [
+        f"{source} transcript is not acceptance material.",
+    ]
+    if transcript.get("not_for_acceptance") is True:
+        warnings.append("transcript.not_for_acceptance is true.")
+    if rights_status != "passed":
+        warnings.append(f"rights {rights_status} is readback only.")
+    return warnings

@@ -127,8 +127,20 @@ def test_build_local_preview_pack_creates_manifest_report_and_fake_transcript(
     assert manifest["cuts"]["candidate_count"] == 1
     assert manifest["subtitles"]["subtitle_count"] == 1
     assert "rights status is pending; this is readback only" in manifest["warnings"]
+    assert "Status Summary" in report
+    assert "Artifact Links" in report
+    assert "Decision Warnings" in report
+    assert "deterministic_fake transcript is not acceptance material." in report
+    assert "transcript.not_for_acceptance is true." in report
+    assert "rights pending is readback only." in report
+    assert "preview_manifest.json" in report
+    assert "fetch_receipt.json" in report
+    assert "transcript.json" in report
+    assert "edit_pack.json" in report
     assert "<audio controls" in report
     assert "<button" not in report.lower()
+    assert "<form" not in report.lower()
+    assert "<video" not in report.lower()
 
 
 def test_build_local_preview_pack_accepts_fixture_transcript(
@@ -146,7 +158,7 @@ def test_build_local_preview_pack_accepts_fixture_transcript(
                     "id": "seg_fixture_001",
                     "start_seconds": 0.0,
                     "end_seconds": 1.0,
-                    "text": "fixture segment",
+                    "text": "ここが見どころです",
                 }
             ]
         ),
@@ -174,6 +186,11 @@ def test_build_local_preview_pack_accepts_fixture_transcript(
     assert manifest["transcript"]["source"] == "fixture"
     assert manifest["transcript"]["not_for_acceptance"] is True
     assert not (root / "ep_fixture" / "_preview_pack" / "deterministic_fake_segments.json").exists()
+    report = (root / "ep_fixture" / "preview_report.html").read_text(encoding="utf-8")
+    assert "fixture transcript is not acceptance material." in report
+    assert "ここが見どころです" in report
+    assert "Not for acceptance" in report
+    assert "Rights status" in report
 
 
 def test_build_local_preview_pack_rejects_url_input(tmp_path: Path):

@@ -123,6 +123,34 @@ episodes/<episode_id>/
 
 HTML report は GUI の代替実装ではない。実行 button、fetch button、編集確定 button は置かない。
 
+### SH-05b Report QA / Polish
+
+SH-05b では、report が「存在する」だけではなく operator が制作判断面として読めることを確認し、表示だけを小さく磨いた。機能追加、GUI ingest、rendered video preview、network fetch は含めない。
+
+追加・確認した表示:
+
+| 表示 | 目的 |
+|---|---|
+| Status Summary | `Transcript source`、`Not for acceptance`、`Rights status`、`Read-only artifact preview` を冒頭で確認する |
+| Decision Warnings | fake / fixture transcript が acceptance material ではないこと、rights pending が readback only であることを warning list から独立して表示する |
+| Artifact Links | `source.wav`、`preview_manifest.json`、`fetch_receipt.json`、`transcript.json`、`edit_pack.json` への read-only link をまとめる |
+| Audio controls | `source.wav` の read-only 確認用。動画 preview ではない |
+| Japanese text wrapping | 日本語 fixture transcript / subtitle draft が table cell 内で読めるように最小調整する |
+
+QA smoke は ignored scratch の `episodes/sh05b_fixture_smoke_ja` と `_tmp/sh05b_fixture_smoke_ja` で実施した。Python `wave` で作成した 44.1kHz / stereo / 16-bit / 3.0秒の local WAV を入力し、短い日本語 fixture transcript を `--transcript-fixture` として渡した。
+
+実測 readback:
+
+- `transcript.source=fixture`
+- `transcript.not_for_acceptance=true`
+- `candidate_count=1`
+- `subtitle_count=2`
+- `source.wav` は mono / 16kHz / 16-bit / 3.0秒
+- HTML は Status Summary / Decision Warnings / Artifact Links / audio controls / manifest link / receipt link を含む
+- HTML は `<button>` / `<form>` / `<video>` を含まない
+
+画面確認は `file://` 直開きがブラウザ安全ポリシーで扱いづらいため、`localhost` の静的サーバー経由で `preview_report.html` を開き、DOM readback を証跡とした。DOM readback では日本語 fixture text、not-for-acceptance 表示、rights pending readback、manifest / receipt link、audio controls が確認できた。
+
 ## Fake Transcript
 
 `--transcript-fixture` 未指定時は deterministic fake segments を `episodes/<episode_id>/_preview_pack/deterministic_fake_segments.json` に生成し、既存 `transcribe-audio --engine fake` に渡す。
