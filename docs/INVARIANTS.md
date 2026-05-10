@@ -30,7 +30,7 @@
 外部 API・AI・取得系は **`src/integrations/` の中に隔離**する。本体ロジックは integration 結果を受け取るだけ。
 
 - `src/integrations/youtube/` — OAuth・videos.insert・thumbnails.set
-- `src/integrations/asset_fetch/` — source audio/video 取得 adapter（INT-02a は fake WAV generator、実 VOD 取得は後続）
+- `src/integrations/asset_fetch/` — source audio/video 取得 adapter（INT-02a は fake WAV generator、INT-02c は local-media-audio FFmpeg normalize、INT-02d は yt-dlp-audio spec only。実 VOD 取得は後続）
 - future `src/integrations/stt/` — STT engine wrapper（URL / VOD 取得は含めない）
 - `src/integrations/bg_removal/` — 背景切り抜き API（外部送信を伴う）
 

@@ -1,8 +1,10 @@
-# Asset Fetch Boundary — INT-02b / INT-02c
+# Asset Fetch Boundary — INT-02b / INT-02c / INT-02d
 
 INT-02b は **spec only**。実 downloader は実装しない。目的は、yt-dlp / FFmpeg を `asset_fetch` integration の内側に閉じ込め、Editing core / STT / rendering / GUI に漏らさないこと。
 
 INT-02c はこの境界に従い、実 yt-dlp / network fetch へ進まず、既存ローカル media file を FFmpeg で `source.wav` に正規化する最小実装だけを追加する。
+
+INT-02d は **spec only**。`yt-dlp-audio` の URL fetch contract を仕様化するが、yt-dlp 実行、network fetch、CLI mode 追加は行わない。詳細は [YTDLP_AUDIO_SPEC.md](YTDLP_AUDIO_SPEC.md) を正本とする。
 
 ## 状態
 
@@ -12,6 +14,7 @@ INT-02c はこの境界に従い、実 yt-dlp / network fetch へ進まず、既
 | INT-02a | done | `fetch-source-audio --mode fake` による source audio 契約、sidecar、receipt、ledger 接続 |
 | INT-02b | done | 実 downloader 前の責務境界と readback contract |
 | INT-02c | done | `fetch-source-audio --mode local-media-audio`。ローカル media file を FFmpeg で `source.wav` に正規化 |
+| INT-02d | done | `yt-dlp-audio` boundary spec only。URL fetch / network / yt-dlp / FFmpeg / receipt / rights / human / GUI / STT の責務を分離 |
 
 ## Tool 責務
 
@@ -45,7 +48,7 @@ mode 名は、実装 commit で `FEATURE_REGISTRY` に登録してから CLI cho
 |---|---|---|
 | `fake` | implemented | network / yt-dlp / FFmpeg を呼ばず、1秒 silent WAV を作る |
 | `local-media-audio` | implemented in INT-02c | 既存ローカル media file を FFmpeg で `source.wav` に正規化する。URL / VOD / network fetch はしない |
-| `yt-dlp-audio` | future | URL から元 media を取得し、FFmpeg で `source.wav` に正規化する。取得と正規化以外はしない |
+| `yt-dlp-audio` | specified in INT-02d, not implemented | URL から元 media を取得し、FFmpeg で `source.wav` に正規化する。取得と正規化以外はしない |
 | `fetch-source-video` | future | 未実装。INT-02c の範囲外 |
 
 実 mode は次を満たす。
@@ -108,6 +111,20 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | source video | `fetch-source-video` は未実装 |
 | real dependency acceptance | local operator smoke passed。実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で synthetic local WAV を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
 | GUI | fetch button は未実装。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
+
+## INT-02d yt-dlp-audio spec only
+
+| 領域 | 固定境界 |
+|---|---|
+| URL fetch | future `yt-dlp-audio` の入力としてだけ扱う。`transcribe-audio` / Editing CLI / GUI には URL を渡さない |
+| network access | actual 実装時の `src/integrations/asset_fetch/` adapter だけが行う。dry-run は network を呼ばない |
+| yt-dlp | 元 media の一時取得と provider / extractor / format / warnings readback だけを担う |
+| FFmpeg | yt-dlp が得た media を `source.wav` に正規化するだけ。cut / concat / render / encode はしない |
+| receipt | URL、provider、yt-dlp / FFmpeg versions、commands、outputs、warnings、stderr digest、rollback を保存する |
+| rights | status / warnings は snapshot するだけで hard gate にしない |
+| human responsibility | URL 選定、権利・規約 review、公開可否、creative acceptance は人間責務 |
+| GUI | INT-02d では fetch button を追加しない |
+| STT | `transcribe-audio` は生成済みローカル `source.wav` だけを読む |
 
 ## Test 観点
 

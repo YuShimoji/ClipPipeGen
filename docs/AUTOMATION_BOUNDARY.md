@@ -9,7 +9,7 @@
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
-| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。実 yt-dlp / network fetch / `fetch-source-video` は future integration |
+| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。INT-02d: `yt-dlp-audio` は spec only。実 yt-dlp / network fetch / `fetch-source-video` は future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
 
@@ -108,12 +108,12 @@ bridge する CLI 候補：
 - `audit-thumbnail-template`（Slice 1 で使用）
 - 字幕表示幅計測（後続スライスで Editing 用）
 
-## INT-02b / INT-02c asset_fetch 境界
+## INT-02b / INT-02c / INT-02d asset_fetch 境界
 
-正本: [ASSET_FETCH_BOUNDARY.md](ASSET_FETCH_BOUNDARY.md)
+正本: [ASSET_FETCH_BOUNDARY.md](ASSET_FETCH_BOUNDARY.md) / [YTDLP_AUDIO_SPEC.md](YTDLP_AUDIO_SPEC.md)
 
 - yt-dlp の責務は URL から元 media を取得することだけ。
 - FFmpeg の責務は source audio を `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化することだけ。
 - `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` は yt-dlp / FFmpeg を直接呼ばない。
 - `asset_fetch` は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない。
-- INT-02c の `local-media-audio` はローカル file の FFmpeg normalize のみ実装済み。yt-dlp / network fetch / `fetch-source-video` / GUI fetch button は未実装。
+- INT-02c の `local-media-audio` はローカル file の FFmpeg normalize のみ実装済み。INT-02d の `yt-dlp-audio` は仕様化のみ。yt-dlp / network fetch / `fetch-source-video` / GUI fetch button は未実装。

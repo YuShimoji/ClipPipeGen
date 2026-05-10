@@ -9,6 +9,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BOUNDARY_DOC = REPO_ROOT / "docs" / "ASSET_FETCH_BOUNDARY.md"
+YTDLP_AUDIO_SPEC = REPO_ROOT / "docs" / "YTDLP_AUDIO_SPEC.md"
 
 
 def test_asset_fetch_boundary_spec_names_required_contracts():
@@ -27,6 +28,38 @@ def test_asset_fetch_boundary_spec_names_required_contracts():
         "`tools[].version`",
         "`stderr_digest`",
         "`rollback.files[]`",
+        "INT-02d は **spec only**",
+        "YTDLP_AUDIO_SPEC.md",
+    ]
+    for needle in required:
+        assert needle in text
+
+
+def test_ytdlp_audio_spec_keeps_url_fetch_boundaries_explicit():
+    text = YTDLP_AUDIO_SPEC.read_text(encoding="utf-8")
+
+    required = [
+        "INT-02d は **spec only**",
+        "network fetch",
+        "yt-dlp 実行",
+        "URL input",
+        "network access",
+        "yt-dlp",
+        "FFmpeg",
+        "receipt",
+        "権利確認",
+        "人間責務",
+        "GUI 非露出",
+        "STT 非接続",
+        "rights",
+        "human responsibility",
+        "GUI",
+        "STT",
+        "dry-run",
+        "intermediate.retained=false",
+        "transcribe-audio",
+        "fetch-source-video",
+        "creative acceptance",
     ]
     for needle in required:
         assert needle in text
@@ -44,6 +77,7 @@ def test_fetch_source_audio_exposes_only_source_audio_modes():
     assert "{fake,local-media-audio}" in result.stdout
     assert "--local-media" in result.stdout
     assert "--ffmpeg-path" in result.stdout
+    assert "yt-dlp-audio" not in result.stdout.lower()
     assert "yt-dlp" not in result.stdout.lower()
     assert "fetch-source-video" not in result.stdout.lower()
 
