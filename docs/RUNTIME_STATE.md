@@ -42,18 +42,28 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b done。samples runnable
-- **current_slice**: Slice 2 — INT-02b asset_fetch boundary spec は done。実 downloader 前に yt-dlp / FFmpeg の責務境界、readback contract、core 侵入防止テストを固定した
-- **next_action（assistant 側）**: 推奨は INT-02b の未決事項（dependency discovery、mode 名、intermediate file policy、stderr digest、duration readback）を閉じてから、source audio の実取得だけに絞った INT-02 successor を実装すること。実 downloader はまだ未実装
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c done。samples runnable
+- **current_slice**: Slice 2 — INT-02c local-media-audio normalize は done。URL / VOD / network fetch へ進まず、ローカル media file を FFmpeg で source audio contract に正規化する最小実装を追加した
+- **next_action（assistant 側）**: 推奨は実 FFmpeg がある環境で operator smoke（ローカル media file → `source.wav` / receipt / ledger readback）を行うこと。その後に進めるなら `yt-dlp-audio` の URL fetch だけを別 slice として仕様化・実装する。`fetch-source-video` / GUI fetch button はまだ未実装
+
+### Slice 2 (xii) INT-02c done（local-media-audio normalize）
+
+- `src/integrations/asset_fetch/ffmpeg_audio.py` — FFmpeg adapter を `asset_fetch` 内に限定して追加。path discovery は `--ffmpeg-path` → `CLIPPIPE_FFMPEG` → PATH、version readback は `ffmpeg -version`、normalize は `-vn -ac 1 -ar 16000 -sample_fmt s16 -acodec pcm_s16le`
+- `src/cli/fetch_source_audio.py` — `--mode local-media-audio` / `--local-media` / `--ffmpeg-path` を追加。`--source-url` との併用は拒否し、dry-run は subprocess を呼ばず command plan / paths / conflicts を返す
+- receipt readback — provider、tools[].version、commands[].summary / exit_code、input.local_path、outputs、warnings、stderr_digest、rollback を保存。stderr 全文は保存せず secret scrub 後の digest / tail のみにする
+- failure policy — version 取得失敗や normalize 失敗時は sidecar / receipt / ledger を書かない。partial `source.wav` は削除する
+- 境界維持 — `src/pipeline/*`、`transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles`、GUI から FFmpeg / yt-dlp を直接呼ばない。asset_fetch は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない
+- `tests/test_ffmpeg_audio_adapter.py` / `tests/test_source_audio_fetch.py` / `tests/test_asset_fetch_boundary.py` — fake runner / monkeypatch で CI が実 FFmpeg に依存しないこと、dry-run no subprocess、receipt / rollback、core 侵入防止を検証
+- 実 yt-dlp / network fetch、`fetch-source-video`、GUI fetch button は未実装のまま
 
 ### Slice 2 (xi) INT-02b done（asset_fetch boundary spec only）
 
 - `docs/ASSET_FETCH_BOUNDARY.md` — yt-dlp / FFmpeg の責務境界を固定。yt-dlp は URL から元 media を取得するだけ、FFmpeg は source audio を PCM WAV / mono / 16kHz / 16-bit に正規化するだけ
-- `fetch-source-audio` future mode contract — `fake` 以外の mode はまだ CLI choices に追加しない。実 mode 追加前に `--dry-run` preflight、receipt、rollback、ledger refresh、failure readback を満たす必要がある
+- `fetch-source-audio` future mode contract — 実 mode 追加前に `--dry-run` preflight、receipt、rollback、ledger refresh、failure readback を満たす必要がある
 - receipt readback — command、tool versions、provider/engine、input URL/local path、output paths、duration、hashes、warnings、stderr digest、rollback files を必須 readback として仕様化
 - core 侵入防止 — `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles`、`src/pipeline/*` は yt-dlp / FFmpeg を直接参照しない。asset_fetch は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない
-- `tests/test_asset_fetch_boundary.py` — boundary spec の必須文言、fetch CLI が fake mode のみであること、pipeline / Editing / STT CLI に yt-dlp / FFmpeg 参照がないことを検証
-- 実 yt-dlp / FFmpeg 実行、`fetch-source-video`、GUI fetch button は未実装のまま
+- `tests/test_asset_fetch_boundary.py` — boundary spec の必須文言、fetch CLI が source audio mode のみに閉じていること、pipeline / Editing / STT CLI に yt-dlp / FFmpeg 参照がないことを検証
+- 実 yt-dlp 実行、network fetch、`fetch-source-video`、GUI fetch button は未実装のまま
 
 ### Slice 2 (x) ED-03 done（transcript context check for cut candidates）
 
@@ -87,7 +97,7 @@
 - `sidecar.json` — `source.kind="unverified"` / `source.retrieval_method="asset_fetch_fake"` / `license.kind="unknown"` / `usage_conditions=["source_link_required"]`。restriction は metadata として保持し、local CLI の hard gate にはしない
 - `docs/SCHEMAS/v1/fetch_receipt.md` — receipt schema と rollback files contract を追加
 - `tests/test_source_audio_fetch.py` — fake fetch roundtrip、dry-run、duplicate refusal、missing rights refusal、force refresh、ED-07 `transcribe-audio` 連携を検証。Python suite は 72 tests pass
-- 実 yt-dlp / ffmpeg / network fetch、`fetch-source-video`、GUI action button は未実装。親 `INT-02` の後続 slice として扱う
+- 実 yt-dlp / network fetch、`fetch-source-video`、GUI action button は未実装。親 `INT-02` の後続 slice として扱う
 
 ### Slice 2 (vi) ED-07 done（transcript schema + fake transcribe-audio adapter）
 
@@ -192,7 +202,7 @@
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch は実装済み。INT-02b で yt-dlp / FFmpeg の境界仕様は固定済み。次の推奨は未決事項を閉じたうえで、source audio の実取得と正規化だけに絞って INT-02 successor を実装すること。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化は実装済み。次の推奨は実 FFmpeg がある環境でローカル media の operator smoke を行い、その後に `yt-dlp-audio` だけを別 slice として扱うこと。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

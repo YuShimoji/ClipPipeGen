@@ -67,6 +67,7 @@
 - 外部 integration（asset_fetch / bg_removal）の呼び出し境界
 - INT-02a では source audio の標準形（PCM WAV / mono / 16kHz / 16-bit）を `fetch-source-audio --mode fake` で生成し、ledger / sidecar / receipt に接続する
 - INT-02b では yt-dlp / FFmpeg の境界を仕様化済み。yt-dlp は元 media 取得だけ、FFmpeg は source audio 正規化だけ。cut / render / STT は行わない
+- INT-02c では `fetch-source-audio --mode local-media-audio` でローカル media file を source audio 標準形に正規化する。URL / VOD / network fetch は行わない
 
 ### Inputs
 

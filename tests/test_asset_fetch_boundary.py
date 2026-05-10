@@ -1,4 +1,4 @@
-"""INT-02b: asset_fetch boundary spec guards."""
+"""INT-02b/INT-02c: asset_fetch boundary guards."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def test_asset_fetch_boundary_spec_names_required_contracts():
         assert needle in text
 
 
-def test_fetch_source_audio_exposes_fake_mode_only_before_real_downloader():
+def test_fetch_source_audio_exposes_only_source_audio_modes():
     result = subprocess.run(
         [sys.executable, "-m", "src.cli.main", "fetch-source-audio", "--help"],
         cwd=str(REPO_ROOT),
@@ -41,9 +41,11 @@ def test_fetch_source_audio_exposes_fake_mode_only_before_real_downloader():
     )
 
     assert result.returncode == 0, result.stderr
-    assert "{fake}" in result.stdout
+    assert "{fake,local-media-audio}" in result.stdout
+    assert "--local-media" in result.stdout
+    assert "--ffmpeg-path" in result.stdout
     assert "yt-dlp" not in result.stdout.lower()
-    assert "ffmpeg" not in result.stdout.lower()
+    assert "fetch-source-video" not in result.stdout.lower()
 
 
 def test_ffmpeg_and_ytdlp_do_not_enter_pipeline_or_editing_cli():

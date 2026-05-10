@@ -18,7 +18,7 @@ Subcommands:
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
     validate-transcript      Validate transcript.json against schema v1.
     transcribe-audio         ED-07: local audio -> transcript.json (fake engine in v1).
-    fetch-source-audio       INT-02a: create/register fake source_audio WAV material.
+    fetch-source-audio       INT-02: create/register source_audio WAV material.
     generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
     check-cut-context        ED-03: review cut boundaries against transcript context.
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.

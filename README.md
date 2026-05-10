@@ -31,9 +31,9 @@
 
 ## 現在のスライス
 
-**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 では GUI action 導線、Editing tab、`edit_pack`、手動 cut 入力、字幕幅計測、`transcript.json` / fake `transcribe-audio` adapter、`fetch-source-audio --mode fake` の source audio 契約、`generate-cuts` の cut 候補生成、`check-cut-context` の文脈チェック、`generate-subtitles` の字幕案生成が実装済み。
+**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 では GUI action 導線、Editing tab、`edit_pack`、手動 cut 入力、字幕幅計測、`transcript.json` / fake `transcribe-audio` adapter、`fetch-source-audio --mode fake` の source audio 契約、`fetch-source-audio --mode local-media-audio` のローカル media 正規化、`generate-cuts` の cut 候補生成、`check-cut-context` の文脈チェック、`generate-subtitles` の字幕案生成が実装済み。
 
-次の自動化アンカーは実 downloader 接続（INT-02 successor）だが、先に INT-02b として [asset_fetch 境界仕様](docs/ASSET_FETCH_BOUNDARY.md) を固定済み。`transcribe-audio` は既存のローカル音声ファイルを `transcript.json` にする責務に限定し、URL / VOD からの取得は INT-02 として分離する。INT-02a の fake source audio は `source_audio` material として `material_ledger` に接続され、ED-07/ED-02/ED-03/ED-04 の入力になる。実 yt-dlp / FFmpeg downloader はまだ未実装。
+次の自動化アンカーは実 downloader 接続（INT-02 successor）だが、先に INT-02b として [asset_fetch 境界仕様](docs/ASSET_FETCH_BOUNDARY.md) を固定済み。INT-02c では URL / VOD / network fetch へ進まず、既存ローカル media file を FFmpeg で `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化する adapter だけを `src/integrations/asset_fetch/` に追加した。`transcribe-audio` は既存のローカル音声ファイルを `transcript.json` にする責務に限定し、URL / VOD からの取得は INT-02 として分離する。実 yt-dlp / network fetch / `fetch-source-video` / GUI fetch button はまだ未実装。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

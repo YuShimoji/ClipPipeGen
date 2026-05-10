@@ -9,7 +9,7 @@
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
-| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / ffmpeg 境界仕様は固定済み。実 yt-dlp / ffmpeg と `fetch-source-video` は future integration |
+| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。実 yt-dlp / network fetch / `fetch-source-video` は future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
 
@@ -22,7 +22,7 @@
 - rights / sidecar status の readback（値は記録し、local CLI の hard gate にはしない）
 - 後続スライスで段階的に追加（FEATURE_REGISTRY 参照）：
   - 元動画ダウンロード integration
-  - source audio contract（`fetch-source-audio --mode fake` は実装済み。標準形は PCM WAV / mono / 16kHz / 16-bit）
+  - source audio contract（`fetch-source-audio --mode fake` と `--mode local-media-audio` は実装済み。標準形は PCM WAV / mono / 16kHz / 16-bit）
   - ローカル音声ファイルからの transcript 生成（`transcribe-audio --engine fake` は実装済み。実 STT engine は後続）
   - transcript からの字幕案生成（`generate-subtitles` は実装済み。字幕焼き込みは後続）
   - transcript からのカット候補抽出（`generate-cuts` は実装済み）
@@ -34,7 +34,7 @@
 - 動画レンダリング / cut / concat / 字幕焼き込み / エンコード
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
-- 実 source audio / video ダウンロード（yt-dlp / ffmpeg / network fetch）
+- 実 source audio / video ダウンロード（yt-dlp / network fetch / `fetch-source-video`）
 - 実 STT engine 接続（`whisper.cpp` 等）
 - 背景切り抜き API 呼び出し
 - 完全自動サムネ合成 / サムネ画像レンダリング
@@ -78,7 +78,7 @@
 | ディレクトリ | 含むもの | 含まないもの |
 |---|---|---|
 | `src/integrations/youtube/` | OAuth、videos.insert、thumbnails.set、playlist 操作、visibility 更新 | pipeline 本体ロジック |
-| `src/integrations/asset_fetch/` | source audio/video 取得 adapter。INT-02a では fake WAV generator、後続で yt-dlp 系ラッパー / VOD ダウンロード | 編集処理 |
+| `src/integrations/asset_fetch/` | source audio/video 取得 adapter。INT-02a では fake WAV generator、INT-02c では local-media-audio FFmpeg normalize adapter。後続で yt-dlp 系ラッパー / VOD ダウンロード | 編集処理 |
 | future `src/integrations/stt/` | STT engine wrapper、engine-specific args / output parse | URL / VOD 取得、cut 候補抽出 |
 | `src/integrations/bg_removal/` | 背景切り抜き API クライアント、結果ファイル受領 | 元動画への適用、サムネ合成 |
 | `src/pipeline/` | manifest／schema／slot patch／validate／transcript 構造変換 | 外部送信、課金、認証 |
@@ -108,7 +108,7 @@ bridge する CLI 候補：
 - `audit-thumbnail-template`（Slice 1 で使用）
 - 字幕表示幅計測（後続スライスで Editing 用）
 
-## INT-02b asset_fetch 境界
+## INT-02b / INT-02c asset_fetch 境界
 
 正本: [ASSET_FETCH_BOUNDARY.md](ASSET_FETCH_BOUNDARY.md)
 
@@ -116,4 +116,4 @@ bridge する CLI 候補：
 - FFmpeg の責務は source audio を `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化することだけ。
 - `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` は yt-dlp / FFmpeg を直接呼ばない。
 - `asset_fetch` は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない。
-- 実 downloader は未実装。future mode を CLI に追加する前に、preflight / receipt / rollback / ledger refresh / stderr digest / tool version readback を満たす。
+- INT-02c の `local-media-audio` はローカル file の FFmpeg normalize のみ実装済み。yt-dlp / network fetch / `fetch-source-video` / GUI fetch button は未実装。

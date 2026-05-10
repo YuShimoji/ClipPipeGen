@@ -1,19 +1,15 @@
 # fetch_receipt.schema (v1)
 
-INT-02 系の素材取得コマンドが、実行内容・生成物・rollback 対象を記録する receipt。INT-02a では `fetch-source-audio --mode fake` が `materials/<material_id>/fetch_receipt.json` を作る。
+INT-02 系の素材取得コマンドが、実行内容・生成物・rollback 対象を記録する receipt。`fetch-source-audio` は `materials/<material_id>/fetch_receipt.json` を作る。
 
 ## 境界
 
 - `fetch_receipt.json` は取得処理の readback と再実行判断のための記録であり、権利判断の正本ではない。
-- 権利・出典・利用条件は `rights_manifest.json` と `sidecar.json` に保存する。
-- 実 downloader の導入後も、URL / 出力先 / hash / byte size / rollback files を同じ形で残す。
-- INT-02b の境界正本は [ASSET_FETCH_BOUNDARY.md](../../ASSET_FETCH_BOUNDARY.md)。yt-dlp / FFmpeg は `asset_fetch` integration に閉じ込め、Editing core / STT / render / GUI には入れない。
+- 権利・出所・利用条件は `rights_manifest.json` と `sidecar.json` に保持する。
+- yt-dlp / FFmpeg は `asset_fetch` integration に閉じ込め、Editing core / STT / render / GUI には入れない。
+- 正本: [ASSET_FETCH_BOUNDARY.md](../../ASSET_FETCH_BOUNDARY.md)
 
-## ファイル形式
-
-JSON。INT-02a の配置は `episodes/<episode_id>/materials/<material_id>/fetch_receipt.json`。
-
-## トップレベル構造
+## Top-Level 例: fake
 
 ```json
 {
@@ -58,6 +54,8 @@ JSON。INT-02a の配置は `episodes/<episode_id>/materials/<material_id>/fetch
     "material_id": "src_audio_001",
     "mode": "fake",
     "source_url": "https://www.youtube.com/watch?v=AAAA",
+    "local_media_path": null,
+    "local_media_exists": null,
     "output_path": "episodes/episode_example/materials/src_audio_001/source.wav",
     "sidecar_path": "episodes/episode_example/materials/src_audio_001/sidecar.json",
     "receipt_path": "episodes/episode_example/materials/src_audio_001/fetch_receipt.json",
@@ -72,8 +70,72 @@ JSON。INT-02a の配置は `episodes/<episode_id>/materials/<material_id>/fetch
       "duration_seconds": 1.0
     },
     "will_write": true,
+    "command_plan": null,
+    "will_call_subprocess": false,
     "conflicts": [],
     "would_fail_without_force": false
+  }
+}
+```
+
+## Top-Level 例: local-media-audio
+
+```json
+{
+  "schema_version": "v1",
+  "episode_id": "episode_example",
+  "material_id": "src_audio_local",
+  "mode": "local-media-audio",
+  "source_url": null,
+  "output_path": "episodes/episode_example/materials/src_audio_local/source.wav",
+  "sha256": "abcdef0123...",
+  "byte_size": 64044,
+  "created_at": "2026-05-10T12:00:00+09:00",
+  "rollback": {
+    "files": [
+      "episodes/episode_example/materials/src_audio_local/source.wav",
+      "episodes/episode_example/materials/src_audio_local/sidecar.json",
+      "episodes/episode_example/materials/src_audio_local/fetch_receipt.json"
+    ],
+    "ledger_material_id": "src_audio_local"
+  },
+  "command_summary": "fetch-source-audio --mode local-media-audio",
+  "provider": "local-media",
+  "tools": [
+    {
+      "name": "ffmpeg",
+      "path": "C:/tools/ffmpeg.exe",
+      "path_source": "argument",
+      "version": "ffmpeg version 7.1 ..."
+    }
+  ],
+  "commands": [
+    {
+      "summary": "C:/tools/ffmpeg.exe -y -i input.mov -vn -ac 1 -ar 16000 -sample_fmt s16 -acodec pcm_s16le source.wav",
+      "exit_code": 0
+    }
+  ],
+  "input": {
+    "source_url": null,
+    "local_path": "C:/media/input.mov"
+  },
+  "outputs": [
+    {
+      "path": "episodes/episode_example/materials/src_audio_local/source.wav",
+      "sha256": "abcdef0123...",
+      "byte_size": 64044,
+      "duration_seconds": 2.0
+    }
+  ],
+  "warnings": [
+    "input duration is not probed in INT-02c; output WAV duration is read after normalization"
+  ],
+  "stderr_digest": {
+    "algorithm": "sha256",
+    "sha256": "0123456789abcdef...",
+    "tail": "ffmpeg stderr tail after scrub",
+    "tail_chars": 800,
+    "truncated": false
   }
 }
 ```
@@ -85,22 +147,24 @@ JSON。INT-02a の配置は `episodes/<episode_id>/materials/<material_id>/fetch
 | `schema_version` | string | 固定値 `"v1"` |
 | `episode_id` | string | episode ID |
 | `material_id` | string | `material_ledger.materials[].id` と一致 |
-| `mode` | string | `fake` / future downloader mode |
-| `source_url` | string | 取得元 URL の readback |
+| `mode` | string | `fake` / `local-media-audio` / future mode |
+| `source_url` | string/null | URL 取得 mode の readback。`local-media-audio` では `null` |
 | `output_path` | string | 生成された素材ファイル |
 | `sha256` | string | 生成ファイルの SHA-256 |
 | `byte_size` | number | 生成ファイルのバイトサイズ |
 | `created_at` | string | ISO 8601 |
 | `rollback.files[]` | string[] | operator が rollback する場合の生成ファイル一覧 |
-| `command_summary` | string | 実行コマンドの短い要約 |
-| `provider` | string | `asset_fetch_fake` / `yt-dlp` / `local-media` 等 |
-| `tools[]` | array | 実 downloader で使った tool 名と version。fake では空配列可 |
+| `rollback.ledger_material_id` | string | rollback 時に消す ledger entry の ID |
+| `command_summary` | string | CLI 実行の短い概要 |
+| `provider` | string | `asset_fetch_fake` / `local-media` / future `yt-dlp` 等 |
+| `tools[]` | array | 実行に使った tool 名、path、path source、version。fake では空配列可 |
 | `commands[]` | array | secret を含まない command summary と exit code。fake では空配列可 |
 | `input.source_url` | string/null | URL 取得 mode の入力 URL |
 | `input.local_path` | string/null | local media mode の入力 file |
 | `outputs[]` | array | 生成 file の path / hash / byte size / duration readback |
-| `warnings[]` | string[] | fallback、metadata 欠落、duration 不明など |
-| `stderr_digest` | string/null | stderr 全文ではなく digest / tail。secret を保存しない |
+| `warnings[]` | string[] | fallback、metadata 欠落、duration unknown など |
+| `stderr_digest` | object/null | scrubbed stderr の digest / tail。全文 stderr は保存しない |
+| `preflight` | object | 実行前 readback。dry-run と同じ形 |
 
 ## INT-02a source audio 標準
 
@@ -119,20 +183,21 @@ JSON。INT-02a の配置は `episodes/<episode_id>/materials/<material_id>/fetch
 | ledger subkind | `wav_pcm_16k_mono` |
 | intended use | `editing_audio` |
 
-この WAV は ED-07 `transcribe-audio` の `--source-audio` に渡す入力であり、`--material-id` を併用すると `transcript.source_audio.material_id` と `material_ledger` が接続される。
+この WAV は ED-07 `transcribe-audio` の `--source-audio` に渡せる入力であり、`--material-id` を併用すると `transcript.source_audio.material_id` と `material_ledger` が接続される。
 
-## INT-02b 実 downloader contract
+## INT-02c local-media-audio 標準
 
-実 downloader は未実装。future mode を追加する場合は、次を守る。
+`fetch-source-audio --mode local-media-audio` は、既存ローカル media file だけを入力にし、FFmpeg で `source.wav` に正規化する。
 
-| 領域 | Contract |
+| 項目 | 値 |
 |---|---|
-| yt-dlp | URL から元 media を取得するだけ。audio normalize / STT / cut / render はしない |
-| FFmpeg | source audio を PCM WAV / mono / 16kHz / 16-bit に正規化するだけ。cut / concat / subtitle burn-in / encode はしない |
-| output | `materials/<material_id>/source.wav`、`sidecar.json`、`fetch_receipt.json`、`material_ledger` entry |
-| readback | command、tool versions、provider/engine、input URL、output paths、duration、hashes、warnings、stderr digest、rollback files |
-| rollback | generated file、retained intermediate、sidecar、receipt、ledger material ID の対応関係 |
-| boundary | `transcribe-audio` はローカル音声のみを読む。Editing core は FFmpeg / yt-dlp を直接呼ばない |
+| 入力 | `--local-media <path>`。URL / VOD / network fetch は拒否 |
+| FFmpeg discovery | `--ffmpeg-path` → `CLIPPIPE_FFMPEG` → PATH |
+| version readback | `ffmpeg -version` の first line。失敗時は実行失敗 |
+| normalize command | `-vn -ac 1 -ar 16000 -sample_fmt s16 -acodec pcm_s16le` |
+| duration | input duration は probe しない。output WAV duration を Python `wave` で読む |
+| stderr | secret scrub 後の SHA-256 と tail のみ receipt に保存 |
+| partial failure | partial `source.wav` は削除。sidecar / receipt / ledger は書かない |
 
 ## CLI
 
@@ -145,12 +210,20 @@ python -m src.cli.main fetch-source-audio \
 
 python -m src.cli.main fetch-source-audio \
   --episode-id episode_example \
-  --source-url https://www.youtube.com/watch?v=AAAA \
-  --material-id src_audio_001 \
-  --mode fake \
+  --local-media C:/media/input.mov \
+  --material-id src_audio_local \
+  --mode local-media-audio \
+  --ffmpeg-path C:/tools/ffmpeg.exe
+
+python -m src.cli.main fetch-source-audio \
+  --episode-id episode_example \
+  --local-media C:/media/input.mov \
+  --material-id src_audio_local \
+  --mode local-media-audio \
+  --ffmpeg-path C:/tools/ffmpeg.exe \
   --dry-run
 ```
 
-`--dry-run` は preflight JSON のみ出力し、ファイルを書かない。既存ファイル・既存 `material_id` は `conflicts[]` と `would_fail_without_force` に表示する。
+`--dry-run` は preflight JSON のみ出力し、ファイルを書かず、FFmpeg subprocess も呼ばない。既存ファイル・既存 `material_id` は `conflicts[]` と `would_fail_without_force` に表示する。
 
 `--force` は同じ `material_id` の生成物を再生成し、同じ ID の ledger entry を refresh するためのもの。別 `material_id` の ledger entry は削除しない。
