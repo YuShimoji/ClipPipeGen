@@ -27,7 +27,7 @@
 
 外部境界（隔離）:
   src/integrations/youtube/   ← Publishing から呼ばれる
-  src/integrations/asset_fetch/ ← Material Sourcing から呼ばれる
+  src/integrations/asset_fetch/ ← Material Sourcing から呼ばれる（yt-dlp / FFmpeg はここだけ）
   future src/integrations/stt/  ← Editing から呼ばれる（engine wrapper。URL 取得は含めない）
   src/integrations/bg_removal/  ← Material Sourcing から呼ばれる（または外部処理結果を受領）
 ```
@@ -66,6 +66,7 @@
 - Editing／Thumbnail／Compliance からの素材要求の受付
 - 外部 integration（asset_fetch / bg_removal）の呼び出し境界
 - INT-02a では source audio の標準形（PCM WAV / mono / 16kHz / 16-bit）を `fetch-source-audio --mode fake` で生成し、ledger / sidecar / receipt に接続する
+- INT-02b では yt-dlp / FFmpeg の境界を仕様化済み。yt-dlp は元 media 取得だけ、FFmpeg は source audio 正規化だけ。cut / render / STT は行わない
 
 ### Inputs
 
@@ -111,6 +112,7 @@
 - **やる**：ローカル音声からの transcript 生成、カット候補・文脈チェック・字幕案・配置データ
 - **やらない**：実際のカット実行・concat・字幕焼き込み・動画レンダリング（YMM4／外部 NLE／人手）
 - **分離する**：URL / VOD からの素材取得は INT-02 `asset_fetch`。`transcribe-audio` の内部に fetch を混ぜない
+- **分離する**：FFmpeg / yt-dlp は Editing から直接呼ばない。source audio は Material Sourcing から ledger 経由で受け取る
 - **NLMYTGen 共通化しない**：NLMYTGen の S-3 CSV／S-6 Production IR／skit_group は構造が違うので使わない。共通化候補は字幕表示幅計測のみ。
 
 ## 4. Thumbnail

@@ -299,6 +299,23 @@ def _build_receipt(
             "ledger_material_id": material_id,
         },
         "command_summary": "fetch-source-audio --mode fake",
+        "provider": "asset_fetch_fake",
+        "tools": [],
+        "commands": [],
+        "input": {
+            "source_url": source_url,
+            "local_path": None,
+        },
+        "outputs": [
+            {
+                "path": _display_path(output_path, Path.cwd()),
+                "sha256": sha256,
+                "byte_size": byte_size,
+                "duration_seconds": preflight["audio_format"]["duration_seconds"],
+            }
+        ],
+        "warnings": [],
+        "stderr_digest": None,
         "preflight": preflight,
     }
 

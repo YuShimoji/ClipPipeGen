@@ -42,9 +42,18 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a done。samples runnable
-- **current_slice**: Slice 2 — ED-03 `check-cut-context` は done。`transcript.json` から既存 `edit_pack.cut_candidates[].context_check` を更新できる
-- **next_action（assistant 側）**: 推奨は INT-02 successor の実 downloader（yt-dlp / ffmpeg）接続。別案として ED-07 successor の実 `whisper.cpp` 接続、または SH-03 successor の GUI action 導線（generate/check 系）
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b done。samples runnable
+- **current_slice**: Slice 2 — INT-02b asset_fetch boundary spec は done。実 downloader 前に yt-dlp / FFmpeg の責務境界、readback contract、core 侵入防止テストを固定した
+- **next_action（assistant 側）**: 推奨は INT-02b の未決事項（dependency discovery、mode 名、intermediate file policy、stderr digest、duration readback）を閉じてから、source audio の実取得だけに絞った INT-02 successor を実装すること。実 downloader はまだ未実装
+
+### Slice 2 (xi) INT-02b done（asset_fetch boundary spec only）
+
+- `docs/ASSET_FETCH_BOUNDARY.md` — yt-dlp / FFmpeg の責務境界を固定。yt-dlp は URL から元 media を取得するだけ、FFmpeg は source audio を PCM WAV / mono / 16kHz / 16-bit に正規化するだけ
+- `fetch-source-audio` future mode contract — `fake` 以外の mode はまだ CLI choices に追加しない。実 mode 追加前に `--dry-run` preflight、receipt、rollback、ledger refresh、failure readback を満たす必要がある
+- receipt readback — command、tool versions、provider/engine、input URL/local path、output paths、duration、hashes、warnings、stderr digest、rollback files を必須 readback として仕様化
+- core 侵入防止 — `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles`、`src/pipeline/*` は yt-dlp / FFmpeg を直接参照しない。asset_fetch は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない
+- `tests/test_asset_fetch_boundary.py` — boundary spec の必須文言、fetch CLI が fake mode のみであること、pipeline / Editing / STT CLI に yt-dlp / FFmpeg 参照がないことを検証
+- 実 yt-dlp / FFmpeg 実行、`fetch-source-video`、GUI fetch button は未実装のまま
 
 ### Slice 2 (x) ED-03 done（transcript context check for cut candidates）
 
@@ -183,7 +192,7 @@
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch は実装済み。次の推奨は親 INT-02 successor として実 downloader（yt-dlp / ffmpeg / network fetch）と source video 取得の境界を実装すること。
+- INT-02a で source audio の fake fetch は実装済み。INT-02b で yt-dlp / FFmpeg の境界仕様は固定済み。次の推奨は未決事項を閉じたうえで、source audio の実取得と正規化だけに絞って INT-02 successor を実装すること。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

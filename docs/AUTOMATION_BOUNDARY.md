@@ -9,7 +9,7 @@
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
-| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。実 yt-dlp / ffmpeg と `fetch-source-video` は future integration |
+| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / ffmpeg 境界仕様は固定済み。実 yt-dlp / ffmpeg と `fetch-source-video` は future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
 
@@ -107,3 +107,13 @@ bridge する CLI 候補：
 - `patch-thumbnail-template`（Slice 1 で使用）
 - `audit-thumbnail-template`（Slice 1 で使用）
 - 字幕表示幅計測（後続スライスで Editing 用）
+
+## INT-02b asset_fetch 境界
+
+正本: [ASSET_FETCH_BOUNDARY.md](ASSET_FETCH_BOUNDARY.md)
+
+- yt-dlp の責務は URL から元 media を取得することだけ。
+- FFmpeg の責務は source audio を `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化することだけ。
+- `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` は yt-dlp / FFmpeg を直接呼ばない。
+- `asset_fetch` は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない。
+- 実 downloader は未実装。future mode を CLI に追加する前に、preflight / receipt / rollback / ledger refresh / stderr digest / tool version readback を満たす。

@@ -103,6 +103,23 @@ def test_fetch_source_audio_fake_creates_wav_sidecar_receipt_and_ledger(tmp_path
 
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     assert receipt["mode"] == "fake"
+    assert receipt["provider"] == "asset_fetch_fake"
+    assert receipt["tools"] == []
+    assert receipt["commands"] == []
+    assert receipt["input"] == {
+        "source_url": "https://www.youtube.com/watch?v=AAA",
+        "local_path": None,
+    }
+    assert receipt["outputs"] == [
+        {
+            "path": receipt["preflight"]["output_path"],
+            "sha256": receipt["sha256"],
+            "byte_size": receipt["byte_size"],
+            "duration_seconds": 1.0,
+        }
+    ]
+    assert receipt["warnings"] == []
+    assert receipt["stderr_digest"] is None
     assert receipt["rollback"]["files"] == [
         receipt["preflight"]["output_path"],
         receipt["preflight"]["sidecar_path"],

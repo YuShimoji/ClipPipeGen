@@ -7,6 +7,7 @@
 - **Python は制作接着層**：元動画 URL／素材／rights 記録／EDL／字幕案／manifest／slot patch／publishing metadata を episode 単位でつなぐ。
 - **外部素材取得・背景切り抜き・upload は通常の integration 候補**。未実装なら未実装として扱い、方針上の禁止にしない。
 - **STT と素材取得を混ぜない**。`transcribe-audio` はローカル音声ファイルから `transcript.json` を作る。URL / VOD 取得は INT-02 `asset_fetch` として別に扱う。
+- **FFmpeg / yt-dlp を core に漏らさない**。実 downloader は `src/integrations/asset_fetch/` に閉じ込める。FFmpeg は source audio 正規化だけ、yt-dlp は元 media 取得だけ。Editing core / STT / render / GUI から直接呼ばない。
 - **rights / license / restriction は readback**。`pending` / `unverified` / `unknown` / `fair_use_claimed` / `denied` などの値だけで local CLI を停止しない。
 - **外部ツール境界は明示する**。YMM4、外部 NLE、YouTube API、背景切り抜き API などは integration / bridge / handoff として扱う。
 

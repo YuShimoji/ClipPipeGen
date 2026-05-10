@@ -74,6 +74,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | INT-01 | YouTube OAuth flow | proposed | trusted application のセットアップ含む |
 | INT-02 | asset_fetch（source audio / video 取得） | proposed | `fetch-source-audio` / `fetch-source-video` CLI。URL / 出力先 / 推定サイズ / 目的を preflight 表示し、実行 log / receipt / rollback 情報を残す。取得結果は `material_ledger` に自動登録できる。yt-dlp / ffmpeg は `src/integrations/asset_fetch/` に隔離し、CI は fake downloader を使う。rights status は readback に留め、値だけで取得そのものの hard gate にはしない |
 | INT-02a | source audio material contract + fake fetch | done | `fetch-source-audio --mode fake` を実装。標準音声は `source.wav`（PCM WAV / mono / 16kHz / 16-bit / 1秒 silent fixture）。`sidecar.json` / `fetch_receipt.json` / `material_ledger.json` を生成し、`kind=source_audio` / `subkind=wav_pcm_16k_mono` / `intended_uses=["editing_audio"]` で ED-07 `transcribe-audio` に接続する。実 yt-dlp / ffmpeg / `fetch-source-video` は親 INT-02 の後続 |
+| INT-02b | asset_fetch boundary spec only | done | 実 downloader 実装前に `docs/ASSET_FETCH_BOUNDARY.md` で yt-dlp / ffmpeg の責務を固定。yt-dlp は URL から元 media を取得するだけ、ffmpeg は source audio を PCM WAV / mono / 16kHz / 16-bit に正規化するだけ。Editing core / STT / render / cut / GUI への浸透を禁止し、future mode の preflight / receipt / rollback / ledger readback contract とテスト観点を定義 |
 | INT-03 | bg_removal 受領フロー | proposed | 外部処理結果（透過PNG）の受け入れ。API 呼び出しは含めるか別途検討 |
 | INT-04 | bg_removal API 呼び出し | proposed | INT-03 の能動版。provider / 入出力 / receipt を integration として実装 |
 
@@ -125,3 +126,4 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 - 2026-05-10: `ED-04` を `done` に遷移。根拠: `src/pipeline/subtitle_generation.py` / `generate-subtitles` / ED-05 `measure_subtitle` 消費 / `tests/test_subtitle_generation.py` を実装。実 subtitle burn-in / renderer は OUT-01 後続
 - 2026-05-10: `ED-02` を `done` に遷移。根拠: `src/pipeline/cut_generation.py` / `generate-cuts` / transcript window heuristic / `tests/test_cut_generation.py` を実装。文脈妥当性の判定は ED-03 で後続実装済み
 - 2026-05-10: `ED-03` を `done` に遷移。根拠: `src/pipeline/context_check.py` / `check-cut-context` / `status-episode` context readback / `tests/test_context_check.py` を実装。実動画 preview / NLE export は ED-06 / OUT-01 後続
+- 2026-05-10: `INT-02b` を `done` に遷移。根拠: `docs/ASSET_FETCH_BOUNDARY.md` と `tests/test_asset_fetch_boundary.py` で、yt-dlp / ffmpeg の責務、future mode contract、readback、rollback、core 侵入防止テストを仕様化。実 downloader は未実装のまま維持
