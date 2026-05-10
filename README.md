@@ -31,9 +31,9 @@
 
 ## 現在のスライス
 
-**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 では GUI action 導線、Editing tab、`edit_pack`、手動 cut 入力、字幕幅計測、`transcript.json` / fake `transcribe-audio` adapter、`fetch-source-audio --mode fake` の source audio 契約、`generate-cuts` の cut 候補生成、`generate-subtitles` の字幕案生成が実装済み。
+**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 では GUI action 導線、Editing tab、`edit_pack`、手動 cut 入力、字幕幅計測、`transcript.json` / fake `transcribe-audio` adapter、`fetch-source-audio --mode fake` の source audio 契約、`generate-cuts` の cut 候補生成、`check-cut-context` の文脈チェック、`generate-subtitles` の字幕案生成が実装済み。
 
-次の Editing 自動化アンカーは文脈チェック（ED-03）または実 downloader 接続（INT-02 successor）。`transcribe-audio` は既存のローカル音声ファイルを `transcript.json` にする責務に限定し、URL / VOD からの取得は INT-02 として分離する。INT-02a の fake source audio は `source_audio` material として `material_ledger` に接続され、ED-07/ED-02/ED-04 の入力になる。
+次の自動化アンカーは実 downloader 接続（INT-02 successor）。`transcribe-audio` は既存のローカル音声ファイルを `transcript.json` にする責務に限定し、URL / VOD からの取得は INT-02 として分離する。INT-02a の fake source audio は `source_audio` material として `material_ledger` に接続され、ED-07/ED-02/ED-03/ED-04 の入力になる。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

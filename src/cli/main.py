@@ -20,6 +20,7 @@ Subcommands:
     transcribe-audio         ED-07: local audio -> transcript.json (fake engine in v1).
     fetch-source-audio       INT-02a: create/register fake source_audio WAV material.
     generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
+    check-cut-context        ED-03: review cut boundaries against transcript context.
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.
 """
 
@@ -32,6 +33,7 @@ from . import (
     add_cut_candidate,
     audit_material_ledger,
     audit_thumbnail,
+    check_cut_context,
     fetch_source_audio,
     generate_cuts,
     generate_subtitles,
@@ -65,6 +67,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
     "generate-cuts": generate_cuts.run,
+    "check-cut-context": check_cut_context.run,
     "generate-subtitles": generate_subtitles.run,
 }
 

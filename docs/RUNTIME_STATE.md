@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-04 / ED-05 / ED-07 / INT-02a done。samples runnable
-- **current_slice**: Slice 2 — ED-02 `generate-cuts` は done。`transcript.json` から `edit_pack.cut_candidates[]` を生成できる
-- **next_action（assistant 側）**: 推奨は ED-03 文脈チェック。別案として INT-02 successor の実 downloader（yt-dlp / ffmpeg）または ED-07 successor の実 `whisper.cpp` 接続
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a done。samples runnable
+- **current_slice**: Slice 2 — ED-03 `check-cut-context` は done。`transcript.json` から既存 `edit_pack.cut_candidates[].context_check` を更新できる
+- **next_action（assistant 側）**: 推奨は INT-02 successor の実 downloader（yt-dlp / ffmpeg）接続。別案として ED-07 successor の実 `whisper.cpp` 接続、または SH-03 successor の GUI action 導線（generate/check 系）
+
+### Slice 2 (x) ED-03 done（transcript context check for cut candidates）
+
+- `src/pipeline/context_check.py` — cut candidate の開始/終了が transcript segment の途中を切っていないか、`source_segment_ids` が transcript と対応しているか、近接する前後 segment があるかを判定。`context_check.status` は `passed` / `needs_review` / `failed`
+- `src/cli/check_cut_context.py` — `check-cut-context --transcript ... --edit-pack ...` を追加。`--selected-cuts-only` / `--cut-id` / `--boundary-tolerance-seconds` / `--adjacent-window-seconds` / `--dry-run` / `--format json` を持つ
+- `status-episode` / GUI Editing readback — `context_checks.{passed_count,needs_review_count,failed_count,not_checked_count}` を表示。transcript と cut があり未チェックなら `next_action` で ED-03 実行を促す
+- `tests/test_context_check.py` — aligned boundary、近接 next segment、発話途中切断、selected scope、unknown cut、CLI roundtrip、dry-run を検証。Python suite は 93 tests pass
+- ED-03 は review note の記録であり、動画 preview / NLE export / creative acceptance は行わない。ED-06 / OUT-01 後続
 
 ### Slice 2 (ix) ED-02 done（transcript-based cut candidate generation）
 
@@ -173,9 +181,9 @@
 
 ## 次に変えうる判断
 
-- SH-03b は GUI action 導線（init-edit-pack / add-cut-candidate / set-compliance / register-material / patch-thumbnail）。upload / fetch / bg-removal API は未実装のためまだ button がない。
-- ED-03 は `transcript.json` と auto/manual cut を入力にし、cut 境界の文脈妥当性を review note として返す。
-- INT-02a で source audio の fake fetch は実装済み。親 INT-02 の残りは実 downloader（yt-dlp / ffmpeg / network fetch）と source video 取得。
+- SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
+- ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
+- INT-02a で source audio の fake fetch は実装済み。次の推奨は親 INT-02 successor として実 downloader（yt-dlp / ffmpeg / network fetch）と source video 取得の境界を実装すること。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

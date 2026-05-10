@@ -59,6 +59,15 @@ def _print_text(status: dict) -> None:
         f"{status['editing']['state']} "
         f"({status['editing'].get('cut_candidates_count', 0)} cuts)"
     )
+    context = status["editing"].get("context_checks") or {}
+    if context:
+        print(
+            "context: "
+            f"passed={context.get('passed_count', 0)}, "
+            f"needs_review={context.get('needs_review_count', 0)}, "
+            f"failed={context.get('failed_count', 0)}, "
+            f"not_checked={context.get('not_checked_count', 0)}"
+        )
     print(
         "thumbnail: "
         f"{status['thumbnail']['state']} "

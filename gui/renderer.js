@@ -67,6 +67,10 @@ function renderEditing(editing, edit_pack_artifact) {
     ["cut_candidates_count", editing.cut_candidates_count ?? 0],
     ["selected_cuts_count", editing.selected_cuts_count ?? 0],
     ["subtitles_count", editing.subtitles_count ?? 0],
+    ["context_passed_count", editing.context_checks?.passed_count ?? 0],
+    ["context_needs_review_count", editing.context_checks?.needs_review_count ?? 0],
+    ["context_failed_count", editing.context_checks?.failed_count ?? 0],
+    ["context_not_checked_count", editing.context_checks?.not_checked_count ?? 0],
     ["schema_issues_count", editing.schema_issues_count ?? 0],
   ];
   renderDetails("#editing-content", rows, editing.schema_issues || []);

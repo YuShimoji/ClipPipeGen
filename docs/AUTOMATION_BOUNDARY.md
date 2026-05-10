@@ -25,7 +25,8 @@
   - source audio contract（`fetch-source-audio --mode fake` は実装済み。標準形は PCM WAV / mono / 16kHz / 16-bit）
   - ローカル音声ファイルからの transcript 生成（`transcribe-audio --engine fake` は実装済み。実 STT engine は後続）
   - transcript からの字幕案生成（`generate-subtitles` は実装済み。字幕焼き込みは後続）
-  - transcript からのカット候補抽出（`generate-cuts` は実装済み。文脈チェックは ED-03 後続）
+  - transcript からのカット候補抽出（`generate-cuts` は実装済み）
+  - transcript 隣接 segment による cut 文脈チェック（`check-cut-context` は実装済み。動画 preview / creative acceptance は後続）
   - upload / thumbnail 設定 / visibility 更新 integration
 
 ## 現時点で未実装

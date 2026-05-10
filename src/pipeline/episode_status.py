@@ -163,6 +163,7 @@ def _fill_editing_status(status: dict[str, Any], edit_pack_path: Path) -> None:
     selected = pack.get("selected_cut_ids") or []
     candidates = pack.get("cut_candidates") or []
     subtitles = pack.get("subtitles") or []
+    context_checks = _context_check_counts(candidates)
     state = "ready"
     if issues:
         state = "blocked"
@@ -174,6 +175,7 @@ def _fill_editing_status(status: dict[str, Any], edit_pack_path: Path) -> None:
         "cut_candidates_count": len(candidates),
         "selected_cuts_count": len(selected),
         "subtitles_count": len(subtitles),
+        "context_checks": context_checks,
         "schema_issues_count": len(issues),
         "schema_issues": [i.to_dict() for i in issues],
     }
@@ -273,6 +275,30 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
             "action": "Fix edit_pack schema issues",
             "reason": "cut candidates and subtitle drafts must validate before later detection/export work",
         }
+    transcript = (status["editing"] or {}).get("transcript") or {}
+    context_checks = (status["editing"] or {}).get("context_checks") or {}
+    if (
+        transcript.get("state") == "ready"
+        and status["editing"].get("cut_candidates_count", 0) > 0
+        and context_checks.get("not_checked_count", 0) > 0
+    ):
+        return {
+            "owner": "assistant",
+            "action": "Run check-cut-context for transcript-based cut review",
+            "reason": "cut boundaries should be checked against adjacent transcript context before downstream export",
+        }
+    if context_checks.get("failed_count", 0) > 0:
+        return {
+            "owner": "both",
+            "action": "Fix or replace failed cut candidates",
+            "reason": "ED-03 found cut boundaries or source segment links that fail context review",
+        }
+    if context_checks.get("needs_review_count", 0) > 0:
+        return {
+            "owner": "user",
+            "action": "Review ED-03 context notes and choose final cuts",
+            "reason": "nearby transcript segments may contain setup or continuation context",
+        }
     if not status["artifacts"]["thumbnail_patch_input"]["exists"]:
         return {
             "owner": "assistant",
@@ -296,3 +322,26 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
         "action": "Open patched .ymmp in YMM4 and perform final visual acceptance",
         "reason": "composition and final thumbnail judgement happen in the creative tool",
     }
+
+
+def _context_check_counts(candidates: list[Any]) -> dict[str, int]:
+    counts = {
+        "not_checked_count": 0,
+        "passed_count": 0,
+        "needs_review_count": 0,
+        "failed_count": 0,
+    }
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        context = candidate.get("context_check") or {}
+        status = context.get("status")
+        if status == "passed":
+            counts["passed_count"] += 1
+        elif status == "needs_review":
+            counts["needs_review_count"] += 1
+        elif status == "failed":
+            counts["failed_count"] += 1
+        else:
+            counts["not_checked_count"] += 1
+    return counts
