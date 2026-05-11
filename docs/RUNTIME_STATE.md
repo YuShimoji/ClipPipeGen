@@ -51,6 +51,7 @@
 - `src/integrations/asset_fetch/yt_dlp_audio.py` — yt-dlp path discovery（`--yt-dlp-path` → `CLIPPIPE_YTDLP` → PATH）、dry-run-safe plan、yt-dlp version readback、URL download、temporary intermediate selection、existing FFmpeg adapter への normalization handoff、combined stderr digest、failure cleanup を追加
 - `src/cli/fetch_source_audio.py` — `--mode yt-dlp-audio` / `--yt-dlp-path` を追加。実行は yt-dlp fetch → FFmpeg normalize → sidecar / receipt / ledger write に限定。dry-run は network / subprocess を呼ばず command plan を返す
 - Receipt readback — mode/provider/tools/commands/input/intermediate/output/warnings/stderr digest/rights snapshot/rollback を保存。`intermediate.retained=false`、rights は `hard_gate=false`
+- URL scrub — 実行時の URL は yt-dlp に渡すが、preflight / receipt / sidecar / command readback では query / fragment / userinfo / token を scrub する
 - Boundary — `fetch-source-video`、GUI fetch button、GUI からの fetch/build/render、`transcribe-audio` URL / VOD fetch、cut / concat、subtitle burn-in、render / encode は追加していない
 - Assistant-side validation — fake runner / monkeypatch / dry-run / boundary tests で source audio URL fetch surface を確認。実 URL smoke は user-owned URL selection and rights / terms review が必要
 

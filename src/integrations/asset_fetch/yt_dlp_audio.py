@@ -17,6 +17,7 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping, Protocol
+from urllib.parse import urlsplit
 
 from . import ffmpeg_audio
 
@@ -61,10 +62,10 @@ class YtDlpAudioPlan:
             "yt_dlp_path": self.yt_dlp_path,
             "yt_dlp_path_source": self.yt_dlp_path_source,
             "ffmpeg_plan": self.ffmpeg_plan.to_dict(),
-            "source_url": self.source_url,
+            "source_url": scrub_url_for_readback(self.source_url),
             "output_path": self.output_path,
             "intermediate_template": self.intermediate_template,
-            "yt_dlp_command": self.yt_dlp_command,
+            "yt_dlp_command": _scrub_command_for_readback(self.yt_dlp_command),
             "yt_dlp_command_summary": self.yt_dlp_command_summary,
             "audio_format": audio_format(),
             "warnings": self.warnings,
@@ -90,6 +91,28 @@ class YtDlpAudioResult:
 
 def audio_format() -> dict[str, Any]:
     return ffmpeg_audio.audio_format()
+
+
+def scrub_url_for_readback(url: str | None) -> str | None:
+    """Return a URL suitable for receipts/logs without query secrets."""
+    if not url:
+        return url
+    try:
+        parts = urlsplit(url)
+    except ValueError:
+        return _scrub_secretish_text(url)
+    if parts.scheme not in {"http", "https"}:
+        return _scrub_secretish_text(url)
+
+    netloc = parts.netloc
+    if "@" in netloc:
+        netloc = "<userinfo:redacted>@" + netloc.rsplit("@", 1)[1]
+    out = f"{parts.scheme}://{netloc}{parts.path}"
+    if parts.query:
+        out += "?<query:redacted>"
+    if parts.fragment:
+        out += "#<fragment:redacted>"
+    return _scrub_secretish_text(out)
 
 
 def discover_yt_dlp(
@@ -331,8 +354,24 @@ def _command_summary(command: list[str]) -> str:
     return " ".join(_summary_part(p) for p in command)
 
 
+def _scrub_command_for_readback(command: list[str] | None) -> list[str] | None:
+    if command is None:
+        return None
+    return [scrub_url_for_readback(p) or "" if re.match(r"https?://", p) else p for p in command]
+
+
 def _summary_part(part: str) -> str:
     if re.match(r"https?://", part):
         return "<url>"
     normalized = str(part).replace("\\", "/")
-    return normalized.replace("token=", "token=<redacted>")
+    return _scrub_secretish_text(normalized)
+
+
+def _scrub_secretish_text(text: str) -> str:
+    out = re.sub(
+        r"(?i)(token|api[_-]?key|authorization|password|signature|sig)=\S+",
+        r"\1=<redacted>",
+        text,
+    )
+    out = re.sub(r"(?i)(bearer)\s+[A-Za-z0-9._\-]+", r"\1 <redacted>", out)
+    return out

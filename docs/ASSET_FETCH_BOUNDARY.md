@@ -141,7 +141,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | yt-dlp | `src/integrations/asset_fetch/yt_dlp_audio.py` 内で一時 media を取得するだけ |
 | FFmpeg | 既存 `ffmpeg_audio.py` adapter を使い `source.wav`（PCM WAV / mono / 16kHz / 16-bit）へ正規化するだけ |
 | dry-run | network / subprocess を呼ばず、yt-dlp / FFmpeg discovery と command plan を JSON readback する |
-| receipt | `tools[]` に yt-dlp / FFmpeg、`commands[]` に download / normalize、`intermediate.retained=false`、`rights_snapshot.hard_gate=false` を保存 |
+| receipt | `tools[]` に yt-dlp / FFmpeg、`commands[]` に download / normalize、`intermediate.retained=false`、`rights_snapshot.hard_gate=false` を保存。URL readback / command summary / stderr digest tail は secret / token / query を scrub する |
 | GUI | fetch button は追加しない。GUI から fetch/build/render/upload を起動しない |
 | STT / Editing | `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` に URL / yt-dlp / FFmpeg を混ぜない |
 | Output | `fetch-source-video`、cut / concat、subtitle burn-in、render / encode は追加しない |

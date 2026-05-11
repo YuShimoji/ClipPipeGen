@@ -208,7 +208,7 @@ def _preflight(
         "episode_id": episode_id,
         "material_id": material_id,
         "mode": mode,
-        "source_url": source_url,
+        "source_url": _source_url_readback(source_url),
         "local_media_path": local_media,
         "local_media_exists": Path(local_media).exists() if local_media else None,
         "output_path": _display_path(paths["audio"], Path.cwd()),
@@ -512,7 +512,7 @@ def _build_sidecar(
         "asset_hash_sha256": asset_hash,
         "source": {
             "kind": "unverified",
-            "url": source_url,
+            "url": _source_url_readback(source_url),
             "local_path": source_local_path,
             "retrieved_at": retrieved_at,
             "retrieved_by": retrieved_by,
@@ -541,7 +541,7 @@ def _build_sidecar(
 
 def _attribution_text(source_url: str | None, source_local_path: str | None) -> str:
     if source_url:
-        return f"Source: {source_url}"
+        return f"Source: {_source_url_readback(source_url)}"
     return f"Local media source: {source_local_path}"
 
 
@@ -556,12 +556,13 @@ def _build_receipt(
     created_at: str,
     preflight: dict[str, Any],
 ) -> dict[str, Any]:
+    source_url_readback = _source_url_readback(source_url)
     return {
         "schema_version": SCHEMA_VERSION,
         "episode_id": episode_id,
         "material_id": material_id,
         "mode": "fake",
-        "source_url": source_url,
+        "source_url": source_url_readback,
         "output_path": _display_path(output_path, Path.cwd()),
         "sha256": sha256,
         "byte_size": byte_size,
@@ -579,7 +580,7 @@ def _build_receipt(
         "tools": [],
         "commands": [],
         "input": {
-            "source_url": source_url,
+            "source_url": source_url_readback,
             "local_path": None,
         },
         "outputs": [
@@ -676,12 +677,13 @@ def _build_yt_dlp_audio_receipt(
 ) -> dict[str, Any]:
     output_display = _display_path(output_path, Path.cwd())
     ffmpeg_result = fetch_result.ffmpeg_result
+    source_url_readback = _source_url_readback(source_url)
     return {
         "schema_version": SCHEMA_VERSION,
         "episode_id": episode_id,
         "material_id": material_id,
         "mode": "yt-dlp-audio",
-        "source_url": source_url,
+        "source_url": source_url_readback,
         "output_path": output_display,
         "sha256": sha256,
         "byte_size": byte_size,
@@ -721,7 +723,7 @@ def _build_yt_dlp_audio_receipt(
             },
         ],
         "input": {
-            "source_url": source_url,
+            "source_url": source_url_readback,
             "local_path": None,
         },
         "intermediate": {
@@ -763,3 +765,7 @@ def _display_path(path: Path, base: Path) -> str:
         return str(path.resolve().relative_to(base.resolve())).replace("\\", "/")
     except ValueError:
         return str(path).replace("\\", "/")
+
+
+def _source_url_readback(source_url: str | None) -> str | None:
+    return yt_dlp_audio.scrub_url_for_readback(source_url)

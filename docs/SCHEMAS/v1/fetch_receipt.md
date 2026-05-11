@@ -217,6 +217,8 @@ INT-02d は spec only。INT-02e では [YTDLP_AUDIO_SPEC.md](../../YTDLP_AUDIO_S
 | rollback | `source.wav`、sidecar、receipt、ledger material ID を対応付ける |
 | rights_snapshot | `compliance_status_at_fetch` と `hard_gate=false` を保存する |
 
+URL readback は query / fragment / userinfo を scrub する。実行時には operator が指定した元 URL を yt-dlp に渡すが、`preflight` / `receipt` / `sidecar` / command readback には secret・token・query を残さない。
+
 ## CLI
 
 ```bash

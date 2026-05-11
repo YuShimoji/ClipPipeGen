@@ -12,18 +12,22 @@ from src.integrations.asset_fetch import fake_audio, ffmpeg_audio, yt_dlp_audio
 
 def test_build_plan_prefers_argument_paths_without_spawning_subprocess():
     plan = yt_dlp_audio.build_plan(
-        source_url="https://www.youtube.com/watch?v=AAA",
+        source_url="https://www.youtube.com/watch?v=AAA&token=secret",
         output_path="materials/src/source.wav",
         yt_dlp_path="C:/bin/yt-dlp.exe",
         ffmpeg_path="C:/bin/ffmpeg.exe",
         env={yt_dlp_audio.YTDLP_ENV_VAR: "C:/env/yt-dlp.exe"},
     )
 
+    readback = plan.to_dict()
     assert plan.yt_dlp_path == "C:/bin/yt-dlp.exe"
     assert plan.yt_dlp_path_source == "argument"
     assert plan.yt_dlp_command is not None
     assert plan.yt_dlp_command[0] == "C:/bin/yt-dlp.exe"
-    assert plan.yt_dlp_command[-1] == "https://www.youtube.com/watch?v=AAA"
+    assert plan.yt_dlp_command[-1] == "https://www.youtube.com/watch?v=AAA&token=secret"
+    assert readback["source_url"] == "https://www.youtube.com/watch?<query:redacted>"
+    assert readback["yt_dlp_command"][-1] == "https://www.youtube.com/watch?<query:redacted>"
+    assert "token=secret" not in str(readback)
     assert plan.yt_dlp_command_summary is not None
     assert "https://www.youtube.com" not in plan.yt_dlp_command_summary
     assert "<url>" in plan.yt_dlp_command_summary
@@ -126,3 +130,17 @@ def test_ytdlp_failure_does_not_leave_source_wav(tmp_path: Path):
     assert "exit_code=1" in str(exc.value)
     assert "secret" not in str(exc.value)
     assert not output_wav.exists()
+
+
+def test_scrub_url_for_readback_removes_query_fragment_and_userinfo():
+    scrubbed = yt_dlp_audio.scrub_url_for_readback(
+        "https://user:password@example.com/watch?v=AAA&token=secret#frag"
+    )
+
+    assert scrubbed == (
+        "https://<userinfo:redacted>@example.com/watch"
+        "?<query:redacted>#<fragment:redacted>"
+    )
+    assert "password" not in scrubbed
+    assert "token=secret" not in scrubbed
+    assert "v=AAA" not in scrubbed

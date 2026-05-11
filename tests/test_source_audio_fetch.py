@@ -20,6 +20,7 @@ from src.pipeline.transcript import load_transcript
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+SCRUBBED_YOUTUBE_WATCH_URL = "https://www.youtube.com/watch?<query:redacted>"
 
 
 def _rights_passed(episode_id: str) -> dict:
@@ -109,7 +110,7 @@ def test_fetch_source_audio_fake_creates_wav_sidecar_receipt_and_ledger(tmp_path
     assert receipt["tools"] == []
     assert receipt["commands"] == []
     assert receipt["input"] == {
-        "source_url": "https://www.youtube.com/watch?v=AAA",
+        "source_url": SCRUBBED_YOUTUBE_WATCH_URL,
         "local_path": None,
     }
     assert receipt["outputs"] == [
@@ -495,9 +496,9 @@ def test_fetch_source_audio_ytdlp_audio_creates_receipt_without_rights_hard_gate
     sidecar = json.loads((material_dir / "sidecar.json").read_text(encoding="utf-8"))
     assert receipt["mode"] == "yt-dlp-audio"
     assert receipt["provider"] == "yt-dlp"
-    assert receipt["source_url"] == "https://www.youtube.com/watch?v=AAA"
+    assert receipt["source_url"] == SCRUBBED_YOUTUBE_WATCH_URL
     assert receipt["input"] == {
-        "source_url": "https://www.youtube.com/watch?v=AAA",
+        "source_url": SCRUBBED_YOUTUBE_WATCH_URL,
         "local_path": None,
     }
     assert [tool["name"] for tool in receipt["tools"]] == ["yt-dlp", "ffmpeg"]
@@ -513,7 +514,7 @@ def test_fetch_source_audio_ytdlp_audio_creates_receipt_without_rights_hard_gate
         "hard_gate": False,
     }
     assert sidecar["source"]["retrieval_method"] == "asset_fetch_yt_dlp_audio"
-    assert sidecar["source"]["url"] == "https://www.youtube.com/watch?v=AAA"
+    assert sidecar["source"]["url"] == SCRUBBED_YOUTUBE_WATCH_URL
 
     ledger = load_ledger(ep_dir / "material_ledger.json")
     entry = ledger["materials"][0]
