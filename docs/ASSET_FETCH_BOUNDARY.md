@@ -6,7 +6,7 @@ INT-02c はこの境界に従い、実 yt-dlp / network fetch へ進まず、既
 
 INT-02d は **spec only**。`yt-dlp-audio` の URL fetch contract を仕様化するが、yt-dlp 実行、network fetch、CLI mode 追加は行わない。詳細は [YTDLP_AUDIO_SPEC.md](YTDLP_AUDIO_SPEC.md) を正本とする。
 
-INT-02e は INT-02d の contract に従い、`fetch-source-audio --mode yt-dlp-audio` を source audio URL fetch のみに限定して実装する。Default executor: assistant. User input required only for smoke URL selection and rights / terms review.
+INT-02e は INT-02d の contract に従い、`fetch-source-audio --mode yt-dlp-audio` を source audio URL fetch のみに限定して実装済み。technical smoke URL で actual run を行い、receipt / sidecar / ledger / WAV readback を確認した。
 
 SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fetch-source-audio --mode local-media-audio` の出力を downstream artifact に接続し、`preview_manifest.json` / read-only `preview_report.html` を生成する review surface である。SH-05c GUI ingest は生成済み preview pack を読むだけで、GUI から build / fetch / render / upload を起動しない。SH-05 は rendered video preview、network fetch、GUI fetch button、cut / concat、subtitle burn-in、render / encode を実装しない。詳細は [PREVIEW_PACK.md](PREVIEW_PACK.md) を正本とする。
 
@@ -19,7 +19,7 @@ SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fet
 | INT-02b | done | 実 downloader 前の責務境界と readback contract |
 | INT-02c | done | `fetch-source-audio --mode local-media-audio`。ローカル media file を FFmpeg で `source.wav` に正規化 |
 | INT-02d | done | `yt-dlp-audio` boundary spec only。URL fetch / network / yt-dlp / FFmpeg / receipt / rights / human / GUI / STT の責務を分離 |
-| INT-02e | in_progress | `fetch-source-audio --mode yt-dlp-audio`。source audio URL fetch のみに限定して assistant-side 実装済み。実 URL operator smoke は user-owned URL 選定と rights / terms review 待ち |
+| INT-02e | done | `fetch-source-audio --mode yt-dlp-audio`。source audio URL fetch のみに限定して実装済み。technical smoke URL で receipt / sidecar / ledger / WAV readback を確認 |
 
 ## Tool 責務
 
@@ -54,7 +54,7 @@ mode 名は、実装 commit で `FEATURE_REGISTRY` に登録してから CLI cho
 |---|---|---|
 | `fake` | implemented | network / yt-dlp / FFmpeg を呼ばず、1秒 silent WAV を作る |
 | `local-media-audio` | implemented in INT-02c | 既存ローカル media file を FFmpeg で `source.wav` に正規化する。URL / VOD / network fetch はしない |
-| `yt-dlp-audio` | implemented in INT-02e, external smoke pending | URL から元 media を一時取得し、FFmpeg で `source.wav` に正規化する。取得と正規化以外はしない。downloaded intermediate は保持しない |
+| `yt-dlp-audio` | implemented and smoked in INT-02e | URL から元 media を一時取得し、FFmpeg で `source.wav` に正規化する。取得と正規化以外はしない。downloaded intermediate は保持しない |
 | `fetch-source-video` | future | 未実装。INT-02c の範囲外 |
 
 実 mode は次を満たす。
@@ -112,10 +112,10 @@ receipt は INT-02a fields に加えて、以下を記録する。
 
 | 項目 | 残り |
 |---|---|
-| yt-dlp discovery | `yt-dlp` path discovery、version failure、provider URL policy は未決 |
-| URL fetch mode | `fetch-source-audio --mode yt-dlp-audio` として assistant-side 実装 in_progress。実 URL operator smoke は user-owned URL 選定と rights / terms review 待ち |
+| yt-dlp discovery | `--yt-dlp-path` → `CLIPPIPE_YTDLP` → PATH の順。INT-02e smoke では user-local `yt-dlp` `2026.03.17` を PATH から発見 |
+| URL fetch mode | `fetch-source-audio --mode yt-dlp-audio` として実装済み。technical smoke URL で actual fetch → normalize → receipt / sidecar / ledger write を確認 |
 | source video | `fetch-source-video` は未実装 |
-| real dependency acceptance | local operator smoke passed。実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で synthetic local WAV を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
+| real dependency acceptance | local-media-audio は実 FFmpeg smoke passed。yt-dlp-audio は user-local `yt-dlp` `2026.03.17` + 実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で technical smoke URL を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
 | GUI | fetch button は未実装。SH-05c では既存 preview pack の read-only ingest だけ実装済み。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
 | local preview pack | SH-05 / SH-05c 実装済み。local media 1本から `preview_manifest.json` / read-only `preview_report.html` まで生成し、GUI から既存 pack を read-only 表示できる。これは artifact preview であり rendered video preview ではない |
 
@@ -161,4 +161,4 @@ receipt は INT-02a fields に加えて、以下を記録する。
 
 ## 次に進む条件
 
-INT-02e 後に次へ進む場合は、まず user-owned URL 選定と rights / terms review に基づく real URL operator smoke で `yt-dlp-audio` receipt / sidecar / ledger / WAV readback を確認する。`fetch-source-video`、render、encode、GUI action はさらに別 slice に分ける。
+INT-02e 後に次へ進む場合は、取得済み source audio の downstream 接続を `SH-05d` 相当の source-audio preview bridge として分ける。`fetch-source-video`、render、encode、GUI action はさらに別 slice に分ける。

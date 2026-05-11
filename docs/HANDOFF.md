@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-11 JST
+Last updated: 2026-05-12 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
 
@@ -8,9 +8,9 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest completed feature slice: `SH-05c GUI read-only preview pack ingest`
-- Current feature slice: `INT-02e yt-dlp-audio source audio URL fetch` (assistant-side implementation in progress; real URL smoke awaits user URL selection and rights / terms review)
-- SH-05c implementation commit before this handoff: `5a16f75 feat(SH-05c): add preview pack GUI ingest`
+- Latest completed feature slice: `INT-02e yt-dlp-audio source audio URL fetch`
+- Current recommended feature slice: `SH-05d source-audio preview bridge` (proposed; connect fetched `source.wav` / receipt / ledger to local preview pack review surface)
+- INT-02e implementation baseline before smoke: `6669de6 test(INT-02e): lock URL scrub dry-run readback`
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -22,36 +22,31 @@ git pull --ff-only origin main
 
 ## What Is Now Done
 
-SH-05c is complete. The GUI has a `Preview Pack` tab that reads an existing episode directory or `preview_manifest.json` and displays:
+INT-02e is complete. `fetch-source-audio --mode yt-dlp-audio` is limited to source-audio URL fetch only:
 
-- manifest validation state
-- Status Summary
-- Decision Warnings
-- Artifact Links
-- transcript source and `not_for_acceptance`
-- cut candidate count
-- context status counts
-- subtitle count
-- local read-only links to `preview_report.html`, `source.wav`, `fetch_receipt.json`, `transcript.json`, and `edit_pack.json`
+- yt-dlp runs only inside `src/integrations/asset_fetch/yt_dlp_audio.py`.
+- FFmpeg still only normalizes the downloaded temporary media to `source.wav`.
+- The downloaded intermediate is not retained.
+- The receipt records yt-dlp + FFmpeg tools, download / normalize command summaries, source URL readback, output hash/duration, rollback files, and rights snapshot.
+- Rights status is readback only and `hard_gate=false`.
 
-The GUI does not run `build-local-preview-pack`, fetch, render, upload, or any network/external acquisition workflow.
+Technical operator smoke used ignored episode `episodes/int02e_operator_smoke_20260512` and material `src_audio_ytdlp_001`. It generated `source.wav`, `sidecar.json`, `fetch_receipt.json`, and a `material_ledger.json` entry. The smoke URL is not creative acceptance or publishing approval.
+
+SH-05c remains complete. The GUI Preview Pack tab reads an existing episode directory or `preview_manifest.json`; it does not run `build-local-preview-pack`, fetch, render, upload, or any network/external acquisition workflow.
 
 ## Key Files
 
-- `gui/preview_reader.cjs` — read-only preview manifest reader and lightweight validation.
-- `gui/main.cjs` — IPC handler `preview:read`.
-- `gui/preload.cjs` — exposes `readPreviewPack`.
-- `gui/renderer.html` / `gui/renderer.js` / `gui/styles.css` — Preview Pack tab, warnings, artifact links.
-- `gui/smoke.cjs` — GUI smoke checks for preview ingest and forbidden execution controls.
-- `docs/RUNTIME_STATE.md` — current slice and next action.
+- `src/integrations/asset_fetch/yt_dlp_audio.py` — yt-dlp source-audio fetch adapter.
+- `src/cli/fetch_source_audio.py` — `--mode yt-dlp-audio` CLI wiring, sidecar / receipt / ledger write.
+- `docs/RUNTIME_STATE.md` — current state and next recommended action.
 - `docs/FEATURE_REGISTRY.md` — feature status table and transition log.
-- `docs/PREVIEW_PACK.md` — SH-05 / SH-05b / SH-05b+ / SH-05c boundary and evidence summary.
 - `docs/ASSET_FETCH_BOUNDARY.md` — asset_fetch, FFmpeg, yt-dlp, GUI, STT, Editing boundaries.
 - `docs/AUTOMATION_BOUNDARY.md` — automation map and forbidden surfaces.
+- `docs/PREVIEW_PACK.md` — next downstream review surface boundary.
 
 ## Validation Already Run
 
-Last validation for SH-05c:
+Last validation for INT-02e:
 
 ```powershell
 uvx pytest -q
@@ -62,16 +57,23 @@ git diff --check
 
 Results:
 
-- `uvx pytest -q` -> `114 passed`
+- `uvx pytest -q` -> `122 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
 
-Boundary grep was also run and returned no hits for direct FFmpeg / yt-dlp / fetch-video leakage in GUI, pipeline, STT, or Editing surfaces.
+Additional smoke readback:
+
+- `yt-dlp --version` -> `2026.03.17`
+- dry-run -> `will_write=false`, `will_call_subprocess=false`, URL query / fragment scrubbed, conflicts `[]`
+- actual run -> `source.wav`, sidecar, receipt, ledger entry created
+- Python `wave` readback -> mono / 16kHz / 16-bit / 2.07425 seconds
+- `audit-material-ledger --format json` -> `ok=true`
+- artifact hygiene -> smoke episode remains ignored under `episodes/`
 
 ## Visual Evidence
 
-SH-05c visual evidence was generated locally from the SH-05b smoke episode:
+SH-05c visual evidence was previously generated locally from the SH-05b smoke episode:
 
 - `_tmp/sh05c_gui_visual_evidence/gui_preview_pack_tab.png`
 - `_tmp/sh05c_gui_visual_evidence/gui_preview_pack_artifacts.png`
@@ -91,8 +93,6 @@ Readback from the visual evidence:
 
 Not implemented / not accepted yet:
 
-- `yt-dlp-audio` real URL operator smoke (requires user URL selection and rights / terms review)
-- network fetch
 - `fetch-source-video`
 - GUI fetch button
 - GUI-triggered `build-local-preview-pack`
@@ -103,19 +103,18 @@ Not implemented / not accepted yet:
 - creative acceptance
 - rights hard gate
 
-FFmpeg remains an `asset_fetch` local media audio normalization adapter only. It must not enter STT, Editing, GUI, render, cut, concat, or subtitle burn-in surfaces.
+yt-dlp and FFmpeg remain inside `asset_fetch` for source audio only. They must not enter STT, Editing, GUI, render, cut, concat, or subtitle burn-in surfaces.
 
 ## Recommended Next Slice
 
 Current recommended work:
 
-`INT-02e yt-dlp-audio real URL operator smoke`, limited to source-audio URL fetch only.
+`SH-05d source-audio preview bridge`, limited to connecting already fetched source audio artifacts to the existing preview-pack review surface.
 
 Scope constraints for that next slice:
 
-- Add only `fetch-source-audio --mode yt-dlp-audio` or equivalent successor. Assistant-side implementation is present; external smoke remains.
-- Network access and yt-dlp execution must stay inside `src/integrations/asset_fetch/`.
-- FFmpeg still only normalizes fetched media to `source.wav`.
+- Consume existing `source.wav`, `fetch_receipt.json`, and `material_ledger.json`.
+- Do not add a new downloader.
 - Do not add `fetch-source-video`.
 - Do not add GUI fetch button.
 - Do not connect URL fetch to `transcribe-audio`.
@@ -123,7 +122,7 @@ Scope constraints for that next slice:
 - Rights status remains readback, not a hard gate.
 
 Default executor: assistant.
-User input required only for smoke URL selection and rights / terms review.
+User input is not required for the first design/implementation pass unless the bridge needs a production episode URL or creative acceptance.
 
 ## Quick Operator Check
 
