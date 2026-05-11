@@ -9,6 +9,7 @@ This file is the shortest project-local handoff for resuming from another termin
 - Branch: `main`
 - Upstream: `origin/main`
 - Latest completed feature slice: `SH-05c GUI read-only preview pack ingest`
+- Current feature slice: `INT-02e yt-dlp-audio source audio URL fetch` (assistant-side implementation in progress; real URL smoke awaits user URL selection and rights / terms review)
 - SH-05c implementation commit before this handoff: `5a16f75 feat(SH-05c): add preview pack GUI ingest`
 - Working tree expectation after pull: clean
 
@@ -88,9 +89,9 @@ Readback from the visual evidence:
 
 ## Hard Boundaries Still In Force
 
-Not implemented yet:
+Not implemented / not accepted yet:
 
-- `yt-dlp-audio` actual execution
+- `yt-dlp-audio` real URL operator smoke (requires user URL selection and rights / terms review)
 - network fetch
 - `fetch-source-video`
 - GUI fetch button
@@ -106,13 +107,13 @@ FFmpeg remains an `asset_fetch` local media audio normalization adapter only. It
 
 ## Recommended Next Slice
 
-Next recommended work:
+Current recommended work:
 
-`INT-02e yt-dlp-audio actual implementation`, limited to source-audio URL fetch only.
+`INT-02e yt-dlp-audio real URL operator smoke`, limited to source-audio URL fetch only.
 
 Scope constraints for that next slice:
 
-- Add only `fetch-source-audio --mode yt-dlp-audio` or equivalent successor.
+- Add only `fetch-source-audio --mode yt-dlp-audio` or equivalent successor. Assistant-side implementation is present; external smoke remains.
 - Network access and yt-dlp execution must stay inside `src/integrations/asset_fetch/`.
 - FFmpeg still only normalizes fetched media to `source.wav`.
 - Do not add `fetch-source-video`.
@@ -120,6 +121,9 @@ Scope constraints for that next slice:
 - Do not connect URL fetch to `transcribe-audio`.
 - Do not add render / encode / cut / concat / subtitle burn-in.
 - Rights status remains readback, not a hard gate.
+
+Default executor: assistant.
+User input required only for smoke URL selection and rights / terms review.
 
 ## Quick Operator Check
 

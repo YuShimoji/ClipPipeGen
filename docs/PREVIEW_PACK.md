@@ -181,7 +181,7 @@ SH-05b+ では、DOM readback だけではなく実画面として `preview_repo
 - `subtitle_count=4`
 - `preview_manifest` validation issues: `[]`
 
-SH-05b+ でも、yt-dlp / network fetch / `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / creative acceptance は扱わない。
+SH-05b+ でも、yt-dlp / network fetch / `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / creative acceptance は扱わない。INT-02e の `yt-dlp-audio` は preview pack とは別の asset_fetch slice として扱う。
 
 ### SH-05c GUI Read-Only Ingest
 
@@ -214,7 +214,7 @@ Readback result:
 - artifact links 6件 all `exists`
 - Preview Pack panel has no form/button execution controls
 
-SH-05c keeps the SH-05 boundary: no yt-dlp, network fetch, `fetch-source-video`, GUI fetch button, GUI-triggered `build-local-preview-pack`, rendered video preview, cut / concat, subtitle burn-in, render / encode, creative acceptance, or rights hard gate.
+SH-05c keeps the SH-05 boundary: no yt-dlp, network fetch, `fetch-source-video`, GUI fetch button, GUI-triggered `build-local-preview-pack`, rendered video preview, cut / concat, subtitle burn-in, render / encode, creative acceptance, or rights hard gate. INT-02e may create source audio via yt-dlp in `asset_fetch`, but SH-05 / SH-05c do not invoke it.
 
 ## Fake Transcript
 
@@ -224,8 +224,8 @@ fixture 指定時も `transcribe-audio --engine fake` を使うため、`preview
 
 ## Remaining Out Of Scope
 
-- `yt-dlp-audio` actual implementation
-- network fetch
+- `yt-dlp-audio` real URL operator smoke and preview-pack integration
+- source video network fetch
 - `fetch-source-video`
 - GUI fetch button
 - rendered video preview

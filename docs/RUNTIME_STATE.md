@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。samples runnable
-- **current_slice**: Slice 2 — SH-05c GUI read-only preview pack ingest は done。GUI の Preview Pack tab が既存 episode directory または `preview_manifest.json` を読み、manifest validation、Status Summary、Decision Warnings、Artifact Links を read-only 表示する
-- **next_action（assistant 側）**: 次の推奨は INT-02d の仕様に従い `yt-dlp-audio` 実装 slice を source audio URL fetch のみに限定して進めること。`fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode はまだ未実装
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d done。INT-02e は assistant-side 実装 in_progress。samples runnable
+- **current_slice**: Slice 2 — INT-02e `yt-dlp-audio` source audio URL fetch。`fetch-source-audio --mode yt-dlp-audio` は source audio URL fetch のみに限定して実装し、yt-dlp は `src/integrations/asset_fetch/` 内で一時 media 取得だけ、FFmpeg は `source.wav` 正規化だけを担う。実 URL operator smoke は user-owned URL 選定と rights / terms review 待ち
+- **next_action（assistant 側）**: User が smoke URL と rights / terms review 結果を渡したら、assistant が `fetch-source-audio --mode yt-dlp-audio --dry-run` → actual smoke → receipt / sidecar / ledger / WAV readback を行う。`fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode はまだ未実装
+
+### Slice 2 (xviii) INT-02e in_progress（yt-dlp-audio source audio URL fetch）
+
+- `src/integrations/asset_fetch/yt_dlp_audio.py` — yt-dlp path discovery（`--yt-dlp-path` → `CLIPPIPE_YTDLP` → PATH）、dry-run-safe plan、yt-dlp version readback、URL download、temporary intermediate selection、existing FFmpeg adapter への normalization handoff、combined stderr digest、failure cleanup を追加
+- `src/cli/fetch_source_audio.py` — `--mode yt-dlp-audio` / `--yt-dlp-path` を追加。実行は yt-dlp fetch → FFmpeg normalize → sidecar / receipt / ledger write に限定。dry-run は network / subprocess を呼ばず command plan を返す
+- Receipt readback — mode/provider/tools/commands/input/intermediate/output/warnings/stderr digest/rights snapshot/rollback を保存。`intermediate.retained=false`、rights は `hard_gate=false`
+- Boundary — `fetch-source-video`、GUI fetch button、GUI からの fetch/build/render、`transcribe-audio` URL / VOD fetch、cut / concat、subtitle burn-in、render / encode は追加していない
+- Assistant-side validation — fake runner / monkeypatch / dry-run / boundary tests で source audio URL fetch surface を確認。実 URL smoke は user-owned URL selection and rights / terms review が必要
 
 ### Slice 2 (xvii) SH-05c done（GUI read-only preview pack ingest）
 
@@ -256,7 +264,7 @@
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only は実施済み。次の推奨は仕様に従い `yt-dlp-audio` の実装 slice を source audio URL fetch のみに限定して扱うこと。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の assistant-side 実装は実施済み。次の推奨は user-owned URL 選定と rights / terms review に基づく real URL operator smoke。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

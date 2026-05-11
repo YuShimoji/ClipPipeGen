@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from src.integrations.asset_fetch import fake_audio, ffmpeg_audio
+from src.integrations.asset_fetch import fake_audio, ffmpeg_audio, yt_dlp_audio
 from src.pipeline.material_ledger import (
     LedgerError,
     build_skeleton,
@@ -33,8 +33,13 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--source-url")
     parser.add_argument("--local-media")
     parser.add_argument("--material-id", required=True)
-    parser.add_argument("--mode", choices=("fake", "local-media-audio"), required=True)
+    parser.add_argument(
+        "--mode",
+        choices=("fake", "local-media-audio", "yt-dlp-audio"),
+        required=True,
+    )
     parser.add_argument("--ffmpeg-path")
+    parser.add_argument("--yt-dlp-path")
     parser.add_argument("--root", default="episodes")
     parser.add_argument("--registered-by")
     parser.add_argument("--dry-run", action="store_true")
@@ -56,6 +61,7 @@ def run(argv: list[str]) -> int:
         mode=args.mode,
         paths=paths,
         ffmpeg_path=args.ffmpeg_path,
+        yt_dlp_path=args.yt_dlp_path,
         will_write=not args.dry_run,
     )
 
@@ -95,7 +101,7 @@ def run(argv: list[str]) -> int:
                 preflight=preflight,
                 force=args.force,
             )
-        else:
+        elif args.mode == "local-media-audio":
             receipt = _execute_local_media_audio(
                 episode_id=args.episode_id,
                 local_media=args.local_media,
@@ -106,10 +112,25 @@ def run(argv: list[str]) -> int:
                 force=args.force,
                 ffmpeg_path=args.ffmpeg_path,
             )
+        else:
+            receipt = _execute_yt_dlp_audio(
+                episode_id=args.episode_id,
+                source_url=args.source_url,
+                material_id=args.material_id,
+                registered_by=registered_by,
+                paths=paths,
+                preflight=preflight,
+                force=args.force,
+                yt_dlp_path=args.yt_dlp_path,
+                ffmpeg_path=args.ffmpeg_path,
+            )
     except (LedgerError, ValueError) as exc:
         print(f"fetch-source-audio failed: {exc}", file=sys.stderr)
         return 1
     except ffmpeg_audio.FfmpegError as exc:
+        print(f"fetch-source-audio failed: {exc}", file=sys.stderr)
+        return 1
+    except yt_dlp_audio.YtDlpAudioError as exc:
         print(f"fetch-source-audio failed: {exc}", file=sys.stderr)
         return 1
 
@@ -127,18 +148,30 @@ def _mode_arg_error(args: argparse.Namespace) -> str | None:
         if args.local_media:
             return "--local-media is only valid when --mode local-media-audio"
         if args.ffmpeg_path:
-            return "--ffmpeg-path is only valid when --mode local-media-audio"
+            return "--ffmpeg-path is only valid when --mode local-media-audio or --mode yt-dlp-audio"
+        if args.yt_dlp_path:
+            return "--yt-dlp-path is only valid when --mode yt-dlp-audio"
         return None
     if args.mode == "local-media-audio":
         if not args.local_media:
             return "--local-media is required when --mode local-media-audio"
         if args.source_url:
             return "--mode local-media-audio does not accept --source-url"
+        if args.yt_dlp_path:
+            return "--yt-dlp-path is only valid when --mode yt-dlp-audio"
+        return None
+    if args.mode == "yt-dlp-audio":
+        if not args.source_url:
+            return "--source-url is required when --mode yt-dlp-audio"
+        if args.local_media:
+            return "--local-media is only valid when --mode local-media-audio"
         return None
     return f"unsupported mode: {args.mode}"
 
 
 def _default_registered_by(mode: str) -> str:
+    if mode == "yt-dlp-audio":
+        return "tool:asset_fetch_yt_dlp_audio"
     if mode == "local-media-audio":
         return "tool:asset_fetch_local_media_audio"
     return "tool:asset_fetch_fake"
@@ -167,6 +200,7 @@ def _preflight(
     mode: str,
     paths: dict[str, Path],
     ffmpeg_path: str | None,
+    yt_dlp_path: str | None,
     will_write: bool,
 ) -> dict[str, Any]:
     payload = {
@@ -192,6 +226,14 @@ def _preflight(
             ffmpeg_path=ffmpeg_path,
         ).to_dict()
         payload["will_call_subprocess"] = will_write
+    elif mode == "yt-dlp-audio":
+        payload["command_plan"] = yt_dlp_audio.build_plan(
+            source_url=source_url or "",
+            output_path=paths["audio"],
+            yt_dlp_path=yt_dlp_path,
+            ffmpeg_path=ffmpeg_path,
+        ).to_dict()
+        payload["will_call_subprocess"] = will_write
     else:
         payload["command_plan"] = None
         payload["will_call_subprocess"] = False
@@ -199,7 +241,7 @@ def _preflight(
 
 
 def _audio_format_for_mode(mode: str) -> dict[str, Any]:
-    if mode == "local-media-audio":
+    if mode in {"local-media-audio", "yt-dlp-audio"}:
         return ffmpeg_audio.audio_format()
     return {
         "container": "wav",
@@ -359,6 +401,84 @@ def _execute_local_media_audio(
         created_at=now,
         preflight=preflight,
         normalize_result=result,
+    )
+    _save_json(receipt, paths["receipt"])
+    return receipt
+
+
+def _execute_yt_dlp_audio(
+    *,
+    episode_id: str,
+    source_url: str,
+    material_id: str,
+    registered_by: str,
+    paths: dict[str, Path],
+    preflight: dict[str, Any],
+    force: bool,
+    yt_dlp_path: str | None,
+    ffmpeg_path: str | None,
+) -> dict[str, Any]:
+    rights = load_rights_manifest(paths["rights_manifest"])
+    compliance = rights.get("compliance_check") or {}
+    rights_status = compliance.get("status", "pending")
+
+    if paths["ledger"].exists():
+        ledger = (
+            _ledger_without_material(paths["ledger"], material_id)
+            if force
+            else load_ledger(paths["ledger"])
+        )
+    else:
+        ledger = build_skeleton(episode_id)
+
+    result = yt_dlp_audio.fetch_url_audio(
+        source_url=source_url,
+        output_path=paths["audio"],
+        yt_dlp_path=yt_dlp_path,
+        ffmpeg_path=ffmpeg_path,
+    )
+    asset_hash = compute_sha256(paths["audio"])
+    now = datetime.now(timezone.utc).isoformat()
+    sidecar = _build_sidecar(
+        material_id=material_id,
+        audio_path=paths["audio"],
+        asset_hash=asset_hash,
+        source_url=source_url,
+        retrieved_at=now,
+        retrieved_by=registered_by,
+        retrieval_method=yt_dlp_audio.RETRIEVAL_METHOD,
+        source_notes=(
+            "Source audio fetched from URL by yt-dlp inside asset_fetch and "
+            "normalized by FFmpeg; downloaded intermediate media is not retained."
+        ),
+    )
+    save_sidecar(sidecar, paths["sidecar"])
+
+    ledger = register_material(
+        ledger,
+        kind="source_audio",
+        subkind=yt_dlp_audio.SUBKIND,
+        file_path=_display_path(paths["audio"], Path.cwd()),
+        sidecar_path=_display_path(paths["sidecar"], Path.cwd()),
+        intended_uses=["editing_audio"],
+        registered_by=registered_by,
+        rights_manifest_id=rights.get("episode_id", episode_id),
+        rights_status_at_registration=rights_status,
+        material_id=material_id,
+    )
+    save_ledger(ledger, paths["ledger"])
+
+    receipt = _build_yt_dlp_audio_receipt(
+        episode_id=episode_id,
+        material_id=material_id,
+        source_url=source_url,
+        output_path=paths["audio"],
+        sha256=asset_hash,
+        byte_size=paths["audio"].stat().st_size,
+        created_at=now,
+        preflight=preflight,
+        fetch_result=result,
+        rights_status=rights_status,
     )
     _save_json(receipt, paths["receipt"])
     return receipt
@@ -537,6 +657,96 @@ def _build_local_media_receipt(
         ],
         "warnings": normalize_result.warnings,
         "stderr_digest": normalize_result.stderr_digest,
+        "preflight": preflight,
+    }
+
+
+def _build_yt_dlp_audio_receipt(
+    *,
+    episode_id: str,
+    material_id: str,
+    source_url: str,
+    output_path: Path,
+    sha256: str,
+    byte_size: int,
+    created_at: str,
+    preflight: dict[str, Any],
+    fetch_result: yt_dlp_audio.YtDlpAudioResult,
+    rights_status: str,
+) -> dict[str, Any]:
+    output_display = _display_path(output_path, Path.cwd())
+    ffmpeg_result = fetch_result.ffmpeg_result
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "episode_id": episode_id,
+        "material_id": material_id,
+        "mode": "yt-dlp-audio",
+        "source_url": source_url,
+        "output_path": output_display,
+        "sha256": sha256,
+        "byte_size": byte_size,
+        "created_at": created_at,
+        "rollback": {
+            "files": [
+                preflight["output_path"],
+                preflight["sidecar_path"],
+                preflight["receipt_path"],
+            ],
+            "ledger_material_id": material_id,
+        },
+        "command_summary": "fetch-source-audio --mode yt-dlp-audio",
+        "provider": yt_dlp_audio.PROVIDER,
+        "tools": [
+            {
+                "name": "yt-dlp",
+                "path": fetch_result.yt_dlp_path,
+                "path_source": fetch_result.yt_dlp_path_source,
+                "version": fetch_result.yt_dlp_version,
+            },
+            {
+                "name": "ffmpeg",
+                "path": ffmpeg_result.ffmpeg_path,
+                "path_source": ffmpeg_result.ffmpeg_path_source,
+                "version": ffmpeg_result.ffmpeg_version,
+            },
+        ],
+        "commands": [
+            {
+                "summary": fetch_result.yt_dlp_command_summary,
+                "exit_code": fetch_result.yt_dlp_exit_code,
+            },
+            {
+                "summary": ffmpeg_result.command_summary,
+                "exit_code": ffmpeg_result.exit_code,
+            },
+        ],
+        "input": {
+            "source_url": source_url,
+            "local_path": None,
+        },
+        "intermediate": {
+            "name": fetch_result.downloaded_intermediate_name,
+            "byte_size": fetch_result.downloaded_intermediate_byte_size,
+            "retained": fetch_result.intermediate_retained,
+        },
+        "outputs": [
+            {
+                "path": output_display,
+                "sha256": sha256,
+                "byte_size": byte_size,
+                "duration_seconds": ffmpeg_result.duration_seconds,
+            }
+        ],
+        "warnings": fetch_result.warnings,
+        "stderr_digest": fetch_result.stderr_digest,
+        "tool_stderr_digests": {
+            "yt_dlp": fetch_result.yt_dlp_stderr_digest,
+            "ffmpeg": ffmpeg_result.stderr_digest,
+        },
+        "rights_snapshot": {
+            "compliance_status_at_fetch": rights_status,
+            "hard_gate": False,
+        },
         "preflight": preflight,
     }
 

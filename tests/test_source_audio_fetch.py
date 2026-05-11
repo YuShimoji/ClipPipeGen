@@ -339,6 +339,189 @@ def test_fetch_source_audio_local_media_audio_dry_run_writes_nothing(
     assert not (ep_dir / "material_ledger.json").exists()
 
 
+def test_fetch_source_audio_ytdlp_audio_dry_run_writes_nothing(tmp_path: Path, capsys):
+    root, ep_dir = _prepare_episode(tmp_path)
+
+    result = fetch_source_audio.run(
+        [
+            "--episode-id",
+            "ep_audio",
+            "--root",
+            str(root),
+            "--source-url",
+            "https://www.youtube.com/watch?v=AAA",
+            "--material-id",
+            "src_audio_url",
+            "--mode",
+            "yt-dlp-audio",
+            "--yt-dlp-path",
+            "C:/tools/yt-dlp.exe",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--dry-run",
+        ]
+    )
+
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+    assert result == 0
+    assert payload["will_write"] is False
+    assert payload["will_call_subprocess"] is False
+    assert payload["command_plan"]["yt_dlp_path"] == "C:/tools/yt-dlp.exe"
+    assert payload["command_plan"]["ffmpeg_plan"]["ffmpeg_path"] == "C:/tools/ffmpeg.exe"
+    assert payload["command_plan"]["yt_dlp_command"]
+    assert not (ep_dir / "materials").exists()
+    assert not (ep_dir / "material_ledger.json").exists()
+
+
+def test_fetch_source_audio_ytdlp_audio_creates_receipt_without_rights_hard_gate(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_episode(tmp_path)
+    manifest = _rights_passed("ep_audio")
+    manifest = set_compliance_status(
+        manifest,
+        status="failed",
+        checked_by="user:tester",
+    )
+    save_rights_manifest(manifest, ep_dir / "rights_manifest.json")
+
+    def fake_fetch_url_audio(*, source_url, output_path, yt_dlp_path, ffmpeg_path):
+        assert source_url == "https://www.youtube.com/watch?v=AAA"
+        assert yt_dlp_path == "C:/tools/yt-dlp.exe"
+        assert ffmpeg_path == "C:/tools/ffmpeg.exe"
+        fake_audio.write_silent_wav(output_path, duration_seconds=3.0)
+        ffmpeg_result = fetch_source_audio.ffmpeg_audio.NormalizeResult(
+            ffmpeg_path="C:/tools/ffmpeg.exe",
+            ffmpeg_path_source="argument",
+            ffmpeg_version="ffmpeg version test",
+            command=[
+                "C:/tools/ffmpeg.exe",
+                "-y",
+                "-i",
+                "source.webm",
+                "-vn",
+                "-ac",
+                "1",
+                "-ar",
+                "16000",
+                "-sample_fmt",
+                "s16",
+                "-acodec",
+                "pcm_s16le",
+                str(output_path),
+            ],
+            command_summary="C:/tools/ffmpeg.exe -y -i source.webm ... source.wav",
+            exit_code=0,
+            stderr_digest={
+                "algorithm": "sha256",
+                "sha256": "f" * 64,
+                "tail": "ffmpeg ok",
+                "tail_chars": 800,
+                "truncated": False,
+            },
+            duration_seconds=3.0,
+            warnings=["output WAV duration is read after normalization"],
+        )
+        return fetch_source_audio.yt_dlp_audio.YtDlpAudioResult(
+            yt_dlp_path="C:/tools/yt-dlp.exe",
+            yt_dlp_path_source="argument",
+            yt_dlp_version="2026.05.01",
+            yt_dlp_command=[
+                "C:/tools/yt-dlp.exe",
+                "--no-playlist",
+                "--no-progress",
+                "-f",
+                "bestaudio/best",
+                "-o",
+                "source.%(ext)s",
+                source_url,
+            ],
+            yt_dlp_command_summary=(
+                "C:/tools/yt-dlp.exe --no-playlist --no-progress "
+                "-f bestaudio/best -o source.%(ext)s <url>"
+            ),
+            yt_dlp_exit_code=0,
+            yt_dlp_stderr_digest={
+                "algorithm": "sha256",
+                "sha256": "y" * 64,
+                "tail": "yt-dlp ok",
+                "tail_chars": 800,
+                "truncated": False,
+            },
+            downloaded_intermediate_name="source.webm",
+            downloaded_intermediate_byte_size=123,
+            intermediate_retained=False,
+            ffmpeg_result=ffmpeg_result,
+            stderr_digest={
+                "algorithm": "sha256",
+                "sha256": "c" * 64,
+                "tail": "combined ok",
+                "tail_chars": 800,
+                "truncated": False,
+            },
+            warnings=["downloaded intermediate media deleted after normalization"],
+        )
+
+    monkeypatch.setattr(
+        fetch_source_audio.yt_dlp_audio,
+        "fetch_url_audio",
+        fake_fetch_url_audio,
+    )
+
+    result = fetch_source_audio.run(
+        [
+            "--episode-id",
+            "ep_audio",
+            "--root",
+            str(root),
+            "--source-url",
+            "https://www.youtube.com/watch?v=AAA",
+            "--material-id",
+            "src_audio_url",
+            "--mode",
+            "yt-dlp-audio",
+            "--yt-dlp-path",
+            "C:/tools/yt-dlp.exe",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+        ]
+    )
+
+    assert result == 0
+    material_dir = ep_dir / "materials" / "src_audio_url"
+    receipt = json.loads((material_dir / "fetch_receipt.json").read_text(encoding="utf-8"))
+    sidecar = json.loads((material_dir / "sidecar.json").read_text(encoding="utf-8"))
+    assert receipt["mode"] == "yt-dlp-audio"
+    assert receipt["provider"] == "yt-dlp"
+    assert receipt["source_url"] == "https://www.youtube.com/watch?v=AAA"
+    assert receipt["input"] == {
+        "source_url": "https://www.youtube.com/watch?v=AAA",
+        "local_path": None,
+    }
+    assert [tool["name"] for tool in receipt["tools"]] == ["yt-dlp", "ffmpeg"]
+    assert [command["exit_code"] for command in receipt["commands"]] == [0, 0]
+    assert receipt["intermediate"] == {
+        "name": "source.webm",
+        "byte_size": 123,
+        "retained": False,
+    }
+    assert receipt["outputs"][0]["duration_seconds"] == 3.0
+    assert receipt["rights_snapshot"] == {
+        "compliance_status_at_fetch": "failed",
+        "hard_gate": False,
+    }
+    assert sidecar["source"]["retrieval_method"] == "asset_fetch_yt_dlp_audio"
+    assert sidecar["source"]["url"] == "https://www.youtube.com/watch?v=AAA"
+
+    ledger = load_ledger(ep_dir / "material_ledger.json")
+    entry = ledger["materials"][0]
+    assert entry["id"] == "src_audio_url"
+    assert entry["kind"] == "source_audio"
+    assert entry["compliance_link"]["compliance_status_at_registration"] == "failed"
+
+
 def test_fetch_source_audio_local_media_audio_rejects_source_url(tmp_path: Path):
     root, _ = _prepare_episode(tmp_path)
     source_media = tmp_path / "input.mp4"

@@ -1,4 +1,4 @@
-"""INT-02b/INT-02c: asset_fetch boundary guards."""
+"""INT-02b/INT-02c/INT-02d/INT-02e: asset_fetch boundary guards."""
 
 from __future__ import annotations
 
@@ -74,11 +74,11 @@ def test_fetch_source_audio_exposes_only_source_audio_modes():
     )
 
     assert result.returncode == 0, result.stderr
-    assert "{fake,local-media-audio}" in result.stdout
+    assert "{fake,local-media-audio,yt-dlp-audio}" in result.stdout
     assert "--local-media" in result.stdout
     assert "--ffmpeg-path" in result.stdout
-    assert "yt-dlp-audio" not in result.stdout.lower()
-    assert "yt-dlp" not in result.stdout.lower()
+    assert "--yt-dlp-path" in result.stdout
+    assert "yt-dlp-audio" in result.stdout.lower()
     assert "fetch-source-video" not in result.stdout.lower()
 
 
