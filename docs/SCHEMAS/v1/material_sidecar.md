@@ -20,7 +20,7 @@ JSON。
   "asset_hash_sha256": "abcdef0123...",
   "source": {
     "kind": "official_clip_permitted_source",
-    "url": "https://www.youtube.com/watch?v=XXXX",
+    "url": "https://example.com/permitted-source/video-XXXX",
     "retrieved_at": "2026-05-06T11:00:00+09:00",
     "retrieved_by": "user:thankyoukass",
     "retrieval_method": "manual_screenshot",
@@ -45,7 +45,7 @@ JSON。
     "modification": "allowed_minor_only",
     "redistribution": "denied"
   },
-  "attribution_text": "© hololive production / 元動画: https://www.youtube.com/watch?v=XXXX",
+  "attribution_text": "© hololive production / 元動画: https://example.com/permitted-source/video-XXXX",
   "derived_from": null
 }
 ```
@@ -87,6 +87,8 @@ ledger と一致する。改竄検出用。
 | `notes` | optional | 補足 |
 
 `source.kind` 候補:
+
+`asset_fetch` が生成する URL readback は query / fragment / userinfo を scrub し、secret・token・署名付き query を sidecar に残さない。追跡に必要な識別情報は、必要に応じて `source.notes` や operator 側の review 記録に分けて残す。
 
 | 値 | 説明 |
 |---|---|

@@ -86,7 +86,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | `tools[].version` | 実行時に取得した version。version check 失敗時は INT-02c では失敗扱い |
 | `commands[].summary` | secret を含まない command 概要 |
 | `commands[].exit_code` | tool process の終了 code |
-| `input.source_url` | URL 取得 mode の入力 URL。INT-02c では `null` |
+| `input.source_url` | URL 取得 mode の scrub 済み入力 URL readback。query / fragment / userinfo は残さない。INT-02c では `null` |
 | `input.local_path` | local media mode の入力 file |
 | `outputs[].path` | 生成 file |
 | `outputs[].sha256` | 生成 file hash |

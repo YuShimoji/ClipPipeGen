@@ -350,7 +350,7 @@ def test_fetch_source_audio_ytdlp_audio_dry_run_writes_nothing(tmp_path: Path, c
             "--root",
             str(root),
             "--source-url",
-            "https://www.youtube.com/watch?v=AAA",
+            "https://user:password@example.com/watch?v=AAA&token=secret#frag",
             "--material-id",
             "src_audio_url",
             "--mode",
@@ -371,6 +371,14 @@ def test_fetch_source_audio_ytdlp_audio_dry_run_writes_nothing(tmp_path: Path, c
     assert payload["command_plan"]["yt_dlp_path"] == "C:/tools/yt-dlp.exe"
     assert payload["command_plan"]["ffmpeg_plan"]["ffmpeg_path"] == "C:/tools/ffmpeg.exe"
     assert payload["command_plan"]["yt_dlp_command"]
+    assert payload["source_url"] == (
+        "https://<userinfo:redacted>@example.com/watch"
+        "?<query:redacted>#<fragment:redacted>"
+    )
+    assert payload["command_plan"]["source_url"] == payload["source_url"]
+    assert payload["command_plan"]["yt_dlp_command"][-1] == payload["source_url"]
+    assert "token=secret" not in json.dumps(payload, ensure_ascii=False)
+    assert "password" not in json.dumps(payload, ensure_ascii=False)
     assert not (ep_dir / "materials").exists()
     assert not (ep_dir / "material_ledger.json").exists()
 
