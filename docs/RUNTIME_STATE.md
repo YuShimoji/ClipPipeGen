@@ -42,9 +42,19 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
-- **current_slice**: Slice 2 — ED-06 `minimal NLE export` is implemented。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成し、cut range、title/reason、subtitle draft、source refs、source audio provenance、fake/fixture transcript warning を外部編集へ渡せる readback として接続した。これは production edit acceptance ではなく export plumbing proof
-- **next_action（assistant 側）**: 次は fake / fixture 依存を下げるなら real STT adapter を優先する。source-video acquisition は visual timeline / tiny render を成立させる前提として後続候補、tiny render proof は source video が無い状態では弱いため、real STT または source-video acquisition の後に回す。GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / publishing はまだ未実装のまま分離する
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
+- **current_slice**: Slice 2 — ED-07b `real STT transcript path` is implemented。optional Vosk adapter で既存 `source.wav` から `real_transcript=true` の `transcript.json` を生成し、その transcript を `generate-cuts` / `check-cut-context` / `generate-subtitles` / ED-06 `export-nle` の CSV readback へ流せるようにした。これは STT quality / creative edit / render / publishing acceptance ではなく、実音声由来の export plumbing proof
+- **next_action（assistant 側）**: 次は source-video acquisition を優先候補にする。tiny render proof は artifact output を早く見せられるが、source video が無い状態では弱い。STT provider hardening / transcript review は、operator が transcript 修正に詰まった場合の補強候補。GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / publishing はまだ未実装のまま分離する
+
+### Slice 2 (xxi) ED-07b done（real STT transcript path）
+
+- `src/integrations/stt/vosk_adapter.py` — optional Vosk adapter を追加。provider は repo dependency にせず、`uvx --with vosk ...` など実行環境側で解決する。`preflight_vosk` は provider importability、model directory、mono 16-bit PCM WAV を確認し、欠落時は fixture fallback せず明示 failure にする
+- `src/cli/transcribe_audio.py` — `--engine fake` に加えて `--engine vosk --model <path>` を実装。`--source-audio-path` alias、`--dry-run`、`--format json`、`--provider` alias、`--force` を追加し、`material_ledger` / `material_id` link と source audio hash / duration / sample rate / channels を readback する
+- `src/pipeline/transcript.py` — `stt.provider`、`stt.real_transcript`、`stt.segment_count`、top-level `segment_count` を保存。real STT 由来の transcript は `real_transcript=true`、fake / fixture は false のまま
+- `src/pipeline/nle_export.py` / `src/cli/export_nle.py` — explicit または sibling `transcript.json` を読み、CSV / manifest / report に transcript provider、engine、model、real flag、segment count、duration を出す。material ledger fallback では sidecar / sibling receipt も見て source audio provider / mode / hash を補う
+- Smoke readback — ignored `episodes/ed07b_real_stt_smoke_20260512` で Windows TTS 生成の `source.wav` を Vosk model `_tmp/stt_models/vosk-model-small-en-us-0.15` に通し、`transcript.json`（1 segment / 9.45 秒 / `real_transcript=true`）を生成。そこから 1 cut、context passed、1 subtitle、ED-06 `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` まで通した
+- Assistant-side validation — targeted transcript / STT adapter / edit path / ED-06 export tests、`uvx pytest -q`（131 passed）、`npm run smoke`、`npm run smoke:electron`、`git diff --check` を通過
+- Boundary — STT 精度評価、話者分離、transcript correction UI、source-video acquisition、render / encode、subtitle burn-in、GUI STT button、GUI export button、publishing は追加していない。real transcript 由来でも `production_edit_candidate=false` のまま、draft / unreviewed として扱う
 
 ### Slice 2 (xx) ED-06 done（minimal NLE export）
 

@@ -1,7 +1,8 @@
 """transcribe-audio subcommand: local audio -> transcript.json.
 
-ED-07 only provides the adapter surface. The initial executable engine is
-`fake`, which consumes fixture segments for deterministic tests and smoke runs.
+ED-07 provides the transcript artifact surface. `fake` consumes fixture
+segments for deterministic tests; `vosk` is an optional local real-STT adapter
+that requires an explicit model path and never falls back to fixture data.
 """
 
 from __future__ import annotations
@@ -12,6 +13,12 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from src.integrations.stt.vosk_adapter import (
+    VoskSttError,
+    preflight_vosk,
+    transcribe_vosk,
+    try_read_wav_info,
+)
 from src.pipeline.material_ledger import compute_sha256, load_ledger
 from src.pipeline.transcript import (
     build_transcript,
@@ -26,15 +33,27 @@ def run(argv: list[str]) -> int:
         description="Create transcript.json from an existing local audio file.",
     )
     parser.add_argument("--episode-id", required=True)
-    parser.add_argument("--source-audio", required=True)
+    parser.add_argument("--source-audio", "--source-audio-path", dest="source_audio", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--language", default="ja")
-    parser.add_argument("--engine", choices=("fake",), required=True)
+    parser.add_argument("--engine", choices=("fake", "vosk"))
+    parser.add_argument("--provider", choices=("fake", "vosk"), help="alias for --engine")
+    parser.add_argument("--model", help="model name or path for real STT providers")
     parser.add_argument("--fixture-segments")
     parser.add_argument("--material-ledger")
     parser.add_argument("--material-id")
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args(argv)
+    try:
+        engine = _resolve_engine(args.engine, args.provider)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+    if engine is None:
+        print("transcribe-audio requires --engine or --provider", file=sys.stderr)
+        return 1
 
     if "://" in args.source_audio:
         print(
@@ -49,7 +68,7 @@ def run(argv: list[str]) -> int:
         return 1
 
     output_path = Path(args.output)
-    if output_path.exists() and not args.force:
+    if output_path.exists() and not args.force and not args.dry_run:
         print(
             f"refusing to overwrite existing transcript: {output_path} "
             "(use --force to overwrite)",
@@ -57,40 +76,37 @@ def run(argv: list[str]) -> int:
         )
         return 1
 
-    if not args.fixture_segments:
-        print("--fixture-segments is required for --engine fake", file=sys.stderr)
-        return 1
-
     try:
-        segments = _load_fixture_segments(Path(args.fixture_segments))
         material_id = _validate_material_link(
             material_ledger_path=args.material_ledger,
             material_id=args.material_id,
             source_audio=source_audio,
         )
-    except ValueError as exc:
+        if args.dry_run:
+            payload = _dry_run_payload(
+                engine=engine,
+                source_audio=source_audio,
+                output_path=output_path,
+                language=args.language,
+                model=args.model,
+                fixture_segments=args.fixture_segments,
+                material_id=material_id,
+            )
+            _print_payload(payload, fmt=args.format)
+            return 0 if payload["preflight_ok"] else 1
+        transcript = _build_transcript(
+            episode_id=args.episode_id,
+            source_audio=source_audio,
+            language=args.language,
+            engine=engine,
+            model=args.model,
+            fixture_segments=args.fixture_segments,
+            material_id=material_id,
+        )
+    except (ValueError, VoskSttError) as exc:
         print(f"transcribe-audio failed: {exc}", file=sys.stderr)
         return 1
 
-    warnings = []
-    if not segments:
-        warnings.append("fake engine fixture produced no segments")
-
-    transcript = build_transcript(
-        args.episode_id,
-        source_audio_path=_display_path(source_audio, Path.cwd()),
-        language=args.language,
-        stt_engine=args.engine,
-        stt_engine_version="fake-v1",
-        stt_params={
-            "fixture_segments": _display_path(Path(args.fixture_segments), Path.cwd()),
-            "language": args.language,
-        },
-        stt_warnings=warnings,
-        segments=segments,
-        material_id=material_id,
-        source_audio_sha256=compute_sha256(source_audio),
-    )
     issues = validate_transcript(transcript)
     if issues:
         print(f"transcribe-audio produced invalid transcript: {len(issues)} issue(s)", file=sys.stderr)
@@ -99,9 +115,157 @@ def run(argv: list[str]) -> int:
         return 1
 
     save_transcript(transcript, output_path)
-    print(f"created: {output_path}")
-    print(f"segments: {len(transcript['segments'])}")
+    payload = {
+        "created": str(output_path).replace("\\", "/"),
+        "segments": len(transcript["segments"]),
+        "duration_seconds": transcript.get("source_audio", {}).get("duration_seconds"),
+        "provider": transcript["stt"].get("provider"),
+        "engine": transcript["stt"].get("engine"),
+        "model": transcript["stt"].get("model"),
+        "real_transcript": transcript["stt"].get("real_transcript"),
+        "warnings": transcript["stt"].get("warnings", []),
+    }
+    if args.format == "json":
+        _print_payload(payload, fmt=args.format)
+    else:
+        print(f"created: {output_path}")
+        print(f"segments: {len(transcript['segments'])}")
+        print(f"duration_seconds: {payload['duration_seconds']}")
+        print(f"provider: {payload['provider']}")
+        print(f"engine: {payload['engine']}")
+        print(f"model: {payload['model']}")
+        print(f"real_transcript: {str(payload['real_transcript']).lower()}")
+        for warning in payload["warnings"]:
+            print(f"warning: {warning}")
     return 0
+
+
+def _resolve_engine(engine: str | None, provider: str | None) -> str | None:
+    if engine and provider and engine != provider:
+        raise ValueError("--engine and --provider must match when both are provided")
+    return engine or provider
+
+
+def _build_transcript(
+    *,
+    episode_id: str,
+    source_audio: Path,
+    language: str,
+    engine: str,
+    model: str | None,
+    fixture_segments: str | None,
+    material_id: str | None,
+) -> dict[str, Any]:
+    audio_info = try_read_wav_info(source_audio)
+    common = {
+        "episode_id": episode_id,
+        "source_audio_path": _display_path(source_audio, Path.cwd()),
+        "language": language,
+        "material_id": material_id,
+        "source_audio_sha256": compute_sha256(source_audio),
+        "source_audio_duration_seconds": audio_info.duration_seconds if audio_info else None,
+        "source_audio_sample_rate_hz": audio_info.sample_rate_hz if audio_info else None,
+        "source_audio_channels": audio_info.channels if audio_info else None,
+    }
+    if engine == "fake":
+        if not fixture_segments:
+            raise ValueError("--fixture-segments is required for --engine fake")
+        segments = _load_fixture_segments(Path(fixture_segments))
+        warnings = []
+        if not segments:
+            warnings.append("fake engine fixture produced no segments")
+        return build_transcript(
+            **common,
+            stt_engine=engine,
+            stt_provider="fake",
+            stt_engine_version="fake-v1",
+            stt_params={
+                "fixture_segments": _display_path(Path(fixture_segments), Path.cwd()),
+                "language": language,
+            },
+            stt_warnings=warnings,
+            segments=segments,
+            real_transcript=False,
+        )
+
+    if engine == "vosk":
+        if not model:
+            raise ValueError("--model is required for --engine vosk")
+        result = transcribe_vosk(
+            source_audio_path=source_audio,
+            model_path=Path(model),
+            language=language,
+        )
+        return build_transcript(
+            **common,
+            stt_engine="vosk",
+            stt_provider="vosk",
+            stt_engine_version=result.engine_version,
+            stt_model=result.model_readback,
+            stt_params=result.params,
+            stt_warnings=[
+                *result.warnings,
+                "real STT plumbing proof only; transcript quality is not creative acceptance",
+            ],
+            segments=result.segments,
+            real_transcript=True,
+        )
+
+    raise ValueError(f"unsupported engine: {engine}")
+
+
+def _dry_run_payload(
+    *,
+    engine: str,
+    source_audio: Path,
+    output_path: Path,
+    language: str,
+    model: str | None,
+    fixture_segments: str | None,
+    material_id: str | None,
+) -> dict[str, Any]:
+    issues: list[str] = []
+    provider_payload: dict[str, Any] | None = None
+    if engine == "fake":
+        if not fixture_segments:
+            issues.append("--fixture-segments is required for --engine fake")
+        provider_payload = {"provider": "fake", "fixture_segments": fixture_segments}
+    elif engine == "vosk":
+        if not model:
+            issues.append("--model is required for --engine vosk")
+        else:
+            provider_payload = preflight_vosk(source_audio_path=source_audio, model_path=Path(model))
+            issues.extend(provider_payload["issues"])
+    else:
+        issues.append(f"unsupported engine: {engine}")
+    audio_info = try_read_wav_info(source_audio)
+    return {
+        "preflight_ok": not issues,
+        "will_write": False,
+        "engine": engine,
+        "provider": engine,
+        "real_transcript": engine != "fake",
+        "source_audio": _display_path(source_audio, Path.cwd()),
+        "output": str(output_path).replace("\\", "/"),
+        "language": language,
+        "model": model,
+        "material_id": material_id,
+        "audio": audio_info.to_dict() if audio_info else None,
+        "provider_preflight": provider_payload,
+        "issues": issues,
+    }
+
+
+def _print_payload(payload: dict[str, Any], *, fmt: str) -> None:
+    if fmt == "json":
+        json.dump(payload, sys.stdout, ensure_ascii=False, indent=2)
+        sys.stdout.write("\n")
+        return
+    for key, value in payload.items():
+        if isinstance(value, (dict, list)):
+            print(f"{key}: {json.dumps(value, ensure_ascii=False)}")
+        else:
+            print(f"{key}: {value}")
 
 
 def _load_fixture_segments(path: Path) -> list[dict[str, Any]]:

@@ -8,7 +8,7 @@ Speech-to-text の出力 artifact。ローカル音声ファイルを `transcrib
 
 - `transcribe-audio` は **既存のローカル音声ファイル**を入力にして `transcript.json` を生成する。
 - VOD / URL からの音声・動画取得は `transcribe-audio` に含めない。取得は INT-02 `asset_fetch`（`fetch-source-audio` / `fetch-source-video`）の責務。
-- 実 STT engine は未確定。ED-07 初期実装は `fake` engine で adapter surface を固め、後続候補として `whisper.cpp` subprocess を扱う。schema は engine に依存しない。
+- ED-07 初期の `fake` engine は fixture / deterministic test 用に残す。ED-07b では optional provider として `vosk` adapter を追加し、明示された model path で実 `source.wav` から transcript を生成できる。provider / model が無い場合は preflight failure にし、fixture へ fallback しない。
 - source audio の rights / sidecar / ledger 情報は readback と判断材料であり、値だけで transcript 生成を止める hard gate にはしない。
 
 ## ファイル形式
@@ -33,16 +33,22 @@ JSON。配置は `episodes/<episode_id>/transcript.json`。
     "channels": 2
   },
   "stt": {
-    "engine": "whisper.cpp",
+    "engine": "vosk",
+    "provider": "vosk",
     "engine_version": "unknown",
-    "model": "large-v3-turbo-q5_0",
+    "model": "_tmp/stt_models/vosk-model-small-en-us-0.15",
     "params": {
-      "language": "ja"
+      "language": "ja",
+      "model_path": "_tmp/stt_models/vosk-model-small-en-us-0.15",
+      "word_timing": true
     },
     "started_at": "2026-05-08T12:00:00+09:00",
     "completed_at": "2026-05-08T12:10:00+09:00",
-    "warnings": []
+    "warnings": [],
+    "real_transcript": true,
+    "segment_count": 1
   },
+  "segment_count": 1,
   "segments": [
     {
       "id": "seg_000001",
@@ -81,17 +87,20 @@ STT に渡したローカル音声ファイルの readback。
 
 ### `stt`
 
-実行した STT engine と readback。provider 固有値は `params` に閉じ込める。
+実行した STT engine と readback。provider 固有値は `params` に閉じ込める。fake / fixture 由来か、実音声から生成された transcript かは `real_transcript` で readback する。
 
 | フィールド | 型 | 必須 | 説明 |
 |---|---|---|---|
-| `engine` | string | ✓ | `whisper.cpp` / `local-whisper` / `external-api` 等 |
+| `engine` | string | ✓ | `fake` / `vosk` / future `whisper.cpp` 等 |
+| `provider` | string | optional | provider readback。未指定なら `engine` と同じ |
 | `engine_version` | string | optional | 実行 engine の version。取得不能なら `unknown` |
-| `model` | string | optional | 使用 model 名 |
+| `model` | string | optional | 使用 model 名または model path |
 | `params` | object | optional | language、beam size、temperature 等の engine 固有引数 |
 | `started_at` | string | optional | ISO 8601 |
 | `completed_at` | string | optional | ISO 8601 |
 | `warnings` | string[] | optional | engine warning / fallback なしで継続した注意点 |
+| `real_transcript` | boolean | optional | 実音声由来なら `true`。fake / fixture は `false` |
+| `segment_count` | number | optional | `segments[]` 件数の readback |
 
 ### `segments[]`
 
@@ -159,12 +168,22 @@ python -m src.cli.main transcribe-audio \
   --engine fake \
   --fixture-segments samples/episode_example/fixture_segments.json
 
+uvx --with vosk python -m src.cli.main transcribe-audio \
+  --episode-id episode_example \
+  --source-audio episodes/episode_example/materials/src_audio_001/source.wav \
+  --output episodes/episode_example/transcript.json \
+  --language ja \
+  --engine vosk \
+  --model _tmp/stt_models/vosk-model-small-ja-0.22 \
+  --material-ledger episodes/episode_example/material_ledger.json \
+  --material-id src_audio_001
+
 python -m src.cli.main validate-transcript \
   --transcript samples/episode_example/transcript.json \
   --format json
 ```
 
-ED-07 初期実装は `fake` engine のみ。fixture segments を読み、ローカル音声ファイルの存在確認・sha256・STT readback を付けて transcript を生成する。実 `whisper.cpp` 接続は後続 slice。
+`fake` engine は fixture segments を読み、ローカル音声ファイルの存在確認・sha256・STT readback を付けて transcript を生成する。`vosk` engine は optional dependency と model directory を明示して実行する local STT adapter で、repo に巨大依存や model を追加しない。`--dry-run --format json` は provider importability、model path、WAV 形式を preflight し、失敗時も fixture へ fallback しない。
 
 URL / VOD を渡す CLI にはしない。URL 取得が必要な場合は、先に INT-02 `fetch-source-audio` または `fetch-source-video` でローカル素材を作り、必要なら `material_ledger` に登録してから `transcribe-audio` に渡す。
 

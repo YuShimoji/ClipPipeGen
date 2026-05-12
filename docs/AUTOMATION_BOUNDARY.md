@@ -8,10 +8,10 @@
 |---|---|---|---|
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local | local preview pack（artifact preview / read-only report） | `src/cli/build_local_preview_pack.py` / `src/pipeline/preview_pack.py` | SH-05 実装済み。local media 1本から source audio / transcript / cut / context / subtitle / manifest / HTML report を接続。SH-05d で既存 source_audio material の `source.wav` / receipt / sidecar / ledger も再取得なしで review surface に接続。動画生成ではない |
-| Local | NLE export（CSV cut list / readback report） | `src/cli/export_nle.py` / `src/pipeline/nle_export.py` | ED-06 実装済み。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成する。FCPXML / Resolve XML / render / encode ではなく、fake / fixture transcript 由来は production candidate ではない |
+| Local | NLE export（CSV cut list / readback report） | `src/cli/export_nle.py` / `src/pipeline/nle_export.py` | ED-06 実装済み。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成する。ED-07b 以降は `transcript.json` の provider / model / real_transcript も readback する。FCPXML / Resolve XML / render / encode ではなく、production candidate 判定はしない |
 | Local GUI | preview pack read-only ingest | `gui/preview_reader.cjs` / GUI Preview Pack tab | SH-05c 実装済み。既存 `preview_manifest.json` / `preview_report.html` を読み、validation / warning / artifact link を表示するだけ。build / fetch / render / upload は実行しない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
-| Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
+| Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。ED-07b で optional `vosk` adapter を追加し、明示 model path の local STT で `real_transcript=true` を生成可能。provider / model 不在は preflight failure で、fixture fallback はしない。URL / VOD 取得は含めない |
 | External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。INT-02d: `yt-dlp-audio` spec only は完了。INT-02e: `yt-dlp-audio` source audio URL fetch は actual smoke まで完了。`fetch-source-video` は future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
@@ -26,7 +26,7 @@
 - 後続スライスで段階的に追加（FEATURE_REGISTRY 参照）：
   - 元動画ダウンロード integration
   - source audio contract（`fetch-source-audio --mode fake`、`--mode local-media-audio`、`--mode yt-dlp-audio` は実装済み。`yt-dlp-audio` は source audio URL fetch のみに限定し、標準形は PCM WAV / mono / 16kHz / 16-bit）
-  - ローカル音声ファイルからの transcript 生成（`transcribe-audio --engine fake` は実装済み。実 STT engine は後続）
+  - ローカル音声ファイルからの transcript 生成（`transcribe-audio --engine fake` と optional `--engine vosk --model <path>` は実装済み。Vosk は local provider / model を明示し、fallback しない）
   - transcript からの字幕案生成（`generate-subtitles` は実装済み。字幕焼き込みは後続）
   - transcript からのカット候補抽出（`generate-cuts` は実装済み）
   - transcript 隣接 segment による cut 文脈チェック（`check-cut-context` は実装済み。動画 preview / creative acceptance は後続）
@@ -41,7 +41,7 @@
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
 - source video ダウンロード（`fetch-source-video`）
-- 実 STT engine 接続（`whisper.cpp` 等）
+- STT 品質評価、話者分離、外部 API STT、`whisper.cpp` 等の追加 provider
 - 背景切り抜き API 呼び出し
 - 完全自動サムネ合成 / サムネ画像レンダリング
 
@@ -85,7 +85,7 @@
 |---|---|---|
 | `src/integrations/youtube/` | OAuth、videos.insert、thumbnails.set、playlist 操作、visibility 更新 | pipeline 本体ロジック |
 | `src/integrations/asset_fetch/` | source audio/video 取得 adapter。INT-02a では fake WAV generator、INT-02c では local-media-audio FFmpeg normalize adapter。後続で yt-dlp 系ラッパー / VOD ダウンロード | 編集処理 |
-| future `src/integrations/stt/` | STT engine wrapper、engine-specific args / output parse | URL / VOD 取得、cut 候補抽出 |
+| `src/integrations/stt/` | STT engine wrapper、engine-specific args / output parse。現在は optional Vosk adapter | URL / VOD 取得、cut 候補抽出、字幕生成、render |
 | `src/integrations/bg_removal/` | 背景切り抜き API クライアント、結果ファイル受領 | 元動画への適用、サムネ合成 |
 | `src/pipeline/` | manifest／schema／slot patch／validate／transcript 構造変換 | 外部送信、課金、認証 |
 | `src/cli/` | コマンドライン entry points | 業務ロジック（pipeline 呼び出しのみ） |

@@ -8,9 +8,9 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest completed feature slice: `ED-06 minimal NLE export` (CSV cut list + JSON/HTML readback; export plumbing proof, not production edit acceptance)
-- Current recommended decision: prefer real STT adapter next if fake / fixture transcript quality is now the bottleneck; source-video acquisition is the next visual/render prerequisite
-- Latest completed feature-slice closeout before this handoff note: local ED-06 implementation in the current working tree
+- Latest completed feature slice: `ED-07b real STT transcript path` (optional Vosk adapter; real `source.wav` -> `transcript.json` -> cuts/subtitles -> ED-06 CSV export plumbing proof)
+- Current recommended decision: compare source-video acquisition vs tiny render proof; source-video is the stronger next default if visual timeline/render confidence is the bottleneck
+- Latest completed feature-slice closeout before this handoff note: local ED-07b implementation in the current working tree
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -49,6 +49,15 @@ ED-06 is complete as a minimal external editing handoff. `export-nle` consumes `
 - `nle_export_manifest.json` and `nle_export_report.html` read back the generated artifact paths and warnings.
 - Fake / fixture transcript derived exports keep `production_edit_candidate=false` and warning text; the output can leave ClipPipeGen for external review, but it is not production edit acceptance.
 
+ED-07b is complete as a real transcript plumbing proof. `transcribe-audio --engine vosk` is an optional local STT path that consumes an existing `source.wav` and writes a `transcript.json` with provider/model/source-audio readback:
+
+- The adapter lives under `src/integrations/stt/` and is optional; Vosk and its model are not vendored into the repo.
+- `transcribe-audio --dry-run --format json` preflights provider importability, model directory, and mono 16-bit PCM WAV shape. Missing provider/model is an explicit failure, not a fallback to fixture data.
+- `transcript.json` now records `stt.provider`, `stt.model`, `stt.real_transcript`, `stt.segment_count`, top-level `segment_count`, and source audio duration/sample rate/channel readback when available.
+- The same transcript feeds `generate-cuts`, `check-cut-context`, `generate-subtitles`, and `export-nle`.
+- ED-06 export now reads sibling or explicit `transcript.json` and carries transcript provider/engine/model/real flag/segment count/duration into CSV, manifest, and HTML report.
+- This is still not STT quality, creative edit, rights, render, or publishing acceptance. Real transcript output remains draft/unreviewed unless a human review slice marks it otherwise.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -61,8 +70,8 @@ Current state against that final shape:
 |---|---|---|
 | Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
-| Transcript | `transcribe-audio --engine fake` and fixture flows exist | No real STT adapter; fake / fixture transcript is not acceptance material |
-| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | The edit still depends on fake / fixture transcript unless real STT or reviewed transcript is supplied |
+| Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | Real transcript output is still unreviewed draft; creative edit acceptance and render proof remain future work |
 | NLE / render | Minimal CSV cut list export exists | No FCPXML / Resolve XML and no mp4 / rendered video proof |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
@@ -76,6 +85,9 @@ The project should continue only if the next slices add or connect real producti
 - `src/pipeline/preview_pack.py` — preview manifest / report generation and source audio provenance readback.
 - `src/pipeline/nle_export.py` — ED-06 CSV cut list / manifest / HTML readback generation.
 - `src/cli/export_nle.py` — `export-nle` CLI.
+- `src/integrations/stt/vosk_adapter.py` — optional Vosk provider preflight / WAV read / transcript segment conversion.
+- `src/cli/transcribe_audio.py` — `fake` and optional `vosk` transcript generation CLI.
+- `src/pipeline/transcript.py` — transcript schema builder / validator with real transcript metadata readback.
 - `gui/preview_reader.cjs` — read-only preview manifest ingest and artifact link validation.
 - `docs/SCHEMAS/v1/nle_export.md` — ED-06 artifact contract and boundary.
 - `docs/RUNTIME_STATE.md` — current state and next recommended action.
@@ -86,7 +98,7 @@ The project should continue only if the next slices add or connect real producti
 
 ## Validation Already Run
 
-Last validation for ED-06 closeout:
+Last validation for ED-07b closeout:
 
 ```powershell
 uvx pytest -q
@@ -97,18 +109,20 @@ git diff --check
 
 Results:
 
-- `uvx pytest -q` -> `126 passed`
+- `uvx pytest -q` -> `131 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
 
 Additional targeted readback:
 
+- `uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py` -> targeted transcript / STT adapter tests pass
+- `uvx pytest -q tests/test_real_transcript_pipeline.py tests/test_cut_generation.py tests/test_context_check.py tests/test_subtitle_generation.py` -> targeted edit_pack / context / subtitle path tests pass
 - `uvx pytest -q tests/test_nle_export.py` -> targeted ED-06 export tests pass
-- `export-nle` writes `nle_cut_list.csv`, `nle_export_manifest.json`, and `nle_export_report.html`
-- manifest/report read back CSV path, source provider/mode/URL/hash/rights snapshot, and `production_edit_candidate=false`
-- fake / fixture transcript warning remains visible in CSV rows, manifest warnings, and HTML report
-- ignored `episodes/ed06_export_smoke_20260512` readback -> `nle_cut_list.csv`, `nle_export_manifest.json`, and `nle_export_report.html` generated from preview-pack-derived `edit_pack.json`
+- ignored `episodes/ed07b_real_stt_smoke_20260512` readback -> Windows TTS `source.wav` was transcribed by Vosk into `transcript.json`, then flowed through cut generation, context check, subtitle generation, and ED-06 CSV export
+- generated paths: `episodes/ed07b_real_stt_smoke_20260512/transcript.json`, `edit_pack.json`, `exports/ed06/nle_cut_list.csv`, `nle_export_manifest.json`, and `nle_export_report.html`
+- manifest/report read back transcript provider `vosk`, model `_tmp/stt_models/vosk-model-small-en-us-0.15`, `real_transcript=true`, segment count, duration, source audio material id/path/hash, and `production_edit_candidate=false`
+- remaining warnings say the export is a plumbing proof, real STT quality is not creative acceptance, and `edit_pack.review.status` is still `draft`
 - `uvx pytest -q tests/test_preview_pack.py tests/test_asset_fetch_boundary.py` -> targeted preview/boundary tests pass
 - existing source audio mode does not call `fetch-source-audio`
 - `preview_manifest.json` includes `source_wav`, `fetch_receipt`, `sidecar`, `material_ledger`, `ledger_entry`, and `source_audio_provenance`
@@ -118,15 +132,15 @@ Additional targeted readback:
 
 ## Resume-Time Environment Drift (2026-05-12 secondary readback)
 
-The earlier INT-02e closeout validation used a different shell/environment from one secondary readback on the same day. The drift items below remain useful context, but SH-05d is complete and PowerShell validation for this slice passed. Read this section before touching GUI / TH-01 walkthrough / INT-02e re-smoke work.
+The earlier INT-02e closeout validation used a different shell/environment from one secondary readback on the same day. The drift items below remain useful context, but ED-07b is complete and PowerShell validation for this slice passed. Read this section before touching GUI / TH-01 walkthrough / INT-02e re-smoke work.
 
-### Electron smoke now fails in this environment
+### Electron smoke drift can appear in git-bash
 
 - Command: `npm run smoke:electron`. Also reproduced via `node_modules/electron/dist/electron.exe . --smoke` and `node_modules/electron/dist/electron.exe gui/main.cjs --smoke`.
 - Result: `TypeError: Cannot read properties of undefined (reading 'handle')` at `gui/main.cjs:30` (`ipcMain.handle("episode:status", ...)`).
 - Root signal: a probe script run via `electron.exe` shows `require('electron')` returning the binary path **string** instead of the Electron API object, so the destructured `app` / `BrowserWindow` / `ipcMain` are all undefined. `app.whenReady` is never reached because `ipcMain.handle` throws first.
 - Environment: invoked from git-bash on Windows. `node_modules/electron/dist/version` reports `42.0.0`; `electron.exe --version` reports its bundled `v24.15.0` (Node). `gui/main.cjs` is unchanged since the INT-02e closeout.
-- Status of the HANDOFF claim `npm run smoke:electron -> electron smoke: OK`: currently inaccurate from git-bash on this machine, but PowerShell validation after SH-05d passed. Resolution of the git-bash-specific launcher drift is deferred and should not be mixed into production-pipeline slices.
+- Status: PowerShell validation for ED-07b reports `npm run smoke:electron -> electron smoke: OK`. The git-bash-specific launcher drift is deferred and should not be mixed into production-pipeline slices.
 - Impact on SH-05d: none. SH-05d is CLI / pipeline / preview artifact work and does not depend on changing the Electron main-process boot path. GUI Preview Pack visual re-check on the SH-05d output is a follow-up, not a SH-05d blocker.
 
 ### TH-01 real walkthrough still depends on `config/nlmytgen_path.json`
@@ -165,7 +179,6 @@ Readback from the visual evidence:
 Not implemented / not accepted yet:
 
 - `fetch-source-video`
-- real STT adapter
 - FCPXML / Resolve XML export
 - GUI fetch button
 - GUI export button
@@ -176,16 +189,17 @@ Not implemented / not accepted yet:
 - render / encode
 - creative acceptance
 - rights hard gate
+- STT quality acceptance / transcript correction workflow / speaker diarization
 
 yt-dlp and FFmpeg remain inside `asset_fetch` for source audio only. They must not enter STT, Editing, GUI, render, cut, concat, or subtitle burn-in surfaces.
 
 ## Recommended Next Slice
 
-ED-06 is no longer the next slice; it is done. The next useful move should reduce fake / fixture dependence or add the visual source needed for render proof rather than adding more read-only surface.
+ED-07b is no longer the next slice; it is done. The next useful move should either add a visual source for timeline/render proof or deliberately harden transcript review/provider setup, rather than adding more read-only surface.
 
-Recommended default: real STT adapter. ED-06 proves that `edit_pack.json` can leave ClipPipeGen; the next biggest trust blocker is that cuts and subtitles can still be fake / fixture transcript derived.
+Recommended default: source-video acquisition. The pipeline now has real audio-derived text and an external editing CSV; the next bigger production gap is that there is still no source video artifact for a visual timeline or render proof.
 
-Alternative: source-video acquisition if the next goal is visual timeline or tiny render proof. Tiny render proof should normally wait until source-video acquisition exists; audio-only rendering proves less.
+Alternative: tiny render proof if the goal is to prove an output artifact immediately. It should be scoped carefully because an audio-only or synthetic visual render proves less than a source-video-backed render.
 
 ## Next Two-Slice Pressure
 
@@ -193,17 +207,17 @@ After `ED-06`, the project should deliberately move toward one of these producti
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| Real STT adapter / real transcript path | 9/10 | Escapes fake / fixture transcript and lets `source.wav` become usable editing text | Engine / model setup and runtime variance |
-| Source-video acquisition | 8/10 | Gives render / timeline proof a real visual source | Larger asset-fetch boundary and rights/readback surface |
-| `OUT-01` tiny render proof | 6/10 | Produces an actual video artifact | Audio-only source makes this weak unless source video or a deliberate visual proof is added |
+| Source-video acquisition | 9/10 | Gives render / timeline proof a real visual source | Larger asset-fetch boundary and rights/readback surface |
+| `OUT-01` tiny render proof | 7/10 | Produces an actual video artifact and proves artifact handoff | Weak if it uses synthetic/blank video instead of source-video |
+| Transcript review / provider preflight hardening | 6/10 | Makes real STT output more operator-usable and repeatable | Improves trust but does not create visual production artifacts |
 
-Recommended continuation after `ED-06`: prefer real STT if transcript correctness is blocking decisions; choose source-video acquisition first only if the next milestone is a visual timeline / tiny render. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `ED-07b`: prefer source-video acquisition if the next milestone is visual timeline / tiny render; choose tiny render proof first only if a constrained non-production render artifact is needed to validate the output plumbing. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ### Decision criteria after ED-06
 
 The choice after ED-06 should be made from observable production signals, not from speculative quality.
 
-Prefer **real STT adapter** when:
+Prefer **transcript review / provider hardening** when:
 
 - The operator is visibly hand-correcting `transcript.json` before it is useful for cuts or subtitles.
 - `ED-04 generate-subtitles` output is being treated as "structure only, ignore text" downstream.
@@ -215,9 +229,9 @@ Prefer **source-video acquisition** when:
 - Audio-only provenance is no longer enough for operator review.
 - The project needs to exercise rights/readback around video acquisition before render.
 
-Tiebreaker when signals are weak: default to real STT. It removes the fake / fixture warning that now follows the whole chain from preview pack through NLE export.
+Tiebreaker when signals are weak: default to source-video acquisition. It unlocks the strongest next proof for visual timeline and render decisions.
 
-`OUT-01` tiny render proof stays a later candidate. Without source-video acquisition, an audio-only render demonstration is weak; reorder only when source video moves.
+`OUT-01` tiny render proof becomes compelling after source-video acquisition exists; before that, keep it explicitly marked as a non-production plumbing proof.
 
 ## Quick Operator Check
 

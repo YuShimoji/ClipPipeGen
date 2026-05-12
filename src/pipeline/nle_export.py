@@ -41,6 +41,13 @@ CSV_FIELDS = [
     "source_audio_mode",
     "source_url",
     "source_audio_sha256",
+    "transcript_path",
+    "transcript_provider",
+    "transcript_engine",
+    "transcript_model",
+    "transcript_real",
+    "transcript_segment_count",
+    "transcript_duration_seconds",
     "production_edit_candidate",
     "warnings",
 ]
@@ -55,6 +62,7 @@ def export_csv_cut_list(
     edit_pack_path: Path,
     output_dir: Path,
     preview_manifest_path: Path | None = None,
+    transcript_path: Path | None = None,
     base_dir: Path | None = None,
 ) -> dict[str, Any]:
     base = base_dir or Path.cwd()
@@ -77,16 +85,31 @@ def export_csv_cut_list(
         edit_pack_path=edit_pack_path,
     )
     preview_manifest = _load_json_optional(preview_path) if preview_path else {}
+    resolved_transcript_path = _resolve_transcript_path(
+        transcript_path,
+        edit_pack_path=edit_pack_path,
+    )
+    transcript = _load_json_optional(resolved_transcript_path) if resolved_transcript_path else {}
+    transcript_readback = _transcript_readback(
+        transcript_path=resolved_transcript_path,
+        transcript=transcript,
+        base_dir=base,
+    )
     source_readback = _source_readback(
         edit_pack=edit_pack,
         edit_pack_path=edit_pack_path,
         preview_manifest=preview_manifest,
         base_dir=base,
     )
-    warnings = _warnings(edit_pack=edit_pack, preview_manifest=preview_manifest)
+    warnings = _warnings(
+        edit_pack=edit_pack,
+        preview_manifest=preview_manifest,
+        transcript_readback=transcript_readback,
+    )
     rows = _rows(
         edit_pack=edit_pack,
         source_readback=source_readback,
+        transcript_readback=transcript_readback,
         warnings=warnings,
     )
 
@@ -105,6 +128,7 @@ def export_csv_cut_list(
         "input": {
             "edit_pack": display_path(edit_pack_path, base),
             "preview_manifest": display_path(preview_path, base) if preview_path else None,
+            "transcript": display_path(resolved_transcript_path, base) if resolved_transcript_path else None,
         },
         "outputs": {
             "csv_cut_list": display_path(csv_path, base),
@@ -117,11 +141,13 @@ def export_csv_cut_list(
             "selected_cut_count": len(edit_pack.get("selected_cut_ids") or []),
             "subtitle_count": len(edit_pack.get("subtitles") or []),
             "review_status": (edit_pack.get("review") or {}).get("status", "unknown"),
+            "transcript_segment_count": transcript_readback.get("segment_count"),
         },
         "source_refs": {
             "rights_manifest": edit_pack.get("rights_manifest_path"),
             "material_ledger": edit_pack.get("material_ledger_path"),
             "source_audio": source_readback,
+            "transcript": transcript_readback,
         },
         "warnings": warnings,
     }
@@ -147,6 +173,7 @@ def _rows(
     *,
     edit_pack: dict[str, Any],
     source_readback: dict[str, Any],
+    transcript_readback: dict[str, Any],
     warnings: list[str],
 ) -> list[dict[str, Any]]:
     cuts = edit_pack.get("cut_candidates") or []
@@ -168,6 +195,7 @@ def _rows(
             cut=cut,
             selected=not selected_ids or cut.get("id") in selected_set,
             source_readback=source_readback,
+            transcript_readback=transcript_readback,
             warnings=warnings,
         )
         for cut in ordered
@@ -180,6 +208,7 @@ def _row(
     cut: dict[str, Any],
     selected: bool,
     source_readback: dict[str, Any],
+    transcript_readback: dict[str, Any],
     warnings: list[str],
 ) -> dict[str, Any]:
     subtitles = _subtitles_for_cut(edit_pack.get("subtitles") or [], cut)
@@ -210,6 +239,15 @@ def _row(
         "source_audio_mode": source_readback.get("mode", ""),
         "source_url": source_readback.get("source_url") or "",
         "source_audio_sha256": source_readback.get("sha256", ""),
+        "transcript_path": transcript_readback.get("path") or "",
+        "transcript_provider": transcript_readback.get("provider", ""),
+        "transcript_engine": transcript_readback.get("engine", ""),
+        "transcript_model": transcript_readback.get("model", ""),
+        "transcript_real": str(bool(transcript_readback.get("real_transcript"))).lower(),
+        "transcript_segment_count": transcript_readback.get("segment_count", ""),
+        "transcript_duration_seconds": _seconds(float(transcript_readback.get("duration_seconds") or 0.0))
+        if transcript_readback.get("duration_seconds") is not None
+        else "",
         "production_edit_candidate": "false",
         "warnings": " | ".join(warnings),
     }
@@ -243,25 +281,91 @@ def _title(edit_pack: dict[str, Any], cut: dict[str, Any]) -> str:
     return topic or str(cut.get("id") or "cut")
 
 
-def _warnings(*, edit_pack: dict[str, Any], preview_manifest: dict[str, Any]) -> list[str]:
+def _warnings(
+    *,
+    edit_pack: dict[str, Any],
+    preview_manifest: dict[str, Any],
+    transcript_readback: dict[str, Any],
+) -> list[str]:
     warnings = [
         "ED-06 CSV export is a plumbing proof, not production edit acceptance.",
     ]
-    transcript = preview_manifest.get("transcript") if isinstance(preview_manifest, dict) else {}
-    if isinstance(transcript, dict):
-        source = transcript.get("source")
-        if transcript.get("not_for_acceptance") is True:
-            warnings.append("preview transcript is not acceptance material.")
-        if source in {"fixture", "deterministic_fake"}:
-            warnings.append(f"{source} transcript means exported cuts remain preview-only.")
+    if transcript_readback.get("available"):
+        if transcript_readback.get("real_transcript") is True:
+            warnings.append(
+                "real STT transcript is unreviewed; transcript quality is not creative acceptance."
+            )
+        else:
+            warnings.append("transcript real_transcript is false; export remains preview-only.")
+        for warning in transcript_readback.get("warnings") or []:
+            if warning not in warnings:
+                warnings.append(str(warning))
     else:
-        warnings.append("preview_manifest transcript readback is unavailable.")
+        transcript = preview_manifest.get("transcript") if isinstance(preview_manifest, dict) else {}
+        if isinstance(transcript, dict):
+            source = transcript.get("source")
+            if transcript.get("not_for_acceptance") is True:
+                warnings.append("preview transcript is not acceptance material.")
+            if source in {"fixture", "deterministic_fake"}:
+                warnings.append(f"{source} transcript means exported cuts remain preview-only.")
+        else:
+            warnings.append("preview_manifest transcript readback is unavailable.")
     review_status = (edit_pack.get("review") or {}).get("status", "unknown")
     if review_status != "approved":
         warnings.append(f"edit_pack review.status is {review_status}; export is not approved.")
     if not edit_pack.get("selected_cut_ids"):
         warnings.append("selected_cut_ids is empty; exporting all cut candidates for review.")
     return warnings
+
+
+def _transcript_readback(
+    *,
+    transcript_path: Path | None,
+    transcript: dict[str, Any],
+    base_dir: Path,
+) -> dict[str, Any]:
+    if not transcript_path or not isinstance(transcript, dict) or not transcript:
+        return {
+            "available": False,
+            "path": display_path(transcript_path, base_dir) if transcript_path else None,
+            "provider": "",
+            "engine": "",
+            "model": "",
+            "real_transcript": False,
+            "segment_count": None,
+            "duration_seconds": None,
+            "source_audio_path": "",
+            "source_audio_material_id": "",
+            "source_audio_sha256": "",
+            "warnings": [],
+        }
+    stt = transcript.get("stt") if isinstance(transcript.get("stt"), dict) else {}
+    source_audio = (
+        transcript.get("source_audio")
+        if isinstance(transcript.get("source_audio"), dict)
+        else {}
+    )
+    segments = transcript.get("segments") if isinstance(transcript.get("segments"), list) else []
+    segment_count = stt.get("segment_count")
+    if not isinstance(segment_count, int):
+        segment_count = transcript.get("segment_count")
+    if not isinstance(segment_count, int):
+        segment_count = len(segments)
+    return {
+        "available": True,
+        "path": display_path(transcript_path, base_dir),
+        "provider": stt.get("provider") or stt.get("engine") or "",
+        "engine": stt.get("engine", ""),
+        "model": stt.get("model") or (stt.get("params") or {}).get("model_path") or "",
+        "engine_version": stt.get("engine_version", ""),
+        "real_transcript": stt.get("real_transcript") is True,
+        "segment_count": segment_count,
+        "duration_seconds": source_audio.get("duration_seconds"),
+        "source_audio_path": source_audio.get("path", ""),
+        "source_audio_material_id": source_audio.get("material_id", ""),
+        "source_audio_sha256": source_audio.get("sha256", ""),
+        "warnings": stt.get("warnings") if isinstance(stt.get("warnings"), list) else [],
+    }
 
 
 def _source_readback(
@@ -306,17 +410,35 @@ def _source_readback(
         ),
         {},
     )
+    sidecar_path = _resolve_path(
+        material_entry.get("sidecar_path"),
+        anchor=ledger_path.parent if ledger_path else edit_pack_path.parent,
+    )
+    receipt_path = sidecar_path.parent / "fetch_receipt.json" if sidecar_path else None
+    sidecar = _load_json_optional(sidecar_path) if sidecar_path else {}
+    receipt = _load_json_optional(receipt_path) if receipt_path and receipt_path.exists() else {}
+    sidecar_source = sidecar.get("source") if isinstance(sidecar.get("source"), dict) else {}
+    sidecar_provenance = (
+        sidecar.get("provenance") if isinstance(sidecar.get("provenance"), dict) else {}
+    )
+    receipt_input = receipt.get("input") if isinstance(receipt.get("input"), dict) else {}
     return {
         "material_id": material_entry.get("id", ""),
         "source_wav": material_entry.get("file_path", ""),
-        "fetch_receipt": "",
-        "sidecar": material_entry.get("sidecar_path", ""),
+        "fetch_receipt": display_path(receipt_path, base_dir) if receipt_path and receipt_path.exists() else "",
+        "sidecar": display_path(sidecar_path, base_dir) if sidecar_path else material_entry.get("sidecar_path", ""),
         "material_ledger": display_path(ledger_path, base_dir) if ledger_path else edit_pack.get("material_ledger_path", ""),
-        "mode": "",
-        "provider": "",
-        "source_url": None,
+        "mode": receipt.get("mode") or sidecar_provenance.get("mode") or "",
+        "provider": receipt.get("provider")
+        or sidecar_provenance.get("provider")
+        or sidecar_source.get("retrieval_method")
+        or "",
+        "source_url": receipt.get("source_url")
+        or receipt_input.get("source_url")
+        or sidecar_provenance.get("source_url")
+        or sidecar_source.get("url"),
         "sha256": material_entry.get("hash_sha256", ""),
-        "rights_status_at_fetch": "unknown",
+        "rights_status_at_fetch": material_entry.get("rights_status_at_registration", "unknown"),
         "rights_hard_gate": False,
     }
 
@@ -329,6 +451,17 @@ def _resolve_preview_manifest(
     if preview_manifest_path:
         return preview_manifest_path
     sibling = edit_pack_path.parent / "preview_manifest.json"
+    return sibling if sibling.exists() else None
+
+
+def _resolve_transcript_path(
+    transcript_path: Path | None,
+    *,
+    edit_pack_path: Path,
+) -> Path | None:
+    if transcript_path:
+        return transcript_path
+    sibling = edit_pack_path.parent / "transcript.json"
     return sibling if sibling.exists() else None
 
 
@@ -365,6 +498,7 @@ def _write_json(payload: dict[str, Any], path: Path) -> None:
 
 def _make_report_html(*, manifest: dict[str, Any], rows: list[dict[str, Any]]) -> str:
     source = manifest.get("source_refs", {}).get("source_audio", {})
+    transcript = manifest.get("source_refs", {}).get("transcript", {})
     outputs = manifest.get("outputs", {})
     warnings = manifest.get("warnings", [])
     rows_html = "\n".join(
@@ -399,6 +533,16 @@ def _make_report_html(*, manifest: dict[str, Any], rows: list[dict[str, Any]]) -
     <dt>source_url</dt><dd>{escape(str(source.get("source_url") or ""))}</dd>
     <dt>sha256</dt><dd>{escape(str(source.get("sha256", "")))}</dd>
     <dt>rights_status_at_fetch</dt><dd>{escape(str(source.get("rights_status_at_fetch", "")))}</dd>
+  </dl>
+  <h2>Transcript Provenance</h2>
+  <dl>
+    <dt>path</dt><dd>{escape(str(transcript.get("path") or ""))}</dd>
+    <dt>provider</dt><dd>{escape(str(transcript.get("provider", "")))}</dd>
+    <dt>engine</dt><dd>{escape(str(transcript.get("engine", "")))}</dd>
+    <dt>model</dt><dd>{escape(str(transcript.get("model", "")))}</dd>
+    <dt>real_transcript</dt><dd>{escape(str(transcript.get("real_transcript", False)).lower())}</dd>
+    <dt>segment_count</dt><dd>{escape(str(transcript.get("segment_count", "")))}</dd>
+    <dt>duration_seconds</dt><dd>{escape(str(transcript.get("duration_seconds", "")))}</dd>
   </dl>
   <h2>Cut List Preview</h2>
   <table>

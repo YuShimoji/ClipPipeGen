@@ -40,6 +40,7 @@ def build_transcript(
     stt_engine: str,
     segments: list[dict[str, Any]],
     material_id: str | None = None,
+    stt_provider: str | None = None,
     source_audio_sha256: str | None = None,
     source_audio_duration_seconds: float | None = None,
     source_audio_sample_rate_hz: int | None = None,
@@ -48,8 +49,10 @@ def build_transcript(
     stt_model: str | None = None,
     stt_params: dict[str, Any] | None = None,
     stt_warnings: list[str] | None = None,
+    real_transcript: bool = False,
 ) -> dict[str, Any]:
     now = datetime.now(timezone.utc).isoformat()
+    normalized_segments = normalize_segments(segments)
     source_audio: dict[str, Any] = {
         "path": source_audio_path,
         "material_id": material_id,
@@ -72,14 +75,18 @@ def build_transcript(
         "source_audio": source_audio,
         "stt": {
             "engine": stt_engine,
+            "provider": stt_provider or stt_engine,
             "engine_version": stt_engine_version,
             "model": stt_model,
             "params": stt_params or {},
             "started_at": now,
             "completed_at": now,
             "warnings": stt_warnings or [],
+            "real_transcript": real_transcript,
+            "segment_count": len(normalized_segments),
         },
-        "segments": normalize_segments(segments),
+        "segment_count": len(normalized_segments),
+        "segments": normalized_segments,
         "review": {
             "status": "draft",
             "reviewed_by": None,

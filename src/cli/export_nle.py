@@ -25,6 +25,10 @@ def run(argv: list[str]) -> int:
         help="preview_manifest.json for source audio provenance readback",
     )
     parser.add_argument(
+        "--transcript",
+        help="transcript.json for STT provenance readback",
+    )
+    parser.add_argument(
         "--export-format",
         choices=("csv",),
         default="csv",
@@ -36,12 +40,14 @@ def run(argv: list[str]) -> int:
     edit_pack_path = Path(args.edit_pack)
     output_dir = Path(args.output_dir) if args.output_dir else edit_pack_path.parent / "exports" / "ed06"
     preview_manifest_path = Path(args.preview_manifest) if args.preview_manifest else None
+    transcript_path = Path(args.transcript) if args.transcript else None
 
     try:
         result = export_csv_cut_list(
             edit_pack_path=edit_pack_path,
             output_dir=output_dir,
             preview_manifest_path=preview_manifest_path,
+            transcript_path=transcript_path,
             base_dir=Path.cwd(),
         )
     except (OSError, json.JSONDecodeError, NleExportError) as exc:
@@ -55,6 +61,7 @@ def run(argv: list[str]) -> int:
         "report": str(result["report_path"]).replace("\\", "/"),
         "cut_rows": len(result["rows"]),
         "production_edit_candidate": result["manifest"]["production_edit_candidate"],
+        "transcript": result["manifest"]["source_refs"]["transcript"],
         "warnings": result["manifest"]["warnings"],
     }
     if args.format == "json":
@@ -67,6 +74,9 @@ def run(argv: list[str]) -> int:
         print(f"report: {payload['report']}")
         print(f"cut_rows: {payload['cut_rows']}")
         print(f"production_edit_candidate: {str(payload['production_edit_candidate']).lower()}")
+        transcript = payload["transcript"]
+        print(f"transcript: {transcript.get('path') or ''}")
+        print(f"transcript_real: {str(transcript.get('real_transcript', False)).lower()}")
         for warning in payload["warnings"]:
             print(f"warning: {warning}")
     return 0
