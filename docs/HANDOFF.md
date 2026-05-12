@@ -8,9 +8,10 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
+- Sync commit: `32363a5 feat(OUT-01): add tiny render proof`
 - Latest completed feature slice: `OUT-01 tiny render proof` (`render-tiny-proof`; source_video + source_audio + edit_pack selected cut -> diagnostic rendered video + receipt/manifest/report)
 - Current recommended decision: compare render hardening vs source-video URL acquisition; subtitle burn-in is useful but should remain a separate follow-up slice
-- Latest completed feature-slice closeout before this handoff note: OUT-01 implementation in the current working tree
+- Latest completed feature-slice closeout before this handoff note: OUT-01 implementation committed and pushed to `origin/main`
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -131,7 +132,7 @@ git diff --check
 
 Results:
 
-- `uvx pytest -q` -> all tests passing
+- `uvx pytest -q` -> `140 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors

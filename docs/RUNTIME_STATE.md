@@ -52,7 +52,7 @@
 - Timeline policy — 最初の selected cut を source video / source audio timeline に対応させ、source video/audio duration や `--duration-sec` を超える場合は shortest input に clamp する。loop / speed change / complex concat / subtitle burn-in は行わず、clamp / duration mismatch / diagnostic render warning を manifest/receipt/report に残す
 - Smoke readback — ignored `episodes/ed07b_real_stt_smoke_20260512` に `src_video_out01_smoke` を追加し、既存 real STT 由来 `edit_pack.json` と `src_audio_real_stt_smoke/source.wav` から `renders/out01_tiny_render_smoke/rendered_video.mp4` を生成。output metadata は duration `1.11`、container `mov,mp4,m4a,3gp,3g2,mj2`、video codec `h264`、audio codec `aac`、resolution `160x90`、fps `15.0`、stream count `2`
 - Boundary — OUT-01 は rendered artifact plumbing proof であり、production render、creative edit acceptance、publishing、subtitle burn-in、GUI render button、URL video fetch、FCPXML / Resolve XML には進んでいない。`production_candidate=false` のまま扱う
-- Assistant-side validation — targeted OUT-01 render tests、source-video acquisition tests、ED-07b transcript tests、ED-06 export tests、`uvx pytest -q`、`npm run smoke`、`npm run smoke:electron`、`git diff --check` を通す
+- Assistant-side validation — targeted OUT-01 render tests、source-video acquisition tests、ED-07b transcript tests、ED-06 export tests、`uvx pytest -q`（140 passed）、`npm run smoke`、`npm run smoke:electron`、`git diff --check` を通過
 
 ### Slice 2 (xxii) INT-02f done（local source video acquisition）
 
