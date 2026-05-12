@@ -44,7 +44,7 @@
 
 - **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
 - **current_slice**: Slice 2 — INT-02e `yt-dlp-audio` source audio URL fetch is done。`fetch-source-audio --mode yt-dlp-audio` は source audio URL fetch のみに限定して実装し、yt-dlp は `src/integrations/asset_fetch/` 内で一時 media 取得だけ、FFmpeg は `source.wav` 正規化だけを担う。technical smoke URL で receipt / sidecar / ledger / WAV readback を確認済み
-- **next_action（assistant 側）**: `SH-05d` 相当の source-audio preview bridge を起票・実装する。取得済み `source.wav` / `fetch_receipt.json` / `material_ledger.json` を local preview pack の review surface に接続する。ただし `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode はまだ未実装のまま分離する
+- **next_action（assistant 側）**: `SH-05d` 相当の source-audio preview bridge を起票・実装する。取得済み `source.wav` / `fetch_receipt.json` / `sidecar.json` / `material_ledger.json` を local preview pack の review surface / `preview_manifest.json` / `preview_report.html` に接続する。ただし `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode はまだ未実装のまま分離する。acceptance は report polish ではなく「実 URL 由来 source audio が次の編集判断面に接続されたこと」。直近の引き継ぎ詳細は [HANDOFF.md](HANDOFF.md) を読む
 
 ### Slice 2 (xviii) INT-02e done（yt-dlp-audio source audio URL fetch）
 
@@ -276,6 +276,7 @@
 
 - 入口: [README.md](../README.md) / [AGENTS.md](../AGENTS.md)
 - 方針: [CLAUDE.md](../CLAUDE.md)（ルート）
+- 再開用引き継ぎ: [HANDOFF.md](HANDOFF.md)
 - GUI MVP: [GUI_MVP_SCOPE.md](GUI_MVP_SCOPE.md)
 - 不変条件: [INVARIANTS.md](INVARIANTS.md)
 - 自動化境界: [AUTOMATION_BOUNDARY.md](AUTOMATION_BOUNDARY.md)

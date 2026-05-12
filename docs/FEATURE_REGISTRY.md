@@ -95,7 +95,7 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。
 | SH-05b | local-preview-pack report QA / polish | done | `preview_report.html` に Status Summary、Decision Warnings、Artifact Links を追加し、not-for-acceptance、rights pending readback、manifest / receipt / source.wav links を明確化。日本語 fixture smoke を localhost / DOM readback で確認。GUI ingest、network fetch、render / encode は含めない |
 | SH-05b+ | local-preview-pack visual evidence hardening | done | medium 日本語 fixture smoke で `preview_report.html` の実画面 screenshot / visual readback を保存。`preview_manifest` lightweight validation を追加し、warnings / not-for-acceptance / rights pending / artifact links / audio controls の視認性を確認。GUI ingest、network fetch、render / encode は含めない |
 | SH-05c | GUI read-only preview pack ingest | done | GUI に Preview Pack tab を追加。既存 episode directory または `preview_manifest.json` を読み、manifest validation、Status Summary、Decision Warnings、Artifact Links を read-only 表示する。GUI から build / fetch / render / upload は実行しない |
-| SH-05d | source-audio preview bridge | proposed | INT-02e で取得済みの `source.wav` / `fetch_receipt.json` / `material_ledger.json` を local preview pack の review surface に接続する。新規 downloader、GUI fetch button、GUI からの build-local-preview-pack 実行、render / encode、cut / concat、subtitle burn-in は含めない |
+| SH-05d | source-audio preview bridge | proposed | INT-02e で取得済みの `source.wav` / `fetch_receipt.json` / `sidecar.json` / `material_ledger.json` を local preview pack の review surface / `preview_manifest.json` / `preview_report.html` に接続する。acceptance は report polish ではなく、実 URL 由来 source audio が次の編集判断面に接続されたこと。新規 downloader、GUI fetch button、GUI からの build-local-preview-pack 実行、render / encode、cut / concat、subtitle burn-in は含めない |
 
 ## 未実装 / 必要時に再起票
 

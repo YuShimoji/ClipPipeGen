@@ -10,7 +10,7 @@ This file is the shortest project-local handoff for resuming from another termin
 - Upstream: `origin/main`
 - Latest completed feature slice: `INT-02e yt-dlp-audio source audio URL fetch`
 - Current recommended feature slice: `SH-05d source-audio preview bridge` (proposed; connect fetched `source.wav` / receipt / ledger to local preview pack review surface)
-- INT-02e implementation baseline before smoke: `6669de6 test(INT-02e): lock URL scrub dry-run readback`
+- Latest completed feature-slice closeout before this handoff note: `7659ef1 docs(INT-02e): close yt-dlp audio smoke`
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -33,6 +33,25 @@ INT-02e is complete. `fetch-source-audio --mode yt-dlp-audio` is limited to sour
 Technical operator smoke used ignored episode `episodes/int02e_operator_smoke_20260512` and material `src_audio_ytdlp_001`. It generated `source.wav`, `sidecar.json`, `fetch_receipt.json`, and a `material_ledger.json` entry. The smoke URL is not creative acceptance or publishing approval.
 
 SH-05c remains complete. The GUI Preview Pack tab reads an existing episode directory or `preview_manifest.json`; it does not run `build-local-preview-pack`, fetch, render, upload, or any network/external acquisition workflow.
+
+## Production Gap Readback
+
+ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
+
+`source media -> material_ledger / receipt -> transcript.json -> edit_pack.json -> subtitles / thumbnail / NLE export / render / publishing`
+
+Current state against that final shape:
+
+| Area | Current state | Remaining production gap |
+|---|---|---|
+| Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
+| Preview surface | Local preview pack and GUI read-only ingest exist | INT-02e fetched `source.wav` is not yet directly connected to the preview pack review surface |
+| Transcript | `transcribe-audio --engine fake` and fixture flows exist | No real STT adapter; fake / fixture transcript is not acceptance material |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, and subtitles | External editing handoff is still missing |
+| NLE / render | Not implemented | No EDL/XML/FCPXML export and no mp4 / rendered video proof |
+| Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
+
+The project should continue only if the next slices add or connect real production-adjacent artifacts. A slice that only adds more policy, boundary text, report polish, or GUI read-only state without connecting `source.wav`, `transcript.json`, `edit_pack.json`, `preview_manifest.json`, NLE export, or rendered video should be treated as drift.
 
 ## Key Files
 
@@ -111,6 +130,13 @@ Current recommended work:
 
 `SH-05d source-audio preview bridge`, limited to connecting already fetched source audio artifacts to the existing preview-pack review surface.
 
+Acceptance for that next slice:
+
+- An episode that already contains INT-02e outputs can be used without re-downloading source media.
+- Existing `source.wav`, `fetch_receipt.json`, `sidecar.json`, and `material_ledger.json` are visible from the preview surface / `preview_manifest.json` / `preview_report.html`.
+- The operator can decide whether the fetched source audio is ready for the next editing decision.
+- The bridge reaches or connects at least one real artifact: `source.wav`, `transcript.json`, `edit_pack.json`, or `preview_manifest.json`.
+
 Scope constraints for that next slice:
 
 - Consume existing `source.wav`, `fetch_receipt.json`, and `material_ledger.json`.
@@ -123,6 +149,18 @@ Scope constraints for that next slice:
 
 Default executor: assistant.
 User input is not required for the first design/implementation pass unless the bridge needs a production episode URL or creative acceptance.
+
+## Next Two-Slice Pressure
+
+After `SH-05d`, the project should deliberately move toward one of these production-adjacent artifacts:
+
+| Candidate | Usefulness | Why it matters | Risk |
+|---|---:|---|---|
+| Real STT adapter / real transcript path | 9/10 | Escapes fake / fixture transcript and lets `source.wav` become usable editing text | Engine / model setup and runtime variance |
+| `ED-06` minimal NLE export | 8/10 | Lets `edit_pack.json` leave ClipPipeGen and enter an external editor | Can still be fake-transcript-derived if chosen before real STT |
+| `OUT-01` tiny render proof | 7/10 | Produces an actual video artifact | Audio-only source makes this weak unless source video or a deliberate visual proof is added |
+
+Recommended continuation after `SH-05d`: prefer `ED-06` if the goal is the fastest external editing handoff, or real STT if transcript correctness is the bottleneck. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ## Quick Operator Check
 
