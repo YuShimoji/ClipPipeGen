@@ -194,3 +194,5 @@ python -m src.cli.main export-nle \
 `generate-subtitles` は ED-04 の subtitle draft 生成スライス。`transcript.json` の `segments[]` を `edit_pack.subtitles[]` に変換し、`--wrap-eaw` 指定時は ED-05 の EAW 折返しを使って `text` に改行を入れる。実 STT、URL/VOD 取得、動画レンダリング、字幕焼き込みは行わない。
 
 `export-nle` は ED-06 の最小 NLE handoff。`edit_pack.cut_candidates[]` / `selected_cut_ids[]` / `subtitles[]` と、可能な範囲の source audio provenance を `nle_cut_list.csv`、`nle_export_manifest.json`、`nle_export_report.html` に出力する。これは外部編集ソフトへ渡すための plumbing proof であり、FCPXML / Resolve XML、render / encode、production edit acceptance は行わない。詳細は [nle_export.md](nle_export.md)。
+
+`render-tiny-proof` は OUT-01 の diagnostic output proof。`edit_pack.selected_cut_ids[0]`（無ければ最初の cut candidate）を source video / source audio timeline に対応させ、短い `rendered_video.mp4` / `.mkv` と readback manifest/report を生成する。production render、subtitle burn-in、creative acceptance、publishing は行わない。詳細は [tiny_render.md](tiny_render.md)。

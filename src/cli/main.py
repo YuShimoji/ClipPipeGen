@@ -20,6 +20,7 @@ Subcommands:
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
     fetch-source-video       INT-02f: create/register source_video material.
+    render-tiny-proof        OUT-01: source video/audio + edit_pack -> diagnostic video.
     generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
     check-cut-context        ED-03: review cut boundaries against transcript context.
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.
@@ -48,6 +49,7 @@ from . import (
     measure_subtitle_width,
     patch_thumbnail,
     register_material,
+    render_tiny_proof,
     set_compliance,
     status_episode,
     transcribe_audio,
@@ -73,6 +75,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
     "fetch-source-video": fetch_source_video.run,
+    "render-tiny-proof": render_tiny_proof.run,
     "generate-cuts": generate_cuts.run,
     "check-cut-context": check_cut_context.run,
     "generate-subtitles": generate_subtitles.run,

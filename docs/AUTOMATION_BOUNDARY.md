@@ -9,6 +9,7 @@
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local | local preview pack（artifact preview / read-only report） | `src/cli/build_local_preview_pack.py` / `src/pipeline/preview_pack.py` | SH-05 実装済み。local media 1本から source audio / transcript / cut / context / subtitle / manifest / HTML report を接続。SH-05d で既存 source_audio material の `source.wav` / receipt / sidecar / ledger も再取得なしで review surface に接続。動画生成ではない |
 | Local | NLE export（CSV cut list / readback report） | `src/cli/export_nle.py` / `src/pipeline/nle_export.py` | ED-06 実装済み。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成する。ED-07b 以降は `transcript.json` の provider / model / real_transcript も readback する。FCPXML / Resolve XML / render / encode ではなく、production candidate 判定はしない |
+| Local/External tool | tiny render proof | `src/cli/render_tiny_proof.py` / `src/integrations/render/` | OUT-01 実装済み。source_video material / source_audio material / edit_pack selected cut から diagnostic rendered video、receipt、manifest、HTML report を生成する。FFmpeg/FFprobe は render integration に閉じ込め、subtitle burn-in / GUI action / production render / publishing は行わない |
 | Local GUI | preview pack read-only ingest | `gui/preview_reader.cjs` / GUI Preview Pack tab | SH-05c 実装済み。既存 `preview_manifest.json` / `preview_report.html` を読み、validation / warning / artifact link を表示するだけ。build / fetch / render / upload は実行しない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。ED-07b で optional `vosk` adapter を追加し、明示 model path の local STT で `real_transcript=true` を生成可能。provider / model 不在は preflight failure で、fixture fallback はしない。URL / VOD 取得は含めない |
@@ -32,11 +33,12 @@
   - transcript 隣接 segment による cut 文脈チェック（`check-cut-context` は実装済み。動画 preview / creative acceptance は後続）
   - ローカル素材 1 本、または取得済み source audio material から operator-visible な artifact preview / read-only HTML report を生成（`build-local-preview-pack` は実装済み。rendered video preview ではない）
   - `edit_pack.json` から外部編集へ渡す CSV cut list / manifest / HTML readback を生成（`export-nle` は実装済み。production edit acceptance ではない）
+  - source video / source audio / edit_pack -> tiny diagnostic rendered video / receipt / manifest / report (`render-tiny-proof` is implemented; production render acceptance is not claimed)
   - upload / thumbnail 設定 / visibility 更新 integration
 
 ## 現時点で未実装
 
-- 動画レンダリング / cut / concat / 字幕焼き込み / エンコード / rendered video preview
+- production render / cut / concat / subtitle burn-in / rendered video preview surface (OUT-01 tiny diagnostic artifact exists, but production render is not accepted)
 - FCPXML / Resolve XML など NLE 固有 XML export
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
@@ -86,6 +88,7 @@
 | `src/integrations/youtube/` | OAuth、videos.insert、thumbnails.set、playlist 操作、visibility 更新 | pipeline 本体ロジック |
 | `src/integrations/asset_fetch/` | source audio/video 取得 adapter。INT-02a では fake WAV generator、INT-02c では local-media-audio FFmpeg normalize adapter。後続で yt-dlp 系ラッパー / VOD ダウンロード | 編集処理 |
 | `src/integrations/stt/` | STT engine wrapper、engine-specific args / output parse。現在は optional Vosk adapter | URL / VOD 取得、cut 候補抽出、字幕生成、render |
+| `src/integrations/render/` | OUT-01 tiny diagnostic render adapter。FFmpeg/FFprobe で source video + source audio + edit_pack cut range を short output artifact にする | URL / VOD 取得、STT、cut 候補抽出、字幕焼き込み、GUI action、production render acceptance |
 | `src/integrations/bg_removal/` | 背景切り抜き API クライアント、結果ファイル受領 | 元動画への適用、サムネ合成 |
 | `src/pipeline/` | manifest／schema／slot patch／validate／transcript 構造変換 | 外部送信、課金、認証 |
 | `src/cli/` | コマンドライン entry points | 業務ロジック（pipeline 呼び出しのみ） |
@@ -130,7 +133,7 @@ bridge する CLI 候補：
 正本: [ASSET_FETCH_BOUNDARY.md](ASSET_FETCH_BOUNDARY.md) / [YTDLP_AUDIO_SPEC.md](YTDLP_AUDIO_SPEC.md)
 
 - yt-dlp の責務は URL から元 media を取得することだけ。
-- FFmpeg の責務は source audio を `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化することだけ。
+- FFmpeg の責務は `src/integrations/asset_fetch/` では source audio を `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化すること、`src/integrations/render/` では OUT-01 tiny diagnostic render を作ることだけ。
 - `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` は yt-dlp / FFmpeg を直接呼ばない。
 - `asset_fetch` は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない。
 - INT-02c の `local-media-audio` はローカル file の FFmpeg normalize のみ実装済み。INT-02e の `yt-dlp-audio` source audio URL fetch は actual smoke まで完了。INT-02f の `local-media-video` はローカル video file のコピー登録と FFprobe metadata readback のみ実装済み。URL video fetch / GUI fetch button は未実装。
