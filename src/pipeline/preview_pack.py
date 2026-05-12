@@ -20,6 +20,7 @@ from .transcript import load_transcript
 SCHEMA_VERSION = "v1"
 PREVIEW_WORK_DIR = "_preview_pack"
 FAKE_SEGMENTS_FILENAME = "deterministic_fake_segments.json"
+INPUT_KINDS = {"local_media_file", "existing_source_audio_material"}
 TRANSCRIPT_SOURCES = {"fixture", "deterministic_fake"}
 
 
@@ -74,6 +75,8 @@ def build_preview_manifest(
     material_id: str,
     source_wav_path: Path,
     fetch_receipt_path: Path,
+    sidecar_path: Path,
+    material_ledger_path: Path,
     transcript_path: Path,
     transcript_source: str,
     edit_pack_path: Path,
@@ -81,9 +84,14 @@ def build_preview_manifest(
     warnings: list[str],
     next_actions: list[str],
     base_dir: Path,
+    input_kind: str = "local_media_file",
 ) -> dict[str, Any]:
     edit_pack = load_edit_pack(edit_pack_path)
     transcript = load_transcript(transcript_path)
+    receipt = _load_json_optional(fetch_receipt_path)
+    sidecar = _load_json_optional(sidecar_path)
+    ledger = _load_json_optional(material_ledger_path)
+    material_entry = _find_material_entry(ledger, material_id)
     cuts = edit_pack.get("cut_candidates") or []
     subtitles = edit_pack.get("subtitles") or []
     context_counts = _context_counts(cuts)
@@ -93,14 +101,22 @@ def build_preview_manifest(
         "episode_id": episode_id,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "input": {
-            "kind": "local_media_file",
+            "kind": input_kind,
             "path": display_path(input_path, base_dir),
         },
         "material": {
             "material_id": material_id,
             "source_wav": display_path(source_wav_path, base_dir),
             "fetch_receipt": display_path(fetch_receipt_path, base_dir),
+            "sidecar": display_path(sidecar_path, base_dir),
+            "material_ledger": display_path(material_ledger_path, base_dir),
+            "ledger_entry": _material_entry_readback(material_entry),
         },
+        "source_audio_provenance": _source_audio_provenance(
+            receipt=receipt,
+            sidecar=sidecar,
+            material_entry=material_entry,
+        ),
         "transcript": {
             "source": transcript_source,
             "path": display_path(transcript_path, base_dir),
@@ -134,8 +150,8 @@ def validate_preview_manifest(manifest: dict[str, Any]) -> list[str]:
 
     input_info = _require_dict(manifest, "input", issues)
     if input_info:
-        if input_info.get("kind") != "local_media_file":
-            issues.append("input.kind must be local_media_file")
+        if input_info.get("kind") not in INPUT_KINDS:
+            issues.append("input.kind must be local_media_file or existing_source_audio_material")
         _require_string(input_info, "path", issues, "input.path")
 
     material = _require_dict(manifest, "material", issues)
@@ -143,6 +159,14 @@ def validate_preview_manifest(manifest: dict[str, Any]) -> list[str]:
         _require_string(material, "material_id", issues, "material.material_id")
         _require_string(material, "source_wav", issues, "material.source_wav")
         _require_string(material, "fetch_receipt", issues, "material.fetch_receipt")
+        _require_string(material, "sidecar", issues, "material.sidecar")
+        _require_string(material, "material_ledger", issues, "material.material_ledger")
+        _require_dict(material, "ledger_entry", issues, "material.ledger_entry")
+
+    provenance = _require_dict(manifest, "source_audio_provenance", issues)
+    if provenance:
+        _require_string(provenance, "mode", issues, "source_audio_provenance.mode")
+        _require_string(provenance, "provider", issues, "source_audio_provenance.provider")
 
     transcript = _require_dict(manifest, "transcript", issues)
     if transcript:
@@ -178,10 +202,12 @@ def validate_preview_manifest(manifest: dict[str, Any]) -> list[str]:
 def make_preview_report_html(
     *,
     manifest: dict[str, Any],
-    episode_dir: Path,
+    source_wav_path: Path,
     edit_pack_path: Path,
     transcript_path: Path,
     fetch_receipt_path: Path,
+    sidecar_path: Path,
+    material_ledger_path: Path,
     rights_manifest_path: Path,
     manifest_path: Path,
     report_path: Path,
@@ -192,11 +218,13 @@ def make_preview_report_html(
     rights = _load_json_optional(rights_manifest_path)
     compliance = (rights.get("compliance_check") or {}) if isinstance(rights, dict) else {}
     rights_status = compliance.get("status", "unknown")
-    audio_src = display_path(episode_dir / "materials" / manifest["material"]["material_id"] / "source.wav", report_path.parent)
+    audio_src = display_path(source_wav_path, report_path.parent)
     artifact_paths = {
-        "Source WAV": episode_dir / "materials" / manifest["material"]["material_id"] / "source.wav",
+        "Source WAV": source_wav_path,
         "Preview manifest": manifest_path,
         "Fetch receipt": fetch_receipt_path,
+        "Sidecar": sidecar_path,
+        "Material ledger": material_ledger_path,
         "Transcript": transcript_path,
         "Edit pack": edit_pack_path,
     }
@@ -237,6 +265,7 @@ def make_preview_report_html(
             _status_summary_section(manifest, rights_status),
             _list_section("Decision Warnings", decision_warnings, css_class="warning"),
             _summary_section(manifest, rights_status, receipt),
+            _source_audio_provenance_section(manifest.get("source_audio_provenance") or {}),
             _artifact_links_section(artifact_paths, report_path.parent),
             _audio_section(audio_src),
             _segments_section(segments),
@@ -296,6 +325,86 @@ def _load_json_optional(path: Path) -> dict[str, Any]:
         return {}
 
 
+def _find_material_entry(ledger: dict[str, Any], material_id: str) -> dict[str, Any]:
+    for material in ledger.get("materials") or []:
+        if isinstance(material, dict) and material.get("id") == material_id:
+            return material
+    return {}
+
+
+def _material_entry_readback(entry: dict[str, Any]) -> dict[str, Any]:
+    compliance = entry.get("compliance_link") or {}
+    return {
+        "id": entry.get("id", "unknown"),
+        "kind": entry.get("kind", "unknown"),
+        "subkind": entry.get("subkind", "unknown"),
+        "file_path": entry.get("file_path", "unknown"),
+        "sidecar_path": entry.get("sidecar_path", "unknown"),
+        "hash_sha256": entry.get("hash_sha256", "unknown"),
+        "byte_size": entry.get("byte_size", 0),
+        "intended_uses": list(entry.get("intended_uses") or []),
+        "registered_by": entry.get("registered_by", "unknown"),
+        "compliance_status_at_registration": compliance.get(
+            "compliance_status_at_registration",
+            "unknown",
+        ),
+    }
+
+
+def _source_audio_provenance(
+    *,
+    receipt: dict[str, Any],
+    sidecar: dict[str, Any],
+    material_entry: dict[str, Any],
+) -> dict[str, Any]:
+    receipt_input = receipt.get("input") if isinstance(receipt.get("input"), dict) else {}
+    sidecar_source = sidecar.get("source") if isinstance(sidecar.get("source"), dict) else {}
+    sidecar_license = sidecar.get("license") if isinstance(sidecar.get("license"), dict) else {}
+    rights_snapshot = (
+        receipt.get("rights_snapshot")
+        if isinstance(receipt.get("rights_snapshot"), dict)
+        else {}
+    )
+    intermediate = (
+        receipt.get("intermediate")
+        if isinstance(receipt.get("intermediate"), dict)
+        else {}
+    )
+    tools = receipt.get("tools") if isinstance(receipt.get("tools"), list) else []
+    outputs = receipt.get("outputs") if isinstance(receipt.get("outputs"), list) else []
+    first_output = outputs[0] if outputs and isinstance(outputs[0], dict) else {}
+    return {
+        "mode": receipt.get("mode", "unknown"),
+        "provider": receipt.get("provider", "unknown"),
+        "command_summary": receipt.get("command_summary", "unknown"),
+        "source_url": receipt_input.get("source_url") or receipt.get("source_url"),
+        "local_path": receipt_input.get("local_path"),
+        "retrieval_method": sidecar_source.get("retrieval_method", "unknown"),
+        "retrieved_at": sidecar_source.get("retrieved_at", "unknown"),
+        "retrieved_by": sidecar_source.get("retrieved_by", "unknown"),
+        "source_kind": sidecar_source.get("kind", "unknown"),
+        "source_notes": sidecar_source.get("notes", ""),
+        "license_kind": sidecar_license.get("kind", "unknown"),
+        "rights_status_at_fetch": rights_snapshot.get(
+            "compliance_status_at_fetch",
+            "unknown",
+        ),
+        "rights_hard_gate": rights_snapshot.get("hard_gate", False),
+        "intermediate_retained": intermediate.get("retained"),
+        "output_sha256": receipt.get("sha256")
+        or first_output.get("sha256", material_entry.get("hash_sha256")),
+        "ledger_registered_by": material_entry.get("registered_by", "unknown"),
+        "tools": [
+            {
+                "name": tool.get("name", "unknown"),
+                "version": tool.get("version", "unknown"),
+            }
+            for tool in tools
+            if isinstance(tool, dict)
+        ],
+    }
+
+
 def _require_dict(payload: dict[str, Any], key: str, issues: list[str], label: str | None = None) -> dict[str, Any]:
     value = payload.get(key)
     name = label or key
@@ -335,6 +444,36 @@ def _summary_section(
     ]
     body = "".join(f"<tr><th>{esc(k)}</th><td><code>{esc(v)}</code></td></tr>" for k, v in rows)
     return f"<section><h2>Episode</h2><table>{body}</table></section>"
+
+
+def _source_audio_provenance_section(provenance: dict[str, Any]) -> str:
+    tools = provenance.get("tools") if isinstance(provenance.get("tools"), list) else []
+    tool_text = ", ".join(
+        f"{tool.get('name', 'unknown')} {tool.get('version', 'unknown')}"
+        for tool in tools
+        if isinstance(tool, dict)
+    ) or "none"
+    rows = [
+        ("Mode", provenance.get("mode", "unknown")),
+        ("Provider", provenance.get("provider", "unknown")),
+        ("Command summary", provenance.get("command_summary", "unknown")),
+        ("Source URL", provenance.get("source_url") or "none"),
+        ("Local path", provenance.get("local_path") or "none"),
+        ("Retrieval method", provenance.get("retrieval_method", "unknown")),
+        ("Retrieved by", provenance.get("retrieved_by", "unknown")),
+        ("Retrieved at", provenance.get("retrieved_at", "unknown")),
+        ("Source kind", provenance.get("source_kind", "unknown")),
+        ("License kind", provenance.get("license_kind", "unknown")),
+        ("Rights at fetch", provenance.get("rights_status_at_fetch", "unknown")),
+        ("Rights hard gate", str(provenance.get("rights_hard_gate", False)).lower()),
+        ("Intermediate retained", str(provenance.get("intermediate_retained", "unknown")).lower()),
+        ("Output sha256", provenance.get("output_sha256", "unknown")),
+        ("Tools", tool_text),
+    ]
+    if provenance.get("source_notes"):
+        rows.append(("Source notes", provenance["source_notes"]))
+    body = "".join(f"<tr><th>{esc(k)}</th><td><code>{esc(v)}</code></td></tr>" for k, v in rows)
+    return f"<section><h2>Source Audio Provenance</h2><table>{body}</table></section>"
 
 
 def _status_summary_section(manifest: dict[str, Any], rights_status: str) -> str:
@@ -468,6 +607,7 @@ def _decision_warnings(manifest: dict[str, Any], rights_status: str) -> list[str
     ]
     if transcript.get("not_for_acceptance") is True:
         warnings.append("transcript.not_for_acceptance is true.")
+        warnings.append("fake or fixture transcript and generated edit_pack are not production candidates.")
     if rights_status != "passed":
         warnings.append(f"rights {rights_status} is readback only.")
     return warnings

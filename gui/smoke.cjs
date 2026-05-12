@@ -169,7 +169,15 @@ const validManifestIssues = validatePreviewManifest({
   episode_id: "ep",
   created_at: "2026-05-11T00:00:00+00:00",
   input: { kind: "local_media_file", path: "_tmp/input.wav" },
-  material: { material_id: "src", source_wav: "episodes/ep/materials/src/source.wav", fetch_receipt: "episodes/ep/materials/src/fetch_receipt.json" },
+  material: {
+    material_id: "src",
+    source_wav: "episodes/ep/materials/src/source.wav",
+    fetch_receipt: "episodes/ep/materials/src/fetch_receipt.json",
+    sidecar: "episodes/ep/materials/src/sidecar.json",
+    material_ledger: "episodes/ep/material_ledger.json",
+    ledger_entry: { id: "src", kind: "source_audio" },
+  },
+  source_audio_provenance: { mode: "local-media-audio", provider: "local-media" },
   transcript: { source: "fixture", path: "episodes/ep/transcript.json", segment_count: 1, not_for_acceptance: true },
   cuts: { path: "episodes/ep/edit_pack.json", candidate_count: 1, context_counts: { passed: 1, needs_review: 0, failed: 0, not_checked: 0 } },
   subtitles: { path: "episodes/ep/edit_pack.json", subtitle_count: 1 },
@@ -181,7 +189,7 @@ if (validManifestIssues.length !== 0) {
   throw new Error(`valid preview manifest should pass validation: ${validManifestIssues.join(", ")}`);
 }
 const invalidManifestIssues = validatePreviewManifest({ schema_version: "v1" });
-if (!invalidManifestIssues.includes("episode_id is required") || !invalidManifestIssues.includes("input.kind must be local_media_file")) {
+if (!invalidManifestIssues.includes("episode_id is required") || !invalidManifestIssues.includes("input.kind must be local_media_file or existing_source_audio_material")) {
   throw new Error("invalid preview manifest should report required field issues");
 }
 
@@ -275,10 +283,12 @@ function createPreviewPackFixture() {
   const previewReport = path.join(episodeDir, "preview_report.html");
   const sourceWav = path.join(materialDir, "source.wav");
   const fetchReceipt = path.join(materialDir, "fetch_receipt.json");
+  const sidecar = path.join(materialDir, "sidecar.json");
+  const ledger = path.join(episodeDir, "material_ledger.json");
   const transcript = path.join(episodeDir, "transcript.json");
   const editPack = path.join(episodeDir, "edit_pack.json");
   const manifestPath = path.join(episodeDir, "preview_manifest.json");
-  for (const file of [previewReport, sourceWav, fetchReceipt, transcript, editPack]) {
+  for (const file of [previewReport, sourceWav, fetchReceipt, sidecar, ledger, transcript, editPack]) {
     fs.writeFileSync(file, "{}");
   }
   const rel = (fullPath) => path.relative(root, fullPath).replace(/\\/g, "/");
@@ -294,6 +304,13 @@ function createPreviewPackFixture() {
           material_id: "src_audio_smoke",
           source_wav: rel(sourceWav),
           fetch_receipt: rel(fetchReceipt),
+          sidecar: rel(sidecar),
+          material_ledger: rel(ledger),
+          ledger_entry: { id: "src_audio_smoke", kind: "source_audio" },
+        },
+        source_audio_provenance: {
+          mode: "local-media-audio",
+          provider: "local-media",
         },
         transcript: {
           source: "fixture",

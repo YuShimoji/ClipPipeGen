@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
-- **current_slice**: Slice 2 — INT-02e `yt-dlp-audio` source audio URL fetch is done。`fetch-source-audio --mode yt-dlp-audio` は source audio URL fetch のみに限定して実装し、yt-dlp は `src/integrations/asset_fetch/` 内で一時 media 取得だけ、FFmpeg は `source.wav` 正規化だけを担う。technical smoke URL で receipt / sidecar / ledger / WAV readback を確認済み
-- **next_action（assistant 側）**: `SH-05d` 相当の source-audio preview bridge を起票・実装する。取得済み `source.wav` / `fetch_receipt.json` / `sidecar.json` / `material_ledger.json` を local preview pack の review surface / `preview_manifest.json` / `preview_report.html` に接続する。ただし `fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode はまだ未実装のまま分離する。acceptance は report polish ではなく「実 URL 由来 source audio が次の編集判断面に接続されたこと」。直近の引き継ぎ詳細は [HANDOFF.md](HANDOFF.md) を読む
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
+- **current_slice**: Slice 2 — SH-05d `source-audio preview bridge` is implemented。INT-02e などで取得済みの `source.wav` / `fetch_receipt.json` / `sidecar.json` / `material_ledger.json` を、再 download なしで `preview_manifest.json` / `preview_report.html` の review surface に接続できる。reproducible existing-source-audio smoke は通過済み。ignored の実 INT-02e smoke episode はこの作業時点のローカルに無かったため、real INT-02e artifact smoke は input artifact 再入手時の確認項目として pending
+- **next_action（assistant 側）**: 次は production-adjacent artifact の選択。最短の外部編集 handoff を優先するなら `ED-06` minimal NLE export、transcript 修正が実運用の詰まりなら real STT adapter を起票する。`fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / publishing はまだ未実装のまま分離する
+
+### Slice 2 (xix) SH-05d done（source-audio preview bridge）
+
+- `src/cli/build_local_preview_pack.py` — `--use-existing-source-audio` を追加。既存 episode の `material_ledger.json` から `source_audio` entry を参照し、`source.wav` / `sidecar.json` / 同ディレクトリの `fetch_receipt.json` を検出する。existing mode では `fetch-source-audio` を呼ばない
+- `src/pipeline/preview_pack.py` — manifest に `material.sidecar` / `material.material_ledger` / `material.ledger_entry` / `source_audio_provenance` を追加。report に `Source Audio Provenance` section を追加し、receipt mode/provider/command/source URL/local path/tool versions/rights snapshot/intermediate retention/hash を readback する
+- `gui/preview_reader.cjs` — read-only ingest が `existing_source_audio_material` input kind と sidecar / material ledger links を validate / artifact readback できるように更新。GUI fetch button や GUI からの build 実行は追加していない
+- Production warning — fake/fixture transcript と生成 edit_pack は production candidate ではないことを Decision Warnings / warnings / next actions に明示
+- Assistant-side validation — targeted preview-pack tests で existing source audio mode が `fetch-source-audio` を呼ばず、既存 source audio artifacts を manifest/report に接続することを確認。ignored `episodes/sh05d_existing_source_audio_smoke_20260512` で reproducible smoke episode を作成し、`preview_manifest.json` の `source_audio_provenance` / sidecar / material_ledger / ledger_entry / receipt refs、`preview_report.html` の provider / tool / URL / hash / rights snapshot / production-candidate warning、GUI read-only ingest `state=ready` を readback。real INT-02e artifact smoke は元の ignored episode が無いため pending。ED-06、real STT、render、GUI fetch button、NLMYTGen config、publishing は未着手のまま維持
 
 ### Slice 2 (xviii) INT-02e done（yt-dlp-audio source audio URL fetch）
 
@@ -268,7 +276,7 @@
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke は完了。次の推奨は取得済み `source.wav` / receipt / ledger を local preview pack の review surface へ接続する `SH-05d` 相当の bridge。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、SH-05d で取得済み source audio の preview bridge は完了。次の推奨は `ED-06` minimal NLE export と real STT adapter のどちらが直近の制作摩擦を下げるかを選ぶこと。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

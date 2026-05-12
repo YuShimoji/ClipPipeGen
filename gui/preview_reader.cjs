@@ -101,6 +101,8 @@ function createPreviewReader(repoRoot) {
       ["Preview report", manifest?.report?.path],
       ["Source WAV", manifest?.material?.source_wav],
       ["Fetch receipt", manifest?.material?.fetch_receipt],
+      ["Sidecar", manifest?.material?.sidecar],
+      ["Material ledger", manifest?.material?.material_ledger],
       ["Transcript", manifest?.transcript?.path],
       ["Edit pack", manifest?.cuts?.path],
     ];
@@ -223,11 +225,19 @@ function validatePreviewManifest(manifest) {
   pushIssue(issues, manifest && manifest.schema_version === "v1", "schema_version must be v1");
   pushIssue(issues, typeof manifest?.episode_id === "string" && manifest.episode_id.length > 0, "episode_id is required");
   pushIssue(issues, typeof manifest?.created_at === "string" && manifest.created_at.length > 0, "created_at is required");
-  pushIssue(issues, manifest?.input?.kind === "local_media_file", "input.kind must be local_media_file");
+  pushIssue(
+    issues,
+    ["local_media_file", "existing_source_audio_material"].includes(manifest?.input?.kind),
+    "input.kind must be local_media_file or existing_source_audio_material",
+  );
   pushIssue(issues, typeof manifest?.input?.path === "string" && manifest.input.path.length > 0, "input.path is required");
   pushIssue(issues, typeof manifest?.material?.material_id === "string" && manifest.material.material_id.length > 0, "material.material_id is required");
   pushIssue(issues, typeof manifest?.material?.source_wav === "string" && manifest.material.source_wav.length > 0, "material.source_wav is required");
   pushIssue(issues, typeof manifest?.material?.fetch_receipt === "string" && manifest.material.fetch_receipt.length > 0, "material.fetch_receipt is required");
+  pushIssue(issues, typeof manifest?.material?.sidecar === "string" && manifest.material.sidecar.length > 0, "material.sidecar is required");
+  pushIssue(issues, typeof manifest?.material?.material_ledger === "string" && manifest.material.material_ledger.length > 0, "material.material_ledger is required");
+  pushIssue(issues, typeof manifest?.material?.ledger_entry === "object" && manifest.material.ledger_entry !== null, "material.ledger_entry is required");
+  pushIssue(issues, typeof manifest?.source_audio_provenance === "object" && manifest.source_audio_provenance !== null, "source_audio_provenance is required");
   pushIssue(issues, ["fixture", "deterministic_fake"].includes(manifest?.transcript?.source), "transcript.source must be fixture or deterministic_fake");
   pushIssue(issues, typeof manifest?.transcript?.path === "string" && manifest.transcript.path.length > 0, "transcript.path is required");
   pushIssue(issues, manifest?.transcript?.not_for_acceptance === true, "transcript.not_for_acceptance must be true");
