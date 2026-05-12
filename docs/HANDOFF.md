@@ -8,10 +8,10 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: `32363a5 feat(OUT-01): add tiny render proof`
-- Latest completed feature slice: `OUT-01 tiny render proof` (`render-tiny-proof`; source_video + source_audio + edit_pack selected cut -> diagnostic rendered video + receipt/manifest/report)
-- Current recommended decision: compare render hardening vs source-video URL acquisition; subtitle burn-in is useful but should remain a separate follow-up slice
-- Latest completed feature-slice closeout before this handoff note: OUT-01 implementation committed and pushed to `origin/main`
+- Sync commit: OUT-01a closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest completed feature slice: `OUT-01a render preflight / fallback readback` (`render-tiny-proof`; source_video + source_audio + edit_pack selected cut -> diagnostic rendered video + preflight/fallback/failure readback)
+- Current recommended decision: compare longer local video render smoke vs subtitle burn-in diagnostic; if codec/container failures dominate, keep the render profile matrix minimal
+- Latest completed feature-slice closeout before this handoff note: OUT-01a implementation committed and pushed to `origin/main`
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -75,6 +75,15 @@ OUT-01 is complete as a tiny diagnostic render proof. `render-tiny-proof` consum
 - Timeline mapping uses the first selected cut from `edit_pack.json`; if the cut range exceeds source video/audio duration or `--duration-sec`, it clamps to the shortest available diagnostic range and records warnings.
 - Output metadata is probed with FFprobe: duration, container, video codec, audio codec, resolution, fps, and stream counts.
 - This is not production render, creative acceptance, subtitle burn-in, GUI render action, URL video fetch, or publishing.
+
+OUT-01a is complete as render preflight / fallback readback hardening. The same `render-tiny-proof` output path now makes failure diagnosis visible instead of only proving one successful render:
+
+- FFmpeg and FFprobe are discovered and version-checked before render; missing tools classify as `environment_missing_ffmpeg` / `environment_missing_ffprobe`.
+- Auto render profiles prefer `mp4 / libx264 / aac`, then codec fallback, with `mkv` fallback candidates preserved in the command plan.
+- Each attempted profile records status, selected flag, failure reason, command summary, and stderr digest in receipt / manifest.
+- Failed render attempts after context resolution still write `render_receipt.json`, `render_manifest.json`, and `render_report.html` with `failure_classification`.
+- Fresh ignored smoke episode `episodes/out01a_hardened_smoke_20260513` regenerated `renders/out01a_hardened/rendered_video.mp4`; output readback was duration `2.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `160x90`, fps `15.0`, stream count `2`.
+- This remains diagnostic render subsystem hardening, not production render, creative acceptance, subtitle burn-in, URL video acquisition, GUI render action, or publishing.
 
 ## Production Gap Readback
 
@@ -240,6 +249,7 @@ Not implemented / not accepted yet:
 - subtitle burn-in
 - production render / full render pipeline
 - rendered video preview surface beyond the diagnostic OUT-01 artifact
+- render profile matrix beyond the minimal OUT-01a fallback set
 - creative acceptance
 - rights hard gate
 - STT quality acceptance / transcript correction workflow / speaker diarization
@@ -248,24 +258,24 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-OUT-01 is no longer the next slice; it is done. The next useful move is to decide which bottleneck matters more: render stability, source-video URL acquisition, or subtitle burn-in proof.
+OUT-01a is no longer the next slice; it is done. The next useful move is to decide whether the remaining bottleneck is local render duration coverage, visible subtitle connection, or remote source acquisition.
 
-Recommended default: render hardening if the next milestone is repeatable local output. OUT-01 proved mp4 generation, but codec/container fallback, preflight messaging, and output policy are still thin.
+Recommended default: longer local video render smoke if duration/clamp behavior needs confidence. OUT-01a made failures diagnosable; longer local media will reveal timeline and stream edge cases without adding URL acquisition risk.
 
-Alternative: source-video URL acquisition if the next milestone is remote source material. Keep it separate from render hardening and subtitle burn-in.
+Alternative: subtitle burn-in diagnostic if text-on-video proof is now more valuable than input breadth. Keep it separate from font, typography, safe-area, and layout polish.
 
 ## Next Two-Slice Pressure
 
-After `OUT-01`, the project should deliberately move toward one of these production-adjacent bottlenecks:
+After `OUT-01a`, the project should deliberately move toward one of these production-adjacent bottlenecks:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| render hardening | 8/10 | Makes OUT-01 repeatable across FFmpeg builds and explicit about mp4/mkv fallback | Can drift into full renderer if codec policy grows too much |
-| source-video URL acquisition | 7/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
-| subtitle burn-in proof | 6/10 | Connects existing subtitle draft to a visual artifact | Easy to drift into font/design/safe-area polish |
+| longer local video render smoke | 8/10 | Exercises OUT-01a preflight/fallback readback against longer timeline and stream mismatch cases | Can drift into full renderer if it starts solving creative output |
+| subtitle burn-in diagnostic | 7/10 | Connects existing subtitle draft to a visual artifact after render diagnostics are stable | Easy to drift into font/design/safe-area polish |
+| source-video URL acquisition | 6/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
 | Transcript review / provider preflight hardening | 6/10 | Makes real STT output more operator-usable and repeatable | Improves trust but does not create visual production artifacts |
 
-Recommended continuation after `OUT-01`: prefer render hardening if the next milestone is reliable output, choose source-video URL acquisition if remote inputs are now the blocker, and choose subtitle burn-in only if text-on-video proof is more valuable than acquisition breadth. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `OUT-01a`: prefer longer local video render smoke if clamp/duration behavior remains uncertain, choose subtitle burn-in diagnostic if visible text connection is now the bottleneck, and choose source-video URL acquisition only after local video coverage is adequate. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ### Decision criteria after ED-06
 

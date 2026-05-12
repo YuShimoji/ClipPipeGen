@@ -1,15 +1,17 @@
-# tiny_render artifacts (OUT-01)
+# tiny_render artifacts (OUT-01 / OUT-01a)
 
 OUT-01 は `source_video` material、`source_audio` material、`edit_pack.json` の selected cut を接続し、確認可能な短い動画 artifact を生成する plumbing proof。production render、creative acceptance、subtitle burn-in、publishing ではない。
+
+OUT-01a は同じ artifact 生成経路を保ったまま、render 前 preflight、codec/container fallback readback、failure classification を追加する。成功判定は `rendered_video.*` の再生成を含み、docs / taxonomy だけでは done にしない。
 
 既定の出力先は `episodes/<episode_id>/renders/<output_id>/`。
 
 | artifact | purpose |
 |---|---|
 | `rendered_video.mp4` / `rendered_video.mkv` | diagnostic rendered video artifact。mp4/H.264/AAC を優先し、環境により mkv を許可する |
-| `render_receipt.json` | 実行 command、FFmpeg/FFprobe version、input refs、timeline mapping、warnings、output metadata を保存する |
-| `render_manifest.json` | operator / CI が読む readback。source refs、timeline policy、output paths、output metadata、non-production warnings を保持する |
-| `render_report.html` | 人間が確認する小さな HTML report。input refs、timeline mapping、metadata、warnings を表示する |
+| `render_receipt.json` | 実行 command、FFmpeg/FFprobe preflight/version、attempted render profiles、selected profile、failure classification、input refs、timeline mapping、warnings、output metadata を保存する |
+| `render_manifest.json` | operator / CI が読む readback。source refs、timeline policy、profile/fallback paths、output paths、output metadata、non-production warnings を保持する |
+| `render_report.html` | 人間が確認する小さな HTML report。input refs、timeline mapping、metadata、selected profile、attempts、warnings を表示する |
 
 ## CLI
 
@@ -56,11 +58,24 @@ clamp、duration target unmet、source video/audio duration mismatch は `timeli
 - `production_candidate=false`
 - `creative_acceptance=false`
 - `publish_acceptance=false`
+- `status`
+- `failure_classification.status`
+- `failure_classification.failure_reason`
 - `source_refs.source_video`
 - `source_refs.source_audio`
 - `source_refs.edit_pack`
 - `source_refs.transcript`
 - `timeline_mapping`
+- `preflight.tool_preflight.ffmpeg.available`
+- `preflight.tool_preflight.ffmpeg.path`
+- `preflight.tool_preflight.ffprobe.available`
+- `preflight.tool_preflight.ffprobe.path`
+- `selected_render_profile.profile_id`
+- `selected_container`
+- `selected_video_codec`
+- `selected_audio_codec`
+- `attempted_render_profiles[]`
+- `fallback_used`
 - `outputs.rendered_video`
 - `outputs.render_receipt`
 - `outputs.render_manifest`
@@ -73,6 +88,25 @@ clamp、duration target unmet、source video/audio duration mismatch は `timeli
 - `output_metadata.fps`
 - `output_metadata.stream_count`
 - `warnings[]`
+
+## OUT-01a failure classification
+
+Failure は最低限この分類に寄せる:
+
+| reason | 意味 |
+|---|---|
+| `environment_missing_ffmpeg` | FFmpeg が discovery / version preflight を通らない |
+| `environment_missing_ffprobe` | FFprobe が discovery / version preflight を通らない |
+| `codec_or_container_unsupported` | codec / muxer / container 指定が環境で使えない |
+| `input_video_missing` | source video path が存在しない |
+| `input_audio_missing` | source audio path が存在しない |
+| `input_stream_invalid` | 入力 stream が壊れている、または必要 stream が読めない |
+| `duration_or_timeline_mismatch` | duration / timeline が非正値または利用不能 |
+| `ffmpeg_command_failed` | FFmpeg command が上記以外で失敗 |
+| `metadata_probe_failed` | render 後の FFprobe metadata readback が失敗 |
+| `code_bug_or_unexpected_exception` | 予期しない例外 |
+
+`mp4 / libx264 / aac` を第一候補とし、auto profile では同 container の alternate codec、必要時は `mkv` profile を fallback 候補として持つ。実際に試した profile は `attempted_render_profiles[]` に status と failure reason を残す。未試行候補は `preflight.command_plan.render_profiles[]` に残る。
 
 ## Boundary
 

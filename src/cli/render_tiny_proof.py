@@ -42,6 +42,9 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
 
+    context: dict[str, Any] | None = None
+    mapping: dict[str, Any] | None = None
+    preflight: dict[str, Any] | None = None
     try:
         context = _resolve_context(
             root=Path(args.root),
@@ -72,7 +75,7 @@ def run(argv: list[str]) -> int:
         print(f"render-tiny-proof failed: {exc}", file=sys.stderr)
         return 1
 
-    conflicts = _conflicts(context["paths"])
+    conflicts = _conflicts(context["paths"], preflight=preflight)
     preflight["conflicts"] = conflicts
     preflight["would_fail_without_force"] = bool(conflicts and not args.force)
 
@@ -109,7 +112,15 @@ def run(argv: list[str]) -> int:
             render_result=result,
         )
     except (OSError, ffmpeg_tiny.TinyRenderError) as exc:
-        print(f"render-tiny-proof failed: {exc}", file=sys.stderr)
+        if context is not None and mapping is not None and preflight is not None:
+            _write_failure_outputs(
+                context=context,
+                mapping=mapping,
+                preflight=preflight,
+                error=exc,
+            )
+        reason = getattr(exc, "failure_reason", "code_bug_or_unexpected_exception")
+        print(f"render-tiny-proof failed: {reason}: {exc}", file=sys.stderr)
         return 1
 
     payload = {
@@ -119,6 +130,9 @@ def run(argv: list[str]) -> int:
         "render_report": _display_path(context["paths"]["report"], Path.cwd()),
         "output_metadata": manifest["output_metadata"],
         "timeline_mapping": mapping,
+        "selected_render_profile": manifest["selected_render_profile"],
+        "attempted_render_profiles": manifest["attempted_render_profiles"],
+        "fallback_used": manifest["fallback_used"],
         "production_candidate": manifest["production_candidate"],
         "warnings": manifest["warnings"],
         "receipt": receipt["schema_version"],
@@ -384,6 +398,22 @@ def _preflight(
         "timeline_mapping": mapping,
         "outputs": _output_readback(context),
         "command_plan": plan.to_dict(),
+        "tool_preflight": {
+            "status": "not_checked",
+            "reason": "dry-run command planning does not execute ffmpeg/ffprobe version checks",
+            "ffmpeg": {
+                "path": plan.ffmpeg_path,
+                "path_source": plan.ffmpeg_path_source,
+                "available": plan.ffmpeg_path is not None,
+                "version": None,
+            },
+            "ffprobe": {
+                "path": plan.ffprobe_path,
+                "path_source": plan.ffprobe_path_source,
+                "available": plan.ffprobe_path is not None,
+                "version": None,
+            },
+        },
         "production_candidate": False,
         "creative_acceptance": False,
         "publish_acceptance": False,
@@ -406,6 +436,14 @@ def _write_outputs(
         render_warnings=render_result.warnings,
     )
     output_metadata = render_result.metadata
+    outputs = {
+        "rendered_video": render_result.output_path,
+        "render_receipt": _display_path(paths["receipt"], Path.cwd()),
+        "render_manifest": _display_path(paths["manifest"], Path.cwd()),
+        "render_report": _display_path(paths["report"], Path.cwd()),
+    }
+    execution_preflight = dict(preflight)
+    execution_preflight["tool_preflight"] = render_result.preflight
     receipt = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": ARTIFACT_KIND,
@@ -415,18 +453,25 @@ def _write_outputs(
         "created_at": now,
         "provider": "ffmpeg",
         "mode": "tiny-render-proof",
+        "status": "succeeded",
+        "failure_classification": {
+            "status": "succeeded",
+            "failure_reason": None,
+            "message": None,
+        },
         "production_candidate": False,
         "creative_acceptance": False,
         "publish_acceptance": False,
         "input": _input_readback(context),
         "timeline_mapping": mapping,
-        "outputs": {
-            "rendered_video": _display_path(paths["video"], Path.cwd()),
-            "render_receipt": _display_path(paths["receipt"], Path.cwd()),
-            "render_manifest": _display_path(paths["manifest"], Path.cwd()),
-            "render_report": _display_path(paths["report"], Path.cwd()),
-        },
+        "outputs": outputs,
         "output_metadata": output_metadata,
+        "selected_render_profile": render_result.selected_profile.to_dict(),
+        "attempted_render_profiles": [attempt.to_dict() for attempt in render_result.attempts],
+        "fallback_used": render_result.fallback_used,
+        "selected_container": render_result.selected_profile.container,
+        "selected_video_codec": render_result.selected_profile.video_codec,
+        "selected_audio_codec": render_result.selected_profile.audio_codec,
         "tools": [
             {
                 "name": "ffmpeg",
@@ -445,7 +490,7 @@ def _write_outputs(
         "selected_command_summary": render_result.command_summary,
         "probe": render_result.probe_result.to_dict(),
         "warnings": warnings,
-        "preflight": preflight,
+        "preflight": execution_preflight,
     }
     manifest = {
         "schema_version": SCHEMA_VERSION,
@@ -454,13 +499,124 @@ def _write_outputs(
         "episode_id": context["episode_id"],
         "output_id": context["output_id"],
         "created_at": now,
+        "status": "succeeded",
+        "failure_classification": receipt["failure_classification"],
+        "production_candidate": False,
+        "creative_acceptance": False,
+        "publish_acceptance": False,
+        "source_refs": _input_readback(context),
+        "timeline_mapping": mapping,
+        "outputs": outputs,
+        "output_metadata": output_metadata,
+        "selected_render_profile": receipt["selected_render_profile"],
+        "attempted_render_profiles": receipt["attempted_render_profiles"],
+        "fallback_used": receipt["fallback_used"],
+        "selected_container": receipt["selected_container"],
+        "selected_video_codec": receipt["selected_video_codec"],
+        "selected_audio_codec": receipt["selected_audio_codec"],
+        "preflight": execution_preflight,
+        "subtitle_burn_in": False,
+        "warnings": warnings,
+    }
+    _write_json(receipt, paths["receipt"])
+    _write_json(manifest, paths["manifest"])
+    paths["report"].parent.mkdir(parents=True, exist_ok=True)
+    paths["report"].write_text(_make_report_html(manifest), encoding="utf-8")
+    return receipt, manifest
+
+
+def _write_failure_outputs(
+    *,
+    context: dict[str, Any],
+    mapping: dict[str, Any],
+    preflight: dict[str, Any],
+    error: BaseException,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    now = datetime.now(timezone.utc).isoformat()
+    paths = context["paths"]
+    failure_reason = getattr(error, "failure_reason", "code_bug_or_unexpected_exception")
+    attempts = getattr(error, "attempts", []) or []
+    selected_profile = getattr(error, "selected_profile", None)
+    selected_profile_dict = selected_profile.to_dict() if selected_profile else None
+    output_path = (
+        selected_profile.output_path
+        if selected_profile
+        else _first_planned_output(preflight) or _display_path(paths["video"], Path.cwd())
+    )
+    execution_preflight = dict(preflight)
+    error_preflight = getattr(error, "preflight", None)
+    if error_preflight:
+        execution_preflight["tool_preflight"] = error_preflight
+    warnings = _warnings(
+        context=context,
+        mapping=mapping,
+        render_warnings=[
+            f"render failed before diagnostic artifact acceptance: {failure_reason}",
+            str(error),
+        ],
+    )
+    receipt = {
+        "schema_version": SCHEMA_VERSION,
+        "artifact_kind": ARTIFACT_KIND,
+        "format": FORMAT,
+        "episode_id": context["episode_id"],
+        "output_id": context["output_id"],
+        "created_at": now,
+        "provider": "ffmpeg",
+        "mode": "tiny-render-proof",
+        "status": "failed",
+        "failure_classification": {
+            "status": "failed",
+            "failure_reason": failure_reason,
+            "message": str(error),
+        },
+        "production_candidate": False,
+        "creative_acceptance": False,
+        "publish_acceptance": False,
+        "input": _input_readback(context),
+        "timeline_mapping": mapping,
+        "outputs": {
+            "rendered_video": output_path,
+            "render_receipt": _display_path(paths["receipt"], Path.cwd()),
+            "render_manifest": _display_path(paths["manifest"], Path.cwd()),
+            "render_report": _display_path(paths["report"], Path.cwd()),
+        },
+        "output_metadata": {},
+        "selected_render_profile": selected_profile_dict,
+        "attempted_render_profiles": [attempt.to_dict() for attempt in attempts],
+        "fallback_used": any(not attempt.selected for attempt in attempts),
+        "selected_container": selected_profile.container if selected_profile else None,
+        "selected_video_codec": selected_profile.video_codec if selected_profile else None,
+        "selected_audio_codec": selected_profile.audio_codec if selected_profile else None,
+        "commands": [attempt.to_dict() for attempt in attempts],
+        "selected_command_summary": None,
+        "probe": None,
+        "warnings": warnings,
+        "preflight": execution_preflight,
+    }
+    manifest = {
+        "schema_version": SCHEMA_VERSION,
+        "artifact_kind": ARTIFACT_KIND,
+        "format": FORMAT,
+        "episode_id": context["episode_id"],
+        "output_id": context["output_id"],
+        "created_at": now,
+        "status": "failed",
+        "failure_classification": receipt["failure_classification"],
         "production_candidate": False,
         "creative_acceptance": False,
         "publish_acceptance": False,
         "source_refs": _input_readback(context),
         "timeline_mapping": mapping,
         "outputs": receipt["outputs"],
-        "output_metadata": output_metadata,
+        "output_metadata": {},
+        "selected_render_profile": selected_profile_dict,
+        "attempted_render_profiles": receipt["attempted_render_profiles"],
+        "fallback_used": receipt["fallback_used"],
+        "selected_container": receipt["selected_container"],
+        "selected_video_codec": receipt["selected_video_codec"],
+        "selected_audio_codec": receipt["selected_audio_codec"],
+        "preflight": execution_preflight,
         "subtitle_burn_in": False,
         "warnings": warnings,
     }
@@ -561,11 +717,21 @@ def _transcript_ref(edit_pack_path: Path) -> dict[str, Any]:
     }
 
 
-def _conflicts(paths: dict[str, Path]) -> list[str]:
+def _conflicts(paths: dict[str, Path], *, preflight: dict[str, Any] | None = None) -> list[str]:
     out: list[str] = []
     for key in ("video", "receipt", "manifest", "report"):
         if paths[key].exists():
             out.append(str(paths[key]))
+    planned_outputs = set()
+    if preflight:
+        plan = preflight.get("command_plan") if isinstance(preflight.get("command_plan"), dict) else {}
+        for profile in plan.get("render_profiles") or []:
+            if isinstance(profile, dict) and profile.get("output_path"):
+                planned_outputs.add(str(profile["output_path"]))
+    for planned in sorted(planned_outputs):
+        path = Path(planned)
+        if path.exists() and str(path) not in out:
+            out.append(str(path))
     return out
 
 
@@ -609,7 +775,25 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     metadata = manifest["output_metadata"]
     outputs = manifest["outputs"]
     warnings = manifest["warnings"]
+    selected_profile = manifest.get("selected_render_profile") or {}
+    failure = manifest.get("failure_classification") or {}
+    attempts = manifest.get("attempted_render_profiles") or []
+    tool_preflight = (manifest.get("preflight") or {}).get("tool_preflight") or {}
+    ffmpeg = tool_preflight.get("ffmpeg") or {}
+    ffprobe = tool_preflight.get("ffprobe") or {}
     warning_items = "\n".join(f"<li>{escape(str(warning))}</li>" for warning in warnings)
+    attempt_rows = "\n".join(
+        "<tr>"
+        f"<td>{escape(str((attempt.get('profile') or {}).get('profile_id', '')))}</td>"
+        f"<td>{escape(str((attempt.get('profile') or {}).get('container', '')))}</td>"
+        f"<td>{escape(str((attempt.get('profile') or {}).get('video_codec', '')))}</td>"
+        f"<td>{escape(str((attempt.get('profile') or {}).get('audio_codec', '')))}</td>"
+        f"<td>{escape(str(attempt.get('status', '')))}</td>"
+        f"<td>{escape(str(attempt.get('failure_reason') or ''))}</td>"
+        f"<td>{escape(str(attempt.get('selected', False)).lower())}</td>"
+        "</tr>"
+        for attempt in attempts
+    )
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -619,6 +803,25 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
 <body>
   <h1>OUT-01 Tiny Render Proof Readback</h1>
   <p>This rendered artifact is diagnostic plumbing proof, not production / creative / publish acceptance.</p>
+  <h2>Render Status</h2>
+  <dl>
+    <dt>status</dt><dd>{escape(str(manifest.get("status", "succeeded")))}</dd>
+    <dt>failure_reason</dt><dd>{escape(str(failure.get("failure_reason") or ""))}</dd>
+    <dt>selected_profile</dt><dd>{escape(str(selected_profile.get("profile_id") or ""))}</dd>
+    <dt>selected_container</dt><dd>{escape(str(manifest.get("selected_container") or ""))}</dd>
+    <dt>selected_video_codec</dt><dd>{escape(str(manifest.get("selected_video_codec") or ""))}</dd>
+    <dt>selected_audio_codec</dt><dd>{escape(str(manifest.get("selected_audio_codec") or ""))}</dd>
+    <dt>fallback_used</dt><dd>{escape(str(manifest.get("fallback_used", False)).lower())}</dd>
+  </dl>
+  <h2>Tool Preflight</h2>
+  <dl>
+    <dt>ffmpeg_available</dt><dd>{escape(str(ffmpeg.get("available", False)).lower())}</dd>
+    <dt>ffmpeg_path</dt><dd>{escape(str(ffmpeg.get("path") or ""))}</dd>
+    <dt>ffmpeg_version</dt><dd>{escape(str(ffmpeg.get("version") or ""))}</dd>
+    <dt>ffprobe_available</dt><dd>{escape(str(ffprobe.get("available", False)).lower())}</dd>
+    <dt>ffprobe_path</dt><dd>{escape(str(ffprobe.get("path") or ""))}</dd>
+    <dt>ffprobe_version</dt><dd>{escape(str(ffprobe.get("version") or ""))}</dd>
+  </dl>
   <h2>Artifact Paths</h2>
   <ul>
     <li>rendered_video: {escape(str(outputs.get("rendered_video", "")))}</li>
@@ -651,6 +854,15 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     <dt>fps</dt><dd>{escape(str(metadata.get("fps")))}</dd>
     <dt>stream_count</dt><dd>{escape(str(metadata.get("stream_count")))}</dd>
   </dl>
+  <h2>Render Attempts</h2>
+  <table>
+    <thead>
+      <tr><th>profile</th><th>container</th><th>video</th><th>audio</th><th>status</th><th>failure</th><th>selected</th></tr>
+    </thead>
+    <tbody>
+{attempt_rows}
+    </tbody>
+  </table>
   <h2>Warnings</h2>
   <ul>
 {warning_items}
@@ -700,6 +912,15 @@ def _display_path(path: Path | None, base: Path) -> str:
         return str(path).replace("\\", "/")
 
 
+def _first_planned_output(preflight: dict[str, Any]) -> str | None:
+    plan = preflight.get("command_plan") if isinstance(preflight.get("command_plan"), dict) else {}
+    profiles = plan.get("render_profiles") if isinstance(plan.get("render_profiles"), list) else []
+    for profile in profiles:
+        if isinstance(profile, dict) and profile.get("output_path"):
+            return str(profile["output_path"]).replace("\\", "/")
+    return None
+
+
 def _print_payload(payload: dict[str, Any], *, fmt: str) -> None:
     if fmt == "json":
         json.dump(payload, sys.stdout, ensure_ascii=False, indent=2)
@@ -718,6 +939,11 @@ def _print_payload(payload: dict[str, Any], *, fmt: str) -> None:
         print(f"resolution: {metadata.get('resolution')}")
         print(f"fps: {metadata.get('fps')}")
         print(f"stream_count: {metadata.get('stream_count')}")
+        selected_profile = payload.get("selected_render_profile")
+        if selected_profile:
+            print(f"selected_render_profile: {selected_profile.get('profile_id')}")
+        if "fallback_used" in payload:
+            print(f"fallback_used: {str(payload['fallback_used']).lower()}")
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         for warning in payload["warnings"]:
             print(f"warning: {warning}")

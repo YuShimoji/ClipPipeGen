@@ -9,7 +9,7 @@
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local | local preview pack（artifact preview / read-only report） | `src/cli/build_local_preview_pack.py` / `src/pipeline/preview_pack.py` | SH-05 実装済み。local media 1本から source audio / transcript / cut / context / subtitle / manifest / HTML report を接続。SH-05d で既存 source_audio material の `source.wav` / receipt / sidecar / ledger も再取得なしで review surface に接続。動画生成ではない |
 | Local | NLE export（CSV cut list / readback report） | `src/cli/export_nle.py` / `src/pipeline/nle_export.py` | ED-06 実装済み。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成する。ED-07b 以降は `transcript.json` の provider / model / real_transcript も readback する。FCPXML / Resolve XML / render / encode ではなく、production candidate 判定はしない |
-| Local/External tool | tiny render proof | `src/cli/render_tiny_proof.py` / `src/integrations/render/` | OUT-01 実装済み。source_video material / source_audio material / edit_pack selected cut から diagnostic rendered video、receipt、manifest、HTML report を生成する。FFmpeg/FFprobe は render integration に閉じ込め、subtitle burn-in / GUI action / production render / publishing は行わない |
+| Local/External tool | tiny render proof | `src/cli/render_tiny_proof.py` / `src/integrations/render/` | OUT-01 実装済み。source_video material / source_audio material / edit_pack selected cut から diagnostic rendered video、receipt、manifest、HTML report を生成する。OUT-01a で FFmpeg/FFprobe preflight、codec/container fallback attempt、failure classification、selected profile readback を追加済み。FFmpeg/FFprobe は render integration に閉じ込め、subtitle burn-in / GUI action / production render / publishing は行わない |
 | Local GUI | preview pack read-only ingest | `gui/preview_reader.cjs` / GUI Preview Pack tab | SH-05c 実装済み。既存 `preview_manifest.json` / `preview_report.html` を読み、validation / warning / artifact link を表示するだけ。build / fetch / render / upload は実行しない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。ED-07b で optional `vosk` adapter を追加し、明示 model path の local STT で `real_transcript=true` を生成可能。provider / model 不在は preflight failure で、fixture fallback はしない。URL / VOD 取得は含めない |
@@ -33,7 +33,7 @@
   - transcript 隣接 segment による cut 文脈チェック（`check-cut-context` は実装済み。動画 preview / creative acceptance は後続）
   - ローカル素材 1 本、または取得済み source audio material から operator-visible な artifact preview / read-only HTML report を生成（`build-local-preview-pack` は実装済み。rendered video preview ではない）
   - `edit_pack.json` から外部編集へ渡す CSV cut list / manifest / HTML readback を生成（`export-nle` は実装済み。production edit acceptance ではない）
-  - source video / source audio / edit_pack -> tiny diagnostic rendered video / receipt / manifest / report (`render-tiny-proof` is implemented; production render acceptance is not claimed)
+  - source video / source audio / edit_pack -> tiny diagnostic rendered video / receipt / manifest / report (`render-tiny-proof` is implemented; OUT-01a preflight/fallback/failure readback exists; production render acceptance is not claimed)
   - upload / thumbnail 設定 / visibility 更新 integration
 
 ## 現時点で未実装

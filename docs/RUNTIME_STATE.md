@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / OUT-01 done。samples runnable
-- **current_slice**: Slice 2 — OUT-01 `tiny render proof` is implemented。`render-tiny-proof` で source_video material、source_audio material、edit_pack の最初の selected cut をつなぎ、diagnostic `rendered_video.mp4` と `render_receipt.json` / `render_manifest.json` / `render_report.html` を生成できる。これは production render / creative / publish acceptance ではなく、subtitle burn-in も行わない
-- **next_action（assistant 側）**: 次は subtitle burn-in ではなく、まず render hardening（codec/container fallback と preflight 強化）または source-video URL acquisition を比較する。tiny render は出たため、次に減らす摩擦は「より安定した render 条件」か「remote source video の取得境界」のどちらか
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / OUT-01 / OUT-01a done。samples runnable
+- **current_slice**: Slice 2 — OUT-01a `render preflight / fallback readback` is implemented。`render-tiny-proof` は source_video material、source_audio material、edit_pack の selected cut から diagnostic `rendered_video.*` を再生成しつつ、FFmpeg/FFprobe preflight、selected render profile、attempted profiles、fallback reason、failure classification を `render_receipt.json` / `render_manifest.json` / `render_report.html` に残す。これは production render / creative / publish acceptance ではなく、subtitle burn-in も行わない
+- **next_action（assistant 側）**: OUT-01a が安定したため、次は longer local video render smoke と subtitle burn-in diagnostic を比較する。codec/container failure が多い場合だけ render profile matrix を最小追加し、duration/clamp が問題なら longer local source video smoke を優先する。source video の取得元が問題でも、まず local video smoke を長尺化してから URL video acquisition を検討する
+
+### Slice 2 (xxiv) OUT-01a done（render preflight / fallback readback）
+- `src/integrations/render/ffmpeg_tiny.py` — render 前に FFmpeg / FFprobe discovery と `-version` preflight を行い、`environment_missing_ffmpeg` / `environment_missing_ffprobe` を分類する。auto profile は `mp4/libx264/aac` を第一候補とし、同 container の codec fallback と `mkv` fallback 候補を command plan に残す
+- Failure classification — render attempt ごとに `status`、`profile`、`failure_reason`、stderr digest を保存。分類は `codec_or_container_unsupported`、`input_stream_invalid`、`ffmpeg_command_failed`、`metadata_probe_failed`、`input_video_missing`、`input_audio_missing`、`duration_or_timeline_mismatch`、`code_bug_or_unexpected_exception` を扱う
+- `src/cli/render_tiny_proof.py` — success / failure とも receipt / manifest / report に selected profile、attempted profiles、fallback_used、tool preflight、failure_classification を write back する。失敗時も context 解決後なら `render_receipt.json` / `render_manifest.json` / `render_report.html` を残す
+- Smoke readback — ignored `episodes/out01a_hardened_smoke_20260513` で synthetic local media を source video / source audio に登録し、manual selected cut から `renders/out01a_hardened/rendered_video.mp4` を再生成。metadata は duration `2.0`、container `mov,mp4,m4a,3gp,3g2,mj2`、video codec `h264`、audio codec `aac`、resolution `160x90`、fps `15.0`、stream count `2`
+- Boundary — OUT-01a は diagnostic render subsystem hardening であり、production render、creative edit acceptance、publishing、subtitle burn-in、font/safe-area polish、GUI render button、URL video fetch、FCPXML / Resolve XML には進んでいない。`production_candidate=false` のまま扱う
+- Assistant-side validation — targeted OUT-01a render hardening tests、tiny render tests、source-video acquisition tests、ED-07b transcript tests、ED-06 export tests、`uvx pytest -q`、`npm run smoke`、`npm run smoke:electron`、`git diff --check` を通過
 
 ### Slice 2 (xxiii) OUT-01 done（tiny render proof）
 - `src/integrations/render/ffmpeg_tiny.py` — render 専用 FFmpeg/FFprobe adapter を追加。source video + source audio の単一 cut range を mp4/mkv に出力し、output duration / container / video codec / audio codec / resolution / fps / stream count を FFprobe で readback する。STT / Editing / GUI / asset_fetch には FFmpeg render を混ぜない

@@ -29,6 +29,21 @@ STDERR_TAIL_CHARS = 1000
 class TinyRenderError(Exception):
     """Raised when tiny render proof cannot be produced or probed."""
 
+    def __init__(
+        self,
+        message: str,
+        *,
+        failure_reason: str = "code_bug_or_unexpected_exception",
+        preflight: dict[str, Any] | None = None,
+        attempts: list["CommandAttempt"] | None = None,
+        selected_profile: "RenderProfile | None" = None,
+    ) -> None:
+        super().__init__(message)
+        self.failure_reason = failure_reason
+        self.preflight = preflight
+        self.attempts = attempts or []
+        self.selected_profile = selected_profile
+
 
 class Runner(Protocol):
     def __call__(
@@ -40,6 +55,24 @@ class Runner(Protocol):
         timeout: int,
     ) -> subprocess.CompletedProcess[str]:
         ...
+
+
+@dataclass(frozen=True)
+class RenderProfile:
+    profile_id: str
+    container: str
+    video_codec: str
+    audio_codec: str
+    output_path: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "profile_id": self.profile_id,
+            "container": self.container,
+            "video_codec": self.video_codec,
+            "audio_codec": self.audio_codec,
+            "output_path": self.output_path,
+        }
 
 
 @dataclass(frozen=True)
@@ -58,6 +91,7 @@ class RenderPlan:
     audio_codec: str
     command: list[str] | None
     command_summary: str | None
+    render_profiles: list[RenderProfile]
     warnings: list[str]
 
     def to_dict(self) -> dict[str, Any]:
@@ -76,23 +110,30 @@ class RenderPlan:
             "audio_codec": self.audio_codec,
             "command": self.command,
             "command_summary": self.command_summary,
+            "render_profiles": [profile.to_dict() for profile in self.render_profiles],
             "warnings": self.warnings,
         }
 
 
 @dataclass(frozen=True)
 class CommandAttempt:
+    profile: RenderProfile
     command: list[str]
     command_summary: str
+    status: str
     exit_code: int
     stderr_digest: dict[str, Any]
+    failure_reason: str | None
     selected: bool
 
     def to_dict(self) -> dict[str, Any]:
         return {
+            "profile": self.profile.to_dict(),
             "summary": self.command_summary,
+            "status": self.status,
             "exit_code": self.exit_code,
             "stderr_digest": self.stderr_digest,
+            "failure_reason": self.failure_reason,
             "selected": self.selected,
         }
 
@@ -131,9 +172,12 @@ class RenderResult:
     command: list[str]
     command_summary: str
     attempts: list[CommandAttempt]
+    selected_profile: RenderProfile
+    fallback_used: bool
     output_path: str
     metadata: dict[str, Any]
     probe_result: ProbeResult
+    preflight: dict[str, Any]
     warnings: list[str]
 
 
@@ -163,18 +207,25 @@ def build_plan(
     if resolved_ffprobe is None:
         warnings.append(f"ffprobe not found via --ffprobe-path, {FFPROBE_ENV_VAR}, or PATH")
 
+    profiles = _render_profiles(
+        output_path=output_path,
+        container=container,
+        video_codec=video_codec,
+        audio_codec=audio_codec,
+    )
     command: list[str] | None = None
     command_summary: str | None = None
     if resolved_ffmpeg is not None:
+        first_profile = profiles[0]
         command = _render_command(
             ffmpeg_path=resolved_ffmpeg,
             source_video_path=source_video_path,
             source_audio_path=source_audio_path,
-            output_path=output_path,
+            output_path=first_profile.output_path,
             start_seconds=start_seconds,
             duration_seconds=duration_seconds,
-            video_codec=_codec_candidates(container=container, video_codec=video_codec, audio_codec=audio_codec)[0][0],
-            audio_codec=_codec_candidates(container=container, video_codec=video_codec, audio_codec=audio_codec)[0][1],
+            video_codec=first_profile.video_codec,
+            audio_codec=first_profile.audio_codec,
         )
         command_summary = _command_summary(command)
 
@@ -193,6 +244,7 @@ def build_plan(
         audio_codec=audio_codec,
         command=command,
         command_summary=command_summary,
+        render_profiles=profiles,
         warnings=warnings,
     )
 
@@ -211,6 +263,53 @@ def discover_ffprobe(
     env: Mapping[str, str] | None = None,
 ) -> tuple[str | None, str | None]:
     return _discover_tool("ffprobe", explicit_path=ffprobe_path, env_var=FFPROBE_ENV_VAR, env=env)
+
+
+def preflight_tools(
+    *,
+    ffmpeg_path: str | Path | None = None,
+    ffmpeg_path_source: str | None = None,
+    ffprobe_path: str | Path | None = None,
+    ffprobe_path_source: str | None = None,
+    runner: Runner = subprocess.run,
+    env: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    """Check render tool availability before attempting the render."""
+    resolved_ffmpeg, discovered_ffmpeg_source = (
+        (str(ffmpeg_path), ffmpeg_path_source or "argument")
+        if ffmpeg_path
+        else discover_ffmpeg(env=env)
+    )
+    resolved_ffprobe, discovered_ffprobe_source = (
+        (str(ffprobe_path), ffprobe_path_source or "argument")
+        if ffprobe_path
+        else discover_ffprobe(env=env)
+    )
+    ffmpeg = _tool_preflight(
+        tool_name="ffmpeg",
+        path=resolved_ffmpeg,
+        path_source=discovered_ffmpeg_source,
+        missing_reason="environment_missing_ffmpeg",
+        runner=runner,
+    )
+    ffprobe = _tool_preflight(
+        tool_name="ffprobe",
+        path=resolved_ffprobe,
+        path_source=discovered_ffprobe_source,
+        missing_reason="environment_missing_ffprobe",
+        runner=runner,
+    )
+    failure_reason = None
+    if not ffmpeg["available"]:
+        failure_reason = "environment_missing_ffmpeg"
+    elif not ffprobe["available"]:
+        failure_reason = "environment_missing_ffprobe"
+    return {
+        "status": "passed" if failure_reason is None else "failed",
+        "failure_reason": failure_reason,
+        "ffmpeg": ffmpeg,
+        "ffprobe": ffprobe,
+    }
 
 
 def render_tiny_proof(
@@ -232,13 +331,6 @@ def render_tiny_proof(
     source_video = Path(source_video_path)
     source_audio = Path(source_audio_path)
     output = Path(output_path)
-    if not source_video.exists():
-        raise TinyRenderError(f"source video not found: {source_video}")
-    if not source_audio.exists():
-        raise TinyRenderError(f"source audio not found: {source_audio}")
-    if duration_seconds <= 0:
-        raise TinyRenderError("duration_seconds must be positive")
-
     plan = build_plan(
         source_video_path=source_video,
         source_audio_path=source_audio,
@@ -252,23 +344,50 @@ def render_tiny_proof(
         audio_codec=audio_codec,
         env=env,
     )
-    if plan.ffmpeg_path is None:
-        raise TinyRenderError("ffmpeg not found")
-    if plan.ffprobe_path is None:
-        raise TinyRenderError("ffprobe not found")
+    preflight = preflight_tools(
+        ffmpeg_path=plan.ffmpeg_path,
+        ffmpeg_path_source=plan.ffmpeg_path_source,
+        ffprobe_path=plan.ffprobe_path,
+        ffprobe_path_source=plan.ffprobe_path_source,
+        runner=runner,
+        env=env,
+    )
+    if preflight["failure_reason"] is not None:
+        raise TinyRenderError(
+            f"render preflight failed: {preflight['failure_reason']}",
+            failure_reason=preflight["failure_reason"],
+            preflight=preflight,
+        )
+    if not source_video.exists():
+        raise TinyRenderError(
+            f"source video not found: {source_video}",
+            failure_reason="input_video_missing",
+            preflight=preflight,
+        )
+    if not source_audio.exists():
+        raise TinyRenderError(
+            f"source audio not found: {source_audio}",
+            failure_reason="input_audio_missing",
+            preflight=preflight,
+        )
+    if duration_seconds <= 0:
+        raise TinyRenderError(
+            "duration_seconds must be positive",
+            failure_reason="duration_or_timeline_mismatch",
+            preflight=preflight,
+        )
 
-    ffmpeg_version = _read_tool_version(plan.ffmpeg_path, tool_name="ffmpeg", runner=runner)
-    ffprobe_version = _read_tool_version(plan.ffprobe_path, tool_name="ffprobe", runner=runner)
-    output.parent.mkdir(parents=True, exist_ok=True)
+    ffmpeg_version = preflight["ffmpeg"]["version"] or "unknown"
+    ffprobe_version = preflight["ffprobe"]["version"] or "unknown"
 
     attempts: list[CommandAttempt] = []
     last_error = "no render attempts were built"
     selected_command: list[str] | None = None
-    for candidate_video_codec, candidate_audio_codec in _codec_candidates(
-        container=container,
-        video_codec=video_codec,
-        audio_codec=audio_codec,
-    ):
+    selected_profile: RenderProfile | None = None
+    selected_output: Path | None = None
+    for profile in plan.render_profiles:
+        output = Path(profile.output_path)
+        output.parent.mkdir(parents=True, exist_ok=True)
         command = _render_command(
             ffmpeg_path=plan.ffmpeg_path,
             source_video_path=source_video,
@@ -276,8 +395,8 @@ def render_tiny_proof(
             output_path=output,
             start_seconds=start_seconds,
             duration_seconds=duration_seconds,
-            video_codec=candidate_video_codec,
-            audio_codec=candidate_audio_codec,
+            video_codec=profile.video_codec,
+            audio_codec=profile.audio_codec,
         )
         try:
             result = runner(
@@ -289,13 +408,21 @@ def render_tiny_proof(
         except (OSError, subprocess.SubprocessError) as exc:
             if output.exists():
                 output.unlink()
+            failure_reason = (
+                "environment_missing_ffmpeg"
+                if isinstance(exc, FileNotFoundError)
+                else "ffmpeg_command_failed"
+            )
             last_error = f"ffmpeg render failed before exit code: {exc}"
             attempts.append(
                 CommandAttempt(
+                    profile=profile,
                     command=command,
                     command_summary=_command_summary(command),
+                    status="failed",
                     exit_code=-1,
                     stderr_digest=build_stderr_digest(str(exc)),
+                    failure_reason=failure_reason,
                     selected=False,
                 )
             )
@@ -305,15 +432,20 @@ def render_tiny_proof(
         success = result.returncode == 0 and output.exists()
         attempts.append(
             CommandAttempt(
+                profile=profile,
                 command=command,
                 command_summary=_command_summary(command),
+                status="succeeded" if success else "failed",
                 exit_code=result.returncode,
                 stderr_digest=digest,
+                failure_reason=None if success else _classify_ffmpeg_failure(result.stderr),
                 selected=success,
             )
         )
         if success:
             selected_command = command
+            selected_profile = profile
+            selected_output = output
             break
         if output.exists():
             output.unlink()
@@ -322,21 +454,40 @@ def render_tiny_proof(
             f"exit_code={result.returncode}; stderr_sha256={digest['sha256']}"
         )
 
-    if selected_command is None:
-        raise TinyRenderError(last_error)
+    if selected_command is None or selected_profile is None or selected_output is None:
+        last_reason = (
+            attempts[-1].failure_reason
+            if attempts and attempts[-1].failure_reason
+            else "ffmpeg_command_failed"
+        )
+        raise TinyRenderError(
+            last_error,
+            failure_reason=last_reason,
+            preflight=preflight,
+            attempts=attempts,
+        )
 
-    probe = probe_media(
-        input_path=output,
-        ffprobe_path=plan.ffprobe_path,
-        runner=runner,
-        ffprobe_version=ffprobe_version,
-        ffprobe_path_source=plan.ffprobe_path_source or "unknown",
-    )
+    try:
+        probe = probe_media(
+            input_path=selected_output,
+            ffprobe_path=plan.ffprobe_path,
+            runner=runner,
+            ffprobe_version=ffprobe_version,
+            ffprobe_path_source=plan.ffprobe_path_source or "unknown",
+        )
+    except TinyRenderError as exc:
+        raise TinyRenderError(
+            str(exc),
+            failure_reason=exc.failure_reason or "metadata_probe_failed",
+            preflight=preflight,
+            attempts=attempts,
+            selected_profile=selected_profile,
+        ) from exc
     warnings = list(plan.warnings)
     failed_attempts = [attempt for attempt in attempts if not attempt.selected]
     if failed_attempts:
         warnings.append(
-            f"{len(failed_attempts)} ffmpeg codec attempt(s) failed before the selected render command"
+            f"{len(failed_attempts)} render profile fallback attempt(s) failed before selected profile {selected_profile.profile_id}"
         )
 
     return RenderResult(
@@ -349,9 +500,12 @@ def render_tiny_proof(
         command=selected_command,
         command_summary=_command_summary(selected_command),
         attempts=attempts,
-        output_path=str(output).replace("\\", "/"),
+        selected_profile=selected_profile,
+        fallback_used=bool(failed_attempts),
+        output_path=str(selected_output).replace("\\", "/"),
         metadata=probe.metadata,
         probe_result=probe,
+        preflight=preflight,
         warnings=warnings,
     )
 
@@ -371,7 +525,7 @@ def probe_media(
         else discover_ffprobe(env=env)
     )
     if resolved is None:
-        raise TinyRenderError("ffprobe not found")
+        raise TinyRenderError("ffprobe not found", failure_reason="environment_missing_ffprobe")
     version = ffprobe_version or _read_tool_version(resolved, tool_name="ffprobe", runner=runner)
     command = _probe_command(resolved, input_path)
     try:
@@ -382,17 +536,24 @@ def probe_media(
             timeout=COMMAND_TIMEOUT_SECONDS,
         )
     except (OSError, subprocess.SubprocessError) as exc:
-        raise TinyRenderError(f"ffprobe failed before exit code: {exc}") from exc
+        raise TinyRenderError(
+            f"ffprobe failed before exit code: {exc}",
+            failure_reason="metadata_probe_failed",
+        ) from exc
     digest = build_stderr_digest(result.stderr)
     if result.returncode != 0:
         raise TinyRenderError(
             "ffprobe metadata read failed: "
-            f"exit_code={result.returncode}; stderr_sha256={digest['sha256']}"
+            f"exit_code={result.returncode}; stderr_sha256={digest['sha256']}",
+            failure_reason="metadata_probe_failed",
         )
     try:
         payload = json.loads(result.stdout or "{}")
     except json.JSONDecodeError as exc:
-        raise TinyRenderError(f"ffprobe returned invalid JSON: {exc}") from exc
+        raise TinyRenderError(
+            f"ffprobe returned invalid JSON: {exc}",
+            failure_reason="metadata_probe_failed",
+        ) from exc
     return ProbeResult(
         ffprobe_path=resolved,
         ffprobe_path_source=source or "unknown",
@@ -414,6 +575,74 @@ def build_stderr_digest(stderr: str | None) -> dict[str, Any]:
         "tail": tail,
         "tail_chars": STDERR_TAIL_CHARS,
         "truncated": len(scrubbed) > STDERR_TAIL_CHARS,
+    }
+
+
+def _tool_preflight(
+    *,
+    tool_name: str,
+    path: str | None,
+    path_source: str | None,
+    missing_reason: str,
+    runner: Runner,
+) -> dict[str, Any]:
+    if path is None:
+        return {
+            "name": tool_name,
+            "path": None,
+            "path_source": None,
+            "available": False,
+            "version": None,
+            "status": "failed",
+            "failure_reason": missing_reason,
+            "stderr_digest": None,
+        }
+    command = [path, "-version"]
+    try:
+        result = runner(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=VERSION_TIMEOUT_SECONDS,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        return {
+            "name": tool_name,
+            "path": path,
+            "path_source": path_source or "unknown",
+            "available": False,
+            "version": None,
+            "status": "failed",
+            "failure_reason": missing_reason,
+            "stderr_digest": build_stderr_digest(str(exc)),
+            "command_summary": _command_summary(command),
+        }
+    digest = build_stderr_digest(result.stderr)
+    if result.returncode != 0:
+        return {
+            "name": tool_name,
+            "path": path,
+            "path_source": path_source or "unknown",
+            "available": False,
+            "version": None,
+            "status": "failed",
+            "failure_reason": missing_reason,
+            "stderr_digest": digest,
+            "command_summary": _command_summary(command),
+            "exit_code": result.returncode,
+        }
+    first_line = (result.stdout or "").splitlines()[0:1]
+    return {
+        "name": tool_name,
+        "path": path,
+        "path_source": path_source or "unknown",
+        "available": True,
+        "version": first_line[0].strip() if first_line else "unknown",
+        "status": "passed",
+        "failure_reason": None,
+        "stderr_digest": digest,
+        "command_summary": _command_summary(command),
+        "exit_code": result.returncode,
     }
 
 
@@ -504,6 +733,93 @@ def _codec_candidates(
     if container == "mkv":
         return [("libx264", "aac"), ("libopenh264", "aac"), ("mpeg4", "pcm_s16le")]
     return [("libx264", "aac"), ("libopenh264", "aac"), ("mpeg4", "aac")]
+
+
+def _render_profiles(
+    *,
+    output_path: str | Path,
+    container: str,
+    video_codec: str,
+    audio_codec: str,
+) -> list[RenderProfile]:
+    output = Path(output_path)
+    if video_codec != "auto" or audio_codec != "auto":
+        resolved_video = "libx264" if video_codec == "auto" else video_codec
+        resolved_audio = "aac" if audio_codec == "auto" else audio_codec
+        return [
+            RenderProfile(
+                profile_id=_profile_id(container, resolved_video, resolved_audio),
+                container=container,
+                video_codec=resolved_video,
+                audio_codec=resolved_audio,
+                output_path=str(_output_path_for_container(output, container)).replace("\\", "/"),
+            )
+        ]
+
+    if container == "mkv":
+        candidates = [
+            ("mkv", "libx264", "aac"),
+            ("mkv", "libopenh264", "aac"),
+            ("mkv", "mpeg4", "pcm_s16le"),
+            ("mp4", "libx264", "aac"),
+        ]
+    else:
+        candidates = [
+            ("mp4", "libx264", "aac"),
+            ("mp4", "libopenh264", "aac"),
+            ("mp4", "mpeg4", "aac"),
+            ("mkv", "libx264", "aac"),
+            ("mkv", "mpeg4", "pcm_s16le"),
+        ]
+    return [
+        RenderProfile(
+            profile_id=_profile_id(candidate_container, candidate_video, candidate_audio),
+            container=candidate_container,
+            video_codec=candidate_video,
+            audio_codec=candidate_audio,
+            output_path=str(_output_path_for_container(output, candidate_container)).replace("\\", "/"),
+        )
+        for candidate_container, candidate_video, candidate_audio in candidates
+    ]
+
+
+def _output_path_for_container(output_path: Path, container: str) -> Path:
+    return output_path.with_suffix(f".{container}")
+
+
+def _profile_id(container: str, video_codec: str, audio_codec: str) -> str:
+    video = {"libx264": "h264", "libopenh264": "openh264"}.get(video_codec, video_codec)
+    audio = audio_codec.replace("-", "_")
+    return f"{container}_{video}_{audio}"
+
+
+def _classify_ffmpeg_failure(stderr: str | None) -> str:
+    text = (stderr or "").lower()
+    if any(
+        marker in text
+        for marker in (
+            "unknown encoder",
+            "encoder not found",
+            "error initializing output stream",
+            "could not write header",
+            "codec not currently supported",
+            "requested output format",
+            "invalid argument",
+        )
+    ):
+        return "codec_or_container_unsupported"
+    if any(
+        marker in text
+        for marker in (
+            "no such file or directory",
+            "error opening input",
+            "invalid data found when processing input",
+            "stream specifier",
+            "matches no streams",
+        )
+    ):
+        return "input_stream_invalid"
+    return "ffmpeg_command_failed"
 
 
 def _render_command(
