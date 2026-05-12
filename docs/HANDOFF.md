@@ -8,9 +8,9 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest completed feature slice: `SH-05d source-audio preview bridge` (implemented; reproducible existing-source-audio smoke passed; real INT-02e artifact smoke pending until ignored artifact is available again)
-- Current recommended decision: choose `ED-06 minimal NLE export` vs real STT adapter based on the next visible production bottleneck
-- Latest completed feature-slice closeout before this handoff note: local SH-05d implementation in the current working tree
+- Latest completed feature slice: `ED-06 minimal NLE export` (CSV cut list + JSON/HTML readback; export plumbing proof, not production edit acceptance)
+- Current recommended decision: prefer real STT adapter next if fake / fixture transcript quality is now the bottleneck; source-video acquisition is the next visual/render prerequisite
+- Latest completed feature-slice closeout before this handoff note: local ED-06 implementation in the current working tree
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -41,6 +41,14 @@ SH-05d is complete. `build-local-preview-pack --use-existing-source-audio` consu
 - GUI Preview Pack ingest remains read-only; it can validate the new manifest fields and artifact links but does not run build, fetch, render, upload, or network/external acquisition workflows.
 - Closeout smoke used ignored reproducible episode `episodes/sh05d_existing_source_audio_smoke_20260512`. It proves the bridge behavior without network / downloader. The original ignored INT-02e real smoke episode was not present locally, so a real INT-02e artifact smoke remains pending until those artifacts are regenerated or restored.
 
+ED-06 is complete as a minimal external editing handoff. `export-nle` consumes `edit_pack.json` and writes a CSV cut list plus readback files:
+
+- The chosen export format is `csv_cut_list_v1`, backed by `nle_cut_list.csv`.
+- The export includes cut id, selected state, title/reason, start/end/duration seconds, source type, confidence, context status, source segment ids, subtitle ids/text/ranges, and source audio refs.
+- When a sibling or explicit `preview_manifest.json` exists, the export carries source audio provenance such as provider, mode, source URL, output hash, and rights status snapshot.
+- `nle_export_manifest.json` and `nle_export_report.html` read back the generated artifact paths and warnings.
+- Fake / fixture transcript derived exports keep `production_edit_candidate=false` and warning text; the output can leave ClipPipeGen for external review, but it is not production edit acceptance.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -54,8 +62,8 @@ Current state against that final shape:
 | Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake` and fixture flows exist | No real STT adapter; fake / fixture transcript is not acceptance material |
-| Edit pack | `transcript.json` can feed cut candidates, context checks, and subtitles | External editing handoff is still missing |
-| NLE / render | Not implemented | No EDL/XML/FCPXML export and no mp4 / rendered video proof |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | The edit still depends on fake / fixture transcript unless real STT or reviewed transcript is supplied |
+| NLE / render | Minimal CSV cut list export exists | No FCPXML / Resolve XML and no mp4 / rendered video proof |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
 The project should continue only if the next slices add or connect real production-adjacent artifacts. A slice that only adds more policy, boundary text, report polish, or GUI read-only state without connecting `source.wav`, `transcript.json`, `edit_pack.json`, `preview_manifest.json`, NLE export, or rendered video should be treated as drift.
@@ -66,7 +74,10 @@ The project should continue only if the next slices add or connect real producti
 - `src/cli/fetch_source_audio.py` — `--mode yt-dlp-audio` CLI wiring, sidecar / receipt / ledger write.
 - `src/cli/build_local_preview_pack.py` — local preview pack orchestration and `--use-existing-source-audio` bridge.
 - `src/pipeline/preview_pack.py` — preview manifest / report generation and source audio provenance readback.
+- `src/pipeline/nle_export.py` — ED-06 CSV cut list / manifest / HTML readback generation.
+- `src/cli/export_nle.py` — `export-nle` CLI.
 - `gui/preview_reader.cjs` — read-only preview manifest ingest and artifact link validation.
+- `docs/SCHEMAS/v1/nle_export.md` — ED-06 artifact contract and boundary.
 - `docs/RUNTIME_STATE.md` — current state and next recommended action.
 - `docs/FEATURE_REGISTRY.md` — feature status table and transition log.
 - `docs/ASSET_FETCH_BOUNDARY.md` — asset_fetch, FFmpeg, yt-dlp, GUI, STT, Editing boundaries.
@@ -75,7 +86,7 @@ The project should continue only if the next slices add or connect real producti
 
 ## Validation Already Run
 
-Last validation for SH-05d:
+Last validation for ED-06 closeout:
 
 ```powershell
 uvx pytest -q
@@ -86,13 +97,18 @@ git diff --check
 
 Results:
 
-- `uvx pytest -q` -> `123 passed`
+- `uvx pytest -q` -> `126 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
 
 Additional targeted readback:
 
+- `uvx pytest -q tests/test_nle_export.py` -> targeted ED-06 export tests pass
+- `export-nle` writes `nle_cut_list.csv`, `nle_export_manifest.json`, and `nle_export_report.html`
+- manifest/report read back CSV path, source provider/mode/URL/hash/rights snapshot, and `production_edit_candidate=false`
+- fake / fixture transcript warning remains visible in CSV rows, manifest warnings, and HTML report
+- ignored `episodes/ed06_export_smoke_20260512` readback -> `nle_cut_list.csv`, `nle_export_manifest.json`, and `nle_export_report.html` generated from preview-pack-derived `edit_pack.json`
 - `uvx pytest -q tests/test_preview_pack.py tests/test_asset_fetch_boundary.py` -> targeted preview/boundary tests pass
 - existing source audio mode does not call `fetch-source-audio`
 - `preview_manifest.json` includes `source_wav`, `fetch_receipt`, `sidecar`, `material_ledger`, `ledger_entry`, and `source_audio_provenance`
@@ -149,7 +165,10 @@ Readback from the visual evidence:
 Not implemented / not accepted yet:
 
 - `fetch-source-video`
+- real STT adapter
+- FCPXML / Resolve XML export
 - GUI fetch button
+- GUI export button
 - GUI-triggered `build-local-preview-pack`
 - cut / concat
 - subtitle burn-in
@@ -162,41 +181,41 @@ yt-dlp and FFmpeg remain inside `asset_fetch` for source audio only. They must n
 
 ## Recommended Next Slice
 
-SH-05d is no longer the next slice; it is done. The next useful move should produce or export a production-adjacent artifact rather than adding more read-only surface.
+ED-06 is no longer the next slice; it is done. The next useful move should reduce fake / fixture dependence or add the visual source needed for render proof rather than adding more read-only surface.
 
-Recommended default: `ED-06 minimal NLE export` if there is no concrete transcript-quality blocker. It turns existing `edit_pack.json` into an artifact that can leave ClipPipeGen and enter an external editor.
+Recommended default: real STT adapter. ED-06 proves that `edit_pack.json` can leave ClipPipeGen; the next biggest trust blocker is that cuts and subtitles can still be fake / fixture transcript derived.
 
-Alternative: real STT adapter if the producer is already correcting fake / fixture transcript text before cut, subtitle, or context decisions can be trusted.
+Alternative: source-video acquisition if the next goal is visual timeline or tiny render proof. Tiny render proof should normally wait until source-video acquisition exists; audio-only rendering proves less.
 
 ## Next Two-Slice Pressure
 
-After `SH-05d`, the project should deliberately move toward one of these production-adjacent artifacts:
+After `ED-06`, the project should deliberately move toward one of these production-adjacent artifacts:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
 | Real STT adapter / real transcript path | 9/10 | Escapes fake / fixture transcript and lets `source.wav` become usable editing text | Engine / model setup and runtime variance |
-| `ED-06` minimal NLE export | 8/10 | Lets `edit_pack.json` leave ClipPipeGen and enter an external editor | Can still be fake-transcript-derived if chosen before real STT |
-| `OUT-01` tiny render proof | 7/10 | Produces an actual video artifact | Audio-only source makes this weak unless source video or a deliberate visual proof is added |
+| Source-video acquisition | 8/10 | Gives render / timeline proof a real visual source | Larger asset-fetch boundary and rights/readback surface |
+| `OUT-01` tiny render proof | 6/10 | Produces an actual video artifact | Audio-only source makes this weak unless source video or a deliberate visual proof is added |
 
-Recommended continuation after `SH-05d`: prefer `ED-06` if the goal is the fastest external editing handoff, or real STT if transcript correctness is the bottleneck. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `ED-06`: prefer real STT if transcript correctness is blocking decisions; choose source-video acquisition first only if the next milestone is a visual timeline / tiny render. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
-### Decision criteria after SH-05d (`ED-06` vs real STT)
+### Decision criteria after ED-06
 
-The choice between `ED-06` and a real STT adapter after SH-05d should be made from observable production signals, not from speculative quality.
-
-Prefer **`ED-06` minimal NLE export** when:
-
-- The producer's bottleneck is "I cannot get `edit_pack.json` into Resolve / Premiere / DaVinci," i.e. pipeline outputs accumulate inside ClipPipeGen with no downstream consumer.
-- The current fake / fixture transcript is acceptable as a placeholder for editing decisions because the operator re-times manually in the NLE anyway.
-- The deciding factor is "shortest path to the first artifact that leaves ClipPipeGen."
+The choice after ED-06 should be made from observable production signals, not from speculative quality.
 
 Prefer **real STT adapter** when:
 
-- The operator is visibly hand-correcting `transcript.json` before it is useful for cuts or subtitles, i.e. the transcript itself is the bottleneck.
+- The operator is visibly hand-correcting `transcript.json` before it is useful for cuts or subtitles.
 - `ED-04 generate-subtitles` output is being treated as "structure only, ignore text" downstream.
-- A nearby slice (subtitle review, context check, or cut tuning) is repeatedly stalled on transcript correctness rather than on missing tooling.
+- A nearby slice is repeatedly stalled on transcript correctness rather than on missing tooling.
 
-Tiebreaker when both signals are weak: default to `ED-06`. It has lower environment-setup cost than a real STT engine and directly converts existing pipeline outputs into a production-adjacent artifact. Real STT introduces engine / model / runtime variance and is better triggered by a concrete transcript-correctness pain.
+Prefer **source-video acquisition** when:
+
+- The next milestone is a visual timeline, rendered proof, or NLE source-video handoff.
+- Audio-only provenance is no longer enough for operator review.
+- The project needs to exercise rights/readback around video acquisition before render.
+
+Tiebreaker when signals are weak: default to real STT. It removes the fake / fixture warning that now follows the whole chain from preview pack through NLE export.
 
 `OUT-01` tiny render proof stays a later candidate. Without source-video acquisition, an audio-only render demonstration is weak; reorder only when source video moves.
 

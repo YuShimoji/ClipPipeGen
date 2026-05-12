@@ -22,6 +22,7 @@ Subcommands:
     generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
     check-cut-context        ED-03: review cut boundaries against transcript context.
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.
+    export-nle               ED-06: edit_pack.json -> human-readable NLE CSV cut list.
     build-local-preview-pack SH-05: local media -> read-only artifact preview pack.
 """
 
@@ -36,6 +37,7 @@ from . import (
     audit_thumbnail,
     build_local_preview_pack,
     check_cut_context,
+    export_nle,
     fetch_source_audio,
     generate_cuts,
     generate_subtitles,
@@ -71,6 +73,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "generate-cuts": generate_cuts.run,
     "check-cut-context": check_cut_context.run,
     "generate-subtitles": generate_subtitles.run,
+    "export-nle": export_nle.run,
     "build-local-preview-pack": build_local_preview_pack.run,
 }
 

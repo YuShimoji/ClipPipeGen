@@ -42,9 +42,17 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
-- **current_slice**: Slice 2 — SH-05d `source-audio preview bridge` is implemented。INT-02e などで取得済みの `source.wav` / `fetch_receipt.json` / `sidecar.json` / `material_ledger.json` を、再 download なしで `preview_manifest.json` / `preview_report.html` の review surface に接続できる。reproducible existing-source-audio smoke は通過済み。ignored の実 INT-02e smoke episode はこの作業時点のローカルに無かったため、real INT-02e artifact smoke は input artifact 再入手時の確認項目として pending
-- **next_action（assistant 側）**: 次は production-adjacent artifact の選択。最短の外部編集 handoff を優先するなら `ED-06` minimal NLE export、transcript 修正が実運用の詰まりなら real STT adapter を起票する。`fetch-source-video` / GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / publishing はまだ未実装のまま分離する
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
+- **current_slice**: Slice 2 — ED-06 `minimal NLE export` is implemented。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成し、cut range、title/reason、subtitle draft、source refs、source audio provenance、fake/fixture transcript warning を外部編集へ渡せる readback として接続した。これは production edit acceptance ではなく export plumbing proof
+- **next_action（assistant 側）**: 次は fake / fixture 依存を下げるなら real STT adapter を優先する。source-video acquisition は visual timeline / tiny render を成立させる前提として後続候補、tiny render proof は source video が無い状態では弱いため、real STT または source-video acquisition の後に回す。GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / publishing はまだ未実装のまま分離する
+
+### Slice 2 (xx) ED-06 done（minimal NLE export）
+
+- `src/pipeline/nle_export.py` — `edit_pack.json` を validate し、`selected_cut_ids` があれば採用 cut の順に、空なら全候補を review 用として `nle_cut_list.csv` に出力する。cut range、duration、title/reason、source_segment_ids、context status、subtitle draft、source audio refs、warning を行ごとに保持する
+- `src/cli/export_nle.py` — `export-nle --edit-pack ...` を追加。既定出力は `episodes/<episode_id>/exports/ed06/`、`--preview-manifest` 省略時は episode sibling の `preview_manifest.json` を参照する。`--format json` で CSV / manifest / report path を machine-readable に返す
+- Readback artifacts — `nle_export_manifest.json` は input/output path、cut rows、review status、rights/material ledger refs、source audio provenance、`production_edit_candidate=false`、warnings を保持する。`nle_export_report.html` は operator が CSV path、provider、mode、source URL、hash、rights snapshot、warning を読める小さな report
+- Boundary — 現行の external editor handoff は CSV cut list。FCPXML / Resolve XML、real STT、source-video acquisition、render / encode、subtitle burn-in、GUI export button、publishing は追加していない
+- Assistant-side validation — `tests/test_nle_export.py` で selected cut の CSV export、未選択時の全候補 review export、CLI JSON readback、source audio provenance、fixture transcript warning、production candidate false を確認。ignored `episodes/ed06_export_smoke_20260512` で preview pack 由来 edit_pack から実 export path / report warning を readback
 
 ### Slice 2 (xix) SH-05d done（source-audio preview bridge）
 
@@ -161,7 +169,7 @@
 - `src/cli/generate_subtitles.py` — `generate-subtitles --transcript ... --edit-pack ...` を追加。`--wrap-eaw` で ED-05 の EAW greedy wrap を使い、`--selected-cuts-only` / `--cut-id` で cut 範囲へ絞り込める。`--dry-run` は書き込みなし
 - `status-episode` / GUI Editing readback — `subtitles_count` を表示
 - `tests/test_subtitle_generation.py` — 全 segment 生成、EAW wrap、selected cut への紐付け、既存 auto subtitle refresh、CLI roundtrip、dry-run、invalid wrap を検証。Python suite は 79 tests pass
-- 実 subtitle burn-in、動画レンダリング、NLE export、GUI action button は未実装。OUT-01 / ED-06 / SH-03 successor として扱う
+- 実 subtitle burn-in、動画レンダリング、GUI action button は未実装。NLE export は ED-06 CSV cut list として実装済みだが、FCPXML / Resolve XML は後続
 
 ### Slice 2 (vii) INT-02a done（source audio material contract + fake fetch）
 
@@ -276,7 +284,7 @@
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、SH-05d で取得済み source audio の preview bridge は完了。次の推奨は `ED-06` minimal NLE export と real STT adapter のどちらが直近の制作摩擦を下げるかを選ぶこと。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、SH-05d で取得済み source audio の preview bridge、ED-06 で minimal NLE CSV export は完了。次の推奨は fake / fixture 依存を下げる real STT adapter。visual timeline / tiny render を先に狙う場合は source-video acquisition を別 slice として起票する。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

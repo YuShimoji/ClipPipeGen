@@ -8,6 +8,7 @@
 |---|---|---|---|
 | Local | manifest／schema validate | `src/pipeline/*` | 実装済み |
 | Local | local preview pack（artifact preview / read-only report） | `src/cli/build_local_preview_pack.py` / `src/pipeline/preview_pack.py` | SH-05 実装済み。local media 1本から source audio / transcript / cut / context / subtitle / manifest / HTML report を接続。SH-05d で既存 source_audio material の `source.wav` / receipt / sidecar / ledger も再取得なしで review surface に接続。動画生成ではない |
+| Local | NLE export（CSV cut list / readback report） | `src/cli/export_nle.py` / `src/pipeline/nle_export.py` | ED-06 実装済み。`edit_pack.json` から `nle_cut_list.csv` / `nle_export_manifest.json` / `nle_export_report.html` を生成する。FCPXML / Resolve XML / render / encode ではなく、fake / fixture transcript 由来は production candidate ではない |
 | Local GUI | preview pack read-only ingest | `gui/preview_reader.cjs` / GUI Preview Pack tab | SH-05c 実装済み。既存 `preview_manifest.json` / `preview_report.html` を読み、validation / warning / artifact link を表示するだけ。build / fetch / render / upload は実行しない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / future `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。URL / VOD 取得は含めない |
@@ -30,11 +31,13 @@
   - transcript からのカット候補抽出（`generate-cuts` は実装済み）
   - transcript 隣接 segment による cut 文脈チェック（`check-cut-context` は実装済み。動画 preview / creative acceptance は後続）
   - ローカル素材 1 本、または取得済み source audio material から operator-visible な artifact preview / read-only HTML report を生成（`build-local-preview-pack` は実装済み。rendered video preview ではない）
+  - `edit_pack.json` から外部編集へ渡す CSV cut list / manifest / HTML readback を生成（`export-nle` は実装済み。production edit acceptance ではない）
   - upload / thumbnail 設定 / visibility 更新 integration
 
 ## 現時点で未実装
 
 - 動画レンダリング / cut / concat / 字幕焼き込み / エンコード / rendered video preview
+- FCPXML / Resolve XML など NLE 固有 XML export
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
 - source video ダウンロード（`fetch-source-video`）

@@ -103,7 +103,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 |---|---|
 | `transcribe-audio` に URL / VOD fetch を足す | STT と素材取得を混ぜると再実行、権利 readback、失敗復旧が壊れる |
 | `generate-cuts` / `check-cut-context` / `generate-subtitles` から FFmpeg を呼ぶ | Editing は transcript / edit_pack の変換層であり、media tool 実行層ではない |
-| `asset_fetch` に cut / concat / subtitle burn-in / render / encode を入れる | OUT-01 / ED-06 の責務を侵食する |
+| `asset_fetch` に cut / concat / subtitle burn-in / render / encode / NLE export を入れる | ED-06 / OUT-01 の責務を侵食する |
 | GUI に fetch button を先に追加する | preflight / receipt / rollback が operator-visible になる前に実行面を広げない |
 | rights status を hard gate にする | rights は readback。取得可否の自動判断へ過剰遷移しない |
 | creative acceptance / preview 判定を receipt に入れる | receipt は実行証跡。品質判断や採否は別 artifact / operator review |

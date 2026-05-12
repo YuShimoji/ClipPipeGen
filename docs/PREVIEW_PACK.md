@@ -263,7 +263,7 @@ SH-05d は、INT-02e などで取得済みの source audio material を preview 
 
 Closeout では ignored `episodes/sh05d_existing_source_audio_smoke_20260512` に reproducible existing-source-audio smoke episode を作り、manifest / report / GUI read-only ingest を確認した。元の ignored INT-02e real smoke episode はこの作業時点のローカルに無かったため、real INT-02e artifact smoke は input artifact を再生成または復元した時の確認項目として残る。
 
-SH-05d でも、real STT、ED-06、render、GUI fetch button、GUI からの build、publishing、NLMYTGen config は扱わない。
+SH-05d 自体は、real STT、ED-06 export、render、GUI fetch button、GUI からの build、publishing、NLMYTGen config を扱わない。ED-06 は preview pack の後段 CLI `export-nle` として別 slice で扱う。
 
 ## Fake Transcript
 
