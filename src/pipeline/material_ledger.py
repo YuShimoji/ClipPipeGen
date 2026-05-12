@@ -37,6 +37,7 @@ VALID_INTENDED_USES = {
     "editing_overlay",
     "editing_bg",
     "editing_audio",
+    "editing_video",
     "description_text",
     "reference_only",
 }

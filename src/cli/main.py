@@ -19,6 +19,7 @@ Subcommands:
     validate-transcript      Validate transcript.json against schema v1.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
+    fetch-source-video       INT-02f: create/register source_video material.
     generate-cuts            ED-02: transcript.json -> edit_pack.cut_candidates[].
     check-cut-context        ED-03: review cut boundaries against transcript context.
     generate-subtitles       ED-04: transcript.json -> edit_pack.subtitles[] drafts.
@@ -39,6 +40,7 @@ from . import (
     check_cut_context,
     export_nle,
     fetch_source_audio,
+    fetch_source_video,
     generate_cuts,
     generate_subtitles,
     init_edit_pack,
@@ -70,6 +72,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "validate-transcript": validate_transcript.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
+    "fetch-source-video": fetch_source_video.run,
     "generate-cuts": generate_cuts.run,
     "check-cut-context": check_cut_context.run,
     "generate-subtitles": generate_subtitles.run,

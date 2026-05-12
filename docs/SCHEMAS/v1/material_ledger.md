@@ -88,6 +88,26 @@ JSON。配置は `episodes/<episode_id>/material_ledger.json`、または projec
 - `fetch_receipt.json` は同じ material directory に保存し、生成物・hash・rollback 対象を記録する。
 - ED-07 `transcribe-audio` はこの WAV を `--source-audio` に受け取り、`--material-id` で transcript と ledger を接続する。
 
+### `source_video` 標準（INT-02f）
+
+`fetch-source-video --mode local-media-video` が作る標準映像素材は次の形に固定する。
+
+```json
+{
+  "id": "src_video_001",
+  "kind": "source_video",
+  "subkind": "source_video_original",
+  "file_path": "episodes/episode_example/materials/src_video_001/source_video.mkv",
+  "sidecar_path": "episodes/episode_example/materials/src_video_001/sidecar.json",
+  "intended_uses": ["editing_video"]
+}
+```
+
+- 入力は既存ローカル video file。URL / VOD / network fetch は INT-02f では扱わない。
+- `source_video.<ext>` は入力 extension を維持して episode material directory へコピーする。render / encode / cut / concat は行わない。
+- `sidecar.json` は通常の `material_sidecar.schema` に従い、`source.retrieval_method="asset_fetch_local_media_video"` と `media_metadata` を記録する。
+- `fetch_receipt.json` は同じ material directory に保存し、FFprobe path/version、metadata、warnings、rollback 対象を記録する。
+
 ### `intended_uses` 候補
 
 | 値 | 説明 |
@@ -96,6 +116,7 @@ JSON。配置は `episodes/<episode_id>/material_ledger.json`、または projec
 | `editing_overlay` | 動画編集中のオーバーレイ |
 | `editing_bg` | 動画編集中の背景 |
 | `editing_audio` | 動画編集中の音声 |
+| `editing_video` | 動画編集中の映像 source |
 | `description_text` | 概要欄テキスト |
 | `reference_only` | 参考のみ（最終出力に含めない） |
 
@@ -130,6 +151,7 @@ MS-01 validator が以下を強制する：
 |---|---|
 | `register-material` | 素材を ledger に追加（sidecar 必須） |
 | `fetch-source-audio` | source audio WAV を生成/取得し、sidecar・receipt・ledger entry をまとめて作成 |
+| `fetch-source-video` | source video file を取得/登録し、sidecar・receipt・ledger entry と FFprobe metadata をまとめて作成 |
 | `list-materials` | ledger を表示（filter: kind / intended_uses） |
 | `audit-material-ledger` | 整合性チェック（hash・sidecar・compliance_link）。NLMYTGen の `audit-*` 命名規則に揃える |
 | `remove-material` | 物理削除はせず ledger entry を `archived` フラグで残す |

@@ -12,7 +12,7 @@
 | Local GUI | preview pack read-only ingest | `gui/preview_reader.cjs` / GUI Preview Pack tab | SH-05c 実装済み。既存 `preview_manifest.json` / `preview_report.html` を読み、validation / warning / artifact link を表示するだけ。build / fetch / render / upload は実行しない |
 | Local/Bridge | サムネ slot patch 適用（書き出し） | `src/cli/patch_thumbnail.py`（NLMYTGen CLI bridge 経由） | 実装済み。出力先は input で指定 |
 | Local/External tool | speech-to-text（ローカル音声 → transcript） | `src/cli/transcribe_audio.py` / `src/integrations/stt/` | ED-07 adapter surface 実装済み（fake engine）。ED-07b で optional `vosk` adapter を追加し、明示 model path の local STT で `real_transcript=true` を生成可能。provider / model 不在は preflight failure で、fixture fallback はしない。URL / VOD 取得は含めない |
-| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。INT-02d: `yt-dlp-audio` spec only は完了。INT-02e: `yt-dlp-audio` source audio URL fetch は actual smoke まで完了。`fetch-source-video` は future integration |
+| External integration | source audio / video 取得 | `src/integrations/asset_fetch/` | INT-02a: `fetch-source-audio --mode fake` で source audio 契約は実装済み。INT-02b: yt-dlp / FFmpeg 境界仕様は固定済み。INT-02c: `local-media-audio` でローカル media の FFmpeg 正規化を実装済み。INT-02d: `yt-dlp-audio` spec only は完了。INT-02e: `yt-dlp-audio` source audio URL fetch は actual smoke まで完了。INT-02f: `fetch-source-video --mode local-media-video` で local source video 登録と FFprobe metadata readback を実装済み。URL video fetch は future integration |
 | External integration | 背景切り抜き API 呼び出し | `src/integrations/bg_removal/` | 通常の future integration |
 | External integration | YouTube への upload / thumbnail 設定 / visibility 更新 | `src/integrations/youtube/` | 通常の future integration |
 
@@ -40,7 +40,7 @@
 - FCPXML / Resolve XML など NLE 固有 XML export
 - 音声合成 / TTS
 - YouTube upload / thumbnail 設定 / visibility 更新
-- source video ダウンロード（`fetch-source-video`）
+- URL source video ダウンロード（future `yt-dlp-video`）
 - STT 品質評価、話者分離、外部 API STT、`whisper.cpp` 等の追加 provider
 - 背景切り抜き API 呼び出し
 - 完全自動サムネ合成 / サムネ画像レンダリング
@@ -133,4 +133,4 @@ bridge する CLI 候補：
 - FFmpeg の責務は source audio を `source.wav`（PCM WAV / mono / 16kHz / 16-bit）に正規化することだけ。
 - `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` は yt-dlp / FFmpeg を直接呼ばない。
 - `asset_fetch` は cut / concat / subtitle burn-in / render / encode / preview / creative acceptance を扱わない。
-- INT-02c の `local-media-audio` はローカル file の FFmpeg normalize のみ実装済み。INT-02e の `yt-dlp-audio` source audio URL fetch は actual smoke まで完了。`fetch-source-video` / GUI fetch button は未実装。
+- INT-02c の `local-media-audio` はローカル file の FFmpeg normalize のみ実装済み。INT-02e の `yt-dlp-audio` source audio URL fetch は actual smoke まで完了。INT-02f の `local-media-video` はローカル video file のコピー登録と FFprobe metadata readback のみ実装済み。URL video fetch / GUI fetch button は未実装。

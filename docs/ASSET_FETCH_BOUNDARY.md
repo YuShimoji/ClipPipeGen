@@ -1,4 +1,4 @@
-# Asset Fetch Boundary — INT-02b / INT-02c / INT-02d / INT-02e
+# Asset Fetch Boundary — INT-02b / INT-02c / INT-02d / INT-02e / INT-02f
 
 INT-02b は **spec only**。実 downloader は実装しない。目的は、yt-dlp / FFmpeg を `asset_fetch` integration の内側に閉じ込め、Editing core / STT / rendering / GUI に漏らさないこと。
 
@@ -7,6 +7,8 @@ INT-02c はこの境界に従い、実 yt-dlp / network fetch へ進まず、既
 INT-02d は **spec only**。`yt-dlp-audio` の URL fetch contract を仕様化するが、yt-dlp 実行、network fetch、CLI mode 追加は行わない。詳細は [YTDLP_AUDIO_SPEC.md](YTDLP_AUDIO_SPEC.md) を正本とする。
 
 INT-02e は INT-02d の contract に従い、`fetch-source-audio --mode yt-dlp-audio` を source audio URL fetch のみに限定して実装済み。technical smoke URL で actual run を行い、receipt / sidecar / ledger / WAV readback を確認した。
+
+INT-02f は `fetch-source-video --mode local-media-video` を追加し、既存ローカル video file を episode material directory にコピー登録し、FFprobe metadata / sidecar / receipt / ledger entry を readback する。URL video fetch、render、encode、cut、concat、subtitle burn-in は含めない。
 
 SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fetch-source-audio --mode local-media-audio` の出力、または SH-05d の既存 source audio material readback を downstream artifact に接続し、`preview_manifest.json` / read-only `preview_report.html` を生成する review surface である。SH-05c GUI ingest は生成済み preview pack を読むだけで、GUI から build / fetch / render / upload を起動しない。SH-05 は rendered video preview、network fetch、GUI fetch button、cut / concat、subtitle burn-in、render / encode を実装しない。詳細は [PREVIEW_PACK.md](PREVIEW_PACK.md) を正本とする。
 
@@ -20,6 +22,7 @@ SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fet
 | INT-02c | done | `fetch-source-audio --mode local-media-audio`。ローカル media file を FFmpeg で `source.wav` に正規化 |
 | INT-02d | done | `yt-dlp-audio` boundary spec only。URL fetch / network / yt-dlp / FFmpeg / receipt / rights / human / GUI / STT の責務を分離 |
 | INT-02e | done | `fetch-source-audio --mode yt-dlp-audio`。source audio URL fetch のみに限定して実装済み。technical smoke URL で receipt / sidecar / ledger / WAV readback を確認 |
+| INT-02f | done | `fetch-source-video --mode local-media-video`。local source video をコピー登録し、FFprobe metadata / receipt / sidecar / ledger readback を確認 |
 
 ## Tool 責務
 
@@ -27,8 +30,10 @@ SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fet
 |---|---|---|
 | yt-dlp | URL から元 media を取得する。取得元 URL、provider、format、生成された intermediate file を readback する | audio normalize、STT、cut、concat、subtitle burn-in、render、creative 判断 |
 | FFmpeg | source audio を `source.wav` に正規化する。標準は PCM WAV / mono / 16kHz / 16-bit | URL 取得、STT、cut 候補抽出、文脈チェック、字幕焼き込み、動画 render / encode |
-| `src/integrations/asset_fetch/` | yt-dlp / FFmpeg の実行 adapter、preflight、receipt 材料の収集 | pipeline 本体ロジック、Editing 判断、Publishing 判断 |
+| FFprobe | local source video の metadata を読む。duration / codec / resolution / fps / stream count を receipt に残す | video を変換する、render / encode する、creative 判断 |
+| `src/integrations/asset_fetch/` | yt-dlp / FFmpeg / FFprobe の実行 adapter、preflight、receipt 材料の収集 | pipeline 本体ロジック、Editing 判断、Publishing 判断 |
 | `src/cli/fetch_source_audio.py` | asset_fetch adapter を呼び、`source.wav` / `sidecar.json` / `fetch_receipt.json` / `material_ledger` を接続する | STT を呼ぶ、cut/render を呼ぶ、URL mode と local file mode を混ぜる |
+| `src/cli/fetch_source_video.py` | asset_fetch adapter を呼び、`source_video.<ext>` / `sidecar.json` / `fetch_receipt.json` / `material_ledger` を接続する | render / encode を呼ぶ、cut/render を呼ぶ、source audio 取得と混ぜる |
 | `build-local-preview-pack` | 既存 `local-media-audio` または existing source audio material / transcript / cut / context / subtitle contract を順に接続し、manifest/report を生成する | yt-dlp / FFmpeg を直接呼ぶ、network fetch、fetch-source-video、render / encode、GUI fetch button |
 | `transcribe-audio` | 既存ローカル音声ファイルを `transcript.json` にする | URL / VOD 取得、yt-dlp / FFmpeg 呼び出し |
 | Editing core | transcript から cut / context / subtitle artifact を作る | downloader、FFmpeg、render、encode |
@@ -36,14 +41,15 @@ SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fet
 
 ## 出力 Contract
 
-`fetch-source-audio` の各 mode は、INT-02a fake と同じ material directory 形を守る。
+`fetch-source-audio` / `fetch-source-video` の各 mode は、同じ material directory 形を守る。
 
 | 出力 | 必須 | 内容 |
 |---|---|---|
 | `materials/<material_id>/source.wav` | yes | normalized source audio。PCM WAV / mono / 16kHz / 16-bit |
+| `materials/<material_id>/source_video.<ext>` | source video mode | copied source video。container / codec は FFprobe metadata として readback |
 | `materials/<material_id>/sidecar.json` | yes | 出所、retrieval method、license / restrictions readback。権利判断の正本ではない |
 | `materials/<material_id>/fetch_receipt.json` | yes | 実行 command、tool versions、provider、input、hash、warnings、stderr digest、rollback |
-| `material_ledger.json` entry | yes | `kind="source_audio"`、`subkind="wav_pcm_16k_mono"`、`intended_uses=["editing_audio"]` |
+| `material_ledger.json` entry | yes | audio は `kind="source_audio"` / `intended_uses=["editing_audio"]`。video は `kind="source_video"` / `intended_uses=["editing_video"]` |
 | intermediate media file | optional | 残す場合は receipt と rollback に必ず記録する。INT-02c は intermediate を生成しない |
 
 ## Mode Contract
@@ -55,7 +61,8 @@ mode 名は、実装 commit で `FEATURE_REGISTRY` に登録してから CLI cho
 | `fake` | implemented | network / yt-dlp / FFmpeg を呼ばず、1秒 silent WAV を作る |
 | `local-media-audio` | implemented in INT-02c | 既存ローカル media file を FFmpeg で `source.wav` に正規化する。URL / VOD / network fetch はしない |
 | `yt-dlp-audio` | implemented and smoked in INT-02e | URL から元 media を一時取得し、FFmpeg で `source.wav` に正規化する。取得と正規化以外はしない。downloaded intermediate は保持しない |
-| `fetch-source-video` | future | 未実装。INT-02c の範囲外 |
+| `local-media-video` | implemented in INT-02f | 既存ローカル video file を `source_video.<ext>` としてコピー登録し、FFprobe metadata を readback する。URL / VOD / network fetch はしない |
+| `yt-dlp-video` | future | URL から source video を取得する後続候補。INT-02f では未実装 |
 
 実 mode は次を満たす。
 
@@ -82,7 +89,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | フィールド | 内容 |
 |---|---|
 | `provider` | `asset_fetch_fake` / `local-media` / future `yt-dlp` 等 |
-| `tools[].name` | `ffmpeg` / future `yt-dlp` |
+| `tools[].name` | `ffmpeg` / `yt-dlp` / `ffprobe` |
 | `tools[].version` | 実行時に取得した version。version check 失敗時は INT-02c では失敗扱い |
 | `commands[].summary` | secret を含まない command 概要 |
 | `commands[].exit_code` | tool process の終了 code |
@@ -114,7 +121,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 |---|---|
 | yt-dlp discovery | `--yt-dlp-path` → `CLIPPIPE_YTDLP` → PATH の順。INT-02e smoke では user-local `yt-dlp` `2026.03.17` を PATH から発見 |
 | URL fetch mode | `fetch-source-audio --mode yt-dlp-audio` として実装済み。technical smoke URL で actual fetch → normalize → receipt / sidecar / ledger write を確認 |
-| source video | `fetch-source-video` は未実装 |
+| source video | `fetch-source-video --mode local-media-video` は実装済み。URL video fetch は未実装 |
 | real dependency acceptance | local-media-audio は実 FFmpeg smoke passed。yt-dlp-audio は user-local `yt-dlp` `2026.03.17` + 実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で technical smoke URL を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
 | GUI | fetch button は未実装。SH-05c/SH-05d では既存 preview pack / existing source audio provenance の read-only ingest だけ実装済み。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
 | local preview pack | SH-05 / SH-05c / SH-05d 実装済み。local media 1本、または取得済み source audio material から `preview_manifest.json` / read-only `preview_report.html` まで接続し、GUI から既存 pack を read-only 表示できる。これは artifact preview であり rendered video preview ではない |
@@ -144,7 +151,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | receipt | `tools[]` に yt-dlp / FFmpeg、`commands[]` に download / normalize、`intermediate.retained=false`、`rights_snapshot.hard_gate=false` を保存。URL readback / command summary / stderr digest tail は secret / token / query を scrub する |
 | GUI | fetch button は追加しない。GUI から fetch/build/render/upload を起動しない |
 | STT / Editing | `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles` に URL / yt-dlp / FFmpeg を混ぜない |
-| Output | `fetch-source-video`、cut / concat、subtitle burn-in、render / encode は追加しない |
+| Output | `yt-dlp-video`、cut / concat、subtitle burn-in、render / encode は追加しない |
 
 ## Test 観点
 
@@ -161,4 +168,4 @@ receipt は INT-02a fields に加えて、以下を記録する。
 
 ## 次に進む条件
 
-INT-02e 後の取得済み source audio downstream 接続は `SH-05d` source-audio preview bridge として完了。次に進む場合も、`fetch-source-video`、render、encode、GUI action はさらに別 slice に分ける。
+INT-02f 後の取得済み source video は、tiny render proof の入力候補になった。次に進む場合も、render、encode、GUI action、URL video fetch はさらに別 slice に分ける。

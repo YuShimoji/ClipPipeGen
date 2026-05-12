@@ -8,9 +8,9 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest completed feature slice: `ED-07b real STT transcript path` (optional Vosk adapter; real `source.wav` -> `transcript.json` -> cuts/subtitles -> ED-06 CSV export plumbing proof)
-- Current recommended decision: compare source-video acquisition vs tiny render proof; source-video is the stronger next default if visual timeline/render confidence is the bottleneck
-- Latest completed feature-slice closeout before this handoff note: local ED-07b implementation in the current working tree
+- Latest completed feature slice: `INT-02f local source video acquisition` (`fetch-source-video --mode local-media-video`; local video -> `source_video.<ext>` + FFprobe metadata + receipt/sidecar/ledger)
+- Current recommended decision: proceed to OUT-01 tiny render proof if the goal is rendered artifact plumbing; URL video fetch remains a separate later integration
+- Latest completed feature-slice closeout before this handoff note: local INT-02f implementation in the current working tree
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -58,6 +58,14 @@ ED-07b is complete as a real transcript plumbing proof. `transcribe-audio --engi
 - ED-06 export now reads sibling or explicit `transcript.json` and carries transcript provider/engine/model/real flag/segment count/duration into CSV, manifest, and HTML report.
 - This is still not STT quality, creative edit, rights, render, or publishing acceptance. Real transcript output remains draft/unreviewed unless a human review slice marks it otherwise.
 
+INT-02f is complete as local source video acquisition. `fetch-source-video --mode local-media-video` consumes an existing local video file, copies it into the episode material directory, and records provenance plus technical metadata:
+
+- The output file is `materials/<material_id>/source_video.<ext>`; the input extension is preserved.
+- The command writes `sidecar.json`, `fetch_receipt.json`, and a `material_ledger.json` entry with `kind="source_video"`, `subkind="source_video_original"`, and `intended_uses=["editing_video"]`.
+- FFprobe metadata is read back into receipt and sidecar: duration, container, video codec, audio codec if present, resolution, fps/frame_rate, and stream counts.
+- Rights status is stored as a snapshot with `hard_gate=false`; pending rights and smoke/local fixture materials are not production/creative/publish acceptance.
+- This is not render/encode. It does not cut, concat, burn subtitles, add a GUI fetch button, fetch URL video, or publish.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -69,6 +77,7 @@ Current state against that final shape:
 | Area | Current state | Remaining production gap |
 |---|---|---|
 | Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
+| Source video | Local video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | URL video acquisition and rendered output proof are still future work |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
 | Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | Real transcript output is still unreviewed draft; creative edit acceptance and render proof remain future work |
@@ -80,7 +89,9 @@ The project should continue only if the next slices add or connect real producti
 ## Key Files
 
 - `src/integrations/asset_fetch/yt_dlp_audio.py` — yt-dlp source-audio fetch adapter.
+- `src/integrations/asset_fetch/source_video.py` — local source video copy/probe adapter.
 - `src/cli/fetch_source_audio.py` — `--mode yt-dlp-audio` CLI wiring, sidecar / receipt / ledger write.
+- `src/cli/fetch_source_video.py` — `--mode local-media-video` CLI wiring, sidecar / receipt / ledger write.
 - `src/cli/build_local_preview_pack.py` — local preview pack orchestration and `--use-existing-source-audio` bridge.
 - `src/pipeline/preview_pack.py` — preview manifest / report generation and source audio provenance readback.
 - `src/pipeline/nle_export.py` — ED-06 CSV cut list / manifest / HTML readback generation.
@@ -98,7 +109,7 @@ The project should continue only if the next slices add or connect real producti
 
 ## Validation Already Run
 
-Last validation for ED-07b closeout:
+Last validation for INT-02f closeout:
 
 ```powershell
 uvx pytest -q
@@ -109,13 +120,18 @@ git diff --check
 
 Results:
 
-- `uvx pytest -q` -> `131 passed`
+- `uvx pytest -q` -> `136 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
 
 Additional targeted readback:
 
+- `uvx pytest -q tests/test_source_video_fetch.py tests/test_asset_fetch_boundary.py tests/test_material_ledger.py tests/test_source_audio_fetch.py tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_nle_export.py` -> targeted source-video acquisition / material ledger / source-audio / transcript / ED-06 export tests pass
+- ignored `episodes/int02f_source_video_smoke_20260512` readback -> local `input_source_video.mkv` was copied into `source_video.mkv`, then `fetch_receipt.json`, `sidecar.json`, and `material_ledger.json` entry were generated
+- generated source-video paths: `episodes/int02f_source_video_smoke_20260512/materials/src_video_local_smoke/source_video.mkv`, `fetch_receipt.json`, `sidecar.json`, and `episodes/int02f_source_video_smoke_20260512/material_ledger.json`
+- metadata readback: duration `1.2`, container `matroska,webm`, video codec `mpeg4`, audio codec `null`, resolution `160x90`, fps `15.0`, stream count `1`
+- remaining warnings say local source video was copied without render/encode, source video acquisition is not production/creative/publish acceptance, audio stream is absent, and rights status is `pending`
 - `uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py` -> targeted transcript / STT adapter tests pass
 - `uvx pytest -q tests/test_real_transcript_pipeline.py tests/test_cut_generation.py tests/test_context_check.py tests/test_subtitle_generation.py` -> targeted edit_pack / context / subtitle path tests pass
 - `uvx pytest -q tests/test_nle_export.py` -> targeted ED-06 export tests pass
@@ -178,7 +194,7 @@ Readback from the visual evidence:
 
 Not implemented / not accepted yet:
 
-- `fetch-source-video`
+- URL video fetch / `yt-dlp-video`
 - FCPXML / Resolve XML export
 - GUI fetch button
 - GUI export button
@@ -195,11 +211,11 @@ yt-dlp and FFmpeg remain inside `asset_fetch` for source audio only. They must n
 
 ## Recommended Next Slice
 
-ED-07b is no longer the next slice; it is done. The next useful move should either add a visual source for timeline/render proof or deliberately harden transcript review/provider setup, rather than adding more read-only surface.
+INT-02f is no longer the next slice; it is done. The next useful move is to consume the now-registered source video in a minimal renderer/output proof rather than adding more read-only surface.
 
-Recommended default: source-video acquisition. The pipeline now has real audio-derived text and an external editing CSV; the next bigger production gap is that there is still no source video artifact for a visual timeline or render proof.
+Recommended default: OUT-01 tiny render proof. The pipeline now has real audio-derived text, an external editing CSV, and source video material metadata; the next bottleneck is whether a small rendered artifact can be produced with clear provenance and non-production warnings.
 
-Alternative: tiny render proof if the goal is to prove an output artifact immediately. It should be scoped carefully because an audio-only or synthetic visual render proves less than a source-video-backed render.
+Alternative: URL video fetch if the next milestone is acquiring remote source video rather than rendering from local material. Keep it separate from render/encode.
 
 ## Next Two-Slice Pressure
 
@@ -207,11 +223,11 @@ After `ED-06`, the project should deliberately move toward one of these producti
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| Source-video acquisition | 9/10 | Gives render / timeline proof a real visual source | Larger asset-fetch boundary and rights/readback surface |
-| `OUT-01` tiny render proof | 7/10 | Produces an actual video artifact and proves artifact handoff | Weak if it uses synthetic/blank video instead of source-video |
+| `OUT-01` tiny render proof | 9/10 | Produces an actual video artifact and proves handoff from source video + edit decisions | Must stay tiny and non-production; no publishing |
+| URL video acquisition | 7/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
 | Transcript review / provider preflight hardening | 6/10 | Makes real STT output more operator-usable and repeatable | Improves trust but does not create visual production artifacts |
 
-Recommended continuation after `ED-07b`: prefer source-video acquisition if the next milestone is visual timeline / tiny render; choose tiny render proof first only if a constrained non-production render artifact is needed to validate the output plumbing. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `INT-02f`: prefer tiny render proof if the next milestone is visual output plumbing; choose URL video acquisition first only if local video input is not acceptable for the next proof. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ### Decision criteria after ED-06
 
@@ -223,15 +239,15 @@ Prefer **transcript review / provider hardening** when:
 - `ED-04 generate-subtitles` output is being treated as "structure only, ignore text" downstream.
 - A nearby slice is repeatedly stalled on transcript correctness rather than on missing tooling.
 
-Prefer **source-video acquisition** when:
+Prefer **URL video acquisition** when:
 
-- The next milestone is a visual timeline, rendered proof, or NLE source-video handoff.
-- Audio-only provenance is no longer enough for operator review.
-- The project needs to exercise rights/readback around video acquisition before render.
+- The next source material must come from a URL rather than local file.
+- The project needs scrubbed URL / downloader receipt semantics before render.
+- Rights / terms review around URL video acquisition is the actual blocker.
 
-Tiebreaker when signals are weak: default to source-video acquisition. It unlocks the strongest next proof for visual timeline and render decisions.
+Tiebreaker when signals are weak: default to tiny render proof. It is the shortest path to prove that the newly registered source video can be consumed by an output pipeline.
 
-`OUT-01` tiny render proof becomes compelling after source-video acquisition exists; before that, keep it explicitly marked as a non-production plumbing proof.
+`OUT-01` tiny render proof must remain explicitly non-production: no publishing, no GUI fetch button, no broad renderer feature set, and no production candidate claims.
 
 ## Quick Operator Check
 

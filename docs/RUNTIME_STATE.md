@@ -42,9 +42,19 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e done。samples runnable
-- **current_slice**: Slice 2 — ED-07b `real STT transcript path` is implemented。optional Vosk adapter で既存 `source.wav` から `real_transcript=true` の `transcript.json` を生成し、その transcript を `generate-cuts` / `check-cut-context` / `generate-subtitles` / ED-06 `export-nle` の CSV readback へ流せるようにした。これは STT quality / creative edit / render / publishing acceptance ではなく、実音声由来の export plumbing proof
-- **next_action（assistant 側）**: 次は source-video acquisition を優先候補にする。tiny render proof は artifact output を早く見せられるが、source video が無い状態では弱い。STT provider hardening / transcript review は、operator が transcript 修正に詰まった場合の補強候補。GUI fetch button / GUI からの build-local-preview-pack 実行 / render / encode / publishing はまだ未実装のまま分離する
+- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f done。samples runnable
+- **current_slice**: Slice 2 — INT-02f `local source video acquisition` is implemented。`fetch-source-video --mode local-media-video` で既存ローカル video file を `source_video.<ext>` として episode material にコピー登録し、FFprobe metadata / sidecar / fetch_receipt / material_ledger entry を readback できるようにした。これは source-video acquisition proof であり、render / encode / creative / publish acceptance ではない
+- **next_action（assistant 側）**: 次は OUT-01 tiny render proof を優先候補にできる。source audio → real transcript → edit_pack → ED-06 export と、source video → material ledger / receipt / metadata が並んだため、最小 render artifact の入力は揃った。URL video fetch、GUI fetch button、subtitle burn-in、publishing はまだ別 slice として分離する
+
+### Slice 2 (xxii) INT-02f done（local source video acquisition）
+
+- `src/integrations/asset_fetch/source_video.py` — local source video adapter を追加。`source_video.<ext>` へコピーし、FFprobe で duration / container / video codec / audio codec / resolution / fps / stream count を JSON readback する。FFprobe discovery は `--ffprobe-path` → `CLIPPIPE_FFPROBE` → PATH。render / encode / cut / concat は行わない
+- `src/cli/fetch_source_video.py` — `fetch-source-video --mode local-media-video` を追加。`--source-path`（`--local-media` alias）を受け、episode 配下に `source_video.<ext>` / `sidecar.json` / `fetch_receipt.json` / `material_ledger.json` entry を作る。`--dry-run` は copy / probe subprocess を呼ばず command plan と output contract を返す
+- `material_ledger` — `intended_uses` に `editing_video` を追加。source video entry は `kind="source_video"` / `subkind="source_video_original"` / `intended_uses=["editing_video"]`
+- Smoke readback — ignored `episodes/int02f_source_video_smoke_20260512` で local fixture `input_source_video.mkv` を `src_video_local_smoke` として登録。`source_video.mkv`、`fetch_receipt.json`、`sidecar.json`、`material_ledger.json` entry を生成し、`audit-material-ledger --format json` は `ok=true`
+- Metadata readback — duration `1.2` 秒、container `matroska,webm`、video codec `mpeg4`、audio codec `null`（音声 stream なし）、resolution `160x90`、fps `15.0`、stream count `1`
+- Assistant-side validation — targeted source-video acquisition / material ledger / source-audio / transcript / ED-06 export tests、`uvx pytest -q`（136 passed）、`npm run smoke`、`npm run smoke:electron`、`git diff --check` を通過
+- Boundary — URL video fetch、yt-dlp-video、render / encode、cut / concat、subtitle burn-in、GUI fetch button、publishing、creative acceptance は追加していない。rights は `pending` snapshot と warning を保持し hard gate にしない
 
 ### Slice 2 (xxi) ED-07b done（real STT transcript path）
 
@@ -293,8 +303,8 @@
 ## 次に変えうる判断
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
-- ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。creative acceptance、動画 preview、NLE export は未実装。
-- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、SH-05d で取得済み source audio の preview bridge、ED-06 で minimal NLE CSV export は完了。次の推奨は fake / fixture 依存を下げる real STT adapter。visual timeline / tiny render を先に狙う場合は source-video acquisition を別 slice として起票する。
+- ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。ED-06 で NLE CSV export も実装済み。creative acceptance と動画 preview / render は未実装。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、INT-02f で local source video acquisition と FFprobe metadata readback、SH-05d で取得済み source audio の preview bridge、ED-06 で minimal NLE CSV export、ED-07b で real STT transcript path は完了。次の推奨は OUT-01 tiny render proof。ただし URL video fetch / GUI fetch button / subtitle burn-in / publishing は別 slice に分ける。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 
