@@ -8,7 +8,8 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: OUT-01b closeout commit on `main` (see latest `git log --oneline -1`)
+- Sync commit: OUT-01b handoff refresh commit on `main` (see latest `git log --oneline -1`)
+- Implementation commit: `f6bc384 feat(OUT-01b): add longer local render smoke`
 - Latest completed feature slice: `OUT-01b longer local video render smoke` (`render-tiny-proof`; 12 second local source_video + source_audio + edit_pack selected cut -> diagnostic rendered video + OUT-01a preflight/fallback/readback)
 - Current recommended decision: prefer subtitle burn-in diagnostic next if longer local smoke stays stable; if duration/clamp issues reappear, fix timeline/local fixture generation first
 - Latest completed feature-slice closeout before this handoff note: OUT-01b implementation committed and pushed to `origin/main`
