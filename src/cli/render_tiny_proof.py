@@ -285,6 +285,9 @@ def _metadata_for_source(kind: str, *, sidecar: dict[str, Any], receipt: dict[st
     if output.get("duration_seconds") is not None:
         metadata["duration_seconds"] = output.get("duration_seconds")
     audio_format = receipt.get("audio_format") if isinstance(receipt.get("audio_format"), dict) else {}
+    if not audio_format:
+        preflight = receipt.get("preflight") if isinstance(receipt.get("preflight"), dict) else {}
+        audio_format = preflight.get("audio_format") if isinstance(preflight.get("audio_format"), dict) else {}
     metadata.update({k: v for k, v in audio_format.items() if v is not None})
     return metadata
 

@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-12 JST
+Last updated: 2026-05-13 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
 
@@ -8,10 +8,10 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: OUT-01a closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest completed feature slice: `OUT-01a render preflight / fallback readback` (`render-tiny-proof`; source_video + source_audio + edit_pack selected cut -> diagnostic rendered video + preflight/fallback/failure readback)
-- Current recommended decision: compare longer local video render smoke vs subtitle burn-in diagnostic; if codec/container failures dominate, keep the render profile matrix minimal
-- Latest completed feature-slice closeout before this handoff note: OUT-01a implementation committed and pushed to `origin/main`
+- Sync commit: OUT-01b closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest completed feature slice: `OUT-01b longer local video render smoke` (`render-tiny-proof`; 12 second local source_video + source_audio + edit_pack selected cut -> diagnostic rendered video + OUT-01a preflight/fallback/readback)
+- Current recommended decision: prefer subtitle burn-in diagnostic next if longer local smoke stays stable; if duration/clamp issues reappear, fix timeline/local fixture generation first
+- Latest completed feature-slice closeout before this handoff note: OUT-01b implementation committed and pushed to `origin/main`
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -85,6 +85,16 @@ OUT-01a is complete as render preflight / fallback readback hardening. The same 
 - Fresh ignored smoke episode `episodes/out01a_hardened_smoke_20260513` regenerated `renders/out01a_hardened/rendered_video.mp4`; output readback was duration `2.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `160x90`, fps `15.0`, stream count `2`.
 - This remains diagnostic render subsystem hardening, not production render, creative acceptance, subtitle burn-in, URL video acquisition, GUI render action, or publishing.
 
+OUT-01b is complete as a longer local video render smoke. It keeps the OUT-01a render path and uses local fixture media to exercise duration / stream / timeline mapping without adding URL video acquisition or subtitle burn-in:
+
+- Fresh ignored smoke episode `episodes/out01b_long_local_render_smoke_20260513` uses synthetic local input `_tmp/out01b_long_local_input.mp4` and registers source video material `src_video_out01b_long_local`.
+- Source video readback: duration `14.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24.0`, stream count `2`.
+- Source audio material `src_audio_out01b_long_local` is normalized to `source.wav`; render manifest readback records duration `14.016`, codec `pcm_s16le`, sample rate `16000`, channels `1`.
+- Selected cut `cut_out01b_long_001` maps `1.0` -> `13.0` seconds with duration target `12.0`; timeline policy remains `single_selected_cut_clamped_to_shortest_input_no_loop_no_speed_change_no_subtitle_burn_in`, and clamp did not occur.
+- Render output `renders/out01b_long_local/rendered_video.mp4` readback: duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24.0`, stream count `2`.
+- Selected profile is `mp4_h264_aac`; attempted profile list is `mp4_h264_aac`; fallback did not occur. Receipt / manifest / report still expose FFmpeg/FFprobe preflight, attempts, selected profile, warnings, and non-production status.
+- This remains diagnostic render coverage, not production render, creative acceptance, subtitle burn-in, URL video acquisition, GUI render action, or publishing.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -100,7 +110,7 @@ Current state against that final shape:
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
 | Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | Real transcript output is still unreviewed draft; creative edit acceptance and render proof remain future work |
-| NLE / render | Minimal CSV cut list export exists, and OUT-01 can produce a tiny diagnostic rendered video from source video + source audio + edit_pack | No FCPXML / Resolve XML, no subtitle burn-in, and no production render acceptance |
+| NLE / render | Minimal CSV cut list export exists, and OUT-01b can produce a 12 second diagnostic rendered video from local source video + source audio + edit_pack selected cut while preserving preflight / attempts / metadata readback | No FCPXML / Resolve XML, no subtitle burn-in, and no production render acceptance |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
 The project should continue only if the next slices add or connect real production-adjacent artifacts. A slice that only adds more policy, boundary text, report polish, or GUI read-only state without connecting `source.wav`, `transcript.json`, `edit_pack.json`, `preview_manifest.json`, NLE export, or rendered video should be treated as drift.
@@ -130,29 +140,40 @@ The project should continue only if the next slices add or connect real producti
 
 ## Validation Already Run
 
-Last validation for OUT-01 closeout:
+Last validation for OUT-01b closeout:
 
 ```powershell
+uvx pytest -q tests/test_tiny_render.py
+uvx pytest -q tests/test_source_video_fetch.py
+uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_real_transcript_pipeline.py
+uvx pytest -q tests/test_nle_export.py
 uvx pytest -q
 npm run smoke
 npm run smoke:electron
 git diff --check
+ffprobe -v error -print_format json -show_format -show_streams episodes/out01b_long_local_render_smoke_20260513/renders/out01b_long_local/rendered_video.mp4
 ```
 
 Results:
 
-- `uvx pytest -q` -> `140 passed`
+- `uvx pytest -q tests/test_tiny_render.py` -> `11 passed`
+- `uvx pytest -q tests/test_source_video_fetch.py` -> `4 passed`
+- `uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_real_transcript_pipeline.py` -> `13 passed`
+- `uvx pytest -q tests/test_nle_export.py` -> `3 passed`
+- `uvx pytest -q` -> `147 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
+- rendered video FFprobe readback -> duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`
 
-Additional OUT-01 readback:
+Additional OUT-01b readback:
 
-- `uvx pytest -q tests/test_tiny_render.py tests/test_source_video_fetch.py tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_real_transcript_pipeline.py tests/test_nle_export.py` -> targeted render / source-video / transcript / ED-06 checks pass
-- ignored `episodes/ed07b_real_stt_smoke_20260512` readback -> added `src_video_out01_smoke`, then rendered `renders/out01_tiny_render_smoke/rendered_video.mp4` from `src_video_out01_smoke`, `src_audio_real_stt_smoke`, and real-STT-derived `edit_pack.json`
-- generated render paths: `episodes/ed07b_real_stt_smoke_20260512/renders/out01_tiny_render_smoke/rendered_video.mp4`, `render_receipt.json`, `render_manifest.json`, and `render_report.html`
-- output metadata readback: duration `1.11`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `160x90`, fps `15.0`, stream count `2`
-- remaining warnings say the render is diagnostic, subtitle burn-in is disabled, one codec attempt fell back before success, cut range / duration target were clamped, source video/audio durations differ, edit_pack review is draft, and rights are not production-ready
+- ignored `episodes/out01b_long_local_render_smoke_20260513` readback -> registered local source video `src_video_out01b_long_local`, normalized source audio `src_audio_out01b_long_local`, selected `cut_out01b_long_001`, then rendered `renders/out01b_long_local/rendered_video.mp4`
+- generated render paths: `episodes/out01b_long_local_render_smoke_20260513/renders/out01b_long_local/rendered_video.mp4`, `render_receipt.json`, `render_manifest.json`, and `render_report.html`
+- source video readback: duration `14.0`, h264/aac, `640x360`, fps `24.0`, stream count `2`
+- source audio readback: duration `14.016`, `pcm_s16le`, `16000` Hz, `1` channel
+- timeline readback: selected range `1.0` -> `13.0`, duration target `12.0`, clamp `false`, fallback `false`, selected/attempted profile `mp4_h264_aac`
+- remaining warnings say the render is diagnostic, subtitle burn-in is disabled, transcript readback is unavailable for this fixture, edit_pack review is draft, and rights are not production-ready
 
 Last validation for INT-02f closeout:
 
@@ -258,24 +279,24 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-OUT-01a is no longer the next slice; it is done. The next useful move is to decide whether the remaining bottleneck is local render duration coverage, visible subtitle connection, or remote source acquisition.
+OUT-01b is no longer the next slice; it is done. The local render duration bottleneck has a 12 second diagnostic proof, so the next useful move is to decide whether visible subtitle connection, timeline robustness, or remote source acquisition is the higher-value bottleneck.
 
-Recommended default: longer local video render smoke if duration/clamp behavior needs confidence. OUT-01a made failures diagnosable; longer local media will reveal timeline and stream edge cases without adding URL acquisition risk.
+Recommended default: subtitle burn-in diagnostic. OUT-01b now gives enough local-duration confidence to connect existing subtitle draft data to a diagnostic visual artifact, as long as font, typography, safe-area, and layout polish stay out of scope.
 
-Alternative: subtitle burn-in diagnostic if text-on-video proof is now more valuable than input breadth. Keep it separate from font, typography, safe-area, and layout polish.
+Alternative: timeline/local fixture hardening if duration target, clamp, or stream mismatch warnings reappear under slightly different local inputs. Keep this as a narrow smoke/failure-readback slice, not a full renderer.
 
 ## Next Two-Slice Pressure
 
-After `OUT-01a`, the project should deliberately move toward one of these production-adjacent bottlenecks:
+After `OUT-01b`, the project should deliberately move toward one of these production-adjacent bottlenecks:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| longer local video render smoke | 8/10 | Exercises OUT-01a preflight/fallback readback against longer timeline and stream mismatch cases | Can drift into full renderer if it starts solving creative output |
-| subtitle burn-in diagnostic | 7/10 | Connects existing subtitle draft to a visual artifact after render diagnostics are stable | Easy to drift into font/design/safe-area polish |
+| subtitle burn-in diagnostic | 8/10 | Connects existing subtitle draft to a visual artifact after render diagnostics and 12 second local timeline proof are stable | Easy to drift into font/design/safe-area polish |
+| timeline/local fixture hardening | 7/10 | Expands confidence around duration target, clamp, and stream mismatch cases without URL acquisition risk | Can drift into full renderer if it starts solving creative output |
 | source-video URL acquisition | 6/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
 | Transcript review / provider preflight hardening | 6/10 | Makes real STT output more operator-usable and repeatable | Improves trust but does not create visual production artifacts |
 
-Recommended continuation after `OUT-01a`: prefer longer local video render smoke if clamp/duration behavior remains uncertain, choose subtitle burn-in diagnostic if visible text connection is now the bottleneck, and choose source-video URL acquisition only after local video coverage is adequate. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `OUT-01b`: prefer subtitle burn-in diagnostic if visible text connection is now the bottleneck, choose timeline/local fixture hardening only if clamp or mismatch behavior remains uncertain, and choose source-video URL acquisition only after local render plus subtitle diagnostic coverage are adequate. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ### Decision criteria after ED-06
 

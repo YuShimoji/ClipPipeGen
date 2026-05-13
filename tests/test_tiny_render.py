@@ -334,6 +334,133 @@ def test_render_tiny_proof_cli_writes_failure_receipt_manifest_and_report(
     assert "codec_or_container_unsupported" in report
 
 
+def test_render_tiny_proof_cli_preserves_longer_local_timeline_readback(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path)
+
+    def fake_render_tiny_proof(**kwargs):
+        output_path = Path(kwargs["output_path"])
+        return _render_result(
+            output_path,
+            metadata=_long_output_metadata(duration_seconds=12.0),
+            warnings=["subtitle burn-in is intentionally disabled"],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_tiny_proof,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01b_long_local",
+            "--duration-sec",
+            "12",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 0
+    output_dir = ep_dir / "renders" / "out01b_long_local"
+    manifest = json.loads((output_dir / "render_manifest.json").read_text(encoding="utf-8"))
+    receipt = json.loads((output_dir / "render_receipt.json").read_text(encoding="utf-8"))
+    report = (output_dir / "render_report.html").read_text(encoding="utf-8")
+
+    assert manifest["timeline_mapping"]["cut_id"] == "cut_long_001"
+    assert manifest["timeline_mapping"]["requested_start_seconds"] == 3.0
+    assert manifest["timeline_mapping"]["requested_end_seconds"] == 15.0
+    assert manifest["timeline_mapping"]["render_duration_seconds"] == 12.0
+    assert manifest["timeline_mapping"]["duration_target_seconds"] == 12.0
+    assert manifest["timeline_mapping"]["clamped"] is False
+    assert manifest["source_refs"]["source_video"]["metadata"]["duration_seconds"] == 20.0
+    assert manifest["source_refs"]["source_video"]["metadata"]["resolution"] == "640x360"
+    assert manifest["source_refs"]["source_audio"]["metadata"]["duration_seconds"] == 20.0
+    assert manifest["source_refs"]["source_audio"]["metadata"]["codec"] == "pcm_s16le"
+    assert manifest["source_refs"]["source_audio"]["metadata"]["sample_rate_hz"] == 16000
+    assert manifest["source_refs"]["source_audio"]["metadata"]["channels"] == 1
+    assert manifest["output_metadata"]["duration_seconds"] == 12.0
+    assert manifest["output_metadata"]["resolution"] == "640x360"
+    assert manifest["selected_render_profile"]["profile_id"] == "mp4_h264_aac"
+    assert manifest["attempted_render_profiles"][0]["status"] == "succeeded"
+    assert manifest["fallback_used"] is False
+    assert "duration target unmet" not in " ".join(manifest["warnings"])
+    assert receipt["timeline_mapping"]["duration_target_seconds"] == 12.0
+    assert "cut_long_001" in report
+    assert "640x360" in report
+
+
+def test_render_tiny_proof_cli_records_long_duration_clamp_warning(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path, source_video_duration=8.0)
+
+    def fake_render_tiny_proof(**kwargs):
+        output_path = Path(kwargs["output_path"])
+        return _render_result(
+            output_path,
+            metadata=_long_output_metadata(duration_seconds=5.0),
+            warnings=[],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_tiny_proof,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01b_long_local_clamped",
+            "--duration-sec",
+            "12",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 0
+    manifest_path = ep_dir / "renders" / "out01b_long_local_clamped" / "render_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    warnings = " ".join(manifest["warnings"])
+
+    assert manifest["timeline_mapping"]["render_duration_seconds"] == 5.0
+    assert manifest["timeline_mapping"]["clamped"] is True
+    assert manifest["output_metadata"]["duration_seconds"] == 5.0
+    assert "duration target unmet" in warnings
+    assert "source video/audio duration mismatch" in warnings
+
+
 def test_render_tiny_proof_dry_run_writes_nothing(tmp_path: Path):
     root, ep_dir = _prepare_episode(tmp_path)
 
@@ -567,6 +694,70 @@ def _prepare_episode(tmp_path: Path) -> tuple[Path, Path]:
     return root, ep_dir
 
 
+def _prepare_long_episode(
+    tmp_path: Path,
+    *,
+    source_video_duration: float = 20.0,
+    source_audio_duration: float = 20.0,
+) -> tuple[Path, Path]:
+    root, ep_dir = _prepare_episode(tmp_path)
+    video_dir = ep_dir / "materials" / "src_video_001"
+    audio_dir = ep_dir / "materials" / "src_audio_001"
+
+    video_metadata = {
+        "duration_seconds": source_video_duration,
+        "container": "mov,mp4,m4a,3gp,3g2,mj2",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "resolution": "640x360",
+        "fps": 24.0,
+        "stream_count": 2,
+    }
+    sidecar = json.loads((video_dir / "sidecar.json").read_text(encoding="utf-8"))
+    sidecar["media_metadata"] = video_metadata
+    _write_json(sidecar, video_dir / "sidecar.json")
+
+    fetch_receipt = json.loads((video_dir / "fetch_receipt.json").read_text(encoding="utf-8"))
+    fetch_receipt["video_metadata"] = video_metadata
+    _write_json(fetch_receipt, video_dir / "fetch_receipt.json")
+
+    audio_receipt = json.loads((audio_dir / "fetch_receipt.json").read_text(encoding="utf-8"))
+    audio_receipt["outputs"] = [
+        {
+            "duration_seconds": source_audio_duration,
+        }
+    ]
+    audio_receipt["preflight"] = {
+        "audio_format": {
+            "container": "wav",
+            "codec": "pcm_s16le",
+            "sample_rate_hz": 16000,
+            "channels": 1,
+            "sample_width_bytes": 2,
+            "duration_seconds": None,
+        }
+    }
+    _write_json(audio_receipt, audio_dir / "fetch_receipt.json")
+
+    pack = build_skeleton(
+        "ep_out01",
+        rights_manifest_path=str(ep_dir / "rights_manifest.json").replace("\\", "/"),
+        material_ledger_path=str(ep_dir / "material_ledger.json").replace("\\", "/"),
+    )
+    pack = add_cut_candidate(
+        pack,
+        start_seconds=3.0,
+        end_seconds=15.0,
+        source="manual",
+        reason="OUT-01b longer local diagnostic cut",
+        confidence=0.8,
+        cut_id="cut_long_001",
+        select=True,
+    )
+    save_edit_pack(pack, ep_dir / "edit_pack.json")
+    return root, ep_dir
+
+
 def _fake_render_runner(output: Path):
     def runner(
         args: list[str],
@@ -698,6 +889,71 @@ def _render_profile(output_path: Path) -> ffmpeg_tiny.RenderProfile:
         audio_codec="aac",
         output_path=str(output_path).replace("\\", "/"),
     )
+
+
+def _render_result(
+    output_path: Path,
+    *,
+    metadata: dict,
+    warnings: list[str],
+) -> ffmpeg_tiny.RenderResult:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_bytes(b"rendered video")
+    probe = ffmpeg_tiny.ProbeResult(
+        ffprobe_path="C:/tools/ffprobe.exe",
+        ffprobe_path_source="argument",
+        ffprobe_version="ffprobe version test",
+        command=["C:/tools/ffprobe.exe", "-show_streams", str(output_path)],
+        command_summary="C:/tools/ffprobe.exe -show_streams rendered_video.mp4",
+        exit_code=0,
+        stderr_digest=_stderr_digest(),
+        metadata=metadata,
+    )
+    profile = _render_profile(output_path)
+    return ffmpeg_tiny.RenderResult(
+        ffmpeg_path="C:/tools/ffmpeg.exe",
+        ffmpeg_path_source="argument",
+        ffmpeg_version="ffmpeg version test",
+        ffprobe_path="C:/tools/ffprobe.exe",
+        ffprobe_path_source="argument",
+        ffprobe_version="ffprobe version test",
+        command=["C:/tools/ffmpeg.exe", "-i", "source", str(output_path)],
+        command_summary="C:/tools/ffmpeg.exe -i source rendered_video.mp4",
+        attempts=[
+            ffmpeg_tiny.CommandAttempt(
+                profile=profile,
+                command=["C:/tools/ffmpeg.exe", "-i", "source", str(output_path)],
+                command_summary="C:/tools/ffmpeg.exe -i source rendered_video.mp4",
+                status="succeeded",
+                exit_code=0,
+                stderr_digest=_stderr_digest(),
+                failure_reason=None,
+                selected=True,
+            )
+        ],
+        selected_profile=profile,
+        fallback_used=False,
+        output_path=str(output_path).replace("\\", "/"),
+        metadata=metadata,
+        probe_result=probe,
+        preflight=_tool_preflight(),
+        warnings=warnings,
+    )
+
+
+def _long_output_metadata(*, duration_seconds: float) -> dict:
+    metadata = _output_metadata()
+    metadata.update(
+        {
+            "duration_seconds": duration_seconds,
+            "width": 640,
+            "height": 360,
+            "resolution": "640x360",
+            "fps": 24.0,
+            "frame_rate": "24/1",
+        }
+    )
+    return metadata
 
 
 def _tool_preflight() -> dict:

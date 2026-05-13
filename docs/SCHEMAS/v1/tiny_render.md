@@ -1,8 +1,10 @@
-# tiny_render artifacts (OUT-01 / OUT-01a)
+# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b)
 
 OUT-01 は `source_video` material、`source_audio` material、`edit_pack.json` の selected cut を接続し、確認可能な短い動画 artifact を生成する plumbing proof。production render、creative acceptance、subtitle burn-in、publishing ではない。
 
 OUT-01a は同じ artifact 生成経路を保ったまま、render 前 preflight、codec/container fallback readback、failure classification を追加する。成功判定は `rendered_video.*` の再生成を含み、docs / taxonomy だけでは done にしない。
+
+OUT-01b は同じ artifact schema を使い、10〜30 秒程度の local source video / source audio / selected cut smoke を扱う。目的は duration target、clamp、stream mismatch、timeline mapping を診断できる長さへ進めることであり、URL video acquisition、subtitle burn-in、GUI render button、production render へは進まない。
 
 既定の出力先は `episodes/<episode_id>/renders/<output_id>/`。
 
@@ -48,6 +50,19 @@ Optional:
 - source video / source audio / `--duration-sec` のうち最短の利用可能 range に clamp する
 
 clamp、duration target unmet、source video/audio duration mismatch は `timeline_mapping.warnings[]` と top-level `warnings[]` に残す。
+
+## OUT-01b longer local smoke readback
+
+OUT-01b は schema を増やさず、既存 field に次を読める状態を要求する:
+
+- local `source_video` material の duration / container / video codec / audio codec / resolution / fps / stream count
+- `source_audio` material の duration / WAV codec / sample rate / channels
+- `edit_pack` selected cut id と requested range
+- timeline policy、duration target、render start、render duration、clamp 有無、warning
+- FFmpeg / FFprobe preflight、attempted profiles、selected profile、fallback 有無
+- rendered output の duration / container / video codec / audio codec / resolution / fps / stream count
+
+10 秒以上の output duration を目標にし、未達時は `duration target unmet` warning と理由を残す。fixture / synthetic input を使う場合は diagnostic fixture として扱い、`production_candidate=false`、`creative_acceptance=false`、`publish_acceptance=false` を維持する。
 
 ## Manifest minimum
 
