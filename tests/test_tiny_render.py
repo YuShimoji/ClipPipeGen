@@ -50,6 +50,60 @@ def test_ffmpeg_tiny_adapter_renders_and_probes_output(tmp_path: Path):
     assert result.attempts[0].failure_reason is None
 
 
+def test_ffmpeg_tiny_adapter_uses_diagnostic_subtitle_filter(tmp_path: Path):
+    source_video = tmp_path / "source_video.mp4"
+    source_audio = tmp_path / "source.wav"
+    subtitle_file = tmp_path / "diagnostic_subtitles.srt"
+    output = tmp_path / "rendered_video.mp4"
+    source_video.write_bytes(b"video")
+    _write_wav(source_audio, seconds=2.0)
+    subtitle_file.write_text("1\n00:00:00,000 --> 00:00:01,000\nhello from edit_pack\n", encoding="utf-8")
+
+    result = ffmpeg_tiny.render_tiny_proof(
+        source_video_path=source_video,
+        source_audio_path=source_audio,
+        output_path=output,
+        start_seconds=0.0,
+        duration_seconds=1.0,
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        subtitle_file_path=subtitle_file,
+        runner=_fake_render_runner(output),
+    )
+
+    vf = result.command[result.command.index("-vf") + 1]
+    assert "subtitles=filename=" in vf
+    assert "diagnostic_subtitles.srt" in vf
+    assert result.selected_profile.profile_id == "mp4_h264_aac"
+    assert any("diagnostic subtitle burn-in enabled" in warning for warning in result.warnings)
+
+
+def test_ffmpeg_tiny_adapter_classifies_subtitle_filter_failure(tmp_path: Path):
+    source_video = tmp_path / "source_video.mp4"
+    source_audio = tmp_path / "source.wav"
+    subtitle_file = tmp_path / "diagnostic_subtitles.srt"
+    output = tmp_path / "rendered_video.mp4"
+    source_video.write_bytes(b"video")
+    _write_wav(source_audio, seconds=2.0)
+    subtitle_file.write_text("1\n00:00:00,000 --> 00:00:01,000\nhello\n", encoding="utf-8")
+
+    with pytest.raises(ffmpeg_tiny.TinyRenderError) as excinfo:
+        ffmpeg_tiny.render_tiny_proof(
+            source_video_path=source_video,
+            source_audio_path=source_audio,
+            output_path=output,
+            start_seconds=0.0,
+            duration_seconds=1.0,
+            ffmpeg_path="fake-ffmpeg",
+            ffprobe_path="fake-ffprobe",
+            subtitle_file_path=subtitle_file,
+            runner=_subtitle_filter_failure_runner(output),
+        )
+
+    assert excinfo.value.failure_reason == "subtitle_filter_failed"
+    assert excinfo.value.attempts[0].failure_reason == "subtitle_filter_failed"
+
+
 def test_ffmpeg_tiny_adapter_records_codec_fallback_attempt(tmp_path: Path):
     source_video = tmp_path / "source_video.mp4"
     source_audio = tmp_path / "source.wav"
@@ -257,7 +311,7 @@ def test_render_tiny_proof_cli_writes_video_receipt_manifest_and_report(
     assert manifest["selected_render_profile"]["profile_id"] == "mp4_h264_aac"
     assert manifest["attempted_render_profiles"][0]["status"] == "succeeded"
     assert manifest["fallback_used"] is False
-    assert manifest["subtitle_burn_in"] is False
+    assert manifest["subtitle_burn_in"]["status"] == "disabled"
     assert any("duration target unmet" in w for w in manifest["warnings"])
     assert any("not approved" in w for w in manifest["warnings"])
 
@@ -268,6 +322,115 @@ def test_render_tiny_proof_cli_writes_video_receipt_manifest_and_report(
     assert receipt["commands"][0]["selected"] is True
     assert receipt["preflight"]["tool_preflight"]["status"] == "passed"
     assert "OUT-01 Tiny Render Proof" in report_path.read_text(encoding="utf-8")
+
+
+def test_render_tiny_proof_cli_writes_subtitle_burn_in_readback(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path)
+    _add_diagnostic_subtitle(ep_dir)
+
+    def fake_render_tiny_proof(**kwargs):
+        subtitle_file = Path(kwargs["subtitle_file_path"])
+        assert subtitle_file.exists()
+        assert "hello from edit_pack subtitle" in subtitle_file.read_text(encoding="utf-8")
+        output_path = Path(kwargs["output_path"])
+        return _render_result(
+            output_path,
+            metadata=_long_output_metadata(duration_seconds=12.0),
+            warnings=["diagnostic subtitle burn-in enabled; typography/safe-area/font polish is not claimed"],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_tiny_proof,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01c_subtitle_burnin",
+            "--duration-sec",
+            "12",
+            "--burn-in-subtitles",
+            "diagnostic",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 0
+    output_dir = ep_dir / "renders" / "out01c_subtitle_burnin"
+    manifest = json.loads((output_dir / "render_manifest.json").read_text(encoding="utf-8"))
+    receipt = json.loads((output_dir / "render_receipt.json").read_text(encoding="utf-8"))
+    report = (output_dir / "render_report.html").read_text(encoding="utf-8")
+
+    burn_in = manifest["subtitle_burn_in"]
+    assert burn_in["enabled"] is True
+    assert burn_in["status"] == "enabled"
+    assert burn_in["source_ref"]["source_type"] == "edit_pack_subtitles"
+    assert burn_in["source_ref"]["subtitle_ids"] == ["sub_out01c_001"]
+    assert burn_in["source_ref"]["source_segment_ids"] == ["seg_out01c_001"]
+    assert burn_in["items"][0]["text"] == "hello from edit_pack subtitle"
+    assert burn_in["items"][0]["start_seconds"] == 1.0
+    assert burn_in["items"][0]["end_seconds"] == 4.5
+    assert manifest["subtitle_source_ref"] == burn_in["source_ref"]
+    assert manifest["subtitle_overlay_policy"]["position"] == "bottom_center_fixed"
+    assert "diagnostic_subtitles.srt" in manifest["outputs"]["diagnostic_subtitle_file"]
+    assert receipt["subtitle_burn_in"]["status"] == "enabled"
+    assert receipt["preflight"]["command_plan"]["subtitle_file_path"].endswith("diagnostic_subtitles.srt")
+    assert manifest["timeline_mapping"]["policy"].endswith("diagnostic_subtitle_burn_in")
+    assert manifest["selected_render_profile"]["profile_id"] == "mp4_h264_aac"
+    assert manifest["attempted_render_profiles"][0]["status"] == "succeeded"
+    assert manifest["fallback_used"] is False
+    assert "hello from edit_pack subtitle" in report
+    assert "Diagnostic overlay only" in report
+
+
+def test_render_tiny_proof_cli_fails_when_diagnostic_subtitle_source_missing(tmp_path: Path):
+    root, ep_dir = _prepare_episode(tmp_path)
+    (ep_dir / "transcript.json").unlink()
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01c_subtitle_missing",
+            "--burn-in-subtitles",
+            "diagnostic",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 1
+    assert not (ep_dir / "renders" / "out01c_subtitle_missing" / "render_manifest.json").exists()
+
 
 
 def test_render_tiny_proof_cli_writes_failure_receipt_manifest_and_report(
@@ -504,7 +667,7 @@ def test_render_tiny_proof_cli_help_exposes_no_fetch_or_publish():
     assert "--source-video-material-id" in help_text
     assert "--source-audio-material-id" in help_text
     assert "--edit-pack-path" in help_text
-    assert "subtitle" not in help_text
+    assert "--burn-in-subtitles" in help_text
     assert "yt-dlp" not in help_text
     assert "publish" not in help_text
 
@@ -758,6 +921,24 @@ def _prepare_long_episode(
     return root, ep_dir
 
 
+def _add_diagnostic_subtitle(ep_dir: Path) -> None:
+    edit_pack_path = ep_dir / "edit_pack.json"
+    pack = json.loads(edit_pack_path.read_text(encoding="utf-8"))
+    pack["subtitles"] = [
+        {
+            "id": "sub_out01c_001",
+            "cut_id": "cut_long_001",
+            "start_seconds": 4.0,
+            "end_seconds": 7.5,
+            "text": "hello from edit_pack subtitle",
+            "source": "auto",
+            "style_slot": "subtitle.default",
+            "source_segment_id": "seg_out01c_001",
+        }
+    ]
+    _write_json(pack, edit_pack_path)
+
+
 def _fake_render_runner(output: Path):
     def runner(
         args: list[str],
@@ -806,6 +987,33 @@ def _fake_render_runner(output: Path):
                     }
                 ),
                 stderr="",
+            )
+        raise AssertionError(args)
+
+    return runner
+
+
+def _subtitle_filter_failure_runner(output: Path):
+    def runner(
+        args: list[str],
+        *,
+        capture_output: bool,
+        text: bool,
+        timeout: int,
+    ) -> subprocess.CompletedProcess[str]:
+        assert capture_output is True
+        assert text is True
+        assert timeout > 0
+        if args == ["fake-ffmpeg", "-version"]:
+            return subprocess.CompletedProcess(args, 0, stdout="ffmpeg version test\n", stderr="")
+        if args == ["fake-ffprobe", "-version"]:
+            return subprocess.CompletedProcess(args, 0, stdout="ffprobe version test\n", stderr="")
+        if args[0] == "fake-ffmpeg":
+            return subprocess.CompletedProcess(
+                args,
+                1,
+                stdout="",
+                stderr="No such filter: 'subtitles'",
             )
         raise AssertionError(args)
 
@@ -995,4 +1203,3 @@ def _stderr_digest(tail: str = "") -> dict:
         "tail_chars": 1000,
         "truncated": False,
     }
-

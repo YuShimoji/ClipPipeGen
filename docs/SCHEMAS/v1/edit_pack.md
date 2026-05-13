@@ -195,4 +195,4 @@ python -m src.cli.main export-nle \
 
 `export-nle` は ED-06 の最小 NLE handoff。`edit_pack.cut_candidates[]` / `selected_cut_ids[]` / `subtitles[]` と、可能な範囲の source audio provenance を `nle_cut_list.csv`、`nle_export_manifest.json`、`nle_export_report.html` に出力する。これは外部編集ソフトへ渡すための plumbing proof であり、FCPXML / Resolve XML、render / encode、production edit acceptance は行わない。詳細は [nle_export.md](nle_export.md)。
 
-`render-tiny-proof` は OUT-01 の diagnostic output proof。`edit_pack.selected_cut_ids[0]`（無ければ最初の cut candidate）を source video / source audio timeline に対応させ、短い `rendered_video.mp4` / `.mkv` と readback manifest/report を生成する。production render、subtitle burn-in、creative acceptance、publishing は行わない。詳細は [tiny_render.md](tiny_render.md)。
+`render-tiny-proof` は OUT-01 の diagnostic output proof。`edit_pack.selected_cut_ids[0]`（無ければ最初の cut candidate）を source video / source audio timeline に対応させ、短い `rendered_video.mp4` / `.mkv` と readback manifest/report を生成する。OUT-01c では `--burn-in-subtitles diagnostic` に限り `edit_pack.subtitles[]` を diagnostic overlay として焼き込める。production render、subtitle design acceptance、creative acceptance、publishing は行わない。詳細は [tiny_render.md](tiny_render.md)。

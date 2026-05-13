@@ -1,10 +1,12 @@
-# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b)
+# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b / OUT-01c)
 
-OUT-01 は `source_video` material、`source_audio` material、`edit_pack.json` の selected cut を接続し、確認可能な短い動画 artifact を生成する plumbing proof。production render、creative acceptance、subtitle burn-in、publishing ではない。
+OUT-01 は `source_video` material、`source_audio` material、`edit_pack.json` の selected cut を接続し、確認可能な短い動画 artifact を生成する plumbing proof。production render、creative acceptance、publishing ではない。
 
 OUT-01a は同じ artifact 生成経路を保ったまま、render 前 preflight、codec/container fallback readback、failure classification を追加する。成功判定は `rendered_video.*` の再生成を含み、docs / taxonomy だけでは done にしない。
 
 OUT-01b は同じ artifact schema を使い、10〜30 秒程度の local source video / source audio / selected cut smoke を扱う。目的は duration target、clamp、stream mismatch、timeline mapping を診断できる長さへ進めることであり、URL video acquisition、subtitle burn-in、GUI render button、production render へは進まない。
+
+OUT-01c は `render-tiny-proof --burn-in-subtitles diagnostic` で、既存 `edit_pack.subtitles[]`（無い場合は sibling `transcript.json` segments）を UTF-8 SRT に変換し、diagnostic overlay として動画フレーム上へ焼き込む。目的は subtitle artifact の由来を保持したまま visual artifact に接続できることを確認することであり、typography / safe-area / line-wrap / font polish / creative acceptance ではない。
 
 既定の出力先は `episodes/<episode_id>/renders/<output_id>/`。
 
@@ -35,18 +37,20 @@ Optional:
 - `--audio-codec auto|<ffmpeg codec>`
 - `--ffmpeg-path`
 - `--ffprobe-path`
+- `--burn-in-subtitles off|diagnostic`
 - `--dry-run`
 
 ## Timeline policy
 
 `render-tiny-proof` は `edit_pack.selected_cut_ids[0]` を優先し、無い場合は最初の `cut_candidates[0]` を使う。
 
-初回 proof の policy は固定:
+初回 proof の base policy は固定:
 
 - loop しない
 - speed change しない
 - complex concat しない
-- subtitle burn-in しない
+- default では subtitle burn-in しない
+- `--burn-in-subtitles diagnostic` の場合だけ、既存 subtitle source を diagnostic overlay として焼き込む
 - source video / source audio / `--duration-sec` のうち最短の利用可能 range に clamp する
 
 clamp、duration target unmet、source video/audio duration mismatch は `timeline_mapping.warnings[]` と top-level `warnings[]` に残す。
@@ -63,6 +67,21 @@ OUT-01b は schema を増やさず、既存 field に次を読める状態を要
 - rendered output の duration / container / video codec / audio codec / resolution / fps / stream count
 
 10 秒以上の output duration を目標にし、未達時は `duration target unmet` warning と理由を残す。fixture / synthetic input を使う場合は diagnostic fixture として扱い、`production_candidate=false`、`creative_acceptance=false`、`publish_acceptance=false` を維持する。
+
+## OUT-01c subtitle burn-in diagnostic readback
+
+OUT-01c は schema を少し広げ、subtitle source と overlay 方針を receipt / manifest / report に残す:
+
+- `subtitle_burn_in.status`: `disabled` / `enabled` / `failed`。default は `disabled`。diagnostic mode 成功時のみ `enabled`
+- `subtitle_burn_in.source_ref.source_type`: `edit_pack_subtitles` を優先。無い場合は `transcript_segments_diagnostic`
+- `subtitle_burn_in.source_ref.path`: `edit_pack.json` または `transcript.json`
+- `subtitle_burn_in.source_ref.subtitle_ids[]` / `source_segment_ids[]`: 実際に焼き込んだ subtitle / transcript segment の ID
+- `subtitle_burn_in.source_ref.subtitle_file`: render output directory 内の generated `diagnostic_subtitles.srt`
+- `subtitle_burn_in.items[]`: rendered timeline 上の start/end、source timeline 上の start/end、text、cut_id、source_segment_id
+- `subtitle_overlay_policy`: `position=bottom_center_fixed`、FFmpeg subtitles filter の default font provider、source timeline から rendered timeline への clamp、既存改行保持、line-wrap / typography / safe-area polish をしないこと
+- `outputs.diagnostic_subtitle_file`: generated SRT の path
+
+明示 `--burn-in-subtitles diagnostic` で subtitle source が無い場合は silent fallback せず失敗する。FFmpeg `subtitles` filter / font / libass 由来の失敗は `subtitle_filter_failed` として分類し、render が成功しても `production_candidate=false` / `creative_acceptance=false` / `publish_acceptance=false` を維持する。
 
 ## Manifest minimum
 
@@ -81,6 +100,9 @@ OUT-01b は schema を増やさず、既存 field に次を読める状態を要
 - `source_refs.edit_pack`
 - `source_refs.transcript`
 - `timeline_mapping`
+- `subtitle_burn_in.status`
+- `subtitle_burn_in.source_ref`
+- `subtitle_overlay_policy`
 - `preflight.tool_preflight.ffmpeg.available`
 - `preflight.tool_preflight.ffmpeg.path`
 - `preflight.tool_preflight.ffprobe.available`
@@ -117,6 +139,8 @@ Failure は最低限この分類に寄せる:
 | `input_audio_missing` | source audio path が存在しない |
 | `input_stream_invalid` | 入力 stream が壊れている、または必要 stream が読めない |
 | `duration_or_timeline_mismatch` | duration / timeline が非正値または利用不能 |
+| `subtitle_source_missing` | diagnostic subtitle burn-in が要求されたが、subtitle file / source が存在しない |
+| `subtitle_filter_failed` | FFmpeg `subtitles` filter、libass、font provider、filtergraph escaping など subtitle overlay で失敗 |
 | `ffmpeg_command_failed` | FFmpeg command が上記以外で失敗 |
 | `metadata_probe_failed` | render 後の FFprobe metadata readback が失敗 |
 | `code_bug_or_unexpected_exception` | 予期しない例外 |
@@ -128,10 +152,9 @@ Failure は最低限この分類に寄せる:
 OUT-01 は diagnostic output proof に限定する。次は別 slice として扱う:
 
 - production render / full render pipeline
-- subtitle burn-in
+- production subtitle burn-in / subtitle design acceptance
 - font / safe area / layout polish
 - source-video URL acquisition
 - GUI render button
 - YouTube upload / publishing
 - NLE XML export
-

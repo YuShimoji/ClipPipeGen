@@ -37,6 +37,12 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--audio-codec", default="auto")
     parser.add_argument("--ffmpeg-path")
     parser.add_argument("--ffprobe-path")
+    parser.add_argument(
+        "--burn-in-subtitles",
+        choices=("off", "diagnostic"),
+        default="off",
+        help="Optionally burn edit_pack/transcript subtitles as a diagnostic overlay.",
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--format", choices=("text", "json"), default="text")
@@ -61,6 +67,18 @@ def run(argv: list[str]) -> int:
             source_audio_duration=context["source_audio"]["metadata"].get("duration_seconds"),
             duration_target_seconds=args.duration_sec,
         )
+        subtitle_burn_in = _subtitle_burn_in_plan(
+            context=context,
+            mapping=mapping,
+            mode=args.burn_in_subtitles,
+        )
+        context["subtitle_burn_in"] = subtitle_burn_in
+        if subtitle_burn_in["enabled"]:
+            mapping = dict(mapping)
+            mapping["policy"] = mapping["policy"].replace(
+                "no_subtitle_burn_in",
+                "diagnostic_subtitle_burn_in",
+            )
         preflight = _preflight(
             context=context,
             mapping=mapping,
@@ -93,6 +111,13 @@ def run(argv: list[str]) -> int:
         return 1
 
     try:
+        subtitle_file_path = None
+        if context["subtitle_burn_in"]["enabled"]:
+            subtitle_file_path = context["paths"]["subtitle_file"]
+            _write_diagnostic_subtitle_file(
+                subtitle_file_path,
+                context["subtitle_burn_in"]["items"],
+            )
         result = ffmpeg_tiny.render_tiny_proof(
             source_video_path=context["source_video"]["path"],
             source_audio_path=context["source_audio"]["path"],
@@ -104,6 +129,7 @@ def run(argv: list[str]) -> int:
             container=args.container,
             video_codec=args.video_codec,
             audio_codec=args.audio_codec,
+            subtitle_file_path=subtitle_file_path,
         )
         receipt, manifest = _write_outputs(
             context=context,
@@ -133,6 +159,7 @@ def run(argv: list[str]) -> int:
         "selected_render_profile": manifest["selected_render_profile"],
         "attempted_render_profiles": manifest["attempted_render_profiles"],
         "fallback_used": manifest["fallback_used"],
+        "subtitle_burn_in": manifest["subtitle_burn_in"],
         "production_candidate": manifest["production_candidate"],
         "warnings": manifest["warnings"],
         "receipt": receipt["schema_version"],
@@ -194,6 +221,8 @@ def _resolve_context(
     if source_audio["metadata"].get("duration_seconds") is None:
         source_audio["metadata"]["duration_seconds"] = _wav_duration(source_audio["path"])
 
+    transcript_path = edit_pack_path.parent / "transcript.json"
+    transcript_payload = _load_json_optional(transcript_path) if transcript_path.exists() else {}
     output_dir = episode_dir / "renders" / output_id
     return {
         "episode_id": episode_id,
@@ -205,10 +234,13 @@ def _resolve_context(
         "edit_pack_path": edit_pack_path,
         "source_video": source_video,
         "source_audio": source_audio,
-        "transcript": _transcript_ref(edit_pack_path),
+        "transcript": _transcript_ref(transcript_path, transcript_payload),
+        "transcript_path": transcript_path,
+        "transcript_payload": transcript_payload,
         "paths": {
             "output_dir": output_dir,
             "video": output_dir / f"rendered_video.{container}",
+            "subtitle_file": output_dir / "diagnostic_subtitles.srt",
             "receipt": output_dir / "render_receipt.json",
             "manifest": output_dir / "render_manifest.json",
             "report": output_dir / "render_report.html",
@@ -366,6 +398,168 @@ def _select_cut(edit_pack: dict[str, Any]) -> dict[str, Any]:
     return cuts[0]
 
 
+def _subtitle_burn_in_plan(
+    *,
+    context: dict[str, Any],
+    mapping: dict[str, Any],
+    mode: str,
+) -> dict[str, Any]:
+    overlay_policy = {
+        "overlay_mode": mode,
+        "position": "bottom_center_fixed",
+        "font_strategy": "ffmpeg subtitles filter default font provider; no project fontfile or typography polish",
+        "timing_policy": "map source timeline seconds to rendered timeline seconds and clamp each subtitle to the rendered range",
+        "text_source": "prefer edit_pack.subtitles[]; fall back to sibling transcript.json segments only for diagnostic linkage",
+        "line_handling": "preserve existing newlines; no line-wrap, kinsoku, safe-area, outline, or background polish",
+        "escaping": "write UTF-8 SRT and escape the subtitle file path for FFmpeg filtergraph use",
+    }
+    if mode == "off":
+        return {
+            "enabled": False,
+            "requested_mode": mode,
+            "status": "disabled",
+            "source_ref": {
+                "source_type": "none",
+                "path": None,
+                "subtitle_ids": [],
+                "source_segment_ids": [],
+                "item_count": 0,
+            },
+            "overlay_policy": overlay_policy,
+            "items": [],
+            "text_preview": [],
+            "warnings": [],
+        }
+    if mode != "diagnostic":
+        raise RenderCliError(f"unsupported subtitle burn-in mode: {mode}")
+
+    items, source_ref, warnings = _subtitle_items_from_edit_pack(context=context, mapping=mapping)
+    if not items:
+        items, source_ref, transcript_warnings = _subtitle_items_from_transcript(context=context, mapping=mapping)
+        warnings.extend(transcript_warnings)
+    if not items:
+        raise RenderCliError(
+            "diagnostic subtitle burn-in requested but no edit_pack subtitles or transcript segments overlap the rendered range"
+        )
+
+    source_ref = dict(source_ref)
+    source_ref["subtitle_file"] = _display_path(context["paths"]["subtitle_file"], Path.cwd())
+    return {
+        "enabled": True,
+        "requested_mode": mode,
+        "status": "enabled",
+        "source_ref": source_ref,
+        "overlay_policy": overlay_policy,
+        "items": items,
+        "text_preview": [item["text"] for item in items[:3]],
+        "warnings": warnings,
+    }
+
+
+def _subtitle_items_from_edit_pack(
+    *,
+    context: dict[str, Any],
+    mapping: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any], list[str]]:
+    subtitles = [s for s in context["edit_pack"].get("subtitles") or [] if isinstance(s, dict)]
+    items = _subtitle_items_from_source(
+        entries=subtitles,
+        mapping=mapping,
+        id_field="id",
+        source_type="edit_pack_subtitles",
+    )
+    return (
+        items,
+        {
+            "source_type": "edit_pack_subtitles",
+            "path": _display_path(context["edit_pack_path"], Path.cwd()),
+            "subtitle_ids": [item["source_id"] for item in items],
+            "source_segment_ids": [
+                item["source_segment_id"]
+                for item in items
+                if item.get("source_segment_id")
+            ],
+            "item_count": len(items),
+        },
+        [] if items else ["edit_pack has no subtitles overlapping the diagnostic render range"],
+    )
+
+
+def _subtitle_items_from_transcript(
+    *,
+    context: dict[str, Any],
+    mapping: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any], list[str]]:
+    transcript = context.get("transcript_payload") or {}
+    segments = [s for s in transcript.get("segments") or [] if isinstance(s, dict)]
+    items = _subtitle_items_from_source(
+        entries=segments,
+        mapping=mapping,
+        id_field="id",
+        source_type="transcript_segments_diagnostic",
+    )
+    return (
+        items,
+        {
+            "source_type": "transcript_segments_diagnostic",
+            "path": _display_path(context["transcript_path"], Path.cwd()) if transcript else None,
+            "subtitle_ids": [],
+            "source_segment_ids": [item["source_id"] for item in items],
+            "item_count": len(items),
+        },
+        [
+            "no edit_pack subtitle draft overlapped the render range; diagnostic overlay uses transcript segments directly"
+        ]
+        if items
+        else ["transcript has no segments overlapping the diagnostic render range"],
+    )
+
+
+def _subtitle_items_from_source(
+    *,
+    entries: list[dict[str, Any]],
+    mapping: dict[str, Any],
+    id_field: str,
+    source_type: str,
+) -> list[dict[str, Any]]:
+    render_start = float(mapping["render_start_seconds"])
+    render_end = render_start + float(mapping["render_duration_seconds"])
+    cut_id = mapping.get("cut_id")
+    items: list[dict[str, Any]] = []
+    for entry in entries:
+        text = str(entry.get("text") or "").strip()
+        if not text:
+            continue
+        if source_type == "edit_pack_subtitles" and entry.get("cut_id") and entry.get("cut_id") != cut_id:
+            continue
+        source_start = _optional_float(entry.get("start_seconds"))
+        source_end = _optional_float(entry.get("end_seconds"))
+        if source_start is None or source_end is None or source_end <= source_start:
+            continue
+        overlap_start = max(source_start, render_start)
+        overlap_end = min(source_end, render_end)
+        if overlap_end <= overlap_start:
+            continue
+        items.append(
+            {
+                "source_type": source_type,
+                "source_id": entry.get(id_field),
+                "subtitle_id": entry.get("id") if source_type == "edit_pack_subtitles" else None,
+                "cut_id": entry.get("cut_id") or cut_id,
+                "source": entry.get("source") or source_type,
+                "source_segment_id": entry.get("source_segment_id") or (
+                    entry.get("id") if source_type == "transcript_segments_diagnostic" else None
+                ),
+                "source_start_seconds": source_start,
+                "source_end_seconds": source_end,
+                "start_seconds": round(overlap_start - render_start, 3),
+                "end_seconds": round(overlap_end - render_start, 3),
+                "text": text,
+            }
+        )
+    return items
+
+
 def _preflight(
     *,
     context: dict[str, Any],
@@ -388,6 +582,11 @@ def _preflight(
         container=container,
         video_codec=video_codec,
         audio_codec=audio_codec,
+        subtitle_file_path=(
+            context["paths"]["subtitle_file"]
+            if (context.get("subtitle_burn_in") or {}).get("enabled")
+            else None
+        ),
     )
     return {
         "schema_version": SCHEMA_VERSION,
@@ -399,6 +598,9 @@ def _preflight(
         "will_call_subprocess": will_write,
         "input": _input_readback(context),
         "timeline_mapping": mapping,
+        "subtitle_burn_in": _subtitle_burn_in_readback(context),
+        "subtitle_source_ref": _subtitle_burn_in_readback(context)["source_ref"],
+        "subtitle_overlay_policy": _subtitle_burn_in_readback(context)["overlay_policy"],
         "outputs": _output_readback(context),
         "command_plan": plan.to_dict(),
         "tool_preflight": {
@@ -445,8 +647,14 @@ def _write_outputs(
         "render_manifest": _display_path(paths["manifest"], Path.cwd()),
         "render_report": _display_path(paths["report"], Path.cwd()),
     }
+    if (context.get("subtitle_burn_in") or {}).get("enabled"):
+        outputs["diagnostic_subtitle_file"] = _display_path(paths["subtitle_file"], Path.cwd())
     execution_preflight = dict(preflight)
     execution_preflight["tool_preflight"] = render_result.preflight
+    subtitle_burn_in = _subtitle_burn_in_readback(
+        context,
+        status="enabled" if (context.get("subtitle_burn_in") or {}).get("enabled") else "disabled",
+    )
     receipt = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": ARTIFACT_KIND,
@@ -467,6 +675,9 @@ def _write_outputs(
         "publish_acceptance": False,
         "input": _input_readback(context),
         "timeline_mapping": mapping,
+        "subtitle_burn_in": subtitle_burn_in,
+        "subtitle_source_ref": subtitle_burn_in["source_ref"],
+        "subtitle_overlay_policy": subtitle_burn_in["overlay_policy"],
         "outputs": outputs,
         "output_metadata": output_metadata,
         "selected_render_profile": render_result.selected_profile.to_dict(),
@@ -509,6 +720,9 @@ def _write_outputs(
         "publish_acceptance": False,
         "source_refs": _input_readback(context),
         "timeline_mapping": mapping,
+        "subtitle_burn_in": subtitle_burn_in,
+        "subtitle_source_ref": subtitle_burn_in["source_ref"],
+        "subtitle_overlay_policy": subtitle_burn_in["overlay_policy"],
         "outputs": outputs,
         "output_metadata": output_metadata,
         "selected_render_profile": receipt["selected_render_profile"],
@@ -518,7 +732,6 @@ def _write_outputs(
         "selected_video_codec": receipt["selected_video_codec"],
         "selected_audio_codec": receipt["selected_audio_codec"],
         "preflight": execution_preflight,
-        "subtitle_burn_in": False,
         "warnings": warnings,
     }
     _write_json(receipt, paths["receipt"])
@@ -558,6 +771,20 @@ def _write_failure_outputs(
             str(error),
         ],
     )
+    subtitle_status = "failed" if (context.get("subtitle_burn_in") or {}).get("enabled") else "disabled"
+    subtitle_burn_in = _subtitle_burn_in_readback(
+        context,
+        status=subtitle_status,
+        failure_reason=failure_reason if subtitle_status == "failed" else None,
+    )
+    outputs = {
+        "rendered_video": output_path,
+        "render_receipt": _display_path(paths["receipt"], Path.cwd()),
+        "render_manifest": _display_path(paths["manifest"], Path.cwd()),
+        "render_report": _display_path(paths["report"], Path.cwd()),
+    }
+    if (context.get("subtitle_burn_in") or {}).get("enabled"):
+        outputs["diagnostic_subtitle_file"] = _display_path(paths["subtitle_file"], Path.cwd())
     receipt = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": ARTIFACT_KIND,
@@ -578,12 +805,10 @@ def _write_failure_outputs(
         "publish_acceptance": False,
         "input": _input_readback(context),
         "timeline_mapping": mapping,
-        "outputs": {
-            "rendered_video": output_path,
-            "render_receipt": _display_path(paths["receipt"], Path.cwd()),
-            "render_manifest": _display_path(paths["manifest"], Path.cwd()),
-            "render_report": _display_path(paths["report"], Path.cwd()),
-        },
+        "subtitle_burn_in": subtitle_burn_in,
+        "subtitle_source_ref": subtitle_burn_in["source_ref"],
+        "subtitle_overlay_policy": subtitle_burn_in["overlay_policy"],
+        "outputs": outputs,
         "output_metadata": {},
         "selected_render_profile": selected_profile_dict,
         "attempted_render_profiles": [attempt.to_dict() for attempt in attempts],
@@ -611,6 +836,9 @@ def _write_failure_outputs(
         "publish_acceptance": False,
         "source_refs": _input_readback(context),
         "timeline_mapping": mapping,
+        "subtitle_burn_in": subtitle_burn_in,
+        "subtitle_source_ref": subtitle_burn_in["source_ref"],
+        "subtitle_overlay_policy": subtitle_burn_in["overlay_policy"],
         "outputs": receipt["outputs"],
         "output_metadata": {},
         "selected_render_profile": selected_profile_dict,
@@ -620,7 +848,6 @@ def _write_failure_outputs(
         "selected_video_codec": receipt["selected_video_codec"],
         "selected_audio_codec": receipt["selected_audio_codec"],
         "preflight": execution_preflight,
-        "subtitle_burn_in": False,
         "warnings": warnings,
     }
     _write_json(receipt, paths["receipt"])
@@ -638,7 +865,15 @@ def _warnings(
 ) -> list[str]:
     warnings = list(dict.fromkeys(render_warnings + mapping["warnings"]))
     warnings.append("OUT-01 tiny render proof is diagnostic; production render acceptance is not claimed.")
-    warnings.append("subtitle burn-in, visual polish, publishing, and creative acceptance are out of scope.")
+    subtitle_burn_in = context.get("subtitle_burn_in") or {}
+    if subtitle_burn_in.get("enabled"):
+        warnings.append(
+            "subtitle burn-in is diagnostic overlay only; typography, safe-area, creative acceptance, publishing, and production subtitle design are out of scope."
+        )
+    else:
+        warnings.append("subtitle burn-in is disabled; visual polish, publishing, and creative acceptance are out of scope.")
+    for warning in subtitle_burn_in.get("warnings") or []:
+        warnings.append(str(warning))
     review_status = (context["edit_pack"].get("review") or {}).get("status", "unknown")
     if review_status != "approved":
         warnings.append(f"edit_pack review.status is {review_status}; render is not approved.")
@@ -693,18 +928,70 @@ def _source_readback(source: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _output_readback(context: dict[str, Any]) -> dict[str, str]:
+def _subtitle_burn_in_readback(
+    context: dict[str, Any],
+    *,
+    status: str | None = None,
+    failure_reason: str | None = None,
+) -> dict[str, Any]:
+    plan = context.get("subtitle_burn_in") or {}
+    current_status = status or plan.get("status") or "disabled"
     return {
+        "enabled": bool(plan.get("enabled")),
+        "requested_mode": plan.get("requested_mode") or "off",
+        "status": current_status,
+        "failure_reason": failure_reason,
+        "source_ref": plan.get("source_ref")
+        or {
+            "source_type": "none",
+            "path": None,
+            "subtitle_ids": [],
+            "source_segment_ids": [],
+            "item_count": 0,
+        },
+        "overlay_policy": plan.get("overlay_policy") or {},
+        "items": plan.get("items") or [],
+        "text_preview": plan.get("text_preview") or [],
+    }
+
+
+def _output_readback(context: dict[str, Any]) -> dict[str, str]:
+    outputs = {
         "rendered_video": _display_path(context["paths"]["video"], Path.cwd()),
         "render_receipt": _display_path(context["paths"]["receipt"], Path.cwd()),
         "render_manifest": _display_path(context["paths"]["manifest"], Path.cwd()),
         "render_report": _display_path(context["paths"]["report"], Path.cwd()),
     }
+    if (context.get("subtitle_burn_in") or {}).get("enabled"):
+        outputs["diagnostic_subtitle_file"] = _display_path(context["paths"]["subtitle_file"], Path.cwd())
+    return outputs
 
 
-def _transcript_ref(edit_pack_path: Path) -> dict[str, Any]:
-    transcript_path = edit_pack_path.parent / "transcript.json"
-    transcript = _load_json_optional(transcript_path) if transcript_path.exists() else {}
+def _write_diagnostic_subtitle_file(path: Path, items: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    blocks: list[str] = []
+    for index, item in enumerate(items, start=1):
+        start = _format_srt_timestamp(float(item["start_seconds"]))
+        end = _format_srt_timestamp(float(item["end_seconds"]))
+        text = str(item["text"]).replace("\r\n", "\n").replace("\r", "\n")
+        blocks.append(f"{index}\n{start} --> {end}\n{text}\n")
+    path.write_text("\n".join(blocks), encoding="utf-8")
+
+
+def _format_srt_timestamp(seconds: float) -> str:
+    if seconds < 0:
+        seconds = 0.0
+    milliseconds_total = int(round(seconds * 1000))
+    milliseconds = milliseconds_total % 1000
+    total_seconds = milliseconds_total // 1000
+    secs = total_seconds % 60
+    total_minutes = total_seconds // 60
+    minutes = total_minutes % 60
+    hours = total_minutes // 60
+    return f"{hours:02d}:{minutes:02d}:{secs:02d},{milliseconds:03d}"
+
+
+def _transcript_ref(transcript_path: Path, transcript: dict[str, Any]) -> dict[str, Any]:
     stt = transcript.get("stt") if isinstance(transcript.get("stt"), dict) else {}
     source_audio = transcript.get("source_audio") if isinstance(transcript.get("source_audio"), dict) else {}
     return {
@@ -722,7 +1009,7 @@ def _transcript_ref(edit_pack_path: Path) -> dict[str, Any]:
 
 def _conflicts(paths: dict[str, Path], *, preflight: dict[str, Any] | None = None) -> list[str]:
     out: list[str] = []
-    for key in ("video", "receipt", "manifest", "report"):
+    for key in ("video", "subtitle_file", "receipt", "manifest", "report"):
         if paths[key].exists():
             out.append(str(paths[key]))
     planned_outputs = set()
@@ -781,6 +1068,9 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     selected_profile = manifest.get("selected_render_profile") or {}
     failure = manifest.get("failure_classification") or {}
     attempts = manifest.get("attempted_render_profiles") or []
+    subtitle_burn_in = manifest.get("subtitle_burn_in") or {}
+    subtitle_source_ref = subtitle_burn_in.get("source_ref") or manifest.get("subtitle_source_ref") or {}
+    subtitle_policy = subtitle_burn_in.get("overlay_policy") or manifest.get("subtitle_overlay_policy") or {}
     tool_preflight = (manifest.get("preflight") or {}).get("tool_preflight") or {}
     ffmpeg = tool_preflight.get("ffmpeg") or {}
     ffprobe = tool_preflight.get("ffprobe") or {}
@@ -797,6 +1087,16 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
         "</tr>"
         for attempt in attempts
     )
+    subtitle_items = subtitle_burn_in.get("items") or []
+    subtitle_rows = "\n".join(
+        "<tr>"
+        f"<td>{escape(str(item.get('source_id') or item.get('subtitle_id') or ''))}</td>"
+        f"<td>{escape(str(item.get('start_seconds')))}-{escape(str(item.get('end_seconds')))}</td>"
+        f"<td>{escape(str(item.get('text') or ''))}</td>"
+        "</tr>"
+        for item in subtitle_items
+    )
+    subtitle_text_preview = " | ".join(str(text) for text in subtitle_burn_in.get("text_preview") or [])
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -828,6 +1128,7 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
   <h2>Artifact Paths</h2>
   <ul>
     <li>rendered_video: {escape(str(outputs.get("rendered_video", "")))}</li>
+    <li>diagnostic_subtitle_file: {escape(str(outputs.get("diagnostic_subtitle_file", "")))}</li>
     <li>render_receipt: {escape(str(outputs.get("render_receipt", "")))}</li>
     <li>render_manifest: {escape(str(outputs.get("render_manifest", "")))}</li>
     <li>render_report: {escape(str(outputs.get("render_report", "")))}</li>
@@ -839,6 +1140,26 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     <dt>edit_pack</dt><dd>{escape(str(edit_pack.get("path")))} / review={escape(str(edit_pack.get("review_status")))}</dd>
     <dt>transcript</dt><dd>{escape(str(transcript.get("path") or ""))} / real={escape(str(transcript.get("real_transcript", False)).lower())}</dd>
   </dl>
+  <h2>Subtitle Burn-In Diagnostic</h2>
+  <p>Diagnostic overlay only. This is not typography / safe-area / line-wrap / font polish / creative acceptance.</p>
+  <dl>
+    <dt>status</dt><dd>{escape(str(subtitle_burn_in.get("status", "disabled")))}</dd>
+    <dt>requested_mode</dt><dd>{escape(str(subtitle_burn_in.get("requested_mode", "off")))}</dd>
+    <dt>source_type</dt><dd>{escape(str(subtitle_source_ref.get("source_type", "none")))}</dd>
+    <dt>source_path</dt><dd>{escape(str(subtitle_source_ref.get("path") or ""))}</dd>
+    <dt>subtitle_file</dt><dd>{escape(str(subtitle_source_ref.get("subtitle_file") or ""))}</dd>
+    <dt>text_preview</dt><dd>{escape(subtitle_text_preview)}</dd>
+    <dt>position</dt><dd>{escape(str(subtitle_policy.get("position", "")))}</dd>
+    <dt>font_strategy</dt><dd>{escape(str(subtitle_policy.get("font_strategy", "")))}</dd>
+    <dt>timing_policy</dt><dd>{escape(str(subtitle_policy.get("timing_policy", "")))}</dd>
+    <dt>line_handling</dt><dd>{escape(str(subtitle_policy.get("line_handling", "")))}</dd>
+  </dl>
+  <table>
+    <thead><tr><th>source</th><th>render time</th><th>text</th></tr></thead>
+    <tbody>
+{subtitle_rows}
+    </tbody>
+  </table>
   <h2>Timeline Mapping</h2>
   <dl>
     <dt>policy</dt><dd>{escape(str(mapping.get("policy")))}</dd>
@@ -947,9 +1268,13 @@ def _print_payload(payload: dict[str, Any], *, fmt: str) -> None:
             print(f"selected_render_profile: {selected_profile.get('profile_id')}")
         if "fallback_used" in payload:
             print(f"fallback_used: {str(payload['fallback_used']).lower()}")
+        subtitle_burn_in = payload.get("subtitle_burn_in") or {}
+        if subtitle_burn_in:
+            print(f"subtitle_burn_in_status: {subtitle_burn_in.get('status')}")
+            source_ref = subtitle_burn_in.get("source_ref") or {}
+            print(f"subtitle_source_type: {source_ref.get('source_type')}")
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         for warning in payload["warnings"]:
             print(f"warning: {warning}")
         return
     print(json.dumps(payload, ensure_ascii=False, indent=2))
-

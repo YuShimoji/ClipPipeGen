@@ -2,8 +2,9 @@
 
 This module is intentionally small and diagnostic. It renders one selected cut
 range from an existing source video plus source audio into a single video file,
-then probes the output for readback metadata. It does not choose creative cuts,
-burn subtitles, fetch URLs, upload, or claim production readiness.
+then probes the output for readback metadata. Optional subtitle burn-in is
+limited to a diagnostic overlay fed by an explicit subtitle file. It does not
+choose creative cuts, fetch URLs, upload, or claim production readiness.
 """
 
 from __future__ import annotations
@@ -89,6 +90,7 @@ class RenderPlan:
     container: str
     video_codec: str
     audio_codec: str
+    subtitle_file_path: str | None
     command: list[str] | None
     command_summary: str | None
     render_profiles: list[RenderProfile]
@@ -108,6 +110,7 @@ class RenderPlan:
             "container": self.container,
             "video_codec": self.video_codec,
             "audio_codec": self.audio_codec,
+            "subtitle_file_path": self.subtitle_file_path,
             "command": self.command,
             "command_summary": self.command_summary,
             "render_profiles": [profile.to_dict() for profile in self.render_profiles],
@@ -193,6 +196,7 @@ def build_plan(
     container: str = "mp4",
     video_codec: str = "auto",
     audio_codec: str = "auto",
+    subtitle_file_path: str | Path | None = None,
     env: Mapping[str, str] | None = None,
 ) -> RenderPlan:
     """Build a dry-run-safe render command plan without spawning subprocesses."""
@@ -200,8 +204,13 @@ def build_plan(
     resolved_ffprobe, ffprobe_source = discover_ffprobe(ffprobe_path=ffprobe_path, env=env)
     warnings = [
         "OUT-01 tiny render proof is diagnostic and not production/creative/publish acceptance",
-        "subtitle burn-in is intentionally disabled",
     ]
+    if subtitle_file_path:
+        warnings.append(
+            "diagnostic subtitle burn-in enabled; typography/safe-area/font polish is not claimed"
+        )
+    else:
+        warnings.append("subtitle burn-in is intentionally disabled")
     if resolved_ffmpeg is None:
         warnings.append(f"ffmpeg not found via --ffmpeg-path, {FFMPEG_ENV_VAR}, or PATH")
     if resolved_ffprobe is None:
@@ -226,6 +235,7 @@ def build_plan(
             duration_seconds=duration_seconds,
             video_codec=first_profile.video_codec,
             audio_codec=first_profile.audio_codec,
+            subtitle_file_path=subtitle_file_path,
         )
         command_summary = _command_summary(command)
 
@@ -242,6 +252,7 @@ def build_plan(
         container=container,
         video_codec=video_codec,
         audio_codec=audio_codec,
+        subtitle_file_path=str(subtitle_file_path).replace("\\", "/") if subtitle_file_path else None,
         command=command,
         command_summary=command_summary,
         render_profiles=profiles,
@@ -324,6 +335,7 @@ def render_tiny_proof(
     container: str = "mp4",
     video_codec: str = "auto",
     audio_codec: str = "auto",
+    subtitle_file_path: str | Path | None = None,
     runner: Runner = subprocess.run,
     env: Mapping[str, str] | None = None,
 ) -> RenderResult:
@@ -342,6 +354,7 @@ def render_tiny_proof(
         container=container,
         video_codec=video_codec,
         audio_codec=audio_codec,
+        subtitle_file_path=subtitle_file_path,
         env=env,
     )
     preflight = preflight_tools(
@@ -376,6 +389,12 @@ def render_tiny_proof(
             failure_reason="duration_or_timeline_mismatch",
             preflight=preflight,
         )
+    if subtitle_file_path is not None and not Path(subtitle_file_path).exists():
+        raise TinyRenderError(
+            f"diagnostic subtitle file not found: {subtitle_file_path}",
+            failure_reason="subtitle_source_missing",
+            preflight=preflight,
+        )
 
     ffmpeg_version = preflight["ffmpeg"]["version"] or "unknown"
     ffprobe_version = preflight["ffprobe"]["version"] or "unknown"
@@ -397,6 +416,7 @@ def render_tiny_proof(
             duration_seconds=duration_seconds,
             video_codec=profile.video_codec,
             audio_codec=profile.audio_codec,
+            subtitle_file_path=subtitle_file_path,
         )
         try:
             result = runner(
@@ -795,6 +815,11 @@ def _profile_id(container: str, video_codec: str, audio_codec: str) -> str:
 
 def _classify_ffmpeg_failure(stderr: str | None) -> str:
     text = (stderr or "").lower()
+    if (
+        any(marker in text for marker in ("subtitles", "libass", "fontconfig", "drawtext", "font"))
+        and any(marker in text for marker in ("error", "failed", "unable", "cannot", "no such filter"))
+    ):
+        return "subtitle_filter_failed"
     if any(
         marker in text
         for marker in (
@@ -832,7 +857,11 @@ def _render_command(
     duration_seconds: float,
     video_codec: str,
     audio_codec: str,
+    subtitle_file_path: str | Path | None = None,
 ) -> list[str]:
+    video_filters = ["scale=trunc(iw/2)*2:trunc(ih/2)*2", "format=yuv420p"]
+    if subtitle_file_path is not None:
+        video_filters.append(f"subtitles=filename='{_escape_filter_value(subtitle_file_path)}'")
     return [
         ffmpeg_path,
         "-y",
@@ -853,7 +882,7 @@ def _render_command(
         "-map",
         "1:a:0",
         "-vf",
-        "scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p",
+        ",".join(video_filters),
         "-c:v",
         video_codec,
         "-c:a",
@@ -874,6 +903,18 @@ def _probe_command(ffprobe_path: str, input_path: str | Path) -> list[str]:
         "-show_streams",
         str(input_path),
     ]
+
+
+def _escape_filter_value(value: str | Path) -> str:
+    text = str(value).replace("\\", "/")
+    return (
+        text.replace("\\", "\\\\")
+        .replace(":", "\\:")
+        .replace("'", "\\'")
+        .replace(",", "\\,")
+        .replace("[", "\\[")
+        .replace("]", "\\]")
+    )
 
 
 def _command_summary(command: list[str]) -> str:
@@ -925,4 +966,3 @@ def _fps_from_rate(value: Any) -> float | None:
 
 def _seconds(value: float) -> str:
     return f"{float(value):.6f}".rstrip("0").rstrip(".")
-

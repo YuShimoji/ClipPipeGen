@@ -10,7 +10,7 @@ INT-02e は INT-02d の contract に従い、`fetch-source-audio --mode yt-dlp-a
 
 INT-02f は `fetch-source-video --mode local-media-video` を追加し、既存ローカル video file を episode material directory にコピー登録し、FFprobe metadata / sidecar / receipt / ledger entry を readback する。URL video fetch、render、encode、cut、concat、subtitle burn-in は含めない。
 
-OUT-01 はこの asset_fetch 境界の外側で `render-tiny-proof` を追加し、取得済み source_video / source_audio / edit_pack selected cut から diagnostic rendered artifact を作る。これは asset acquisition ではなく output proof であり、source-video URL fetch、subtitle burn-in、GUI action、production render acceptance には進まない。
+OUT-01 はこの asset_fetch 境界の外側で `render-tiny-proof` を追加し、取得済み source_video / source_audio / edit_pack selected cut から diagnostic rendered artifact を作る。OUT-01c では `edit_pack.subtitles[]` 由来の diagnostic subtitle overlay も同じ render integration に閉じ込める。これは asset acquisition ではなく output proof であり、source-video URL fetch、GUI action、production render acceptance、subtitle design acceptance には進まない。
 
 SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fetch-source-audio --mode local-media-audio` の出力、または SH-05d の既存 source audio material readback を downstream artifact に接続し、`preview_manifest.json` / read-only `preview_report.html` を生成する review surface である。SH-05c GUI ingest は生成済み preview pack を読むだけで、GUI から build / fetch / render / upload を起動しない。SH-05 は rendered video preview、network fetch、GUI fetch button、cut / concat、subtitle burn-in、render / encode を実装しない。詳細は [PREVIEW_PACK.md](PREVIEW_PACK.md) を正本とする。
 
@@ -170,4 +170,4 @@ receipt は INT-02a fields に加えて、以下を記録する。
 
 ## 次に進む条件
 
-OUT-01 で取得済み source video は tiny render proof に接続済み。次に進む場合も、render hardening、subtitle burn-in、GUI action、URL video fetch はさらに別 slice に分ける。
+OUT-01c で取得済み source video / source audio / edit_pack subtitle draft は diagnostic visual proof に接続済み。次に進む場合も、production render、subtitle design hardening、GUI action、URL video fetch はさらに別 slice に分ける。
