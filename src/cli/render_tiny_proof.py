@@ -18,6 +18,7 @@ from src.pipeline.material_ledger import load_ledger
 SCHEMA_VERSION = "v1"
 ARTIFACT_KIND = "tiny_render_proof"
 FORMAT = "tiny_render_proof_v1"
+RENDERABLE_SUBTITLE_STATUSES = {"included", "clamped_to_render_window"}
 
 
 def run(argv: list[str]) -> int:
@@ -114,9 +115,9 @@ def run(argv: list[str]) -> int:
         subtitle_file_path = None
         if context["subtitle_burn_in"]["enabled"]:
             subtitle_file_path = context["paths"]["subtitle_file"]
-            _write_diagnostic_subtitle_file(
+            context["subtitle_burn_in"]["srt_file"] = _write_diagnostic_subtitle_file(
                 subtitle_file_path,
-                context["subtitle_burn_in"]["items"],
+                _renderable_subtitle_items(context["subtitle_burn_in"]["items"]),
             )
         result = ffmpeg_tiny.render_tiny_proof(
             source_video_path=context["source_video"]["path"],
@@ -404,14 +405,16 @@ def _subtitle_burn_in_plan(
     mapping: dict[str, Any],
     mode: str,
 ) -> dict[str, Any]:
+    render_window = _subtitle_render_window(mapping)
     overlay_policy = {
         "overlay_mode": mode,
         "position": "bottom_center_fixed",
         "font_strategy": "ffmpeg subtitles filter default font provider; no project fontfile or typography polish",
-        "timing_policy": "map source timeline seconds to rendered timeline seconds and clamp each subtitle to the rendered range",
+        "timing_policy": "subtract render_start offset from source timeline seconds, clamp overlapping subtitles to the rendered range, and skip items outside the render window",
         "text_source": "prefer edit_pack.subtitles[]; fall back to sibling transcript.json segments only for diagnostic linkage",
         "line_handling": "preserve existing newlines; no line-wrap, kinsoku, safe-area, outline, or background polish",
         "escaping": "write UTF-8 SRT and escape the subtitle file path for FFmpeg filtergraph use",
+        "status_policy": "included/clamped items are written to SRT; skipped/invalid/empty items stay in readback only",
     }
     if mode == "off":
         return {
@@ -428,6 +431,18 @@ def _subtitle_burn_in_plan(
             "overlay_policy": overlay_policy,
             "items": [],
             "text_preview": [],
+            "timing_mapping": _subtitle_timing_mapping_readback(
+                mapping=mapping,
+                items=[],
+                render_window=render_window,
+            ),
+            "filter_preflight": _subtitle_filter_preflight(
+                status="not_requested",
+                failure_reason=None,
+                failure_detail=None,
+                subtitle_file=None,
+                srt_file=None,
+            ),
             "warnings": [],
         }
     if mode != "diagnostic":
@@ -439,19 +454,48 @@ def _subtitle_burn_in_plan(
         warnings.extend(transcript_warnings)
     if not items:
         raise RenderCliError(
-            "diagnostic subtitle burn-in requested but no edit_pack subtitles or transcript segments overlap the rendered range"
+            "diagnostic subtitle burn-in requested but no edit_pack subtitles or transcript segments were available for the selected render"
         )
 
+    renderable_items = _renderable_subtitle_items(items)
+    status = "enabled" if renderable_items else "skipped"
+    timing_readback = _subtitle_timing_mapping_readback(
+        mapping=mapping,
+        items=items,
+        render_window=render_window,
+    )
+    warnings.extend(_subtitle_status_warnings(timing_readback["status_counts"]))
+    if not renderable_items:
+        warnings.append("diagnostic subtitle source was found, but no subtitle item is renderable inside the selected render window")
     source_ref = dict(source_ref)
-    source_ref["subtitle_file"] = _display_path(context["paths"]["subtitle_file"], Path.cwd())
+    source_ref["subtitle_file"] = _display_path(context["paths"]["subtitle_file"], Path.cwd()) if renderable_items else None
+    source_ref["rendered_subtitle_ids"] = [
+        item["source_id"] for item in renderable_items if item.get("source_id")
+    ]
+    source_ref["skipped_subtitle_ids"] = [
+        item["source_id"]
+        for item in items
+        if item.get("source_id") and item.get("status") not in RENDERABLE_SUBTITLE_STATUSES
+    ]
     return {
-        "enabled": True,
+        "enabled": bool(renderable_items),
         "requested_mode": mode,
-        "status": "enabled",
+        "status": status,
         "source_ref": source_ref,
         "overlay_policy": overlay_policy,
         "items": items,
-        "text_preview": [item["text"] for item in items[:3]],
+        "text_preview": [
+            item["text"]
+            for item in (renderable_items or [item for item in items if item.get("text")])[:3]
+        ],
+        "timing_mapping": timing_readback,
+        "filter_preflight": _subtitle_filter_preflight(
+            status="deferred_to_ffmpeg_render" if renderable_items else "skipped_no_renderable_subtitles",
+            failure_reason=None,
+            failure_detail=None,
+            subtitle_file=context["paths"]["subtitle_file"] if renderable_items else None,
+            srt_file=None,
+        ),
         "warnings": warnings,
     }
 
@@ -473,15 +517,16 @@ def _subtitle_items_from_edit_pack(
         {
             "source_type": "edit_pack_subtitles",
             "path": _display_path(context["edit_pack_path"], Path.cwd()),
-            "subtitle_ids": [item["source_id"] for item in items],
+            "subtitle_ids": [item["source_id"] for item in items if item.get("source_id")],
             "source_segment_ids": [
                 item["source_segment_id"]
                 for item in items
                 if item.get("source_segment_id")
             ],
             "item_count": len(items),
+            "renderable_item_count": len(_renderable_subtitle_items(items)),
         },
-        [] if items else ["edit_pack has no subtitles overlapping the diagnostic render range"],
+        [] if items else ["edit_pack has no subtitle entries for the selected diagnostic render cut"],
     )
 
 
@@ -504,14 +549,15 @@ def _subtitle_items_from_transcript(
             "source_type": "transcript_segments_diagnostic",
             "path": _display_path(context["transcript_path"], Path.cwd()) if transcript else None,
             "subtitle_ids": [],
-            "source_segment_ids": [item["source_id"] for item in items],
+            "source_segment_ids": [item["source_id"] for item in items if item.get("source_id")],
             "item_count": len(items),
+            "renderable_item_count": len(_renderable_subtitle_items(items)),
         },
         [
-            "no edit_pack subtitle draft overlapped the render range; diagnostic overlay uses transcript segments directly"
+            "no edit_pack subtitle draft was available for the selected cut; diagnostic overlay uses transcript segments directly"
         ]
         if items
-        else ["transcript has no segments overlapping the diagnostic render range"],
+        else ["transcript has no segments for the selected diagnostic render"],
     )
 
 
@@ -527,37 +573,175 @@ def _subtitle_items_from_source(
     cut_id = mapping.get("cut_id")
     items: list[dict[str, Any]] = []
     for entry in entries:
-        text = str(entry.get("text") or "").strip()
-        if not text:
-            continue
         if source_type == "edit_pack_subtitles" and entry.get("cut_id") and entry.get("cut_id") != cut_id:
             continue
+        text = str(entry.get("text") or "").strip()
         source_start = _optional_float(entry.get("start_seconds"))
         source_end = _optional_float(entry.get("end_seconds"))
-        if source_start is None or source_end is None or source_end <= source_start:
-            continue
-        overlap_start = max(source_start, render_start)
-        overlap_end = min(source_end, render_end)
-        if overlap_end <= overlap_start:
-            continue
-        items.append(
-            {
-                "source_type": source_type,
-                "source_id": entry.get(id_field),
-                "subtitle_id": entry.get("id") if source_type == "edit_pack_subtitles" else None,
-                "cut_id": entry.get("cut_id") or cut_id,
-                "source": entry.get("source") or source_type,
-                "source_segment_id": entry.get("source_segment_id") or (
-                    entry.get("id") if source_type == "transcript_segments_diagnostic" else None
-                ),
-                "source_start_seconds": source_start,
-                "source_end_seconds": source_end,
-                "start_seconds": round(overlap_start - render_start, 3),
-                "end_seconds": round(overlap_end - render_start, 3),
-                "text": text,
-            }
-        )
+        status = "included"
+        skip_reason = None
+        render_item_start: float | None = None
+        render_item_end: float | None = None
+        if not text:
+            status = "empty_text"
+            skip_reason = "subtitle text is empty after trimming"
+        elif source_start is None or source_end is None or source_end <= source_start:
+            status = "invalid_timing"
+            skip_reason = "subtitle timing must have numeric start/end with end greater than start"
+        elif source_end <= render_start:
+            status = "skipped_before_render_window"
+            skip_reason = "subtitle ends before the selected render window starts"
+        elif source_start >= render_end:
+            status = "skipped_after_render_window"
+            skip_reason = "subtitle starts after the selected render window ends"
+        else:
+            overlap_start = max(source_start, render_start)
+            overlap_end = min(source_end, render_end)
+            render_item_start = round(overlap_start - render_start, 3)
+            render_item_end = round(overlap_end - render_start, 3)
+            if source_start < render_start or source_end > render_end:
+                status = "clamped_to_render_window"
+        item = {
+            "source_type": source_type,
+            "source_id": entry.get(id_field),
+            "subtitle_id": entry.get("id") if source_type == "edit_pack_subtitles" else None,
+            "cut_id": entry.get("cut_id") or cut_id,
+            "source": entry.get("source") or source_type,
+            "source_segment_id": entry.get("source_segment_id") or (
+                entry.get("id") if source_type == "transcript_segments_diagnostic" else None
+            ),
+            "original_start_seconds": source_start,
+            "original_end_seconds": source_end,
+            "source_start_seconds": source_start,
+            "source_end_seconds": source_end,
+            "render_start_seconds": render_item_start,
+            "render_end_seconds": render_item_end,
+            "start_seconds": render_item_start,
+            "end_seconds": render_item_end,
+            "status": status,
+            "render_start_offset_seconds": render_start,
+            "render_window_start_seconds": render_start,
+            "render_window_end_seconds": render_end,
+            "skip_reason": skip_reason,
+            "text": text,
+        }
+        items.append(item)
     return items
+
+
+def _subtitle_render_window(mapping: dict[str, Any]) -> dict[str, Any]:
+    start = float(mapping["render_start_seconds"])
+    duration = float(mapping["render_duration_seconds"])
+    return {
+        "source_start_seconds": start,
+        "source_end_seconds": start + duration,
+        "render_start_seconds": 0.0,
+        "render_end_seconds": duration,
+        "duration_seconds": duration,
+    }
+
+
+def _renderable_subtitle_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES]
+
+
+def _subtitle_timing_mapping_readback(
+    *,
+    mapping: dict[str, Any],
+    items: list[dict[str, Any]],
+    render_window: dict[str, Any],
+) -> dict[str, Any]:
+    status_counts: dict[str, int] = {}
+    for item in items:
+        status = str(item.get("status") or "unknown")
+        status_counts[status] = status_counts.get(status, 0) + 1
+    renderable_count = sum(status_counts.get(status, 0) for status in RENDERABLE_SUBTITLE_STATUSES)
+    return {
+        "policy": "source_timeline_to_render_timeline_subtract_offset_then_clamp_or_skip",
+        "source_timeline": "edit_pack/transcript seconds are interpreted on the same source media timeline as the selected cut",
+        "render_start_offset_seconds": float(mapping["render_start_seconds"]),
+        "render_duration_seconds": float(mapping["render_duration_seconds"]),
+        "render_window": render_window,
+        "item_count": len(items),
+        "renderable_item_count": renderable_count,
+        "skipped_item_count": sum(
+            count
+            for status, count in status_counts.items()
+            if status.startswith("skipped_") or status in {"empty_text", "invalid_timing"}
+        ),
+        "status_counts": status_counts,
+    }
+
+
+def _subtitle_status_warnings(status_counts: dict[str, int]) -> list[str]:
+    warnings: list[str] = []
+    if status_counts.get("clamped_to_render_window"):
+        warnings.append("subtitle timing diagnostic clamped at least one subtitle to the render window")
+    skipped_count = sum(
+        status_counts.get(status, 0)
+        for status in ("skipped_before_render_window", "skipped_after_render_window")
+    )
+    if skipped_count:
+        warnings.append("subtitle timing diagnostic skipped subtitle item(s) outside the render window")
+    if status_counts.get("invalid_timing"):
+        warnings.append("subtitle timing diagnostic skipped invalid_timing item(s)")
+    if status_counts.get("empty_text"):
+        warnings.append("subtitle timing diagnostic skipped empty_text item(s)")
+    return warnings
+
+
+def _subtitle_filter_preflight(
+    *,
+    status: str,
+    failure_reason: str | None,
+    failure_detail: str | None,
+    subtitle_file: Path | str | None,
+    srt_file: dict[str, Any] | None,
+) -> dict[str, Any]:
+    failure_detail = failure_detail or _subtitle_failure_detail_from_reason(failure_reason)
+    return {
+        "status": status,
+        "failure_reason": failure_reason,
+        "failure_detail": failure_detail,
+        "ffmpeg_subtitles_filter": {
+            "requested": status not in {"not_requested", "skipped_no_renderable_subtitles"},
+            "availability_check": "deferred_to_ffmpeg_render_attempt",
+            "failure_classification": "subtitle_filter_failed",
+        },
+        "libass": {
+            "status": "deferred_to_ffmpeg_render_attempt",
+            "failure_detail": "libass_failure",
+        },
+        "font_provider": {
+            "strategy": "ffmpeg subtitles filter default provider; fontconfig/default font availability is environment-owned",
+            "status": "deferred_to_ffmpeg_render_attempt",
+            "failure_detail": "fontconfig_failure or font_provider_failure",
+        },
+        "subtitle_file_path": _display_path(Path(subtitle_file), Path.cwd()) if subtitle_file else None,
+        "path_escaping": {
+            "strategy": "escape backslash, colon, single quote, comma, and square brackets for FFmpeg filtergraph filename",
+            "status": "planned" if subtitle_file else "not_applicable",
+            "failure_detail": "subtitle_file_path_or_escaping_failure",
+        },
+        "srt_encoding": srt_file
+        or {
+            "encoding": "utf-8",
+            "status": "pending_write" if subtitle_file else "not_applicable",
+            "failure_detail": "subtitle_srt_encoding_failed",
+        },
+    }
+
+
+def _subtitle_failure_detail_from_reason(failure_reason: str | None) -> str | None:
+    if failure_reason == "subtitle_srt_encoding_failed":
+        return "srt_encoding_or_parsing_failure"
+    if failure_reason == "subtitle_srt_write_failed":
+        return "subtitle_file_path_or_escaping_failure"
+    if failure_reason == "subtitle_source_missing":
+        return "subtitle_source_missing"
+    if failure_reason == "subtitle_filter_failed":
+        return "ffmpeg_subtitles_filter_failure"
+    return None
 
 
 def _preflight(
@@ -651,9 +835,16 @@ def _write_outputs(
         outputs["diagnostic_subtitle_file"] = _display_path(paths["subtitle_file"], Path.cwd())
     execution_preflight = dict(preflight)
     execution_preflight["tool_preflight"] = render_result.preflight
+    planned_subtitle_status = (context.get("subtitle_burn_in") or {}).get("status")
     subtitle_burn_in = _subtitle_burn_in_readback(
         context,
-        status="enabled" if (context.get("subtitle_burn_in") or {}).get("enabled") else "disabled",
+        status=(
+            "skipped"
+            if planned_subtitle_status == "skipped"
+            else "enabled"
+            if (context.get("subtitle_burn_in") or {}).get("enabled")
+            else "disabled"
+        ),
     )
     receipt = {
         "schema_version": SCHEMA_VERSION,
@@ -771,11 +962,19 @@ def _write_failure_outputs(
             str(error),
         ],
     )
-    subtitle_status = "failed" if (context.get("subtitle_burn_in") or {}).get("enabled") else "disabled"
+    planned_subtitle_status = (context.get("subtitle_burn_in") or {}).get("status")
+    subtitle_status = (
+        "failed"
+        if (context.get("subtitle_burn_in") or {}).get("enabled")
+        else "skipped"
+        if planned_subtitle_status == "skipped"
+        else "disabled"
+    )
     subtitle_burn_in = _subtitle_burn_in_readback(
         context,
         status=subtitle_status,
         failure_reason=failure_reason if subtitle_status == "failed" else None,
+        attempts=attempts,
     )
     outputs = {
         "rendered_video": output_path,
@@ -870,6 +1069,10 @@ def _warnings(
         warnings.append(
             "subtitle burn-in is diagnostic overlay only; typography, safe-area, creative acceptance, publishing, and production subtitle design are out of scope."
         )
+    elif subtitle_burn_in.get("requested_mode") == "diagnostic" and subtitle_burn_in.get("status") == "skipped":
+        warnings.append(
+            "subtitle burn-in diagnostic was requested but skipped because no subtitle item is renderable inside the selected window; visual polish, publishing, and creative acceptance are out of scope."
+        )
     else:
         warnings.append("subtitle burn-in is disabled; visual polish, publishing, and creative acceptance are out of scope.")
     for warning in subtitle_burn_in.get("warnings") or []:
@@ -933,26 +1136,85 @@ def _subtitle_burn_in_readback(
     *,
     status: str | None = None,
     failure_reason: str | None = None,
+    attempts: list[Any] | None = None,
 ) -> dict[str, Any]:
     plan = context.get("subtitle_burn_in") or {}
     current_status = status or plan.get("status") or "disabled"
+    source_ref = plan.get("source_ref") or {
+        "source_type": "none",
+        "path": None,
+        "subtitle_ids": [],
+        "source_segment_ids": [],
+        "item_count": 0,
+    }
+    subtitle_file = source_ref.get("subtitle_file")
+    failure_detail = _subtitle_failure_detail_from_attempts(attempts or [])
+    if current_status == "enabled" and status == "enabled":
+        filter_preflight = _subtitle_filter_preflight(
+            status="passed_by_successful_render",
+            failure_reason=None,
+            failure_detail=None,
+            subtitle_file=subtitle_file,
+            srt_file=plan.get("srt_file"),
+        )
+    elif current_status == "enabled":
+        filter_preflight = plan.get("filter_preflight") or _subtitle_filter_preflight(
+            status="deferred_to_ffmpeg_render",
+            failure_reason=None,
+            failure_detail=None,
+            subtitle_file=subtitle_file,
+            srt_file=plan.get("srt_file"),
+        )
+    elif current_status == "failed":
+        filter_preflight = _subtitle_filter_preflight(
+            status="failed",
+            failure_reason=failure_reason,
+            failure_detail=failure_detail,
+            subtitle_file=subtitle_file,
+            srt_file=plan.get("srt_file"),
+        )
+    elif current_status == "skipped":
+        filter_preflight = _subtitle_filter_preflight(
+            status="skipped_no_renderable_subtitles",
+            failure_reason=None,
+            failure_detail=None,
+            subtitle_file=None,
+            srt_file=None,
+        )
+    elif current_status == "disabled":
+        filter_preflight = _subtitle_filter_preflight(
+            status="not_requested",
+            failure_reason=None,
+            failure_detail=None,
+            subtitle_file=None,
+            srt_file=None,
+        )
+    else:
+        filter_preflight = plan.get("filter_preflight") or {}
     return {
         "enabled": bool(plan.get("enabled")),
         "requested_mode": plan.get("requested_mode") or "off",
         "status": current_status,
         "failure_reason": failure_reason,
-        "source_ref": plan.get("source_ref")
-        or {
-            "source_type": "none",
-            "path": None,
-            "subtitle_ids": [],
-            "source_segment_ids": [],
-            "item_count": 0,
-        },
+        "source_ref": source_ref,
         "overlay_policy": plan.get("overlay_policy") or {},
+        "timing_mapping": plan.get("timing_mapping") or {},
+        "filter_preflight": filter_preflight,
         "items": plan.get("items") or [],
         "text_preview": plan.get("text_preview") or [],
     }
+
+
+def _subtitle_failure_detail_from_attempts(attempts: list[Any]) -> str | None:
+    for attempt in attempts:
+        digest = getattr(attempt, "stderr_digest", None)
+        if not isinstance(digest, dict) and isinstance(attempt, dict):
+            digest = attempt.get("stderr_digest")
+        tail = digest.get("tail") if isinstance(digest, dict) else None
+        detail = ffmpeg_tiny.classify_subtitle_failure_detail(tail)
+        if detail:
+            return detail
+    return None
 
 
 def _output_readback(context: dict[str, Any]) -> dict[str, str]:
@@ -967,15 +1229,35 @@ def _output_readback(context: dict[str, Any]) -> dict[str, str]:
     return outputs
 
 
-def _write_diagnostic_subtitle_file(path: Path, items: list[dict[str, Any]]) -> None:
+def _write_diagnostic_subtitle_file(path: Path, items: list[dict[str, Any]]) -> dict[str, Any]:
     path.parent.mkdir(parents=True, exist_ok=True)
     blocks: list[str] = []
     for index, item in enumerate(items, start=1):
-        start = _format_srt_timestamp(float(item["start_seconds"]))
-        end = _format_srt_timestamp(float(item["end_seconds"]))
+        start = _format_srt_timestamp(float(item["render_start_seconds"]))
+        end = _format_srt_timestamp(float(item["render_end_seconds"]))
         text = str(item["text"]).replace("\r\n", "\n").replace("\r", "\n")
         blocks.append(f"{index}\n{start} --> {end}\n{text}\n")
-    path.write_text("\n".join(blocks), encoding="utf-8")
+    payload = "\n".join(blocks)
+    try:
+        path.write_text(payload, encoding="utf-8")
+    except UnicodeError as exc:
+        raise ffmpeg_tiny.TinyRenderError(
+            f"diagnostic subtitle SRT encoding failed: {exc}",
+            failure_reason="subtitle_srt_encoding_failed",
+        ) from exc
+    except OSError as exc:
+        raise ffmpeg_tiny.TinyRenderError(
+            f"diagnostic subtitle SRT write failed: {exc}",
+            failure_reason="subtitle_srt_write_failed",
+        ) from exc
+    return {
+        "encoding": "utf-8",
+        "status": "written",
+        "path": _display_path(path, Path.cwd()),
+        "byte_size": path.stat().st_size,
+        "item_count": len(items),
+        "failure_detail": None,
+    }
 
 
 def _format_srt_timestamp(seconds: float) -> str:
@@ -1071,6 +1353,8 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     subtitle_burn_in = manifest.get("subtitle_burn_in") or {}
     subtitle_source_ref = subtitle_burn_in.get("source_ref") or manifest.get("subtitle_source_ref") or {}
     subtitle_policy = subtitle_burn_in.get("overlay_policy") or manifest.get("subtitle_overlay_policy") or {}
+    subtitle_timing = subtitle_burn_in.get("timing_mapping") or {}
+    subtitle_filter = subtitle_burn_in.get("filter_preflight") or {}
     tool_preflight = (manifest.get("preflight") or {}).get("tool_preflight") or {}
     ffmpeg = tool_preflight.get("ffmpeg") or {}
     ffprobe = tool_preflight.get("ffprobe") or {}
@@ -1091,7 +1375,10 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     subtitle_rows = "\n".join(
         "<tr>"
         f"<td>{escape(str(item.get('source_id') or item.get('subtitle_id') or ''))}</td>"
-        f"<td>{escape(str(item.get('start_seconds')))}-{escape(str(item.get('end_seconds')))}</td>"
+        f"<td>{escape(str(item.get('status') or ''))}</td>"
+        f"<td>{escape(str(item.get('original_start_seconds')))}-{escape(str(item.get('original_end_seconds')))}</td>"
+        f"<td>{escape(str(item.get('render_start_seconds')))}-{escape(str(item.get('render_end_seconds')))}</td>"
+        f"<td>{escape(str(item.get('skip_reason') or ''))}</td>"
         f"<td>{escape(str(item.get('text') or ''))}</td>"
         "</tr>"
         for item in subtitle_items
@@ -1153,9 +1440,14 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     <dt>font_strategy</dt><dd>{escape(str(subtitle_policy.get("font_strategy", "")))}</dd>
     <dt>timing_policy</dt><dd>{escape(str(subtitle_policy.get("timing_policy", "")))}</dd>
     <dt>line_handling</dt><dd>{escape(str(subtitle_policy.get("line_handling", "")))}</dd>
+    <dt>status_policy</dt><dd>{escape(str(subtitle_policy.get("status_policy", "")))}</dd>
+    <dt>render_start_offset_seconds</dt><dd>{escape(str(subtitle_timing.get("render_start_offset_seconds", "")))}</dd>
+    <dt>timing_status_counts</dt><dd>{escape(json.dumps(subtitle_timing.get("status_counts") or {}, ensure_ascii=False))}</dd>
+    <dt>filter_preflight_status</dt><dd>{escape(str(subtitle_filter.get("status", "")))}</dd>
+    <dt>filter_failure_detail</dt><dd>{escape(str(subtitle_filter.get("failure_detail") or ""))}</dd>
   </dl>
   <table>
-    <thead><tr><th>source</th><th>render time</th><th>text</th></tr></thead>
+    <thead><tr><th>source</th><th>status</th><th>source time</th><th>render time</th><th>skip/failure detail</th><th>text</th></tr></thead>
     <tbody>
 {subtitle_rows}
     </tbody>

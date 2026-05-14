@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-13 JST
+Last updated: 2026-05-14 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
 
@@ -8,11 +8,11 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: OUT-01c implementation commit on `main` (see latest `git log --oneline -1`)
-- Implementation commit: OUT-01c subtitle burn-in diagnostic commit on `main` (see latest `git log --oneline -1`)
-- Latest completed feature slice: `OUT-01c subtitle burn-in diagnostic` (`render-tiny-proof --burn-in-subtitles diagnostic`; source_video + source_audio + edit_pack selected cut + edit_pack subtitle draft -> diagnostic rendered video with overlay + subtitle source / policy readback)
-- Current recommended decision: compare subtitle timing / local fixture hardening against source-video URL acquisition; if subtitle filter/font failures recur, harden font/filter preflight first
-- Latest completed feature-slice closeout before this handoff note: OUT-01c implementation committed and pushed to `origin/main`
+- Sync commit: OUT-01d implementation commit on `main` (see latest `git log --oneline -1`)
+- Implementation commit: OUT-01d subtitle timing / font-filter preflight commit on `main` (see latest `git log --oneline -1`)
+- Latest completed feature slice: `OUT-01d subtitle timing / font-filter preflight` (`render-tiny-proof --burn-in-subtitles diagnostic`; source_video + source_audio + edit_pack selected cut + edit_pack subtitle draft -> diagnostic rendered video with subtitle source, timing status, offset/clamp/skip, SRT/filter policy readback)
+- Current recommended decision: compare real STT transcript -> subtitle draft -> edit_pack linkage against source-video URL acquisition; if filter/font failures recur on another machine, do one minimal font/filter preflight hardening slice first
+- Latest completed feature-slice closeout before this handoff note: OUT-01d implementation committed and pushed to `origin/main`
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -106,6 +106,17 @@ OUT-01c is complete as subtitle burn-in diagnostic. It keeps the OUT-01a / OUT-0
 - Output readback was duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24.0`, stream count `2`; selected/attempted profile was `mp4_h264_aac`; fallback did not occur.
 - This remains diagnostic visual proof. It is not production subtitle design, typography polish, safe-area/layout acceptance, creative edit acceptance, URL video acquisition, GUI render action, or publishing.
 
+OUT-01d is complete as subtitle timing / font-filter preflight hardening. It keeps the OUT-01c diagnostic overlay path and makes the timing and environment diagnosis explicit:
+
+- Subtitle item readback now includes original source timeline start/end, rendered timeline start/end, render_start offset, and status.
+- Possible item statuses are `included`, `clamped_to_render_window`, `skipped_before_render_window`, `skipped_after_render_window`, `invalid_timing`, and `empty_text`.
+- Only `included` / `clamped_to_render_window` items are written to `diagnostic_subtitles.srt`; skipped / invalid / empty items remain in receipt / manifest / report readback.
+- `subtitle_burn_in.timing_mapping` records the mapping policy, render window, offset, status counts, renderable count, and skipped/invalid count.
+- `subtitle_burn_in.filter_preflight` records FFmpeg subtitles filter validation mode, SRT UTF-8 write status, path escaping policy, and failure detail buckets for subtitles filter / libass / fontconfig / font provider / SRT parsing / path escaping failures.
+- Fresh ignored smoke episode `episodes/out01d_timing_font_preflight_smoke_20260514` generated `renders/out01d_timing_font_preflight/rendered_video.mp4` from local source video `src_video_out01d_timing`, source audio `src_audio_out01d_timing`, selected cut `cut_out01d_timing_001`, and edit_pack subtitle drafts that exercise included / clamped / skipped timing.
+- Output readback was duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24.0`, stream count `2`; selected/attempted profile was `mp4_h264_aac`; fallback did not occur; filter status was `passed_by_successful_render`.
+- This remains diagnostic render hardening. It is not production subtitle design, typography polish, safe-area/layout acceptance, creative edit acceptance, URL video acquisition, GUI render action, or publishing.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -121,7 +132,7 @@ Current state against that final shape:
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
 | Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | Real transcript output is still unreviewed draft; creative edit acceptance and render proof remain future work |
-| NLE / render | Minimal CSV cut list export exists, OUT-01b can produce a 12 second diagnostic rendered video, and OUT-01c can burn edit_pack subtitle drafts as diagnostic overlay while preserving source/policy readback | No FCPXML / Resolve XML, no production subtitle design, and no production render acceptance |
+| NLE / render | Minimal CSV cut list export exists, OUT-01b can produce a 12 second diagnostic rendered video, OUT-01c can burn edit_pack subtitle drafts as diagnostic overlay, and OUT-01d can read back subtitle timing status plus font/filter failure policy | No FCPXML / Resolve XML, no production subtitle design, and no production render acceptance |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
 The project should continue only if the next slices add or connect real production-adjacent artifacts. A slice that only adds more policy, boundary text, report polish, or GUI read-only state without connecting `source.wav`, `transcript.json`, `edit_pack.json`, `preview_manifest.json`, NLE export, or rendered video should be treated as drift.
@@ -151,7 +162,7 @@ The project should continue only if the next slices add or connect real producti
 
 ## Validation Already Run
 
-Latest validation for OUT-01c closeout:
+Latest validation for OUT-01d closeout:
 
 ```powershell
 uvx pytest -q tests/test_tiny_render.py
@@ -162,28 +173,28 @@ uvx pytest -q
 npm run smoke
 npm run smoke:electron
 git diff --check
-ffprobe -v error -print_format json -show_format -show_streams episodes/out01c_subtitle_burnin_smoke_20260513/renders/out01c_subtitle_burnin/rendered_video.mp4
+ffprobe -v error -print_format json -show_format -show_streams episodes/out01d_timing_font_preflight_smoke_20260514/renders/out01d_timing_font_preflight/rendered_video.mp4
 ```
 
 Results:
 
-- `uvx pytest -q tests/test_tiny_render.py` -> `15 passed`
+- `uvx pytest -q tests/test_tiny_render.py` -> `19 passed`
 - `uvx pytest -q tests/test_source_video_fetch.py` -> `4 passed`
 - `uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_real_transcript_pipeline.py` -> `13 passed`
 - `uvx pytest -q tests/test_nle_export.py` -> `3 passed`
-- `uvx pytest -q` -> `151 passed`
+- `uvx pytest -q` -> `155 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
 - rendered video FFprobe readback -> duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`
 
-Additional OUT-01c readback:
+Additional OUT-01d readback:
 
-- ignored `episodes/out01c_subtitle_burnin_smoke_20260513` readback -> registered local source video `src_video_out01c_subtitle`, normalized source audio `src_audio_out01c_subtitle`, generated fake transcript segments, generated `edit_pack.subtitles[]`, selected `cut_out01c_subtitle_001`, then rendered `renders/out01c_subtitle_burnin/rendered_video.mp4`
-- generated render paths: `episodes/out01c_subtitle_burnin_smoke_20260513/renders/out01c_subtitle_burnin/rendered_video.mp4`, `diagnostic_subtitles.srt`, `render_receipt.json`, `render_manifest.json`, and `render_report.html`
-- subtitle source readback: `source_type=edit_pack_subtitles`, `path=episodes/out01c_subtitle_burnin_smoke_20260513/edit_pack.json`, subtitle IDs `sub_001` / `sub_002` / `sub_003`, source segment IDs `seg_out01c_001` / `seg_out01c_002` / `seg_out01c_003`
-- subtitle text preview: `OUT-01c diagnostic subtitle from transcript`, `edit_pack subtitle draft is now visible`, `not production subtitle design`
-- overlay policy: `position=bottom_center_fixed`, FFmpeg subtitles filter default font provider, source timeline to rendered timeline clamp, preserve existing newlines, no line-wrap / kinsoku / safe-area / typography polish
+- ignored `episodes/out01d_timing_font_preflight_smoke_20260514` readback -> registered local source video `src_video_out01d_timing`, normalized source audio `src_audio_out01d_timing`, generated fake transcript segments, edited `edit_pack.subtitles[]` with diagnostic timing cases, selected `cut_out01d_timing_001`, then rendered `renders/out01d_timing_font_preflight/rendered_video.mp4`
+- generated render paths: `episodes/out01d_timing_font_preflight_smoke_20260514/renders/out01d_timing_font_preflight/rendered_video.mp4`, `diagnostic_subtitles.srt`, `render_receipt.json`, `render_manifest.json`, and `render_report.html`
+- subtitle source readback: `source_type=edit_pack_subtitles`, `path=episodes/out01d_timing_font_preflight_smoke_20260514/edit_pack.json`, status counts `skipped_before_render_window=1`, `clamped_to_render_window=2`, `included=2`, `skipped_after_render_window=1`
+- subtitle timing readback: render_start offset `1.0`; SRT contains only included/clamped items; skipped items remain in manifest/report but are not written to SRT
+- filter readback: `filter_preflight.status=passed_by_successful_render`, `srt_encoding.status=written`, failure detail empty on success
 - selected/attempted profile: `mp4_h264_aac`; fallback did not occur; `subtitle_burn_in.status=enabled`
 - remaining warnings say the render is diagnostic, subtitle overlay is not typography/safe-area/font polish, transcript is fake/fixture-derived, edit_pack review is draft, and rights are not production-ready
 
@@ -322,28 +333,28 @@ Not implemented / not accepted yet:
 - rights hard gate
 - STT quality acceptance / transcript correction workflow / speaker diarization
 
-yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in `src/integrations/render/` only for OUT-01 diagnostic rendering, including OUT-01c diagnostic subtitle overlay, and in `src/integrations/asset_fetch/` for source-audio normalization; it must not enter STT, Editing core, GUI actions, URL video fetch, or production subtitle/render surfaces.
+yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in `src/integrations/render/` only for OUT-01 diagnostic rendering, including OUT-01c diagnostic subtitle overlay and OUT-01d timing/filter readback, and in `src/integrations/asset_fetch/` for source-audio normalization; it must not enter STT, Editing core, GUI actions, URL video fetch, or production subtitle/render surfaces.
 
 ## Recommended Next Slice
 
-OUT-01c is no longer the next slice; it is done. The local render + subtitle visual proof now exists, so the next useful move is to decide whether subtitle timing robustness, font/filter environment hardening, or remote source acquisition is the higher-value bottleneck.
+OUT-01d is no longer the next slice; it is done. The local render + subtitle timing/filter diagnostic proof now exists, so the next useful move is to decide whether real STT subtitle linkage, remote source acquisition, or one more environment preflight hardening slice is the higher-value bottleneck.
 
-Recommended default: subtitle timing / local fixture hardening if subtitle alignment or clamp behavior is uncertain under nearby inputs. Keep this as a narrow smoke/failure-readback slice, not a full renderer.
+Recommended default: strengthen `real STT transcript -> subtitle draft -> edit_pack.subtitles[]` if subtitle source quality/linkage is now the weakest step. Keep this as artifact linkage and review-state readback, not STT quality acceptance.
 
-Alternative: source-video URL acquisition if the next source material must come from a remote URL and local render + subtitle diagnostic coverage is adequate. If filter/font failures appear across machines, choose font/filter preflight hardening first.
+Alternative: source-video URL acquisition if the next source material must come from a remote URL and local render + subtitle diagnostic coverage is adequate. If filter/font failures appear across machines, choose one more font/filter preflight hardening slice first.
 
 ## Next Two-Slice Pressure
 
-After `OUT-01c`, the project should deliberately move toward one of these production-adjacent bottlenecks:
+After `OUT-01d`, the project should deliberately move toward one of these production-adjacent bottlenecks:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| timeline/local fixture hardening | 7/10 | Expands confidence around duration target, clamp, and stream mismatch cases without URL acquisition risk | Can drift into full renderer if it starts solving creative output |
-| source-video URL acquisition | 6/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
-| font/filter preflight hardening | 6/10 | Makes OUT-01c more portable across FFmpeg builds by surfacing subtitles/libass/font availability before render | Can drift into typography polish if not kept diagnostic |
+| transcript -> subtitle draft linkage | 8/10 | Makes the subtitle source less fixture/manual and connects real STT artifacts into the render proof | Can drift into STT quality/edit acceptance if not kept to linkage/readback |
+| source-video URL acquisition | 7/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
+| font/filter preflight hardening | 5/10 | Makes OUT-01d more portable across FFmpeg builds by surfacing subtitles/libass/font availability before render | Can drift into typography polish if not kept diagnostic |
 | Transcript review / provider preflight hardening | 6/10 | Makes real STT output more operator-usable and repeatable | Improves trust but does not create visual production artifacts |
 
-Recommended continuation after `OUT-01c`: choose subtitle timing / local fixture hardening if alignment around source timeline vs rendered timeline is still uncertain; choose source-video URL acquisition if remote source material is the blocker; choose font/filter preflight only if subtitle filter failures appear on another operator machine. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `OUT-01d`: choose transcript -> subtitle draft linkage if subtitle provenance is the blocker; choose source-video URL acquisition if remote source material is the blocker; choose font/filter preflight only if subtitle filter failures appear on another operator machine. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ### Decision criteria after ED-06
 

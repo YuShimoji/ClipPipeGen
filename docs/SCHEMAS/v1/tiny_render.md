@@ -1,4 +1,4 @@
-# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b / OUT-01c)
+# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d)
 
 OUT-01 は `source_video` material、`source_audio` material、`edit_pack.json` の selected cut を接続し、確認可能な短い動画 artifact を生成する plumbing proof。production render、creative acceptance、publishing ではない。
 
@@ -83,6 +83,17 @@ OUT-01c は schema を少し広げ、subtitle source と overlay 方針を recei
 
 明示 `--burn-in-subtitles diagnostic` で subtitle source が無い場合は silent fallback せず失敗する。FFmpeg `subtitles` filter / font / libass 由来の失敗は `subtitle_filter_failed` として分類し、render が成功しても `production_candidate=false` / `creative_acceptance=false` / `publish_acceptance=false` を維持する。
 
+## OUT-01d subtitle timing / font-filter diagnostic readback
+
+OUT-01d は OUT-01c の diagnostic overlay を production design に広げず、subtitle timing / font-filter preflight の readback を固める。
+
+- `subtitle_burn_in.status`: `disabled` / `enabled` / `failed` / `skipped`。`skipped` は subtitle source は見つかったが render window に書ける item が無い状態
+- `subtitle_burn_in.items[]`: `original_start_seconds` / `original_end_seconds`、`render_start_seconds` / `render_end_seconds`、互換用 `source_start_seconds` / `source_end_seconds` / `start_seconds` / `end_seconds`、`status`、`render_start_offset_seconds`、`skip_reason`、text、cut_id、source_segment_id を持つ
+- `subtitle_burn_in.timing_mapping`: source timeline から render timeline へ `render_start_offset_seconds` を差し引き、overlap を clamp し、window 外 / invalid / empty を skip する policy。`render_window`、`status_counts`、`renderable_item_count`、`skipped_item_count` を持つ
+- `subtitle_burn_in.filter_preflight`: FFmpeg `subtitles` filter availability は render attempt に委ねる。成功時は `passed_by_successful_render`、失敗時は `subtitle_filter_failed` と `failure_detail`、SRT write は `srt_encoding.status=written`、path escaping 方針は `path_escaping.strategy` に残す
+- Timing status は `included`、`clamped_to_render_window`、`skipped_before_render_window`、`skipped_after_render_window`、`invalid_timing`、`empty_text` のいずれか。SRT に書くのは `included` / `clamped_to_render_window` のみで、skipped / invalid / empty は report から診断できるよう readback に残す
+- Failure detail は `ffmpeg_subtitles_filter_missing`、`libass_failure`、`fontconfig_failure`、`font_provider_failure`、`srt_encoding_or_parsing_failure`、`subtitle_file_path_or_escaping_failure`、`ffmpeg_subtitles_filter_failure` を使う。これは typography / font choice / safe-area polish ではなく、環境差と filter failure の診断用
+
 ## Manifest minimum
 
 `render_manifest.json` は少なくとも次を持つ:
@@ -102,6 +113,8 @@ OUT-01c は schema を少し広げ、subtitle source と overlay 方針を recei
 - `timeline_mapping`
 - `subtitle_burn_in.status`
 - `subtitle_burn_in.source_ref`
+- `subtitle_burn_in.timing_mapping`
+- `subtitle_burn_in.filter_preflight`
 - `subtitle_overlay_policy`
 - `preflight.tool_preflight.ffmpeg.available`
 - `preflight.tool_preflight.ffmpeg.path`
@@ -141,6 +154,8 @@ Failure は最低限この分類に寄せる:
 | `duration_or_timeline_mismatch` | duration / timeline が非正値または利用不能 |
 | `subtitle_source_missing` | diagnostic subtitle burn-in が要求されたが、subtitle file / source が存在しない |
 | `subtitle_filter_failed` | FFmpeg `subtitles` filter、libass、font provider、filtergraph escaping など subtitle overlay で失敗 |
+| `subtitle_srt_encoding_failed` | diagnostic SRT の UTF-8 write / encoding が失敗 |
+| `subtitle_srt_write_failed` | diagnostic SRT file の書き込みが失敗 |
 | `ffmpeg_command_failed` | FFmpeg command が上記以外で失敗 |
 | `metadata_probe_failed` | render 後の FFprobe metadata readback が失敗 |
 | `code_bug_or_unexpected_exception` | 予期しない例外 |

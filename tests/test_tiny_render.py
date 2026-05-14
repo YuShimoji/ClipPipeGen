@@ -104,6 +104,27 @@ def test_ffmpeg_tiny_adapter_classifies_subtitle_filter_failure(tmp_path: Path):
     assert excinfo.value.attempts[0].failure_reason == "subtitle_filter_failed"
 
 
+def test_ffmpeg_tiny_adapter_classifies_subtitle_failure_details():
+    assert (
+        ffmpeg_tiny.classify_subtitle_failure_detail("No such filter: 'subtitles'")
+        == "ffmpeg_subtitles_filter_missing"
+    )
+    assert (
+        ffmpeg_tiny.classify_subtitle_failure_detail("Fontconfig error: Cannot load default config file")
+        == "fontconfig_failure"
+    )
+    assert (
+        ffmpeg_tiny.classify_subtitle_failure_detail("Error opening filters: invalid UTF-8 in SRT")
+        == "srt_encoding_or_parsing_failure"
+    )
+    assert (
+        ffmpeg_tiny.classify_subtitle_failure_detail(
+            "Error initializing filter 'subtitles' with args filename=C\\:/tmp/bad.srt: Unable to open path"
+        )
+        == "subtitle_file_path_or_escaping_failure"
+    )
+
+
 def test_ffmpeg_tiny_adapter_records_codec_fallback_attempt(tmp_path: Path):
     source_video = tmp_path / "source_video.mp4"
     source_audio = tmp_path / "source.wav"
@@ -386,8 +407,18 @@ def test_render_tiny_proof_cli_writes_subtitle_burn_in_readback(
     assert burn_in["source_ref"]["subtitle_ids"] == ["sub_out01c_001"]
     assert burn_in["source_ref"]["source_segment_ids"] == ["seg_out01c_001"]
     assert burn_in["items"][0]["text"] == "hello from edit_pack subtitle"
+    assert burn_in["items"][0]["status"] == "included"
+    assert burn_in["items"][0]["original_start_seconds"] == 4.0
+    assert burn_in["items"][0]["original_end_seconds"] == 7.5
+    assert burn_in["items"][0]["render_start_offset_seconds"] == 3.0
     assert burn_in["items"][0]["start_seconds"] == 1.0
     assert burn_in["items"][0]["end_seconds"] == 4.5
+    assert burn_in["items"][0]["render_start_seconds"] == 1.0
+    assert burn_in["items"][0]["render_end_seconds"] == 4.5
+    assert burn_in["timing_mapping"]["render_start_offset_seconds"] == 3.0
+    assert burn_in["timing_mapping"]["status_counts"] == {"included": 1}
+    assert burn_in["filter_preflight"]["status"] == "passed_by_successful_render"
+    assert burn_in["filter_preflight"]["srt_encoding"]["status"] == "written"
     assert manifest["subtitle_source_ref"] == burn_in["source_ref"]
     assert manifest["subtitle_overlay_policy"]["position"] == "bottom_center_fixed"
     assert "diagnostic_subtitles.srt" in manifest["outputs"]["diagnostic_subtitle_file"]
@@ -399,6 +430,309 @@ def test_render_tiny_proof_cli_writes_subtitle_burn_in_readback(
     assert manifest["fallback_used"] is False
     assert "hello from edit_pack subtitle" in report
     assert "Diagnostic overlay only" in report
+    assert "included" in report
+    assert "render_start_offset_seconds" in report
+
+
+def test_render_tiny_proof_cli_writes_subtitle_timing_status_readback(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path)
+    _write_json(
+        {
+            "schema_version": "v1",
+            "episode_id": "ep_out01",
+            "source_audio": {
+                "path": str(ep_dir / "materials" / "src_audio_001" / "source.wav").replace("\\", "/"),
+                "material_id": "src_audio_001",
+                "duration_seconds": 20.0,
+            },
+            "stt": {
+                "engine": "fake",
+                "provider": "fake",
+                "real_transcript": False,
+                "segment_count": 7,
+            },
+            "segment_count": 7,
+            "segments": [
+                {
+                    "id": "seg_inside",
+                    "start_seconds": 4.0,
+                    "end_seconds": 5.0,
+                    "text": "inside render window",
+                },
+                {
+                    "id": "seg_clamp_start",
+                    "start_seconds": 2.0,
+                    "end_seconds": 4.0,
+                    "text": "clamp at render start",
+                },
+                {
+                    "id": "seg_clamp_end",
+                    "start_seconds": 14.0,
+                    "end_seconds": 18.0,
+                    "text": "clamp at render end",
+                },
+                {
+                    "id": "seg_before",
+                    "start_seconds": 1.0,
+                    "end_seconds": 2.0,
+                    "text": "before window",
+                },
+                {
+                    "id": "seg_after",
+                    "start_seconds": 16.0,
+                    "end_seconds": 17.0,
+                    "text": "after window",
+                },
+                {
+                    "id": "seg_invalid",
+                    "start_seconds": 8.0,
+                    "end_seconds": 7.0,
+                    "text": "invalid timing",
+                },
+                {
+                    "id": "seg_empty",
+                    "start_seconds": 6.0,
+                    "end_seconds": 7.0,
+                    "text": "   ",
+                },
+            ],
+        },
+        ep_dir / "transcript.json",
+    )
+
+    def fake_render_tiny_proof(**kwargs):
+        subtitle_text = Path(kwargs["subtitle_file_path"]).read_text(encoding="utf-8")
+        assert "inside render window" in subtitle_text
+        assert "clamp at render start" in subtitle_text
+        assert "clamp at render end" in subtitle_text
+        assert "before window" not in subtitle_text
+        assert "after window" not in subtitle_text
+        assert "invalid timing" not in subtitle_text
+        output_path = Path(kwargs["output_path"])
+        return _render_result(
+            output_path,
+            metadata=_long_output_metadata(duration_seconds=12.0),
+            warnings=["diagnostic subtitle burn-in enabled; typography/safe-area/font polish is not claimed"],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_tiny_proof,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01d_timing",
+            "--duration-sec",
+            "12",
+            "--burn-in-subtitles",
+            "diagnostic",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 0
+    manifest = json.loads(
+        (ep_dir / "renders" / "out01d_timing" / "render_manifest.json").read_text(encoding="utf-8")
+    )
+    report = (ep_dir / "renders" / "out01d_timing" / "render_report.html").read_text(encoding="utf-8")
+    burn_in = manifest["subtitle_burn_in"]
+    statuses = {item["source_id"]: item for item in burn_in["items"]}
+
+    assert burn_in["source_ref"]["source_type"] == "transcript_segments_diagnostic"
+    assert burn_in["source_ref"]["renderable_item_count"] == 3
+    assert statuses["seg_inside"]["status"] == "included"
+    assert statuses["seg_inside"]["render_start_seconds"] == 1.0
+    assert statuses["seg_inside"]["render_end_seconds"] == 2.0
+    assert statuses["seg_clamp_start"]["status"] == "clamped_to_render_window"
+    assert statuses["seg_clamp_start"]["render_start_seconds"] == 0.0
+    assert statuses["seg_clamp_start"]["render_end_seconds"] == 1.0
+    assert statuses["seg_clamp_end"]["status"] == "clamped_to_render_window"
+    assert statuses["seg_clamp_end"]["render_start_seconds"] == 11.0
+    assert statuses["seg_clamp_end"]["render_end_seconds"] == 12.0
+    assert statuses["seg_before"]["status"] == "skipped_before_render_window"
+    assert statuses["seg_after"]["status"] == "skipped_after_render_window"
+    assert statuses["seg_invalid"]["status"] == "invalid_timing"
+    assert statuses["seg_empty"]["status"] == "empty_text"
+    assert burn_in["timing_mapping"]["render_start_offset_seconds"] == 3.0
+    assert burn_in["timing_mapping"]["status_counts"] == {
+        "included": 1,
+        "clamped_to_render_window": 2,
+        "skipped_before_render_window": 1,
+        "skipped_after_render_window": 1,
+        "invalid_timing": 1,
+        "empty_text": 1,
+    }
+    assert any("clamped at least one subtitle" in warning for warning in manifest["warnings"])
+    assert any("skipped invalid_timing" in warning for warning in manifest["warnings"])
+    assert "clamped_to_render_window" in report
+    assert "invalid_timing" in report
+
+
+def test_render_tiny_proof_cli_skips_burn_in_when_no_subtitle_is_renderable(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path)
+    _write_json(
+        {
+            "schema_version": "v1",
+            "episode_id": "ep_out01",
+            "stt": {
+                "engine": "fake",
+                "provider": "fake",
+                "real_transcript": False,
+                "segment_count": 1,
+            },
+            "segment_count": 1,
+            "segments": [
+                {
+                    "id": "seg_after",
+                    "start_seconds": 16.0,
+                    "end_seconds": 17.0,
+                    "text": "after window",
+                }
+            ],
+        },
+        ep_dir / "transcript.json",
+    )
+
+    def fake_render_tiny_proof(**kwargs):
+        assert kwargs["subtitle_file_path"] is None
+        return _render_result(
+            Path(kwargs["output_path"]),
+            metadata=_long_output_metadata(duration_seconds=12.0),
+            warnings=["subtitle burn-in is intentionally disabled"],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_tiny_proof,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01d_skipped",
+            "--duration-sec",
+            "12",
+            "--burn-in-subtitles",
+            "diagnostic",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 0
+    manifest = json.loads(
+        (ep_dir / "renders" / "out01d_skipped" / "render_manifest.json").read_text(encoding="utf-8")
+    )
+    assert manifest["subtitle_burn_in"]["status"] == "skipped"
+    assert manifest["subtitle_burn_in"]["enabled"] is False
+    assert manifest["subtitle_burn_in"]["filter_preflight"]["status"] == "skipped_no_renderable_subtitles"
+    assert manifest["subtitle_burn_in"]["items"][0]["status"] == "skipped_after_render_window"
+    assert "diagnostic_subtitle_file" not in manifest["outputs"]
+
+
+def test_render_tiny_proof_cli_writes_subtitle_filter_failure_detail(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path)
+    _add_diagnostic_subtitle(ep_dir)
+
+    def fake_render_failure(**kwargs):
+        output_path = Path(kwargs["output_path"])
+        profile = _render_profile(output_path)
+        attempt = ffmpeg_tiny.CommandAttempt(
+            profile=profile,
+            command=["C:/tools/ffmpeg.exe", "-vf", "subtitles=filename='diagnostic_subtitles.srt'"],
+            command_summary="C:/tools/ffmpeg.exe -vf subtitles=filename=diagnostic_subtitles.srt",
+            status="failed",
+            exit_code=1,
+            stderr_digest=_stderr_digest("Fontconfig error: Cannot load default config file"),
+            failure_reason="subtitle_filter_failed",
+            selected=False,
+        )
+        raise ffmpeg_tiny.TinyRenderError(
+            "ffmpeg subtitle filter failed",
+            failure_reason="subtitle_filter_failed",
+            preflight=_tool_preflight(),
+            attempts=[attempt],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_failure,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01d_filter_failed",
+            "--duration-sec",
+            "12",
+            "--burn-in-subtitles",
+            "diagnostic",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 1
+    manifest = json.loads(
+        (ep_dir / "renders" / "out01d_filter_failed" / "render_manifest.json").read_text(encoding="utf-8")
+    )
+    report = (ep_dir / "renders" / "out01d_filter_failed" / "render_report.html").read_text(encoding="utf-8")
+    assert manifest["failure_classification"]["failure_reason"] == "subtitle_filter_failed"
+    assert manifest["subtitle_burn_in"]["status"] == "failed"
+    assert manifest["subtitle_burn_in"]["filter_preflight"]["status"] == "failed"
+    assert manifest["subtitle_burn_in"]["filter_preflight"]["failure_detail"] == "fontconfig_failure"
+    assert "fontconfig_failure" in report
 
 
 def test_render_tiny_proof_cli_fails_when_diagnostic_subtitle_source_missing(tmp_path: Path):

@@ -1,5 +1,7 @@
 # ClipPipeGen
 
+OUT-01d note: diagnostic subtitle burn-in now records per-subtitle timing status (`included` / `clamped_to_render_window` / skipped / invalid / empty), render_start offset, SRT encoding, and FFmpeg subtitles/libass/font/path failure details in the tiny render receipt / manifest / report. This remains diagnostic proof, not production subtitle design or GUI render action.
+
 ホロライブ等の VTuber 切り抜き動画制作を、権利・素材・編集・サムネ・投稿の4レーンで半自動化する制作補助ツール。
 
 ## このリポジトリの位置付け

@@ -21,7 +21,7 @@
 
 - **Compliance / Rights は記録層**。`compliance_check.status` は判断材料として表示するが、他レーンの local CLI gate にしない。
 - **Material Sourcing は横断レイヤー**。Editing／Thumbnail／Compliance がそれぞれ素材要求を出し、Material Sourcing が一元的に台帳化する。動画編集配下に置かない。
-- **Editing は transcript／cut EDL／字幕案／配置データまで**。動画ファイルの cut 実行・concat・production 字幕焼き込みは外部 NLE／YMM4／人手で行う。OUT-01c の diagnostic subtitle overlay は render integration 内の visual proof であり、Editing の責務ではない。
+- **Editing は transcript／cut EDL／字幕案／配置データまで**。動画ファイルの cut 実行・concat・production 字幕焼き込みは外部 NLE／YMM4／人手で行う。OUT-01c/OUT-01d の diagnostic subtitle overlay と timing/filter readback は render integration 内の visual proof であり、Editing の責務ではない。
 - **Thumbnail は YMM4 サムネテンプレへの slot patch を先行実装済み**。完全自動合成や画像レンダリングは必要になった時点で feature として起票する。
 - **Publishing は metadata／thumbnail 設定／upload receipt を扱う候補レーン**。visibility の扱いは CLI/GUI 実装時の引数仕様として決める。
 
@@ -31,7 +31,7 @@
 
 - `src/integrations/youtube/` — OAuth・videos.insert・thumbnails.set
 - `src/integrations/asset_fetch/` — source audio/video 取得 adapter（INT-02a は fake WAV generator、INT-02c は local-media-audio FFmpeg normalize、INT-02d は yt-dlp-audio spec only。INT-02e は source audio URL fetch 限定の yt-dlp-audio actual smoke まで完了。INT-02f は local source video acquisition と FFprobe metadata readback まで完了。URL video fetch は後続）
-- `src/integrations/render/` — diagnostic output adapter（OUT-01 は source_video + source_audio + edit_pack selected cut から tiny rendered artifact / receipt / manifest / report を生成。OUT-01c は edit_pack subtitle draft を diagnostic overlay として接続。production render / subtitle design acceptance / GUI action は後続）
+- `src/integrations/render/` — diagnostic output adapter（OUT-01 は source_video + source_audio + edit_pack selected cut から tiny rendered artifact / receipt / manifest / report を生成。OUT-01c は edit_pack subtitle draft を diagnostic overlay として接続し、OUT-01d は timing status / filter failure detail を readback する。production render / subtitle design acceptance / GUI action は後続）
 - future `src/integrations/stt/` — STT engine wrapper（URL / VOD 取得は含めない）
 - `src/integrations/bg_removal/` — 背景切り抜き API（外部送信を伴う）
 

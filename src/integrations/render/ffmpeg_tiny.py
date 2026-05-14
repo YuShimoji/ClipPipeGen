@@ -815,10 +815,7 @@ def _profile_id(container: str, video_codec: str, audio_codec: str) -> str:
 
 def _classify_ffmpeg_failure(stderr: str | None) -> str:
     text = (stderr or "").lower()
-    if (
-        any(marker in text for marker in ("subtitles", "libass", "fontconfig", "drawtext", "font"))
-        and any(marker in text for marker in ("error", "failed", "unable", "cannot", "no such filter"))
-    ):
+    if classify_subtitle_failure_detail(stderr) is not None:
         return "subtitle_filter_failed"
     if any(
         marker in text
@@ -845,6 +842,40 @@ def _classify_ffmpeg_failure(stderr: str | None) -> str:
     ):
         return "input_stream_invalid"
     return "ffmpeg_command_failed"
+
+
+def classify_subtitle_failure_detail(stderr: str | None) -> str | None:
+    text = (stderr or "").lower()
+    has_error = any(
+        marker in text
+        for marker in (
+            "error",
+            "failed",
+            "unable",
+            "cannot",
+            "no such filter",
+            "invalid",
+            "parse",
+            "could not",
+        )
+    )
+    if not has_error:
+        return None
+    if "no such filter" in text and "subtitles" in text:
+        return "ffmpeg_subtitles_filter_missing"
+    if "libass" in text:
+        return "libass_failure"
+    if "fontconfig" in text:
+        return "fontconfig_failure"
+    if "font" in text:
+        return "font_provider_failure"
+    if "subtitles" in text and any(marker in text for marker in ("open", "path", "filename", "escape")):
+        return "subtitle_file_path_or_escaping_failure"
+    if any(marker in text for marker in ("utf-8", "utf8", "srt")):
+        return "srt_encoding_or_parsing_failure"
+    if "subtitles" in text or "drawtext" in text:
+        return "ffmpeg_subtitles_filter_failure"
+    return None
 
 
 def _render_command(
