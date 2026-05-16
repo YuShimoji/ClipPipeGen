@@ -8,12 +8,12 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-15 handoff verification commit on `main` (see latest `git log --oneline -1`)
+- Sync commit: 2026-05-16 resume verification commit on `main` (see latest `git log --oneline -1`)
 - Latest implementation commit: `eb4eaff` — OUT-01d subtitle timing / font-filter preflight
 - Latest completed feature slice: `OUT-01d subtitle timing / font-filter preflight` (`render-tiny-proof --burn-in-subtitles diagnostic`; source_video + source_audio + edit_pack selected cut + edit_pack subtitle draft -> diagnostic rendered video with subtitle source, timing status, offset/clamp/skip, SRT/filter policy readback)
 - Current recommended decision: compare real STT transcript -> subtitle draft -> edit_pack linkage against source-video URL acquisition; if filter/font failures recur on another machine, do one minimal font/filter preflight hardening slice first
 - Latest completed feature-slice closeout before this handoff note: OUT-01d implementation committed and pushed to `origin/main`
-- Latest local verification: 2026-05-15 JST after `git fetch --prune origin`; `python -m pytest` passed 155 tests and `npm run smoke` returned `gui smoke: OK`
+- Latest local verification: 2026-05-16 JST after `git pull --ff-only origin main`; sample `status-episode` reports ready, `uvx pytest -q` passed 155 tests, `npm run smoke` returned `gui smoke: OK`, `npm run smoke:electron` returned `electron smoke: OK`, and `git diff --check` was clean
 - Working tree expectation after pull: clean
 
 Resume command:
