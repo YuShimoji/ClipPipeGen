@@ -54,10 +54,18 @@ def test_generate_subtitle_drafts_from_all_segments():
     result = generate_subtitle_drafts(pack, _transcript())
 
     assert result.generated_count == 2
+    assert result.subtitle_source_type == "transcript_segments"
+    assert result.production_subtitle_design is False
     subtitles = result.edit_pack["subtitles"]
     assert subtitles[0]["id"] == "sub_001"
     assert subtitles[0]["source"] == "auto"
+    assert subtitles[0]["source_type"] == "transcript_segments"
     assert subtitles[0]["source_segment_id"] == "seg_001"
+    assert subtitles[0]["source_segment_ids"] == ["seg_001"]
+    assert subtitles[0]["draft"] is True
+    assert subtitles[0]["diagnostic"] is True
+    assert subtitles[0]["not_production_subtitle_design"] is True
+    assert subtitles[0]["production_subtitle_design"] is False
     assert subtitles[0]["cut_id"] is None
     assert validate_edit_pack(result.edit_pack) == []
 
@@ -141,6 +149,8 @@ def test_cli_generate_subtitles_roundtrip(tmp_path: Path):
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload["generated_count"] == 2
+    assert payload["subtitle_source_type"] == "transcript_segments"
+    assert payload["production_subtitle_design"] is False
     pack = load_edit_pack(edit_pack_path)
     assert len(pack["subtitles"]) == 2
     assert validate_edit_pack(pack) == []

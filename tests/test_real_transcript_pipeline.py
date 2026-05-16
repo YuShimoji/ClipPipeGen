@@ -101,6 +101,16 @@ def test_real_transcript_flows_to_cuts_subtitles_and_nle_export(tmp_path: Path):
 
     assert cut_result.generated_count == 1
     assert subtitle_result.generated_count == 1
+    assert subtitle_result.subtitle_source_type == "real_transcript"
+    assert subtitle_result.source_segment_ids == ["seg_000001"]
+    generated_subtitle = subtitle_result.edit_pack["subtitles"][0]
+    assert generated_subtitle["source_type"] == "real_transcript"
+    assert generated_subtitle["source_segment_id"] == "seg_000001"
+    assert generated_subtitle["source_segment_ids"] == ["seg_000001"]
+    assert generated_subtitle["draft"] is True
+    assert generated_subtitle["diagnostic"] is True
+    assert generated_subtitle["not_production_subtitle_design"] is True
+    assert generated_subtitle["production_subtitle_design"] is False
     assert rows[0]["transcript_provider"] == "vosk"
     assert rows[0]["transcript_real"] == "true"
     assert rows[0]["transcript_segment_count"] == "1"

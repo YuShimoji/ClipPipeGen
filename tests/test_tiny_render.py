@@ -434,6 +434,83 @@ def test_render_tiny_proof_cli_writes_subtitle_burn_in_readback(
     assert "render_start_offset_seconds" in report
 
 
+def test_render_tiny_proof_cli_reads_real_transcript_subtitle_source(
+    tmp_path: Path,
+    monkeypatch,
+):
+    root, ep_dir = _prepare_long_episode(tmp_path)
+    _add_real_transcript_subtitle(ep_dir)
+
+    def fake_render_tiny_proof(**kwargs):
+        subtitle_text = Path(kwargs["subtitle_file_path"]).read_text(encoding="utf-8")
+        assert "real transcript subtitle reaches render" in subtitle_text
+        output_path = Path(kwargs["output_path"])
+        return _render_result(
+            output_path,
+            metadata=_long_output_metadata(duration_seconds=12.0),
+            warnings=["diagnostic subtitle burn-in enabled; typography/safe-area/font polish is not claimed"],
+        )
+
+    monkeypatch.setattr(
+        render_tiny_proof.ffmpeg_tiny,
+        "render_tiny_proof",
+        fake_render_tiny_proof,
+    )
+
+    result = render_tiny_proof.run(
+        [
+            "--episode-id",
+            "ep_out01",
+            "--root",
+            str(root),
+            "--source-video-material-id",
+            "src_video_001",
+            "--source-audio-material-id",
+            "src_audio_001",
+            "--edit-pack-path",
+            str(ep_dir / "edit_pack.json"),
+            "--output-id",
+            "out01e_real_transcript_subtitle",
+            "--duration-sec",
+            "12",
+            "--burn-in-subtitles",
+            "diagnostic",
+            "--ffmpeg-path",
+            "C:/tools/ffmpeg.exe",
+            "--ffprobe-path",
+            "C:/tools/ffprobe.exe",
+        ]
+    )
+
+    assert result == 0
+    output_dir = ep_dir / "renders" / "out01e_real_transcript_subtitle"
+    manifest = json.loads((output_dir / "render_manifest.json").read_text(encoding="utf-8"))
+    receipt = json.loads((output_dir / "render_receipt.json").read_text(encoding="utf-8"))
+    report = (output_dir / "render_report.html").read_text(encoding="utf-8")
+    burn_in = manifest["subtitle_burn_in"]
+    item = burn_in["items"][0]
+
+    assert burn_in["status"] == "enabled"
+    assert burn_in["source_ref"]["source_type"] == "edit_pack_subtitles"
+    assert burn_in["source_ref"]["subtitle_source_type"] == "real_transcript"
+    assert burn_in["source_ref"]["subtitle_source_types"] == ["real_transcript"]
+    assert burn_in["source_ref"]["derived_from_real_transcript"] is True
+    assert burn_in["source_ref"]["transcript_real_transcript"] is True
+    assert burn_in["source_ref"]["transcript_provider"] == "vosk"
+    assert burn_in["source_ref"]["source_segment_ids"] == ["seg_real_001"]
+    assert item["subtitle_source_type"] == "real_transcript"
+    assert item["source_segment_id"] == "seg_real_001"
+    assert item["source_segment_ids"] == ["seg_real_001"]
+    assert item["status"] == "included"
+    assert burn_in["timing_mapping"]["status_counts"] == {"included": 1}
+    assert receipt["subtitle_burn_in"]["source_ref"]["derived_from_real_transcript"] is True
+    assert manifest["production_candidate"] is False
+    assert manifest["creative_acceptance"] is False
+    assert manifest["publish_acceptance"] is False
+    assert "subtitle_source_type" in report
+    assert "derived_from_real_transcript</dt><dd>true" in report
+
+
 def test_render_tiny_proof_cli_writes_subtitle_timing_status_readback(
     tmp_path: Path,
     monkeypatch,
@@ -1271,6 +1348,46 @@ def _add_diagnostic_subtitle(ep_dir: Path) -> None:
         }
     ]
     _write_json(pack, edit_pack_path)
+
+
+def _add_real_transcript_subtitle(ep_dir: Path) -> None:
+    edit_pack_path = ep_dir / "edit_pack.json"
+    pack = json.loads(edit_pack_path.read_text(encoding="utf-8"))
+    pack["subtitles"] = [
+        {
+            "id": "sub_real_001",
+            "cut_id": "cut_long_001",
+            "start_seconds": 4.0,
+            "end_seconds": 6.0,
+            "text": "real transcript subtitle reaches render",
+            "source": "auto",
+            "source_type": "real_transcript",
+            "style_slot": "subtitle.default",
+            "source_segment_id": "seg_real_001",
+            "source_segment_ids": ["seg_real_001"],
+            "draft": True,
+            "diagnostic": True,
+            "not_production_subtitle_design": True,
+            "production_subtitle_design": False,
+        }
+    ]
+    _write_json(pack, edit_pack_path)
+    transcript = json.loads((ep_dir / "transcript.json").read_text(encoding="utf-8"))
+    transcript["stt"]["engine"] = "vosk"
+    transcript["stt"]["provider"] = "vosk"
+    transcript["stt"]["model"] = "models/vosk-small"
+    transcript["stt"]["real_transcript"] = True
+    transcript["stt"]["segment_count"] = 1
+    transcript["segments"] = [
+        {
+            "id": "seg_real_001",
+            "start_seconds": 4.0,
+            "end_seconds": 6.0,
+            "text": "real transcript subtitle reaches render",
+            "review_status": "unreviewed",
+        }
+    ]
+    _write_json(transcript, ep_dir / "transcript.json")
 
 
 def _fake_render_runner(output: Path):

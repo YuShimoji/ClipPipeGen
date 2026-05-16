@@ -1,4 +1,4 @@
-# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d)
+# tiny_render artifacts (OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e)
 
 OUT-01 は `source_video` material、`source_audio` material、`edit_pack.json` の selected cut を接続し、確認可能な短い動画 artifact を生成する plumbing proof。production render、creative acceptance、publishing ではない。
 
@@ -7,6 +7,8 @@ OUT-01a は同じ artifact 生成経路を保ったまま、render 前 preflight
 OUT-01b は同じ artifact schema を使い、10〜30 秒程度の local source video / source audio / selected cut smoke を扱う。目的は duration target、clamp、stream mismatch、timeline mapping を診断できる長さへ進めることであり、URL video acquisition、subtitle burn-in、GUI render button、production render へは進まない。
 
 OUT-01c は `render-tiny-proof --burn-in-subtitles diagnostic` で、既存 `edit_pack.subtitles[]`（無い場合は sibling `transcript.json` segments）を UTF-8 SRT に変換し、diagnostic overlay として動画フレーム上へ焼き込む。目的は subtitle artifact の由来を保持したまま visual artifact に接続できることを確認することであり、typography / safe-area / line-wrap / font polish / creative acceptance ではない。
+
+OUT-01e は OUT-01d の timing diagnostic burn-in を広げず、`real_transcript=true` の `transcript.json` から作られた `edit_pack.subtitles[]` を diagnostic render に通す。目的は subtitle source が fixture/manual ではなく real STT 由来であること、かつ `source_segment_ids[]` と non-production readback が render artifacts に残ることを確認することであり、STT 品質評価や production subtitle design ではない。
 
 既定の出力先は `episodes/<episode_id>/renders/<output_id>/`。
 
@@ -94,6 +96,19 @@ OUT-01d は OUT-01c の diagnostic overlay を production design に広げず、
 - Timing status は `included`、`clamped_to_render_window`、`skipped_before_render_window`、`skipped_after_render_window`、`invalid_timing`、`empty_text` のいずれか。SRT に書くのは `included` / `clamped_to_render_window` のみで、skipped / invalid / empty は report から診断できるよう readback に残す
 - Failure detail は `ffmpeg_subtitles_filter_missing`、`libass_failure`、`fontconfig_failure`、`font_provider_failure`、`srt_encoding_or_parsing_failure`、`subtitle_file_path_or_escaping_failure`、`ffmpeg_subtitles_filter_failure` を使う。これは typography / font choice / safe-area polish ではなく、環境差と filter failure の診断用
 
+## OUT-01e real STT subtitle source readback
+
+OUT-01e は `subtitle_burn_in.source_ref.source_type="edit_pack_subtitles"` のまま、subtitle draft の由来を追加で読めるようにする:
+
+- `subtitle_burn_in.source_ref.subtitle_source_type`: 全 item が同じなら `real_transcript` / `transcript_segments`、混在時は `mixed`
+- `subtitle_burn_in.source_ref.subtitle_source_types[]`: render 対象 subtitle items に含まれる source type の一意リスト
+- `subtitle_burn_in.source_ref.derived_from_real_transcript`: `edit_pack.subtitles[]` 側が `source_type="real_transcript"` で、sibling `transcript.json` も `stt.real_transcript=true` のときだけ `true`
+- `subtitle_burn_in.source_ref.transcript_real_transcript` / `transcript_provider` / `transcript_model`: sibling `transcript.json` の STT provenance
+- `subtitle_burn_in.source_ref.source_segment_ids[]`: render 対象 subtitle draft が参照する `transcript.segments[].id`
+- `subtitle_burn_in.items[].subtitle_source_type` / `source_segment_ids[]` / `draft` / `diagnostic` / `not_production_subtitle_design`: 個別 subtitle item の readback
+
+`derived_from_real_transcript=true` でも production subtitle design、STT 品質、creative acceptance、publish acceptance は成立しない。`production_candidate=false` / `creative_acceptance=false` / `publish_acceptance=false` を維持する。
+
 ## Manifest minimum
 
 `render_manifest.json` は少なくとも次を持つ:
@@ -113,6 +128,9 @@ OUT-01d は OUT-01c の diagnostic overlay を production design に広げず、
 - `timeline_mapping`
 - `subtitle_burn_in.status`
 - `subtitle_burn_in.source_ref`
+- `subtitle_burn_in.source_ref.subtitle_source_type`
+- `subtitle_burn_in.source_ref.derived_from_real_transcript`
+- `subtitle_burn_in.source_ref.source_segment_ids`
 - `subtitle_burn_in.timing_mapping`
 - `subtitle_burn_in.filter_preflight`
 - `subtitle_overlay_policy`

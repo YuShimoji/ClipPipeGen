@@ -512,19 +512,33 @@ def _subtitle_items_from_edit_pack(
         id_field="id",
         source_type="edit_pack_subtitles",
     )
+    subtitle_source_types = _subtitle_source_types(items)
+    transcript = context.get("transcript") or {}
+    derived_from_real_transcript = (
+        "real_transcript" in subtitle_source_types
+        and transcript.get("real_transcript") is True
+    )
     return (
         items,
         {
             "source_type": "edit_pack_subtitles",
+            "subtitle_source_type": _single_or_mixed(subtitle_source_types),
+            "subtitle_source_types": subtitle_source_types,
+            "derived_from_real_transcript": derived_from_real_transcript,
+            "transcript_real_transcript": transcript.get("real_transcript") is True,
+            "transcript_provider": transcript.get("provider") or "",
+            "transcript_model": transcript.get("model") or "",
             "path": _display_path(context["edit_pack_path"], Path.cwd()),
             "subtitle_ids": [item["source_id"] for item in items if item.get("source_id")],
-            "source_segment_ids": [
-                item["source_segment_id"]
+            "source_segment_ids": _unique_strings(
+                segment_id
                 for item in items
-                if item.get("source_segment_id")
-            ],
+                for segment_id in item.get("source_segment_ids", [])
+            ),
             "item_count": len(items),
             "renderable_item_count": len(_renderable_subtitle_items(items)),
+            "production_subtitle_design": False,
+            "creative_acceptance": False,
         },
         [] if items else ["edit_pack has no subtitle entries for the selected diagnostic render cut"],
     )
@@ -537,6 +551,8 @@ def _subtitle_items_from_transcript(
 ) -> tuple[list[dict[str, Any]], dict[str, Any], list[str]]:
     transcript = context.get("transcript_payload") or {}
     segments = [s for s in transcript.get("segments") or [] if isinstance(s, dict)]
+    transcript_readback = context.get("transcript") or {}
+    subtitle_source_type = "real_transcript" if transcript_readback.get("real_transcript") is True else "transcript_segments"
     items = _subtitle_items_from_source(
         entries=segments,
         mapping=mapping,
@@ -547,11 +563,19 @@ def _subtitle_items_from_transcript(
         items,
         {
             "source_type": "transcript_segments_diagnostic",
+            "subtitle_source_type": subtitle_source_type,
+            "subtitle_source_types": [subtitle_source_type],
+            "derived_from_real_transcript": subtitle_source_type == "real_transcript",
+            "transcript_real_transcript": transcript_readback.get("real_transcript") is True,
+            "transcript_provider": transcript_readback.get("provider") or "",
+            "transcript_model": transcript_readback.get("model") or "",
             "path": _display_path(context["transcript_path"], Path.cwd()) if transcript else None,
             "subtitle_ids": [],
             "source_segment_ids": [item["source_id"] for item in items if item.get("source_id")],
             "item_count": len(items),
             "renderable_item_count": len(_renderable_subtitle_items(items)),
+            "production_subtitle_design": False,
+            "creative_acceptance": False,
         },
         [
             "no edit_pack subtitle draft was available for the selected cut; diagnostic overlay uses transcript segments directly"
@@ -578,6 +602,7 @@ def _subtitle_items_from_source(
         text = str(entry.get("text") or "").strip()
         source_start = _optional_float(entry.get("start_seconds"))
         source_end = _optional_float(entry.get("end_seconds"))
+        source_segment_ids = _entry_source_segment_ids(entry, source_type=source_type)
         status = "included"
         skip_reason = None
         render_item_start: float | None = None
@@ -607,9 +632,14 @@ def _subtitle_items_from_source(
             "subtitle_id": entry.get("id") if source_type == "edit_pack_subtitles" else None,
             "cut_id": entry.get("cut_id") or cut_id,
             "source": entry.get("source") or source_type,
-            "source_segment_id": entry.get("source_segment_id") or (
-                entry.get("id") if source_type == "transcript_segments_diagnostic" else None
+            "subtitle_source_type": entry.get("source_type") or (
+                "transcript_segments" if source_type == "transcript_segments_diagnostic" else None
             ),
+            "source_segment_id": source_segment_ids[0] if source_segment_ids else None,
+            "source_segment_ids": source_segment_ids,
+            "draft": entry.get("draft"),
+            "diagnostic": entry.get("diagnostic"),
+            "not_production_subtitle_design": entry.get("not_production_subtitle_design"),
             "original_start_seconds": source_start,
             "original_end_seconds": source_end,
             "source_start_seconds": source_start,
@@ -627,6 +657,49 @@ def _subtitle_items_from_source(
         }
         items.append(item)
     return items
+
+
+def _entry_source_segment_ids(entry: dict[str, Any], *, source_type: str) -> list[str]:
+    raw_ids = entry.get("source_segment_ids")
+    if isinstance(raw_ids, list):
+        ids = [str(value) for value in raw_ids if value]
+    else:
+        ids = []
+    if entry.get("source_segment_id"):
+        ids.append(str(entry["source_segment_id"]))
+    if source_type == "transcript_segments_diagnostic" and entry.get("id"):
+        ids.append(str(entry["id"]))
+    return _unique_strings(ids)
+
+
+def _subtitle_source_types(items: list[dict[str, Any]]) -> list[str]:
+    return _unique_strings(
+        item.get("subtitle_source_type")
+        for item in items
+        if item.get("subtitle_source_type")
+    )
+
+
+def _single_or_mixed(values: list[str]) -> str | None:
+    if not values:
+        return None
+    if len(values) == 1:
+        return values[0]
+    return "mixed"
+
+
+def _unique_strings(values) -> list[str]:
+    seen: set[str] = set()
+    unique: list[str] = []
+    for value in values:
+        if value is None:
+            continue
+        text = str(value)
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        unique.append(text)
+    return unique
 
 
 def _subtitle_render_window(mapping: dict[str, Any]) -> dict[str, Any]:
@@ -1433,6 +1506,9 @@ def _make_report_html(manifest: dict[str, Any]) -> str:
     <dt>status</dt><dd>{escape(str(subtitle_burn_in.get("status", "disabled")))}</dd>
     <dt>requested_mode</dt><dd>{escape(str(subtitle_burn_in.get("requested_mode", "off")))}</dd>
     <dt>source_type</dt><dd>{escape(str(subtitle_source_ref.get("source_type", "none")))}</dd>
+    <dt>subtitle_source_type</dt><dd>{escape(str(subtitle_source_ref.get("subtitle_source_type") or ""))}</dd>
+    <dt>derived_from_real_transcript</dt><dd>{escape(str(subtitle_source_ref.get("derived_from_real_transcript", False)).lower())}</dd>
+    <dt>transcript_provider</dt><dd>{escape(str(subtitle_source_ref.get("transcript_provider") or ""))}</dd>
     <dt>source_path</dt><dd>{escape(str(subtitle_source_ref.get("path") or ""))}</dd>
     <dt>subtitle_file</dt><dd>{escape(str(subtitle_source_ref.get("subtitle_file") or ""))}</dd>
     <dt>text_preview</dt><dd>{escape(subtitle_text_preview)}</dd>

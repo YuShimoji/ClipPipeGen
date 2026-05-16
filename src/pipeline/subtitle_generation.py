@@ -22,6 +22,9 @@ class SubtitleGenerationResult:
     replaced_auto_count: int
     skipped_segments_count: int
     scope: str
+    subtitle_source_type: str
+    source_segment_ids: list[str]
+    production_subtitle_design: bool
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -30,6 +33,9 @@ class SubtitleGenerationResult:
             "skipped_segments_count": self.skipped_segments_count,
             "scope": self.scope,
             "subtitles_count": len(self.edit_pack.get("subtitles") or []),
+            "subtitle_source_type": self.subtitle_source_type,
+            "source_segment_ids": self.source_segment_ids,
+            "production_subtitle_design": self.production_subtitle_design,
         }
 
 
@@ -89,6 +95,7 @@ def generate_subtitle_drafts(
     used_ids = {s.get("id") for s in kept if isinstance(s, dict)}
     generated: list[dict[str, Any]] = []
     skipped = 0
+    subtitle_source_type = _subtitle_source_type(transcript)
     for segment in transcript.get("segments") or []:
         if not isinstance(segment, dict) or segment.get("review_status") == "rejected":
             skipped += 1
@@ -97,6 +104,8 @@ def generate_subtitle_drafts(
         if not windows:
             skipped += 1
             continue
+        segment_id = str(segment.get("id") or "")
+        source_segment_ids = [segment_id] if segment_id else []
         for start, end, assigned_cut_id in windows:
             subtitle_id = _next_subtitle_id(used_ids)
             used_ids.add(subtitle_id)
@@ -112,8 +121,14 @@ def generate_subtitle_drafts(
                         ambiguous_width=ambiguous_width,
                     ),
                     "source": "auto",
+                    "source_type": subtitle_source_type,
                     "style_slot": style_slot,
                     "source_segment_id": segment.get("id"),
+                    "source_segment_ids": source_segment_ids,
+                    "draft": True,
+                    "diagnostic": True,
+                    "not_production_subtitle_design": True,
+                    "production_subtitle_design": False,
                 }
             )
 
@@ -133,6 +148,13 @@ def generate_subtitle_drafts(
         replaced_auto_count=len(auto_existing) if replace_auto else 0,
         skipped_segments_count=skipped,
         scope=scope,
+        subtitle_source_type=subtitle_source_type,
+        source_segment_ids=[
+            segment_id
+            for subtitle in generated
+            for segment_id in subtitle.get("source_segment_ids", [])
+        ],
+        production_subtitle_design=False,
     )
 
 
@@ -191,6 +213,11 @@ def _format_text(text: str, *, wrap_eaw: int | None, ambiguous_width: int) -> st
         ambiguous_width=ambiguous_width,
     )
     return "\n".join(line.text for line in measured.lines)
+
+
+def _subtitle_source_type(transcript: dict[str, Any]) -> str:
+    stt = transcript.get("stt") if isinstance(transcript.get("stt"), dict) else {}
+    return "real_transcript" if stt.get("real_transcript") is True else "transcript_segments"
 
 
 def _next_subtitle_id(used_ids: set[Any]) -> str:

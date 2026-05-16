@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-15 JST
+Last updated: 2026-05-16 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
 
@@ -8,12 +8,12 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-16 resume verification commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: `eb4eaff` — OUT-01d subtitle timing / font-filter preflight
-- Latest completed feature slice: `OUT-01d subtitle timing / font-filter preflight` (`render-tiny-proof --burn-in-subtitles diagnostic`; source_video + source_audio + edit_pack selected cut + edit_pack subtitle draft -> diagnostic rendered video with subtitle source, timing status, offset/clamp/skip, SRT/filter policy readback)
-- Current recommended decision: compare real STT transcript -> subtitle draft -> edit_pack linkage against source-video URL acquisition; if filter/font failures recur on another machine, do one minimal font/filter preflight hardening slice first
-- Latest completed feature-slice closeout before this handoff note: OUT-01d implementation committed and pushed to `origin/main`
-- Latest local verification: 2026-05-16 JST after `git pull --ff-only origin main`; sample `status-episode` reports ready, `uvx pytest -q` passed 155 tests, `npm run smoke` returned `gui smoke: OK`, `npm run smoke:electron` returned `electron smoke: OK`, and `git diff --check` was clean
+- Sync commit: 2026-05-16 ED-08 / OUT-01e closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — ED-08 / OUT-01e real STT subtitle draft linkage and diagnostic render smoke
+- Latest completed feature slice: `ED-08 / OUT-01e real STT subtitle draft linkage and diagnostic render smoke` (`source.wav -> real transcript.json -> edit_pack.subtitles[] -> render-tiny-proof --burn-in-subtitles diagnostic -> rendered_video.mp4`; real transcript source / segment IDs / timing mapping / non-production readback preserved)
+- Current recommended decision: compare source-video URL acquisition against transcript review / correction. If subtitle text quality is now the blocker, review/correction comes first; if the local pipeline is stable and material entry is the blocker, source-video URL acquisition comes first; if subtitles/libass/font failures recur on another machine, do minimal font/filter preflight hardening first
+- Latest completed feature-slice closeout before this handoff note: ED-08 / OUT-01e implementation committed and pushed to `origin/main`
+- Latest local verification: 2026-05-16 JST after `git pull --ff-only origin main`; targeted transcript/subtitle/edit_pack/tiny-render/ED-07b/ED-06 tests passed, fresh ignored OUT-01e smoke generated a subtitle-burned `rendered_video.mp4`, `uvx pytest -q` passed 156 tests, `npm run smoke` returned `gui smoke: OK`, `npm run smoke:electron` returned `electron smoke: OK`, and `git diff --check` was clean
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -118,6 +118,16 @@ OUT-01d is complete as subtitle timing / font-filter preflight hardening. It kee
 - Output readback was duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24.0`, stream count `2`; selected/attempted profile was `mp4_h264_aac`; fallback did not occur; filter status was `passed_by_successful_render`.
 - This remains diagnostic render hardening. It is not production subtitle design, typography polish, safe-area/layout acceptance, creative edit acceptance, URL video acquisition, GUI render action, or publishing.
 
+ED-08 / OUT-01e is complete as real STT subtitle draft linkage and diagnostic render smoke. It keeps ED-07b real transcript plumbing and OUT-01d timing diagnostics, but connects them through `edit_pack.subtitles[]`:
+
+- `generate-subtitles` reads `transcript.stt.real_transcript=true` and writes subtitle drafts with `source_type="real_transcript"`, `source_segment_ids[]`, `draft=true`, `diagnostic=true`, `not_production_subtitle_design=true`, and `production_subtitle_design=false`.
+- Fake / fixture transcript inputs stay `source_type="transcript_segments"` and do not become production candidates.
+- `render-tiny-proof --burn-in-subtitles diagnostic` still prioritizes `edit_pack.subtitles[]`, but now reads subtitle provenance into `subtitle_burn_in.source_ref.subtitle_source_type`, `subtitle_source_types[]`, `derived_from_real_transcript`, transcript provider/model, and `source_segment_ids[]`.
+- OUT-01d timing mapping remains intact: original/render time, render_start offset, status counts, included/clamped/skipped/invalid/empty statuses, filter preflight, and disabled burn-in behavior are still tested.
+- Fresh ignored smoke episode `episodes/out01e_real_transcript_subtitle_smoke_20260516` used synthetic local TTS audio normalized to `source.wav`, Vosk model `_tmp/stt_models/vosk-model-small-en-us-0.15`, source audio material `src_audio_out01e_real_stt`, and local source video material `src_video_out01e_local`.
+- Smoke output `renders/out01e_real_transcript_subtitle_render/rendered_video.mp4` was generated with `subtitle_burn_in.status=enabled`, `derived_from_real_transcript=true`, status counts `included=1`, output duration `8.82`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`.
+- This remains diagnostic linkage. It is not STT quality acceptance, transcript correction UI, production subtitle design, creative acceptance, URL video acquisition, GUI render action, publishing, FCPXML, or Resolve XML.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -132,8 +142,8 @@ Current state against that final shape:
 | Source video | Local video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | URL video acquisition is still future work |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
-| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export | Real transcript output is still unreviewed draft; creative edit acceptance and render proof remain future work |
-| NLE / render | Minimal CSV cut list export exists, OUT-01b can produce a 12 second diagnostic rendered video, OUT-01c can burn edit_pack subtitle drafts as diagnostic overlay, and OUT-01d can read back subtitle timing status plus font/filter failure policy | No FCPXML / Resolve XML, no production subtitle design, and no production render acceptance |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; ED-08 preserves `real_transcript` subtitle source and segment IDs in `edit_pack.subtitles[]` | Real transcript output is still unreviewed draft; transcript correction and creative edit acceptance are future work |
+| NLE / render | Minimal CSV cut list export exists; OUT-01b can produce a diagnostic video; OUT-01c/OUT-01d can burn and diagnose subtitle timing; OUT-01e can burn real STT-derived subtitle drafts | No FCPXML / Resolve XML, no production subtitle design, no STT quality acceptance, and no production render acceptance |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
 The project should continue only if the next slices add or connect real production-adjacent artifacts. A slice that only adds more policy, boundary text, report polish, or GUI read-only state without connecting `source.wav`, `transcript.json`, `edit_pack.json`, `preview_manifest.json`, NLE export, or rendered video should be treated as drift.
@@ -146,6 +156,7 @@ The project should continue only if the next slices add or connect real producti
 - `src/cli/fetch_source_audio.py` — `--mode yt-dlp-audio` CLI wiring, sidecar / receipt / ledger write.
 - `src/cli/fetch_source_video.py` — `--mode local-media-video` CLI wiring, sidecar / receipt / ledger write.
 - `src/cli/render_tiny_proof.py` — `render-tiny-proof` CLI wiring, receipt / manifest / report write.
+- `src/pipeline/subtitle_generation.py` — transcript segments to `edit_pack.subtitles[]` draft generation, including real transcript source readback.
 - `src/cli/build_local_preview_pack.py` — local preview pack orchestration and `--use-existing-source-audio` bridge.
 - `src/pipeline/preview_pack.py` — preview manifest / report generation and source audio provenance readback.
 - `src/pipeline/nle_export.py` — ED-06 CSV cut list / manifest / HTML readback generation.
@@ -163,31 +174,41 @@ The project should continue only if the next slices add or connect real producti
 
 ## Validation Already Run
 
-Latest validation for OUT-01d closeout:
+Latest validation for ED-08 / OUT-01e closeout:
 
 ```powershell
+uvx pytest -q tests/test_subtitle_generation.py tests/test_real_transcript_pipeline.py
+uvx pytest -q tests/test_edit_pack.py
 uvx pytest -q tests/test_tiny_render.py
-uvx pytest -q tests/test_source_video_fetch.py
 uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_real_transcript_pipeline.py
 uvx pytest -q tests/test_nle_export.py
 uvx pytest -q
 npm run smoke
 npm run smoke:electron
 git diff --check
-ffprobe -v error -print_format json -show_format -show_streams episodes/out01d_timing_font_preflight_smoke_20260514/renders/out01d_timing_font_preflight/rendered_video.mp4
+ffprobe -v error -print_format json -show_format -show_streams episodes/out01e_real_transcript_subtitle_smoke_20260516/renders/out01e_real_transcript_subtitle_render/rendered_video.mp4
 ```
 
 Results:
 
-- `uvx pytest -q tests/test_tiny_render.py` -> `19 passed`
-- `uvx pytest -q tests/test_source_video_fetch.py` -> `4 passed`
+- `uvx pytest -q tests/test_subtitle_generation.py tests/test_real_transcript_pipeline.py` -> `8 passed`
+- `uvx pytest -q tests/test_edit_pack.py` -> `10 passed`
+- `uvx pytest -q tests/test_tiny_render.py` -> `20 passed`
 - `uvx pytest -q tests/test_transcript.py tests/test_vosk_stt_adapter.py tests/test_real_transcript_pipeline.py` -> `13 passed`
 - `uvx pytest -q tests/test_nle_export.py` -> `3 passed`
-- `uvx pytest -q` -> `155 passed`
+- `uvx pytest -q` -> `156 passed`
 - `npm run smoke` -> `gui smoke: OK`
 - `npm run smoke:electron` -> `electron smoke: OK`
 - `git diff --check` -> no whitespace errors
-- rendered video FFprobe readback -> duration `12.0`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`
+- rendered video FFprobe readback -> duration `8.82`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`
+
+Additional OUT-01e readback:
+
+- ignored `episodes/out01e_real_transcript_subtitle_smoke_20260516` readback -> local diagnostic TTS WAV was normalized to `materials/src_audio_out01e_real_stt/source.wav`, Vosk generated `transcript.json` with `real_transcript=true`, `generate-cuts` selected `cut_001`, `generate-subtitles` wrote one `edit_pack.subtitles[]` item with `source_type="real_transcript"` and `source_segment_ids=["seg_000001"]`, then `render-tiny-proof --burn-in-subtitles diagnostic` generated `renders/out01e_real_transcript_subtitle_render/rendered_video.mp4`
+- transcript readback -> provider `vosk`, model `_tmp/stt_models/vosk-model-small-en-us-0.15`, segment count `1`, source audio duration `9.8028125`, warning `real STT plumbing proof only; transcript quality is not creative acceptance`
+- subtitle burn-in readback -> `subtitle_burn_in.status=enabled`, `source_ref.source_type=edit_pack_subtitles`, `source_ref.subtitle_source_type=real_transcript`, `derived_from_real_transcript=true`, `transcript_real_transcript=true`, `transcript_provider=vosk`, `source_segment_ids=["seg_000001"]`
+- timing readback -> `render_start_offset_seconds=0.09`, render duration `8.82`, status counts `{"included": 1}`, item `sub_001` maps original `0.09 -> 8.91` to render `0.0 -> 8.82`
+- warnings remain expected: diagnostic-only render, duration target unmet because the available real transcript/source audio range is shorter than the default target, source video/audio duration mismatch, draft edit_pack review status, pending source material rights
 
 Additional OUT-01d readback:
 
@@ -334,28 +355,28 @@ Not implemented / not accepted yet:
 - rights hard gate
 - STT quality acceptance / transcript correction workflow / speaker diarization
 
-yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in `src/integrations/render/` only for OUT-01 diagnostic rendering, including OUT-01c diagnostic subtitle overlay and OUT-01d timing/filter readback, and in `src/integrations/asset_fetch/` for source-audio normalization; it must not enter STT, Editing core, GUI actions, URL video fetch, or production subtitle/render surfaces.
+yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in `src/integrations/render/` only for OUT-01 diagnostic rendering, including OUT-01c diagnostic subtitle overlay, OUT-01d timing/filter readback, and OUT-01e real STT subtitle source readback, and in `src/integrations/asset_fetch/` for source-audio normalization; it must not enter STT, Editing core, GUI actions, URL video fetch, or production subtitle/render surfaces.
 
 ## Recommended Next Slice
 
-OUT-01d is no longer the next slice; it is done. The local render + subtitle timing/filter diagnostic proof now exists, so the next useful move is to decide whether real STT subtitle linkage, remote source acquisition, or one more environment preflight hardening slice is the higher-value bottleneck.
+ED-08 / OUT-01e is no longer the next slice; it is done. The narrow production-adjacent line now exists: `source.wav -> real transcript.json -> edit_pack.subtitles[] -> OUT-01d diagnostic burn-in -> rendered_video.mp4`.
 
-Recommended default: strengthen `real STT transcript -> subtitle draft -> edit_pack.subtitles[]` if subtitle source quality/linkage is now the weakest step. Keep this as artifact linkage and review-state readback, not STT quality acceptance.
+Recommended default if the next bottleneck is source material entry: implement source-video URL acquisition with receipt / scrubbed URL / rights readback, then feed it into the existing OUT-01e local diagnostic render path.
 
-Alternative: source-video URL acquisition if the next source material must come from a remote URL and local render + subtitle diagnostic coverage is adequate. If filter/font failures appear across machines, choose one more font/filter preflight hardening slice first.
+Alternative if subtitle text quality is now blocking operator judgment: add a transcript review / correction slice that edits or approves `transcript.json` / subtitle draft state without introducing production subtitle design. If subtitles/libass/font failures appear across machines, choose one minimal font/filter preflight hardening slice first.
 
 ## Next Two-Slice Pressure
 
-After `OUT-01d`, the project should deliberately move toward one of these production-adjacent bottlenecks:
+After `ED-08 / OUT-01e`, the project should deliberately move toward one of these production-adjacent bottlenecks:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| transcript -> subtitle draft linkage | 8/10 | Makes the subtitle source less fixture/manual and connects real STT artifacts into the render proof | Can drift into STT quality/edit acceptance if not kept to linkage/readback |
-| source-video URL acquisition | 7/10 | Lets source video come from remote URL with receipt / scrubbed URL readback | Rights/terms and yt-dlp boundary are larger than local file copy |
+| source-video URL acquisition | 8/10 | Local source video works; remote source-video entry is now the next material bottleneck for real episodes | Rights/terms and yt-dlp boundary are larger than local file copy |
+| transcript review / correction | 7/10 | Real STT subtitle linkage exists, but operator trust may require correction before creative judgment | Can drift into full subtitle UI or production design if not kept to transcript/subtitle draft state |
 | font/filter preflight hardening | 5/10 | Makes OUT-01d more portable across FFmpeg builds by surfacing subtitles/libass/font availability before render | Can drift into typography polish if not kept diagnostic |
-| Transcript review / provider preflight hardening | 6/10 | Makes real STT output more operator-usable and repeatable | Improves trust but does not create visual production artifacts |
+| STT provider setup hardening | 5/10 | Makes Vosk/model setup less operator-dependent | Improves repeatability but does not create new production artifacts |
 
-Recommended continuation after `OUT-01d`: choose transcript -> subtitle draft linkage if subtitle provenance is the blocker; choose source-video URL acquisition if remote source material is the blocker; choose font/filter preflight only if subtitle filter failures appear on another operator machine. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `ED-08 / OUT-01e`: choose source-video URL acquisition if the goal is a more realistic episode intake; choose transcript review / correction if the generated STT text is too weak for operator judgment; choose font/filter preflight only if another machine shows subtitle filter failures. Do not count GUI read-only display or audit log expansion as progress toward video production.
 
 ### Decision criteria after ED-06
 
