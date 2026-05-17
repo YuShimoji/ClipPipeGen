@@ -1,9 +1,8 @@
 # Minimal Codex project config scaffold.
 # Keep this file short and project-specific.
 # Canonical behavioral rules live in AGENTS.md and docs/*.md.
-
-model = "gpt-5-codex"
-approval_policy = "never"
-sandbox_mode = "workspace-write"
+# Do not pin model, approval_policy, or sandbox_mode here.
+# Those are session/user choices in Codex; repo-local values can override
+# app-side model switching and break message submission.
 
 # Add project-specific hooks or tool restrictions here if needed.
