@@ -28,6 +28,9 @@ Thumbs.db
 # Local config (NLMYTGen path 等の環境固有)
 config/nlmytgen_path.json
 
+# Claude Code local session permissions (assistant-specific Bash auto-allow list)
+.claude/settings.local.json
+
 # Local episode work（権利確認前の素材を含む可能性）
 episodes/
 /materials/
