@@ -8,12 +8,12 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-18 INT-02h code closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — INT-02h `fetch-source-video --mode yt-dlp-video` adapter / CLI / tests
-- Latest completed feature slice: `INT-02h yt-dlp-video source video URL fetch (code + CI)` (`src/integrations/asset_fetch/yt_dlp_video.py` adapter + `src/cli/fetch_source_video.py` mode 拡張 + `tests/test_ytdlp_video_adapter.py` 9 件 + `tests/test_source_video_fetch.py` 7 件追加 + `tests/test_asset_fetch_boundary.py` の help assertion 反転。actual operator URL smoke は user-supplied URL を待つ)
-- Current recommended decision: INT-02h の actual operator URL smoke（user-supplied URL）を行ったあと、Phase 0 一本通し（実 URL → rendered_video.mp4 + CSV cut list）で詰まり所を観測する。日本語 STT 破綻は Phase 0 で観測根拠として受容し、Phase 1 候補（vosk-model-ja / whisper.cpp 等の operator setup）に回す
-- Latest completed feature-slice closeout before this handoff note: INT-02h adapter + CLI + tests + docs committed; smoke pending
-- Latest local verification: 2026-05-18 JST INT-02h code closeout; `uvx pytest -q tests/test_ytdlp_video_adapter.py` (9 passed), `uvx pytest -q tests/test_source_video_fetch.py` (11 passed), `uvx pytest -q tests/test_asset_fetch_boundary.py` (7 passed), `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean
+- Sync commit: 2026-05-18 INT-02h smoke closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — INT-02h `fetch-source-video --mode yt-dlp-video` with actual URL operator smoke readback
+- Latest completed feature slice: `INT-02h yt-dlp-video source video URL fetch (code + CI + actual smoke)` (`src/integrations/asset_fetch/yt_dlp_video.py` + `src/cli/fetch_source_video.py` mode 拡張 + tests 9+7+1。Smoke: archive.org `BigBuckBunny_124` を input、`source_video.mp4` 61.8MB / h264 / aac / 640x360 / 24fps / 596.48s、`audit-material-ledger ok=true`)
+- Current recommended decision: Phase 0 一本通し（同じ archive.org URL を入力に source_audio 取得 → STT (英語 model) → cut/context/subtitle → diagnostic render → CSV export）に進む。日本語 STT 破綻は Phase 0 で観測根拠として受容し、Phase 1 候補に回す
+- Latest completed feature-slice closeout before this handoff note: INT-02h code + tests + docs + actual URL smoke committed
+- Latest local verification: 2026-05-18 JST INT-02h smoke closeout; `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean, actual operator smoke で `fetch-source-video --mode yt-dlp-video` の dry-run + actual run + ledger audit が通過
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -359,9 +359,17 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-INT-02h code + CI is done. `fetch-source-video --mode yt-dlp-video` exists and tests pass. The next step is the **actual operator URL smoke**: with an operator-supplied URL, run the same dry-run + actual flow as INT-02e, then proceed to **Phase 0 one-pass smoke** (URL → rendered_video.mp4 + CSV cut list).
+INT-02h code + CI + actual operator URL smoke are complete. archive.org `BigBuckBunny_124` produced `source_video.mp4` with FFprobe metadata readback and `audit-material-ledger ok=true`. The next step is **Phase 0 one-pass smoke**: take the same archive.org URL through `fetch-source-audio --mode yt-dlp-audio`, `transcribe-audio --engine vosk` (English model), `generate-cuts` / `check-cut-context` / `generate-subtitles`, `render-tiny-proof --burn-in-subtitles diagnostic`, and `export-nle` — observing each step's readback and stalls.
 
-Stale planning block (kept for reference until smoke + Phase 0 land):
+Phase 0 readback expectations (English Vosk model + Big Buck Bunny audio):
+
+- `source.wav` PCM 16kHz mono around 9.9 minutes
+- Vosk English STT will produce something for the English narration / soundtrack passages; non-narration / silence parts will have empty segments. This is fine and is the documented "observation" mode of Phase 0
+- `edit_pack.json` from generated cuts + diagnostic subtitles
+- `render-tiny-proof` will produce a small diagnostic `rendered_video.mp4` clipped to the first selected cut
+- `export-nle` writes CSV cut list + manifest + report
+
+Stale planning block (kept for reference until Phase 0 lands):
 
 Recommended INT-02h scope:
 
