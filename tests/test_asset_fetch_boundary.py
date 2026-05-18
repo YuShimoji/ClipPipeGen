@@ -1,4 +1,4 @@
-"""INT-02b/INT-02c/INT-02d/INT-02e: asset_fetch boundary guards."""
+"""INT-02b/INT-02c/INT-02d/INT-02e/INT-02g: asset_fetch boundary guards."""
 
 from __future__ import annotations
 
@@ -10,6 +10,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BOUNDARY_DOC = REPO_ROOT / "docs" / "ASSET_FETCH_BOUNDARY.md"
 YTDLP_AUDIO_SPEC = REPO_ROOT / "docs" / "YTDLP_AUDIO_SPEC.md"
+YTDLP_VIDEO_SPEC = REPO_ROOT / "docs" / "YTDLP_VIDEO_SPEC.md"
 
 
 def test_asset_fetch_boundary_spec_names_required_contracts():
@@ -30,6 +31,10 @@ def test_asset_fetch_boundary_spec_names_required_contracts():
         "`rollback.files[]`",
         "INT-02d は **spec only**",
         "YTDLP_AUDIO_SPEC.md",
+        "INT-02g は **spec only**",
+        "YTDLP_VIDEO_SPEC.md",
+        "INT-02g yt-dlp-video spec only",
+        "spec only in INT-02g",
     ]
     for needle in required:
         assert needle in text
@@ -60,6 +65,41 @@ def test_ytdlp_audio_spec_keeps_url_fetch_boundaries_explicit():
         "transcribe-audio",
         "fetch-source-video",
         "creative acceptance",
+    ]
+    for needle in required:
+        assert needle in text
+
+
+def test_ytdlp_video_spec_keeps_url_fetch_boundaries_explicit():
+    text = YTDLP_VIDEO_SPEC.read_text(encoding="utf-8")
+
+    required = [
+        "INT-02g は **spec only**",
+        "network fetch",
+        "yt-dlp 実行",
+        "URL input",
+        "network access",
+        "yt-dlp",
+        "FFprobe",
+        "receipt",
+        "権利確認",
+        "人間責務",
+        "GUI 非露出",
+        "rights",
+        "human responsibility",
+        "GUI",
+        "dry-run",
+        "URL Scrub Contract",
+        "intermediate_retained=false",
+        "fetch-source-video --mode yt-dlp-video",
+        "Format Selection Constraint",
+        "ホワイトリスト",
+        "transcribe-audio",
+        "render-tiny-proof",
+        "creative acceptance",
+        "hard_gate",
+        "production_acceptance",
+        "INT-02h",
     ]
     for needle in required:
         assert needle in text

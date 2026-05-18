@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-16 JST
+Last updated: 2026-05-18 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
 
@@ -8,12 +8,12 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-16 ED-08 / OUT-01e closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — ED-08 / OUT-01e real STT subtitle draft linkage and diagnostic render smoke
-- Latest completed feature slice: `ED-08 / OUT-01e real STT subtitle draft linkage and diagnostic render smoke` (`source.wav -> real transcript.json -> edit_pack.subtitles[] -> render-tiny-proof --burn-in-subtitles diagnostic -> rendered_video.mp4`; real transcript source / segment IDs / timing mapping / non-production readback preserved)
-- Current recommended decision: compare source-video URL acquisition against transcript review / correction. If subtitle text quality is now the blocker, review/correction comes first; if the local pipeline is stable and material entry is the blocker, source-video URL acquisition comes first; if subtitles/libass/font failures recur on another machine, do minimal font/filter preflight hardening first
-- Latest completed feature-slice closeout before this handoff note: ED-08 / OUT-01e implementation committed and pushed to `origin/main`
-- Latest local verification: 2026-05-16 JST after `git pull --ff-only origin main`; targeted transcript/subtitle/edit_pack/tiny-render/ED-07b/ED-06 tests passed, fresh ignored OUT-01e smoke generated a subtitle-burned `rendered_video.mp4`, `uvx pytest -q` passed 156 tests, `npm run smoke` returned `gui smoke: OK`, `npm run smoke:electron` returned `electron smoke: OK`, and `git diff --check` was clean
+- Sync commit: 2026-05-18 INT-02g closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — INT-02g `yt-dlp-video` boundary spec only
+- Latest completed feature slice: `INT-02g yt-dlp-video boundary spec only` (`docs/YTDLP_VIDEO_SPEC.md` + `docs/ASSET_FETCH_BOUNDARY.md` 反映 + `tests/test_asset_fetch_boundary.py` 境界文言検証。CLI mode 追加 / yt-dlp 実行 / network fetch / GUI fetch button は INT-02g スコープ外で、INT-02h で実装する)
+- Current recommended decision: INT-02h `fetch-source-video --mode yt-dlp-video` を INT-02e (yt-dlp-audio) と同型で実装し、その後 Phase 0 一本通し（実 URL → rendered_video.mp4 + CSV cut list）で詰まり所を観測する。日本語 STT 破綻は Phase 0 で観測根拠として受容し、Phase 1 候補（vosk-model-ja / whisper.cpp 等の operator setup）に回す
+- Latest completed feature-slice closeout before this handoff note: INT-02g spec doc / boundary update / boundary tests committed
+- Latest local verification: 2026-05-18 JST INT-02g closeout; `uvx pytest -q tests/test_asset_fetch_boundary.py` で INT-02g 境界文言テスト含む boundary test がすべて pass、`uvx pytest -q` 全件 pass、`npm run smoke` / `npm run smoke:electron` `OK`、`git diff --check` clean
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -359,11 +359,22 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-ED-08 / OUT-01e is no longer the next slice; it is done. The narrow production-adjacent line now exists: `source.wav -> real transcript.json -> edit_pack.subtitles[] -> OUT-01d diagnostic burn-in -> rendered_video.mp4`.
+INT-02g is done. The boundary contract for `yt-dlp-video` is now fixed in `docs/YTDLP_VIDEO_SPEC.md`. The next slice is **INT-02h** `fetch-source-video --mode yt-dlp-video`: implement source-video URL acquisition as the symmetric counterpart to INT-02e (yt-dlp-audio).
 
-Recommended default if the next bottleneck is source material entry: implement source-video URL acquisition with receipt / scrubbed URL / rights readback, then feed it into the existing OUT-01e local diagnostic render path.
+Recommended INT-02h scope:
 
-Alternative if subtitle text quality is now blocking operator judgment: add a transcript review / correction slice that edits or approves `transcript.json` / subtitle draft state without introducing production subtitle design. If subtitles/libass/font failures appear across machines, choose one minimal font/filter preflight hardening slice first.
+- `src/integrations/asset_fetch/yt_dlp_video.py` adapter with `--yt-dlp-path` / `CLIPPIPE_YTDLP` / PATH discovery and version readback.
+- `fetch-source-video --mode yt-dlp-video` CLI choice with `--source-url`, `--format-selector` (explicit, no yt-dlp default), `--yt-dlp-path`, `--ffprobe-path`. `--source-path` / `--local-media` は拒否する。
+- Dry-run that does not call network or subprocess and returns command plan, output paths, conflicts, expected outputs as JSON.
+- URL scrub for query / fragment / userinfo / signed URL token in receipt / sidecar / command summaries.
+- 許容 container ホワイトリスト（例: `mp4`, `mkv`, `webm`）。許容外は failure として partial download を削除し、sidecar / receipt / ledger を書かない。
+- Chosen format readback (format id / video codec / audio codec / container / resolution / fps / filesize) in `fetch_receipt.json`.
+- FFprobe metadata readback (duration / container / video codec / audio codec / resolution / fps / stream count) のあと sidecar / receipt / `material_ledger.json` entry を書く。
+- Failure cleanup: partial `source_video.<ext>` を削除し、sidecar / receipt / ledger は成功後だけ書く。
+- Fake runner / dry-run tests in `tests/test_ytdlp_video_adapter.py` and `tests/test_source_video_fetch.py`（既存 INT-02f boundary test を温存）。
+- Operator-driven actual smoke with a user-selected URL; ignored episode artifact only.
+
+After INT-02h is done, **Phase 0** runs the full local pipeline against a real URL: `fetch-source-video --mode yt-dlp-video` -> `fetch-source-audio --mode yt-dlp-audio` -> `transcribe-audio --engine vosk` (English model; Japanese 破綻は観測根拠として受容) -> `generate-cuts` / `check-cut-context` / `generate-subtitles` -> `render-tiny-proof --burn-in-subtitles diagnostic` -> `export-nle`. TH-01 walkthrough、SH-02 episode_pack 集約、Publishing、GUI render/fetch/export button、日本語 STT 接続は Phase 1 以降に分けて起票する。
 
 ## Next Two-Slice Pressure
 
