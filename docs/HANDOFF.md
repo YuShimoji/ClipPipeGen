@@ -8,13 +8,27 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-18 Phase 0 one-pass smoke closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — Phase 0 one-pass smoke (URL → rendered_video.mp4 + NLE CSV) readback
-- Latest completed feature slice: `Phase 0 one-pass operator smoke` — ClipPipeGen の縦糸を初めて 1 本通した。`fetch-source-video --mode yt-dlp-video` → `fetch-source-audio --mode yt-dlp-audio` → `transcribe-audio --engine vosk` → `generate-cuts` / `check-cut-context` / `generate-subtitles` → `render-tiny-proof --burn-in-subtitles diagnostic` → `export-nle` が連鎖して `rendered_video.mp4` + `nle_cut_list.csv` まで到達
-- Current recommended decision: Phase 1 候補を観測根拠で評価する。優先度: (1) 日本語 STT 接続（vosk-model-ja / whisper.cpp）— Phase 0 で最も顕著な詰まり所、(2) TH-01 実 YMM4 base template walkthrough、(3) SH-02 `episode_pack` 集約、(4) Publishing (INT-01 + PB-01..04)
-- Latest completed feature-slice closeout before this handoff note: Phase 0 one-pass smoke committed
-- Latest local verification: 2026-05-18 JST Phase 0 closeout; `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, 各 CLI 段で exit_code=0、`audit-material-ledger ok=true`、`render-tiny-proof` 出力 FFprobe metadata 期待通り
+- Sync commit: 2026-05-18 Phase 0.5 HoloEN-01 blocked closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — Phase 0.5 `HoloEN-01 publish-quality diagnostic pilot` を `in_progress (blocked_waiting_for_url)` として正本化
+- Latest completed feature slice: `Phase 0 one-pass operator smoke` — 縦糸を初通し（URL → source_video.mp4 + source.wav → Vosk EN transcript.json → edit_pack.json → rendered_video.mp4 + nle_cut_list.csv）
+- Current recommended decision: HoloEN-01 actual smoke は operator-supplied HoloEN public VOD URL を待つ blocked 状態。operator は `docs/HOLOEN_PILOT.md` の URL 選定条件 / 避けるべき素材 / COVER 公式 attribution 要件を確認し、HoloEN 公開済み VOD URL 1 本を選定する。URL 取得後の手順は同 doc の Runbook セクション。日本語 STT 接続（`JP-STT-01` 候補）は Phase 0.5 の品質観測結果を見てから decide
+- Latest completed feature-slice closeout before this handoff note: Phase 0 one-pass smoke committed (commit `2a06f13`)
+- Latest local verification: 2026-05-18 JST Phase 0.5 blocked closeout; `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean, placeholder URL での `fetch-source-video --mode yt-dlp-video --dry-run` で no-network / URL scrub / format selector default / allowed containers readback を確認
 - Working tree expectation after pull: clean
+
+## Resume on another terminal
+
+```powershell
+git checkout main
+git pull --ff-only origin main
+# read these to pick up state:
+#   docs/HANDOFF.md
+#   docs/RUNTIME_STATE.md
+#   docs/HOLOEN_PILOT.md  # HoloEN-01 runbook / URL selection / acceptance
+#   docs/FEATURE_REGISTRY.md
+```
+
+To unblock HoloEN-01: operator selects an HoloEN public VOD URL that satisfies the selection criteria in `docs/HOLOEN_PILOT.md`, then follows the Runbook section starting at step 1 (`init-episode`).
 
 Resume command:
 
@@ -359,17 +373,22 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-Phase 0 one-pass smoke is complete. The narrow production-adjacent line `URL → source_video.mp4 + source.wav → transcript.json → edit_pack.json → rendered_video.mp4 + nle_cut_list.csv` now exists.
+Phase 0.5 `HoloEN-01 publish-quality diagnostic pilot` is the active recommendation. URL fetch / transcript / cut / subtitle / diagnostic render / CSV chain has been proven by Phase 0; what Phase 0.5 needs to observe is **whether the output looks like something that could become a publishable clip after human editing**, using HoloEN English-speaking VOD content (where Vosk EN can be expected to capture actual speech, unlike the Big Buck Bunny pilot where there were only "the" / "bush").
 
-Phase 0 observed sticking points (ranked):
+The slice is currently **blocked_waiting_for_url**. operator action required:
 
-1. **Japanese STT** — Big Buck Bunny の英語 model 経由で 596.48s から計 1.1 s しか transcribe されなかった。日本語コンテンツでの縦糸は日本語 STT 必須。`vosk-model-ja` または `whisper.cpp` adapter 導入が Phase 1 最有力候補
-2. **Tooling acquisition** — yt-dlp / ffmpeg / Vosk Python / Vosk model はそれぞれ別の取得経路（winget / uv tool / 手動 download）。operator setup hardening スライスで一本化する選択肢あり
-3. **TH-01 user-owned acceptance** — 実 YMM4 `.ymmp` authoring + `config/nlmytgen_path.json` 配置。サムネレーンを creative acceptance まで持ち上げる
-4. **SH-02 episode_pack** — rights / material / edit / thumbnail / publish_draft 集約
-5. **Publishing (INT-01 + PB-01..04)** — 縦糸の出口を閉じる
+1. Select an HoloEN public VOD URL that satisfies `docs/HOLOEN_PILOT.md` URL selection criteria
+2. Confirm the URL does not fall into avoid-list（members-only / paid / concert / song-heavy / third-party IP risk）
+3. Hand the URL to assistant (or run the Runbook in `docs/HOLOEN_PILOT.md` directly)
 
-Phase 1 着手前に: `transcript.language` が `--language` 未指定で defaulted `ja` のまま英語 model を使った場合の readback 不整合、`chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。これらが production blocker になる前に Phase 1 主軸を決める方が優先。
+After HoloEN-01 lands, observed Phase 0 sticking points still apply as Phase 1 candidates:
+
+1. **Japanese STT** (`JP-STT-01` future) — `vosk-model-ja` or `whisper.cpp` adapter. Most material if pipeline is for actual hololive JP content
+2. **TH-01 user-owned acceptance** — 実 YMM4 `.ymmp` authoring + `config/nlmytgen_path.json` 配置
+3. **SH-02 episode_pack** — rights / material / edit / thumbnail / publish_draft 集約
+4. **Publishing (INT-01 + PB-01..04)** — 縦糸の出口を閉じる
+
+Phase 1 着手前に: `transcript.language` defaulted 不整合、`chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。
 
 Stale planning block (kept for reference until Phase 1 lands):
 

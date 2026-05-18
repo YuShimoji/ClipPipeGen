@@ -43,8 +43,30 @@
 ### lane / slice
 
 - **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-08 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e done。samples runnable
-- **current_slice**: Slice 2 — INT-02h `fetch-source-video --mode yt-dlp-video` は実装と actual URL operator smoke まで完了。`src/integrations/asset_fetch/yt_dlp_video.py` adapter は yt-dlp path discovery、URL scrub、dry-run safe command plan、actual fetch、許容 container ホワイトリスト（mp4 / mkv / webm）、FFprobe metadata readback、partial download cleanup、source_video.* 既存検出を担う。CLI は `--mode yt-dlp-video` / `--source-url` / `--format-selector`（default `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best`） / `--yt-dlp-path` を受け、`source_video.<ext>` / `sidecar.json` / `fetch_receipt.json` / `material_ledger.json` entry を生成する。rights snapshot は `hard_gate=false` / `production_acceptance=false`、`source_pipeline.intermediate_retained=false`。`uvx pytest -q`（173 passed） + GUI smoke 全 pass、archive.org Big Buck Bunny URL での actual smoke で source_video.mp4（h264 / aac / 640x360 / 24fps / 596.48秒 / 61.8MB）と `audit-material-ledger ok=true` を readback
-- **next_action（assistant 側）**: Phase 0 一本通し（URL → rendered_video.mp4 + NLE CSV）完了。次は Phase 1 候補を観測根拠で決める。優先度（観測順）: (1) 日本語 STT 接続（vosk-model-ja / whisper.cpp）— Phase 0 で最も顕著な詰まり所、(2) TH-01 実 YMM4 base template walkthrough（user-owned acceptance）、(3) SH-02 `episode_pack` 統合 manifest、(4) Publishing（INT-01 + PB-01..04）。これらは別 slice として PLAN MODE で計画 → 承認 → 実装。chosen_format readback の archive.org extractor 限界、`transcript.language` defaulted 不整合は別 slice 候補として保留
+- **current_slice**: Phase 0.5 — `HoloEN-01 publish-quality diagnostic pilot` を `in_progress (blocked_waiting_for_url)` として正本化。`docs/HOLOEN_PILOT.md` に URL 選定条件 / 避けるべき素材（members-only / paid / concert / 楽曲中心 / 第三者 IP リスク高）/ COVER 公式 attribution 要件 / runbook / quality scorecard（技術 / 制作 / 権利の 3 軸）/ acceptance / 次候補判断を固定。assistant は任意 URL を勝手に選定せず、actual smoke は operator-supplied HoloEN public VOD URL を待つ。Phase 0.5 は日本語 STT 対応の代替ではなく、英語発話コンテンツで「動画コンテンツとして成立しそうか」を早期診断する先行路線。`production_candidate=false` / creative acceptance / publishing acceptance ではない
+- **next_action（assistant 側）**: HoloEN-01 actual smoke は user-supplied URL を待つ blocked 状態。operator は `docs/HOLOEN_PILOT.md` の URL 選定条件 / 避けるべき素材を確認し、HoloEN 公開済み VOD URL 1 本を選定する。URL 取得後の手順は同 doc の Runbook セクション。並行候補として日本語 STT 接続（`JP-STT-01` 候補）を Phase 1 に置けるが、Phase 0.5 の品質観測結果を見てから decide するのが推奨。chosen_format readback の archive.org extractor 限界、`transcript.language` defaulted 不整合は別 slice 候補として保留
+
+### Phase 0.5 (i) HoloEN-01 in_progress（publish-quality diagnostic pilot — blocked_waiting_for_url）
+
+`Phase 0` で plumbing が通ったあとに、英語発話コンテンツで「動画コンテンツとして成立しそうか」を早期観測する先行路線として `HoloEN-01` を起票・承認。`docs/HOLOEN_PILOT.md` を新規作成して URL 選定条件 / 避けるべき素材 / COVER 公式 attribution / runbook / quality scorecard / acceptance / blocked state 手順 / 次候補判断を固定した。
+
+- 根拠ガイドライン: COVER 公式 derivative works terms（<https://hololivepro.com/en/terms/>）
+- 主要 readback:
+  - clip / shorts / translation は guideline 準拠なら個別許諾不要、ただし Content ID 登録は禁止
+  - **members-only / paid / concert footage は明示的に clip 不可**（pilot 対象から除外）
+  - 公開時は **元配信 URL link + 元配信 source title** が attribution として必須
+  - 第三者 IP（ゲーム / 楽曲 / フォント等）は operator が個別確認
+  - 公序良俗違反 / 政治宗教 / 名誉毀損 / official 偽装は禁止
+- URL 選定方針: assistant は任意 URL を勝手に選定しない。operator が HoloEN 公開済み VOD を選定し、避けるべき素材条件を満たさないと判断したものを渡す
+- 縦糸再利用: 既存 INT-02h / INT-02e / Vosk EN STT / generate-cuts / check-cut-context / generate-subtitles / OUT-01d diagnostic burn-in / ED-06 CSV export を新規 architecture なしで使う
+- placeholder URL dry-run: `https://www.youtube.com/watch?v=__operator_supplied_holoen_vod__` を入力に `fetch-source-video --mode yt-dlp-video --dry-run` を実行し、no-network / URL scrub / format selector default `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best` / allowed containers `[mp4, mkv, webm]` / `will_write=false` / `will_call_subprocess=false` を readback
+- 境界維持: `production_candidate=false` / creative acceptance / publishing acceptance / YouTube upload / OAuth / Content ID 登録 / 日本語 STT 対応 / font polish / GUI render button / FCPXML / Resolve XML には進まない
+- 観測結果による次候補:
+  - transcript / subtitle / cut が成立 → transcript review / production render acceptance
+  - STT が weak → 別 EN STT provider（whisper.cpp 等）または transcript correction
+  - URL 未指定で blocked のまま → operator にHoloEN public VOD URL 選定を依頼
+  - 日本語展開が主目的 → `JP-STT-01` Japanese STT adapter smoke
+  - pipeline 通るが品質弱い → human quality gate / review workflow
 
 ### Slice 2 (xxxi) Phase 0 one-pass smoke done（URL → rendered_video.mp4 + NLE CSV）
 

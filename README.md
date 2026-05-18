@@ -1,5 +1,7 @@
 # ClipPipeGen
 
+Phase 0.5 note: `HoloEN-01 publish-quality diagnostic pilot` を `in_progress (blocked_waiting_for_url)` で起票。Phase 0 で plumbing が通った縦糸（URL → source_video / source_audio → Vosk EN transcript → edit_pack → diagnostic burn-in render → NLE CSV）を HoloEN 公開済み VOD で 1 本通し、英語発話コンテンツで「動画コンテンツとして成立しそうか」を技術 / 制作 / 権利の 3 軸で早期診断する先行路線。日本語 STT 対応の代替ではない。runbook / URL 選定条件 / 避けるべき素材 / COVER 公式 attribution 要件 / acceptance は [docs/HOLOEN_PILOT.md](docs/HOLOEN_PILOT.md) を正本とする。actual smoke は operator-supplied HoloEN public VOD URL を待つ。`production_candidate=false` / creative / publishing acceptance ではない。
+
 OUT-01e note: real STT `transcript.json` segments can now generate `edit_pack.subtitles[]` drafts with `source_type=real_transcript`, then flow into `render-tiny-proof --burn-in-subtitles diagnostic` with subtitle source / segment id / timing readback. This remains diagnostic proof, not STT quality, production subtitle design, creative acceptance, or GUI render action.
 
 ホロライブ等の VTuber 切り抜き動画制作を、権利・素材・編集・サムネ・投稿の4レーンで半自動化する制作補助ツール。
