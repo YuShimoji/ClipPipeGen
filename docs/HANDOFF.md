@@ -8,12 +8,12 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-18 INT-02h smoke closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — INT-02h `fetch-source-video --mode yt-dlp-video` with actual URL operator smoke readback
-- Latest completed feature slice: `INT-02h yt-dlp-video source video URL fetch (code + CI + actual smoke)` (`src/integrations/asset_fetch/yt_dlp_video.py` + `src/cli/fetch_source_video.py` mode 拡張 + tests 9+7+1。Smoke: archive.org `BigBuckBunny_124` を input、`source_video.mp4` 61.8MB / h264 / aac / 640x360 / 24fps / 596.48s、`audit-material-ledger ok=true`)
-- Current recommended decision: Phase 0 一本通し（同じ archive.org URL を入力に source_audio 取得 → STT (英語 model) → cut/context/subtitle → diagnostic render → CSV export）に進む。日本語 STT 破綻は Phase 0 で観測根拠として受容し、Phase 1 候補に回す
-- Latest completed feature-slice closeout before this handoff note: INT-02h code + tests + docs + actual URL smoke committed
-- Latest local verification: 2026-05-18 JST INT-02h smoke closeout; `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean, actual operator smoke で `fetch-source-video --mode yt-dlp-video` の dry-run + actual run + ledger audit が通過
+- Sync commit: 2026-05-18 Phase 0 one-pass smoke closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — Phase 0 one-pass smoke (URL → rendered_video.mp4 + NLE CSV) readback
+- Latest completed feature slice: `Phase 0 one-pass operator smoke` — ClipPipeGen の縦糸を初めて 1 本通した。`fetch-source-video --mode yt-dlp-video` → `fetch-source-audio --mode yt-dlp-audio` → `transcribe-audio --engine vosk` → `generate-cuts` / `check-cut-context` / `generate-subtitles` → `render-tiny-proof --burn-in-subtitles diagnostic` → `export-nle` が連鎖して `rendered_video.mp4` + `nle_cut_list.csv` まで到達
+- Current recommended decision: Phase 1 候補を観測根拠で評価する。優先度: (1) 日本語 STT 接続（vosk-model-ja / whisper.cpp）— Phase 0 で最も顕著な詰まり所、(2) TH-01 実 YMM4 base template walkthrough、(3) SH-02 `episode_pack` 集約、(4) Publishing (INT-01 + PB-01..04)
+- Latest completed feature-slice closeout before this handoff note: Phase 0 one-pass smoke committed
+- Latest local verification: 2026-05-18 JST Phase 0 closeout; `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, 各 CLI 段で exit_code=0、`audit-material-ledger ok=true`、`render-tiny-proof` 出力 FFprobe metadata 期待通り
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -359,17 +359,19 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-INT-02h code + CI + actual operator URL smoke are complete. archive.org `BigBuckBunny_124` produced `source_video.mp4` with FFprobe metadata readback and `audit-material-ledger ok=true`. The next step is **Phase 0 one-pass smoke**: take the same archive.org URL through `fetch-source-audio --mode yt-dlp-audio`, `transcribe-audio --engine vosk` (English model), `generate-cuts` / `check-cut-context` / `generate-subtitles`, `render-tiny-proof --burn-in-subtitles diagnostic`, and `export-nle` — observing each step's readback and stalls.
+Phase 0 one-pass smoke is complete. The narrow production-adjacent line `URL → source_video.mp4 + source.wav → transcript.json → edit_pack.json → rendered_video.mp4 + nle_cut_list.csv` now exists.
 
-Phase 0 readback expectations (English Vosk model + Big Buck Bunny audio):
+Phase 0 observed sticking points (ranked):
 
-- `source.wav` PCM 16kHz mono around 9.9 minutes
-- Vosk English STT will produce something for the English narration / soundtrack passages; non-narration / silence parts will have empty segments. This is fine and is the documented "observation" mode of Phase 0
-- `edit_pack.json` from generated cuts + diagnostic subtitles
-- `render-tiny-proof` will produce a small diagnostic `rendered_video.mp4` clipped to the first selected cut
-- `export-nle` writes CSV cut list + manifest + report
+1. **Japanese STT** — Big Buck Bunny の英語 model 経由で 596.48s から計 1.1 s しか transcribe されなかった。日本語コンテンツでの縦糸は日本語 STT 必須。`vosk-model-ja` または `whisper.cpp` adapter 導入が Phase 1 最有力候補
+2. **Tooling acquisition** — yt-dlp / ffmpeg / Vosk Python / Vosk model はそれぞれ別の取得経路（winget / uv tool / 手動 download）。operator setup hardening スライスで一本化する選択肢あり
+3. **TH-01 user-owned acceptance** — 実 YMM4 `.ymmp` authoring + `config/nlmytgen_path.json` 配置。サムネレーンを creative acceptance まで持ち上げる
+4. **SH-02 episode_pack** — rights / material / edit / thumbnail / publish_draft 集約
+5. **Publishing (INT-01 + PB-01..04)** — 縦糸の出口を閉じる
 
-Stale planning block (kept for reference until Phase 0 lands):
+Phase 1 着手前に: `transcript.language` が `--language` 未指定で defaulted `ja` のまま英語 model を使った場合の readback 不整合、`chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。これらが production blocker になる前に Phase 1 主軸を決める方が優先。
+
+Stale planning block (kept for reference until Phase 1 lands):
 
 Recommended INT-02h scope:
 

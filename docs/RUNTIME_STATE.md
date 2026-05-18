@@ -44,7 +44,40 @@
 
 - **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-08 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e done。samples runnable
 - **current_slice**: Slice 2 — INT-02h `fetch-source-video --mode yt-dlp-video` は実装と actual URL operator smoke まで完了。`src/integrations/asset_fetch/yt_dlp_video.py` adapter は yt-dlp path discovery、URL scrub、dry-run safe command plan、actual fetch、許容 container ホワイトリスト（mp4 / mkv / webm）、FFprobe metadata readback、partial download cleanup、source_video.* 既存検出を担う。CLI は `--mode yt-dlp-video` / `--source-url` / `--format-selector`（default `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best`） / `--yt-dlp-path` を受け、`source_video.<ext>` / `sidecar.json` / `fetch_receipt.json` / `material_ledger.json` entry を生成する。rights snapshot は `hard_gate=false` / `production_acceptance=false`、`source_pipeline.intermediate_retained=false`。`uvx pytest -q`（173 passed） + GUI smoke 全 pass、archive.org Big Buck Bunny URL での actual smoke で source_video.mp4（h264 / aac / 640x360 / 24fps / 596.48秒 / 61.8MB）と `audit-material-ledger ok=true` を readback
-- **next_action（assistant 側）**: INT-02h smoke まで完了。次は Phase 0 一本通し: 同じ ignored episode `episodes/int02h_operator_smoke_20260518` の `source_video.mp4` を input に、`fetch-source-audio --mode yt-dlp-audio`（同 archive.org URL）、`transcribe-audio --engine vosk`（英語 model）、`generate-cuts` / `check-cut-context` / `generate-subtitles`、`render-tiny-proof --burn-in-subtitles diagnostic`、`export-nle` までを一連で回し、各段の readback と詰まり所を観測する。日本語 STT 破綻は Phase 1 候補（vosk-model-ja / whisper.cpp 等）に回す。chosen_format readback の archive.org extractor 限界は別 slice で扱う
+- **next_action（assistant 側）**: Phase 0 一本通し（URL → rendered_video.mp4 + NLE CSV）完了。次は Phase 1 候補を観測根拠で決める。優先度（観測順）: (1) 日本語 STT 接続（vosk-model-ja / whisper.cpp）— Phase 0 で最も顕著な詰まり所、(2) TH-01 実 YMM4 base template walkthrough（user-owned acceptance）、(3) SH-02 `episode_pack` 統合 manifest、(4) Publishing（INT-01 + PB-01..04）。これらは別 slice として PLAN MODE で計画 → 承認 → 実装。chosen_format readback の archive.org extractor 限界、`transcript.language` defaulted 不整合は別 slice 候補として保留
+
+### Slice 2 (xxxi) Phase 0 one-pass smoke done（URL → rendered_video.mp4 + NLE CSV）
+
+ClipPipeGen の縦糸を初めて 1 本通した。INT-02h 完了直後、同じ ignored episode `episodes/int02h_operator_smoke_20260518` を共用して `https://archive.org/details/BigBuckBunny_124` を入力に下記の連鎖を実行。
+
+Pipeline trace（すべて exit 0）:
+
+1. `fetch-source-video --mode yt-dlp-video` → `source_video.mp4` (h264 / aac / 640x360 / 24fps / 596.48s / 61.8MB)
+2. `fetch-source-audio --mode yt-dlp-audio` → `source.wav` (pcm_s16le / 16kHz / mono / 19.1MB / sha256 `77b7e31e0e68ebf82410a151da858caa1eb5ad0a51d2a1c64da9fee02f4ed747`)
+3. `transcribe-audio --engine vosk --model _tmp/stt_models/vosk-model-small-en-us-0.15`（`uvx --with vosk` 経由）→ `transcript.json`（`real_transcript=true`、`segment_count=2`、`duration_seconds=596.48`、語認識は `seg_000001 "the" [272.88-273.66]` と `seg_000002 "bush" [456.90-457.23]` のみ）
+4. `init-edit-pack` + `generate-cuts --target-duration-seconds 12 --gap-threshold-seconds 30 --select-generated` → 2 cut candidates、両方 selected
+5. `check-cut-context` → 2 cuts `passed`
+6. `generate-subtitles --wrap-eaw 40 --selected-cuts-only` → 2 subtitles、`source_type=real_transcript`、`draft=true`、`source_segment_ids` 紐付け
+7. `render-tiny-proof --burn-in-subtitles diagnostic`（最初の selected cut のみ render）→ `rendered_video.mp4`（0.78s / h264 / aac / 640x360 / 24fps / 101KB）、`diagnostic_subtitles.srt` に "the" 焼き込み、`subtitle_burn_in.status=enabled` / `subtitle_source_type=edit_pack_subtitles` / `derived_from_real_transcript=true`
+8. `export-nle` → `nle_cut_list.csv` (2 rows) + `nle_export_manifest.json` + `nle_export_report.html`。CSV は `source_audio_provider=yt-dlp` / `transcript_provider=vosk` / `transcript_real=true` / `production_edit_candidate=false` を保持
+
+Phase 0 で観測された詰まり所（Phase 1 候補）:
+
+- **STT × コンテンツのミスマッチ**: Big Buck Bunny は主にアニメ + 音楽で英語台詞ほぼ無し。`vosk-model-small-en-us-0.15` は 596.48 秒の入力から計 1.11 秒分（"the" / "bush"）しか認識しなかった。これは "real STT 接続が動く" 証拠であると同時に、**creative acceptable な subtitle のためには日本語 model + 日本語コンテンツが必要** であることの実証
+- **環境依存**: yt-dlp / ffmpeg は user-scope winget install で揃えられた。Vosk は `uv tool install vosk` + `uvx --with vosk` 経由で実行できたが、Vosk model は手動 download（`alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip` → `_tmp/stt_models/`）
+- **`transcript.language` の不整合**: `--language` 未指定で defaulted `ja` のまま English model を使ったため、`transcript.language=ja` が記録された。English model 使用時に language readback を一致させる軽い修正余地
+- **`chosen_format` readback の archive.org extractor 限界**（INT-02h closeout で既記録）
+
+Phase 1 候補（観測根拠つき優先度）:
+
+1. 日本語 STT 接続（vosk-model-ja or whisper.cpp）— **Phase 0 で最も明確な詰まり所**。日本語コンテンツで縦糸の "意味のある transcript" を出すために必須
+2. TH-01 実 YMM4 base template walkthrough — `config/nlmytgen_path.json` 設定 + 実 `.ymmp` authoring。サムネレーンの user-owned acceptance
+3. SH-02 `episode_pack` 統合 manifest — rights / material / edit / thumbnail / publish_draft を 1 個に結ぶ
+4. Publishing（INT-01 + PB-01..04）— 縦糸の出口を閉じる
+
+Boundary 維持: Phase 0 は **plumbing 一本通しの観測** であり、creative acceptance / publishing acceptance / production render / 日本語字幕 typography / safe-area polish / GUI render button のいずれにも昇格しない。すべての receipts / sidecar / report が `production_candidate=false` / `not for acceptance` を保持
+
+Assistant-side validation — `uvx pytest -q`（173 passed）、`npm run smoke` / `npm run smoke:electron`（OK）、各段の CLI exit_code=0、Phase 0 全成果物は ignored `episodes/int02h_operator_smoke_20260518/` 配下に閉じ込め
 
 ### Slice 2 (xxx) INT-02h done（yt-dlp-video source video URL fetch）
 
