@@ -1,4 +1,4 @@
-# Asset Fetch Boundary — INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g
+# Asset Fetch Boundary — INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h
 
 INT-02b は **spec only**。実 downloader は実装しない。目的は、yt-dlp / FFmpeg を `asset_fetch` integration の内側に閉じ込め、Editing core / STT / GUI に漏らさないこと。OUT-01 以降の diagnostic render は `src/integrations/render/` に分離し、asset_fetch には入れない。
 
@@ -10,7 +10,9 @@ INT-02e は INT-02d の contract に従い、`fetch-source-audio --mode yt-dlp-a
 
 INT-02f は `fetch-source-video --mode local-media-video` を追加し、既存ローカル video file を episode material directory にコピー登録し、FFprobe metadata / sidecar / receipt / ledger entry を readback する。URL video fetch、render、encode、cut、concat、subtitle burn-in は含めない。
 
-INT-02g は **spec only**。`yt-dlp-video` の URL source video fetch contract を仕様化するが、yt-dlp 実行、network fetch、CLI mode 追加は行わない。詳細は [YTDLP_VIDEO_SPEC.md](YTDLP_VIDEO_SPEC.md) を正本とする。INT-02h で actual implementation を扱う。
+INT-02g は **spec only**。`yt-dlp-video` の URL source video fetch contract を仕様化するが、yt-dlp 実行、network fetch、CLI mode 追加は行わない。詳細は [YTDLP_VIDEO_SPEC.md](YTDLP_VIDEO_SPEC.md) を正本とする。
+
+INT-02h は INT-02g の contract に従い、`fetch-source-video --mode yt-dlp-video` を source video URL fetch のみに限定して実装済み。yt-dlp は `src/integrations/asset_fetch/yt_dlp_video.py` 内で URL から `source_video.<ext>` を取得し、許容 container（mp4 / mkv / webm）外は failure cleanup する。FFprobe は metadata readback のみ。FFmpeg normalize は使わず、yt-dlp 出力をそのまま source_video として保存する。default format selector は `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best`、CLI `--format-selector` で operator が上書き可。actual operator URL smoke は user-supplied URL を待つ。
 
 OUT-01 はこの asset_fetch 境界の外側で `render-tiny-proof` を追加し、取得済み source_video / source_audio / edit_pack selected cut から diagnostic rendered artifact を作る。OUT-01c では `edit_pack.subtitles[]` 由来の diagnostic subtitle overlay、OUT-01d では subtitle timing / filter failure detail readback も同じ render integration に閉じ込める。これは asset acquisition ではなく output proof であり、source-video URL fetch、GUI action、production render acceptance、subtitle design acceptance には進まない。
 
@@ -28,7 +30,7 @@ SH-05 local-preview-pack は INT-02 の実 downloader ではない。既存 `fet
 | INT-02e | done | `fetch-source-audio --mode yt-dlp-audio`。source audio URL fetch のみに限定して実装済み。technical smoke URL で receipt / sidecar / ledger / WAV readback を確認 |
 | INT-02f | done | `fetch-source-video --mode local-media-video`。local source video をコピー登録し、FFprobe metadata / receipt / sidecar / ledger readback を確認 |
 | INT-02g | done | `yt-dlp-video` boundary spec only。URL fetch / network / yt-dlp / FFprobe metadata readback / receipt / rights / human / GUI / render / STT の責務を分離。詳細は [YTDLP_VIDEO_SPEC.md](YTDLP_VIDEO_SPEC.md) |
-| INT-02h | proposed | `fetch-source-video --mode yt-dlp-video`。INT-02g contract に従い source video URL fetch を実装する後続 slice |
+| INT-02h | done | `fetch-source-video --mode yt-dlp-video`。source video URL fetch のみに限定して実装済み。許容 container は mp4 / mkv / webm、default format selector は `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best`、URL scrub と partial download cleanup を持つ。`source_video.<ext>` / sidecar / receipt / ledger entry を生成し、rights snapshot は `hard_gate=false` / `production_acceptance=false`。actual operator URL smoke は user-supplied URL を待つ |
 
 ## Tool 責務
 
@@ -68,7 +70,7 @@ mode 名は、実装 commit で `FEATURE_REGISTRY` に登録してから CLI cho
 | `local-media-audio` | implemented in INT-02c | 既存ローカル media file を FFmpeg で `source.wav` に正規化する。URL / VOD / network fetch はしない |
 | `yt-dlp-audio` | implemented and smoked in INT-02e | URL から元 media を一時取得し、FFmpeg で `source.wav` に正規化する。取得と正規化以外はしない。downloaded intermediate は保持しない |
 | `local-media-video` | implemented in INT-02f | 既存ローカル video file を `source_video.<ext>` としてコピー登録し、FFprobe metadata を readback する。URL / VOD / network fetch はしない |
-| `yt-dlp-video` | spec only in INT-02g | URL から source video を取得する後続候補。INT-02g で境界 contract を固定し、INT-02h で `fetch-source-video --mode yt-dlp-video` を実装する |
+| `yt-dlp-video` | implemented in INT-02h | URL から source video を取得する。INT-02g で境界 contract を固定し、INT-02h で `fetch-source-video --mode yt-dlp-video` を許容 container（mp4 / mkv / webm）/ URL scrub / chosen format readback / FFprobe metadata 付きで実装済み。actual operator URL smoke は user-supplied URL を待つ |
 
 実 mode は次を満たす。
 
@@ -127,7 +129,7 @@ receipt は INT-02a fields に加えて、以下を記録する。
 |---|---|
 | yt-dlp discovery | `--yt-dlp-path` → `CLIPPIPE_YTDLP` → PATH の順。INT-02e smoke では user-local `yt-dlp` `2026.03.17` を PATH から発見 |
 | URL fetch mode | `fetch-source-audio --mode yt-dlp-audio` として実装済み。technical smoke URL で actual fetch → normalize → receipt / sidecar / ledger write を確認 |
-| source video | `fetch-source-video --mode local-media-video` は実装済み。URL video fetch は INT-02g で境界 spec を固定済み、INT-02h で実装する |
+| source video | `fetch-source-video --mode local-media-video` と `--mode yt-dlp-video` は実装済み。INT-02g で境界 spec、INT-02h で actual fetch（許容 container、URL scrub、chosen format、FFprobe metadata、rollback）を実装済み。actual operator URL smoke は user-supplied URL を待つ |
 | real dependency acceptance | local-media-audio は実 FFmpeg smoke passed。yt-dlp-audio は user-local `yt-dlp` `2026.03.17` + 実 FFmpeg `ffmpeg version 8.0.1-full_build-www.gyan.dev` で technical smoke URL を `source.wav` に正規化し、Python `wave` readback、receipt、ledger audit、ignored artifact status を確認。CI は fake runner / monkeypatch に限定 |
 | GUI | fetch button は未実装。SH-05c/SH-05d では既存 preview pack / existing source audio provenance の read-only ingest だけ実装済み。追加する場合は preflight / confirmation / receipt readback の GUI contract が必要 |
 | local preview pack | SH-05 / SH-05c / SH-05d 実装済み。local media 1本、または取得済み source audio material から `preview_manifest.json` / read-only `preview_report.html` まで接続し、GUI から既存 pack を read-only 表示できる。これは artifact preview であり rendered video preview ではない |
@@ -174,6 +176,22 @@ receipt は INT-02a fields に加えて、以下を記録する。
 | GUI | INT-02g では fetch button を追加しない |
 | render | `render-tiny-proof` は URL を読まない。取得済み `source_video.<ext>` を material directory 経由で読むだけ |
 | STT | INT-02g は `source.wav` を作らない。STT 接続は INT-02e / INT-02c の source audio mode を使う |
+
+## INT-02h yt-dlp-video implementation boundary
+
+| 領域 | 固定境界 |
+|---|---|
+| CLI | `fetch-source-video --mode yt-dlp-video` のみ。`--source-url` 必須、`--source-path` / `--local-media` は拒否。`--format-selector` / `--yt-dlp-path` / `--ffprobe-path` を受ける |
+| yt-dlp | `src/integrations/asset_fetch/yt_dlp_video.py` 内で URL から source video を取得し、`source_video.<ext>` として保存する。intermediate は持たない |
+| FFprobe | `source_video.<ext>` の metadata（duration / container / codec / resolution / fps / stream count）を読むだけ。INT-02f と同じ `source_video.probe_video` を再利用する |
+| FFmpeg | INT-02h でも使わない。normalize / cut / concat / subtitle burn-in / render / encode はしない |
+| format selector | default は `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best`。`--format-selector` で operator が上書き可。yt-dlp default には依存させない |
+| 許容 container | `mp4` / `mkv` / `webm` のみ受容。許容外を yt-dlp が選んだ場合は partial download を削除し sidecar / receipt / ledger を書かない |
+| dry-run | network / subprocess を呼ばず、yt-dlp / FFprobe discovery、command plan、scrubbed URL、format selector、allowed containers、conflicts、expected outputs を JSON readback する |
+| receipt | `tools[]` に yt-dlp / FFprobe、`commands[]` に download / probe、`chosen_format` に format id / vcodec / acodec / ext / resolution / fps / filesize、`container`、`source_pipeline.intermediate_retained=false`、`rights_snapshot.hard_gate=false` / `production_acceptance=false`、URL scrub（query / fragment / userinfo / signed URL token）を保存 |
+| GUI | fetch button は追加しない。GUI から fetch / build / render / upload を起動しない |
+| STT / Editing | `transcribe-audio`、`generate-cuts`、`check-cut-context`、`generate-subtitles`、`render-tiny-proof` に URL / yt-dlp を混ぜない |
+| Output | cut / concat、subtitle burn-in、render / encode、`fetch-source-audio` への侵食、production / creative / publish acceptance は追加しない |
 
 ## Test 観点
 

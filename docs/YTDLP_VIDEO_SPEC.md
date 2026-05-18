@@ -108,3 +108,5 @@ INT-02h 実装 slice は、最低限以下を確認する。
 ## Closure
 
 INT-02g は spec only であり、commit は docs / boundary test だけを追加する。`fetch-source-video --mode yt-dlp-video` の CLI choice、`src/integrations/asset_fetch/yt_dlp_video.py` adapter、actual network fetch、real URL smoke は INT-02h で行う。
+
+Post-spec implementation note: INT-02h はこの contract に従い、`fetch-source-video --mode yt-dlp-video` を source video URL fetch のみに限定して実装済み。許容 container は mp4 / mkv / webm、default format selector は `best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best`、URL scrub と partial download cleanup を持つ。fake runner / dry-run / monkeypatch test で boundary を確認済み。actual operator URL smoke は user-supplied URL を待つ。

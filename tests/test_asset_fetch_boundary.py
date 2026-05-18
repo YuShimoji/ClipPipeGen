@@ -34,7 +34,8 @@ def test_asset_fetch_boundary_spec_names_required_contracts():
         "INT-02g は **spec only**",
         "YTDLP_VIDEO_SPEC.md",
         "INT-02g yt-dlp-video spec only",
-        "spec only in INT-02g",
+        "INT-02h yt-dlp-video implementation boundary",
+        "implemented in INT-02h",
     ]
     for needle in required:
         assert needle in text
@@ -122,7 +123,7 @@ def test_fetch_source_audio_exposes_only_source_audio_modes():
     assert "fetch-source-video" not in result.stdout.lower()
 
 
-def test_fetch_source_video_exposes_local_video_acquisition_only():
+def test_fetch_source_video_exposes_video_acquisition_modes_only():
     result = subprocess.run(
         [sys.executable, "-m", "src.cli.main", "fetch-source-video", "--help"],
         cwd=str(REPO_ROOT),
@@ -133,11 +134,14 @@ def test_fetch_source_video_exposes_local_video_acquisition_only():
     assert result.returncode == 0, result.stderr
     help_text = result.stdout.lower()
     assert "local-media-video" in help_text
+    assert "yt-dlp-video" in help_text
     assert "--source-path" in help_text
+    assert "--source-url" in help_text
     assert "--ffprobe-path" in help_text
+    assert "--yt-dlp-path" in help_text
+    assert "--format-selector" in help_text
     assert "render" not in help_text
     assert "encode" not in help_text
-    assert "yt-dlp-video" not in help_text
 
 
 def test_build_local_preview_pack_exposes_no_external_fetch_or_output_generation():

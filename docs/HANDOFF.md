@@ -8,12 +8,12 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-18 INT-02g closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — INT-02g `yt-dlp-video` boundary spec only
-- Latest completed feature slice: `INT-02g yt-dlp-video boundary spec only` (`docs/YTDLP_VIDEO_SPEC.md` + `docs/ASSET_FETCH_BOUNDARY.md` 反映 + `tests/test_asset_fetch_boundary.py` 境界文言検証。CLI mode 追加 / yt-dlp 実行 / network fetch / GUI fetch button は INT-02g スコープ外で、INT-02h で実装する)
-- Current recommended decision: INT-02h `fetch-source-video --mode yt-dlp-video` を INT-02e (yt-dlp-audio) と同型で実装し、その後 Phase 0 一本通し（実 URL → rendered_video.mp4 + CSV cut list）で詰まり所を観測する。日本語 STT 破綻は Phase 0 で観測根拠として受容し、Phase 1 候補（vosk-model-ja / whisper.cpp 等の operator setup）に回す
-- Latest completed feature-slice closeout before this handoff note: INT-02g spec doc / boundary update / boundary tests committed
-- Latest local verification: 2026-05-18 JST INT-02g closeout; `uvx pytest -q tests/test_asset_fetch_boundary.py` で INT-02g 境界文言テスト含む boundary test がすべて pass、`uvx pytest -q` 全件 pass、`npm run smoke` / `npm run smoke:electron` `OK`、`git diff --check` clean
+- Sync commit: 2026-05-18 INT-02h code closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — INT-02h `fetch-source-video --mode yt-dlp-video` adapter / CLI / tests
+- Latest completed feature slice: `INT-02h yt-dlp-video source video URL fetch (code + CI)` (`src/integrations/asset_fetch/yt_dlp_video.py` adapter + `src/cli/fetch_source_video.py` mode 拡張 + `tests/test_ytdlp_video_adapter.py` 9 件 + `tests/test_source_video_fetch.py` 7 件追加 + `tests/test_asset_fetch_boundary.py` の help assertion 反転。actual operator URL smoke は user-supplied URL を待つ)
+- Current recommended decision: INT-02h の actual operator URL smoke（user-supplied URL）を行ったあと、Phase 0 一本通し（実 URL → rendered_video.mp4 + CSV cut list）で詰まり所を観測する。日本語 STT 破綻は Phase 0 で観測根拠として受容し、Phase 1 候補（vosk-model-ja / whisper.cpp 等の operator setup）に回す
+- Latest completed feature-slice closeout before this handoff note: INT-02h adapter + CLI + tests + docs committed; smoke pending
+- Latest local verification: 2026-05-18 JST INT-02h code closeout; `uvx pytest -q tests/test_ytdlp_video_adapter.py` (9 passed), `uvx pytest -q tests/test_source_video_fetch.py` (11 passed), `uvx pytest -q tests/test_asset_fetch_boundary.py` (7 passed), `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean
 - Working tree expectation after pull: clean
 
 Resume command:
@@ -359,7 +359,9 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-INT-02g is done. The boundary contract for `yt-dlp-video` is now fixed in `docs/YTDLP_VIDEO_SPEC.md`. The next slice is **INT-02h** `fetch-source-video --mode yt-dlp-video`: implement source-video URL acquisition as the symmetric counterpart to INT-02e (yt-dlp-audio).
+INT-02h code + CI is done. `fetch-source-video --mode yt-dlp-video` exists and tests pass. The next step is the **actual operator URL smoke**: with an operator-supplied URL, run the same dry-run + actual flow as INT-02e, then proceed to **Phase 0 one-pass smoke** (URL → rendered_video.mp4 + CSV cut list).
+
+Stale planning block (kept for reference until smoke + Phase 0 land):
 
 Recommended INT-02h scope:
 
