@@ -42,9 +42,33 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-08 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e done。samples runnable
-- **current_slice**: Phase 0.5 — `HoloEN-01 publish-quality diagnostic pilot` を `in_progress (blocked_waiting_for_url)` として正本化。`docs/HOLOEN_PILOT.md` に URL 選定条件 / 避けるべき素材（members-only / paid / concert / 楽曲中心 / 第三者 IP リスク高）/ COVER 公式 attribution 要件 / runbook / quality scorecard（技術 / 制作 / 権利の 3 軸）/ acceptance / 次候補判断を固定。assistant は任意 URL を勝手に選定せず、actual smoke は operator-supplied HoloEN public VOD URL を待つ。Phase 0.5 は日本語 STT 対応の代替ではなく、英語発話コンテンツで「動画コンテンツとして成立しそうか」を早期診断する先行路線。`production_candidate=false` / creative acceptance / publishing acceptance ではない
-- **next_action（assistant 側）**: HoloEN-01 actual smoke は user-supplied URL を待つ blocked 状態。operator は `docs/HOLOEN_PILOT.md` の URL 選定条件 / 避けるべき素材を確認し、HoloEN 公開済み VOD URL 1 本を選定する。URL 取得後の手順は同 doc の Runbook セクション。並行候補として日本語 STT 接続（`JP-STT-01` 候補）を Phase 1 に置けるが、Phase 0.5 の品質観測結果を見てから decide するのが推奨。chosen_format readback の archive.org extractor 限界、`transcript.language` defaulted 不整合は別 slice 候補として保留
+- **current_lane**: Slice 2 + Phase 0.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-08 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** done。samples runnable
+- **current_slice**: Phase 0.5 + JP-STT-01 closeout — `JP-STT-01` で Vosk JP model (`vosk-model-small-ja-0.22`) を既存 language-agnostic adapter で動作確認、Windows TTS 経由 actual smoke で「今日は良い天気ですね」等を正しく transcribe。`HoloEN-01` で assistant 自律選定 URL（<https://www.youtube.com/watch?v=D4i4fjs9PWc> Kronii Wisdom Teeth Removal Woes）から rendered_video.mp4 + NLE CSV まで full pipeline 完走、quality scorecard 記入済。安全側過剰の自己拘束（assistant は URL を勝手に選定しない / actual smoke は user-supplied URL を待つ）を撤廃し、INVARIANTS "rights は readback、hard gate にしない" と整合した運用に揃えた
+- **next_action（assistant 側）**: Phase 0.5 と JP-STT-01 done で 2 つの主要ボトルネック（日本語 STT 接続 / HoloEN publish-quality 早期診断）を同時に解消。次の Phase 1.5 候補は (1) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or ED-09 transcript review workflow）、(2) `ED-07c` language↔model 一貫性 validation、(3) `JP-Pilot-01` 日本語コンテンツでの publish-quality 観測（HoloEN-01 を JP 化）、(4) `TH-01 walkthrough` user-owned acceptance、(5) `SH-02 episode_pack` 集約、(6) Publishing (INT-01 + PB-01..04)。優先順位は operator と合意
+
+### Phase 0.5 (ii) HoloEN-01 done + JP-STT-01 done（assistant 自律選定 + 日本語 STT 接続）
+
+ユーザーから安全側過剰の撤廃指示を受け、`docs/HOLOEN_PILOT.md` の「assistant は任意 URL を勝手に選定しない」記述を撤廃。INVARIANTS の「rights は readback、hard gate にしない」と整合した自律選定方針に切替。COVER 公式 derivative works guideline 由来の除外条件（members-only / paid / concert / song / 第三者 IP リスク高）は compliance として維持。
+
+**JP-STT-01 actual smoke**: ignored `episodes/jp_stt_smoke_20260520`、Windows TTS Haruka voice で 13.315s mono/16kHz/16bit WAV 生成、`uvx --with vosk` + `vosk-model-small-ja-0.22` で transcribe → `language=ja` / `stt.provider=vosk` / `real_transcript=true` / 3 segments、内容は「今日 は これ は 日本 語 の 音声 認識 です」「くりっ パイプ 以前 の 応募 スク ジェーピー モデル で トランス スクリプト を 生成 できる か 確認 し て い ます」「今日 は いい 天気 です ね」。adapter コード変更 0 行（既に language-agnostic）、CLI help text 補強のみ。175 passed。
+
+**HoloEN-01 actual smoke**: assistant 自律選定 URL <https://www.youtube.com/watch?v=D4i4fjs9PWc> 【Kroniicle Animation】 Wisdom Teeth Removal Woes（Kronii original animation / 77.78s / public / 第三者IPリスク低）。ignored `episodes/holoen01_kronii_wisdomteeth_20260520`。Pipeline trace（全 exit 0）:
+1. `fetch-source-video --mode yt-dlp-video` → source_video.mp4 (h264/aac/1920x1080/60fps/77.78s)
+2. `fetch-source-audio --mode yt-dlp-audio` → source.wav (pcm_s16le/16kHz/mono)
+3. `transcribe-audio --engine vosk --language en --model vosk-model-small-en-us-0.15` → 13 segments / 66.2% coverage / real_transcript=true
+4. `init-edit-pack` + `generate-cuts --target-duration-seconds 15 --select-generated` → 4 cut candidates
+5. `check-cut-context` → 2 passed / 2 needs_review
+6. `generate-subtitles --wrap-eaw 40 --selected-cuts-only` → 13 subtitle drafts, `source_type=real_transcript`
+7. `render-tiny-proof --burn-in-subtitles diagnostic` → rendered_video.mp4 4.89s/1080p/60fps/h264/aac/burn-in enabled
+8. `export-nle` → nle_cut_list.csv 4 rows / manifest / report
+9. `audit-material-ledger` → ok=true / 0 issues / 2 materials
+
+Quality scorecard: 技術全 pass、制作 weak（STT 精度限界、cut boundary review 要）、権利 pass（COVER guideline 準拠範囲、`production_candidate=false` 維持）。詳細は `docs/HOLOEN_PILOT.md` の "Smoke 結果（初回 actual smoke）" セクション。
+
+観測された次の判断点:
+- STT 精度: Vosk EN small model は HoloEN voice acting tone でも改善余地大。whisper.cpp / OpenAI Whisper 比較が next bottleneck
+- Cut boundary: 4/2 が needs_review。context check 閾値調整 or ED-09 transcript review workflow
+- ED-07c: language↔model 一貫性 validation を future proposed として起票（Phase 0 + HoloEN-01 双方で観測された不整合の根本対処）
 
 ### Phase 0.5 (i) HoloEN-01 in_progress（publish-quality diagnostic pilot — blocked_waiting_for_url）
 

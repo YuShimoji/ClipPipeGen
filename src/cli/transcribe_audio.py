@@ -35,10 +35,26 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--episode-id", required=True)
     parser.add_argument("--source-audio", "--source-audio-path", dest="source_audio", required=True)
     parser.add_argument("--output", required=True)
-    parser.add_argument("--language", default="ja")
+    parser.add_argument(
+        "--language",
+        default="ja",
+        help=(
+            'BCP-47 language tag recorded in transcript metadata (e.g. "en", "ja"). '
+            'Default "ja". Must match the language of --model for meaningful '
+            "transcription; CLI does not validate this (see ED-07c future slice)."
+        ),
+    )
     parser.add_argument("--engine", choices=("fake", "vosk"))
     parser.add_argument("--provider", choices=("fake", "vosk"), help="alias for --engine")
-    parser.add_argument("--model", help="model name or path for real STT providers")
+    parser.add_argument(
+        "--model",
+        help=(
+            "model name or path for real STT providers. Vosk EN example: "
+            "_tmp/stt_models/vosk-model-small-en-us-0.15 (ED-07b). Vosk JP example: "
+            "_tmp/stt_models/vosk-model-small-ja-0.22 (JP-STT-01). See "
+            "docs/JP_STT_SMOKE.md for the JP model fetch runbook."
+        ),
+    )
     parser.add_argument("--fixture-segments")
     parser.add_argument("--material-ledger")
     parser.add_argument("--material-id")

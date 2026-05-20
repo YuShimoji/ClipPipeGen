@@ -188,3 +188,28 @@ python -m src.cli.main validate-transcript \
 URL / VOD を渡す CLI にはしない。URL 取得が必要な場合は、先に INT-02 `fetch-source-audio` または `fetch-source-video` でローカル素材を作り、必要なら `material_ledger` に登録してから `transcribe-audio` に渡す。
 
 INT-02a の標準 source audio は `episodes/<episode_id>/materials/<material_id>/source.wav`（PCM WAV / mono / 16kHz / 16-bit）で、ledger entry は `kind="source_audio"` / `subkind="wav_pcm_16k_mono"` / `intended_uses=["editing_audio"]` を持つ。`transcribe-audio --material-id <id>` はこの ledger entry を確認し、`transcript.source_audio.material_id` に接続する。
+
+## Provider / model 採用状況
+
+| Provider | engine value | language | 状態 | Model path 例 | Slice |
+|---|---|---|---|---|---|
+| fake fixture | `fake` | any | implemented | （CLI で `--fixture-segments` を渡す） | ED-07 |
+| Vosk EN | `vosk` | `en` | implemented | `_tmp/stt_models/vosk-model-small-en-us-0.15` | ED-07b |
+| Vosk JP | `vosk` | `ja` | implemented | `_tmp/stt_models/vosk-model-small-ja-0.22` | JP-STT-01 |
+| whisper.cpp | `whisper-cpp` | any | proposed | — | future |
+| OpenAI Whisper | `whisper` | any | proposed | — | future |
+
+### Vosk JP smoke
+
+operator runbook: [JP_STT_SMOKE.md](../../JP_STT_SMOKE.md)（model 入手 / 日本語 audio source 候補 / smoke 手順 / readback / トラブルシュート）
+
+### Language ↔ Model 一貫性（既知の design intent）
+
+CLI は `--language` と `--model` の言語が一致しているかを検証しない。`--language` は `transcript.language` / `stt.params.language` の metadata readback として使われ、`--model` は実 STT 実行に使われる。operator が明示的に一致させる責任を持つ。
+
+不一致時（例: `--language ja --model <EN model>`）の挙動:
+- transcript は `language=ja` で記録される（CLI の defaulted 値）
+- 実 STT 出力は model 言語（EN）で生成される
+- 結果として `language` と `segments[].text` が乖離する
+
+これを CLI レベルで検出する slice は **ED-07c** として proposed。それまでは operator が `JP_STT_SMOKE.md` の手順通り、JP model 利用時は `--language ja` を明示する運用で対応する。

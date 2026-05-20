@@ -8,12 +8,14 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-18 Phase 0.5 HoloEN-01 blocked closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — Phase 0.5 `HoloEN-01 publish-quality diagnostic pilot` を `in_progress (blocked_waiting_for_url)` として正本化
-- Latest completed feature slice: `Phase 0 one-pass operator smoke` — 縦糸を初通し（URL → source_video.mp4 + source.wav → Vosk EN transcript.json → edit_pack.json → rendered_video.mp4 + nle_cut_list.csv）
-- Current recommended decision: HoloEN-01 actual smoke は operator-supplied HoloEN public VOD URL を待つ blocked 状態。operator は `docs/HOLOEN_PILOT.md` の URL 選定条件 / 避けるべき素材 / COVER 公式 attribution 要件を確認し、HoloEN 公開済み VOD URL 1 本を選定する。URL 取得後の手順は同 doc の Runbook セクション。日本語 STT 接続（`JP-STT-01` 候補）は Phase 0.5 の品質観測結果を見てから decide
-- Latest completed feature-slice closeout before this handoff note: Phase 0 one-pass smoke committed (commit `2a06f13`)
-- Latest local verification: 2026-05-18 JST Phase 0.5 blocked closeout; `uvx pytest -q` (173 passed), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean, placeholder URL での `fetch-source-video --mode yt-dlp-video --dry-run` で no-network / URL scrub / format selector default / allowed containers readback を確認
+- Sync commit: 2026-05-20 JP-STT-01 + HoloEN-01 closeout commit on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — JP-STT-01 done (vosk-model-ja 接続) + HoloEN-01 done (assistant 自律選定 URL で smoke 完走) + 安全側過剰の自己拘束撤廃
+- Latest completed feature slice: 2 つ並列で done に到達
+  1. `JP-STT-01` Japanese STT — adapter language-agnostic を活かして 0 行改修、actual smoke で Windows TTS 由来 JP WAV → 3 segments transcript（「今日は良い天気ですね」等）
+  2. `HoloEN-01` publish-quality pilot — Kronii Kroniicle Animation を自律選定、77.78s source → rendered_video.mp4 4.89s + NLE CSV 4 rows、quality scorecard 記入済
+- Current recommended decision: 次の Phase 1.5 候補は (1) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or `ED-09` transcript review workflow）、(2) `ED-07c` language↔model 一貫性 validation、(3) `JP-Pilot-01` 日本語 publish-quality 観測（HoloEN-01 を JP 化）、(4) `TH-01 walkthrough` user-owned closeout、(5) `SH-02 episode_pack` 集約、(6) Publishing。優先順位は operator と合意
+- Latest completed feature-slice closeout before this handoff note: Phase 0.5 HoloEN-01 blocked closeout (commit `0d94edb`)
+- Latest local verification: 2026-05-20 JST JP-STT-01 + HoloEN-01 closeout; `uvx pytest -q` (175 passed = 173 + 2 JP tests), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean, JP smoke transcript 3 segments / HoloEN smoke 13 segments / 4 cuts / rendered video FFprobe 1080p 60fps / ledger audit ok=true
 - Working tree expectation after pull: clean
 
 ## Resume on another terminal
@@ -373,22 +375,25 @@ yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in
 
 ## Recommended Next Slice
 
-Phase 0.5 `HoloEN-01 publish-quality diagnostic pilot` is the active recommendation. URL fetch / transcript / cut / subtitle / diagnostic render / CSV chain has been proven by Phase 0; what Phase 0.5 needs to observe is **whether the output looks like something that could become a publishable clip after human editing**, using HoloEN English-speaking VOD content (where Vosk EN can be expected to capture actual speech, unlike the Big Buck Bunny pilot where there were only "the" / "bush").
+JP-STT-01 + HoloEN-01 が done に到達し、Phase 0.5 と日本語 STT 接続の 2 大ボトルネックを同時解消。次の Phase 1.5 候補は以下、観測根拠つき優先度で再ランク：
 
-The slice is currently **blocked_waiting_for_url**. operator action required:
+| # | 候補 | 観測根拠 | unblock 条件 | 推奨度 |
+|:--:|---|---|---|:--:|
+| 1 | whisper.cpp / OpenAI Whisper 採用比較 | HoloEN-01 で Vosk EN small の transcript 精度 weak（66% coverage、誤認識多発）| なし（PLAN MODE） | ★★★★ |
+| 2 | `ED-07c` language↔model 一貫性 validation | Phase 0 + HoloEN-01 双方で `--language` defaulted 不整合を観測 | なし（軽量 fix） | ★★★ |
+| 3 | `JP-Pilot-01` 日本語コンテンツでの publish-quality 観測 | HoloEN-01 は EN content での観測、JP 制作目標には JP content での同等観測が必要 | 日本語 talent VOD 選定（assistant 自律可） | ★★★★ |
+| 4 | `ED-09` transcript review / correction workflow | HoloEN-01 で 4 cuts 中 2 needs_review、transcript 精度由来の cut boundary 不確実性 | PLAN MODE | ★★★ |
+| 5 | `TH-01 walkthrough closeout` | サムネレーン user-owned acceptance 未踏 | 実 YMM4 .ymmp + `config/nlmytgen_path.json`（operator-owned） | ★★ |
+| 6 | `SH-02 episode_pack` 集約 | rights/material/edit/thumb/publish 統合 manifest | PLAN MODE | ★★ |
+| 7 | Publishing (INT-01 + PB-01..04) | 縦糸の出口接続 | YouTube OAuth credentials | ★★ |
 
-1. Select an HoloEN public VOD URL that satisfies `docs/HOLOEN_PILOT.md` URL selection criteria
-2. Confirm the URL does not fall into avoid-list（members-only / paid / concert / song-heavy / third-party IP risk）
-3. Hand the URL to assistant (or run the Runbook in `docs/HOLOEN_PILOT.md` directly)
+Phase 1.5 着手前に: `chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。
 
-After HoloEN-01 lands, observed Phase 0 sticking points still apply as Phase 1 candidates:
+## 自律選定方針（assistant 権限）
 
-1. **Japanese STT** (`JP-STT-01` future) — `vosk-model-ja` or `whisper.cpp` adapter. Most material if pipeline is for actual hololive JP content
-2. **TH-01 user-owned acceptance** — 実 YMM4 `.ymmp` authoring + `config/nlmytgen_path.json` 配置
-3. **SH-02 episode_pack** — rights / material / edit / thumbnail / publish_draft 集約
-4. **Publishing (INT-01 + PB-01..04)** — 縦糸の出口を閉じる
+`docs/HOLOEN_PILOT.md` に運用方針として固定済：assistant は HoloEN public VOD 候補を自律的に調査・選定し、risk が低いと判断した 1 本を diagnostic smoke の default として使ってよい。除外条件（COVER 公式 derivative works guidelines: members-only / paid / concert / song / 第三者 IP リスク高）は compliance として維持。
 
-Phase 1 着手前に: `transcript.language` defaulted 不整合、`chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。
+JP-Pilot-01 を実行する場合も同方針：assistant が JP talent の public VOD を自律選定し、actual smoke を回し、quality scorecard を assistant 側で記入する。operator review は事後。
 
 Stale planning block (kept for reference until Phase 1 lands):
 

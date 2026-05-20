@@ -37,6 +37,38 @@ def test_transcribe_vosk_with_injected_provider_returns_real_segments(tmp_path: 
     ]
 
 
+def test_transcribe_vosk_jp_language_passes_through_to_params(tmp_path: Path):
+    """JP-STT-01: vosk adapter is language-agnostic; ja must flow through to params."""
+    audio_path = tmp_path / "source.wav"
+    model_path = tmp_path / "vosk-model-small-ja-0.22"
+    model_path.mkdir()
+    _write_mono_wav(audio_path)
+
+    result = transcribe_vosk(
+        source_audio_path=audio_path,
+        model_path=model_path,
+        language="ja",
+        vosk_module=_FakeVosk,
+    )
+
+    # adapter behavior is identical to EN; only language metadata changes.
+    assert result.engine_version == "fake-vosk-test"
+    assert result.model_readback.endswith("vosk-model-small-ja-0.22")
+    assert result.params["provider"] == "vosk"
+    assert result.params["language"] == "ja"
+    assert result.params["model_path"].endswith("vosk-model-small-ja-0.22")
+    assert result.params["word_timing"] is True
+    # segments structure is language-agnostic; _FakeVosk returns the same fixture text.
+    assert result.segments == [
+        {
+            "start_seconds": 0.1,
+            "end_seconds": 0.8,
+            "text": "real speech",
+            "confidence": 0.825,
+        }
+    ]
+
+
 def test_preflight_vosk_reports_missing_model_without_fixture_fallback(tmp_path: Path):
     audio_path = tmp_path / "source.wav"
     _write_mono_wav(audio_path)
