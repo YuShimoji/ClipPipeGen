@@ -7,7 +7,7 @@
 ## このスライスの境界
 
 - **やる**: vosk-model-ja を使った日本語音声 → `transcript.json` の plumbing proof
-- **やらない**: STT 品質評価、話者分離、transcript correction UI、日本語字幕 typography polish、production render acceptance、HoloEN-01 を JP 化した publish-quality 観測（別 slice）、`--language` / `--model` 一貫性 validation（ED-07c future）、whisper.cpp / OpenAI Whisper 等の他 provider、GUI button、Publishing
+- **やらない**: STT 品質評価、話者分離、transcript correction UI、日本語字幕 typography polish、production render acceptance、HoloEN-01 を JP 化した publish-quality 観測（別 slice）、whisper.cpp / OpenAI Whisper 等の他 provider、GUI button、Publishing
 
 ## Model 入手
 
@@ -142,7 +142,7 @@ readback 後は ignored `episodes/<EP>/transcript.json` を覗いて `segments[]
 5. Windows TTS（または同等の JP audio source）で生成した日本語 WAV を input に `transcribe-audio --engine vosk --language ja --model <jp path>` が exit 0
 6. `transcript.json` の上記 readback 項目が期待通り
 7. `production_candidate=false` 維持、すべての smoke artifact は ignored `episodes/jp_stt_smoke_<date>/` 配下
-8. docs（FEATURE_REGISTRY / RUNTIME_STATE / HANDOFF / README）を JP-STT-01 done、HoloEN-01 hold、ED-07c proposed の状態に更新
+8. docs（FEATURE_REGISTRY / RUNTIME_STATE / HANDOFF / README）を JP-STT-01 done と HoloEN-01 done の状態に更新
 9. commit + push `origin/main`
 
 ## トラブルシュート
@@ -159,7 +159,7 @@ readback 後は ignored `episodes/<EP>/transcript.json` を覗いて `segments[]
 
 | ID 候補 | 概要 |
 |---|---|
-| **ED-07c** | `--language` と `--model` の一貫性 validation（model path basename から language 推定 → mismatch 時 warn / error） |
+| **ED-07c** | done。`transcribe-audio --engine vosk` は model path basename から infer できる言語と `--language` を照合し、不一致なら transcript を書かずに失敗する |
 | **JP-Pilot-01** | HoloEN-01 を JP 化リスコープした publish-quality diagnostic pilot（日本語コンテンツでの投稿品質観測） |
 | transcript correction UI | operator が日本語 transcript を手で直す GUI |
 | JP 字幕 typography / safe-area / font polish | OUT-01 系の next slice |

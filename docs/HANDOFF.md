@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-18 JST
+Last updated: 2026-05-25 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
 
@@ -8,14 +8,15 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: 2026-05-20 JP-STT-01 + HoloEN-01 closeout commit on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — JP-STT-01 done (vosk-model-ja 接続) + HoloEN-01 done (assistant 自律選定 URL で smoke 完走) + 安全側過剰の自己拘束撤廃
-- Latest completed feature slice: 2 つ並列で done に到達
-  1. `JP-STT-01` Japanese STT — adapter language-agnostic を活かして 0 行改修、actual smoke で Windows TTS 由来 JP WAV → 3 segments transcript（「今日は良い天気ですね」等）
-  2. `HoloEN-01` publish-quality pilot — Kronii Kroniicle Animation を自律選定、77.78s source → rendered_video.mp4 4.89s + NLE CSV 4 rows、quality scorecard 記入済
-- Current recommended decision: 次の Phase 1.5 候補は (1) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or `ED-09` transcript review workflow）、(2) `ED-07c` language↔model 一貫性 validation、(3) `JP-Pilot-01` 日本語 publish-quality 観測（HoloEN-01 を JP 化）、(4) `TH-01 walkthrough` user-owned closeout、(5) `SH-02 episode_pack` 集約、(6) Publishing。優先順位は operator と合意
+- Sync commit: ED-07c language/model validation closeout on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — ED-07c done。`transcribe-audio --engine vosk` が inferable Vosk model language と `--language` の不一致を dry-run / actual とも拒否し、JP/EN transcript metadata の誤読を防ぐ
+- Latest completed feature slice: `ED-07c` language↔model consistency validation
+  1. `vosk-model-small-en-us-0.15` + `--language ja` のような mismatch は transcript を書く前に失敗
+  2. 推定不能な model 名は warning-only とし、`stt.params.language_model_check` に readback
+  3. `JP-STT-01` と `HoloEN-01` は引き続き done。JP/STT と HoloEN pilot の成果は保持
+- Current recommended decision: 次の Phase 1.5 候補は (1) `JP-Pilot-01` 日本語 publish-quality 観測（HoloEN-01 を JP 化）、(2) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or `ED-09` transcript review workflow）、(3) `TH-01 walkthrough` user-owned closeout、(4) `SH-02 episode_pack` 集約、(5) Publishing。優先順位は operator と合意
 - Latest completed feature-slice closeout before this handoff note: Phase 0.5 HoloEN-01 blocked closeout (commit `0d94edb`)
-- Latest local verification: 2026-05-20 JST JP-STT-01 + HoloEN-01 closeout; `uvx pytest -q` (175 passed = 173 + 2 JP tests), `npm run smoke` / `npm run smoke:electron` `OK`, `git diff --check` clean, JP smoke transcript 3 segments / HoloEN smoke 13 segments / 4 cuts / rendered video FFprobe 1080p 60fps / ledger audit ok=true
+- Latest local verification: 2026-05-25 JST ED-07c closeout; `uvx pytest -q` (178 passed), `npm run smoke` / `npm run smoke:electron` OK, `git diff --check` clean.
 - Working tree expectation after pull: clean
 
 ## Resume on another terminal
@@ -30,7 +31,7 @@ git pull --ff-only origin main
 #   docs/FEATURE_REGISTRY.md
 ```
 
-To unblock HoloEN-01: operator selects an HoloEN public VOD URL that satisfies the selection criteria in `docs/HOLOEN_PILOT.md`, then follows the Runbook section starting at step 1 (`init-episode`).
+HoloEN-01 is already done. For a fresh pilot, assistant may self-select a low-risk public VOD following `docs/HOLOEN_PILOT.md`, or operator may supply a URL explicitly.
 
 Resume command:
 
@@ -155,7 +156,7 @@ Current state against that final shape:
 | Area | Current state | Remaining production gap |
 |---|---|---|
 | Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
-| Source video | Local video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | URL video acquisition is still future work |
+| Source video | Local video and URL video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
 | Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; ED-08 preserves `real_transcript` subtitle source and segment IDs in `edit_pack.subtitles[]` | Real transcript output is still unreviewed draft; transcript correction and creative edit acceptance are future work |
@@ -356,7 +357,6 @@ Readback from the visual evidence:
 
 Not implemented / not accepted yet:
 
-- URL video fetch / `yt-dlp-video`
 - FCPXML / Resolve XML export
 - GUI fetch button
 - GUI export button
@@ -371,21 +371,20 @@ Not implemented / not accepted yet:
 - rights hard gate
 - STT quality acceptance / transcript correction workflow / speaker diarization
 
-yt-dlp remains inside `asset_fetch` source-audio URL fetch. FFmpeg is allowed in `src/integrations/render/` only for OUT-01 diagnostic rendering, including OUT-01c diagnostic subtitle overlay, OUT-01d timing/filter readback, and OUT-01e real STT subtitle source readback, and in `src/integrations/asset_fetch/` for source-audio normalization; it must not enter STT, Editing core, GUI actions, URL video fetch, or production subtitle/render surfaces.
+yt-dlp remains inside `asset_fetch` source-audio/source-video URL fetch. FFmpeg is allowed in `src/integrations/render/` only for OUT-01 diagnostic rendering, including OUT-01c diagnostic subtitle overlay, OUT-01d timing/filter readback, and OUT-01e real STT subtitle source readback, and in `src/integrations/asset_fetch/` for source-audio normalization; it must not enter STT, Editing core, GUI actions, or production subtitle/render surfaces.
 
 ## Recommended Next Slice
 
-JP-STT-01 + HoloEN-01 が done に到達し、Phase 0.5 と日本語 STT 接続の 2 大ボトルネックを同時解消。次の Phase 1.5 候補は以下、観測根拠つき優先度で再ランク：
+ED-07c で STT の language/model metadata 不整合を入口で止めた。次の Phase 1.5 候補は以下、観測根拠つき優先度で再ランク：
 
 | # | 候補 | 観測根拠 | unblock 条件 | 推奨度 |
 |:--:|---|---|---|:--:|
-| 1 | whisper.cpp / OpenAI Whisper 採用比較 | HoloEN-01 で Vosk EN small の transcript 精度 weak（66% coverage、誤認識多発）| なし（PLAN MODE） | ★★★★ |
-| 2 | `ED-07c` language↔model 一貫性 validation | Phase 0 + HoloEN-01 双方で `--language` defaulted 不整合を観測 | なし（軽量 fix） | ★★★ |
-| 3 | `JP-Pilot-01` 日本語コンテンツでの publish-quality 観測 | HoloEN-01 は EN content での観測、JP 制作目標には JP content での同等観測が必要 | 日本語 talent VOD 選定（assistant 自律可） | ★★★★ |
-| 4 | `ED-09` transcript review / correction workflow | HoloEN-01 で 4 cuts 中 2 needs_review、transcript 精度由来の cut boundary 不確実性 | PLAN MODE | ★★★ |
-| 5 | `TH-01 walkthrough closeout` | サムネレーン user-owned acceptance 未踏 | 実 YMM4 .ymmp + `config/nlmytgen_path.json`（operator-owned） | ★★ |
-| 6 | `SH-02 episode_pack` 集約 | rights/material/edit/thumb/publish 統合 manifest | PLAN MODE | ★★ |
-| 7 | Publishing (INT-01 + PB-01..04) | 縦糸の出口接続 | YouTube OAuth credentials | ★★ |
+| 1 | `JP-Pilot-01` 日本語コンテンツでの publish-quality 観測 | ED-07c で JP/EN model mismatch を入口で止められるようになり、JP 制作目標に近い素材で pipeline 品質を測る準備が整った | 日本語 talent VOD 選定（assistant 自律可） | ★★★★★ |
+| 2 | whisper.cpp / OpenAI Whisper 採用比較 | HoloEN-01 で Vosk EN small の transcript 精度 weak（66% coverage、誤認識多発）| なし（PLAN MODE） | ★★★★ |
+| 3 | `ED-09` transcript review / correction workflow | HoloEN-01 で 4 cuts 中 2 needs_review、transcript 精度由来の cut boundary 不確実性 | PLAN MODE | ★★★ |
+| 4 | `TH-01 walkthrough closeout` | サムネレーン user-owned acceptance 未踏 | 実 YMM4 .ymmp + `config/nlmytgen_path.json`（operator-owned） | ★★ |
+| 5 | `SH-02 episode_pack` 集約 | rights/material/edit/thumb/publish 統合 manifest | PLAN MODE | ★★ |
+| 6 | Publishing (INT-01 + PB-01..04) | 縦糸の出口接続 | YouTube OAuth credentials | ★★ |
 
 Phase 1.5 着手前に: `chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。
 

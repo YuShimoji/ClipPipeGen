@@ -7,6 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from src.cli.transcribe_audio import _check_vosk_model_language
 from src.pipeline.material_ledger import compute_sha256
 from src.pipeline.transcript import (
     build_transcript,
@@ -227,6 +228,105 @@ def test_cli_transcribe_audio_vosk_dry_run_reports_preflight_failure(tmp_path: P
     assert payload["provider"] == "vosk"
     assert payload["real_transcript"] is True
     assert any("model directory not found" in issue.lower() for issue in payload["issues"])
+
+
+def test_vosk_model_language_check_detects_known_model_names():
+    en_check = _check_vosk_model_language(
+        language="en-US",
+        model="_tmp/stt_models/vosk-model-small-en-us-0.15",
+    )
+    jp_check = _check_vosk_model_language(
+        language="ja",
+        model="_tmp/stt_models/vosk-model-small-ja-0.22",
+    )
+    unknown_check = _check_vosk_model_language(language="ja", model="_tmp/stt_models/model")
+
+    assert en_check["status"] == "passed"
+    assert en_check["language_primary"] == "en"
+    assert en_check["model_language"] == "en"
+    assert jp_check["status"] == "passed"
+    assert jp_check["model_language"] == "ja"
+    assert unknown_check["status"] == "not_inferable"
+    assert unknown_check["warnings"]
+
+
+def test_cli_transcribe_audio_vosk_rejects_inferable_language_model_mismatch(tmp_path: Path):
+    audio_path = tmp_path / "source.wav"
+    model_path = tmp_path / "vosk-model-small-en-us-0.15"
+    transcript_path = tmp_path / "transcript.json"
+    model_path.mkdir()
+    _write_mono_wav(audio_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "transcribe-audio",
+            "--episode-id",
+            "ep_tr_cli_vosk_mismatch",
+            "--source-audio",
+            str(audio_path),
+            "--output",
+            str(transcript_path),
+            "--language",
+            "ja",
+            "--engine",
+            "vosk",
+            "--model",
+            str(model_path),
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "does not match inferred Vosk model language 'en'" in result.stderr
+    assert not transcript_path.exists()
+
+
+def test_cli_transcribe_audio_vosk_dry_run_reports_language_model_mismatch(
+    tmp_path: Path,
+):
+    audio_path = tmp_path / "source.wav"
+    model_path = tmp_path / "vosk-model-small-ja-0.22"
+    model_path.mkdir()
+    _write_mono_wav(audio_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "transcribe-audio",
+            "--episode-id",
+            "ep_tr_cli_vosk_mismatch",
+            "--source-audio",
+            str(audio_path),
+            "--output",
+            str(tmp_path / "transcript.json"),
+            "--language",
+            "en",
+            "--engine",
+            "vosk",
+            "--model",
+            str(model_path),
+            "--dry-run",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    payload = json.loads(result.stdout)
+    assert payload["preflight_ok"] is False
+    assert payload["language_model_check"]["status"] == "failed"
+    assert payload["language_model_check"]["model_language"] == "ja"
+    assert any("does not match inferred Vosk model language" in i for i in payload["issues"])
 
 
 def test_cli_validate_transcript_json(tmp_path: Path):

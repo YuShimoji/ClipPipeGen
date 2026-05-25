@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -40,8 +41,9 @@ def run(argv: list[str]) -> int:
         default="ja",
         help=(
             'BCP-47 language tag recorded in transcript metadata (e.g. "en", "ja"). '
-            'Default "ja". Must match the language of --model for meaningful '
-            "transcription; CLI does not validate this (see ED-07c future slice)."
+            'Default "ja". For Vosk models, the CLI validates this against an '
+            "inferable model language such as vosk-model-small-en-us-0.15 or "
+            "vosk-model-small-ja-0.22."
         ),
     )
     parser.add_argument("--engine", choices=("fake", "vosk"))
@@ -207,20 +209,28 @@ def _build_transcript(
     if engine == "vosk":
         if not model:
             raise ValueError("--model is required for --engine vosk")
+        language_check = _check_vosk_model_language(language=language, model=model)
+        if language_check["issues"]:
+            raise ValueError(language_check["issues"][0])
         result = transcribe_vosk(
             source_audio_path=source_audio,
             model_path=Path(model),
             language=language,
         )
+        stt_params = dict(result.params)
+        stt_params["language_model_check"] = language_check["status"]
+        if language_check["model_language"]:
+            stt_params["model_language"] = language_check["model_language"]
         return build_transcript(
             **common,
             stt_engine="vosk",
             stt_provider="vosk",
             stt_engine_version=result.engine_version,
             stt_model=result.model_readback,
-            stt_params=result.params,
+            stt_params=stt_params,
             stt_warnings=[
                 *result.warnings,
+                *language_check["warnings"],
                 "real STT plumbing proof only; transcript quality is not creative acceptance",
             ],
             segments=result.segments,
@@ -246,14 +256,31 @@ def _dry_run_payload(
         if not fixture_segments:
             issues.append("--fixture-segments is required for --engine fake")
         provider_payload = {"provider": "fake", "fixture_segments": fixture_segments}
+        language_check = _empty_language_model_check(
+            status="not_applicable",
+            language=language,
+            model=model,
+        )
     elif engine == "vosk":
         if not model:
             issues.append("--model is required for --engine vosk")
+            language_check = _empty_language_model_check(
+                status="not_checked",
+                language=language,
+                model=model,
+            )
         else:
+            language_check = _check_vosk_model_language(language=language, model=model)
+            issues.extend(language_check["issues"])
             provider_payload = preflight_vosk(source_audio_path=source_audio, model_path=Path(model))
             issues.extend(provider_payload["issues"])
     else:
         issues.append(f"unsupported engine: {engine}")
+        language_check = _empty_language_model_check(
+            status="not_applicable",
+            language=language,
+            model=model,
+        )
     audio_info = try_read_wav_info(source_audio)
     return {
         "preflight_ok": not issues,
@@ -268,8 +295,96 @@ def _dry_run_payload(
         "material_id": material_id,
         "audio": audio_info.to_dict() if audio_info else None,
         "provider_preflight": provider_payload,
+        "language_model_check": language_check,
         "issues": issues,
     }
+
+
+def _check_vosk_model_language(*, language: str, model: str) -> dict[str, Any]:
+    language_primary = _primary_language(language)
+    model_language = _infer_vosk_model_language(Path(model))
+    if model_language is None:
+        return _empty_language_model_check(
+            status="not_inferable",
+            language=language,
+            model=model,
+            warnings=[
+                (
+                    "could not infer Vosk model language from --model; ensure "
+                    f"--language {language!r} matches the selected model"
+                )
+            ],
+        )
+    if language_primary != model_language:
+        return _empty_language_model_check(
+            status="failed",
+            language=language,
+            model=model,
+            model_language=model_language,
+            issues=[
+                (
+                    f"--language {language!r} does not match inferred Vosk model "
+                    f"language {model_language!r} from --model {model!r}; pass "
+                    f"--language {model_language} or choose a matching model"
+                )
+            ],
+        )
+    return _empty_language_model_check(
+        status="passed",
+        language=language,
+        model=model,
+        model_language=model_language,
+    )
+
+
+def _empty_language_model_check(
+    *,
+    status: str,
+    language: str,
+    model: str | None,
+    model_language: str | None = None,
+    issues: list[str] | None = None,
+    warnings: list[str] | None = None,
+) -> dict[str, Any]:
+    return {
+        "status": status,
+        "language": language,
+        "language_primary": _primary_language(language),
+        "model": model,
+        "model_language": model_language,
+        "issues": issues or [],
+        "warnings": warnings or [],
+    }
+
+
+def _primary_language(language: str) -> str:
+    return re.split(r"[-_]", language.strip().lower(), maxsplit=1)[0]
+
+
+def _infer_vosk_model_language(model_path: Path) -> str | None:
+    tokens = [token for token in re.split(r"[-_.]+", model_path.name.lower()) if token]
+    try:
+        model_index = tokens.index("model")
+    except ValueError:
+        return None
+    descriptors = {
+        "android",
+        "big",
+        "grammar",
+        "large",
+        "lgraph",
+        "portable",
+        "server",
+        "small",
+        "speaker",
+        "spk",
+    }
+    for token in tokens[model_index + 1 :]:
+        if token in descriptors:
+            continue
+        if len(token) == 2 and token.isalpha():
+            return token
+    return None
 
 
 def _print_payload(payload: dict[str, Any], *, fmt: str) -> None:

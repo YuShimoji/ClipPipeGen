@@ -42,9 +42,16 @@
 
 ### lane / slice
 
-- **current_lane**: Slice 2 + Phase 0.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-08 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** done。samples runnable
-- **current_slice**: Phase 0.5 + JP-STT-01 closeout — `JP-STT-01` で Vosk JP model (`vosk-model-small-ja-0.22`) を既存 language-agnostic adapter で動作確認、Windows TTS 経由 actual smoke で「今日は良い天気ですね」等を正しく transcribe。`HoloEN-01` で assistant 自律選定 URL（<https://www.youtube.com/watch?v=D4i4fjs9PWc> Kronii Wisdom Teeth Removal Woes）から rendered_video.mp4 + NLE CSV まで full pipeline 完走、quality scorecard 記入済。安全側過剰の自己拘束（assistant は URL を勝手に選定しない / actual smoke は user-supplied URL を待つ）を撤廃し、INVARIANTS "rights は readback、hard gate にしない" と整合した運用に揃えた
-- **next_action（assistant 側）**: Phase 0.5 と JP-STT-01 done で 2 つの主要ボトルネック（日本語 STT 接続 / HoloEN publish-quality 早期診断）を同時に解消。次の Phase 1.5 候補は (1) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or ED-09 transcript review workflow）、(2) `ED-07c` language↔model 一貫性 validation、(3) `JP-Pilot-01` 日本語コンテンツでの publish-quality 観測（HoloEN-01 を JP 化）、(4) `TH-01 walkthrough` user-owned acceptance、(5) `SH-02 episode_pack` 集約、(6) Publishing (INT-01 + PB-01..04)。優先順位は operator と合意
+- **current_lane**: Slice 2 + Phase 1.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-07c / ED-08 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** done。samples runnable
+- **current_slice**: Phase 1.5 ED-07c closeout — `transcribe-audio --engine vosk` が `vosk-model-small-en-us-0.15` / `vosk-model-small-ja-0.22` のような model path basename から primary language を推定し、`--language` と不一致なら dry-run / actual とも失敗する。推定不能な model 名は warning-only とし、actual transcript では `stt.params.language_model_check` / `stt.params.model_language` に readback する。これにより Phase 0 で観測された "EN model + defaulted language=ja" の metadata 乖離を入口で防ぐ。
+- **next_action（assistant 側）**: ED-07c で JP/EN STT 比較の前提が締まったため、次は (1) `JP-Pilot-01` 日本語 public VOD で publish-quality 観測、(2) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or ED-09 transcript review workflow）、(3) `TH-01 walkthrough` user-owned acceptance、(4) `SH-02 episode_pack` 集約、(5) Publishing (INT-01 + PB-01..04) の順で候補化する。GUI fetch/render button はまだ後回し。
+
+### Phase 1.5 (i) ED-07c done（language/model consistency validation）
+
+- `src/cli/transcribe_audio.py` — Vosk model path basename を token 化し、`vosk-model-small-en-us-0.15` → `en`、`vosk-model-small-ja-0.22` → `ja` のように primary language を推定。`--language` の primary tag と不一致なら `transcribe-audio failed` として transcript を書かない。`--dry-run --format json` は `language_model_check.status=failed` と issues を返す。
+- 推定不能な model 名（例: `model`）は hard failure にせず warning として `stt.warnings[]` に残す。provider/model 命名が project 外で揺れる余地を残しつつ、既知の Vosk model mismatch は止める。
+- `tests/test_transcript.py` — EN/JP model inference、actual mismatch refusal、dry-run mismatch readback を追加。targeted STT/transcript tests は 18 passed。
+- docs — `docs/SCHEMAS/v1/transcript.md` の JP example と Language ↔ Model 節を ED-07c 実装後の正本へ更新。`docs/JP_STT_SMOKE.md` の future 扱いを撤回し、HoloEN / asset_fetch 周辺の古い "user-supplied URL 待ち" / "URL video fetch future" 表現を実装済み状態へ寄せた。
 
 ### Phase 0.5 (ii) HoloEN-01 done + JP-STT-01 done（assistant 自律選定 + 日本語 STT 接続）
 
@@ -68,7 +75,7 @@ Quality scorecard: 技術全 pass、制作 weak（STT 精度限界、cut boundar
 観測された次の判断点:
 - STT 精度: Vosk EN small model は HoloEN voice acting tone でも改善余地大。whisper.cpp / OpenAI Whisper 比較が next bottleneck
 - Cut boundary: 4/2 が needs_review。context check 閾値調整 or ED-09 transcript review workflow
-- ED-07c: language↔model 一貫性 validation を future proposed として起票（Phase 0 + HoloEN-01 双方で観測された不整合の根本対処）
+- ED-07c: language↔model 一貫性 validation は done。Phase 0 + HoloEN-01 双方で観測された不整合の根本対処として、推定可能な Vosk model mismatch を入口で止める。
 
 ### Phase 0.5 (i) HoloEN-01 in_progress（publish-quality diagnostic pilot — blocked_waiting_for_url）
 
@@ -111,7 +118,7 @@ Phase 0 で観測された詰まり所（Phase 1 候補）:
 
 - **STT × コンテンツのミスマッチ**: Big Buck Bunny は主にアニメ + 音楽で英語台詞ほぼ無し。`vosk-model-small-en-us-0.15` は 596.48 秒の入力から計 1.11 秒分（"the" / "bush"）しか認識しなかった。これは "real STT 接続が動く" 証拠であると同時に、**creative acceptable な subtitle のためには日本語 model + 日本語コンテンツが必要** であることの実証
 - **環境依存**: yt-dlp / ffmpeg は user-scope winget install で揃えられた。Vosk は `uv tool install vosk` + `uvx --with vosk` 経由で実行できたが、Vosk model は手動 download（`alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip` → `_tmp/stt_models/`）
-- **`transcript.language` の不整合**: `--language` 未指定で defaulted `ja` のまま English model を使ったため、`transcript.language=ja` が記録された。English model 使用時に language readback を一致させる軽い修正余地
+- **`transcript.language` の不整合**: `--language` 未指定で defaulted `ja` のまま English model を使ったため、`transcript.language=ja` が記録された。これは ED-07c で修正済みで、推定可能な Vosk EN model + `--language ja` は transcript を書く前に失敗する
 - **`chosen_format` readback の archive.org extractor 限界**（INT-02h closeout で既記録）
 
 Phase 1 候補（観測根拠つき優先度）:

@@ -9,6 +9,7 @@ Speech-to-text の出力 artifact。ローカル音声ファイルを `transcrib
 - `transcribe-audio` は **既存のローカル音声ファイル**を入力にして `transcript.json` を生成する。
 - VOD / URL からの音声・動画取得は `transcribe-audio` に含めない。取得は INT-02 `asset_fetch`（`fetch-source-audio` / `fetch-source-video`）の責務。
 - ED-07 初期の `fake` engine は fixture / deterministic test 用に残す。ED-07b では optional provider として `vosk` adapter を追加し、明示された model path で実 `source.wav` から transcript を生成できる。provider / model が無い場合は preflight failure にし、fixture へ fallback しない。
+- ED-07c では Vosk model path の basename から言語を推定できる場合に `--language` と照合する。推定できる不一致は dry-run / actual とも失敗し、推定不能な model 名は warning に留める。
 - source audio の rights / sidecar / ledger 情報は readback と判断材料であり、値だけで transcript 生成を止める hard gate にはしない。
 
 ## ファイル形式
@@ -36,10 +37,12 @@ JSON。配置は `episodes/<episode_id>/transcript.json`。
     "engine": "vosk",
     "provider": "vosk",
     "engine_version": "unknown",
-    "model": "_tmp/stt_models/vosk-model-small-en-us-0.15",
+    "model": "_tmp/stt_models/vosk-model-small-ja-0.22",
     "params": {
       "language": "ja",
-      "model_path": "_tmp/stt_models/vosk-model-small-en-us-0.15",
+      "model_path": "_tmp/stt_models/vosk-model-small-ja-0.22",
+      "language_model_check": "passed",
+      "model_language": "ja",
       "word_timing": true
     },
     "started_at": "2026-05-08T12:00:00+09:00",
@@ -203,13 +206,14 @@ INT-02a の標準 source audio は `episodes/<episode_id>/materials/<material_id
 
 operator runbook: [JP_STT_SMOKE.md](../../JP_STT_SMOKE.md)（model 入手 / 日本語 audio source 候補 / smoke 手順 / readback / トラブルシュート）
 
-### Language ↔ Model 一貫性（既知の design intent）
+### Language ↔ Model 一貫性（ED-07c）
 
-CLI は `--language` と `--model` の言語が一致しているかを検証しない。`--language` は `transcript.language` / `stt.params.language` の metadata readback として使われ、`--model` は実 STT 実行に使われる。operator が明示的に一致させる責任を持つ。
+CLI は `--language` と `--model` の言語が一致しているかを、Vosk model path の basename から推定できる範囲で検証する。`--language` は `transcript.language` / `stt.params.language` の metadata readback として使われ、`--model` は実 STT 実行に使われるため、ここがズレると downstream の字幕・cut 評価が誤読される。
 
-不一致時（例: `--language ja --model <EN model>`）の挙動:
-- transcript は `language=ja` で記録される（CLI の defaulted 値）
-- 実 STT 出力は model 言語（EN）で生成される
-- 結果として `language` と `segments[].text` が乖離する
+検証例:
+- `--language en --model _tmp/stt_models/vosk-model-small-en-us-0.15` → `passed`
+- `--language ja --model _tmp/stt_models/vosk-model-small-ja-0.22` → `passed`
+- `--language ja --model _tmp/stt_models/vosk-model-small-en-us-0.15` → `failed`。CLI は `transcript.json` を書かない
+- `--language ja --model _tmp/stt_models/model` → `not_inferable`。warning を `stt.warnings[]` に残し、operator が model と language の対応を確認する
 
-これを CLI レベルで検出する slice は **ED-07c** として proposed。それまでは operator が `JP_STT_SMOKE.md` の手順通り、JP model 利用時は `--language ja` を明示する運用で対応する。
+`stt.params.language_model_check` は `passed` / `not_inferable` のいずれかを readback する。Vosk の推定言語は推定できた場合のみ `stt.params.model_language` に残す。dry-run では mismatch の `failed` も `language_model_check` に出るが、actual run では transcript を書かずに失敗する。
