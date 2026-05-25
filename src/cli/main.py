@@ -17,6 +17,7 @@ Subcommands:
     validate-edit-pack       Validate edit_pack.json against schema v1.
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
     validate-transcript      Validate transcript.json against schema v1.
+    review-transcript        ED-09: apply human review/correction patch to transcript.json.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
     fetch-source-video       INT-02f: create/register source_video material.
@@ -50,6 +51,7 @@ from . import (
     patch_thumbnail,
     register_material,
     render_tiny_proof,
+    review_transcript,
     set_compliance,
     status_episode,
     transcribe_audio,
@@ -72,6 +74,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "validate-edit-pack": validate_edit_pack.run,
     "add-cut-candidate": add_cut_candidate.run,
     "validate-transcript": validate_transcript.run,
+    "review-transcript": review_transcript.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
     "fetch-source-video": fetch_source_video.run,

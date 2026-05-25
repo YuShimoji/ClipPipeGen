@@ -184,6 +184,13 @@ uvx --with vosk python -m src.cli.main transcribe-audio \
 python -m src.cli.main validate-transcript \
   --transcript samples/episode_example/transcript.json \
   --format json
+
+python -m src.cli.main review-transcript \
+  --transcript episodes/episode_example/transcript.json \
+  --patch episodes/episode_example/transcript_review_patch.json \
+  --reviewed-by user:operator \
+  --dry-run \
+  --format json
 ```
 
 `fake` engine は fixture segments を読み、ローカル音声ファイルの存在確認・sha256・STT readback を付けて transcript を生成する。`vosk` engine は optional dependency と model directory を明示して実行する local STT adapter で、repo に巨大依存や model を追加しない。`--dry-run --format json` は provider importability、model path、WAV 形式を preflight し、失敗時も fixture へ fallback しない。
@@ -191,6 +198,30 @@ python -m src.cli.main validate-transcript \
 URL / VOD を渡す CLI にはしない。URL 取得が必要な場合は、先に INT-02 `fetch-source-audio` または `fetch-source-video` でローカル素材を作り、必要なら `material_ledger` に登録してから `transcribe-audio` に渡す。
 
 INT-02a の標準 source audio は `episodes/<episode_id>/materials/<material_id>/source.wav`（PCM WAV / mono / 16kHz / 16-bit）で、ledger entry は `kind="source_audio"` / `subkind="wav_pcm_16k_mono"` / `intended_uses=["editing_audio"]` を持つ。`transcribe-audio --material-id <id>` はこの ledger entry を確認し、`transcript.source_audio.material_id` に接続する。
+
+### ED-09 review patch
+
+`review-transcript` は v1 patch JSON を `transcript.json` に適用する。v1 で変更できるのは `segments[].text`、`segments[].review_status`、`segments[].notes`、および top-level `review.status` / `review.notes` / `review.reviewed_by` だけ。segment timing、source audio、STT provider/model/readback は変更しない。
+
+```json
+{
+  "schema_version": "v1",
+  "segments": [
+    {
+      "id": "seg_000001",
+      "text": "corrected subtitle text",
+      "review_status": "accepted",
+      "notes": ["human corrected from Vosk output"]
+    }
+  ],
+  "review": {
+    "status": "needs_review",
+    "notes": ["correction pass 1"]
+  }
+}
+```
+
+`review.status="approved"` にする場合は `--reviewed-by` または patch 内 `review.reviewed_by` が必須で、全 segment が `accepted` または `rejected` でなければ失敗する。`--dry-run --format json` は `updated_segment_count`、`review_status`、`segment_review_counts`、`schema_ok`、`dry_run` を返し、ファイルを書き換えない。
 
 ## Provider / model 採用状況
 

@@ -7,6 +7,8 @@ URL/VOD fetch belongs to INT-02 asset_fetch.
 from __future__ import annotations
 
 import json
+from copy import deepcopy
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -17,6 +19,37 @@ SCHEMA_VERSION = "v1"
 
 VALID_SEGMENT_REVIEW_STATUSES = {"unreviewed", "accepted", "needs_fix", "rejected"}
 VALID_REVIEW_STATUSES = {"draft", "needs_review", "approved", "rejected"}
+SEGMENT_REVIEW_COUNT_KEYS = (
+    "unreviewed_count",
+    "accepted_count",
+    "needs_fix_count",
+    "rejected_count",
+    "unknown_count",
+)
+
+
+class TranscriptReviewError(Exception):
+    """Raised when an ED-09 review patch cannot be applied safely."""
+
+
+@dataclass(frozen=True)
+class TranscriptReviewResult:
+    transcript: dict[str, Any]
+    updated_segment_count: int
+    review_status: str
+    segment_review_counts: dict[str, int]
+    schema_issues: list[ValidationIssue]
+
+    def to_dict(self, *, dry_run: bool = False) -> dict[str, Any]:
+        return {
+            "schema_version": SCHEMA_VERSION,
+            "updated_segment_count": self.updated_segment_count,
+            "review_status": self.review_status,
+            "segment_review_counts": self.segment_review_counts,
+            "schema_ok": not self.schema_issues,
+            "schema_issues": [issue.to_dict() for issue in self.schema_issues],
+            "dry_run": dry_run,
+        }
 
 
 def load_transcript(path: str | Path) -> dict[str, Any]:
@@ -30,6 +63,89 @@ def save_transcript(transcript: dict[str, Any], path: str | Path) -> None:
     with p.open("w", encoding="utf-8") as f:
         json.dump(transcript, f, ensure_ascii=False, indent=2)
         f.write("\n")
+
+
+def apply_review_patch(
+    transcript: dict[str, Any],
+    patch: dict[str, Any],
+    *,
+    reviewed_by: str | None = None,
+) -> TranscriptReviewResult:
+    """Apply an ED-09 text/status/notes patch to transcript.json data.
+
+    v1 patches deliberately cannot change segment timing, source audio, or STT
+    provenance. They only make human review/correction state explicit.
+    """
+    if not isinstance(transcript, dict):
+        raise TranscriptReviewError("transcript must be an object")
+    if not isinstance(patch, dict):
+        raise TranscriptReviewError("patch must be an object")
+    if patch.get("schema_version") != SCHEMA_VERSION:
+        raise TranscriptReviewError("patch.schema_version must be 'v1'")
+
+    top_level_allowed = {"schema_version", "segments", "review"}
+    extra_top_level = sorted(set(patch) - top_level_allowed)
+    if extra_top_level:
+        raise TranscriptReviewError(
+            "unsupported patch field(s): " + ", ".join(extra_top_level)
+        )
+
+    updated = deepcopy(transcript)
+    segments_by_id = _segments_by_id(updated.get("segments"))
+    segment_patches = patch.get("segments", [])
+    if segment_patches is None:
+        segment_patches = []
+    if not isinstance(segment_patches, list):
+        raise TranscriptReviewError("patch.segments must be an array")
+
+    seen_patch_ids: set[str] = set()
+    for index, segment_patch in enumerate(segment_patches):
+        _apply_segment_review_patch(
+            segments_by_id,
+            segment_patch,
+            index=index,
+            seen_patch_ids=seen_patch_ids,
+        )
+
+    explicit_reviewer = _resolve_reviewer(patch.get("review"), reviewed_by)
+    if "review" in patch:
+        _apply_top_level_review_patch(
+            updated,
+            patch["review"],
+            reviewed_by=explicit_reviewer,
+        )
+
+    review = updated.setdefault("review", {})
+    review_status = review.get("status", "draft")
+    if review_status == "approved":
+        if not explicit_reviewer:
+            raise TranscriptReviewError(
+                "review.status=approved requires --reviewed-by or review.reviewed_by"
+            )
+        not_final = [
+            str(segment.get("id"))
+            for segment in updated.get("segments") or []
+            if isinstance(segment, dict)
+            and segment.get("review_status") not in {"accepted", "rejected"}
+        ]
+        if not_final:
+            raise TranscriptReviewError(
+                "review.status=approved requires every segment to be accepted or "
+                "rejected; remaining: "
+                + ", ".join(not_final)
+            )
+        review["reviewed_by"] = explicit_reviewer
+        review["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+
+    updated["updated_at"] = datetime.now(timezone.utc).isoformat()
+    issues = validate_transcript(updated)
+    return TranscriptReviewResult(
+        transcript=updated,
+        updated_segment_count=len(segment_patches),
+        review_status=review_status,
+        segment_review_counts=count_segment_review_statuses(updated.get("segments")),
+        schema_issues=issues,
+    )
 
 
 def build_transcript(
@@ -114,6 +230,134 @@ def normalize_segments(segments: list[dict[str, Any]]) -> list[dict[str, Any]]:
         item.setdefault("notes", [])
         normalized.append(item)
     return normalized
+
+
+def count_segment_review_statuses(segments: Any) -> dict[str, int]:
+    counts = {key: 0 for key in SEGMENT_REVIEW_COUNT_KEYS}
+    if not isinstance(segments, list):
+        return counts
+    for segment in segments:
+        if not isinstance(segment, dict):
+            counts["unknown_count"] += 1
+            continue
+        status = segment.get("review_status")
+        key = f"{status}_count"
+        if key in counts:
+            counts[key] += 1
+        else:
+            counts["unknown_count"] += 1
+    return counts
+
+
+def _segments_by_id(segments: Any) -> dict[str, dict[str, Any]]:
+    if not isinstance(segments, list):
+        raise TranscriptReviewError("transcript.segments must be an array")
+    out: dict[str, dict[str, Any]] = {}
+    for index, segment in enumerate(segments):
+        if not isinstance(segment, dict):
+            raise TranscriptReviewError(f"transcript.segments[{index}] must be an object")
+        segment_id = segment.get("id")
+        if not isinstance(segment_id, str) or not segment_id:
+            raise TranscriptReviewError(f"transcript.segments[{index}].id is required")
+        if segment_id in out:
+            raise TranscriptReviewError(f"duplicate transcript segment id: {segment_id}")
+        out[segment_id] = segment
+    return out
+
+
+def _apply_segment_review_patch(
+    segments_by_id: dict[str, dict[str, Any]],
+    patch: Any,
+    *,
+    index: int,
+    seen_patch_ids: set[str],
+) -> None:
+    if not isinstance(patch, dict):
+        raise TranscriptReviewError(f"patch.segments[{index}] must be an object")
+    allowed = {"id", "text", "review_status", "notes"}
+    extra = sorted(set(patch) - allowed)
+    if extra:
+        raise TranscriptReviewError(
+            f"patch.segments[{index}] has unsupported field(s): "
+            + ", ".join(extra)
+        )
+    segment_id = patch.get("id")
+    if not isinstance(segment_id, str) or not segment_id:
+        raise TranscriptReviewError(f"patch.segments[{index}].id is required")
+    if segment_id in seen_patch_ids:
+        raise TranscriptReviewError(f"duplicate patch segment id: {segment_id}")
+    seen_patch_ids.add(segment_id)
+    if segment_id not in segments_by_id:
+        raise TranscriptReviewError(f"unknown segment id in patch: {segment_id}")
+
+    target = segments_by_id[segment_id]
+    if "text" in patch:
+        if not isinstance(patch["text"], str) or not patch["text"].strip():
+            raise TranscriptReviewError(f"patch text for {segment_id} must be non-empty")
+        target["text"] = patch["text"]
+    if "review_status" in patch:
+        review_status = patch["review_status"]
+        if review_status not in VALID_SEGMENT_REVIEW_STATUSES:
+            raise TranscriptReviewError(
+                f"patch review_status for {segment_id} must be one of "
+                f"{sorted(VALID_SEGMENT_REVIEW_STATUSES)}"
+            )
+        target["review_status"] = review_status
+    if "notes" in patch:
+        target["notes"] = _require_string_list(
+            patch["notes"],
+            field=f"patch.segments[{index}].notes",
+        )
+
+
+def _apply_top_level_review_patch(
+    transcript: dict[str, Any],
+    review_patch: Any,
+    *,
+    reviewed_by: str | None,
+) -> None:
+    if not isinstance(review_patch, dict):
+        raise TranscriptReviewError("patch.review must be an object")
+    allowed = {"status", "reviewed_by", "notes"}
+    extra = sorted(set(review_patch) - allowed)
+    if extra:
+        raise TranscriptReviewError(
+            "patch.review has unsupported field(s): " + ", ".join(extra)
+        )
+    review = transcript.setdefault("review", {})
+    if "status" in review_patch:
+        status = review_patch["status"]
+        if status not in VALID_REVIEW_STATUSES:
+            raise TranscriptReviewError(
+                f"patch.review.status must be one of {sorted(VALID_REVIEW_STATUSES)}"
+            )
+        review["status"] = status
+    if "notes" in review_patch:
+        review["notes"] = _require_string_list(review_patch["notes"], field="patch.review.notes")
+    if reviewed_by:
+        review["reviewed_by"] = reviewed_by
+
+
+def _resolve_reviewer(review_patch: Any, cli_reviewed_by: str | None) -> str | None:
+    if cli_reviewed_by is not None:
+        stripped = cli_reviewed_by.strip()
+        if not stripped:
+            raise TranscriptReviewError("--reviewed-by must be a non-empty identifier")
+        return stripped
+    if isinstance(review_patch, dict) and "reviewed_by" in review_patch:
+        value = review_patch.get("reviewed_by")
+        if not isinstance(value, str) or not value.strip():
+            raise TranscriptReviewError("patch.review.reviewed_by must be non-empty")
+        return value.strip()
+    return None
+
+
+def _require_string_list(value: Any, *, field: str) -> list[str]:
+    if not isinstance(value, list):
+        raise TranscriptReviewError(f"{field} must be an array")
+    if not all(isinstance(item, str) for item in value):
+        raise TranscriptReviewError(f"{field} must contain only strings")
+    return list(value)
 
 
 def validate_transcript(transcript: dict[str, Any]) -> list[ValidationIssue]:

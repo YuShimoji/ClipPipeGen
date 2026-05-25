@@ -24,7 +24,11 @@ from .thumbnail_patch import (
     validate_thumbnail_patch_input,
 )
 from .edit_pack import load_edit_pack, validate_edit_pack
-from .transcript import load_transcript, validate_transcript
+from .transcript import (
+    count_segment_review_statuses,
+    load_transcript,
+    validate_transcript,
+)
 
 SCHEMA_VERSION = "v1"
 
@@ -187,6 +191,10 @@ def _fill_transcript_status(status: dict[str, Any], transcript_path: Path) -> No
         editing["transcript"] = {
             "state": "missing",
             "segments_count": 0,
+            "review_status": "missing",
+            "reviewed_by": None,
+            "reviewed_at": None,
+            "segment_review_counts": count_segment_review_statuses([]),
             "schema_issues_count": 0,
             "schema_issues": [],
         }
@@ -196,9 +204,14 @@ def _fill_transcript_status(status: dict[str, Any], transcript_path: Path) -> No
     transcript = load_transcript(transcript_path)
     issues = validate_transcript(transcript)
     segments = transcript.get("segments") if isinstance(transcript.get("segments"), list) else []
+    review = transcript.get("review") if isinstance(transcript.get("review"), dict) else {}
     editing["transcript"] = {
         "state": "ready" if not issues else "blocked",
         "segments_count": len(segments),
+        "review_status": review.get("status", "unknown"),
+        "reviewed_by": review.get("reviewed_by"),
+        "reviewed_at": review.get("reviewed_at"),
+        "segment_review_counts": count_segment_review_statuses(segments),
         "schema_issues_count": len(issues),
         "schema_issues": [i.to_dict() for i in issues],
         "engine": (transcript.get("stt") or {}).get("engine"),

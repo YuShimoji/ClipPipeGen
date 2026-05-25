@@ -10,6 +10,7 @@ from pathlib import Path
 
 from src.pipeline.edit_pack import build_skeleton, save_edit_pack
 from src.pipeline.nle_export import export_csv_cut_list
+from src.pipeline.transcript import apply_review_patch, build_transcript, save_transcript
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -105,6 +106,73 @@ def test_cli_export_nle_json_readback(tmp_path: Path):
     assert Path(payload["csv_cut_list"]).exists()
     assert Path(payload["manifest"]).exists()
     assert Path(payload["report"]).exists()
+
+
+def test_export_nle_respects_approved_transcript_review_status(tmp_path: Path):
+    episode_dir, edit_pack_path = _episode_fixture(tmp_path)
+    source_audio = episode_dir / "materials" / "src_audio_fixture" / "source.wav"
+    transcript = build_transcript(
+        "ep_ed06",
+        source_audio_path=str(source_audio).replace("\\", "/"),
+        material_id="src_audio_fixture",
+        source_audio_sha256="abc123",
+        source_audio_duration_seconds=20.0,
+        language="en",
+        stt_engine="vosk",
+        stt_provider="vosk",
+        stt_model="models/vosk-small",
+        segments=[
+            {
+                "id": "seg_001",
+                "start_seconds": 0.0,
+                "end_seconds": 8.0,
+                "text": "setup",
+            },
+            {
+                "id": "seg_002",
+                "start_seconds": 12.5,
+                "end_seconds": 15.0,
+                "text": "approved punchline",
+            },
+            {
+                "id": "seg_003",
+                "start_seconds": 15.0,
+                "end_seconds": 20.0,
+                "text": "approved finish",
+            },
+        ],
+        real_transcript=True,
+    )
+    review = apply_review_patch(
+        transcript,
+        {
+            "schema_version": "v1",
+            "segments": [
+                {"id": "seg_001", "review_status": "accepted"},
+                {"id": "seg_002", "review_status": "accepted"},
+                {"id": "seg_003", "review_status": "accepted"},
+            ],
+            "review": {"status": "approved"},
+        },
+        reviewed_by="user:reviewer",
+    )
+    transcript_path = episode_dir / "transcript.json"
+    save_transcript(review.transcript, transcript_path)
+
+    result = export_csv_cut_list(
+        edit_pack_path=edit_pack_path,
+        output_dir=episode_dir / "exports" / "ed06_reviewed",
+        transcript_path=transcript_path,
+        base_dir=tmp_path,
+    )
+
+    warnings = " | ".join(result["manifest"]["warnings"])
+    assert "real STT transcript is unreviewed" not in warnings
+    assert "real STT transcript review.status is approved" in warnings
+    assert result["manifest"]["source_refs"]["transcript"]["review_status"] == "approved"
+    assert result["manifest"]["source_refs"]["transcript"]["segment_review_counts"][
+        "accepted_count"
+    ] == 3
 
 
 def _episode_fixture(tmp_path: Path, *, selected: bool = True) -> tuple[Path, Path]:

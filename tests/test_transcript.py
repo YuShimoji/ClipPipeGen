@@ -7,9 +7,17 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from src.cli.transcribe_audio import _check_vosk_model_language
+from src.pipeline.context_check import check_cut_context
+from src.pipeline.cut_generation import generate_cut_candidates
+from src.pipeline.edit_pack import build_skeleton as build_edit_skeleton
 from src.pipeline.material_ledger import compute_sha256
+from src.pipeline.subtitle_generation import generate_subtitle_drafts
 from src.pipeline.transcript import (
+    TranscriptReviewError,
+    apply_review_patch,
     build_transcript,
     load_transcript,
     save_transcript,
@@ -127,6 +135,276 @@ def test_approved_review_requires_reviewer_and_time():
     codes = {i.code for i in issues}
     assert "TRANSCRIPT_REVIEWED_BY_MISSING" in codes
     assert "TRANSCRIPT_REVIEWED_AT_MISSING" in codes
+
+
+def test_apply_review_patch_updates_text_status_notes_and_preserves_provenance():
+    transcript = build_transcript(
+        "ep_review",
+        source_audio_path="episodes/ep_review/source.wav",
+        source_audio_sha256="sha",
+        source_audio_duration_seconds=3.0,
+        language="ja",
+        stt_engine="vosk",
+        stt_provider="vosk",
+        stt_model="_tmp/stt_models/vosk-model-small-ja-0.22",
+        segments=[
+            {"id": "seg_a", "start_seconds": 0.0, "end_seconds": 1.0, "text": "bad a"},
+            {"id": "seg_b", "start_seconds": 1.5, "end_seconds": 2.5, "text": "bad b"},
+        ],
+        real_transcript=True,
+    )
+    result = apply_review_patch(
+        transcript,
+        {
+            "schema_version": "v1",
+            "segments": [
+                {
+                    "id": "seg_a",
+                    "text": "corrected a",
+                    "review_status": "accepted",
+                    "notes": ["human correction"],
+                },
+                {"id": "seg_b", "review_status": "needs_fix"},
+            ],
+            "review": {"status": "needs_review", "notes": ["pass 1"]},
+        },
+    )
+
+    updated = result.transcript
+    assert transcript["segments"][0]["text"] == "bad a"
+    assert updated["segments"][0]["text"] == "corrected a"
+    assert updated["segments"][0]["review_status"] == "accepted"
+    assert updated["segments"][0]["notes"] == ["human correction"]
+    assert updated["segments"][1]["review_status"] == "needs_fix"
+    assert updated["review"]["status"] == "needs_review"
+    assert updated["review"]["notes"] == ["pass 1"]
+    assert updated["source_audio"]["sha256"] == "sha"
+    assert updated["stt"]["provider"] == "vosk"
+    assert result.updated_segment_count == 2
+    assert result.segment_review_counts["accepted_count"] == 1
+    assert result.segment_review_counts["needs_fix_count"] == 1
+    assert result.schema_issues == []
+
+
+@pytest.mark.parametrize(
+    ("patch", "message"),
+    [
+        (
+            {"schema_version": "v1", "segments": [{"id": "missing", "text": "x"}]},
+            "unknown segment id",
+        ),
+        (
+            {
+                "schema_version": "v1",
+                "segments": [
+                    {"id": "seg_000001", "review_status": "accepted"},
+                    {"id": "seg_000001", "review_status": "rejected"},
+                ],
+            },
+            "duplicate patch segment id",
+        ),
+        (
+            {
+                "schema_version": "v1",
+                "segments": [{"id": "seg_000001", "review_status": "done"}],
+            },
+            "review_status",
+        ),
+        (
+            {
+                "schema_version": "v1",
+                "segments": [
+                    {"id": "seg_000001", "text": " ", "review_status": "accepted"}
+                ],
+            },
+            "non-empty",
+        ),
+    ],
+)
+def test_apply_review_patch_rejects_unsafe_segment_patches(patch: dict, message: str):
+    with pytest.raises(TranscriptReviewError, match=message):
+        apply_review_patch(_valid_transcript(), patch)
+
+
+def test_apply_review_patch_approved_requires_reviewer_and_final_segment_statuses():
+    transcript = _valid_transcript()
+    with pytest.raises(TranscriptReviewError, match="requires --reviewed-by"):
+        apply_review_patch(
+            transcript,
+            {"schema_version": "v1", "review": {"status": "approved"}},
+        )
+
+    with pytest.raises(TranscriptReviewError, match="every segment"):
+        apply_review_patch(
+            transcript,
+            {"schema_version": "v1", "review": {"status": "approved"}},
+            reviewed_by="user:reviewer",
+        )
+
+    result = apply_review_patch(
+        transcript,
+        {
+            "schema_version": "v1",
+            "segments": [{"id": "seg_000001", "review_status": "accepted"}],
+            "review": {"status": "approved"},
+        },
+        reviewed_by="user:reviewer",
+    )
+    assert result.transcript["review"]["status"] == "approved"
+    assert result.transcript["review"]["reviewed_by"] == "user:reviewer"
+    assert result.transcript["review"]["reviewed_at"]
+    assert result.schema_issues == []
+
+
+def test_review_transcript_cli_dry_run_does_not_write(tmp_path: Path):
+    transcript_path = tmp_path / "transcript.json"
+    patch_path = tmp_path / "review_patch.json"
+    save_transcript(_valid_transcript(), transcript_path)
+    before = transcript_path.read_text(encoding="utf-8")
+    patch_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "segments": [
+                    {
+                        "id": "seg_000001",
+                        "text": "corrected from cli",
+                        "review_status": "accepted",
+                    }
+                ],
+                "review": {"status": "needs_review"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "review-transcript",
+            "--transcript",
+            str(transcript_path),
+            "--patch",
+            str(patch_path),
+            "--dry-run",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["dry_run"] is True
+    assert payload["updated_segment_count"] == 1
+    assert payload["segment_review_counts"]["accepted_count"] == 1
+    assert transcript_path.read_text(encoding="utf-8") == before
+
+
+def test_review_transcript_cli_rejects_invalid_patch_without_saving(tmp_path: Path):
+    transcript_path = tmp_path / "transcript.json"
+    patch_path = tmp_path / "bad_review_patch.json"
+    save_transcript(_valid_transcript(), transcript_path)
+    before = transcript_path.read_text(encoding="utf-8")
+    patch_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "segments": [{"id": "missing", "review_status": "accepted"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "review-transcript",
+            "--transcript",
+            str(transcript_path),
+            "--patch",
+            str(patch_path),
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    payload = json.loads(result.stdout)
+    assert "unknown segment id" in payload["error"]
+    assert transcript_path.read_text(encoding="utf-8") == before
+
+
+def test_reviewed_transcript_statuses_feed_downstream_generation_and_context_check():
+    transcript = build_transcript(
+        "ep_review_downstream",
+        source_audio_path="episodes/ep_review_downstream/source.wav",
+        language="en",
+        stt_engine="fake",
+        segments=[
+            {"id": "seg_a", "start_seconds": 0.0, "end_seconds": 1.0, "text": "keep"},
+            {"id": "seg_b", "start_seconds": 1.2, "end_seconds": 2.2, "text": "drop"},
+            {"id": "seg_c", "start_seconds": 3.0, "end_seconds": 4.0, "text": "fix"},
+        ],
+    )
+    review_result = apply_review_patch(
+        transcript,
+        {
+            "schema_version": "v1",
+            "segments": [
+                {"id": "seg_a", "review_status": "accepted"},
+                {"id": "seg_b", "review_status": "rejected"},
+                {"id": "seg_c", "review_status": "needs_fix"},
+            ],
+            "review": {"status": "needs_review"},
+        },
+    )
+    reviewed = review_result.transcript
+    edit_pack = build_edit_skeleton("ep_review_downstream")
+
+    cut_result = generate_cut_candidates(
+        edit_pack,
+        reviewed,
+        target_duration_seconds=1.0,
+        min_duration_seconds=0.5,
+        max_duration_seconds=2.0,
+        gap_threshold_seconds=0.5,
+        max_candidates=4,
+        select_generated=True,
+    )
+    assert cut_result.skipped_segments_count == 1
+    assert all(
+        "seg_b" not in (cut.get("source_segment_ids") or [])
+        for cut in cut_result.edit_pack["cut_candidates"]
+    )
+
+    subtitle_result = generate_subtitle_drafts(cut_result.edit_pack, reviewed)
+    assert subtitle_result.skipped_segments_count == 1
+    assert "seg_b" not in subtitle_result.source_segment_ids
+
+    context_result = check_cut_context(
+        cut_result.edit_pack,
+        reviewed,
+        cut_id=next(
+            cut["id"]
+            for cut in cut_result.edit_pack["cut_candidates"]
+            if cut.get("source_segment_ids") == ["seg_c"]
+        ),
+    )
+    assert context_result.needs_review_count == 1
+    assert "marked needs_fix" in " ".join(
+        context_result.edit_pack["cut_candidates"][-1]["context_check"]["notes"]
+    )
 
 
 def test_cli_transcribe_audio_fake_roundtrip(tmp_path: Path):

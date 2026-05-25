@@ -116,7 +116,7 @@ def test_real_transcript_flows_to_cuts_subtitles_and_nle_export(tmp_path: Path):
     assert rows[0]["transcript_segment_count"] == "1"
     assert manifest["source_refs"]["transcript"]["real_transcript"] is True
     assert manifest["source_refs"]["transcript"]["source_audio_material_id"] == "src_audio_real"
-    assert "real STT transcript is unreviewed" in " | ".join(manifest["warnings"])
+    assert "real STT transcript review.status is draft" in " | ".join(manifest["warnings"])
     assert "fixture transcript" not in " | ".join(manifest["warnings"])
     assert "Transcript Provenance" in report
     assert "vosk" in report

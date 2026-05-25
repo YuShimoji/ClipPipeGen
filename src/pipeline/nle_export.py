@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from .edit_pack import load_edit_pack, validate_edit_pack
+from .transcript import count_segment_review_statuses
 
 SCHEMA_VERSION = "v1"
 EXPORT_FORMAT = "csv_cut_list_v1"
@@ -292,9 +293,17 @@ def _warnings(
     ]
     if transcript_readback.get("available"):
         if transcript_readback.get("real_transcript") is True:
-            warnings.append(
-                "real STT transcript is unreviewed; transcript quality is not creative acceptance."
-            )
+            review_status = transcript_readback.get("review_status", "unknown")
+            if review_status == "approved":
+                warnings.append(
+                    "real STT transcript review.status is approved; "
+                    "transcript approval is not edit/publish acceptance."
+                )
+            else:
+                warnings.append(
+                    f"real STT transcript review.status is {review_status}; "
+                    "transcript quality is not creative acceptance."
+                )
         else:
             warnings.append("transcript real_transcript is false; export remains preview-only.")
         for warning in transcript_readback.get("warnings") or []:
@@ -333,6 +342,10 @@ def _transcript_readback(
             "model": "",
             "real_transcript": False,
             "segment_count": None,
+            "review_status": "missing",
+            "reviewed_by": None,
+            "reviewed_at": None,
+            "segment_review_counts": count_segment_review_statuses([]),
             "duration_seconds": None,
             "source_audio_path": "",
             "source_audio_material_id": "",
@@ -340,6 +353,7 @@ def _transcript_readback(
             "warnings": [],
         }
     stt = transcript.get("stt") if isinstance(transcript.get("stt"), dict) else {}
+    review = transcript.get("review") if isinstance(transcript.get("review"), dict) else {}
     source_audio = (
         transcript.get("source_audio")
         if isinstance(transcript.get("source_audio"), dict)
@@ -360,6 +374,10 @@ def _transcript_readback(
         "engine_version": stt.get("engine_version", ""),
         "real_transcript": stt.get("real_transcript") is True,
         "segment_count": segment_count,
+        "review_status": review.get("status", "unknown"),
+        "reviewed_by": review.get("reviewed_by"),
+        "reviewed_at": review.get("reviewed_at"),
+        "segment_review_counts": count_segment_review_statuses(segments),
         "duration_seconds": source_audio.get("duration_seconds"),
         "source_audio_path": source_audio.get("path", ""),
         "source_audio_material_id": source_audio.get("material_id", ""),
@@ -542,6 +560,8 @@ def _make_report_html(*, manifest: dict[str, Any], rows: list[dict[str, Any]]) -
     <dt>model</dt><dd>{escape(str(transcript.get("model", "")))}</dd>
     <dt>real_transcript</dt><dd>{escape(str(transcript.get("real_transcript", False)).lower())}</dd>
     <dt>segment_count</dt><dd>{escape(str(transcript.get("segment_count", "")))}</dd>
+    <dt>review_status</dt><dd>{escape(str(transcript.get("review_status", "")))}</dd>
+    <dt>segment_review_counts</dt><dd>{escape(json.dumps(transcript.get("segment_review_counts", {}), ensure_ascii=False))}</dd>
     <dt>duration_seconds</dt><dd>{escape(str(transcript.get("duration_seconds", "")))}</dd>
   </dl>
   <h2>Cut List Preview</h2>

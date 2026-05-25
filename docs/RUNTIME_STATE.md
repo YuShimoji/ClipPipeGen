@@ -1,5 +1,15 @@
 # Runtime State — ClipPipeGen
 
+## ED-09 closeout — 2026-05-25 JST
+
+ED-09 transcript review / correction workflow is implemented. The new `review-transcript` CLI applies a v1 patch JSON to `transcript.json` and only mutates segment text, `review_status`, notes, and top-level review fields. It refuses unknown / duplicate segment IDs, unsupported patch fields, invalid statuses, empty corrected text, and `review.status=approved` unless a reviewer is provided and every segment is `accepted` or `rejected`.
+
+`status-episode` now reads transcript review state and `segment_review_counts`, while `export-nle` uses transcript `review.status` in warnings instead of always saying real STT is unreviewed. Transcript approval is still not edit, render, publish, or production acceptance; `production_candidate=false` remains the default boundary.
+
+JP-Pilot-01 remains a diagnostic ignored artifact. Its pipeline proof is valid, but the episode `rights_manifest.json` was a skeleton/fetch readback state, not a schema-passed rights manifest. The next most useful move is to create a small JP-Pilot review patch, run `review-transcript --dry-run`, then regenerate cuts/subtitles/NLE/render with existing `--replace-auto` paths to compare corrected transcript output against raw Vosk JP output.
+
+Local verification for this closeout: `uvx pytest -q` -> 188 passed, `npm run smoke` -> OK, `npm run smoke:electron` -> OK, and `git diff --check` -> clean.
+
 ブロックの主成果と次の手を更新する。compact 後の再アンカリングではこのファイルを読む。
 
 ## 現在位置

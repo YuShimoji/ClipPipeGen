@@ -115,6 +115,14 @@ def test_status_reads_valid_transcript_when_present(tmp_path: Path):
     assert status["artifacts"]["transcript"]["exists"] is True
     assert status["editing"]["transcript"]["state"] == "ready"
     assert status["editing"]["transcript"]["segments_count"] == 1
+    assert status["editing"]["transcript"]["review_status"] == "draft"
+    assert status["editing"]["transcript"]["segment_review_counts"] == {
+        "unreviewed_count": 1,
+        "accepted_count": 0,
+        "needs_fix_count": 0,
+        "rejected_count": 0,
+        "unknown_count": 0,
+    }
 
 
 def test_status_reports_invalid_transcript_readback(tmp_path: Path):
