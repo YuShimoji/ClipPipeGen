@@ -153,7 +153,7 @@ JP-Pilot-01 is complete as a Japanese public VOD diagnostic. It reused the exist
 - Selected source: official hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！` at <https://www.youtube.com/watch?v=7J5aS_pcBj4>.
 - Ignored episode `episodes/jp_pilot01_hololive_bancho_20260525` generated `source_video.mp4`, `source.wav`, `transcript.json`, `edit_pack.json`, `renders/jp_pilot01_diagnostic_render/rendered_video.mp4`, and `exports/jp_pilot01/nle_cut_list.csv`.
 - Readback: 26 transcript segments, speech coverage about 51.4%, 6 selected cut candidates, 3 passed / 3 needs_review, 17 subtitle drafts, 6.6s 1080p diagnostic render, 6 NLE CSV rows, ledger audit ok.
-- The transcript is technically real but not creatively acceptable as-is; the next bottleneck is transcript review / correction, not render polish or publishing.
+- The transcript is technically real but not creatively acceptable as-is. ED-09 added the review / correction entry point; the next bottleneck is corrected JP-Pilot rerun, not render polish or publishing.
 
 ## Production Gap Readback
 
