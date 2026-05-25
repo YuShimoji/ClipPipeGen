@@ -8,15 +8,15 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Sync commit: ED-07c language/model validation closeout on `main` (see latest `git log --oneline -1`)
-- Latest implementation commit: current `main` — ED-07c done。`transcribe-audio --engine vosk` が inferable Vosk model language と `--language` の不一致を dry-run / actual とも拒否し、JP/EN transcript metadata の誤読を防ぐ
-- Latest completed feature slice: `ED-07c` language↔model consistency validation
-  1. `vosk-model-small-en-us-0.15` + `--language ja` のような mismatch は transcript を書く前に失敗
-  2. 推定不能な model 名は warning-only とし、`stt.params.language_model_check` に readback
-  3. `JP-STT-01` と `HoloEN-01` は引き続き done。JP/STT と HoloEN pilot の成果は保持
-- Current recommended decision: 次の Phase 1.5 候補は (1) `JP-Pilot-01` 日本語 publish-quality 観測（HoloEN-01 を JP 化）、(2) HoloEN-01 観測で見えた STT 精度 weak への対処（whisper.cpp / OpenAI Whisper 比較 or `ED-09` transcript review workflow）、(3) `TH-01 walkthrough` user-owned closeout、(4) `SH-02 episode_pack` 集約、(5) Publishing。優先順位は operator と合意
-- Latest completed feature-slice closeout before this handoff note: Phase 0.5 HoloEN-01 blocked closeout (commit `0d94edb`)
-- Latest local verification: 2026-05-25 JST ED-07c closeout; `uvx pytest -q` (178 passed), `npm run smoke` / `npm run smoke:electron` OK, `git diff --check` clean.
+- Sync commit: JP-Pilot-01 Japanese public VOD diagnostic closeout on `main` (see latest `git log --oneline -1`)
+- Latest implementation commit: current `main` — JP-Pilot-01 done。公式 hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！` を assistant が自律選定し、URL → source_video/source_audio → Vosk JP transcript → edit_pack → subtitles → diagnostic render → NLE CSV → ledger audit まで実走した
+- Latest completed feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
+  1. `transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` は language/model check passed で 26 segments を生成
+  2. `generate-cuts` は 6 selected cuts、`check-cut-context` は 3 passed / 3 needs_review、`generate-subtitles` は 17 real_transcript subtitle drafts
+  3. `render-tiny-proof --burn-in-subtitles diagnostic` は 6.6s / 1080p render、`export-nle` は 6 CSV rows、`audit-material-ledger` は ok
+- Current recommended decision: 次の最短前進は `ED-09` transcript review / correction workflow。JP-Pilot-01 で Vosk JP は接続として通ったが、実コンテンツ字幕品質は未受容だったため、補正済み transcript を cuts / subtitles / NLE / render に再投入できる入口を優先する。次点は whisper.cpp / OpenAI Whisper 比較、TH-01 walkthrough、SH-02 episode_pack、GUI fetch/render/export、Publishing
+- Latest completed feature-slice closeout before this handoff note: ED-07c language/model validation closeout
+- Latest local verification: 2026-05-25 JST JP-Pilot-01 closeout; `uvx pytest -q` (178 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean, JP-Pilot-01 render FFprobe readback OK.
 - Working tree expectation after pull: clean
 
 ## Resume on another terminal
@@ -31,7 +31,7 @@ git pull --ff-only origin main
 #   docs/FEATURE_REGISTRY.md
 ```
 
-HoloEN-01 is already done. For a fresh pilot, assistant may self-select a low-risk public VOD following `docs/HOLOEN_PILOT.md`, or operator may supply a URL explicitly.
+HoloEN-01 and JP-Pilot-01 are already done. For another fresh pilot, assistant may self-select a low-risk public VOD following the same exclusion rules documented in `docs/HOLOEN_PILOT.md` and `docs/JP_PILOT.md`, or operator may supply a URL explicitly.
 
 Resume command:
 
@@ -145,6 +145,13 @@ ED-08 / OUT-01e is complete as real STT subtitle draft linkage and diagnostic re
 - Smoke output `renders/out01e_real_transcript_subtitle_render/rendered_video.mp4` was generated with `subtitle_burn_in.status=enabled`, `derived_from_real_transcript=true`, status counts `included=1`, output duration `8.82`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`.
 - This remains diagnostic linkage. It is not STT quality acceptance, transcript correction UI, production subtitle design, creative acceptance, URL video acquisition, GUI render action, publishing, FCPXML, or Resolve XML.
 
+JP-Pilot-01 is complete as a Japanese public VOD diagnostic. It reused the existing URL/source media, Vosk JP, edit_pack, subtitle, render, and NLE export path without adding new production surfaces:
+
+- Selected source: official hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！` at <https://www.youtube.com/watch?v=7J5aS_pcBj4>.
+- Ignored episode `episodes/jp_pilot01_hololive_bancho_20260525` generated `source_video.mp4`, `source.wav`, `transcript.json`, `edit_pack.json`, `renders/jp_pilot01_diagnostic_render/rendered_video.mp4`, and `exports/jp_pilot01/nle_cut_list.csv`.
+- Readback: 26 transcript segments, speech coverage about 51.4%, 6 selected cut candidates, 3 passed / 3 needs_review, 17 subtitle drafts, 6.6s 1080p diagnostic render, 6 NLE CSV rows, ledger audit ok.
+- The transcript is technically real but not creatively acceptable as-is; the next bottleneck is transcript review / correction, not render polish or publishing.
+
 ## Production Gap Readback
 
 ClipPipeGen is not finished when it can only produce docs, receipts, ledgers, or read-only reports. The final shape is a production-assist pipeline that carries URL / local-media source material through an episode:
@@ -158,9 +165,9 @@ Current state against that final shape:
 | Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Source video | Local video and URL video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
-| Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; real runs mark `stt.real_transcript=true` | STT quality review / correction workflow is not implemented, and provider/model setup is operator-local |
-| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; ED-08 preserves `real_transcript` subtitle source and segment IDs in `edit_pack.subtitles[]` | Real transcript output is still unreviewed draft; transcript correction and creative edit acceptance are future work |
-| NLE / render | Minimal CSV cut list export exists; OUT-01b can produce a diagnostic video; OUT-01c/OUT-01d can burn and diagnose subtitle timing; OUT-01e can burn real STT-derived subtitle drafts | No FCPXML / Resolve XML, no production subtitle design, no STT quality acceptance, and no production render acceptance |
+| Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; JP-Pilot-01 proves Vosk JP can process a public Japanese VOD | STT quality review / correction workflow is now the main bottleneck; real transcript output remains unreviewed draft |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; JP-Pilot-01 produced 6 cuts and 17 real_transcript subtitle drafts | 3/6 cuts needed review, so corrected transcript and human review readback should come before production edit acceptance |
+| NLE / render | Minimal CSV cut list export exists; OUT-01b can produce a diagnostic video; OUT-01c/OUT-01d can burn and diagnose subtitle timing; JP-Pilot-01 burned JP real STT subtitles into a diagnostic 1080p render | No FCPXML / Resolve XML, no production subtitle design, no STT quality acceptance, and no production render acceptance |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
 The project should continue only if the next slices add or connect real production-adjacent artifacts. A slice that only adds more policy, boundary text, report polish, or GUI read-only state without connecting `source.wav`, `transcript.json`, `edit_pack.json`, `preview_manifest.json`, NLE export, or rendered video should be treated as drift.
@@ -188,8 +195,29 @@ The project should continue only if the next slices add or connect real producti
 - `docs/ASSET_FETCH_BOUNDARY.md` — asset_fetch, FFmpeg, yt-dlp, GUI, STT, Editing boundaries.
 - `docs/AUTOMATION_BOUNDARY.md` — automation map and forbidden surfaces.
 - `docs/PREVIEW_PACK.md` — next downstream review surface boundary.
+- `docs/JP_PILOT.md` — JP-Pilot-01 runbook, readback, stagnation audit, and next-entry comparison.
 
 ## Validation Already Run
+
+Latest validation for JP-Pilot-01 closeout:
+
+```powershell
+uvx pytest -q
+npm run smoke
+npm run smoke:electron
+git diff --check
+ffprobe -v error -print_format json -show_format -show_streams episodes/jp_pilot01_hololive_bancho_20260525/renders/jp_pilot01_diagnostic_render/rendered_video.mp4
+python -m src.cli.main audit-material-ledger --episode-id jp_pilot01_hololive_bancho_20260525 --format json
+```
+
+Results:
+
+- `uvx pytest -q` -> `178 passed`
+- `npm run smoke` -> `gui smoke: OK`
+- `npm run smoke:electron` -> `electron smoke: OK`
+- `git diff --check` -> no whitespace errors
+- JP-Pilot-01 render FFprobe readback -> duration `6.600000`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `1920x1080`, fps `30/1`, stream count `2`
+- JP-Pilot-01 ledger audit -> `ok=true`, issues `[]`, materials `2`
 
 Latest validation for ED-08 / OUT-01e closeout:
 
@@ -375,74 +403,39 @@ yt-dlp remains inside `asset_fetch` source-audio/source-video URL fetch. FFmpeg 
 
 ## Recommended Next Slice
 
-ED-07c で STT の language/model metadata 不整合を入口で止めた。次の Phase 1.5 候補は以下、観測根拠つき優先度で再ランク：
+JP-Pilot-01 で日本語 public VOD の縦糸は通った。次の候補は「実装は通るが制作判断に使えない transcript」をどう扱うかで決める。
 
 | # | 候補 | 観測根拠 | unblock 条件 | 推奨度 |
 |:--:|---|---|---|:--:|
-| 1 | `JP-Pilot-01` 日本語コンテンツでの publish-quality 観測 | ED-07c で JP/EN model mismatch を入口で止められるようになり、JP 制作目標に近い素材で pipeline 品質を測る準備が整った | 日本語 talent VOD 選定（assistant 自律可） | ★★★★★ |
-| 2 | whisper.cpp / OpenAI Whisper 採用比較 | HoloEN-01 で Vosk EN small の transcript 精度 weak（66% coverage、誤認識多発）| なし（PLAN MODE） | ★★★★ |
-| 3 | `ED-09` transcript review / correction workflow | HoloEN-01 で 4 cuts 中 2 needs_review、transcript 精度由来の cut boundary 不確実性 | PLAN MODE | ★★★ |
+| 1 | `ED-09` transcript review / correction workflow | JP-Pilot-01 で Vosk JP transcript は生成できたが、実字幕として未受容。6 cuts 中 3 needs_review | corrected transcript の artifact/readback 設計 | ★★★★★ |
+| 2 | whisper.cpp / OpenAI Whisper 採用比較 | Vosk EN/JP とも実コンテンツでは誤認識が workflow bottleneck | 依存追加または API 契約判断 | ★★★★ |
+| 3 | GUI fetch/render/export actions | CLI 経路は通るが operator が各 CLI を手動で連結する摩擦が残る | core artifact contract 維持、確認 dialog / receipt readback | ★★★ |
 | 4 | `TH-01 walkthrough closeout` | サムネレーン user-owned acceptance 未踏 | 実 YMM4 .ymmp + `config/nlmytgen_path.json`（operator-owned） | ★★ |
 | 5 | `SH-02 episode_pack` 集約 | rights/material/edit/thumb/publish 統合 manifest | PLAN MODE | ★★ |
 | 6 | Publishing (INT-01 + PB-01..04) | 縦糸の出口接続 | YouTube OAuth credentials | ★★ |
 
-Phase 1.5 着手前に: `chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフトは "small fix" 候補として保留。
+`chosen_format` の archive.org extractor 限界、git-bash の electron smoke ドリフト、INT-02 umbrella status の drift は small Audit 候補として保留。JP-Pilot-01 の結果から見る限り、機能実装そのものの最大停滞は STT review/correction surface の不在。
 
 ## 自律選定方針（assistant 権限）
 
 `docs/HOLOEN_PILOT.md` に運用方針として固定済：assistant は HoloEN public VOD 候補を自律的に調査・選定し、risk が低いと判断した 1 本を diagnostic smoke の default として使ってよい。除外条件（COVER 公式 derivative works guidelines: members-only / paid / concert / song / 第三者 IP リスク高）は compliance として維持。
 
-JP-Pilot-01 を実行する場合も同方針：assistant が JP talent の public VOD を自律選定し、actual smoke を回し、quality scorecard を assistant 側で記入する。operator review は事後。
-
-Stale planning block (kept for reference until Phase 1 lands):
-
-Recommended INT-02h scope:
-
-- `src/integrations/asset_fetch/yt_dlp_video.py` adapter with `--yt-dlp-path` / `CLIPPIPE_YTDLP` / PATH discovery and version readback.
-- `fetch-source-video --mode yt-dlp-video` CLI choice with `--source-url`, `--format-selector` (explicit, no yt-dlp default), `--yt-dlp-path`, `--ffprobe-path`. `--source-path` / `--local-media` は拒否する。
-- Dry-run that does not call network or subprocess and returns command plan, output paths, conflicts, expected outputs as JSON.
-- URL scrub for query / fragment / userinfo / signed URL token in receipt / sidecar / command summaries.
-- 許容 container ホワイトリスト（例: `mp4`, `mkv`, `webm`）。許容外は failure として partial download を削除し、sidecar / receipt / ledger を書かない。
-- Chosen format readback (format id / video codec / audio codec / container / resolution / fps / filesize) in `fetch_receipt.json`.
-- FFprobe metadata readback (duration / container / video codec / audio codec / resolution / fps / stream count) のあと sidecar / receipt / `material_ledger.json` entry を書く。
-- Failure cleanup: partial `source_video.<ext>` を削除し、sidecar / receipt / ledger は成功後だけ書く。
-- Fake runner / dry-run tests in `tests/test_ytdlp_video_adapter.py` and `tests/test_source_video_fetch.py`（既存 INT-02f boundary test を温存）。
-- Operator-driven actual smoke with a user-selected URL; ignored episode artifact only.
-
-After INT-02h is done, **Phase 0** runs the full local pipeline against a real URL: `fetch-source-video --mode yt-dlp-video` -> `fetch-source-audio --mode yt-dlp-audio` -> `transcribe-audio --engine vosk` (English model; Japanese 破綻は観測根拠として受容) -> `generate-cuts` / `check-cut-context` / `generate-subtitles` -> `render-tiny-proof --burn-in-subtitles diagnostic` -> `export-nle`. TH-01 walkthrough、SH-02 episode_pack 集約、Publishing、GUI render/fetch/export button、日本語 STT 接続は Phase 1 以降に分けて起票する。
+JP-Pilot-01 も同方針で完了済み。assistant が JP public VOD を自律選定し、actual smoke と quality scorecard を記録した。operator review は事後。
 
 ## Next Two-Slice Pressure
 
-After `ED-08 / OUT-01e`, the project should deliberately move toward one of these production-adjacent bottlenecks:
+After `JP-Pilot-01`, the project should deliberately move toward one of these production-adjacent bottlenecks:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| source-video URL acquisition | 8/10 | Local source video works; remote source-video entry is now the next material bottleneck for real episodes | Rights/terms and yt-dlp boundary are larger than local file copy |
-| transcript review / correction | 7/10 | Real STT subtitle linkage exists, but operator trust may require correction before creative judgment | Can drift into full subtitle UI or production design if not kept to transcript/subtitle draft state |
-| font/filter preflight hardening | 5/10 | Makes OUT-01d more portable across FFmpeg builds by surfacing subtitles/libass/font availability before render | Can drift into typography polish if not kept diagnostic |
-| STT provider setup hardening | 5/10 | Makes Vosk/model setup less operator-dependent | Improves repeatability but does not create new production artifacts |
+| transcript review / correction | 9/10 | JP-Pilot-01 produced a real Vosk JP transcript, but the text is not usable as-is for subtitles or cut judgment | Can drift into full subtitle UI; keep v1 to transcript/edit_pack readback and regeneration |
+| STT provider comparison | 8/10 | Vosk EN/JP both show quality limits on real content; provider choice now affects every downstream artifact | External dependency/API contract may require explicit operator decision |
+| GUI fetch/render/export actions | 6/10 | CLI pipeline works but is still operator-unfriendly when repeated end to end | Can accidentally expose unreviewed production actions; keep confirmation/readback strict |
+| production subtitle/render acceptance | 5/10 | Diagnostic burn-in works, but typography/safe-area/full render policy is absent | Premature until transcript/cut review exists |
 
-Recommended continuation after `ED-08 / OUT-01e`: choose source-video URL acquisition if the goal is a more realistic episode intake; choose transcript review / correction if the generated STT text is too weak for operator judgment; choose font/filter preflight only if another machine shows subtitle filter failures. Do not count GUI read-only display or audit log expansion as progress toward video production.
+Recommended continuation after `JP-Pilot-01`: choose transcript review / correction first unless the next request explicitly prioritizes provider comparison. Do not count docs-only policy expansion, read-only GUI panels, or audit log polish as production progress unless they connect a corrected transcript, selected cuts, NLE export, or rendered video artifact.
 
-### Decision criteria after ED-06
-
-The choice after ED-06 should be made from observable production signals, not from speculative quality.
-
-Prefer **transcript review / provider hardening** when:
-
-- The operator is visibly hand-correcting `transcript.json` before it is useful for cuts or subtitles.
-- `ED-04 generate-subtitles` output is being treated as "structure only, ignore text" downstream.
-- A nearby slice is repeatedly stalled on transcript correctness rather than on missing tooling.
-
-Prefer **URL video acquisition** when:
-
-- The next source material must come from a URL rather than local file.
-- The project needs scrubbed URL / downloader receipt semantics before render.
-- Rights / terms review around URL video acquisition is the actual blocker.
-
-Tiebreaker when signals are weak: default to render hardening. OUT-01 already proved that source video can be consumed by an output pipeline; the next weakest link is repeatability across codecs and operator environments.
-
-Any OUT follow-up must remain explicitly non-production until a later acceptance slice: no publishing, no GUI fetch/render button, no broad renderer feature set, and no production candidate claims.
+Any OUT follow-up must remain explicitly non-production until a later acceptance slice: no publishing, no GUI one-click publish, no broad renderer feature set, and no production candidate claims.
 
 ## Quick Operator Check
 
