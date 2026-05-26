@@ -114,7 +114,7 @@ JSON。配置は `episodes/<episode_id>/edit_pack.json`。
 | `end_seconds` | number | ✓ | 元動画上の字幕終了秒 |
 | `text` | string | ✓ | 字幕本文。空文字禁止 |
 | `source` | enum | ✓ | `manual` / `auto` / `imported` |
-| `source_type` | enum | optional | `real_transcript` / `transcript_segments`。`transcript.stt.real_transcript=true` 由来なら `real_transcript` |
+| `source_type` | enum | optional | `real_transcript` / `transcript_segments` / `imported_subtitle_track`。`transcript.stt.real_transcript=true` 由来なら `real_transcript`、`transcript.stt.engine="subtitle_track"` 由来なら `imported_subtitle_track` |
 | `style_slot` | string | optional | 後段 YMM4/NLE 用の表示スタイル名 |
 | `source_segment_id` | string | optional | `transcript.segments[].id` 由来ならその ID。ED-04 が付与する |
 | `source_segment_ids` | string[] | optional | subtitle draft の元になった `transcript.segments[].id` 群。ED-08 では render readback へ渡す |
@@ -203,8 +203,8 @@ python -m src.cli.main export-nle \
 
 `check-cut-context` は ED-03 の文脈チェック。`transcript.json` の隣接 segment を見て、cut 境界が発話途中を切っていないか、`source_segment_ids` が transcript と対応しているか、近接する前後発話があるかを `context_check.status` と notes に記録する。動画 preview / NLE export / creative acceptance は行わない。
 
-`generate-subtitles` は ED-04 / ED-08 の subtitle draft 生成スライス。`transcript.json` の `segments[]` を `edit_pack.subtitles[]` に変換し、`--wrap-eaw` 指定時は ED-05 の EAW 折返しを使って `text` に改行を入れる。ED-08 では `transcript.stt.real_transcript=true` を `source_type="real_transcript"` として保持し、`source_segment_ids[]` と diagnostic / non-production flags を付与する。STT 品質評価、transcript correction UI、URL/VOD 取得、動画レンダリング、字幕デザイン acceptance は行わない。
+`generate-subtitles` は ED-04 / ED-08 / ED-10 の subtitle draft 生成スライス。`transcript.json` の `segments[]` を `edit_pack.subtitles[]` に変換し、`--wrap-eaw` 指定時は ED-05 の EAW 折返しを使って `text` に改行を入れる。ED-08 では `transcript.stt.real_transcript=true` を `source_type="real_transcript"` として保持し、ED-10 では `transcript.stt.engine="subtitle_track"` を `source_type="imported_subtitle_track"` として保持する。どちらも `source_segment_ids[]` と diagnostic / non-production flags を付与する。STT 品質評価、transcript correction UI、URL/VOD 取得、動画レンダリング、字幕デザイン acceptance は行わない。
 
 `export-nle` は ED-06 の最小 NLE handoff。`edit_pack.cut_candidates[]` / `selected_cut_ids[]` / `subtitles[]` と、可能な範囲の source audio provenance を `nle_cut_list.csv`、`nle_export_manifest.json`、`nle_export_report.html` に出力する。これは外部編集ソフトへ渡すための plumbing proof であり、FCPXML / Resolve XML、render / encode、production edit acceptance は行わない。詳細は [nle_export.md](nle_export.md)。
 
-`render-tiny-proof` は OUT-01 の diagnostic output proof。`edit_pack.selected_cut_ids[0]`（無ければ最初の cut candidate）を source video / source audio timeline に対応させ、短い `rendered_video.mp4` / `.mkv` と readback manifest/report を生成する。OUT-01c では `--burn-in-subtitles diagnostic` に限り `edit_pack.subtitles[]` を diagnostic overlay として焼き込める。OUT-01e では `source_type="real_transcript"` の subtitle draft provenance と `source_segment_ids[]` を burn-in readback に残す。production render、subtitle design acceptance、creative acceptance、publishing は行わない。詳細は [tiny_render.md](tiny_render.md)。
+`render-tiny-proof` は OUT-01 の diagnostic output proof。`edit_pack.selected_cut_ids[0]`（無ければ最初の cut candidate）を source video / source audio timeline に対応させ、短い `rendered_video.mp4` / `.mkv` と readback manifest/report を生成する。OUT-01c では `--burn-in-subtitles diagnostic` に限り `edit_pack.subtitles[]` を diagnostic overlay として焼き込める。OUT-01e / ED-10 では `source_type="real_transcript"` または `source_type="imported_subtitle_track"` の subtitle draft provenance と `source_segment_ids[]` を burn-in readback に残す。production render、subtitle design acceptance、creative acceptance、publishing は行わない。詳細は [tiny_render.md](tiny_render.md)。

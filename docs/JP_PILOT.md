@@ -2,7 +2,7 @@
 
 `JP-Pilot-01` は、ED-07c 後の日本語 public VOD で `source media -> material_ledger / receipt -> transcript.json -> edit_pack.json -> subtitles -> diagnostic render -> NLE CSV` を通し、制作上どこが詰まるかを観測する slice。これは production / creative / publish acceptance ではなく、`production_candidate=false` の診断である。
 
-ED-09 follow-up: `JP-Pilot-01R` / `JP-Pilot-01R2` で transcript review / correction の実効性を確認済み。公式 Japanese subtitle track を照合材料に既存 26 transcript segments を accepted 25 / rejected 1 / unreviewed 0 まで補正し、短め selected cuts 5 本、context 5 passed、21 subtitle drafts、NLE CSV、diagnostic render を再生成した。これは引き続き diagnostic であり、production / creative / publish acceptance ではない。
+ED-09 follow-up: `JP-Pilot-01R` / `JP-Pilot-01R2` で transcript review / correction の実効性を確認済み。公式 Japanese subtitle track を照合材料に既存 26 transcript segments を accepted 25 / rejected 1 / unreviewed 0 まで補正し、短め selected cuts 5 本、context 5 passed、21 subtitle drafts、NLE CSV、diagnostic render を再生成した。ED-10 follow-up: `JP-Pilot-01R3` で公式 subtitle track 自体を transcript-compatible artifact として import し、105 segments / 9 selected cuts / 105 subtitle drafts / NLE CSV 9 rows / diagnostic render まで再投入した。これは引き続き diagnostic であり、production / creative / publish acceptance ではない。
 
 ## 対象素材
 
@@ -63,7 +63,26 @@ R2 では R1 の default `transcript.json` / `edit_pack.json` を ignored backup
 
 R2 の成果は「既存 Vosk segment の補正 coverage」と「selected cut の広さ」はかなり改善できたこと。一方で、公式 subtitle track には Vosk が segment 化しなかった短い発話やリアクションが残る。ここは `review-transcript` ではなく、公式 subtitle track import / transcript alignment の仕事として切り出すのが自然。
 
+## JP-Pilot-01R3: official subtitle track import rerun（2026-05-26 JST）
+
+R3 では ED-10 の `import-subtitle-track` を使い、YouTube JSON3 の公式 Japanese subtitle track を `transcript.json` 互換 artifact として再投入した。R2 の default `transcript.json` / `edit_pack.json` は ignored backup に残し、imported transcript は `stt.engine="subtitle_track"` / `provider="youtube_subtitles"` / `review.status="needs_review"` / `reviewed_by="codex:jp-pilot01r3"` として保存した。これは字幕 track の pipeline 取り込み確認であり、字幕デザインや production acceptance ではない。
+
+| 観測項目 | JP-Pilot-01 raw | JP-Pilot-01R2 | JP-Pilot-01R3 |
+|---|---:|---:|---:|
+| transcript source | Vosk JP | Vosk JP + ED-09 review patch | official subtitle track import |
+| transcript segments | 26 | 26 | 105 |
+| transcript review counts | unreviewed 26 / accepted 0 / rejected 0 | unreviewed 0 / accepted 25 / rejected 1 | unreviewed 0 / accepted 105 / rejected 0 |
+| cut candidates / selected | 6 / 6 | 5 / 5 | 9 / 9 |
+| context check | 3 passed / 3 needs_review | 5 passed / 0 needs_review | 3 passed / 6 needs_review |
+| subtitle drafts | 17 `real_transcript` | 21 `real_transcript` | 105 `imported_subtitle_track` |
+| NLE CSV rows | 6 | 5 | 9 |
+| diagnostic render | 6.6s / 1080p | 23.13s / 1080p / clamped=false | 6.84s / 1080p / clamped=false |
+
+R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 event を artifact に戻せない」問題は解消した。一方、公式字幕は短い event を細かく保持するため、自動 cut は 9 本に増え、context check は 6 本が needs_review になった。次の判断は transcript completeness ではなく、final cut/context review と production subtitle/render acceptance に移っている。公式字幕がない素材では、引き続き STT provider comparison が優先候補になる。
+
 ## 観測した制作上の詰まり
+
+R3 update: 公式 subtitle track の欠落回収は ED-10 で進んだ。現時点の詰まりは、R3 の 9 cuts 中 6 cuts が context `needs_review` であること、production subtitle design / safe-area / typography / full render policy が未定であること、公式字幕が無い素材では Vosk 以外の STT provider 比較がまだ必要なこと。
 
 日本語 Vosk model は pipeline 接続としては機能したが、実コンテンツの字幕品質にはまだ届かない。JP-Pilot-01R2 では公式 subtitle track を使った補正により、既存 transcript segment の範囲では unreviewed を解消し、selected cut context も全件 passed にできた。ただし公式字幕 event の一部は Vosk segment 外に落ちるため、caption completeness はまだ未受容。
 
@@ -84,6 +103,8 @@ cut は R2 で 5 件すべて `passed` になり、60 秒級の広い window も
 | INT-02 parent umbrella | child slices は多数 done、親は proposed のまま | registry 表現の drift。実装停滞ではない | Audit slice で umbrella status を successor-lane 相当に整理する |
 
 ## 次の取っ掛かり
+
+R3 後の入口は、`Explore: subtitle track import` ではなく `Advance: final cut/context review` と `Advance: production subtitle/render acceptance` が先頭になる。公式字幕が無い素材に進む場合だけ、`Verify: STT provider comparison` を優先する。
 
 | 入口 | 何が軽くなるか | 選ぶと可能になること |
 |---|---|---|

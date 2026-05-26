@@ -8,18 +8,19 @@ This file is the shortest project-local handoff for resuming from another termin
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest completed diagnostic slice: `JP-Pilot-01R2` review coverage + selected cut narrowing. It expanded the ignored JP-Pilot transcript review to accepted 25 / rejected 1 / unreviewed 0, regenerated shorter selected cuts, got all 5 selected cuts through context check, and rendered a 23.13s diagnostic proof.
-- Current recommended decision: prioritize official subtitle track import / transcript alignment. R2 showed that ED-09 patches can correct existing Vosk segments, but 37 official subtitle events fell outside Vosk segment coverage and cannot be represented by text-only review patches.
+- Latest completed feature slice: `ED-10` official subtitle track import / transcript alignment. It adds `import-subtitle-track`, currently for YouTube JSON3 subtitle tracks, and writes transcript-compatible artifacts with `stt.engine="subtitle_track"`.
+- Latest completed diagnostic slice: `JP-Pilot-01R3` official-caption rerun. It imported the official Japanese subtitle track for the ignored JP-Pilot episode, produced 105 transcript segments, regenerated 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s 1080p diagnostic render.
+- Current recommended decision: use JP-Pilot R3 to choose final cuts and define production subtitle/render acceptance. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review before creative acceptance.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Sync commit: JP-Pilot-01R2 review coverage closeout on `main` (see latest `git log --oneline -1` after pull)
-- Latest implementation slice before JP-Pilot-01R2: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
+- Sync commit: ED-10 / JP-Pilot-01R3 closeout on `main` (see latest `git log --oneline -1` after pull)
+- Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
 - Previous feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
   1. `transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` は language/model check passed で 26 segments を生成
   2. `generate-cuts` は 6 selected cuts、`check-cut-context` は 3 passed / 3 needs_review、`generate-subtitles` は 17 real_transcript subtitle drafts
   3. `render-tiny-proof --burn-in-subtitles diagnostic` は 6.6s / 1080p render、`export-nle` は 6 CSV rows、`audit-material-ledger` は ok
-- Previous recommendation resolved by JP-Pilot-01R2: review coverage and selected cut narrowing now work on real JP material. The remaining question is no longer "can we correct existing segments?" but "how do we import/align official subtitle events that Vosk did not segment?"
+- Previous recommendation resolved by ED-10 / JP-Pilot-01R3: official subtitle events can now enter the transcript/cuts/subtitle/NLE/render pipeline without being constrained to Vosk segment coverage.
 - Latest completed feature-slice closeout before this handoff note: ED-07c language/model validation closeout
-- Latest local verification: 2026-05-26 JST JP-Pilot-01R2 closeout; `uvx pytest -q` (188 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean.
+- Latest local verification: 2026-05-26 JST ED-10 closeout; `uvx pytest -q` (191 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean.
 - Working tree expectation after pull: clean
 
 ## Resume on another terminal
@@ -148,12 +149,20 @@ ED-08 / OUT-01e is complete as real STT subtitle draft linkage and diagnostic re
 - Smoke output `renders/out01e_real_transcript_subtitle_render/rendered_video.mp4` was generated with `subtitle_burn_in.status=enabled`, `derived_from_real_transcript=true`, status counts `included=1`, output duration `8.82`, container `mov,mp4,m4a,3gp,3g2,mj2`, video codec `h264`, audio codec `aac`, resolution `640x360`, fps `24/1`, stream count `2`.
 - This remains diagnostic linkage. It is not STT quality acceptance, transcript correction UI, production subtitle design, creative acceptance, URL video acquisition, GUI render action, publishing, FCPXML, or Resolve XML.
 
+ED-10 is complete as official subtitle track import / transcript alignment. It does not add a production subtitle surface; it converts a subtitle track into the existing transcript artifact shape so the established cut/subtitle/NLE/render path can consume it:
+
+- CLI shape: `import-subtitle-track --base-transcript <path> --subtitle-track <path> --output <path> [--source-format youtube-json3] [--reviewed-by <id>] [--dry-run] [--force] [--format json]`.
+- The first source format is YouTube JSON3. The importer writes `stt.engine="subtitle_track"`, `provider="youtube_subtitles"`, `engine_version="youtube-json3"`, and preserves base transcript source-audio readback.
+- Segment notes keep alignment readback against the base transcript when overlap exists, and warnings call out unaligned or overlapping subtitle events.
+- `generate-subtitles` now marks imported subtitle-track drafts as `source_type="imported_subtitle_track"`, and `export-nle` warnings say "subtitle track transcript" instead of mislabeling these artifacts as real STT.
+- Rejected / accepted / review states remain conservative data flags. An imported official subtitle track is not typography, safe-area, production render, rights, creative, or publishing acceptance.
+
 JP-Pilot-01 is complete as a Japanese public VOD diagnostic. It reused the existing URL/source media, Vosk JP, edit_pack, subtitle, render, and NLE export path without adding new production surfaces:
 
 - Selected source: official hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！` at <https://www.youtube.com/watch?v=7J5aS_pcBj4>.
 - Ignored episode `episodes/jp_pilot01_hololive_bancho_20260525` generated `source_video.mp4`, `source.wav`, `transcript.json`, `edit_pack.json`, `renders/jp_pilot01_diagnostic_render/rendered_video.mp4`, and `exports/jp_pilot01/nle_cut_list.csv`.
 - Readback: 26 transcript segments, speech coverage about 51.4%, 6 selected cut candidates, 3 passed / 3 needs_review, 17 subtitle drafts, 6.6s 1080p diagnostic render, 6 NLE CSV rows, ledger audit ok.
-- The transcript is technically real but not creatively acceptable as-is. ED-09 added the review / correction entry point; JP-Pilot-01R proved a 7-segment corrected rerun; JP-Pilot-01R2 expanded coverage to accepted 25 / rejected 1 / unreviewed 0 and narrowed selected cuts to 10.86s-23.13s with all context checks passed. The next bottleneck is official subtitle import / alignment, because text-only patching cannot recover caption events that Vosk never segmented.
+- The transcript is technically real but not creatively acceptable as-is. ED-09 added the review / correction entry point; JP-Pilot-01R proved a 7-segment corrected rerun; JP-Pilot-01R2 expanded coverage to accepted 25 / rejected 1 / unreviewed 0 and narrowed selected cuts to 10.86s-23.13s with all context checks passed. ED-10 / JP-Pilot-01R3 then imported the official subtitle track directly, producing 105 subtitle-track segments, 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s diagnostic render. The current bottleneck is final cut/context review and production subtitle/render acceptance for this captioned source.
 
 ## Production Gap Readback
 
@@ -168,8 +177,8 @@ Current state against that final shape:
 | Source audio | URL and local media can become `source.wav` with receipt / sidecar / ledger proof | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Source video | Local video and URL video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
-| Transcript | `transcribe-audio --engine fake` and optional `--engine vosk --model <path>` exist; ED-09 review patches can mark corrected transcript text; JP-Pilot-01R2 has accepted 25 / rejected 1 / unreviewed 0 existing segments | Text-only review cannot add missing caption events or repair STT segmentation gaps; official subtitle import / alignment is the next transcript bottleneck |
-| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; JP-Pilot-01R2 produced 5 narrowed cuts, 21 subtitle drafts, and 5 passed context checks | Creative cut acceptance and production subtitle design are still missing; caption completeness should be resolved before production render acceptance |
+| Transcript | `transcribe-audio --engine fake`, optional `--engine vosk --model <path>`, ED-09 review patches, and ED-10 `import-subtitle-track` exist. JP-Pilot-01R3 has 105 official subtitle-track segments with source-audio and alignment readback | Official captions can now enter the artifact path, but imported subtitle tracks are still review data and not creative or production subtitle acceptance; sources without official captions still need STT comparison |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; JP-Pilot-01R3 produced 9 cuts, 105 subtitle drafts, and NLE CSV 9 rows | Creative cut acceptance and production subtitle design are still missing; R3 has 6 context `needs_review` cuts that must be judged before final edit acceptance |
 | NLE / render | Minimal CSV cut list export exists; OUT-01b can produce a diagnostic video; OUT-01c/OUT-01d can burn and diagnose subtitle timing; JP-Pilot-01 burned JP real STT subtitles into a diagnostic 1080p render | No FCPXML / Resolve XML, no production subtitle design, no STT quality acceptance, and no production render acceptance |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 
@@ -184,6 +193,8 @@ The project should continue only if the next slices add or connect real producti
 - `src/cli/fetch_source_video.py` — `--mode local-media-video` CLI wiring, sidecar / receipt / ledger write.
 - `src/cli/render_tiny_proof.py` — `render-tiny-proof` CLI wiring, receipt / manifest / report write.
 - `src/pipeline/subtitle_generation.py` — transcript segments to `edit_pack.subtitles[]` draft generation, including real transcript source readback.
+- `src/cli/import_subtitle_track.py` — `import-subtitle-track` CLI wiring for subtitle-track-to-transcript import.
+- `src/pipeline/subtitle_import.py` — ED-10 YouTube JSON3 parser, base transcript alignment, warnings, and transcript artifact generation.
 - `src/cli/build_local_preview_pack.py` — local preview pack orchestration and `--use-existing-source-audio` bridge.
 - `src/pipeline/preview_pack.py` — preview manifest / report generation and source audio provenance readback.
 - `src/pipeline/nle_export.py` — ED-06 CSV cut list / manifest / HTML readback generation.
@@ -201,6 +212,27 @@ The project should continue only if the next slices add or connect real producti
 - `docs/JP_PILOT.md` — JP-Pilot-01 runbook, readback, stagnation audit, and next-entry comparison.
 
 ## Validation Already Run
+
+Latest validation for ED-10 / JP-Pilot-01R3 closeout:
+
+```powershell
+python -m src.cli.main import-subtitle-track --base-transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.jp_pilot01r2_20260526.json --subtitle-track episodes\jp_pilot01_hololive_bancho_20260525\source_subs\7J5aS_pcBj4.ja.json3 --output episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --reviewed-by codex:jp-pilot01r3 --force --format json
+python -m src.cli.main generate-cuts --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --target-duration-seconds 18 --min-duration-seconds 4 --max-duration-seconds 28 --gap-threshold-seconds 2.5 --max-candidates 10 --replace-auto --select-generated --format json
+python -m src.cli.main check-cut-context --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --selected-cuts-only --format json
+python -m src.cli.main generate-subtitles --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --selected-cuts-only --replace-auto --format json
+python -m src.cli.main export-nle --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --output-dir episodes\jp_pilot01_hololive_bancho_20260525\exports\jp_pilot01r3_subtitle_import --format json
+python -m src.cli.main render-tiny-proof --episode-id jp_pilot01_hololive_bancho_20260525 --source-video-material-id src_video_jp_pilot01 --source-audio-material-id src_audio_jp_pilot01 --edit-pack-path episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --output-id jp_pilot01r3_subtitle_import_diagnostic_render --duration-sec 6.84 --burn-in-subtitles diagnostic --force --format json
+python -m src.cli.main validate-transcript --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --format json
+python -m src.cli.main validate-edit-pack --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --format json
+python -m src.cli.main validate-rights --rights-manifest episodes\jp_pilot01_hololive_bancho_20260525\rights_manifest.json --format json
+python -m src.cli.main audit-material-ledger --episode-id jp_pilot01_hololive_bancho_20260525 --root episodes --format json
+uvx pytest -q
+npm run smoke
+npm run smoke:electron
+git diff --check
+```
+
+Results: import dry-run/apply `schema_ok=true`, imported segments 105, aligned 68, unaligned 37, overlapping 1, segment review counts accepted 105 / needs_fix 0 / rejected 0 / unreviewed 0. Downstream produced 9 selected cuts, context 3 passed / 6 needs_review / 0 failed, 105 `imported_subtitle_track` subtitle drafts, NLE CSV 9 rows, and a 6.84s / 1920x1080 diagnostic render with 7 rendered subtitle items. Transcript/edit/rights schemas passed and ledger audit was OK. Full validation: `uvx pytest -q` -> 191 passed, `npm run smoke` -> OK, `npm run smoke:electron` -> OK, `git diff --check` -> clean.
 
 Latest validation for JP-Pilot-01R2 closeout:
 
@@ -459,6 +491,15 @@ yt-dlp remains inside `asset_fetch` source-audio/source-video URL fetch. FFmpeg 
 
 ## Recommended Next Slice
 
+Current recommendation after ED-10 / JP-Pilot-01R3: move from "can captions enter the pipeline?" to "which cuts and subtitle/render policy are acceptable enough to become production-candidate work." The official subtitle track now covers the JP-Pilot source as 105 transcript segments, but 6 of 9 generated cuts still need context review and all render output remains diagnostic.
+
+| # | Candidate | Why now | Unblocks | Priority |
+|:--:|---|---|---|:--:|
+| 1 | JP-Pilot final cut/context review | R3 produced 9 selected cuts but 6 need context review | A concrete final edit candidate instead of a purely generated cut list | High |
+| 2 | Production subtitle/render acceptance | Official captions now cover the source, so typography/safe-area/full-render policy can be tested on real text | A first production-candidate render slice | High |
+| 3 | STT provider comparison | Vosk remains weak when official captions are absent | A data-backed choice for whisper.cpp / OpenAI Whisper or continued Vosk use | Medium |
+| 4 | GUI fetch/render/export actions | CLI path works, but repeated operator runs are still manual | Non-engineer-friendly execution once artifact contracts settle | Medium |
+
 JP-Pilot-01R2 で既存 Vosk segment の review coverage と selected cut narrowing は前進した。次は、ED-09 の text patch では表現できなかった公式 subtitle event を artifact に戻すか、公式字幕がない素材向けに STT provider を比較するかを選ぶ段階。
 
 | # | 候補 | 観測根拠 | unblock 条件 | 推奨度 |
@@ -481,17 +522,16 @@ JP-Pilot-01 も同方針で完了済み。assistant が JP public VOD を自律�
 
 ## Next Two-Slice Pressure
 
-After `JP-Pilot-01R2`, the project should deliberately move toward one of these production-adjacent bottlenecks:
+After `ED-10 / JP-Pilot-01R3`, the project should deliberately move toward one of these production-adjacent bottlenecks:
 
 | Candidate | Usefulness | Why it matters | Risk |
 |---|---:|---|---|
-| official subtitle import | 10/10 | R2 showed official captions are the reliable source, but 37 events cannot fit into existing Vosk segments | Must keep rights/readback pending and avoid production claims |
-| STT provider comparison | 8/10 | Vosk EN/JP quality limits still matter for sources without official subtitle tracks | External dependency/API contract may require explicit operator decision |
-| production subtitle/render acceptance | 7/10 | R2 narrowed cuts and context passed, but subtitle completeness/design are still unresolved | Premature if caption gaps are ignored |
-| final cut policy | 6/10 | R2 produced usable shorter candidates; the project still has no creative selection rule | Needs human or explicit heuristic acceptance boundary |
+| final cut policy | 9/10 | R3 has complete official-caption text and 9 generated cuts, but 6 context checks still need judgement | Needs human/heuristic creative acceptance boundary |
+| production subtitle/render acceptance | 8/10 | Official captions now enter the artifact path; the missing piece is typography/safe-area/full-render policy | Must avoid claiming production acceptance from diagnostic render output |
+| STT provider comparison | 7/10 | Vosk EN/JP quality limits still matter for sources without official subtitle tracks | External dependency/API contract may require explicit operator decision |
 | GUI fetch/render/export actions | 5/10 | CLI pipeline works but is still operator-unfriendly when repeated end to end | Can accidentally expose unreviewed production actions; keep confirmation/readback strict |
 
-Recommended continuation after `JP-Pilot-01R2`: prefer official subtitle import / transcript alignment if staying on captioned public VODs; prefer STT provider comparison if the next target lacks official captions; prefer production subtitle/render acceptance only after the caption gap decision is explicit. Do not count docs-only policy expansion, read-only GUI panels, or audit log polish as production progress unless they connect a corrected transcript, selected cuts, NLE export, or rendered video artifact.
+Recommended continuation after `ED-10 / JP-Pilot-01R3`: prefer final cut/context review and production subtitle/render acceptance if staying on this captioned JP-Pilot source; prefer STT provider comparison if the next target lacks official captions. Do not count docs-only policy expansion, read-only GUI panels, or audit log polish as production progress unless they connect a corrected transcript, selected cuts, NLE export, or rendered video artifact.
 
 Any OUT follow-up must remain explicitly non-production until a later acceptance slice: no publishing, no GUI one-click publish, no broad renderer feature set, and no production candidate claims.
 

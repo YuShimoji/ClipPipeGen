@@ -294,14 +294,15 @@ def _warnings(
     if transcript_readback.get("available"):
         if transcript_readback.get("real_transcript") is True:
             review_status = transcript_readback.get("review_status", "unknown")
+            label = _transcript_warning_label(transcript_readback)
             if review_status == "approved":
                 warnings.append(
-                    "real STT transcript review.status is approved; "
+                    f"{label} review.status is approved; "
                     "transcript approval is not edit/publish acceptance."
                 )
             else:
                 warnings.append(
-                    f"real STT transcript review.status is {review_status}; "
+                    f"{label} review.status is {review_status}; "
                     "transcript quality is not creative acceptance."
                 )
         else:
@@ -325,6 +326,12 @@ def _warnings(
     if not edit_pack.get("selected_cut_ids"):
         warnings.append("selected_cut_ids is empty; exporting all cut candidates for review.")
     return warnings
+
+
+def _transcript_warning_label(transcript_readback: dict[str, Any]) -> str:
+    if transcript_readback.get("engine") == "subtitle_track":
+        return "subtitle track transcript"
+    return "real STT transcript"
 
 
 def _transcript_readback(

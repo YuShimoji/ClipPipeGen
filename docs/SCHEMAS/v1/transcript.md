@@ -223,7 +223,27 @@ INT-02a の標準 source audio は `episodes/<episode_id>/materials/<material_id
 
 `review.status="approved"` にする場合は `--reviewed-by` または patch 内 `review.reviewed_by` が必須で、全 segment が `accepted` または `rejected` でなければ失敗する。`--dry-run --format json` は `updated_segment_count`、`review_status`、`segment_review_counts`、`schema_ok`、`dry_run` を返し、ファイルを書き換えない。
 
+### ED-10 subtitle track import
+
+`import-subtitle-track` imports an official/external subtitle track into a `transcript.json`-compatible artifact. v1 supports YouTube JSON3 only (`--source-format youtube-json3`). The base transcript anchors `episode_id`, `language`, and `source_audio`; subtitle events become new `segments[]`.
+
+```bash
+python -m src.cli.main import-subtitle-track \
+  --base-transcript episodes/episode_example/transcript.json \
+  --subtitle-track episodes/episode_example/source_subs/example.ja.json3 \
+  --output episodes/episode_example/transcript.json \
+  --reviewed-by user:operator \
+  --dry-run \
+  --format json
+```
+
+Imported transcripts use `stt.engine="subtitle_track"`, `stt.provider="youtube_subtitles"`, and `stt.engine_version="youtube-json3"`. `stt.params` records the subtitle track path, source format, base transcript engine/provider/segment count, and alignment overlap threshold. Segment notes record either `aligned_base_segment_id=... overlap_seconds=...` or `no_base_segment_overlap_above=...`.
+
+The top-level review remains conservative (`needs_review`). Subtitle track import is a caption-completeness / alignment aid, not subtitle design, typography, safe-area, creative acceptance, rights approval, production render, or publishing acceptance. Downstream `generate-subtitles` marks these drafts as `source_type="imported_subtitle_track"`.
+
 ## Provider / model 採用状況
+
+ED-10 adds `engine="subtitle_track"` for imported subtitle-track transcripts. The current provider is `youtube_subtitles` with YouTube JSON3 input under `episodes/<episode_id>/source_subs/*.json3`.
 
 | Provider | engine value | language | 状態 | Model path 例 | Slice |
 |---|---|---|---|---|---|

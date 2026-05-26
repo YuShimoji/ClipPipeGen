@@ -217,6 +217,8 @@ def _format_text(text: str, *, wrap_eaw: int | None, ambiguous_width: int) -> st
 
 def _subtitle_source_type(transcript: dict[str, Any]) -> str:
     stt = transcript.get("stt") if isinstance(transcript.get("stt"), dict) else {}
+    if stt.get("engine") == "subtitle_track":
+        return "imported_subtitle_track"
     return "real_transcript" if stt.get("real_transcript") is True else "transcript_segments"
 
 
