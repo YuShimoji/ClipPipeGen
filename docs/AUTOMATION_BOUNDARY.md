@@ -1,5 +1,13 @@
 # Automation Boundary
 
+## 2026-05-26 clarification: diagnostic processing vs production gates
+
+Local diagnostic processing is allowed while `rights_manifest.compliance_check.status` is `pending`: source fetch, transcript generation/import/review, cut generation, context checks, subtitle drafts, NLE CSV export, `render-tiny-proof`, cut review packets, and evidence summaries. These operations must preserve rights status as readback and must not claim production, creative, publishing, or public-use approval.
+
+Production/public operations are hard-gated beyond this boundary: upload, OAuth-backed publishing, visibility changes, public thumbnail setting, production render acceptance, production subtitle burn-in/design acceptance, and any public-ready claim require an explicit rights / publishing acceptance slice. Pending rights cannot be described as production-usable.
+
+`src/integrations/render/` is the only place where Python may call FFmpeg for rendered video output, and only for diagnostic artifacts with `production_candidate=false` plus receipt / manifest / report. Editing core may prepare transcript, cuts, subtitles, review packets, and NLE handoff data, but it must not become the production renderer.
+
 何を自動化し、何を外部 integration / 外部ツールとして扱うかの境界。禁止リストではなく、実装面の分離を定義する。
 
 ## Integration マップ

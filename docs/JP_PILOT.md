@@ -80,6 +80,8 @@ R3 では ED-10 の `import-subtitle-track` を使い、YouTube JSON3 の公式 
 
 R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 event を artifact に戻せない」問題は解消した。一方、公式字幕は短い event を細かく保持するため、自動 cut は 9 本に増え、context check は 6 本が needs_review になった。次の判断は transcript completeness ではなく、final cut/context review と production subtitle/render acceptance に移っている。公式字幕がない素材では、引き続き STT provider comparison が優先候補になる。
 
+R3 review packet: `build-cut-review-packet` で `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/` に `cut_review_packet.json` / `cut_review_report.html` / `evidence_summary.json` / `evidence_summary.html` を生成済み。各 cut には duration、reason、context notes、subtitle event count、subtitle density、review focus、`decision_placeholder.final_decision="undecided"` が入る。これは final cut 採否ではなく、人間レビューへ渡すための readback。
+
 ## 観測した制作上の詰まり
 
 R3 update: 公式 subtitle track の欠落回収は ED-10 で進んだ。現時点の詰まりは、R3 の 9 cuts 中 6 cuts が context `needs_review` であること、production subtitle design / safe-area / typography / full render policy が未定であること、公式字幕が無い素材では Vosk 以外の STT provider 比較がまだ必要なこと。

@@ -19,6 +19,7 @@ Subcommands:
     validate-transcript      Validate transcript.json against schema v1.
     review-transcript        ED-09: apply human review/correction patch to transcript.json.
     import-subtitle-track    ED-10: subtitle track -> transcript.json-compatible artifact.
+    build-cut-review-packet  ED-10/R3: selected cuts -> review packet/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
     fetch-source-video       INT-02f: create/register source_video material.
@@ -40,6 +41,7 @@ from . import (
     audit_material_ledger,
     audit_thumbnail,
     build_local_preview_pack,
+    build_cut_review_packet,
     check_cut_context,
     export_nle,
     fetch_source_audio,
@@ -78,6 +80,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "validate-transcript": validate_transcript.run,
     "review-transcript": review_transcript.run,
     "import-subtitle-track": import_subtitle_track.run,
+    "build-cut-review-packet": build_cut_review_packet.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
     "fetch-source-video": fetch_source_video.run,

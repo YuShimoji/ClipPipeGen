@@ -8,6 +8,8 @@ JP-Pilot-01R3 reran the ignored episode `episodes/jp_pilot01_hololive_bancho_202
 
 This resolves the R2 bottleneck where 37 official subtitle events could not be represented by ED-09 text patches because they had no good Vosk segment overlap. The new bottleneck is no longer caption completeness for this source; it is final cut/context review plus production subtitle/render acceptance. For sources without official subtitle tracks, STT provider comparison remains the higher-priority branch.
 
+Follow-up evidence packet (local ignored artifact): `build-cut-review-packet` generated `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_review_packet.json`, `cut_review_report.html`, `evidence_summary.json`, and `evidence_summary.html`. The packet lists all 9 selected cuts with subtitle density, context notes, review focus, and undecided decision placeholders. Context summary remains 3 passed / 6 needs_review; rights remain `pending`; diagnostic render evidence remains `production_candidate=false`.
+
 ## JP-Pilot-01R2 closeout — 2026-05-26 JST
 
 JP-Pilot-01R2 review coverage + cut narrowing is complete as an ignored diagnostic artifact. The R1 `transcript.json` / `edit_pack.json` were backed up inside `episodes/jp_pilot01_hololive_bancho_20260525`, then `review-transcript` applied `transcript_review_patch_jp_pilot01r2.json` using max-overlap alignment from the official Japanese subtitle track. Result: segment review counts moved from unreviewed 19 / accepted 7 to unreviewed 0 / accepted 25 / rejected 1, with `review.status=needs_review` and `reviewed_by=codex:jp-pilot01r2`.

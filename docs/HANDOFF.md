@@ -20,7 +20,7 @@ This file is the shortest project-local handoff for resuming from another termin
   3. `render-tiny-proof --burn-in-subtitles diagnostic` は 6.6s / 1080p render、`export-nle` は 6 CSV rows、`audit-material-ledger` は ok
 - Previous recommendation resolved by ED-10 / JP-Pilot-01R3: official subtitle events can now enter the transcript/cuts/subtitle/NLE/render pipeline without being constrained to Vosk segment coverage.
 - Latest completed feature-slice closeout before this handoff note: ED-07c language/model validation closeout
-- Latest local verification: 2026-05-26 JST ED-10 closeout; `uvx pytest -q` (191 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean.
+- Latest local verification: 2026-05-26 JST ED-10a closeout; `uvx pytest -q` (193 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean.
 - Working tree expectation after pull: clean
 
 ## Resume on another terminal
@@ -157,6 +157,13 @@ ED-10 is complete as official subtitle track import / transcript alignment. It d
 - `generate-subtitles` now marks imported subtitle-track drafts as `source_type="imported_subtitle_track"`, and `export-nle` warnings say "subtitle track transcript" instead of mislabeling these artifacts as real STT.
 - Rejected / accepted / review states remain conservative data flags. An imported official subtitle track is not typography, safe-area, production render, rights, creative, or publishing acceptance.
 
+The JP-Pilot R3 review packet surface is also available. `build-cut-review-packet` reads the R3 `edit_pack.json`, `transcript.json`, NLE manifest, render manifest, and rights manifest, then writes a machine-readable packet and an HTML report for final cut/context review:
+
+- Local ignored output: `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/`
+- Files: `cut_review_packet.json`, `cut_review_report.html`, `evidence_summary.json`, `evidence_summary.html`
+- Readback: 9 selected cuts, context 3 passed / 6 needs_review, 105 imported subtitle drafts, rights `pending`, render `production_candidate=false`
+- This packet deliberately keeps every `decision_placeholder.final_decision` as `undecided`; it is handoff material, not agent acceptance.
+
 JP-Pilot-01 is complete as a Japanese public VOD diagnostic. It reused the existing URL/source media, Vosk JP, edit_pack, subtitle, render, and NLE export path without adding new production surfaces:
 
 - Selected source: official hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！` at <https://www.youtube.com/watch?v=7J5aS_pcBj4>.
@@ -195,6 +202,9 @@ The project should continue only if the next slices add or connect real producti
 - `src/pipeline/subtitle_generation.py` — transcript segments to `edit_pack.subtitles[]` draft generation, including real transcript source readback.
 - `src/cli/import_subtitle_track.py` — `import-subtitle-track` CLI wiring for subtitle-track-to-transcript import.
 - `src/pipeline/subtitle_import.py` — ED-10 YouTube JSON3 parser, base transcript alignment, warnings, and transcript artifact generation.
+- `src/cli/build_cut_review_packet.py` — review packet CLI for selected-cut human review handoff.
+- `src/pipeline/cut_review_packet.py` — cut review packet / evidence summary JSON and HTML generation.
+- `docs/SCHEMAS/v1/cut_review_packet.md` — cut review packet shape and boundary.
 - `src/cli/build_local_preview_pack.py` — local preview pack orchestration and `--use-existing-source-audio` bridge.
 - `src/pipeline/preview_pack.py` — preview manifest / report generation and source audio provenance readback.
 - `src/pipeline/nle_export.py` — ED-06 CSV cut list / manifest / HTML readback generation.
@@ -222,6 +232,7 @@ python -m src.cli.main check-cut-context --transcript episodes\jp_pilot01_hololi
 python -m src.cli.main generate-subtitles --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --selected-cuts-only --replace-auto --format json
 python -m src.cli.main export-nle --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --output-dir episodes\jp_pilot01_hololive_bancho_20260525\exports\jp_pilot01r3_subtitle_import --format json
 python -m src.cli.main render-tiny-proof --episode-id jp_pilot01_hololive_bancho_20260525 --source-video-material-id src_video_jp_pilot01 --source-audio-material-id src_audio_jp_pilot01 --edit-pack-path episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --output-id jp_pilot01r3_subtitle_import_diagnostic_render --duration-sec 6.84 --burn-in-subtitles diagnostic --force --format json
+python -m src.cli.main build-cut-review-packet --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --nle-manifest episodes\jp_pilot01_hololive_bancho_20260525\exports\jp_pilot01r3_subtitle_import\nle_export_manifest.json --render-manifest episodes\jp_pilot01_hololive_bancho_20260525\renders\jp_pilot01r3_subtitle_import_diagnostic_render\render_manifest.json --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --format json
 python -m src.cli.main validate-transcript --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --format json
 python -m src.cli.main validate-edit-pack --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --format json
 python -m src.cli.main validate-rights --rights-manifest episodes\jp_pilot01_hololive_bancho_20260525\rights_manifest.json --format json
@@ -232,7 +243,7 @@ npm run smoke:electron
 git diff --check
 ```
 
-Results: import dry-run/apply `schema_ok=true`, imported segments 105, aligned 68, unaligned 37, overlapping 1, segment review counts accepted 105 / needs_fix 0 / rejected 0 / unreviewed 0. Downstream produced 9 selected cuts, context 3 passed / 6 needs_review / 0 failed, 105 `imported_subtitle_track` subtitle drafts, NLE CSV 9 rows, and a 6.84s / 1920x1080 diagnostic render with 7 rendered subtitle items. Transcript/edit/rights schemas passed and ledger audit was OK. Full validation: `uvx pytest -q` -> 191 passed, `npm run smoke` -> OK, `npm run smoke:electron` -> OK, `git diff --check` -> clean.
+Results: import dry-run/apply `schema_ok=true`, imported segments 105, aligned 68, unaligned 37, overlapping 1, segment review counts accepted 105 / needs_fix 0 / rejected 0 / unreviewed 0. Downstream produced 9 selected cuts, context 3 passed / 6 needs_review / 0 failed, 105 `imported_subtitle_track` subtitle drafts, NLE CSV 9 rows, and a 6.84s / 1920x1080 diagnostic render with 7 rendered subtitle items. The review packet writes 9 cut entries with undecided decision placeholders plus an evidence summary that records rights `pending` and diagnostic render `production_candidate=false`. Transcript/edit/rights schemas passed and ledger audit was OK. Full validation: `uvx pytest -q` -> 193 passed, `npm run smoke` -> OK, `npm run smoke:electron` -> OK, `git diff --check` -> clean.
 
 Latest validation for JP-Pilot-01R2 closeout:
 

@@ -1,5 +1,13 @@
 # Invariants
 
+## 2026-05-26 clarification: diagnostic render and rights gates
+
+Python may generate local diagnostic render artifacts only inside the render integration boundary (`src/integrations/render/` and `render-tiny-proof`). Such artifacts must keep `production_candidate=false`, must write receipt / manifest / report readback, and must not be described as production render, public-ready render, production subtitle burn-in, or creative acceptance.
+
+Python must not own production render acceptance, production subtitle design acceptance, upload, publishing, OAuth, visibility changes, or public-ready output. Those are later acceptance / integration surfaces and require explicit feature slices.
+
+`rights_manifest.compliance_check.status=pending` is allowed for source fetch, transcript import/review, cut generation, context checks, subtitle drafts, NLE CSV handoff, diagnostic render, local evidence summaries, and local review packets. Pending rights are readback, not production approval. Public production use, upload, publishing, thumbnail setting on a public video, or any claim that an artifact is production-ready requires an explicit rights / publishing acceptance step and must not be inferred from local diagnostic success.
+
 破ってはいけない条件・責務境界を保持する正本。実装済み/未実装の区別を明確にし、未実装機能を禁止扱いにしない。
 
 ## North Star
