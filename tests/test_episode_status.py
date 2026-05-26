@@ -47,6 +47,10 @@ def test_status_reports_missing_rights_first(tmp_path: Path):
     status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
     assert status["rights"]["state"] == "missing"
     assert status["next_action"]["action"].startswith("Run init-episode")
+    assert status["operator_review"]["review_ready"] is False
+    assert status["operator_review"]["reviewability"] == "review_blocked_missing_artifacts"
+    assert "cut_review_report.html" in status["operator_review"]["missing_review_artifacts"][0]
+    assert status["operator_review"]["production_candidate"] is False
 
 
 def test_status_reports_material_registration_next_after_passed_rights(tmp_path: Path):
@@ -178,3 +182,21 @@ def test_status_episode_cli_outputs_json(tmp_path: Path):
     payload = json.loads(result.stdout)
     assert payload["episode_id"] == "ep_cli"
     assert payload["rights"]["state"] == "ready"
+    assert payload["operator_review"]["review_ready"] is False
+    assert payload["operator_review"]["recovery_doc"] == "docs/NON_REPO_ARTIFACT_HANDOFF.md"
+
+
+def test_status_reports_review_ready_when_r3_reports_exist(tmp_path: Path):
+    ep_dir = tmp_path / "episodes" / "ep_review_ready"
+    review_dir = ep_dir / "review" / "jp_pilot01r3_cut_review"
+    review_dir.mkdir(parents=True)
+    save_rights_manifest(_rights_passed("ep_review_ready"), ep_dir / "rights_manifest.json")
+    for name in ("cut_review_report.html", "evidence_summary.html", "non_repo_artifact_handoff.html"):
+        (review_dir / name).write_text("<html></html>", encoding="utf-8")
+
+    status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
+
+    assert status["operator_review"]["review_ready"] is True
+    assert status["operator_review"]["reviewability"] == "review_ready"
+    assert status["operator_review"]["missing_review_artifacts"] == []
+    assert status["operator_review"]["production_candidate"] is False

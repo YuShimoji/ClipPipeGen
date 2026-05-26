@@ -211,6 +211,29 @@ def _packet_payload(
             "rights_status": rights_status,
             "production_candidate": False,
         },
+        "operator_review": {
+            "reviewability": "review_ready",
+            "review_ready": True,
+            "missing_review_artifacts": [],
+            "page_role": "human final cut/context review screen",
+            "artifact_availability": [
+                "cut_review_report.html is present in this output directory",
+                "cut_review_packet.json is present in this output directory",
+                "evidence_summary.html should be checked as evidence, not as the primary decision surface",
+                "non_repo_artifact_handoff.html records Git-excluded diagnostic artifact identity when present",
+            ],
+            "current_boundary": (
+                f"diagnostic_only; production_candidate=false; rights_status={rights_status}; "
+                "production/public use is blocked until a separate approval slice"
+            ),
+            "next_human_decision": (
+                "Describe which cuts should be carried forward, adjusted, or dropped. "
+                "Natural language is allowed; the Agent can normalize the review later."
+            ),
+            "commands_role": "Recovery and reproduction commands are appendix material, not the main review path.",
+            "production_candidate": False,
+            "rights_status": rights_status,
+        },
         "review_boundary": {
             "agent_auto_accepts_final_cuts": False,
             "decision_required": "human final cut/context review",
@@ -348,6 +371,26 @@ def _evidence_payload(
         "episode_id": edit_pack["episode_id"],
         "source_identity": source_identity,
         "production_candidate": False,
+        "operator_review": {
+            "reviewability": "diagnostic_only",
+            "review_ready": True,
+            "missing_review_artifacts": [],
+            "page_role": "evidence and artifact inventory check",
+            "artifact_availability": [
+                f"{item.get('name')}: {'present' if item.get('exists') else 'missing'}"
+                for item in artifact_paths
+            ],
+            "current_boundary": (
+                f"diagnostic_only; production_candidate=false; rights_status={rights_status}; "
+                "this page is evidence, not final cut acceptance"
+            ),
+            "next_human_decision": (
+                "Use cut_review_report.html for the actual cut judgment; use this page to verify evidence."
+            ),
+            "commands_role": "Recovery and reproduction commands are appendix material, not the main review path.",
+            "production_candidate": False,
+            "rights_status": rights_status,
+        },
         "manual_operation_readback": {
             "local_cli_reproducible": True,
             "browser_click_required": False,
@@ -594,11 +637,39 @@ def _reproduction_commands(episode_id: str) -> list[str]:
     ]
 
 
+def _operator_summary_html(operator: dict[str, Any], source: dict[str, Any]) -> str:
+    missing = operator.get("missing_review_artifacts") or []
+    if missing:
+        missing_html = "<ul>" + "".join(f"<li>{escape(str(item))}</li>" for item in missing) + "</ul>"
+    else:
+        missing_html = "<p>None recorded for this page.</p>"
+    availability = operator.get("artifact_availability") or []
+    availability_html = "<ul>" + "".join(f"<li>{escape(str(item))}</li>" for item in availability) + "</ul>"
+    return f"""
+  <section class="operator-summary" data-role="operator-summary">
+    <h2>Operator Reviewability</h2>
+    <dl>
+      <dt>What this page is</dt><dd>{escape(str(operator.get("page_role", "operator review surface")))}</dd>
+      <dt>Can the user review now?</dt><dd>review_ready={escape(str(operator.get("review_ready", False)).lower())}; reviewability={escape(str(operator.get("reviewability", "unknown")))}</dd>
+      <dt>Source identity</dt><dd>{escape(str(source.get("source_video_identity", "unknown")))} / YouTube ID {escape(str(source.get("youtube_id", "unknown")))}</dd>
+      <dt>Current boundary</dt><dd>{escape(str(operator.get("current_boundary", "")))}</dd>
+      <dt>Next human decision</dt><dd>{escape(str(operator.get("next_human_decision", "")))}</dd>
+      <dt>Commands</dt><dd>{escape(str(operator.get("commands_role", "")))}</dd>
+    </dl>
+    <h3>Artifact availability</h3>
+    {availability_html}
+    <h3>Missing review artifacts</h3>
+    {missing_html}
+  </section>
+"""
+
+
 def _packet_html(packet: dict[str, Any]) -> str:
     rows = "\n".join(_cut_row_html(cut) for cut in packet.get("cuts") or [])
     boundary = packet.get("review_boundary") or {}
     summary = packet.get("summary") or {}
     source = packet.get("source_identity") or {}
+    operator = packet.get("operator_review") or {}
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -615,6 +686,7 @@ def _packet_html(packet: dict[str, Any]) -> str:
 <body>
   <h1>Cut Review Packet</h1>
   <p class="warn">Review surface only. Agent auto-accepts final cuts: {escape(str(boundary.get("agent_auto_accepts_final_cuts")).lower())}. Production candidate: {escape(str(boundary.get("production_candidate")).lower())}.</p>
+  {_operator_summary_html(operator, source)}
   <h2>Source Video Identity</h2>
   <dl>
     <dt>Source video identity</dt><dd>{escape(str(source.get("source_video_identity", "unknown")))}</dd>
@@ -685,12 +757,14 @@ def _evidence_html(evidence: dict[str, Any]) -> str:
     )
     metrics = evidence.get("metrics") or {}
     source = evidence.get("source_identity") or {}
+    operator = evidence.get("operator_review") or {}
     return f"""<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><title>ED-10 / R3 Evidence Summary</title></head>
 <body>
   <h1>ED-10 / JP-Pilot R3 Evidence Summary</h1>
   <p>Production candidate: {escape(str(evidence.get("production_candidate", False)).lower())}. This evidence supports local review only.</p>
+  {_operator_summary_html(operator, source)}
   <h2>Source Video Identity</h2>
   <dl>
     <dt>Source video identity</dt><dd>{escape(str(source.get("source_video_identity", "unknown")))}</dd>
@@ -709,8 +783,11 @@ def _evidence_html(evidence: dict[str, Any]) -> str:
     <thead><tr><th>name</th><th>exists</th><th>path</th><th>size</th></tr></thead>
     <tbody>{inventory_rows}</tbody>
   </table>
-  <h2>Reproduction Commands</h2>
-  <ol>{commands}</ol>
+  <h2>Appendix</h2>
+  <details>
+    <summary>Recovery / reproduction commands</summary>
+    <ol>{commands}</ol>
+  </details>
   <h2>Boundary Evidence</h2>
   <ul>{''.join(f'<li>{escape(str(item))}</li>' for item in evidence.get('boundary_evidence') or [])}</ul>
 </body>

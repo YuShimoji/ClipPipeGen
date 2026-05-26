@@ -50,7 +50,13 @@ def test_non_repo_handoff_records_existing_diagnostic_render_identity(tmp_path: 
     assert manifest["boundary"]["production_usage_allowed"] is False
     assert manifest["handoff_status"]["transferable_by_git"] is False
     assert manifest["handoff_status"]["regeneratable"] is True
-    _assert_no_video_embed(result["report_path"].read_text(encoding="utf-8"))
+    assert manifest["operator_review"]["reviewability"] == "diagnostic_only"
+    assert manifest["operator_review"]["review_ready"] is True
+    report = result["report_path"].read_text(encoding="utf-8")
+    assert "Operator Reviewability" in report
+    assert "review_ready=true" in report
+    assert "<summary>Recovery / reproduction commands</summary>" in report
+    _assert_no_video_embed(report)
 
 
 def test_non_repo_handoff_cli_writes_missing_report_without_video_embed(tmp_path: Path):
@@ -100,6 +106,10 @@ def test_non_repo_handoff_cli_writes_missing_report_without_video_embed(tmp_path
         "production_acceptance_rule"
     ]
     assert "Missing Behavior" in report
+    assert "Operator Reviewability" in report
+    assert "review_ready=false" in report
+    assert "review_blocked_missing_artifacts" in report
+    assert "<summary>Recovery / reproduction commands</summary>" in report
     assert "production_candidate</dt><dd>false" in report
     _assert_no_video_embed(report)
 
@@ -125,6 +135,8 @@ def test_render_manifest_without_rendered_video_output_infers_sibling_missing(tm
     assert artifact_info["size_bytes"] is None
     assert artifact_info["sha256"] is None
     assert result["manifest"]["handoff_status"]["transferable_by_git"] is False
+    assert result["manifest"]["operator_review"]["review_ready"] is False
+    assert result["manifest"]["operator_review"]["reviewability"] == "review_blocked_missing_artifacts"
     assert result["manifest"]["missing_behavior"]["regeneration_command"].startswith(
         "python -m src.cli.main render-tiny-proof"
     )
@@ -212,6 +224,8 @@ def test_fresh_checkout_missing_dependencies_report_is_readable(tmp_path: Path):
     assert manifest["handoff_status"]["regeneratable"] is False
     assert manifest["handoff_status"]["requires_local_media"] is True
     assert "Dependency Artifacts" in report
+    assert "Operator Reviewability" in report
+    assert "review_ready=false" in report
     assert "transcript.json" in report
     assert "<td>false</td>" in report
     assert "Missing Behavior" in report

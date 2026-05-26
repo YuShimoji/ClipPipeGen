@@ -6,6 +6,8 @@ ClipPipeGen の local episode には、diagnostic render video や source media 
 
 ## CLI
 
+Operator-facing rule: `build-non-repo-handoff` creates only the handoff manifest/report. It is not a render command and it does not recreate `rendered_video.mp4`. If the binary artifact is missing, use the `missing_behavior.regeneration_command` appendix as the separate recovery route after confirming the required local inputs exist.
+
 `build-non-repo-handoff` は local artifact handoff manifest/report を作る command であり、`render-tiny-proof` の代替ではない。動画本体を再生成する場合は、manifest の `missing_behavior.regeneration_command` に記録された render command などを別途実行する。
 
 ```powershell

@@ -2,7 +2,7 @@
 
 Last updated: 2026-05-26 JST
 
-This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them.
+This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 ## Current Sync Point
 
@@ -10,7 +10,7 @@ This file is the shortest project-local handoff for resuming from another termin
 - Upstream: `origin/main`
 - Latest completed feature slice: `ED-10` official subtitle track import / transcript alignment. It adds `import-subtitle-track`, currently for YouTube JSON3 subtitle tracks, and writes transcript-compatible artifacts with `stt.engine="subtitle_track"`.
 - Latest completed diagnostic slice: `JP-Pilot-01R3` official-caption rerun. It imported the official Japanese subtitle track for the ignored JP-Pilot episode, produced 105 transcript segments, regenerated 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s 1080p diagnostic render.
-- Current recommended decision: use JP-Pilot R3 cut review packet for human final cut/context review first. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review and all cut decisions remain `undecided`.
+- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet for human final cut/context review. If they are missing, final cut/context review is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review and all cut decisions remain `undecided`.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
 - Pulled sync base for this handoff refresh: `734b0f0 docs: close non-repo handoff sync point` on `main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
@@ -521,9 +521,9 @@ Current recommendation after ED-10 / JP-Pilot-01R3 / SH-06: move from "can capti
 | 3 | Advance: production subtitle/render acceptance | Diagnostic render and production candidate boundaries still need a policy | A later production-candidate render slice after candidate seeds exist | Medium |
 | 4 | Clear Rights: rights approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after creative/render acceptance exists | Medium |
 
-For the next human review, open the ignored local reports in this order when available: `cut_review_report.html`, then `evidence_summary.html`, then `non_repo_artifact_handoff.html`. If this is a fresh checkout only, regenerate or transfer the required local episode artifacts first; otherwise treat the review surface as missing.
+For the next human review, start with Reviewability as defined in `docs/OPERATOR_REVIEW_UX.md`. When the ignored local reports are available, inspect `cut_review_report.html`, then `evidence_summary.html`, then `non_repo_artifact_handoff.html`. If this is a fresh checkout only, do not present the review report as ready; restore or regenerate the required local episode artifacts first, otherwise treat the review surface as `review_blocked_missing_artifacts`.
 
-Human review should classify `cut_001` through `cut_009` as `accept_candidate`, `adjust_boundary`, or `reject`. Focus especially on previous setup, following payoff, and whether the cut boundary should move. The goal is to narrow to 1-3 candidate seeds. The agent must not auto-fill final cut decisions, must not convert undecided cuts into creative acceptance, and must not treat the diagnostic render as production output.
+Human review may be returned in natural language. The operator can describe which cuts feel usable, which need boundary changes, and which should be dropped; the Agent may normalize that review into `accept_candidate`, `adjust_boundary`, or `reject` in a later decision patch. The goal is to narrow to 1-3 candidate seeds. The agent must not auto-fill final cut decisions, must not force strict machine format as the first human response, must not convert undecided cuts into creative acceptance, and must not treat the diagnostic render as production output.
 
 Regenerated render comparison can follow once candidate seeds are clearer. Exact SHA-256 is useful only for the same local artifact identity; re-renders may differ by environment, so a later Verify slice should define duration / resolution / codec / timeline refs / subtitle source refs / boundary flags as metadata approximate criteria.
 

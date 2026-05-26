@@ -55,6 +55,7 @@ def build_episode_status(
         "materials": {"state": "missing"},
         "editing": {"state": "missing"},
         "thumbnail": {"state": "missing"},
+        "operator_review": {},
         "settings": {"bridge_config": _bridge_config_status(bridge_config_path)},
         "next_action": {},
     }
@@ -87,6 +88,7 @@ def build_episode_status(
     if thumb_result_path.exists():
         _fill_thumbnail_result_status(status, thumb_result_path)
 
+    status["operator_review"] = _operator_review_status(ep_dir, base, status)
     status["next_action"] = _choose_next_action(status)
     return status
 
@@ -243,6 +245,40 @@ def _fill_thumbnail_result_status(status: dict[str, Any], result_path: Path) -> 
         }
     )
     status["thumbnail"] = thumb
+
+
+def _operator_review_status(ep_dir: Path, base: Path, status: dict[str, Any]) -> dict[str, Any]:
+    review_dir = ep_dir / "review" / "jp_pilot01r3_cut_review"
+    required = {
+        "cut_review_report": review_dir / "cut_review_report.html",
+        "evidence_summary": review_dir / "evidence_summary.html",
+        "non_repo_artifact_handoff": review_dir / "non_repo_artifact_handoff.html",
+    }
+    artifacts = {
+        name: {
+            "path": _display_path(path, base),
+            "exists": path.exists() and path.is_file(),
+        }
+        for name, path in required.items()
+    }
+    missing = [item["path"] for item in artifacts.values() if not item["exists"]]
+    review_ready = not missing
+    rights_status = (status.get("rights") or {}).get("compliance_status") or "unknown"
+    return {
+        "review_surface": "jp_pilot01r3_cut_review",
+        "reviewability": "review_ready" if review_ready else "review_blocked_missing_artifacts",
+        "review_ready": review_ready,
+        "missing_review_artifacts": missing,
+        "next_human_action": (
+            "Open cut_review_report.html and respond in natural language with cut/context judgment."
+            if review_ready
+            else "Restore or regenerate ignored R3 review artifacts before final cut/context review; Git alone cannot start R3 review."
+        ),
+        "recovery_doc": "docs/NON_REPO_ARTIFACT_HANDOFF.md",
+        "production_candidate": False,
+        "rights_status": rights_status,
+        "artifacts": artifacts,
+    }
 
 
 def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:

@@ -113,6 +113,13 @@ def build_non_repo_artifact_handoff(
         generated_by_command=generated_by_command,
         dependency_artifacts=dependency_artifacts,
     )
+    operator_review = _operator_review_status(
+        artifact_exists=exists,
+        artifact_local_path=_absolute_display_path(resolved_artifact),
+        source_identity=source_identity,
+        boundary=boundary,
+        dependency_artifacts=dependency_artifacts,
+    )
     payload = {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": ARTIFACT_KIND,
@@ -136,6 +143,7 @@ def build_non_repo_artifact_handoff(
         "boundary": boundary,
         "handoff_status": handoff_status,
         "missing_behavior": missing_behavior,
+        "operator_review": operator_review,
         "notes": [
             "The binary artifact is intentionally excluded from Git.",
             "This manifest records identity, hashes, source identity, recovery commands, and acceptance boundaries only.",
@@ -404,6 +412,59 @@ def _missing_behavior(
     }
 
 
+def _operator_review_status(
+    *,
+    artifact_exists: bool,
+    artifact_local_path: str,
+    source_identity: dict[str, Any],
+    boundary: dict[str, Any],
+    dependency_artifacts: dict[str, Any],
+) -> dict[str, Any]:
+    missing_review_artifacts: list[str] = []
+    if not artifact_exists:
+        missing_review_artifacts.append(artifact_local_path)
+    optional_review_context = {"nle_report", "render_report"}
+    for name, item in dependency_artifacts.items():
+        if name in optional_review_context:
+            continue
+        if not item.get("exists") and item.get("path"):
+            missing_review_artifacts.append(str(item["path"]))
+
+    review_ready = artifact_exists and not missing_review_artifacts
+    reviewability = "diagnostic_only" if review_ready else "review_blocked_missing_artifacts"
+    availability = [
+        f"diagnostic artifact: {'present' if artifact_exists else 'missing'}",
+        *[
+            f"{name}: {'present' if item.get('exists') else 'missing'}"
+            for name, item in dependency_artifacts.items()
+        ],
+    ]
+    return {
+        "reviewability": reviewability,
+        "review_ready": review_ready,
+        "missing_review_artifacts": missing_review_artifacts,
+        "page_role": "Git-excluded artifact identity and regeneration boundary",
+        "artifact_availability": availability,
+        "source_identity": {
+            "source_video_identity": source_identity.get("source_video_identity", "unknown"),
+            "youtube_id": source_identity.get("youtube_id", "unknown"),
+            "transcript_source": source_identity.get("transcript_source", "unknown"),
+        },
+        "current_boundary": (
+            f"diagnostic_only; production_candidate={str(boundary.get('production_candidate', False)).lower()}; "
+            f"rights_status={boundary.get('rights_status', 'unknown')}; production/public use is not approved"
+        ),
+        "next_human_decision": (
+            "If artifacts are present, use cut_review_report.html for cut judgment. "
+            "If artifacts are missing, restore or regenerate ignored episode artifacts before final cut/context review."
+        ),
+        "commands_role": "Recovery and regeneration commands are appendix material, not the main review path.",
+        "production_candidate": False,
+        "rights_status": boundary.get("rights_status", "unknown"),
+        "recovery_doc": "docs/NON_REPO_ARTIFACT_HANDOFF.md",
+    }
+
+
 def _render_readback(render_manifest: dict[str, Any]) -> dict[str, Any]:
     metadata = render_manifest.get("output_metadata") if isinstance(render_manifest.get("output_metadata"), dict) else {}
     return {
@@ -423,6 +484,7 @@ def _handoff_html(manifest: dict[str, Any]) -> str:
     boundary = manifest.get("boundary") or {}
     handoff = manifest.get("handoff_status") or {}
     missing = manifest.get("missing_behavior") or {}
+    operator = manifest.get("operator_review") or {}
     dependencies = manifest.get("dependency_artifacts") or {}
     dep_rows = "\n".join(
         "<tr>"
@@ -434,6 +496,15 @@ def _handoff_html(manifest: dict[str, Any]) -> str:
         "</tr>"
         for name, item in dependencies.items()
     )
+    availability = operator.get("artifact_availability") or []
+    availability_html = "<ul>" + "".join(f"<li>{escape(str(item))}</li>" for item in availability) + "</ul>"
+    missing_items = operator.get("missing_review_artifacts") or []
+    missing_html = (
+        "<ul>" + "".join(f"<li>{escape(str(item))}</li>" for item in missing_items) + "</ul>"
+        if missing_items
+        else "<p>None recorded for this page.</p>"
+    )
+    recovery_command = escape(str(missing.get("regeneration_command", "unknown")))
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -452,6 +523,23 @@ def _handoff_html(manifest: dict[str, Any]) -> str:
   <h1>Non-Repo Artifact Handoff</h1>
   <p class="warn">Binary artifact is excluded from Git. This page records identity and recovery steps only; it does not embed or auto-open video.</p>
 
+  <section class="operator-summary" data-role="operator-summary">
+    <h2>Operator Reviewability</h2>
+    <dl>
+      <dt>What this page is</dt><dd>{escape(str(operator.get("page_role", "non-repo artifact handoff")))}</dd>
+      <dt>Can the user review now?</dt><dd>review_ready={escape(str(operator.get("review_ready", False)).lower())}; reviewability={escape(str(operator.get("reviewability", "unknown")))}</dd>
+      <dt>Source identity</dt><dd>{escape(str(source.get("source_video_identity", "unknown")))} / YouTube ID {escape(str(source.get("youtube_id", "unknown")))}</dd>
+      <dt>Artifact availability</dt><dd>{escape("present" if artifact.get("exists") else "missing")}</dd>
+      <dt>Current boundary</dt><dd>{escape(str(operator.get("current_boundary", "")))}</dd>
+      <dt>Next human decision</dt><dd>{escape(str(operator.get("next_human_decision", "")))}</dd>
+      <dt>Commands</dt><dd>{escape(str(operator.get("commands_role", "")))}</dd>
+    </dl>
+    <h3>Artifact availability details</h3>
+    {availability_html}
+    <h3>Missing review artifacts</h3>
+    {missing_html}
+  </section>
+
   <h2>Artifact</h2>
   <dl>
     <dt>episode_id</dt><dd>{escape(str(manifest.get("episode_id", "")))}</dd>
@@ -463,7 +551,6 @@ def _handoff_html(manifest: dict[str, Any]) -> str:
     <dt>exists</dt><dd>{escape(str(artifact.get("exists", False)).lower())}</dd>
     <dt>size_bytes</dt><dd>{escape(str(artifact.get("size_bytes") or ""))}</dd>
     <dt>sha256</dt><dd>{escape(str(artifact.get("sha256") or ""))}</dd>
-    <dt>generated_by_command</dt><dd><code>{escape(str(artifact.get("generated_by_command") or "unknown"))}</code></dd>
   </dl>
 
   <h2>Source Video Identity</h2>
@@ -500,10 +587,15 @@ def _handoff_html(manifest: dict[str, Any]) -> str:
 
   <h2>Missing Behavior</h2>
   <p>{escape(str(missing.get("when_absent_show", "")))}</p>
-  <p><code>{escape(str(missing.get("regeneration_command", "unknown")))}</code></p>
   <p>{escape(str(missing.get("exact_verification", "")))}</p>
   <p>{escape(str(missing.get("approximate_verification", "")))}</p>
   <p>{escape(str(missing.get("production_acceptance_rule", "")))}</p>
+
+  <h2>Appendix</h2>
+  <details>
+    <summary>Recovery / reproduction commands</summary>
+    <p><code>{recovery_command}</code></p>
+  </details>
 </body>
 </html>
 """

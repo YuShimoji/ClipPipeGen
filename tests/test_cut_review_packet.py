@@ -33,6 +33,7 @@ def test_cut_review_packet_summarizes_needs_review_and_boundaries(tmp_path: Path
 
     packet = result["packet"]
     report = result["report_path"].read_text(encoding="utf-8")
+    evidence_report = result["evidence_report_path"].read_text(encoding="utf-8")
     evidence = result["evidence"]
 
     assert packet["summary"]["cut_count"] == 2
@@ -46,9 +47,18 @@ def test_cut_review_packet_summarizes_needs_review_and_boundaries(tmp_path: Path
     assert needs_review["decision_placeholder"]["final_decision"] == "undecided"
     assert needs_review["subtitle_event_count"] == 2
     assert "Production candidate: false" in report
+    assert "Operator Reviewability" in report
+    assert "What this page is" in report
+    assert "review_ready=true" in report
+    assert "Natural language is allowed" in report
+    assert "Recovery and reproduction commands are appendix material" in report
     assert evidence["metrics"]["render"]["production_candidate"] is False
     assert evidence["metrics"]["rights"]["production_usage_allowed"] is False
+    assert evidence["operator_review"]["reviewability"] == "diagnostic_only"
     assert any("rights_manifest status=pending" in item for item in evidence["boundary_evidence"])
+    assert "Operator Reviewability" in evidence_report
+    assert "<details>" in evidence_report
+    assert "<summary>Recovery / reproduction commands</summary>" in evidence_report
     generated = {
         item["name"]: item for item in evidence["artifact_inventory"]
         if item["name"] in {"cut_review_packet", "cut_review_report", "evidence_summary", "evidence_report"}
@@ -93,6 +103,15 @@ def test_cut_review_packet_cli_writes_json_and_html(tmp_path: Path):
     evidence_report = Path(payload["evidence_report"]).read_text(encoding="utf-8")
     assert "Production candidate: false" in evidence_report
     assert "rights_manifest status=pending" in evidence_report
+    assert "<summary>Recovery / reproduction commands</summary>" in evidence_report
+
+
+def test_operator_review_ux_doc_accepts_natural_language_and_blocks_auto_final_cut():
+    doc = (REPO_ROOT / "docs" / "OPERATOR_REVIEW_UX.md").read_text(encoding="utf-8")
+    assert "review_blocked_missing_artifacts" in doc
+    assert "natural language" in doc
+    assert "must not auto-accept" in doc
+    assert "Commands" in doc and "appendix" in doc
 
 
 def _write_episode(tmp_path: Path) -> Path:

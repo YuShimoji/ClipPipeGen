@@ -68,6 +68,15 @@ def _print_text(status: dict) -> None:
             f"failed={context.get('failed_count', 0)}, "
             f"not_checked={context.get('not_checked_count', 0)}"
         )
+    operator = status.get("operator_review") or {}
+    if operator:
+        print(
+            "reviewability: "
+            f"{operator.get('reviewability', 'unknown')} "
+            f"(review_ready={str(operator.get('review_ready', False)).lower()}, "
+            f"missing={len(operator.get('missing_review_artifacts') or [])})"
+        )
+        print(f"review next: {operator.get('next_human_action', '')}")
     print(
         "thumbnail: "
         f"{status['thumbnail']['state']} "
