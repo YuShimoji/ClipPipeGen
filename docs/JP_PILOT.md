@@ -82,36 +82,33 @@ R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 ev
 
 R3 review packet: `build-cut-review-packet` で `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/` に `cut_review_packet.json` / `cut_review_report.html` / `evidence_summary.json` / `evidence_summary.html` を生成済み。各 cut には duration、reason、context notes、subtitle event count、subtitle density、review focus、`decision_placeholder.final_decision="undecided"` が入る。これは final cut 採否ではなく、人間レビューへ渡すための readback。
 
+R3 source identity readback: YouTube ID `7J5aS_pcBj4`、subtitle track `source_subs/7J5aS_pcBj4.ja.json3`、transcript source `imported subtitle track / youtube_subtitles`、source video material id `src_video_jp_pilot01`、source audio material id `src_audio_jp_pilot01`、rights status `pending`、production usage `not allowed until rights approval`。title / URL が local metadata から取得できない場合は `unknown` として扱い、外部検索や新規 download で埋めない。
+
+Non-Repo Artifact Handoff: `build-non-repo-handoff` は `rendered_video.mp4` を再生成する command ではなく、local artifact の handoff manifest/report を作る command。R3 固有の `non_repo_artifact_handoff.json` / `.html`、`rendered_video.mp4`、source media、subtitle track、render manifest は ignored `episodes/` 配下の local artifact であり、fresh checkout には来ない。missing のまま production / creative / publish acceptance へ進めない。
+
 ## 観測した制作上の詰まり
 
-R3 update: 公式 subtitle track の欠落回収は ED-10 で進んだ。現時点の詰まりは、R3 の 9 cuts 中 6 cuts が context `needs_review` であること、production subtitle design / safe-area / typography / full render policy が未定であること、公式字幕が無い素材では Vosk 以外の STT provider 比較がまだ必要なこと。
+R3 update: 公式 subtitle track の欠落回収は ED-10 で進んだ。現時点の詰まりは、R3 の 9 cuts 中 6 cuts が context `needs_review` で、全 cut の final decision が `undecided` のままであること。ここから先は Agent が採否を埋める段階ではなく、人間が `cut_001`〜`cut_009` を `accept_candidate` / `adjust_boundary` / `reject` に分類する段階。
 
-日本語 Vosk model は pipeline 接続としては機能したが、実コンテンツの字幕品質にはまだ届かない。JP-Pilot-01R2 では公式 subtitle track を使った補正により、既存 transcript segment の範囲では unreviewed を解消し、selected cut context も全件 passed にできた。ただし公式字幕 event の一部は Vosk segment 外に落ちるため、caption completeness はまだ未受容。
-
-cut は R2 で 5 件すべて `passed` になり、60 秒級の広い window も 10〜23 秒台へ縮んだ。ここから先の停滞は context threshold ではなく、「公式字幕の欠落 event をどう transcript/subtitle artifact に取り込むか」と「production subtitle design をどこまで定義するか」に移っている。
+diagnostic render は local review evidence として有用だが、production render でも creative acceptance でも publish acceptance でもない。再生成時の SHA-256 が環境差で byte-exact にならない可能性も残るため、render comparison の exact hash / metadata approximate 基準は Verify slice として後続に残す。
 
 ## 機能停滞の棚卸し
 
 | 領域 | 現在状態 | 停滞の種類 | 推奨する次の動き |
 |---|---|---|---|
-| STT 品質・補正 | JP-Pilot-01R2 で既存 26 segments は accepted 25 / rejected 1 / unreviewed 0 | Vosk segment に載らない公式字幕 event が残る | official subtitle track import / transcript alignment を切る |
-| cut review | R2 で 5 selected cuts、5 passed / 0 needs_review、10.9s〜23.1s | 境界 readback は改善。creative choice はまだ未受容 | import/alignment 後に final selected cut policy を決める |
-| production render / subtitle design | 23.13s diagnostic render は clamped=false で通るが、本番字幕設計・safe-area・typography は未実装 | caption completeness と design acceptance が未定 | caption import で欠落を埋めてから production subtitle/render acceptance を切る |
-| GUI fetch / render / export | CLI は進んだが GUI action は手動 cut 入力中心 | operator 導線の摩擦。core pipeline の停滞ではない | CLI artifact が安定してから GUI に fetch/render/export actions を追加 |
-| Publishing / OAuth / visibility | PB / INT-01 は proposed | 認証・API 契約・公開判断が必要なため意図的に後回し | production candidate が作れるまで着手しない |
-| TH-01 walkthrough | ソフト実装 done、実 YMM4 template acceptance は user-owned | 実素材/テンプレ準備待ち | 低リスクで閉じるなら walkthrough smoke を別作業に切る |
-| SH-02 episode_pack | proposed | artifact が増えたため価値は上がったが、publish_draft がまだ無い | caption import または production render 後にまとめる |
-| bg removal / TTS / auto thumbnail | proposed / future | 現在の中核 bottleneck ではない | JP pipeline の字幕・cut 受容後に必要性を再評価 |
-| INT-02 parent umbrella | child slices は多数 done、親は proposed のまま | registry 表現の drift。実装停滞ではない | Audit slice で umbrella status を successor-lane 相当に整理する |
+| final cut/context review | R3 は 9 selected cuts、context 3 passed / 6 needs_review、decision 全件 `undecided` | 実装ではなく編集判断が律速 | `cut_review_report.html` を見て 1〜3 本の candidate seed に絞る |
+| regenerated render comparison | SHA-256 は既存 local artifact の同一性確認には使えるが、再 render は環境差で byte-exact にならない可能性がある | exact / approximate の受入基準が未定 | candidate seed が見えてから Verify slice で metadata approximate を定義する |
+| production subtitle/render acceptance | 公式字幕は artifact に戻ったが、diagnostic render と production candidate の境界は未定 | typography / safe-area / full render policy が未定 | candidate seed 後に production subtitle/render acceptance を切る |
+| rights approval path | rights status は `pending` | production/public 利用不可 | production/public 利用前に別 slice として rights approval path を整理する |
+| Publishing / OAuth / visibility | PB / INT-01 は proposed | 認証・API 契約・公開判断が必要 | rights と production acceptance が揃うまで着手しない |
 
 ## 次の取っ掛かり
 
-R3 後の入口は、`Explore: subtitle track import` ではなく `Advance: final cut/context review` と `Advance: production subtitle/render acceptance` が先頭になる。公式字幕が無い素材に進む場合だけ、`Verify: STT provider comparison` を優先する。
+R3 後の入口は、`Advance: final cut/context review` が第一候補。公式字幕 track import と Non-Repo Artifact Handoff は閉じており、今は人間が cut/context を判断するための review surface が揃っている。
 
 | 入口 | 何が軽くなるか | 選ぶと可能になること |
 |---|---|---|
-| Explore: subtitle track import | Vosk segment 外に落ちた公式字幕 event を artifact に戻せる | ED-10 相当の caption import / transcript alignment を設計できる |
-| Advance: production subtitle/render acceptance | R2 の narrowed cuts を使って typography / safe-area / full render policy を検討できる | ただし caption gap の扱いを先に決める必要がある |
-| Verify: STT provider comparison | 公式 subtitle が無い素材で Vosk の限界と代替 provider の効果を比較できる | whisper.cpp / OpenAI Whisper の依存追加や API 契約変更を根拠付きで判断できる |
-| Audit: registry / docs drift cleanup | done child と proposed umbrella のズレが減る | 次スライス選定時に「実装済みだが未受容」と「本当に未実装」を混同しなくなる |
-| Explore: GUI action expansion | CLI 操作の摩擦が減る | fetch / render / export を operator が画面から実行できる |
+| Advance: final cut/context review | R3 の 9 cuts / 6 needs_review を制作判断へ移せる | `accept_candidate` / `adjust_boundary` / `reject` で 1〜3 本の candidate seed を残せる |
+| Verify: regenerated render comparison | 別端末・再生成時の hash 差分の扱いが明確になる | duration / resolution / codec / timeline refs / subtitle source refs / boundary flags の approximate 基準を決められる |
+| Advance: production subtitle/render acceptance | diagnostic render と production candidate の境界が明確になる | candidate seed 後に typography / safe-area / full render policy を検討できる |
+| Clear Rights: rights approval path | rights pending のまま production/public 利用しない境界が明確になる | 公開・production 利用前の approval 条件を整理できる |
