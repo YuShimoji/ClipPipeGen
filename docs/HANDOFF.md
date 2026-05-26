@@ -12,7 +12,7 @@ This file is the shortest project-local handoff for resuming from another termin
 - Latest completed diagnostic slice: `JP-Pilot-01R3` official-caption rerun. It imported the official Japanese subtitle track for the ignored JP-Pilot episode, produced 105 transcript segments, regenerated 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s 1080p diagnostic render.
 - Current recommended decision: use JP-Pilot R3 cut review packet for human final cut/context review first. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review and all cut decisions remain `undecided`.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Sync commit: `734b0f0 docs: close non-repo handoff sync point` on `main`
+- Pulled sync base for this handoff refresh: `734b0f0 docs: close non-repo handoff sync point` on `main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
 - Previous feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
   1. `transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` は language/model check passed で 26 segments を生成
