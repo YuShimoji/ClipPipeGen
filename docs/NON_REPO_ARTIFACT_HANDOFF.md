@@ -6,6 +6,8 @@ ClipPipeGen の local episode には、diagnostic render video や source media 
 
 ## CLI
 
+`build-non-repo-handoff` は local artifact handoff manifest/report を作る command であり、`render-tiny-proof` の代替ではない。動画本体を再生成する場合は、manifest の `missing_behavior.regeneration_command` に記録された render command などを別途実行する。
+
 ```powershell
 python -m src.cli.main build-non-repo-handoff `
   --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 `
@@ -18,6 +20,14 @@ python -m src.cli.main build-non-repo-handoff `
 出力は `non_repo_artifact_handoff.json` と `non_repo_artifact_handoff.html`。動画本体をコピー、埋め込み、Base64 化、HTML の `video` tag 参照にはしない。
 
 ## 別端末での扱い
+
+「別端末」は三つに分けて読む。
+
+| 状態 | 何があるか | 扱い |
+|---|---|---|
+| Same machine / same workspace | ignored `episodes/` が残っていれば、local manifest/report、`rendered_video.mp4`、source media、subtitle track を照合できる | hash / size / source identity を確認し、diagnostic local review evidence としてだけ扱う |
+| Different machine with transferred local episode artifacts | Git 外の許可された transfer 経路で episode artifacts を移した場合のみ、R3 固有 manifest/report や動画を照合できる | 移送後も Git 管理対象にはしない。hash / size / source identity と rights / production boundary を確認する |
+| Fresh checkout only | generator / schema / docs / tests はあるが、R3 固有 manifest/report、`rendered_video.mp4`、source media、subtitle track、render manifest は無い | 必要な upstream artifacts が揃うまで missing として扱い、production / creative / publish acceptance へ進めない |
 
 1. まず handoff manifest を開き、`artifact.exists`、`artifact.local_path`、`artifact.sha256`、`source_identity`、`boundary` を確認する。
 2. `rendered_video.mp4` が存在する場合は hash と size を確認し、diagnostic local review evidence としてだけ扱う。

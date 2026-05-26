@@ -61,7 +61,8 @@ def build_non_repo_artifact_handoff(
         artifact_path = _artifact_path_from_render_manifest(render_manifest, render_manifest_path)
     if artifact_path is None:
         raise NonRepoArtifactHandoffError(
-            "--artifact-path is required when render_manifest outputs.rendered_video is unavailable"
+            "--artifact-path is required unless --render-manifest points to a manifest with outputs.rendered_video "
+            "or a sibling rendered_video.mp4 recovery path"
         )
     resolved_artifact = _resolve_path(artifact_path, base=base, anchor=episode_dir)
     exists = resolved_artifact.exists() and resolved_artifact.is_file()

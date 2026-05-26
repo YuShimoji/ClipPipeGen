@@ -29,6 +29,8 @@ JP-Pilot R3 の `rendered_video.mp4` は diagnostic artifact であり、Git に
 
 R3 の既定出力先は ignored local episode 配下の `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.json` と `non_repo_artifact_handoff.html`。fresh checkout に動画や ignored episode が無い場合は missing として扱い、manifest の regeneration command と dependency artifacts が揃うまで production / creative / publish acceptance へ進めない。
 
+別端末の意味は三つに分ける。same machine / same workspace では ignored `episodes/` が残っていれば照合できる。different machine では Git 外の許可された transfer 経路で episode artifacts を移した場合だけ hash / size / source identity を照合できる。fresh checkout only では generator / schema / docs / tests だけがあり、R3 固有 manifest/report、`rendered_video.mp4`、source media、subtitle track、render manifest は無いので、必要な upstream artifacts が揃うまで missing のまま扱う。
+
 ## Resume on another terminal
 
 ```powershell

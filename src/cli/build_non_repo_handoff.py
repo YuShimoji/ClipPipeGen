@@ -20,7 +20,8 @@ def run(argv: list[str]) -> int:
         prog="build-non-repo-handoff",
         description=(
             "Build machine-readable and human-readable handoff metadata for a local "
-            "artifact that must not be committed to Git."
+            "artifact that must not be committed to Git. This command does not render "
+            "or recreate the binary artifact."
         ),
     )
     parser.add_argument("--episode-dir", required=True)
