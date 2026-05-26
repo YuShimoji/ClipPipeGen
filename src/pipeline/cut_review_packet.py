@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from .edit_pack import load_edit_pack, validate_edit_pack
+from .non_repo_artifact_handoff import build_source_identity
 from .rights_manifest import load_rights_manifest, validate_rights_manifest
 from .transcript import count_segment_review_statuses, load_transcript, validate_transcript
 
@@ -162,11 +163,20 @@ def _packet_payload(
     ]
     context_counts = _context_counts(cut_entries)
     rights_status = _rights_status(rights)
+    source_identity = build_source_identity(
+        episode_dir=episode_dir,
+        transcript=transcript,
+        rights=rights,
+        render_manifest=render_manifest,
+        material_ledger=_load_json_optional(episode_dir / "material_ledger.json"),
+        base_dir=base_dir,
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": "cut_review_packet",
         "created_at": _now(),
         "episode_id": edit_pack["episode_id"],
+        "source_identity": source_identity,
         "input": {
             "episode_dir": _display_path(episode_dir, base_dir),
             "edit_pack": _display_path(edit_pack_path, base_dir),
@@ -323,11 +333,20 @@ def _evidence_payload(
         evidence_report_path=evidence_report_path,
         base_dir=base_dir,
     )
+    source_identity = build_source_identity(
+        episode_dir=episode_dir,
+        transcript=transcript,
+        rights=rights,
+        render_manifest=render_manifest,
+        material_ledger=_load_json_optional(episode_dir / "material_ledger.json"),
+        base_dir=base_dir,
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "artifact_kind": "ed10_r3_evidence_summary",
         "created_at": _now(),
         "episode_id": edit_pack["episode_id"],
+        "source_identity": source_identity,
         "production_candidate": False,
         "manual_operation_readback": {
             "local_cli_reproducible": True,
@@ -535,6 +554,8 @@ def _artifact_inventory(
         ("render_receipt", render_manifest_path.parent / "render_receipt.json" if render_manifest_path else None),
         ("render_report", render_manifest_path.parent / "render_report.html" if render_manifest_path else None),
         ("rendered_video", render_manifest_path.parent / "rendered_video.mp4" if render_manifest_path else None),
+        ("non_repo_artifact_handoff", packet_path.parent / "non_repo_artifact_handoff.json"),
+        ("non_repo_artifact_handoff_report", packet_path.parent / "non_repo_artifact_handoff.html"),
         ("cut_review_packet", packet_path),
         ("cut_review_report", report_path),
         ("evidence_summary", evidence_path),
@@ -577,6 +598,7 @@ def _packet_html(packet: dict[str, Any]) -> str:
     rows = "\n".join(_cut_row_html(cut) for cut in packet.get("cuts") or [])
     boundary = packet.get("review_boundary") or {}
     summary = packet.get("summary") or {}
+    source = packet.get("source_identity") or {}
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -593,6 +615,17 @@ def _packet_html(packet: dict[str, Any]) -> str:
 <body>
   <h1>Cut Review Packet</h1>
   <p class="warn">Review surface only. Agent auto-accepts final cuts: {escape(str(boundary.get("agent_auto_accepts_final_cuts")).lower())}. Production candidate: {escape(str(boundary.get("production_candidate")).lower())}.</p>
+  <h2>Source Video Identity</h2>
+  <dl>
+    <dt>Source video identity</dt><dd>{escape(str(source.get("source_video_identity", "unknown")))}</dd>
+    <dt>YouTube ID</dt><dd>{escape(str(source.get("youtube_id", "unknown")))}</dd>
+    <dt>Subtitle track</dt><dd>{escape(str(source.get("subtitle_track", "unknown")))}</dd>
+    <dt>Transcript source</dt><dd>{escape(str(source.get("transcript_source", "unknown")))}</dd>
+    <dt>Source video material id</dt><dd>{escape(str(source.get("source_video_material_id", "unknown")))}</dd>
+    <dt>Source audio material id</dt><dd>{escape(str(source.get("source_audio_material_id", "unknown")))}</dd>
+    <dt>Rights status</dt><dd>{escape(str(summary.get("rights_status", "unknown")))}</dd>
+    <dt>Production usage</dt><dd>not allowed until rights approval</dd>
+  </dl>
   <dl>
     <dt>episode_id</dt><dd>{escape(str(packet.get("episode_id", "")))}</dd>
     <dt>cut_count</dt><dd>{escape(str(summary.get("cut_count", "")))}</dd>
@@ -651,12 +684,24 @@ def _evidence_html(evidence: dict[str, Any]) -> str:
         for command in evidence.get("reproduction_commands") or []
     )
     metrics = evidence.get("metrics") or {}
+    source = evidence.get("source_identity") or {}
     return f"""<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><title>ED-10 / R3 Evidence Summary</title></head>
 <body>
   <h1>ED-10 / JP-Pilot R3 Evidence Summary</h1>
   <p>Production candidate: {escape(str(evidence.get("production_candidate", False)).lower())}. This evidence supports local review only.</p>
+  <h2>Source Video Identity</h2>
+  <dl>
+    <dt>Source video identity</dt><dd>{escape(str(source.get("source_video_identity", "unknown")))}</dd>
+    <dt>YouTube ID</dt><dd>{escape(str(source.get("youtube_id", "unknown")))}</dd>
+    <dt>Subtitle track</dt><dd>{escape(str(source.get("subtitle_track", "unknown")))}</dd>
+    <dt>Transcript source</dt><dd>{escape(str(source.get("transcript_source", "unknown")))}</dd>
+    <dt>Source video material id</dt><dd>{escape(str(source.get("source_video_material_id", "unknown")))}</dd>
+    <dt>Source audio material id</dt><dd>{escape(str(source.get("source_audio_material_id", "unknown")))}</dd>
+    <dt>Rights status</dt><dd>{escape(str((metrics.get("rights") or {}).get("status", "unknown")))}</dd>
+    <dt>Production usage</dt><dd>not allowed until rights approval</dd>
+  </dl>
   <h2>Metrics</h2>
   <pre>{escape(json.dumps(metrics, ensure_ascii=False, indent=2))}</pre>
   <h2>Artifact Inventory</h2>
@@ -731,7 +776,7 @@ def _issue_to_dict(issue: Any) -> dict[str, Any]:
 def _write_json(payload: dict[str, Any], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+        json.dump(payload, f, ensure_ascii=True, indent=2)
         f.write("\n")
 
 

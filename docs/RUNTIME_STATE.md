@@ -1,5 +1,13 @@
 # Runtime State — ClipPipeGen
 
+## SH-06 / Non-Repo Artifact Handoff closeout — 2026-05-26 JST
+
+SH-06 adds a handoff surface for local artifacts that must stay out of Git. `build-non-repo-handoff` reads the JP-Pilot R3 `render_manifest.json` plus local review inputs and writes `non_repo_artifact_handoff.json` / `non_repo_artifact_handoff.html` with artifact path, size, sha256, source identity, dependency artifacts, regeneration command, missing behavior, rights boundary, and production boundary. The report does not embed video or add a local `video` tag.
+
+JP-Pilot R3 handoff was generated under ignored local review output: `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.json` and `.html`. That ignored manifest records `rendered_video.mp4` as `git_policy=excluded_from_git`, `transferable_by_git=false`, and carries the local size/sha256 readback, YouTube ID `7J5aS_pcBj4`, subtitle track `source_subs/7J5aS_pcBj4.ja.json3`, rights `pending`, and `production_candidate=false` / `creative_acceptance=false` / `publish_acceptance=false`. Fresh checkouts should regenerate this local manifest/report instead of expecting the episode artifacts through Git.
+
+`build-cut-review-packet` now adds Source Video Identity to the cut review and evidence reports and lists the non-repo handoff files in artifact inventory when present. This is still a diagnostic/local handoff slice only. It does not move to final cut acceptance, production subtitle/render acceptance, rights approval, OAuth, or publishing.
+
 ## ED-10 / JP-Pilot-01R3 closeout — 2026-05-26 JST
 
 ED-10 official subtitle track import is implemented as a CLI/data-first workflow. The new `import-subtitle-track` command reads a base `transcript.json` plus a YouTube JSON3 subtitle track and writes a transcript-compatible artifact with `stt.engine="subtitle_track"` / `provider="youtube_subtitles"`. It preserves source-audio readback, records base transcript alignment notes, keeps top-level review conservative (`needs_review`), and treats the result as a transcript alignment aid rather than subtitle design or production acceptance.
@@ -78,8 +86,8 @@ Local verification for this closeout: `uvx pytest -q` -> 188 passed, `npm run sm
 
 ### lane / slice
 
-- **current_lane**: Slice 2 + Phase 1.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-07c / ED-08 / ED-09 / **ED-10** / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** / **JP-Pilot-01** / **JP-Pilot-01R** / **JP-Pilot-01R2** / **JP-Pilot-01R3** done。samples runnable
-- **current_slice**: Phase 1.5 `ED-10 / JP-Pilot-01R3` closeout — `import-subtitle-track` で YouTube JSON3 公式字幕 track を transcript-compatible artifact に変換し、JP-Pilot ignored artifact へ再投入した。105 subtitle-track segments / 9 selected cuts / context 3 passed + 6 needs_review / 105 imported-subtitle drafts / NLE CSV 9 rows / 6.84s diagnostic render まで通した。rights は schema-readable pending のままで approval ではない。
+- **current_lane**: Slice 2 + Phase 1.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / **SH-06** / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-07c / ED-08 / ED-09 / **ED-10** / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** / **JP-Pilot-01** / **JP-Pilot-01R** / **JP-Pilot-01R2** / **JP-Pilot-01R3** done。samples runnable
+- **current_slice**: Phase 1.5 `SH-06 / Non-Repo Artifact Handoff` closeout — JP-Pilot R3 の ignored diagnostic `rendered_video.mp4` を Git に含めず、handoff manifest/report で local path / size / sha256 / source identity / dependency artifacts / regeneration command / rights and production boundary / missing behavior を引き継げるようにした。R3 本体は引き続き diagnostic local review only であり、rights は pending、production / creative / publish acceptance ではない。
 - **next_action（user / assistant mixed）**: 次の最短前進は (1) JP-Pilot R3 の context notes を見て final cut policy を決める、(2) production subtitle/render acceptance を小さく定義する、(3) official captions が無い素材向けに STT provider comparison を切る、の順。GUI fetch/render/export actions、TH-01 walkthrough、SH-02 episode_pack、Publishing は core caption/cut/render acceptance の後続候補。
 
 ### Phase 1.5 (ii) JP-Pilot-01 done（Japanese public VOD diagnostic）

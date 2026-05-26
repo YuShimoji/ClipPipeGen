@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://clippipegen.local/schemas/v1/non_repo_artifact_handoff.schema.json",
+  "title": "ClipPipeGen Non-Repo Artifact Handoff",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "episode_id",
+    "artifact_id",
+    "artifact",
+    "source_identity",
+    "dependency_artifacts",
+    "boundary",
+    "handoff_status",
+    "missing_behavior"
+  ],
+  "properties": {
+    "schema_version": { "const": "v1" },
+    "artifact_kind": { "const": "non_repo_artifact_handoff" },
+    "created_at": { "type": "string" },
+    "episode_id": { "type": "string", "minLength": 1 },
+    "artifact_id": { "type": "string", "minLength": 1 },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "artifact_kind",
+        "git_policy",
+        "local_path",
+        "repo_relative_path",
+        "exists",
+        "size_bytes",
+        "sha256",
+        "generated_by_command"
+      ],
+      "properties": {
+        "artifact_kind": {
+          "enum": [
+            "diagnostic_render_video",
+            "source_video",
+            "source_audio",
+            "subtitle_track",
+            "nle_export"
+          ]
+        },
+        "git_policy": {
+          "enum": ["excluded_from_git", "tracked_metadata_only"]
+        },
+        "local_path": { "type": "string" },
+        "repo_relative_path": { "type": "string" },
+        "exists": { "type": "boolean" },
+        "size_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "content_hash": {
+          "type": ["string", "null"],
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "generated_by_command": { "type": ["string", "null"] },
+        "render_readback": { "type": "object" }
+      },
+      "additionalProperties": true
+    },
+    "source_identity": {
+      "type": "object",
+      "required": [
+        "source_video_title",
+        "youtube_id",
+        "source_url",
+        "subtitle_track",
+        "transcript_source",
+        "source_video_material_id",
+        "source_audio_material_id"
+      ],
+      "properties": {
+        "source_video_identity": { "type": "string" },
+        "source_video_title": { "type": "string" },
+        "source_video_channel": { "type": "string" },
+        "youtube_id": { "type": "string" },
+        "source_url": { "type": "string" },
+        "subtitle_track": { "type": "string" },
+        "transcript_source": { "type": "string" },
+        "transcript_engine": { "type": "string" },
+        "transcript_provider": { "type": "string" },
+        "source_video_material_id": { "type": "string" },
+        "source_audio_material_id": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "dependency_artifacts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "path", "exists", "size_bytes", "sha256"],
+        "properties": {
+          "name": { "type": "string" },
+          "path": { "type": ["string", "null"] },
+          "exists": { "type": "boolean" },
+          "size_bytes": { "type": ["integer", "null"], "minimum": 0 },
+          "sha256": {
+            "type": ["string", "null"],
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "boundary": {
+      "type": "object",
+      "required": [
+        "production_candidate",
+        "creative_acceptance",
+        "publish_acceptance",
+        "rights_status",
+        "production_usage_allowed"
+      ],
+      "properties": {
+        "production_candidate": { "type": "boolean" },
+        "creative_acceptance": { "type": "boolean" },
+        "publish_acceptance": { "type": "boolean" },
+        "rights_status": { "type": "string" },
+        "production_usage_allowed": { "type": "boolean" },
+        "diagnostic_render_only": { "type": "boolean" },
+        "rights_review_required_before_production": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "handoff_status": {
+      "type": "object",
+      "required": [
+        "transferable_by_git",
+        "regeneratable",
+        "requires_local_media",
+        "requires_external_credentials",
+        "requires_rights_review_before_production"
+      ],
+      "properties": {
+        "transferable_by_git": { "const": false },
+        "regeneratable": { "type": "boolean" },
+        "requires_local_media": { "type": "boolean" },
+        "requires_external_credentials": {
+          "type": ["boolean", "string"],
+          "enum": [true, false, "unknown"]
+        },
+        "requires_rights_review_before_production": { "const": true }
+      },
+      "additionalProperties": true
+    },
+    "missing_behavior": {
+      "type": "object",
+      "required": [
+        "when_absent_show",
+        "regeneration_command",
+        "required_upstream_artifacts",
+        "exact_verification",
+        "approximate_verification",
+        "production_acceptance_rule"
+      ],
+      "properties": {
+        "when_absent_show": { "type": "string" },
+        "regeneration_command": { "type": "string" },
+        "required_upstream_artifacts": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "exact_verification": { "type": "string" },
+        "approximate_verification": { "type": "string" },
+        "production_acceptance_rule": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

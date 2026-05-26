@@ -23,6 +23,12 @@ This file is the shortest project-local handoff for resuming from another termin
 - Latest local verification: 2026-05-26 JST ED-10a closeout; `uvx pytest -q` (193 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean.
 - Working tree expectation after pull: clean
 
+## Non-Repo Artifact Handoff
+
+JP-Pilot R3 の `rendered_video.mp4` は diagnostic artifact であり、Git に含めない。別端末へ引き継ぐときは、動画本体ではなく `build-non-repo-handoff` が出す manifest/report で local path、size、sha256、source identity、再生成 command、rights/production boundary、missing 時の扱いを確認する。手順の正本は [NON_REPO_ARTIFACT_HANDOFF.md](NON_REPO_ARTIFACT_HANDOFF.md)。
+
+R3 の既定出力先は ignored local episode 配下の `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.json` と `non_repo_artifact_handoff.html`。fresh checkout に動画や ignored episode が無い場合は missing として扱い、manifest の regeneration command と dependency artifacts が揃うまで production / creative / publish acceptance へ進めない。
+
 ## Resume on another terminal
 
 ```powershell
