@@ -1,12 +1,20 @@
 # Runtime State — ClipPipeGen
 
+## JP-Pilot-01R2 closeout — 2026-05-26 JST
+
+JP-Pilot-01R2 review coverage + cut narrowing is complete as an ignored diagnostic artifact. The R1 `transcript.json` / `edit_pack.json` were backed up inside `episodes/jp_pilot01_hololive_bancho_20260525`, then `review-transcript` applied `transcript_review_patch_jp_pilot01r2.json` using max-overlap alignment from the official Japanese subtitle track. Result: segment review counts moved from unreviewed 19 / accepted 7 to unreviewed 0 / accepted 25 / rejected 1, with `review.status=needs_review` and `reviewed_by=codex:jp-pilot01r2`.
+
+Downstream rerun used a clean edit_pack skeleton and shorter cut settings (`target=18s`, `max=28s`, `gap=2.5s`, `max_candidates=5`). R2 produced 5 selected cuts with durations 10.86s to 23.13s, all 5 selected cuts passed context check, 21 subtitle drafts were generated, NLE CSV wrote 5 rows, and `render-tiny-proof --duration-sec 23.13 --burn-in-subtitles diagnostic` rendered the first narrowed cut without clamp. Rights remain schema-readable `pending`; this is not rights, creative, render, subtitle-design, or publishing acceptance.
+
+Important limitation: 37 official subtitle events did not overlap any Vosk segment closely enough to be represented by an ED-09 text patch. The next most useful move is `ED-10`-style official subtitle track import / transcript alignment. If the next source lacks official captions, use STT provider comparison instead.
+
 ## JP-Pilot-01R closeout — 2026-05-26 JST
 
 JP-Pilot-01R corrected rerun is complete as an ignored diagnostic artifact. The raw Vosk `transcript.json` / `edit_pack.json` were backed up inside `episodes/jp_pilot01_hololive_bancho_20260525`, then `review-transcript` applied a 7-segment review patch based on the official Japanese subtitle track. Result: transcript review counts moved from unreviewed 26 / accepted 0 to unreviewed 19 / accepted 7, with `review.status=needs_review` and `reviewed_by=codex:jp-pilot01r`.
 
 Downstream rerun completed after resetting the ignored default `edit_pack.json` to a clean skeleton: cuts changed from 6 selected to 5 selected, context checks improved from 3 passed / 3 needs_review to 3 passed / 2 needs_review, subtitles changed from 17 drafts to 26 drafts, NLE CSV wrote 5 rows, and diagnostic renders succeeded. The default render is 6.6s / 1080p; an additional focus render selected `cut_003` and confirmed corrected transcript text can be burned into a 10.0s diagnostic render. `rights_manifest.json` is now schema-readable with `compliance_check.status=pending`; this is not rights approval.
 
-Next most useful move: do not jump straight to production render. Choose between (1) JP-Pilot review coverage + selected cut narrowing, (2) ED-10-style official subtitle track import / transcript alignment, or (3) STT provider comparison for sources without official subtitles.
+R1 follow-up at the time was: do not jump straight to production render; choose between review coverage + selected cut narrowing, official subtitle track import / transcript alignment, or STT provider comparison for sources without official subtitles. R2 has since completed the review coverage + cut narrowing branch.
 
 ## ED-09 closeout — 2026-05-25 JST
 
@@ -60,16 +68,16 @@ Local verification for this closeout: `uvx pytest -q` -> 188 passed, `npm run sm
 
 ### lane / slice
 
-- **current_lane**: Slice 2 + Phase 1.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-07c / ED-08 / ED-09 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** / **JP-Pilot-01** / **JP-Pilot-01R** done。samples runnable
-- **current_slice**: Phase 1.5 `JP-Pilot-01R` closeout — ED-09 の `review-transcript` を JP-Pilot ignored artifact に適用し、7 accepted transcript segments から cuts / context / subtitles / NLE / diagnostic render を再生成した。rights は schema-readable pending に整えたが approval ではない。
-- **next_action（assistant 側）**: 次の最短前進は (1) JP-Pilot review coverage + selected cut narrowing、または (2) official subtitle track import / transcript alignment。公式 subtitle が無い素材を重視するなら (3) whisper.cpp / OpenAI Whisper 比較。production subtitle/render acceptance、GUI fetch/render/export actions、TH-01 walkthrough、SH-02 episode_pack、Publishing はその後の候補。
+- **current_lane**: Slice 2 + Phase 1.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-07c / ED-08 / ED-09 / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** / **JP-Pilot-01** / **JP-Pilot-01R** / **JP-Pilot-01R2** done。samples runnable
+- **current_slice**: Phase 1.5 `JP-Pilot-01R2` closeout — ED-09 の `review-transcript` を既存 JP-Pilot ignored artifact に追加適用し、accepted 25 / rejected 1 / unreviewed 0 まで review coverage を上げた。短め target で cuts を再生成し、5 selected cuts / 5 passed / 21 subtitles / NLE CSV / 23.13s diagnostic render まで通した。rights は schema-readable pending のままで approval ではない。
+- **next_action（assistant 側）**: 次の最短前進は (1) official subtitle track import / transcript alignment。公式 subtitle が無い素材を重視するなら (2) whisper.cpp / OpenAI Whisper 比較。R2 artifact で映像面へ進むなら (3) production subtitle/render acceptance だが、caption gap の扱いを先に決める。GUI fetch/render/export actions、TH-01 walkthrough、SH-02 episode_pack、Publishing はその後の候補。
 
 ### Phase 1.5 (ii) JP-Pilot-01 done（Japanese public VOD diagnostic）
 
 - Assistant 自律選定 URL: <https://www.youtube.com/watch?v=7J5aS_pcBj4> — `【アニメ】押忍！！ば～んちょ だじぇ！` / `hololive ホロライブ - VTuber Group` official channel / 164.77s。members-only / paid / concert / song / gameplay / 第三者 IP 高リスクを避け、公式短尺アニメとして採用。
 - Pipeline trace（ignored `episodes/jp_pilot01_hololive_bancho_20260525`）: `fetch-source-video --mode yt-dlp-video` → `source_video.mp4` h264/aac 1920x1080 30fps、`fetch-source-audio --mode yt-dlp-audio` → `source.wav` pcm_s16le/16kHz/mono、`transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` → 26 segments / speech coverage 約 51.4% / language-model check passed、`generate-cuts` → 6 selected cuts、`check-cut-context` → 3 passed / 3 needs_review、`generate-subtitles` → 17 real_transcript subtitle drafts、`render-tiny-proof --burn-in-subtitles diagnostic` → 6.6s 1080p render、`export-nle` → 6 CSV rows、`audit-material-ledger` → ok。
 - Quality scorecard: 技術接続は pass。制作は weak — transcript 例に「話者 も 欲しい ねぇ...」のような誤認識が残り、そのまま字幕・cut 判断に使える品質ではない。権利は readback — 公式公開素材を診断に通しただけで、Content ID 登録、再公開、creative / production / publish acceptance には進まない。
-- 停滞棚卸し: JP-Pilot-01R で補正済み transcript の downstream 再投入は成立したが、19/26 segments はまだ unreviewed。production render / subtitle design / Publishing は、未補正 transcript と広い selected cuts の上に積むと手戻りが大きい。GUI fetch/render/export は operator 導線の摩擦だが core pipeline の停滞ではない。詳細は `docs/JP_PILOT.md`。
+- 停滞棚卸し: JP-Pilot-01R2 で既存 Vosk segments の unreviewed は解消し、selected cuts も 10.86s〜23.13s に絞れた。一方、公式字幕 event の一部は Vosk segment 外に落ちるため、caption completeness はまだ未受容。production render / subtitle design / Publishing は、official subtitle import / alignment か caption gap 方針の後に扱う。GUI fetch/render/export は operator 導線の摩擦だが core pipeline の停滞ではない。詳細は `docs/JP_PILOT.md`。
 
 ### Phase 1.5 (i) ED-07c done（language/model consistency validation）
 
@@ -493,7 +501,7 @@ Assistant-side validation — `uvx pytest -q`（173 passed）、`npm run smoke` 
 
 - SH-03b/SH-03c は GUI action 導線（init-edit-pack / add-cut-candidate / validate-edit-pack / set-compliance / register-material / patch-thumbnail）。ED-02 / ED-03 / ED-04 の generate/check 系 GUI form、upload / fetch / bg-removal API button は未実装。
 - ED-03 は `check-cut-context` と `status-episode` readback まで実装済み。ED-06 で NLE CSV export、OUT-01 系で diagnostic render / subtitle burn-in も実装済み。creative / production acceptance はまだ未実装。
-- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、INT-02f で local source video acquisition と FFprobe metadata readback、INT-02g で `yt-dlp-video` boundary spec only、INT-02h で `fetch-source-video --mode yt-dlp-video` 実装と actual smoke、SH-05d で取得済み source audio の preview bridge、ED-06 で minimal NLE CSV export、ED-07b で real STT transcript path、ED-07c で language/model consistency validation、ED-08 / OUT-01e で real STT subtitle draft linkage と diagnostic render smoke、JP-STT-01 / HoloEN-01 / JP-Pilot-01 で実素材 pilot、ED-09 で transcript review / correction CLI と downstream readback、JP-Pilot-01R で corrected rerun は完了。次の推奨は JP-Pilot review coverage / official subtitle import / STT provider comparison の比較判断。production subtitle/render acceptance、TH-01 walkthrough、SH-02 episode_pack、GUI action expansion、Publishing は後続候補。
+- INT-02a で source audio の fake fetch、INT-02b で yt-dlp / FFmpeg 境界仕様、INT-02c で local-media-audio FFmpeg 正規化と実 FFmpeg operator smoke、INT-02d で `yt-dlp-audio` spec only、INT-02e で source audio URL fetch 限定の実装と real URL operator smoke、INT-02f で local source video acquisition と FFprobe metadata readback、INT-02g で `yt-dlp-video` boundary spec only、INT-02h で `fetch-source-video --mode yt-dlp-video` 実装と actual smoke、SH-05d で取得済み source audio の preview bridge、ED-06 で minimal NLE CSV export、ED-07b で real STT transcript path、ED-07c で language/model consistency validation、ED-08 / OUT-01e で real STT subtitle draft linkage と diagnostic render smoke、JP-STT-01 / HoloEN-01 / JP-Pilot-01 で実素材 pilot、ED-09 で transcript review / correction CLI と downstream readback、JP-Pilot-01R / JP-Pilot-01R2 で corrected rerun と review coverage + cut narrowing は完了。次の推奨は official subtitle import / transcript alignment。production subtitle/render acceptance、STT provider comparison、TH-01 walkthrough、SH-02 episode_pack、GUI action expansion、Publishing は後続候補。
 - NLMYTGen CLI bridge が想定通り動作した場合、shared package 化を検討（ただし CLI bridge で 2-3 個の実例が出てから）
 - ホロライブ以外の VTuber 事務所（にじさんじ等）への対象拡大は v1 では検討しない。Slice 1 完了後に rights_manifest 構造の汎用性を見て判断する
 

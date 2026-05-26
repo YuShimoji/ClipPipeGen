@@ -2,7 +2,7 @@
 
 ED-09 note: transcript review / correction workflow is now implemented. Use `review-transcript --transcript <path> --patch <path> [--reviewed-by <id>] [--dry-run] [--format json]` to apply v1 correction patches to `transcript.json`; it updates only segment text, review status, notes, and top-level review fields. `status-episode` now shows transcript review counts, and `export-nle` reports transcript review state instead of assuming every real STT transcript is unreviewed. Transcript approval is still not edit/render/publish acceptance.
 
-JP-Pilot-01 / 01R note: ED-07c 後の日本語 public VOD diagnostic として、assistant 自律選定 URL <https://www.youtube.com/watch?v=7J5aS_pcBj4>（公式 hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！`）で URL → source_video / source_audio → Vosk JP transcript → edit_pack → subtitles → diagnostic burn-in render → NLE CSV → ledger audit まで完走。ED-09 後の JP-Pilot-01R では公式 Japanese subtitle track を照合材料に 7 segments を accepted にし、補正済み transcript から 5 cuts、26 subtitle drafts、NLE CSV 5 rows、default/focus diagnostic render を再生成した。詳細は [docs/JP_PILOT.md](docs/JP_PILOT.md)。
+JP-Pilot-01 / 01R / 01R2 note: ED-07c 後の日本語 public VOD diagnostic として、assistant 自律選定 URL <https://www.youtube.com/watch?v=7J5aS_pcBj4>（公式 hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！`）で URL → source_video / source_audio → Vosk JP transcript → edit_pack → subtitles → diagnostic burn-in render → NLE CSV → ledger audit まで完走。ED-09 後の JP-Pilot-01R2 では公式 Japanese subtitle track の max-overlap alignment で既存 26 transcript segments を accepted 25 / rejected 1 / unreviewed 0 まで補正し、短め selected cuts 5 本、context 5 passed / 0 needs_review、21 subtitle drafts、NLE CSV 5 rows、23.13s diagnostic render を再生成した。公式字幕イベントの一部は Vosk segment 外に落ちるため、transcript review は `needs_review` のまま。詳細は [docs/JP_PILOT.md](docs/JP_PILOT.md)。
 
 JP-STT-01 / HoloEN-01 note: Vosk JP model (`vosk-model-small-ja-0.22`) で日本語音声を transcript.json にする plumbing proof（adapter 変更 0 行、language-agnostic）と、HoloEN public VOD（assistant 自律選定: Ouro Kronii Kroniicle Animation）で URL → rendered_video.mp4 + NLE CSV まで full pipeline を通した quality scorecard 記入済。runbook は [docs/JP_STT_SMOKE.md](docs/JP_STT_SMOKE.md) / [docs/HOLOEN_PILOT.md](docs/HOLOEN_PILOT.md)。assistant は HoloEN public VOD 候補を自律選定する権限を持ち、除外条件（members-only / paid / concert / song / 第三者IPリスク高）は COVER 公式 derivative works guidelines 由来の compliance として維持。`production_candidate=false` / creative acceptance / publishing acceptance ではない。
 
@@ -43,11 +43,11 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5 では、source audio / source video 取得、real STT transcript、cut / context / subtitle draft、NLE CSV export、diagnostic render、real transcript subtitle burn-in、JP-STT-01 / HoloEN-01 / JP-Pilot-01 の実素材 pilot、ED-09 transcript review / correction workflow、JP-Pilot-01R corrected rerun まで実装済み。
+**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5 では、source audio / source video 取得、real STT transcript、cut / context / subtitle draft、NLE CSV export、diagnostic render、real transcript subtitle burn-in、JP-STT-01 / HoloEN-01 / JP-Pilot-01 の実素材 pilot、ED-09 transcript review / correction workflow、JP-Pilot-01R corrected rerun、JP-Pilot-01R2 review coverage + cut narrowing まで実装済み。
 
 現在の中核パイプラインは `source media -> material_ledger / receipt -> transcript.json -> edit_pack.json -> subtitles -> diagnostic render -> NLE CSV` まで通る。`review-transcript` は補正済み transcript を既存 downstream に戻す入口であり、transcript approval は edit / render / publish / production acceptance ではない。
 
-GUI fetch/render button、production render、production subtitle design、FCPXML / Resolve XML、STT 品質 acceptance、GUI transcript correction surface、Publishing / OAuth はまだ未実装。次の推奨は JP-Pilot review coverage + selected cut narrowing、official subtitle track import / transcript alignment、または公式字幕がない素材向けの STT provider comparison。
+GUI fetch/render button、production render、production subtitle design、FCPXML / Resolve XML、STT 品質 acceptance、GUI transcript correction surface、Publishing / OAuth はまだ未実装。次の推奨は official subtitle track import / transcript alignment。公式字幕が無い素材を優先する場合は STT provider comparison、現 artifact の映像化を詰める場合は production subtitle/render acceptance の前に caption gap の扱いを決める。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 
