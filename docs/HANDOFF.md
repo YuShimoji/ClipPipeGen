@@ -4,6 +4,8 @@ Last updated: 2026-05-27 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
+Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
 ## Current Sync Point
 
 - Branch: `main`
@@ -13,7 +15,7 @@ This file is the shortest project-local handoff for resuming from another termin
 - Latest completed operator UX slice: `SH-07` operator review UX separation. It adds `docs/OPERATOR_REVIEW_UX.md`, moves restart/report order to Reviewability first, places recovery/reproduction commands in appendix/details, adds `operator_review` readback to `status-episode`, and keeps natural-language cut review acceptable before any structured decision patch.
 - Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet for human final cut/context review. If they are missing, final cut/context review is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review and all cut decisions remain `undecided`.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Current sync base for this handoff refresh: `3d97e45 feat: improve operator review surfaces` on `main` / `origin/main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
+- Current sync base before this runtime-state cleanup: `28f0256 docs: refresh operator review handoff` on `main` / `origin/main`; the operator review implementation underneath it is `3d97e45 feat: improve operator review surfaces`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
 - Previous feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
   1. `transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` は language/model check passed で 26 segments を生成
@@ -42,6 +44,7 @@ git pull --ff-only origin main
 # read these to pick up state:
 #   docs/HANDOFF.md
 #   docs/RUNTIME_STATE.md
+#   docs/RUNTIME_HISTORY.md  # history/archive only; not the active resume surface
 #   docs/HOLOEN_PILOT.md  # HoloEN-01 runbook / URL selection / acceptance
 #   docs/FEATURE_REGISTRY.md
 ```
