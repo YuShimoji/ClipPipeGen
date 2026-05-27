@@ -1,12 +1,20 @@
 # Runtime State — ClipPipeGen
 
-## Current recommended move — 2026-05-26 JST
+## Current recommended move — 2026-05-27 JST
 
 The next recommended action is still **Advance: JP-Pilot R3 final cut/context review**, but the first restart response must report Reviewability as defined in `docs/OPERATOR_REVIEW_UX.md`. If the ignored R3 review artifacts are present in the current workspace, the review can start. If they are missing, the state is `review_blocked_missing_artifacts`: Git alone cannot start R3 review, and the ignored episode artifacts must be restored or regenerated before final cut/context review. ED-10 solved the caption-completeness blocker for this source by importing the official YouTube JSON3 subtitle track into a transcript-compatible artifact, and SH-06 closed the non-repo diagnostic render handoff surface. The remaining bottleneck is no longer implementation plumbing; it is deciding which of the 9 generated R3 cuts are worth carrying forward.
 
 Do not auto-accept final cuts. When review artifacts are present, inspect the local ignored R3 reports in this order: `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_review_report.html`, then `evidence_summary.html`, then `non_repo_artifact_handoff.html`. The operator may respond in natural language; the Agent can later normalize the review into `accept_candidate`, `adjust_boundary`, or `reject`. The review should focus on previous setup, following payoff, and boundary adjustment. The target outcome is 1-3 human-selected candidate seeds, not production acceptance.
 
 Next after that, keep **Verify: regenerated render comparison** as the second candidate. Exact SHA-256 identifies the same existing local artifact, but re-rendered diagnostic video may differ by environment; a later Verify slice should define metadata approximate criteria such as duration, resolution, codec, timeline refs, subtitle source refs, and boundary flags. **Advance: production subtitle/render acceptance** should follow after candidate seeds exist. **Clear Rights: rights approval path** remains separate because rights are still `pending` and production/public use is not allowed.
+
+## SH-07 / Operator Review UX closeout — 2026-05-27 JST
+
+SH-07 separates human review guidance from machine evidence and recovery commands. `docs/OPERATOR_REVIEW_UX.md` defines the restart response order: what is possible in this workspace, what is missing, what the user should inspect, what the user decides, what the Agent must not do, then evidence/recovery commands as appendix. It also defines `review_ready`, `review_blocked_missing_artifacts`, `diagnostic_only`, and `production_blocked_rights_pending`.
+
+`cut_review_report.html`, `evidence_summary.html`, and `non_repo_artifact_handoff.html` now start with an operator-facing Reviewability summary. Evidence and handoff pages keep recovery/reproduction commands, but put them behind a Recovery / reproduction commands appendix/details section instead of making commands the main review path. `status-episode` now includes `operator_review.review_ready`, `missing_review_artifacts`, `next_human_action`, `recovery_doc`, `production_candidate=false`, and `rights_status`.
+
+This closeout does not create or restore ignored R3 artifacts. In the current clean checkout, R3 report files under `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/` may be absent because `episodes/` is ignored. In that case, review remains `review_blocked_missing_artifacts` until local episode artifacts are restored or regenerated. No production render, publishing, OAuth, thumbnail setting, rights approval, final cut auto-decision, STT provider comparison, media download, or external YouTube access was performed.
 
 ## SH-06 / Non-Repo Artifact Handoff closeout — 2026-05-26 JST
 
@@ -93,6 +101,9 @@ Local verification for this closeout: `uvx pytest -q` -> 188 passed, `npm run sm
 - 関連リポ: [NLMYTGen](https://github.com/YuShimoji/NLMYTGen)（CLI subprocess 経由でのみ再利用）
 
 ### lane / slice
+
+- **latest_context_override (2026-05-27 JST)**: `SH-07 / Operator Review UX` is the latest pushed closeout at `3d97e45`. Treat the historical lane bullets below as cumulative context; the active resume surface is Reviewability-first via `docs/OPERATOR_REVIEW_UX.md`, `docs/HANDOFF.md`, and `status-episode.operator_review`.
+- **latest_next_action**: If R3 review artifacts exist in the workspace, start human final cut/context review and accept natural-language feedback. If they are missing, report `review_blocked_missing_artifacts` and restore or regenerate ignored episode artifacts before review. Do not auto-classify final cuts, do not treat diagnostic artifacts as production, and do not treat rights pending as approval.
 
 - **current_lane**: Slice 2 + Phase 1.5 — TH-W01 / SH-04 / SH-03b / SH-03c / SH-05 / SH-05b / SH-05b+ / SH-05c / SH-05d / **SH-06** / ED-01 / ED-02 / ED-02a / ED-03 / ED-04 / ED-05 / ED-06 / ED-07 / ED-07b / ED-07c / ED-08 / ED-09 / **ED-10** / INT-02a / INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h / OUT-01 / OUT-01a / OUT-01b / OUT-01c / OUT-01d / OUT-01e / **JP-STT-01** / **HoloEN-01** / **JP-Pilot-01** / **JP-Pilot-01R** / **JP-Pilot-01R2** / **JP-Pilot-01R3** done。samples runnable
 - **current_slice**: Phase 1.5 `SH-06 / Non-Repo Artifact Handoff` closeout — JP-Pilot R3 の ignored diagnostic `rendered_video.mp4` を Git に含めず、handoff manifest/report で local path / size / sha256 / source identity / dependency artifacts / regeneration command / rights and production boundary / missing behavior を引き継げるようにした。220e44d で fresh checkout / missing artifact / 別端末三分類を verified。R3 本体は引き続き diagnostic local review only であり、rights は pending、production / creative / publish acceptance ではない。

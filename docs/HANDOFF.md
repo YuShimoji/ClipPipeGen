@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-26 JST
+Last updated: 2026-05-27 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
@@ -10,9 +10,10 @@ This file is the shortest project-local handoff for resuming from another termin
 - Upstream: `origin/main`
 - Latest completed feature slice: `ED-10` official subtitle track import / transcript alignment. It adds `import-subtitle-track`, currently for YouTube JSON3 subtitle tracks, and writes transcript-compatible artifacts with `stt.engine="subtitle_track"`.
 - Latest completed diagnostic slice: `JP-Pilot-01R3` official-caption rerun. It imported the official Japanese subtitle track for the ignored JP-Pilot episode, produced 105 transcript segments, regenerated 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s 1080p diagnostic render.
+- Latest completed operator UX slice: `SH-07` operator review UX separation. It adds `docs/OPERATOR_REVIEW_UX.md`, moves restart/report order to Reviewability first, places recovery/reproduction commands in appendix/details, adds `operator_review` readback to `status-episode`, and keeps natural-language cut review acceptable before any structured decision patch.
 - Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet for human final cut/context review. If they are missing, final cut/context review is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review and all cut decisions remain `undecided`.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Pulled sync base for this handoff refresh: `734b0f0 docs: close non-repo handoff sync point` on `main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
+- Current sync base for this handoff refresh: `3d97e45 feat: improve operator review surfaces` on `main` / `origin/main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
 - Previous feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
   1. `transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` は language/model check passed で 26 segments を生成
@@ -20,7 +21,7 @@ This file is the shortest project-local handoff for resuming from another termin
   3. `render-tiny-proof --burn-in-subtitles diagnostic` は 6.6s / 1080p render、`export-nle` は 6 CSV rows、`audit-material-ledger` は ok
 - Previous recommendation resolved by ED-10 / JP-Pilot-01R3: official subtitle events can now enter the transcript/cuts/subtitle/NLE/render pipeline without being constrained to Vosk segment coverage.
 - Latest completed feature-slice closeout before this handoff note: ED-07c language/model validation closeout
-- Latest local verification: 2026-05-26 JST non-repo handoff missing-artifact closeout; `uvx pytest -q` (199 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean.
+- Latest local verification: 2026-05-27 JST operator review UX closeout; `uvx pytest -q` (201 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean. Staged-path guard before commit found no `episodes/`, rendered video, source media, rights payload, or large binary paths.
 - Working tree expectation after pull: clean
 
 ## Non-Repo Artifact Handoff
