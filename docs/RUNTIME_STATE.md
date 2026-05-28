@@ -9,8 +9,11 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-05-27 JST
-- latest runtime docs refresh: `28f0256 docs: refresh operator review handoff`
+- date: 2026-05-28 JST
+- latest resume-surface cleanup:
+  `7df8976 docs: make runtime state resume-first`
+- previous runtime docs refresh:
+  `28f0256 docs: refresh operator review handoff`
 - latest operator review implementation:
   `3d97e45 feat: improve operator review surfaces`
 - current bottleneck: JP-Pilot R3 final cut/context review
