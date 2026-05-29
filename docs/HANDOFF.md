@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-05-27 JST
+Last updated: 2026-05-30 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
@@ -13,7 +13,7 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Latest completed feature slice: `ED-10` official subtitle track import / transcript alignment. It adds `import-subtitle-track`, currently for YouTube JSON3 subtitle tracks, and writes transcript-compatible artifacts with `stt.engine="subtitle_track"`.
 - Latest completed diagnostic slice: `JP-Pilot-01R3` official-caption rerun. It imported the official Japanese subtitle track for the ignored JP-Pilot episode, produced 105 transcript segments, regenerated 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s 1080p diagnostic render.
 - Latest completed operator UX slice: `SH-07` operator review UX separation. It adds `docs/OPERATOR_REVIEW_UX.md`, moves restart/report order to Reviewability first, places recovery/reproduction commands in appendix/details, adds `operator_review` readback to `status-episode`, and keeps natural-language cut review acceptable before any structured decision patch.
-- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet for human final cut/context review. If they are missing, final cut/context review is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks, but 6 of 9 R3 cut context checks still need review and all cut decisions remain `undecided`.
+- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet plus `cut_decision_speed_pass.json` / `.html` to confirm the speed-first candidate decision. If they are missing, candidate review/readback is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks. On 2026-05-30 JST, the operator instructed speed-first sample expansion, so all 9 R3 cuts are `accept_candidate` candidate seeds only; the 6 context `needs_review` results remain retained risk and are not production, creative, publishing, or rights acceptance.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
 - Current sync base before this runtime-state cleanup: `28f0256 docs: refresh operator review handoff` on `main` / `origin/main`; the operator review implementation underneath it is `3d97e45 feat: improve operator review surfaces`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
@@ -177,6 +177,7 @@ The JP-Pilot R3 review packet surface is also available. `build-cut-review-packe
 - Files: `cut_review_packet.json`, `cut_review_report.html`, `evidence_summary.json`, `evidence_summary.html`
 - Readback: 9 selected cuts, context 3 passed / 6 needs_review, 105 imported subtitle drafts, rights `pending`, render `production_candidate=false`
 - This packet deliberately keeps every `decision_placeholder.final_decision` as `undecided`; it is handoff material, not agent acceptance.
+- The 2026-05-30 speed-first operator decision is recorded separately in local ignored `cut_decision_speed_pass.json` / `.html`: all 9 cuts are `accept_candidate` candidate seeds only, `needs_review` remains retained risk, and production / creative / publishing / rights acceptance remain false or pending.
 
 JP-Pilot-01 is complete as a Japanese public VOD diagnostic. It reused the existing URL/source media, Vosk JP, edit_pack, subtitle, render, and NLE export path without adding new production surfaces:
 
@@ -199,7 +200,7 @@ Current state against that final shape:
 | Source video | Local video and URL video can become `source_video.<ext>` with receipt / sidecar / ledger proof and FFprobe metadata | Technical acquisition proof is not creative, production, or publishing acceptance |
 | Preview surface | Local preview pack, GUI read-only ingest, and SH-05d existing-source-audio bridge exist | The surface still uses fake / fixture transcript and draft edit_pack, so it is not final edit acceptance |
 | Transcript | `transcribe-audio --engine fake`, optional `--engine vosk --model <path>`, ED-09 review patches, and ED-10 `import-subtitle-track` exist. JP-Pilot-01R3 has 105 official subtitle-track segments with source-audio and alignment readback | Official captions can now enter the artifact path, but imported subtitle tracks are still review data and not creative or production subtitle acceptance; sources without official captions still need STT comparison |
-| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; JP-Pilot-01R3 produced 9 cuts, 105 subtitle drafts, and NLE CSV 9 rows | Creative cut acceptance and production subtitle design are still missing; R3 has 6 context `needs_review` cuts that must be judged before final edit acceptance |
+| Edit pack | `transcript.json` can feed cut candidates, context checks, subtitles, and ED-06 CSV export; JP-Pilot-01R3 produced 9 cuts, 105 subtitle drafts, and NLE CSV 9 rows. The 2026-05-30 operator instruction carries all 9 as speed-first `accept_candidate` seeds | Creative cut acceptance and production subtitle design are still missing; R3 still has 6 context `needs_review` cuts retained as risk before production acceptance |
 | NLE / render | Minimal CSV cut list export exists; OUT-01b can produce a diagnostic video; OUT-01c/OUT-01d can burn and diagnose subtitle timing; JP-Pilot-01 burned JP real STT subtitles into a diagnostic 1080p render | No FCPXML / Resolve XML, no production subtitle design, no STT quality acceptance, and no production render acceptance |
 | Publishing | Not implemented | Upload / metadata / thumbnail setting / publish receipt are future integration work |
 

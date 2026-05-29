@@ -9,14 +9,15 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-05-28 JST
+- date: 2026-05-30 JST
 - latest resume-surface cleanup:
-  `7df8976 docs: make runtime state resume-first`
+  `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
   `28f0256 docs: refresh operator review handoff`
 - latest operator review implementation:
   `3d97e45 feat: improve operator review surfaces`
-- current bottleneck: JP-Pilot R3 final cut/context review
+- current bottleneck: production subtitle/render acceptance mini-slice or
+  regenerated render comparison after R3 speed-first candidate seed decision
 - reviewability rule: if the ignored R3 review artifacts are present, report
   `review_ready`; if they are missing, report
   `review_blocked_missing_artifacts`
@@ -25,9 +26,11 @@ instructions.
 
 ED-10 solved the caption-completeness blocker for this source by importing the
 official YouTube JSON3 subtitle track into a transcript-compatible artifact.
-SH-07 then made the operator review path Reviewability-first. The remaining
-work is not implementation plumbing; it is human judgement over the 9 generated
-R3 cut candidates.
+SH-07 then made the operator review path Reviewability-first. On 2026-05-30
+JST, the operator explicitly bypassed strict individual R3 cut review for
+speed-first sample expansion. All 9 generated R3 cuts are accepted only as
+`accept_candidate` candidate seeds; the 6 `needs_review` context results remain
+retained risk and are not rewritten to `passed`.
 
 ## What To Read First
 
@@ -37,10 +40,12 @@ reports in this order:
 1. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_review_report.html`
 2. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/evidence_summary.html`
 3. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.html`
+4. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_speed_pass.html`
 
-In that state, the review can begin and the operator can respond in natural
-language. The Agent can later normalize the response into structured cut
-decisions.
+In that state, the review artifacts are readable and the speed-first candidate
+decision can be confirmed from `cut_decision_speed_pass.json` / `.html`. This
+decision is sample expansion only, not production, creative, publishing, or
+rights acceptance.
 
 When this is a fresh checkout or those ignored reports are missing, do not send
 the operator to the HTML report as if review is ready. Read these instead:
@@ -53,20 +58,22 @@ the operator to the HTML report as if review is ready. Read these instead:
 Git alone does not contain `episodes/` artifacts, source media, render outputs,
 or R3 review reports.
 
-## Current Human Task
+## Current Candidate Decision
 
-The human review task is to classify the 9 R3 cuts into:
+The previous human review task was to classify the 9 R3 cuts into:
 
 - `accept_candidate`
 - `adjust_boundary`
 - `reject`
 
-The goal is 1-3 candidate seeds for later production-adjacent work. This is not
-production acceptance, publishing acceptance, or rights approval.
+For this run, the operator instructed a speed-first sample expansion: carry all
+9 R3 cuts forward as `accept_candidate` candidate seeds. This does not resolve
+the 6 context `needs_review` results; it carries them forward as retained risk.
+This is not production acceptance, creative acceptance, publishing acceptance,
+or rights approval.
 
-The Agent must not auto-accept, auto-reject, or auto-adjust final cuts. The
-operator may describe the review in natural language before any structured
-decision patch exists.
+Absent an explicit operator instruction like the one above, the Agent must not
+auto-accept, auto-reject, or auto-adjust final cuts.
 
 Review focus:
 
@@ -105,19 +112,21 @@ Review focus:
 
 ## Next Actions
 
-1. Advance: final cut/context review
-   - Use when R3 review artifacts are present.
-   - Output should be 1-3 human-selected candidate seeds.
+1. Advance: production subtitle/render acceptance mini-slice
+   - Use after the speed-first candidate seed set is available locally.
+   - Define typography, safe-area, full-render, and production-candidate rules
+     without claiming acceptance yet.
 2. Verify: regenerated render comparison
-   - Use after review or when a workspace must regenerate diagnostics.
+   - Use when a workspace must compare regenerated diagnostics to prior R3
+     artifacts.
    - Define when exact SHA-256 matters and when metadata approximate comparison
      is acceptable.
-3. Advance: production subtitle/render acceptance
-   - Use after candidate seeds exist.
-   - Define typography, safe-area, full-render, and production-candidate rules.
-4. Clear Rights: rights approval path
+3. Clear Rights: rights approval path
    - Use before any production/public usage claim.
    - Keep this separate from local diagnostic success.
+4. Prepare: publishing / OAuth / thumbnail
+   - Keep this later until production acceptance and rights are no longer
+     pending.
 
 Publishing and OAuth work remain later; do not treat them as the immediate next
 step.
@@ -140,6 +149,8 @@ step.
 2. Report `review_ready` or `review_blocked_missing_artifacts` before listing
    commands.
 3. Keep `rights=pending` and `production_candidate=false` visible.
-4. Do not classify final cuts without human review.
+4. Do not classify final cuts without explicit operator instruction. The
+   2026-05-30 speed-first instruction applies only to candidate seeds, not
+   production-approved cuts.
 5. Do not stage `episodes/`, source media, rendered video, subtitle payloads, or
    other large local artifacts.

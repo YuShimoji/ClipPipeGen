@@ -78,9 +78,18 @@ R3 では ED-10 の `import-subtitle-track` を使い、YouTube JSON3 の公式 
 | NLE CSV rows | 6 | 5 | 9 |
 | diagnostic render | 6.6s / 1080p | 23.13s / 1080p / clamped=false | 6.84s / 1080p / clamped=false |
 
-R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 event を artifact に戻せない」問題は解消した。一方、公式字幕は短い event を細かく保持するため、自動 cut は 9 本に増え、context check は 6 本が needs_review になった。次の判断は transcript completeness ではなく、final cut/context review と production subtitle/render acceptance に移っている。公式字幕がない素材では、引き続き STT provider comparison が優先候補になる。
+R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 event を artifact に戻せない」問題は解消した。一方、公式字幕は短い event を細かく保持するため、自動 cut は 9 本に増え、context check は 6 本が needs_review になった。2026-05-30 JST の operator instruction で 9 本は速度重視の candidate seed として通すが、次の判断は production subtitle/render acceptance と regenerated render comparison に移っている。公式字幕がない素材では、引き続き STT provider comparison が優先候補になる。
 
 R3 review packet: `build-cut-review-packet` で `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/` に `cut_review_packet.json` / `cut_review_report.html` / `evidence_summary.json` / `evidence_summary.html` を生成済み。各 cut には duration、reason、context notes、subtitle event count、subtitle density、review focus、`decision_placeholder.final_decision="undecided"` が入る。これは final cut 採否ではなく、人間レビューへ渡すための readback。
+
+R3 speed-first candidate decision (2026-05-30 JST): by operator instruction,
+strict individual cut acceptance was bypassed for sample expansion. Local
+ignored `cut_decision_speed_pass.json` / `.html` records `cut_001` through
+`cut_009` as `accept_candidate` candidate seeds only. The original context
+status is not mutated: 3 cuts remain `passed`, 6 cuts remain `needs_review`
+with retained context risk. This is not production acceptance, creative
+acceptance, publishing acceptance, or rights approval; `rights_status=pending`
+and `production_candidate=false` remain in force.
 
 R3 source identity readback: YouTube ID `7J5aS_pcBj4`、subtitle track `source_subs/7J5aS_pcBj4.ja.json3`、transcript source `imported subtitle track / youtube_subtitles`、source video material id `src_video_jp_pilot01`、source audio material id `src_audio_jp_pilot01`、rights status `pending`、production usage `not allowed until rights approval`。title / URL が local metadata から取得できない場合は `unknown` として扱い、外部検索や新規 download で埋めない。
 
@@ -96,7 +105,7 @@ diagnostic render は local review evidence として有用だが、production r
 
 | 領域 | 現在状態 | 停滞の種類 | 推奨する次の動き |
 |---|---|---|---|
-| final cut/context review | R3 は 9 selected cuts、context 3 passed / 6 needs_review、decision 全件 `undecided` | 実装ではなく編集判断が律速 | `cut_review_report.html` を見て 1〜3 本の candidate seed に絞る |
+| speed-first candidate seed decision | R3 は 9 selected cuts、context 3 passed / 6 needs_review、全件 `accept_candidate` seed として通過 | production acceptance ではなく sample expansion の速度優先判断 | `cut_decision_speed_pass.html` で needs_review retained risk を確認する |
 | regenerated render comparison | SHA-256 は既存 local artifact の同一性確認には使えるが、再 render は環境差で byte-exact にならない可能性がある | exact / approximate の受入基準が未定 | candidate seed が見えてから Verify slice で metadata approximate を定義する |
 | production subtitle/render acceptance | 公式字幕は artifact に戻ったが、diagnostic render と production candidate の境界は未定 | typography / safe-area / full render policy が未定 | candidate seed 後に production subtitle/render acceptance を切る |
 | rights approval path | rights status は `pending` | production/public 利用不可 | production/public 利用前に別 slice として rights approval path を整理する |
@@ -104,11 +113,11 @@ diagnostic render は local review evidence として有用だが、production r
 
 ## 次の取っ掛かり
 
-R3 後の入口は、`Advance: final cut/context review` が第一候補。公式字幕 track import と Non-Repo Artifact Handoff は閉じており、今は人間が cut/context を判断するための review surface が揃っている。
+R3 speed-first decision 後の入口は、`Advance: production subtitle/render acceptance mini-slice` または `Verify: regenerated render comparison` が第一候補。公式字幕 track import と Non-Repo Artifact Handoff は閉じており、9 cuts は candidate seed として次工程へ流せる。ただし 6 件の context `needs_review` は retained risk であり、production / creative / publish acceptance ではない。
 
 | 入口 | 何が軽くなるか | 選ぶと可能になること |
 |---|---|---|
-| Advance: final cut/context review | R3 の 9 cuts / 6 needs_review を制作判断へ移せる | `accept_candidate` / `adjust_boundary` / `reject` で 1〜3 本の candidate seed を残せる |
+| Advance: production subtitle/render acceptance mini-slice | 9 candidate seeds を production 境界の検討へ移せる | typography / safe-area / full render policy と production_candidate 条件を定義できる |
 | Verify: regenerated render comparison | 別端末・再生成時の hash 差分の扱いが明確になる | duration / resolution / codec / timeline refs / subtitle source refs / boundary flags の approximate 基準を決められる |
-| Advance: production subtitle/render acceptance | diagnostic render と production candidate の境界が明確になる | candidate seed 後に typography / safe-area / full render policy を検討できる |
+| Audit: retained context risk | speed-first で残した 6 件の `needs_review` を production 前に再確認できる | boundary adjustment が必要な cut を production acceptance 前に分離できる |
 | Clear Rights: rights approval path | rights pending のまま production/public 利用しない境界が明確になる | 公開・production 利用前の approval 条件を整理できる |
