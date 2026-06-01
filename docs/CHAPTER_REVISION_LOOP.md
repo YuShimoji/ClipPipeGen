@@ -40,6 +40,17 @@ plus JSON/CSV patch templates. It does not access YouTube, fetch media, run
 yt-dlp, render video, open Electron, save in a browser, publish, set a
 thumbnail, or approve rights.
 
+`regenerated_r3_baseline_acceptance.*` and
+`production_subtitle_render_acceptance_plan.*` are optional enrichment
+artifacts for later downstream acceptance planning. When the cut review packet,
+evidence summary, non-repo handoff, and speed-first decision artifacts exist,
+the board still generates without those optional files. In that case the JSON
+uses `board_status="generated_with_warnings"` and lists the missing files in
+`missing_optional_artifacts[]`; the HTML top summary repeats the warning. The
+operator can still write chapter revision input, but the missing optional
+readbacks should be supplied or regenerated before downstream acceptance
+planning.
+
 ## Source Evidence vs Editorial Layer
 
 The source transcript and official subtitle track remain evidence. The board

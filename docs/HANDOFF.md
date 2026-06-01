@@ -65,6 +65,17 @@ python -m src.cli.main build-chapter-revision-board `
   --format json
 ```
 
+The board no longer requires downstream acceptance enrichment artifacts before
+operator input can start. `regenerated_r3_baseline_acceptance.*` and
+`production_subtitle_render_acceptance_plan.*` are optional: if they are
+missing while the cut review packet, evidence summary, non-repo handoff, and
+speed-first decision artifacts are present, the generator writes
+`chapter_revision_board.*` and patch templates with
+`board_status=generated_with_warnings` plus `missing_optional_artifacts[]`.
+This is still an operator input surface only; it does not create production
+subtitle/render acceptance, rights approval, publishing acceptance, or a
+production candidate.
+
 Current R3 board readback:
 
 | Item | State |

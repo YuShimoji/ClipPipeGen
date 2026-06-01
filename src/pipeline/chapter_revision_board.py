@@ -117,6 +117,8 @@ REQUIRED_REVIEW_FILES = {
     "non_repo_artifact_handoff_report": "non_repo_artifact_handoff.html",
     "cut_decision_speed_pass": "cut_decision_speed_pass.json",
     "cut_decision_speed_pass_report": "cut_decision_speed_pass.html",
+}
+OPTIONAL_REVIEW_FILES = {
     "regenerated_r3_baseline_acceptance": "regenerated_r3_baseline_acceptance.json",
     "regenerated_r3_baseline_acceptance_report": "regenerated_r3_baseline_acceptance.html",
     "production_subtitle_render_acceptance_plan": "production_subtitle_render_acceptance_plan.json",
@@ -142,8 +144,10 @@ def build_chapter_revision_board(
     """Write board JSON/HTML and patch JSON/CSV templates.
 
     The function assumes the caller has already generated the R3 review packet
-    and speed-first candidate decision artifacts. Missing review artifacts are
-    treated as a blocked review surface rather than being silently skipped.
+    and speed-first candidate decision artifacts. Missing core review artifacts
+    are treated as a blocked review surface. Later acceptance/readback artifacts
+    are optional enrichment and surface as generated-with-warnings instead of
+    blocking operator input.
     """
 
     base = base_dir or Path.cwd()
@@ -153,21 +157,23 @@ def build_chapter_revision_board(
     transcript_path = transcript_path or episode_dir / "transcript.json"
     rights_manifest_path = rights_manifest_path or episode_dir / "rights_manifest.json"
 
-    missing = _missing_required_artifacts(review_dir)
+    missing = _missing_artifacts(review_dir, REQUIRED_REVIEW_FILES)
     if missing:
         raise ChapterRevisionBoardError(
             "missing required R3 review artifact(s): " + ", ".join(missing)
         )
+    missing_optional_artifacts = _missing_artifacts(review_dir, OPTIONAL_REVIEW_FILES)
+    board_status = "generated_with_warnings" if missing_optional_artifacts else "generated"
 
     cut_review_packet = _load_json(review_dir / REQUIRED_REVIEW_FILES["cut_review_packet"])
     evidence_summary = _load_json(review_dir / REQUIRED_REVIEW_FILES["evidence_summary"])
     non_repo_handoff = _load_json(review_dir / REQUIRED_REVIEW_FILES["non_repo_artifact_handoff"])
     speed_pass = _load_json(review_dir / REQUIRED_REVIEW_FILES["cut_decision_speed_pass"])
-    baseline_acceptance = _load_json(
-        review_dir / REQUIRED_REVIEW_FILES["regenerated_r3_baseline_acceptance"]
+    baseline_acceptance = _load_json_optional(
+        review_dir / OPTIONAL_REVIEW_FILES["regenerated_r3_baseline_acceptance"]
     )
-    acceptance_plan = _load_json(
-        review_dir / REQUIRED_REVIEW_FILES["production_subtitle_render_acceptance_plan"]
+    acceptance_plan = _load_json_optional(
+        review_dir / OPTIONAL_REVIEW_FILES["production_subtitle_render_acceptance_plan"]
     )
     edit_pack = _load_json_optional(edit_pack_path)
     transcript = _load_json_optional(transcript_path)
@@ -227,7 +233,10 @@ def build_chapter_revision_board(
         "board_kind": BOARD_KIND,
         "created_at": _now(),
         "episode_id": _episode_id(episode_dir, cut_review_packet, speed_pass, transcript),
+        "board_status": board_status,
         "revision_readiness": "ready",
+        "generated_with_warnings": bool(missing_optional_artifacts),
+        "missing_optional_artifacts": missing_optional_artifacts,
         "source_identity": source_identity,
         "boundary_flags": boundary_flags,
         "input_artifacts": _input_artifacts(review_dir, base),
@@ -518,6 +527,20 @@ def _board_html(
     summary = board.get("summary") or {}
     boundary = board.get("boundary_flags") or {}
     source = board.get("source_identity") or {}
+    missing_optional = board.get("missing_optional_artifacts") or []
+    warnings_html = ""
+    if missing_optional:
+        warnings_html = (
+            "  <section>\n"
+            "    <h2>Generated With Warnings</h2>\n"
+            "    <p class=\"warn\">Generated with warnings: optional baseline/acceptance plan artifacts missing.</p>\n"
+            "    <ul>"
+            + "".join(f"<li><code>{escape(str(item))}</code></li>" for item in missing_optional)
+            + "</ul>\n"
+            "    <p class=\"muted\">The board and patch templates are usable for operator input. "
+            "Missing optional artifacts should be supplied or regenerated before downstream acceptance planning.</p>\n"
+            "  </section>\n"
+        )
     rows = "\n".join(_chapter_row_html(chapter) for chapter in board.get("chapters") or [])
     vocabulary = _vocabulary_html(board.get("allowed_values") or {})
     impact = _impact_html(board.get("downstream_impact_guide") or [])
@@ -546,6 +569,7 @@ def _board_html(
     <h2>Top Summary</h2>
     <dl>
       <dt>episode_id</dt><dd>{escape(str(board.get("episode_id", "")))}</dd>
+      <dt>board status</dt><dd>{escape(str(board.get("board_status", "")))}</dd>
       <dt>source</dt><dd>{escape(str(source.get("source_video_title") or source.get("source_video_identity") or "unknown"))} / YouTube ID {escape(str(source.get("youtube_id", "unknown")))}</dd>
       <dt>subtitle track</dt><dd>{escape(str(source.get("subtitle_track", "unknown")))}</dd>
       <dt>chapter count</dt><dd>{escape(str(summary.get("chapter_count", "")))}</dd>
@@ -554,6 +578,7 @@ def _board_html(
       <dt>boundary</dt><dd>production_candidate={escape(str(boundary.get("production_candidate", False)).lower())}; creative_acceptance={escape(str(boundary.get("creative_acceptance", False)).lower())}; publish_acceptance={escape(str(boundary.get("publish_acceptance", False)).lower())}; rights_status={escape(str(boundary.get("rights_status", "unknown")))}</dd>
     </dl>
   </section>
+{warnings_html}
   <section>
     <h2>How To Use</h2>
     <ol>
@@ -714,12 +739,13 @@ def _summary(
 
 def _input_artifacts(review_dir: Path, base: Path) -> dict[str, dict[str, Any]]:
     artifacts: dict[str, dict[str, Any]] = {}
-    for name, filename in REQUIRED_REVIEW_FILES.items():
+    for name, filename in {**REQUIRED_REVIEW_FILES, **OPTIONAL_REVIEW_FILES}.items():
         path = review_dir / filename
         artifacts[name] = {
             "path": _display_path(path, base),
             "exists": path.exists(),
             "role": _artifact_role(name),
+            "required": name in REQUIRED_REVIEW_FILES,
         }
     return artifacts
 
@@ -912,9 +938,9 @@ def _rights_status(rights: dict[str, Any], *fallbacks: Any) -> str:
     return "missing"
 
 
-def _missing_required_artifacts(review_dir: Path) -> list[str]:
+def _missing_artifacts(review_dir: Path, files: dict[str, str]) -> list[str]:
     missing: list[str] = []
-    for filename in REQUIRED_REVIEW_FILES.values():
+    for filename in files.values():
         path = review_dir / filename
         if not path.exists():
             missing.append(str(path).replace("\\", "/"))

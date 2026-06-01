@@ -55,6 +55,9 @@ def run(argv: list[str]) -> int:
         "schema_version": "v1",
         "episode_id": board.get("episode_id"),
         "board_kind": board.get("board_kind"),
+        "board_status": board.get("board_status"),
+        "generated_with_warnings": board.get("generated_with_warnings"),
+        "missing_optional_artifacts": board.get("missing_optional_artifacts") or [],
         "chapter_count": summary.get("chapter_count"),
         "candidate_seed_count": summary.get("candidate_seed_count"),
         "retained_context_risk_count": summary.get("retained_context_risk_count"),
@@ -76,6 +79,12 @@ def run(argv: list[str]) -> int:
     else:
         print(f"episode_id: {payload['episode_id']}")
         print(f"board_kind: {payload['board_kind']}")
+        print(f"board_status: {payload['board_status']}")
+        print(f"generated_with_warnings: {str(payload['generated_with_warnings']).lower()}")
+        if payload["missing_optional_artifacts"]:
+            print("missing_optional_artifacts:")
+            for item in payload["missing_optional_artifacts"]:
+                print(f"  - {item}")
         print(f"chapter_count: {payload['chapter_count']}")
         print(f"candidate_seed_count: {payload['candidate_seed_count']}")
         print(f"retained_context_risk_count: {payload['retained_context_risk_count']}")

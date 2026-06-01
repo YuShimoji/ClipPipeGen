@@ -26,6 +26,9 @@ def test_chapter_revision_board_generates_nine_chapters_and_keeps_boundaries(tmp
     board = result["board"]
     chapters = board["chapters"]
     assert board["board_kind"] == "chapter_revision_board_v0"
+    assert board["board_status"] == "generated"
+    assert board["generated_with_warnings"] is False
+    assert board["missing_optional_artifacts"] == []
     assert board["boundary_flags"]["production_candidate"] is False
     assert board["boundary_flags"]["creative_acceptance"] is False
     assert board["boundary_flags"]["publish_acceptance"] is False
@@ -102,6 +105,66 @@ def test_chapter_revision_board_html_and_csv_are_operator_visible(tmp_path: Path
     assert "ch_001,cut_001,undecided" in csv_text
 
 
+def test_chapter_revision_board_generates_with_warnings_without_baseline_acceptance(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+    (review_dir / "regenerated_r3_baseline_acceptance.json").unlink()
+    (review_dir / "regenerated_r3_baseline_acceptance.html").unlink()
+
+    result = build_chapter_revision_board(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        output_dir=review_dir,
+        base_dir=tmp_path,
+    )
+
+    board = result["board"]
+    html = result["board_html_path"].read_text(encoding="utf-8")
+    assert board["board_status"] == "generated_with_warnings"
+    assert board["generated_with_warnings"] is True
+    assert board["summary"]["chapter_count"] == 9
+    assert board["summary"]["retained_context_risk_count"] == 6
+    assert "regenerated_r3_baseline_acceptance.json" in board["missing_optional_artifacts"][0]
+    assert any("regenerated_r3_baseline_acceptance.html" in p for p in board["missing_optional_artifacts"])
+    assert "Generated with warnings: optional baseline/acceptance plan artifacts missing." in html
+    assert "regenerated_r3_baseline_acceptance.json" in html
+    assert result["patch_template_path"].exists()
+    assert result["patch_csv_path"].exists()
+
+
+def test_chapter_revision_board_generates_with_warnings_without_acceptance_plan(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+    (review_dir / "production_subtitle_render_acceptance_plan.json").unlink()
+    (review_dir / "production_subtitle_render_acceptance_plan.html").unlink()
+
+    result = build_chapter_revision_board(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        output_dir=review_dir,
+        base_dir=tmp_path,
+    )
+
+    board = result["board"]
+    html = result["board_html_path"].read_text(encoding="utf-8")
+    assert board["board_status"] == "generated_with_warnings"
+    assert board["generated_with_warnings"] is True
+    assert board["boundary_flags"]["production_candidate"] is False
+    assert board["boundary_flags"]["rights_status"] == "pending"
+    assert any(
+        "production_subtitle_render_acceptance_plan.json" in p
+        for p in board["missing_optional_artifacts"]
+    )
+    assert "production_subtitle_render_acceptance_plan.html" in html
+    assert {revision["chapter_action"] for revision in result["patch_template"]["revisions"]} == {
+        "undecided"
+    }
+
+
 def test_build_chapter_revision_board_cli_writes_json_html_and_templates(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
@@ -128,6 +191,9 @@ def test_build_chapter_revision_board_cli_writes_json_html_and_templates(tmp_pat
 
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
+    assert payload["board_status"] == "generated"
+    assert payload["generated_with_warnings"] is False
+    assert payload["missing_optional_artifacts"] == []
     assert payload["chapter_count"] == 9
     assert payload["retained_context_risk_count"] == 6
     assert payload["production_candidate"] is False
