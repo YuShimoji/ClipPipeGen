@@ -78,7 +78,7 @@ R3 では ED-10 の `import-subtitle-track` を使い、YouTube JSON3 の公式 
 | NLE CSV rows | 6 | 5 | 9 |
 | diagnostic render | 6.6s / 1080p | 23.13s / 1080p / clamped=false | 6.84s / 1080p / clamped=false |
 
-R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 event を artifact に戻せない」問題は解消した。一方、公式字幕は短い event を細かく保持するため、自動 cut は 9 本に増え、context check は 6 本が needs_review になった。2026-05-30 JST の operator instruction で 9 本は速度重視の candidate seed として通すが、次の判断は production subtitle/render acceptance と regenerated render comparison に移っている。公式字幕がない素材では、引き続き STT provider comparison が優先候補になる。
+R3 で R2 の最大停滞だった「Vosk segment 外に落ちた公式字幕 event を artifact に戻せない」問題は解消した。一方、公式字幕は短い event を細かく保持するため、自動 cut は 9 本に増え、context check は 6 本が needs_review になった。2026-05-30 JST の operator instruction で 9 本は速度重視の candidate seed として通し、2026-06-01 JST の Chapter Revision Loop v0 で `cut_001`〜`cut_009` を `ch_001`〜`ch_009` に対応させる operator 作業台を追加した。次の判断は chapter revision patch input と、その patch を edit_pack / subtitle drafts / render plan / NLMYTGen handoff に戻す normalization に移っている。公式字幕がない素材では、引き続き STT provider comparison が優先候補になる。
 
 R3 review packet: `build-cut-review-packet` で `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/` に `cut_review_packet.json` / `cut_review_report.html` / `evidence_summary.json` / `evidence_summary.html` を生成済み。各 cut には duration、reason、context notes、subtitle event count、subtitle density、review focus、`decision_placeholder.final_decision="undecided"` が入る。これは final cut 採否ではなく、人間レビューへ渡すための readback。
 
@@ -90,6 +90,16 @@ status is not mutated: 3 cuts remain `passed`, 6 cuts remain `needs_review`
 with retained context risk. This is not production acceptance, creative
 acceptance, publishing acceptance, or rights approval; `rights_status=pending`
 and `production_candidate=false` remain in force.
+
+Chapter Revision Loop v0 (2026-06-01 JST): `build-chapter-revision-board`
+generates ignored local `chapter_revision_board.json` / `.html` and
+`chapter_revision_patch.template.json` / `.csv` in the R3 review directory.
+The board keeps all current decisions as `accept_candidate`, keeps the six
+`retained_context_risk=true` chapters visible, and leaves operator fields blank
+or `undecided`. `script_override` is editorial layer only,
+`display_subtitle_request` is subtitle surface request, and boundary changes
+are requests for later edit_pack / cut-range work. Source transcript and the
+official subtitle track remain evidence and are not directly mutated.
 
 R3 source identity readback: YouTube ID `7J5aS_pcBj4`、subtitle track `source_subs/7J5aS_pcBj4.ja.json3`、transcript source `imported subtitle track / youtube_subtitles`、source video material id `src_video_jp_pilot01`、source audio material id `src_audio_jp_pilot01`、rights status `pending`、production usage `not allowed until rights approval`。title / URL が local metadata から取得できない場合は `unknown` として扱い、外部検索や新規 download で埋めない。
 
