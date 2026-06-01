@@ -56,6 +56,7 @@ def build_episode_status(
         "editing": {"state": "missing"},
         "thumbnail": {"state": "missing"},
         "operator_review": {},
+        "final_cut_decision": {},
         "settings": {"bridge_config": _bridge_config_status(bridge_config_path)},
         "next_action": {},
     }
@@ -89,6 +90,7 @@ def build_episode_status(
         _fill_thumbnail_result_status(status, thumb_result_path)
 
     status["operator_review"] = _operator_review_status(ep_dir, base, status)
+    status["final_cut_decision"] = _final_cut_decision_status(ep_dir, base)
     status["next_action"] = _choose_next_action(status)
     return status
 
@@ -281,7 +283,60 @@ def _operator_review_status(ep_dir: Path, base: Path, status: dict[str, Any]) ->
     }
 
 
+def _final_cut_decision_status(ep_dir: Path, base: Path) -> dict[str, Any]:
+    review_dir = ep_dir / "review" / "jp_pilot01r3_cut_review"
+    packet_path = review_dir / "cut_decision_packet.json"
+    report_path = review_dir / "cut_decision_report.html"
+    artifacts = {
+        "cut_decision_packet": _artifact(packet_path, base),
+        "cut_decision_report": _artifact(report_path, base),
+    }
+    if not packet_path.exists():
+        return {
+            "state": "missing",
+            "ready_for_next_acceptance_slice": False,
+            "artifacts": artifacts,
+            "summary": {},
+            "production_candidate": False,
+            "rights_status": "unknown",
+        }
+    try:
+        packet = json.loads(packet_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {
+            "state": "blocked",
+            "ready_for_next_acceptance_slice": False,
+            "artifacts": artifacts,
+            "summary": {},
+            "production_candidate": False,
+            "rights_status": "unknown",
+            "message": "cut_decision_packet.json is not readable JSON",
+        }
+    summary = packet.get("summary") if isinstance(packet.get("summary"), dict) else {}
+    keep_cut_ids = summary.get("keep_cut_ids") if isinstance(summary.get("keep_cut_ids"), list) else []
+    return {
+        "state": "ready",
+        "ready_for_next_acceptance_slice": bool(keep_cut_ids),
+        "decision_scope": packet.get("decision_scope"),
+        "artifacts": artifacts,
+        "summary": summary,
+        "keep_cut_ids": keep_cut_ids,
+        "needs_adjustment_cut_ids": summary.get("needs_adjustment_cut_ids") or [],
+        "reject_cut_ids": summary.get("reject_cut_ids") or [],
+        "production_candidate": packet.get("production_candidate") is True,
+        "rights_status": packet.get("rights_status") or "unknown",
+        "next_recommended_action": (packet.get("next_step") or {}).get("recommended"),
+    }
+
+
 def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
+    final_cut = status.get("final_cut_decision") or {}
+    if final_cut.get("state") == "ready" and final_cut.get("ready_for_next_acceptance_slice"):
+        return {
+            "owner": "assistant",
+            "action": "Start production subtitle/render acceptance for kept R3 candidate cuts",
+            "reason": "cut_decision_packet has keep candidates while production_candidate remains false",
+        }
     if not status["artifacts"]["rights_manifest"]["exists"]:
         return {
             "owner": "assistant",

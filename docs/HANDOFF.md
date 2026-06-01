@@ -14,9 +14,10 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Latest completed diagnostic slice: `JP-Pilot-01R3` official-caption rerun. It imported the official Japanese subtitle track for the ignored JP-Pilot episode, produced 105 transcript segments, regenerated 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s 1080p diagnostic render.
 - Latest completed operator UX slice: `SH-07` operator review UX separation. It adds `docs/OPERATOR_REVIEW_UX.md`, moves restart/report order to Reviewability first, places recovery/reproduction commands in appendix/details, adds `operator_review` readback to `status-episode`, and keeps natural-language cut review acceptable before any structured decision patch.
 - Latest completed chapter revision slice: `ED-10b` Chapter Revision Loop v0. It adds `build-chapter-revision-board`, `src/pipeline/chapter_revision_board.py`, `docs/CHAPTER_REVISION_LOOP.md`, `docs/SCHEMAS/v1/chapter_revision_patch.md`, and tests. It generates a static board plus JSON/CSV patch templates from existing R3 review artifacts.
-- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet plus `cut_decision_speed_pass.json` / `.html` to confirm the speed-first candidate decision, then use `chapter_revision_board.html` as the operator working board. If they are missing, candidate review/readback is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks. On 2026-05-30 JST, the operator instructed speed-first sample expansion, so all 9 R3 cuts are `accept_candidate` candidate seeds only; the 6 context `needs_review` results remain retained risk and are not production, creative, publishing, or rights acceptance.
+- Latest completed cut decision slice: `ED-10c` R3 Cut Decision Packet. It adds `build-cut-decision-packet`, `src/pipeline/cut_decision_packet.py`, and `status-episode.final_cut_decision` readback. The current R3 triage is `keep`: `cut_001`, `cut_002`, `cut_003`; `needs_adjustment`: `cut_004`-`cut_008`; `reject`: `cut_009`.
+- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet plus `cut_decision_report.html` to confirm the candidate triage, then start a production subtitle/render acceptance mini-slice for only the 3 kept candidate cuts. If they are missing, candidate review/readback is blocked until the ignored episode artifacts are restored or regenerated; Git alone cannot start R3 review. The R2 caption-completeness blocker is resolved for sources with official subtitle tracks. On 2026-05-30 JST, the operator instructed speed-first sample expansion; on 2026-06-02 JST, the operator advanced that set into keep / needs_adjustment / reject triage. `cut_003` keeps original `needs_review` risk via manual override reason. This is not production, creative, publishing, or rights acceptance.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Current sync base after this handoff cleanup: `b9b3e1d feat: add chapter revision board` on `main` / `origin/main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
+- Current sync base before the ED-10c cut decision slice: `bdfb5b1 fix: allow chapter revision board with optional artifacts` on `main` / `origin/main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
 - Previous feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
   1. `transcribe-audio --engine vosk --language ja --model vosk-model-small-ja-0.22` は language/model check passed で 26 segments を生成
@@ -93,6 +94,40 @@ evidence. `script_override` is editorial layer only,
 are later `edit_pack` / cut-range requests. Do not add a source transcript
 mutation field to the patch. The Agent must not invent creative intent or fill
 `script_override` on behalf of the operator.
+
+## R3 Cut Decision Packet
+
+R3 Cut Decision Packet is the current bridge from broad candidate seeds to the
+next production-adjacent acceptance slice. It writes the final cut decision
+readback into ignored local artifacts:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_packet.json
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_report.html
+```
+
+The tracked generator is reproducible:
+
+```powershell
+python -m src.cli.main build-cut-decision-packet `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --format json
+```
+
+Current R3 decision readback:
+
+| Cut group | State | Why it matters |
+|---|---|---|
+| `cut_001`, `cut_002`, `cut_003` | `keep` | These are the only candidate cuts to carry into production subtitle/render acceptance. |
+| `cut_004`-`cut_008` | `needs_adjustment` | Context risk, boundary continuity, or subtitle density must be resolved before promotion. |
+| `cut_009` | `reject` | Short, dependent closing beat; not useful for this 1-3 candidate pass. |
+
+`cut_003` is the only kept cut whose original context status is
+`needs_review`. The packet records an explicit manual override reason and keeps
+the risk visible. This packet is not production acceptance, not rights approval,
+not publishing acceptance, and does not set `production_candidate=true`.
 
 ## Resume on another terminal
 
@@ -577,19 +612,17 @@ yt-dlp remains inside `asset_fetch` source-audio/source-video URL fetch. FFmpeg 
 
 ## Recommended Next Slice
 
-Current recommendation after ED-10 / JP-Pilot-01R3 / SH-06 / ED-10b:
-move from "can captions and ignored diagnostic render evidence enter the
-pipeline?" and "can the operator see the candidates?" to "which chapter-level
-revision decisions should be written into the patch and normalized into
-downstream artifacts?" Non-Repo Artifact Handoff remains infrastructure; it
-does not make `rendered_video.mp4` transferable by Git and it does not create
-production acceptance.
+Current recommendation after ED-10 / JP-Pilot-01R3 / SH-06 / ED-10b / ED-10c:
+move from broad candidate visibility to production subtitle/render acceptance
+for the 3 kept R3 candidates. Non-Repo Artifact Handoff remains infrastructure;
+it does not make `rendered_video.mp4` transferable by Git and it does not
+create production acceptance.
 
 | # | Candidate | Why now | Unblocks | Priority |
 |:--:|---|---|---|:--:|
-| 1 | Advance: operator chapter revision patch | The board exists and maps 9 cuts to 9 chapters, but the operator decisions are still blank / `undecided` | Machine-readable input for edit_pack / subtitle / render plan / NLMYTGen handoff normalization | High |
-| 2 | Audit: retained context risk | Six R3 chapters still carry `retained_context_risk=true` from the speed-first decision | Separate local rewrite candidates from boundary/source-selection candidates before production-adjacent work | High |
-| 3 | Advance: patch normalizer / applier | JSON/CSV templates exist, but no application step consumes them yet | A closed loop from operator patch to downstream artifacts | Medium |
+| 1 | Advance: production subtitle/render acceptance | The cut decision packet narrowed R3 to 3 kept candidate cuts | Typography, safe-area, render completeness, and production-candidate rules for `cut_001`-`cut_003` | High |
+| 2 | Audit: needs_adjustment cuts | Five cuts are explicitly held back instead of silently discarded | Boundary/density fixes can be scoped without blocking the kept candidates | High |
+| 3 | Advance: operator chapter revision patch | The board exists and maps 9 cuts to 9 chapters, but the operator fields are still blank / `undecided` | Machine-readable input for edit_pack / subtitle / render plan / NLMYTGen handoff normalization | Medium |
 | 4 | Verify: regenerated render comparison | Fresh checkouts and transferred workspaces may regenerate non-byte-identical diagnostic renders | A rule for exact SHA-256 vs metadata approximate comparison | Medium |
 | 5 | Clear Rights: rights approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after creative/render acceptance exists | Medium |
 
@@ -597,9 +630,9 @@ For the next human review, start with Reviewability as defined in
 `docs/OPERATOR_REVIEW_UX.md`. When the ignored local reports are available,
 inspect `cut_review_report.html`, then `evidence_summary.html`, then
 `non_repo_artifact_handoff.html`, then `cut_decision_speed_pass.html`, then
-`chapter_revision_board.html`. If this is a fresh checkout only, do not present
-the review board as ready; restore or regenerate the required local episode
-artifacts first, otherwise treat the review surface as
+`cut_decision_report.html`, then `chapter_revision_board.html`. If this is a
+fresh checkout only, do not present the review board as ready; restore or
+regenerate the required local episode artifacts first, otherwise treat the review surface as
 `review_blocked_missing_artifacts`.
 
 Human review can now be returned as `chapter_revision_patch.template.json` /

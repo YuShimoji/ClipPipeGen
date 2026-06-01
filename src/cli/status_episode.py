@@ -77,6 +77,15 @@ def _print_text(status: dict) -> None:
             f"missing={len(operator.get('missing_review_artifacts') or [])})"
         )
         print(f"review next: {operator.get('next_human_action', '')}")
+    final_cut = status.get("final_cut_decision") or {}
+    if final_cut:
+        print(
+            "final cut decision: "
+            f"{final_cut.get('state', 'unknown')} "
+            f"(keep={len(final_cut.get('keep_cut_ids') or [])}, "
+            f"needs_adjustment={len(final_cut.get('needs_adjustment_cut_ids') or [])}, "
+            f"reject={len(final_cut.get('reject_cut_ids') or [])})"
+        )
     print(
         "thumbnail: "
         f"{status['thumbnail']['state']} "

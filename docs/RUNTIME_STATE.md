@@ -19,9 +19,13 @@ instructions.
 - latest chapter revision implementation:
   Chapter Revision Loop v0 adds a static board and JSON/CSV patch templates
   for R3 chapter-level operator decisions.
-- current bottleneck: operator chapter revision patch input, then downstream
-  normalization into edit_pack / subtitle drafts / render plan / NLMYTGen
-  handoff decisions
+- latest cut decision implementation:
+  R3 Cut Decision Packet classifies the 9 selected cuts into keep /
+  needs_adjustment / reject and exposes `final_cut_decision` in
+  `status-episode`.
+- current bottleneck: production subtitle/render acceptance for the 3 kept R3
+  candidate cuts, plus a separate adjustment loop for the 5 retained
+  needs_adjustment cuts
 - reviewability rule: if the ignored R3 review artifacts are present, report
   `review_ready`; if they are missing, report
   `review_blocked_missing_artifacts`
@@ -40,6 +44,14 @@ Chapter Revision Loop v0 now gives those 9 candidate seeds stable chapter ids
 `ch_001` through `ch_009` and keeps operator-written intent separate from the
 source transcript and official subtitle track.
 
+On 2026-06-02 JST, the operator advanced from speed-first sample expansion to
+candidate triage. `cut_001`, `cut_002`, and `cut_003` are kept only as
+candidates for the next acceptance slice. `cut_004` through `cut_008` are
+`needs_adjustment`; `cut_009` is rejected. `cut_003` keeps its original
+`needs_review` context status and requires the recorded manual override reason.
+This is still not production acceptance, creative acceptance, publishing
+acceptance, or rights approval.
+
 ## What To Read First
 
 When the R3 review artifacts are present, start with the local ignored review
@@ -49,7 +61,8 @@ reports in this order:
 2. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/evidence_summary.html`
 3. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.html`
 4. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_speed_pass.html`
-5. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
+5. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_report.html`
+6. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
 
 In that state, the review artifacts are readable and the speed-first candidate
 decision can be confirmed from `cut_decision_speed_pass.json` / `.html`. This
@@ -74,17 +87,18 @@ or R3 review reports.
 
 ## Current Candidate Decision
 
-The previous human review task was to classify the 9 R3 cuts into:
+The current cut decision packet classifies the 9 R3 cuts into:
 
-- `accept_candidate`
-- `adjust_boundary`
-- `reject`
+- `keep`: `cut_001`, `cut_002`, `cut_003`
+- `needs_adjustment`: `cut_004`, `cut_005`, `cut_006`, `cut_007`, `cut_008`
+- `reject`: `cut_009`
 
-For this run, the operator instructed a speed-first sample expansion: carry all
-9 R3 cuts forward as `accept_candidate` candidate seeds. This does not resolve
-the 6 context `needs_review` results; it carries them forward as retained risk.
-This is not production acceptance, creative acceptance, publishing acceptance,
-or rights approval.
+The earlier speed-first sample expansion carried all 9 R3 cuts forward as
+`accept_candidate` candidate seeds. The newer triage narrows the next acceptance
+slice to 3 kept candidates. It does not resolve the 6 context `needs_review`
+results; `cut_003` is kept with a manual override reason and the remaining
+`needs_review` cuts stay in `needs_adjustment`. This is not production
+acceptance, creative acceptance, publishing acceptance, or rights approval.
 
 Absent an explicit operator instruction like the one above, the Agent must not
 auto-accept, auto-reject, or auto-adjust final cuts.
@@ -126,15 +140,14 @@ Review focus:
 
 ## Next Actions
 
-1. Advance: operator chapter revision patch
-   - Use when the Chapter Revision Board is present locally.
-   - Fill or normalize chapter-level intent, script/display subtitle requests,
-     boundary requests, rollback signals, and downstream targets without
-     mutating the source transcript.
-2. Advance: production subtitle/render acceptance mini-slice
-   - Use after operator chapter revision narrows what should move forward.
+1. Advance: production subtitle/render acceptance mini-slice
+   - Use for kept candidate cuts `cut_001`, `cut_002`, and `cut_003`.
    - Define typography, safe-area, full-render, and production-candidate rules
      without claiming acceptance yet.
+2. Advance: adjustment loop for retained R3 cuts
+   - Use for `cut_004` through `cut_008`.
+   - Review boundaries, density, and whether any cut should merge/split before
+     it can re-enter candidate status.
 3. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
