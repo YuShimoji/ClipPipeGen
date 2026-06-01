@@ -20,6 +20,7 @@ Subcommands:
     review-transcript        ED-09: apply human review/correction patch to transcript.json.
     import-subtitle-track    ED-10: subtitle track -> transcript.json-compatible artifact.
     build-cut-review-packet  ED-10/R3: selected cuts -> review packet/report.
+    build-chapter-revision-board R3: operator-editable chapter board + patch templates.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -42,6 +43,7 @@ from . import (
     audit_material_ledger,
     audit_thumbnail,
     build_local_preview_pack,
+    build_chapter_revision_board,
     build_cut_review_packet,
     build_non_repo_handoff,
     check_cut_context,
@@ -83,6 +85,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "review-transcript": review_transcript.run,
     "import-subtitle-track": import_subtitle_track.run,
     "build-cut-review-packet": build_cut_review_packet.run,
+    "build-chapter-revision-board": build_chapter_revision_board.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

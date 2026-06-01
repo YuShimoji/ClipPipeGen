@@ -9,15 +9,19 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-05-30 JST
+- date: 2026-06-01 JST
 - latest resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
   `28f0256 docs: refresh operator review handoff`
 - latest operator review implementation:
   `3d97e45 feat: improve operator review surfaces`
-- current bottleneck: production subtitle/render acceptance mini-slice or
-  regenerated render comparison after R3 speed-first candidate seed decision
+- latest chapter revision implementation:
+  Chapter Revision Loop v0 adds a static board and JSON/CSV patch templates
+  for R3 chapter-level operator decisions.
+- current bottleneck: operator chapter revision patch input, then downstream
+  normalization into edit_pack / subtitle drafts / render plan / NLMYTGen
+  handoff decisions
 - reviewability rule: if the ignored R3 review artifacts are present, report
   `review_ready`; if they are missing, report
   `review_blocked_missing_artifacts`
@@ -32,6 +36,10 @@ speed-first sample expansion. All 9 generated R3 cuts are accepted only as
 `accept_candidate` candidate seeds; the 6 `needs_review` context results remain
 retained risk and are not rewritten to `passed`.
 
+Chapter Revision Loop v0 now gives those 9 candidate seeds stable chapter ids
+`ch_001` through `ch_009` and keeps operator-written intent separate from the
+source transcript and official subtitle track.
+
 ## What To Read First
 
 When the R3 review artifacts are present, start with the local ignored review
@@ -41,11 +49,17 @@ reports in this order:
 2. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/evidence_summary.html`
 3. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.html`
 4. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_speed_pass.html`
+5. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
 
 In that state, the review artifacts are readable and the speed-first candidate
 decision can be confirmed from `cut_decision_speed_pass.json` / `.html`. This
 decision is sample expansion only, not production, creative, publishing, or
 rights acceptance.
+
+If `chapter_revision_board.html` is present, it is the operator working board
+for chapter-level decisions. The corresponding templates are
+`chapter_revision_patch.template.json` and
+`chapter_revision_patch.template.csv`; defaults are blank or `undecided`.
 
 When this is a fresh checkout or those ignored reports are missing, do not send
 the operator to the HTML report as if review is ready. Read these instead:
@@ -112,19 +126,24 @@ Review focus:
 
 ## Next Actions
 
-1. Advance: production subtitle/render acceptance mini-slice
-   - Use after the speed-first candidate seed set is available locally.
+1. Advance: operator chapter revision patch
+   - Use when the Chapter Revision Board is present locally.
+   - Fill or normalize chapter-level intent, script/display subtitle requests,
+     boundary requests, rollback signals, and downstream targets without
+     mutating the source transcript.
+2. Advance: production subtitle/render acceptance mini-slice
+   - Use after operator chapter revision narrows what should move forward.
    - Define typography, safe-area, full-render, and production-candidate rules
      without claiming acceptance yet.
-2. Verify: regenerated render comparison
+3. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
    - Define when exact SHA-256 matters and when metadata approximate comparison
      is acceptable.
-3. Clear Rights: rights approval path
+4. Clear Rights: rights approval path
    - Use before any production/public usage claim.
    - Keep this separate from local diagnostic success.
-4. Prepare: publishing / OAuth / thumbnail
+5. Prepare: publishing / OAuth / thumbnail
    - Keep this later until production acceptance and rights are no longer
      pending.
 
@@ -152,5 +171,7 @@ step.
 4. Do not classify final cuts without explicit operator instruction. The
    2026-05-30 speed-first instruction applies only to candidate seeds, not
    production-approved cuts.
-5. Do not stage `episodes/`, source media, rendered video, subtitle payloads, or
+5. If the Chapter Revision Board exists, treat `script_override` as editorial
+   layer only and do not add source transcript mutation fields.
+6. Do not stage `episodes/`, source media, rendered video, subtitle payloads, or
    other large local artifacts.
