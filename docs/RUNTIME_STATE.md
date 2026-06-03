@@ -9,7 +9,7 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-01 JST
+- date: 2026-06-03 JST
 - latest resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -23,9 +23,14 @@ instructions.
   R3 Cut Decision Packet classifies the 9 selected cuts into keep /
   needs_adjustment / reject and exposes `final_cut_decision` in
   `status-episode`.
-- current bottleneck: production subtitle/render acceptance for the 3 kept R3
-  candidate cuts, plus a separate adjustment loop for the 5 retained
-  needs_adjustment cuts
+- latest local visual proof readback:
+  JP-Pilot R3 kept cuts now have local ignored acceptance/readback reports for
+  `cut_001` through `cut_003`. `cut_001` has an existing diagnostic render frame
+  with subtitle overlay; `cut_002` and `cut_003` have source-frame-only proof
+  and still need subtitle-overlay representative diagnostic evidence.
+- current bottleneck: representative diagnostic proof with subtitle overlay for
+  `cut_002` / `cut_003`, plus human review of `cut_001` readability,
+  safe-area, and timing; rights remain pending before any production/public use
 - reviewability rule: if the ignored R3 review artifacts are present, report
   `review_ready`; if they are missing, report
   `review_blocked_missing_artifacts`
@@ -52,6 +57,23 @@ candidates for the next acceptance slice. `cut_004` through `cut_008` are
 This is still not production acceptance, creative acceptance, publishing
 acceptance, or rights approval.
 
+On 2026-06-03 JST, local ignored reports were created for the kept candidate
+mini-slice:
+
+- `production_subtitle_render_acceptance_report.json` / `.html`
+- `representative_visual_proof_report.json` / `.html`
+- `visual_proof_cut_001.png`
+- `visual_proof_cut_002.png`
+- `visual_proof_cut_003.png`
+- `visual_proof_contact_sheet.png`
+
+These are under
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/`
+and are intentionally not in Git. The readback is conservative: `cut_001` has
+subtitle-overlay diagnostic-frame evidence only, while `cut_002` and `cut_003`
+are source-frame-only and do not prove subtitle typography, safe-area, line
+wrapping, or timing sync. `cut_003` keeps retained context risk.
+
 ## What To Read First
 
 When the R3 review artifacts are present, start with the local ignored review
@@ -62,7 +84,9 @@ reports in this order:
 3. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/non_repo_artifact_handoff.html`
 4. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_speed_pass.html`
 5. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_report.html`
-6. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
+6. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/production_subtitle_render_acceptance_report.html`
+7. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html`
+8. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
 
 In that state, the review artifacts are readable and the speed-first candidate
 decision can be confirmed from `cut_decision_speed_pass.json` / `.html`. This
@@ -140,23 +164,28 @@ Review focus:
 
 ## Next Actions
 
-1. Advance: production subtitle/render acceptance mini-slice
-   - Use for kept candidate cuts `cut_001`, `cut_002`, and `cut_003`.
-   - Define typography, safe-area, full-render, and production-candidate rules
-     without claiming acceptance yet.
-2. Advance: adjustment loop for retained R3 cuts
+1. Verify: representative diagnostic visual proof
+   - Use for `cut_002` and `cut_003`, which currently have source-frame-only
+     proof and no subtitle overlay.
+   - Generate or inspect diagnostic subtitle-overlay evidence without claiming
+     production render or production acceptance.
+2. Review: kept cut visual proof readback
+   - Use for `cut_001`, which has a diagnostic subtitle-overlay frame.
+   - Human review should record readability, safe-area, and timing judgment
+     while keeping `production_candidate=false`.
+3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
    - Review boundaries, density, and whether any cut should merge/split before
      it can re-enter candidate status.
-3. Verify: regenerated render comparison
+4. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
    - Define when exact SHA-256 matters and when metadata approximate comparison
      is acceptable.
-4. Clear Rights: rights approval path
+5. Clear Rights: rights approval path
    - Use before any production/public usage claim.
    - Keep this separate from local diagnostic success.
-5. Prepare: publishing / OAuth / thumbnail
+6. Prepare: publishing / OAuth / thumbnail
    - Keep this later until production acceptance and rights are no longer
      pending.
 
