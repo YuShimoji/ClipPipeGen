@@ -40,6 +40,24 @@ plus JSON/CSV patch templates. It does not access YouTube, fetch media, run
 yt-dlp, render video, open Electron, save in a browser, publish, set a
 thumbnail, or approve rights.
 
+For the narrower `cut_002` / `cut_003` pass, use the scoped proxy handoff
+generator after the board and kept-candidate visual proof readback exist:
+
+```powershell
+python -m src.cli.main build-operator-proxy-decision-handoff `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --format json
+```
+
+This writes `cut_002_cut_003_text_proxy_review.*`,
+`cut_002_cut_003_operator_proxy_decision_handoff.*`, and scoped
+`chapter_revision_patch.cut_002_cut_003_proxy.template.*` artifacts. It keeps
+`proxy_decision=undecided`, leaves creative/operator text blank, preserves
+`cut_003` retained context risk, and records subtitle-overlay proof as blocked
+until an actual diagnostic overlay proof exists.
+
 `regenerated_r3_baseline_acceptance.*` and
 `production_subtitle_render_acceptance_plan.*` are optional enrichment
 artifacts for later downstream acceptance planning. When the cut review packet,

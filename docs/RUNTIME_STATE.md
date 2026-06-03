@@ -33,7 +33,8 @@ instructions.
   and scoped Chapter Revision Patch templates. They preserve operator fields as
   blank or `undecided`, keep `cut_003` retained context risk, and read back
   source media as available from `material_ledger.json` while keeping subtitle
-  overlay proof for those cuts blocked / unproven.
+  overlay proof for those cuts blocked / unproven. The tracked regeneration
+  command is `build-operator-proxy-decision-handoff`.
 - current bottleneck: representative diagnostic proof with subtitle overlay for
   `cut_002` / `cut_003`, plus operator proxy decisions that can route the cuts
   to subtitle, boundary, render-plan, or NLMYTGen handoff work; rights remain

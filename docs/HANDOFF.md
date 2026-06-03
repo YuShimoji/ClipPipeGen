@@ -168,10 +168,22 @@ handoff so the operator can decide how to route them without filling the whole
 Chapter Revision Board. Generated ignored local artifacts:
 
 ```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_text_proxy_review.json
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_text_proxy_review.html
 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_operator_proxy_decision_handoff.json
 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_operator_proxy_decision_handoff.html
 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_patch.cut_002_cut_003_proxy.template.json
 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_patch.cut_002_cut_003_proxy.template.csv
+```
+
+The tracked generator is reproducible:
+
+```powershell
+python -m src.cli.main build-operator-proxy-decision-handoff `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --format json
 ```
 
 Current proxy readback:

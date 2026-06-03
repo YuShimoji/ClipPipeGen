@@ -22,6 +22,7 @@ Subcommands:
     build-cut-review-packet  ED-10/R3: selected cuts -> review packet/report.
     build-chapter-revision-board R3: operator-editable chapter board + patch templates.
     build-cut-decision-packet R3: classify selected cuts for next acceptance slice.
+    build-operator-proxy-decision-handoff R3: cut-scoped proxy decision handoff.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -48,6 +49,7 @@ from . import (
     build_cut_review_packet,
     build_local_preview_pack,
     build_non_repo_handoff,
+    build_operator_proxy_decision_handoff,
     check_cut_context,
     export_nle,
     fetch_source_audio,
@@ -89,6 +91,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-cut-review-packet": build_cut_review_packet.run,
     "build-chapter-revision-board": build_chapter_revision_board.run,
     "build-cut-decision-packet": build_cut_decision_packet.run,
+    "build-operator-proxy-decision-handoff": build_operator_proxy_decision_handoff.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
