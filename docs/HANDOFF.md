@@ -16,7 +16,8 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Latest completed chapter revision slice: `ED-10b` Chapter Revision Loop v0. It adds `build-chapter-revision-board`, `src/pipeline/chapter_revision_board.py`, `docs/CHAPTER_REVISION_LOOP.md`, `docs/SCHEMAS/v1/chapter_revision_patch.md`, and tests. It generates a static board plus JSON/CSV patch templates from existing R3 review artifacts.
 - Latest completed cut decision slice: `ED-10c` R3 Cut Decision Packet. It adds `build-cut-decision-packet`, `src/pipeline/cut_decision_packet.py`, and `status-episode.final_cut_decision` readback. The current R3 triage is `keep`: `cut_001`, `cut_002`, `cut_003`; `needs_adjustment`: `cut_004`-`cut_008`; `reject`: `cut_009`.
 - Latest local evidence slice: representative visual proof readback for kept R3 candidates. Local ignored `production_subtitle_render_acceptance_report.*`, `representative_visual_proof_report.*`, `visual_proof_cut_001.png`, `visual_proof_cut_002.png`, `visual_proof_cut_003.png`, and `visual_proof_contact_sheet.png` were generated under the R3 review directory. `cut_001` has an existing diagnostic render frame with subtitle overlay; `cut_002` and `cut_003` have source-frame-only proof, so subtitle typography / safe-area / line wrapping / timing are still not proven for those two cuts.
-- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet plus `cut_decision_report.html` to confirm the candidate triage, then inspect `representative_visual_proof_report.html` for the kept candidates. The immediate next move is representative diagnostic subtitle-overlay proof for `cut_002` / `cut_003`, and human review of `cut_001` readability / safe-area / timing. If ignored artifacts are missing, candidate review/readback is blocked until the local episode artifacts are restored or regenerated; Git alone cannot start R3 visual review. On 2026-05-30 JST, the operator instructed speed-first sample expansion; on 2026-06-02 JST, the operator advanced that set into keep / needs_adjustment / reject triage. `cut_003` keeps original `needs_review` risk via manual override reason. This is not production, creative, publishing, or rights acceptance.
+- Latest local proxy decision handoff: ignored `cut_002_cut_003_operator_proxy_decision_handoff.json` / `.html` and scoped `chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv` were generated for the two kept cuts that still lack subtitle-overlay proof. Source media is available from `material_ledger.json` material paths, but cut_002/cut_003 overlay proof is still blocked / unproven. Operator fields remain blank or `undecided`; `cut_003` retained context risk remains active.
+- Current recommended decision: first report Reviewability. If the ignored R3 review artifacts are present in this workspace, use the JP-Pilot R3 cut review packet plus `cut_decision_report.html` to confirm the candidate triage, then inspect the `cut_002` / `cut_003` proxy handoff and templates before asking the operator to fill all 9 chapter fields. The immediate next moves are either operator proxy decision input for `cut_002` / `cut_003`, representative diagnostic subtitle-overlay proof for those cuts, or human review of `cut_001` readability / safe-area / timing. If ignored artifacts are missing, candidate review/readback is blocked until the local episode artifacts are restored or regenerated; Git alone cannot start R3 visual review. On 2026-05-30 JST, the operator instructed speed-first sample expansion; on 2026-06-02 JST, the operator advanced that set into keep / needs_adjustment / reject triage. `cut_003` keeps original `needs_review` risk via manual override reason. This is not production, creative, publishing, or rights acceptance.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
 - Current sync base before the ED-10c cut decision slice: `bdfb5b1 fix: allow chapter revision board with optional artifacts` on `main` / `origin/main`. After pull, confirm the current checkout with `git log -1 --oneline --decorate`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
@@ -27,6 +28,7 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Previous recommendation resolved by ED-10 / JP-Pilot-01R3: official subtitle events can now enter the transcript/cuts/subtitle/NLE/render pipeline without being constrained to Vosk segment coverage.
 - Latest completed feature-slice closeout before this handoff note: ED-07c language/model validation closeout
 - Latest local verification: 2026-06-01 JST Chapter Revision Loop closeout; `uvx pytest -q` (206 passed), `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean, `git ls-files episodes` empty. Staged-path guard before commit found no `episodes/`, rendered video, source media, subtitle payloads, `.json3`, rights payload, or large binary paths.
+- Latest proxy handoff validation: 2026-06-03 JST; JSON parse and CSV readback passed for the `cut_002` / `cut_003` proxy handoff and scoped patch template. `uvx pytest -q` -> 212 passed, `npm run smoke` OK, `npm run smoke:electron` OK, `git diff --check` clean, and `git ls-files episodes` empty.
 - Working tree expectation after pull: clean
 
 ## Non-Repo Artifact Handoff
@@ -158,6 +160,41 @@ The visual proof reports keep `production_render_executed=false`,
 `creative_acceptance=false`, `publish_acceptance=false`,
 `rights_status=pending`, and `production_usage_allowed=false`. The PNGs and
 reports are local ignored artifacts and must not be staged.
+
+## cut_002 / cut_003 Proxy Decision Handoff
+
+The two kept cuts without subtitle-overlay proof now have a narrower local
+handoff so the operator can decide how to route them without filling the whole
+Chapter Revision Board. Generated ignored local artifacts:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_operator_proxy_decision_handoff.json
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_operator_proxy_decision_handoff.html
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_patch.cut_002_cut_003_proxy.template.json
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_patch.cut_002_cut_003_proxy.template.csv
+```
+
+Current proxy readback:
+
+| Cut | Proxy state | Operator default | What remains unproven |
+|---|---|---|---|
+| `cut_002` | context `passed`, compact 4.838s setup beat, 2 subtitles, line wrap proxy review required | `proxy_decision=undecided`, intent/script/subtitle request blank | subtitle-overlay typography, safe-area, and timing sync |
+| `cut_003` | context `needs_review`, retained context risk true, 19.119s, 15 subtitles | `proxy_decision=undecided`, `context_risk_handling=undecided` | context boundary handling plus subtitle-overlay typography, safe-area, and timing sync |
+
+Source media is present by material ledger readback:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4
+episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav
+```
+
+The old root-level paths `episodes/.../source_video.mp4` and
+`episodes/.../source.wav` are not the current source of truth. Even with source
+media available, `visual_proof_status` remains
+`blocked_no_cut_002_cut_003_overlay_proof` until a diagnostic subtitle-overlay
+proof is generated or inspected for these two cuts. The proxy handoff does not
+pass typography, safe-area, timing sync, creative acceptance, production
+acceptance, publishing acceptance, or rights approval.
 
 ## Resume on another terminal
 
@@ -651,12 +688,13 @@ acceptance.
 
 | # | Candidate | Why now | Unblocks | Priority |
 |:--:|---|---|---|:--:|
-| 1 | Verify: subtitle-overlay visual proof for `cut_002` / `cut_003` | Current proof for those cuts is source-frame-only | Human review can judge typography, safe-area, line wrapping, and timing instead of relying on proxy status | High |
-| 2 | Review: `cut_001` diagnostic overlay frame | `cut_001` already has subtitle-overlay diagnostic evidence | Readability / safe-area / timing can be accepted, adjusted, or sent back without touching production state | High |
-| 3 | Audit: needs_adjustment cuts | Five cuts are explicitly held back instead of silently discarded | Boundary/density fixes can be scoped without blocking the kept candidates | Medium |
-| 4 | Advance: operator chapter revision patch | The board exists and maps 9 cuts to 9 chapters, but the operator fields are still blank / `undecided` | Machine-readable input for edit_pack / subtitle / render plan / NLMYTGen handoff normalization | Medium |
-| 5 | Verify: regenerated render comparison | Fresh checkouts and transferred workspaces may regenerate non-byte-identical diagnostic renders | A rule for exact SHA-256 vs metadata approximate comparison | Medium |
-| 6 | Clear Rights: rights approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after creative/render acceptance exists | Medium |
+| 1 | Advance: `cut_002` / `cut_003` proxy decision | The scoped handoff exists and keeps operator fields blank / `undecided` | Machine-readable routing into subtitle, boundary, render plan, or NLMYTGen handoff work without asking for all 9 chapters | High |
+| 2 | Verify: subtitle-overlay visual proof for `cut_002` / `cut_003` | Source media is present by material ledger, but overlay proof is still not generated | Human review can judge typography, safe-area, line wrapping, and timing instead of relying on proxy status | High |
+| 3 | Review: `cut_001` diagnostic overlay frame | `cut_001` already has subtitle-overlay diagnostic evidence | Readability / safe-area / timing can be accepted, adjusted, or sent back without touching production state | High |
+| 4 | Audit: needs_adjustment cuts | Five cuts are explicitly held back instead of silently discarded | Boundary/density fixes can be scoped without blocking the kept candidates | Medium |
+| 5 | Advance: full operator chapter revision patch | The board maps 9 cuts to 9 chapters, but most operator fields are still blank / `undecided` | Broader machine-readable input for edit_pack / subtitle / render plan / NLMYTGen handoff normalization | Medium |
+| 6 | Verify: regenerated render comparison | Fresh checkouts and transferred workspaces may regenerate non-byte-identical diagnostic renders | A rule for exact SHA-256 vs metadata approximate comparison | Medium |
+| 7 | Clear Rights: rights approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after creative/render acceptance exists | Medium |
 
 For the next human review, start with Reviewability as defined in
 `docs/OPERATOR_REVIEW_UX.md`. When the ignored local reports are available,
@@ -664,6 +702,8 @@ inspect `cut_review_report.html`, then `evidence_summary.html`, then
 `non_repo_artifact_handoff.html`, then `cut_decision_speed_pass.html`, then
 `cut_decision_report.html`, then
 `production_subtitle_render_acceptance_report.html`, then
+`cut_002_cut_003_text_proxy_review.html`, then
+`cut_002_cut_003_operator_proxy_decision_handoff.html`, then
 `representative_visual_proof_report.html`, then `chapter_revision_board.html`.
 If this is a fresh checkout only, do not present the review board or visual
 proof as ready; restore or regenerate the required local episode artifacts

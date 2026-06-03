@@ -28,9 +28,16 @@ instructions.
   `cut_001` through `cut_003`. `cut_001` has an existing diagnostic render frame
   with subtitle overlay; `cut_002` and `cut_003` have source-frame-only proof
   and still need subtitle-overlay representative diagnostic evidence.
+- latest local proxy decision handoff:
+  `cut_002` / `cut_003` now have ignored operator proxy decision handoff files
+  and scoped Chapter Revision Patch templates. They preserve operator fields as
+  blank or `undecided`, keep `cut_003` retained context risk, and read back
+  source media as available from `material_ledger.json` while keeping subtitle
+  overlay proof for those cuts blocked / unproven.
 - current bottleneck: representative diagnostic proof with subtitle overlay for
-  `cut_002` / `cut_003`, plus human review of `cut_001` readability,
-  safe-area, and timing; rights remain pending before any production/public use
+  `cut_002` / `cut_003`, plus operator proxy decisions that can route the cuts
+  to subtitle, boundary, render-plan, or NLMYTGen handoff work; rights remain
+  pending before any production/public use
 - reviewability rule: if the ignored R3 review artifacts are present, report
   `review_ready`; if they are missing, report
   `review_blocked_missing_artifacts`
@@ -74,6 +81,21 @@ subtitle-overlay diagnostic-frame evidence only, while `cut_002` and `cut_003`
 are source-frame-only and do not prove subtitle typography, safe-area, line
 wrapping, or timing sync. `cut_003` keeps retained context risk.
 
+Later on 2026-06-03 JST, scoped operator proxy decision handoff files were
+created for `cut_002` / `cut_003`:
+
+- `cut_002_cut_003_operator_proxy_decision_handoff.json` / `.html`
+- `chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv`
+
+These files are also ignored local artifacts under the same R3 review
+directory. They record `source_media_status=available_from_material_ledger` for
+`materials/src_video_jp_pilot01/source_video.mp4` and
+`materials/src_audio_jp_pilot01/source.wav`, while preserving
+`visual_proof_status=blocked_no_cut_002_cut_003_overlay_proof`. The older
+root-level source media paths are not the current source of truth. This handoff
+does not create production, creative, publishing, rights, typography,
+safe-area, or timing acceptance.
+
 ## What To Read First
 
 When the R3 review artifacts are present, start with the local ignored review
@@ -85,8 +107,10 @@ reports in this order:
 4. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_speed_pass.html`
 5. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_report.html`
 6. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/production_subtitle_render_acceptance_report.html`
-7. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html`
-8. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
+7. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_text_proxy_review.html`
+8. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_operator_proxy_decision_handoff.html`
+9. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html`
+10. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/chapter_revision_board.html`
 
 In that state, the review artifacts are readable and the speed-first candidate
 decision can be confirmed from `cut_decision_speed_pass.json` / `.html`. This
@@ -97,6 +121,10 @@ If `chapter_revision_board.html` is present, it is the operator working board
 for chapter-level decisions. The corresponding templates are
 `chapter_revision_patch.template.json` and
 `chapter_revision_patch.template.csv`; defaults are blank or `undecided`.
+When the scoped proxy templates are present, use
+`chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv` for the
+first `cut_002` / `cut_003` operator decision pass instead of asking the
+operator to fill all 9 chapters at once.
 
 When this is a fresh checkout or those ignored reports are missing, do not send
 the operator to the HTML report as if review is ready. Read these instead:
@@ -140,6 +168,10 @@ Review focus:
 - transcript source: imported subtitle track / `youtube_subtitles`
 - source video material id: `src_video_jp_pilot01`
 - source audio material id: `src_audio_jp_pilot01`
+- source video material path:
+  `episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4`
+- source audio material path:
+  `episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav`
 - rights status: `pending`
 - production usage: not allowed until approval
 - source URL: `https://www.youtube.com/watch?v=7J5aS_pcBj4`
@@ -164,28 +196,33 @@ Review focus:
 
 ## Next Actions
 
-1. Verify: representative diagnostic visual proof
+1. Advance: `cut_002` / `cut_003` operator proxy decision
+   - Use the scoped proxy handoff and patch templates when visual proof is not
+     yet available or when the operator wants to route work before rendering.
+   - Reduces the friction from broad 9-chapter review to a focused two-cut
+     decision surface without changing source transcript evidence.
+2. Verify: representative diagnostic visual proof
    - Use for `cut_002` and `cut_003`, which currently have source-frame-only
      proof and no subtitle overlay.
    - Generate or inspect diagnostic subtitle-overlay evidence without claiming
      production render or production acceptance.
-2. Review: kept cut visual proof readback
+3. Review: kept cut visual proof readback
    - Use for `cut_001`, which has a diagnostic subtitle-overlay frame.
    - Human review should record readability, safe-area, and timing judgment
      while keeping `production_candidate=false`.
-3. Advance: adjustment loop for retained R3 cuts
+4. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
    - Review boundaries, density, and whether any cut should merge/split before
      it can re-enter candidate status.
-4. Verify: regenerated render comparison
+5. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
    - Define when exact SHA-256 matters and when metadata approximate comparison
      is acceptable.
-5. Clear Rights: rights approval path
+6. Clear Rights: rights approval path
    - Use before any production/public usage claim.
    - Keep this separate from local diagnostic success.
-6. Prepare: publishing / OAuth / thumbnail
+7. Prepare: publishing / OAuth / thumbnail
    - Keep this later until production acceptance and rights are no longer
      pending.
 

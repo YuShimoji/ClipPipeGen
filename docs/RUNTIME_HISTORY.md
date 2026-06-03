@@ -6,6 +6,35 @@ The active resume surface is docs/RUNTIME_STATE.md.
 Historical sections preserve old wording for traceability.
 
 ---
+## cut_002 / cut_003 proxy handoff closeout — 2026-06-03 JST
+
+The JP-Pilot R3 kept-candidate review gained a scoped proxy decision handoff
+for `cut_002` and `cut_003`. The generated files are ignored local artifacts
+under `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/`:
+`cut_002_cut_003_operator_proxy_decision_handoff.json` / `.html` and
+`chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv`.
+
+This handoff exists because `cut_002` and `cut_003` still lack
+subtitle-overlay diagnostic proof. Source media was found through
+`material_ledger.json` at `materials/src_video_jp_pilot01/source_video.mp4` and
+`materials/src_audio_jp_pilot01/source.wav`, so the blocker is no longer
+recorded as source media missing in the active resume docs. The current blocker
+is specifically that no cut_002/cut_003 subtitle-overlay proof has been created
+or inspected. The older root-level source media paths are not the current
+source of truth.
+
+The proxy handoff leaves operator decision fields blank or `undecided`. It does
+not pass typography, safe-area, timing sync, production render, creative
+acceptance, publishing acceptance, rights approval, or production usage.
+`cut_003` keeps `retained_context_risk=true`; rights remain `pending`; and
+`episodes/` artifacts remain excluded from Git.
+
+Validation for this closeout: JSON parse and CSV readback passed for the proxy
+handoff and scoped patch template. `uvx pytest -q` -> 212 passed,
+`npm run smoke` -> OK, `npm run smoke:electron` -> OK, `git diff --check` ->
+clean, and `git ls-files episodes` -> empty.
+
+---
 # Runtime State — ClipPipeGen
 
 ## Current recommended move — 2026-05-27 JST
