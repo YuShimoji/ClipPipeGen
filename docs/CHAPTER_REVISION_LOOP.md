@@ -44,7 +44,7 @@ For the narrower `cut_002` / `cut_003` pass, use the scoped proxy handoff
 generator after the board and kept-candidate visual proof readback exist:
 
 ```powershell
-python -m src.cli.main build-operator-proxy-decision-handoff `
+uvx python -m src.cli.main build-operator-proxy-decision-handoff `
   --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
   --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
   --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `

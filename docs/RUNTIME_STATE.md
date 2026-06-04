@@ -9,7 +9,9 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-03 JST
+- date: 2026-06-04 JST
+- latest pushed resume point:
+  `21f7792 feat: add R3 proxy decision handoff generator`
 - latest resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -29,12 +31,13 @@ instructions.
   with subtitle overlay; `cut_002` and `cut_003` have source-frame-only proof
   and still need subtitle-overlay representative diagnostic evidence.
 - latest local proxy decision handoff:
-  `cut_002` / `cut_003` now have ignored operator proxy decision handoff files
-  and scoped Chapter Revision Patch templates. They preserve operator fields as
-  blank or `undecided`, keep `cut_003` retained context risk, and read back
-  source media as available from `material_ledger.json` while keeping subtitle
-  overlay proof for those cuts blocked / unproven. The tracked regeneration
-  command is `build-operator-proxy-decision-handoff`.
+  ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
+  generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
+  operator proxy decision handoff files, and scoped Chapter Revision Patch
+  templates. They preserve operator fields as blank, `undecided`, `noop`, or
+  `none`, keep `cut_003` retained context risk, and read back source media as
+  available from `material_ledger.json` while keeping subtitle overlay proof
+  for those cuts blocked / unproven.
 - current bottleneck: representative diagnostic proof with subtitle overlay for
   `cut_002` / `cut_003`, plus operator proxy decisions that can route the cuts
   to subtitle, boundary, render-plan, or NLMYTGen handoff work; rights remain
@@ -82,9 +85,11 @@ subtitle-overlay diagnostic-frame evidence only, while `cut_002` and `cut_003`
 are source-frame-only and do not prove subtitle typography, safe-area, line
 wrapping, or timing sync. `cut_003` keeps retained context risk.
 
-Later on 2026-06-03 JST, scoped operator proxy decision handoff files were
-created for `cut_002` / `cut_003`:
+On 2026-06-04 JST, ED-10d made the scoped `cut_002` / `cut_003`
+text/proxy decision handoff reproducible from tracked code and regenerated the
+ignored local artifacts:
 
+- `cut_002_cut_003_text_proxy_review.json` / `.html`
 - `cut_002_cut_003_operator_proxy_decision_handoff.json` / `.html`
 - `chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv`
 
@@ -96,6 +101,16 @@ directory. They record `source_media_status=available_from_material_ledger` for
 root-level source media paths are not the current source of truth. This handoff
 does not create production, creative, publishing, rights, typography,
 safe-area, or timing acceptance.
+
+Regenerate them, when the required local R3 artifacts are present, with:
+
+```powershell
+uvx python -m src.cli.main build-operator-proxy-decision-handoff `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --format json
+```
 
 ## What To Read First
 
