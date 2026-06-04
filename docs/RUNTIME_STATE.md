@@ -9,12 +9,12 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-04 JST
+- date: 2026-06-05 JST
 - latest pushed resume point:
-  current `main` after the 2026-06-04 representative visual proof reviewability
-  correction; confirm with `git log -1 --oneline --decorate`.
+  current `main` after the 2026-06-05 subtitle-overlay visual proof resume
+  refresh; confirm with `git log -1 --oneline --decorate`.
 - previous pushed resume point:
-  `21f7792 feat: add R3 proxy decision handoff generator`
+  `cfd3cb4 Merge remote-tracking branch 'origin/main'`
 - latest resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -29,29 +29,33 @@ instructions.
   needs_adjustment / reject and exposes `final_cut_decision` in
   `status-episode`.
 - latest local visual proof readback:
-  A scoped 2026-06-04 Verify regenerated local diagnostic subtitle-overlay
-  proof for `cut_002` / `cut_003` only. The refreshed
-  `representative_visual_proof_report.*`, `visual_proof_cut_002.png`,
-  `visual_proof_cut_003.png`, and `visual_proof_contact_sheet.png` exist, but
-  `visual_proof_cut_001.png` is missing. Global status remains
-  `review_blocked_missing_artifacts`; this is not `review_ready`.
+  `build-subtitle-overlay-visual-proof` has regenerated ignored local
+  diagnostic subtitle-overlay proof for explicit target cuts `cut_002` and
+  `cut_003`. The refreshed `subtitle_overlay_visual_proof_report.*`,
+  `subtitle_overlay_visual_proof_cut_002.*`,
+  `subtitle_overlay_visual_proof_cut_003.*`, and
+  `representative_visual_proof_report.*` exist under the R3 review directory.
+  In this same-machine checkout `visual_proof_cut_001.png` is also present, so
+  `status-episode` reports `operator_review.review_ready=true`.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
   operator proxy decision handoff files, and scoped Chapter Revision Patch
   templates. They preserve operator fields as blank, `undecided`, `noop`, or
   `none`, keep `cut_003` retained context risk, and read back source media as
-  available from `material_ledger.json`. This handoff predates the narrow
-  `cut_002` / `cut_003` overlay Verify and still must not be treated as
-  operator decision, creative acceptance, or production acceptance.
-- current bottleneck: missing `visual_proof_cut_001.png` blocks the original
-  representative visual proof set. The next operator-facing surface is the
-  scoped `representative_visual_proof_report.html` for `cut_002` / `cut_003`
-  inspection, not `cut_review_report.html` as a global review-ready surface.
-- reviewability rule: if the refreshed representative visual proof report
-  records `review_blocked_missing_artifacts`, `status-episode` must also report
-  `review_blocked_missing_artifacts` until the missing proof is resolved or
-  explicitly waived by an operator decision.
+  available from `material_ledger.json`. After the scoped overlay proof run,
+  the regenerated ED-10d handoff reads
+  `visual_proof_status=available_requires_human_review`. This is still not an
+  operator decision, creative acceptance, production acceptance, publishing
+  acceptance, or rights approval.
+- current bottleneck: the local proof generation blocker for `cut_002` /
+  `cut_003` is resolved in this checkout. The next gate is human review of the
+  diagnostic overlay proof and the `cut_002` / `cut_003` proxy decision fields,
+  while rights remain pending and production/public use remains disallowed.
+- reviewability rule: report `review_ready` only when the ignored R3 reports
+  and representative visual proof artifacts are present in the current
+  workspace. Fresh checkouts or workspaces missing ignored `episodes/`
+  artifacts remain `review_blocked_missing_artifacts`.
 - rights: `pending`
 - production_candidate: `false`
 
@@ -129,7 +133,42 @@ narrow instruction. The refreshed report records
 it is not production render acceptance, subtitle design acceptance, creative
 acceptance, publishing acceptance, rights approval, or public-use permission.
 
-Regenerate them, when the required local R3 artifacts are present, with:
+On 2026-06-05 JST, the tracked
+`build-subtitle-overlay-visual-proof` generator was rerun for explicit target
+cuts `cut_002` and `cut_003`. It used
+`materials/src_video_jp_pilot01/source_video.mp4`,
+`materials/src_audio_jp_pilot01/source.wav`, `edit_pack.json`,
+`material_ledger.json`, and the existing representative visual proof readback.
+The regenerated ignored local artifacts are:
+
+- `subtitle_overlay_visual_proof_report.json` / `.html`
+- `subtitle_overlay_visual_proof_cut_002.mp4` / `.png` / `.srt`
+- `subtitle_overlay_visual_proof_cut_003.mp4` / `.png` / `.srt`
+- `representative_visual_proof_report.json` / `.html`
+
+Readback confirmed `target_cuts=[cut_002, cut_003]`,
+`source_media_status=available_from_material_ledger`,
+`subtitle_overlay_available_count=2`, `all_target_cuts_have_overlay=true`,
+`visual_proof_status=available_requires_human_review` after ED-10d
+regeneration, `production_candidate=false`, `rights_status=pending`, and
+`production_usage_allowed=false`. Manual frame inspection confirmed nonblank
+subtitle-overlay frames for both target cuts. This remains diagnostic-only
+visual evidence and does not approve typography, safe-area, timing sync,
+creative use, publishing, rights, or production render.
+
+Regenerate the scoped overlay proof, when the required local R3 artifacts are
+present, with:
+
+```powershell
+uvx python -m src.cli.main build-subtitle-overlay-visual-proof `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
+Then regenerate the ED-10d proxy handoff with:
 
 ```powershell
 uvx python -m src.cli.main build-operator-proxy-decision-handoff `
@@ -141,18 +180,24 @@ uvx python -m src.cli.main build-operator-proxy-decision-handoff `
 
 ## What To Read First
 
-When the refreshed representative visual proof report records
-`review_blocked_missing_artifacts`, start with this scoped surface:
+When this same-machine workspace has the ignored R3 reports and visual proof
+artifacts, `status-episode` reports `review_ready`. Use the review reports in
+the order below, and inspect the scoped overlay proof before filling the
+`cut_002` / `cut_003` proxy decision fields.
+
+If the refreshed representative visual proof report records
+`review_blocked_missing_artifacts`, start with this scoped surface instead:
 
 1. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html`
 
-Use it only for visual inspection of the regenerated `cut_002` / `cut_003`
-diagnostic overlay frames. Do not send the operator to `cut_review_report.html`
-as if the workspace were globally `review_ready`.
+Use it only for visual inspection of the regenerated or partial diagnostic
+overlay frames. Do not send the operator to `cut_review_report.html` as if the
+workspace were globally `review_ready` while the report records a blocked
+state.
 
-When the missing `cut_001` proof issue is resolved or explicitly waived, and
-the R3 review artifacts are otherwise present, use the local ignored review
-reports in this order:
+When the representative proof artifacts are present or an explicit operator
+waiver exists, and the R3 review artifacts are otherwise present, use the local
+ignored review reports in this order:
 
 1. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_review_report.html`
 2. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/evidence_summary.html`
@@ -249,33 +294,32 @@ Review focus:
 
 ## Next Actions
 
-1. Review: scoped representative diagnostic visual proof
-   - Open `representative_visual_proof_report.html` for `cut_002` / `cut_003`.
-   - Confirm only local diagnostic readability / safe-area / timing impressions.
-   - Keep `review_ready=false`, `rights=pending`, and
-     `production_candidate=false`.
-2. Resolve or waive: missing `visual_proof_cut_001.png`
-   - Regenerate the missing diagnostic proof or record an explicit operator
-     waiver before opening the global operator review gate.
-3. Advance: `cut_002` / `cut_003` operator proxy decision
+1. Review: current R3 review-ready surface
+   - Open `cut_review_report.html` and `representative_visual_proof_report.html`
+     in this same-machine workspace.
+   - Confirm only local diagnostic readability / safe-area / line wrapping /
+     timing impressions.
+   - Keep `rights=pending`, `production_candidate=false`, and
+     `production_usage_allowed=false`.
+2. Advance: `cut_002` / `cut_003` operator proxy decision
    - After scoped visual inspection, use
      `cut_002_cut_003_operator_proxy_decision_handoff.html` and the scoped patch
      templates for routing decisions.
    - Operator-owned fields remain blank / `undecided` until the operator fills
      them.
-4. Advance: adjustment loop for retained R3 cuts
+3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
    - Review boundaries, density, and whether any cut should merge/split before
      it can re-enter candidate status.
-5. Verify: regenerated render comparison
+4. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
    - Define when exact SHA-256 matters and when metadata approximate comparison
      is acceptable.
-6. Clear Rights: rights approval path
+5. Clear Rights: rights approval path
    - Use before any production/public usage claim.
    - Keep this separate from local diagnostic success.
-7. Prepare: publishing / OAuth / thumbnail
+6. Prepare: publishing / OAuth / thumbnail
    - Keep this later until production acceptance and rights are no longer
      pending.
 
