@@ -6,6 +6,39 @@ The active resume surface is docs/RUNTIME_STATE.md.
 Historical sections preserve old wording for traceability.
 
 ---
+## Scoped visual proof verify closeout — 2026-06-04 JST
+
+Initial restore did not recover the complete representative visual proof set:
+`visual_proof_cut_001.png` was missing. Existing source media was available via
+`material_ledger.json`, and `edit_pack.json`, `cut_decision_packet.json`, and
+`chapter_revision_board.json` were JSON-readable, so the narrow Verify
+regenerated diagnostic subtitle-overlay proof only for `cut_002` / `cut_003`.
+
+Generated ignored local artifacts under
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/`:
+`representative_visual_proof_report.json` / `.html`,
+`visual_proof_cut_002.png`, `visual_proof_cut_003.png`, and
+`visual_proof_contact_sheet.png`. The refreshed report records
+`scope=cut_002_cut_003_diagnostic_subtitle_overlay_verify`,
+`proof_generation_succeeded=true`, `restore_succeeded=false`,
+`review_state=review_blocked_missing_artifacts`, `rights_status=pending`, and
+`production_candidate=false`.
+
+This was local diagnostic overlay evidence only. It did not create production
+render acceptance, subtitle design acceptance, creative acceptance, publishing
+acceptance, rights approval, or public-use permission. Operator-owned fields
+were not filled or inferred. No external refresh, media acquisition, staging of
+episode artifacts, source media, rendered video, subtitle payloads, JSON3
+payloads, credentials, or large binaries was performed.
+
+The next operator-facing surface is
+`representative_visual_proof_report.html` for scoped visual inspection of
+`cut_002` / `cut_003`. Do not send the operator to `cut_review_report.html` as
+if the workspace were globally `review_ready`. The global status remains
+`review_blocked_missing_artifacts` until `visual_proof_cut_001.png` is
+regenerated or explicitly waived by the operator.
+
+---
 ## cut_002 / cut_003 proxy handoff closeout — 2026-06-03 JST
 
 The JP-Pilot R3 kept-candidate review gained a scoped proxy decision handoff

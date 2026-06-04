@@ -39,10 +39,19 @@ The Agent may later normalize the human review into a structured decision patch 
 | `cut_review_report.html` | Human final cut/context review screen. | Commands stay out of the main path. |
 | `evidence_summary.html` | Evidence and artifact inventory check. | Reproduction commands are appendix/details. |
 | `non_repo_artifact_handoff.html` | Git-excluded artifact identity, missing state, and regeneration boundary. | Recovery/regeneration commands are appendix/details. |
+| `representative_visual_proof_report.html` | Scoped diagnostic visual proof readback when representative proof is partial or regenerated. | Use before global cut review if the report records `review_blocked_missing_artifacts`. |
 
 `build-non-repo-handoff` creates the `non_repo_artifact_handoff` manifest/report. It is not a render command and does not recreate `rendered_video.mp4`; any render command belongs to the recovery appendix after missing inputs are understood.
 
 If R3 artifacts are missing, final cut/context review is blocked. The response should not instruct the operator to open `cut_review_report.html` as the first action. It should show the missing state, the restoration route for ignored episode artifacts, and the regeneration conditions.
+
+If `representative_visual_proof_report.json` exists and records
+`review_blocked_missing_artifacts`, treat that report as the current gate even
+when the older `cut_review_report.html`, `evidence_summary.html`, and
+`non_repo_artifact_handoff.html` exist. Send the operator to
+`representative_visual_proof_report.html` only for the scoped visual inspection
+named by that report, and keep global `review_ready=false` until the missing
+proof is resolved or explicitly waived.
 
 ## Completion Wording
 

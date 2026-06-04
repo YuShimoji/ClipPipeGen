@@ -264,23 +264,147 @@ def _operator_review_status(ep_dir: Path, base: Path, status: dict[str, Any]) ->
         for name, path in required.items()
     }
     missing = [item["path"] for item in artifacts.values() if not item["exists"]]
-    review_ready = not missing
+    visual_proof = _representative_visual_proof_status(review_dir, base)
+    artifacts.update(visual_proof["artifacts"])
+    for item in visual_proof["missing_review_artifacts"]:
+        if item not in missing:
+            missing.append(item)
+    visual_proof_blocked = visual_proof["reviewability"] == "review_blocked_missing_artifacts"
+    review_ready = not missing and not visual_proof_blocked
     rights_status = (status.get("rights") or {}).get("compliance_status") or "unknown"
-    return {
+    blocked_by = None
+    if visual_proof_blocked:
+        blocked_by = "representative_visual_proof"
+    elif missing:
+        blocked_by = "required_review_artifacts"
+
+    if review_ready:
+        next_human_action = (
+            "Open cut_review_report.html and respond in natural language with cut/context judgment."
+        )
+    elif blocked_by == "representative_visual_proof" and visual_proof.get("report_html_exists"):
+        next_human_action = (
+            "Open representative_visual_proof_report.html for scoped cut_002/cut_003 "
+            "diagnostic visual inspection; do not treat cut_review_report.html as global "
+            "review-ready until the missing visual proof is resolved or waived."
+        )
+    else:
+        next_human_action = (
+            "Restore or regenerate ignored R3 review artifacts before final cut/context review; "
+            "Git alone cannot start R3 review."
+        )
+
+    result = {
         "review_surface": "jp_pilot01r3_cut_review",
         "reviewability": "review_ready" if review_ready else "review_blocked_missing_artifacts",
         "review_ready": review_ready,
         "missing_review_artifacts": missing,
-        "next_human_action": (
-            "Open cut_review_report.html and respond in natural language with cut/context judgment."
-            if review_ready
-            else "Restore or regenerate ignored R3 review artifacts before final cut/context review; Git alone cannot start R3 review."
-        ),
+        "next_human_action": next_human_action,
         "recovery_doc": "docs/NON_REPO_ARTIFACT_HANDOFF.md",
         "production_candidate": False,
         "rights_status": rights_status,
         "artifacts": artifacts,
     }
+    if blocked_by:
+        result["blocked_by"] = blocked_by
+    if visual_proof["state"] != "absent":
+        result["representative_visual_proof"] = {
+            key: value
+            for key, value in visual_proof.items()
+            if key not in {"artifacts", "missing_review_artifacts"}
+        }
+    return result
+
+
+def _representative_visual_proof_status(review_dir: Path, base: Path) -> dict[str, Any]:
+    report_json_path = review_dir / "representative_visual_proof_report.json"
+    report_html_path = review_dir / "representative_visual_proof_report.html"
+    if not report_json_path.exists() and not report_html_path.exists():
+        return {
+            "state": "absent",
+            "reviewability": "not_applicable",
+            "missing_review_artifacts": [],
+            "artifacts": {},
+        }
+
+    artifacts: dict[str, dict[str, Any]] = {
+        "representative_visual_proof_report_json": _artifact(report_json_path, base),
+        "representative_visual_proof_report_html": _artifact(report_html_path, base),
+    }
+    missing: list[str] = []
+    report: dict[str, Any] = {}
+    report_readable = False
+    if report_json_path.exists():
+        try:
+            report = json.loads(report_json_path.read_text(encoding="utf-8"))
+            report_readable = True
+        except (OSError, json.JSONDecodeError):
+            missing.append(_display_path(report_json_path, base))
+    else:
+        missing.append(_display_path(report_json_path, base))
+
+    if not report_html_path.exists():
+        missing.append(_display_path(report_html_path, base))
+
+    if report_readable:
+        for name, value in (report.get("outputs") or {}).items():
+            if not isinstance(value, str) or not value:
+                continue
+            if not (
+                name.startswith("visual_proof_")
+                or name.startswith("representative_visual_proof_report")
+            ):
+                continue
+            path = _resolve_report_path(value, base)
+            artifacts[name] = _artifact(path, base)
+            if name.startswith("representative_visual_proof_report") and not path.exists():
+                missing.append(_display_path(path, base))
+
+        for item in report.get("unrestored_or_out_of_scope_artifacts") or []:
+            if not isinstance(item, dict):
+                continue
+            raw_path = item.get("path")
+            if not isinstance(raw_path, str) or not raw_path:
+                continue
+            path = _resolve_report_path(raw_path, base)
+            artifact_name = path.stem.replace("-", "_")
+            artifacts[artifact_name] = _artifact(path, base)
+            if item.get("exists") is False or not path.exists():
+                display = _display_path(path, base)
+                if display not in missing:
+                    missing.append(display)
+
+    review_state = report.get("review_state")
+    restore_succeeded = report.get("restore_succeeded")
+    blocked = (
+        bool(missing)
+        or review_state == "review_blocked_missing_artifacts"
+        or restore_succeeded is False
+    )
+    return {
+        "state": "present",
+        "reviewability": "review_blocked_missing_artifacts" if blocked else "review_ready",
+        "report_readable": report_readable,
+        "report_html_exists": report_html_path.exists(),
+        "report_path": _display_path(report_json_path, base),
+        "report_html_path": _display_path(report_html_path, base),
+        "scope": report.get("scope"),
+        "target_cuts": report.get("target_cuts") or [],
+        "proof_generation_succeeded": report.get("proof_generation_succeeded"),
+        "restore_succeeded": restore_succeeded,
+        "review_state": review_state,
+        "production_candidate": report.get("production_candidate") is True,
+        "rights_status": report.get("rights_status") or "unknown",
+        "missing_review_artifacts": missing,
+        "artifacts": artifacts,
+    }
+
+
+def _resolve_report_path(value: str, base: Path) -> Path:
+    path = Path(value)
+    if path.is_absolute():
+        return path
+    return base / path
 
 
 def _final_cut_decision_status(ep_dir: Path, base: Path) -> dict[str, Any]:
@@ -330,6 +454,16 @@ def _final_cut_decision_status(ep_dir: Path, base: Path) -> dict[str, Any]:
 
 
 def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
+    operator = status.get("operator_review") or {}
+    if operator.get("blocked_by") == "representative_visual_proof":
+        return {
+            "owner": "user",
+            "action": "Inspect scoped representative visual proof before global R3 review",
+            "reason": (
+                "representative_visual_proof_report records missing visual proof artifacts; "
+                "global review_ready remains blocked until they are resolved or explicitly waived"
+            ),
+        }
     final_cut = status.get("final_cut_decision") or {}
     if final_cut.get("state") == "ready" and final_cut.get("ready_for_next_acceptance_slice"):
         return {

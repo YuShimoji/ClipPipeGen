@@ -200,3 +200,85 @@ def test_status_reports_review_ready_when_r3_reports_exist(tmp_path: Path):
     assert status["operator_review"]["reviewability"] == "review_ready"
     assert status["operator_review"]["missing_review_artifacts"] == []
     assert status["operator_review"]["production_candidate"] is False
+
+
+def test_status_blocks_when_representative_visual_proof_reports_missing_cut(tmp_path: Path):
+    ep_dir = tmp_path / "episodes" / "jp_pilot01_hololive_bancho_20260525"
+    review_dir = ep_dir / "review" / "jp_pilot01r3_cut_review"
+    review_dir.mkdir(parents=True)
+    save_rights_manifest(_rights_passed(ep_dir.name), ep_dir / "rights_manifest.json")
+    for name in ("cut_review_report.html", "evidence_summary.html", "non_repo_artifact_handoff.html"):
+        (review_dir / name).write_text("<html></html>", encoding="utf-8")
+
+    visual_report_html = review_dir / "representative_visual_proof_report.html"
+    visual_report_json = review_dir / "representative_visual_proof_report.json"
+    visual_report_html.write_text("<html></html>", encoding="utf-8")
+    for name in ("visual_proof_cut_002.png", "visual_proof_cut_003.png", "visual_proof_contact_sheet.png"):
+        (review_dir / name).write_bytes(b"png")
+    visual_report_json.write_text(
+        json.dumps(
+            {
+                "schema_version": "v1",
+                "report_kind": "representative_visual_proof_report",
+                "episode_id": ep_dir.name,
+                "scope": "cut_002_cut_003_diagnostic_subtitle_overlay_verify",
+                "target_cuts": ["cut_002", "cut_003"],
+                "proof_generation_succeeded": True,
+                "restore_succeeded": False,
+                "review_state": "review_blocked_missing_artifacts",
+                "production_candidate": False,
+                "rights_status": "pending",
+                "outputs": {
+                    "representative_visual_proof_report_json": str(
+                        visual_report_json.relative_to(tmp_path)
+                    ),
+                    "representative_visual_proof_report_html": str(
+                        visual_report_html.relative_to(tmp_path)
+                    ),
+                    "visual_proof_cut_002_png": str(
+                        (review_dir / "visual_proof_cut_002.png").relative_to(tmp_path)
+                    ),
+                    "visual_proof_cut_003_png": str(
+                        (review_dir / "visual_proof_cut_003.png").relative_to(tmp_path)
+                    ),
+                    "visual_proof_contact_sheet_png": str(
+                        (review_dir / "visual_proof_contact_sheet.png").relative_to(tmp_path)
+                    ),
+                },
+                "unrestored_or_out_of_scope_artifacts": [
+                    {
+                        "path": str((review_dir / "visual_proof_cut_001.png").relative_to(tmp_path)),
+                        "exists": False,
+                    }
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (review_dir / "cut_decision_packet.json").write_text(
+        json.dumps(
+            {
+                "decision_scope": "candidate_for_next_acceptance_slice_only",
+                "production_candidate": False,
+                "rights_status": "pending",
+                "summary": {"keep_cut_ids": ["cut_001", "cut_002", "cut_003"]},
+                "next_step": {"recommended": "production_subtitle_render_acceptance"},
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    status = build_episode_status(episode_dir=ep_dir, base_dir=tmp_path)
+
+    operator = status["operator_review"]
+    assert operator["review_ready"] is False
+    assert operator["reviewability"] == "review_blocked_missing_artifacts"
+    assert operator["blocked_by"] == "representative_visual_proof"
+    assert any("visual_proof_cut_001.png" in item for item in operator["missing_review_artifacts"])
+    assert operator["representative_visual_proof"]["scope"] == (
+        "cut_002_cut_003_diagnostic_subtitle_overlay_verify"
+    )
+    assert "representative_visual_proof_report.html" in operator["next_human_action"]
+    assert status["next_action"]["action"].startswith("Inspect scoped representative visual proof")
