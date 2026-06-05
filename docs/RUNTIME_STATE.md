@@ -11,11 +11,25 @@ instructions.
 
 - date: 2026-06-05 JST
 - latest pushed resume point:
-  current `main` after the 2026-06-05 subtitle-overlay visual proof resume
-  refresh; confirm with `git log -1 --oneline --decorate`.
+  this docs refresh commit after the 2026-06-05 JST sync/readiness
+  validation. Confirm the exact hash with
+  `git log -1 --oneline --decorate` after pulling.
+- verified base before this refresh:
+  `a0e9db2 docs: refresh subtitle overlay proof handoff`
+  (`HEAD -> main`, `origin/main`, `origin/HEAD` at validation time).
 - previous pushed resume point:
   `cfd3cb4 Merge remote-tracking branch 'origin/main'`
-- latest resume-surface cleanup:
+- latest resume-surface sync validation:
+  2026-06-05 JST same-machine checkout readback:
+  `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
+  `git status --short --branch` -> `## main...origin/main`;
+  `status-episode` -> `operator_review.review_ready=true`,
+  `rights_status=pending`, `production_candidate=false`, keep cuts
+  `cut_001`, `cut_002`, `cut_003`; `uvx pytest -q` -> 217 passed;
+  `npm run smoke` -> `gui smoke: OK`; `npm run smoke:electron` ->
+  `electron smoke: OK`; `git diff --check` clean; `git ls-files episodes`
+  empty.
+- previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
   `28f0256 docs: refresh operator review handoff`
