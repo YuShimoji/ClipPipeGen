@@ -20,15 +20,18 @@ instructions.
 - previous pushed resume point:
   `cfd3cb4 Merge remote-tracking branch 'origin/main'`
 - latest resume-surface sync validation:
-  2026-06-05 JST same-machine checkout readback:
+  2026-06-05 JST post-rebase local readback in this workspace:
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
   `git status --short --branch` -> `## main...origin/main`;
-  `status-episode` -> `operator_review.review_ready=true`,
-  `rights_status=pending`, `production_candidate=false`, keep cuts
-  `cut_001`, `cut_002`, `cut_003`; `uvx pytest -q` -> 217 passed;
-  `npm run smoke` -> `gui smoke: OK`; `npm run smoke:electron` ->
-  `electron smoke: OK`; `git diff --check` clean; `git ls-files episodes`
-  empty.
+  `status-episode` -> `operator_review.review_ready=false`,
+  `reviewability=review_blocked_missing_artifacts`, missing
+  `visual_proof_cut_001.png`; `rights_status=pending`,
+  `production_candidate=false`, keep cuts `cut_001`, `cut_002`, `cut_003`;
+  `uvx pytest -q` -> 217 passed; `git diff --check` clean;
+  `git ls-files episodes` empty. A prior same-machine validation recorded
+  `review_ready=true` when `visual_proof_cut_001.png` existed; treat
+  reviewability as workspace-local and re-run `status-episode` after pulling or
+  restoring ignored `episodes/` artifacts.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -49,8 +52,12 @@ instructions.
   `subtitle_overlay_visual_proof_cut_002.*`,
   `subtitle_overlay_visual_proof_cut_003.*`, and
   `representative_visual_proof_report.*` exist under the R3 review directory.
-  In this same-machine checkout `visual_proof_cut_001.png` is also present, so
-  `status-episode` reports `operator_review.review_ready=true`.
+  In the current post-rebase local ignored artifact set,
+  `visual_proof_cut_001.png` is missing, so `status-episode` reports
+  `operator_review.review_ready=false` and
+  `review_blocked_missing_artifacts`. If another restored same-machine
+  workspace has `visual_proof_cut_001.png`, it may report `review_ready=true`;
+  do not infer that state for a fresh checkout or for this local artifact set.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
@@ -63,9 +70,12 @@ instructions.
   operator decision, creative acceptance, production acceptance, publishing
   acceptance, or rights approval.
 - current bottleneck: the local proof generation blocker for `cut_002` /
-  `cut_003` is resolved in this checkout. The next gate is human review of the
-  diagnostic overlay proof and the `cut_002` / `cut_003` proxy decision fields,
-  while rights remain pending and production/public use remains disallowed.
+  `cut_003` is resolved, but the current local workspace is still blocked by
+  missing `visual_proof_cut_001.png`. Inspect the scoped
+  `representative_visual_proof_report.html` for `cut_002` / `cut_003` only;
+  open the global R3 review gate only after `visual_proof_cut_001.png` is
+  restored/regenerated or explicitly waived. Rights remain pending and
+  production/public use remains disallowed.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
