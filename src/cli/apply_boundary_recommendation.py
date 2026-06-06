@@ -17,15 +17,26 @@ def run(argv: list[str]) -> int:
         prog="apply-boundary-recommendation",
         description=(
             "Validate a cut boundary recommendation against edit_pack and write "
-            "a dry-run/blocking receipt. ED-10e does not mutate edit_pack."
+            "a dry-run/blocking/apply receipt."
         ),
     )
     parser.add_argument("--episode-dir", required=True)
     parser.add_argument("--edit-pack", required=True)
+    parser.add_argument(
+        "--transcript",
+        help="transcript.json; required for explicit overlap application policies",
+    )
     parser.add_argument("--recommendation-report", required=True)
     parser.add_argument("--cut-id", required=True)
     parser.add_argument("--output-receipt", required=True)
-    parser.add_argument("--dry-run", action="store_true", required=True)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--dry-run", action="store_true")
+    mode.add_argument("--apply", action="store_true")
+    parser.add_argument(
+        "--overlap-policy",
+        choices=("none", "shrink_or_split_cut_004"),
+        default="none",
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
 
@@ -37,6 +48,9 @@ def run(argv: list[str]) -> int:
             cut_id=args.cut_id,
             output_receipt_path=args.output_receipt,
             dry_run=args.dry_run,
+            apply=args.apply,
+            overlap_policy=args.overlap_policy,
+            transcript_path=args.transcript,
         )
     except BoundaryRecommendationApplyError as exc:
         print(f"apply-boundary-recommendation failed: {exc}", file=sys.stderr)
@@ -48,6 +62,9 @@ def run(argv: list[str]) -> int:
     payload = {
         "status": receipt["status"],
         "dry_run": receipt["dry_run"],
+        "apply_requested": receipt["apply_requested"],
+        "selected_policy": receipt["selected_policy"],
+        "edit_pack_mutated": receipt["edit_pack_mutated"],
         "cut_id": receipt["cut_id"],
         "source_recommendation_report": receipt["source_recommendation_report"],
         "previous_start_seconds": receipt["previous_start_seconds"],
@@ -55,6 +72,10 @@ def run(argv: list[str]) -> int:
         "requested_start_seconds": receipt["requested_start_seconds"],
         "requested_end_seconds": receipt["requested_end_seconds"],
         "conflicting_cut_ids": receipt["conflict_detection"]["conflicting_cut_ids"],
+        "cut_004_handling": receipt.get("cut_004_handling"),
+        "subtitle_reassignment_policy": receipt["subtitle_assignment_status"].get(
+            "subtitle_reassignment_policy"
+        ),
         "proof_stale_or_requires_regeneration": receipt[
             "proof_stale_or_requires_regeneration"
         ],
@@ -69,6 +90,8 @@ def run(argv: list[str]) -> int:
         sys.stdout.write("\n")
     else:
         print(f"status: {payload['status']}")
+        print(f"selected_policy: {payload['selected_policy']}")
+        print(f"edit_pack_mutated: {payload['edit_pack_mutated']}")
         print(f"cut_id: {payload['cut_id']}")
         print(
             "requested_range: "

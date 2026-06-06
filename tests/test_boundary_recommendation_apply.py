@@ -59,7 +59,14 @@ def _pack(*, overlap: bool = True) -> dict:
             "reason": "seg_000025..seg_000034",
             "confidence": 0.867,
             "context_check": {"status": "needs_review", "notes": []},
-            "source_segment_ids": ["seg_000025", "seg_000026", "seg_000027"],
+            "source_segment_ids": [
+                "seg_000025",
+                "seg_000026",
+                "seg_000027",
+                "seg_000028",
+                "seg_000029",
+                "seg_000030",
+            ],
         },
     ]
     pack["selected_cut_ids"] = ["cut_003", "cut_004"]
@@ -74,6 +81,42 @@ def _pack(*, overlap: bool = True) -> dict:
             "source_type": "imported_subtitle_track",
             "source_segment_id": "seg_000025",
             "source_segment_ids": ["seg_000025"],
+            "draft": True,
+        },
+        {
+            "id": "sub_026",
+            "cut_id": "cut_004",
+            "start_seconds": 43.36,
+            "end_seconds": 44.762,
+            "text": "倒して回ってるんです！",
+            "source": "auto",
+            "source_type": "imported_subtitle_track",
+            "source_segment_id": "seg_000026",
+            "source_segment_ids": ["seg_000026"],
+            "draft": True,
+        },
+        {
+            "id": "sub_027",
+            "cut_id": "cut_004",
+            "start_seconds": 44.762,
+            "end_seconds": 47.498,
+            "text": "長…長… 船長のことかな？",
+            "source": "auto",
+            "source_type": "imported_subtitle_track",
+            "source_segment_id": "seg_000027",
+            "source_segment_ids": ["seg_000027"],
+            "draft": True,
+        },
+        {
+            "id": "sub_028",
+            "cut_id": "cut_004",
+            "start_seconds": 47.498,
+            "end_seconds": 48.999,
+            "text": "マリンならあっちにいたよ",
+            "source": "auto",
+            "source_type": "imported_subtitle_track",
+            "source_segment_id": "seg_000028",
+            "source_segment_ids": ["seg_000028"],
             "draft": True,
         },
         {
@@ -133,6 +176,51 @@ def _recommendation() -> dict:
                 "provide the response/referral; seg_000030 starts the next challenge arc."
             ),
         },
+    }
+
+
+def _transcript() -> dict:
+    return {
+        "schema_version": "v1",
+        "episode_id": "ep_boundary_001",
+        "segments": [
+            {
+                "id": "seg_000025",
+                "start_seconds": 41.725,
+                "end_seconds": 43.36,
+                "text": "長(ちょう)？　長って言った？",
+            },
+            {
+                "id": "seg_000026",
+                "start_seconds": 43.36,
+                "end_seconds": 44.762,
+                "text": "倒して回ってるんです！",
+            },
+            {
+                "id": "seg_000027",
+                "start_seconds": 44.762,
+                "end_seconds": 47.498,
+                "text": "長…長… 船長のことかな？",
+            },
+            {
+                "id": "seg_000028",
+                "start_seconds": 47.498,
+                "end_seconds": 48.999,
+                "text": "マリンならあっちにいたよ",
+            },
+            {
+                "id": "seg_000029",
+                "start_seconds": 48.999,
+                "end_seconds": 49.566,
+                "text": "ありがとうございますー！",
+            },
+            {
+                "id": "seg_000030",
+                "start_seconds": 50.868,
+                "end_seconds": 53.904,
+                "text": "ホロライブの番長として、 船長を倒してやる！！",
+            },
+        ],
     }
 
 
@@ -229,7 +317,14 @@ def test_receipt_preserves_evidence_and_production_boundaries(tmp_path: Path):
 
     subtitles = receipt["subtitle_assignment_status"]["affected_subtitles"]
     assert receipt["subtitle_assignment_status"]["stale_or_requires_regeneration"] is True
-    assert [item["subtitle_id"] for item in subtitles] == ["sub_025", "sub_029", "sub_030"]
+    assert [item["subtitle_id"] for item in subtitles] == [
+        "sub_025",
+        "sub_026",
+        "sub_027",
+        "sub_028",
+        "sub_029",
+        "sub_030",
+    ]
     assert subtitles[0]["current_cut_id"] == "cut_004"
     assert receipt["transcript_not_mutated"] is True
     assert receipt["official_subtitle_evidence_not_mutated"] is True
@@ -238,6 +333,112 @@ def test_receipt_preserves_evidence_and_production_boundaries(tmp_path: Path):
     assert receipt["production_candidate"] is False
     assert receipt["rights_status"] == "pending"
     assert receipt["production_usage_allowed"] is False
+
+
+def test_policy_dry_run_plans_cut004_shrink_without_mutation(tmp_path: Path):
+    edit_pack_path = tmp_path / "edit_pack.json"
+    transcript_path = tmp_path / "transcript.json"
+    recommendation_path = tmp_path / "recommendation.json"
+    receipt_path = tmp_path / "receipt.json"
+    save_edit_pack(_pack(overlap=True), edit_pack_path)
+    before = edit_pack_path.read_text(encoding="utf-8")
+    _write_json(transcript_path, _transcript())
+    _write_json(recommendation_path, _recommendation())
+
+    receipt = build_boundary_recommendation_receipt(
+        episode_dir=tmp_path,
+        edit_pack_path=edit_pack_path,
+        recommendation_report_path=recommendation_path,
+        cut_id="cut_003",
+        output_receipt_path=receipt_path,
+        dry_run=True,
+        overlap_policy="shrink_or_split_cut_004",
+        transcript_path=transcript_path,
+    )
+
+    assert receipt["status"] == "dry_run"
+    assert receipt["selected_policy"] == "shrink_or_split_cut_004"
+    assert receipt["edit_pack_mutated"] is False
+    assert receipt["cut_004_handling"]["new_start_seconds"] == 50.868
+    assert receipt["cut_004_handling"]["new_source_segment_ids"] == ["seg_000030"]
+    changes = receipt["subtitle_assignment_status"]["planned_or_applied_changes"]
+    assert {item["subtitle_id"]: item["new_cut_id"] for item in changes} == {
+        "sub_025": "cut_003",
+        "sub_026": "cut_003",
+        "sub_027": "cut_003",
+        "sub_028": "cut_003",
+        "sub_029": "cut_003",
+        "sub_030": "cut_004",
+    }
+    assert edit_pack_path.read_text(encoding="utf-8") == before
+
+
+def test_apply_policy_updates_cut_ranges_segments_and_subtitles(tmp_path: Path):
+    edit_pack_path = tmp_path / "edit_pack.json"
+    transcript_path = tmp_path / "transcript.json"
+    recommendation_path = tmp_path / "recommendation.json"
+    receipt_path = tmp_path / "receipt.json"
+    save_edit_pack(_pack(overlap=True), edit_pack_path)
+    _write_json(transcript_path, _transcript())
+    _write_json(recommendation_path, _recommendation())
+
+    receipt = build_boundary_recommendation_receipt(
+        episode_dir=tmp_path,
+        edit_pack_path=edit_pack_path,
+        recommendation_report_path=recommendation_path,
+        cut_id="cut_003",
+        output_receipt_path=receipt_path,
+        dry_run=False,
+        apply=True,
+        overlap_policy="shrink_or_split_cut_004",
+        transcript_path=transcript_path,
+    )
+
+    assert receipt["status"] == "applied"
+    assert receipt["edit_pack_mutated"] is True
+    pack = load_edit_pack(edit_pack_path)
+    cut003 = next(cut for cut in pack["cut_candidates"] if cut["id"] == "cut_003")
+    cut004 = next(cut for cut in pack["cut_candidates"] if cut["id"] == "cut_004")
+    assert cut003["start_seconds"] == 22.606
+    assert cut003["end_seconds"] == 49.566
+    assert cut003["source_segment_ids"][-5:] == [
+        "seg_000025",
+        "seg_000026",
+        "seg_000027",
+        "seg_000028",
+        "seg_000029",
+    ]
+    assert "seg_000030" not in cut003["source_segment_ids"]
+    assert cut004["start_seconds"] == 50.868
+    assert cut004["end_seconds"] == 60.277
+    assert cut004["source_segment_ids"] == ["seg_000030"]
+    assert cut004["resegmentation_target"] is True
+    subtitles = {item["id"]: item["cut_id"] for item in pack["subtitles"]}
+    assert subtitles["sub_025"] == "cut_003"
+    assert subtitles["sub_029"] == "cut_003"
+    assert subtitles["sub_030"] == "cut_004"
+    assert cut003["context_check"]["status"] == "needs_review"
+    assert cut004["context_check"]["status"] == "needs_review"
+
+
+def test_apply_policy_requires_transcript(tmp_path: Path):
+    edit_pack_path = tmp_path / "edit_pack.json"
+    recommendation_path = tmp_path / "recommendation.json"
+    receipt_path = tmp_path / "receipt.json"
+    save_edit_pack(_pack(overlap=True), edit_pack_path)
+    _write_json(recommendation_path, _recommendation())
+
+    with pytest.raises(BoundaryRecommendationApplyError, match="requires --transcript"):
+        build_boundary_recommendation_receipt(
+            episode_dir=tmp_path,
+            edit_pack_path=edit_pack_path,
+            recommendation_report_path=recommendation_path,
+            cut_id="cut_003",
+            output_receipt_path=receipt_path,
+            dry_run=False,
+            apply=True,
+            overlap_policy="shrink_or_split_cut_004",
+        )
 
 
 def test_cli_writes_blocked_receipt(tmp_path: Path):
@@ -277,3 +478,50 @@ def test_cli_writes_blocked_receipt(tmp_path: Path):
     assert payload["status"] == "blocked_overlap"
     assert payload["conflicting_cut_ids"] == ["cut_004"]
     assert json.loads(receipt_path.read_text(encoding="utf-8"))["status"] == "blocked_overlap"
+
+
+def test_cli_apply_policy_writes_applied_receipt(tmp_path: Path):
+    edit_pack_path = tmp_path / "edit_pack.json"
+    transcript_path = tmp_path / "transcript.json"
+    recommendation_path = tmp_path / "recommendation.json"
+    receipt_path = tmp_path / "receipt.json"
+    save_edit_pack(_pack(overlap=True), edit_pack_path)
+    _write_json(transcript_path, _transcript())
+    _write_json(recommendation_path, _recommendation())
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "apply-boundary-recommendation",
+            "--episode-dir",
+            str(tmp_path),
+            "--edit-pack",
+            str(edit_pack_path),
+            "--transcript",
+            str(transcript_path),
+            "--recommendation-report",
+            str(recommendation_path),
+            "--cut-id",
+            "cut_003",
+            "--output-receipt",
+            str(receipt_path),
+            "--apply",
+            "--overlap-policy",
+            "shrink_or_split_cut_004",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "applied"
+    assert payload["edit_pack_mutated"] is True
+    pack = load_edit_pack(edit_pack_path)
+    cut003 = next(cut for cut in pack["cut_candidates"] if cut["id"] == "cut_003")
+    assert cut003["end_seconds"] == 49.566

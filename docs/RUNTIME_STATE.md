@@ -92,24 +92,28 @@ instructions.
   ED-10e adds the tracked `apply-boundary-recommendation` CLI and
   `src/pipeline/boundary_recommendation_apply.py`. It consumes an
   operator-owned boundary recommendation report plus current `edit_pack.json`
-  and writes a dry-run/blocking receipt with current range validation,
-  requested range readback, selected cut overlap detection, subtitle assignment
-  stale readback, and production/rights boundary flags. The actual local
-  `cut_003` run wrote ignored
-  `cut_003_boundary_apply_receipt.json` / `.html` with
-  `status=blocked_overlap` because the requested `22.606 -> 49.566` range
-  overlaps selected `cut_004` (`41.725 -> 60.277`). It did not mutate
-  edit_pack, transcript, official subtitle evidence, source media, typography,
-  proof, or render artifacts. Validation:
-  `uvx pytest -q tests/test_boundary_recommendation_apply.py` -> 5 passed.
-- current bottleneck: the `cut_003` end-extension recommendation is now
-  recorded and preflighted, but application is blocked by selected `cut_004`
-  overlap and subtitle assignments for `seg_000025..seg_000029` still belonging
-  downstream of `cut_004`. The next operator-owned work is choosing an explicit
-  overlap/subtitle reassignment policy before any boundary application. Rights
-  remain pending and production/public use remains disallowed. Fresh checkouts
-  still need artifact restore/regeneration or an explicit waiver before global
-  R3 review can be treated as ready.
+  and writes a dry-run/blocking/apply receipt with current range validation,
+  requested range readback, selected cut overlap detection, explicit overlap
+  policy readback, subtitle reassignment readback, and production/rights
+  boundary flags. Default remains safe: mutation requires explicit
+  `--apply --overlap-policy shrink_or_split_cut_004 --transcript`. The actual
+  same-machine local run wrote ignored
+  `cut_003_boundary_apply_receipt.shrink_or_split_cut_004.json` / `.html` with
+  `status=applied`: `cut_003` is now `22.606 -> 49.566` and owns
+  `seg_000025..seg_000029`; `seg_000030` remains excluded from `cut_003`;
+  `cut_004` is now `50.868 -> 60.277`, keeps `seg_000030..seg_000034`, and has
+  `resegmentation_target=true`; `sub_025..sub_029` now point to `cut_003` and
+  `sub_030` remains `cut_004`. It did not mutate transcript, official subtitle
+  evidence, source media, typography, proof, or render artifacts. Validation:
+  `uvx pytest -q tests/test_boundary_recommendation_apply.py` -> 9 passed;
+  `validate-edit-pack` -> `schema_ok=true`.
+- current bottleneck: the `cut_003` end-extension is applied only in the local
+  ignored episode artifact set. Downstream readbacks are stale until
+  `check-cut-context`, subtitle/review packets, chapter/proxy handoffs, NLE
+  export, and diagnostic proof/render are regenerated or explicitly left stale
+  for the next review pass. Rights remain pending and production/public use
+  remains disallowed. Fresh checkouts still need artifact restore/regeneration
+  or an explicit waiver before global R3 review can be treated as ready.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -366,12 +370,13 @@ Review focus:
    - `cut_002` is already in the candidate lane with
      `proxy_decision=proceed_with_limitations`; keep the long-line watch risk
      visible.
-   - `cut_003` has a proposal-only end extension to `49.566s`, but ED-10e
-     blocks application while selected `cut_004` overlap remains unresolved.
+   - `cut_003` now has the accepted local end extension to `49.566s`; treat
+     older cut review, proxy handoff, NLE export, and visual proof artifacts as
+     stale until regenerated.
 3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
-   - Decide whether `cut_004` should shrink, split, merge, or remain as-is
-     before `cut_003` can safely absorb `seg_000025..seg_000029`.
+   - `cut_004` has been explicitly shrunk to start at `50.868s` and remains a
+     resegmentation target before it can re-enter candidate status.
 4. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.

@@ -16,7 +16,7 @@ Subcommands:
     init-edit-pack           Create an edit_pack skeleton for the Editing lane.
     validate-edit-pack       Validate edit_pack.json against schema v1.
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
-    apply-boundary-recommendation ED-10e: validate one cut boundary recommendation and write a dry-run/blocking receipt.
+    apply-boundary-recommendation ED-10e: validate/apply one cut boundary recommendation with receipt.
     validate-transcript      Validate transcript.json against schema v1.
     review-transcript        ED-09: apply human review/correction patch to transcript.json.
     import-subtitle-track    ED-10: subtitle track -> transcript.json-compatible artifact.
