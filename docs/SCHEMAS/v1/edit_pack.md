@@ -163,7 +163,7 @@ ED-01 validator が以下を強制する：
 - `transcribe-audio` は ED-07 の責務であり、既存のローカル音声ファイルから `transcript.json` を生成する。URL / VOD 取得は INT-02 `asset_fetch` の責務。
 - ED-01 は Editing レーンの **器** を確定するだけ。外部 API と元動画ダウンロードは発生しない。
 
-## CLI（ED-01 / ED-02a / ED-02 / ED-03 / ED-04 / ED-06）
+## CLI（ED-01 / ED-02a / ED-02 / ED-03 / ED-04 / ED-06 / ED-10e）
 
 ```bash
 python -m src.cli.main init-edit-pack --episode-id ep_x
@@ -186,6 +186,14 @@ python -m src.cli.main check-cut-context \
   --edit-pack episodes/ep_x/edit_pack.json \
   --selected-cuts-only
 
+python -m src.cli.main apply-boundary-recommendation \
+  --episode-dir episodes/ep_x \
+  --edit-pack episodes/ep_x/edit_pack.json \
+  --recommendation-report episodes/ep_x/review/cut_003_boundary_recommendation_report.json \
+  --cut-id cut_003 \
+  --output-receipt episodes/ep_x/review/cut_003_boundary_apply_receipt.json \
+  --dry-run
+
 python -m src.cli.main generate-subtitles \
   --transcript episodes/ep_x/transcript.json \
   --edit-pack episodes/ep_x/edit_pack.json \
@@ -202,6 +210,8 @@ python -m src.cli.main export-nle \
 `generate-cuts` は ED-02 の自動 cut 候補生成スライス。`transcript.json` の segment timing / text density / topic hint を使って `edit_pack.cut_candidates[]` を追加する。文脈妥当性の判定はせず、`context_check.status="not_checked"` として ED-03 に渡す。
 
 `check-cut-context` は ED-03 の文脈チェック。`transcript.json` の隣接 segment を見て、cut 境界が発話途中を切っていないか、`source_segment_ids` が transcript と対応しているか、近接する前後発話があるかを `context_check.status` と notes に記録する。動画 preview / NLE export / creative acceptance は行わない。
+
+`apply-boundary-recommendation` は ED-10e の operator recommendation preflight。boundary recommendation report と現行 `edit_pack.json` を照合し、cut id、現行 range、要求 range、selected cut overlap、subtitle assignment stale 状態を receipt JSON/HTML に出す。現行 slice は `--dry-run` のみで、edit_pack / transcript / official subtitle evidence / source media / typography / proof / render を変更しない。overlap がある場合は `blocked_overlap` receipt を出し、boundary application は後続の明示 slice に残す。
 
 `generate-subtitles` は ED-04 / ED-08 / ED-10 の subtitle draft 生成スライス。`transcript.json` の `segments[]` を `edit_pack.subtitles[]` に変換し、`--wrap-eaw` 指定時は ED-05 の EAW 折返しを使って `text` に改行を入れる。ED-08 では `transcript.stt.real_transcript=true` を `source_type="real_transcript"` として保持し、ED-10 では `transcript.stt.engine="subtitle_track"` を `source_type="imported_subtitle_track"` として保持する。どちらも `source_segment_ids[]` と diagnostic / non-production flags を付与する。STT 品質評価、transcript correction UI、URL/VOD 取得、動画レンダリング、字幕デザイン acceptance は行わない。
 

@@ -11,13 +11,10 @@ instructions.
 
 - date: 2026-06-07 JST
 - latest pushed resume point:
-  this tracked proxy-decision allowed-value refresh after the 2026-06-07 JST
-  schema/readback validation. Confirm the exact hash with
-  `git log -1 --oneline --decorate` after pulling.
+  this tracked ED-10e boundary recommendation dry-run/blocked receipt slice.
+  Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
-  `a06078e feat: add diagnostic subtitle style readback`
-  (`HEAD -> main`, `origin/main`, `origin/HEAD` at validation time before this
-  local refresh).
+  origin/main parity `0 0` in this workspace before ED-10e implementation.
 - previous pushed resume point:
   `cfd3cb4 Merge remote-tracking branch 'origin/main'`
 - latest resume-surface sync validation:
@@ -75,8 +72,9 @@ instructions.
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
   operator proxy decision handoff files, and scoped Chapter Revision Patch
-  templates. They preserve operator fields as blank, `undecided`, `noop`, or
-  `none`, keep `cut_003` retained context risk, and read back source media as
+  templates. Templates preserve operator fields as blank, `undecided`, `noop`,
+  or `none`; the filled operator patch is the current decision authority. The
+  handoff keeps `cut_003` retained context risk and reads back source media as
   available from `material_ledger.json`. After the scoped overlay proof run,
   the regenerated ED-10d handoff reads
   `visual_proof_status=available_requires_human_review`. The scoped
@@ -86,19 +84,32 @@ instructions.
   production acceptance, publishing acceptance, or rights approval. The narrow
   enum/readback validation ran
   `uvx pytest -q tests/test_operator_proxy_decision_handoff.py` -> 2 passed,
-  regenerated the ignored ED-10d handoff/template artifacts, confirmed
-  `cut_002.proxy_decision=undecided`,
-  `cut_003.context_risk_handling=undecided`,
+  regenerated the ignored ED-10d handoff/template artifacts, confirmed template
+  defaults remain blank/undecided,
   `production_candidate=false`, `rights_status=pending`, and
   `git ls-files episodes` empty.
-- current bottleneck: the local proof generation blocker for `cut_002` /
-  `cut_003` is resolved, and this same-machine workspace currently has the
-  ignored R3 proof set needed for `review_ready`. The next operator-owned work
-  is human inspection of `representative_visual_proof_report.html` /
-  `subtitle_overlay_visual_proof_report.html`, then a `cut_002` / `cut_003`
-  proxy decision. Rights remain pending and production/public use remains
-  disallowed. Fresh checkouts still need artifact restore/regeneration or an
-  explicit waiver before global R3 review can be treated as ready.
+- latest boundary recommendation applier:
+  ED-10e adds the tracked `apply-boundary-recommendation` CLI and
+  `src/pipeline/boundary_recommendation_apply.py`. It consumes an
+  operator-owned boundary recommendation report plus current `edit_pack.json`
+  and writes a dry-run/blocking receipt with current range validation,
+  requested range readback, selected cut overlap detection, subtitle assignment
+  stale readback, and production/rights boundary flags. The actual local
+  `cut_003` run wrote ignored
+  `cut_003_boundary_apply_receipt.json` / `.html` with
+  `status=blocked_overlap` because the requested `22.606 -> 49.566` range
+  overlaps selected `cut_004` (`41.725 -> 60.277`). It did not mutate
+  edit_pack, transcript, official subtitle evidence, source media, typography,
+  proof, or render artifacts. Validation:
+  `uvx pytest -q tests/test_boundary_recommendation_apply.py` -> 5 passed.
+- current bottleneck: the `cut_003` end-extension recommendation is now
+  recorded and preflighted, but application is blocked by selected `cut_004`
+  overlap and subtitle assignments for `seg_000025..seg_000029` still belonging
+  downstream of `cut_004`. The next operator-owned work is choosing an explicit
+  overlap/subtitle reassignment policy before any boundary application. Rights
+  remain pending and production/public use remains disallowed. Fresh checkouts
+  still need artifact restore/regeneration or an explicit waiver before global
+  R3 review can be treated as ready.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -352,15 +363,15 @@ Review focus:
    - Keep `rights=pending`, `production_candidate=false`, and
      `production_usage_allowed=false`.
 2. Advance: `cut_002` / `cut_003` operator proxy decision
-   - After scoped visual inspection, use
-     `cut_002_cut_003_operator_proxy_decision_handoff.html` and the scoped patch
-     templates for routing decisions.
-   - Operator-owned fields remain blank / `undecided` until the operator fills
-     them.
+   - `cut_002` is already in the candidate lane with
+     `proxy_decision=proceed_with_limitations`; keep the long-line watch risk
+     visible.
+   - `cut_003` has a proposal-only end extension to `49.566s`, but ED-10e
+     blocks application while selected `cut_004` overlap remains unresolved.
 3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
-   - Review boundaries, density, and whether any cut should merge/split before
-     it can re-enter candidate status.
+   - Decide whether `cut_004` should shrink, split, merge, or remain as-is
+     before `cut_003` can safely absorb `seg_000025..seg_000029`.
 4. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
