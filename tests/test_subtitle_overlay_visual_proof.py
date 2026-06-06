@@ -45,12 +45,24 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert report["production_usage_allowed"] is False
     assert report["creative_acceptance"] is False
     assert report["publish_acceptance"] is False
+    assert report["style_direction"]["preset_name"] == "jp_clip_readable_v1"
+    assert report["style_direction"]["target_viewing_context"] == (
+        "smartphone_readable_japanese_clip_subtitle"
+    )
+    assert report["style_parameters"]["font_size"]["source"] == (
+        "not_explicitly_pinned_in_this_proof"
+    )
+    assert report["style_parameters"]["wrapping"]["automatic_wrap_applied_by_overlay_generator"] is False
     assert report["aggregate_summary"]["subtitle_overlay_available_count"] == 2
     assert {item["cut_id"] for item in report["cut_results"]} == {"cut_002", "cut_003"}
 
     for item in report["cut_results"]:
         assert item["subtitle_overlay_present"] is True
         assert item["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
+        assert item["style_direction"]["preset_name"] == "jp_clip_readable_v1"
+        assert item["style_parameters"]["alignment"]["value"] == "bottom_center_fixed"
+        assert item["style_parameters"]["font_size"]["value"] is None
+        assert item["line_width_readback"]["measurement_kind"] == "east_asian_width_proxy"
         assert (tmp_path / item["generated_artifacts"]["video"]).is_relative_to(review_dir)
         assert (tmp_path / item["generated_artifacts"]["frame"]).is_relative_to(review_dir)
         assert item["generated_artifacts"]["video"].endswith(f"{item['cut_id']}.mp4")
@@ -62,16 +74,31 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert (review_dir / "subtitle_overlay_visual_proof_cut_003.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_003.png").exists()
 
+    overlay_html = (review_dir / "subtitle_overlay_visual_proof_report.html").read_text(encoding="utf-8")
+    assert "jp_clip_readable_v1" in overlay_html
+    assert "font_size" in overlay_html
+    assert 'src="subtitle_overlay_visual_proof_cut_002.png"' in overlay_html
+    assert 'src="subtitle_overlay_visual_proof_cut_003.mp4"' in overlay_html
+    assert 'src="visual_proof_contact_sheet.png"' in overlay_html
+
     representative = json.loads(
         (review_dir / "representative_visual_proof_report.json").read_text(encoding="utf-8")
     )
+    assert representative["diagnostic_style_direction"]["preset_name"] == "jp_clip_readable_v1"
     assessments = {item["cut_id"]: item for item in representative["per_cut_visual_assessment"]}
     assert assessments["cut_001"]["visual_proof_status"] == "available_diagnostic_render_frame"
     assert assessments["cut_002"]["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
+    assert assessments["cut_002"]["style_parameters"]["font_size"]["source"] == (
+        "not_explicitly_pinned_in_this_proof"
+    )
     assert assessments["cut_002"]["previous_visual_proof_status"] == (
         "available_source_frame_only_no_subtitle_overlay"
     )
     assert assessments["cut_003"]["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
+
+    representative_html = (review_dir / "representative_visual_proof_report.html").read_text(encoding="utf-8")
+    assert "jp_clip_readable_v1" in representative_html
+    assert 'src="subtitle_overlay_visual_proof_cut_002.png"' in representative_html
 
     after = build_operator_proxy_decision_handoff(
         episode_dir=episode_dir,
@@ -84,6 +111,8 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert handoff["boundary_flags"]["production_candidate"] is False
     assert handoff["boundary_flags"]["rights_status"] == "pending"
     cut_002, cut_003 = handoff["cuts"]
+    assert cut_002["visual_proof"]["style_direction"]["preset_name"] == "jp_clip_readable_v1"
+    assert cut_002["visual_proof"]["style_parameters"]["style_slot"] == "subtitle.default"
     assert cut_002["operator_input_fields"]["proxy_decision"] == "undecided"
     assert cut_002["operator_input_fields"]["editorial_intent"] == ""
     assert cut_003["context_status"] == "needs_review"
@@ -132,6 +161,7 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
     assert payload["target_cuts"] == ["cut_002", "cut_003"]
     assert payload["dry_run"] is True
     assert payload["visual_proof_status"] == "blocked_no_cut_002_cut_003_overlay_proof"
+    assert payload["style_direction_preset"] == "jp_clip_readable_v1"
     assert payload["production_candidate"] is False
     assert payload["rights_status"] == "pending"
     assert not (review_dir / "subtitle_overlay_visual_proof_report.json").exists()
@@ -148,6 +178,7 @@ def _write_episode(tmp_path: Path) -> Path:
     audio_dir.mkdir(parents=True)
     (video_dir / "source_video.mp4").write_bytes(b"video")
     (audio_dir / "source.wav").write_bytes(b"audio")
+    (review_dir / "visual_proof_contact_sheet.png").write_bytes(b"contact-sheet")
     _write_json(_edit_pack(episode_dir.name), episode_dir / "edit_pack.json")
     _write_json(_material_ledger(episode_dir), episode_dir / "material_ledger.json")
     _write_json(_chapter_revision_board(episode_dir.name), review_dir / "chapter_revision_board.json")
@@ -334,6 +365,11 @@ def _representative_visual_report(episode_id: str) -> dict:
             _source_frame_assessment("cut_002", False),
             _source_frame_assessment("cut_003", True),
         ],
+        "outputs": {
+            "json": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/representative_visual_proof_report.json",
+            "html": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html",
+            "contact_sheet": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/visual_proof_contact_sheet.png",
+        },
     }
 
 

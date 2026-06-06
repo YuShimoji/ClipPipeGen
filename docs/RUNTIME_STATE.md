@@ -9,29 +9,31 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-05 JST
+- date: 2026-06-07 JST
 - latest pushed resume point:
-  this docs refresh commit after the 2026-06-05 JST sync/readiness
-  validation. Confirm the exact hash with
+  this tracked diagnostic style-direction/readback refresh after the 2026-06-07
+  JST sync/readiness validation. Confirm the exact hash with
   `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
-  `a0e9db2 docs: refresh subtitle overlay proof handoff`
-  (`HEAD -> main`, `origin/main`, `origin/HEAD` at validation time).
+  `5399afd docs: record post-rebase reviewability drift`
+  (`HEAD -> main`, `origin/main`, `origin/HEAD` at validation time before this
+  local refresh).
 - previous pushed resume point:
   `cfd3cb4 Merge remote-tracking branch 'origin/main'`
 - latest resume-surface sync validation:
-  2026-06-05 JST post-rebase local readback in this workspace:
+  2026-06-07 JST local readback in this workspace:
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
-  `git status --short --branch` -> `## main...origin/main`;
-  `status-episode` -> `operator_review.review_ready=false`,
-  `reviewability=review_blocked_missing_artifacts`, missing
-  `visual_proof_cut_001.png`; `rights_status=pending`,
+  `status-episode` -> `operator_review.review_ready=true`,
+  `reviewability=review_ready`, no missing review artifacts;
+  `rights_status=pending`,
   `production_candidate=false`, keep cuts `cut_001`, `cut_002`, `cut_003`;
-  `uvx pytest -q` -> 217 passed; `git diff --check` clean;
-  `git ls-files episodes` empty. A prior same-machine validation recorded
-  `review_ready=true` when `visual_proof_cut_001.png` existed; treat
-  reviewability as workspace-local and re-run `status-episode` after pulling or
-  restoring ignored `episodes/` artifacts.
+  `uvx pytest -q` -> 217 passed; `npm run smoke` -> OK;
+  `npm run smoke:electron` -> OK; `git diff --check` clean aside from CRLF
+  warnings; `git ls-files episodes` empty. This `review_ready` state depends
+  on the ignored local R3 artifacts in this workspace, including
+  `visual_proof_cut_001.png`; fresh checkouts or workspaces missing ignored
+  `episodes/` artifacts must re-run `status-episode` and may correctly report
+  `review_blocked_missing_artifacts`.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -52,12 +54,23 @@ instructions.
   `subtitle_overlay_visual_proof_cut_002.*`,
   `subtitle_overlay_visual_proof_cut_003.*`, and
   `representative_visual_proof_report.*` exist under the R3 review directory.
-  In the current post-rebase local ignored artifact set,
-  `visual_proof_cut_001.png` is missing, so `status-episode` reports
-  `operator_review.review_ready=false` and
-  `review_blocked_missing_artifacts`. If another restored same-machine
-  workspace has `visual_proof_cut_001.png`, it may report `review_ready=true`;
-  do not infer that state for a fresh checkout or for this local artifact set.
+  In the current local ignored artifact set, `visual_proof_cut_001.png` is
+  present and `status-episode` reports `operator_review.review_ready=true` /
+  `review_ready`. Do not infer that state for a fresh checkout; reviewability
+  remains workspace-local and depends on ignored `episodes/` artifacts.
+- latest diagnostic subtitle style readback:
+  `jp_clip_readable_v1` is now recorded as a diagnostic style direction
+  contract for the scoped `cut_002` / `cut_003` overlay proof. It separates
+  qualitative intent from tactical ASS/libass parameters: `font_size`,
+  `outline`, and `margin_v` remain explicitly unpinned/default-readback,
+  `explicit_ass_force_style=false`, and line-width measurement is watch-only.
+  The current readback flags `cut_002` as a long-line risk for a later
+  wrapping/layout preset, not a reason for blind Fontsize tuning. This does not
+  create production subtitle design acceptance, production render acceptance,
+  creative acceptance, rights approval, or public-use permission. The refreshed
+  HTML reports embed or directly link the contact sheet plus `cut_002` /
+  `cut_003` proof PNG/MP4 artifacts so the operator can inspect the scoped
+  overlay surface from one report.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
@@ -70,12 +83,13 @@ instructions.
   operator decision, creative acceptance, production acceptance, publishing
   acceptance, or rights approval.
 - current bottleneck: the local proof generation blocker for `cut_002` /
-  `cut_003` is resolved, but the current local workspace is still blocked by
-  missing `visual_proof_cut_001.png`. Inspect the scoped
-  `representative_visual_proof_report.html` for `cut_002` / `cut_003` only;
-  open the global R3 review gate only after `visual_proof_cut_001.png` is
-  restored/regenerated or explicitly waived. Rights remain pending and
-  production/public use remains disallowed.
+  `cut_003` is resolved, and this same-machine workspace currently has the
+  ignored R3 proof set needed for `review_ready`. The next operator-owned work
+  is human inspection of `representative_visual_proof_report.html` /
+  `subtitle_overlay_visual_proof_report.html`, then a `cut_002` / `cut_003`
+  proxy decision. Rights remain pending and production/public use remains
+  disallowed. Fresh checkouts still need artifact restore/regeneration or an
+  explicit waiver before global R3 review can be treated as ready.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -157,7 +171,7 @@ narrow instruction. The refreshed report records
 it is not production render acceptance, subtitle design acceptance, creative
 acceptance, publishing acceptance, rights approval, or public-use permission.
 
-On 2026-06-05 JST, the tracked
+On 2026-06-07 JST, the tracked
 `build-subtitle-overlay-visual-proof` generator was rerun for explicit target
 cuts `cut_002` and `cut_003`. It used
 `materials/src_video_jp_pilot01/source_video.mp4`,
@@ -175,10 +189,13 @@ Readback confirmed `target_cuts=[cut_002, cut_003]`,
 `subtitle_overlay_available_count=2`, `all_target_cuts_have_overlay=true`,
 `visual_proof_status=available_requires_human_review` after ED-10d
 regeneration, `production_candidate=false`, `rights_status=pending`, and
-`production_usage_allowed=false`. Manual frame inspection confirmed nonblank
-subtitle-overlay frames for both target cuts. This remains diagnostic-only
-visual evidence and does not approve typography, safe-area, timing sync,
-creative use, publishing, rights, or production render.
+`production_usage_allowed=false`. It also records
+`style_direction.preset_name=jp_clip_readable_v1`, separates qualitative intent
+from unpinned tactical style parameters, embeds/links the contact sheet and
+proof PNG/MP4 artifacts in the HTML report, and flags `cut_002` as a
+watch-only long-line risk at the EAW proxy threshold. This remains
+diagnostic-only visual evidence and does not approve typography, safe-area,
+timing sync, creative use, publishing, rights, or production render.
 
 Regenerate the scoped overlay proof, when the required local R3 artifacts are
 present, with:

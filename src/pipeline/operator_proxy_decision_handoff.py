@@ -414,6 +414,9 @@ def _visual_proof_readback(assessment: dict[str, Any]) -> dict[str, Any]:
         "safe_area_status": assessment.get("safe_area_status"),
         "line_wrapping_status": assessment.get("line_wrapping_status"),
         "timing_sync_status": assessment.get("timing_sync_status"),
+        "style_direction": assessment.get("style_direction") or {},
+        "style_parameters": assessment.get("style_parameters") or {},
+        "line_width_readback": assessment.get("line_width_readback") or {},
         "context_risk_status": assessment.get("context_risk_status"),
         "proof_limitations": assessment.get("proof_limitations") or [],
         "recommended_next_action": assessment.get("recommended_next_action") or [],
@@ -597,6 +600,17 @@ def _text_cut_row_html(cut: dict[str, Any], *, include_operator: bool) -> str:
     )
     visual = cut.get("visual_proof") or {}
     line_wrap = cut.get("line_wrap_proxy") or {}
+    style_direction = visual.get("style_direction") or {}
+    style_parameters = visual.get("style_parameters") or {}
+    line_width = visual.get("line_width_readback") or {}
+    style_readback = "<br>".join(
+        [
+            f"style_preset={escape(str(style_direction.get('preset_name', '')))}",
+            f"style_slot={escape(str(style_parameters.get('style_slot', '')))}",
+            f"max_raw_eaw={escape(str(line_width.get('max_raw_line_eaw', '')))}",
+            f"needs_wrap_watch={escape(str(line_width.get('needs_wrap_count', '')))}",
+        ]
+    )
     operator = ""
     if include_operator:
         fields = cut.get("operator_input_fields") or {}
@@ -616,7 +630,7 @@ def _text_cut_row_html(cut: dict[str, Any], *, include_operator: bool) -> str:
         f"max_eaw={escape(str(line_wrap.get('max_raw_eaw', '')))}<br>"
         f"needs_wrap={escape(str(line_wrap.get('needs_wrap_count', '')))}</td>"
         f"<td>{escape(str(visual.get('status', '')))}<br>"
-        f"{escape(str(cut.get('missing_visual_proof_reason', '')))}</td>"
+        f"{escape(str(cut.get('missing_visual_proof_reason', '')))}<br>{style_readback}</td>"
         f"<td>{subtitles}</td>"
         f"<td>{operator}</td>"
         "</tr>"
