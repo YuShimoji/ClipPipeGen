@@ -11,11 +11,11 @@ instructions.
 
 - date: 2026-06-07 JST
 - latest pushed resume point:
-  this tracked diagnostic style-direction/readback refresh after the 2026-06-07
-  JST sync/readiness validation. Confirm the exact hash with
+  this tracked proxy-decision allowed-value refresh after the 2026-06-07 JST
+  schema/readback validation. Confirm the exact hash with
   `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
-  `5399afd docs: record post-rebase reviewability drift`
+  `a06078e feat: add diagnostic subtitle style readback`
   (`HEAD -> main`, `origin/main`, `origin/HEAD` at validation time before this
   local refresh).
 - previous pushed resume point:
@@ -79,9 +79,18 @@ instructions.
   `none`, keep `cut_003` retained context risk, and read back source media as
   available from `material_ledger.json`. After the scoped overlay proof run,
   the regenerated ED-10d handoff reads
-  `visual_proof_status=available_requires_human_review`. This is still not an
-  operator decision, creative acceptance, production acceptance, publishing
-  acceptance, or rights approval.
+  `visual_proof_status=available_requires_human_review`. The scoped
+  `proxy_decision` allowed values now include `proceed_with_limitations` for
+  candidate-lane routing where explicit limitations or watch items remain
+  visible. This is still not an operator decision, creative acceptance,
+  production acceptance, publishing acceptance, or rights approval. The narrow
+  enum/readback validation ran
+  `uvx pytest -q tests/test_operator_proxy_decision_handoff.py` -> 2 passed,
+  regenerated the ignored ED-10d handoff/template artifacts, confirmed
+  `cut_002.proxy_decision=undecided`,
+  `cut_003.context_risk_handling=undecided`,
+  `production_candidate=false`, `rights_status=pending`, and
+  `git ls-files episodes` empty.
 - current bottleneck: the local proof generation blocker for `cut_002` /
   `cut_003` is resolved, and this same-machine workspace currently has the
   ignored R3 proof set needed for `review_ready`. The next operator-owned work

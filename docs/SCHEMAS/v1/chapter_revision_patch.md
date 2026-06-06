@@ -124,6 +124,33 @@ Each `revisions[]` entry corresponds to one board chapter and source cut.
 - `source_selection`
 - `none`
 
+Scoped cut proxy patch templates (`chapter_revision_patch_cut_proxy_v0`) add
+`proxy_decision` for `cut_002` / `cut_003` routing:
+
+- `undecided`
+- `proceed_without_visual_proof`
+- `proceed_with_limitations`
+- `needs_overlay_proof`
+- `adjust_subtitle`
+- `adjust_boundary`
+- `defer`
+- `reject_candidate`
+
+`proceed_with_limitations` means the operator may keep the cut in the
+candidate lane while explicit limitations or watch items remain visible. It is
+diagnostic candidate routing only. It is not production subtitle design
+acceptance, production render acceptance, creative acceptance, rights approval,
+publishing acceptance, or public-use permission.
+
+Scoped cut proxy patch templates also add `context_risk_handling`:
+
+- `undecided`
+- `keep_retained_risk_visible`
+- `request_boundary_review`
+- `needs_overlay_proof`
+- `reject_due_to_context`
+- `defer`
+
 ## Validation Notes
 
 - The patch must not include a direct source transcript mutation field.
