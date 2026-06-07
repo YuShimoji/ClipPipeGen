@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-07 JST
+Last updated: 2026-06-08 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
@@ -19,11 +19,12 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Latest local evidence slice: scoped subtitle-overlay visual proof for explicit target cuts `cut_002` / `cut_003`. Local ignored `subtitle_overlay_visual_proof_report.*`, `subtitle_overlay_visual_proof_cut_002.mp4/png/srt`, `subtitle_overlay_visual_proof_cut_003.mp4/png/srt`, and refreshed `representative_visual_proof_report.*` exist under the R3 review directory. The report now records `jp_clip_readable_v1` as a diagnostic style direction preset, separates qualitative subtitle intent from unpinned FFmpeg/libass style parameters, embeds or directly links the contact sheet and proof PNG/MP4 artifacts, and flags `cut_002` as a watch-only long-line risk. In this same-machine workspace `visual_proof_cut_001.png` is present and `status-episode` reports `operator_review.review_ready=true`; treat this as workspace-local and re-check after pulling, restoring, or losing ignored `episodes/` artifacts.
 - Latest local proxy decision handoff: ignored `cut_002_cut_003_text_proxy_review.json` / `.html`, `cut_002_cut_003_operator_proxy_decision_handoff.json` / `.html`, and scoped `chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv` exist. Source media is available from `material_ledger.json` material paths. The regenerated handoff reads `visual_proof_status=available_requires_human_review`; `proxy_decision` now includes `proceed_with_limitations` for candidate routing with visible limitations/watch items; templates remain blank/default, while the filled operator patch is the current decision authority; `cut_003` retained context risk remains active.
 - Latest boundary recommendation applier: `ED-10e` adds `apply-boundary-recommendation`, which validates an operator-owned boundary recommendation against `edit_pack.json` and writes a dry-run/blocking/apply receipt. Mutation remains explicit only: `--apply --overlap-policy shrink_or_split_cut_004 --transcript`. The current same-machine ignored JP-Pilot edit_pack has applied `cut_003` `22.606 -> 49.566`, shrunk `cut_004` to `50.868 -> 60.277`, moved `sub_025..sub_029` to `cut_003`, and kept `sub_030` on `cut_004`. Transcript, official subtitle evidence, source media, typography, proof, and render were not mutated.
-- Current recommended decision: first report Reviewability, then regenerate or explicitly mark stale the downstream review/readback artifacts affected by the applied local boundary change. `cut_002` remains `proceed_with_limitations` with long-line watch visible. `cut_003` now owns `seg_000025..seg_000029`; `seg_000030` remains excluded and belongs to the shrunk/resegmentation-target `cut_004`. A fresh checkout or workspace missing ignored artifacts may still report `review_blocked_missing_artifacts`; either state remains diagnostic-only and not production, creative, publishing, or rights acceptance.
+- Latest local downstream refresh after ED-10e: the same-machine ignored artifact set now has regenerated context/review/evidence/decision/chapter/proxy/NLE readbacks for the applied `cut_003` boundary. `cut_003` is `22.606 -> 49.566`, owns `seg_000010..seg_000029` and `sub_010..sub_029`, and remains `context_status=needs_review` / `retained_context_risk=true` / `final_cut_decision=keep`. `cut_004` is `50.868 -> 60.277`, owns `seg_000030..seg_000034` and `sub_030..sub_034`, remains `final_cut_decision=needs_adjustment`, and keeps `resegmentation_target=true`. The ED-06 NLE export has been regenerated and its CSV/report title/reason now matches these current ranges after an ignored-only `edit_pack.reason` cleanup.
+- Current recommended decision: if `cut_review_packet.json` / `cut_decision_packet.json` `candidate_reason` prose will be human-facing, run a narrow review/decision reason readback cleanup next; those two packets still contain old auto-generated reason strings for `cut_003` / `cut_004`. If that stale packet prose is acceptable as historical seed text, the next productive slice is proof/render regeneration or the next downstream handoff that consumes the current NLE export. A fresh checkout or workspace missing ignored artifacts may still report `review_blocked_missing_artifacts`; either state remains diagnostic-only and not production, creative, publishing, or rights acceptance.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Current pushed resume point: this tracked ED-10e boundary recommendation dry-run/blocked receipt slice. Confirm the exact hash with
+- Current pushed resume point: this tracked handoff/runtime refresh after local downstream regeneration. Confirm the exact hash with
   `git log -1 --oneline --decorate` after pulling.
-- Verified base before this refresh: origin/main parity `0 0` in this workspace before ED-10e implementation.
+- Verified base before this refresh: origin/main parity `0 0` in this workspace before this handoff refresh.
 - Previous pushed resume point: `cfd3cb4 Merge remote-tracking branch 'origin/main'`.
 - Latest implementation slice before ED-10: ED-09 done。`review-transcript` CLI と pipeline patch 適用、`status-episode` review readback、`export-nle` warning 更新、docs registry 更新を含む
 - Previous feature slice: `JP-Pilot-01` Japanese public VOD diagnostic
@@ -37,6 +38,7 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Latest proxy handoff validation: 2026-06-07 JST; `uvx python -m src.cli.main build-operator-proxy-decision-handoff --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --format json` regenerated the local ignored `cut_002` / `cut_003` text/proxy review, operator proxy handoff, and scoped patch template. JSON and CSV readback confirmed `source_media_status=available_from_material_ledger`, `visual_proof_status=available_requires_human_review`, `style_preset=jp_clip_readable_v1`, `proxy_decision.allowed_values` includes `proceed_with_limitations`, template defaults still blank/undecided, `cut_003.context_status=needs_review`, `cut_003.retained_context_risk=true`, `production_candidate=false`, and `rights_status=pending`. `uvx pytest -q tests/test_operator_proxy_decision_handoff.py` -> 2 passed, and `git ls-files episodes` remained empty. On this Windows workspace, prefer `uvx python -m ...` if bare `python` resolves to the WindowsApps shim.
 - Latest boundary recommendation validation: 2026-06-07 JST; `uvx python -m src.cli.main apply-boundary-recommendation --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --recommendation-report episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\cut_003_boundary_recommendation_report.json --cut-id cut_003 --output-receipt episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\cut_003_boundary_apply_receipt.shrink_or_split_cut_004.json --apply --overlap-policy shrink_or_split_cut_004 --format json` wrote ignored receipt JSON/HTML with `status=applied`, `selected_policy=shrink_or_split_cut_004`, `edit_pack_mutated=true`, `cut_003=22.606->49.566`, `cut_004=50.868->60.277`, `sub_025..sub_029 -> cut_003`, `sub_030 -> cut_004`, `transcript_not_mutated=true`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`. `uvx pytest -q tests/test_boundary_recommendation_apply.py` -> 9 passed; `validate-edit-pack` -> `schema_ok=true`.
 - Latest sync/readiness validation: 2026-06-07 JST in this workspace; `git rev-list --left-right --count HEAD...origin/main` -> `0 0` before this local refresh; `status-episode` -> `operator_review.review_ready=true`, `reviewability=review_ready`, no missing review artifacts, `rights_status=pending`, `production_candidate=false`, keep cuts `cut_001`, `cut_002`, `cut_003`; `uvx pytest -q` -> 217 passed; `npm run smoke` -> OK; `npm run smoke:electron` -> OK; `git diff --check` clean aside from CRLF warnings; `git ls-files episodes` empty. This readiness depends on ignored local artifacts and must be rechecked on fresh checkout or another workspace.
+- Latest local NLE reason/readback validation: 2026-06-08 JST; `uvx python -m src.cli.main export-nle --edit-pack episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json --output-dir episodes\jp_pilot01_hololive_bancho_20260525\exports\jp_pilot01r3_subtitle_import --format json` regenerated ignored `nle_cut_list.csv`, `nle_export_manifest.json`, and `nle_export_report.html` after updating only `cut_003` / `cut_004` `edit_pack.reason` text. CSV readback confirmed `cut_003=22.606->49.566`, `source_segment_ids=seg_000010..seg_000029`, `subtitle_ids=sub_010..sub_029`; `cut_004=50.868->60.277`, `source_segment_ids=seg_000030..seg_000034`, `subtitle_ids=sub_030..sub_034`; `production_edit_candidate=false`. `git ls-files episodes` remained empty.
 - Working tree expectation after pull: clean
 
 ## Non-Repo Artifact Handoff
@@ -93,7 +95,8 @@ Current R3 board readback:
 | Item | State |
 |---|---|
 | chapter mapping | `cut_001`-`cut_009` map to `ch_001`-`ch_009` |
-| current decision | all 9 remain `accept_candidate` candidate seeds |
+| current decision | `keep=3`, `needs_adjustment=5`, `reject=1`; `cut_decision_packet` is the current decision source |
+| speed pass role | `cut_decision_speed_pass` is historical candidate-seed evidence only and must not override current timing/decision readback |
 | retained risk | 6 original `needs_review` cuts remain `retained_context_risk=true` |
 | representative roles | `cut_009=short_passed_representative`, `cut_004=retained_context_risk_representative`, `cut_008=dense_subtitle_representative` |
 | operator defaults | blank strings, `undecided`, `boundary_request=none`, `downstream_target=[]` |
@@ -214,7 +217,7 @@ Current proxy readback:
 | Cut | Proxy state | Operator decision | What remains unresolved |
 |---|---|---|---|
 | `cut_002` | context `passed`, compact 4.838s setup beat, 2 subtitles, long-line watch visible | `proxy_decision=proceed_with_limitations`; no subtitle adjustment requested in this slice | watch item remains visible; no production subtitle/design/render acceptance |
-| `cut_003` | context `needs_review`, retained context risk true, current `22.606 -> 41.725`, 15 subtitles | `proxy_decision=adjust_boundary`, `context_risk_handling=request_boundary_review`; proposal-only end extension to `49.566s` is recorded | ED-10e blocks application because requested range overlaps selected `cut_004`; subtitle assignments for `seg_000025..seg_000029` require explicit downstream policy |
+| `cut_003` | context `needs_review`, retained context risk true, current `22.606 -> 49.566`, 20 subtitles | original operator patch requested `adjust_boundary` / `request_boundary_review`; ED-10e has since applied the approved end extension locally | retained context risk remains visible; no production subtitle/design/render acceptance |
 
 Source media is present by material ledger readback:
 
@@ -251,8 +254,13 @@ Current receipt readback is `status=applied`,
 `cut_003=22.606 -> 49.566`, `cut_004=50.868 -> 60.277`,
 `sub_025..sub_029 -> cut_003`, `sub_030 -> cut_004`,
 `transcript_not_mutated=true`, `production_candidate=false`,
-`rights_status=pending`, and `production_usage_allowed=false`. Treat older
-review/proxy/NLE/proof artifacts as stale until regenerated.
+`rights_status=pending`, and `production_usage_allowed=false`. Context,
+review/evidence, cut decision, chapter board, scoped proxy handoff, and NLE
+export have now been regenerated from this ignored local edit pack. Treat
+proof/render artifacts as stale_reference until regenerated, and treat stale
+`candidate_reason` prose in `cut_review_packet.json` /
+`cut_decision_packet.json` as a remaining narrow cleanup item if those fields
+will be human-facing.
 
 ## Resume on another terminal
 

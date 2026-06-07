@@ -9,27 +9,28 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-07 JST
+- date: 2026-06-08 JST
 - latest pushed resume point:
-  this tracked ED-10e boundary recommendation dry-run/blocked receipt slice.
+  this tracked handoff/runtime refresh after local downstream regeneration.
   Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
-  origin/main parity `0 0` in this workspace before ED-10e implementation.
+  origin/main parity `0 0` in this workspace before this handoff refresh.
 - previous pushed resume point:
   `cfd3cb4 Merge remote-tracking branch 'origin/main'`
 - latest resume-surface sync validation:
-  2026-06-07 JST local readback in this workspace:
+  2026-06-08 JST local readback in this workspace:
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
-  `status-episode` -> `operator_review.review_ready=true`,
-  `reviewability=review_ready`, no missing review artifacts;
-  `rights_status=pending`,
-  `production_candidate=false`, keep cuts `cut_001`, `cut_002`, `cut_003`;
-  `uvx pytest -q` -> 217 passed; `npm run smoke` -> OK;
-  `npm run smoke:electron` -> OK; `git diff --check` clean aside from CRLF
-  warnings; `git ls-files episodes` empty. This `review_ready` state depends
-  on the ignored local R3 artifacts in this workspace, including
-  `visual_proof_cut_001.png`; fresh checkouts or workspaces missing ignored
-  `episodes/` artifacts must re-run `status-episode` and may correctly report
+  `git status --short --branch` -> `## main...origin/main`;
+  `git ls-files episodes` empty. Targeted local readbacks parsed the current
+  ignored `edit_pack.json`, regenerated NLE CSV/manifest/report, proxy
+  handoff/template, chapter board, cut review packet, and cut decision packet.
+  Tests were not rerun for the latest ignored-only NLE reason cleanup. The last
+  broad validation remains the 2026-06-07 run: `uvx pytest -q` -> 217 passed,
+  `npm run smoke` -> OK, `npm run smoke:electron` -> OK, and
+  `git diff --check` clean aside from CRLF warnings. This `review_ready` state
+  depends on ignored local R3 artifacts in this workspace, including
+  `episodes/` review/proof/export files; fresh checkouts or workspaces missing
+  ignored artifacts must re-run `status-episode` and may correctly report
   `review_blocked_missing_artifacts`.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
@@ -107,13 +108,26 @@ instructions.
   evidence, source media, typography, proof, or render artifacts. Validation:
   `uvx pytest -q tests/test_boundary_recommendation_apply.py` -> 9 passed;
   `validate-edit-pack` -> `schema_ok=true`.
-- current bottleneck: the `cut_003` end-extension is applied only in the local
-  ignored episode artifact set. Downstream readbacks are stale until
-  `check-cut-context`, subtitle/review packets, chapter/proxy handoffs, NLE
-  export, and diagnostic proof/render are regenerated or explicitly left stale
-  for the next review pass. Rights remain pending and production/public use
-  remains disallowed. Fresh checkouts still need artifact restore/regeneration
-  or an explicit waiver before global R3 review can be treated as ready.
+- latest local downstream regeneration after the `cut_003` boundary apply:
+  the current ignored authority now includes `edit_pack.json`,
+  `cut_review_packet.json`, `evidence_summary.json`, corrected
+  `cut_decision_packet.json`, regenerated `chapter_revision_board.json`,
+  refreshed scoped `cut_002` / `cut_003` proxy handoff artifacts, and a
+  regenerated ED-06 NLE export. `cut_003` is `22.606 -> 49.566` with
+  `seg_000010..seg_000029` and `sub_010..sub_029`; `cut_004` is
+  `50.868 -> 60.277` with `seg_000030..seg_000034`, `sub_030..sub_034`, and
+  `resegmentation_target=true`. The latest ignored-only cleanup also updated
+  `edit_pack.cut_candidates[].reason` for `cut_003` / `cut_004` so the NLE
+  CSV/report title/reason matches the current ranges. `cut_review_packet.json`
+  and `cut_decision_packet.json` still contain stale `candidate_reason` prose
+  for those cuts; treat that as the next narrow readback-cleanup watch item if
+  those packet fields will be human-facing.
+- current bottleneck: proof/render artifacts remain stale_reference /
+  historical diagnostic evidence after the boundary change and NLE refresh.
+  Do not treat old proof/render as current validation. Rights remain pending
+  and production/public use remains disallowed. Fresh checkouts still need
+  artifact restore/regeneration or an explicit waiver before global R3 review
+  can be treated as ready.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
