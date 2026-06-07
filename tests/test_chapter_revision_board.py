@@ -35,9 +35,22 @@ def test_chapter_revision_board_generates_nine_chapters_and_keeps_boundaries(tmp
     assert board["boundary_flags"]["rights_status"] == "pending"
     assert board["summary"]["chapter_count"] == 9
     assert board["summary"]["retained_context_risk_count"] == 6
+    assert board["summary"]["candidate_seed_count"] == 9
+    assert board["summary"]["current_decision"] == "mixed"
+    assert board["summary"]["current_decision_counts"] == {
+        "keep": 3,
+        "needs_adjustment": 5,
+        "reject": 1,
+    }
+    assert board["summary"]["speed_pass_role"] == "historical_candidate_seed_evidence_only"
+    assert board["summary"]["all_cuts_candidate_seed_only"] is False
+    assert board["summary"]["historical_speed_pass_all_cuts_candidate_seed_only"] is True
     assert [chapter["chapter_id"] for chapter in chapters] == [f"ch_{i:03d}" for i in range(1, 10)]
     assert [chapter["source_cut_id"] for chapter in chapters] == [f"cut_{i:03d}" for i in range(1, 10)]
-    assert {chapter["current_decision"] for chapter in chapters} == {"accept_candidate"}
+    assert chapters[2]["current_decision"] == "keep"
+    assert chapters[3]["current_decision"] == "needs_adjustment"
+    assert chapters[8]["current_decision"] == "reject"
+    assert {chapter["decision_source"] for chapter in chapters} == {"cut_decision_packet"}
     assert sum(1 for chapter in chapters if chapter["retained_context_risk"]) == 6
     assert chapters[3]["representative_role"] == "retained_context_risk_representative"
     assert chapters[7]["representative_role"] == "dense_subtitle_representative"
@@ -165,6 +178,123 @@ def test_chapter_revision_board_generates_with_warnings_without_acceptance_plan(
     }
 
 
+def test_chapter_revision_board_prefers_current_review_and_decision_packets_over_stale_speed_pass(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+    packet_path = review_dir / "cut_review_packet.json"
+    decision_path = review_dir / "cut_decision_packet.json"
+    speed_path = review_dir / "cut_decision_speed_pass.json"
+    edit_pack_path = episode_dir / "edit_pack.json"
+
+    packet = json.loads(packet_path.read_text(encoding="utf-8"))
+    decision_packet = json.loads(decision_path.read_text(encoding="utf-8"))
+    speed = json.loads(speed_path.read_text(encoding="utf-8"))
+    edit_pack = json.loads(edit_pack_path.read_text(encoding="utf-8"))
+
+    _replace_cut(
+        packet["cuts"],
+        "cut_003",
+        start_seconds=22.606,
+        end_seconds=49.566,
+        duration_seconds=26.96,
+        subtitle_event_count=20,
+        subtitle_density_per_second=0.742,
+        subtitle_chars_per_second=6.25,
+        context_status="needs_review",
+    )
+    _replace_cut(
+        packet["cuts"],
+        "cut_004",
+        start_seconds=50.868,
+        end_seconds=60.277,
+        duration_seconds=9.409,
+        subtitle_event_count=5,
+        subtitle_density_per_second=0.531,
+        subtitle_chars_per_second=5.9,
+        context_status="needs_review",
+    )
+    _replace_cut_decision(
+        decision_packet["decisions"],
+        "cut_003",
+        final_cut_decision="keep",
+        duration_seconds=26.96,
+        manual_override_reason=(
+            "Keep candidate with retained context risk visible after boundary/context review."
+        ),
+    )
+    _replace_cut_decision(
+        decision_packet["decisions"],
+        "cut_004",
+        final_cut_decision="needs_adjustment",
+        duration_seconds=9.409,
+        adjustment_recommendation="review segmentation before promotion",
+    )
+    _replace_cut(
+        speed["cuts"],
+        "cut_003",
+        start_seconds=22.606,
+        end_seconds=41.725,
+        duration_seconds=19.119,
+        final_decision="accept_candidate",
+    )
+    _replace_cut(
+        speed["cuts"],
+        "cut_004",
+        start_seconds=41.725,
+        end_seconds=60.277,
+        duration_seconds=18.552,
+        final_decision="accept_candidate",
+    )
+    edit_pack["cut_candidates"] = [
+        {"id": "cut_003", "resegmentation_target": False},
+        {"id": "cut_004", "resegmentation_target": True},
+    ]
+
+    _write_json(packet, packet_path)
+    _write_json(decision_packet, decision_path)
+    _write_json(speed, speed_path)
+    _write_json(edit_pack, edit_pack_path)
+
+    result = build_chapter_revision_board(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        output_dir=review_dir,
+        base_dir=tmp_path,
+    )
+
+    board = result["board"]
+    board_text = result["board_path"].read_text(encoding="utf-8")
+    cut_003 = _chapter(board, "cut_003")
+    cut_004 = _chapter(board, "cut_004")
+
+    assert cut_003["source_start_seconds"] == 22.606
+    assert cut_003["source_end_seconds"] == 49.566
+    assert cut_003["duration_seconds"] == 26.96
+    assert cut_003["subtitle_count"] == 20
+    assert cut_003["current_decision"] == "keep"
+    assert cut_003["decision_scope"] == "current_cut_decision"
+    assert cut_003["manual_override_reason"]
+    assert "19.119" not in cut_003["manual_override_reason"]
+    assert cut_003["decision_source"] == "cut_decision_packet"
+    assert cut_003["historical_candidate_seed_decision"] == {
+        "source": "cut_decision_speed_pass",
+        "final_decision": "accept_candidate",
+        "decision_scope": "candidate_seed_only",
+        "timing_authority": "not_current_authority",
+        "historical_only": True,
+    }
+    assert cut_004["source_start_seconds"] == 50.868
+    assert cut_004["source_end_seconds"] == 60.277
+    assert cut_004["duration_seconds"] == 9.409
+    assert cut_004["subtitle_count"] == 5
+    assert cut_004["current_decision"] == "needs_adjustment"
+    assert cut_004["resegmentation_target"] is True
+    assert "resegmentation_target" in cut_004["current_risks"]
+    assert "19.119" not in board_text
+
+
 def test_build_chapter_revision_board_cli_writes_json_html_and_templates(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
@@ -233,6 +363,7 @@ def _write_review_artifacts(review_dir: Path, episode_id: str) -> None:
     speed = _speed_pass(episode_id)
     source_identity = packet["source_identity"]
     _write_json(packet, review_dir / "cut_review_packet.json")
+    _write_json(_cut_decision_packet(episode_id), review_dir / "cut_decision_packet.json")
     _write_json(
         {
             "schema_version": "v1",
@@ -284,6 +415,7 @@ def _write_review_artifacts(review_dir: Path, episode_id: str) -> None:
         "cut_review_report.html",
         "evidence_summary.html",
         "non_repo_artifact_handoff.html",
+        "cut_decision_report.html",
         "cut_decision_speed_pass.html",
         "regenerated_r3_baseline_acceptance.html",
         "production_subtitle_render_acceptance_plan.html",
@@ -365,6 +497,79 @@ def _speed_pass(episode_id: str) -> dict:
         },
         "cuts": cuts,
     }
+
+
+def _cut_decision_packet(episode_id: str) -> dict:
+    decisions = []
+    for i in range(1, 10):
+        cut_id = f"cut_{i:03d}"
+        status = "passed" if i in {1, 2, 9} else "needs_review"
+        if i in {1, 2, 3}:
+            final_decision = "keep"
+        elif i == 9:
+            final_decision = "reject"
+        else:
+            final_decision = "needs_adjustment"
+        decisions.append(
+            {
+                "cut_id": cut_id,
+                "start_seconds": float(i),
+                "end_seconds": float(i) + (5.0 if i == 9 else 18.0),
+                "duration_seconds": 5.0 if i == 9 else 18.0,
+                "context_status": status,
+                "subtitle_event_count": 33 if i == 8 else (4 if i == 9 else 6 + i),
+                "final_cut_decision": final_decision,
+                "manual_override_reason": (
+                    "keep candidate with retained context risk visible"
+                    if final_decision == "keep"
+                    else None
+                ),
+                "adjustment_recommendation": (
+                    "review before downstream promotion"
+                    if final_decision == "needs_adjustment"
+                    else None
+                ),
+                "production_candidate": False,
+                "rights_status": "pending",
+            }
+        )
+    return {
+        "schema_version": "v1",
+        "artifact_kind": "cut_decision_packet",
+        "episode_id": episode_id,
+        "decision_policy": "manual_review_surface",
+        "production_candidate": False,
+        "rights_status": "pending",
+        "source_identity": _source_identity(),
+        "summary": {
+            "cut_count": 9,
+            "decision_counts": {"keep": 3, "needs_adjustment": 5, "reject": 1},
+        },
+        "decisions": decisions,
+    }
+
+
+def _replace_cut(cuts: list[dict], cut_id: str, **updates) -> None:
+    for cut in cuts:
+        if cut.get("cut_id") == cut_id:
+            cut.update(updates)
+            return
+    raise AssertionError(f"missing cut fixture: {cut_id}")
+
+
+def _replace_cut_decision(decisions: list[dict], cut_id: str, **updates) -> None:
+    for decision in decisions:
+        if decision.get("cut_id") == cut_id:
+            decision.update(updates)
+            return
+    raise AssertionError(f"missing decision fixture: {cut_id}")
+
+
+def _chapter(board: dict, cut_id: str) -> dict:
+    for chapter in board["chapters"]:
+        if chapter.get("source_cut_id") == cut_id:
+            return chapter
+    raise AssertionError(f"missing chapter: {cut_id}")
 
 
 def _edit_pack() -> dict:

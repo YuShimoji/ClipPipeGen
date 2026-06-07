@@ -28,7 +28,8 @@ transcript mutation format.
   "patch_status": "draft",
   "applies_to": {
     "regenerated_r3_baseline_acceptance": "regenerated_r3_baseline_acceptance.json",
-    "cut_decision_speed_pass": "cut_decision_speed_pass.json"
+    "cut_decision_packet": "cut_decision_packet.json",
+    "cut_decision_speed_pass_historical": "cut_decision_speed_pass.json"
   },
   "global_notes": "",
   "revisions": []
