@@ -11,13 +11,13 @@ instructions.
 
 - date: 2026-06-09 JST
 - latest pushed resume point:
-  this tracked handoff/runtime refresh after the local cut_003 operator decision
-  mini-slice closed from the filled `.operator.*` patch artifacts.
+  this tracked handoff/runtime refresh after the cut_003 Subtitle Design /
+  Review UX diagnostic style candidate slice.
   Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
 - previous pushed resume point:
-  `cfd3cb4 Merge remote-tracking branch 'origin/main'`
+  `5fa88cf docs: close cut 003 operator decision slice`
 - latest resume-surface sync validation:
   2026-06-09 JST local readback in this workspace:
   `git status --short --branch` -> `## main...origin/main`;
@@ -43,6 +43,27 @@ instructions.
   This is a cut/content proxy decision only; it is not production subtitle
   design acceptance, production render acceptance, creative acceptance, rights
   approval, publishing acceptance, or public-use permission.
+- latest subtitle design / review UX validation:
+  2026-06-09 JST local readback in this workspace: the tracked
+  `build-subtitle-overlay-visual-proof` generator now writes a diagnostic ASS
+  burned-in subtitle style candidate for the embedded proof subtitle and moves
+  SRT text into `subtitle_overlay_reference/` as reference-only material. The
+  same-basename VLC autoload SRT for `cut_003` was renamed away from the proof
+  video path. The ignored local style probe regenerated only `cut_003` and
+  parsed `subtitle_overlay_visual_proof_report.json`, `.html`, the generated
+  `.burned_in.ass`, the `.reference.srt`, and
+  `representative_visual_proof_report.json`. Readback:
+  `renderer=ffmpeg_subtitles_filter_ass`,
+  `style_candidate_id=jp_clip_readable_v1_burned_in_probe`,
+  `font_size=72`, `outline=5`, `margin_v=70`,
+  `sidecar_srt_reference.role=reference_text_only_not_burned_in_subtitle_rendering`,
+  `old_same_basename_srt_exists=false`, `production_subtitle_design_acceptance=false`,
+  `production_candidate=false`, `rights_status=pending`, and
+  `production_usage_allowed=false`. Existing previous proof frame/video/SRT
+  were archived under `subtitle_overlay_reference/` for comparison in the
+  same HTML report. Human review still decides whether this diagnostic style is
+  acceptable for YouTube readability; no production subtitle design acceptance
+  is claimed.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -72,18 +93,16 @@ instructions.
   It is diagnostic proof evidence only and does not accept production subtitle
   design.
 - latest diagnostic subtitle style readback:
-  `jp_clip_readable_v1` is now recorded as a diagnostic style direction
-  contract for the scoped `cut_002` / `cut_003` overlay proof. It separates
-  qualitative intent from tactical ASS/libass parameters: `font_size`,
-  `outline`, and `margin_v` remain explicitly unpinned/default-readback,
-  `explicit_ass_force_style=false`, and line-width measurement is watch-only.
-  The current readback flags `cut_002` as a long-line risk for a later
-  wrapping/layout preset, not a reason for blind Fontsize tuning. This does not
-  create production subtitle design acceptance, production render acceptance,
-  creative acceptance, rights approval, or public-use permission. The refreshed
-  HTML reports embed or directly link the contact sheet plus `cut_002` /
-  `cut_003` proof PNG/MP4 artifacts so the operator can inspect the scoped
-  overlay surface from one report.
+  `jp_clip_readable_v1` remains the diagnostic direction, and the current
+  cut_003 style probe records an explicit diagnostic ASS candidate rather than
+  relying on FFmpeg/libass SRT defaults. The candidate is intentionally
+  review-only: `font_size=72`, `outline=5`, `margin_v=70`,
+  bottom-center alignment, reference SRT stored away from the video basename,
+  and VLC sidecar review warning present in the HTML. This does not create
+  production subtitle design acceptance, production render acceptance, creative
+  acceptance, rights approval, or public-use permission. The single human
+  review entry point for this slice is
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
@@ -155,14 +174,14 @@ instructions.
   [CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md](CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md)
   as the tracked audit-summary surface; the accepted filled decision itself is
   the ignored `.operator.*` patch, not the blank template.
-- current bottleneck: cut_003 operator decision mini-slice is closed locally as
-  a diagnostic proxy decision, but subtitle production design remains
-  unaccepted. The next narrow move should be a separate subtitle
-  design/readability slice or source-timeline context preview, not another
-  proof regeneration in this closure slice. Rights remain pending and
-  production/public use remains disallowed. Fresh checkouts still need artifact
-  restore/regeneration or explicit local readback before they can rely on the
-  ignored `episodes/` operator patch/proof artifacts.
+- current bottleneck: cut_003 boundary and operator decision remain closed, and
+  the separate Subtitle Design / Review UX diagnostic style probe is ready for
+  human readability review. The remaining decision is whether the embedded
+  burned-in subtitle inside the proof video is closer to YouTube-readable
+  review style than the previous small/movie-subtitle-like proof, while keeping
+  the reference SRT disabled as a player subtitle track. Rights remain pending,
+  production/public use remains disallowed, and production subtitle design
+  acceptance remains false until explicit human approval.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`

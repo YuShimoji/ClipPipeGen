@@ -27,6 +27,12 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         base_dir=tmp_path,
     )
     assert before["handoff"]["visual_proof_status"] == "blocked_no_cut_002_cut_003_overlay_proof"
+    legacy_cut3_srt = review_dir / "subtitle_overlay_visual_proof_cut_003.srt"
+    legacy_cut3_srt.write_text("legacy autoload subtitle", encoding="utf-8")
+    legacy_cut3_video = review_dir / "subtitle_overlay_visual_proof_cut_003.mp4"
+    legacy_cut3_frame = review_dir / "subtitle_overlay_visual_proof_cut_003.png"
+    legacy_cut3_video.write_bytes(b"previous video")
+    legacy_cut3_frame.write_bytes(b"previous frame")
 
     result = build_subtitle_overlay_visual_proof(
         episode_dir=episode_dir,
@@ -49,10 +55,23 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert report["style_direction"]["target_viewing_context"] == (
         "smartphone_readable_japanese_clip_subtitle"
     )
+    assert report["style_parameters"]["renderer"] == "ffmpeg_subtitles_filter_ass"
+    assert report["style_parameters"]["explicit_ass_style_file"] is True
     assert report["style_parameters"]["font_size"]["source"] == (
-        "not_explicitly_pinned_in_this_proof"
+        "explicit_diagnostic_ass_style_candidate"
     )
+    assert report["style_parameters"]["font_size"]["value"] == 72
+    assert report["style_parameters"]["outline"]["value"] == 5
+    assert report["style_parameters"]["margin_v"]["value"] == 70
     assert report["style_parameters"]["wrapping"]["automatic_wrap_applied_by_overlay_generator"] is False
+    assert report["burned_in_subtitle_style"]["style_candidate_id"] == (
+        "jp_clip_readable_v1_burned_in_probe"
+    )
+    assert report["burned_in_subtitle_style"]["production_subtitle_design_acceptance"] is False
+    assert report["sidecar_srt_reference"]["role"] == (
+        "reference_text_only_not_burned_in_subtitle_rendering"
+    )
+    assert report["review_warning"]["vlc_sidecar_srt_auto_display"] == "can_confuse_review"
     assert report["aggregate_summary"]["subtitle_overlay_available_count"] == 2
     assert {item["cut_id"] for item in report["cut_results"]} == {"cut_002", "cut_003"}
 
@@ -61,7 +80,18 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         assert item["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
         assert item["style_direction"]["preset_name"] == "jp_clip_readable_v1"
         assert item["style_parameters"]["alignment"]["value"] == "bottom_center_fixed"
-        assert item["style_parameters"]["font_size"]["value"] is None
+        assert item["style_parameters"]["font_size"]["value"] == 72
+        assert item["burned_in_subtitle_style"]["font_size"] == 72
+        assert item["sidecar_srt_reference"]["role"] == (
+            "reference_text_only_not_burned_in_subtitle_rendering"
+        )
+        assert item["generated_artifacts"]["burned_in_subtitle_file"].endswith(".burned_in.ass")
+        assert item["generated_artifacts"]["sidecar_srt_reference"].endswith(".reference.srt")
+        assert "subtitle_overlay_reference" in item["generated_artifacts"]["sidecar_srt_reference"]
+        assert item["artifact_exists"]["burned_in_subtitle_file"] is True
+        assert item["artifact_exists"]["sidecar_srt_reference"] is True
+        assert ".burned_in.ass" in item["attempts"][0]["summary"]
+        assert ".reference.srt" not in item["attempts"][0]["summary"]
         assert item["line_width_readback"]["measurement_kind"] == "east_asian_width_proxy"
         assert (tmp_path / item["generated_artifacts"]["video"]).is_relative_to(review_dir)
         assert (tmp_path / item["generated_artifacts"]["frame"]).is_relative_to(review_dir)
@@ -71,12 +101,23 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert not (review_dir / "subtitle_overlay_visual_proof_cut_001.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_002.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_002.png").exists()
+    assert (review_dir / "subtitle_overlay_reference" / "subtitle_overlay_visual_proof_cut_002.burned_in.ass").exists()
+    assert (review_dir / "subtitle_overlay_reference" / "subtitle_overlay_visual_proof_cut_002.reference.srt").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_003.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_003.png").exists()
+    assert not legacy_cut3_srt.exists()
+    assert (review_dir / "subtitle_overlay_reference" / "subtitle_overlay_visual_proof_cut_003.legacy_autoload.srt").exists()
+    assert (review_dir / "subtitle_overlay_reference" / "subtitle_overlay_visual_proof_cut_003.previous_style.mp4").exists()
+    assert (review_dir / "subtitle_overlay_reference" / "subtitle_overlay_visual_proof_cut_003.previous_style.png").exists()
+    assert (review_dir / "subtitle_overlay_reference" / "subtitle_overlay_visual_proof_cut_003.previous_autoload.srt").exists()
 
     overlay_html = (review_dir / "subtitle_overlay_visual_proof_report.html").read_text(encoding="utf-8")
     assert "jp_clip_readable_v1" in overlay_html
     assert "font_size" in overlay_html
+    assert "Burned-in vs Sidecar SRT" in overlay_html
+    assert "previous proof for comparison" in overlay_html
+    assert "subtitle_overlay_reference/subtitle_overlay_visual_proof_cut_003.previous_style.png" in overlay_html
+    assert "subtitle_overlay_reference/subtitle_overlay_visual_proof_cut_003.reference.srt" in overlay_html
     assert 'src="subtitle_overlay_visual_proof_cut_002.png"' in overlay_html
     assert 'src="subtitle_overlay_visual_proof_cut_003.mp4"' in overlay_html
     assert 'src="visual_proof_contact_sheet.png"' in overlay_html
@@ -85,12 +126,19 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         (review_dir / "representative_visual_proof_report.json").read_text(encoding="utf-8")
     )
     assert representative["diagnostic_style_direction"]["preset_name"] == "jp_clip_readable_v1"
+    assert representative["burned_in_subtitle_style"]["style_candidate_id"] == (
+        "jp_clip_readable_v1_burned_in_probe"
+    )
+    assert representative["sidecar_srt_reference"]["role"] == (
+        "reference_text_only_not_burned_in_subtitle_rendering"
+    )
     assessments = {item["cut_id"]: item for item in representative["per_cut_visual_assessment"]}
     assert assessments["cut_001"]["visual_proof_status"] == "available_diagnostic_render_frame"
     assert assessments["cut_002"]["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
     assert assessments["cut_002"]["style_parameters"]["font_size"]["source"] == (
-        "not_explicitly_pinned_in_this_proof"
+        "explicit_diagnostic_ass_style_candidate"
     )
+    assert assessments["cut_002"]["sidecar_srt_reference"]["autoload_prevention"]
     assert assessments["cut_002"]["previous_visual_proof_status"] == (
         "available_source_frame_only_no_subtitle_overlay"
     )
@@ -113,6 +161,7 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     cut_002, cut_003 = handoff["cuts"]
     assert cut_002["visual_proof"]["style_direction"]["preset_name"] == "jp_clip_readable_v1"
     assert cut_002["visual_proof"]["style_parameters"]["style_slot"] == "subtitle.default"
+    assert cut_002["visual_proof"]["style_parameters"]["font_size"]["value"] == 72
     assert cut_002["operator_input_fields"]["proxy_decision"] == "undecided"
     assert cut_002["operator_input_fields"]["editorial_intent"] == ""
     assert cut_003["context_status"] == "needs_review"

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import copy
 import json
+import shutil
 import subprocess
 from datetime import datetime, timezone
 from html import escape
@@ -28,6 +29,25 @@ DEFAULT_REVIEW_DIR_NAME = "jp_pilot01r3_cut_review"
 RENDERABLE_SUBTITLE_STATUSES = {"included", "clamped_to_render_window"}
 DIAGNOSTIC_STYLE_DIRECTION_NAME = "jp_clip_readable_v1"
 LINE_WIDTH_WATCH_EAW = 40
+ASS_STYLE_NAME = "ClipPipeDiagnostic"
+ASS_PLAY_RES_X = 1920
+ASS_PLAY_RES_Y = 1080
+DIAGNOSTIC_ASS_STYLE = {
+    "candidate_id": "jp_clip_readable_v1_burned_in_probe",
+    "font_name": "Yu Gothic",
+    "font_size": 72,
+    "outline": 5,
+    "shadow": 1,
+    "margin_l": 80,
+    "margin_r": 80,
+    "margin_v": 70,
+    "alignment": 2,
+    "primary_colour": "&H00FFFFFF",
+    "secondary_colour": "&H00FFFFFF",
+    "outline_colour": "&H00000000",
+    "back_colour": "&H80000000",
+    "border_style": 1,
+}
 
 
 class SubtitleOverlayVisualProofError(Exception):
@@ -200,6 +220,8 @@ def _build_cut_proof(
             attempts=[],
             frame_extract=None,
             error=None,
+            legacy_autoload_srt=None,
+            previous_proof_artifacts=None,
             base=base,
         )
 
@@ -219,11 +241,17 @@ def _build_cut_proof(
             attempts=[],
             frame_extract=None,
             error="no renderable subtitle items for target cut",
+            legacy_autoload_srt=None,
+            previous_proof_artifacts=None,
             base=base,
         )
 
     cut_paths["output_dir"].mkdir(parents=True, exist_ok=True)
-    _write_srt(cut_paths["subtitle_file"], renderable_items)
+    cut_paths["reference_dir"].mkdir(parents=True, exist_ok=True)
+    previous_proof_artifacts = _archive_existing_proof_artifacts(cut_paths)
+    legacy_autoload_srt = _mitigate_legacy_autoload_srt(cut_paths)
+    _write_srt(cut_paths["sidecar_srt_reference"], renderable_items)
+    _write_ass(cut_paths["burned_in_subtitle_file"], renderable_items)
     try:
         render_result = ffmpeg_tiny.render_tiny_proof(
             source_video_path=source_media["source_video"]["resolved_path"],
@@ -234,7 +262,7 @@ def _build_cut_proof(
             ffmpeg_path=ffmpeg_path,
             ffprobe_path=ffprobe_path,
             container=container,
-            subtitle_file_path=cut_paths["subtitle_file"],
+            subtitle_file_path=cut_paths["burned_in_subtitle_file"],
             runner=runner,
         )
         video_path = Path(render_result.output_path)
@@ -259,6 +287,8 @@ def _build_cut_proof(
             attempted_render_profiles=[attempt.to_dict() for attempt in render_result.attempts],
             attempts=[attempt.to_dict() for attempt in render_result.attempts],
             frame_extract=frame_extract,
+            legacy_autoload_srt=legacy_autoload_srt,
+            previous_proof_artifacts=previous_proof_artifacts,
             error=None,
             base=base,
         )
@@ -280,6 +310,8 @@ def _build_cut_proof(
             ],
             attempts=[attempt.to_dict() for attempt in getattr(exc, "attempts", [])],
             frame_extract=None,
+            legacy_autoload_srt=locals().get("legacy_autoload_srt"),
+            previous_proof_artifacts=locals().get("previous_proof_artifacts"),
             error=f"{failure_reason}: {exc}",
             base=base,
         )
@@ -301,6 +333,8 @@ def _cut_report(
     attempts: list[dict[str, Any]],
     frame_extract: dict[str, Any] | None,
     error: str | None,
+    legacy_autoload_srt: dict[str, Any] | None,
+    previous_proof_artifacts: dict[str, Path] | None,
     base: Path,
 ) -> dict[str, Any]:
     cut_id = str(cut.get("id") or "")
@@ -345,6 +379,17 @@ def _cut_report(
         },
         "style_direction": _diagnostic_style_direction(),
         "style_parameters": _style_parameter_readback(items),
+        "burned_in_subtitle_style": _burned_in_subtitle_style_readback(),
+        "sidecar_srt_reference": _sidecar_srt_reference_readback(
+            cut_paths=cut_paths,
+            base=base,
+            legacy_autoload_srt=legacy_autoload_srt,
+        ),
+        "previous_proof_artifacts": _previous_proof_artifacts_readback(
+            previous_proof_artifacts or {},
+            base=base,
+        ),
+        "review_warning": _review_warning_readback(),
         "line_width_readback": _line_width_readback(items),
         "timing_window": {
             "source_start_seconds": start_seconds,
@@ -360,12 +405,23 @@ def _cut_report(
         "generated_artifacts": {
             "video": _display_path(cut_paths["video"], base),
             "frame": _display_path(cut_paths["frame"], base),
-            "diagnostic_subtitle_file": _display_path(cut_paths["subtitle_file"], base),
+            "diagnostic_subtitle_file": _display_path(
+                cut_paths["burned_in_subtitle_file"], base
+            ),
+            "burned_in_subtitle_file": _display_path(
+                cut_paths["burned_in_subtitle_file"], base
+            ),
+            "sidecar_srt_reference": _display_path(
+                cut_paths["sidecar_srt_reference"], base
+            ),
         },
         "artifact_exists": {
             "video": cut_paths["video"].exists(),
             "frame": cut_paths["frame"].exists(),
-            "diagnostic_subtitle_file": cut_paths["subtitle_file"].exists(),
+            "diagnostic_subtitle_file": cut_paths["burned_in_subtitle_file"].exists(),
+            "burned_in_subtitle_file": cut_paths["burned_in_subtitle_file"].exists(),
+            "sidecar_srt_reference": cut_paths["sidecar_srt_reference"].exists(),
+            "legacy_autoload_srt": cut_paths["legacy_autoload_srt"].exists(),
         },
         "output_metadata": output_metadata,
         "selected_render_profile": selected_profile,
@@ -395,11 +451,13 @@ def _cut_report(
         ),
         "limitations": [
             "diagnostic subtitle overlay only; not production subtitle design",
-            "FFmpeg default subtitle styling is used; typography polish is not claimed",
+            "diagnostic ASS style candidate is used for burned-in review subtitles; production typography polish is not claimed",
+            "sidecar SRT is reference-only and stored away from the video basename to avoid VLC auto-display confusion",
             "safe-area, line wrapping, readability, and timing sync still require human review",
-            "overlay presence is inferred from successful subtitle filter/render and generated SRT, not OCR",
+            "overlay presence is inferred from successful subtitle filter/render and generated subtitle files, not OCR",
             "rights_status=pending; production/public usage is not allowed",
         ],
+        "production_subtitle_design_acceptance": False,
         "production_candidate": False,
         "rights_status": "pending",
         "production_usage_allowed": False,
@@ -440,6 +498,9 @@ def _report_payload(
         },
         "style_direction": _diagnostic_style_direction(),
         "style_parameters": _report_style_parameter_summary(cut_reports),
+        "burned_in_subtitle_style": _burned_in_subtitle_style_readback(),
+        "sidecar_srt_reference": _report_sidecar_srt_reference_summary(cut_reports),
+        "review_warning": _review_warning_readback(),
         "cut_results": cut_reports,
         "aggregate_summary": {
             "target_cut_count": len(target_cut_ids),
@@ -462,6 +523,7 @@ def _report_payload(
             "Diagnostic overlay proof only; production render acceptance is not claimed.",
             "Production subtitle design, creative acceptance, publishing acceptance, and rights approval are out of scope.",
             "Generated artifacts are local review artifacts and must not be staged from episodes/.",
+            "Burned-in subtitles are inside the proof video; sidecar SRT files are reference-only and should not be enabled as a VLC subtitle track during embedded-subtitle review.",
         ],
     }
 
@@ -490,32 +552,40 @@ def _diagnostic_style_direction() -> dict[str, Any]:
 
 def _style_parameter_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
     style_slots = _unique_strings(item.get("style_slot") for item in items)
+    style = DIAGNOSTIC_ASS_STYLE
     return {
-        "renderer": "ffmpeg_subtitles_filter_srt",
+        "renderer": "ffmpeg_subtitles_filter_ass",
         "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
         "style_slots": style_slots or ["subtitle.default"],
+        "style_candidate_id": style["candidate_id"],
+        "explicit_ass_style_file": True,
         "explicit_ass_force_style": False,
+        "font_name": {
+            "value": style["font_name"],
+            "source": "explicit_diagnostic_ass_style_candidate",
+            "readback": "ASS style file font name; actual glyph fallback remains renderer/font-provider dependent",
+        },
         "font_size": {
-            "value": None,
+            "value": style["font_size"],
             "unit": "ass_points",
-            "source": "not_explicitly_pinned_in_this_proof",
-            "readback": "FFmpeg/libass SRT default; accepted direction is tracked separately",
+            "source": "explicit_diagnostic_ass_style_candidate",
+            "readback": "larger diagnostic review subtitle than FFmpeg/libass SRT default",
         },
         "outline": {
-            "value": None,
+            "value": style["outline"],
             "unit": "ass_outline_units",
-            "source": "not_explicitly_pinned_in_this_proof",
-            "readback": "FFmpeg/libass SRT default",
+            "source": "explicit_diagnostic_ass_style_candidate",
+            "readback": "stronger diagnostic outline for YouTube-readability review",
         },
         "margin_v": {
-            "value": None,
+            "value": style["margin_v"],
             "unit": "ass_pixels_or_script_units",
-            "source": "not_explicitly_pinned_in_this_proof",
-            "readback": "FFmpeg/libass SRT default",
+            "source": "explicit_diagnostic_ass_style_candidate",
+            "readback": "diagnostic bottom margin for embedded review subtitles",
         },
         "alignment": {
             "value": "bottom_center_fixed",
-            "source": "diagnostic SRT overlay uses bottom subtitle placement",
+            "source": "diagnostic ASS overlay uses bottom-center subtitle placement",
         },
         "wrapping": {
             "policy": "preserve_existing_newlines_only",
@@ -559,6 +629,76 @@ def _line_width_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
             "This is a text-width proxy only; it does not prove rendered pixel width, "
             "kinsoku behavior, safe-area, or final layout."
         ),
+    }
+
+
+def _burned_in_subtitle_style_readback() -> dict[str, Any]:
+    style = DIAGNOSTIC_ASS_STYLE
+    return {
+        "style_candidate_id": style["candidate_id"],
+        "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
+        "renderer_input": "ASS style file consumed by FFmpeg subtitles filter",
+        "comparison_baseline": "previous FFmpeg/libass SRT default proof looked too small and movie-subtitle-like for YouTube review",
+        "intended_design_target": "larger smartphone-readable Japanese YouTube clip review subtitle",
+        "font_name": style["font_name"],
+        "font_size": style["font_size"],
+        "outline": style["outline"],
+        "shadow": style["shadow"],
+        "margin_v": style["margin_v"],
+        "alignment": "bottom_center_fixed",
+        "production_subtitle_design_acceptance": False,
+        "human_review_required": True,
+    }
+
+
+def _review_warning_readback() -> dict[str, Any]:
+    return {
+        "vlc_sidecar_srt_auto_display": "can_confuse_review",
+        "embedded_burned_in_subtitle": "review_the_subtitle_visible_inside_the_video_frame",
+        "sidecar_srt_reference": "reference_text_only_do_not_enable_as_player_subtitle_track_when_judging_burned_in_style",
+        "production_subtitle_design_acceptance": False,
+    }
+
+
+def _sidecar_srt_reference_readback(
+    *,
+    cut_paths: dict[str, Path],
+    base: Path,
+    legacy_autoload_srt: dict[str, Any] | None,
+) -> dict[str, Any]:
+    return {
+        "role": "reference_text_only_not_burned_in_subtitle_rendering",
+        "path": _display_path(cut_paths["sidecar_srt_reference"], base),
+        "autoload_prevention": (
+            "stored_under_subtitle_overlay_reference_with_non_matching_video_basename"
+        ),
+        "vlc_warning": (
+            "Do not enable this SRT as a player subtitle track when reviewing "
+            "the embedded burned-in proof subtitle."
+        ),
+        "legacy_autoload_srt": legacy_autoload_srt
+        or {
+            "status": "not_checked_or_not_applicable",
+            "path": _display_path(cut_paths["legacy_autoload_srt"], base),
+        },
+    }
+
+
+def _report_sidecar_srt_reference_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "role": "reference_text_only_not_burned_in_subtitle_rendering",
+        "autoload_prevention": (
+            "reference SRT files are not stored beside the proof video with "
+            "the same basename"
+        ),
+        "vlc_review_warning": (
+            "disable player subtitle tracks when judging embedded burned-in "
+            "subtitle style"
+        ),
+        "per_cut": {
+            str(cut.get("cut_id")): cut.get("sidecar_srt_reference") or {}
+            for cut in cut_reports
+        },
     }
 
 
@@ -614,6 +754,9 @@ def _updated_representative_report(
     updated["production_usage_allowed"] = False
     updated["diagnostic_style_direction"] = overlay_report["style_direction"]
     updated["diagnostic_style_parameters"] = overlay_report["style_parameters"]
+    updated["burned_in_subtitle_style"] = overlay_report.get("burned_in_subtitle_style") or {}
+    updated["sidecar_srt_reference"] = overlay_report.get("sidecar_srt_reference") or {}
+    updated["review_warning"] = overlay_report.get("review_warning") or {}
     updated["subtitle_overlay_visual_proof"] = {
         "report": overlay_report["outputs"]["json"],
         "target_cuts": overlay_report["target_cuts"],
@@ -622,6 +765,9 @@ def _updated_representative_report(
         ],
         "style_direction": overlay_report["style_direction"],
         "style_parameters": overlay_report["style_parameters"],
+        "burned_in_subtitle_style": overlay_report.get("burned_in_subtitle_style") or {},
+        "sidecar_srt_reference": overlay_report.get("sidecar_srt_reference") or {},
+        "review_warning": overlay_report.get("review_warning") or {},
     }
     by_cut = {str(item.get("cut_id")): item for item in cut_reports}
     assessments = updated.get("per_cut_visual_assessment") or []
@@ -649,6 +795,10 @@ def _updated_representative_report(
         assessment["timing_sync_status"] = proof["timing_sync_status"]
         assessment["style_direction"] = proof["style_direction"]
         assessment["style_parameters"] = proof["style_parameters"]
+        assessment["burned_in_subtitle_style"] = proof.get("burned_in_subtitle_style") or {}
+        assessment["sidecar_srt_reference"] = proof.get("sidecar_srt_reference") or {}
+        assessment["previous_proof_artifacts"] = proof.get("previous_proof_artifacts") or {}
+        assessment["review_warning"] = proof.get("review_warning") or {}
         assessment["line_width_readback"] = proof["line_width_readback"]
         assessment["proof_limitations"] = proof["limitations"]
         assessment["recommended_next_action"] = [
@@ -659,6 +809,10 @@ def _updated_representative_report(
             "report": overlay_report["outputs"]["json"],
             "style_direction": proof["style_direction"],
             "style_parameters": proof["style_parameters"],
+            "burned_in_subtitle_style": proof.get("burned_in_subtitle_style") or {},
+            "sidecar_srt_reference": proof.get("sidecar_srt_reference") or {},
+            "previous_proof_artifacts": proof.get("previous_proof_artifacts") or {},
+            "review_warning": proof.get("review_warning") or {},
             "line_width_readback": proof["line_width_readback"],
             "timing_window": proof["timing_window"],
             "subtitle_source": proof["subtitle_source"],
@@ -857,11 +1011,19 @@ def _output_paths(*, review_dir: Path) -> dict[str, Any]:
     def for_cut(cut_id: str) -> dict[str, Path]:
         if cut_id not in cuts:
             stem = f"subtitle_overlay_visual_proof_{cut_id}"
+            reference_dir = review_dir / "subtitle_overlay_reference"
             cuts[cut_id] = {
                 "output_dir": review_dir,
+                "reference_dir": reference_dir,
                 "video": review_dir / f"{stem}.mp4",
                 "frame": review_dir / f"{stem}.png",
-                "subtitle_file": review_dir / f"{stem}.srt",
+                "legacy_autoload_srt": review_dir / f"{stem}.srt",
+                "burned_in_subtitle_file": reference_dir / f"{stem}.burned_in.ass",
+                "sidecar_srt_reference": reference_dir / f"{stem}.reference.srt",
+                "legacy_autoload_srt_archive": reference_dir / f"{stem}.legacy_autoload.srt",
+                "previous_proof_video": reference_dir / f"{stem}.previous_style.mp4",
+                "previous_proof_frame": reference_dir / f"{stem}.previous_style.png",
+                "previous_autoload_srt": reference_dir / f"{stem}.previous_autoload.srt",
             }
         return cuts[cut_id]
 
@@ -889,6 +1051,122 @@ def _write_srt(path: Path, items: list[dict[str, Any]]) -> None:
         lines.extend(str(item.get("text") or "").splitlines() or [""])
         lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _mitigate_legacy_autoload_srt(cut_paths: dict[str, Path]) -> dict[str, Any]:
+    legacy_path = cut_paths["legacy_autoload_srt"]
+    archive_path = cut_paths["legacy_autoload_srt_archive"]
+    if not legacy_path.exists():
+        return {
+            "status": "not_present",
+            "path": str(legacy_path).replace("\\", "/"),
+            "autoload_risk_after_run": False,
+        }
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    if archive_path.exists():
+        archive_path.unlink()
+    legacy_path.replace(archive_path)
+    return {
+        "status": "renamed_to_reference_directory",
+        "path": str(legacy_path).replace("\\", "/"),
+        "archived_as": str(archive_path).replace("\\", "/"),
+        "autoload_risk_after_run": False,
+    }
+
+
+def _archive_existing_proof_artifacts(cut_paths: dict[str, Path]) -> dict[str, Path]:
+    archived: dict[str, Path] = {}
+    candidates = {
+        "previous_proof_video": (cut_paths["video"], cut_paths["previous_proof_video"]),
+        "previous_proof_frame": (cut_paths["frame"], cut_paths["previous_proof_frame"]),
+        "previous_autoload_srt": (
+            cut_paths["legacy_autoload_srt"],
+            cut_paths["previous_autoload_srt"],
+        ),
+    }
+    for key, (source, target) in candidates.items():
+        if not source.exists():
+            continue
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        archived[key] = target
+    return archived
+
+
+def _previous_proof_artifacts_readback(
+    artifacts: dict[str, Path],
+    *,
+    base: Path,
+) -> dict[str, Any]:
+    if not artifacts:
+        return {
+            "status": "not_available",
+            "role": "previous proof artifacts were not present before this run",
+        }
+    return {
+        "status": "archived_before_overwrite",
+        "role": "previous diagnostic proof for visual comparison only",
+        "not_acceptance": "previous proof is not production subtitle design acceptance",
+        "artifacts": {
+            key: _display_path(value, base)
+            for key, value in artifacts.items()
+        },
+    }
+
+
+def _write_ass(path: Path, items: list[dict[str, Any]]) -> None:
+    style = DIAGNOSTIC_ASS_STYLE
+    lines = [
+        "[Script Info]",
+        "ScriptType: v4.00+",
+        f"PlayResX: {ASS_PLAY_RES_X}",
+        f"PlayResY: {ASS_PLAY_RES_Y}",
+        "WrapStyle: 0",
+        "ScaledBorderAndShadow: yes",
+        "",
+        "[V4+ Styles]",
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
+        (
+            f"Style: {ASS_STYLE_NAME},{style['font_name']},{style['font_size']},"
+            f"{style['primary_colour']},{style['secondary_colour']},"
+            f"{style['outline_colour']},{style['back_colour']},"
+            "0,0,0,0,100,100,0,0,"
+            f"{style['border_style']},{style['outline']},{style['shadow']},"
+            f"{style['alignment']},{style['margin_l']},{style['margin_r']},"
+            f"{style['margin_v']},1"
+        ),
+        "",
+        "[Events]",
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
+    ]
+    for item in items:
+        start = _ass_time(float(item["render_start_seconds"]))
+        end = _ass_time(float(item["render_end_seconds"]))
+        text = _ass_text(str(item.get("text") or ""))
+        lines.append(f"Dialogue: 0,{start},{end},{ASS_STYLE_NAME},,0,0,0,,{text}")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _ass_text(text: str) -> str:
+    return (
+        text.replace("\\", "\\\\")
+        .replace("{", "\\{")
+        .replace("}", "\\}")
+        .replace("\r\n", "\n")
+        .replace("\r", "\n")
+        .replace("\n", "\\N")
+    )
+
+
+def _ass_time(seconds: float) -> str:
+    total_cs = max(0, int(round(seconds * 100)))
+    cs = total_cs % 100
+    total_seconds = total_cs // 100
+    sec = total_seconds % 60
+    minutes_total = total_seconds // 60
+    minute = minutes_total % 60
+    hour = minutes_total // 60
+    return f"{hour}:{minute:02d}:{sec:02d}.{cs:02d}"
 
 
 def _extract_frame(
@@ -961,6 +1239,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
         report.get("style_direction") or {},
         report.get("style_parameters") or {},
     )
+    review_warning = _review_warning_html(report.get("review_warning") or {})
     related_visuals = _related_visuals_html(report.get("related_visual_artifacts") or {})
     return f"""<!doctype html>
 <html lang="ja">
@@ -985,6 +1264,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
   <p>target cuts: {escape(", ".join(report.get("target_cuts") or []))}</p>
   <p>rights_status: {escape(str(report.get("rights_status", "")))} / production_candidate: {escape(str(report.get("production_candidate", "")))}</p>
+{review_warning}
   <section>
     <h2>Diagnostic Style Direction</h2>
 {style_summary}
@@ -1002,7 +1282,13 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
 def _overlay_cut_row(item: dict[str, Any]) -> str:
     artifacts = item.get("generated_artifacts") or {}
     limitations = "<br>".join(escape(str(value)) for value in item.get("limitations") or [])
+    previous = (item.get("previous_proof_artifacts") or {}).get("artifacts") or {}
     artifact_text = _artifact_links_html(artifacts)
+    if previous:
+        artifact_text = (
+            f"{artifact_text}<br><strong>previous proof for comparison</strong><br>"
+            f"{_artifact_links_html(previous)}"
+        )
     visual = _visual_embed_html(
         frame=artifacts.get("frame"),
         video=artifacts.get("video"),
@@ -1042,6 +1328,7 @@ def _representative_report_html(report: dict[str, Any]) -> str:
         report.get("diagnostic_style_direction") or {},
         report.get("diagnostic_style_parameters") or {},
     )
+    review_warning = _review_warning_html(report.get("review_warning") or {})
     related_visuals = _related_visuals_html(report.get("outputs") or {})
     return f"""<!doctype html>
 <html lang="ja">
@@ -1065,6 +1352,7 @@ def _representative_report_html(report: dict[str, Any]) -> str:
   <h1>Representative Visual Proof Report</h1>
   <p class="warn">Diagnostic only. Human review is still required. production_candidate=false, rights_status=pending.</p>
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
+{review_warning}
   <section>
     <h2>Diagnostic Style Direction</h2>
 {style_summary}
@@ -1121,6 +1409,7 @@ def _representative_cut_row(item: dict[str, Any]) -> str:
 def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -> str:
     if not direction and not parameters:
         return "    <p>No diagnostic style direction is recorded for this report.</p>"
+    font_name = parameters.get("font_name") or {}
     font_size = parameters.get("font_size") or {}
     outline = parameters.get("outline") or {}
     margin_v = parameters.get("margin_v") or {}
@@ -1130,9 +1419,12 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
     return (
         "    <dl>"
         f"<dt>preset</dt><dd>{escape(str(direction.get('preset_name', '')))}</dd>"
+        f"<dt>renderer</dt><dd>{escape(str(parameters.get('renderer', '')))}</dd>"
         f"<dt>intent</dt><dd>{escape(str(direction.get('target_viewing_context', '')))}; "
         f"{escape(str(direction.get('visual_weight', '')))}</dd>"
         f"<dt>long-line policy</dt><dd>{escape(str(direction.get('long_line_policy', '')))}</dd>"
+        f"<dt>font name</dt><dd>{escape(str(font_name.get('value', '')))} "
+        f"({escape(str(font_name.get('source', '')))}; {escape(str(font_name.get('readback', '')))})</dd>"
         f"<dt>font size</dt><dd>{escape(str(font_size.get('value')))} "
         f"({escape(str(font_size.get('source', '')))}; {escape(str(font_size.get('readback', '')))})</dd>"
         f"<dt>outline</dt><dd>{escape(str(outline.get('value')))} "
@@ -1162,6 +1454,7 @@ def _style_cut_html(
     return "<br>".join(
         [
             f"preset: {escape(str(direction.get('preset_name', '')))}",
+            f"renderer: {escape(str(parameters.get('renderer', '')))}",
             f"style_slot: {escape(str(parameters.get('style_slot', '')))}",
             f"font_size: {escape(str(font_size.get('value')))} ({escape(str(font_size.get('source', '')))})",
             f"outline: {escape(str(outline.get('value')))} ({escape(str(outline.get('source', '')))})",
@@ -1170,6 +1463,24 @@ def _style_cut_html(
             f"max_raw_eaw: {escape(str(line_width.get('max_raw_line_eaw', '')))}",
             f"needs_wrap_watch: {escape(str(line_width.get('needs_wrap_count', '')))}",
         ]
+    )
+
+
+def _review_warning_html(warning: dict[str, Any]) -> str:
+    if not warning:
+        return ""
+    return (
+        "  <section class=\"warn\"><h2>Burned-in vs Sidecar SRT</h2>"
+        "<p>The subtitle to review is the embedded burned-in subtitle visible "
+        "inside the proof video frame. Sidecar SRT files are reference text "
+        "only; disable player subtitle tracks in VLC when judging the burned-in "
+        "subtitle style.</p>"
+        "<dl>"
+        f"<dt>VLC sidecar SRT</dt><dd>{escape(str(warning.get('vlc_sidecar_srt_auto_display', '')))}</dd>"
+        f"<dt>embedded subtitle</dt><dd>{escape(str(warning.get('embedded_burned_in_subtitle', '')))}</dd>"
+        f"<dt>sidecar SRT role</dt><dd>{escape(str(warning.get('sidecar_srt_reference', '')))}</dd>"
+        f"<dt>production subtitle design acceptance</dt><dd>{escape(str(warning.get('production_subtitle_design_acceptance', '')))}</dd>"
+        "</dl></section>"
     )
 
 
@@ -1221,6 +1532,10 @@ def _artifact_href(value: Any) -> str:
     text = str(value).replace("\\", "/")
     if text.startswith(("http://", "https://")):
         return escape(text, quote=True)
+    parts = [part for part in text.split("/") if part]
+    if "subtitle_overlay_reference" in parts:
+        index = parts.index("subtitle_overlay_reference")
+        return escape("/".join(parts[index:]), quote=True)
     return escape(Path(text).name, quote=True)
 
 
