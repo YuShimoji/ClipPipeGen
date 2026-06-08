@@ -37,8 +37,8 @@ MANUAL_DECISIONS = {
         "decision_reason": "strong candidate arc despite needs_review context flag",
         "manual_override_reason": (
             "context flag is caused by immediate following subtitle boundary; official subtitle track source, "
-            "19.119s duration, and moderate subtitle density make it worth carrying to production subtitle/render "
-            "acceptance as a candidate, not as production-approved"
+            "retained context risk, and manageable subtitle density make it worth carrying to production "
+            "subtitle/render acceptance as a candidate, not as production-approved"
         ),
     },
     "cut_004": {
