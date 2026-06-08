@@ -18,6 +18,7 @@ from typing import Any
 from src.integrations.render import ffmpeg_tiny
 from src.pipeline.edit_pack import load_edit_pack, validate_edit_pack
 from src.pipeline.material_ledger import load_ledger
+from src.pipeline.text_measure import measure_subtitle
 
 SCHEMA_VERSION = "v1"
 REPORT_KIND = "subtitle_overlay_visual_proof_report"
@@ -25,6 +26,8 @@ DEFAULT_SOURCE_VIDEO_MATERIAL_ID = "src_video_jp_pilot01"
 DEFAULT_SOURCE_AUDIO_MATERIAL_ID = "src_audio_jp_pilot01"
 DEFAULT_REVIEW_DIR_NAME = "jp_pilot01r3_cut_review"
 RENDERABLE_SUBTITLE_STATUSES = {"included", "clamped_to_render_window"}
+DIAGNOSTIC_STYLE_DIRECTION_NAME = "jp_clip_readable_v1"
+LINE_WIDTH_WATCH_EAW = 40
 
 
 class SubtitleOverlayVisualProofError(Exception):
@@ -111,6 +114,7 @@ def build_subtitle_overlay_visual_proof(
         source_media=source_media,
         cut_reports=cut_reports,
         representative_report_path=representative_path,
+        representative_report=representative_report,
         report_path=report_path,
         report_html_path=report_html_path,
         base=base,
@@ -339,6 +343,9 @@ def _cut_report(
                 for segment_id in item.get("source_segment_ids", [])
             ),
         },
+        "style_direction": _diagnostic_style_direction(),
+        "style_parameters": _style_parameter_readback(items),
+        "line_width_readback": _line_width_readback(items),
         "timing_window": {
             "source_start_seconds": start_seconds,
             "source_end_seconds": end_seconds,
@@ -409,6 +416,7 @@ def _report_payload(
     source_media: dict[str, Any],
     cut_reports: list[dict[str, Any]],
     representative_report_path: Path,
+    representative_report: dict[str, Any],
     report_path: Path,
     report_html_path: Path,
     base: Path,
@@ -430,6 +438,8 @@ def _report_payload(
             "source_video": _source_media_public(source_media["source_video"]),
             "source_audio": _source_media_public(source_media["source_audio"]),
         },
+        "style_direction": _diagnostic_style_direction(),
+        "style_parameters": _report_style_parameter_summary(cut_reports),
         "cut_results": cut_reports,
         "aggregate_summary": {
             "target_cut_count": len(target_cut_ids),
@@ -438,6 +448,7 @@ def _report_payload(
             "all_target_cuts_have_overlay": success_count == len(target_cut_ids),
         },
         "representative_visual_proof_report": _display_path(representative_report_path, base),
+        "related_visual_artifacts": _related_visual_artifacts(representative_report),
         "outputs": {
             "json": _display_path(report_path, base),
             "html": _display_path(report_html_path, base),
@@ -455,6 +466,138 @@ def _report_payload(
     }
 
 
+def _diagnostic_style_direction() -> dict[str, Any]:
+    return {
+        "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
+        "contract_status": "diagnostic_direction_readback",
+        "target_viewing_context": "smartphone_readable_japanese_clip_subtitle",
+        "visual_weight": "larger_and_more_assertive_than_restrained_film_or_news_subtitles",
+        "reaction_caption_tolerance": "short_reaction_captions_may_carry_stronger_visual_weight",
+        "long_line_policy": (
+            "long captions must be watched for excessive horizontal spread; "
+            "wrapping/layout is not accepted by this diagnostic proof"
+        ),
+        "review_status": "diagnostic_human_review_required",
+        "not_acceptance": [
+            "not_production_subtitle_design_acceptance",
+            "not_production_render_acceptance",
+            "not_creative_acceptance",
+            "not_rights_approval",
+            "not_public_use_permission",
+        ],
+    }
+
+
+def _style_parameter_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
+    style_slots = _unique_strings(item.get("style_slot") for item in items)
+    return {
+        "renderer": "ffmpeg_subtitles_filter_srt",
+        "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
+        "style_slots": style_slots or ["subtitle.default"],
+        "explicit_ass_force_style": False,
+        "font_size": {
+            "value": None,
+            "unit": "ass_points",
+            "source": "not_explicitly_pinned_in_this_proof",
+            "readback": "FFmpeg/libass SRT default; accepted direction is tracked separately",
+        },
+        "outline": {
+            "value": None,
+            "unit": "ass_outline_units",
+            "source": "not_explicitly_pinned_in_this_proof",
+            "readback": "FFmpeg/libass SRT default",
+        },
+        "margin_v": {
+            "value": None,
+            "unit": "ass_pixels_or_script_units",
+            "source": "not_explicitly_pinned_in_this_proof",
+            "readback": "FFmpeg/libass SRT default",
+        },
+        "alignment": {
+            "value": "bottom_center_fixed",
+            "source": "diagnostic SRT overlay uses bottom subtitle placement",
+        },
+        "wrapping": {
+            "policy": "preserve_existing_newlines_only",
+            "automatic_wrap_applied_by_overlay_generator": False,
+            "available_proxy_wrap_eaw": LINE_WIDTH_WATCH_EAW,
+            "watch_item": (
+                "Long subtitle line width may require a later clip subtitle "
+                "layout preset or wrapping policy."
+            ),
+        },
+    }
+
+
+def _line_width_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    for item in items:
+        text = str(item.get("text") or "")
+        raw = measure_subtitle(text)
+        wrapped = measure_subtitle(text, wrap_eaw=LINE_WIDTH_WATCH_EAW)
+        rows.append(
+            {
+                "subtitle_id": item.get("subtitle_id"),
+                "status": item.get("status"),
+                "raw_longest_line_eaw": raw.longest_line_eaw,
+                "raw_line_count": len(raw.lines),
+                "watch_wrap_eaw": LINE_WIDTH_WATCH_EAW,
+                "would_wrap_at_watch_eaw": wrapped.needs_wrap,
+                "wrapped_line_count": len(wrapped.lines),
+                "max_wrapped_line_eaw": wrapped.longest_line_eaw,
+            }
+        )
+    return {
+        "measurement_kind": "east_asian_width_proxy",
+        "policy_status": "watch_only_no_layout_engine_change",
+        "watch_wrap_eaw": LINE_WIDTH_WATCH_EAW,
+        "subtitle_count_measured": len(rows),
+        "max_raw_line_eaw": max((row["raw_longest_line_eaw"] for row in rows), default=0),
+        "needs_wrap_count": sum(1 for row in rows if row["would_wrap_at_watch_eaw"]),
+        "items": rows,
+        "known_limitation": (
+            "This is a text-width proxy only; it does not prove rendered pixel width, "
+            "kinsoku behavior, safe-area, or final layout."
+        ),
+    }
+
+
+def _report_style_parameter_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    style_slots = _unique_strings(
+        slot
+        for cut in cut_reports
+        for slot in (cut.get("style_parameters") or {}).get("style_slots", [])
+    )
+    long_line_count = sum(
+        int((cut.get("line_width_readback") or {}).get("needs_wrap_count") or 0)
+        for cut in cut_reports
+    )
+    return {
+        **_style_parameter_readback([]),
+        "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
+        "style_slots": style_slots or ["subtitle.default"],
+        "per_cut": {
+            str(cut.get("cut_id")): cut.get("style_parameters") or {}
+            for cut in cut_reports
+        },
+        "line_width_watch_summary": {
+            "watch_wrap_eaw": LINE_WIDTH_WATCH_EAW,
+            "cuts_measured": len(cut_reports),
+            "subtitle_items_needing_wrap_watch": long_line_count,
+            "policy_status": "watch_only_no_layout_engine_change",
+        },
+    }
+
+
+def _related_visual_artifacts(representative_report: dict[str, Any]) -> dict[str, Any]:
+    outputs = representative_report.get("outputs") if isinstance(representative_report, dict) else {}
+    contact_sheet = outputs.get("contact_sheet") if isinstance(outputs, dict) else None
+    return {
+        "representative_visual_proof_report_html": outputs.get("html") if isinstance(outputs, dict) else None,
+        "contact_sheet": contact_sheet,
+    }
+
+
 def _updated_representative_report(
     *,
     representative_report: dict[str, Any],
@@ -469,12 +612,16 @@ def _updated_representative_report(
     updated["publish_acceptance"] = False
     updated["rights_status"] = "pending"
     updated["production_usage_allowed"] = False
+    updated["diagnostic_style_direction"] = overlay_report["style_direction"]
+    updated["diagnostic_style_parameters"] = overlay_report["style_parameters"]
     updated["subtitle_overlay_visual_proof"] = {
         "report": overlay_report["outputs"]["json"],
         "target_cuts": overlay_report["target_cuts"],
         "all_target_cuts_have_overlay": overlay_report["aggregate_summary"][
             "all_target_cuts_have_overlay"
         ],
+        "style_direction": overlay_report["style_direction"],
+        "style_parameters": overlay_report["style_parameters"],
     }
     by_cut = {str(item.get("cut_id")): item for item in cut_reports}
     assessments = updated.get("per_cut_visual_assessment") or []
@@ -500,6 +647,9 @@ def _updated_representative_report(
         assessment["safe_area_status"] = proof["safe_area_status"]
         assessment["line_wrapping_status"] = proof["line_wrapping_status"]
         assessment["timing_sync_status"] = proof["timing_sync_status"]
+        assessment["style_direction"] = proof["style_direction"]
+        assessment["style_parameters"] = proof["style_parameters"]
+        assessment["line_width_readback"] = proof["line_width_readback"]
         assessment["proof_limitations"] = proof["limitations"]
         assessment["recommended_next_action"] = [
             f"human_review_{cut_id}_diagnostic_subtitle_overlay_for_readability_safe_area_line_wrapping_and_timing",
@@ -507,6 +657,9 @@ def _updated_representative_report(
         ]
         assessment["subtitle_overlay_readback"] = {
             "report": overlay_report["outputs"]["json"],
+            "style_direction": proof["style_direction"],
+            "style_parameters": proof["style_parameters"],
+            "line_width_readback": proof["line_width_readback"],
             "timing_window": proof["timing_window"],
             "subtitle_source": proof["subtitle_source"],
             "artifact_exists": proof["artifact_exists"],
@@ -681,6 +834,7 @@ def _subtitle_items_for_cut(
                 "status": status,
                 "skip_reason": skip_reason,
                 "text": text,
+                "style_slot": subtitle.get("style_slot"),
                 "draft": subtitle.get("draft"),
                 "diagnostic": subtitle.get("diagnostic"),
                 "not_production_subtitle_design": subtitle.get("not_production_subtitle_design"),
@@ -803,6 +957,11 @@ def _write_json(payload: dict[str, Any], path: Path) -> None:
 
 def _overlay_report_html(report: dict[str, Any]) -> str:
     rows = "\n".join(_overlay_cut_row(item) for item in report.get("cut_results") or [])
+    style_summary = _style_summary_html(
+        report.get("style_direction") or {},
+        report.get("style_parameters") or {},
+    )
+    related_visuals = _related_visuals_html(report.get("related_visual_artifacts") or {})
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -814,6 +973,10 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
     th, td {{ border: 1px solid #ccc; padding: 8px; vertical-align: top; }}
     th {{ background: #f3f3f3; }}
     .warn {{ color: #8a4b00; }}
+    .proof-frame {{ max-width: 360px; width: 100%; border: 1px solid #ccc; display: block; margin-bottom: 8px; }}
+    video {{ max-width: 360px; width: 100%; display: block; margin-top: 8px; }}
+    dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
+    dt {{ font-weight: 700; }}
   </style>
 </head>
 <body>
@@ -822,8 +985,13 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
   <p>target cuts: {escape(", ".join(report.get("target_cuts") or []))}</p>
   <p>rights_status: {escape(str(report.get("rights_status", "")))} / production_candidate: {escape(str(report.get("production_candidate", "")))}</p>
+  <section>
+    <h2>Diagnostic Style Direction</h2>
+{style_summary}
+  </section>
+{related_visuals}
   <table>
-    <tr><th>cut</th><th>status</th><th>artifacts</th><th>review statuses</th><th>limitations</th></tr>
+    <tr><th>cut</th><th>status</th><th>visual</th><th>artifacts</th><th>style readback</th><th>review statuses</th><th>limitations</th></tr>
     {rows}
   </table>
 </body>
@@ -834,8 +1002,16 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
 def _overlay_cut_row(item: dict[str, Any]) -> str:
     artifacts = item.get("generated_artifacts") or {}
     limitations = "<br>".join(escape(str(value)) for value in item.get("limitations") or [])
-    artifact_text = "<br>".join(
-        f"{escape(key)}: {escape(str(value))}" for key, value in artifacts.items()
+    artifact_text = _artifact_links_html(artifacts)
+    visual = _visual_embed_html(
+        frame=artifacts.get("frame"),
+        video=artifacts.get("video"),
+        alt=f"{item.get('cut_id', '')} subtitle-overlay proof frame",
+    )
+    style_text = _style_cut_html(
+        item.get("style_direction") or {},
+        item.get("style_parameters") or {},
+        item.get("line_width_readback") or {},
     )
     statuses = "<br>".join(
         [
@@ -849,7 +1025,9 @@ def _overlay_cut_row(item: dict[str, Any]) -> str:
         "<tr>"
         f"<td>{escape(str(item.get('cut_id', '')))}</td>"
         f"<td>{escape(str(item.get('visual_proof_status', '')))}<br>overlay_present={escape(str(item.get('subtitle_overlay_present', '')))}</td>"
+        f"<td>{visual}</td>"
         f"<td>{artifact_text}</td>"
+        f"<td>{style_text}</td>"
         f"<td>{statuses}</td>"
         f"<td>{limitations}</td>"
         "</tr>"
@@ -860,6 +1038,11 @@ def _representative_report_html(report: dict[str, Any]) -> str:
     rows = "\n".join(
         _representative_cut_row(item) for item in report.get("per_cut_visual_assessment") or []
     )
+    style_summary = _style_summary_html(
+        report.get("diagnostic_style_direction") or {},
+        report.get("diagnostic_style_parameters") or {},
+    )
+    related_visuals = _related_visuals_html(report.get("outputs") or {})
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -871,14 +1054,24 @@ def _representative_report_html(report: dict[str, Any]) -> str:
     th, td {{ border: 1px solid #ccc; padding: 8px; vertical-align: top; }}
     th {{ background: #f3f3f3; }}
     .warn {{ color: #8a4b00; }}
+    .proof-frame {{ max-width: 360px; width: 100%; border: 1px solid #ccc; display: block; margin-bottom: 8px; }}
+    .contact-sheet {{ max-width: 100%; border: 1px solid #ccc; display: block; margin: 8px 0 16px; }}
+    video {{ max-width: 360px; width: 100%; display: block; margin-top: 8px; }}
+    dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
+    dt {{ font-weight: 700; }}
   </style>
 </head>
 <body>
   <h1>Representative Visual Proof Report</h1>
   <p class="warn">Diagnostic only. Human review is still required. production_candidate=false, rights_status=pending.</p>
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
+  <section>
+    <h2>Diagnostic Style Direction</h2>
+{style_summary}
+  </section>
+{related_visuals}
   <table>
-    <tr><th>cut</th><th>visual proof</th><th>artifacts</th><th>review status</th><th>limitations</th></tr>
+    <tr><th>cut</th><th>visual proof</th><th>visual</th><th>artifacts</th><th>style readback</th><th>review status</th><th>limitations</th></tr>
     {rows}
   </table>
 </body>
@@ -892,8 +1085,16 @@ def _representative_cut_row(item: dict[str, Any]) -> str:
         ("video", item.get("visual_proof_video_artifact_path")),
         ("previous_source_frame", item.get("previous_source_frame_artifact_path")),
     ]
-    artifact_text = "<br>".join(
-        f"{escape(label)}: {escape(str(value))}" for label, value in artifacts if value
+    artifact_text = _artifact_links_html({label: value for label, value in artifacts if value})
+    visual = _visual_embed_html(
+        frame=item.get("visual_proof_artifact_path"),
+        video=item.get("visual_proof_video_artifact_path"),
+        alt=f"{item.get('cut_id', '')} representative visual proof",
+    )
+    style_text = _style_cut_html(
+        item.get("style_direction") or {},
+        item.get("style_parameters") or {},
+        item.get("line_width_readback") or {},
     )
     limitations = "<br>".join(escape(str(value)) for value in item.get("proof_limitations") or [])
     statuses = "<br>".join(
@@ -908,11 +1109,119 @@ def _representative_cut_row(item: dict[str, Any]) -> str:
         "<tr>"
         f"<td>{escape(str(item.get('cut_id', '')))}</td>"
         f"<td>{escape(str(item.get('visual_proof_status', '')))}</td>"
+        f"<td>{visual}</td>"
         f"<td>{artifact_text}</td>"
+        f"<td>{style_text}</td>"
         f"<td>{statuses}</td>"
         f"<td>{limitations}</td>"
         "</tr>"
     )
+
+
+def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -> str:
+    if not direction and not parameters:
+        return "    <p>No diagnostic style direction is recorded for this report.</p>"
+    font_size = parameters.get("font_size") or {}
+    outline = parameters.get("outline") or {}
+    margin_v = parameters.get("margin_v") or {}
+    alignment = parameters.get("alignment") or {}
+    wrapping = parameters.get("wrapping") or {}
+    line_summary = parameters.get("line_width_watch_summary") or {}
+    return (
+        "    <dl>"
+        f"<dt>preset</dt><dd>{escape(str(direction.get('preset_name', '')))}</dd>"
+        f"<dt>intent</dt><dd>{escape(str(direction.get('target_viewing_context', '')))}; "
+        f"{escape(str(direction.get('visual_weight', '')))}</dd>"
+        f"<dt>long-line policy</dt><dd>{escape(str(direction.get('long_line_policy', '')))}</dd>"
+        f"<dt>font size</dt><dd>{escape(str(font_size.get('value')))} "
+        f"({escape(str(font_size.get('source', '')))}; {escape(str(font_size.get('readback', '')))})</dd>"
+        f"<dt>outline</dt><dd>{escape(str(outline.get('value')))} "
+        f"({escape(str(outline.get('source', '')))}; {escape(str(outline.get('readback', '')))})</dd>"
+        f"<dt>margin_v</dt><dd>{escape(str(margin_v.get('value')))} "
+        f"({escape(str(margin_v.get('source', '')))}; {escape(str(margin_v.get('readback', '')))})</dd>"
+        f"<dt>alignment</dt><dd>{escape(str(alignment.get('value', '')))}</dd>"
+        f"<dt>wrapping</dt><dd>{escape(str(wrapping.get('policy', '')))}; "
+        f"watch_eaw={escape(str(wrapping.get('available_proxy_wrap_eaw', '')))}</dd>"
+        f"<dt>line-width watch</dt><dd>subtitle_items_needing_wrap_watch="
+        f"{escape(str(line_summary.get('subtitle_items_needing_wrap_watch', '')))}</dd>"
+        "    </dl>"
+    )
+
+
+def _style_cut_html(
+    direction: dict[str, Any],
+    parameters: dict[str, Any],
+    line_width: dict[str, Any],
+) -> str:
+    if not direction and not parameters and not line_width:
+        return ""
+    font_size = parameters.get("font_size") or {}
+    outline = parameters.get("outline") or {}
+    margin_v = parameters.get("margin_v") or {}
+    alignment = parameters.get("alignment") or {}
+    return "<br>".join(
+        [
+            f"preset: {escape(str(direction.get('preset_name', '')))}",
+            f"style_slot: {escape(str(parameters.get('style_slot', '')))}",
+            f"font_size: {escape(str(font_size.get('value')))} ({escape(str(font_size.get('source', '')))})",
+            f"outline: {escape(str(outline.get('value')))} ({escape(str(outline.get('source', '')))})",
+            f"margin_v: {escape(str(margin_v.get('value')))} ({escape(str(margin_v.get('source', '')))})",
+            f"alignment: {escape(str(alignment.get('value', '')))}",
+            f"max_raw_eaw: {escape(str(line_width.get('max_raw_line_eaw', '')))}",
+            f"needs_wrap_watch: {escape(str(line_width.get('needs_wrap_count', '')))}",
+        ]
+    )
+
+
+def _related_visuals_html(artifacts: dict[str, Any]) -> str:
+    contact_sheet = artifacts.get("contact_sheet")
+    representative_html = artifacts.get("representative_visual_proof_report_html") or artifacts.get("html")
+    chunks: list[str] = []
+    if contact_sheet:
+        href = _artifact_href(contact_sheet)
+        chunks.append(
+            "  <section><h2>Contact Sheet</h2>"
+            f"<a href=\"{href}\"><img class=\"contact-sheet\" src=\"{href}\" alt=\"visual proof contact sheet\"></a>"
+            "</section>"
+        )
+    if representative_html:
+        href = _artifact_href(representative_html)
+        chunks.append(
+            f"  <p>Representative report: <a href=\"{href}\">{escape(str(representative_html))}</a></p>"
+        )
+    return "\n".join(chunks)
+
+
+def _visual_embed_html(*, frame: Any, video: Any, alt: str) -> str:
+    chunks: list[str] = []
+    if frame:
+        href = _artifact_href(frame)
+        chunks.append(
+            f"<a href=\"{href}\"><img class=\"proof-frame\" src=\"{href}\" alt=\"{escape(alt)}\"></a>"
+        )
+    if video:
+        href = _artifact_href(video)
+        chunks.append(
+            f"<a href=\"{href}\">video</a><video controls preload=\"metadata\" src=\"{href}\"></video>"
+        )
+    return "<br>".join(chunks)
+
+
+def _artifact_links_html(artifacts: dict[str, Any]) -> str:
+    links: list[str] = []
+    for key, value in artifacts.items():
+        if not value:
+            continue
+        href = _artifact_href(value)
+        links.append(f"{escape(str(key))}: <a href=\"{href}\">{escape(str(value))}</a>")
+    return "<br>".join(links)
+
+
+def _artifact_href(value: Any) -> str:
+    text = str(value).replace("\\", "/")
+    if text.startswith(("http://", "https://")):
+        return escape(text, quote=True)
+    return escape(Path(text).name, quote=True)
 
 
 def _resolve_existing_path(value: Any, *, base: Path) -> Path | None:

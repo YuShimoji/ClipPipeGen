@@ -115,6 +115,8 @@ REQUIRED_REVIEW_FILES = {
     "evidence_report": "evidence_summary.html",
     "non_repo_artifact_handoff": "non_repo_artifact_handoff.json",
     "non_repo_artifact_handoff_report": "non_repo_artifact_handoff.html",
+    "cut_decision_packet": "cut_decision_packet.json",
+    "cut_decision_report": "cut_decision_report.html",
     "cut_decision_speed_pass": "cut_decision_speed_pass.json",
     "cut_decision_speed_pass_report": "cut_decision_speed_pass.html",
 }
@@ -168,6 +170,7 @@ def build_chapter_revision_board(
     cut_review_packet = _load_json(review_dir / REQUIRED_REVIEW_FILES["cut_review_packet"])
     evidence_summary = _load_json(review_dir / REQUIRED_REVIEW_FILES["evidence_summary"])
     non_repo_handoff = _load_json(review_dir / REQUIRED_REVIEW_FILES["non_repo_artifact_handoff"])
+    cut_decision_packet = _load_json(review_dir / REQUIRED_REVIEW_FILES["cut_decision_packet"])
     speed_pass = _load_json(review_dir / REQUIRED_REVIEW_FILES["cut_decision_speed_pass"])
     baseline_acceptance = _load_json_optional(
         review_dir / OPTIONAL_REVIEW_FILES["regenerated_r3_baseline_acceptance"]
@@ -215,11 +218,12 @@ def build_chapter_revision_board(
     chapters = _chapter_entries(
         speed_pass=speed_pass,
         cut_review_packet=cut_review_packet,
+        cut_decision_packet=cut_decision_packet,
         edit_pack=edit_pack,
         rights_status=rights_status,
         allowed_values=allowed_values,
     )
-    summary = _summary(chapters, cut_review_packet, speed_pass)
+    summary = _summary(chapters, cut_review_packet, cut_decision_packet, speed_pass)
     boundary_flags = {
         "production_candidate": False,
         "creative_acceptance": False,
@@ -273,7 +277,9 @@ def build_chapter_revision_board(
         "non_goals": _non_goals(),
         "chapters": chapters,
     }
-    patch_template = _patch_template(board, board_path, baseline_acceptance, speed_pass, base)
+    patch_template = _patch_template(
+        board, board_path, baseline_acceptance, cut_decision_packet, speed_pass, base
+    )
     csv_rows = _csv_rows(chapters)
     example = _patch_example(board, board_path, base) if include_example else None
 
@@ -299,6 +305,7 @@ def _chapter_entries(
     *,
     speed_pass: dict[str, Any],
     cut_review_packet: dict[str, Any],
+    cut_decision_packet: dict[str, Any],
     edit_pack: dict[str, Any],
     rights_status: str,
     allowed_values: dict[str, list[str]],
@@ -309,6 +316,11 @@ def _chapter_entries(
     packet_cuts = {
         str(c.get("cut_id")): c
         for c in cut_review_packet.get("cuts") or []
+        if isinstance(c, dict) and c.get("cut_id")
+    }
+    decision_cuts = {
+        str(c.get("cut_id")): c
+        for c in cut_decision_packet.get("decisions") or []
         if isinstance(c, dict) and c.get("cut_id")
     }
     if not speed_cuts and packet_cuts:
@@ -325,14 +337,17 @@ def _chapter_entries(
         raise ChapterRevisionBoardError("no cut decisions found for chapter revision board")
 
     subtitle_index = _subtitle_index(edit_pack)
+    cut_metadata = _cut_metadata_index(edit_pack)
     chapters: list[dict[str, Any]] = []
     for idx, speed_cut in enumerate(sorted(speed_cuts, key=lambda item: _cut_sort_key(item.get("cut_id"))), start=1):
         cut_id = str(speed_cut.get("cut_id"))
         packet_cut = packet_cuts.get(cut_id, {})
+        decision_cut = decision_cuts.get(cut_id, {})
+        metadata = cut_metadata.get(cut_id, {})
         cut_subtitles = subtitle_index.get(cut_id) or _preview_subtitles(packet_cut)
-        start = _number(speed_cut.get("start_seconds"), packet_cut.get("start_seconds"), 0.0)
-        end = _number(speed_cut.get("end_seconds"), packet_cut.get("end_seconds"), start)
-        duration = _number(speed_cut.get("duration_seconds"), packet_cut.get("duration_seconds"), end - start)
+        start = _number(packet_cut.get("start_seconds"), speed_cut.get("start_seconds"), 0.0)
+        end = _number(packet_cut.get("end_seconds"), speed_cut.get("end_seconds"), start)
+        duration = _number(packet_cut.get("duration_seconds"), end - start, speed_cut.get("duration_seconds"))
         subtitle_count = _int(packet_cut.get("subtitle_event_count"), len(cut_subtitles))
         subtitle_density = _number(
             packet_cut.get("subtitle_density_per_second"),
@@ -341,24 +356,50 @@ def _chapter_entries(
         chars_per_second = _number(packet_cut.get("subtitle_chars_per_second"), 0.0)
         line_wrap_proxy = _line_wrap_proxy(cut_subtitles)
         context_status = str(
-            speed_cut.get("original_context_status")
-            or packet_cut.get("context_status")
+            packet_cut.get("context_status")
+            or decision_cut.get("context_status")
+            or speed_cut.get("original_context_status")
             or "unknown"
         )
         retained_context_risk = bool(
             speed_cut.get("retained_context_risk")
             or context_status == "needs_review"
         )
+        final_decision = str(
+            decision_cut.get("final_cut_decision")
+            or speed_cut.get("final_decision")
+            or "accept_candidate"
+        )
+        resegmentation_target = bool(metadata.get("resegmentation_target"))
         chapter = {
             "chapter_id": f"ch_{idx:03d}",
             "source_cut_id": cut_id,
             "source_start_seconds": round(start, 3),
             "source_end_seconds": round(end, 3),
             "duration_seconds": round(max(0.0, duration), 3),
-            "current_decision": str(speed_cut.get("final_decision") or "accept_candidate"),
-            "decision_scope": str(speed_cut.get("decision_scope") or "candidate_seed_only"),
+            "current_decision": final_decision,
+            "final_cut_decision": final_decision,
+            "decision_scope": str(
+                decision_cut.get("decision_scope")
+                or cut_decision_packet.get("decision_scope")
+                or ("current_cut_decision" if decision_cut else speed_cut.get("decision_scope"))
+                or "candidate_seed_only"
+            ),
+            "decision_source": (
+                "cut_decision_packet" if decision_cut else "cut_decision_speed_pass_historical"
+            ),
+            "historical_candidate_seed_decision": {
+                "source": "cut_decision_speed_pass",
+                "final_decision": speed_cut.get("final_decision"),
+                "decision_scope": speed_cut.get("decision_scope"),
+                "timing_authority": "not_current_authority",
+                "historical_only": True,
+            },
+            "manual_override_reason": decision_cut.get("manual_override_reason"),
+            "adjustment_recommendation": decision_cut.get("adjustment_recommendation"),
             "original_context_status": context_status,
             "retained_context_risk": retained_context_risk,
+            "resegmentation_target": resegmentation_target,
             "representative_role": REPRESENTATIVE_ROLES.get(cut_id),
             "source_text_sample": _source_text_sample(packet_cut),
             "subtitle_count": subtitle_count,
@@ -370,6 +411,7 @@ def _chapter_entries(
             "current_risks": _current_risks(
                 context_status=context_status,
                 retained_context_risk=retained_context_risk,
+                resegmentation_target=resegmentation_target,
                 subtitle_density=subtitle_density,
                 chars_per_second=chars_per_second,
                 line_wrap_proxy=line_wrap_proxy,
@@ -385,6 +427,7 @@ def _patch_template(
     board: dict[str, Any],
     board_path: Path,
     baseline_acceptance: dict[str, Any],
+    cut_decision_packet: dict[str, Any],
     speed_pass: dict[str, Any],
     base: Path,
 ) -> dict[str, Any]:
@@ -403,7 +446,11 @@ def _patch_template(
                 baseline_acceptance,
                 "regenerated_r3_baseline_acceptance.json",
             ),
-            "cut_decision_speed_pass": _artifact_path_from_payload(
+            "cut_decision_packet": _artifact_path_from_payload(
+                cut_decision_packet,
+                "cut_decision_packet.json",
+            ),
+            "cut_decision_speed_pass_historical": _artifact_path_from_payload(
                 speed_pass,
                 "cut_decision_speed_pass.json",
             ),
@@ -715,24 +762,37 @@ def _allowed_values() -> dict[str, list[str]]:
 def _summary(
     chapters: list[dict[str, Any]],
     cut_review_packet: dict[str, Any],
+    cut_decision_packet: dict[str, Any],
     speed_pass: dict[str, Any],
 ) -> dict[str, Any]:
     retained = sum(1 for chapter in chapters if chapter.get("retained_context_risk") is True)
     context_counts: dict[str, int] = {}
+    current_decision_counts: dict[str, int] = {}
     for chapter in chapters:
         status = str(chapter.get("original_context_status") or "unknown")
         context_counts[status] = context_counts.get(status, 0) + 1
+        decision = str(chapter.get("current_decision") or "unknown")
+        current_decision_counts[decision] = current_decision_counts.get(decision, 0) + 1
+    seed_count = sum(
+        1
+        for cut in speed_pass.get("cuts") or []
+        if isinstance(cut, dict) and cut.get("final_decision") == "accept_candidate"
+    )
     return {
         "chapter_count": len(chapters),
-        "candidate_seed_count": len(
-            [chapter for chapter in chapters if chapter.get("current_decision") == "accept_candidate"]
-        ),
-        "current_decision": "accept_candidate",
+        "candidate_seed_count": seed_count,
+        "current_decision": "mixed",
+        "current_decision_counts": current_decision_counts,
         "retained_context_risk_count": retained,
         "context_counts": context_counts,
         "source_cut_count": (cut_review_packet.get("summary") or {}).get("cut_count"),
+        "cut_decision_policy": cut_decision_packet.get("decision_policy"),
         "speed_pass_policy": speed_pass.get("decision_policy"),
-        "all_cuts_candidate_seed_only": True,
+        "speed_pass_role": "historical_candidate_seed_evidence_only",
+        "all_cuts_candidate_seed_only": (
+            False if cut_decision_packet.get("decisions") else seed_count == len(chapters)
+        ),
+        "historical_speed_pass_all_cuts_candidate_seed_only": seed_count == len(chapters),
         "operator_decision_patch_required_for_next_mutation": True,
     }
 
@@ -754,7 +814,9 @@ def _artifact_role(name: str) -> str:
     if "report" in name:
         return "human-readable evidence"
     if name == "cut_decision_speed_pass":
-        return "candidate seed decision input"
+        return "historical candidate seed evidence"
+    if name == "cut_decision_packet":
+        return "current cut decision input"
     if name == "cut_review_packet":
         return "cut metrics and context input"
     if name == "evidence_summary":
@@ -814,6 +876,7 @@ def _current_risks(
     *,
     context_status: str,
     retained_context_risk: bool,
+    resegmentation_target: bool,
     subtitle_density: float,
     chars_per_second: float,
     line_wrap_proxy: dict[str, Any],
@@ -821,6 +884,8 @@ def _current_risks(
     risks: list[str] = []
     if retained_context_risk:
         risks.append("retained_context_risk")
+    if resegmentation_target:
+        risks.append("resegmentation_target")
     if context_status == "needs_review":
         risks.append("context_boundary_review_required")
     elif context_status not in {"passed", "unknown"}:
@@ -893,6 +958,18 @@ def _subtitle_index(edit_pack: dict[str, Any]) -> dict[str, list[dict[str, Any]]
         if cut_id is None:
             continue
         index.setdefault(str(cut_id), []).append(subtitle)
+    return index
+
+
+def _cut_metadata_index(edit_pack: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    index: dict[str, dict[str, Any]] = {}
+    for cut in edit_pack.get("cut_candidates") or []:
+        if not isinstance(cut, dict):
+            continue
+        cut_id = cut.get("id") or cut.get("cut_id")
+        if cut_id is None:
+            continue
+        index[str(cut_id)] = cut
     return index
 
 

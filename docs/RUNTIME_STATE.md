@@ -9,29 +9,29 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-05 JST
+- date: 2026-06-08 JST
 - latest pushed resume point:
-  this docs refresh commit after the 2026-06-05 JST sync/readiness
-  validation. Confirm the exact hash with
-  `git log -1 --oneline --decorate` after pulling.
+  this tracked handoff/runtime refresh after local downstream regeneration.
+  Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
-  `a0e9db2 docs: refresh subtitle overlay proof handoff`
-  (`HEAD -> main`, `origin/main`, `origin/HEAD` at validation time).
+  origin/main parity `0 0` in this workspace before this handoff refresh.
 - previous pushed resume point:
   `cfd3cb4 Merge remote-tracking branch 'origin/main'`
 - latest resume-surface sync validation:
-  2026-06-05 JST post-rebase local readback in this workspace:
+  2026-06-08 JST local readback in this workspace:
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
   `git status --short --branch` -> `## main...origin/main`;
-  `status-episode` -> `operator_review.review_ready=false`,
-  `reviewability=review_blocked_missing_artifacts`, missing
-  `visual_proof_cut_001.png`; `rights_status=pending`,
-  `production_candidate=false`, keep cuts `cut_001`, `cut_002`, `cut_003`;
-  `uvx pytest -q` -> 217 passed; `git diff --check` clean;
-  `git ls-files episodes` empty. A prior same-machine validation recorded
-  `review_ready=true` when `visual_proof_cut_001.png` existed; treat
-  reviewability as workspace-local and re-run `status-episode` after pulling or
-  restoring ignored `episodes/` artifacts.
+  `git ls-files episodes` empty. Targeted local readbacks parsed the current
+  ignored `edit_pack.json`, regenerated NLE CSV/manifest/report, proxy
+  handoff/template, chapter board, cut review packet, and cut decision packet.
+  Tests were not rerun for the latest ignored-only NLE reason cleanup. The last
+  broad validation remains the 2026-06-07 run: `uvx pytest -q` -> 217 passed,
+  `npm run smoke` -> OK, `npm run smoke:electron` -> OK, and
+  `git diff --check` clean aside from CRLF warnings. This `review_ready` state
+  depends on ignored local R3 artifacts in this workspace, including
+  `episodes/` review/proof/export files; fresh checkouts or workspaces missing
+  ignored artifacts must re-run `status-episode` and may correctly report
+  `review_blocked_missing_artifacts`.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -52,30 +52,82 @@ instructions.
   `subtitle_overlay_visual_proof_cut_002.*`,
   `subtitle_overlay_visual_proof_cut_003.*`, and
   `representative_visual_proof_report.*` exist under the R3 review directory.
-  In the current post-rebase local ignored artifact set,
-  `visual_proof_cut_001.png` is missing, so `status-episode` reports
-  `operator_review.review_ready=false` and
-  `review_blocked_missing_artifacts`. If another restored same-machine
-  workspace has `visual_proof_cut_001.png`, it may report `review_ready=true`;
-  do not infer that state for a fresh checkout or for this local artifact set.
+  In the current local ignored artifact set, `visual_proof_cut_001.png` is
+  present and `status-episode` reports `operator_review.review_ready=true` /
+  `review_ready`. Do not infer that state for a fresh checkout; reviewability
+  remains workspace-local and depends on ignored `episodes/` artifacts.
+- latest diagnostic subtitle style readback:
+  `jp_clip_readable_v1` is now recorded as a diagnostic style direction
+  contract for the scoped `cut_002` / `cut_003` overlay proof. It separates
+  qualitative intent from tactical ASS/libass parameters: `font_size`,
+  `outline`, and `margin_v` remain explicitly unpinned/default-readback,
+  `explicit_ass_force_style=false`, and line-width measurement is watch-only.
+  The current readback flags `cut_002` as a long-line risk for a later
+  wrapping/layout preset, not a reason for blind Fontsize tuning. This does not
+  create production subtitle design acceptance, production render acceptance,
+  creative acceptance, rights approval, or public-use permission. The refreshed
+  HTML reports embed or directly link the contact sheet plus `cut_002` /
+  `cut_003` proof PNG/MP4 artifacts so the operator can inspect the scoped
+  overlay surface from one report.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
   operator proxy decision handoff files, and scoped Chapter Revision Patch
-  templates. They preserve operator fields as blank, `undecided`, `noop`, or
-  `none`, keep `cut_003` retained context risk, and read back source media as
+  templates. Templates preserve operator fields as blank, `undecided`, `noop`,
+  or `none`; the filled operator patch is the current decision authority. The
+  handoff keeps `cut_003` retained context risk and reads back source media as
   available from `material_ledger.json`. After the scoped overlay proof run,
   the regenerated ED-10d handoff reads
-  `visual_proof_status=available_requires_human_review`. This is still not an
-  operator decision, creative acceptance, production acceptance, publishing
-  acceptance, or rights approval.
-- current bottleneck: the local proof generation blocker for `cut_002` /
-  `cut_003` is resolved, but the current local workspace is still blocked by
-  missing `visual_proof_cut_001.png`. Inspect the scoped
-  `representative_visual_proof_report.html` for `cut_002` / `cut_003` only;
-  open the global R3 review gate only after `visual_proof_cut_001.png` is
-  restored/regenerated or explicitly waived. Rights remain pending and
-  production/public use remains disallowed.
+  `visual_proof_status=available_requires_human_review`. The scoped
+  `proxy_decision` allowed values now include `proceed_with_limitations` for
+  candidate-lane routing where explicit limitations or watch items remain
+  visible. This is still not an operator decision, creative acceptance,
+  production acceptance, publishing acceptance, or rights approval. The narrow
+  enum/readback validation ran
+  `uvx pytest -q tests/test_operator_proxy_decision_handoff.py` -> 2 passed,
+  regenerated the ignored ED-10d handoff/template artifacts, confirmed template
+  defaults remain blank/undecided,
+  `production_candidate=false`, `rights_status=pending`, and
+  `git ls-files episodes` empty.
+- latest boundary recommendation applier:
+  ED-10e adds the tracked `apply-boundary-recommendation` CLI and
+  `src/pipeline/boundary_recommendation_apply.py`. It consumes an
+  operator-owned boundary recommendation report plus current `edit_pack.json`
+  and writes a dry-run/blocking/apply receipt with current range validation,
+  requested range readback, selected cut overlap detection, explicit overlap
+  policy readback, subtitle reassignment readback, and production/rights
+  boundary flags. Default remains safe: mutation requires explicit
+  `--apply --overlap-policy shrink_or_split_cut_004 --transcript`. The actual
+  same-machine local run wrote ignored
+  `cut_003_boundary_apply_receipt.shrink_or_split_cut_004.json` / `.html` with
+  `status=applied`: `cut_003` is now `22.606 -> 49.566` and owns
+  `seg_000025..seg_000029`; `seg_000030` remains excluded from `cut_003`;
+  `cut_004` is now `50.868 -> 60.277`, keeps `seg_000030..seg_000034`, and has
+  `resegmentation_target=true`; `sub_025..sub_029` now point to `cut_003` and
+  `sub_030` remains `cut_004`. It did not mutate transcript, official subtitle
+  evidence, source media, typography, proof, or render artifacts. Validation:
+  `uvx pytest -q tests/test_boundary_recommendation_apply.py` -> 9 passed;
+  `validate-edit-pack` -> `schema_ok=true`.
+- latest local downstream regeneration after the `cut_003` boundary apply:
+  the current ignored authority now includes `edit_pack.json`,
+  `cut_review_packet.json`, `evidence_summary.json`, corrected
+  `cut_decision_packet.json`, regenerated `chapter_revision_board.json`,
+  refreshed scoped `cut_002` / `cut_003` proxy handoff artifacts, and a
+  regenerated ED-06 NLE export. `cut_003` is `22.606 -> 49.566` with
+  `seg_000010..seg_000029` and `sub_010..sub_029`; `cut_004` is
+  `50.868 -> 60.277` with `seg_000030..seg_000034`, `sub_030..sub_034`, and
+  `resegmentation_target=true`. The latest ignored-only cleanup also updated
+  `edit_pack.cut_candidates[].reason` for `cut_003` / `cut_004` so the NLE
+  CSV/report title/reason matches the current ranges. `cut_review_packet.json`
+  and `cut_decision_packet.json` still contain stale `candidate_reason` prose
+  for those cuts; treat that as the next narrow readback-cleanup watch item if
+  those packet fields will be human-facing.
+- current bottleneck: proof/render artifacts remain stale_reference /
+  historical diagnostic evidence after the boundary change and NLE refresh.
+  Do not treat old proof/render as current validation. Rights remain pending
+  and production/public use remains disallowed. Fresh checkouts still need
+  artifact restore/regeneration or an explicit waiver before global R3 review
+  can be treated as ready.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -157,7 +209,7 @@ narrow instruction. The refreshed report records
 it is not production render acceptance, subtitle design acceptance, creative
 acceptance, publishing acceptance, rights approval, or public-use permission.
 
-On 2026-06-05 JST, the tracked
+On 2026-06-07 JST, the tracked
 `build-subtitle-overlay-visual-proof` generator was rerun for explicit target
 cuts `cut_002` and `cut_003`. It used
 `materials/src_video_jp_pilot01/source_video.mp4`,
@@ -175,10 +227,13 @@ Readback confirmed `target_cuts=[cut_002, cut_003]`,
 `subtitle_overlay_available_count=2`, `all_target_cuts_have_overlay=true`,
 `visual_proof_status=available_requires_human_review` after ED-10d
 regeneration, `production_candidate=false`, `rights_status=pending`, and
-`production_usage_allowed=false`. Manual frame inspection confirmed nonblank
-subtitle-overlay frames for both target cuts. This remains diagnostic-only
-visual evidence and does not approve typography, safe-area, timing sync,
-creative use, publishing, rights, or production render.
+`production_usage_allowed=false`. It also records
+`style_direction.preset_name=jp_clip_readable_v1`, separates qualitative intent
+from unpinned tactical style parameters, embeds/links the contact sheet and
+proof PNG/MP4 artifacts in the HTML report, and flags `cut_002` as a
+watch-only long-line risk at the EAW proxy threshold. This remains
+diagnostic-only visual evidence and does not approve typography, safe-area,
+timing sync, creative use, publishing, rights, or production render.
 
 Regenerate the scoped overlay proof, when the required local R3 artifacts are
 present, with:
@@ -326,15 +381,16 @@ Review focus:
    - Keep `rights=pending`, `production_candidate=false`, and
      `production_usage_allowed=false`.
 2. Advance: `cut_002` / `cut_003` operator proxy decision
-   - After scoped visual inspection, use
-     `cut_002_cut_003_operator_proxy_decision_handoff.html` and the scoped patch
-     templates for routing decisions.
-   - Operator-owned fields remain blank / `undecided` until the operator fills
-     them.
+   - `cut_002` is already in the candidate lane with
+     `proxy_decision=proceed_with_limitations`; keep the long-line watch risk
+     visible.
+   - `cut_003` now has the accepted local end extension to `49.566s`; treat
+     older cut review, proxy handoff, NLE export, and visual proof artifacts as
+     stale until regenerated.
 3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
-   - Review boundaries, density, and whether any cut should merge/split before
-     it can re-enter candidate status.
+   - `cut_004` has been explicitly shrunk to start at `50.868s` and remains a
+     resegmentation target before it can re-enter candidate status.
 4. Verify: regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.

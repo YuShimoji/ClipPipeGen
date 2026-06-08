@@ -64,6 +64,9 @@ def run(argv: list[str]) -> int:
         "dry_run": result["dry_run"],
         "source_media_status": report.get("source_media_status"),
         "visual_proof_status": result["visual_proof_status"],
+        "style_direction_preset": (
+            (report.get("style_direction") or {}).get("preset_name")
+        ),
         "subtitle_overlay_available_count": (
             report.get("aggregate_summary") or {}
         ).get("subtitle_overlay_available_count"),
@@ -91,6 +94,7 @@ def run(argv: list[str]) -> int:
         print(f"dry_run: {str(payload['dry_run']).lower()}")
         print(f"source_media_status: {payload['source_media_status']}")
         print(f"visual_proof_status: {payload['visual_proof_status']}")
+        print(f"style_direction_preset: {payload['style_direction_preset']}")
         print(f"subtitle_overlay_available_count: {payload['subtitle_overlay_available_count']}")
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         print(f"creative_acceptance: {str(payload['creative_acceptance']).lower()}")

@@ -24,12 +24,22 @@ DEFAULT_TARGET_CUT_IDS = ("cut_002", "cut_003")
 PROXY_DECISION_VALUES = [
     "undecided",
     "proceed_without_visual_proof",
+    "proceed_with_limitations",
     "needs_overlay_proof",
     "adjust_subtitle",
     "adjust_boundary",
     "defer",
     "reject_candidate",
 ]
+PROXY_DECISION_VALUE_NOTES = {
+    "proceed_with_limitations": (
+        "Operator may keep the cut in the candidate lane while explicit "
+        "limitations or watch items remain visible. This is diagnostic "
+        "candidate routing only, not production acceptance, creative "
+        "acceptance, rights approval, publishing acceptance, or public-use "
+        "permission."
+    ),
+}
 ANALYST_ACTION_VALUES = [
     "noop",
     "normalize_operator_notes",
@@ -164,10 +174,12 @@ def build_operator_proxy_decision_handoff(
         "visual_proof_status": visual_proof_status,
         "boundary_flags": boundary_flags,
         "allowed_values": allowed_values,
+        "allowed_value_notes": _allowed_value_notes(),
         "operator_guidance": {
             "purpose": (
-                "Capture operator decisions for cuts that still lack subtitle-overlay "
-                "visual proof, without filling the full Chapter Revision Board."
+                "Capture operator decisions for cut-scoped proxy routing while "
+                "diagnostic proof still requires human review, without filling "
+                "the full Chapter Revision Board."
             ),
             "agent_must_not_prefill": [
                 "proxy_decision",
@@ -178,8 +190,9 @@ def build_operator_proxy_decision_handoff(
                 "operator_note",
             ],
             "visual_proof_boundary": (
-                "Typography, safe-area, line wrapping, and timing sync stay unproven "
-                "until subtitle-overlay diagnostic proof exists for these cuts."
+                "Diagnostic proof may exist, but typography, safe-area, line "
+                "wrapping, and timing sync still require human review and do "
+                "not create production acceptance."
             ),
             "patch_files": [
                 _display_path(patch_template_path, base),
@@ -349,13 +362,15 @@ def _patch_template(handoff: dict[str, Any], handoff_path: Path, base: Path) -> 
         "patch_status": "draft",
         "target_cuts": handoff.get("target_cuts") or [],
         "allowed_values": handoff.get("allowed_values") or {},
+        "allowed_value_notes": handoff.get("allowed_value_notes") or {},
         "boundary_flags": handoff.get("boundary_flags") or {},
         "global_notes": "",
         "validation_notes": [
             "proxy_decision defaults to undecided and must be changed only by operator input",
             "editorial_intent, script_override, display_subtitle_request, and operator_note start blank",
             "source transcript and official subtitle track remain evidence and are not patched here",
-            "visual proof blocked entries do not pass typography, safe-area, line wrapping, or timing sync",
+            "diagnostic visual proof entries do not pass typography, safe-area, line wrapping, or timing sync",
+            "proceed_with_limitations keeps explicit limitations or watch items visible and is not production acceptance",
             "rights_status=pending keeps production/public usage disallowed",
         ],
         "revisions": [
@@ -414,6 +429,9 @@ def _visual_proof_readback(assessment: dict[str, Any]) -> dict[str, Any]:
         "safe_area_status": assessment.get("safe_area_status"),
         "line_wrapping_status": assessment.get("line_wrapping_status"),
         "timing_sync_status": assessment.get("timing_sync_status"),
+        "style_direction": assessment.get("style_direction") or {},
+        "style_parameters": assessment.get("style_parameters") or {},
+        "line_width_readback": assessment.get("line_width_readback") or {},
         "context_risk_status": assessment.get("context_risk_status"),
         "proof_limitations": assessment.get("proof_limitations") or [],
         "recommended_next_action": assessment.get("recommended_next_action") or [],
@@ -468,6 +486,12 @@ def _allowed_values() -> dict[str, list[str]]:
     }
 
 
+def _allowed_value_notes() -> dict[str, dict[str, str]]:
+    return {
+        "proxy_decision": PROXY_DECISION_VALUE_NOTES,
+    }
+
+
 def _subtitle_index(edit_pack: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     index: dict[str, list[dict[str, Any]]] = {}
     for subtitle in edit_pack.get("subtitles") or []:
@@ -513,7 +537,10 @@ def _text_review_html(review: dict[str, Any]) -> str:
 
 def _handoff_html(handoff: dict[str, Any]) -> str:
     rows = "\n".join(_text_cut_row_html(cut, include_operator=True) for cut in handoff.get("cuts") or [])
-    values = _allowed_values_html(handoff.get("allowed_values") or {})
+    values = _allowed_values_html(
+        handoff.get("allowed_values") or {},
+        handoff.get("allowed_value_notes") or {},
+    )
     return _html_page(
         title="cut_002 / cut_003 Operator Proxy Decision Handoff",
         summary=_summary_html(handoff),
@@ -544,7 +571,7 @@ def _html_page(*, title: str, summary: str, rows: str, extra: str) -> str:
 </head>
 <body>
   <h1>{escape(title)}</h1>
-  <p class="warn">Operator decision surface only: visual proof blocked for subtitle overlay; rights pending; production_candidate=false.</p>
+  <p class="warn">Operator decision surface only: diagnostic visual proof still requires human review; rights pending; production_candidate=false.</p>
   <section>
     <h2>Top Summary</h2>
 {summary}
@@ -597,6 +624,17 @@ def _text_cut_row_html(cut: dict[str, Any], *, include_operator: bool) -> str:
     )
     visual = cut.get("visual_proof") or {}
     line_wrap = cut.get("line_wrap_proxy") or {}
+    style_direction = visual.get("style_direction") or {}
+    style_parameters = visual.get("style_parameters") or {}
+    line_width = visual.get("line_width_readback") or {}
+    style_readback = "<br>".join(
+        [
+            f"style_preset={escape(str(style_direction.get('preset_name', '')))}",
+            f"style_slot={escape(str(style_parameters.get('style_slot', '')))}",
+            f"max_raw_eaw={escape(str(line_width.get('max_raw_line_eaw', '')))}",
+            f"needs_wrap_watch={escape(str(line_width.get('needs_wrap_count', '')))}",
+        ]
+    )
     operator = ""
     if include_operator:
         fields = cut.get("operator_input_fields") or {}
@@ -616,19 +654,33 @@ def _text_cut_row_html(cut: dict[str, Any], *, include_operator: bool) -> str:
         f"max_eaw={escape(str(line_wrap.get('max_raw_eaw', '')))}<br>"
         f"needs_wrap={escape(str(line_wrap.get('needs_wrap_count', '')))}</td>"
         f"<td>{escape(str(visual.get('status', '')))}<br>"
-        f"{escape(str(cut.get('missing_visual_proof_reason', '')))}</td>"
+        f"{escape(str(cut.get('missing_visual_proof_reason', '')))}<br>{style_readback}</td>"
         f"<td>{subtitles}</td>"
         f"<td>{operator}</td>"
         "</tr>"
     )
 
 
-def _allowed_values_html(allowed_values: dict[str, list[str]]) -> str:
+def _allowed_values_html(
+    allowed_values: dict[str, list[str]],
+    allowed_value_notes: dict[str, dict[str, str]],
+) -> str:
     chunks = []
     for key, values in allowed_values.items():
+        notes = allowed_value_notes.get(key) or {}
         chunks.append(
             f"<h3>{escape(key)}</h3><ul>"
-            + "".join(f"<li><code>{escape(str(value))}</code></li>" for value in values)
+            + "".join(
+                "<li>"
+                f"<code>{escape(str(value))}</code>"
+                + (
+                    f" - {escape(str(notes.get(str(value))))}"
+                    if str(value) in notes
+                    else ""
+                )
+                + "</li>"
+                for value in values
+            )
             + "</ul>"
         )
     return "\n".join(chunks)

@@ -38,6 +38,11 @@ def test_operator_proxy_decision_handoff_keeps_operator_fields_blank(tmp_path: P
         "rights_status": "pending",
         "production_usage_allowed": False,
     }
+    assert "proceed_with_limitations" in handoff["allowed_values"]["proxy_decision"]
+    assert (
+        "not production acceptance"
+        in handoff["allowed_value_notes"]["proxy_decision"]["proceed_with_limitations"]
+    )
 
     cut_002, cut_003 = handoff["cuts"]
     assert cut_002["cut_id"] == "cut_002"
@@ -55,6 +60,12 @@ def test_operator_proxy_decision_handoff_keeps_operator_fields_blank(tmp_path: P
     assert [revision["cut_id"] for revision in patch["revisions"]] == ["cut_002", "cut_003"]
     assert {revision["proxy_decision"] for revision in patch["revisions"]} == {"undecided"}
     assert patch["boundary_flags"]["production_candidate"] is False
+    assert "proceed_with_limitations" in patch["allowed_values"]["proxy_decision"]
+    assert patch["allowed_value_notes"]["proxy_decision"]["proceed_with_limitations"]
+    handoff_html = result["handoff_html_path"].read_text(encoding="utf-8")
+    assert "proceed_with_limitations" in handoff_html
+    assert "diagnostic visual proof still requires human review" in handoff_html
+    assert "visual proof blocked for subtitle overlay" not in handoff_html
     assert result["text_review_path"].exists()
     assert result["text_review_html_path"].exists()
     assert result["handoff_path"].exists()

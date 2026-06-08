@@ -48,6 +48,8 @@ def test_cut_decision_packet_classifies_all_r3_cuts(tmp_path: Path):
     cut_003 = _decision(packet, "cut_003")
     assert cut_003["context_status"] == "needs_review"
     assert "not as production-approved" in cut_003["manual_override_reason"]
+    assert "19.119" not in cut_003["manual_override_reason"]
+    assert "retained context risk" in cut_003["manual_override_reason"]
     assert _decision(packet, "cut_008")["subtitle_timing_status"]["overlap_count"] == 0
     assert result["packet_path"].exists()
     assert result["report_path"].exists()

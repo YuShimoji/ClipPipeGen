@@ -16,6 +16,7 @@ Subcommands:
     init-edit-pack           Create an edit_pack skeleton for the Editing lane.
     validate-edit-pack       Validate edit_pack.json against schema v1.
     add-cut-candidate        Append one manual/imported cut candidate to edit_pack.
+    apply-boundary-recommendation ED-10e: validate/apply one cut boundary recommendation with receipt.
     validate-transcript      Validate transcript.json against schema v1.
     review-transcript        ED-09: apply human review/correction patch to transcript.json.
     import-subtitle-track    ED-10: subtitle track -> transcript.json-compatible artifact.
@@ -43,6 +44,7 @@ from typing import Callable
 
 from . import (
     add_cut_candidate,
+    apply_boundary_recommendation,
     audit_material_ledger,
     audit_thumbnail,
     build_chapter_revision_board,
@@ -87,6 +89,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "init-edit-pack": init_edit_pack.run,
     "validate-edit-pack": validate_edit_pack.run,
     "add-cut-candidate": add_cut_candidate.run,
+    "apply-boundary-recommendation": apply_boundary_recommendation.run,
     "validate-transcript": validate_transcript.run,
     "review-transcript": review_transcript.run,
     "import-subtitle-track": import_subtitle_track.run,
