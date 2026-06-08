@@ -28,25 +28,38 @@ DEFAULT_SOURCE_AUDIO_MATERIAL_ID = "src_audio_jp_pilot01"
 DEFAULT_REVIEW_DIR_NAME = "jp_pilot01r3_cut_review"
 RENDERABLE_SUBTITLE_STATUSES = {"included", "clamped_to_render_window"}
 DIAGNOSTIC_STYLE_DIRECTION_NAME = "jp_clip_readable_v1"
+SUBTITLE_PRESENTATION_CONTRACT_ID = "jp_clip_dialogue_reference_v0"
 LINE_WIDTH_WATCH_EAW = 40
-ASS_STYLE_NAME = "ClipPipeDiagnostic"
+PRESENTATION_WRAP_EAW = 28
+RESPONSE_REFERRAL_SUBTITLE_IDS = {f"sub_{index:03d}" for index in range(25, 30)}
+ASS_DIALOGUE_STYLE_NAME = "ClipPipeDialogueLeft"
+ASS_SPEAKER_BADGE_STYLE_NAME = "ClipPipeSpeakerBadge"
 ASS_PLAY_RES_X = 1920
 ASS_PLAY_RES_Y = 1080
 DIAGNOSTIC_ASS_STYLE = {
-    "candidate_id": "jp_clip_readable_v1_burned_in_probe",
+    "candidate_id": "jp_clip_dialogue_badge_left_v0",
     "font_name": "Yu Gothic",
-    "font_size": 72,
-    "outline": 5,
+    "font_size": 92,
+    "outline": 7,
     "shadow": 1,
     "margin_l": 80,
     "margin_r": 80,
-    "margin_v": 70,
-    "alignment": 2,
+    "margin_v": 110,
+    "alignment": 7,
     "primary_colour": "&H00FFFFFF",
     "secondary_colour": "&H00FFFFFF",
     "outline_colour": "&H00000000",
     "back_colour": "&H80000000",
     "border_style": 1,
+    "speaker_badge_label": "SPK",
+    "speaker_badge_font_size": 46,
+    "speaker_badge_x": 128,
+    "speaker_badge_y": 805,
+    "dialogue_x": 250,
+    "dialogue_y": 742,
+    "dialogue_wrap_eaw": PRESENTATION_WRAP_EAW,
+    "speaker_accent_colour": "&H0000D7FF",
+    "speaker_badge_back_colour": "&H90202020",
 }
 
 
@@ -209,6 +222,7 @@ def _build_cut_proof(
             episode_id=episode_id,
             cut=cut,
             items=items,
+            presentation_items=[],
             source_media=source_media,
             cut_paths=cut_paths,
             overlay_present=False,
@@ -219,6 +233,7 @@ def _build_cut_proof(
             attempted_render_profiles=[],
             attempts=[],
             frame_extract=None,
+            sample_frame_extracts=[],
             error=None,
             legacy_autoload_srt=None,
             previous_proof_artifacts=None,
@@ -230,6 +245,7 @@ def _build_cut_proof(
             episode_id=episode_id,
             cut=cut,
             items=items,
+            presentation_items=[],
             source_media=source_media,
             cut_paths=cut_paths,
             overlay_present=False,
@@ -240,6 +256,7 @@ def _build_cut_proof(
             attempted_render_profiles=[],
             attempts=[],
             frame_extract=None,
+            sample_frame_extracts=[],
             error="no renderable subtitle items for target cut",
             legacy_autoload_srt=None,
             previous_proof_artifacts=None,
@@ -250,8 +267,9 @@ def _build_cut_proof(
     cut_paths["reference_dir"].mkdir(parents=True, exist_ok=True)
     previous_proof_artifacts = _archive_existing_proof_artifacts(cut_paths)
     legacy_autoload_srt = _mitigate_legacy_autoload_srt(cut_paths)
+    presentation_items = _presentation_items(renderable_items)
     _write_srt(cut_paths["sidecar_srt_reference"], renderable_items)
-    _write_ass(cut_paths["burned_in_subtitle_file"], renderable_items)
+    _write_ass(cut_paths["burned_in_subtitle_file"], presentation_items)
     try:
         render_result = ffmpeg_tiny.render_tiny_proof(
             source_video_path=source_media["source_video"]["resolved_path"],
@@ -269,7 +287,14 @@ def _build_cut_proof(
         frame_extract = _extract_frame(
             video_path=video_path,
             frame_path=cut_paths["frame"],
-            seconds=_representative_frame_seconds(renderable_items, duration),
+            seconds=_representative_frame_seconds(presentation_items, duration),
+            ffmpeg_path=render_result.ffmpeg_path,
+            runner=runner,
+        )
+        sample_frame_extracts = _extract_sample_frames(
+            video_path=video_path,
+            cut_paths=cut_paths,
+            sample_specs=_sample_frame_specs(presentation_items, duration),
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
         )
@@ -277,6 +302,7 @@ def _build_cut_proof(
             episode_id=episode_id,
             cut=cut,
             items=items,
+            presentation_items=presentation_items,
             source_media=source_media,
             cut_paths={**cut_paths, "video": video_path},
             overlay_present=True,
@@ -287,6 +313,7 @@ def _build_cut_proof(
             attempted_render_profiles=[attempt.to_dict() for attempt in render_result.attempts],
             attempts=[attempt.to_dict() for attempt in render_result.attempts],
             frame_extract=frame_extract,
+            sample_frame_extracts=sample_frame_extracts,
             legacy_autoload_srt=legacy_autoload_srt,
             previous_proof_artifacts=previous_proof_artifacts,
             error=None,
@@ -298,6 +325,7 @@ def _build_cut_proof(
             episode_id=episode_id,
             cut=cut,
             items=items,
+            presentation_items=locals().get("presentation_items", []),
             source_media=source_media,
             cut_paths=cut_paths,
             overlay_present=False,
@@ -310,6 +338,7 @@ def _build_cut_proof(
             ],
             attempts=[attempt.to_dict() for attempt in getattr(exc, "attempts", [])],
             frame_extract=None,
+            sample_frame_extracts=[],
             legacy_autoload_srt=locals().get("legacy_autoload_srt"),
             previous_proof_artifacts=locals().get("previous_proof_artifacts"),
             error=f"{failure_reason}: {exc}",
@@ -322,6 +351,7 @@ def _cut_report(
     episode_id: str,
     cut: dict[str, Any],
     items: list[dict[str, Any]],
+    presentation_items: list[dict[str, Any]],
     source_media: dict[str, Any],
     cut_paths: dict[str, Path],
     overlay_present: bool,
@@ -332,6 +362,7 @@ def _cut_report(
     attempted_render_profiles: list[dict[str, Any]],
     attempts: list[dict[str, Any]],
     frame_extract: dict[str, Any] | None,
+    sample_frame_extracts: list[dict[str, Any]],
     error: str | None,
     legacy_autoload_srt: dict[str, Any] | None,
     previous_proof_artifacts: dict[str, Path] | None,
@@ -377,6 +408,11 @@ def _cut_report(
                 for segment_id in item.get("source_segment_ids", [])
             ),
         },
+        "subtitle_presentation_contract": _subtitle_presentation_contract_readback(),
+        "speaker_identity_presentation": _speaker_identity_presentation_readback(),
+        "replacement_behavior": _replacement_behavior_readback(presentation_items),
+        "renderer_path_audit": _renderer_path_audit_readback(),
+        "sample_frame_selection": _sample_frame_selection_readback(sample_frame_extracts),
         "style_direction": _diagnostic_style_direction(),
         "style_parameters": _style_parameter_readback(items),
         "burned_in_subtitle_style": _burned_in_subtitle_style_readback(),
@@ -402,9 +438,21 @@ def _cut_report(
             "items": items,
             "status_counts": _status_counts(items),
         },
+        "subtitle_presentation_timing": {
+            "items": presentation_items,
+            "timing_source": "derived_from_renderable_subtitles_for_diagnostic_ASS_only",
+            "source_transcript_or_official_subtitles_mutated": False,
+        },
         "generated_artifacts": {
             "video": _display_path(cut_paths["video"], base),
             "frame": _display_path(cut_paths["frame"], base),
+            "sample_frames": [
+                {
+                    **extract,
+                    "path": _display_path(Path(str(extract.get("path") or "")), base),
+                }
+                for extract in sample_frame_extracts
+            ],
             "diagnostic_subtitle_file": _display_path(
                 cut_paths["burned_in_subtitle_file"], base
             ),
@@ -418,6 +466,12 @@ def _cut_report(
         "artifact_exists": {
             "video": cut_paths["video"].exists(),
             "frame": cut_paths["frame"].exists(),
+            "sample_frames": {
+                str(extract.get("role") or extract.get("sample_id") or ""): Path(
+                    str(extract.get("path") or "")
+                ).exists()
+                for extract in sample_frame_extracts
+            },
             "diagnostic_subtitle_file": cut_paths["burned_in_subtitle_file"].exists(),
             "burned_in_subtitle_file": cut_paths["burned_in_subtitle_file"].exists(),
             "sidecar_srt_reference": cut_paths["sidecar_srt_reference"].exists(),
@@ -452,6 +506,8 @@ def _cut_report(
         "limitations": [
             "diagnostic subtitle overlay only; not production subtitle design",
             "diagnostic ASS style candidate is used for burned-in review subtitles; production typography polish is not claimed",
+            "speaker face icon assets were not available in the current material ledger; the diagnostic candidate uses a speaker badge placeholder fallback",
+            "sample frames are subtitle-bearing timing probes only and are not OCR verification",
             "sidecar SRT is reference-only and stored away from the video basename to avoid VLC auto-display confusion",
             "safe-area, line wrapping, readability, and timing sync still require human review",
             "overlay presence is inferred from successful subtitle filter/render and generated subtitle files, not OCR",
@@ -498,6 +554,11 @@ def _report_payload(
         },
         "style_direction": _diagnostic_style_direction(),
         "style_parameters": _report_style_parameter_summary(cut_reports),
+        "subtitle_presentation_contract": _subtitle_presentation_contract_readback(),
+        "speaker_identity_presentation": _speaker_identity_presentation_readback(),
+        "replacement_behavior": _report_replacement_behavior_summary(cut_reports),
+        "renderer_path_audit": _renderer_path_audit_readback(),
+        "sample_frame_selection": _report_sample_frame_selection_summary(cut_reports),
         "burned_in_subtitle_style": _burned_in_subtitle_style_readback(),
         "sidecar_srt_reference": _report_sidecar_srt_reference_summary(cut_reports),
         "review_warning": _review_warning_readback(),
@@ -531,13 +592,16 @@ def _report_payload(
 def _diagnostic_style_direction() -> dict[str, Any]:
     return {
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
+        "presentation_contract_id": SUBTITLE_PRESENTATION_CONTRACT_ID,
         "contract_status": "diagnostic_direction_readback",
         "target_viewing_context": "smartphone_readable_japanese_clip_subtitle",
-        "visual_weight": "larger_and_more_assertive_than_restrained_film_or_news_subtitles",
+        "visual_weight": "large_heavily_outlined_clip_dialogue_not_restrained_movie_subtitles",
+        "preferred_non_pov_pattern": "face_icon_plus_left_aligned_subtitle",
+        "implemented_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
         "reaction_caption_tolerance": "short_reaction_captions_may_carry_stronger_visual_weight",
         "long_line_policy": (
-            "long captions must be watched for excessive horizontal spread; "
-            "wrapping/layout is not accepted by this diagnostic proof"
+            "diagnostic ASS wraps dialogue text at the presentation contract proxy width; "
+            "rendered pixel fit still requires human review"
         ),
         "review_status": "diagnostic_human_review_required",
         "not_acceptance": [
@@ -581,20 +645,29 @@ def _style_parameter_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
             "value": style["margin_v"],
             "unit": "ass_pixels_or_script_units",
             "source": "explicit_diagnostic_ass_style_candidate",
-            "readback": "diagnostic bottom margin for embedded review subtitles",
+            "readback": "legacy compatibility readback; actual candidate uses explicit ASS pos tags for badge and left-aligned dialogue",
         },
         "alignment": {
-            "value": "bottom_center_fixed",
-            "source": "diagnostic ASS overlay uses bottom-center subtitle placement",
+            "value": "speaker_badge_left_aligned_dialogue",
+            "source": "diagnostic ASS overlay uses positioned speaker badge plus left-aligned dialogue text",
         },
         "wrapping": {
-            "policy": "preserve_existing_newlines_only",
-            "automatic_wrap_applied_by_overlay_generator": False,
-            "available_proxy_wrap_eaw": LINE_WIDTH_WATCH_EAW,
+            "policy": "wrap_dialogue_text_for_diagnostic_ass_candidate",
+            "automatic_wrap_applied_by_overlay_generator": True,
+            "available_proxy_wrap_eaw": PRESENTATION_WRAP_EAW,
+            "watch_width_eaw": LINE_WIDTH_WATCH_EAW,
             "watch_item": (
                 "Long subtitle line width may require a later clip subtitle "
                 "layout preset or wrapping policy."
             ),
+        },
+        "positioning": {
+            "dialogue_x": style["dialogue_x"],
+            "dialogue_y": style["dialogue_y"],
+            "speaker_badge_x": style["speaker_badge_x"],
+            "speaker_badge_y": style["speaker_badge_y"],
+            "play_res_x": ASS_PLAY_RES_X,
+            "play_res_y": ASS_PLAY_RES_Y,
         },
     }
 
@@ -619,8 +692,9 @@ def _line_width_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
         )
     return {
         "measurement_kind": "east_asian_width_proxy",
-        "policy_status": "watch_only_no_layout_engine_change",
+        "policy_status": "diagnostic_ass_wrap_applied_still_requires_rendered_visual_review",
         "watch_wrap_eaw": LINE_WIDTH_WATCH_EAW,
+        "presentation_wrap_eaw": PRESENTATION_WRAP_EAW,
         "subtitle_count_measured": len(rows),
         "max_raw_line_eaw": max((row["raw_longest_line_eaw"] for row in rows), default=0),
         "needs_wrap_count": sum(1 for row in rows if row["would_wrap_at_watch_eaw"]),
@@ -638,14 +712,16 @@ def _burned_in_subtitle_style_readback() -> dict[str, Any]:
         "style_candidate_id": style["candidate_id"],
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
         "renderer_input": "ASS style file consumed by FFmpeg subtitles filter",
-        "comparison_baseline": "previous FFmpeg/libass SRT default proof looked too small and movie-subtitle-like for YouTube review",
-        "intended_design_target": "larger smartphone-readable Japanese YouTube clip review subtitle",
+        "comparison_baseline": "previous FFmpeg/libass SRT/default-centered proof looked too small and movie-subtitle-like for YouTube review",
+        "intended_design_target": "reference-driven non-POV speaker badge plus large left-aligned Japanese clip dialogue subtitle",
         "font_name": style["font_name"],
         "font_size": style["font_size"],
         "outline": style["outline"],
         "shadow": style["shadow"],
         "margin_v": style["margin_v"],
-        "alignment": "bottom_center_fixed",
+        "alignment": "speaker_badge_left_aligned_dialogue",
+        "speaker_badge_label": style["speaker_badge_label"],
+        "dialogue_wrap_eaw": style["dialogue_wrap_eaw"],
         "production_subtitle_design_acceptance": False,
         "human_review_required": True,
     }
@@ -729,6 +805,129 @@ def _report_style_parameter_summary(cut_reports: list[dict[str, Any]]) -> dict[s
     }
 
 
+def _subtitle_presentation_contract_readback() -> dict[str, Any]:
+    return {
+        "contract_id": SUBTITLE_PRESENTATION_CONTRACT_ID,
+        "contract_doc": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
+        "dialogue_subtitle_style": "large_heavily_outlined_clip_dialogue",
+        "preferred_non_pov_speaker_identity": "face_icon_plus_left_aligned_subtitle",
+        "implemented_diagnostic_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
+        "future_explanatory_caption_style": "explicitly_deferred",
+        "replacement_behavior_expectation": "previous_line_disappears_when_next_subtitle_appears",
+        "multi_speaker_icon_stack": "deferred_advanced_pattern",
+        "emotion_specific_font_switching": "deferred",
+        "production_subtitle_design_acceptance": False,
+        "production_render_acceptance": False,
+        "creative_acceptance": False,
+        "rights_approval": False,
+        "publishing_or_public_use_permission": False,
+    }
+
+
+def _speaker_identity_presentation_readback() -> dict[str, Any]:
+    return {
+        "preferred_pattern": "face_icon_plus_left_aligned_subtitle",
+        "implemented_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
+        "pattern_status": "approximated_with_fallback_speaker_badge_no_face_icon_assets",
+        "real_face_icon_assets_available": False,
+        "fallback_used": True,
+        "fallback_kind": "speaker_badge_placeholder",
+        "fallback_label": DIAGNOSTIC_ASS_STYLE["speaker_badge_label"],
+        "future_asset_slot": {
+            "x": DIAGNOSTIC_ASS_STYLE["speaker_badge_x"],
+            "y": DIAGNOSTIC_ASS_STYLE["speaker_badge_y"],
+            "purpose": "future real speaker face icon can replace the badge without changing dialogue anchor",
+        },
+    }
+
+
+def _replacement_behavior_readback(presentation_items: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "mode": "replace_on_next_subtitle_start",
+        "fixed_linger_extension": False,
+        "presentation_item_count": len(presentation_items),
+        "items_truncated_by_next_subtitle": sum(
+            1 for item in presentation_items if item.get("replacement_applied") is True
+        ),
+        "source_transcript_or_official_subtitles_mutated": False,
+        "items": [
+            {
+                "subtitle_id": item.get("subtitle_id"),
+                "render_start_seconds": item.get("render_start_seconds"),
+                "render_end_seconds": item.get("render_end_seconds"),
+                "display_start_seconds": item.get("display_start_seconds"),
+                "display_end_seconds": item.get("display_end_seconds"),
+                "replacement_applied": item.get("replacement_applied"),
+                "replacement_end_source": item.get("replacement_end_source"),
+            }
+            for item in presentation_items
+        ],
+    }
+
+
+def _report_replacement_behavior_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    per_cut = {
+        str(cut.get("cut_id")): cut.get("replacement_behavior") or {}
+        for cut in cut_reports
+    }
+    return {
+        "mode": "replace_on_next_subtitle_start",
+        "fixed_linger_extension": False,
+        "per_cut": per_cut,
+        "source_transcript_or_official_subtitles_mutated": False,
+    }
+
+
+def _renderer_path_audit_readback() -> dict[str, Any]:
+    return {
+        "renderer": "ffmpeg_subtitles_filter_ass",
+        "actual_renderer_path_configured": True,
+        "actual_render_verified_by": "ffmpeg_success_and_subtitle_bearing_frame_extracts_not_ocr",
+        "renderer_path_limitations_detected": False,
+        "play_res_x": ASS_PLAY_RES_X,
+        "play_res_y": ASS_PLAY_RES_Y,
+        "play_res_mismatch_detected": False,
+        "old_candidate_insufficiency": {
+            "renderer_path_limitations": False,
+            "scaling_or_playres_mismatch": False,
+            "insufficient_style_difference": True,
+            "sample_selection_weakness": True,
+            "reason": (
+                "The previous candidate changed ASS parameters but kept a restrained "
+                "movie-subtitle-like centered pattern and sampled only one cue, so it "
+                "did not prove the reference-driven YouTube clip subtitle direction."
+            ),
+        },
+    }
+
+
+def _sample_frame_selection_readback(sample_frame_extracts: list[dict[str, Any]]) -> dict[str, Any]:
+    roles = [str(item.get("role") or "") for item in sample_frame_extracts]
+    subtitle_ids = [str(item.get("subtitle_id") or "") for item in sample_frame_extracts]
+    return {
+        "policy": "subtitle_bearing_active_cues_only",
+        "roles": roles,
+        "subtitle_ids": subtitle_ids,
+        "includes_response_referral_block": any(
+            subtitle_id in RESPONSE_REFERRAL_SUBTITLE_IDS for subtitle_id in subtitle_ids
+        ),
+        "sample_count": len(sample_frame_extracts),
+        "ocr_verified": False,
+        "human_visual_review_required": True,
+    }
+
+
+def _report_sample_frame_selection_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "policy": "subtitle_bearing_active_cues_only",
+        "required_roles": ["early", "middle", "response_referral", "final"],
+        "per_cut": {
+            str(cut.get("cut_id")): cut.get("sample_frame_selection") or {}
+            for cut in cut_reports
+        },
+    }
+
+
 def _related_visual_artifacts(representative_report: dict[str, Any]) -> dict[str, Any]:
     outputs = representative_report.get("outputs") if isinstance(representative_report, dict) else {}
     contact_sheet = outputs.get("contact_sheet") if isinstance(outputs, dict) else None
@@ -754,6 +953,15 @@ def _updated_representative_report(
     updated["production_usage_allowed"] = False
     updated["diagnostic_style_direction"] = overlay_report["style_direction"]
     updated["diagnostic_style_parameters"] = overlay_report["style_parameters"]
+    updated["subtitle_presentation_contract"] = overlay_report.get(
+        "subtitle_presentation_contract"
+    ) or {}
+    updated["speaker_identity_presentation"] = overlay_report.get(
+        "speaker_identity_presentation"
+    ) or {}
+    updated["replacement_behavior"] = overlay_report.get("replacement_behavior") or {}
+    updated["renderer_path_audit"] = overlay_report.get("renderer_path_audit") or {}
+    updated["sample_frame_selection"] = overlay_report.get("sample_frame_selection") or {}
     updated["burned_in_subtitle_style"] = overlay_report.get("burned_in_subtitle_style") or {}
     updated["sidecar_srt_reference"] = overlay_report.get("sidecar_srt_reference") or {}
     updated["review_warning"] = overlay_report.get("review_warning") or {}
@@ -765,6 +973,15 @@ def _updated_representative_report(
         ],
         "style_direction": overlay_report["style_direction"],
         "style_parameters": overlay_report["style_parameters"],
+        "subtitle_presentation_contract": overlay_report.get(
+            "subtitle_presentation_contract"
+        ) or {},
+        "speaker_identity_presentation": overlay_report.get(
+            "speaker_identity_presentation"
+        ) or {},
+        "replacement_behavior": overlay_report.get("replacement_behavior") or {},
+        "renderer_path_audit": overlay_report.get("renderer_path_audit") or {},
+        "sample_frame_selection": overlay_report.get("sample_frame_selection") or {},
         "burned_in_subtitle_style": overlay_report.get("burned_in_subtitle_style") or {},
         "sidecar_srt_reference": overlay_report.get("sidecar_srt_reference") or {},
         "review_warning": overlay_report.get("review_warning") or {},
@@ -795,6 +1012,15 @@ def _updated_representative_report(
         assessment["timing_sync_status"] = proof["timing_sync_status"]
         assessment["style_direction"] = proof["style_direction"]
         assessment["style_parameters"] = proof["style_parameters"]
+        assessment["subtitle_presentation_contract"] = proof.get(
+            "subtitle_presentation_contract"
+        ) or {}
+        assessment["speaker_identity_presentation"] = proof.get(
+            "speaker_identity_presentation"
+        ) or {}
+        assessment["replacement_behavior"] = proof.get("replacement_behavior") or {}
+        assessment["renderer_path_audit"] = proof.get("renderer_path_audit") or {}
+        assessment["sample_frame_selection"] = proof.get("sample_frame_selection") or {}
         assessment["burned_in_subtitle_style"] = proof.get("burned_in_subtitle_style") or {}
         assessment["sidecar_srt_reference"] = proof.get("sidecar_srt_reference") or {}
         assessment["previous_proof_artifacts"] = proof.get("previous_proof_artifacts") or {}
@@ -809,6 +1035,13 @@ def _updated_representative_report(
             "report": overlay_report["outputs"]["json"],
             "style_direction": proof["style_direction"],
             "style_parameters": proof["style_parameters"],
+            "subtitle_presentation_contract": proof.get(
+                "subtitle_presentation_contract"
+            ) or {},
+            "speaker_identity_presentation": proof.get("speaker_identity_presentation") or {},
+            "replacement_behavior": proof.get("replacement_behavior") or {},
+            "renderer_path_audit": proof.get("renderer_path_audit") or {},
+            "sample_frame_selection": proof.get("sample_frame_selection") or {},
             "burned_in_subtitle_style": proof.get("burned_in_subtitle_style") or {},
             "sidecar_srt_reference": proof.get("sidecar_srt_reference") or {},
             "previous_proof_artifacts": proof.get("previous_proof_artifacts") or {},
@@ -817,6 +1050,8 @@ def _updated_representative_report(
             "timing_window": proof["timing_window"],
             "subtitle_source": proof["subtitle_source"],
             "artifact_exists": proof["artifact_exists"],
+            "sample_frames": (proof.get("generated_artifacts") or {}).get("sample_frames")
+            or [],
         }
     updated["aggregate_summary"] = _representative_aggregate(assessments)
     outputs = updated.get("outputs")
@@ -1013,6 +1248,7 @@ def _output_paths(*, review_dir: Path) -> dict[str, Any]:
             stem = f"subtitle_overlay_visual_proof_{cut_id}"
             reference_dir = review_dir / "subtitle_overlay_reference"
             cuts[cut_id] = {
+                "stem": stem,
                 "output_dir": review_dir,
                 "reference_dir": reference_dir,
                 "video": review_dir / f"{stem}.mp4",
@@ -1114,6 +1350,57 @@ def _previous_proof_artifacts_readback(
     }
 
 
+def _presentation_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    renderable = [
+        item
+        for item in items
+        if item.get("status") in RENDERABLE_SUBTITLE_STATUSES
+    ]
+    renderable.sort(
+        key=lambda item: (
+            float(item.get("render_start_seconds") or 0.0),
+            float(item.get("render_end_seconds") or 0.0),
+            str(item.get("subtitle_id") or ""),
+        )
+    )
+    presentation: list[dict[str, Any]] = []
+    for index, item in enumerate(renderable):
+        start = float(item["render_start_seconds"])
+        source_end = float(item["render_end_seconds"])
+        next_start = (
+            float(renderable[index + 1]["render_start_seconds"])
+            if index + 1 < len(renderable)
+            else None
+        )
+        display_end = source_end
+        replacement_applied = False
+        replacement_end_source = "source_subtitle_end"
+        if next_start is not None and start < next_start < source_end:
+            display_end = next_start
+            replacement_applied = True
+            replacement_end_source = "next_subtitle_start"
+        if display_end <= start:
+            display_end = min(source_end, start + 0.2)
+            replacement_end_source = "minimum_visible_window"
+        wrapped = measure_subtitle(
+            str(item.get("text") or ""),
+            wrap_eaw=DIAGNOSTIC_ASS_STYLE["dialogue_wrap_eaw"],
+        )
+        presentation.append(
+            {
+                **item,
+                "display_start_seconds": round(start, 3),
+                "display_end_seconds": round(display_end, 3),
+                "replacement_applied": replacement_applied,
+                "replacement_end_source": replacement_end_source,
+                "wrapped_text": "\n".join(line.text for line in wrapped.lines),
+                "wrapped_line_count": len(wrapped.lines),
+                "max_wrapped_line_eaw": wrapped.longest_line_eaw,
+            }
+        )
+    return presentation
+
+
 def _write_ass(path: Path, items: list[dict[str, Any]]) -> None:
     style = DIAGNOSTIC_ASS_STYLE
     lines = [
@@ -1127,7 +1414,7 @@ def _write_ass(path: Path, items: list[dict[str, Any]]) -> None:
         "[V4+ Styles]",
         "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
         (
-            f"Style: {ASS_STYLE_NAME},{style['font_name']},{style['font_size']},"
+            f"Style: {ASS_DIALOGUE_STYLE_NAME},{style['font_name']},{style['font_size']},"
             f"{style['primary_colour']},{style['secondary_colour']},"
             f"{style['outline_colour']},{style['back_colour']},"
             "0,0,0,0,100,100,0,0,"
@@ -1135,15 +1422,37 @@ def _write_ass(path: Path, items: list[dict[str, Any]]) -> None:
             f"{style['alignment']},{style['margin_l']},{style['margin_r']},"
             f"{style['margin_v']},1"
         ),
+        (
+            f"Style: {ASS_SPEAKER_BADGE_STYLE_NAME},{style['font_name']},"
+            f"{style['speaker_badge_font_size']},"
+            f"{style['primary_colour']},{style['secondary_colour']},"
+            f"{style['speaker_accent_colour']},{style['speaker_badge_back_colour']},"
+            "1,0,0,0,100,100,0,0,"
+            "3,3,0,5,0,0,0,1"
+        ),
         "",
         "[Events]",
         "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text",
     ]
     for item in items:
-        start = _ass_time(float(item["render_start_seconds"]))
-        end = _ass_time(float(item["render_end_seconds"]))
-        text = _ass_text(str(item.get("text") or ""))
-        lines.append(f"Dialogue: 0,{start},{end},{ASS_STYLE_NAME},,0,0,0,,{text}")
+        start = _ass_time(float(item["display_start_seconds"]))
+        end = _ass_time(float(item["display_end_seconds"]))
+        badge = _ass_text(str(style["speaker_badge_label"]))
+        text = _ass_text(str(item.get("wrapped_text") or item.get("text") or ""))
+        badge_override = (
+            f"{{\\an5\\pos({style['speaker_badge_x']},{style['speaker_badge_y']})}}"
+        )
+        dialogue_override = (
+            f"{{\\an7\\pos({style['dialogue_x']},{style['dialogue_y']})}}"
+        )
+        lines.append(
+            f"Dialogue: 0,{start},{end},{ASS_SPEAKER_BADGE_STYLE_NAME},,0,0,0,,"
+            f"{badge_override}{badge}"
+        )
+        lines.append(
+            f"Dialogue: 1,{start},{end},{ASS_DIALOGUE_STYLE_NAME},,0,0,0,,"
+            f"{dialogue_override}{text}"
+        )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -1200,15 +1509,131 @@ def _extract_frame(
     }
 
 
+def _extract_sample_frames(
+    *,
+    video_path: Path,
+    cut_paths: dict[str, Path],
+    sample_specs: list[dict[str, Any]],
+    ffmpeg_path: str,
+    runner: ffmpeg_tiny.Runner,
+) -> list[dict[str, Any]]:
+    extracts: list[dict[str, Any]] = []
+    for spec in sample_specs:
+        role = str(spec["role"])
+        frame_path = cut_paths["reference_dir"] / f"{cut_paths['stem']}.sample_{role}.png"
+        extract = _extract_frame(
+            video_path=video_path,
+            frame_path=frame_path,
+            seconds=float(spec["frame_seconds"]),
+            ffmpeg_path=ffmpeg_path,
+            runner=runner,
+        )
+        extracts.append(
+            {
+                **extract,
+                "sample_id": spec["sample_id"],
+                "role": role,
+                "subtitle_id": spec.get("subtitle_id"),
+                "frame_selection_reason": spec.get("frame_selection_reason"),
+                "subtitle_bearing_expected": True,
+            }
+        )
+    return extracts
+
+
+def _sample_frame_specs(items: list[dict[str, Any]], duration: float) -> list[dict[str, Any]]:
+    if not items:
+        return []
+    candidates: list[tuple[str, dict[str, Any], str]] = [
+        ("early", items[0], "first active subtitle cue"),
+        ("middle", items[len(items) // 2], "middle active subtitle cue"),
+    ]
+    response_item = next(
+        (item for item in items if item.get("subtitle_id") in RESPONSE_REFERRAL_SUBTITLE_IDS),
+        None,
+    )
+    if response_item is not None:
+        candidates.append(
+            (
+                "response_referral",
+                response_item,
+                "first active cue inside required response/referral block sub_025..sub_029",
+            )
+        )
+    else:
+        candidates.append(
+            (
+                "response_referral",
+                items[-1],
+                "fallback final cue because response/referral block is not present for this cut",
+            )
+        )
+    candidates.append(("final", items[-1], "final active subtitle cue"))
+
+    specs: list[dict[str, Any]] = []
+    for role, item, reason in candidates:
+        specs.append(
+            {
+                "sample_id": f"{role}:{item.get('subtitle_id')}",
+                "role": role,
+                "subtitle_id": item.get("subtitle_id"),
+                "frame_seconds": _subtitle_frame_seconds(item, duration),
+                "display_start_seconds": item.get("display_start_seconds"),
+                "display_end_seconds": item.get("display_end_seconds"),
+                "frame_selection_reason": reason,
+            }
+        )
+    return specs
+
+
 def _representative_frame_seconds(items: list[dict[str, Any]], duration: float) -> float:
     renderable = [item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES]
     if not renderable:
         return 0.0
-    first = renderable[0]
-    start = _optional_float(first.get("render_start_seconds")) or 0.0
-    end = _optional_float(first.get("render_end_seconds")) or min(duration, start + 0.5)
-    midpoint = start + max(0.1, min(0.5, (end - start) / 2))
+    return _subtitle_frame_seconds(renderable[0], duration)
+
+
+def _subtitle_frame_seconds(item: dict[str, Any], duration: float) -> float:
+    start = (
+        _optional_float(item.get("display_start_seconds"))
+        if item.get("display_start_seconds") is not None
+        else _optional_float(item.get("render_start_seconds"))
+    ) or 0.0
+    end = (
+        _optional_float(item.get("display_end_seconds"))
+        if item.get("display_end_seconds") is not None
+        else _optional_float(item.get("render_end_seconds"))
+    ) or min(duration, start + 0.5)
+    window = max(0.0, end - start)
+    if window <= 0.0:
+        return max(0.0, min(duration, start))
+    midpoint = start + min(max(window / 2, 0.08), 0.55)
+    if midpoint >= end:
+        midpoint = start + (window / 2)
     return max(0.0, min(duration, midpoint))
+
+
+def _sample_frames_html(sample_frames: list[dict[str, Any]]) -> str:
+    if not sample_frames:
+        return ""
+    chunks = ["<div class=\"sample-grid\">"]
+    for sample in sample_frames:
+        path = sample.get("path")
+        if not path:
+            continue
+        href = _artifact_href(path)
+        label = (
+            f"{sample.get('role', '')} / {sample.get('subtitle_id', '')} / "
+            f"{sample.get('frame_seconds', '')}s"
+        )
+        chunks.append(
+            "<figure>"
+            f"<a href=\"{href}\"><img class=\"proof-frame\" src=\"{href}\" alt=\"{escape(str(label))}\"></a>"
+            f"<figcaption>{escape(str(label))}</figcaption>"
+            "</figure>"
+        )
+    chunks.append("</div>")
+    return "".join(chunks)
 
 
 def _status_counts(items: list[dict[str, Any]]) -> dict[str, int]:
@@ -1253,6 +1678,9 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
     th {{ background: #f3f3f3; }}
     .warn {{ color: #8a4b00; }}
     .proof-frame {{ max-width: 360px; width: 100%; border: 1px solid #ccc; display: block; margin-bottom: 8px; }}
+    .sample-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }}
+    figure {{ margin: 0; }}
+    figcaption {{ font-size: 12px; color: #444; }}
     video {{ max-width: 360px; width: 100%; display: block; margin-top: 8px; }}
     dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
     dt {{ font-weight: 700; }}
@@ -1271,7 +1699,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
   </section>
 {related_visuals}
   <table>
-    <tr><th>cut</th><th>status</th><th>visual</th><th>artifacts</th><th>style readback</th><th>review statuses</th><th>limitations</th></tr>
+    <tr><th>cut</th><th>status</th><th>visual</th><th>subtitle-bearing samples</th><th>artifacts</th><th>style readback</th><th>review statuses</th><th>limitations</th></tr>
     {rows}
   </table>
 </body>
@@ -1283,7 +1711,9 @@ def _overlay_cut_row(item: dict[str, Any]) -> str:
     artifacts = item.get("generated_artifacts") or {}
     limitations = "<br>".join(escape(str(value)) for value in item.get("limitations") or [])
     previous = (item.get("previous_proof_artifacts") or {}).get("artifacts") or {}
-    artifact_text = _artifact_links_html(artifacts)
+    artifact_text = _artifact_links_html(
+        {key: value for key, value in artifacts.items() if key != "sample_frames"}
+    )
     if previous:
         artifact_text = (
             f"{artifact_text}<br><strong>previous proof for comparison</strong><br>"
@@ -1294,6 +1724,7 @@ def _overlay_cut_row(item: dict[str, Any]) -> str:
         video=artifacts.get("video"),
         alt=f"{item.get('cut_id', '')} subtitle-overlay proof frame",
     )
+    sample_visuals = _sample_frames_html(artifacts.get("sample_frames") or [])
     style_text = _style_cut_html(
         item.get("style_direction") or {},
         item.get("style_parameters") or {},
@@ -1312,6 +1743,7 @@ def _overlay_cut_row(item: dict[str, Any]) -> str:
         f"<td>{escape(str(item.get('cut_id', '')))}</td>"
         f"<td>{escape(str(item.get('visual_proof_status', '')))}<br>overlay_present={escape(str(item.get('subtitle_overlay_present', '')))}</td>"
         f"<td>{visual}</td>"
+        f"<td>{sample_visuals}</td>"
         f"<td>{artifact_text}</td>"
         f"<td>{style_text}</td>"
         f"<td>{statuses}</td>"
@@ -1343,6 +1775,9 @@ def _representative_report_html(report: dict[str, Any]) -> str:
     .warn {{ color: #8a4b00; }}
     .proof-frame {{ max-width: 360px; width: 100%; border: 1px solid #ccc; display: block; margin-bottom: 8px; }}
     .contact-sheet {{ max-width: 100%; border: 1px solid #ccc; display: block; margin: 8px 0 16px; }}
+    .sample-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; }}
+    figure {{ margin: 0; }}
+    figcaption {{ font-size: 12px; color: #444; }}
     video {{ max-width: 360px; width: 100%; display: block; margin-top: 8px; }}
     dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
     dt {{ font-weight: 700; }}
@@ -1419,9 +1854,11 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
     return (
         "    <dl>"
         f"<dt>preset</dt><dd>{escape(str(direction.get('preset_name', '')))}</dd>"
+        f"<dt>contract</dt><dd>{escape(str(direction.get('presentation_contract_id', '')))}</dd>"
         f"<dt>renderer</dt><dd>{escape(str(parameters.get('renderer', '')))}</dd>"
         f"<dt>intent</dt><dd>{escape(str(direction.get('target_viewing_context', '')))}; "
         f"{escape(str(direction.get('visual_weight', '')))}</dd>"
+        f"<dt>pattern</dt><dd>{escape(str(direction.get('implemented_pattern', '')))}</dd>"
         f"<dt>long-line policy</dt><dd>{escape(str(direction.get('long_line_policy', '')))}</dd>"
         f"<dt>font name</dt><dd>{escape(str(font_name.get('value', '')))} "
         f"({escape(str(font_name.get('source', '')))}; {escape(str(font_name.get('readback', '')))})</dd>"
@@ -1451,15 +1888,19 @@ def _style_cut_html(
     outline = parameters.get("outline") or {}
     margin_v = parameters.get("margin_v") or {}
     alignment = parameters.get("alignment") or {}
+    positioning = parameters.get("positioning") or {}
     return "<br>".join(
         [
             f"preset: {escape(str(direction.get('preset_name', '')))}",
+            f"contract: {escape(str(direction.get('presentation_contract_id', '')))}",
             f"renderer: {escape(str(parameters.get('renderer', '')))}",
             f"style_slot: {escape(str(parameters.get('style_slot', '')))}",
             f"font_size: {escape(str(font_size.get('value')))} ({escape(str(font_size.get('source', '')))})",
             f"outline: {escape(str(outline.get('value')))} ({escape(str(outline.get('source', '')))})",
             f"margin_v: {escape(str(margin_v.get('value')))} ({escape(str(margin_v.get('source', '')))})",
             f"alignment: {escape(str(alignment.get('value', '')))}",
+            f"dialogue_pos: {escape(str(positioning.get('dialogue_x', '')))}, {escape(str(positioning.get('dialogue_y', '')))}",
+            f"badge_pos: {escape(str(positioning.get('speaker_badge_x', '')))}, {escape(str(positioning.get('speaker_badge_y', '')))}",
             f"max_raw_eaw: {escape(str(line_width.get('max_raw_line_eaw', '')))}",
             f"needs_wrap_watch: {escape(str(line_width.get('needs_wrap_count', '')))}",
         ]

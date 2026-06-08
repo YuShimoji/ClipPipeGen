@@ -45,25 +45,29 @@ instructions.
   approval, publishing acceptance, or public-use permission.
 - latest subtitle design / review UX validation:
   2026-06-09 JST local readback in this workspace: the tracked
-  `build-subtitle-overlay-visual-proof` generator now writes a diagnostic ASS
-  burned-in subtitle style candidate for the embedded proof subtitle and moves
-  SRT text into `subtitle_overlay_reference/` as reference-only material. The
-  same-basename VLC autoload SRT for `cut_003` was renamed away from the proof
-  video path. The ignored local style probe regenerated only `cut_003` and
-  parsed `subtitle_overlay_visual_proof_report.json`, `.html`, the generated
-  `.burned_in.ass`, the `.reference.srt`, and
-  `representative_visual_proof_report.json`. Readback:
-  `renderer=ffmpeg_subtitles_filter_ass`,
-  `style_candidate_id=jp_clip_readable_v1_burned_in_probe`,
-  `font_size=72`, `outline=5`, `margin_v=70`,
-  `sidecar_srt_reference.role=reference_text_only_not_burned_in_subtitle_rendering`,
-  `old_same_basename_srt_exists=false`, `production_subtitle_design_acceptance=false`,
+  `build-subtitle-overlay-visual-proof` generator now follows
+  [SUBTITLE_PRESENTATION_CONTRACT.md](SUBTITLE_PRESENTATION_CONTRACT.md)
+  (`jp_clip_dialogue_reference_v0`) for diagnostic proof only. The active
+  diagnostic candidate is `jp_clip_dialogue_badge_left_v0`: a large
+  heavy-outlined, left-aligned dialogue subtitle beside a speaker badge
+  placeholder. The material ledger has only source video/audio, so real member
+  face icons were unavailable and the preferred non-POV face-icon pattern is
+  approximated with an explicit fallback. The ignored local style probe
+  regenerates only `cut_003`, keeps the reference SRT under
+  `subtitle_overlay_reference/`, extracts subtitle-bearing sample frames for
+  early / middle / response-referral / final active cues, and records
+  replacement-style display timing. Readback fields include
+  `subtitle_presentation_contract.contract_id=jp_clip_dialogue_reference_v0`,
+  `style_candidate_id=jp_clip_dialogue_badge_left_v0`, `font_size=92`,
+  `outline=7`, `alignment=speaker_badge_left_aligned_dialogue`,
+  `speaker_identity_presentation.fallback_used=true`,
+  `sample_frame_selection.includes_response_referral_block=true`,
+  `production_subtitle_design_acceptance=false`,
   `production_candidate=false`, `rights_status=pending`, and
-  `production_usage_allowed=false`. Existing previous proof frame/video/SRT
-  were archived under `subtitle_overlay_reference/` for comparison in the
-  same HTML report. Human review still decides whether this diagnostic style is
-  acceptable for YouTube readability; no production subtitle design acceptance
-  is claimed.
+  `production_usage_allowed=false`. Existing previous proof frame/video/SRT are
+  archived under `subtitle_overlay_reference/` for comparison in the same HTML
+  report. Human review still decides diagnostic readability only; no production
+  subtitle design acceptance is claimed.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -93,12 +97,13 @@ instructions.
   It is diagnostic proof evidence only and does not accept production subtitle
   design.
 - latest diagnostic subtitle style readback:
-  `jp_clip_readable_v1` remains the diagnostic direction, and the current
-  cut_003 style probe records an explicit diagnostic ASS candidate rather than
-  relying on FFmpeg/libass SRT defaults. The candidate is intentionally
-  review-only: `font_size=72`, `outline=5`, `margin_v=70`,
-  bottom-center alignment, reference SRT stored away from the video basename,
-  and VLC sidecar review warning present in the HTML. This does not create
+  `jp_clip_readable_v1` remains the broad diagnostic direction, while
+  `jp_clip_dialogue_reference_v0` is the tracked presentation contract for the
+  current proof candidate. The current cut_003 probe uses an explicit ASS file
+  with `ClipPipeSpeakerBadge` and `ClipPipeDialogueLeft` styles, `font_size=92`,
+  `outline=7`, positioned badge/dialogue anchors, diagnostic EAW wrapping, and
+  replacement-style display timing. Reference SRT remains away from the video
+  basename and the VLC sidecar warning remains present. This does not create
   production subtitle design acceptance, production render acceptance, creative
   acceptance, rights approval, or public-use permission. The single human
   review entry point for this slice is
