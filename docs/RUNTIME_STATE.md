@@ -11,8 +11,8 @@ instructions.
 
 - date: 2026-06-08 JST
 - latest pushed resume point:
-  this tracked handoff/runtime refresh after the cut_003 Review Contract
-  Taxonomy audit and downstream-handoff readiness correction.
+  this tracked handoff/runtime refresh after the local cut_003 Review Contract
+  Taxonomy audit correction found stale subtitle-overlay proof evidence.
   Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
 - verified base before this refresh:
   origin/main parity `0 0` in this workspace before this handoff refresh.
@@ -25,25 +25,27 @@ instructions.
   `git ls-files episodes` empty. Targeted local readbacks parsed the current
   ignored `edit_pack.json`, `subtitle_overlay_visual_proof_report.json`,
   `representative_visual_proof_report.json`, current review/decision packets,
-  chapter board, and scoped proxy handoff. The proof-level cut_003 Review
-  Contract Taxonomy gates are evidence-backed for visual human review, but the
-  local `chapter_revision_board.json` and
-  `cut_002_cut_003_operator_proxy_decision_handoff.json` still read the old
-  cut_003 range `22.606 -> 41.725`; do not use them as final proxy decision
-  authority until regenerated or explicitly waived. `visual_proof_cut_001.png`
-  is currently missing in this workspace, so the global R3 review gate remains
-  blocked even though the scoped cut_003 proof can be inspected. The local
-  ignored audit files `review_contract_taxonomy_audit_cut_003.json` / `.html`
-  were added under the R3 review directory, and the tracked summary is
+  chapter board, scoped proxy handoff, and
+  `subtitle_overlay_visual_proof_cut_003.srt`. The current authority is
+  `edit_pack.json` `cut_003=22.606 -> 49.566` with `sub_010..sub_029`, while
+  the subtitle-overlay proof report/SRT still read `22.606 -> 41.725` with
+  `sub_010..sub_024`. The proof-level Review Contract Taxonomy is therefore
+  blocked: `range_matches_current_authority`,
+  `subtitles_sub_010_to_sub_029_included`, and
+  `added_response_referral_block_included` fail. The local chapter board and
+  scoped proxy handoff now read the current `22.606 -> 49.566` timing/text, but
+  their nested visual-proof readback inherits the stale proof artifact. The
+  local ignored audit files `review_contract_taxonomy_audit_cut_003.json` /
+  `.html` were added under the R3 review directory, and the tracked summary is
   [CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md](CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md).
-  Tests were not rerun because the latest executable changes were docs-only
-  plus ignored audit artifacts. The last broad validation remains the
-  2026-06-07 run: `uvx pytest -q` -> 217 passed, `npm run smoke` -> OK,
-  `npm run smoke:electron` -> OK, and `git diff --check` clean aside from CRLF
-  warnings. Reviewability depends on ignored local R3 artifacts in this
-  workspace, including `episodes/` review/proof/export files; fresh checkouts
-  or workspaces missing ignored artifacts must re-run `status-episode` and may
-  correctly report `review_blocked_missing_artifacts`.
+  `status-episode` reports `operator_review.review_ready=true`, but that is a
+  global artifact-presence/readability state and does not make the stale
+  cut_003 proof taxonomy pass. Tests were not rerun for the audit artifact
+  generation; tracked edits are docs-only. `git diff --check` passed with
+  CRLF replacement warnings only. Reviewability depends on ignored local R3
+  artifacts in this workspace, including `episodes/` review/proof/export files;
+  fresh checkouts or workspaces missing ignored artifacts must re-run
+  `status-episode` and may correctly report `review_blocked_missing_artifacts`.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -64,11 +66,12 @@ instructions.
   `subtitle_overlay_visual_proof_cut_002.*`,
   `subtitle_overlay_visual_proof_cut_003.*`, and
   `representative_visual_proof_report.*` exist under the R3 review directory.
-  In the current local ignored artifact set, `visual_proof_cut_001.png` is
-  missing, so global R3 review remains blocked unless that artifact is
-  restored/regenerated or explicitly waived. Do not infer reviewability for a
-  fresh checkout; reviewability remains workspace-local and depends on ignored
-  `episodes/` artifacts.
+  In the current local ignored artifact set, `status-episode` reports
+  `operator_review.review_ready=true`; do not infer reviewability for a fresh
+  checkout because it remains workspace-local and depends on ignored
+  `episodes/` artifacts. This proof run is still stale for boundary-adjusted
+  `cut_003` after the later `cut_003=22.606 -> 49.566` apply because the
+  proof/SRT only include `sub_010..sub_024`.
 - latest diagnostic subtitle style readback:
   `jp_clip_readable_v1` is now recorded as a diagnostic style direction
   contract for the scoped `cut_002` / `cut_003` overlay proof. It separates
@@ -94,9 +97,11 @@ instructions.
   `visual_proof_status=available_requires_human_review`. The scoped
   `proxy_decision` allowed values now include `proceed_with_limitations` for
   candidate-lane routing where explicit limitations or watch items remain
-  visible. This is still not an operator decision, creative acceptance,
-  production acceptance, publishing acceptance, or rights approval. The narrow
-  enum/readback validation ran
+  visible. The timing and subtitle text readback for `cut_003` is current at
+  `22.606 -> 49.566`, but the nested visual-proof readback is stale until the
+  subtitle-overlay proof media/report are regenerated. This is still not an
+  operator decision, creative acceptance, production acceptance, publishing
+  acceptance, or rights approval. The narrow enum/readback validation ran
   `uvx pytest -q tests/test_operator_proxy_decision_handoff.py` -> 2 passed,
   regenerated the ignored ED-10d handoff/template artifacts, confirmed template
   defaults remain blank/undecided,
@@ -136,29 +141,28 @@ instructions.
   for those cuts; treat that as the next narrow readback-cleanup watch item if
   those packet fields will be human-facing.
 - latest Review Contract Taxonomy audit:
-  cut_003 proof-level gates passed against current authority
-  `22.606 -> 49.566`, `sub_010..sub_029`, response/referral block
-  `sub_025..sub_029`, `seg_000030` / `sub_030` excluded,
-  `style_direction_preset=jp_clip_readable_v1`,
+  cut_003 proof-level gates are blocked in the current local artifact set.
+  `edit_pack.json` is current at `22.606 -> 49.566` with `sub_010..sub_029`,
+  response/referral block `sub_025..sub_029`, and `seg_000030` / `sub_030`
+  excluded into `cut_004`; however `subtitle_overlay_visual_proof_report.json`
+  and `subtitle_overlay_visual_proof_cut_003.srt` still read `22.606 -> 41.725`
+  with `sub_010..sub_024`. `style_direction_preset=jp_clip_readable_v1`,
   `production_candidate=false`, `rights_status=pending`, and
-  `production_usage_allowed=false`. `blocking_limitations=none_detected` is
-  evidence-backed only for current proof-level review. Required human review
-  remains required for readability, subtitle density, timing sync impression,
-  response/referral closure, and retained-context-risk interpretation.
-  `visual_proof_cut_003.png` and old tiny-render manifests remain
-  historical/stale, and the currently present downstream chapter board and
-  scoped proxy handoff read old cut_003 `22.606 -> 41.725`. Use
+  `production_usage_allowed=false` remain visible but cannot compensate for
+  missing proof coverage. Required human review remains required for
+  readability, subtitle density, timing sync impression, response/referral
+  closure, and retained-context-risk interpretation. Use
   [CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md](CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md)
   as the tracked resume note for this correction. This did not regenerate
   proof media.
 - current bottleneck: proof/render artifacts remain stale_reference /
   historical diagnostic evidence after the boundary change and NLE refresh.
-  Do not treat old proof/render as current validation. In addition, do not use
-  the stale downstream chapter board or scoped proxy handoff for final cut_003
-  operator decisions until they are regenerated from current authority or
-  explicitly waived. Rights remain pending and production/public use remains
-  disallowed. Fresh checkouts still need artifact restore/regeneration or an
-  explicit waiver before global R3 review can be treated as ready.
+  Do not treat old proof/render as current validation. The next narrow move is
+  to regenerate only the ignored cut_003 subtitle-overlay proof/report/SRT from
+  current `edit_pack.json`, then rerun the taxonomy audit. Rights remain
+  pending and production/public use remains disallowed. Fresh checkouts still
+  need artifact restore/regeneration or an explicit waiver before global R3
+  review can be treated as ready.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -415,10 +419,10 @@ Review focus:
    - `cut_002` is already in the candidate lane with
      `proxy_decision=proceed_with_limitations`; keep the long-line watch risk
      visible.
-   - `cut_003` now has proof-level current authority `22.606 -> 49.566`, but
-     the local scoped proxy handoff and chapter board still read old
-     `22.606 -> 41.725`; regenerate those ignored downstream surfaces or get
-     an explicit waiver before final proxy decision input.
+   - `cut_003` text/timing authority is current at `22.606 -> 49.566`, but the
+     local subtitle-overlay proof report/SRT still read old
+     `22.606 -> 41.725`; regenerate the ignored cut_003 proof from current
+     authority or get an explicit waiver before final proxy decision input.
 3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
    - `cut_004` has been explicitly shrunk to start at `50.868s` and remains a
