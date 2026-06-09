@@ -67,17 +67,50 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         assert (tmp_path / item["generated_artifacts"]["frame"]).is_relative_to(review_dir)
         assert item["generated_artifacts"]["video"].endswith(f"{item['cut_id']}.mp4")
         assert item["generated_artifacts"]["frame"].endswith(f"{item['cut_id']}.png")
+        assert item["sample_selection_policy"] == (
+            "sample frames are selected only from renderable subtitle cue midpoints"
+        )
+        sample_frames = item["generated_artifacts"]["sample_frames"]
+        assert set(sample_frames) == {
+            "sample_early",
+            "sample_middle",
+            "sample_response_referral",
+            "sample_final",
+        }
+        assert item["artifact_exists"]["sample_frames"] == {
+            "sample_early": True,
+            "sample_middle": True,
+            "sample_response_referral": True,
+            "sample_final": True,
+        }
+        assert len(item["sample_frame_plan"]) == 4
+        assert len(item["sample_frame_extracts"]) == 4
+        assert all(extract["status"] == "succeeded" for extract in item["sample_frame_extracts"])
+        assert all((tmp_path / path).is_relative_to(review_dir) for path in sample_frames.values())
+        assert sample_frames["sample_early"].endswith(f"{item['cut_id']}.sample_early.png")
 
     assert not (review_dir / "subtitle_overlay_visual_proof_cut_001.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_002.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_002.png").exists()
+    assert (review_dir / "subtitle_overlay_visual_proof_cut_002.sample_early.png").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_003.mp4").exists()
     assert (review_dir / "subtitle_overlay_visual_proof_cut_003.png").exists()
+    assert (review_dir / "subtitle_overlay_visual_proof_cut_003.sample_response_referral.png").exists()
+    assert report["review_surface"]["candidate_id"] == "jp_clip_dialogue_badge_left_v0"
+    assert report["review_surface"]["contract_id"] == "jp_clip_dialogue_reference_v0"
+    assert report["review_surface"]["sidecar_srt_reference_only"] is True
+    assert report["review_surface"]["production_subtitle_design_acceptance"] is False
 
     overlay_html = (review_dir / "subtitle_overlay_visual_proof_report.html").read_text(encoding="utf-8")
     assert "jp_clip_readable_v1" in overlay_html
     assert "font_size" in overlay_html
+    assert "candidate_id: jp_clip_dialogue_badge_left_v0" in overlay_html
+    assert "contract_id: jp_clip_dialogue_reference_v0" in overlay_html
+    assert "sidecar_srt_reference_only: True" in overlay_html
+    assert "production_subtitle_design_acceptance: False" in overlay_html
     assert 'src="subtitle_overlay_visual_proof_cut_002.png"' in overlay_html
+    assert 'src="subtitle_overlay_visual_proof_cut_003.sample_early.png"' in overlay_html
+    assert 'src="subtitle_overlay_visual_proof_cut_003.sample_response_referral.png"' in overlay_html
     assert 'src="subtitle_overlay_visual_proof_cut_003.mp4"' in overlay_html
     assert 'src="visual_proof_contact_sheet.png"' in overlay_html
 
@@ -95,10 +128,17 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         "available_source_frame_only_no_subtitle_overlay"
     )
     assert assessments["cut_003"]["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
+    assert assessments["cut_003"]["subtitle_overlay_sample_frames"]["sample_final"].endswith(
+        "subtitle_overlay_visual_proof_cut_003.sample_final.png"
+    )
+    assert assessments["cut_003"]["subtitle_overlay_readback"]["sample_selection_policy"] == (
+        "sample frames are selected only from renderable subtitle cue midpoints"
+    )
 
     representative_html = (review_dir / "representative_visual_proof_report.html").read_text(encoding="utf-8")
     assert "jp_clip_readable_v1" in representative_html
     assert 'src="subtitle_overlay_visual_proof_cut_002.png"' in representative_html
+    assert 'src="subtitle_overlay_visual_proof_cut_003.sample_middle.png"' in representative_html
 
     after = build_operator_proxy_decision_handoff(
         episode_dir=episode_dir,
@@ -368,7 +408,7 @@ def _representative_visual_report(episode_id: str) -> dict:
         "outputs": {
             "json": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/representative_visual_proof_report.json",
             "html": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html",
-            "contact_sheet": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/visual_proof_contact_sheet.png",
+            "visual_proof_contact_sheet_png": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/visual_proof_contact_sheet.png",
         },
     }
 

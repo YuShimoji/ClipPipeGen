@@ -28,6 +28,14 @@ DEFAULT_REVIEW_DIR_NAME = "jp_pilot01r3_cut_review"
 RENDERABLE_SUBTITLE_STATUSES = {"included", "clamped_to_render_window"}
 DIAGNOSTIC_STYLE_DIRECTION_NAME = "jp_clip_readable_v1"
 LINE_WIDTH_WATCH_EAW = 40
+DEFAULT_CANDIDATE_ID = "jp_clip_dialogue_badge_left_v0"
+DEFAULT_CONTRACT_ID = "jp_clip_dialogue_reference_v0"
+SAMPLE_FRAME_LABELS = (
+    "sample_early",
+    "sample_middle",
+    "sample_response_referral",
+    "sample_final",
+)
 
 
 class SubtitleOverlayVisualProofError(Exception):
@@ -199,6 +207,7 @@ def _build_cut_proof(
             attempted_render_profiles=[],
             attempts=[],
             frame_extract=None,
+            sample_frame_extracts=None,
             error=None,
             base=base,
         )
@@ -218,6 +227,7 @@ def _build_cut_proof(
             attempted_render_profiles=[],
             attempts=[],
             frame_extract=None,
+            sample_frame_extracts=None,
             error="no renderable subtitle items for target cut",
             base=base,
         )
@@ -245,6 +255,14 @@ def _build_cut_proof(
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
         )
+        sample_plan = _sample_frame_plan(renderable_items, duration)
+        sample_frame_extracts = _extract_sample_frames(
+            video_path=video_path,
+            sample_paths=cut_paths["sample_frames"],
+            sample_plan=sample_plan,
+            ffmpeg_path=render_result.ffmpeg_path,
+            runner=runner,
+        )
         return _cut_report(
             episode_id=episode_id,
             cut=cut,
@@ -259,6 +277,7 @@ def _build_cut_proof(
             attempted_render_profiles=[attempt.to_dict() for attempt in render_result.attempts],
             attempts=[attempt.to_dict() for attempt in render_result.attempts],
             frame_extract=frame_extract,
+            sample_frame_extracts=sample_frame_extracts,
             error=None,
             base=base,
         )
@@ -280,6 +299,7 @@ def _build_cut_proof(
             ],
             attempts=[attempt.to_dict() for attempt in getattr(exc, "attempts", [])],
             frame_extract=None,
+            sample_frame_extracts=None,
             error=f"{failure_reason}: {exc}",
             base=base,
         )
@@ -300,6 +320,7 @@ def _cut_report(
     attempted_render_profiles: list[dict[str, Any]],
     attempts: list[dict[str, Any]],
     frame_extract: dict[str, Any] | None,
+    sample_frame_extracts: list[dict[str, Any]] | None,
     error: str | None,
     base: Path,
 ) -> dict[str, Any]:
@@ -309,6 +330,7 @@ def _cut_report(
     renderable_items = [
         item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES
     ]
+    sample_frame_paths = cut_paths.get("sample_frames") or {}
     return {
         "episode_id": episode_id,
         "cut_id": cut_id,
@@ -360,11 +382,18 @@ def _cut_report(
         "generated_artifacts": {
             "video": _display_path(cut_paths["video"], base),
             "frame": _display_path(cut_paths["frame"], base),
+            "sample_frames": {
+                label: _display_path(path, base)
+                for label, path in sample_frame_paths.items()
+            },
             "diagnostic_subtitle_file": _display_path(cut_paths["subtitle_file"], base),
         },
         "artifact_exists": {
             "video": cut_paths["video"].exists(),
             "frame": cut_paths["frame"].exists(),
+            "sample_frames": {
+                label: path.exists() for label, path in sample_frame_paths.items()
+            },
             "diagnostic_subtitle_file": cut_paths["subtitle_file"].exists(),
         },
         "output_metadata": output_metadata,
@@ -373,6 +402,11 @@ def _cut_report(
         "attempted_render_profiles": attempted_render_profiles,
         "attempts": attempts,
         "frame_extract": frame_extract or {},
+        "sample_selection_policy": (
+            "sample frames are selected only from renderable subtitle cue midpoints"
+        ),
+        "sample_frame_plan": _sample_frame_plan(renderable_items, round(end_seconds - start_seconds, 3)),
+        "sample_frame_extracts": sample_frame_extracts or [],
         "typography_status": (
             "diagnostic_overlay_visible_human_review_required"
             if overlay_present
@@ -398,6 +432,7 @@ def _cut_report(
             "FFmpeg default subtitle styling is used; typography polish is not claimed",
             "safe-area, line wrapping, readability, and timing sync still require human review",
             "overlay presence is inferred from successful subtitle filter/render and generated SRT, not OCR",
+            "sidecar SRT is reference-only and is not the review surface by itself",
             "rights_status=pending; production/public usage is not allowed",
         ],
         "production_candidate": False,
@@ -449,6 +484,7 @@ def _report_payload(
         },
         "representative_visual_proof_report": _display_path(representative_report_path, base),
         "related_visual_artifacts": _related_visual_artifacts(representative_report),
+        "review_surface": _review_surface_readback(report_html_path=report_html_path, base=base),
         "outputs": {
             "json": _display_path(report_path, base),
             "html": _display_path(report_html_path, base),
@@ -461,8 +497,19 @@ def _report_payload(
         "warnings": [
             "Diagnostic overlay proof only; production render acceptance is not claimed.",
             "Production subtitle design, creative acceptance, publishing acceptance, and rights approval are out of scope.",
+            "Sidecar SRT is reference-only; human review must use visible subtitle-bearing frames/video.",
             "Generated artifacts are local review artifacts and must not be staged from episodes/.",
         ],
+    }
+
+
+def _review_surface_readback(*, report_html_path: Path, base: Path) -> dict[str, Any]:
+    return {
+        "candidate_id": DEFAULT_CANDIDATE_ID,
+        "contract_id": DEFAULT_CONTRACT_ID,
+        "sidecar_srt_reference_only": True,
+        "production_subtitle_design_acceptance": False,
+        "minimum_human_review_file": _display_path(report_html_path, base),
     }
 
 
@@ -591,9 +638,15 @@ def _report_style_parameter_summary(cut_reports: list[dict[str, Any]]) -> dict[s
 
 def _related_visual_artifacts(representative_report: dict[str, Any]) -> dict[str, Any]:
     outputs = representative_report.get("outputs") if isinstance(representative_report, dict) else {}
-    contact_sheet = outputs.get("contact_sheet") if isinstance(outputs, dict) else None
+    contact_sheet = None
+    representative_html = None
+    if isinstance(outputs, dict):
+        contact_sheet = outputs.get("contact_sheet") or outputs.get("visual_proof_contact_sheet_png")
+        representative_html = (
+            outputs.get("representative_visual_proof_report_html") or outputs.get("html")
+        )
     return {
-        "representative_visual_proof_report_html": outputs.get("html") if isinstance(outputs, dict) else None,
+        "representative_visual_proof_report_html": representative_html,
         "contact_sheet": contact_sheet,
     }
 
@@ -614,6 +667,7 @@ def _updated_representative_report(
     updated["production_usage_allowed"] = False
     updated["diagnostic_style_direction"] = overlay_report["style_direction"]
     updated["diagnostic_style_parameters"] = overlay_report["style_parameters"]
+    updated["review_surface"] = overlay_report["review_surface"]
     updated["subtitle_overlay_visual_proof"] = {
         "report": overlay_report["outputs"]["json"],
         "target_cuts": overlay_report["target_cuts"],
@@ -637,6 +691,9 @@ def _updated_representative_report(
         assessment["visual_proof_status"] = "available_diagnostic_subtitle_overlay"
         assessment["visual_proof_artifact_path"] = proof["generated_artifacts"]["frame"]
         assessment["visual_proof_video_artifact_path"] = proof["generated_artifacts"]["video"]
+        assessment["subtitle_overlay_sample_frames"] = proof["generated_artifacts"].get(
+            "sample_frames"
+        )
         assessment["diagnostic_subtitle_file_path"] = proof["generated_artifacts"][
             "diagnostic_subtitle_file"
         ]
@@ -663,6 +720,9 @@ def _updated_representative_report(
             "timing_window": proof["timing_window"],
             "subtitle_source": proof["subtitle_source"],
             "artifact_exists": proof["artifact_exists"],
+            "sample_selection_policy": proof["sample_selection_policy"],
+            "sample_frame_plan": proof["sample_frame_plan"],
+            "sample_frame_extracts": proof["sample_frame_extracts"],
         }
     updated["aggregate_summary"] = _representative_aggregate(assessments)
     outputs = updated.get("outputs")
@@ -861,6 +921,10 @@ def _output_paths(*, review_dir: Path) -> dict[str, Any]:
                 "output_dir": review_dir,
                 "video": review_dir / f"{stem}.mp4",
                 "frame": review_dir / f"{stem}.png",
+                "sample_frames": {
+                    label: review_dir / f"{stem}.{label}.png"
+                    for label in SAMPLE_FRAME_LABELS
+                },
                 "subtitle_file": review_dir / f"{stem}.srt",
             }
         return cuts[cut_id]
@@ -922,6 +986,32 @@ def _extract_frame(
     }
 
 
+def _extract_sample_frames(
+    *,
+    video_path: Path,
+    sample_paths: dict[str, Path],
+    sample_plan: list[dict[str, Any]],
+    ffmpeg_path: str,
+    runner: ffmpeg_tiny.Runner,
+) -> list[dict[str, Any]]:
+    extracts: list[dict[str, Any]] = []
+    plan_by_label = {str(item.get("label")): item for item in sample_plan}
+    for label in SAMPLE_FRAME_LABELS:
+        plan = plan_by_label.get(label)
+        frame_path = sample_paths.get(label)
+        if not plan or frame_path is None:
+            continue
+        extract = _extract_frame(
+            video_path=video_path,
+            frame_path=frame_path,
+            seconds=float(plan["frame_seconds"]),
+            ffmpeg_path=ffmpeg_path,
+            runner=runner,
+        )
+        extracts.append({**plan, **extract})
+    return extracts
+
+
 def _representative_frame_seconds(items: list[dict[str, Any]], duration: float) -> float:
     renderable = [item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES]
     if not renderable:
@@ -931,6 +1021,88 @@ def _representative_frame_seconds(items: list[dict[str, Any]], duration: float) 
     end = _optional_float(first.get("render_end_seconds")) or min(duration, start + 0.5)
     midpoint = start + max(0.1, min(0.5, (end - start) / 2))
     return max(0.0, min(duration, midpoint))
+
+
+def _sample_frame_plan(items: list[dict[str, Any]], duration: float) -> list[dict[str, Any]]:
+    renderable = [
+        item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES
+    ]
+    if not renderable:
+        return []
+    choices = {
+        "sample_early": renderable[0],
+        "sample_middle": _nearest_subtitle_item(renderable, duration / 2),
+        "sample_response_referral": _response_referral_sample_item(renderable, duration),
+        "sample_final": renderable[-1],
+    }
+    plan: list[dict[str, Any]] = []
+    for label in SAMPLE_FRAME_LABELS:
+        item = choices[label]
+        plan.append(
+            {
+                "label": label,
+                "frame_seconds": _subtitle_midpoint_seconds(item, duration),
+                "subtitle_id": item.get("subtitle_id"),
+                "source_segment_ids": item.get("source_segment_ids") or [],
+                "render_start_seconds": item.get("render_start_seconds"),
+                "render_end_seconds": item.get("render_end_seconds"),
+                "selection_basis": _sample_selection_basis(label),
+            }
+        )
+    return plan
+
+
+def _nearest_subtitle_item(items: list[dict[str, Any]], target_seconds: float) -> dict[str, Any]:
+    return min(
+        items,
+        key=lambda item: abs(_subtitle_midpoint_seconds(item, target_seconds) - target_seconds),
+    )
+
+
+def _response_referral_sample_item(items: list[dict[str, Any]], duration: float) -> dict[str, Any]:
+    explicit_response_items = [
+        item
+        for item in items
+        if _numeric_suffix(item.get("subtitle_id")) >= 25
+        or any(_numeric_suffix(segment_id) >= 25 for segment_id in item.get("source_segment_ids") or [])
+    ]
+    if explicit_response_items:
+        return explicit_response_items[0]
+    late_items = [
+        item for item in items if _subtitle_midpoint_seconds(item, duration) >= duration * 0.72
+    ]
+    if late_items:
+        return late_items[0]
+    return items[min(len(items) - 1, max(0, int(len(items) * 0.75)))]
+
+
+def _subtitle_midpoint_seconds(item: dict[str, Any], duration: float) -> float:
+    start = _optional_float(item.get("render_start_seconds"))
+    end = _optional_float(item.get("render_end_seconds"))
+    if start is None or end is None or end <= start:
+        return round(max(0.0, min(duration, 0.0)), 3)
+    return round(max(0.0, min(duration, start + ((end - start) / 2))), 3)
+
+
+def _sample_selection_basis(label: str) -> str:
+    return {
+        "sample_early": "first renderable subtitle cue midpoint",
+        "sample_middle": "renderable subtitle cue midpoint nearest cut midpoint",
+        "sample_response_referral": (
+            "sub_025+ or late renderable subtitle cue midpoint for response/referral review"
+        ),
+        "sample_final": "last renderable subtitle cue midpoint",
+    }.get(label, "renderable subtitle cue midpoint")
+
+
+def _numeric_suffix(value: Any) -> int:
+    text = str(value or "")
+    digits = ""
+    for char in reversed(text):
+        if not char.isdigit():
+            break
+        digits = char + digits
+    return int(digits) if digits else -1
 
 
 def _status_counts(items: list[dict[str, Any]]) -> dict[str, int]:
@@ -962,6 +1134,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
         report.get("style_parameters") or {},
     )
     related_visuals = _related_visuals_html(report.get("related_visual_artifacts") or {})
+    review_surface = _review_surface_html(report.get("review_surface") or {})
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -974,6 +1147,11 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
     th {{ background: #f3f3f3; }}
     .warn {{ color: #8a4b00; }}
     .proof-frame {{ max-width: 360px; width: 100%; border: 1px solid #ccc; display: block; margin-bottom: 8px; }}
+    .contact-sheet {{ max-width: 100%; border: 1px solid #ccc; display: block; margin: 8px 0 16px; }}
+    .sample-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 10px; }}
+    .sample-card {{ margin: 0; }}
+    .sample-card img {{ width: 100%; border: 1px solid #aaa; display: block; }}
+    .sample-card figcaption {{ font-size: 12px; color: #333; margin-top: 3px; }}
     video {{ max-width: 360px; width: 100%; display: block; margin-top: 8px; }}
     dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
     dt {{ font-weight: 700; }}
@@ -985,6 +1163,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
   <p>target cuts: {escape(", ".join(report.get("target_cuts") or []))}</p>
   <p>rights_status: {escape(str(report.get("rights_status", "")))} / production_candidate: {escape(str(report.get("production_candidate", "")))}</p>
+{review_surface}
   <section>
     <h2>Diagnostic Style Direction</h2>
 {style_summary}
@@ -1003,11 +1182,17 @@ def _overlay_cut_row(item: dict[str, Any]) -> str:
     artifacts = item.get("generated_artifacts") or {}
     limitations = "<br>".join(escape(str(value)) for value in item.get("limitations") or [])
     artifact_text = _artifact_links_html(artifacts)
-    visual = _visual_embed_html(
+    sample_visual = _sample_frames_embed_html(
+        sample_frames=artifacts.get("sample_frames"),
+        sample_plan=item.get("sample_frame_plan"),
+        alt_prefix=str(item.get("cut_id", "")),
+    )
+    main_visual = _visual_embed_html(
         frame=artifacts.get("frame"),
         video=artifacts.get("video"),
         alt=f"{item.get('cut_id', '')} subtitle-overlay proof frame",
     )
+    visual = "<br>".join(chunk for chunk in [sample_visual, main_visual] if chunk)
     style_text = _style_cut_html(
         item.get("style_direction") or {},
         item.get("style_parameters") or {},
@@ -1086,11 +1271,17 @@ def _representative_cut_row(item: dict[str, Any]) -> str:
         ("previous_source_frame", item.get("previous_source_frame_artifact_path")),
     ]
     artifact_text = _artifact_links_html({label: value for label, value in artifacts if value})
-    visual = _visual_embed_html(
+    sample_visual = _sample_frames_embed_html(
+        sample_frames=item.get("subtitle_overlay_sample_frames"),
+        sample_plan=(item.get("subtitle_overlay_readback") or {}).get("sample_frame_plan"),
+        alt_prefix=str(item.get("cut_id", "")),
+    )
+    main_visual = _visual_embed_html(
         frame=item.get("visual_proof_artifact_path"),
         video=item.get("visual_proof_video_artifact_path"),
         alt=f"{item.get('cut_id', '')} representative visual proof",
     )
+    visual = "<br>".join(chunk for chunk in [sample_visual, main_visual] if chunk)
     style_text = _style_cut_html(
         item.get("style_direction") or {},
         item.get("style_parameters") or {},
@@ -1115,6 +1306,22 @@ def _representative_cut_row(item: dict[str, Any]) -> str:
         f"<td>{statuses}</td>"
         f"<td>{limitations}</td>"
         "</tr>"
+    )
+
+
+def _review_surface_html(review_surface: dict[str, Any]) -> str:
+    if not review_surface:
+        return ""
+    return (
+        "  <section>"
+        "<h2>Review Surface Contract</h2>"
+        f"<p>candidate_id: {escape(str(review_surface.get('candidate_id', '')))} / "
+        f"contract_id: {escape(str(review_surface.get('contract_id', '')))}</p>"
+        f"<p>sidecar_srt_reference_only: {escape(str(review_surface.get('sidecar_srt_reference_only', '')))} / "
+        "production_subtitle_design_acceptance: "
+        f"{escape(str(review_surface.get('production_subtitle_design_acceptance', '')))}</p>"
+        f"<p>minimum_human_review_file: {escape(str(review_surface.get('minimum_human_review_file', '')))}</p>"
+        "  </section>"
     )
 
 
@@ -1207,10 +1414,50 @@ def _visual_embed_html(*, frame: Any, video: Any, alt: str) -> str:
     return "<br>".join(chunks)
 
 
+def _sample_frames_embed_html(*, sample_frames: Any, sample_plan: Any, alt_prefix: str) -> str:
+    if not isinstance(sample_frames, dict) or not sample_frames:
+        return ""
+    plan_by_label = {
+        str(item.get("label")): item
+        for item in (sample_plan or [])
+        if isinstance(item, dict) and item.get("label")
+    }
+    cards: list[str] = []
+    for label in SAMPLE_FRAME_LABELS:
+        path = sample_frames.get(label)
+        if not path:
+            continue
+        href = _artifact_href(path)
+        plan = plan_by_label.get(label) or {}
+        caption_parts = [label]
+        if plan.get("frame_seconds") is not None:
+            caption_parts.append(f"t={escape(str(plan.get('frame_seconds')))}s")
+        if plan.get("subtitle_id"):
+            caption_parts.append(escape(str(plan.get("subtitle_id"))))
+        caption = " / ".join(caption_parts)
+        cards.append(
+            "<figure class=\"sample-card\">"
+            f"<a href=\"{href}\"><img src=\"{href}\" alt=\"{escape(alt_prefix)} {escape(label)} subtitle-bearing sample frame\"></a>"
+            f"<figcaption>{caption}</figcaption>"
+            "</figure>"
+        )
+    if not cards:
+        return ""
+    return "<div class=\"sample-grid\">" + "".join(cards) + "</div>"
+
+
 def _artifact_links_html(artifacts: dict[str, Any]) -> str:
     links: list[str] = []
     for key, value in artifacts.items():
         if not value:
+            continue
+        if isinstance(value, dict):
+            for child_key, child_value in value.items():
+                if not child_value:
+                    continue
+                href = _artifact_href(child_value)
+                label = f"{key}.{child_key}"
+                links.append(f"{escape(str(label))}: <a href=\"{href}\">{escape(str(child_value))}</a>")
             continue
         href = _artifact_href(value)
         links.append(f"{escape(str(key))}: <a href=\"{href}\">{escape(str(value))}</a>")
