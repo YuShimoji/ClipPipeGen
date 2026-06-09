@@ -11,11 +11,23 @@ instructions.
 
 - date: 2026-06-09 JST
 - latest pushed resume point:
-  this tracked handoff/runtime refresh after the cut_003 Subtitle Design /
-  Review UX diagnostic style candidate slice.
-  Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
+  `86958cb feat: add subtitle presentation contract proof`.
+  This is the pushed subtitle presentation contract / diagnostic proof update
+  for the cut_003 Subtitle Design / Review UX slice.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
+- latest post-push sync validation:
+  2026-06-09 JST local readback after push:
+  `git status --short --branch` -> `## main...origin/main`;
+  `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
+  `git log -1 --oneline --decorate` ->
+  `86958cb (HEAD -> main, origin/main, origin/HEAD) feat: add subtitle presentation contract proof`;
+  `git ls-files episodes` empty. The targeted validation for this pushed
+  state was
+  `uvx pytest -q tests/test_subtitle_overlay_visual_proof.py tests/test_operator_proxy_decision_handoff.py tests/test_asset_fetch_boundary.py`
+  -> 11 passed, plus `git diff --check` / `git diff --cached --check` clean
+  before commit. Ignored `episodes/` proof artifacts were regenerated locally
+  for `cut_003` only and remain unstaged.
 - previous pushed resume point:
   `5fa88cf docs: close cut 003 operator decision slice`
 - latest resume-surface sync validation:
@@ -68,6 +80,16 @@ instructions.
   archived under `subtitle_overlay_reference/` for comparison in the same HTML
   report. Human review still decides diagnostic readability only; no production
   subtitle design acceptance is claimed.
+- next human review prompt:
+  open
+  `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html`
+  with player subtitle tracks disabled. Judge only the embedded burned-in
+  subtitle. Answer whether the speaker-badge fallback plus left-aligned large
+  subtitle is acceptable for diagnostic review, whether real face icons are
+  required before the next candidate, whether text size/outline/position are
+  readable enough for YouTube-style review, and whether the response/referral
+  sample coverage is acceptable. Keep production subtitle design/render,
+  creative, rights, publishing, and public-use acceptance unaccepted.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
