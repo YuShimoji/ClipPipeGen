@@ -9,41 +9,87 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-08 JST
+- date: 2026-06-09 JST
 - latest pushed resume point:
-  this tracked handoff/runtime refresh after the cut_003 Review Contract
-  Taxonomy audit and downstream-handoff readiness correction.
-  Confirm the exact hash with `git log -1 --oneline --decorate` after pulling.
+  `86958cb feat: add subtitle presentation contract proof`.
+  This is the pushed subtitle presentation contract / diagnostic proof update
+  for the cut_003 Subtitle Design / Review UX slice.
 - verified base before this refresh:
-  origin/main parity `0 0` in this workspace before this handoff refresh.
-- previous pushed resume point:
-  `cfd3cb4 Merge remote-tracking branch 'origin/main'`
-- latest resume-surface sync validation:
-  2026-06-08 JST local readback in this workspace:
-  `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
+  origin/main parity in this workspace before this handoff refresh.
+- latest post-push sync validation:
+  2026-06-09 JST local readback after push:
   `git status --short --branch` -> `## main...origin/main`;
-  `git ls-files episodes` empty. Targeted local readbacks parsed the current
-  ignored `edit_pack.json`, `subtitle_overlay_visual_proof_report.json`,
-  `representative_visual_proof_report.json`, current review/decision packets,
-  chapter board, and scoped proxy handoff. The proof-level cut_003 Review
-  Contract Taxonomy gates are evidence-backed for visual human review, but the
-  local `chapter_revision_board.json` and
-  `cut_002_cut_003_operator_proxy_decision_handoff.json` still read the old
-  cut_003 range `22.606 -> 41.725`; do not use them as final proxy decision
-  authority until regenerated or explicitly waived. `visual_proof_cut_001.png`
-  is currently missing in this workspace, so the global R3 review gate remains
-  blocked even though the scoped cut_003 proof can be inspected. The local
-  ignored audit files `review_contract_taxonomy_audit_cut_003.json` / `.html`
-  were added under the R3 review directory, and the tracked summary is
-  [CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md](CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md).
-  Tests were not rerun because the latest executable changes were docs-only
-  plus ignored audit artifacts. The last broad validation remains the
-  2026-06-07 run: `uvx pytest -q` -> 217 passed, `npm run smoke` -> OK,
-  `npm run smoke:electron` -> OK, and `git diff --check` clean aside from CRLF
-  warnings. Reviewability depends on ignored local R3 artifacts in this
-  workspace, including `episodes/` review/proof/export files; fresh checkouts
-  or workspaces missing ignored artifacts must re-run `status-episode` and may
-  correctly report `review_blocked_missing_artifacts`.
+  `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
+  `git log -1 --oneline --decorate` ->
+  `86958cb (HEAD -> main, origin/main, origin/HEAD) feat: add subtitle presentation contract proof`;
+  `git ls-files episodes` empty. The targeted validation for this pushed
+  state was
+  `uvx pytest -q tests/test_subtitle_overlay_visual_proof.py tests/test_operator_proxy_decision_handoff.py tests/test_asset_fetch_boundary.py`
+  -> 11 passed, plus `git diff --check` / `git diff --cached --check` clean
+  before commit. Ignored `episodes/` proof artifacts were regenerated locally
+  for `cut_003` only and remain unstaged.
+- previous pushed resume point:
+  `5fa88cf docs: close cut 003 operator decision slice`
+- latest resume-surface sync validation:
+  2026-06-09 JST local readback in this workspace:
+  `git status --short --branch` -> `## main...origin/main`;
+  `git ls-files episodes` empty. Targeted local readbacks parsed the accepted
+  ignored filled operator patch
+  `chapter_revision_patch.cut_002_cut_003_proxy.operator.json`, matching
+  `.operator.csv`, and `.operator.html`. The filled patch reads
+  `cut_003.proxy_decision=proceed_with_limitations`,
+  `cut_003.context_risk_handling=keep_retained_risk_visible`,
+  `boundary_request=none`, `analyst_action=noop`, and
+  `downstream_target=none`. It keeps retained context risk visible and records
+  that human review accepted cut length and response/referral closure for
+  diagnostic candidate review. The same note records the unresolved subtitle
+  design/readability limitation:
+  `subtitle_visual_readability=needs_adjustment`,
+  `embedded_subtitle_too_small_for_youtube=true`,
+  `sidecar_srt_player_display_can_confuse_review=true`,
+  `source_timeline_context_preview_requested=true`, and
+  `production_subtitle_design_acceptance=false`. The scoped template
+  `.template.json` / `.template.csv` stayed blank/default. `cut_002` stayed
+  unchanged with `proxy_decision=proceed_with_limitations`,
+  `context_risk_handling=undecided`, and its existing long-line watch note.
+  This is a cut/content proxy decision only; it is not production subtitle
+  design acceptance, production render acceptance, creative acceptance, rights
+  approval, publishing acceptance, or public-use permission.
+- latest subtitle design / review UX validation:
+  2026-06-09 JST local readback in this workspace: the tracked
+  `build-subtitle-overlay-visual-proof` generator now follows
+  [SUBTITLE_PRESENTATION_CONTRACT.md](SUBTITLE_PRESENTATION_CONTRACT.md)
+  (`jp_clip_dialogue_reference_v0`) for diagnostic proof only. The active
+  diagnostic candidate is `jp_clip_dialogue_badge_left_v0`: a large
+  heavy-outlined, left-aligned dialogue subtitle beside a speaker badge
+  placeholder. The material ledger has only source video/audio, so real member
+  face icons were unavailable and the preferred non-POV face-icon pattern is
+  approximated with an explicit fallback. The ignored local style probe
+  regenerates only `cut_003`, keeps the reference SRT under
+  `subtitle_overlay_reference/`, extracts subtitle-bearing sample frames for
+  early / middle / response-referral / final active cues, and records
+  replacement-style display timing. Readback fields include
+  `subtitle_presentation_contract.contract_id=jp_clip_dialogue_reference_v0`,
+  `style_candidate_id=jp_clip_dialogue_badge_left_v0`, `font_size=92`,
+  `outline=7`, `alignment=speaker_badge_left_aligned_dialogue`,
+  `speaker_identity_presentation.fallback_used=true`,
+  `sample_frame_selection.includes_response_referral_block=true`,
+  `production_subtitle_design_acceptance=false`,
+  `production_candidate=false`, `rights_status=pending`, and
+  `production_usage_allowed=false`. Existing previous proof frame/video/SRT are
+  archived under `subtitle_overlay_reference/` for comparison in the same HTML
+  report. Human review still decides diagnostic readability only; no production
+  subtitle design acceptance is claimed.
+- next human review prompt:
+  open
+  `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html`
+  with player subtitle tracks disabled. Judge only the embedded burned-in
+  subtitle. Answer whether the speaker-badge fallback plus left-aligned large
+  subtitle is acceptable for diagnostic review, whether real face icons are
+  required before the next candidate, whether text size/outline/position are
+  readable enough for YouTube-style review, and whether the response/referral
+  sample coverage is acceptable. Keep production subtitle design/render,
+  creative, rights, publishing, and public-use acceptance unaccepted.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -64,24 +110,26 @@ instructions.
   `subtitle_overlay_visual_proof_cut_002.*`,
   `subtitle_overlay_visual_proof_cut_003.*`, and
   `representative_visual_proof_report.*` exist under the R3 review directory.
-  In the current local ignored artifact set, `visual_proof_cut_001.png` is
-  missing, so global R3 review remains blocked unless that artifact is
-  restored/regenerated or explicitly waived. Do not infer reviewability for a
-  fresh checkout; reviewability remains workspace-local and depends on ignored
-  `episodes/` artifacts.
+  In the current local ignored artifact set, `status-episode` reports
+  `operator_review.review_ready=true`; do not infer reviewability for a fresh
+  checkout because it remains workspace-local and depends on ignored
+  `episodes/` artifacts. The accepted current cut_003 proof/readback is
+  `22.606 -> 49.566` with `sub_010..sub_029`, the
+  response/referral block `sub_025..sub_029` included, and `sub_030` excluded.
+  It is diagnostic proof evidence only and does not accept production subtitle
+  design.
 - latest diagnostic subtitle style readback:
-  `jp_clip_readable_v1` is now recorded as a diagnostic style direction
-  contract for the scoped `cut_002` / `cut_003` overlay proof. It separates
-  qualitative intent from tactical ASS/libass parameters: `font_size`,
-  `outline`, and `margin_v` remain explicitly unpinned/default-readback,
-  `explicit_ass_force_style=false`, and line-width measurement is watch-only.
-  The current readback flags `cut_002` as a long-line risk for a later
-  wrapping/layout preset, not a reason for blind Fontsize tuning. This does not
-  create production subtitle design acceptance, production render acceptance,
-  creative acceptance, rights approval, or public-use permission. The refreshed
-  HTML reports embed or directly link the contact sheet plus `cut_002` /
-  `cut_003` proof PNG/MP4 artifacts so the operator can inspect the scoped
-  overlay surface from one report.
+  `jp_clip_readable_v1` remains the broad diagnostic direction, while
+  `jp_clip_dialogue_reference_v0` is the tracked presentation contract for the
+  current proof candidate. The current cut_003 probe uses an explicit ASS file
+  with `ClipPipeSpeakerBadge` and `ClipPipeDialogueLeft` styles, `font_size=92`,
+  `outline=7`, positioned badge/dialogue anchors, diagnostic EAW wrapping, and
+  replacement-style display timing. Reference SRT remains away from the video
+  basename and the VLC sidecar warning remains present. This does not create
+  production subtitle design acceptance, production render acceptance, creative
+  acceptance, rights approval, or public-use permission. The single human
+  review entry point for this slice is
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
@@ -94,7 +142,14 @@ instructions.
   `visual_proof_status=available_requires_human_review`. The scoped
   `proxy_decision` allowed values now include `proceed_with_limitations` for
   candidate-lane routing where explicit limitations or watch items remain
-  visible. This is still not an operator decision, creative acceptance,
+  visible. The timing and subtitle text readback for `cut_003` is current at
+  `22.606 -> 49.566`. The accepted filled operator patch is stored separately
+  as `.operator.json` / `.operator.csv` / `.operator.html`; templates remain
+  blank/default and must not be overwritten with filled decisions. This filled
+  patch records the narrow cut_003 route as
+  `proxy_decision=proceed_with_limitations` and
+  `context_risk_handling=keep_retained_risk_visible`, with subtitle visual
+  readiness still `needs_adjustment`. This is still not creative acceptance,
   production acceptance, publishing acceptance, or rights approval. The narrow
   enum/readback validation ran
   `uvx pytest -q tests/test_operator_proxy_decision_handoff.py` -> 2 passed,
@@ -136,29 +191,24 @@ instructions.
   for those cuts; treat that as the next narrow readback-cleanup watch item if
   those packet fields will be human-facing.
 - latest Review Contract Taxonomy audit:
-  cut_003 proof-level gates passed against current authority
-  `22.606 -> 49.566`, `sub_010..sub_029`, response/referral block
-  `sub_025..sub_029`, `seg_000030` / `sub_030` excluded,
-  `style_direction_preset=jp_clip_readable_v1`,
-  `production_candidate=false`, `rights_status=pending`, and
-  `production_usage_allowed=false`. `blocking_limitations=none_detected` is
-  evidence-backed only for current proof-level review. Required human review
-  remains required for readability, subtitle density, timing sync impression,
-  response/referral closure, and retained-context-risk interpretation.
-  `visual_proof_cut_003.png` and old tiny-render manifests remain
-  historical/stale, and the currently present downstream chapter board and
-  scoped proxy handoff read old cut_003 `22.606 -> 41.725`. Use
+  the regenerated cut_003 proof/readback now matches current authority:
+  `22.606 -> 49.566`, `sub_010..sub_029`,
+  response/referral block `sub_025..sub_029` included, and `sub_030` excluded.
+  The taxonomy audit passed the required gates with
+  `blocking_limitations=none_detected` for proof-level gates. Human review
+  accepted length and scene closure for diagnostic candidate review, but did
+  not accept production subtitle design/readability. Keep
   [CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md](CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md)
-  as the tracked resume note for this correction. This did not regenerate
-  proof media.
-- current bottleneck: proof/render artifacts remain stale_reference /
-  historical diagnostic evidence after the boundary change and NLE refresh.
-  Do not treat old proof/render as current validation. In addition, do not use
-  the stale downstream chapter board or scoped proxy handoff for final cut_003
-  operator decisions until they are regenerated from current authority or
-  explicitly waived. Rights remain pending and production/public use remains
-  disallowed. Fresh checkouts still need artifact restore/regeneration or an
-  explicit waiver before global R3 review can be treated as ready.
+  as the tracked audit-summary surface; the accepted filled decision itself is
+  the ignored `.operator.*` patch, not the blank template.
+- current bottleneck: cut_003 boundary and operator decision remain closed, and
+  the separate Subtitle Design / Review UX diagnostic style probe is ready for
+  human readability review. The remaining decision is whether the embedded
+  burned-in subtitle inside the proof video is closer to YouTube-readable
+  review style than the previous small/movie-subtitle-like proof, while keeping
+  the reference SRT disabled as a player subtitle track. Rights remain pending,
+  production/public use remains disallowed, and production subtitle design
+  acceptance remains false until explicit human approval.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -415,10 +465,11 @@ Review focus:
    - `cut_002` is already in the candidate lane with
      `proxy_decision=proceed_with_limitations`; keep the long-line watch risk
      visible.
-   - `cut_003` now has proof-level current authority `22.606 -> 49.566`, but
-     the local scoped proxy handoff and chapter board still read old
-     `22.606 -> 41.725`; regenerate those ignored downstream surfaces or get
-     an explicit waiver before final proxy decision input.
+   - `cut_003` proxy decision is closed locally from the accepted filled
+     `.operator.*` patch:
+     `proxy_decision=proceed_with_limitations`,
+     `context_risk_handling=keep_retained_risk_visible`; keep subtitle
+     design/readability as a separate unaccepted limitation.
 3. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
    - `cut_004` has been explicitly shrunk to start at `50.868s` and remains a
