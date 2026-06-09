@@ -8,7 +8,12 @@ import sys
 from pathlib import Path
 
 from src.pipeline.operator_proxy_decision_handoff import build_operator_proxy_decision_handoff
-from src.integrations.render.subtitle_overlay_visual_proof import build_subtitle_overlay_visual_proof
+from src.integrations.render.subtitle_overlay_visual_proof import (
+    _presentation_items,
+    _subtitle_layout_contract,
+    _write_ass,
+    build_subtitle_overlay_visual_proof,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -58,19 +63,48 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert report["style_parameters"]["renderer"] == "ffmpeg_subtitles_filter_ass"
     assert report["style_parameters"]["explicit_ass_style_file"] is True
     assert report["style_parameters"]["font_size"]["source"] == (
-        "explicit_diagnostic_ass_style_candidate"
+        "formula_from_frame_height"
     )
-    assert report["style_parameters"]["font_size"]["value"] == 92
-    assert report["style_parameters"]["outline"]["value"] == 7
-    assert report["style_parameters"]["margin_v"]["value"] == 110
+    assert report["style_parameters"]["font_size"]["value"] == 21
+    assert report["style_parameters"]["outline"]["value"] == 2
+    assert report["style_parameters"]["margin_v"]["value"] == 16
+    assert report["style_parameters"]["presentation_mode"] == "badge_left_dialogue"
+    assert report["style_parameters"]["supported_presentation_modes"] == [
+        "badge_left_dialogue",
+        "bottom_center_emphasis",
+    ]
+    assert report["style_parameters"]["left_alignment_scope"].startswith("conditional")
+    assert report["style_parameters"]["layout_formulas"]["font_size"] == (
+        "round(frame_height * 0.115)"
+    )
+    assert report["style_parameters"]["layout_values"]["badge_width"] == 21
+    assert report["style_parameters"]["layout_values"]["badge_height"] == 15
+    assert report["style_parameters"]["layout_values"]["badge_font_size"] == 9
+    assert report["style_parameters"]["layout_values"]["badge_text_gap"] == 6
+    assert report["style_parameters"]["layout_values"]["line_height"] == 24
     assert report["style_parameters"]["wrapping"]["automatic_wrap_applied_by_overlay_generator"] is True
     assert report["subtitle_presentation_contract"]["contract_id"] == (
         "jp_clip_dialogue_reference_v0"
     )
+    assert report["subtitle_presentation_contract"]["selected_presentation_mode"] == (
+        "badge_left_dialogue"
+    )
+    assert report["subtitle_presentation_contract"]["supported_presentation_modes"] == [
+        "badge_left_dialogue",
+        "bottom_center_emphasis",
+    ]
+    assert report["subtitle_presentation_contract"]["left_alignment_is_universal"] is False
+    assert report["subtitle_presentation_contract"]["layout_values"]["font_size"] == 21
     assert report["speaker_identity_presentation"]["fallback_used"] is True
     assert report["speaker_identity_presentation"]["fallback_kind"] == (
         "speaker_badge_placeholder"
     )
+    assert report["speaker_identity_presentation"]["fallback_badge_size"] == {
+        "width": 21,
+        "height": 15,
+        "font_size": 9,
+        "formula": "badge_width=round(font_size*1.0), badge_height=round(font_size*0.7), badge_font_size=round(font_size*0.44)",
+    }
     assert report["replacement_behavior"]["mode"] == "replace_on_next_subtitle_start"
     assert report["renderer_path_audit"]["old_candidate_insufficiency"][
         "insufficient_style_difference"
@@ -99,13 +133,23 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         assert item["style_parameters"]["alignment"]["value"] == (
             "speaker_badge_left_aligned_dialogue"
         )
-        assert item["style_parameters"]["font_size"]["value"] == 92
-        assert item["burned_in_subtitle_style"]["font_size"] == 92
+        assert item["style_parameters"]["font_size"]["value"] == 21
+        assert item["style_parameters"]["font_size"]["source"] == "formula_from_frame_height"
+        assert item["style_parameters"]["layout_values"]["line_height"] == 24
+        assert item["burned_in_subtitle_style"]["font_size"] == 21
+        assert item["burned_in_subtitle_style"]["outline"] == 2
+        assert item["burned_in_subtitle_style"]["badge_size"]["width"] == 21
+        assert item["burned_in_subtitle_style"]["line_height"] == 24
+        assert item["burned_in_subtitle_style"]["left_alignment_scope"].startswith("conditional")
         assert item["subtitle_presentation_contract"]["contract_id"] == (
             "jp_clip_dialogue_reference_v0"
         )
+        assert item["subtitle_presentation_contract"]["left_alignment_is_universal"] is False
         assert item["speaker_identity_presentation"]["pattern_status"] == (
             "approximated_with_fallback_speaker_badge_no_face_icon_assets"
+        )
+        assert item["speaker_identity_presentation"]["badge_vertical_alignment_rule"].startswith(
+            "Align badge center"
         )
         assert item["replacement_behavior"]["mode"] == "replace_on_next_subtitle_start"
         assert item["sample_frame_selection"]["roles"] == [
@@ -154,7 +198,11 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert "jp_clip_readable_v1" in overlay_html
     assert "jp_clip_dialogue_reference_v0" in overlay_html
     assert "speaker_badge_placeholder_plus_left_aligned_subtitle" in overlay_html
+    assert "bottom_center_emphasis" in overlay_html
+    assert "conditional" in overlay_html
     assert "font_size" in overlay_html
+    assert "round(frame_height * 0.115)" in overlay_html
+    assert "badge alignment rule" in overlay_html
     assert "Burned-in vs Sidecar SRT" in overlay_html
     assert "subtitle-bearing samples" in overlay_html
     assert "previous proof for comparison" in overlay_html
@@ -169,8 +217,8 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     ).read_text(encoding="utf-8")
     assert "Style: ClipPipeDialogueLeft" in cut3_ass
     assert "Style: ClipPipeSpeakerBadge" in cut3_ass
-    assert "\\pos(250,742)" in cut3_ass
-    assert "\\pos(128,805)" in cut3_ass
+    assert "\\pos(45,140)" in cut3_ass
+    assert "\\pos(28,152)" in cut3_ass
 
     representative = json.loads(
         (review_dir / "representative_visual_proof_report.json").read_text(encoding="utf-8")
@@ -189,8 +237,12 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert assessments["cut_001"]["visual_proof_status"] == "available_diagnostic_render_frame"
     assert assessments["cut_002"]["visual_proof_status"] == "available_diagnostic_subtitle_overlay"
     assert assessments["cut_002"]["style_parameters"]["font_size"]["source"] == (
-        "explicit_diagnostic_ass_style_candidate"
+        "formula_from_frame_height"
     )
+    assert assessments["cut_002"]["style_parameters"]["font_size"]["value"] == 21
+    assert assessments["cut_002"]["subtitle_presentation_contract"][
+        "left_alignment_is_universal"
+    ] is False
     assert assessments["cut_002"]["subtitle_presentation_contract"]["contract_id"] == (
         "jp_clip_dialogue_reference_v0"
     )
@@ -221,7 +273,7 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     cut_002, cut_003 = handoff["cuts"]
     assert cut_002["visual_proof"]["style_direction"]["preset_name"] == "jp_clip_readable_v1"
     assert cut_002["visual_proof"]["style_parameters"]["style_slot"] == "subtitle.default"
-    assert cut_002["visual_proof"]["style_parameters"]["font_size"]["value"] == 92
+    assert cut_002["visual_proof"]["style_parameters"]["font_size"]["value"] == 21
     assert cut_002["operator_input_fields"]["proxy_decision"] == "undecided"
     assert cut_002["operator_input_fields"]["editorial_intent"] == ""
     assert cut_003["context_status"] == "needs_review"
@@ -275,6 +327,38 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
     assert payload["rights_status"] == "pending"
     assert not (review_dir / "subtitle_overlay_visual_proof_report.json").exists()
     assert not (review_dir / "subtitle_overlay_visual_proof_cut_002.mp4").exists()
+
+
+def test_bottom_center_emphasis_layout_writes_centered_ass_without_badge_dialogue(
+    tmp_path: Path,
+):
+    layout = _subtitle_layout_contract(
+        frame_width=320,
+        frame_height=180,
+        mode="bottom_center_emphasis",
+        dimension_source="test_frame",
+    )
+    items = _presentation_items(
+        [
+            {
+                "subtitle_id": "sub_test",
+                "status": "included",
+                "render_start_seconds": 0.0,
+                "render_end_seconds": 2.0,
+                "text": "center emphasis",
+            }
+        ],
+        layout=layout,
+    )
+    ass_path = tmp_path / "bottom_center.burned_in.ass"
+    _write_ass(ass_path, items, layout=layout)
+
+    ass = ass_path.read_text(encoding="utf-8")
+    assert layout["alignment"] == "bottom_center_emphasis"
+    assert layout["values"]["bottom_center_x"] == 160
+    assert "\\an2\\pos(160,165)" in ass
+    assert "Style: ClipPipeDialogueLeft,Yu Gothic,22," in ass
+    assert "Dialogue: 0,0:00:00.00,0:00:02.00,ClipPipeSpeakerBadge" not in ass
 
 
 def _write_episode(tmp_path: Path) -> Path:

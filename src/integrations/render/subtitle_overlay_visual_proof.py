@@ -34,30 +34,35 @@ PRESENTATION_WRAP_EAW = 28
 RESPONSE_REFERRAL_SUBTITLE_IDS = {f"sub_{index:03d}" for index in range(25, 30)}
 ASS_DIALOGUE_STYLE_NAME = "ClipPipeDialogueLeft"
 ASS_SPEAKER_BADGE_STYLE_NAME = "ClipPipeSpeakerBadge"
-ASS_PLAY_RES_X = 1920
-ASS_PLAY_RES_Y = 1080
+DEFAULT_FRAME_WIDTH = 1920
+DEFAULT_FRAME_HEIGHT = 1080
+DEFAULT_PRESENTATION_MODE = "badge_left_dialogue"
+SUPPORTED_PRESENTATION_MODES = ("badge_left_dialogue", "bottom_center_emphasis")
+LAYOUT_RATIOS = {
+    "font_size_to_frame_height": 0.115,
+    "outline_to_font_size": 0.096,
+    "shadow_to_font_size": 0.018,
+    "horizontal_margin_to_frame_width": 0.055,
+    "bottom_margin_to_frame_height": 0.09,
+    "badge_width_to_font_size": 1.0,
+    "badge_height_to_font_size": 0.7,
+    "badge_font_size_to_font_size": 0.44,
+    "badge_text_gap_to_font_size": 0.3,
+    "line_height_to_font_size": 1.15,
+    "first_line_optical_center_to_line_height": 0.52,
+    "two_line_block_reserved_lines": 2,
+    "bottom_center_font_size_to_frame_height": 0.125,
+    "bottom_center_bottom_margin_to_frame_height": 0.085,
+}
 DIAGNOSTIC_ASS_STYLE = {
     "candidate_id": "jp_clip_dialogue_badge_left_v0",
     "font_name": "Yu Gothic",
-    "font_size": 92,
-    "outline": 7,
-    "shadow": 1,
-    "margin_l": 80,
-    "margin_r": 80,
-    "margin_v": 110,
-    "alignment": 7,
     "primary_colour": "&H00FFFFFF",
     "secondary_colour": "&H00FFFFFF",
     "outline_colour": "&H00000000",
     "back_colour": "&H80000000",
     "border_style": 1,
     "speaker_badge_label": "SPK",
-    "speaker_badge_font_size": 46,
-    "speaker_badge_x": 128,
-    "speaker_badge_y": 805,
-    "dialogue_x": 250,
-    "dialogue_y": 742,
-    "dialogue_wrap_eaw": PRESENTATION_WRAP_EAW,
     "speaker_accent_colour": "&H0000D7FF",
     "speaker_badge_back_colour": "&H90202020",
 }
@@ -217,12 +222,19 @@ def _build_cut_proof(
         item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES
     ]
     cut_paths = output_paths["cuts"][cut_id]
+    layout = _subtitle_layout_contract(
+        frame_width=DEFAULT_FRAME_WIDTH,
+        frame_height=DEFAULT_FRAME_HEIGHT,
+        mode=DEFAULT_PRESENTATION_MODE,
+        dimension_source="default_only_no_probe_performed",
+    )
     if dry_run:
         return _cut_report(
             episode_id=episode_id,
             cut=cut,
             items=items,
             presentation_items=[],
+            layout=layout,
             source_media=source_media,
             cut_paths=cut_paths,
             overlay_present=False,
@@ -246,6 +258,7 @@ def _build_cut_proof(
             cut=cut,
             items=items,
             presentation_items=[],
+            layout=layout,
             source_media=source_media,
             cut_paths=cut_paths,
             overlay_present=False,
@@ -267,9 +280,14 @@ def _build_cut_proof(
     cut_paths["reference_dir"].mkdir(parents=True, exist_ok=True)
     previous_proof_artifacts = _archive_existing_proof_artifacts(cut_paths)
     legacy_autoload_srt = _mitigate_legacy_autoload_srt(cut_paths)
-    presentation_items = _presentation_items(renderable_items)
+    layout = _probed_subtitle_layout_contract(
+        source_video_path=source_media["source_video"]["resolved_path"],
+        ffprobe_path=ffprobe_path,
+        runner=runner,
+    )
+    presentation_items = _presentation_items(renderable_items, layout=layout)
     _write_srt(cut_paths["sidecar_srt_reference"], renderable_items)
-    _write_ass(cut_paths["burned_in_subtitle_file"], presentation_items)
+    _write_ass(cut_paths["burned_in_subtitle_file"], presentation_items, layout=layout)
     try:
         render_result = ffmpeg_tiny.render_tiny_proof(
             source_video_path=source_media["source_video"]["resolved_path"],
@@ -303,6 +321,7 @@ def _build_cut_proof(
             cut=cut,
             items=items,
             presentation_items=presentation_items,
+            layout=layout,
             source_media=source_media,
             cut_paths={**cut_paths, "video": video_path},
             overlay_present=True,
@@ -326,6 +345,7 @@ def _build_cut_proof(
             cut=cut,
             items=items,
             presentation_items=locals().get("presentation_items", []),
+            layout=locals().get("layout", layout),
             source_media=source_media,
             cut_paths=cut_paths,
             overlay_present=False,
@@ -352,6 +372,7 @@ def _cut_report(
     cut: dict[str, Any],
     items: list[dict[str, Any]],
     presentation_items: list[dict[str, Any]],
+    layout: dict[str, Any],
     source_media: dict[str, Any],
     cut_paths: dict[str, Path],
     overlay_present: bool,
@@ -408,14 +429,15 @@ def _cut_report(
                 for segment_id in item.get("source_segment_ids", [])
             ),
         },
-        "subtitle_presentation_contract": _subtitle_presentation_contract_readback(),
-        "speaker_identity_presentation": _speaker_identity_presentation_readback(),
+        "subtitle_presentation_contract": _subtitle_presentation_contract_readback(layout),
+        "speaker_identity_presentation": _speaker_identity_presentation_readback(layout),
         "replacement_behavior": _replacement_behavior_readback(presentation_items),
         "renderer_path_audit": _renderer_path_audit_readback(),
         "sample_frame_selection": _sample_frame_selection_readback(sample_frame_extracts),
         "style_direction": _diagnostic_style_direction(),
-        "style_parameters": _style_parameter_readback(items),
-        "burned_in_subtitle_style": _burned_in_subtitle_style_readback(),
+        "style_parameters": _style_parameter_readback(items, layout=layout),
+        "burned_in_subtitle_style": _burned_in_subtitle_style_readback(layout),
+        "layout_contract": layout,
         "sidecar_srt_reference": _sidecar_srt_reference_readback(
             cut_paths=cut_paths,
             base=base,
@@ -554,12 +576,12 @@ def _report_payload(
         },
         "style_direction": _diagnostic_style_direction(),
         "style_parameters": _report_style_parameter_summary(cut_reports),
-        "subtitle_presentation_contract": _subtitle_presentation_contract_readback(),
-        "speaker_identity_presentation": _speaker_identity_presentation_readback(),
+        "subtitle_presentation_contract": _report_contract_summary(cut_reports),
+        "speaker_identity_presentation": _report_speaker_identity_summary(cut_reports),
         "replacement_behavior": _report_replacement_behavior_summary(cut_reports),
         "renderer_path_audit": _renderer_path_audit_readback(),
         "sample_frame_selection": _report_sample_frame_selection_summary(cut_reports),
-        "burned_in_subtitle_style": _burned_in_subtitle_style_readback(),
+        "burned_in_subtitle_style": _report_burned_in_style_summary(cut_reports),
         "sidecar_srt_reference": _report_sidecar_srt_reference_summary(cut_reports),
         "review_warning": _review_warning_readback(),
         "cut_results": cut_reports,
@@ -598,6 +620,10 @@ def _diagnostic_style_direction() -> dict[str, Any]:
         "visual_weight": "large_heavily_outlined_clip_dialogue_not_restrained_movie_subtitles",
         "preferred_non_pov_pattern": "face_icon_plus_left_aligned_subtitle",
         "implemented_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
+        "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
+        "left_alignment_scope": (
+            "conditional to badge_left_dialogue mode; not all subtitles are forced left"
+        ),
         "reaction_caption_tolerance": "short_reaction_captions_may_carry_stronger_visual_weight",
         "long_line_policy": (
             "diagnostic ASS wraps dialogue text at the presentation contract proxy width; "
@@ -614,14 +640,206 @@ def _diagnostic_style_direction() -> dict[str, Any]:
     }
 
 
-def _style_parameter_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
+def _probed_subtitle_layout_contract(
+    *,
+    source_video_path: Path,
+    ffprobe_path: str | Path | None,
+    runner: ffmpeg_tiny.Runner,
+) -> dict[str, Any]:
+    probe = ffmpeg_tiny.probe_media(
+        input_path=source_video_path,
+        ffprobe_path=ffprobe_path,
+        runner=runner,
+    )
+    width = int(probe.metadata.get("width") or DEFAULT_FRAME_WIDTH)
+    height = int(probe.metadata.get("height") or DEFAULT_FRAME_HEIGHT)
+    return _subtitle_layout_contract(
+        frame_width=width,
+        frame_height=height,
+        mode=DEFAULT_PRESENTATION_MODE,
+        dimension_source="ffprobe_source_video",
+    )
+
+
+def _subtitle_layout_contract(
+    *,
+    frame_width: int,
+    frame_height: int,
+    mode: str,
+    dimension_source: str,
+) -> dict[str, Any]:
+    if mode not in SUPPORTED_PRESENTATION_MODES:
+        raise SubtitleOverlayVisualProofError(f"unsupported presentation mode: {mode}")
+    width = max(1, int(frame_width))
+    height = max(1, int(frame_height))
+    if mode == "bottom_center_emphasis":
+        font_size = _layout_round(height * LAYOUT_RATIOS["bottom_center_font_size_to_frame_height"])
+    else:
+        font_size = _layout_round(height * LAYOUT_RATIOS["font_size_to_frame_height"])
+    outline = max(2, _layout_round(font_size * LAYOUT_RATIOS["outline_to_font_size"]))
+    shadow = max(1, _layout_round(font_size * LAYOUT_RATIOS["shadow_to_font_size"]))
+    margin_l = _layout_round(width * LAYOUT_RATIOS["horizontal_margin_to_frame_width"])
+    margin_r = margin_l
+    bottom_margin_ratio = (
+        LAYOUT_RATIOS["bottom_center_bottom_margin_to_frame_height"]
+        if mode == "bottom_center_emphasis"
+        else LAYOUT_RATIOS["bottom_margin_to_frame_height"]
+    )
+    bottom_margin = _layout_round(height * bottom_margin_ratio)
+    line_height = _layout_round(font_size * LAYOUT_RATIOS["line_height_to_font_size"])
+    badge_width = _layout_round(font_size * LAYOUT_RATIOS["badge_width_to_font_size"])
+    badge_height = _layout_round(font_size * LAYOUT_RATIOS["badge_height_to_font_size"])
+    badge_font_size = _layout_round(font_size * LAYOUT_RATIOS["badge_font_size_to_font_size"])
+    badge_text_gap = _layout_round(font_size * LAYOUT_RATIOS["badge_text_gap_to_font_size"])
+    reserved_lines = int(LAYOUT_RATIOS["two_line_block_reserved_lines"])
+    dialogue_x = margin_l + badge_width + badge_text_gap
+    dialogue_y_for_two_line_block = max(
+        0,
+        height - bottom_margin - (line_height * reserved_lines),
+    )
+    first_line_center_offset = _layout_round(
+        line_height * LAYOUT_RATIOS["first_line_optical_center_to_line_height"]
+    )
+    badge_center_x = margin_l + _layout_round(badge_width / 2)
+    badge_center_y_for_two_line_block = dialogue_y_for_two_line_block + first_line_center_offset
+    bottom_center_y = height - bottom_margin
+    formulas = {
+        "font_size": (
+            f"round(frame_height * {LAYOUT_RATIOS['font_size_to_frame_height']})"
+            if mode == "badge_left_dialogue"
+            else f"round(frame_height * {LAYOUT_RATIOS['bottom_center_font_size_to_frame_height']})"
+        ),
+        "outline": f"max(2, round(font_size * {LAYOUT_RATIOS['outline_to_font_size']}))",
+        "shadow": f"max(1, round(font_size * {LAYOUT_RATIOS['shadow_to_font_size']}))",
+        "horizontal_margin": (
+            f"round(frame_width * {LAYOUT_RATIOS['horizontal_margin_to_frame_width']})"
+        ),
+        "bottom_margin": f"round(frame_height * {bottom_margin_ratio})",
+        "badge_width": f"round(font_size * {LAYOUT_RATIOS['badge_width_to_font_size']})",
+        "badge_height": f"round(font_size * {LAYOUT_RATIOS['badge_height_to_font_size']})",
+        "badge_font_size": (
+            f"round(font_size * {LAYOUT_RATIOS['badge_font_size_to_font_size']})"
+        ),
+        "badge_text_gap": f"round(font_size * {LAYOUT_RATIOS['badge_text_gap_to_font_size']})",
+        "line_height": f"round(font_size * {LAYOUT_RATIOS['line_height_to_font_size']})",
+        "badge_vertical_alignment": (
+            "badge_center_y = dialogue_y + "
+            f"round(line_height * {LAYOUT_RATIOS['first_line_optical_center_to_line_height']})"
+        ),
+        "dialogue_y": (
+            "frame_height - bottom_margin - line_height * wrapped_line_count"
+        ),
+    }
+    return {
+        "contract_id": SUBTITLE_PRESENTATION_CONTRACT_ID,
+        "mode": mode,
+        "supported_modes": list(SUPPORTED_PRESENTATION_MODES),
+        "mode_policy": {
+            "badge_left_dialogue": (
+                "non-POV dialogue with speaker identity element when coherent for the cut"
+            ),
+            "bottom_center_emphasis": (
+                "emphasis or generic subtitle moments where a speaker badge/left anchor is not appropriate"
+            ),
+        },
+        "selected_mode_reason": (
+            "cut_003 is still treated as coherent non-POV dialogue for this diagnostic proof"
+        ),
+        "left_alignment_scope": (
+            "conditional: badge_left_dialogue mode only; bottom_center_emphasis is also supported"
+        ),
+        "frame": {
+            "width": width,
+            "height": height,
+            "dimension_source": dimension_source,
+        },
+        "alignment": (
+            "speaker_badge_left_aligned_dialogue"
+            if mode == "badge_left_dialogue"
+            else "bottom_center_emphasis"
+        ),
+        "badge_vertical_alignment_rule": (
+            "Align badge center to the first subtitle line optical center; "
+            "for multi-line text, move the text block upward but keep the badge on the first-line center."
+        ),
+        "formulas": formulas,
+        "ratios": LAYOUT_RATIOS,
+        "values": {
+            "font_size": font_size,
+            "outline": outline,
+            "shadow": shadow,
+            "margin_l": margin_l,
+            "margin_r": margin_r,
+            "bottom_margin": bottom_margin,
+            "line_height": line_height,
+            "badge_width": badge_width,
+            "badge_height": badge_height,
+            "badge_font_size": badge_font_size,
+            "badge_text_gap": badge_text_gap,
+            "badge_center_x": badge_center_x,
+            "badge_center_y_for_two_line_block": badge_center_y_for_two_line_block,
+            "dialogue_x": dialogue_x,
+            "dialogue_y_for_two_line_block": dialogue_y_for_two_line_block,
+            "bottom_center_x": _layout_round(width / 2),
+            "bottom_center_y": bottom_center_y,
+            "dialogue_wrap_eaw": PRESENTATION_WRAP_EAW,
+        },
+    }
+
+
+def _item_layout(layout: dict[str, Any], *, wrapped_line_count: int) -> dict[str, int]:
+    values = layout["values"]
+    line_count = max(1, int(wrapped_line_count or 1))
+    if layout["mode"] == "bottom_center_emphasis":
+        return {
+            "dialogue_x": values["bottom_center_x"],
+            "dialogue_y": values["bottom_center_y"],
+            "badge_center_x": values["bottom_center_x"],
+            "badge_center_y": values["bottom_center_y"],
+        }
+    dialogue_y = max(
+        0,
+        layout["frame"]["height"] - values["bottom_margin"] - (values["line_height"] * line_count),
+    )
+    badge_center_y = dialogue_y + _layout_round(
+        values["line_height"] * LAYOUT_RATIOS["first_line_optical_center_to_line_height"]
+    )
+    return {
+        "dialogue_x": values["dialogue_x"],
+        "dialogue_y": dialogue_y,
+        "badge_center_x": values["badge_center_x"],
+        "badge_center_y": badge_center_y,
+    }
+
+
+def _layout_round(value: float) -> int:
+    return int(round(float(value)))
+
+
+def _style_parameter_readback(
+    items: list[dict[str, Any]],
+    *,
+    layout: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     style_slots = _unique_strings(item.get("style_slot") for item in items)
     style = DIAGNOSTIC_ASS_STYLE
+    layout = layout or _subtitle_layout_contract(
+        frame_width=DEFAULT_FRAME_WIDTH,
+        frame_height=DEFAULT_FRAME_HEIGHT,
+        mode=DEFAULT_PRESENTATION_MODE,
+        dimension_source="default_style_readback",
+    )
+    values = layout["values"]
     return {
         "renderer": "ffmpeg_subtitles_filter_ass",
         "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
         "style_slots": style_slots or ["subtitle.default"],
         "style_candidate_id": style["candidate_id"],
+        "presentation_mode": layout["mode"],
+        "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
+        "layout_values": values,
+        "layout_formulas": layout["formulas"],
+        "left_alignment_scope": layout["left_alignment_scope"],
         "explicit_ass_style_file": True,
         "explicit_ass_force_style": False,
         "font_name": {
@@ -630,44 +848,49 @@ def _style_parameter_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
             "readback": "ASS style file font name; actual glyph fallback remains renderer/font-provider dependent",
         },
         "font_size": {
-            "value": style["font_size"],
+            "value": values["font_size"],
             "unit": "ass_points",
-            "source": "explicit_diagnostic_ass_style_candidate",
-            "readback": "larger diagnostic review subtitle than FFmpeg/libass SRT default",
+            "source": "formula_from_frame_height",
+            "readback": layout["formulas"]["font_size"],
         },
         "outline": {
-            "value": style["outline"],
+            "value": values["outline"],
             "unit": "ass_outline_units",
-            "source": "explicit_diagnostic_ass_style_candidate",
-            "readback": "stronger diagnostic outline for YouTube-readability review",
+            "source": "formula_from_font_size",
+            "readback": layout["formulas"]["outline"],
         },
         "margin_v": {
-            "value": style["margin_v"],
+            "value": values["bottom_margin"],
             "unit": "ass_pixels_or_script_units",
-            "source": "explicit_diagnostic_ass_style_candidate",
-            "readback": "legacy compatibility readback; actual candidate uses explicit ASS pos tags for badge and left-aligned dialogue",
+            "source": "formula_from_frame_height",
+            "readback": layout["formulas"]["bottom_margin"],
         },
         "alignment": {
-            "value": "speaker_badge_left_aligned_dialogue",
-            "source": "diagnostic ASS overlay uses positioned speaker badge plus left-aligned dialogue text",
+            "value": layout["alignment"],
+            "source": "selected diagnostic presentation mode, not a universal subtitle rule",
         },
         "wrapping": {
             "policy": "wrap_dialogue_text_for_diagnostic_ass_candidate",
             "automatic_wrap_applied_by_overlay_generator": True,
-            "available_proxy_wrap_eaw": PRESENTATION_WRAP_EAW,
+            "available_proxy_wrap_eaw": values["dialogue_wrap_eaw"],
             "watch_width_eaw": LINE_WIDTH_WATCH_EAW,
             "watch_item": (
-                "Long subtitle line width may require a later clip subtitle "
-                "layout preset or wrapping policy."
+                "Rendered visual review is still required after formula-based "
+                "diagnostic wrapping."
             ),
         },
         "positioning": {
-            "dialogue_x": style["dialogue_x"],
-            "dialogue_y": style["dialogue_y"],
-            "speaker_badge_x": style["speaker_badge_x"],
-            "speaker_badge_y": style["speaker_badge_y"],
-            "play_res_x": ASS_PLAY_RES_X,
-            "play_res_y": ASS_PLAY_RES_Y,
+            "dialogue_x": values["dialogue_x"],
+            "dialogue_y_for_two_line_block": values["dialogue_y_for_two_line_block"],
+            "speaker_badge_x": values["badge_center_x"],
+            "speaker_badge_y_for_two_line_block": values["badge_center_y_for_two_line_block"],
+            "badge_text_gap": values["badge_text_gap"],
+            "badge_width": values["badge_width"],
+            "badge_height": values["badge_height"],
+            "line_height": values["line_height"],
+            "play_res_x": layout["frame"]["width"],
+            "play_res_y": layout["frame"]["height"],
+            "badge_vertical_alignment_rule": layout["badge_vertical_alignment_rule"],
         },
     }
 
@@ -706,25 +929,52 @@ def _line_width_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def _burned_in_subtitle_style_readback() -> dict[str, Any]:
+def _burned_in_subtitle_style_readback(layout: dict[str, Any]) -> dict[str, Any]:
     style = DIAGNOSTIC_ASS_STYLE
+    values = layout["values"]
     return {
         "style_candidate_id": style["candidate_id"],
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
+        "presentation_mode": layout["mode"],
+        "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
         "renderer_input": "ASS style file consumed by FFmpeg subtitles filter",
         "comparison_baseline": "previous FFmpeg/libass SRT/default-centered proof looked too small and movie-subtitle-like for YouTube review",
         "intended_design_target": "reference-driven non-POV speaker badge plus large left-aligned Japanese clip dialogue subtitle",
         "font_name": style["font_name"],
-        "font_size": style["font_size"],
-        "outline": style["outline"],
-        "shadow": style["shadow"],
-        "margin_v": style["margin_v"],
-        "alignment": "speaker_badge_left_aligned_dialogue",
+        "font_size": values["font_size"],
+        "outline": values["outline"],
+        "shadow": values["shadow"],
+        "margin_v": values["bottom_margin"],
+        "horizontal_margin": values["margin_l"],
+        "badge_size": {
+            "width": values["badge_width"],
+            "height": values["badge_height"],
+            "font_size": values["badge_font_size"],
+        },
+        "badge_text_gap": values["badge_text_gap"],
+        "line_height": values["line_height"],
+        "alignment": layout["alignment"],
+        "left_alignment_scope": layout["left_alignment_scope"],
+        "badge_vertical_alignment_rule": layout["badge_vertical_alignment_rule"],
+        "layout_formulas": layout["formulas"],
         "speaker_badge_label": style["speaker_badge_label"],
-        "dialogue_wrap_eaw": style["dialogue_wrap_eaw"],
+        "dialogue_wrap_eaw": values["dialogue_wrap_eaw"],
         "production_subtitle_design_acceptance": False,
         "human_review_required": True,
     }
+
+
+def _report_burned_in_style_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    if cut_reports:
+        return cut_reports[0].get("burned_in_subtitle_style") or {}
+    return _burned_in_subtitle_style_readback(
+        _subtitle_layout_contract(
+            frame_width=DEFAULT_FRAME_WIDTH,
+            frame_height=DEFAULT_FRAME_HEIGHT,
+            mode=DEFAULT_PRESENTATION_MODE,
+            dimension_source="default_report_summary",
+        )
+    )
 
 
 def _review_warning_readback() -> dict[str, Any]:
@@ -788,8 +1038,13 @@ def _report_style_parameter_summary(cut_reports: list[dict[str, Any]]) -> dict[s
         int((cut.get("line_width_readback") or {}).get("needs_wrap_count") or 0)
         for cut in cut_reports
     )
+    base_parameters = (
+        (cut_reports[0].get("style_parameters") or {})
+        if cut_reports
+        else _style_parameter_readback([])
+    )
     return {
-        **_style_parameter_readback([]),
+        **base_parameters,
         "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
         "style_slots": style_slots or ["subtitle.default"],
         "per_cut": {
@@ -805,13 +1060,21 @@ def _report_style_parameter_summary(cut_reports: list[dict[str, Any]]) -> dict[s
     }
 
 
-def _subtitle_presentation_contract_readback() -> dict[str, Any]:
+def _subtitle_presentation_contract_readback(layout: dict[str, Any]) -> dict[str, Any]:
     return {
         "contract_id": SUBTITLE_PRESENTATION_CONTRACT_ID,
         "contract_doc": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
         "dialogue_subtitle_style": "large_heavily_outlined_clip_dialogue",
+        "selected_presentation_mode": layout["mode"],
+        "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
+        "left_alignment_is_universal": False,
+        "left_alignment_scope": layout["left_alignment_scope"],
+        "layout_formulas": layout["formulas"],
+        "layout_values": layout["values"],
+        "frame": layout["frame"],
         "preferred_non_pov_speaker_identity": "face_icon_plus_left_aligned_subtitle",
         "implemented_diagnostic_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
+        "alternative_mode": "bottom_center_emphasis",
         "future_explanatory_caption_style": "explicitly_deferred",
         "replacement_behavior_expectation": "previous_line_disappears_when_next_subtitle_appears",
         "multi_speaker_icon_stack": "deferred_advanced_pattern",
@@ -824,21 +1087,56 @@ def _subtitle_presentation_contract_readback() -> dict[str, Any]:
     }
 
 
-def _speaker_identity_presentation_readback() -> dict[str, Any]:
+def _report_contract_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    if cut_reports:
+        return cut_reports[0].get("subtitle_presentation_contract") or {}
+    return _subtitle_presentation_contract_readback(
+        _subtitle_layout_contract(
+            frame_width=DEFAULT_FRAME_WIDTH,
+            frame_height=DEFAULT_FRAME_HEIGHT,
+            mode=DEFAULT_PRESENTATION_MODE,
+            dimension_source="default_report_summary",
+        )
+    )
+
+
+def _speaker_identity_presentation_readback(layout: dict[str, Any]) -> dict[str, Any]:
+    values = layout["values"]
     return {
         "preferred_pattern": "face_icon_plus_left_aligned_subtitle",
         "implemented_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
+        "presentation_mode": layout["mode"],
         "pattern_status": "approximated_with_fallback_speaker_badge_no_face_icon_assets",
         "real_face_icon_assets_available": False,
         "fallback_used": True,
         "fallback_kind": "speaker_badge_placeholder",
         "fallback_label": DIAGNOSTIC_ASS_STYLE["speaker_badge_label"],
+        "fallback_badge_size": {
+            "width": values["badge_width"],
+            "height": values["badge_height"],
+            "font_size": values["badge_font_size"],
+            "formula": "badge_width=round(font_size*1.0), badge_height=round(font_size*0.7), badge_font_size=round(font_size*0.44)",
+        },
+        "badge_vertical_alignment_rule": layout["badge_vertical_alignment_rule"],
         "future_asset_slot": {
-            "x": DIAGNOSTIC_ASS_STYLE["speaker_badge_x"],
-            "y": DIAGNOSTIC_ASS_STYLE["speaker_badge_y"],
+            "x": values["badge_center_x"],
+            "y_for_two_line_block": values["badge_center_y_for_two_line_block"],
             "purpose": "future real speaker face icon can replace the badge without changing dialogue anchor",
         },
     }
+
+
+def _report_speaker_identity_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    if cut_reports:
+        return cut_reports[0].get("speaker_identity_presentation") or {}
+    return _speaker_identity_presentation_readback(
+        _subtitle_layout_contract(
+            frame_width=DEFAULT_FRAME_WIDTH,
+            frame_height=DEFAULT_FRAME_HEIGHT,
+            mode=DEFAULT_PRESENTATION_MODE,
+            dimension_source="default_report_summary",
+        )
+    )
 
 
 def _replacement_behavior_readback(presentation_items: list[dict[str, Any]]) -> dict[str, Any]:
@@ -884,8 +1182,7 @@ def _renderer_path_audit_readback() -> dict[str, Any]:
         "actual_renderer_path_configured": True,
         "actual_render_verified_by": "ffmpeg_success_and_subtitle_bearing_frame_extracts_not_ocr",
         "renderer_path_limitations_detected": False,
-        "play_res_x": ASS_PLAY_RES_X,
-        "play_res_y": ASS_PLAY_RES_Y,
+        "play_res_source": "formula_layout_frame_dimensions",
         "play_res_mismatch_detected": False,
         "old_candidate_insufficiency": {
             "renderer_path_limitations": False,
@@ -1350,7 +1647,11 @@ def _previous_proof_artifacts_readback(
     }
 
 
-def _presentation_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _presentation_items(
+    items: list[dict[str, Any]],
+    *,
+    layout: dict[str, Any],
+) -> list[dict[str, Any]]:
     renderable = [
         item
         for item in items
@@ -1384,8 +1685,9 @@ def _presentation_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
             replacement_end_source = "minimum_visible_window"
         wrapped = measure_subtitle(
             str(item.get("text") or ""),
-            wrap_eaw=DIAGNOSTIC_ASS_STYLE["dialogue_wrap_eaw"],
+            wrap_eaw=layout["values"]["dialogue_wrap_eaw"],
         )
+        item_layout = _item_layout(layout, wrapped_line_count=len(wrapped.lines))
         presentation.append(
             {
                 **item,
@@ -1396,35 +1698,40 @@ def _presentation_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "wrapped_text": "\n".join(line.text for line in wrapped.lines),
                 "wrapped_line_count": len(wrapped.lines),
                 "max_wrapped_line_eaw": wrapped.longest_line_eaw,
+                "presentation_mode": layout["mode"],
+                "layout": item_layout,
             }
         )
     return presentation
 
 
-def _write_ass(path: Path, items: list[dict[str, Any]]) -> None:
+def _write_ass(path: Path, items: list[dict[str, Any]], *, layout: dict[str, Any]) -> None:
     style = DIAGNOSTIC_ASS_STYLE
+    values = layout["values"]
+    dialogue_alignment = "2" if layout["mode"] == "bottom_center_emphasis" else "7"
     lines = [
         "[Script Info]",
         "ScriptType: v4.00+",
-        f"PlayResX: {ASS_PLAY_RES_X}",
-        f"PlayResY: {ASS_PLAY_RES_Y}",
+        f"PlayResX: {layout['frame']['width']}",
+        f"PlayResY: {layout['frame']['height']}",
         "WrapStyle: 0",
         "ScaledBorderAndShadow: yes",
         "",
         "[V4+ Styles]",
         "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding",
         (
-            f"Style: {ASS_DIALOGUE_STYLE_NAME},{style['font_name']},{style['font_size']},"
+            f"Style: {ASS_DIALOGUE_STYLE_NAME},{style['font_name']},{values['font_size']},"
             f"{style['primary_colour']},{style['secondary_colour']},"
             f"{style['outline_colour']},{style['back_colour']},"
             "0,0,0,0,100,100,0,0,"
-            f"{style['border_style']},{style['outline']},{style['shadow']},"
-            f"{style['alignment']},{style['margin_l']},{style['margin_r']},"
-            f"{style['margin_v']},1"
+            f"{style['border_style']},{values['outline']},{values['shadow']},"
+            f"{dialogue_alignment},"
+            f"{values['margin_l']},{values['margin_r']},"
+            f"{values['bottom_margin']},1"
         ),
         (
             f"Style: {ASS_SPEAKER_BADGE_STYLE_NAME},{style['font_name']},"
-            f"{style['speaker_badge_font_size']},"
+            f"{values['badge_font_size']},"
             f"{style['primary_colour']},{style['secondary_colour']},"
             f"{style['speaker_accent_colour']},{style['speaker_badge_back_colour']},"
             "1,0,0,0,100,100,0,0,"
@@ -1439,11 +1746,24 @@ def _write_ass(path: Path, items: list[dict[str, Any]]) -> None:
         end = _ass_time(float(item["display_end_seconds"]))
         badge = _ass_text(str(style["speaker_badge_label"]))
         text = _ass_text(str(item.get("wrapped_text") or item.get("text") or ""))
+        item_layout = item.get("layout") or _item_layout(
+            layout,
+            wrapped_line_count=int(item.get("wrapped_line_count") or 1),
+        )
+        if layout["mode"] == "bottom_center_emphasis":
+            dialogue_override = (
+                f"{{\\an2\\pos({item_layout['dialogue_x']},{item_layout['dialogue_y']})}}"
+            )
+            lines.append(
+                f"Dialogue: 0,{start},{end},{ASS_DIALOGUE_STYLE_NAME},,0,0,0,,"
+                f"{dialogue_override}{text}"
+            )
+            continue
         badge_override = (
-            f"{{\\an5\\pos({style['speaker_badge_x']},{style['speaker_badge_y']})}}"
+            f"{{\\an5\\pos({item_layout['badge_center_x']},{item_layout['badge_center_y']})}}"
         )
         dialogue_override = (
-            f"{{\\an7\\pos({style['dialogue_x']},{style['dialogue_y']})}}"
+            f"{{\\an7\\pos({item_layout['dialogue_x']},{item_layout['dialogue_y']})}}"
         )
         lines.append(
             f"Dialogue: 0,{start},{end},{ASS_SPEAKER_BADGE_STYLE_NAME},,0,0,0,,"
@@ -1850,6 +2170,8 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
     margin_v = parameters.get("margin_v") or {}
     alignment = parameters.get("alignment") or {}
     wrapping = parameters.get("wrapping") or {}
+    layout_values = parameters.get("layout_values") or {}
+    layout_formulas = parameters.get("layout_formulas") or {}
     line_summary = parameters.get("line_width_watch_summary") or {}
     return (
         "    <dl>"
@@ -1857,6 +2179,9 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"<dt>contract</dt><dd>{escape(str(direction.get('presentation_contract_id', '')))}</dd>"
         f"<dt>renderer</dt><dd>{escape(str(parameters.get('renderer', '')))}</dd>"
         f"<dt>candidate_id</dt><dd>{escape(str(parameters.get('style_candidate_id', '')))}</dd>"
+        f"<dt>mode</dt><dd>{escape(str(parameters.get('presentation_mode', '')))}</dd>"
+        f"<dt>supported modes</dt><dd>{escape(', '.join(parameters.get('supported_presentation_modes') or []))}</dd>"
+        f"<dt>left alignment</dt><dd>{escape(str(parameters.get('left_alignment_scope', '')))}</dd>"
         f"<dt>intent</dt><dd>{escape(str(direction.get('target_viewing_context', '')))}; "
         f"{escape(str(direction.get('visual_weight', '')))}</dd>"
         f"<dt>pattern</dt><dd>{escape(str(direction.get('implemented_pattern', '')))}</dd>"
@@ -1870,6 +2195,14 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"<dt>margin_v</dt><dd>{escape(str(margin_v.get('value')))} "
         f"({escape(str(margin_v.get('source', '')))}; {escape(str(margin_v.get('readback', '')))})</dd>"
         f"<dt>alignment</dt><dd>{escape(str(alignment.get('value', '')))}</dd>"
+        f"<dt>badge size</dt><dd>{escape(str(layout_values.get('badge_width', '')))}x"
+        f"{escape(str(layout_values.get('badge_height', '')))}; font="
+        f"{escape(str(layout_values.get('badge_font_size', '')))}</dd>"
+        f"<dt>line height</dt><dd>{escape(str(layout_values.get('line_height', '')))}</dd>"
+        f"<dt>badge alignment rule</dt><dd>{escape(str((parameters.get('positioning') or {}).get('badge_vertical_alignment_rule', '')))}</dd>"
+        f"<dt>font formula</dt><dd>{escape(str(layout_formulas.get('font_size', '')))}</dd>"
+        f"<dt>outline formula</dt><dd>{escape(str(layout_formulas.get('outline', '')))}</dd>"
+        f"<dt>margin formula</dt><dd>{escape(str(layout_formulas.get('bottom_margin', '')))}</dd>"
         f"<dt>wrapping</dt><dd>{escape(str(wrapping.get('policy', '')))}; "
         f"watch_eaw={escape(str(wrapping.get('available_proxy_wrap_eaw', '')))}</dd>"
         f"<dt>line-width watch</dt><dd>subtitle_items_needing_wrap_watch="
@@ -1895,14 +2228,17 @@ def _style_cut_html(
             f"preset: {escape(str(direction.get('preset_name', '')))}",
             f"contract: {escape(str(direction.get('presentation_contract_id', '')))}",
             f"candidate_id: {escape(str(parameters.get('style_candidate_id', '')))}",
+            f"mode: {escape(str(parameters.get('presentation_mode', '')))}",
             f"renderer: {escape(str(parameters.get('renderer', '')))}",
             f"style_slot: {escape(str(parameters.get('style_slot', '')))}",
             f"font_size: {escape(str(font_size.get('value')))} ({escape(str(font_size.get('source', '')))})",
             f"outline: {escape(str(outline.get('value')))} ({escape(str(outline.get('source', '')))})",
             f"margin_v: {escape(str(margin_v.get('value')))} ({escape(str(margin_v.get('source', '')))})",
             f"alignment: {escape(str(alignment.get('value', '')))}",
-            f"dialogue_pos: {escape(str(positioning.get('dialogue_x', '')))}, {escape(str(positioning.get('dialogue_y', '')))}",
-            f"badge_pos: {escape(str(positioning.get('speaker_badge_x', '')))}, {escape(str(positioning.get('speaker_badge_y', '')))}",
+            f"dialogue_pos_two_line: {escape(str(positioning.get('dialogue_x', '')))}, {escape(str(positioning.get('dialogue_y_for_two_line_block', '')))}",
+            f"badge_pos_two_line: {escape(str(positioning.get('speaker_badge_x', '')))}, {escape(str(positioning.get('speaker_badge_y_for_two_line_block', '')))}",
+            f"badge_size: {escape(str(positioning.get('badge_width', '')))}x{escape(str(positioning.get('badge_height', '')))}",
+            f"line_height: {escape(str(positioning.get('line_height', '')))}",
             f"max_raw_eaw: {escape(str(line_width.get('max_raw_line_eaw', '')))}",
             f"needs_wrap_watch: {escape(str(line_width.get('needs_wrap_count', '')))}",
         ]
