@@ -10,24 +10,27 @@ instructions.
 ## Current Resume Capsule
 
 - date: 2026-06-09 JST
-- latest pushed resume point:
-  `86958cb feat: add subtitle presentation contract proof`.
-  This is the pushed subtitle presentation contract / diagnostic proof update
-  for the cut_003 Subtitle Design / Review UX slice.
+- latest pushed implementation resume point before this handoff refresh:
+  `f6fcf5b feat: add subtitle typography measurement spike`.
+  This is the pushed subtitle renderer / typography measurement spike closure.
+  A later docs-only handoff refresh may be the newest commit; on another
+  terminal, use `git log -1 --oneline --decorate` for the exact pulled HEAD.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
-- latest post-push sync validation:
+- latest implementation post-push sync validation:
   2026-06-09 JST local readback after push:
   `git status --short --branch` -> `## main...origin/main`;
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
   `git log -1 --oneline --decorate` ->
-  `86958cb (HEAD -> main, origin/main, origin/HEAD) feat: add subtitle presentation contract proof`;
+  `f6fcf5b feat: add subtitle typography measurement spike`;
   `git ls-files episodes` empty. The targeted validation for this pushed
-  state was
-  `uvx pytest -q tests/test_subtitle_overlay_visual_proof.py tests/test_operator_proxy_decision_handoff.py tests/test_asset_fetch_boundary.py`
-  -> 11 passed, plus `git diff --check` / `git diff --cached --check` clean
-  before commit. Ignored `episodes/` proof artifacts were regenerated locally
-  for `cut_003` only and remain unstaged.
+  state was `uvx pytest -q tests/test_subtitle_style_spike.py
+  tests/test_subtitle_overlay_visual_proof.py -rs` -> 4 passed / 1 skipped
+  (the skipped case is intentional: Pillow is optional and absent in the uvx
+  test environment), `python -m pytest -q tests/test_subtitle_style_spike.py`
+  -> 2 passed on the local Python environment where Pillow is available, and
+  `git diff --check` / `git diff --cached --check` clean before commit. Ignored
+  `episodes/` subtitle style spike artifacts remain unstaged.
 - previous pushed resume point:
   `5fa88cf docs: close cut 003 operator decision slice`
 - latest resume-surface sync validation:
@@ -70,8 +73,11 @@ instructions.
   early / middle / response-referral / final active cues, and records
   replacement-style display timing. Readback fields include
   `subtitle_presentation_contract.contract_id=jp_clip_dialogue_reference_v0`,
-  `style_candidate_id=jp_clip_dialogue_badge_left_v0`, `font_size=92`,
-  `outline=7`, `alignment=speaker_badge_left_aligned_dialogue`,
+  `style_candidate_id=jp_clip_dialogue_badge_left_v0`,
+  `font_size=round(frame_height*0.115)=124` for the 1920x1080 source,
+  `outline=max(2, round(font_size*0.096))=12`,
+  `alignment=speaker_badge_left_aligned_dialogue`,
+  `left_alignment_is_universal=false`,
   `speaker_identity_presentation.fallback_used=true`,
   `sample_frame_selection.includes_response_referral_block=true`,
   `production_subtitle_design_acceptance=false`,
@@ -80,9 +86,35 @@ instructions.
   archived under `subtitle_overlay_reference/` for comparison in the same HTML
   report. Human review still decides diagnostic readability only; no production
   subtitle design acceptance is claimed.
+- latest subtitle renderer / typography measurement spike:
+  `f6fcf5b` adds [SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md](SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md),
+  `src/integrations/render/subtitle_style_spike.py`, and
+  `tests/test_subtitle_style_spike.py`. The spike separates subtitle mode
+  taxonomy from renderer-specific values:
+  `dialogue_badge_left`, `bottom_center_emphasis`, `reaction_caption`, and
+  `speaker_badge_stack`. It records a renderer decision matrix for ASS/libass
+  + FFmpeg, HTML/CSS screenshot prototypes, Pillow/Skia/Pango-style bitmap
+  drawing, YMM4 `.ymmp` TextItem generation, and Premiere/MOGRT/image-overlay
+  paths. Pillow is explicitly optional: the normal project test path can skip
+  PNG generation when Pillow is not installed, while local Python with Pillow
+  can generate ignored review-only PNG/JSON/HTML measurement artifacts under
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_style_spike/`.
+  The report records 16 samples, bbox readback, safe-area readback,
+  `review_only=true`, `production_candidate=false`, and
+  `production_compatible=false`. `来ねぇ！！` is classified as
+  `reaction_caption` / `bottom_center_emphasis` candidate, not ordinary
+  `dialogue_badge_left` by default. ASS/libass remains the existing diagnostic
+  proof path; Pillow/PNG is review-only measurement support and is not claimed
+  to match YMM4, Premiere, ASS, or FFmpeg production rendering.
 - next human review prompt:
   open
-  `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html`
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_style_spike/subtitle_style_spike_report.html`
+  to decide only the next renderer path. The current recommendation is to keep
+  ASS/libass as the diagnostic proof path and Pillow/PNG as review-only
+  measurement support, unless a later narrow slice explicitly opens YMM4
+  TextItem or Premiere handoff work. For the existing cut_003 burned-in proof,
+  open
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`
   with player subtitle tracks disabled. Judge only the embedded burned-in
   subtitle. Answer whether the speaker-badge fallback plus left-aligned large
   subtitle is acceptable for diagnostic review, whether real face icons are
@@ -122,9 +154,13 @@ instructions.
   `jp_clip_readable_v1` remains the broad diagnostic direction, while
   `jp_clip_dialogue_reference_v0` is the tracked presentation contract for the
   current proof candidate. The current cut_003 probe uses an explicit ASS file
-  with `ClipPipeSpeakerBadge` and `ClipPipeDialogueLeft` styles, `font_size=92`,
-  `outline=7`, positioned badge/dialogue anchors, diagnostic EAW wrapping, and
-  replacement-style display timing. Reference SRT remains away from the video
+  with `ClipPipeSpeakerBadge` and `ClipPipeDialogueLeft` styles. The layout is
+  formula-based from the probed 1920x1080 frame: `font_size=124`,
+  `outline=12`, `bottom_margin=97`, `horizontal_margin=106`,
+  `badge=124x87`, `badge_text_gap=37`, `line_height=143`, and
+  `badge_center_y=dialogue_y + round(line_height*0.52)`. Left alignment is
+  conditional to `badge_left_dialogue`; `bottom_center_emphasis` remains a
+  supported alternative mode. Reference SRT remains away from the video
   basename and the VLC sidecar warning remains present. This does not create
   production subtitle design acceptance, production render acceptance, creative
   acceptance, rights approval, or public-use permission. The single human
