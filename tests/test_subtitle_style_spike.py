@@ -40,6 +40,16 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert report["grid_readback"]["bbox_grid_coords"] is None
     assert report["grid_readback"]["safe_area_grid_coords"] is None
     assert report["grid_readback"]["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
+    assert report["measured_bbox_provenance"]["status"] == "systematic_measured_readback"
+    assert report["measured_bbox_provenance"]["source_function"] == "draw.multiline_textbbox"
+    assert report["measured_bbox_provenance"]["hardcoded_per_sample"] is False
+    assert report["measured_bbox_provenance"]["manual_adjustment"] is False
+    assert report["measured_bbox_provenance"]["design_target"] is False
+    assert report["measured_bbox_provenance"]["report_sections"] == [
+        "style_inputs",
+        "computed_layout",
+        "measured_output",
+    ]
     assert set(report["visible_element_authority_classes"]) == {
         "computational_authority",
         "measured_readback",
@@ -113,6 +123,29 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         assert sample["production_candidate"] is False
         assert sample["production_compatible"] is False
         assert sample["requested_font_size"] > 0
+        assert sample["style_inputs"]["mode"] == sample["subtitle_mode"]
+        assert (
+            sample["style_inputs"]["font"]["requested_font_size"]["source"]
+            == "formula_from_frame_height_and_mode_constant"
+        )
+        assert sample["style_inputs"]["font"]["requested_font_size"]["value"] == sample["requested_font_size"]
+        assert sample["style_inputs"]["outline"]["stroke_width"]["value"] == sample["outline"]["stroke_width"]
+        assert sample["style_inputs"]["safe_area_margin"]["x"]["value"] == sample["safe_area_margin"]["x"]
+        assert sample["style_inputs"]["safe_area_margin"]["y"]["value"] == sample["safe_area_margin"]["y"]
+        assert sample["style_inputs"]["line_height"]["value"] == sample["line_height"]
+        assert sample["computed_layout"]["layout_anchor"] == sample["layout_anchor"]
+        assert sample["computed_layout"]["wrap_algorithm"]["source_function"] == "_wrap_text_to_width"
+        assert sample["computed_layout"]["wrap_algorithm"]["not_grid_based"] is True
+        assert sample["computed_layout"]["wrapped_text"] == sample["wrapped_text"]
+        assert sample["computed_layout"]["line_count"] == sample["line_count"]
+        assert sample["computed_layout"]["text_start_position"]["x"] >= 0
+        assert sample["computed_layout"]["text_start_position"]["y"] >= 0
+        assert sample["measured_output"]["source_function"] == "draw.multiline_textbbox"
+        assert sample["measured_output"]["manual_override"] is False
+        assert sample["measured_output"]["hardcoded_per_sample"] is False
+        assert sample["measured_output"]["design_target"] is False
+        assert sample["measured_output"]["measured_bbox"] == sample["measured_bbox"]
+        assert sample["measured_output"]["safe_area_status"] == sample["safe_area_status"]
         assert sample["measured_bbox"]["width"] > 0
         assert sample["measured_bbox"]["height"] > 0
         assert sample["safe_area_margin"]["x"] > 0
@@ -140,11 +173,14 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         if sample["subtitle_mode"] in {"dialogue_badge_left", "speaker_badge_stack"}:
             assert "placeholder_speaker_badge" in sample["visible_element_authority_ids"]
             assert "speaker_accent_color" in sample["visible_element_authority_ids"]
+            assert sample["style_inputs"]["badge"]["production_identity_asset"] is False
+            assert sample["computed_layout"]["badge_slot"]["authority_class"] == "placeholder"
             assert sample["speaker_identity_asset_status"]["uses_speaker_badge"] is True
             assert sample["speaker_identity_asset_status"]["badge_role"] == "placeholder_speaker_badge"
             assert "placeholder speaker badges only" in sample["speaker_identity_asset_status"]["human_review_note"]
         else:
             assert "placeholder_speaker_badge" not in sample["visible_element_authority_ids"]
+            assert sample["style_inputs"]["badge"] is None
             assert sample["speaker_identity_asset_status"]["uses_speaker_badge"] is False
 
     first_image = spike.Image.open(samples[0]["output_image_path"])
@@ -214,7 +250,9 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     persisted = json.loads(json_path.read_text(encoding="utf-8"))
     assert persisted["review_only"] is True
     assert persisted["production_candidate"] is False
+    assert persisted["measured_bbox_provenance"]["status"] == "systematic_measured_readback"
     assert persisted["samples"][0]["measured_bbox"]["width"] > 0
+    assert persisted["samples"][0]["measured_output"]["measured_bbox"] == persisted["samples"][0]["measured_bbox"]
     assert len(persisted["guide_overlay"]["guided_samples"]) == 2
     html = html_path.read_text(encoding="utf-8")
     assert "review_only: true" in html
@@ -222,6 +260,10 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert "grid authority: none" in html
     assert "snap-to-grid" in html
     assert "Visible Element Authority" in html
+    assert "Measured Bbox Provenance" in html
+    assert "style_inputs" in html
+    assert "computed_layout" in html
+    assert "measured_output" in html
     assert "placeholder speaker badges" in html
     assert "real face icons are unavailable" in html
     assert "clean sample" in html

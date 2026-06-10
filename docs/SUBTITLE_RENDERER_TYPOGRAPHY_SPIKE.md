@@ -145,6 +145,26 @@ cell-, or character-count based; wrapping remains
 computational authority, its source fields and tests must be added in the same
 slice.
 
+## Measured Bbox Provenance
+
+`measured_bbox` is a rendered-output measurement, not a design target. It is
+computed after text placement with Pillow `ImageDraw.multiline_textbbox`; it is
+not hardcoded per sample and should not be copied as editor coordinates without
+renderer-specific validation.
+
+Each sample report separates:
+
+| Section | Contents | Review Meaning |
+|---|---|---|
+| `style_inputs` | mode, mode token constants, requested font size, outline, margin, line-height, and badge size formulas where applicable | Design inputs or formula-derived values used before drawing |
+| `computed_layout` | layout anchor, wrap algorithm, wrapped lines, text start position, origin bbox, and placeholder badge slot where applicable | Placement decisions computed before final rendered measurement |
+| `measured_output` | measured bbox, rendered bbox dimensions, safe-area status, and overflow readback | Output measurement from the generated bitmap |
+
+Mode ratios such as `font_ratio`, `stroke_ratio`, `safe_x_ratio`,
+`safe_y_ratio`, and `line_height_ratio` are mode-token constants. Values such
+as requested font size, stroke width, safe-area margins, line height, and badge
+sizes are formula-derived from those constants and the frame/font size.
+
 ## Pillow Dependency Handling
 
 Pillow is an optional local review tool for this spike. It is not declared as a

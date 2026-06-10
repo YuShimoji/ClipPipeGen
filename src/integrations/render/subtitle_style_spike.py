@@ -680,6 +680,21 @@ def build_subtitle_style_spike(
         "grid_readback": GRID_READBACK,
         "visible_element_authority_classes": VISIBLE_ELEMENT_AUTHORITY_CLASSES,
         "visible_element_authority": VISIBLE_ELEMENT_AUTHORITY,
+        "measured_bbox_provenance": {
+            "status": "systematic_measured_readback",
+            "measurement_method": "Pillow ImageDraw.multiline_textbbox after text placement",
+            "source_function": "draw.multiline_textbbox",
+            "hardcoded_per_sample": False,
+            "manual_adjustment": False,
+            "design_target": False,
+            "style_values_and_layout_formulas_are_design_inputs": True,
+            "report_sections": ["style_inputs", "computed_layout", "measured_output"],
+            "human_review_note": (
+                "measured_bbox is rendered-output measurement. It is not a "
+                "hand-tuned style target and should not be copied as editor "
+                "coordinates without renderer-specific validation."
+            ),
+        },
         "guide_overlay": {
             "contract_id": "subtitle_style_spike_layout_guide_overlay_v0",
             "role": "review_aid_not_japanese_wrapping_authority",
@@ -767,6 +782,7 @@ def _render_sample(
     line_height = max(font_size, round(font_size * spec.line_height_ratio))
     spacing = max(0, line_height - font_size)
     font = _load_font(font_path, font_size)
+    badge_style_inputs = None
 
     image = Image.new("RGB", (width, height), (32, 35, 39))
     draw = ImageDraw.Draw(image)
@@ -802,6 +818,16 @@ def _render_sample(
         badge_w = max(48, round(font_size * 1.0))
         badge_h = max(32, round(font_size * 0.7))
         badge_gap = max(8, round(font_size * 0.3))
+        badge_style_inputs = _badge_style_inputs(
+            badge_width=badge_w,
+            badge_height=badge_h,
+            badge_gap=badge_gap,
+            badge_font_size=max(12, round(font_size * 0.44)),
+            width_formula="max(48, round(font_size * 1.0))",
+            height_formula="max(32, round(font_size * 0.7))",
+            gap_formula="max(8, round(font_size * 0.3))",
+            font_size_formula="max(12, round(font_size * 0.44))",
+        )
         text_x, text_y = _origin_for_target_bbox(
             origin_bbox,
             target_left=safe_x + badge_w + badge_gap,
@@ -824,6 +850,18 @@ def _render_sample(
         badge_h = max(30, round(font_size * 0.52))
         badge_gap = max(8, round(font_size * 0.26))
         stack_gap = max(6, round(font_size * 0.12))
+        badge_style_inputs = _badge_style_inputs(
+            badge_width=badge_w,
+            badge_height=badge_h,
+            badge_gap=badge_gap,
+            badge_font_size=max(12, round(font_size * 0.38)),
+            width_formula="max(52, round(font_size * 0.9))",
+            height_formula="max(30, round(font_size * 0.52))",
+            gap_formula="max(8, round(font_size * 0.26))",
+            font_size_formula="max(12, round(font_size * 0.38))",
+            stack_gap=stack_gap,
+            stack_gap_formula="max(6, round(font_size * 0.12))",
+        )
         text_x, text_y = _origin_for_target_bbox(
             origin_bbox,
             target_left=safe_x + badge_w + badge_gap,
@@ -914,6 +952,34 @@ def _render_sample(
         safe_x=safe_x,
         safe_y=safe_y,
     )
+    style_inputs = _style_inputs_readback(
+        spec=spec,
+        canvas_size=(width, height),
+        font_family=font_family,
+        font_path=font_path,
+        font_fallback_status=font_fallback_status,
+        font_size=font_size,
+        stroke_width=stroke_width,
+        shadow_offset=shadow_offset,
+        safe_x=safe_x,
+        safe_y=safe_y,
+        line_height=line_height,
+        badge_style_inputs=badge_style_inputs,
+    )
+    computed_layout = _computed_layout_readback(
+        spec=spec,
+        max_text_width=max_text_width,
+        wrapped_text=wrapped_text,
+        origin_bbox=origin_bbox,
+        text_xy=(text_x, text_y),
+        badge_bbox=badge_bbox,
+        badge_style_inputs=badge_style_inputs,
+    )
+    measured_output = _measured_output_readback(
+        measured_bbox=measured_bbox,
+        safe_area_status=safe_area_status,
+        canvas_size=(width, height),
+    )
     return {
         "output_image_path": output_path.as_posix(),
         "sample_variant": "guide_overlay" if guide_profile else "clean",
@@ -925,6 +991,9 @@ def _render_sample(
         "font_file": font_path,
         "font_fallback_status": font_fallback_status,
         "requested_font_size": font_size,
+        "style_inputs": style_inputs,
+        "computed_layout": computed_layout,
+        "measured_output": measured_output,
         "measured_bbox": _bbox_dict(measured_bbox),
         "badge_bbox": _bbox_dict(badge_bbox) if badge_bbox else None,
         "safe_area_margin": {"x": safe_x, "y": safe_y},
@@ -971,6 +1040,204 @@ def _render_sample(
 
 def _draw_reference_background(draw, *, width: int, height: int, safe_x: int, safe_y: int) -> None:
     draw.rectangle((0, 0, width, height), fill=(36, 39, 44))
+
+
+def _badge_style_inputs(
+    *,
+    badge_width: int,
+    badge_height: int,
+    badge_gap: int,
+    badge_font_size: int,
+    width_formula: str,
+    height_formula: str,
+    gap_formula: str,
+    font_size_formula: str,
+    stack_gap: int | None = None,
+    stack_gap_formula: str | None = None,
+) -> dict[str, Any]:
+    readback: dict[str, Any] = {
+        "badge_width": {
+            "value": badge_width,
+            "source": "formula_from_font_size_with_minimum",
+            "formula": width_formula,
+        },
+        "badge_height": {
+            "value": badge_height,
+            "source": "formula_from_font_size_with_minimum",
+            "formula": height_formula,
+        },
+        "badge_text_gap": {
+            "value": badge_gap,
+            "source": "formula_from_font_size_with_minimum",
+            "formula": gap_formula,
+        },
+        "badge_font_size": {
+            "value": badge_font_size,
+            "source": "formula_from_font_size_with_minimum",
+            "formula": font_size_formula,
+        },
+        "production_identity_asset": False,
+    }
+    if stack_gap is not None:
+        readback["stack_gap"] = {
+            "value": stack_gap,
+            "source": "formula_from_font_size_with_minimum",
+            "formula": stack_gap_formula,
+        }
+    return readback
+
+
+def _style_inputs_readback(
+    *,
+    spec: ModeSpec,
+    canvas_size: tuple[int, int],
+    font_family: str,
+    font_path: str | None,
+    font_fallback_status: str,
+    font_size: int,
+    stroke_width: int,
+    shadow_offset: int,
+    safe_x: int,
+    safe_y: int,
+    line_height: int,
+    badge_style_inputs: dict[str, Any] | None,
+) -> dict[str, Any]:
+    width, height = canvas_size
+    return {
+        "mode": spec.mode,
+        "mode_purpose": spec.purpose,
+        "mode_token_constants": {
+            "font_ratio": spec.font_ratio,
+            "stroke_ratio": spec.stroke_ratio,
+            "shadow_offset_ratio": spec.shadow_offset_ratio,
+            "safe_x_ratio": spec.safe_x_ratio,
+            "safe_y_ratio": spec.safe_y_ratio,
+            "line_height_ratio": spec.line_height_ratio,
+            "anchor": spec.anchor,
+        },
+        "font": {
+            "family": font_family,
+            "file": font_path,
+            "fallback_status": font_fallback_status,
+            "requested_font_size": {
+                "value": font_size,
+                "source": "formula_from_frame_height_and_mode_constant",
+                "formula": "max(16, round(frame_height * mode.font_ratio))",
+                "frame_height": height,
+            },
+        },
+        "outline": {
+            "stroke_width": {
+                "value": stroke_width,
+                "source": "formula_from_font_size_and_mode_constant",
+                "formula": "max(2, round(font_size * mode.stroke_ratio))",
+            }
+        },
+        "shadow": {
+            "offset_px": {
+                "value": shadow_offset,
+                "source": "formula_from_font_size_and_mode_constant",
+                "formula": "max(1, round(font_size * mode.shadow_offset_ratio))",
+            }
+        },
+        "safe_area_margin": {
+            "x": {
+                "value": safe_x,
+                "source": "formula_from_frame_width_and_mode_constant",
+                "formula": "round(frame_width * mode.safe_x_ratio)",
+                "frame_width": width,
+            },
+            "y": {
+                "value": safe_y,
+                "source": "formula_from_frame_height_and_mode_constant",
+                "formula": "round(frame_height * mode.safe_y_ratio)",
+                "frame_height": height,
+            },
+        },
+        "line_height": {
+            "value": line_height,
+            "source": "formula_from_font_size_and_mode_constant",
+            "formula": "max(font_size, round(font_size * mode.line_height_ratio))",
+        },
+        "badge": badge_style_inputs,
+        "not_measured_output": True,
+    }
+
+
+def _computed_layout_readback(
+    *,
+    spec: ModeSpec,
+    max_text_width: int,
+    wrapped_text: str,
+    origin_bbox: tuple[int, int, int, int],
+    text_xy: tuple[int, int],
+    badge_bbox: tuple[int, int, int, int] | None,
+    badge_style_inputs: dict[str, Any] | None,
+) -> dict[str, Any]:
+    lines = wrapped_text.splitlines() or [wrapped_text]
+    text_x, text_y = text_xy
+    readback: dict[str, Any] = {
+        "layout_anchor": spec.anchor,
+        "wrap_algorithm": {
+            "name": "incremental_font_bbox_pixel_width_wrap",
+            "source_function": "_wrap_text_to_width",
+            "max_text_width": max_text_width,
+            "authority": GRID_READBACK["wrapping_authority"],
+            "not_character_count_only": True,
+            "not_grid_based": True,
+        },
+        "wrapped_text": wrapped_text,
+        "wrapped_lines": lines,
+        "line_count": len(lines),
+        "text_start_position": {
+            "x": text_x,
+            "y": text_y,
+            "source": "_origin_for_target_bbox result",
+        },
+        "origin_bbox": {
+            **(_bbox_dict(origin_bbox) or {}),
+            "source": "draw.multiline_textbbox at origin before final placement",
+        },
+        "text_position_source": "anchor-specific calculation from origin bbox and safe margins",
+        "not_measured_output": True,
+    }
+    if badge_bbox:
+        readback["badge_slot"] = {
+            **(_bbox_dict(badge_bbox) or {}),
+            "source": "computed placeholder badge rectangle",
+            "authority_class": "placeholder",
+            "style_inputs": badge_style_inputs,
+        }
+    return readback
+
+
+def _measured_output_readback(
+    *,
+    measured_bbox: tuple[int, int, int, int],
+    safe_area_status: dict[str, Any],
+    canvas_size: tuple[int, int],
+) -> dict[str, Any]:
+    bbox = _bbox_dict(measured_bbox) or {}
+    return {
+        "measurement_method": "Pillow ImageDraw.multiline_textbbox after text placement",
+        "source_function": "draw.multiline_textbbox",
+        "manual_override": False,
+        "hardcoded_per_sample": False,
+        "design_target": False,
+        "measured_bbox": bbox,
+        "rendered_bbox_dimensions": {
+            "width": bbox.get("width"),
+            "height": bbox.get("height"),
+        },
+        "safe_area_status": safe_area_status,
+        "overflow_readback": {
+            "left_overflow_px": safe_area_status["left_overflow_px"],
+            "right_overflow_px": safe_area_status["right_overflow_px"],
+            "top_overflow_px": safe_area_status["top_overflow_px"],
+            "bottom_overflow_px": safe_area_status["bottom_overflow_px"],
+        },
+        "canvas_size": {"width": canvas_size[0], "height": canvas_size[1]},
+    }
 
 
 def _draw_badge(draw, *, label: str, xy: tuple[int, int], size: tuple[int, int], font_path: str | None, font_size: int):
@@ -1472,6 +1739,8 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
     </thead>
     <tbody>{authority_rows}</tbody>
   </table>
+  <h2>Measured Bbox Provenance</h2>
+  <pre>{html.escape(json.dumps(report["measured_bbox_provenance"], ensure_ascii=False, indent=2))}</pre>
   <h2>Guide Overlay Contract</h2>
   <pre>{html.escape(json.dumps({k: v for k, v in report["guide_overlay"].items() if k != "guided_samples"}, ensure_ascii=False, indent=2))}</pre>
   <h2>Grid Readback</h2>
@@ -1505,6 +1774,9 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "font_family": sample["font_family"],
         "font_fallback_status": sample["font_fallback_status"],
         "requested_font_size": sample["requested_font_size"],
+        "style_inputs": sample["style_inputs"],
+        "computed_layout": sample["computed_layout"],
+        "measured_output": sample["measured_output"],
         "measured_bbox": sample["measured_bbox"],
         "safe_area_margin": sample["safe_area_margin"],
         "safe_area_status": sample["safe_area_status"],
