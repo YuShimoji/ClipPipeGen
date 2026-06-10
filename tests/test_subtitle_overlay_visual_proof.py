@@ -7,7 +7,10 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from src.pipeline.operator_proxy_decision_handoff import build_operator_proxy_decision_handoff
+from src.integrations.render import subtitle_style_spike as spike
 from src.integrations.render.subtitle_overlay_visual_proof import (
     _presentation_items,
     _subtitle_layout_contract,
@@ -83,6 +86,16 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert report["style_parameters"]["layout_values"]["badge_text_gap"] == 6
     assert report["style_parameters"]["layout_values"]["line_height"] == 24
     assert report["style_parameters"]["wrapping"]["automatic_wrap_applied_by_overlay_generator"] is True
+    assert report["style_parameters"]["wrapping"]["wrap_algorithm"]["name"] == (
+        "japanese_boundary_font_bbox_pixel_wrap_v1"
+    )
+    assert report["style_parameters"]["wrapping"]["wrapping_authority"] == (
+        "font_bbox_pixel_measurement_not_grid_cell_count"
+    )
+    assert report["style_parameters"]["font_bbox_wrap_readback"]["renderer_gap"]["exists"] is True
+    assert report["font_bbox_wrap_readback"]["wrap_algorithm"]["name"] == (
+        "japanese_boundary_font_bbox_pixel_wrap_v1"
+    )
     assert report["subtitle_presentation_contract"]["contract_id"] == (
         "jp_clip_dialogue_reference_v0"
     )
@@ -174,6 +187,14 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         assert ".burned_in.ass" in item["attempts"][0]["summary"]
         assert ".reference.srt" not in item["attempts"][0]["summary"]
         assert item["line_width_readback"]["measurement_kind"] == "east_asian_width_proxy"
+        assert item["font_bbox_wrap_readback"]["wrap_algorithm"]["name"] == (
+            "japanese_boundary_font_bbox_pixel_wrap_v1"
+        )
+        assert item["font_bbox_wrap_readback"]["renderer_gap"]["exists"] is True
+        assert item["font_bbox_wrap_readback"]["proof_renderer"] == "ffmpeg_subtitles_filter_ass"
+        assert item["font_bbox_wrap_readback"]["measurement_renderer"] == (
+            "Pillow ImageDraw.multiline_textbbox"
+        )
         assert (tmp_path / item["generated_artifacts"]["video"]).is_relative_to(review_dir)
         assert (tmp_path / item["generated_artifacts"]["frame"]).is_relative_to(review_dir)
         assert item["generated_artifacts"]["video"].endswith(f"{item['cut_id']}.mp4")
@@ -203,6 +224,9 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert "font_size" in overlay_html
     assert "round(frame_height * 0.115)" in overlay_html
     assert "badge alignment rule" in overlay_html
+    assert "japanese_boundary_font_bbox_pixel_wrap_v1" in overlay_html
+    assert "font bbox carry-over" in overlay_html
+    assert "measurement/proof renderer gap" in overlay_html
     assert "Burned-in vs Sidecar SRT" in overlay_html
     assert "subtitle-bearing samples" in overlay_html
     assert "previous proof for comparison" in overlay_html
@@ -359,6 +383,70 @@ def test_bottom_center_emphasis_layout_writes_centered_ass_without_badge_dialogu
     assert "\\an2\\pos(160,165)" in ass
     assert "Style: ClipPipeDialogueLeft,Yu Gothic,22," in ass
     assert "Dialogue: 0,0:00:00.00,0:00:02.00,ClipPipeSpeakerBadge" not in ass
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_pillow_font_bbox_wrap_lines_are_passed_to_ass_without_one_character_orphans(
+    tmp_path: Path,
+):
+    _, font_path, _ = spike._select_font()
+    if font_path is None:
+        pytest.skip("Japanese font file is not available for font-bbox wrapping")
+    layout = _subtitle_layout_contract(
+        frame_width=1280,
+        frame_height=720,
+        mode="badge_left_dialogue",
+        dimension_source="test_frame",
+    )
+    items = _presentation_items(
+        [
+            {
+                "subtitle_id": "sub_orphan_1",
+                "status": "included",
+                "render_start_seconds": 0.0,
+                "render_end_seconds": 2.0,
+                "text": "この条件、かなり危ないです",
+            },
+            {
+                "subtitle_id": "sub_orphan_2",
+                "status": "included",
+                "render_start_seconds": 2.0,
+                "render_end_seconds": 4.0,
+                "text": "まず物件カードを見ます",
+            },
+        ],
+        layout=layout,
+    )
+
+    for item in items:
+        readback = item["font_bbox_wrap_readback"]
+        assert readback["status"] == "applied_to_ass_dialogue_text"
+        assert readback["applied_to_proof_text"] is True
+        assert readback["explicit_line_breaks_passed_to_ass"] is True
+        assert readback["wrap_algorithm"]["name"] == "japanese_boundary_font_bbox_pixel_wrap_v1"
+        assert readback["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
+        assert readback["selected_wrapped_lines"] == item["wrapped_lines"]
+        assert readback["one_character_orphan_present"] is False
+        assert all(spike._visible_char_count(line) != 1 for line in item["wrapped_lines"])
+        assert readback["font_file_status"] == "font_file_found"
+        assert readback["measured_bbox_provenance"]["source_function"] == (
+            "draw.multiline_textbbox"
+        )
+        assert readback["renderer_gap"]["exists"] is True
+        assert readback["renderer_gap"]["production_typography_readiness_claimed"] is False
+
+    assert items[0]["orphan_prevention_applied"] is True
+    assert items[0]["font_bbox_wrap_readback"]["orphan_prevention_examples"]
+    assert items[0]["wrapped_lines"] == ["この条件、かなり危ない", "です"]
+
+    ass_path = tmp_path / "bbox_wrapped.burned_in.ass"
+    _write_ass(ass_path, items, layout=layout)
+    ass = ass_path.read_text(encoding="utf-8")
+    assert "この条件、かなり危ない\\Nです" in ass
+    assert "この条件、かなり危ないで\\Nす" not in ass
 
 
 def _write_episode(tmp_path: Path) -> Path:

@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from src.integrations.render import ffmpeg_tiny
+from src.integrations.render import subtitle_style_spike
 from src.pipeline.edit_pack import load_edit_pack, validate_edit_pack
 from src.pipeline.material_ledger import load_ledger
 from src.pipeline.text_measure import measure_subtitle
@@ -31,6 +32,8 @@ DIAGNOSTIC_STYLE_DIRECTION_NAME = "jp_clip_readable_v1"
 SUBTITLE_PRESENTATION_CONTRACT_ID = "jp_clip_dialogue_reference_v0"
 LINE_WIDTH_WATCH_EAW = 40
 PRESENTATION_WRAP_EAW = 28
+FONT_BBOX_WRAP_AUTHORITY = "font_bbox_pixel_measurement_not_grid_cell_count"
+FONT_BBOX_WRAP_SOURCE = "subtitle_style_spike._wrap_text_to_width"
 RESPONSE_REFERRAL_SUBTITLE_IDS = {f"sub_{index:03d}" for index in range(25, 30)}
 ASS_DIALOGUE_STYLE_NAME = "ClipPipeDialogueLeft"
 ASS_SPEAKER_BADGE_STYLE_NAME = "ClipPipeSpeakerBadge"
@@ -395,6 +398,7 @@ def _cut_report(
     renderable_items = [
         item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES
     ]
+    font_bbox_wrap = _font_bbox_wrap_summary(presentation_items)
     return {
         "episode_id": episode_id,
         "cut_id": cut_id,
@@ -435,7 +439,12 @@ def _cut_report(
         "renderer_path_audit": _renderer_path_audit_readback(),
         "sample_frame_selection": _sample_frame_selection_readback(sample_frame_extracts),
         "style_direction": _diagnostic_style_direction(),
-        "style_parameters": _style_parameter_readback(items, layout=layout),
+        "style_parameters": _style_parameter_readback(
+            items,
+            layout=layout,
+            presentation_items=presentation_items,
+        ),
+        "font_bbox_wrap_readback": font_bbox_wrap,
         "burned_in_subtitle_style": _burned_in_subtitle_style_readback(layout),
         "layout_contract": layout,
         "sidecar_srt_reference": _sidecar_srt_reference_readback(
@@ -516,7 +525,13 @@ def _cut_report(
             else "visual_proof_required_no_subtitle_overlay"
         ),
         "line_wrapping_status": (
-            "diagnostic_overlay_generated_human_review_required"
+            "japanese_font_bbox_wrapping_applied_human_review_required"
+            if (
+                overlay_present
+                and font_bbox_wrap.get("all_renderable_items_applied_to_proof_text") is True
+                and font_bbox_wrap.get("one_character_orphan_present") is not True
+            )
+            else "diagnostic_overlay_generated_human_review_required"
             if overlay_present
             else "line_wrap_visual_review_required"
         ),
@@ -576,6 +591,7 @@ def _report_payload(
         },
         "style_direction": _diagnostic_style_direction(),
         "style_parameters": _report_style_parameter_summary(cut_reports),
+        "font_bbox_wrap_readback": _report_font_bbox_wrap_summary(cut_reports),
         "subtitle_presentation_contract": _report_contract_summary(cut_reports),
         "speaker_identity_presentation": _report_speaker_identity_summary(cut_reports),
         "replacement_behavior": _report_replacement_behavior_summary(cut_reports),
@@ -820,6 +836,7 @@ def _style_parameter_readback(
     items: list[dict[str, Any]],
     *,
     layout: dict[str, Any] | None = None,
+    presentation_items: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     style_slots = _unique_strings(item.get("style_slot") for item in items)
     style = DIAGNOSTIC_ASS_STYLE
@@ -830,6 +847,7 @@ def _style_parameter_readback(
         dimension_source="default_style_readback",
     )
     values = layout["values"]
+    font_bbox_wrap = _font_bbox_wrap_summary(presentation_items or [])
     return {
         "renderer": "ffmpeg_subtitles_filter_ass",
         "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
@@ -874,11 +892,23 @@ def _style_parameter_readback(
             "automatic_wrap_applied_by_overlay_generator": True,
             "available_proxy_wrap_eaw": values["dialogue_wrap_eaw"],
             "watch_width_eaw": LINE_WIDTH_WATCH_EAW,
+            "wrap_algorithm": font_bbox_wrap["wrap_algorithm"],
+            "wrapping_authority": FONT_BBOX_WRAP_AUTHORITY,
+            "font_bbox_applied_to_proof_text": font_bbox_wrap.get(
+                "all_renderable_items_applied_to_proof_text"
+            ),
+            "explicit_line_breaks_passed_to_ass": font_bbox_wrap.get(
+                "explicit_line_breaks_passed_to_ass"
+            ),
+            "one_character_orphan_present": font_bbox_wrap.get(
+                "one_character_orphan_present"
+            ),
             "watch_item": (
                 "Rendered visual review is still required after formula-based "
                 "diagnostic wrapping."
             ),
         },
+        "font_bbox_wrap_readback": font_bbox_wrap,
         "positioning": {
             "dialogue_x": values["dialogue_x"],
             "dialogue_y_for_two_line_block": values["dialogue_y_for_two_line_block"],
@@ -1057,6 +1087,56 @@ def _report_style_parameter_summary(cut_reports: list[dict[str, Any]]) -> dict[s
             "subtitle_items_needing_wrap_watch": long_line_count,
             "policy_status": "watch_only_no_layout_engine_change",
         },
+    }
+
+
+def _report_font_bbox_wrap_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any]:
+    per_cut = {
+        str(cut.get("cut_id")): cut.get("font_bbox_wrap_readback") or {}
+        for cut in cut_reports
+    }
+    cut_readbacks = [value for value in per_cut.values() if value]
+    if not cut_readbacks:
+        return _font_bbox_wrap_summary([])
+    first = cut_readbacks[0]
+    return {
+        "wrap_algorithm": first.get("wrap_algorithm") or {},
+        "wrapping_authority": FONT_BBOX_WRAP_AUTHORITY,
+        "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
+        "proof_renderer": "ffmpeg_subtitles_filter_ass",
+        "renderer_gap": _font_bbox_renderer_gap(),
+        "font_family": _single_or_mixed(
+            [str(item.get("font_family") or "") for item in cut_readbacks]
+        ),
+        "font_file_status": _single_or_mixed(
+            [str(item.get("font_file_status") or "") for item in cut_readbacks]
+        ),
+        "font_fallback_status": _single_or_mixed(
+            [str(item.get("font_fallback_status") or "") for item in cut_readbacks]
+        ),
+        "cut_count": len(cut_readbacks),
+        "all_renderable_items_applied_to_proof_text": all(
+            item.get("all_renderable_items_applied_to_proof_text") is True
+            for item in cut_readbacks
+        ),
+        "explicit_line_breaks_passed_to_ass": all(
+            item.get("explicit_line_breaks_passed_to_ass") is True
+            for item in cut_readbacks
+        ),
+        "orphan_prevention_applied_count": sum(
+            int(item.get("orphan_prevention_applied_count") or 0)
+            for item in cut_readbacks
+        ),
+        "one_character_orphan_present": any(
+            item.get("one_character_orphan_present") is True for item in cut_readbacks
+        ),
+        "orphan_prevention_examples": [
+            example
+            for item in cut_readbacks
+            for example in item.get("orphan_prevention_examples") or []
+        ][:8],
+        "measured_bbox_provenance": first.get("measured_bbox_provenance") or {},
+        "per_cut": per_cut,
     }
 
 
@@ -1250,6 +1330,7 @@ def _updated_representative_report(
     updated["production_usage_allowed"] = False
     updated["diagnostic_style_direction"] = overlay_report["style_direction"]
     updated["diagnostic_style_parameters"] = overlay_report["style_parameters"]
+    updated["font_bbox_wrap_readback"] = overlay_report.get("font_bbox_wrap_readback") or {}
     updated["subtitle_presentation_contract"] = overlay_report.get(
         "subtitle_presentation_contract"
     ) or {}
@@ -1270,6 +1351,7 @@ def _updated_representative_report(
         ],
         "style_direction": overlay_report["style_direction"],
         "style_parameters": overlay_report["style_parameters"],
+        "font_bbox_wrap_readback": overlay_report.get("font_bbox_wrap_readback") or {},
         "subtitle_presentation_contract": overlay_report.get(
             "subtitle_presentation_contract"
         ) or {},
@@ -1309,6 +1391,7 @@ def _updated_representative_report(
         assessment["timing_sync_status"] = proof["timing_sync_status"]
         assessment["style_direction"] = proof["style_direction"]
         assessment["style_parameters"] = proof["style_parameters"]
+        assessment["font_bbox_wrap_readback"] = proof.get("font_bbox_wrap_readback") or {}
         assessment["subtitle_presentation_contract"] = proof.get(
             "subtitle_presentation_contract"
         ) or {}
@@ -1332,6 +1415,7 @@ def _updated_representative_report(
             "report": overlay_report["outputs"]["json"],
             "style_direction": proof["style_direction"],
             "style_parameters": proof["style_parameters"],
+            "font_bbox_wrap_readback": proof.get("font_bbox_wrap_readback") or {},
             "subtitle_presentation_contract": proof.get(
                 "subtitle_presentation_contract"
             ) or {},
@@ -1683,11 +1767,26 @@ def _presentation_items(
         if display_end <= start:
             display_end = min(source_end, start + 0.2)
             replacement_end_source = "minimum_visible_window"
-        wrapped = measure_subtitle(
-            str(item.get("text") or ""),
+        raw_text = str(item.get("text") or "")
+        proxy_wrapped = measure_subtitle(
+            raw_text,
             wrap_eaw=layout["values"]["dialogue_wrap_eaw"],
         )
-        item_layout = _item_layout(layout, wrapped_line_count=len(wrapped.lines))
+        proxy_lines = [line.text for line in proxy_wrapped.lines] or [raw_text]
+        font_bbox_wrap = _font_bbox_wrap_readback(
+            text=raw_text,
+            layout=layout,
+            proxy_wrapped_lines=proxy_lines,
+            proxy_longest_line_eaw=proxy_wrapped.longest_line_eaw,
+        )
+        font_bbox_wrap = {
+            **font_bbox_wrap,
+            "subtitle_id": item.get("subtitle_id"),
+            "subtitle_item_status": item.get("status"),
+        }
+        wrapped_lines = font_bbox_wrap["selected_wrapped_lines"] or proxy_lines
+        wrapped_text = "\n".join(wrapped_lines)
+        item_layout = _item_layout(layout, wrapped_line_count=len(wrapped_lines))
         presentation.append(
             {
                 **item,
@@ -1695,14 +1794,385 @@ def _presentation_items(
                 "display_end_seconds": round(display_end, 3),
                 "replacement_applied": replacement_applied,
                 "replacement_end_source": replacement_end_source,
-                "wrapped_text": "\n".join(line.text for line in wrapped.lines),
-                "wrapped_line_count": len(wrapped.lines),
-                "max_wrapped_line_eaw": wrapped.longest_line_eaw,
+                "wrapped_text": wrapped_text,
+                "wrapped_lines": wrapped_lines,
+                "wrapped_line_count": len(wrapped_lines),
+                "max_wrapped_line_eaw": max(
+                    (measure_subtitle(line).longest_line_eaw for line in wrapped_lines),
+                    default=proxy_wrapped.longest_line_eaw,
+                ),
+                "wrap_algorithm": font_bbox_wrap["wrap_algorithm"],
+                "candidate_breaks": font_bbox_wrap["candidate_breaks"],
+                "selected_break_reason": font_bbox_wrap["selected_break_reason"],
+                "selected_breaks": font_bbox_wrap["selected_breaks"],
+                "orphan_prevention_applied": font_bbox_wrap[
+                    "orphan_prevention_applied"
+                ],
+                "font_bbox_wrap_readback": font_bbox_wrap,
                 "presentation_mode": layout["mode"],
                 "layout": item_layout,
             }
         )
     return presentation
+
+
+def _font_bbox_wrap_readback(
+    *,
+    text: str,
+    layout: dict[str, Any],
+    proxy_wrapped_lines: list[str],
+    proxy_longest_line_eaw: int,
+) -> dict[str, Any]:
+    values = layout["values"]
+    max_width = _font_bbox_max_text_width(layout)
+    font_size = int(values["font_size"])
+    stroke_width = int(values["outline"])
+    spacing = max(0, int(values["line_height"]) - font_size)
+    base = {
+        "wrap_algorithm": {
+            "name": subtitle_style_spike.JAPANESE_WRAP_ALGORITHM,
+            "source_function": FONT_BBOX_WRAP_SOURCE,
+            "authority": FONT_BBOX_WRAP_AUTHORITY,
+            "not_character_count_only": True,
+            "not_grid_based": True,
+            "max_text_width": max_width,
+            "candidate_break_strategy": (
+                "Japanese punctuation, particle, and phrase-boundary candidates are "
+                "preferred only after the candidate prefix passes Pillow font bbox "
+                "pixel-width measurement."
+            ),
+            "orphan_prevention": (
+                "When a greedy measured break would leave a single visible Japanese "
+                "character or kana on the next line, the wrapper uses an earlier "
+                "measured-valid break if one exists."
+            ),
+        },
+        "wrapping_authority": FONT_BBOX_WRAP_AUTHORITY,
+        "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
+        "proof_renderer": "ffmpeg_subtitles_filter_ass",
+        "renderer_gap": _font_bbox_renderer_gap(),
+        "proof_font_name": DIAGNOSTIC_ASS_STYLE["font_name"],
+        "presentation_mode": layout["mode"],
+        "mode_purpose": _presentation_mode_purpose(layout["mode"]),
+        "style_token_readback": _style_token_readback(layout),
+        "font_size": font_size,
+        "stroke_width": stroke_width,
+        "spacing": spacing,
+        "candidate_breaks": [],
+        "selected_breaks": [],
+        "selected_break_reason": "font_bbox_measurement_unavailable",
+        "selected_wrapped_lines": list(proxy_wrapped_lines),
+        "wrapped_text": "\n".join(proxy_wrapped_lines),
+        "orphan_prevention_applied": False,
+        "orphan_prevention_examples": [],
+        "one_character_orphan_present": _has_one_character_orphan(proxy_wrapped_lines),
+        "one_character_orphan_lines": _one_character_orphan_lines(proxy_wrapped_lines),
+        "explicit_line_breaks_passed_to_ass": False,
+        "applied_to_proof_text": False,
+        "fallback_wrap_algorithm": "east_asian_width_proxy",
+        "fallback_wrapped_lines": list(proxy_wrapped_lines),
+        "fallback_longest_line_eaw": proxy_longest_line_eaw,
+        "measured_width_by_line": [],
+        "measured_bbox_provenance": _font_bbox_provenance(
+            status="measurement_unavailable",
+            measured_bbox=None,
+        ),
+    }
+    if subtitle_style_spike.Image is None or subtitle_style_spike.ImageDraw is None:
+        return {
+            **base,
+            "status": "unavailable_missing_pillow_optional_dependency",
+            "font_family": None,
+            "font_file": None,
+            "font_file_status": "unavailable_missing_pillow_optional_dependency",
+            "font_fallback_status": "unavailable_missing_pillow_optional_dependency",
+            "limitation": (
+                "Pillow is optional in the normal project environment; run with "
+                "Pillow installed to carry font-bbox wrapped_lines into the ASS proof."
+            ),
+        }
+
+    font_family, font_file, font_file_status = subtitle_style_spike._select_font()
+    try:
+        font = subtitle_style_spike._load_font(font_file, font_size)
+    except Exception as exc:  # pragma: no cover - depends on local font files
+        return {
+            **base,
+            "status": "unavailable_font_load_failed",
+            "font_family": font_family,
+            "font_file": font_file,
+            "font_file_status": font_file_status,
+            "font_fallback_status": f"font_load_failed: {exc}",
+            "limitation": "Pillow was available, but the selected measurement font failed to load.",
+        }
+
+    image = subtitle_style_spike.Image.new(
+        "RGB",
+        (int(layout["frame"]["width"]), int(layout["frame"]["height"])),
+        (0, 0, 0),
+    )
+    draw = subtitle_style_spike.ImageDraw.Draw(image)
+    wrap_result = subtitle_style_spike._wrap_text_to_width(
+        draw=draw,
+        text=text,
+        font=font,
+        max_width=max_width,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+    wrapped_lines = wrap_result.lines or [text]
+    wrapped_text = "\n".join(wrapped_lines)
+    measured_bbox = subtitle_style_spike._text_bbox_at_origin(
+        draw=draw,
+        text=wrapped_text,
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+    return {
+        **base,
+        "status": "applied_to_ass_dialogue_text",
+        "font_family": font_family,
+        "font_file": font_file,
+        "font_file_status": font_file_status,
+        "font_fallback_status": font_file_status,
+        "selected_break_reason": wrap_result.selected_break_reason,
+        "candidate_breaks": wrap_result.candidate_breaks,
+        "selected_breaks": wrap_result.selected_breaks,
+        "selected_wrapped_lines": wrapped_lines,
+        "wrapped_text": wrapped_text,
+        "orphan_prevention_applied": wrap_result.orphan_prevention_applied,
+        "orphan_prevention_examples": _orphan_prevention_examples(
+            wrap_result.candidate_breaks
+        ),
+        "one_character_orphan_present": _has_one_character_orphan(wrapped_lines),
+        "one_character_orphan_lines": _one_character_orphan_lines(wrapped_lines),
+        "explicit_line_breaks_passed_to_ass": True,
+        "applied_to_proof_text": True,
+        "fallback_wrap_algorithm": None,
+        "measured_width_by_line": wrap_result.measured_width_by_line,
+        "measured_bbox_provenance": _font_bbox_provenance(
+            status="systematic_measured_readback_for_wrap_decision",
+            measured_bbox=_bbox_dict(measured_bbox),
+        ),
+    }
+
+
+def _font_bbox_max_text_width(layout: dict[str, Any]) -> int:
+    values = layout["values"]
+    frame_width = int(layout["frame"]["width"])
+    if layout["mode"] == "bottom_center_emphasis":
+        return max(120, frame_width - int(values["margin_l"]) - int(values["margin_r"]))
+    return max(
+        120,
+        frame_width - int(values["dialogue_x"]) - int(values["margin_r"]),
+    )
+
+
+def _font_bbox_provenance(
+    *,
+    status: str,
+    measured_bbox: dict[str, int] | None,
+) -> dict[str, Any]:
+    return {
+        "status": status,
+        "measurement_method": "Pillow ImageDraw.multiline_textbbox before ASS emission",
+        "source_function": "draw.multiline_textbbox",
+        "manual_override": False,
+        "hardcoded_per_sample": False,
+        "design_target": False,
+        "measured_bbox": measured_bbox,
+        "human_review_note": (
+            "This bbox is measurement support for choosing explicit line breaks. "
+            "It is not a claim that FFmpeg/libass, YMM4, or Premiere will render "
+            "the same glyph bbox."
+        ),
+    }
+
+
+def _font_bbox_renderer_gap() -> dict[str, Any]:
+    return {
+        "exists": True,
+        "classification": "controlled_line_breaks_carried_renderer_bbox_not_claimed",
+        "reason": (
+            "Pillow font-bbox measurement selects wrapped_lines that are passed to "
+            "ASS as explicit line breaks, but final glyph rasterization and bbox "
+            "still belong to FFmpeg/libass and can differ from Pillow."
+        ),
+        "production_typography_readiness_claimed": False,
+    }
+
+
+def _presentation_mode_purpose(mode: str) -> str:
+    if mode == "bottom_center_emphasis":
+        return "short emphasis or retort without speaker identity"
+    return "normal dialogue with speaker identity badge"
+
+
+def _style_token_readback(layout: dict[str, Any]) -> dict[str, Any]:
+    values = layout["values"]
+    return {
+        "mode": layout["mode"],
+        "mode_purpose": _presentation_mode_purpose(layout["mode"]),
+        "font": {
+            "proof_font_name": DIAGNOSTIC_ASS_STYLE["font_name"],
+            "font_size": values["font_size"],
+            "formula": layout["formulas"]["font_size"],
+        },
+        "outline": {
+            "value": values["outline"],
+            "formula": layout["formulas"]["outline"],
+        },
+        "safe_area_margin": {
+            "x": values["margin_l"],
+            "y": values["bottom_margin"],
+            "source": "formula_from_frame_dimensions",
+        },
+        "line_height": {
+            "value": values["line_height"],
+            "formula": layout["formulas"]["line_height"],
+        },
+        "badge": {
+            "badge_width": values["badge_width"],
+            "badge_height": values["badge_height"],
+            "badge_text_gap": values["badge_text_gap"],
+            "production_identity_asset": False,
+        },
+    }
+
+
+def _orphan_prevention_examples(candidate_breaks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    examples: list[dict[str, Any]] = []
+    selected_by_line = {
+        int(candidate.get("line_number") or 0): candidate
+        for candidate in candidate_breaks
+        if candidate.get("selected") is True
+    }
+    for candidate in candidate_breaks:
+        if candidate.get("would_leave_one_character_orphan") is not True:
+            continue
+        selected = selected_by_line.get(int(candidate.get("line_number") or 0))
+        examples.append(
+            {
+                "line_number": candidate.get("line_number"),
+                "prevented_break": {
+                    "line_text": candidate.get("line_text"),
+                    "remaining_text": candidate.get("remaining_text"),
+                    "break_index": candidate.get("break_index"),
+                    "measured_width": candidate.get("measured_width"),
+                    "reason": candidate.get("reason"),
+                },
+                "selected_break": {
+                    "line_text": selected.get("line_text") if selected else None,
+                    "remaining_text": selected.get("remaining_text") if selected else None,
+                    "break_index": selected.get("break_index") if selected else None,
+                    "selection_reason": (
+                        selected.get("selection_reason") if selected else None
+                    ),
+                },
+            }
+        )
+    return examples
+
+
+def _has_one_character_orphan(lines: list[str]) -> bool:
+    return bool(_one_character_orphan_lines(lines))
+
+
+def _one_character_orphan_lines(lines: list[str]) -> list[str]:
+    return [
+        line
+        for line in lines
+        if subtitle_style_spike._visible_char_count(str(line)) == 1
+    ]
+
+
+def _font_bbox_wrap_summary(presentation_items: list[dict[str, Any]]) -> dict[str, Any]:
+    readbacks = [
+        item.get("font_bbox_wrap_readback") or {}
+        for item in presentation_items
+        if item.get("font_bbox_wrap_readback")
+    ]
+    if not readbacks:
+        return {
+            "wrap_algorithm": {
+                "name": subtitle_style_spike.JAPANESE_WRAP_ALGORITHM,
+                "source_function": FONT_BBOX_WRAP_SOURCE,
+                "authority": FONT_BBOX_WRAP_AUTHORITY,
+            },
+            "wrapping_authority": FONT_BBOX_WRAP_AUTHORITY,
+            "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
+            "proof_renderer": "ffmpeg_subtitles_filter_ass",
+            "renderer_gap": _font_bbox_renderer_gap(),
+            "status": "no_presentation_items",
+            "items": [],
+        }
+    first = readbacks[0]
+    return {
+        "wrap_algorithm": first.get("wrap_algorithm") or {},
+        "wrapping_authority": FONT_BBOX_WRAP_AUTHORITY,
+        "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
+        "proof_renderer": "ffmpeg_subtitles_filter_ass",
+        "renderer_gap": _font_bbox_renderer_gap(),
+        "font_family": _single_or_mixed(
+            [str(item.get("font_family") or "") for item in readbacks]
+        ),
+        "font_file_status": _single_or_mixed(
+            [str(item.get("font_file_status") or "") for item in readbacks]
+        ),
+        "font_fallback_status": _single_or_mixed(
+            [str(item.get("font_fallback_status") or "") for item in readbacks]
+        ),
+        "applied_to_proof_text_count": sum(
+            1 for item in readbacks if item.get("applied_to_proof_text") is True
+        ),
+        "all_renderable_items_applied_to_proof_text": all(
+            item.get("applied_to_proof_text") is True for item in readbacks
+        ),
+        "explicit_line_breaks_passed_to_ass": all(
+            item.get("explicit_line_breaks_passed_to_ass") is True
+            for item in readbacks
+        ),
+        "orphan_prevention_applied_count": sum(
+            1 for item in readbacks if item.get("orphan_prevention_applied") is True
+        ),
+        "one_character_orphan_present": any(
+            item.get("one_character_orphan_present") is True for item in readbacks
+        ),
+        "orphan_prevention_examples": [
+            example
+            for item in readbacks
+            for example in item.get("orphan_prevention_examples") or []
+        ][:8],
+        "measured_bbox_provenance": first.get("measured_bbox_provenance") or {},
+        "items": [
+            {
+                "subtitle_id": item.get("subtitle_id"),
+                "subtitle_item_status": item.get("subtitle_item_status"),
+                "selected_wrapped_lines": item.get("selected_wrapped_lines"),
+                "selected_break_reason": item.get("selected_break_reason"),
+                "orphan_prevention_applied": item.get("orphan_prevention_applied"),
+                "one_character_orphan_present": item.get("one_character_orphan_present"),
+                "applied_to_proof_text": item.get("applied_to_proof_text"),
+                "candidate_break_count": len(item.get("candidate_breaks") or []),
+            }
+            for item in readbacks
+        ],
+    }
+
+
+def _bbox_dict(bbox: tuple[int, int, int, int] | None) -> dict[str, int] | None:
+    if bbox is None:
+        return None
+    left, top, right, bottom = bbox
+    return {
+        "left": int(left),
+        "top": int(top),
+        "right": int(right),
+        "bottom": int(bottom),
+        "width": int(right - left),
+        "height": int(bottom - top),
+    }
 
 
 def _write_ass(path: Path, items: list[dict[str, Any]], *, layout: dict[str, Any]) -> None:
@@ -2170,6 +2640,9 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
     margin_v = parameters.get("margin_v") or {}
     alignment = parameters.get("alignment") or {}
     wrapping = parameters.get("wrapping") or {}
+    font_bbox_wrap = parameters.get("font_bbox_wrap_readback") or {}
+    wrap_algorithm = font_bbox_wrap.get("wrap_algorithm") or wrapping.get("wrap_algorithm") or {}
+    renderer_gap = font_bbox_wrap.get("renderer_gap") or {}
     layout_values = parameters.get("layout_values") or {}
     layout_formulas = parameters.get("layout_formulas") or {}
     line_summary = parameters.get("line_width_watch_summary") or {}
@@ -2205,6 +2678,15 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"<dt>margin formula</dt><dd>{escape(str(layout_formulas.get('bottom_margin', '')))}</dd>"
         f"<dt>wrapping</dt><dd>{escape(str(wrapping.get('policy', '')))}; "
         f"watch_eaw={escape(str(wrapping.get('available_proxy_wrap_eaw', '')))}</dd>"
+        f"<dt>wrap algorithm</dt><dd>{escape(str(wrap_algorithm.get('name', '')))}; "
+        f"{escape(str(font_bbox_wrap.get('wrapping_authority', '')))}</dd>"
+        f"<dt>font bbox carry-over</dt><dd>applied_to_ass="
+        f"{escape(str(font_bbox_wrap.get('all_renderable_items_applied_to_proof_text', '')))}; "
+        f"explicit_line_breaks={escape(str(font_bbox_wrap.get('explicit_line_breaks_passed_to_ass', '')))}; "
+        f"orphan_prevention_count={escape(str(font_bbox_wrap.get('orphan_prevention_applied_count', '')))}; "
+        f"one_char_orphan={escape(str(font_bbox_wrap.get('one_character_orphan_present', '')))}</dd>"
+        f"<dt>measurement/proof renderer gap</dt><dd>{escape(str(renderer_gap.get('classification', '')))}; "
+        f"exists={escape(str(renderer_gap.get('exists', '')))}</dd>"
         f"<dt>line-width watch</dt><dd>subtitle_items_needing_wrap_watch="
         f"{escape(str(line_summary.get('subtitle_items_needing_wrap_watch', '')))}</dd>"
         "    </dl>"
@@ -2223,6 +2705,9 @@ def _style_cut_html(
     margin_v = parameters.get("margin_v") or {}
     alignment = parameters.get("alignment") or {}
     positioning = parameters.get("positioning") or {}
+    font_bbox_wrap = parameters.get("font_bbox_wrap_readback") or {}
+    wrap_algorithm = font_bbox_wrap.get("wrap_algorithm") or {}
+    renderer_gap = font_bbox_wrap.get("renderer_gap") or {}
     return "<br>".join(
         [
             f"preset: {escape(str(direction.get('preset_name', '')))}",
@@ -2239,6 +2724,12 @@ def _style_cut_html(
             f"badge_pos_two_line: {escape(str(positioning.get('speaker_badge_x', '')))}, {escape(str(positioning.get('speaker_badge_y_for_two_line_block', '')))}",
             f"badge_size: {escape(str(positioning.get('badge_width', '')))}x{escape(str(positioning.get('badge_height', '')))}",
             f"line_height: {escape(str(positioning.get('line_height', '')))}",
+            f"wrap_algorithm: {escape(str(wrap_algorithm.get('name', '')))}",
+            f"font_bbox_applied: {escape(str(font_bbox_wrap.get('all_renderable_items_applied_to_proof_text', '')))}",
+            f"explicit_ass_line_breaks: {escape(str(font_bbox_wrap.get('explicit_line_breaks_passed_to_ass', '')))}",
+            f"orphan_prevention_count: {escape(str(font_bbox_wrap.get('orphan_prevention_applied_count', '')))}",
+            f"one_char_orphan: {escape(str(font_bbox_wrap.get('one_character_orphan_present', '')))}",
+            f"renderer_gap: {escape(str(renderer_gap.get('classification', '')))}",
             f"max_raw_eaw: {escape(str(line_width.get('max_raw_line_eaw', '')))}",
             f"needs_wrap_watch: {escape(str(line_width.get('needs_wrap_count', '')))}",
         ]

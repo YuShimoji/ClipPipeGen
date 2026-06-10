@@ -78,6 +78,20 @@ For `bottom_center_emphasis`:
 - This mode is recorded for diagnostic support, but it is not selected for the
   current `cut_003` proof.
 
+## Japanese Wrapping Readback
+
+The diagnostic overlay proof carries the `subtitle_style_spike` wrapping
+authority into its readback as `japanese_boundary_font_bbox_pixel_wrap_v1` when
+Pillow is available. The selected `wrapped_lines` are passed to ASS as explicit
+line breaks so the proof does not rely on uncontrolled subtitle renderer
+wrapping.
+
+This is a measurement and line-break authority only. Pillow
+`ImageDraw.multiline_textbbox` is the measurement renderer, while the burned-in
+proof is rendered through FFmpeg/libass. Reports must expose this
+`renderer_gap` and must not describe Pillow bbox measurement as final
+ASS/libass, YMM4, Premiere, or production typography readiness.
+
 ## Explanatory Captions
 
 Separate status/explanatory captions are explicitly deferred. They may need a
