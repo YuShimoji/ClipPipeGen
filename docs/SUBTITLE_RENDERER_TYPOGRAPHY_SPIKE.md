@@ -82,6 +82,26 @@ The report must expose `grid_readback.grid_model="none"` and
 The sample images should show the safe-area rectangle and measured bbox
 readback as the actual review authority, not a decorative grid.
 
+## Japanese Font-Aware Wrapping
+
+The subtitle_style_spike wrapper uses
+`japanese_boundary_font_bbox_pixel_wrap_v1`. It enumerates candidate line
+breaks, measures each candidate prefix with the active Pillow font bbox, and
+only selects breaks that fit the current `max_text_width`.
+
+Japanese punctuation, particles, and phrase endings are preference signals, not
+width authority. They can move a break to a better phrase boundary only after
+the candidate line passes font/bbox pixel measurement. If the greedy measured
+break would leave a single visible Japanese character or kana on the following
+line, the wrapper uses an earlier measured-valid break when one exists and
+records `orphan_prevention_applied=true`.
+
+The JSON/HTML readback exposes `wrap_algorithm`, `candidate_breaks`,
+`selected_break_reason`, `orphan_prevention_applied`, `wrapped_lines`,
+`line_count`, `measured_width_by_line`, `font_family`, and `font_file_status`
+so later human review can inspect the wrapping decision without treating raw
+character count or grid cells as authority.
+
 ## Visible Review Element Authority
 
 Every visible review element in the spike must declare one of these authority

@@ -45,6 +45,44 @@ FONT_CANDIDATES = (
     Path("C:/Windows/Fonts/meiryob.ttc"),
     Path("C:/Windows/Fonts/msgothic.ttc"),
 )
+JAPANESE_WRAP_ALGORITHM = "japanese_boundary_font_bbox_pixel_wrap_v1"
+JAPANESE_BREAK_AFTER_PUNCTUATION = frozenset("、。！？!?」』）)]")
+JAPANESE_AVOID_LINE_START = frozenset("、。！？!?」』）)]ゃゅょぁぃぅぇぉっッー")
+JAPANESE_PARTICLE_BREAKS = (
+    "から",
+    "まで",
+    "より",
+    "ので",
+    "けど",
+    "なら",
+    "って",
+    "では",
+    "には",
+    "とは",
+    "は",
+    "が",
+    "を",
+    "に",
+    "へ",
+    "と",
+    "で",
+    "も",
+    "の",
+    "や",
+    "か",
+    "ね",
+    "よ",
+)
+JAPANESE_PHRASE_ENDINGS = (
+    "です",
+    "ます",
+    "でした",
+    "ました",
+    "ない",
+    "する",
+    "します",
+    "ください",
+)
 
 
 @dataclass(frozen=True)
@@ -60,6 +98,18 @@ class ModeSpec:
     line_height_ratio: float
     anchor: str
     transfer_risk: str
+
+
+@dataclass(frozen=True)
+class WrapResult:
+    text: str
+    lines: list[str]
+    algorithm_name: str
+    candidate_breaks: list[dict[str, Any]]
+    selected_break_reason: str
+    selected_breaks: list[dict[str, Any]]
+    orphan_prevention_applied: bool
+    measured_width_by_line: list[int]
 
 
 MODE_SPECS: tuple[ModeSpec, ...] = (
@@ -794,7 +844,7 @@ def _render_sample(
         badge_gap = max(8, round(font_size * 0.3))
         max_text_width = max(120, width - safe_x - badge_w - badge_gap - safe_x)
 
-    wrapped_text = _wrap_text_to_width(
+    wrap_result = _wrap_text_to_width(
         draw=draw,
         text=text,
         font=font,
@@ -802,7 +852,8 @@ def _render_sample(
         spacing=spacing,
         stroke_width=stroke_width,
     )
-    line_count = len(wrapped_text.splitlines()) or 1
+    wrapped_text = wrap_result.text
+    line_count = len(wrap_result.lines) or 1
     origin_bbox = _text_bbox_at_origin(
         draw=draw,
         text=wrapped_text,
@@ -969,7 +1020,7 @@ def _render_sample(
     computed_layout = _computed_layout_readback(
         spec=spec,
         max_text_width=max_text_width,
-        wrapped_text=wrapped_text,
+        wrap_result=wrap_result,
         origin_bbox=origin_bbox,
         text_xy=(text_x, text_y),
         badge_bbox=badge_bbox,
@@ -987,8 +1038,15 @@ def _render_sample(
         "subtitle_mode": spec.mode,
         "text": text,
         "wrapped_text": wrapped_text,
+        "wrapped_lines": wrap_result.lines,
+        "wrap_algorithm": computed_layout["wrap_algorithm"],
+        "candidate_breaks": wrap_result.candidate_breaks,
+        "selected_break_reason": wrap_result.selected_break_reason,
+        "orphan_prevention_applied": wrap_result.orphan_prevention_applied,
+        "measured_width_by_line": wrap_result.measured_width_by_line,
         "font_family": font_family,
         "font_file": font_path,
+        "font_file_status": font_fallback_status,
         "font_fallback_status": font_fallback_status,
         "requested_font_size": font_size,
         "style_inputs": style_inputs,
@@ -1168,27 +1226,43 @@ def _computed_layout_readback(
     *,
     spec: ModeSpec,
     max_text_width: int,
-    wrapped_text: str,
+    wrap_result: WrapResult,
     origin_bbox: tuple[int, int, int, int],
     text_xy: tuple[int, int],
     badge_bbox: tuple[int, int, int, int] | None,
     badge_style_inputs: dict[str, Any] | None,
 ) -> dict[str, Any]:
-    lines = wrapped_text.splitlines() or [wrapped_text]
+    wrapped_text = wrap_result.text
+    lines = wrap_result.lines
     text_x, text_y = text_xy
     readback: dict[str, Any] = {
         "layout_anchor": spec.anchor,
         "wrap_algorithm": {
-            "name": "incremental_font_bbox_pixel_width_wrap",
+            "name": wrap_result.algorithm_name,
             "source_function": "_wrap_text_to_width",
             "max_text_width": max_text_width,
             "authority": GRID_READBACK["wrapping_authority"],
             "not_character_count_only": True,
             "not_grid_based": True,
+            "candidate_break_strategy": (
+                "Japanese punctuation, particle, and phrase-boundary candidates "
+                "are preferred only after each candidate prefix passes font bbox "
+                "pixel-width measurement."
+            ),
+            "orphan_prevention": (
+                "When a greedy measured break would leave a single visible "
+                "Japanese character or kana on the next line, the wrapper uses "
+                "an earlier measured-valid break if one exists."
+            ),
         },
+        "candidate_breaks": wrap_result.candidate_breaks,
+        "selected_break_reason": wrap_result.selected_break_reason,
+        "selected_breaks": wrap_result.selected_breaks,
+        "orphan_prevention_applied": wrap_result.orphan_prevention_applied,
         "wrapped_text": wrapped_text,
         "wrapped_lines": lines,
         "line_count": len(lines),
+        "measured_width_by_line": wrap_result.measured_width_by_line,
         "text_start_position": {
             "x": text_x,
             "y": text_y,
@@ -1298,28 +1372,241 @@ def _wrap_text_to_width(
     max_width: int,
     spacing: int,
     stroke_width: int,
-) -> str:
-    if _text_size(draw=draw, text=text, font=font, spacing=spacing, stroke_width=stroke_width)[0] <= max_width:
-        return text
+) -> WrapResult:
+    initial_width = _text_size(
+        draw=draw,
+        text=text,
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )[0]
+    if initial_width <= max_width:
+        return WrapResult(
+            text=text,
+            lines=[text],
+            algorithm_name=JAPANESE_WRAP_ALGORITHM,
+            candidate_breaks=[],
+            selected_break_reason="whole_text_fits_font_bbox",
+            selected_breaks=[],
+            orphan_prevention_applied=False,
+            measured_width_by_line=[initial_width],
+        )
+
     lines: list[str] = []
-    current = ""
-    for char in text:
-        trial = current + char
-        width = _text_size(
+    candidate_breaks: list[dict[str, Any]] = []
+    selected_breaks: list[dict[str, Any]] = []
+    orphan_prevention_applied = False
+    remaining = text
+    line_number = 1
+
+    while remaining:
+        remaining_width = _text_size(
             draw=draw,
-            text=trial,
+            text=remaining,
             font=font,
             spacing=spacing,
             stroke_width=stroke_width,
         )[0]
-        if current and width > max_width:
-            lines.append(current)
-            current = char
-        else:
-            current = trial
-    if current:
-        lines.append(current)
-    return "\n".join(lines)
+        if remaining_width <= max_width:
+            lines.append(remaining)
+            break
+
+        candidates = _build_wrap_candidates(
+            draw=draw,
+            text=remaining,
+            font=font,
+            max_width=max_width,
+            spacing=spacing,
+            stroke_width=stroke_width,
+            line_number=line_number,
+        )
+        selectable = [
+            candidate
+            for candidate in candidates
+            if candidate["fits_max_width"] and candidate["remaining_text"]
+        ]
+        if not selectable:
+            forced_line = remaining[0]
+            forced_width = _text_size(
+                draw=draw,
+                text=forced_line,
+                font=font,
+                spacing=spacing,
+                stroke_width=stroke_width,
+            )[0]
+            forced = {
+                "line_number": line_number,
+                "break_index": 1,
+                "line_text": forced_line,
+                "remaining_text": remaining[1:],
+                "measured_width": forced_width,
+                "max_width": max_width,
+                "fits_max_width": forced_width <= max_width,
+                "reason": "forced_single_character_no_measured_alternative",
+                "priority": 0,
+                "would_leave_one_character_orphan": _visible_char_count(remaining[1:]) == 1,
+                "next_line_starts_with_avoided_char": bool(remaining[1:] and remaining[1] in JAPANESE_AVOID_LINE_START),
+                "selected": True,
+                "selection_reason": "forced_single_character_no_measured_alternative",
+            }
+            candidate_breaks.extend(candidates)
+            selected_breaks.append(forced)
+            lines.append(forced_line)
+            remaining = remaining[1:]
+            line_number += 1
+            continue
+
+        selected, prevented_orphan = _select_wrap_candidate(selectable)
+        if prevented_orphan:
+            orphan_prevention_applied = True
+        selection_reason = (
+            "orphan_prevention_shifted_break"
+            if prevented_orphan
+            else selected["reason"]
+        )
+        for candidate in candidates:
+            candidate_breaks.append(
+                {
+                    **candidate,
+                    "selected": (
+                        candidate["line_number"] == selected["line_number"]
+                        and candidate["break_index"] == selected["break_index"]
+                    ),
+                    "selection_reason": selection_reason
+                    if (
+                        candidate["line_number"] == selected["line_number"]
+                        and candidate["break_index"] == selected["break_index"]
+                    )
+                    else None,
+                }
+            )
+        selected_breaks.append({**selected, "selected": True, "selection_reason": selection_reason})
+        lines.append(selected["line_text"])
+        remaining = selected["remaining_text"]
+        line_number += 1
+
+    measured_width_by_line = [
+        _text_size(draw=draw, text=line, font=font, spacing=spacing, stroke_width=stroke_width)[0]
+        for line in lines
+    ]
+    return WrapResult(
+        text="\n".join(lines),
+        lines=lines,
+        algorithm_name=JAPANESE_WRAP_ALGORITHM,
+        candidate_breaks=candidate_breaks,
+        selected_break_reason=(
+            "orphan_prevention_shifted_break"
+            if orphan_prevention_applied
+            else (selected_breaks[0]["selection_reason"] if selected_breaks else "whole_text_fits_font_bbox")
+        ),
+        selected_breaks=selected_breaks,
+        orphan_prevention_applied=orphan_prevention_applied,
+        measured_width_by_line=measured_width_by_line,
+    )
+
+
+def _build_wrap_candidates(
+    *,
+    draw,
+    text: str,
+    font,
+    max_width: int,
+    spacing: int,
+    stroke_width: int,
+    line_number: int,
+) -> list[dict[str, Any]]:
+    candidates: list[dict[str, Any]] = []
+    for break_index in range(1, len(text) + 1):
+        line_text = text[:break_index]
+        remaining_text = text[break_index:]
+        measured_width = _text_size(
+            draw=draw,
+            text=line_text,
+            font=font,
+            spacing=spacing,
+            stroke_width=stroke_width,
+        )[0]
+        reason, priority = _classify_japanese_break(text, break_index)
+        candidates.append(
+            {
+                "line_number": line_number,
+                "break_index": break_index,
+                "line_text": line_text,
+                "remaining_text": remaining_text,
+                "measured_width": measured_width,
+                "max_width": max_width,
+                "fits_max_width": measured_width <= max_width,
+                "reason": reason,
+                "priority": priority,
+                "would_leave_one_character_orphan": _visible_char_count(remaining_text) == 1,
+                "next_line_starts_with_avoided_char": bool(
+                    remaining_text and remaining_text[0] in JAPANESE_AVOID_LINE_START
+                ),
+                "selected": False,
+                "selection_reason": None,
+            }
+        )
+    return candidates
+
+
+def _select_wrap_candidate(candidates: list[dict[str, Any]]) -> tuple[dict[str, Any], bool]:
+    greedy = max(candidates, key=lambda candidate: (candidate["break_index"], candidate["measured_width"]))
+    near_limit_start = max(1, greedy["break_index"] - max(3, round(greedy["break_index"] * 0.25)))
+    near_limit = [candidate for candidate in candidates if candidate["break_index"] >= near_limit_start]
+    pool = near_limit or candidates
+
+    non_orphan = [
+        candidate
+        for candidate in pool
+        if not candidate["would_leave_one_character_orphan"]
+        and not candidate["next_line_starts_with_avoided_char"]
+    ]
+    if not non_orphan:
+        non_orphan = [
+            candidate
+            for candidate in candidates
+            if not candidate["would_leave_one_character_orphan"]
+            and not candidate["next_line_starts_with_avoided_char"]
+        ]
+    if not non_orphan:
+        non_orphan = [candidate for candidate in pool if not candidate["would_leave_one_character_orphan"]]
+    if not non_orphan:
+        non_orphan = candidates
+
+    selected = max(
+        non_orphan,
+        key=lambda candidate: (
+            candidate["priority"],
+            candidate["break_index"],
+            candidate["measured_width"],
+        ),
+    )
+    prevented_orphan = (
+        greedy["would_leave_one_character_orphan"]
+        and not selected["would_leave_one_character_orphan"]
+        and selected["break_index"] != greedy["break_index"]
+    )
+    return selected, prevented_orphan
+
+
+def _classify_japanese_break(text: str, break_index: int) -> tuple[str, int]:
+    if break_index >= len(text):
+        return "end_of_text", 0
+    prefix = text[:break_index]
+    next_char = text[break_index]
+    if next_char in JAPANESE_AVOID_LINE_START:
+        return "avoid_japanese_line_start_character", 1
+    if prefix[-1] in JAPANESE_BREAK_AFTER_PUNCTUATION:
+        return "japanese_punctuation_boundary", 90
+    if any(prefix.endswith(ending) for ending in JAPANESE_PHRASE_ENDINGS):
+        return "japanese_phrase_boundary", 70
+    if any(prefix.endswith(particle) for particle in JAPANESE_PARTICLE_BREAKS):
+        return "japanese_particle_boundary", 60
+    return "measured_width_limit", 10
+
+
+def _visible_char_count(text: str) -> int:
+    return sum(1 for char in text if not char.isspace())
 
 
 def _text_size(*, draw, text: str, font, spacing: int, stroke_width: int) -> tuple[int, int]:
@@ -1731,6 +2018,11 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   overlays use center lines, safe-area readback, subtitle baseline guides,
   badge/icon slot guides, and bbox overlays only as labeled review aids; they
   do not drive Japanese wrapping.</p>
+  <p class="notice">Japanese wrapping uses
+  {html.escape(JAPANESE_WRAP_ALGORITHM)}. Candidate punctuation, particle, and
+  phrase boundaries are considered only when the candidate line passes
+  font/bbox pixel measurement, and one-character orphan prevention is recorded
+  per sample.</p>
   <h2>Visible Element Authority</h2>
   <pre>{html.escape(json.dumps(report["visible_element_authority_classes"], ensure_ascii=False, indent=2))}</pre>
   <table>
@@ -1771,7 +2063,15 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "canvas_size": sample["canvas_size"],
         "subtitle_mode": sample["subtitle_mode"],
         "text": sample["text"],
+        "wrapped_text": sample["wrapped_text"],
+        "wrapped_lines": sample["wrapped_lines"],
+        "wrap_algorithm": sample["wrap_algorithm"],
+        "candidate_breaks": sample["candidate_breaks"],
+        "selected_break_reason": sample["selected_break_reason"],
+        "orphan_prevention_applied": sample["orphan_prevention_applied"],
+        "measured_width_by_line": sample["measured_width_by_line"],
         "font_family": sample["font_family"],
+        "font_file_status": sample["font_file_status"],
         "font_fallback_status": sample["font_fallback_status"],
         "requested_font_size": sample["requested_font_size"],
         "style_inputs": sample["style_inputs"],

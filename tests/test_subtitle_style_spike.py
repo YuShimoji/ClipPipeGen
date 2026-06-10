@@ -20,6 +20,52 @@ def test_subtitle_style_spike_records_optional_pillow_boundary():
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
 )
+def test_japanese_wrapper_prevents_one_character_orphan_when_measured_alternative_exists():
+    image = spike.Image.new("RGB", (420, 180), (0, 0, 0))
+    draw = spike.ImageDraw.Draw(image)
+    _, font_path, _ = spike._select_font()
+    font = spike._load_font(font_path, 42)
+    text = "あいうえお"
+    spacing = 0
+    stroke_width = 0
+    max_width = spike._text_size(
+        draw=draw,
+        text=text[:-1],
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )[0]
+    if max_width >= spike._text_size(
+        draw=draw,
+        text=text,
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )[0]:
+        pytest.skip("selected font does not increase measured width for the orphan fixture")
+
+    result = spike._wrap_text_to_width(
+        draw=draw,
+        text=text,
+        font=font,
+        max_width=max_width,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+
+    assert result.algorithm_name == "japanese_boundary_font_bbox_pixel_wrap_v1"
+    assert result.orphan_prevention_applied is True
+    assert result.selected_break_reason == "orphan_prevention_shifted_break"
+    assert spike._visible_char_count(result.lines[-1]) > 1
+    assert result.lines != ["あいうえ", "お"]
+    assert all(width <= max_width for width in result.measured_width_by_line)
+    assert any(candidate["would_leave_one_character_orphan"] for candidate in result.candidate_breaks)
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
 def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     output_dir = tmp_path / "subtitle_style_spike"
 
@@ -134,10 +180,19 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         assert sample["style_inputs"]["safe_area_margin"]["y"]["value"] == sample["safe_area_margin"]["y"]
         assert sample["style_inputs"]["line_height"]["value"] == sample["line_height"]
         assert sample["computed_layout"]["layout_anchor"] == sample["layout_anchor"]
-        assert sample["computed_layout"]["wrap_algorithm"]["source_function"] == "_wrap_text_to_width"
+        assert sample["wrap_algorithm"]["source_function"] == "_wrap_text_to_width"
+        assert sample["wrap_algorithm"]["name"] == "japanese_boundary_font_bbox_pixel_wrap_v1"
+        assert sample["computed_layout"]["wrap_algorithm"] == sample["wrap_algorithm"]
         assert sample["computed_layout"]["wrap_algorithm"]["not_grid_based"] is True
         assert sample["computed_layout"]["wrapped_text"] == sample["wrapped_text"]
+        assert sample["computed_layout"]["wrapped_lines"] == sample["wrapped_lines"]
         assert sample["computed_layout"]["line_count"] == sample["line_count"]
+        assert len(sample["measured_width_by_line"]) == sample["line_count"]
+        assert sample["computed_layout"]["measured_width_by_line"] == sample["measured_width_by_line"]
+        assert sample["computed_layout"]["candidate_breaks"] == sample["candidate_breaks"]
+        assert sample["computed_layout"]["selected_break_reason"] == sample["selected_break_reason"]
+        assert sample["computed_layout"]["orphan_prevention_applied"] == sample["orphan_prevention_applied"]
+        assert sample["font_file_status"] == sample["font_fallback_status"]
         assert sample["computed_layout"]["text_start_position"]["x"] >= 0
         assert sample["computed_layout"]["text_start_position"]["y"] >= 0
         assert sample["measured_output"]["source_function"] == "draw.multiline_textbbox"
@@ -253,6 +308,9 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert persisted["measured_bbox_provenance"]["status"] == "systematic_measured_readback"
     assert persisted["samples"][0]["measured_bbox"]["width"] > 0
     assert persisted["samples"][0]["measured_output"]["measured_bbox"] == persisted["samples"][0]["measured_bbox"]
+    assert persisted["samples"][0]["wrap_algorithm"]["name"] == "japanese_boundary_font_bbox_pixel_wrap_v1"
+    assert "candidate_breaks" in persisted["samples"][0]
+    assert "measured_width_by_line" in persisted["samples"][0]
     assert len(persisted["guide_overlay"]["guided_samples"]) == 2
     html = html_path.read_text(encoding="utf-8")
     assert "review_only: true" in html
@@ -264,6 +322,9 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert "style_inputs" in html
     assert "computed_layout" in html
     assert "measured_output" in html
+    assert "japanese_boundary_font_bbox_pixel_wrap_v1" in html
+    assert "orphan_prevention_applied" in html
+    assert "candidate_breaks" in html
     assert "placeholder speaker badges" in html
     assert "real face icons are unavailable" in html
     assert "clean sample" in html
