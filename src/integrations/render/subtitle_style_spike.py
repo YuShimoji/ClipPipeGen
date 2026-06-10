@@ -191,6 +191,28 @@ RENDERER_DECISION_MATRIX = [
 ]
 
 
+GRID_READBACK = {
+    "grid_model": "none",
+    "grid_origin": None,
+    "grid_cell_size": None,
+    "grid_line_spacing": None,
+    "grid_visible_in_samples": False,
+    "grid_authority": "none",
+    "snap_to_grid": False,
+    "bbox_grid_coords": None,
+    "safe_area_grid_coords": None,
+    "actual_layout_authority": (
+        "Pillow font pixel bbox, measured text width, per-mode safe-area margins, "
+        "and explicit anchor rules"
+    ),
+    "wrapping_authority": "font_bbox_pixel_measurement_not_grid_cell_count",
+    "human_review_note": (
+        "No layout grid is drawn or used. The visible authority is the safe-area "
+        "rectangle plus JSON bbox readback."
+    ),
+}
+
+
 def build_subtitle_style_spike(
     *,
     output_dir: Path = DEFAULT_OUTPUT_DIR,
@@ -243,6 +265,7 @@ def build_subtitle_style_spike(
         },
         "sample_texts": list(SAMPLE_TEXTS),
         "canvas_size": {"width": width, "height": height},
+        "grid_readback": GRID_READBACK,
         "taxonomy": TAXONOMY,
         "renderer_decision_matrix": RENDERER_DECISION_MATRIX,
         "mode_decision": {
@@ -438,6 +461,14 @@ def _render_sample(
         "badge_bbox": _bbox_dict(badge_bbox) if badge_bbox else None,
         "safe_area_margin": {"x": safe_x, "y": safe_y},
         "safe_area_status": safe_area_status,
+        "grid_model": GRID_READBACK["grid_model"],
+        "layout_anchor": spec.anchor,
+        "snap_to_grid": False,
+        "text_bbox_grid_coords": None,
+        "badge_bbox_grid_coords": None,
+        "safe_area_grid_coords": None,
+        "layout_authority": GRID_READBACK["actual_layout_authority"],
+        "wrapping_authority": GRID_READBACK["wrapping_authority"],
         "outline": {
             "stroke_width": stroke_width,
             "stroke_fill": "#000000",
@@ -459,12 +490,6 @@ def _render_sample(
 
 def _draw_reference_background(draw, *, width: int, height: int, safe_x: int, safe_y: int) -> None:
     draw.rectangle((0, 0, width, height), fill=(36, 39, 44))
-    for x in range(0, width, 80):
-        color = (49, 54, 61) if x % 160 else (56, 61, 68)
-        draw.line((x, 0, x, height), fill=color, width=1)
-    for y in range(0, height, 80):
-        color = (49, 54, 61) if y % 160 else (56, 61, 68)
-        draw.line((0, y, width, y), fill=color, width=1)
     draw.rectangle(
         (safe_x, safe_y, width - safe_x, height - safe_y),
         outline=(93, 108, 125),
@@ -685,6 +710,11 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   <p>This report is for renderer and measurement comparison only. It is not a
   production subtitle design, render acceptance, rights approval, publishing
   acceptance, or public-use permission.</p>
+  <p class="notice">grid authority: none. The samples do not use snap-to-grid,
+  grid cells, grid coordinates, or grid-based wrapping. Layout authority is the
+  measured font bbox, safe-area rectangle, and anchor readback.</p>
+  <h2>Grid Readback</h2>
+  <pre>{html.escape(json.dumps(report["grid_readback"], ensure_ascii=False, indent=2))}</pre>
   <h2>Mode Decision</h2>
   <pre>{html.escape(json.dumps(report["mode_decision"], ensure_ascii=False, indent=2))}</pre>
   <h2>Renderer Decision Matrix</h2>
@@ -714,6 +744,14 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "measured_bbox": sample["measured_bbox"],
         "safe_area_margin": sample["safe_area_margin"],
         "safe_area_status": sample["safe_area_status"],
+        "grid_model": sample["grid_model"],
+        "layout_anchor": sample["layout_anchor"],
+        "snap_to_grid": sample["snap_to_grid"],
+        "text_bbox_grid_coords": sample["text_bbox_grid_coords"],
+        "badge_bbox_grid_coords": sample["badge_bbox_grid_coords"],
+        "safe_area_grid_coords": sample["safe_area_grid_coords"],
+        "layout_authority": sample["layout_authority"],
+        "wrapping_authority": sample["wrapping_authority"],
         "outline": sample["outline"],
         "shadow": sample["shadow"],
         "review_only": sample["review_only"],

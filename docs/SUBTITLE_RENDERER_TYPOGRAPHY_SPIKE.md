@@ -71,6 +71,17 @@ must include:
 - target renderer candidate
 - transfer risk for YMM4/Premiere/ASS
 
+## Grid Authority
+
+The spike does not use a layout grid. No text, badge, safe area, wrapping, or
+bbox check is snapped to grid cells. Japanese wrapping remains based on measured
+font pixel bbox behavior, not grid cell count or character count alone.
+
+The report must expose `grid_readback.grid_model="none"` and
+`snap_to_grid=false` so the review surface cannot imply hidden grid authority.
+The sample images should show the safe-area rectangle and measured bbox
+readback as the actual review authority, not a decorative grid.
+
 ## Pillow Dependency Handling
 
 Pillow is an optional local review tool for this spike. It is not declared as a

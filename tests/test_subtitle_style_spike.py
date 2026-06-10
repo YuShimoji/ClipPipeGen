@@ -34,6 +34,12 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         "declared_project_dependency": False,
         "missing_dependency_behavior": "module import remains available; PNG generation raises explicit RuntimeError",
     }
+    assert report["grid_readback"]["grid_model"] == "none"
+    assert report["grid_readback"]["grid_visible_in_samples"] is False
+    assert report["grid_readback"]["snap_to_grid"] is False
+    assert report["grid_readback"]["bbox_grid_coords"] is None
+    assert report["grid_readback"]["safe_area_grid_coords"] is None
+    assert report["grid_readback"]["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
     assert report["mode_decision"]["line"] == "来ねぇ！！"
     assert report["mode_decision"]["not_recommended_default"] == "dialogue_badge_left"
     assert set(report["mode_decision"]["recommended_modes"]) == {
@@ -74,8 +80,18 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         assert sample["measured_bbox"]["width"] > 0
         assert sample["measured_bbox"]["height"] > 0
         assert sample["safe_area_margin"]["x"] > 0
+        assert sample["grid_model"] == "none"
+        assert sample["layout_anchor"]
+        assert sample["snap_to_grid"] is False
+        assert sample["text_bbox_grid_coords"] is None
+        assert sample["badge_bbox_grid_coords"] is None
+        assert sample["safe_area_grid_coords"] is None
+        assert sample["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
         assert sample["outline"]["stroke_width"] > 0
         assert sample["shadow"]["offset_px"] > 0
+
+    first_image = spike.Image.open(samples[0]["output_image_path"])
+    assert first_image.getpixel((80, 10)) == (36, 39, 44)
 
     json_path = output_dir / "subtitle_style_spike_report.json"
     html_path = output_dir / "subtitle_style_spike_report.html"
@@ -88,4 +104,6 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     html = html_path.read_text(encoding="utf-8")
     assert "review_only: true" in html
     assert "production_candidate: false" in html
+    assert "grid authority: none" in html
+    assert "snap-to-grid" in html
     assert "reaction_caption" in html
