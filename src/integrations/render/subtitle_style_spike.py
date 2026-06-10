@@ -207,10 +207,195 @@ GRID_READBACK = {
     ),
     "wrapping_authority": "font_bbox_pixel_measurement_not_grid_cell_count",
     "human_review_note": (
-        "No layout grid is drawn or used. The visible authority is the safe-area "
-        "rectangle plus JSON bbox readback."
+        "No layout grid is drawn or used. The visible readback is the safe-area "
+        "rectangle plus JSON bbox readback; actual placement comes from "
+        "safe-area margin fields, measured bbox, and anchors."
     ),
 }
+
+VISIBLE_ELEMENT_AUTHORITY_CLASSES = {
+    "computational_authority": (
+        "The element or its directly reported fields are used to calculate the "
+        "sample layout."
+    ),
+    "measured_readback": (
+        "The element visualizes or reports measured values; it is evidence, not "
+        "a separate design system."
+    ),
+    "visual_guide_only": (
+        "The element helps human orientation and must not be read as a layout "
+        "calculation rule."
+    ),
+    "placeholder": (
+        "The element reserves or illustrates a future production asset or "
+        "identity role, but is not the final asset."
+    ),
+    "decorative": "The element has no layout or design authority.",
+}
+
+VISIBLE_ELEMENT_AUTHORITY = [
+    {
+        "element_id": "subtitle_text_block",
+        "display_name": "drawn subtitle text block",
+        "authority_class": "computational_authority",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": True,
+        "used_in_layout_calculation": True,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The visible subtitle block is positioned from measured font bbox, "
+            "wrapping width, safe-area margins, and the mode anchor."
+        ),
+        "readback_fields": [
+            "measured_bbox",
+            "wrapped_text",
+            "layout_anchor",
+            "layout_authority",
+            "wrapping_authority",
+        ],
+        "test_coverage": (
+            "tests assert non-empty measured_bbox, layout_anchor, and "
+            "font/bbox wrapping authority for every sample"
+        ),
+    },
+    {
+        "element_id": "safe_area_rectangle",
+        "display_name": "safe-area rectangle",
+        "authority_class": "measured_readback",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The rectangle shows the safe-area margin used by the sample. The "
+            "underlying safe_area_margin fields are layout constraints; the "
+            "drawn rectangle itself is readback."
+        ),
+        "readback_fields": ["safe_area_margin", "safe_area_status"],
+        "test_coverage": (
+            "tests assert safe_area_margin/readback and sample pixel presence "
+            "for the default safe-area rectangle"
+        ),
+    },
+    {
+        "element_id": "measured_text_bbox_readback",
+        "display_name": "measured text bbox readback",
+        "authority_class": "measured_readback",
+        "visible_in_default_samples": False,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The bbox is shown in JSON/HTML as measured evidence for the "
+            "generated bitmap. It is not an editor-portable bbox contract."
+        ),
+        "readback_fields": ["measured_bbox"],
+        "test_coverage": "tests assert measured_bbox width and height are non-zero",
+    },
+    {
+        "element_id": "placeholder_speaker_badge",
+        "display_name": "placeholder speaker badge",
+        "authority_class": "placeholder",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": True,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "SPK/A/B badges are placeholder speaker badges. They are not real "
+            "face icons, final speaker identity design, or production artwork."
+        ),
+        "readback_fields": [
+            "badge_bbox",
+            "speaker_identity_asset_status",
+            "visible_element_authority_ids",
+        ],
+        "test_coverage": (
+            "tests assert badge samples are labeled placeholder speaker badges "
+            "and real face icons are unavailable to this spike"
+        ),
+    },
+    {
+        "element_id": "speaker_accent_color",
+        "display_name": "speaker badge accent color",
+        "authority_class": "placeholder",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The yellow badge fill is a placeholder accent. It is not derived "
+            "from real member assets or a production color palette."
+        ),
+        "readback_fields": ["speaker_identity_asset_status"],
+        "test_coverage": "tests assert the speaker accent color authority entry",
+    },
+    {
+        "element_id": "layout_grid",
+        "display_name": "layout grid",
+        "authority_class": "visual_guide_only",
+        "visible_in_default_samples": False,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "No grid is drawn in default samples and no sample snaps to grid. "
+            "If a grid is ever reintroduced, it must remain labeled as visual "
+            "guidance or gain computational readback plus tests first."
+        ),
+        "readback_fields": ["grid_readback", "grid_model", "snap_to_grid"],
+        "test_coverage": (
+            "tests assert grid_model=none, snap_to_grid=false, null grid "
+            "coordinates, and no grid-line pixel at the old default position"
+        ),
+    },
+    {
+        "element_id": "sample_mode_label",
+        "display_name": "sample mode label",
+        "authority_class": "visual_guide_only",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The HTML label names the sample mode for review routing. It is not "
+            "a layout rule or production style name."
+        ),
+        "readback_fields": ["subtitle_mode", "mode_decision"],
+        "test_coverage": "tests assert sample mode labels and mode decisions are present",
+    },
+    {
+        "element_id": "sample_background",
+        "display_name": "plain sample background",
+        "authority_class": "decorative",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The dark background only makes white subtitle text readable in the "
+            "review PNG."
+        ),
+        "readback_fields": [],
+        "test_coverage": "tests assert the old grid-line pixel is plain background",
+    },
+    {
+        "element_id": "html_sample_image_frame",
+        "display_name": "HTML sample image frame",
+        "authority_class": "decorative",
+        "visible_in_default_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The browser border around each image is page chrome only and has "
+            "no subtitle layout meaning."
+        ),
+        "readback_fields": [],
+        "test_coverage": "tests assert the authority table is rendered in HTML",
+    },
+]
+
+VISIBLE_ELEMENT_AUTHORITY_BY_ID = {item["element_id"]: item for item in VISIBLE_ELEMENT_AUTHORITY}
 
 
 def build_subtitle_style_spike(
@@ -266,6 +451,8 @@ def build_subtitle_style_spike(
         "sample_texts": list(SAMPLE_TEXTS),
         "canvas_size": {"width": width, "height": height},
         "grid_readback": GRID_READBACK,
+        "visible_element_authority_classes": VISIBLE_ELEMENT_AUTHORITY_CLASSES,
+        "visible_element_authority": VISIBLE_ELEMENT_AUTHORITY,
         "taxonomy": TAXONOMY,
         "renderer_decision_matrix": RENDERER_DECISION_MATRIX,
         "mode_decision": {
@@ -485,6 +672,8 @@ def _render_sample(
         "target_renderer_candidate": spec.target_renderer_candidate,
         "anchor_rule": spec.anchor,
         "transfer_risk": spec.transfer_risk,
+        "visible_element_authority_ids": _visible_element_authority_ids_for_mode(spec.mode),
+        "speaker_identity_asset_status": _speaker_identity_asset_status(spec.mode),
     }
 
 
@@ -660,6 +849,37 @@ def _union_bbox(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> t
     return (min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3]))
 
 
+def _visible_element_authority_ids_for_mode(mode: str) -> list[str]:
+    ids = [
+        "subtitle_text_block",
+        "safe_area_rectangle",
+        "measured_text_bbox_readback",
+        "sample_mode_label",
+        "sample_background",
+        "html_sample_image_frame",
+    ]
+    if mode in {"dialogue_badge_left", "speaker_badge_stack"}:
+        ids.extend(["placeholder_speaker_badge", "speaker_accent_color"])
+    return ids
+
+
+def _speaker_identity_asset_status(mode: str) -> dict[str, Any]:
+    uses_badge = mode in {"dialogue_badge_left", "speaker_badge_stack"}
+    return {
+        "uses_speaker_badge": uses_badge,
+        "badge_role": "placeholder_speaker_badge" if uses_badge else "not_used",
+        "real_face_icons_available": False,
+        "real_face_icon_status": "unavailable_to_this_spike_no_asset_input",
+        "production_speaker_identity_design": False,
+        "human_review_note": (
+            "SPK/A/B badges are placeholder speaker badges only; this spike "
+            "does not load real face icons or final speaker identity assets."
+        )
+        if uses_badge
+        else "This mode does not display a speaker badge.",
+    }
+
+
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
@@ -689,6 +909,18 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
         "</tr>"
         for item in report["renderer_decision_matrix"]
     )
+    authority_rows = "\n".join(
+        "<tr>"
+        f"<td>{html.escape(item['element_id'])}</td>"
+        f"<td>{html.escape(item['authority_class'])}</td>"
+        f"<td>{html.escape(str(item['visible_in_default_samples']).lower())}</td>"
+        f"<td>{html.escape(str(item['actual_layout_authority']).lower())}</td>"
+        f"<td>{html.escape(str(item['used_in_layout_calculation']).lower())}</td>"
+        f"<td>{html.escape(item['meaning_for_reviewer'])}</td>"
+        f"<td>{html.escape(item['test_coverage'])}</td>"
+        "</tr>"
+        for item in report["visible_element_authority"]
+    )
     body = f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -711,8 +943,20 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   production subtitle design, render acceptance, rights approval, publishing
   acceptance, or public-use permission.</p>
   <p class="notice">grid authority: none. The samples do not use snap-to-grid,
-  grid cells, grid coordinates, or grid-based wrapping. Layout authority is the
-  measured font bbox, safe-area rectangle, and anchor readback.</p>
+  grid cells, grid coordinates, or grid-based wrapping. Layout authority comes
+  from measured font bbox, safe-area margin fields, and anchor readback; the
+  safe-area rectangle is measured readback.</p>
+  <p class="notice">visible element authority is explicit: SPK/A/B badges are
+  placeholder speaker badges only, real face icons are unavailable to this
+  spike, and decorative or visual-guide elements are not production design.</p>
+  <h2>Visible Element Authority</h2>
+  <pre>{html.escape(json.dumps(report["visible_element_authority_classes"], ensure_ascii=False, indent=2))}</pre>
+  <table>
+    <thead>
+      <tr><th>element</th><th>class</th><th>visible</th><th>layout authority</th><th>used in calculation</th><th>meaning</th><th>test coverage</th></tr>
+    </thead>
+    <tbody>{authority_rows}</tbody>
+  </table>
   <h2>Grid Readback</h2>
   <pre>{html.escape(json.dumps(report["grid_readback"], ensure_ascii=False, indent=2))}</pre>
   <h2>Mode Decision</h2>
@@ -758,6 +1002,8 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "production_candidate": sample["production_candidate"],
         "production_compatible": sample["production_compatible"],
         "target_renderer_candidate": sample["target_renderer_candidate"],
+        "visible_element_authority_ids": sample["visible_element_authority_ids"],
+        "speaker_identity_asset_status": sample["speaker_identity_asset_status"],
     }
 
 

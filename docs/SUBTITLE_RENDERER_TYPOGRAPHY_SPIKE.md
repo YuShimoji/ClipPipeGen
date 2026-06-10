@@ -82,6 +82,41 @@ The report must expose `grid_readback.grid_model="none"` and
 The sample images should show the safe-area rectangle and measured bbox
 readback as the actual review authority, not a decorative grid.
 
+## Visible Review Element Authority
+
+Every visible review element in the spike must declare one of these authority
+classes:
+
+- `computational_authority`: the element or its directly reported fields are
+  used to calculate the sample layout.
+- `measured_readback`: the element visualizes or reports measured values; it is
+  evidence, not a separate design system.
+- `visual_guide_only`: the element helps human orientation and must not be read
+  as a layout calculation rule.
+- `placeholder`: the element reserves or illustrates a future production asset
+  or identity role, but is not the final asset.
+- `decorative`: the element has no layout or design authority.
+
+Current subtitle_style_spike visible elements are classified as follows:
+
+| Element | Authority Class | Reviewer Meaning |
+|---|---|---|
+| drawn subtitle text block | `computational_authority` | Positioned from measured font bbox, wrapping width, safe-area margins, and mode anchor inside this review-only bitmap spike |
+| safe-area rectangle | `measured_readback` | Shows the safe-area margin used by the sample; the drawn rectangle is readback, not a separate grid or design system |
+| measured text bbox readback | `measured_readback` | JSON/HTML evidence for the generated bitmap; not an editor-portable bbox contract |
+| SPK/A/B speaker badges | `placeholder` | Placeholder speaker badges only; not real face icons, final speaker identity design, or production artwork |
+| speaker badge accent color | `placeholder` | Fixed sample accent, not derived from real member assets or a production palette |
+| layout grid | `visual_guide_only` and hidden by default | No grid is drawn in default samples and no sample snaps to grid |
+| sample mode labels | `visual_guide_only` | HTML routing labels for review, not layout rules or production style names |
+| sample background and HTML image frame | `decorative` | Page/image readability aids with no subtitle layout meaning |
+
+If a future sample displays a grid, guide, badge, color, frame, or label that is
+not listed here, the JSON/HTML report must classify it before it can appear in
+human review output. If an element claims computational authority, related
+fields and tests must cover that authority. Placeholder speaker badges must
+continue to say that real face icons are unavailable to this spike unless a
+later slice adds actual identity assets.
+
 ## Pillow Dependency Handling
 
 Pillow is an optional local review tool for this spike. It is not declared as a

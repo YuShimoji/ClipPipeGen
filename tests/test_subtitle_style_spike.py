@@ -40,6 +40,30 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert report["grid_readback"]["bbox_grid_coords"] is None
     assert report["grid_readback"]["safe_area_grid_coords"] is None
     assert report["grid_readback"]["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
+    assert set(report["visible_element_authority_classes"]) == {
+        "computational_authority",
+        "measured_readback",
+        "visual_guide_only",
+        "placeholder",
+        "decorative",
+    }
+    authority = {
+        item["element_id"]: item
+        for item in report["visible_element_authority"]
+    }
+    assert authority["subtitle_text_block"]["authority_class"] == "computational_authority"
+    assert authority["subtitle_text_block"]["actual_layout_authority"] is True
+    assert authority["safe_area_rectangle"]["authority_class"] == "measured_readback"
+    assert authority["safe_area_rectangle"]["visible_in_default_samples"] is True
+    assert authority["measured_text_bbox_readback"]["authority_class"] == "measured_readback"
+    assert authority["placeholder_speaker_badge"]["authority_class"] == "placeholder"
+    assert "not real face icons" in authority["placeholder_speaker_badge"]["meaning_for_reviewer"]
+    assert authority["speaker_accent_color"]["authority_class"] == "placeholder"
+    assert authority["layout_grid"]["authority_class"] == "visual_guide_only"
+    assert authority["layout_grid"]["visible_in_default_samples"] is False
+    assert authority["sample_mode_label"]["authority_class"] == "visual_guide_only"
+    assert authority["sample_background"]["authority_class"] == "decorative"
+    assert authority["html_sample_image_frame"]["authority_class"] == "decorative"
     assert report["mode_decision"]["line"] == "来ねぇ！！"
     assert report["mode_decision"]["not_recommended_default"] == "dialogue_badge_left"
     assert set(report["mode_decision"]["recommended_modes"]) == {
@@ -89,9 +113,29 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         assert sample["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
         assert sample["outline"]["stroke_width"] > 0
         assert sample["shadow"]["offset_px"] > 0
+        assert "subtitle_text_block" in sample["visible_element_authority_ids"]
+        assert "safe_area_rectangle" in sample["visible_element_authority_ids"]
+        assert "measured_text_bbox_readback" in sample["visible_element_authority_ids"]
+        assert "sample_mode_label" in sample["visible_element_authority_ids"]
+        assert "layout_grid" not in sample["visible_element_authority_ids"]
+        assert sample["speaker_identity_asset_status"]["real_face_icons_available"] is False
+        assert (
+            sample["speaker_identity_asset_status"]["production_speaker_identity_design"]
+            is False
+        )
+        if sample["subtitle_mode"] in {"dialogue_badge_left", "speaker_badge_stack"}:
+            assert "placeholder_speaker_badge" in sample["visible_element_authority_ids"]
+            assert "speaker_accent_color" in sample["visible_element_authority_ids"]
+            assert sample["speaker_identity_asset_status"]["uses_speaker_badge"] is True
+            assert sample["speaker_identity_asset_status"]["badge_role"] == "placeholder_speaker_badge"
+            assert "placeholder speaker badges only" in sample["speaker_identity_asset_status"]["human_review_note"]
+        else:
+            assert "placeholder_speaker_badge" not in sample["visible_element_authority_ids"]
+            assert sample["speaker_identity_asset_status"]["uses_speaker_badge"] is False
 
     first_image = spike.Image.open(samples[0]["output_image_path"])
     assert first_image.getpixel((80, 10)) == (36, 39, 44)
+    assert first_image.getpixel((35, 32)) == (93, 108, 125)
 
     json_path = output_dir / "subtitle_style_spike_report.json"
     html_path = output_dir / "subtitle_style_spike_report.html"
@@ -106,4 +150,8 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert "production_candidate: false" in html
     assert "grid authority: none" in html
     assert "snap-to-grid" in html
+    assert "Visible Element Authority" in html
+    assert "placeholder speaker badges" in html
+    assert "real face icons are unavailable" in html
+    assert "decorative" in html
     assert "reaction_caption" in html
