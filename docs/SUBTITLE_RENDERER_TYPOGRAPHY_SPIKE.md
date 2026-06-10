@@ -102,13 +102,18 @@ Current subtitle_style_spike visible elements are classified as follows:
 | Element | Authority Class | Reviewer Meaning |
 |---|---|---|
 | drawn subtitle text block | `computational_authority` | Positioned from measured font bbox, wrapping width, safe-area margins, and mode anchor inside this review-only bitmap spike |
-| safe-area rectangle | `measured_readback` | Shows the safe-area margin used by the sample; the drawn rectangle is readback, not a separate grid or design system |
-| measured text bbox readback | `measured_readback` | JSON/HTML evidence for the generated bitmap; not an editor-portable bbox contract |
+| safe-area rectangle | `measured_readback` | Shown in guide overlay samples only; the drawn rectangle is readback, not a separate grid or design system |
+| measured text bbox readback | `measured_readback` | JSON/HTML evidence and guide-overlay bbox for the generated bitmap; not an editor-portable bbox contract |
 | SPK/A/B speaker badges | `placeholder` | Placeholder speaker badges only; not real face icons, final speaker identity design, or production artwork |
 | speaker badge accent color | `placeholder` | Fixed sample accent, not derived from real member assets or a production palette |
 | layout grid | `visual_guide_only` and hidden by default | No grid is drawn in default samples and no sample snaps to grid |
 | sample mode labels | `visual_guide_only` | HTML routing labels for review, not layout rules or production style names |
 | sample background and HTML image frame | `decorative` | Page/image readability aids with no subtitle layout meaning |
+| frame center / thirds lines | `visual_guide_only` | Guide-overlay orientation aids only; not snap lines |
+| lower subtitle zone | `visual_guide_only` | Bottom-center review zone only; not a wrapping algorithm |
+| subtitle baseline guides | `measured_readback` | Derived line-height / text-position readback; not a font-engine baseline guarantee |
+| badge slot guide | `placeholder` | Placeholder badge/icon slot readback for future identity assets; not a real face icon |
+| badge center / text start / badge-to-text gap guides | `measured_readback` | Current sample alignment readback, not production editor coordinates |
 
 If a future sample displays a grid, guide, badge, color, frame, or label that is
 not listed here, the JSON/HTML report must classify it before it can appear in
@@ -116,6 +121,29 @@ human review output. If an element claims computational authority, related
 fields and tests must cover that authority. Placeholder speaker badges must
 continue to say that real face icons are unavailable to this spike unless a
 later slice adds actual identity assets.
+
+## Layout Guide Overlay Contract
+
+Clean samples and guide overlay samples are separate. Clean samples show the
+subtitle treatment without guide lines. Guide overlay samples add explicit,
+mode-aware review guides that help humans judge placement without reintroducing
+grid cells or snap rules.
+
+The guide overlay contract is `subtitle_style_spike_layout_guide_overlay_v0`.
+It currently implements two profiles:
+
+| Profile | Status | Guide Concepts |
+|---|---|---|
+| `bottom_center_emphasis_guide_v0` | implemented | frame center lines, thirds lines, safe-area rectangle, lower subtitle zone, one-line/two-line baseline target guides, actual baseline readback, text bbox |
+| `dialogue_badge_left_guide_v0` | implemented | frame center lines, thirds lines, safe-area rectangle, subtitle baseline readback, placeholder badge slot, badge center line, text start x, badge-to-text gap, text bbox |
+| `speaker_badge_stack_guide_future` | documented deferred | future multi-speaker icon/name-plate stack review |
+| `status_caption_guide_future` | documented future/advanced | future explanatory/status caption placement review |
+
+Guide overlays remain review aids. They do not make Japanese wrapping grid-,
+cell-, or character-count based; wrapping remains
+`font_bbox_pixel_measurement_not_grid_cell_count`. If a future guide claims
+computational authority, its source fields and tests must be added in the same
+slice.
 
 ## Pillow Dependency Handling
 

@@ -54,13 +54,24 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert authority["subtitle_text_block"]["authority_class"] == "computational_authority"
     assert authority["subtitle_text_block"]["actual_layout_authority"] is True
     assert authority["safe_area_rectangle"]["authority_class"] == "measured_readback"
-    assert authority["safe_area_rectangle"]["visible_in_default_samples"] is True
+    assert authority["safe_area_rectangle"]["visible_in_clean_samples"] is False
+    assert authority["safe_area_rectangle"]["visible_in_guide_overlay_samples"] is True
     assert authority["measured_text_bbox_readback"]["authority_class"] == "measured_readback"
     assert authority["placeholder_speaker_badge"]["authority_class"] == "placeholder"
     assert "not real face icons" in authority["placeholder_speaker_badge"]["meaning_for_reviewer"]
     assert authority["speaker_accent_color"]["authority_class"] == "placeholder"
     assert authority["layout_grid"]["authority_class"] == "visual_guide_only"
     assert authority["layout_grid"]["visible_in_default_samples"] is False
+    assert authority["layout_grid"]["visible_in_guide_overlay_samples"] is False
+    assert authority["frame_center_lines"]["authority_class"] == "visual_guide_only"
+    assert authority["frame_center_lines"]["visible_in_guide_overlay_samples"] is True
+    assert authority["frame_thirds_lines"]["authority_class"] == "visual_guide_only"
+    assert authority["lower_subtitle_zone"]["authority_class"] == "visual_guide_only"
+    assert authority["subtitle_baseline_guides"]["authority_class"] == "measured_readback"
+    assert authority["badge_slot_guide"]["authority_class"] == "placeholder"
+    assert authority["badge_center_line"]["authority_class"] == "measured_readback"
+    assert authority["text_start_x_line"]["authority_class"] == "measured_readback"
+    assert authority["badge_to_text_gap_guide"]["authority_class"] == "measured_readback"
     assert authority["sample_mode_label"]["authority_class"] == "visual_guide_only"
     assert authority["sample_background"]["authority_class"] == "decorative"
     assert authority["html_sample_image_frame"]["authority_class"] == "decorative"
@@ -96,6 +107,7 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         image_path = Path(sample["output_image_path"])
         assert image_path.exists()
         assert image_path.suffix == ".png"
+        assert sample["sample_variant"] == "clean"
         assert sample["canvas_size"] == {"width": 640, "height": 360}
         assert sample["review_only"] is True
         assert sample["production_candidate"] is False
@@ -114,10 +126,12 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         assert sample["outline"]["stroke_width"] > 0
         assert sample["shadow"]["offset_px"] > 0
         assert "subtitle_text_block" in sample["visible_element_authority_ids"]
-        assert "safe_area_rectangle" in sample["visible_element_authority_ids"]
-        assert "measured_text_bbox_readback" in sample["visible_element_authority_ids"]
+        assert "safe_area_rectangle" not in sample["visible_element_authority_ids"]
+        assert "measured_text_bbox_readback" not in sample["visible_element_authority_ids"]
+        assert "frame_center_lines" not in sample["visible_element_authority_ids"]
         assert "sample_mode_label" in sample["visible_element_authority_ids"]
         assert "layout_grid" not in sample["visible_element_authority_ids"]
+        assert sample["guide_overlay"]["enabled"] is False
         assert sample["speaker_identity_asset_status"]["real_face_icons_available"] is False
         assert (
             sample["speaker_identity_asset_status"]["production_speaker_identity_design"]
@@ -135,7 +149,63 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
 
     first_image = spike.Image.open(samples[0]["output_image_path"])
     assert first_image.getpixel((80, 10)) == (36, 39, 44)
-    assert first_image.getpixel((35, 32)) == (93, 108, 125)
+    assert first_image.getpixel((35, 32)) == (36, 39, 44)
+
+    guide_overlay = report["guide_overlay"]
+    assert guide_overlay["contract_id"] == "subtitle_style_spike_layout_guide_overlay_v0"
+    assert guide_overlay["role"] == "review_aid_not_japanese_wrapping_authority"
+    assert guide_overlay["clean_samples_distinguishable"] is True
+    assert {profile["guide_profile"] for profile in guide_overlay["implemented_profiles"]} == {
+        "bottom_center_emphasis_guide_v0",
+        "dialogue_badge_left_guide_v0",
+    }
+    assert {profile["guide_profile"] for profile in guide_overlay["documented_profiles"]} == {
+        "speaker_badge_stack_guide_future",
+        "status_caption_guide_future",
+    }
+    guided_samples = guide_overlay["guided_samples"]
+    assert len(guided_samples) == 2
+    assert {sample["subtitle_mode"] for sample in guided_samples} == {
+        "bottom_center_emphasis",
+        "dialogue_badge_left",
+    }
+    for sample in guided_samples:
+        image_path = Path(sample["output_image_path"])
+        assert image_path.exists()
+        assert ".guide" in image_path.name
+        assert sample["sample_variant"] == "guide_overlay"
+        assert sample["guide_overlay"]["enabled"] is True
+        assert sample["guide_overlay"]["snap_to_grid"] is False
+        assert sample["guide_overlay"]["japanese_wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
+        assert sample["guide_overlay"]["center_lines"]["vertical"]["authority_class"] == "visual_guide_only"
+        assert sample["guide_overlay"]["thirds_lines"]["vertical"][0]["authority_class"] == "visual_guide_only"
+        assert sample["guide_overlay"]["safe_area"]["authority_class"] == "measured_readback"
+        assert sample["guide_overlay"]["text_bbox"]["authority_class"] == "measured_readback"
+        assert sample["guide_overlay"]["baseline_lines"]
+        assert "safe_area_rectangle" in sample["visible_element_authority_ids"]
+        assert "frame_center_lines" in sample["visible_element_authority_ids"]
+        assert "frame_thirds_lines" in sample["visible_element_authority_ids"]
+        assert "subtitle_baseline_guides" in sample["visible_element_authority_ids"]
+        assert "measured_text_bbox_readback" in sample["visible_element_authority_ids"]
+        assert "layout_grid" not in sample["visible_element_authority_ids"]
+    bottom_guide = next(
+        sample for sample in guided_samples if sample["subtitle_mode"] == "bottom_center_emphasis"
+    )
+    assert bottom_guide["guide_overlay"]["guide_profile"] == "bottom_center_emphasis_guide_v0"
+    assert bottom_guide["guide_overlay"]["lower_subtitle_zone"]["authority_class"] == "visual_guide_only"
+    assert len(bottom_guide["guide_overlay"]["mode_baseline_targets"]["two_line"]) == 2
+    dialogue_guide = next(
+        sample for sample in guided_samples if sample["subtitle_mode"] == "dialogue_badge_left"
+    )
+    assert dialogue_guide["guide_overlay"]["guide_profile"] == "dialogue_badge_left_guide_v0"
+    assert dialogue_guide["guide_overlay"]["badge_slot"]["authority_class"] == "placeholder"
+    assert dialogue_guide["guide_overlay"]["badge_center_line"]["authority_class"] == "measured_readback"
+    assert dialogue_guide["guide_overlay"]["text_start_x"]["authority_class"] == "measured_readback"
+    assert dialogue_guide["guide_overlay"]["badge_to_text_gap"]["authority_class"] == "measured_readback"
+    assert "badge_slot_guide" in dialogue_guide["visible_element_authority_ids"]
+    guided_image = spike.Image.open(dialogue_guide["output_image_path"])
+    safe = dialogue_guide["guide_overlay"]["safe_area"]
+    assert guided_image.getpixel((safe["left"], safe["top"])) == spike.GUIDE_COLORS["safe_area"]
 
     json_path = output_dir / "subtitle_style_spike_report.json"
     html_path = output_dir / "subtitle_style_spike_report.html"
@@ -145,6 +215,7 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert persisted["review_only"] is True
     assert persisted["production_candidate"] is False
     assert persisted["samples"][0]["measured_bbox"]["width"] > 0
+    assert len(persisted["guide_overlay"]["guided_samples"]) == 2
     html = html_path.read_text(encoding="utf-8")
     assert "review_only: true" in html
     assert "production_candidate: false" in html
@@ -153,5 +224,10 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert "Visible Element Authority" in html
     assert "placeholder speaker badges" in html
     assert "real face icons are unavailable" in html
+    assert "clean sample" in html
+    assert "guide overlay sample" in html
+    assert "Guide Overlay Contract" in html
+    assert "bottom_center_emphasis_guide_v0" in html
+    assert "dialogue_badge_left_guide_v0" in html
     assert "decorative" in html
     assert "reaction_caption" in html

@@ -239,6 +239,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "drawn subtitle text block",
         "authority_class": "computational_authority",
         "visible_in_default_samples": True,
+        "visible_in_clean_samples": True,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": True,
         "used_in_layout_calculation": True,
         "production_design_authority": False,
@@ -262,7 +264,9 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "element_id": "safe_area_rectangle",
         "display_name": "safe-area rectangle",
         "authority_class": "measured_readback",
-        "visible_in_default_samples": True,
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -282,6 +286,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "measured text bbox readback",
         "authority_class": "measured_readback",
         "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -297,6 +303,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "placeholder speaker badge",
         "authority_class": "placeholder",
         "visible_in_default_samples": True,
+        "visible_in_clean_samples": True,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": True,
         "production_design_authority": False,
@@ -319,6 +327,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "speaker badge accent color",
         "authority_class": "placeholder",
         "visible_in_default_samples": True,
+        "visible_in_clean_samples": True,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -334,6 +344,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "layout grid",
         "authority_class": "visual_guide_only",
         "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": False,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -353,6 +365,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "sample mode label",
         "authority_class": "visual_guide_only",
         "visible_in_default_samples": True,
+        "visible_in_clean_samples": True,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -368,6 +382,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "plain sample background",
         "authority_class": "decorative",
         "visible_in_default_samples": True,
+        "visible_in_clean_samples": True,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -383,6 +399,8 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "display_name": "HTML sample image frame",
         "authority_class": "decorative",
         "visible_in_default_samples": True,
+        "visible_in_clean_samples": True,
+        "visible_in_guide_overlay_samples": True,
         "actual_layout_authority": False,
         "used_in_layout_calculation": False,
         "production_design_authority": False,
@@ -393,9 +411,201 @@ VISIBLE_ELEMENT_AUTHORITY = [
         "readback_fields": [],
         "test_coverage": "tests assert the authority table is rendered in HTML",
     },
+    {
+        "element_id": "frame_center_lines",
+        "display_name": "frame center lines",
+        "authority_class": "visual_guide_only",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "Center lines help reviewers see symmetry and bottom-center alignment. "
+            "They are not snap lines."
+        ),
+        "readback_fields": ["guide_overlay.center_lines"],
+        "test_coverage": "tests assert guided samples expose center line readback",
+    },
+    {
+        "element_id": "frame_thirds_lines",
+        "display_name": "frame thirds lines",
+        "authority_class": "visual_guide_only",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "Thirds lines are optional orientation guides for human review only."
+        ),
+        "readback_fields": ["guide_overlay.thirds_lines"],
+        "test_coverage": "tests assert guided samples expose thirds line readback",
+    },
+    {
+        "element_id": "lower_subtitle_zone",
+        "display_name": "lower subtitle zone",
+        "authority_class": "visual_guide_only",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The lower zone helps judge bottom-centered subtitle placement. It "
+            "does not drive Japanese wrapping."
+        ),
+        "readback_fields": ["guide_overlay.lower_subtitle_zone"],
+        "test_coverage": "tests assert bottom_center_emphasis guide exposes lower subtitle zone",
+    },
+    {
+        "element_id": "subtitle_baseline_guides",
+        "display_name": "subtitle baseline guides",
+        "authority_class": "measured_readback",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "Baseline guides are derived readback from current text position and "
+            "line height. They are not font-engine baseline guarantees."
+        ),
+        "readback_fields": ["guide_overlay.baseline_lines", "line_height"],
+        "test_coverage": "tests assert guided samples expose baseline line readback",
+    },
+    {
+        "element_id": "badge_slot_guide",
+        "display_name": "speaker badge/icon slot guide",
+        "authority_class": "placeholder",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": True,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The badge slot guide shows the placeholder identity slot used to "
+            "anchor dialogue text. It is not a real face icon asset."
+        ),
+        "readback_fields": ["guide_overlay.badge_slot", "badge_bbox"],
+        "test_coverage": "tests assert dialogue guide exposes placeholder badge slot readback",
+    },
+    {
+        "element_id": "badge_center_line",
+        "display_name": "speaker badge center line",
+        "authority_class": "measured_readback",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The badge center line reads back the current first-line alignment "
+            "target for placeholder badge review."
+        ),
+        "readback_fields": ["guide_overlay.badge_center_line"],
+        "test_coverage": "tests assert dialogue guide exposes badge center line readback",
+    },
+    {
+        "element_id": "text_start_x_line",
+        "display_name": "subtitle text start x line",
+        "authority_class": "measured_readback",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The text start line reads back the current left text start used by "
+            "the sample."
+        ),
+        "readback_fields": ["guide_overlay.text_start_x"],
+        "test_coverage": "tests assert dialogue guide exposes text start x readback",
+    },
+    {
+        "element_id": "badge_to_text_gap_guide",
+        "display_name": "badge-to-text gap guide",
+        "authority_class": "measured_readback",
+        "visible_in_default_samples": False,
+        "visible_in_clean_samples": False,
+        "visible_in_guide_overlay_samples": True,
+        "actual_layout_authority": False,
+        "used_in_layout_calculation": False,
+        "production_design_authority": False,
+        "meaning_for_reviewer": (
+            "The gap guide reads back the current placeholder badge-to-text gap."
+        ),
+        "readback_fields": ["guide_overlay.badge_to_text_gap"],
+        "test_coverage": "tests assert dialogue guide exposes badge-to-text gap readback",
+    },
 ]
 
 VISIBLE_ELEMENT_AUTHORITY_BY_ID = {item["element_id"]: item for item in VISIBLE_ELEMENT_AUTHORITY}
+
+GUIDE_OVERLAY_PROFILES = {
+    "bottom_center_emphasis": {
+        "guide_profile": "bottom_center_emphasis_guide_v0",
+        "status": "implemented",
+        "sample_text_index": 1,
+        "sample_variant": "guide_overlay",
+        "purpose": "review bottom-centered emphasis placement without grid cells",
+        "visible_element_authority_ids": [
+            "frame_center_lines",
+            "frame_thirds_lines",
+            "safe_area_rectangle",
+            "lower_subtitle_zone",
+            "subtitle_baseline_guides",
+            "measured_text_bbox_readback",
+        ],
+    },
+    "dialogue_badge_left": {
+        "guide_profile": "dialogue_badge_left_guide_v0",
+        "status": "implemented",
+        "sample_text_index": 2,
+        "sample_variant": "guide_overlay",
+        "purpose": "review placeholder badge slot, text start, gap, and baseline alignment",
+        "visible_element_authority_ids": [
+            "frame_center_lines",
+            "frame_thirds_lines",
+            "safe_area_rectangle",
+            "subtitle_baseline_guides",
+            "measured_text_bbox_readback",
+            "badge_slot_guide",
+            "badge_center_line",
+            "text_start_x_line",
+            "badge_to_text_gap_guide",
+        ],
+    },
+    "speaker_badge_stack": {
+        "guide_profile": "speaker_badge_stack_guide_future",
+        "status": "documented_deferred",
+        "purpose": "future multi-speaker icon/name-plate stack review",
+    },
+    "status_caption": {
+        "guide_profile": "status_caption_guide_future",
+        "status": "documented_future_advanced",
+        "purpose": "future explanatory/status caption placement review",
+    },
+}
+
+GUIDE_COLORS = {
+    "center": (68, 158, 255),
+    "thirds": (82, 96, 112),
+    "safe_area": (93, 108, 125),
+    "zone": (52, 82, 108),
+    "baseline": (255, 210, 0),
+    "bbox": (0, 220, 180),
+    "badge": (255, 100, 180),
+    "text_start": (255, 150, 60),
+    "gap": (255, 190, 80),
+}
 
 
 def build_subtitle_style_spike(
@@ -410,6 +620,7 @@ def build_subtitle_style_spike(
     width, height = canvas_size
     font_family, font_path, font_fallback_status = _select_font()
     samples: list[dict[str, Any]] = []
+    guided_samples: list[dict[str, Any]] = []
 
     for spec in MODE_SPECS:
         for index, text in enumerate(SAMPLE_TEXTS, start=1):
@@ -424,6 +635,22 @@ def build_subtitle_style_spike(
                 font_fallback_status=font_fallback_status,
             )
             samples.append(sample)
+
+        guide_profile = GUIDE_OVERLAY_PROFILES.get(spec.mode)
+        if guide_profile and guide_profile.get("status") == "implemented":
+            text_index = int(guide_profile["sample_text_index"])
+            guided_sample = _render_sample(
+                output_dir=output_dir,
+                canvas_size=(width, height),
+                spec=spec,
+                text=SAMPLE_TEXTS[text_index - 1],
+                text_index=text_index,
+                font_family=font_family,
+                font_path=font_path,
+                font_fallback_status=font_fallback_status,
+                guide_profile=guide_profile,
+            )
+            guided_samples.append(guided_sample)
 
     report = {
         "schema_version": "v1",
@@ -453,6 +680,37 @@ def build_subtitle_style_spike(
         "grid_readback": GRID_READBACK,
         "visible_element_authority_classes": VISIBLE_ELEMENT_AUTHORITY_CLASSES,
         "visible_element_authority": VISIBLE_ELEMENT_AUTHORITY,
+        "guide_overlay": {
+            "contract_id": "subtitle_style_spike_layout_guide_overlay_v0",
+            "role": "review_aid_not_japanese_wrapping_authority",
+            "clean_samples_distinguishable": True,
+            "implemented_profiles": [
+                profile
+                for profile in GUIDE_OVERLAY_PROFILES.values()
+                if profile.get("status") == "implemented"
+            ],
+            "documented_profiles": [
+                profile
+                for profile in GUIDE_OVERLAY_PROFILES.values()
+                if profile.get("status") != "implemented"
+            ],
+            "guided_samples": guided_samples,
+            "readback_requirements": [
+                "guide_profile",
+                "frame_size",
+                "safe_area",
+                "center_lines",
+                "baseline_lines",
+                "badge_slot when applicable",
+                "text_bbox",
+                "authority_class for each visible guide element",
+            ],
+            "non_authority_rules": [
+                "guide overlays do not reintroduce grid cells",
+                "guide overlays do not drive Japanese wrapping",
+                "clean samples remain available without guide overlay lines",
+            ],
+        },
         "taxonomy": TAXONOMY,
         "renderer_decision_matrix": RENDERER_DECISION_MATRIX,
         "mode_decision": {
@@ -498,6 +756,7 @@ def _render_sample(
     font_family: str,
     font_path: str | None,
     font_fallback_status: str,
+    guide_profile: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     width, height = canvas_size
     font_size = max(16, round(height * spec.font_ratio))
@@ -625,7 +884,28 @@ def _render_sample(
         spacing=spacing,
         stroke_width=stroke_width,
     )
-    output_path = output_dir / f"subtitle_style_spike.{spec.mode}.{text_index:02d}.png"
+    guide_overlay_readback = None
+    if guide_profile:
+        guide_overlay_readback = _build_guide_overlay_readback(
+            guide_profile=guide_profile,
+            mode=spec.mode,
+            canvas_size=(width, height),
+            safe_x=safe_x,
+            safe_y=safe_y,
+            font_size=font_size,
+            line_height=line_height,
+            line_count=line_count,
+            text_bbox=measured_bbox,
+            badge_bbox=badge_bbox,
+            badge_gap=(
+                max(8, round(font_size * 0.3))
+                if spec.mode == "dialogue_badge_left"
+                else None
+            ),
+        )
+        _draw_guide_overlay(draw, guide_overlay_readback)
+    variant_slug = ".guide" if guide_profile else ""
+    output_path = output_dir / f"subtitle_style_spike.{spec.mode}.{text_index:02d}{variant_slug}.png"
     image.save(output_path)
 
     safe_area_status = _bbox_inside_safe_area(
@@ -636,6 +916,7 @@ def _render_sample(
     )
     return {
         "output_image_path": output_path.as_posix(),
+        "sample_variant": "guide_overlay" if guide_profile else "clean",
         "canvas_size": {"width": width, "height": height},
         "subtitle_mode": spec.mode,
         "text": text,
@@ -648,6 +929,8 @@ def _render_sample(
         "badge_bbox": _bbox_dict(badge_bbox) if badge_bbox else None,
         "safe_area_margin": {"x": safe_x, "y": safe_y},
         "safe_area_status": safe_area_status,
+        "line_height": line_height,
+        "line_count": line_count,
         "grid_model": GRID_READBACK["grid_model"],
         "layout_anchor": spec.anchor,
         "snap_to_grid": False,
@@ -672,18 +955,22 @@ def _render_sample(
         "target_renderer_candidate": spec.target_renderer_candidate,
         "anchor_rule": spec.anchor,
         "transfer_risk": spec.transfer_risk,
-        "visible_element_authority_ids": _visible_element_authority_ids_for_mode(spec.mode),
+        "visible_element_authority_ids": _visible_element_authority_ids_for_mode(
+            spec.mode,
+            guide_profile=guide_profile,
+        ),
         "speaker_identity_asset_status": _speaker_identity_asset_status(spec.mode),
+        "guide_overlay": guide_overlay_readback
+        or {
+            "enabled": False,
+            "sample_variant": "clean",
+            "human_review_note": "clean sample without guide overlay lines",
+        },
     }
 
 
 def _draw_reference_background(draw, *, width: int, height: int, safe_x: int, safe_y: int) -> None:
     draw.rectangle((0, 0, width, height), fill=(36, 39, 44))
-    draw.rectangle(
-        (safe_x, safe_y, width - safe_x, height - safe_y),
-        outline=(93, 108, 125),
-        width=2,
-    )
 
 
 def _draw_badge(draw, *, label: str, xy: tuple[int, int], size: tuple[int, int], font_path: str | None, font_size: int):
@@ -849,17 +1136,226 @@ def _union_bbox(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> t
     return (min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3]))
 
 
-def _visible_element_authority_ids_for_mode(mode: str) -> list[str]:
+def _build_guide_overlay_readback(
+    *,
+    guide_profile: dict[str, Any],
+    mode: str,
+    canvas_size: tuple[int, int],
+    safe_x: int,
+    safe_y: int,
+    font_size: int,
+    line_height: int,
+    line_count: int,
+    text_bbox: tuple[int, int, int, int],
+    badge_bbox: tuple[int, int, int, int] | None,
+    badge_gap: int | None,
+) -> dict[str, Any]:
+    width, height = canvas_size
+    text_left, text_top, text_right, text_bottom = text_bbox
+    bottom_baseline_y = height - safe_y - max(2, round(font_size * 0.12))
+    one_line_baselines = [
+        {
+            "line_index": 1,
+            "y": bottom_baseline_y,
+            "authority_class": "visual_guide_only",
+            "meaning": "bottom-zone one-line target guide, not font baseline authority",
+        }
+    ]
+    two_line_baselines = [
+        {
+            "line_index": 1,
+            "y": bottom_baseline_y - line_height,
+            "authority_class": "visual_guide_only",
+            "meaning": "bottom-zone two-line first-line target guide",
+        },
+        {
+            "line_index": 2,
+            "y": bottom_baseline_y,
+            "authority_class": "visual_guide_only",
+            "meaning": "bottom-zone two-line second-line target guide",
+        },
+    ]
+    actual_baselines = [
+        {
+            "line_index": index,
+            "y": text_top + round(font_size * 0.86) + (index - 1) * line_height,
+            "authority_class": "measured_readback",
+            "meaning": "approximate visual baseline derived from current text bbox and line height",
+        }
+        for index in range(1, min(3, line_count) + 1)
+    ]
+    readback: dict[str, Any] = {
+        "enabled": True,
+        "sample_variant": "guide_overlay",
+        "guide_profile": guide_profile["guide_profile"],
+        "profile_status": guide_profile["status"],
+        "mode": mode,
+        "frame_size": {"width": width, "height": height},
+        "safe_area": {
+            "left": safe_x,
+            "top": safe_y,
+            "right": width - safe_x,
+            "bottom": height - safe_y,
+            "authority_class": "measured_readback",
+            "meaning": "drawn safe-area rectangle is readback; margin fields constrain placement",
+        },
+        "center_lines": {
+            "vertical": {"x": round(width / 2), "authority_class": "visual_guide_only"},
+            "horizontal": {"y": round(height / 2), "authority_class": "visual_guide_only"},
+        },
+        "thirds_lines": {
+            "vertical": [
+                {"x": round(width / 3), "authority_class": "visual_guide_only"},
+                {"x": round(width * 2 / 3), "authority_class": "visual_guide_only"},
+            ],
+            "horizontal": [
+                {"y": round(height / 3), "authority_class": "visual_guide_only"},
+                {"y": round(height * 2 / 3), "authority_class": "visual_guide_only"},
+            ],
+        },
+        "line_height": line_height,
+        "baseline_lines": actual_baselines,
+        "text_bbox": {
+            **(_bbox_dict(text_bbox) or {}),
+            "authority_class": "measured_readback",
+            "meaning": "measured bitmap text bbox for this generated sample",
+        },
+        "visible_element_authority_ids": list(guide_profile["visible_element_authority_ids"]),
+        "japanese_wrapping_authority": GRID_READBACK["wrapping_authority"],
+        "snap_to_grid": False,
+    }
+    if mode == "bottom_center_emphasis":
+        readback["center_alignment"] = {
+            "x": round(width / 2),
+            "authority_class": "visual_guide_only",
+            "meaning": "visual center guide for bottom-centered emphasis review",
+        }
+        readback["lower_subtitle_zone"] = {
+            "left": safe_x,
+            "top": round(height * 0.58),
+            "right": width - safe_x,
+            "bottom": height - safe_y,
+            "authority_class": "visual_guide_only",
+            "meaning": "review zone only; not a wrapping or placement algorithm",
+        }
+        readback["mode_baseline_targets"] = {
+            "one_line": one_line_baselines,
+            "two_line": two_line_baselines,
+        }
+    if mode == "dialogue_badge_left" and badge_bbox:
+        badge = _bbox_dict(badge_bbox) or {}
+        readback["badge_slot"] = {
+            **badge,
+            "authority_class": "placeholder",
+            "meaning": "placeholder speaker badge/icon slot; not a real face icon asset",
+        }
+        readback["badge_center_line"] = {
+            "x1": badge["left"],
+            "x2": text_right,
+            "y": round((badge["top"] + badge["bottom"]) / 2),
+            "authority_class": "measured_readback",
+            "meaning": "badge center alignment readback for the placeholder badge",
+        }
+        readback["text_start_x"] = {
+            "x": text_left,
+            "authority_class": "measured_readback",
+            "meaning": "current measured left edge of subtitle text",
+        }
+        readback["badge_to_text_gap"] = {
+            "left": badge["right"],
+            "right": text_left,
+            "width": badge_gap,
+            "authority_class": "measured_readback",
+            "meaning": "current placeholder badge-to-text gap readback",
+        }
+        readback["badge_vertical_alignment_rule"] = (
+            "guide reads back current badge center against the first subtitle line; "
+            "it is not real face-icon production design"
+        )
+    return readback
+
+
+def _draw_guide_overlay(draw, guide: dict[str, Any]) -> None:
+    frame = guide["frame_size"]
+    width, height = frame["width"], frame["height"]
+    safe = guide["safe_area"]
+    zone = guide.get("lower_subtitle_zone")
+    if zone:
+        draw.rectangle(
+            (zone["left"], zone["top"], zone["right"], zone["bottom"]),
+            outline=GUIDE_COLORS["zone"],
+            width=1,
+        )
+    for line in guide["thirds_lines"]["vertical"]:
+        draw.line((line["x"], 0, line["x"], height), fill=GUIDE_COLORS["thirds"], width=1)
+    for line in guide["thirds_lines"]["horizontal"]:
+        draw.line((0, line["y"], width, line["y"]), fill=GUIDE_COLORS["thirds"], width=1)
+    draw.line(
+        (guide["center_lines"]["vertical"]["x"], 0, guide["center_lines"]["vertical"]["x"], height),
+        fill=GUIDE_COLORS["center"],
+        width=1,
+    )
+    draw.line(
+        (0, guide["center_lines"]["horizontal"]["y"], width, guide["center_lines"]["horizontal"]["y"]),
+        fill=GUIDE_COLORS["center"],
+        width=1,
+    )
+    draw.rectangle(
+        (safe["left"], safe["top"], safe["right"], safe["bottom"]),
+        outline=GUIDE_COLORS["safe_area"],
+        width=2,
+    )
+    for baseline in guide.get("baseline_lines", []):
+        y = baseline["y"]
+        draw.line((safe["left"], y, safe["right"], y), fill=GUIDE_COLORS["baseline"], width=1)
+    for baselines in (guide.get("mode_baseline_targets") or {}).values():
+        for baseline in baselines:
+            y = baseline["y"]
+            draw.line((safe["left"], y, safe["right"], y), fill=(180, 145, 0), width=1)
+    bbox = guide["text_bbox"]
+    draw.rectangle(
+        (bbox["left"], bbox["top"], bbox["right"], bbox["bottom"]),
+        outline=GUIDE_COLORS["bbox"],
+        width=2,
+    )
+    badge = guide.get("badge_slot")
+    if badge:
+        draw.rectangle(
+            (badge["left"], badge["top"], badge["right"], badge["bottom"]),
+            outline=GUIDE_COLORS["badge"],
+            width=2,
+        )
+    badge_center = guide.get("badge_center_line")
+    if badge_center:
+        draw.line(
+            (badge_center["x1"], badge_center["y"], badge_center["x2"], badge_center["y"]),
+            fill=GUIDE_COLORS["badge"],
+            width=1,
+        )
+    text_start = guide.get("text_start_x")
+    if text_start:
+        draw.line((text_start["x"], safe["top"], text_start["x"], safe["bottom"]), fill=GUIDE_COLORS["text_start"], width=1)
+    gap = guide.get("badge_to_text_gap")
+    if gap:
+        y = (guide.get("badge_center_line") or {}).get("y", safe["bottom"])
+        draw.line((gap["left"], y, gap["right"], y), fill=GUIDE_COLORS["gap"], width=3)
+
+
+def _visible_element_authority_ids_for_mode(
+    mode: str,
+    *,
+    guide_profile: dict[str, Any] | None = None,
+) -> list[str]:
     ids = [
         "subtitle_text_block",
-        "safe_area_rectangle",
-        "measured_text_bbox_readback",
         "sample_mode_label",
         "sample_background",
         "html_sample_image_frame",
     ]
     if mode in {"dialogue_badge_left", "speaker_badge_stack"}:
         ids.extend(["placeholder_speaker_badge", "speaker_accent_color"])
+    if guide_profile:
+        ids.extend(guide_profile["visible_element_authority_ids"])
     return ids
 
 
@@ -885,14 +1381,27 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
 
 
 def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None:
-    rows = []
+    clean_rows = []
     for sample in report["samples"]:
         image_path = Path(sample["output_image_path"])
         rel = image_path.name
-        rows.append(
+        clean_rows.append(
             "<section class=\"sample\">"
-            f"<h3>{html.escape(sample['subtitle_mode'])}: {html.escape(sample['text'])}</h3>"
+            f"<h3>clean sample / {html.escape(sample['subtitle_mode'])}: {html.escape(sample['text'])}</h3>"
             f"<img src=\"{html.escape(rel)}\" alt=\"{html.escape(sample['subtitle_mode'])} sample\">"
+            "<pre>"
+            f"{html.escape(json.dumps(_sample_readback_for_html(sample), ensure_ascii=False, indent=2))}"
+            "</pre>"
+            "</section>"
+        )
+    guide_rows = []
+    for sample in report["guide_overlay"]["guided_samples"]:
+        image_path = Path(sample["output_image_path"])
+        rel = image_path.name
+        guide_rows.append(
+            "<section class=\"sample guide-sample\">"
+            f"<h3>guide overlay sample / {html.escape(sample['subtitle_mode'])}: {html.escape(sample['text'])}</h3>"
+            f"<img src=\"{html.escape(rel)}\" alt=\"{html.escape(sample['subtitle_mode'])} guide overlay sample\">"
             "<pre>"
             f"{html.escape(json.dumps(_sample_readback_for_html(sample), ensure_ascii=False, indent=2))}"
             "</pre>"
@@ -913,7 +1422,8 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
         "<tr>"
         f"<td>{html.escape(item['element_id'])}</td>"
         f"<td>{html.escape(item['authority_class'])}</td>"
-        f"<td>{html.escape(str(item['visible_in_default_samples']).lower())}</td>"
+        f"<td>{html.escape(str(item['visible_in_clean_samples']).lower())}</td>"
+        f"<td>{html.escape(str(item['visible_in_guide_overlay_samples']).lower())}</td>"
         f"<td>{html.escape(str(item['actual_layout_authority']).lower())}</td>"
         f"<td>{html.escape(str(item['used_in_layout_calculation']).lower())}</td>"
         f"<td>{html.escape(item['meaning_for_reviewer'])}</td>"
@@ -933,6 +1443,7 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
     th, td {{ border: 1px solid #c7d0da; padding: 8px; vertical-align: top; }}
     img {{ max-width: 100%; border: 1px solid #b8c2cc; background: #222; }}
     .sample {{ margin: 22px 0; padding: 14px; background: #fff; border: 1px solid #d5dde5; }}
+    .guide-sample {{ border-color: #7a9cc7; }}
     pre {{ white-space: pre-wrap; background: #f0f3f6; padding: 10px; overflow-x: auto; }}
   </style>
 </head>
@@ -949,14 +1460,20 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   <p class="notice">visible element authority is explicit: SPK/A/B badges are
   placeholder speaker badges only, real face icons are unavailable to this
   spike, and decorative or visual-guide elements are not production design.</p>
+  <p class="notice">clean samples and guide overlay samples are separate. Guide
+  overlays use center lines, safe-area readback, subtitle baseline guides,
+  badge/icon slot guides, and bbox overlays only as labeled review aids; they
+  do not drive Japanese wrapping.</p>
   <h2>Visible Element Authority</h2>
   <pre>{html.escape(json.dumps(report["visible_element_authority_classes"], ensure_ascii=False, indent=2))}</pre>
   <table>
     <thead>
-      <tr><th>element</th><th>class</th><th>visible</th><th>layout authority</th><th>used in calculation</th><th>meaning</th><th>test coverage</th></tr>
+      <tr><th>element</th><th>class</th><th>clean</th><th>guide overlay</th><th>layout authority</th><th>used in calculation</th><th>meaning</th><th>test coverage</th></tr>
     </thead>
     <tbody>{authority_rows}</tbody>
   </table>
+  <h2>Guide Overlay Contract</h2>
+  <pre>{html.escape(json.dumps({k: v for k, v in report["guide_overlay"].items() if k != "guided_samples"}, ensure_ascii=False, indent=2))}</pre>
   <h2>Grid Readback</h2>
   <pre>{html.escape(json.dumps(report["grid_readback"], ensure_ascii=False, indent=2))}</pre>
   <h2>Mode Decision</h2>
@@ -968,8 +1485,10 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
     </thead>
     <tbody>{matrix_rows}</tbody>
   </table>
-  <h2>Samples</h2>
-  {''.join(rows)}
+  <h2>Clean Samples</h2>
+  {''.join(clean_rows)}
+  <h2>Guide Overlay Samples</h2>
+  {''.join(guide_rows)}
 </body>
 </html>
 """
@@ -979,6 +1498,7 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
 def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
     return {
         "output_image_path": sample["output_image_path"],
+        "sample_variant": sample["sample_variant"],
         "canvas_size": sample["canvas_size"],
         "subtitle_mode": sample["subtitle_mode"],
         "text": sample["text"],
@@ -988,6 +1508,8 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "measured_bbox": sample["measured_bbox"],
         "safe_area_margin": sample["safe_area_margin"],
         "safe_area_status": sample["safe_area_status"],
+        "line_height": sample["line_height"],
+        "line_count": sample["line_count"],
         "grid_model": sample["grid_model"],
         "layout_anchor": sample["layout_anchor"],
         "snap_to_grid": sample["snap_to_grid"],
@@ -1004,6 +1526,7 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "target_renderer_candidate": sample["target_renderer_candidate"],
         "visible_element_authority_ids": sample["visible_element_authority_ids"],
         "speaker_identity_asset_status": sample["speaker_identity_asset_status"],
+        "guide_overlay": sample["guide_overlay"],
     }
 
 
