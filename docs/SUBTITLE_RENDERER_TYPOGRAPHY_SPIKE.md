@@ -145,6 +145,15 @@ cell-, or character-count based; wrapping remains
 computational authority, its source fields and tests must be added in the same
 slice.
 
+## Local HTML Review Note
+
+Open `subtitle_style_spike_report.html` directly from the local filesystem in
+the same directory as the generated PNG files. The report uses local relative
+image references such as `subtitle_style_spike.dialogue_badge_left.02.png`.
+Browser translation/proxy pages may render the HTML text while blocking access
+to those local sibling PNG files, which makes images look broken even when the
+report and PNG artifacts are valid on disk.
+
 ## Measured Bbox Provenance
 
 `measured_bbox` is a rendered-output measurement, not a design target. It is
