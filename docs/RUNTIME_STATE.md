@@ -9,30 +9,64 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-09 JST
+- date: 2026-06-10 JST
 - latest pushed implementation resume point before this handoff refresh:
-  `f6fcf5b feat: add subtitle typography measurement spike`.
-  This is the pushed subtitle renderer / typography measurement spike closure.
-  A later docs-only handoff refresh may be the newest commit; on another
-  terminal, use `git log -1 --oneline --decorate` for the exact pulled HEAD.
+  `87afbfd docs: note local subtitle report image paths`. This is the pushed
+  subtitle_style_spike review-surface hardening state after the grid authority
+  audit, visible element authority guardrail, guide overlay split,
+  bbox-provenance readback, and local HTML image path audit. A later docs-only
+  handoff refresh may be the newest commit; on another terminal, use
+  `git log -1 --oneline --decorate` for the exact pulled HEAD.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
+- latest subtitle_style_spike review surface state:
+  `1a9410d fix: clarify subtitle spike grid authority` confirms the old grid
+  was visual-only, removes default grid lines from human samples, and exposes
+  `grid_model=none`, `snap_to_grid=false`,
+  `grid_visible_in_samples=false`, and
+  `wrapping_authority=font_bbox_pixel_measurement_not_grid_cell_count`.
+  `d00aff9 feat: add visible review authority guardrail` defines visible
+  element authority classifications
+  (`computational_authority`, `measured_readback`, `visual_guide_only`,
+  `placeholder`, `decorative`) and labels A/B speaker badges as placeholder
+  badges, not real face icons or final speaker identity design. `e3bdf3b feat:
+  add subtitle guide overlay samples` separates clean default samples from
+  explicit guide-overlay samples and documents
+  `bottom_center_emphasis_guide_v0`,
+  `dialogue_badge_left_guide_v0`,
+  `speaker_badge_stack_guide_future`, and
+  `status_caption_guide_future`. `505a33d feat: clarify subtitle bbox
+  provenance` adds `measured_bbox_provenance`, per-sample `style_inputs`,
+  `computed_layout`, and `measured_output`, plus a two-run determinism audit.
+  `87afbfd docs: note local subtitle report image paths` records that the
+  generated report uses sibling relative PNG refs that resolve locally; when
+  images appear broken, the likely cause is opening the local HTML through a
+  translation/proxy surface that cannot fetch the sibling PNG files.
+- current review boundary state:
+  `cut_003` boundary and operator decision remain closed. The accepted route is
+  still diagnostic candidate review only: no cut timing change, transcript
+  mutation, official subtitle evidence mutation, source media mutation,
+  production subtitle design acceptance, production render acceptance,
+  creative acceptance, rights approval, publishing acceptance, or public-use
+  permission has been added. `production_candidate=false`,
+  `rights_status=pending`, `production_usage_allowed=false`, and
+  `production_subtitle_design_acceptance=false` remain active.
 - latest implementation post-push sync validation:
-  2026-06-09 JST local readback after push:
+  2026-06-10 JST local readback before this handoff refresh:
   `git status --short --branch` -> `## main...origin/main`;
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
   `git log -1 --oneline --decorate` ->
-  `f6fcf5b feat: add subtitle typography measurement spike`;
-  `git ls-files episodes` empty. The targeted validation for this pushed
-  state was `uvx pytest -q tests/test_subtitle_style_spike.py
-  tests/test_subtitle_overlay_visual_proof.py -rs` -> 4 passed / 1 skipped
-  (the skipped case is intentional: Pillow is optional and absent in the uvx
-  test environment), `python -m pytest -q tests/test_subtitle_style_spike.py`
-  -> 2 passed on the local Python environment where Pillow is available, and
-  `git diff --check` / `git diff --cached --check` clean before commit. Ignored
-  `episodes/` subtitle style spike artifacts remain unstaged.
+  `87afbfd (HEAD -> main, origin/main, origin/HEAD) docs: note local subtitle report image paths`;
+  `git ls-files episodes` empty. Targeted validation across the recent subtitle
+  spike changes included `uvx --with pillow pytest -q
+  tests/test_subtitle_style_spike.py` -> 2 passed, `uvx pytest -q
+  tests/test_subtitle_style_spike.py -rs` -> 1 passed / 1 intentional Pillow
+  skip, `git diff --check` clean, and JSON/HTML readbacks confirming visible
+  element authority, placeholder badge labeling, guide overlay separation,
+  bbox provenance, deterministic measurement output, and local image refs.
+  Ignored generated artifacts under `episodes/` and `_tmp/` were not staged.
 - previous pushed resume point:
-  `5fa88cf docs: close cut 003 operator decision slice`
+  `f6fcf5b feat: add subtitle typography measurement spike`
 - latest resume-surface sync validation:
   2026-06-09 JST local readback in this workspace:
   `git status --short --branch` -> `## main...origin/main`;
@@ -86,7 +120,7 @@ instructions.
   archived under `subtitle_overlay_reference/` for comparison in the same HTML
   report. Human review still decides diagnostic readability only; no production
   subtitle design acceptance is claimed.
-- latest subtitle renderer / typography measurement spike:
+- previous subtitle renderer / typography measurement spike:
   `f6fcf5b` adds [SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md](SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md),
   `src/integrations/render/subtitle_style_spike.py`, and
   `tests/test_subtitle_style_spike.py`. The spike separates subtitle mode
@@ -107,13 +141,18 @@ instructions.
   proof path; Pillow/PNG is review-only measurement support and is not claimed
   to match YMM4, Premiere, ASS, or FFmpeg production rendering.
 - next human review prompt:
-  open
+  open the local file directly from the filesystem, not through a translation
+  proxy or web-hosted viewer:
   `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_style_spike/subtitle_style_spike_report.html`
-  to decide only the next renderer path. The current recommendation is to keep
-  ASS/libass as the diagnostic proof path and Pillow/PNG as review-only
-  measurement support, unless a later narrow slice explicitly opens YMM4
-  TextItem or Premiere handoff work. For the existing cut_003 burned-in proof,
-  open
+  First confirm the sibling PNG images render. Then review clean samples and
+  explicit guide-overlay samples separately: the clean samples should not carry
+  visual-only aids, while the guide-overlay samples may show safe-area/text-bbox
+  aids only with authority labels and readback. Decide whether the current
+  guides are helpful for subtitle placement / future face-icon work without
+  implying layout authority. Only after that, choose the next narrow route:
+  Japanese font-aware wrapping refinement, or port the same authority/provenance
+  guardrail into `subtitle_overlay_visual_proof`. For the existing cut_003
+  burned-in proof, open
   `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`
   with player subtitle tracks disabled. Judge only the embedded burned-in
   subtitle. Answer whether the speaker-badge fallback plus left-aligned large
