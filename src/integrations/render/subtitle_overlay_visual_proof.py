@@ -637,6 +637,13 @@ def _diagnostic_style_direction() -> dict[str, Any]:
         "preferred_non_pov_pattern": "face_icon_plus_left_aligned_subtitle",
         "implemented_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
         "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
+        "mode_semantics": {
+            "badge_left_dialogue": "recommended for normal speaker-identified dialogue in the current proof",
+            "bottom_center_emphasis": "supported for emphasized dialogue or strong one-liners; comparison/support mode here",
+            "reaction_caption": "tracked in subtitle_style_spike for punchline, surprise, or instant reaction such as 来ねぇ！！",
+            "speaker_badge_stack": "tracked in subtitle_style_spike as a comparison-only placeholder stack for future face-icon/nameplate work",
+            "repeated_text_across_modes": "intentional comparison in reports, not a universal style rule",
+        },
         "left_alignment_scope": (
             "conditional to badge_left_dialogue mode; not all subtitles are forced left"
         ),
@@ -1127,6 +1134,13 @@ def _report_font_bbox_wrap_summary(cut_reports: list[dict[str, Any]]) -> dict[st
             int(item.get("orphan_prevention_applied_count") or 0)
             for item in cut_readbacks
         ),
+        "suffix_tail_prevention_applied_count": sum(
+            int(item.get("suffix_tail_prevention_applied_count") or 0)
+            for item in cut_readbacks
+        ),
+        "suspicious_tail_line_present": any(
+            item.get("suspicious_tail_line_present") is True for item in cut_readbacks
+        ),
         "one_character_orphan_present": any(
             item.get("one_character_orphan_present") is True for item in cut_readbacks
         ),
@@ -1135,6 +1149,16 @@ def _report_font_bbox_wrap_summary(cut_reports: list[dict[str, Any]]) -> dict[st
             for item in cut_readbacks
             for example in item.get("orphan_prevention_examples") or []
         ][:8],
+        "suffix_tail_prevention_examples": [
+            example
+            for item in cut_readbacks
+            for example in item.get("suffix_tail_prevention_examples") or []
+        ][:8],
+        "suspicious_tail_lines": [
+            line
+            for item in cut_readbacks
+            for line in item.get("suspicious_tail_lines") or []
+        ],
         "measured_bbox_provenance": first.get("measured_bbox_provenance") or {},
         "per_cut": per_cut,
     }
@@ -1154,6 +1178,13 @@ def _subtitle_presentation_contract_readback(layout: dict[str, Any]) -> dict[str
         "frame": layout["frame"],
         "preferred_non_pov_speaker_identity": "face_icon_plus_left_aligned_subtitle",
         "implemented_diagnostic_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
+        "mode_semantics": {
+            "badge_left_dialogue": "normal speaker-identified dialogue",
+            "bottom_center_emphasis": "emphasized dialogue or strong one-liner",
+            "reaction_caption": "punchline, surprise, or instant reaction; tracked in subtitle_style_spike",
+            "speaker_badge_stack": "comparison-only placeholder stack for future face-icon/nameplate work",
+            "repeated_text_across_modes": "intentional comparison, not a universal style rule",
+        },
         "alternative_mode": "bottom_center_emphasis",
         "future_explanatory_caption_style": "explicitly_deferred",
         "replacement_behavior_expectation": "previous_line_disappears_when_next_subtitle_appears",
@@ -1191,6 +1222,11 @@ def _speaker_identity_presentation_readback(layout: dict[str, Any]) -> dict[str,
         "fallback_used": True,
         "fallback_kind": "speaker_badge_placeholder",
         "fallback_label": DIAGNOSTIC_ASS_STYLE["speaker_badge_label"],
+        "fallback_human_review_note": (
+            "SPK/A/B badges are temporary speaker badge placeholders, not real "
+            "face icons and not production speaker identity design. Real face "
+            "icon asset intake is a separate future slice."
+        ),
         "fallback_badge_size": {
             "width": values["badge_width"],
             "height": values["badge_height"],
@@ -1808,6 +1844,12 @@ def _presentation_items(
                 "orphan_prevention_applied": font_bbox_wrap[
                     "orphan_prevention_applied"
                 ],
+                "suffix_tail_prevention_applied": font_bbox_wrap[
+                    "suffix_tail_prevention_applied"
+                ],
+                "suspicious_tail_line_present": font_bbox_wrap[
+                    "suspicious_tail_line_present"
+                ],
                 "font_bbox_wrap_readback": font_bbox_wrap,
                 "presentation_mode": layout["mode"],
                 "layout": item_layout,
@@ -1846,6 +1888,11 @@ def _font_bbox_wrap_readback(
                 "character or kana on the next line, the wrapper uses an earlier "
                 "measured-valid break if one exists."
             ),
+            "suffix_tail_prevention": (
+                "When a measured break would isolate a short Japanese sentence "
+                "suffix such as ます or か plus punctuation, the wrapper prefers "
+                "a nearby measured-valid break when one exists."
+            ),
         },
         "wrapping_authority": FONT_BBOX_WRAP_AUTHORITY,
         "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
@@ -1865,6 +1912,10 @@ def _font_bbox_wrap_readback(
         "wrapped_text": "\n".join(proxy_wrapped_lines),
         "orphan_prevention_applied": False,
         "orphan_prevention_examples": [],
+        "suffix_tail_prevention_applied": False,
+        "suffix_tail_prevention_examples": [],
+        "suspicious_tail_line_present": False,
+        "suspicious_tail_lines": [],
         "one_character_orphan_present": _has_one_character_orphan(proxy_wrapped_lines),
         "one_character_orphan_lines": _one_character_orphan_lines(proxy_wrapped_lines),
         "explicit_line_breaks_passed_to_ass": False,
@@ -1945,6 +1996,12 @@ def _font_bbox_wrap_readback(
         "orphan_prevention_examples": _orphan_prevention_examples(
             wrap_result.candidate_breaks
         ),
+        "suffix_tail_prevention_applied": wrap_result.suffix_tail_prevention_applied,
+        "suffix_tail_prevention_examples": _suffix_tail_prevention_examples(
+            wrap_result.candidate_breaks
+        ),
+        "suspicious_tail_line_present": wrap_result.suspicious_tail_line_present,
+        "suspicious_tail_lines": wrap_result.suspicious_tail_lines,
         "one_character_orphan_present": _has_one_character_orphan(wrapped_lines),
         "one_character_orphan_lines": _one_character_orphan_lines(wrapped_lines),
         "explicit_line_breaks_passed_to_ass": True,
@@ -2075,6 +2132,41 @@ def _orphan_prevention_examples(candidate_breaks: list[dict[str, Any]]) -> list[
     return examples
 
 
+def _suffix_tail_prevention_examples(candidate_breaks: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    examples: list[dict[str, Any]] = []
+    selected_by_line = {
+        int(candidate.get("line_number") or 0): candidate
+        for candidate in candidate_breaks
+        if candidate.get("selected") is True
+    }
+    for candidate in candidate_breaks:
+        if candidate.get("would_leave_suspicious_tail_line") is not True:
+            continue
+        selected = selected_by_line.get(int(candidate.get("line_number") or 0))
+        examples.append(
+            {
+                "line_number": candidate.get("line_number"),
+                "prevented_break": {
+                    "line_text": candidate.get("line_text"),
+                    "remaining_text": candidate.get("remaining_text"),
+                    "break_index": candidate.get("break_index"),
+                    "measured_width": candidate.get("measured_width"),
+                    "reason": candidate.get("reason"),
+                    "tail_line_status": candidate.get("tail_line_status"),
+                },
+                "selected_break": {
+                    "line_text": selected.get("line_text") if selected else None,
+                    "remaining_text": selected.get("remaining_text") if selected else None,
+                    "break_index": selected.get("break_index") if selected else None,
+                    "selection_reason": (
+                        selected.get("selection_reason") if selected else None
+                    ),
+                },
+            }
+        )
+    return examples
+
+
 def _has_one_character_orphan(lines: list[str]) -> bool:
     return bool(_one_character_orphan_lines(lines))
 
@@ -2105,6 +2197,9 @@ def _font_bbox_wrap_summary(presentation_items: list[dict[str, Any]]) -> dict[st
             "proof_renderer": "ffmpeg_subtitles_filter_ass",
             "renderer_gap": _font_bbox_renderer_gap(),
             "status": "no_presentation_items",
+            "suffix_tail_prevention_applied_count": 0,
+            "suspicious_tail_line_present": False,
+            "suspicious_tail_lines": [],
             "items": [],
         }
     first = readbacks[0]
@@ -2136,6 +2231,12 @@ def _font_bbox_wrap_summary(presentation_items: list[dict[str, Any]]) -> dict[st
         "orphan_prevention_applied_count": sum(
             1 for item in readbacks if item.get("orphan_prevention_applied") is True
         ),
+        "suffix_tail_prevention_applied_count": sum(
+            1 for item in readbacks if item.get("suffix_tail_prevention_applied") is True
+        ),
+        "suspicious_tail_line_present": any(
+            item.get("suspicious_tail_line_present") is True for item in readbacks
+        ),
         "one_character_orphan_present": any(
             item.get("one_character_orphan_present") is True for item in readbacks
         ),
@@ -2144,6 +2245,16 @@ def _font_bbox_wrap_summary(presentation_items: list[dict[str, Any]]) -> dict[st
             for item in readbacks
             for example in item.get("orphan_prevention_examples") or []
         ][:8],
+        "suffix_tail_prevention_examples": [
+            example
+            for item in readbacks
+            for example in item.get("suffix_tail_prevention_examples") or []
+        ][:8],
+        "suspicious_tail_lines": [
+            line
+            for item in readbacks
+            for line in item.get("suspicious_tail_lines") or []
+        ],
         "measured_bbox_provenance": first.get("measured_bbox_provenance") or {},
         "items": [
             {
@@ -2152,9 +2263,13 @@ def _font_bbox_wrap_summary(presentation_items: list[dict[str, Any]]) -> dict[st
                 "selected_wrapped_lines": item.get("selected_wrapped_lines"),
                 "selected_break_reason": item.get("selected_break_reason"),
                 "orphan_prevention_applied": item.get("orphan_prevention_applied"),
+                "suffix_tail_prevention_applied": item.get("suffix_tail_prevention_applied"),
+                "suspicious_tail_line_present": item.get("suspicious_tail_line_present"),
+                "suspicious_tail_lines": item.get("suspicious_tail_lines"),
                 "one_character_orphan_present": item.get("one_character_orphan_present"),
                 "applied_to_proof_text": item.get("applied_to_proof_text"),
                 "candidate_break_count": len(item.get("candidate_breaks") or []),
+                "candidate_breaks": item.get("candidate_breaks") or [],
             }
             for item in readbacks
         ],
@@ -2479,6 +2594,8 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
 <body>
   <h1>Subtitle Overlay Visual Proof</h1>
   <p class="warn">Diagnostic only. Not production render, subtitle design acceptance, creative acceptance, publishing acceptance, or rights approval.</p>
+  <p class="warn">Mode semantics: badge_left_dialogue is the recommended current proof mode for normal speaker-identified dialogue; bottom_center_emphasis is for emphasized dialogue or strong one-liners; reaction_caption is for punchline, surprise, or instant reaction such as 来ねぇ！！; speaker_badge_stack is comparison-only placeholder stack work for future face-icon/nameplate design. Repeated text across modes is intentional comparison, not a universal style rule.</p>
+  <p class="warn">SPK/A/B are temporary speaker badge placeholders. They are not real face icons and not production speaker identity design. Real face icon asset intake is a separate future slice.</p>
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
   <p>target cuts: {escape(", ".join(report.get("target_cuts") or []))}</p>
   <p>rights_status: {escape(str(report.get("rights_status", "")))} / production_candidate: {escape(str(report.get("production_candidate", "")))}</p>
@@ -2576,6 +2693,8 @@ def _representative_report_html(report: dict[str, Any]) -> str:
 <body>
   <h1>Representative Visual Proof Report</h1>
   <p class="warn">Diagnostic only. Human review is still required. production_candidate=false, rights_status=pending.</p>
+  <p class="warn">Mode semantics: badge_left_dialogue is the current proof mode for normal speaker-identified dialogue; bottom_center_emphasis is for emphasized dialogue or strong one-liners; reaction_caption and speaker_badge_stack remain comparison/deferred mode readbacks. Repeated text across modes is intentional comparison, not a universal style rule.</p>
+  <p class="warn">SPK/A/B are temporary speaker badge placeholders. They are not real face icons and not production speaker identity design. Real face icon asset intake is a separate future slice.</p>
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
 {review_warning}
   <section>
@@ -2646,6 +2765,7 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
     layout_values = parameters.get("layout_values") or {}
     layout_formulas = parameters.get("layout_formulas") or {}
     line_summary = parameters.get("line_width_watch_summary") or {}
+    mode_semantics = direction.get("mode_semantics") or {}
     return (
         "    <dl>"
         f"<dt>preset</dt><dd>{escape(str(direction.get('preset_name', '')))}</dd>"
@@ -2654,6 +2774,7 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"<dt>candidate_id</dt><dd>{escape(str(parameters.get('style_candidate_id', '')))}</dd>"
         f"<dt>mode</dt><dd>{escape(str(parameters.get('presentation_mode', '')))}</dd>"
         f"<dt>supported modes</dt><dd>{escape(', '.join(parameters.get('supported_presentation_modes') or []))}</dd>"
+        f"<dt>mode semantics</dt><dd>{escape(json.dumps(mode_semantics, ensure_ascii=False))}</dd>"
         f"<dt>left alignment</dt><dd>{escape(str(parameters.get('left_alignment_scope', '')))}</dd>"
         f"<dt>intent</dt><dd>{escape(str(direction.get('target_viewing_context', '')))}; "
         f"{escape(str(direction.get('visual_weight', '')))}</dd>"
@@ -2684,6 +2805,8 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"{escape(str(font_bbox_wrap.get('all_renderable_items_applied_to_proof_text', '')))}; "
         f"explicit_line_breaks={escape(str(font_bbox_wrap.get('explicit_line_breaks_passed_to_ass', '')))}; "
         f"orphan_prevention_count={escape(str(font_bbox_wrap.get('orphan_prevention_applied_count', '')))}; "
+        f"suffix_tail_prevention_count={escape(str(font_bbox_wrap.get('suffix_tail_prevention_applied_count', '')))}; "
+        f"suspicious_tail_line_present={escape(str(font_bbox_wrap.get('suspicious_tail_line_present', '')))}; "
         f"one_char_orphan={escape(str(font_bbox_wrap.get('one_character_orphan_present', '')))}</dd>"
         f"<dt>measurement/proof renderer gap</dt><dd>{escape(str(renderer_gap.get('classification', '')))}; "
         f"exists={escape(str(renderer_gap.get('exists', '')))}</dd>"
@@ -2728,8 +2851,11 @@ def _style_cut_html(
             f"font_bbox_applied: {escape(str(font_bbox_wrap.get('all_renderable_items_applied_to_proof_text', '')))}",
             f"explicit_ass_line_breaks: {escape(str(font_bbox_wrap.get('explicit_line_breaks_passed_to_ass', '')))}",
             f"orphan_prevention_count: {escape(str(font_bbox_wrap.get('orphan_prevention_applied_count', '')))}",
+            f"suffix_tail_prevention_count: {escape(str(font_bbox_wrap.get('suffix_tail_prevention_applied_count', '')))}",
+            f"suspicious_tail_line_present: {escape(str(font_bbox_wrap.get('suspicious_tail_line_present', '')))}",
             f"one_char_orphan: {escape(str(font_bbox_wrap.get('one_character_orphan_present', '')))}",
             f"renderer_gap: {escape(str(renderer_gap.get('classification', '')))}",
+            f"wrap_items: {escape(json.dumps(font_bbox_wrap.get('items') or [], ensure_ascii=False))}",
             f"max_raw_eaw: {escape(str(line_width.get('max_raw_line_eaw', '')))}",
             f"needs_wrap_watch: {escape(str(line_width.get('needs_wrap_count', '')))}",
         ]

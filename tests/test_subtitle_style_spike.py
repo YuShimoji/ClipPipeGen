@@ -66,6 +66,90 @@ def test_japanese_wrapper_prevents_one_character_orphan_when_measured_alternativ
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
 )
+def test_japanese_wrapper_prevents_suffix_only_tail_when_measured_alternative_exists():
+    image = spike.Image.new("RGB", (1920, 1080), (0, 0, 0))
+    draw = spike.ImageDraw.Draw(image)
+    _, font_path, _ = spike._select_font()
+    if font_path is None:
+        pytest.skip("Japanese font file is not available for suffix-tail fixture")
+    font = spike._load_font(font_path, 124)
+    spacing = 19
+    stroke_width = 12
+    text = "まあ謝るんなら許してあげます"
+    max_width = spike._text_size(
+        draw=draw,
+        text="まあ謝るんなら許してあげ",
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )[0]
+
+    result = spike._wrap_text_to_width(
+        draw=draw,
+        text=text,
+        font=font,
+        max_width=max_width,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+
+    assert result.suffix_tail_prevention_applied is True
+    assert result.selected_break_reason == "suffix_tail_prevention_shifted_break"
+    assert result.lines != ["まあ謝るんなら許してあげ", "ます"]
+    assert result.lines[-1] in {"あげます", "てあげます", "許してあげます"}
+    assert result.suspicious_tail_line_present is False
+    assert any(
+        candidate["remaining_text"] == "ます"
+        and candidate["would_leave_suspicious_tail_line"] is True
+        for candidate in result.candidate_breaks
+    )
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_japanese_wrapper_marks_question_particle_tail_suspicious():
+    image = spike.Image.new("RGB", (1920, 1080), (0, 0, 0))
+    draw = spike.ImageDraw.Draw(image)
+    _, font_path, _ = spike._select_font()
+    if font_path is None:
+        pytest.skip("Japanese font file is not available for suffix-tail fixture")
+    font = spike._load_font(font_path, 124)
+    spacing = 19
+    stroke_width = 12
+    text = "なんで来なかったんすか！！"
+    max_width = spike._text_size(
+        draw=draw,
+        text="なんで来なかったんす",
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )[0]
+
+    result = spike._wrap_text_to_width(
+        draw=draw,
+        text=text,
+        font=font,
+        max_width=max_width,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+
+    assert result.suffix_tail_prevention_applied is True
+    assert result.lines == ["なんで来なかった", "んすか！！"]
+    assert result.suspicious_tail_line_present is False
+    assert any(
+        candidate["remaining_text"] == "か！！"
+        and candidate["would_leave_suspicious_tail_line"] is True
+        for candidate in result.candidate_breaks
+    )
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
 def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     output_dir = tmp_path / "subtitle_style_spike"
 
@@ -192,6 +276,14 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
         assert sample["computed_layout"]["candidate_breaks"] == sample["candidate_breaks"]
         assert sample["computed_layout"]["selected_break_reason"] == sample["selected_break_reason"]
         assert sample["computed_layout"]["orphan_prevention_applied"] == sample["orphan_prevention_applied"]
+        assert (
+            sample["computed_layout"]["suffix_tail_prevention_applied"]
+            == sample["suffix_tail_prevention_applied"]
+        )
+        assert (
+            sample["computed_layout"]["suspicious_tail_line_present"]
+            == sample["suspicious_tail_line_present"]
+        )
         assert sample["font_file_status"] == sample["font_fallback_status"]
         assert sample["computed_layout"]["text_start_position"]["x"] >= 0
         assert sample["computed_layout"]["text_start_position"]["y"] >= 0
@@ -324,9 +416,13 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert "measured_output" in html
     assert "japanese_boundary_font_bbox_pixel_wrap_v1" in html
     assert "orphan_prevention_applied" in html
+    assert "suffix_tail_prevention_applied" in html
     assert "candidate_breaks" in html
     assert "placeholder speaker badges" in html
     assert "real face icons are unavailable" in html
+    assert "comparison-only" in html
+    assert "Repeated text" in html
+    assert "intentional comparison" in html
     assert "clean sample" in html
     assert "guide overlay sample" in html
     assert "Guide Overlay Contract" in html

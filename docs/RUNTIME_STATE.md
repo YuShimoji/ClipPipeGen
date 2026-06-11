@@ -9,7 +9,7 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-10 JST
+- date: 2026-06-11 JST
 - latest pushed implementation resume point before this handoff refresh:
   `87afbfd docs: note local subtitle report image paths`. This is the pushed
   subtitle_style_spike review-surface hardening state after the grid authority
@@ -19,6 +19,28 @@ instructions.
   `git log -1 --oneline --decorate` for the exact pulled HEAD.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
+- latest subtitle wrapping / report-clarity refinement:
+  the current tracked implementation keeps
+  `japanese_boundary_font_bbox_pixel_wrap_v1` and
+  `wrapping_authority=font_bbox_pixel_measurement_not_grid_cell_count`, but now
+  also treats short suffix-only Japanese tail lines as suspicious when a nearby
+  measured-safe break exists. The concrete current cut_003 readback is:
+  `sub_013` wraps as `なんで来なかった` / `んすか！！`,
+  `sub_017` wraps as `まあ謝るんなら許して` / `あげます`,
+  `sub_024` remains `団長、ちなみに、他の` / `番長知ってますか？`, and
+  `sub_025` remains `長(ちょう)？　長って` / `言った？`.
+  `suffix_tail_prevention_applied_count=2`,
+  `one_character_orphan_present=false`, and
+  `suspicious_tail_line_present=false` in the regenerated cut_003 proof
+  readback. The HTML reports now explain that repeated text across modes is
+  comparison-only, `dialogue_badge_left` is the current normal
+  speaker-identified dialogue mode, `bottom_center_emphasis` is for emphasis or
+  strong one-liners, `reaction_caption` is for punchline/surprise/instant
+  reaction, and `speaker_badge_stack` is a placeholder future stack. SPK/A/B
+  badges are labeled temporary placeholders, not real face icons or production
+  speaker identity design. The regenerated ignored artifacts remain local
+  review-only evidence; production subtitle design/render, creative, rights,
+  publishing, and public-use acceptance remain unaccepted.
 - latest subtitle_style_spike review surface state:
   `1a9410d fix: clarify subtitle spike grid authority` confirms the old grid
   was visual-only, removes default grid lines from human samples, and exposes

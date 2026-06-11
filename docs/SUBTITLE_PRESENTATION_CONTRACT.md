@@ -34,14 +34,25 @@ a fallback, not as final speaker identity design.
 
 ## Layout Modes
 
-The contract supports two diagnostic presentation modes. A generator run must
-read back which mode it selected; left alignment is not a universal rule.
+The current overlay proof generator selects one diagnostic presentation mode,
+and the typography spike may repeat the same text across multiple modes for
+comparison. Repeated text across modes is intentional comparison, not a
+universal style rule. A generator run must read back which mode it selected;
+left alignment is not a universal rule.
 
-- `badge_left_dialogue`: non-POV dialogue where a speaker identity element is
-  coherent. The current `cut_003` diagnostic proof uses this mode with a
-  fallback speaker badge because real face icon assets are not available.
+- `badge_left_dialogue`: recommended current mode for normal non-POV dialogue
+  where a speaker identity element is coherent. The current `cut_003`
+  diagnostic proof uses this mode with a fallback speaker badge because real
+  face icon assets are not available.
 - `bottom_center_emphasis`: large bottom-center emphasis subtitles for moments
-  where a speaker badge or left anchor is not appropriate.
+  where a speaker badge or left anchor is not appropriate, such as emphasized
+  dialogue or a strong one-liner.
+- `reaction_caption`: punchline, surprise, or instant reaction treatment such
+  as `来ねぇ！！`. This is tracked in the typography spike and is not the
+  default for ordinary dialogue.
+- `speaker_badge_stack`: comparison-only placeholder stack for multi-speaker or
+  future face-icon/nameplate work. It is not production speaker identity
+  design.
 
 ## Formula-Based Layout
 
@@ -86,11 +97,28 @@ Pillow is available. The selected `wrapped_lines` are passed to ASS as explicit
 line breaks so the proof does not rely on uncontrolled subtitle renderer
 wrapping.
 
+The wrapper still chooses only measured-valid candidates: punctuation,
+particle, and phrase-boundary preferences are applied after each candidate line
+passes font bbox pixel-width measurement. It also avoids one-character orphan
+lines, and now treats short suffix-only tails such as isolated `ます` or `か`
+plus punctuation as suspicious when a nearby measured-safe break is available.
+Reports must read back selected `wrapped_lines`, `candidate_breaks`,
+`selected_break_reason`, `orphan_prevention_applied`,
+`suffix_tail_prevention_applied`, and any remaining `suspicious_tail_lines`.
+
 This is a measurement and line-break authority only. Pillow
 `ImageDraw.multiline_textbbox` is the measurement renderer, while the burned-in
 proof is rendered through FFmpeg/libass. Reports must expose this
 `renderer_gap` and must not describe Pillow bbox measurement as final
 ASS/libass, YMM4, Premiere, or production typography readiness.
+
+## Speaker Badge Placeholder Semantics
+
+When placeholder speaker badges appear as `SPK`, `A`, or `B`, the report must
+state near the sample that they are temporary placeholders. They are not real
+face icons, not production speaker identity design, and not evidence that real
+member image assets have been acquired. Real face icon asset intake remains a
+separate future slice.
 
 ## Explanatory Captions
 

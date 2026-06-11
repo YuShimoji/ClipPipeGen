@@ -93,6 +93,18 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
         "font_bbox_pixel_measurement_not_grid_cell_count"
     )
     assert report["style_parameters"]["font_bbox_wrap_readback"]["renderer_gap"]["exists"] is True
+    assert (
+        report["style_parameters"]["font_bbox_wrap_readback"][
+            "suffix_tail_prevention_applied_count"
+        ]
+        == 0
+    )
+    assert (
+        report["style_parameters"]["font_bbox_wrap_readback"][
+            "suspicious_tail_line_present"
+        ]
+        is False
+    )
     assert report["font_bbox_wrap_readback"]["wrap_algorithm"]["name"] == (
         "japanese_boundary_font_bbox_pixel_wrap_v1"
     )
@@ -226,6 +238,10 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert "badge alignment rule" in overlay_html
     assert "japanese_boundary_font_bbox_pixel_wrap_v1" in overlay_html
     assert "font bbox carry-over" in overlay_html
+    assert "suffix_tail_prevention_count" in overlay_html
+    assert "wrap_items" in overlay_html
+    assert "SPK/A/B are temporary speaker badge placeholders" in overlay_html
+    assert "Repeated text across modes is intentional comparison" in overlay_html
     assert "measurement/proof renderer gap" in overlay_html
     assert "Burned-in vs Sidecar SRT" in overlay_html
     assert "subtitle-bearing samples" in overlay_html
@@ -430,6 +446,8 @@ def test_pillow_font_bbox_wrap_lines_are_passed_to_ass_without_one_character_orp
         assert readback["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
         assert readback["selected_wrapped_lines"] == item["wrapped_lines"]
         assert readback["one_character_orphan_present"] is False
+        assert readback["suffix_tail_prevention_applied"] is False
+        assert readback["suspicious_tail_line_present"] is False
         assert all(spike._visible_char_count(line) != 1 for line in item["wrapped_lines"])
         assert readback["font_file_status"] == "font_file_found"
         assert readback["measured_bbox_provenance"]["source_function"] == (
@@ -440,13 +458,84 @@ def test_pillow_font_bbox_wrap_lines_are_passed_to_ass_without_one_character_orp
 
     assert items[0]["orphan_prevention_applied"] is True
     assert items[0]["font_bbox_wrap_readback"]["orphan_prevention_examples"]
-    assert items[0]["wrapped_lines"] == ["この条件、かなり危ない", "です"]
+    assert items[0]["wrapped_lines"] == ["この条件、かなり危", "ないです"]
 
     ass_path = tmp_path / "bbox_wrapped.burned_in.ass"
     _write_ass(ass_path, items, layout=layout)
     ass = ass_path.read_text(encoding="utf-8")
-    assert "この条件、かなり危ない\\Nです" in ass
+    assert "この条件、かなり危\\Nないです" in ass
+    assert "この条件、かなり危ない\\Nです" not in ass
     assert "この条件、かなり危ないで\\Nす" not in ass
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_overlay_font_bbox_wrap_prevents_suffix_tail_examples():
+    _, font_path, _ = spike._select_font()
+    if font_path is None:
+        pytest.skip("Japanese font file is not available for font-bbox wrapping")
+    layout = _subtitle_layout_contract(
+        frame_width=1920,
+        frame_height=1080,
+        mode="badge_left_dialogue",
+        dimension_source="test_frame",
+    )
+    items = _presentation_items(
+        [
+            {
+                "subtitle_id": "sub_013",
+                "status": "included",
+                "render_start_seconds": 0.0,
+                "render_end_seconds": 2.0,
+                "text": "なんで来なかったんすか！！",
+            },
+            {
+                "subtitle_id": "sub_017",
+                "status": "included",
+                "render_start_seconds": 2.0,
+                "render_end_seconds": 4.0,
+                "text": "まあ謝るんなら許してあげます",
+            },
+            {
+                "subtitle_id": "sub_024",
+                "status": "included",
+                "render_start_seconds": 4.0,
+                "render_end_seconds": 6.0,
+                "text": "団長、ちなみに、他の番長知ってますか？",
+            },
+            {
+                "subtitle_id": "sub_025",
+                "status": "included",
+                "render_start_seconds": 6.0,
+                "render_end_seconds": 8.0,
+                "text": "長(ちょう)？　長って言った？",
+            },
+        ],
+        layout=layout,
+    )
+
+    by_id = {item["subtitle_id"]: item for item in items}
+    assert by_id["sub_013"]["wrapped_lines"] == ["なんで来なかった", "んすか！！"]
+    assert by_id["sub_013"]["suffix_tail_prevention_applied"] is True
+    assert by_id["sub_013"]["suspicious_tail_line_present"] is False
+    assert by_id["sub_017"]["wrapped_lines"] != ["まあ謝るんなら許してあげ", "ます"]
+    assert by_id["sub_017"]["wrapped_lines"][-1] in {
+        "あげます",
+        "てあげます",
+        "許してあげます",
+    }
+    assert by_id["sub_017"]["suffix_tail_prevention_applied"] is True
+    assert by_id["sub_017"]["suspicious_tail_line_present"] is False
+    assert by_id["sub_024"]["wrapped_lines"] == ["団長、ちなみに、他の", "番長知ってますか？"]
+    assert by_id["sub_024"]["suffix_tail_prevention_applied"] is False
+    assert by_id["sub_025"]["wrapped_lines"] == ["長(ちょう)？　長って", "言った？"]
+    assert by_id["sub_025"]["suffix_tail_prevention_applied"] is False
+    assert all(
+        item["font_bbox_wrap_readback"]["one_character_orphan_present"] is False
+        for item in items
+    )
 
 
 def _write_episode(tmp_path: Path) -> Path:

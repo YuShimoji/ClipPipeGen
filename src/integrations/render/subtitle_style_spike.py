@@ -83,6 +83,25 @@ JAPANESE_PHRASE_ENDINGS = (
     "します",
     "ください",
 )
+JAPANESE_TAIL_PUNCTUATION = frozenset("、。！？!?…ー〜～・「」『』（）()[]【】")
+JAPANESE_SUSPICIOUS_TAIL_CORES = frozenset(
+    (
+        "か",
+        "すか",
+        "です",
+        "ます",
+        "まし",
+        "ました",
+        "でした",
+        "ません",
+        "よ",
+        "ね",
+        "の",
+        "ん",
+        "な",
+        "だ",
+    )
+)
 
 
 @dataclass(frozen=True)
@@ -109,6 +128,9 @@ class WrapResult:
     selected_break_reason: str
     selected_breaks: list[dict[str, Any]]
     orphan_prevention_applied: bool
+    suffix_tail_prevention_applied: bool
+    suspicious_tail_line_present: bool
+    suspicious_tail_lines: list[str]
     measured_width_by_line: list[int]
 
 
@@ -777,6 +799,23 @@ def build_subtitle_style_spike(
             ],
         },
         "taxonomy": TAXONOMY,
+        "mode_semantics": {
+            "comparison_reuse_note": (
+                "The same text is intentionally repeated across modes so humans can "
+                "compare layout behavior. Repeated text is not a universal style rule."
+            ),
+            "recommended_mode_policy": {
+                "dialogue_badge_left": "normal speaker-identified dialogue",
+                "bottom_center_emphasis": "emphasized dialogue or strong one-liner",
+                "reaction_caption": "punchline, surprise, or instant reaction such as 来ねぇ！！",
+                "speaker_badge_stack": "comparison-only placeholder stack for multi-speaker or future face-icon/nameplate work",
+            },
+            "placeholder_badge_note": (
+                "SPK/A/B are temporary speaker badge placeholders, not real face "
+                "icons and not production speaker identity design. Real face icon "
+                "asset intake is a separate future slice."
+            ),
+        },
         "renderer_decision_matrix": RENDERER_DECISION_MATRIX,
         "mode_decision": {
             "line": "来ねぇ！！",
@@ -1043,6 +1082,9 @@ def _render_sample(
         "candidate_breaks": wrap_result.candidate_breaks,
         "selected_break_reason": wrap_result.selected_break_reason,
         "orphan_prevention_applied": wrap_result.orphan_prevention_applied,
+        "suffix_tail_prevention_applied": wrap_result.suffix_tail_prevention_applied,
+        "suspicious_tail_line_present": wrap_result.suspicious_tail_line_present,
+        "suspicious_tail_lines": wrap_result.suspicious_tail_lines,
         "measured_width_by_line": wrap_result.measured_width_by_line,
         "font_family": font_family,
         "font_file": font_path,
@@ -1254,11 +1296,19 @@ def _computed_layout_readback(
                 "Japanese character or kana on the next line, the wrapper uses "
                 "an earlier measured-valid break if one exists."
             ),
+            "suffix_tail_prevention": (
+                "When a measured break would isolate a short Japanese sentence "
+                "suffix such as ます or か plus punctuation, the wrapper prefers "
+                "a nearby measured-valid break when one exists."
+            ),
         },
         "candidate_breaks": wrap_result.candidate_breaks,
         "selected_break_reason": wrap_result.selected_break_reason,
         "selected_breaks": wrap_result.selected_breaks,
         "orphan_prevention_applied": wrap_result.orphan_prevention_applied,
+        "suffix_tail_prevention_applied": wrap_result.suffix_tail_prevention_applied,
+        "suspicious_tail_line_present": wrap_result.suspicious_tail_line_present,
+        "suspicious_tail_lines": wrap_result.suspicious_tail_lines,
         "wrapped_text": wrapped_text,
         "wrapped_lines": lines,
         "line_count": len(lines),
@@ -1389,6 +1439,9 @@ def _wrap_text_to_width(
             selected_break_reason="whole_text_fits_font_bbox",
             selected_breaks=[],
             orphan_prevention_applied=False,
+            suffix_tail_prevention_applied=False,
+            suspicious_tail_line_present=False,
+            suspicious_tail_lines=[],
             measured_width_by_line=[initial_width],
         )
 
@@ -1396,6 +1449,7 @@ def _wrap_text_to_width(
     candidate_breaks: list[dict[str, Any]] = []
     selected_breaks: list[dict[str, Any]] = []
     orphan_prevention_applied = False
+    suffix_tail_prevention_applied = False
     remaining = text
     line_number = 1
 
@@ -1445,6 +1499,8 @@ def _wrap_text_to_width(
                 "reason": "forced_single_character_no_measured_alternative",
                 "priority": 0,
                 "would_leave_one_character_orphan": _visible_char_count(remaining[1:]) == 1,
+                "would_leave_suspicious_tail_line": _is_suspicious_tail_line(remaining[1:]),
+                "tail_line_status": _tail_line_status(remaining[1:]),
                 "next_line_starts_with_avoided_char": bool(remaining[1:] and remaining[1] in JAPANESE_AVOID_LINE_START),
                 "selected": True,
                 "selection_reason": "forced_single_character_no_measured_alternative",
@@ -1456,12 +1512,16 @@ def _wrap_text_to_width(
             line_number += 1
             continue
 
-        selected, prevented_orphan = _select_wrap_candidate(selectable)
+        selected, prevented_orphan, prevented_suffix_tail = _select_wrap_candidate(selectable)
         if prevented_orphan:
             orphan_prevention_applied = True
+        if prevented_suffix_tail:
+            suffix_tail_prevention_applied = True
         selection_reason = (
             "orphan_prevention_shifted_break"
             if prevented_orphan
+            else "suffix_tail_prevention_shifted_break"
+            if prevented_suffix_tail
             else selected["reason"]
         )
         for candidate in candidates:
@@ -1489,6 +1549,7 @@ def _wrap_text_to_width(
         _text_size(draw=draw, text=line, font=font, spacing=spacing, stroke_width=stroke_width)[0]
         for line in lines
     ]
+    suspicious_tail_lines = _suspicious_tail_lines(lines)
     return WrapResult(
         text="\n".join(lines),
         lines=lines,
@@ -1497,10 +1558,15 @@ def _wrap_text_to_width(
         selected_break_reason=(
             "orphan_prevention_shifted_break"
             if orphan_prevention_applied
+            else "suffix_tail_prevention_shifted_break"
+            if suffix_tail_prevention_applied
             else (selected_breaks[0]["selection_reason"] if selected_breaks else "whole_text_fits_font_bbox")
         ),
         selected_breaks=selected_breaks,
         orphan_prevention_applied=orphan_prevention_applied,
+        suffix_tail_prevention_applied=suffix_tail_prevention_applied,
+        suspicious_tail_line_present=bool(suspicious_tail_lines),
+        suspicious_tail_lines=suspicious_tail_lines,
         measured_width_by_line=measured_width_by_line,
     )
 
@@ -1539,6 +1605,8 @@ def _build_wrap_candidates(
                 "reason": reason,
                 "priority": priority,
                 "would_leave_one_character_orphan": _visible_char_count(remaining_text) == 1,
+                "would_leave_suspicious_tail_line": _is_suspicious_tail_line(remaining_text),
+                "tail_line_status": _tail_line_status(remaining_text),
                 "next_line_starts_with_avoided_char": bool(
                     remaining_text and remaining_text[0] in JAPANESE_AVOID_LINE_START
                 ),
@@ -1549,44 +1617,85 @@ def _build_wrap_candidates(
     return candidates
 
 
-def _select_wrap_candidate(candidates: list[dict[str, Any]]) -> tuple[dict[str, Any], bool]:
+def _select_wrap_candidate(
+    candidates: list[dict[str, Any]],
+) -> tuple[dict[str, Any], bool, bool]:
     greedy = max(candidates, key=lambda candidate: (candidate["break_index"], candidate["measured_width"]))
     near_limit_start = max(1, greedy["break_index"] - max(3, round(greedy["break_index"] * 0.25)))
     near_limit = [candidate for candidate in candidates if candidate["break_index"] >= near_limit_start]
     pool = near_limit or candidates
 
-    non_orphan = [
+    clean_near_limit = [
         candidate
         for candidate in pool
         if not candidate["would_leave_one_character_orphan"]
         and not candidate["next_line_starts_with_avoided_char"]
+        and not candidate["would_leave_suspicious_tail_line"]
     ]
-    if not non_orphan:
-        non_orphan = [
+    if clean_near_limit:
+        selected = max(
+            clean_near_limit,
+            key=lambda candidate: (
+                candidate["priority"],
+                candidate["break_index"],
+                candidate["measured_width"],
+            ),
+        )
+    else:
+        clean_anywhere = [
             candidate
             for candidate in candidates
             if not candidate["would_leave_one_character_orphan"]
             and not candidate["next_line_starts_with_avoided_char"]
+            and not candidate["would_leave_suspicious_tail_line"]
         ]
-    if not non_orphan:
-        non_orphan = [candidate for candidate in pool if not candidate["would_leave_one_character_orphan"]]
-    if not non_orphan:
-        non_orphan = candidates
+        if clean_anywhere:
+            selected = max(
+                clean_anywhere,
+                key=lambda candidate: (
+                    candidate["break_index"],
+                    candidate["priority"],
+                    candidate["measured_width"],
+                ),
+            )
+        else:
+            non_orphan = [
+                candidate
+                for candidate in pool
+                if not candidate["would_leave_one_character_orphan"]
+                and not candidate["next_line_starts_with_avoided_char"]
+            ]
+            if not non_orphan:
+                non_orphan = [
+                    candidate
+                    for candidate in candidates
+                    if not candidate["would_leave_one_character_orphan"]
+                    and not candidate["next_line_starts_with_avoided_char"]
+                ]
+            if not non_orphan:
+                non_orphan = [candidate for candidate in pool if not candidate["would_leave_one_character_orphan"]]
+            if not non_orphan:
+                non_orphan = candidates
 
-    selected = max(
-        non_orphan,
-        key=lambda candidate: (
-            candidate["priority"],
-            candidate["break_index"],
-            candidate["measured_width"],
-        ),
-    )
+            selected = max(
+                non_orphan,
+                key=lambda candidate: (
+                    candidate["priority"],
+                    candidate["break_index"],
+                    candidate["measured_width"],
+                ),
+            )
     prevented_orphan = (
         greedy["would_leave_one_character_orphan"]
         and not selected["would_leave_one_character_orphan"]
         and selected["break_index"] != greedy["break_index"]
     )
-    return selected, prevented_orphan
+    prevented_suffix_tail = (
+        greedy["would_leave_suspicious_tail_line"]
+        and not selected["would_leave_suspicious_tail_line"]
+        and selected["break_index"] != greedy["break_index"]
+    )
+    return selected, prevented_orphan, prevented_suffix_tail
 
 
 def _classify_japanese_break(text: str, break_index: int) -> tuple[str, int]:
@@ -1607,6 +1716,37 @@ def _classify_japanese_break(text: str, break_index: int) -> tuple[str, int]:
 
 def _visible_char_count(text: str) -> int:
     return sum(1 for char in text if not char.isspace())
+
+
+def _tail_core(text: str) -> str:
+    return "".join(
+        char
+        for char in text.strip()
+        if not char.isspace() and char not in JAPANESE_TAIL_PUNCTUATION
+    )
+
+
+def _is_suspicious_tail_line(text: str) -> bool:
+    core = _tail_core(text)
+    if not core:
+        return bool(text.strip())
+    if core in JAPANESE_SUSPICIOUS_TAIL_CORES:
+        return True
+    if core.endswith("ます") and _visible_char_count(core) <= 3:
+        return True
+    if core.endswith("です") and _visible_char_count(core) <= 3:
+        return True
+    return False
+
+
+def _tail_line_status(text: str) -> str:
+    return "suspicious_suffix_tail" if _is_suspicious_tail_line(text) else "ok"
+
+
+def _suspicious_tail_lines(lines: list[str]) -> list[str]:
+    if len(lines) < 2:
+        return []
+    return [line for line in lines[1:] if _is_suspicious_tail_line(line)]
 
 
 def _text_size(*, draw, text: str, font, spacing: int, stroke_width: int) -> tuple[int, int]:
@@ -2013,7 +2153,14 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   safe-area rectangle is measured readback.</p>
   <p class="notice">visible element authority is explicit: SPK/A/B badges are
   placeholder speaker badges only, real face icons are unavailable to this
-  spike, and decorative or visual-guide elements are not production design.</p>
+  spike, real face icon asset intake is a separate future slice, and decorative
+  or visual-guide elements are not production design.</p>
+  <p class="notice">mode semantics: dialogue_badge_left is for normal
+  speaker-identified dialogue; bottom_center_emphasis is for emphasized dialogue
+  or a strong one-liner; reaction_caption is for punchline, surprise, or instant
+  reaction such as 来ねぇ！！; speaker_badge_stack is comparison-only placeholder
+  stack work for future multi-speaker face-icon/nameplate design. Repeated text
+  across modes is intentional comparison, not a universal style rule.</p>
   <p class="notice">clean samples and guide overlay samples are separate. Guide
   overlays use center lines, safe-area readback, subtitle baseline guides,
   badge/icon slot guides, and bbox overlays only as labeled review aids; they
@@ -2021,8 +2168,8 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   <p class="notice">Japanese wrapping uses
   {html.escape(JAPANESE_WRAP_ALGORITHM)}. Candidate punctuation, particle, and
   phrase boundaries are considered only when the candidate line passes
-  font/bbox pixel measurement, and one-character orphan prevention is recorded
-  per sample.</p>
+  font/bbox pixel measurement; one-character orphan prevention and suffix-tail
+  prevention are recorded per sample.</p>
   <h2>Visible Element Authority</h2>
   <pre>{html.escape(json.dumps(report["visible_element_authority_classes"], ensure_ascii=False, indent=2))}</pre>
   <table>
@@ -2039,6 +2186,8 @@ def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None
   <pre>{html.escape(json.dumps(report["grid_readback"], ensure_ascii=False, indent=2))}</pre>
   <h2>Mode Decision</h2>
   <pre>{html.escape(json.dumps(report["mode_decision"], ensure_ascii=False, indent=2))}</pre>
+  <h2>Mode Semantics</h2>
+  <pre>{html.escape(json.dumps(report["mode_semantics"], ensure_ascii=False, indent=2))}</pre>
   <h2>Renderer Decision Matrix</h2>
   <table>
     <thead>
@@ -2069,6 +2218,9 @@ def _sample_readback_for_html(sample: dict[str, Any]) -> dict[str, Any]:
         "candidate_breaks": sample["candidate_breaks"],
         "selected_break_reason": sample["selected_break_reason"],
         "orphan_prevention_applied": sample["orphan_prevention_applied"],
+        "suffix_tail_prevention_applied": sample["suffix_tail_prevention_applied"],
+        "suspicious_tail_line_present": sample["suspicious_tail_line_present"],
+        "suspicious_tail_lines": sample["suspicious_tail_lines"],
         "measured_width_by_line": sample["measured_width_by_line"],
         "font_family": sample["font_family"],
         "font_file_status": sample["font_file_status"],
