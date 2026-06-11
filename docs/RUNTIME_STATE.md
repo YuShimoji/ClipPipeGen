@@ -11,12 +11,11 @@ instructions.
 
 - date: 2026-06-11 JST
 - latest pushed implementation resume point before this handoff refresh:
-  `1f63a23 feat: refine Japanese subtitle suffix wrapping`. This is the pushed
-  subtitle suffix-tail wrapping and report-surface clarification state after
-  the grid authority audit, visible element authority guardrail, guide overlay
-  split, bbox-provenance readback, local HTML image path audit, font-bbox
-  wrapping carry-over, and suffix-tail refinement. A later docs-only handoff
-  refresh may be the newest commit; on another terminal, use
+  `87eba6a docs: record cut003 diagnostic readability acceptance`. This is the
+  pushed state that records the limited cut_003 diagnostic burned-in proof
+  readability acceptance after the suffix-tail wrapping and report-surface
+  clarification work. A later docs-only handoff refresh may be the newest
+  commit; on another terminal, use
   `git log -1 --oneline --decorate` for the exact pulled HEAD.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
@@ -65,6 +64,17 @@ instructions.
   Rights approval requires explicit rights/material-use clearance.
   Publishing/public-use permission requires both production acceptance and
   rights approval.
+- latest representative subtitle design review start:
+  [REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md](REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md)
+  records the first cross-scene diagnostic subtitle design readback. The
+  selected representative targets are `cut_002` as the kept comparison target,
+  `cut_003` as the accepted diagnostic baseline, and `cut_008` as the dense
+  needs-adjustment stress target. Existing artifacts are enough to start the
+  review and identify blockers, but not enough to say the current
+  `jp_clip_dialogue_badge_left_v0` contract is stable beyond `cut_003`.
+  `cut_002` lacks current detailed overlay proof/readback for this contract,
+  and `cut_008` is blocked by `needs_adjustment` plus missing proof. No
+  proof/render artifact was regenerated for this docs slice.
 - latest subtitle_style_spike review surface state:
   `1a9410d fix: clarify subtitle spike grid authority` confirms the old grid
   was visual-only, removes default grid lines from human samples, and exposes

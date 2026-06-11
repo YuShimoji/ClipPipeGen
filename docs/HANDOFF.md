@@ -10,10 +10,10 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest pushed sync point before this acceptance readback refresh:
-  `1f63a23 feat: refine Japanese subtitle suffix wrapping`; after pulling from
-  another terminal, run `git log -1 --oneline --decorate` because this docs-only
-  handoff refresh may be newer.
+- Latest pushed sync point before this representative subtitle design readback
+  refresh: `87eba6a docs: record cut003 diagnostic readability acceptance`;
+  after pulling from another terminal, run `git log -1 --oneline --decorate`
+  because this docs-only handoff refresh may be newer.
 - Latest subtitle_style_spike review-surface hardening: the renderer spike is
   now guarded against false visual authority. `1a9410d` closes the grid audit
   with `grid_model=none`, `snap_to_grid=false`,
@@ -57,6 +57,17 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
   Rights approval requires explicit rights/material-use clearance.
   Publishing/public-use permission requires both production acceptance and
   rights approval.
+- Latest representative subtitle design review start:
+  [REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md](REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md)
+  selects `cut_002`, `cut_003`, and `cut_008` as the smallest representative
+  set. `cut_003` remains the accepted diagnostic baseline only. `cut_002` is a
+  kept comparison target, but current artifacts do not yet contain a detailed
+  `jp_clip_dialogue_badge_left_v0` overlay proof/readback for it. `cut_008` is
+  the dense subtitle stress target, but it is blocked by `needs_adjustment` and
+  missing representative proof. The current contract is therefore not yet
+  proven stable across more than `cut_003`, and
+  `production_subtitle_design_acceptance=false` remains active. No ignored
+  proof/render artifact was regenerated in this docs readback slice.
 - Latest local proxy decision handoff: ignored `cut_002_cut_003_text_proxy_review.json` / `.html`, `cut_002_cut_003_operator_proxy_decision_handoff.json` / `.html`, and scoped `chapter_revision_patch.cut_002_cut_003_proxy.template.json` / `.csv` exist. Source media is available from `material_ledger.json` material paths. The regenerated handoff reads `visual_proof_status=available_requires_human_review`; `proxy_decision` now includes `proceed_with_limitations` for candidate routing with visible limitations/watch items; templates remain blank/default. The accepted filled operator patch is stored separately as `chapter_revision_patch.cut_002_cut_003_proxy.operator.json` / `.operator.csv` / `.operator.html` and is the current local decision authority for cut_003; `cut_003` retained context risk remains active.
 - Latest boundary recommendation applier: `ED-10e` adds `apply-boundary-recommendation`, which validates an operator-owned boundary recommendation against `edit_pack.json` and writes a dry-run/blocking/apply receipt. Mutation remains explicit only: `--apply --overlap-policy shrink_or_split_cut_004 --transcript`. The current same-machine ignored JP-Pilot edit_pack has applied `cut_003` `22.606 -> 49.566`, shrunk `cut_004` to `50.868 -> 60.277`, moved `sub_025..sub_029` to `cut_003`, and kept `sub_030` on `cut_004`. Transcript, official subtitle evidence, source media, typography, proof, and render were not mutated.
 - Latest local downstream refresh after ED-10e: the same-machine ignored artifact set now has regenerated context/review/evidence/decision/chapter/proxy/NLE readbacks for the applied `cut_003` boundary. `cut_003` is `22.606 -> 49.566`, owns `seg_000010..seg_000029` and `sub_010..sub_029`, and remains `context_status=needs_review` / `retained_context_risk=true` / `final_cut_decision=keep`. `cut_004` is `50.868 -> 60.277`, owns `seg_000030..seg_000034` and `sub_030..sub_034`, remains `final_cut_decision=needs_adjustment`, and keeps `resegmentation_target=true`. The ED-06 NLE export has been regenerated and its CSV/report title/reason now matches these current ranges after an ignored-only `edit_pack.reason` cleanup.
@@ -86,8 +97,9 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
   explicit rights/material-use clearance exists. These answers must not be
   inferred from the current cut_003 diagnostic proof.
 - JP-Pilot-01 rights note: the ignored episode now has source / talent / disclosure readback and no schema issues, but rights approval remains pending and publishing / production acceptance is still out of scope.
-- Current pushed implementation resume point before this acceptance readback
-  refresh: `1f63a23 feat: refine Japanese subtitle suffix wrapping`, with
+- Current pushed implementation resume point before this representative
+  subtitle design readback refresh:
+  `87eba6a docs: record cut003 diagnostic readability acceptance`, with
   `HEAD`, `origin/main`, and `origin/HEAD` aligned in this workspace before this
   docs refresh. A later docs-only handoff commit may be newest; use
   `git log -1 --oneline --decorate` after pulling for the exact current HEAD.
