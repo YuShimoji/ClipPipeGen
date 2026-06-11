@@ -64,17 +64,24 @@ instructions.
   Rights approval requires explicit rights/material-use clearance.
   Publishing/public-use permission requires both production acceptance and
   rights approval.
-- latest representative subtitle design review start:
+- latest representative subtitle design review / kept-cut Verify:
   [REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md](REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md)
-  records the first cross-scene diagnostic subtitle design readback. The
-  selected representative targets are `cut_002` as the kept comparison target,
-  `cut_003` as the accepted diagnostic baseline, and `cut_008` as the dense
-  needs-adjustment stress target. Existing artifacts are enough to start the
-  review and identify blockers, but not enough to say the current
-  `jp_clip_dialogue_badge_left_v0` contract is stable beyond `cut_003`.
-  `cut_002` lacks current detailed overlay proof/readback for this contract,
-  and `cut_008` is blocked by `needs_adjustment` plus missing proof. No
-  proof/render artifact was regenerated for this docs slice.
+  records the first cross-scene diagnostic subtitle design readback and the
+  follow-up combined kept-cut Verify. The selected representative targets
+  remain `cut_002` as the kept comparison target, `cut_003` as the accepted
+  diagnostic baseline, and `cut_008` as the dense needs-adjustment stress
+  target. The current same-machine ignored proof now has a Pillow-enabled
+  combined `subtitle_overlay_visual_proof_report.*` for `cut_002` and
+  `cut_003`, with `target_cuts=[cut_002, cut_003]`, `all_target_cuts_have_overlay=true`,
+  `jp_clip_dialogue_badge_left_v0`, `ffmpeg_subtitles_filter_ass`, explicit ASS
+  line breaks, font-bbox wrapping readback, visible `renderer_gap`,
+  `production_candidate=false`, `rights_status=pending`, and
+  `production_subtitle_design_acceptance=false`. This makes the current
+  subtitle contract representative-review-ready for the already-kept proof
+  surfaces `cut_002` and `cut_003` only. `cut_008` remains blocked by
+  `needs_adjustment` plus missing proof, and production subtitle design
+  acceptance still requires explicit human design acceptance plus dense/stress
+  evidence.
 - latest subtitle_style_spike review surface state:
   `1a9410d fix: clarify subtitle spike grid authority` confirms the old grid
   was visual-only, removes default grid lines from human samples, and exposes

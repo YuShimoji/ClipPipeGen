@@ -9,18 +9,28 @@ quality, rights, publishing, or public use.
 
 ## Route
 
-The selected route is docs/readback only. Existing artifacts were sufficient to
+The first route was docs/readback only: existing artifacts were sufficient to
 choose representative targets and identify blockers, but not sufficient to say
-that the current subtitle presentation contract is stable across more than
-`cut_003`.
+that the current subtitle presentation contract was stable beyond `cut_003`.
 
-No proof or render was regenerated in this slice. The established
-`build-subtitle-overlay-visual-proof` command writes the shared
-`subtitle_overlay_visual_proof_report.*` and updates
-`representative_visual_proof_report.*`; running it for `cut_002` alone would
-replace the current report target from `cut_003` to `cut_002`. A regeneration
-slice should therefore be explicit about whether it is producing a fresh
-combined `cut_002` / `cut_003` representative proof surface.
+The follow-up Verify route regenerated the shared
+`subtitle_overlay_visual_proof_report.*` and refreshed
+`representative_visual_proof_report.*` explicitly for combined targets
+`cut_002` and `cut_003`. The useful command is:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
+The generated artifacts remain ignored local diagnostic proof only. The
+Pillow-enabled run is required for current font-bbox wrapping readback; running
+without Pillow falls back and does not preserve the accepted suffix-tail
+readback.
 
 ## Inputs Read
 
@@ -45,19 +55,21 @@ All `episodes/` files are ignored local artifacts and must remain untracked.
 
 | target | why selected | review purpose | current evidence | design-review state |
 |---|---|---|---|---|
-| `cut_002` | kept comparison cut with `context_status=passed` and a short subtitle surface | dialogue readability, safe area / position, timing impression, comparison against the accepted `cut_003` baseline | `representative_visual_proof_report.json` has `visual_proof_status=available_requires_human_review` and `visual_proof_cut_002.png` exists | eligible as a comparison target, but blocked for current-contract stability because there is no current `jp_clip_dialogue_badge_left_v0` detailed overlay proof/readback for this cut |
-| `cut_003` | accepted diagnostic baseline and current target in `SUBTITLE_PRESENTATION_CONTRACT.md` | dialogue readability, speaker badge fallback, line wrapping / suffix-tail behavior, safe area / position, timing impression, response/referral block coverage | `subtitle_overlay_visual_proof_report.json` targets `cut_003`, range `22.606 -> 49.566`, `sub_010..sub_029`, `jp_clip_dialogue_badge_left_v0`, explicit ASS line breaks, `renderer_gap` visible | accepted only as `diagnostic_subtitle_wrapping_readability_acceptance=true` for current diagnostic proof readability; not production design |
+| `cut_002` | kept comparison cut with `context_status=passed` and a short subtitle surface | dialogue readability, safe area / position, timing impression, comparison against the accepted `cut_003` baseline | combined `subtitle_overlay_visual_proof_report.json` targets `cut_002` and `cut_003`; `cut_002` has `jp_clip_dialogue_badge_left_v0`, `ffmpeg_subtitles_filter_ass`, font-bbox wrapped lines, resolved PNG/MP4/sample links, `renderer_gap` visible | representative-review-ready as a diagnostic comparison target only; not production design |
+| `cut_003` | accepted diagnostic baseline and current target in `SUBTITLE_PRESENTATION_CONTRACT.md` | dialogue readability, speaker badge fallback, line wrapping / suffix-tail behavior, safe area / position, timing impression, response/referral block coverage | combined `subtitle_overlay_visual_proof_report.json` targets `cut_003`, range `22.606 -> 49.566`, `sub_010..sub_029`, response/referral block `sub_025..sub_029`, `jp_clip_dialogue_badge_left_v0`, explicit ASS line breaks, `renderer_gap` visible | accepted only as `diagnostic_subtitle_wrapping_readability_acceptance=true` for current diagnostic proof readability; not production design |
 | `cut_008` | current `needs_adjustment` dense-subtitle stress case: 33 subtitles, high subtitle density, current decision packet says split or rewrite before production-adjacent acceptance | reading load, line wrapping pressure, safe area under density, timing impression | current decision/readback exists, but no current subtitle-overlay proof for this contract | blocked before design review by `needs_adjustment` state and missing representative proof; use only to define the next adjustment/proof prerequisite |
 
 ## Review Readback
 
-The current subtitle presentation contract is not yet proven stable across
-representative scenes. The only current detailed proof for
-`jp_clip_dialogue_badge_left_v0` is `cut_003`.
+The current subtitle presentation contract is representative-review-ready for
+the already-kept diagnostic proof surfaces `cut_002` and `cut_003` only. This
+means the operator can now compare the current `badge_left_dialogue` contract
+across the short kept comparison cut and the accepted diagnostic baseline
+without regenerating another proof.
 
-`badge_left_dialogue` is sufficiently reviewable on `cut_003` for diagnostic
-readability only. It is not yet cross-cut stable because `cut_002` lacks a
-current detailed overlay proof with the same contract candidate.
+`badge_left_dialogue` is sufficiently represented for diagnostic review on
+`cut_002` and `cut_003`. It is not yet production-accepted and is not proven
+for dense or needs-adjustment cuts.
 
 `bottom_center_emphasis` and `reaction_caption` remain supported/defined modes,
 but they are not accepted design modes from the current representative proof
@@ -90,11 +102,16 @@ or a deliberately diagnostic proof is requested with the limitation visible.
 ## Limitation-Lift Evidence Still Required
 
 To lift `production_subtitle_design_acceptance=false`, the next evidence must
-include representative subtitle design review across relevant cuts/scenes with
-current-contract proof/readback for at least:
+include human representative subtitle design review across relevant cuts/scenes.
+Current-contract proof/readback now exists for:
 
-- a kept comparison cut such as `cut_002`
-- the accepted baseline `cut_003`
+- kept comparison `cut_002`
+- accepted diagnostic baseline `cut_003`
+
+Still missing before production subtitle design acceptance can be lifted:
+
+- an explicit human design acceptance decision, not only parser/readback
+  verification
 - a dense or otherwise stressful subtitle surface after its cut-adjustment
   state is explicitly handled
 
@@ -104,10 +121,9 @@ selection, safe area, line wrapping, timing impression, and the visible
 
 ## Smallest Next Slice
 
-The narrowest next proof route is a deliberate Verify slice that regenerates a
-fresh combined diagnostic subtitle-overlay proof for `cut_002` and `cut_003`
-under the current contract, then parses JSON/HTML and re-reads both cuts as one
-representative surface. That slice should keep `episodes/` ignored, preserve
-all production/public flags as false or pending, and explicitly report whether
-the refreshed `cut_003` proof is still the same human-reviewed baseline or a
-new proof requiring re-review.
+The narrowest next action is human visual review of the combined `cut_002` /
+`cut_003` diagnostic proof surface. Keep the decision limited to subtitle
+design/readability review and keep production/public flags false or pending.
+
+The next proof expansion, if needed, is a separate `cut_008` adjustment/stress
+route after its `needs_adjustment` state is explicitly handled.
