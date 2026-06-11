@@ -11,11 +11,12 @@ instructions.
 
 - date: 2026-06-11 JST
 - latest pushed implementation resume point before this handoff refresh:
-  `87afbfd docs: note local subtitle report image paths`. This is the pushed
-  subtitle_style_spike review-surface hardening state after the grid authority
-  audit, visible element authority guardrail, guide overlay split,
-  bbox-provenance readback, and local HTML image path audit. A later docs-only
-  handoff refresh may be the newest commit; on another terminal, use
+  `1f63a23 feat: refine Japanese subtitle suffix wrapping`. This is the pushed
+  subtitle suffix-tail wrapping and report-surface clarification state after
+  the grid authority audit, visible element authority guardrail, guide overlay
+  split, bbox-provenance readback, local HTML image path audit, font-bbox
+  wrapping carry-over, and suffix-tail refinement. A later docs-only handoff
+  refresh may be the newest commit; on another terminal, use
   `git log -1 --oneline --decorate` for the exact pulled HEAD.
 - verified base before this refresh:
   origin/main parity in this workspace before this handoff refresh.
@@ -41,6 +42,29 @@ instructions.
   speaker identity design. The regenerated ignored artifacts remain local
   review-only evidence; production subtitle design/render, creative, rights,
   publishing, and public-use acceptance remain unaccepted.
+- latest limited human acceptance:
+  human review accepted the current `cut_003` diagnostic burned-in subtitle
+  proof readability baseline for diagnostic review only. Record this as
+  `diagnostic_subtitle_wrapping_readability_acceptance=true` for `cut_003`.
+  The accepted scope is limited to the current cut_003 diagnostic burned-in
+  proof readability, covering wrapping/readability/safe-area/timing impression
+  at the diagnostic proof level. It does not accept production subtitle design,
+  production render, creative quality, rights approval, publishing, or public
+  use. The boundary flags remain
+  `production_subtitle_design_acceptance=false`,
+  `production_render_acceptance=false`, `creative_acceptance=false`,
+  `rights_status=pending`, `production_candidate=false`,
+  `production_usage_allowed=false`, `publishing_acceptance=false`, and
+  `public_use_permission=false`.
+- limitation-lift conditions after the diagnostic acceptance:
+  production subtitle design acceptance requires representative subtitle design
+  review across relevant cuts/scenes, including font, size, outline, color,
+  speaker identity, mode selection, and safe area. Production render acceptance
+  requires final render-path output review, not only diagnostic proof. Creative
+  acceptance requires whole-video or representative-sequence editorial review.
+  Rights approval requires explicit rights/material-use clearance.
+  Publishing/public-use permission requires both production acceptance and
+  rights approval.
 - latest subtitle_style_spike review surface state:
   `1a9410d fix: clarify subtitle spike grid authority` confirms the old grid
   was visual-only, removes default grid lines from human samples, and exposes
@@ -70,23 +94,26 @@ instructions.
   mutation, official subtitle evidence mutation, source media mutation,
   production subtitle design acceptance, production render acceptance,
   creative acceptance, rights approval, publishing acceptance, or public-use
-  permission has been added. `production_candidate=false`,
-  `rights_status=pending`, `production_usage_allowed=false`, and
+  permission has been added. The only new acceptance is
+  `diagnostic_subtitle_wrapping_readability_acceptance=true` for the current
+  cut_003 diagnostic burned-in proof readability baseline.
+  `production_candidate=false`, `rights_status=pending`,
+  `production_usage_allowed=false`, and
   `production_subtitle_design_acceptance=false` remain active.
 - latest implementation post-push sync validation:
-  2026-06-10 JST local readback before this handoff refresh:
+  2026-06-11 JST local readback before this acceptance readback refresh:
   `git status --short --branch` -> `## main...origin/main`;
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
   `git log -1 --oneline --decorate` ->
-  `87afbfd (HEAD -> main, origin/main, origin/HEAD) docs: note local subtitle report image paths`;
+  `1f63a23 (HEAD -> main, origin/main, origin/HEAD) feat: refine Japanese subtitle suffix wrapping`;
   `git ls-files episodes` empty. Targeted validation across the recent subtitle
-  spike changes included `uvx --with pillow pytest -q
-  tests/test_subtitle_style_spike.py` -> 2 passed, `uvx pytest -q
-  tests/test_subtitle_style_spike.py -rs` -> 1 passed / 1 intentional Pillow
-  skip, `git diff --check` clean, and JSON/HTML readbacks confirming visible
-  element authority, placeholder badge labeling, guide overlay separation,
-  bbox provenance, deterministic measurement output, and local image refs.
-  Ignored generated artifacts under `episodes/` and `_tmp/` were not staged.
+  spike and overlay proof changes included `uvx --with pillow pytest -q
+  tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py
+  -rs` -> 10 passed, `git diff --check` clean before this docs refresh, and
+  JSON/HTML readbacks confirming explicit ASS line breaks, suffix-tail
+  prevention, no one-character orphan lines, placeholder badge labeling, and
+  visible `renderer_gap`. Ignored generated artifacts under `episodes/` and
+  `_tmp/` were not regenerated or staged by this docs refresh.
 - previous pushed resume point:
   `f6fcf5b feat: add subtitle typography measurement spike`
 - latest resume-surface sync validation:
@@ -163,26 +190,16 @@ instructions.
   proof path; Pillow/PNG is review-only measurement support and is not claimed
   to match YMM4, Premiere, ASS, or FFmpeg production rendering.
 - next human review prompt:
-  open the local file directly from the filesystem, not through a translation
-  proxy or web-hosted viewer:
-  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_style_spike/subtitle_style_spike_report.html`
-  First confirm the sibling PNG images render. Then review clean samples and
-  explicit guide-overlay samples separately: the clean samples should not carry
-  visual-only aids, while the guide-overlay samples may show safe-area/text-bbox
-  aids only with authority labels and readback. Decide whether the current
-  guides are helpful for subtitle placement / future face-icon work without
-  implying layout authority. Only after that, choose the next narrow route:
-  Japanese font-aware wrapping refinement, or port the same authority/provenance
-  guardrail into `subtitle_overlay_visual_proof`. For the existing cut_003
-  burned-in proof, open
-  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`
-  with player subtitle tracks disabled. Judge only the embedded burned-in
-  subtitle. Answer whether the speaker-badge fallback plus left-aligned large
-  subtitle is acceptable for diagnostic review, whether real face icons are
-  required before the next candidate, whether text size/outline/position are
-  readable enough for YouTube-style review, and whether the response/referral
-  sample coverage is acceptable. Keep production subtitle design/render,
-  creative, rights, publishing, and public-use acceptance unaccepted.
+  the current cut_003 diagnostic burned-in proof readability baseline is
+  accepted for diagnostic review only, so do not re-collect the same
+  speaker-badge/readability/safe-area/timing baseline decision unless the proof
+  changes. The next answers to collect are limitation-lift decisions: whether
+  representative subtitle design across relevant cuts/scenes is accepted,
+  including font, size, outline, color, speaker identity, mode selection, and
+  safe area; whether final render-path output is accepted; whether whole-video
+  or representative-sequence editorial quality is accepted; and whether
+  explicit rights/material-use clearance exists. Publishing/public-use
+  permission requires both production acceptance and rights approval.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:

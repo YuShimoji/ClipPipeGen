@@ -135,6 +135,29 @@ accept or require that path in the current slice.
 - animated subtitle motion
 - production safe-area and typography polish
 
+## Current Cut_003 Diagnostic Acceptance
+
+Human review accepted only the current `cut_003` diagnostic burned-in proof
+readability baseline. Record this as
+`diagnostic_subtitle_wrapping_readability_acceptance=true` for `cut_003`.
+
+The accepted scope is limited to current cut_003 diagnostic burned-in proof
+readability. It covers the current diagnostic proof's
+wrapping/readability/safe-area/timing impression only, and it does not approve
+production subtitle design, production render, creative quality, rights,
+publishing, or public use.
+
+The production/public boundary remains:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## Review And Non-Acceptance
 
 Reports must use subtitle-bearing sample frames, including early, middle,
@@ -144,8 +167,27 @@ The report must keep these states false or pending until a separate acceptance
 slice explicitly changes them:
 
 - `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
 - `production_candidate=false`
 - `rights_status=pending`
 - `production_usage_allowed=false`
-- creative acceptance is not granted
-- publishing or public-use permission is not granted
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+## Limitation-Lift Conditions
+
+Production subtitle design acceptance requires representative subtitle design
+review across relevant cuts/scenes, including font, size, outline, color,
+speaker identity, mode selection, and safe area.
+
+Production render acceptance requires final render-path output review, not only
+diagnostic proof.
+
+Creative acceptance requires whole-video or representative-sequence editorial
+review.
+
+Rights approval requires explicit rights/material-use clearance.
+
+Publishing/public-use permission requires both production acceptance and rights
+approval.
