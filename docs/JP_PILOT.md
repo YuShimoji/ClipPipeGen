@@ -117,17 +117,18 @@ diagnostic render は local review evidence として有用だが、production r
 |---|---|---|---|
 | speed-first candidate seed decision | R3 は 9 selected cuts、context 3 passed / 6 needs_review、全件 `accept_candidate` seed として通過 | production acceptance ではなく sample expansion の速度優先判断 | `cut_decision_speed_pass.html` で needs_review retained risk を確認する |
 | regenerated render comparison | SHA-256 は既存 local artifact の同一性確認には使えるが、再 render は環境差で byte-exact にならない可能性がある | exact / approximate の受入基準が未定 | candidate seed が見えてから Verify slice で metadata approximate を定義する |
-| production subtitle/render acceptance | 公式字幕は artifact に戻ったが、diagnostic render と production candidate の境界は未定 | typography / safe-area / full render policy が未定 | candidate seed 後に production subtitle/render acceptance を切る |
+| limitation-lift slices | 公式字幕は artifact に戻ったが、diagnostic render と production candidate の境界は未定 | representative subtitle design、final render-path output、editorial quality、rights clearance を分けて扱う必要がある | candidate seed 後に 1 つの narrow slice として選ぶ |
 | rights approval path | rights status は `pending` | production/public 利用不可 | production/public 利用前に別 slice として rights approval path を整理する |
 | Publishing / OAuth / visibility | PB / INT-01 は proposed | 認証・API 契約・公開判断が必要 | rights と production acceptance が揃うまで着手しない |
 
 ## 次の取っ掛かり
 
-R3 speed-first decision 後の入口は、`Advance: production subtitle/render acceptance mini-slice` または `Verify: regenerated render comparison` が第一候補。公式字幕 track import と Non-Repo Artifact Handoff は閉じており、9 cuts は candidate seed として次工程へ流せる。ただし 6 件の context `needs_review` は retained risk であり、production / creative / publish acceptance ではない。
+R3 speed-first decision 後の入口は、current reviewability/readback を parser-first で確認したうえで、`Review: representative subtitle design`、`Verify: final render-path output / regenerated render comparison`、`Review: editorial representative-sequence quality`、`Clear Rights: rights/material-use approval path` のどれか 1 つを narrow slice として選ぶ。公式字幕 track import と Non-Repo Artifact Handoff は閉じており、9 cuts は candidate seed として次工程へ流せる。ただし 6 件の context `needs_review` は retained risk であり、production / creative / publish acceptance ではない。
 
 | 入口 | 何が軽くなるか | 選ぶと可能になること |
 |---|---|---|
-| Advance: production subtitle/render acceptance mini-slice | 9 candidate seeds を production 境界の検討へ移せる | typography / safe-area / full render policy と production_candidate 条件を定義できる |
+| Review: representative subtitle design | kept proof surfaces の字幕デザイン判断を production claims なしで進められる | font / size / outline / color / speaker identity / mode / safe area の人間判断を分離できる |
 | Verify: regenerated render comparison | 別端末・再生成時の hash 差分の扱いが明確になる | duration / resolution / codec / timeline refs / subtitle source refs / boundary flags の approximate 基準を決められる |
+| Review: editorial representative-sequence quality | 字幕デザインや render-path とは別に sequence value を確認できる | creative/editorial acceptance の前提を明確にできる |
 | Audit: retained context risk | speed-first で残した 6 件の `needs_review` を production 前に再確認できる | boundary adjustment が必要な cut を production acceptance 前に分離できる |
 | Clear Rights: rights approval path | rights pending のまま production/public 利用しない境界が明確になる | 公開・production 利用前の approval 条件を整理できる |

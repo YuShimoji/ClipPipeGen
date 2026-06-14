@@ -1,8 +1,8 @@
 """Final-cut decision packet generation for JP-Pilot R3.
 
 The packet narrows R3 selected cuts into keep / reject / needs_adjustment for
-the next production-adjacent slice. It is still not production acceptance,
-rights approval, publishing, or a render command.
+the next explicitly selected limitation-lift slice. It is still not production
+acceptance, rights approval, publishing, or a render command.
 """
 
 from __future__ import annotations
@@ -38,7 +38,7 @@ MANUAL_DECISIONS = {
         "manual_override_reason": (
             "context flag is caused by immediate following subtitle boundary; official subtitle track source, "
             "moderate subtitle density, and retained context risk visibility make it worth carrying to "
-            "production subtitle/render acceptance as a candidate, not as production-approved"
+            "a narrow limitation-lift slice as a candidate, not as production-approved"
         ),
     },
     "cut_004": {
@@ -162,11 +162,18 @@ def build_cut_decision_packet(
             "not_rights_approval": True,
         },
         "next_step": {
-            "recommended": "production_subtitle_render_acceptance",
+            "recommended": "select_narrow_limitation_lift_slice",
             "candidate_cut_ids": [d["cut_id"] for d in decisions if d["final_cut_decision"] == "keep"],
+            "separate_candidate_slices": [
+                "representative_subtitle_design_review",
+                "final_render_path_output_review",
+                "editorial_representative_sequence_review",
+                "rights_material_use_clearance",
+            ],
             "boundary": (
-                "Carry keep cuts into production subtitle/render acceptance as candidates only; "
-                "rights remain pending and production_candidate=false."
+                "Carry keep cuts into one explicit limitation-lift slice at a time; do not merge "
+                "representative subtitle design review, final render-path output review, editorial "
+                "review, or rights clearance. Rights remain pending and production_candidate=false."
             ),
         },
         "decisions": decisions,

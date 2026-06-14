@@ -210,13 +210,18 @@ instructions.
   the current cut_003 diagnostic burned-in proof readability baseline is
   accepted for diagnostic review only, so do not re-collect the same
   speaker-badge/readability/safe-area/timing baseline decision unless the proof
-  changes. The next answers to collect are limitation-lift decisions: whether
+  changes. The Agent should parse `status-episode` and the current
+  JSON/HTML/CSV/SRT readbacks before asking for human file inspection. If a
+  human visual check remains necessary, ask for the minimum file set,
+  preferably one file, with the exact question being answered. The next
+  answers to collect are separate limitation-lift decisions: whether
   representative subtitle design across relevant cuts/scenes is accepted,
   including font, size, outline, color, speaker identity, mode selection, and
   safe area; whether final render-path output is accepted; whether whole-video
   or representative-sequence editorial quality is accepted; and whether
-  explicit rights/material-use clearance exists. Publishing/public-use
-  permission requires both production acceptance and rights approval.
+  explicit rights/material-use clearance exists. Do not bundle these into one
+  production acceptance prompt. Publishing/public-use permission requires both
+  production acceptance and rights approval.
 - previous resume-surface cleanup:
   `f725197 docs: update runtime resume commit readback`
 - previous runtime docs refresh:
@@ -259,8 +264,13 @@ instructions.
   basename and the VLC sidecar warning remains present. This does not create
   production subtitle design acceptance, production render acceptance, creative
   acceptance, rights approval, or public-use permission. The single human
-  review entry point for this slice is
-  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`.
+  visual-review file for the current representative subtitle design slice,
+  after parser readback, is
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`;
+  the exact question is whether the current `cut_002` / `cut_003`
+  `badge_left_dialogue` diagnostic presentation is acceptable as
+  representative subtitle design evidence, while keeping production/public
+  flags false or pending.
 - latest local proxy decision handoff:
   ED-10d adds the tracked `build-operator-proxy-decision-handoff` CLI and
   generator. `cut_002` / `cut_003` now have ignored text/proxy review files,
@@ -327,19 +337,23 @@ instructions.
   response/referral block `sub_025..sub_029` included, and `sub_030` excluded.
   The taxonomy audit passed the required gates with
   `blocking_limitations=none_detected` for proof-level gates. Human review
-  accepted length and scene closure for diagnostic candidate review, but did
-  not accept production subtitle design/readability. Keep
+  accepted length and scene closure for diagnostic candidate review, and a
+  later review accepted current cut_003 diagnostic burned-in proof readability
+  only; neither acceptance lifts production subtitle design, production render,
+  creative, rights, publishing, or public-use boundaries. Keep
   [CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md](CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md)
   as the tracked audit-summary surface; the accepted filled decision itself is
   the ignored `.operator.*` patch, not the blank template.
-- current bottleneck: cut_003 boundary and operator decision remain closed, and
-  the separate Subtitle Design / Review UX diagnostic style probe is ready for
-  human readability review. The remaining decision is whether the embedded
-  burned-in subtitle inside the proof video is closer to YouTube-readable
-  review style than the previous small/movie-subtitle-like proof, while keeping
-  the reference SRT disabled as a player subtitle track. Rights remain pending,
-  production/public use remains disallowed, and production subtitle design
-  acceptance remains false until explicit human approval.
+- current bottleneck: cut_003 boundary, operator decision, and current
+  diagnostic burned-in proof readability are closed only for the diagnostic
+  baseline. The next work should choose one narrow limitation-lift slice:
+  representative subtitle design review for the current `cut_002` / `cut_003`
+  combined proof, final render-path output review, editorial representative
+  sequence review, or explicit rights/material-use clearance. `cut_008`
+  remains a dense/stress target only after its `needs_adjustment` route is
+  handled. Rights remain pending, production/public use remains disallowed, and
+  production subtitle design acceptance remains false until explicit human
+  approval.
 - reviewability rule: report `review_ready` only when the ignored R3 reports
   and representative visual proof artifacts are present in the current
   workspace. Fresh checkouts or workspaces missing ignored `episodes/`
@@ -585,14 +599,21 @@ Review focus:
 
 ## Next Actions
 
-1. Review: current R3 review-ready surface
-   - Open `cut_review_report.html` and `representative_visual_proof_report.html`
-     in this same-machine workspace.
-   - Confirm only local diagnostic readability / safe-area / line wrapping /
-     timing impressions.
+1. Audit: current reviewability and report readback
+   - Parse `status-episode` plus current JSON/HTML/CSV/SRT reports before
+     asking the operator to open files.
+   - If human visual inspection is needed, list the minimum file set and the
+     exact question. Do not ask the operator to hunt through generated
+     artifacts.
+2. Review: representative subtitle design for `cut_002` / `cut_003`
+   - Use the existing combined `subtitle_overlay_visual_proof_report.*` after
+     parser readback; regenerate only if target-cut coverage is missing.
+   - Ask only whether the current diagnostic `badge_left_dialogue` design
+     readback is acceptable as representative subtitle design evidence for the
+     kept proof surfaces.
    - Keep `rights=pending`, `production_candidate=false`, and
      `production_usage_allowed=false`.
-2. Advance: `cut_002` / `cut_003` operator proxy decision
+3. Advance: `cut_002` / `cut_003` operator proxy decision
    - `cut_002` is already in the candidate lane with
      `proxy_decision=proceed_with_limitations`; keep the long-line watch risk
      visible.
@@ -601,19 +622,22 @@ Review focus:
      `proxy_decision=proceed_with_limitations`,
      `context_risk_handling=keep_retained_risk_visible`; keep subtitle
      design/readability as a separate unaccepted limitation.
-3. Advance: adjustment loop for retained R3 cuts
+4. Advance: adjustment loop for retained R3 cuts
    - Use for `cut_004` through `cut_008`.
    - `cut_004` has been explicitly shrunk to start at `50.868s` and remains a
      resegmentation target before it can re-enter candidate status.
-4. Verify: regenerated render comparison
+5. Verify: final render-path output or regenerated render comparison
    - Use when a workspace must compare regenerated diagnostics to prior R3
      artifacts.
    - Define when exact SHA-256 matters and when metadata approximate comparison
      is acceptable.
-5. Clear Rights: rights approval path
+6. Review: editorial representative-sequence quality
+   - Keep this separate from subtitle design/readability and render-path
+     output acceptance.
+7. Clear Rights: rights approval path
    - Use before any production/public usage claim.
    - Keep this separate from local diagnostic success.
-6. Prepare: publishing / OAuth / thumbnail
+8. Prepare: YMM4/Premiere handoff, publishing / OAuth / thumbnail, or GUI work
    - Keep this later until production acceptance and rights are no longer
      pending.
 
@@ -636,12 +660,15 @@ step.
 1. Check whether the R3 review artifacts exist in the ignored `episodes/`
    directory.
 2. Report `review_ready` or `review_blocked_missing_artifacts` before listing
-   commands.
+   commands, and parse current report artifacts before asking the operator to
+   open files.
 3. Keep `rights=pending` and `production_candidate=false` visible.
 4. Do not classify final cuts without explicit operator instruction. The
    2026-05-30 speed-first instruction applies only to candidate seeds, not
    production-approved cuts.
-5. If the Chapter Revision Board exists, treat `script_override` as editorial
+5. If human inspection is required, list the minimum file set and exact
+   question being answered.
+6. If the Chapter Revision Board exists, treat `script_override` as editorial
    layer only and do not add source transcript mutation fields.
-6. Do not stage `episodes/`, source media, rendered video, subtitle payloads, or
+7. Do not stage `episodes/`, source media, rendered video, subtitle payloads, or
    other large local artifacts.

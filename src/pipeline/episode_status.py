@@ -280,13 +280,15 @@ def _operator_review_status(ep_dir: Path, base: Path, status: dict[str, Any]) ->
 
     if review_ready:
         next_human_action = (
-            "Open cut_review_report.html and respond in natural language with cut/context judgment."
+            "Parse current R3 JSON/HTML readbacks first; if a human visual judgment remains, "
+            "ask for one targeted cut/context inspection with the minimum report path and exact question."
         )
     elif blocked_by == "representative_visual_proof" and visual_proof.get("report_html_exists"):
         next_human_action = (
-            "Open representative_visual_proof_report.html for scoped cut_002/cut_003 "
-            "diagnostic visual inspection; do not treat cut_review_report.html as global "
-            "review-ready until the missing visual proof is resolved or waived."
+            "Parse representative_visual_proof_report.json first; if a human visual judgment remains, "
+            "ask for one targeted inspection of representative_visual_proof_report.html for scoped "
+            "cut_002/cut_003 diagnostic evidence only. Do not treat cut_review_report.html as global "
+            "review-ready until missing visual proof is resolved or waived."
         )
     else:
         next_human_action = (
@@ -438,7 +440,15 @@ def _final_cut_decision_status(ep_dir: Path, base: Path) -> dict[str, Any]:
         }
     summary = packet.get("summary") if isinstance(packet.get("summary"), dict) else {}
     keep_cut_ids = summary.get("keep_cut_ids") if isinstance(summary.get("keep_cut_ids"), list) else []
-    return {
+    raw_next_recommended_action = (packet.get("next_step") or {}).get("recommended")
+    next_recommended_action = raw_next_recommended_action
+    next_recommended_action_note = None
+    if raw_next_recommended_action == "production_subtitle_render_acceptance":
+        next_recommended_action = "select_narrow_limitation_lift_slice"
+        next_recommended_action_note = (
+            "legacy cut_decision_packet next_step wording normalized into separate limitation-lift slices"
+        )
+    result = {
         "state": "ready",
         "ready_for_next_acceptance_slice": bool(keep_cut_ids),
         "decision_scope": packet.get("decision_scope"),
@@ -449,8 +459,12 @@ def _final_cut_decision_status(ep_dir: Path, base: Path) -> dict[str, Any]:
         "reject_cut_ids": summary.get("reject_cut_ids") or [],
         "production_candidate": packet.get("production_candidate") is True,
         "rights_status": packet.get("rights_status") or "unknown",
-        "next_recommended_action": (packet.get("next_step") or {}).get("recommended"),
+        "next_recommended_action": next_recommended_action,
     }
+    if raw_next_recommended_action != next_recommended_action:
+        result["packet_next_recommended_action"] = raw_next_recommended_action
+        result["next_recommended_action_note"] = next_recommended_action_note
+    return result
 
 
 def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
@@ -468,8 +482,11 @@ def _choose_next_action(status: dict[str, Any]) -> dict[str, str]:
     if final_cut.get("state") == "ready" and final_cut.get("ready_for_next_acceptance_slice"):
         return {
             "owner": "assistant",
-            "action": "Start production subtitle/render acceptance for kept R3 candidate cuts",
-            "reason": "cut_decision_packet has keep candidates while production_candidate remains false",
+            "action": "Choose one narrow limitation-lift slice for kept R3 candidate cuts",
+            "reason": (
+                "separate representative subtitle design review, final render-path output review, "
+                "editorial sequence review, and rights clearance; production_candidate remains false"
+            ),
         }
     if not status["artifacts"]["rights_manifest"]["exists"]:
         return {

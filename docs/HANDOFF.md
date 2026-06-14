@@ -196,8 +196,8 @@ mutation field to the patch. The Agent must not invent creative intent or fill
 ## R3 Cut Decision Packet
 
 R3 Cut Decision Packet is the current bridge from broad candidate seeds to the
-next production-adjacent acceptance slice. It writes the final cut decision
-readback into ignored local artifacts:
+next explicitly selected limitation-lift slice. It writes the final cut
+decision readback into ignored local artifacts:
 
 ```text
 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_packet.json
@@ -218,7 +218,7 @@ Current R3 decision readback:
 
 | Cut group | State | Why it matters |
 |---|---|---|
-| `cut_001`, `cut_002`, `cut_003` | `keep` | These are the only candidate cuts to carry into production subtitle/render acceptance. |
+| `cut_001`, `cut_002`, `cut_003` | `keep` | These are the only candidate cuts to carry into the next selected limitation-lift slice. |
 | `cut_004`-`cut_008` | `needs_adjustment` | Context risk, boundary continuity, or subtitle density must be resolved before promotion. |
 | `cut_009` | `reject` | Short, dependent closing beat; not useful for this 1-3 candidate pass. |
 
@@ -511,7 +511,7 @@ JP-Pilot-01 is complete as a Japanese public VOD diagnostic. It reused the exist
 - Selected source: official hololive short anime `【アニメ】押忍！！ば～んちょ だじぇ！` at <https://www.youtube.com/watch?v=7J5aS_pcBj4>.
 - Ignored episode `episodes/jp_pilot01_hololive_bancho_20260525` generated `source_video.mp4`, `source.wav`, `transcript.json`, `edit_pack.json`, `renders/jp_pilot01_diagnostic_render/rendered_video.mp4`, and `exports/jp_pilot01/nle_cut_list.csv`.
 - Readback: 26 transcript segments, speech coverage about 51.4%, 6 selected cut candidates, 3 passed / 3 needs_review, 17 subtitle drafts, 6.6s 1080p diagnostic render, 6 NLE CSV rows, ledger audit ok.
-- The transcript is technically real but not creatively acceptable as-is. ED-09 added the review / correction entry point; JP-Pilot-01R proved a 7-segment corrected rerun; JP-Pilot-01R2 expanded coverage to accepted 25 / rejected 1 / unreviewed 0 and narrowed selected cuts to 10.86s-23.13s with all context checks passed. ED-10 / JP-Pilot-01R3 then imported the official subtitle track directly, producing 105 subtitle-track segments, 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s diagnostic render. The current bottleneck is final cut/context review and production subtitle/render acceptance for this captioned source.
+- The transcript is technically real but not creatively acceptable as-is. ED-09 added the review / correction entry point; JP-Pilot-01R proved a 7-segment corrected rerun; JP-Pilot-01R2 expanded coverage to accepted 25 / rejected 1 / unreviewed 0 and narrowed selected cuts to 10.86s-23.13s with all context checks passed. ED-10 / JP-Pilot-01R3 then imported the official subtitle track directly, producing 105 subtitle-track segments, 9 selected cuts, 105 subtitle drafts, NLE CSV 9 rows, and a 6.84s diagnostic render. The current bottleneck is parser-first reviewability/readback plus one explicitly selected limitation-lift slice for this captioned source.
 
 ## Production Gap Readback
 
@@ -845,31 +845,34 @@ yt-dlp remains inside `asset_fetch` source-audio/source-video URL fetch. FFmpeg 
 ## Recommended Next Slice
 
 Current recommendation after ED-10 / JP-Pilot-01R3 / SH-06 / ED-10b /
-ED-10c / OUT-01f and the scoped local visual-proof readback: in this current
-workspace, keep the global review gate closed until `visual_proof_cut_001.png`
-is restored/regenerated or explicitly waived. The scoped `cut_002` / `cut_003`
-overlay proof can still be inspected diagnostically before proxy decisions.
-Non-Repo Artifact Handoff remains infrastructure; it does not make
-`rendered_video.mp4` transferable by Git and it does not create production
-acceptance.
+ED-10c / OUT-01f and the kept-cut subtitle proof readback: in this current
+workspace, `status-episode` reports `operator_review.review_ready=true`, but
+that readiness depends on ignored local `episodes/` artifacts and must be
+rechecked on every restart. The Agent should parse `status-episode` and the
+current JSON/HTML/CSV/SRT readbacks before asking for human file inspection.
+If a visual check is still needed, ask for the minimum file set, preferably one
+file, with the exact question. Non-Repo Artifact Handoff remains
+infrastructure; it does not make `rendered_video.mp4` transferable by Git and
+it does not create production acceptance.
 
 | # | Candidate | Why now | Unblocks | Urgency |
 |:--:|---|---|---|:--:|
-| 1 | Resolve or waive: missing `visual_proof_cut_001.png` | This current workspace reports `review_blocked_missing_artifacts` | Opens the global R3 review gate only after regeneration or explicit waiver | Urgent |
-| 2 | Review: scoped `cut_002` / `cut_003` overlay proof | The scoped subtitle-overlay proof and handoff exist locally | Human can inspect diagnostic overlay readability without claiming acceptance | Urgent |
-| 3 | Advance: `cut_002` / `cut_003` proxy decision | The scoped handoff keeps operator fields blank / `undecided` | Machine-readable routing into subtitle, boundary, render plan, or NLMYTGen handoff work after visual inspection | Urgent |
-| 4 | Audit: needs_adjustment cuts | Five cuts are explicitly held back instead of silently discarded | Boundary/density fixes can be scoped without blocking the kept candidates | Medium |
-| 5 | Verify: regenerated render comparison | Fresh checkouts and transferred workspaces may regenerate non-byte-identical diagnostic renders | A rule for exact SHA-256 vs metadata approximate comparison | Medium |
-| 6 | Clear Rights: rights approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after creative/render acceptance exists | Medium |
+| 1 | Review: representative subtitle design for `cut_002` / `cut_003` | Combined subtitle-overlay proof exists locally for the kept comparison cut and accepted diagnostic baseline | Human can answer the narrow design/readability question without production acceptance claims | Urgent |
+| 2 | Audit: needs_adjustment / dense-stress route | `cut_008` is still the smallest dense stress target, but remains `needs_adjustment` | Defines whether a later stress proof is valid input to design acceptance | Medium |
+| 3 | Verify: final render-path output or regenerated render comparison | Diagnostic proof and final render-path output are separate | Defines exact SHA-256 versus metadata approximate criteria without making production claims | Medium |
+| 4 | Review: editorial representative-sequence quality | Creative/editorial acceptance is separate from subtitle design and render-path proof | Lets the operator judge sequence value without rights or production shortcutting | Medium |
+| 5 | Clear Rights: rights/material-use approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after production acceptance exists | Medium |
+| 6 | Prepare: YMM4/Premiere handoff, publishing/OAuth/thumbnail, or GUI work | These are downstream surfaces, not the current proof/readback slice | Keeps handoff and tooling work from mixing with acceptance decisions | Low |
 
 For the next human review, start with Reviewability as defined in
-`docs/OPERATOR_REVIEW_UX.md`. In the current workspace, `status-episode`
-reports `review_blocked_missing_artifacts` because `visual_proof_cut_001.png`
-is missing. Do not present `cut_review_report.html` as globally ready. Use
-`representative_visual_proof_report.html` only for the scoped `cut_002` /
-`cut_003` diagnostic overlay inspection before proxy decisions, then restore,
-regenerate, or explicitly waive `visual_proof_cut_001.png` before opening the
-global R3 review surface.
+`docs/OPERATOR_REVIEW_UX.md`, then parse the current report artifacts. For the
+representative subtitle design slice, the minimum visual file after parser
+readback is `subtitle_overlay_visual_proof_report.html`; the exact question is
+whether the current `cut_002` / `cut_003` `badge_left_dialogue` diagnostic
+presentation is acceptable as representative subtitle design evidence. Keep
+`rights_status=pending`, `production_candidate=false`, and
+`production_subtitle_design_acceptance=false` unless a separate valid
+acceptance slice changes them.
 
 Human review can now be returned as `chapter_revision_patch.template.json` /
 `.csv`, or as natural language that the Agent normalizes into that patch shape.
@@ -902,14 +905,16 @@ move toward one of these production-adjacent bottlenecks:
 | operator chapter revision patch | 9/10 | Board and templates exist, but operator-written decisions are still blank | Agent must not invent creative intent or script overrides |
 | patch normalizer / applier | 8/10 | A patch should be able to flow back into edit_pack / subtitle drafts / render plan / NLMYTGen handoff | Must keep source transcript and official subtitle track immutable evidence |
 | regenerated render comparison | 7/10 | Non-repo artifact handoff records SHA-256, but re-rendered diagnostic video may differ by environment | Must avoid treating hash drift alone as creative or production failure |
-| production subtitle/render acceptance | 7/10 | Official captions now enter the artifact path; the missing piece is typography/safe-area/full-render policy | Should wait until chapter decisions are clearer |
+| representative subtitle design or final render-path acceptance | 7/10 | Official captions now enter the artifact path; typography/safe-area review and final render-path output are separate limitation-lift slices | Must not bundle subtitle design, render-path output, editorial quality, and rights clearance |
 | rights approval path | 7/10 | Rights remain pending, so production/public use is not allowed | Must stay separate from local diagnostic success |
 
 Recommended continuation after `ED-10 / JP-Pilot-01R3 / SH-06 / ED-10b`:
 prefer operator chapter revision patch input first, then a patch
 normalizer/applier, then regenerated render comparison if the handoff must be
-replayed elsewhere, then production subtitle/render acceptance once chapter
-decisions exist, then rights approval path before any production/public use. Do
+replayed elsewhere, then one explicit limitation-lift slice at a time
+(`representative_subtitle_design_review`, `final_render_path_output_review`,
+`editorial_representative_sequence_review`, or
+`rights_material_use_clearance`). Do
 not count docs-only policy expansion, read-only GUI panels, or audit log polish
 as production progress unless they connect operator decisions back to
 `edit_pack`, subtitle drafts, render plans, NLE export, or NLMYTGen handoff.

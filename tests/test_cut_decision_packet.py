@@ -136,7 +136,8 @@ def test_status_episode_reads_final_cut_decision_summary(tmp_path: Path):
     assert final["reject_cut_ids"] == ["cut_009"]
     assert final["production_candidate"] is False
     assert final["rights_status"] == "pending"
-    assert status["next_action"]["action"].startswith("Start production subtitle/render acceptance")
+    assert final["next_recommended_action"] == "select_narrow_limitation_lift_slice"
+    assert status["next_action"]["action"].startswith("Choose one narrow limitation-lift slice")
 
 
 def _decision(packet: dict, cut_id: str) -> dict:

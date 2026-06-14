@@ -200,6 +200,7 @@ def test_status_reports_review_ready_when_r3_reports_exist(tmp_path: Path):
     assert status["operator_review"]["reviewability"] == "review_ready"
     assert status["operator_review"]["missing_review_artifacts"] == []
     assert status["operator_review"]["production_candidate"] is False
+    assert "Parse current R3 JSON/HTML readbacks first" in status["operator_review"]["next_human_action"]
 
 
 def test_status_blocks_when_representative_visual_proof_reports_missing_cut(tmp_path: Path):
@@ -280,5 +281,12 @@ def test_status_blocks_when_representative_visual_proof_reports_missing_cut(tmp_
     assert operator["representative_visual_proof"]["scope"] == (
         "cut_002_cut_003_diagnostic_subtitle_overlay_verify"
     )
+    assert status["final_cut_decision"]["next_recommended_action"] == (
+        "select_narrow_limitation_lift_slice"
+    )
+    assert status["final_cut_decision"]["packet_next_recommended_action"] == (
+        "production_subtitle_render_acceptance"
+    )
+    assert "representative_visual_proof_report.json" in operator["next_human_action"]
     assert "representative_visual_proof_report.html" in operator["next_human_action"]
     assert status["next_action"]["action"].startswith("Inspect scoped representative visual proof")

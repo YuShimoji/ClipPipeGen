@@ -51,7 +51,7 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 現在の中核パイプラインは `source media -> material_ledger / receipt -> transcript.json -> edit_pack.json -> subtitles -> diagnostic render -> NLE CSV` まで通る。`review-transcript` は補正済み transcript を既存 downstream に戻す入口であり、transcript approval は edit / render / publish / production acceptance ではない。
 
-GUI fetch/render button、production render、production subtitle design、FCPXML / Resolve XML、STT 品質 acceptance、GUI transcript correction surface、Publishing / OAuth はまだ未実装。次の推奨は JP-Pilot R3 の final cut/context review と production subtitle/render acceptance。公式字幕が無い素材を優先する場合は STT provider comparison を先に切る。
+GUI fetch/render button、production render、production subtitle design、FCPXML / Resolve XML、STT 品質 acceptance、GUI transcript correction surface、Publishing / OAuth はまだ未実装。次の推奨は JP-Pilot R3 の current reviewability/readback を parser-first で確認し、代表字幕デザイン review、final render-path output review、editorial representative-sequence review、rights/material-use clearance のどれか 1 つを narrow slice として選ぶこと。公式字幕が無い素材を優先する場合は STT provider comparison を先に切る。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

@@ -99,5 +99,5 @@ stable beyond `cut_003`.
 ```text
 Scope: ClipPipeGen only. Do not read, edit, import, or copy files from NLMYTGen.
 Current cut_003 diagnostic burned-in proof readability is accepted only for the current cut_003 diagnostic proof baseline. Keep cut_003=22.606 -> 49.566, sub_010..sub_029 included, sub_030 excluded, proxy_decision=proceed_with_limitations, context_risk_handling=keep_retained_risk_visible, renderer_gap visible, rights_status=pending, production_candidate=false, production_usage_allowed=false, and production_subtitle_design_acceptance=false.
-Continue with the representative subtitle design review route: verify a current-contract comparison proof for cut_002 and keep cut_008 blocked until its needs_adjustment state is explicitly handled. Do not stage episodes/.
+Continue with the representative subtitle design review route: parse status-episode and the existing combined proof JSON/HTML first, verify cut_002/cut_003 target coverage from artifacts before asking the human to open files, and keep cut_008 blocked until its needs_adjustment state is explicitly handled. Regenerate proof only if target-cut coverage is missing. Do not stage episodes/.
 ```

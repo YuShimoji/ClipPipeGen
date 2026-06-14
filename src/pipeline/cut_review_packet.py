@@ -385,7 +385,8 @@ def _evidence_payload(
                 "this page is evidence, not final cut acceptance"
             ),
             "next_human_decision": (
-                "Use cut_review_report.html for the actual cut judgment; use this page to verify evidence."
+                "Parse cut_review_packet.json and evidence_summary.json first; if a human judgment remains, "
+                "use cut_review_report.html for the targeted cut/context question."
             ),
             "commands_role": "Recovery and reproduction commands are appendix material, not the main review path.",
             "production_candidate": False,
@@ -398,8 +399,10 @@ def _evidence_payload(
             "human_acceptance_required_after_packet": True,
             "acceptance_gates_remaining": [
                 "final cut/context review",
+                "representative subtitle design review",
+                "final render-path output review",
+                "editorial representative-sequence review",
                 "rights approval",
-                "production subtitle/render acceptance",
                 "publishing/OAuth",
             ],
         },

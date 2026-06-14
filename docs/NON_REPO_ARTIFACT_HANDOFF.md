@@ -39,6 +39,6 @@ python -m src.cli.main build-non-repo-handoff `
 
 ## 境界
 
-diagnostic render は local review only であり、production render、creative acceptance、publish acceptance ではない。`rights_manifest.compliance_check.status=pending` の artifact は production / public 利用しない。rights approval、production subtitle/render acceptance、publishing/OAuth は別 slice で扱う。
+diagnostic render は local review only であり、production render、creative acceptance、publish acceptance ではない。`rights_manifest.compliance_check.status=pending` の artifact は production / public 利用しない。rights approval、representative subtitle design review、final render-path output review、publishing/OAuth は別 slice で扱う。
 
 特定クラウドや公開共有はこの docs では前提にしない。動画本体が必要な場合は、権限のある local storage または許可された artifact transfer 経路で移す。

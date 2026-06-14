@@ -8,7 +8,7 @@ Use these states before listing proof commands or recovery commands.
 
 | State | Meaning | First response behavior |
 |---|---|---|
-| `review_ready` | Required review reports and local review artifacts are present in this workspace. | Tell the operator what to inspect and what decision to make. |
+| `review_ready` | Required review reports and local review artifacts are present in this workspace. | Parse the current machine-readable reports first; if a human visual judgment remains, name the minimum file set and exact decision question. |
 | `review_blocked_missing_artifacts` | Git alone does not provide the ignored episode artifacts required for R3 review. | Do not send the operator to the review report first; name the missing artifacts and the restore/regenerate route. |
 | `diagnostic_only` | The artifact is useful as local evidence, but not as creative, production, or publish acceptance. | Show the boundary before any command appendix. |
 | `production_blocked_rights_pending` | Rights are readable but not approved for production/public use. | Keep production/public language blocked until a separate rights approval slice exists. |
@@ -19,12 +19,16 @@ Every non-trivial restart report should start in this order:
 
 1. What is possible in this workspace now.
 2. What is missing.
-3. What the user should look at next.
-4. What the user should decide.
-5. What the Agent must not do.
-6. Evidence, recovery commands, and reproduction commands as appendix material.
+3. What the Agent parsed from JSON/HTML/CSV/SRT report artifacts.
+4. What the user should look at next, only if a human visual judgment is still
+   required.
+5. What exact question the user should answer.
+6. What the Agent must not do.
+7. Evidence, recovery commands, and reproduction commands as appendix material.
 
 Command lists are not the main review path. They belong under recovery, reproduction, or advanced appendix sections, or inside collapsed details in HTML.
+Human file opening is not the default blocker. When it is required, list the
+minimum file set, preferably one file, and the exact question that file answers.
 
 ## Cut Review Return Shape
 
@@ -49,9 +53,9 @@ If `representative_visual_proof_report.json` exists and records
 `review_blocked_missing_artifacts`, treat that report as the current gate even
 when the older `cut_review_report.html`, `evidence_summary.html`, and
 `non_repo_artifact_handoff.html` exist. Send the operator to
-`representative_visual_proof_report.html` only for the scoped visual inspection
-named by that report, and keep global `review_ready=false` until the missing
-proof is resolved or explicitly waived.
+`representative_visual_proof_report.html` only after parsing the JSON readback
+and only for the scoped visual inspection named by that report. Keep global
+`review_ready=false` until the missing proof is resolved or explicitly waived.
 
 ## Completion Wording
 

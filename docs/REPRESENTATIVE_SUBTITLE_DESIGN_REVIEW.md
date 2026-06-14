@@ -121,9 +121,14 @@ selection, safe area, line wrapping, timing impression, and the visible
 
 ## Smallest Next Slice
 
-The narrowest next action is human visual review of the combined `cut_002` /
-`cut_003` diagnostic proof surface. Keep the decision limited to subtitle
-design/readability review and keep production/public flags false or pending.
+The narrowest next action is parser-first review of the combined `cut_002` /
+`cut_003` diagnostic proof surface, followed by one targeted human visual
+question only if needed. The minimum visual file is
+`subtitle_overlay_visual_proof_report.html`; the question is whether the
+current `badge_left_dialogue` diagnostic presentation is acceptable as
+representative subtitle design evidence for the kept proof surfaces. Keep the
+decision limited to subtitle design/readability review and keep
+production/public flags false or pending.
 
 The next proof expansion, if needed, is a separate `cut_008` adjustment/stress
 route after its `needs_adjustment` state is explicitly handled.
