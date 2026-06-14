@@ -9,16 +9,15 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-11 JST
-- latest pushed implementation resume point before this handoff refresh:
-  `87eba6a docs: record cut003 diagnostic readability acceptance`. This is the
-  pushed state that records the limited cut_003 diagnostic burned-in proof
-  readability acceptance after the suffix-tail wrapping and report-surface
-  clarification work. A later docs-only handoff refresh may be the newest
-  commit; on another terminal, use
-  `git log -1 --oneline --decorate` for the exact pulled HEAD.
-- verified base before this refresh:
-  origin/main parity in this workspace before this handoff refresh.
+- date: 2026-06-15 JST
+- latest pulled resume point before the active artifact packet:
+  `8f6f518 (HEAD -> main, origin/main, origin/HEAD) fix: align review route
+  readbacks`. The active artifact packet below was created from that synced
+  base before the docs update in this session.
+- verified base before this active artifact packet:
+  `git status --short --branch` -> `## main...origin/main`;
+  `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
+  `git ls-files episodes` empty.
 - latest subtitle wrapping / report-clarity refinement:
   the current tracked implementation keeps
   `japanese_boundary_font_bbox_pixel_wrap_v1` and
@@ -82,6 +81,20 @@ instructions.
   `needs_adjustment` plus missing proof, and production subtitle design
   acceptance still requires explicit human design acceptance plus dense/stress
   evidence.
+- latest active artifact packet:
+  `clip-review-acceptance-gate-001` is now recorded as
+  `ED-10f: Representative Subtitle Design Review v1`. Live parser-first
+  readback on 2026-06-15 JST reported `status-episode.review_ready=true`,
+  no missing review artifacts, transcript `segments_count=105`, selected cuts
+  `9`, subtitles `105`, context `passed=3` / `needs_review=6`,
+  `rights_status=pending`, and `production_candidate=false`. Existing
+  `subtitle_overlay_visual_proof_report.json` already covers
+  `target_cuts=[cut_002, cut_003]` with
+  `all_target_cuts_have_overlay=true`, so no proof regeneration is needed for
+  the current representative question. The review gate is
+  `representative_review_ready_cut002_cut003`; `cut_008` is explicitly
+  `representative_review_blocked_missing_dense_stress_proof` until its
+  `needs_adjustment` route and dense/stress proof are handled.
 - latest subtitle_style_spike review surface state:
   `1a9410d fix: clarify subtitle spike grid authority` confirms the old grid
   was visual-only, removes default grid lines from human samples, and exposes

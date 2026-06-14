@@ -1,11 +1,109 @@
 # Representative Subtitle Design Review
 
-Last updated: 2026-06-11 JST
+Last updated: 2026-06-15 JST
 
 This note records the smallest representative diagnostic subtitle design review
 start after the `cut_003` diagnostic burned-in proof readability acceptance.
 It does not approve production subtitle design, production render, creative
 quality, rights, publishing, or public use.
+
+## Active Artifact: `clip-review-acceptance-gate-001`
+
+- Slice label: `ED-10f: Representative Subtitle Design Review v1`
+- Current packet state: `representative_review_ready_cut002_cut003`
+- Dense/stress state: `representative_review_blocked_missing_dense_stress_proof`
+  for `cut_008`
+- Packet created from parser-first readback on 2026-06-15 JST before this docs
+  update: `HEAD=8f6f518 (main, origin/main)`, `HEAD...origin/main=0 0`,
+  `git status --short --branch` was `## main...origin/main`, and
+  `git ls-files episodes` returned no paths.
+
+The registry was checked before assigning the slice label: `ED-10b` is already
+the R3 chapter revision board / patch template, and `ED-10f` was unused before
+this packet. The packet is a diagnostic / representative review gate only. It
+does not consume or create human production acceptance.
+
+### Parser-First Episode Readback
+
+`status-episode --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --format json`
+reported `reviewability=review_ready`, `review_ready=true`, no missing review
+artifacts, `rights_status=pending`, and `production_candidate=false`.
+
+| field | readback |
+|---|---|
+| transcript | `segments_count=105`, `engine=subtitle_track`, `language=ja`, `review_status=needs_review`, `accepted_count=105` |
+| editing | `selected_cuts_count=9`, `subtitles_count=105`, context `passed=3` / `needs_review=6` |
+| final cut decision | keep `cut_001`, `cut_002`, `cut_003`; needs adjustment `cut_004`-`cut_008`; reject `cut_009` |
+| next action | choose one narrow limitation-lift slice; production candidate remains false |
+
+Existing proof was sufficient. The combined
+`subtitle_overlay_visual_proof_report.json` already has
+`target_cuts=[cut_002, cut_003]`, `subtitle_overlay_available_count=2`, and
+`all_target_cuts_have_overlay=true`, so this packet does not regenerate proof.
+
+### Representative Gate Targets
+
+| target | current evidence | design-review state | status | this artifact can decide | this artifact cannot decide |
+|---|---|---|---|---|---|
+| `cut_002` | `edit_pack` range `12.329 -> 17.167`, `sub_008..sub_009`, context `passed`; combined overlay proof has PNG/MP4/ASS/SRT/sample frames, `available_diagnostic_subtitle_overlay`, font-bbox wrapping applied, and no one-character orphan / suspicious tail line | kept comparison target for readability, safe area, timing impression, and comparison against `cut_003` | ready as diagnostic representative evidence | whether the current `badge_left_dialogue` direction is acceptable enough as a representative comparison target | production subtitle design, production render, rights, publishing, public use, or dense/stress coverage |
+| `cut_003` | `edit_pack` range `22.606 -> 49.566`, `sub_010..sub_029`, response/referral block `sub_025..sub_029`, context `needs_review` retained; combined overlay proof has current diagnostic evidence, explicit ASS line breaks, suffix-tail prevention count `2`, and accepted diagnostic readability baseline | accepted only for current diagnostic burned-in readability baseline; now used as the comparison baseline for representative review | ready as diagnostic baseline evidence | whether the current baseline can carry forward as representative subtitle design evidence for kept proof surfaces | any generalized production subtitle design acceptance or creative / rights / publishing acceptance |
+| `cut_008` | `edit_pack` range `116.934 -> 135.219`, `sub_069..sub_101`, 33 subtitles, subtitle density `1.805`, context `needs_review`; current combined overlay proof does not target it | dense / stress candidate, but its cut state and current proof coverage are not ready | blocked: `representative_review_blocked_missing_dense_stress_proof` | that dense/stress evidence is still required before widening representative scope | a pass/fail design judgment, because current proof is missing and the cut is still `needs_adjustment` |
+
+### Subtitle Design Axes
+
+| axis | current readback for `cut_002` / `cut_003` | review effect |
+|---|---|---|
+| font | ASS style readback `Yu Gothic`; measurement family `NotoSansJP-VF`; renderer glyph fallback remains provider-dependent | human review can assess visible readability, not production font finality |
+| size | `font_size=124` from `round(frame_height * 0.115)` on 1920x1080 proof | candidate size is visible for diagnostic review |
+| outline | `outline=12` from `max(2, round(font_size * 0.096))`, plus shadow `2` | candidate outline weight is visible for readability review |
+| color | diagnostic ASS candidate color is visible in proof, but color is not production-approved | human may accept or request adjustment for the representative direction |
+| speaker identity | real face icon assets unavailable; `SPK` speaker badge placeholder fallback is used | review can decide whether fallback evidence is acceptable, not production speaker identity |
+| mode selection | selected mode `badge_left_dialogue`; `bottom_center_emphasis` remains supported but not accepted by this proof | this gate covers the current normal dialogue mode only |
+| safe area | proof status `diagnostic_overlay_visible_human_review_required`; generated 1920x1080 PNG/MP4/sample frames exist | human review is still required for final safe-area judgment |
+| line wrapping | `japanese_boundary_font_bbox_pixel_wrap_v1`, authority `font_bbox_pixel_measurement_not_grid_cell_count`, explicit ASS line breaks true, no one-character orphan or suspicious tail line | parser readback supports visual review; it does not remove renderer review |
+| timing impression | subtitle timing items are included for both cuts; proof status remains `diagnostic_timing_overlay_generated_human_review_required` | human review can judge diagnostic timing impression |
+| dense / stress evidence | absent for current proof; `cut_008` remains `needs_adjustment` with 33 subtitles | blocks widening representative design acceptance |
+| visible `renderer_gap` | `controlled_line_breaks_carried_renderer_bbox_not_claimed`, `exists=true` | must stay visible; proof does not claim production typography readiness |
+
+### Boundary Flags
+
+- `diagnostic_subtitle_wrapping_readability_acceptance=true` for current
+  `cut_003` diagnostic proof readability only.
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `renderer_gap` remains visible and must not be hidden.
+
+### Manual Verification
+
+Minimum file to open:
+
+1. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`
+
+Optional direct proof files if the HTML viewer cannot play embedded media:
+
+2. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_cut_002.mp4`
+3. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_cut_003.mp4`
+
+Ask exactly one human review question:
+
+> Diagnostic / representative review の範囲で、現在の `cut_002` / `cut_003`
+> `badge_left_dialogue` presentation を、代表字幕デザイン evidence として
+> 次工程へ進めてよいですか？ production subtitle design / production render /
+> rights / publishing / public use は承認しません。
+
+Response options:
+
+- `accept_candidate`: representative subtitle design evidence として次へ進める。ただし production/public flags は false/pending 維持。
+- `adjust_boundary`: 文字サイズ、outline、safe area、mode selection、speaker identity fallback、wrapping などの指定箇所を修正して再 proof。
+- `reject`: この字幕方向は代表 evidence として不採用。
+- `blocked_missing_artifact`: 必要な proof / source media / ignored artifact が不足しているため判断不可。
+- `blocked_missing_dense_stress_proof`: `cut_008` など dense/stress evidence がないため、代表範囲を広げる前に別スライスが必要。
 
 ## Route
 
