@@ -1,0 +1,152 @@
+# Review Artifact Bundle Contract
+
+Active Artifact: `clip-episode-review-surface-001`
+
+Review Artifact Bundle は、episode の review artifacts を 1 つの creator-facing entry point にまとめる contract。目的は、動画制作者を scattered local HTML paths や ignored artifact 探しに戻さず、playable video / contact sheet / artifact readback / decision question を同じ場所で確認できるようにすること。
+
+この bundle は diagnostic / representative review surface であり、production render、production subtitle design、rights approval、publishing、upload、public use を承認しない。
+
+## Bundle の目的
+
+| 目的 | 効果 |
+|---|---|
+| playable MP4 または contact sheet を最初に出す | creator が生成動画・字幕 overlay を report HTML より先に確認できる |
+| required / optional artifact を manifest 化する | missing artifact を「探して」ではなく「欠損」として扱える |
+| path を repo-relative に固定する | full local path を authority にしない |
+| false/pending boundary flags を一箇所に出す | diagnostic success と production/public acceptance を混同しない |
+| exact human decision questions を持つ | creator の返答を次 slice に接続しやすくする |
+
+## Required files
+
+`build-episode-review-bundle` は次を required として読む。欠けている場合、bundle は生成してよいが `review_ready=false` / `review_blocked_missing_artifacts` とする。
+
+| Role | Default path | 役割 |
+|---|---|---|
+| rights_readback | `episodes/<episode_id>/rights_manifest.json` | rights status と production/public block の readback |
+| source_materials | `episodes/<episode_id>/material_ledger.json` | source video/audio material id と local artifact の接続 |
+| transcript_source | `episodes/<episode_id>/transcript.json` | transcript engine/provider、official subtitle track import、segment review |
+| cut_and_subtitle_source | `episodes/<episode_id>/edit_pack.json` | selected cuts、cut candidates、subtitle drafts |
+| cut_review | `review/<review_id>/cut_review_report.html` | cut/context review surface |
+| evidence_summary | `review/<review_id>/evidence_summary.html` | source / render / NLE / rights evidence summary |
+| subtitle_overlay_report_json | `review/<review_id>/subtitle_overlay_visual_proof_report.json` | machine-readable subtitle overlay proof readback |
+| subtitle_overlay_report_html | `review/<review_id>/subtitle_overlay_visual_proof_report.html` | human-readable subtitle overlay proof report |
+
+## Optional files
+
+| Role | Examples | 使い方 |
+|---|---|---|
+| playable_video | `subtitle_overlay_visual_proof_cut_*.mp4`, `renders/**/rendered_video.mp4` | Video Review Player で最優先表示 |
+| contact_sheet / representative_frame | `visual_proof_contact_sheet.png`, `subtitle_overlay_visual_proof_cut_*.png`, `subtitle_overlay_reference/*.sample_*.png` | MP4 が無い時の最初の確認面 |
+| representative_visual_proof | `representative_visual_proof_report.*` | representative proof の cross-check |
+| cut_decision | `cut_decision_packet.json`, `cut_decision_report.html` | keep / needs_adjustment / reject readback |
+| operator_proxy_handoff | `cut_002_cut_003_operator_proxy_decision_handoff.*` | scoped operator decision handoff |
+| chapter_revision_board | `chapter_revision_board.*` | chapter-level operator board |
+| non_repo_handoff | `non_repo_artifact_handoff.*` | Git-excluded artifact identity / recovery boundary |
+| nle_csv / nle_report | `exports/**/nle_cut_list.csv`, `nle_export_report.html` | external editor handoff |
+| render_manifest / render_report | `renders/**/render_manifest.json`, `render_report.html` | diagnostic render identity / metadata |
+
+## `review_manifest.json` schema sketch
+
+```json
+{
+  "schema_version": "v1",
+  "artifact_kind": "episode_review_bundle",
+  "active_artifact": "clip-episode-review-surface-001",
+  "created_at": "2026-06-15T00:00:00+00:00",
+  "episode_id": "jp_pilot01_hololive_bancho_20260525",
+  "bundle": {
+    "repo_relative_dir": "episodes/<episode_id>/review/<review_id>/review_bundle",
+    "index_html": "episodes/<episode_id>/review/<review_id>/review_bundle/index.html",
+    "review_manifest": "episodes/<episode_id>/review/<review_id>/review_bundle/review_manifest.json",
+    "preferred_open_route": {
+      "repo_relative_path": "episodes/<episode_id>/review/<review_id>/review_bundle/index.html",
+      "localhost_helper": "python -m http.server --directory episodes/<episode_id>/review/<review_id>/review_bundle 8000",
+      "os_open_requires_confirmation": true
+    },
+    "path_authority": "repo_relative_paths_only; absolute local paths are not authority"
+  },
+  "reviewability": {
+    "review_ready": true,
+    "state": "diagnostic_only",
+    "missing_required_files": []
+  },
+  "boundary_flags": {
+    "diagnostic_only": true,
+    "production_candidate": false,
+    "production_render_acceptance": false,
+    "production_subtitle_design_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false
+  },
+  "primary_review_order": [
+    {"role": "playable_video", "media_type": "mp4", "path": "episodes/.../subtitle_overlay_visual_proof_cut_002.mp4", "exists": true}
+  ],
+  "required_files": [],
+  "optional_files": [],
+  "screens": [],
+  "human_decision_questions": []
+}
+```
+
+## `index.html` behavior
+
+`index.html` は creator-facing entry point。次の順序を守る。
+
+1. Reviewability と boundary badges を先頭に出す。
+2. playable MP4 が存在するなら `<video controls>` を最初に表示する。
+3. MP4 が無い場合は contact sheet / representative PNG を最初に表示する。
+4. required / optional artifacts を table にし、存在しないものは missing として表示する。
+5. screen map と exact human decision questions を出す。
+6. commands や recovery は主導線にしない。必要なら appendix / contract docs 側に寄せる。
+
+HTML report は証跡としてリンクする。Video review の入口を HTML report 解読にしない。
+
+## File role rules
+
+| Type | Bundle 内の役割 | Authority として扱わないもの |
+|---|---|---|
+| MP4 | generated video / subtitle overlay の直接確認 | production render acceptance、public-ready output |
+| PNG | contact sheet / representative frame / subtitle-bearing sample | timing sync の完全証明、production typography |
+| JSON | machine-readable readback、status、boundary、artifact inventory | 人間の visual acceptance の代替 |
+| CSV | NLE handoff / operator patch handoff | final edit acceptance |
+| HTML | human-readable reports / review board / bundle index | full path authority、production approval |
+
+## Missing artifact behavior
+
+欠損時は bundle を失敗させず、`review_blocked_missing_artifacts` として出す。creator には「この artifact が無いためこの screen は判断不可」と表示し、production / creative / rights / publishing へ進めない。
+
+MP4 と contact sheet / representative PNG がどちらも無い場合、bundle は reviewable generated output を提示できない。HTML report だけがある状態では、動画確認責務を満たしたとは扱わない。
+
+## Portable path rules
+
+- manifest の authority は repo-relative path。
+- absolute local path は表示してもよいが authority ではない。
+- bundle `index.html` からの link は bundle directory からの relative href にする。
+- source media、rendered video、subtitle payload、`episodes/` 配下の generated artifacts は Git に入れない。
+- 別環境で missing になった場合は missing として扱い、勝手に production/public acceptance へ進めない。
+
+## Preferred open route
+
+1. repo-relative path を報告する。
+2. local browser policy で file open が不安定な場合は、bundle directory を static server で開く。
+
+```powershell
+python -m http.server --directory episodes\<episode_id>\review\<review_id>\review_bundle 8000
+```
+
+3. OS open command はユーザーが確認した時だけ使う。
+
+## CLI
+
+```powershell
+uvx python -m src.cli.main build-episode-review-bundle `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\review_bundle `
+  --format json
+```
+
+この CLI は既存 artifact を読むだけで、render / fetch / upload / OAuth / rights approval / production acceptance を行わない。実 MP4/PNG/HTML/JSON/CSV がある場合は link し、欠けている場合は missing panel に出す。

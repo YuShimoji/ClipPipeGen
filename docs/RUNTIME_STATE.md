@@ -10,11 +10,37 @@ instructions.
 ## Current Resume Capsule
 
 - date: 2026-06-15 JST
-- latest pulled resume point before the active artifact packet:
-  `8f6f518 (HEAD -> main, origin/main, origin/HEAD) fix: align review route
-  readbacks`. The active artifact packet below was created from that synced
-  base before the docs update in this session.
-- verified base before this active artifact packet:
+- latest active artifact packet:
+  `clip-episode-review-surface-001` records the review-responsibility
+  correction. ClipPipeGen now explicitly owns reviewable generated output for
+  diagnostic / representative review: playable MP4 when available, subtitle
+  overlay proof, representative frames/contact sheet, artifact links, status
+  readback, and exact human decision questions. This does not lift
+  production render acceptance, production subtitle design acceptance, rights
+  approval, publishing acceptance, upload, or public-use permission. The
+  focused surfaces are [EPISODE_REVIEW_WORKFLOW.md](EPISODE_REVIEW_WORKFLOW.md)
+  and [REVIEW_ARTIFACT_BUNDLE_CONTRACT.md](REVIEW_ARTIFACT_BUNDLE_CONTRACT.md).
+  `SH-08: Episode Review Surface Contract` adds
+  `build-episode-review-bundle`, which writes a local ignored
+  `review_manifest.json` / `index.html` bundle from existing artifacts without
+  rendering, fetching, uploading, or approving production use.
+  Same-machine readback generated ignored
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/review_bundle/review_manifest.json`
+  and `index.html`. Parsed manifest state is `review_ready=true`,
+  `state=diagnostic_only`, first review item
+  `subtitle_overlay_visual_proof_cut_002.mp4` as `playable_video/mp4`,
+  screens `episode_dashboard`, `source_rights_readback`,
+  `transcript_subtitle_source`, `cut_review`, `video_review_player`,
+  `subtitle_design_review`, `export_handoff`, and `acceptance_dashboard`.
+  Boundary flags remain `production_render_acceptance=false`,
+  `production_subtitle_design_acceptance=false`, `rights_status=pending`, and
+  `publishing_acceptance=false`.
+- latest pulled resume point before the SH-08 active artifact packet:
+  `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
+  representative subtitle review gate packet`. The SH-08 review-surface bundle
+  work was created from that synced base before the docs/code update in this
+  session.
+- verified base before this SH-08 active artifact packet:
   `git status --short --branch` -> `## main...origin/main`;
   `git rev-list --left-right --count HEAD...origin/main` -> `0 0`;
   `git ls-files episodes` empty.

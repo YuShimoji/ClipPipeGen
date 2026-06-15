@@ -6,6 +6,8 @@ Python may generate local diagnostic render artifacts only inside the render int
 
 Python must not own production render acceptance, production subtitle design acceptance, upload, publishing, OAuth, visibility changes, or public-ready output. Those are later acceptance / integration surfaces and require explicit feature slices.
 
+Python/CLI may own reviewable generated output for diagnostic and representative review: playable diagnostic MP4 when available, subtitle overlay proof, representative frames/contact sheet, artifact links, status readback, and exact human decision questions. This responsibility does not lift production render acceptance, production subtitle design acceptance, rights approval, publishing acceptance, or public-use permission.
+
 `rights_manifest.compliance_check.status=pending` is allowed for source fetch, transcript import/review, cut generation, context checks, subtitle drafts, NLE CSV handoff, diagnostic render, local evidence summaries, and local review packets. Pending rights are readback, not production approval. Public production use, upload, publishing, thumbnail setting on a public video, or any claim that an artifact is production-ready requires an explicit rights / publishing acceptance step and must not be inferred from local diagnostic success.
 
 破ってはいけない条件・責務境界を保持する正本。実装済み/未実装の区別を明確にし、未実装機能を禁止扱いにしない。
