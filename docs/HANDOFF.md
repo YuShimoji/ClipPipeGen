@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-15 JST
+Last updated: 2026-06-16 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
@@ -11,7 +11,7 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 - Branch: `main`
 - Upstream: `origin/main`
 - Latest implementation resume point before this handoff refresh:
-  `ae42d89 (main, origin/main) feat: add subtitle typography comparison proof`.
+  `9e37a02 (origin/main) docs: refresh ED-10g handoff`.
   A fresh terminal should run `git fetch --prune origin`,
   `git checkout main`, and `git pull --ff-only origin main`, then confirm
   `git rev-list --left-right --count HEAD...origin/main` returns `0 0`.
@@ -29,6 +29,14 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
   [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md);
   the artifact registry entry is `clip-typography-decoration-comparison-001`
   in [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md).
+- Latest ED-10g human response:
+  `small_adjustment` is consumed for `clip-typography-decoration-comparison-001`.
+  It preserves the accepted diagnostic font-size direction and keeps
+  font-family / decoration unresolved until a concrete adjusted candidate is
+  selected. The regenerated comparison JSON/HTML now separates
+  `human_decision_readback.selected_response=adjust_boundary` from
+  `comparison_response_readback.selected_response=small_adjustment` and writes
+  `next_diagnostic_overlay_proof_route` for the next diagnostic overlay proof.
 - Same-machine local proof generated before handoff:
   ignored
   `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/`
@@ -60,9 +68,9 @@ powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_202
   `git ls-files episodes` must remain empty.
 - Latest validation before this handoff refresh:
   `uvx pytest -q tests/test_episode_review_bundle.py tests/test_subtitle_overlay_visual_proof.py tests/test_subtitle_style_spike.py tests/test_episode_status.py`
-  -> `17 passed, 7 skipped`;
+  -> `17 passed, 8 skipped`;
   `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py`
-  -> `11 passed`; `git diff --check` clean; `git ls-files episodes` empty.
+  -> `12 passed`; `git diff --check` clean; `git ls-files episodes` empty.
 - Latest pushed sync point before this representative subtitle design readback
   refresh: `87eba6a docs: record cut003 diagnostic readability acceptance`;
   after pulling from another terminal, run `git log -1 --oneline --decorate`
@@ -897,33 +905,32 @@ yt-dlp remains inside `asset_fetch` source-audio/source-video URL fetch. FFmpeg 
 
 ## Recommended Next Slice
 
-Current recommendation after ED-10 / JP-Pilot-01R3 / SH-06 / ED-10b /
-ED-10c / OUT-01f and the kept-cut subtitle proof readback: in this current
-workspace, `status-episode` reports `operator_review.review_ready=true`, but
-that readiness depends on ignored local `episodes/` artifacts and must be
-rechecked on every restart. The Agent should parse `status-episode` and the
-current JSON/HTML/CSV/SRT readbacks before asking for human file inspection.
-If a visual check is still needed, ask for the minimum file set, preferably one
-file, with the exact question. Non-Repo Artifact Handoff remains
-infrastructure; it does not make `rendered_video.mp4` transferable by Git and
-it does not create production acceptance.
+Current recommendation after ED-10g: consume `small_adjustment` as the human
+response for `clip-typography-decoration-comparison-001`, preserve the accepted
+diagnostic font-size direction, and prepare the next small-adjustment
+diagnostic overlay proof route for `cut_002` / `cut_003`. The font-family and
+decoration axes remain unresolved until a concrete adjusted candidate is
+selected. If a worktree is missing ignored `episodes/` artifacts or the
+comparison report JSON, treat that as same-machine local evidence absence, not
+remote/tracked failure. Regenerate local artifacts only when visual candidate
+readback is needed. Non-Repo Artifact Handoff remains infrastructure; it does
+not make `rendered_video.mp4` transferable by Git and it does not create
+production acceptance.
 
 | # | Candidate | Why now | Unblocks | Urgency |
 |:--:|---|---|---|:--:|
-| 1 | Review: representative subtitle design for `cut_002` / `cut_003` | Combined subtitle-overlay proof exists locally for the kept comparison cut and accepted diagnostic baseline | Human can answer the narrow design/readability question without production acceptance claims | Urgent |
+| 1 | Advance: ED-10g small-adjustment diagnostic overlay proof route | Human answered `small_adjustment`, not a concrete candidate id or production acceptance | Carries accepted font size forward while narrowing font-family and decoration before the next proof | Urgent |
 | 2 | Audit: needs_adjustment / dense-stress route | `cut_008` is still the smallest dense stress target, but remains `needs_adjustment` | Defines whether a later stress proof is valid input to design acceptance | Medium |
 | 3 | Verify: final render-path output or regenerated render comparison | Diagnostic proof and final render-path output are separate | Defines exact SHA-256 versus metadata approximate criteria without making production claims | Medium |
 | 4 | Review: editorial representative-sequence quality | Creative/editorial acceptance is separate from subtitle design and render-path proof | Lets the operator judge sequence value without rights or production shortcutting | Medium |
 | 5 | Clear Rights: rights/material-use approval path | Rights remain `pending`, so production/public use is not allowed | A separate path toward public or production use after production acceptance exists | Medium |
 | 6 | Prepare: YMM4/Premiere handoff, publishing/OAuth/thumbnail, or GUI work | These are downstream surfaces, not the current proof/readback slice | Keeps handoff and tooling work from mixing with acceptance decisions | Low |
 
-For the next human review, start with Reviewability as defined in
-`docs/OPERATOR_REVIEW_UX.md`, then parse the current report artifacts. For the
-representative subtitle design slice, the minimum visual file after parser
-readback is `subtitle_overlay_visual_proof_report.html`; the exact question is
-whether the current `cut_002` / `cut_003` `badge_left_dialogue` diagnostic
-presentation is acceptable as representative subtitle design evidence. Keep
-`rights_status=pending`, `production_candidate=false`, and
+For the next human review, do not re-ask the already-consumed ED-10f
+representative subtitle design question. Start from the ED-10g
+`small_adjustment` response and ask only for the concrete font-family /
+decoration adjustment needed for the next `cut_002` / `cut_003` diagnostic
+overlay proof. Keep `rights_status=pending`, `production_candidate=false`, and
 `production_subtitle_design_acceptance=false` unless a separate valid
 acceptance slice changes them.
 

@@ -1028,6 +1028,19 @@ def build_subtitle_typography_decoration_comparison(
             "decoration": "unresolved_needs_comparison",
             "production_subtitle_design_acceptance": False,
         },
+        "comparison_response_readback": {
+            "source_artifact": "clip-typography-decoration-comparison-001",
+            "selected_response": "small_adjustment",
+            "font_size": "accepted_for_diagnostic_representative_review",
+            "font_family": "unresolved_requires_comparison_or_selection",
+            "decoration": "unresolved_requires_comparison_or_selection",
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
         "candidate_count": len(TYPOGRAPHY_DECORATION_CANDIDATES),
         "sample_texts": texts,
         "canvas_size": {"width": width, "height": height},
@@ -1048,6 +1061,25 @@ def build_subtitle_typography_decoration_comparison(
                 "public use",
             ],
         },
+        "next_diagnostic_overlay_proof_route": {
+            "route_kind": "small_adjustment_diagnostic_overlay_proof",
+            "target_cuts": list(target_cut_ids),
+            "font_size": {
+                "status": "preserve_accepted_diagnostic_representative_direction",
+                "formula": "round(frame_height * 0.115)",
+            },
+            "font_family": "unresolved_until_concrete_adjusted_candidate_selected",
+            "decoration": "unresolved_until_outline_shadow_badge_accent_selected",
+            "regenerate_sh08_required": False,
+            "comparison_artifact_required": "only_when_visual_candidate_readback_is_needed",
+            "episodes_artifact_tracking_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
         "candidates": [_candidate_readback(candidate) for candidate in TYPOGRAPHY_DECORATION_CANDIDATES],
         "samples": samples,
         "outputs": {
@@ -1063,8 +1095,8 @@ def build_subtitle_typography_decoration_comparison(
             )
         },
         "next_decision_question": (
-            "Which font-family / decoration candidate should become the next "
-            "diagnostic subtitle overlay proof direction for cut_002 / cut_003? "
+            "Which concrete font-family / decoration adjustment should become "
+            "the next diagnostic subtitle overlay proof direction for cut_002 / cut_003? "
             "This does not approve production subtitle design, production render, "
             "rights, publishing, public use, or upload."
         ),
@@ -1478,12 +1510,14 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
 <body>
   <h1>Subtitle Typography Decoration Comparison</h1>
   <p class="notice">review_only=true / production_candidate=false / production_subtitle_design_acceptance=false / rights_status=pending</p>
-  <p class="notice">Human readback: adjust_boundary. Font size is accepted only for the current diagnostic / representative route; font family and decoration remain unresolved comparison axes.</p>
+  <p class="notice">Source human readback: adjust_boundary. ED-10g comparison response: small_adjustment. Font size is accepted only for the current diagnostic / representative route; font family and decoration remain unresolved until a concrete adjusted candidate is selected.</p>
   <p class="notice">This artifact uses generated review-only PNGs. It does not mutate source media, transcript, official subtitle evidence, rights, publishing, public use, or upload state.</p>
   <h2>Contact Sheet</h2>
   <p><a href="{html.escape(contact_sheet)}"><img src="{html.escape(contact_sheet)}" alt="typography decoration contact sheet"></a></p>
   <h2>Decision Question</h2>
   <p>{html.escape(str(report["next_decision_question"]))}</p>
+  <h2>Next Diagnostic Overlay Proof Route</h2>
+  <pre>{html.escape(json.dumps(report["next_diagnostic_overlay_proof_route"], ensure_ascii=False, indent=2))}</pre>
   <h2>Fixed / Varied Axes</h2>
   <pre>{html.escape(json.dumps(report["comparison_axes"], ensure_ascii=False, indent=2))}</pre>
   {''.join(sections)}

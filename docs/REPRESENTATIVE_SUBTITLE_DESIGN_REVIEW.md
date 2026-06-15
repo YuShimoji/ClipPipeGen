@@ -124,6 +124,21 @@ The successor packet is
 [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md)
 with artifact id `clip-typography-decoration-comparison-001`.
 
+### ED-10g Small Adjustment Consumed
+
+The human response for `clip-typography-decoration-comparison-001` is consumed
+as `small_adjustment`. This means the comparison did not select one production
+subtitle design. It preserves the ED-10f font-size decision for diagnostic /
+representative review only, and keeps font family plus decorative treatment as
+the unresolved axes for the next diagnostic overlay proof route.
+
+This response does not approve production subtitle design, production render,
+creative quality, rights, publishing, public use, or upload. It also does not
+require SH-08 human preview-session regeneration. If the ignored local
+comparison report is missing in a new worktree, treat that as same-machine
+local artifact absence and rely on tracked docs/tests unless visual judgment is
+needed again.
+
 ## Route
 
 The first route was docs/readback only: existing artifacts were sufficient to

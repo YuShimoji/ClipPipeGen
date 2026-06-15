@@ -9,7 +9,7 @@ instructions.
 
 ## Current Resume Capsule
 
-- date: 2026-06-15 JST
+- date: 2026-06-16 JST
 - latest active artifact packet:
   `clip-human-preview-session-001` records the review-responsibility
   correction. ClipPipeGen now explicitly owns reviewable generated output for
@@ -74,6 +74,20 @@ instructions.
   `production_render_acceptance=false`, `creative_acceptance=false`,
   `rights_status=pending`, `publishing_acceptance=false`, and
   `public_use_permission=false`.
+- latest ED-10g comparison response consumption:
+  the human response for `clip-typography-decoration-comparison-001` is now
+  consumed as `small_adjustment`. This accepts the font-size direction only for
+  the current diagnostic / representative route and does not choose a final
+  font-family or decorative treatment. The next route is a small-adjustment
+  diagnostic overlay proof route for `cut_002` / `cut_003`: preserve
+  `round(frame_height * 0.115)`, keep font family and decoration unresolved
+  until a concrete adjusted candidate is selected, and keep production/public
+  flags false or pending. This is not SH-08 regeneration and does not approve
+  production subtitle design, production render, creative quality, rights,
+  publishing, public use, or upload. In this worktree, `episodes/` was absent
+  and the ignored comparison report JSON was unavailable; that is same-machine
+  local artifact absence, not remote/tracked failure. Remote evidence remains
+  the tracked docs, generator, and tests, with `git ls-files episodes` empty.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle
@@ -677,20 +691,26 @@ Review focus:
 
 ## Next Actions
 
-1. Audit: current reviewability and report readback
+1. Advance: ED-10g small-adjustment diagnostic overlay proof route
+   - Consume `small_adjustment` as the current human answer for
+     `clip-typography-decoration-comparison-001`.
+   - Preserve the accepted diagnostic font-size direction
+     `round(frame_height * 0.115)`.
+   - Select or refine only the unresolved font-family and decoration axes
+     before regenerating the next `cut_002` / `cut_003` diagnostic overlay
+     proof.
+   - If the ignored comparison artifact is missing in a worktree, treat that as
+     same-machine local evidence absence and regenerate only when visual
+     candidate readback is needed.
+   - Keep `rights=pending`, `production_candidate=false`,
+     `production_usage_allowed=false`, and all production/public acceptance
+     flags false.
+2. Audit: current reviewability and report readback
    - Parse `status-episode` plus current JSON/HTML/CSV/SRT reports before
      asking the operator to open files.
    - If human visual inspection is needed, list the minimum file set and the
      exact question. Do not ask the operator to hunt through generated
      artifacts.
-2. Review: representative subtitle design for `cut_002` / `cut_003`
-   - Use the existing combined `subtitle_overlay_visual_proof_report.*` after
-     parser readback; regenerate only if target-cut coverage is missing.
-   - Ask only whether the current diagnostic `badge_left_dialogue` design
-     readback is acceptable as representative subtitle design evidence for the
-     kept proof surfaces.
-   - Keep `rights=pending`, `production_candidate=false`, and
-     `production_usage_allowed=false`.
 3. Advance: `cut_002` / `cut_003` operator proxy decision
    - `cut_002` is already in the candidate lane with
      `proxy_decision=proceed_with_limitations`; keep the long-line watch risk

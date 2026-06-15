@@ -57,6 +57,10 @@ def run(argv: list[str]) -> int:
         "sample_count": len(report["samples"]),
         "candidate_count": report["candidate_count"],
         "font_size": report["font_size_policy"],
+        "comparison_response": report["comparison_response_readback"],
+        "next_diagnostic_overlay_proof_route": report[
+            "next_diagnostic_overlay_proof_route"
+        ],
         "review_only": report["review_only"],
         "production_candidate": report["production_candidate"],
         "production_subtitle_design_acceptance": report[
@@ -76,6 +80,14 @@ def run(argv: list[str]) -> int:
         print(f"sample_count: {payload['sample_count']}")
         print(f"candidate_count: {payload['candidate_count']}")
         print(f"font_size_status: {payload['font_size']['status']}")
+        print(
+            "comparison_response: "
+            f"{payload['comparison_response']['selected_response']}"
+        )
+        print(
+            "next_route: "
+            f"{payload['next_diagnostic_overlay_proof_route']['route_kind']}"
+        )
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         print(
             "production_subtitle_design_acceptance: "

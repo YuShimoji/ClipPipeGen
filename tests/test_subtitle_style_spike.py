@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
 
 from src.integrations.render import subtitle_style_spike as spike
+
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def test_subtitle_style_spike_records_optional_pillow_boundary():
@@ -463,6 +468,17 @@ def test_typography_decoration_comparison_preserves_accepted_font_size_boundary(
     assert report["human_decision_readback"]["decoration"] == (
         "unresolved_needs_comparison"
     )
+    assert report["comparison_response_readback"]["selected_response"] == "small_adjustment"
+    assert report["comparison_response_readback"]["font_size"] == (
+        "accepted_for_diagnostic_representative_review"
+    )
+    assert report["comparison_response_readback"]["font_family"] == (
+        "unresolved_requires_comparison_or_selection"
+    )
+    assert report["comparison_response_readback"]["decoration"] == (
+        "unresolved_requires_comparison_or_selection"
+    )
+    assert report["comparison_response_readback"]["production_subtitle_design_acceptance"] is False
     assert report["production_candidate"] is False
     assert report["production_subtitle_design_acceptance"] is False
     assert report["production_render_acceptance"] is False
@@ -472,6 +488,22 @@ def test_typography_decoration_comparison_preserves_accepted_font_size_boundary(
     assert report["public_use_permission"] is False
     assert report["font_size_policy"]["status"] == "preserved_from_human_review"
     assert report["font_size_policy"]["value"] == 41
+    next_route = report["next_diagnostic_overlay_proof_route"]
+    assert next_route["route_kind"] == "small_adjustment_diagnostic_overlay_proof"
+    assert next_route["target_cuts"] == ["cut_002", "cut_003"]
+    assert next_route["font_size"]["formula"] == "round(frame_height * 0.115)"
+    assert next_route["font_size"]["status"] == (
+        "preserve_accepted_diagnostic_representative_direction"
+    )
+    assert next_route["font_family"] == (
+        "unresolved_until_concrete_adjusted_candidate_selected"
+    )
+    assert next_route["decoration"] == (
+        "unresolved_until_outline_shadow_badge_accent_selected"
+    )
+    assert next_route["regenerate_sh08_required"] is False
+    assert next_route["episodes_artifact_tracking_allowed"] is False
+    assert next_route["production_subtitle_design_acceptance"] is False
     assert report["candidate_count"] == 4
     assert len(report["samples"]) == 8
     assert {sample["candidate_id"] for sample in report["samples"]} == {
@@ -504,12 +536,65 @@ def test_typography_decoration_comparison_preserves_accepted_font_size_boundary(
     assert open_helper.exists()
     persisted = json.loads(json_path.read_text(encoding="utf-8"))
     assert persisted["font_size_policy"]["value"] == 41
+    assert persisted["comparison_response_readback"]["selected_response"] == "small_adjustment"
+    assert persisted["next_diagnostic_overlay_proof_route"]["route_kind"] == (
+        "small_adjustment_diagnostic_overlay_proof"
+    )
     assert persisted["outputs"]["html"].endswith(
         "subtitle_typography_decoration_comparison_report.html"
     )
     assert "open_comparison.ps1" in persisted["open_commands"]["open_comparison"]
     html = html_path.read_text(encoding="utf-8")
-    assert "Human readback: adjust_boundary" in html
+    assert "Source human readback: adjust_boundary" in html
+    assert "ED-10g comparison response: small_adjustment" in html
+    assert "Next Diagnostic Overlay Proof Route" in html
+    assert "small_adjustment_diagnostic_overlay_proof" in html
     assert "font family and decoration remain unresolved" in html
     assert "production_subtitle_design_acceptance=false" in html
     assert "Current Yu Gothic heavy outline" in html
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_typography_decoration_comparison_cli_reports_small_adjustment_route(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "subtitle_typography_decoration_comparison_cli"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "build-subtitle-typography-decoration-comparison",
+            "--output-dir",
+            str(output_dir),
+            "--target-cut",
+            "cut_002",
+            "--target-cut",
+            "cut_003",
+            "--sample-text",
+            "ED-10g small adjustment smoke",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["artifact_id"] == "clip-typography-decoration-comparison-001"
+    assert payload["comparison_response"]["selected_response"] == "small_adjustment"
+    assert payload["next_diagnostic_overlay_proof_route"]["route_kind"] == (
+        "small_adjustment_diagnostic_overlay_proof"
+    )
+    assert payload["next_diagnostic_overlay_proof_route"]["target_cuts"] == [
+        "cut_002",
+        "cut_003",
+    ]
+    assert payload["production_subtitle_design_acceptance"] is False
+    assert Path(payload["outputs"]["html"]).exists()
