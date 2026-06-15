@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-11 JST
+Last updated: 2026-06-15 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
@@ -10,6 +10,59 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 
 - Branch: `main`
 - Upstream: `origin/main`
+- Latest implementation resume point before this handoff refresh:
+  `ae42d89 (main, origin/main) feat: add subtitle typography comparison proof`.
+  A fresh terminal should run `git fetch --prune origin`,
+  `git checkout main`, and `git pull --ff-only origin main`, then confirm
+  `git rev-list --left-right --count HEAD...origin/main` returns `0 0`.
+- Latest active review state:
+  SH-08 / `clip-human-preview-session-001` has consumed the human answer as
+  `adjust_boundary`, not as production subtitle design acceptance. Font size is
+  accepted only for the current diagnostic / representative route:
+  `font_size=accepted_for_diagnostic_representative_review`. `font_family` and
+  `decoration` remain unresolved and moved to ED-10g.
+- Latest successor slice:
+  `ED-10g: Subtitle Typography Decoration Comparison v0` is now the active
+  narrow route. The tracked generator is
+  `build-subtitle-typography-decoration-comparison`; the tracked decision
+  packet is
+  [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md);
+  the artifact registry entry is `clip-typography-decoration-comparison-001`
+  in [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md).
+- Same-machine local proof generated before handoff:
+  ignored
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/`
+  contains 4 candidates, 16 PNG samples, a contact sheet, JSON/HTML report,
+  and `open_comparison.ps1`. This directory is not tracked. Another terminal
+  can regenerate it with:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_typography_decoration_comparison `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
+- Open the local comparison artifact, when present, with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_typography_decoration_comparison\open_comparison.ps1
+```
+
+- Production / public boundaries after handoff remain unchanged:
+  `production_subtitle_design_acceptance=false`,
+  `production_render_acceptance=false`, `creative_acceptance=false`,
+  `rights_status=pending`, `publishing_acceptance=false`, and
+  `public_use_permission=false`. `episodes/` remains ignored and
+  `git ls-files episodes` must remain empty.
+- Latest validation before this handoff refresh:
+  `uvx pytest -q tests/test_episode_review_bundle.py tests/test_subtitle_overlay_visual_proof.py tests/test_subtitle_style_spike.py tests/test_episode_status.py`
+  -> `17 passed, 7 skipped`;
+  `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py`
+  -> `11 passed`; `git diff --check` clean; `git ls-files episodes` empty.
 - Latest pushed sync point before this representative subtitle design readback
   refresh: `87eba6a docs: record cut003 diagnostic readability acceptance`;
   after pulling from another terminal, run `git log -1 --oneline --decorate`
