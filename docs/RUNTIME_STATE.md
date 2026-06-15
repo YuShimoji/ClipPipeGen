@@ -39,6 +39,15 @@ instructions.
   `rights_status=pending`, `production_candidate=false`,
   `production_usage_allowed=false`, `publishing_acceptance=false`, and
   `public_use_permission=false`.
+- SH-08 convenience / cleanup policy update:
+  the active ignored
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/`
+  is a retained local preview artifact until the human decision is consumed.
+  Do not delete it during worktree cleanup, and do not ask the human to
+  regenerate it when same-machine parser readback already confirms the session
+  is review-ready. Keep `episodes/` ignored and keep `git ls-files episodes`
+  empty; remote Git verifies only tracked builder/docs/tests, while local
+  artifact existence is same-machine readback evidence.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle

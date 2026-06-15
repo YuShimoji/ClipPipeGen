@@ -60,6 +60,8 @@ Legacy alias: `clip-episode-review-surface-001`
 
 `docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md` と `build-episode-review-bundle` は、この負担を 1 つの `index.html` / `review_manifest.json` に寄せる。MP4 があるなら video を先に、MP4 が無ければ contact sheet / PNG を先に、JSON/HTML はその後の証跡として並べる。
 
+Active `human_preview_session/` は、人間判断が消費されるまで local に保持してよい review entry point として扱う。利便性を優先し、同じ端末で既に `review_ready=true` の parser readback がある場合は、毎回再生成させず `open_preview.ps1` を最初に案内する。動画確認は production render acceptance ではないが、diagnostic / representative review の責務として in scope であり、散らばった HTML/MP4 を探させるより 1 つの retained local entry point を優先する。
+
 ## 現在の JP-Pilot R3 での入口
 
 現在の代表 subtitle review は `cut_002` / `cut_003` の diagnostic overlay proof を使う。creator が最初に開くべき screen は Review Bundle の `index.html` であり、そこで playable `subtitle_overlay_visual_proof_cut_002.mp4` / `subtitle_overlay_visual_proof_cut_003.mp4` があれば最初に確認する。

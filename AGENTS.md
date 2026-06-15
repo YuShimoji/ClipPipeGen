@@ -34,6 +34,14 @@
 - main 直 push は許容する。ただし force push、履歴改変、他リポへの push は事前確認を取る。
 - テストは過剰に増やさず、実装リスクに対して必要な最小 smoke / critical negative を優先する。
 
+## Worktree cleanup
+
+- Cleanup rules are recorded in [docs/WORKTREE_CLEANUP_POLICY.md](docs/WORKTREE_CLEANUP_POLICY.md).
+- Before code or docs edits, classify dirty state into active-scope tracked files, unrelated tracked modifications, untracked files, ignored generated/cache files, and active retained preview session artifacts.
+- Restore unrelated tracked modifications and delete unrelated untracked/temp/cache files with path-scoped commands.
+- Do not run broad ignored cleanup while an active `episodes/.../human_preview_session/` is retained for pending human review.
+- Keep `episodes/` ignored and keep `git ls-files episodes` empty unless an explicit private/artifact-store strategy is approved.
+
 ## やってはいけないこと
 
 - NLMYTGen 側のファイル編集（CLI 呼び出しは可、編集は不可）

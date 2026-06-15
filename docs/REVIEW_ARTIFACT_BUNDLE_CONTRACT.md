@@ -142,6 +142,35 @@ HTML report は証跡としてリンクする。Video review の入口を HTML r
 
 MP4 と contact sheet / representative PNG がどちらも無い場合、bundle は reviewable generated output を提示できない。HTML report だけがある状態では、動画確認責務を満たしたとは扱わない。
 
+## Local Retention Policy for Active Human Preview Sessions
+
+`episodes/` remains ignored by default. It can contain raw source media,
+diagnostic MP4/PNG assets, subtitle payloads, and other source-derived files
+that must not enter the public Git history without a separate private artifact
+store or explicit approval.
+
+An active `human_preview_session/` is different from disposable cache. Once a
+session has been generated for a pending human diagnostic / representative
+review, it may be retained locally as the review entry point and acceptance
+evidence until the human decision is consumed. The current active retained
+session is:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/
+```
+
+`git ls-files episodes` should remain empty for public repository hygiene.
+Local existence of the active preview session is still valid same-machine
+review evidence when parser readback confirms `review_ready=true`,
+`state=diagnostic_only`, expected target cuts, media assets, decision files, and
+false/pending boundary flags.
+
+Cleanup must protect the active preview session until its human decision is
+recorded or the operator explicitly retires it. Remote Git cannot directly
+verify ignored local preview assets; remote verification is limited to tracked
+builder code, docs, tests, and any local readback reported from the machine
+that retains the artifacts.
+
 ## Portable path rules
 
 - manifest の authority は repo-relative path。
@@ -152,14 +181,19 @@ MP4 と contact sheet / representative PNG がどちらも無い場合、bundle 
 
 ## Preferred open route
 
-1. repo-relative path を報告する。
-2. local browser policy で file open が不安定な場合は、bundle directory を static server で開く。
+1. 人間にはまず active session の open helper を提示する。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\<episode_id>\review\<review_id>\human_preview_session\open_preview.ps1
+```
+
+2. file open が不安定な場合は、bundle directory を static server で開く。
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File episodes\<episode_id>\review\<review_id>\human_preview_session\serve_preview.ps1 -Port 8000
 ```
 
-3. OS open command はユーザーが確認した時だけ使う。
+3. Regenerate command は、parser readback で target cuts / media / decision files が欠けている時だけ使う。
 
 ## CLI
 
