@@ -8,6 +8,8 @@ Review Artifact Bundle は、episode の review artifacts を 1 つの creator-f
 
 この bundle は diagnostic / representative review surface であり、production render、production subtitle design、rights approval、publishing、upload、public use を承認しない。
 
+Tracked artifact registry: [artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md)
+
 ## Bundle の目的
 
 | 目的 | 効果 |
@@ -170,6 +172,10 @@ recorded or the operator explicitly retires it. Remote Git cannot directly
 verify ignored local preview assets; remote verification is limited to tracked
 builder code, docs, tests, and any local readback reported from the machine
 that retains the artifacts.
+
+The tracked artifact registry may reference the active preview path and open
+command, but it must describe the session as a local retained artifact rather
+than a portable file present on every clone.
 
 ## Portable path rules
 

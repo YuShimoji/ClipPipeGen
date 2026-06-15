@@ -42,6 +42,34 @@
 - Do not run broad ignored cleanup while an active `episodes/.../human_preview_session/` is retained for pending human review.
 - Keep `episodes/` ignored and keep `git ls-files episodes` empty unless an explicit private/artifact-store strategy is approved.
 
+## Agent operation / Prompt changes
+
+- Agent operation rules are recorded in [docs/AGENT_OPERATION_CONTRACT.md](docs/AGENT_OPERATION_CONTRACT.md).
+- Prompt and spec rewrite rules are recorded in [docs/PROMPT_CHANGE_MANAGEMENT.md](docs/PROMPT_CHANGE_MANAGEMENT.md).
+- Reviewable artifacts are listed in [artifacts/ARTIFACTS.md](artifacts/ARTIFACTS.md).
+- Do not stop at the first self-review, first test failure, or minor ambiguity when a reversible scoped fix is clear.
+- True stop conditions are destructive operations, rights/publication judgment, credentials/OAuth/payment, cross-repo file access, production/public acceptance, active preview deletion, or repeated blockers after scoped fixes.
+- Agent handoff prompts must contain only execution instructions. Monitoring comments, rationale, model UI wording, and supervision-only notes stay outside the prompt block.
+
+## 完了報告フォーマット
+
+非自明な作業では、以下の内容を自然な日本語見出しで実体ある内容として含める。空欄テンプレートとして並べない。
+
+1. Summary
+2. Changed files
+3. Artifacts
+   - artifact_id
+   - repo_relative_path
+   - preview_url or open_command
+   - screenshot/contact-sheet/storyboard if applicable
+4. Commands run and results
+5. Validation
+6. Decision packet, if user judgement is needed
+7. Blockers, only if true stop condition
+8. Next complete prompt for another Agent, only when handoff is requested
+
+報告には internal reasoning settings、model UI terms、depth labels、unsupported claims、unverified full paths を含めない。
+
 ## やってはいけないこと
 
 - NLMYTGen 側のファイル編集（CLI 呼び出しは可、編集は不可）

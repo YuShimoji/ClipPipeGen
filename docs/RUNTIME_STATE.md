@@ -48,6 +48,16 @@ instructions.
   is review-ready. Keep `episodes/` ignored and keep `git ls-files episodes`
   empty; remote Git verifies only tracked builder/docs/tests, while local
   artifact existence is same-machine readback evidence.
+- Agent operation / prompt-change resource update:
+  [AGENT_OPERATION_CONTRACT.md](AGENT_OPERATION_CONTRACT.md) now records the
+  Codex self-running loop, true stop conditions, visual artifact workflow,
+  artifact manifest requirement, and report contents to avoid.
+  [PROMPT_CHANGE_MANAGEMENT.md](PROMPT_CHANGE_MANAGEMENT.md) records
+  meaning-preserving prompt/spec rewrite rules and change labels.
+  [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md) registers
+  `clip-human-preview-session-001` as a local retained artifact with the
+  open command, fallback command, validation command, and same-machine evidence
+  boundary.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle
