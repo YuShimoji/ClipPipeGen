@@ -32,12 +32,22 @@ DEFAULT_OUTPUT_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/"
     "review/jp_pilot01r3_cut_review/subtitle_style_spike"
 )
+DEFAULT_TYPOGRAPHY_COMPARISON_OUTPUT_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/"
+    "review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison"
+)
 DEFAULT_CANVAS = (1280, 720)
 SAMPLE_TEXTS = (
     "来ねぇ！！",
     "この条件、かなり危ないです",
     "まず物件カードを見ます",
     "ここで事故ります",
+)
+TYPOGRAPHY_COMPARISON_SAMPLE_TEXTS = (
+    "団長、ちなみに、他の番長知ってますか？",
+    "なんで来なかったんすか！！",
+    "まあ謝るんなら許してあげます",
+    "長(ちょう)？　長って言った？",
 )
 FONT_CANDIDATES = (
     Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
@@ -134,6 +144,22 @@ class WrapResult:
     measured_width_by_line: list[int]
 
 
+@dataclass(frozen=True)
+class TypographyDecorationCandidate:
+    candidate_id: str
+    display_name: str
+    font_paths: tuple[Path, ...]
+    fallback_family: str
+    stroke_ratio: float
+    shadow_offset_ratio: float
+    text_fill: tuple[int, int, int]
+    stroke_fill: tuple[int, int, int]
+    shadow_fill: tuple[int, int, int]
+    badge_fill: tuple[int, int, int]
+    badge_outline: tuple[int, int, int]
+    decoration_note: str
+
+
 MODE_SPECS: tuple[ModeSpec, ...] = (
     ModeSpec(
         mode="dialogue_badge_left",
@@ -195,6 +221,77 @@ MODE_SPECS: tuple[ModeSpec, ...] = (
         transfer_risk=(
             "Identity grouping is a renderer integration problem, not only text styling."
         ),
+    ),
+)
+
+TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
+    TypographyDecorationCandidate(
+        candidate_id="current_yu_gothic_heavy_outline",
+        display_name="Current Yu Gothic heavy outline",
+        font_paths=(
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+            Path("C:/Windows/Fonts/YuGothM.ttc"),
+        ),
+        fallback_family="Yu Gothic",
+        stroke_ratio=0.096,
+        shadow_offset_ratio=0.018,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(255, 210, 0),
+        badge_outline=(0, 0, 0),
+        decoration_note="baseline: current diagnostic heavy outline and placeholder yellow speaker badge",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="noto_sans_jp_clean_outline",
+        display_name="Noto Sans JP clean outline",
+        font_paths=(
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+        ),
+        fallback_family="Noto Sans JP",
+        stroke_ratio=0.086,
+        shadow_offset_ratio=0.018,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(34, 139, 230),
+        badge_outline=(12, 36, 56),
+        decoration_note="cleaner outline with a cooler placeholder badge accent",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="meiryo_bold_soft_shadow",
+        display_name="Meiryo bold soft shadow",
+        font_paths=(
+            Path("C:/Windows/Fonts/meiryob.ttc"),
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+        ),
+        fallback_family="Meiryo Bold",
+        stroke_ratio=0.078,
+        shadow_offset_ratio=0.035,
+        text_fill=(255, 252, 238),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(237, 86, 59),
+        badge_outline=(50, 22, 14),
+        decoration_note="slightly lighter outline with a stronger soft-shadow readback",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="gothic_high_contrast_minimal_badge",
+        display_name="Gothic high contrast minimal badge",
+        font_paths=(
+            Path("C:/Windows/Fonts/msgothic.ttc"),
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+        ),
+        fallback_family="MS Gothic",
+        stroke_ratio=0.105,
+        shadow_offset_ratio=0.012,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(46, 50, 56),
+        badge_outline=(245, 196, 74),
+        decoration_note="high-contrast text with a quieter placeholder badge block",
     ),
 )
 
@@ -835,6 +932,588 @@ def build_subtitle_style_spike(
     _write_json(output_dir / "subtitle_style_spike_report.json", report)
     _write_html(output_dir / "subtitle_style_spike_report.html", report, output_dir=output_dir)
     return report
+
+
+def build_subtitle_typography_decoration_comparison(
+    *,
+    output_dir: Path | None = None,
+    episode_dir: Path | None = None,
+    review_dir: Path | None = None,
+    target_cut_ids: list[str] | tuple[str, ...] | None = None,
+    sample_texts: list[str] | tuple[str, ...] | None = None,
+    canvas_size: tuple[int, int] = (1920, 1080),
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Generate review-only font-family / decoration comparison artifacts.
+
+    This preserves the accepted diagnostic font-size direction and varies only
+    font family and decorative treatment. It does not render source media or
+    approve production subtitle design.
+    """
+    if Image is None or ImageDraw is None or ImageFont is None:
+        raise RuntimeError(PILLOW_OPTIONAL_DEPENDENCY_MESSAGE)
+
+    base = base_dir or Path.cwd()
+    if output_dir is None:
+        output_dir = (
+            review_dir / "subtitle_typography_decoration_comparison"
+            if review_dir is not None
+            else DEFAULT_TYPOGRAPHY_COMPARISON_OUTPUT_DIR
+        )
+    output_dir = output_dir if output_dir.is_absolute() else base / output_dir
+    target_cut_ids = tuple(target_cut_ids or ("cut_002", "cut_003"))
+    texts = list(
+        sample_texts
+        or _comparison_texts_from_edit_pack(
+            episode_dir=episode_dir,
+            target_cut_ids=target_cut_ids,
+            base=base,
+        )
+        or TYPOGRAPHY_COMPARISON_SAMPLE_TEXTS
+    )
+    texts = _dedupe_nonempty_texts(texts)[:4]
+    if not texts:
+        texts = list(TYPOGRAPHY_COMPARISON_SAMPLE_TEXTS)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    width, height = canvas_size
+    samples: list[dict[str, Any]] = []
+    for candidate in TYPOGRAPHY_DECORATION_CANDIDATES:
+        for index, text in enumerate(texts, start=1):
+            samples.append(
+                _render_typography_decoration_sample(
+                    output_dir=output_dir,
+                    canvas_size=(width, height),
+                    candidate=candidate,
+                    text=text,
+                    text_index=index,
+                )
+            )
+
+    contact_sheet_path = _write_typography_comparison_contact_sheet(
+        samples=samples,
+        output_dir=output_dir,
+    )
+    json_path = output_dir / "subtitle_typography_decoration_comparison_report.json"
+    html_path = output_dir / "subtitle_typography_decoration_comparison_report.html"
+    open_helper_path = output_dir / "open_comparison.ps1"
+    open_helper_path.write_text(_open_comparison_script(), encoding="utf-8")
+    open_helper_display = _display_path(open_helper_path, base)
+    open_helper_windows = open_helper_display.replace("/", "\\")
+
+    report = {
+        "schema_version": "v1",
+        "report_kind": "subtitle_typography_decoration_comparison",
+        "artifact_id": "clip-typography-decoration-comparison-001",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "scope": "diagnostic_representative_font_family_decoration_comparison",
+        "review_only": True,
+        "production_candidate": False,
+        "production_compatible": False,
+        "production_subtitle_design_acceptance": False,
+        "production_render_acceptance": False,
+        "creative_acceptance": False,
+        "rights_status": "pending",
+        "publishing_acceptance": False,
+        "public_use_permission": False,
+        "source_media_mutated": False,
+        "transcript_mutated": False,
+        "official_subtitle_evidence_mutated": False,
+        "target_cuts": list(target_cut_ids),
+        "human_decision_readback": {
+            "source_artifact": "clip-human-preview-session-001",
+            "selected_response": "adjust_boundary",
+            "font_size": "accepted_for_diagnostic_representative_review",
+            "font_family": "unresolved_needs_comparison",
+            "decoration": "unresolved_needs_comparison",
+            "production_subtitle_design_acceptance": False,
+        },
+        "candidate_count": len(TYPOGRAPHY_DECORATION_CANDIDATES),
+        "sample_texts": texts,
+        "canvas_size": {"width": width, "height": height},
+        "font_size_policy": {
+            "status": "preserved_from_human_review",
+            "formula": "round(frame_height * 0.115)",
+            "value": max(16, round(height * 0.115)),
+            "scope": "diagnostic_representative_review_only",
+        },
+        "comparison_axes": {
+            "fixed": ["font_size", "badge_left_dialogue placement", "font_bbox wrapping"],
+            "varied": ["font_family", "outline/stroke ratio", "shadow offset", "placeholder badge accent"],
+            "out_of_scope": [
+                "production subtitle design acceptance",
+                "production render acceptance",
+                "rights approval",
+                "publishing",
+                "public use",
+            ],
+        },
+        "candidates": [_candidate_readback(candidate) for candidate in TYPOGRAPHY_DECORATION_CANDIDATES],
+        "samples": samples,
+        "outputs": {
+            "json": _display_path(json_path, base),
+            "html": _display_path(html_path, base),
+            "contact_sheet": _display_path(contact_sheet_path, base),
+            "open_helper": _display_path(open_helper_path, base),
+        },
+        "open_commands": {
+            "open_comparison": (
+                "powershell -ExecutionPolicy Bypass -File "
+                f"{open_helper_windows}"
+            )
+        },
+        "next_decision_question": (
+            "Which font-family / decoration candidate should become the next "
+            "diagnostic subtitle overlay proof direction for cut_002 / cut_003? "
+            "This does not approve production subtitle design, production render, "
+            "rights, publishing, public use, or upload."
+        ),
+    }
+    _write_json(json_path, report)
+    _write_typography_comparison_html(html_path, report)
+    return report
+
+
+def _comparison_texts_from_edit_pack(
+    *,
+    episode_dir: Path | None,
+    target_cut_ids: tuple[str, ...],
+    base: Path,
+) -> list[str]:
+    if episode_dir is None:
+        return []
+    episode_dir = episode_dir if episode_dir.is_absolute() else base / episode_dir
+    edit_pack_path = episode_dir / "edit_pack.json"
+    try:
+        edit_pack = json.loads(edit_pack_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    subtitles = edit_pack.get("subtitles") if isinstance(edit_pack.get("subtitles"), list) else []
+    target_set = set(target_cut_ids)
+    by_id = {
+        str(item.get("id")): str(item.get("text") or "")
+        for item in subtitles
+        if isinstance(item, dict) and str(item.get("cut_id") or "") in target_set
+    }
+    preferred_ids = ("sub_008", "sub_013", "sub_017", "sub_025")
+    texts = [by_id[item_id] for item_id in preferred_ids if by_id.get(item_id)]
+    for item in subtitles:
+        if not isinstance(item, dict) or str(item.get("cut_id") or "") not in target_set:
+            continue
+        text = str(item.get("text") or "")
+        if text:
+            texts.append(text)
+    return _dedupe_nonempty_texts(texts)
+
+
+def _dedupe_nonempty_texts(texts: list[str] | tuple[str, ...]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for text in texts:
+        text = str(text).strip()
+        if not text or text in seen:
+            continue
+        seen.add(text)
+        result.append(text)
+    return result
+
+
+def _candidate_readback(candidate: TypographyDecorationCandidate) -> dict[str, Any]:
+    return {
+        "candidate_id": candidate.candidate_id,
+        "display_name": candidate.display_name,
+        "requested_font_paths": [path.as_posix() for path in candidate.font_paths],
+        "fallback_family": candidate.fallback_family,
+        "stroke_ratio": candidate.stroke_ratio,
+        "shadow_offset_ratio": candidate.shadow_offset_ratio,
+        "text_fill": _rgb_hex(candidate.text_fill),
+        "stroke_fill": _rgb_hex(candidate.stroke_fill),
+        "shadow_fill": _rgb_hex(candidate.shadow_fill),
+        "badge_fill": _rgb_hex(candidate.badge_fill),
+        "badge_outline": _rgb_hex(candidate.badge_outline),
+        "decoration_note": candidate.decoration_note,
+        "production_subtitle_design_acceptance": False,
+    }
+
+
+def _render_typography_decoration_sample(
+    *,
+    output_dir: Path,
+    canvas_size: tuple[int, int],
+    candidate: TypographyDecorationCandidate,
+    text: str,
+    text_index: int,
+) -> dict[str, Any]:
+    width, height = canvas_size
+    font_size = max(16, round(height * 0.115))
+    stroke_width = max(2, round(font_size * candidate.stroke_ratio))
+    shadow_offset = max(1, round(font_size * candidate.shadow_offset_ratio))
+    safe_x = round(width * 0.055)
+    safe_y = round(height * 0.09)
+    line_height = max(font_size, round(font_size * 1.15))
+    spacing = max(0, line_height - font_size)
+    badge_w = max(48, round(font_size * 1.0))
+    badge_h = max(32, round(font_size * 0.7))
+    badge_gap = max(8, round(font_size * 0.3))
+    badge_font_size = max(12, round(font_size * 0.44))
+    font_family, font_path, font_status = _select_candidate_font(candidate)
+    font = _load_font(font_path, font_size)
+
+    image = Image.new("RGB", (width, height), (36, 39, 44))
+    draw = ImageDraw.Draw(image)
+    max_text_width = max(120, width - safe_x - badge_w - badge_gap - safe_x)
+    wrap_result = _wrap_text_to_width(
+        draw=draw,
+        text=text,
+        font=font,
+        max_width=max_text_width,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+    origin_bbox = _text_bbox_at_origin(
+        draw=draw,
+        text=wrap_result.text,
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+    text_x, text_y = _origin_for_target_bbox(
+        origin_bbox,
+        target_left=safe_x + badge_w + badge_gap,
+        target_bottom=height - safe_y,
+    )
+    first_line_top = text_y + origin_bbox[1]
+    badge_center_y = first_line_top + round(line_height * 0.52)
+    badge_y = badge_center_y - round(badge_h / 2)
+    badge_bbox = _draw_comparison_badge(
+        draw,
+        label="SPK",
+        xy=(safe_x, badge_y),
+        size=(badge_w, badge_h),
+        font_path=font_path,
+        font_size=badge_font_size,
+        fill=candidate.badge_fill,
+        outline=candidate.badge_outline,
+    )
+    _draw_comparison_text(
+        draw,
+        xy=(text_x, text_y),
+        text=wrap_result.text,
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+        shadow_offset=shadow_offset,
+        text_fill=candidate.text_fill,
+        stroke_fill=candidate.stroke_fill,
+        shadow_fill=candidate.shadow_fill,
+    )
+    measured_bbox = draw.multiline_textbbox(
+        (text_x, text_y),
+        wrap_result.text,
+        font=font,
+        spacing=spacing,
+        stroke_width=stroke_width,
+    )
+    output_path = output_dir / (
+        f"subtitle_typography_decoration.{candidate.candidate_id}.{text_index:02d}.png"
+    )
+    image.save(output_path)
+    safe_area_status = _bbox_inside_safe_area(
+        measured_bbox,
+        canvas_size=(width, height),
+        safe_x=safe_x,
+        safe_y=safe_y,
+    )
+    return {
+        "candidate_id": candidate.candidate_id,
+        "display_name": candidate.display_name,
+        "output_image_path": output_path.as_posix(),
+        "sample_variant": "font_family_decoration_comparison",
+        "canvas_size": {"width": width, "height": height},
+        "subtitle_mode": "badge_left_dialogue",
+        "text": text,
+        "wrapped_text": wrap_result.text,
+        "wrapped_lines": wrap_result.lines,
+        "wrap_algorithm": {
+            "name": wrap_result.algorithm_name,
+            "authority": GRID_READBACK["wrapping_authority"],
+            "source_function": "_wrap_text_to_width",
+            "not_grid_based": True,
+        },
+        "candidate_breaks": wrap_result.candidate_breaks,
+        "selected_break_reason": wrap_result.selected_break_reason,
+        "orphan_prevention_applied": wrap_result.orphan_prevention_applied,
+        "suffix_tail_prevention_applied": wrap_result.suffix_tail_prevention_applied,
+        "suspicious_tail_line_present": wrap_result.suspicious_tail_line_present,
+        "suspicious_tail_lines": wrap_result.suspicious_tail_lines,
+        "measured_width_by_line": wrap_result.measured_width_by_line,
+        "font_family": font_family,
+        "font_file": font_path,
+        "font_file_status": font_status,
+        "font_size_status": "accepted_for_diagnostic_representative_review",
+        "requested_font_size": font_size,
+        "font_size_formula": "round(frame_height * 0.115)",
+        "style_inputs": {
+            "font_family_axis": "comparison_candidate",
+            "decoration_axis": "comparison_candidate",
+            "font_size_axis": "fixed_from_human_review",
+            "stroke_ratio": candidate.stroke_ratio,
+            "shadow_offset_ratio": candidate.shadow_offset_ratio,
+            "badge_fill": _rgb_hex(candidate.badge_fill),
+            "badge_outline": _rgb_hex(candidate.badge_outline),
+            "text_fill": _rgb_hex(candidate.text_fill),
+            "stroke_fill": _rgb_hex(candidate.stroke_fill),
+            "shadow_fill": _rgb_hex(candidate.shadow_fill),
+            "decoration_note": candidate.decoration_note,
+        },
+        "computed_layout": {
+            "layout_anchor": "left_badge_first_line_center",
+            "text_start_position": {"x": text_x, "y": text_y},
+            "badge_slot": _bbox_dict(badge_bbox),
+            "badge_to_text_gap": badge_gap,
+            "line_height": line_height,
+            "max_text_width": max_text_width,
+            "wrapped_lines": wrap_result.lines,
+        },
+        "measured_output": {
+            "source_function": "draw.multiline_textbbox",
+            "measured_bbox": _bbox_dict(measured_bbox),
+            "safe_area_status": safe_area_status,
+            "manual_override": False,
+            "design_target": False,
+        },
+        "measured_bbox": _bbox_dict(measured_bbox),
+        "badge_bbox": _bbox_dict(badge_bbox),
+        "safe_area_margin": {"x": safe_x, "y": safe_y},
+        "safe_area_status": safe_area_status,
+        "line_height": line_height,
+        "line_count": len(wrap_result.lines),
+        "grid_model": GRID_READBACK["grid_model"],
+        "snap_to_grid": False,
+        "layout_authority": GRID_READBACK["actual_layout_authority"],
+        "wrapping_authority": GRID_READBACK["wrapping_authority"],
+        "outline": {
+            "stroke_width": stroke_width,
+            "stroke_fill": _rgb_hex(candidate.stroke_fill),
+            "renderer_term": "Pillow stroke_width, not ASS/YMM4/Premiere value",
+        },
+        "shadow": {
+            "offset_px": shadow_offset,
+            "fill": _rgb_hex(candidate.shadow_fill),
+            "renderer_term": "Pillow shadow offset, not ASS/YMM4/Premiere value",
+        },
+        "review_only": True,
+        "production_candidate": False,
+        "production_compatible": False,
+        "production_subtitle_design_acceptance": False,
+        "visible_element_authority_ids": [
+            "subtitle_text_block",
+            "placeholder_speaker_badge",
+            "speaker_accent_color",
+            "sample_background",
+        ],
+        "speaker_identity_asset_status": _speaker_identity_asset_status("dialogue_badge_left"),
+    }
+
+
+def _select_candidate_font(
+    candidate: TypographyDecorationCandidate,
+) -> tuple[str, str | None, str]:
+    for path in candidate.font_paths:
+        if path.exists():
+            return path.stem, str(path), "font_file_found"
+    fallback_family, fallback_path, fallback_status = _select_font()
+    return (
+        fallback_family or candidate.fallback_family,
+        fallback_path,
+        f"requested_candidate_font_missing_used_{fallback_status}",
+    )
+
+
+def _draw_comparison_badge(
+    draw,
+    *,
+    label: str,
+    xy: tuple[int, int],
+    size: tuple[int, int],
+    font_path: str | None,
+    font_size: int,
+    fill: tuple[int, int, int],
+    outline: tuple[int, int, int],
+) -> tuple[int, int, int, int]:
+    x, y = xy
+    w, h = size
+    draw.rounded_rectangle((x, y, x + w, y + h), radius=4, fill=fill, outline=outline, width=2)
+    badge_font = _load_font(font_path, font_size)
+    bbox = draw.textbbox((0, 0), label, font=badge_font, stroke_width=0)
+    tw = bbox[2] - bbox[0]
+    th = bbox[3] - bbox[1]
+    draw.text(
+        (x + round((w - tw) / 2), y + round((h - th) / 2) - 2),
+        label,
+        font=badge_font,
+        fill=(255, 255, 255),
+        stroke_width=1,
+        stroke_fill=(0, 0, 0),
+    )
+    return (x, y, x + w, y + h)
+
+
+def _draw_comparison_text(
+    draw,
+    *,
+    xy: tuple[int, int],
+    text: str,
+    font,
+    spacing: int,
+    stroke_width: int,
+    shadow_offset: int,
+    text_fill: tuple[int, int, int],
+    stroke_fill: tuple[int, int, int],
+    shadow_fill: tuple[int, int, int],
+) -> None:
+    x, y = xy
+    draw.multiline_text(
+        (x + shadow_offset, y + shadow_offset),
+        text,
+        font=font,
+        fill=shadow_fill,
+        spacing=spacing,
+        stroke_width=stroke_width,
+        stroke_fill=shadow_fill,
+    )
+    draw.multiline_text(
+        (x, y),
+        text,
+        font=font,
+        fill=text_fill,
+        spacing=spacing,
+        stroke_width=stroke_width,
+        stroke_fill=stroke_fill,
+    )
+
+
+def _write_typography_comparison_contact_sheet(
+    *,
+    samples: list[dict[str, Any]],
+    output_dir: Path,
+) -> Path:
+    image_paths = [Path(sample["output_image_path"]) for sample in samples]
+    thumbnails = []
+    for path in image_paths:
+        image = Image.open(path).convert("RGB")
+        image.thumbnail((480, 270))
+        thumbnails.append(image.copy())
+    if not thumbnails:
+        raise RuntimeError("no typography comparison images were generated")
+    columns = 2
+    cell_w = max(image.width for image in thumbnails)
+    cell_h = max(image.height for image in thumbnails)
+    rows = (len(thumbnails) + columns - 1) // columns
+    sheet = Image.new("RGB", (columns * cell_w, rows * cell_h), (22, 25, 29))
+    for index, image in enumerate(thumbnails):
+        x = (index % columns) * cell_w
+        y = (index // columns) * cell_h
+        sheet.paste(image, (x, y))
+    contact_sheet = output_dir / "subtitle_typography_decoration_contact_sheet.png"
+    sheet.save(contact_sheet)
+    return contact_sheet
+
+
+def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> None:
+    samples_by_candidate: dict[str, list[dict[str, Any]]] = {}
+    for sample in report["samples"]:
+        samples_by_candidate.setdefault(str(sample["candidate_id"]), []).append(sample)
+    sections = []
+    for candidate in report["candidates"]:
+        candidate_id = str(candidate["candidate_id"])
+        sample_blocks = []
+        for sample in samples_by_candidate.get(candidate_id, []):
+            image_name = Path(sample["output_image_path"]).name
+            readback = {
+                "text": sample["text"],
+                "font_family": sample["font_family"],
+                "font_file_status": sample["font_file_status"],
+                "font_size_status": sample["font_size_status"],
+                "requested_font_size": sample["requested_font_size"],
+                "outline": sample["outline"],
+                "shadow": sample["shadow"],
+                "safe_area_status": sample["safe_area_status"],
+                "wrapped_lines": sample["wrapped_lines"],
+                "production_subtitle_design_acceptance": sample[
+                    "production_subtitle_design_acceptance"
+                ],
+            }
+            sample_blocks.append(
+                "<figure>"
+                f"<img src=\"{html.escape(image_name)}\" alt=\"{html.escape(candidate_id)} sample\">"
+                "<figcaption><pre>"
+                f"{html.escape(json.dumps(readback, ensure_ascii=False, indent=2))}"
+                "</pre></figcaption>"
+                "</figure>"
+            )
+        sections.append(
+            "<section class=\"candidate\">"
+            f"<h2>{html.escape(candidate['display_name'])}</h2>"
+            f"<p>{html.escape(candidate['decoration_note'])}</p>"
+            f"<p>font paths: {html.escape(', '.join(candidate['requested_font_paths']))}</p>"
+            f"{''.join(sample_blocks)}"
+            "</section>"
+        )
+    contact_sheet = Path(report["outputs"]["contact_sheet"]).name
+    body = f"""<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Subtitle Typography Decoration Comparison</title>
+  <style>
+    body {{ font-family: system-ui, sans-serif; margin: 24px; color: #20242a; background: #f5f7f9; }}
+    .notice {{ padding: 12px 14px; border: 1px solid #aab5c0; background: #fff; }}
+    .candidate {{ margin: 24px 0; padding: 16px; background: #fff; border: 1px solid #d4dde6; }}
+    figure {{ margin: 16px 0; }}
+    img {{ max-width: 100%; border: 1px solid #b8c2cc; background: #222; }}
+    pre {{ white-space: pre-wrap; background: #eef2f5; padding: 10px; overflow-x: auto; }}
+  </style>
+</head>
+<body>
+  <h1>Subtitle Typography Decoration Comparison</h1>
+  <p class="notice">review_only=true / production_candidate=false / production_subtitle_design_acceptance=false / rights_status=pending</p>
+  <p class="notice">Human readback: adjust_boundary. Font size is accepted only for the current diagnostic / representative route; font family and decoration remain unresolved comparison axes.</p>
+  <p class="notice">This artifact uses generated review-only PNGs. It does not mutate source media, transcript, official subtitle evidence, rights, publishing, public use, or upload state.</p>
+  <h2>Contact Sheet</h2>
+  <p><a href="{html.escape(contact_sheet)}"><img src="{html.escape(contact_sheet)}" alt="typography decoration contact sheet"></a></p>
+  <h2>Decision Question</h2>
+  <p>{html.escape(str(report["next_decision_question"]))}</p>
+  <h2>Fixed / Varied Axes</h2>
+  <pre>{html.escape(json.dumps(report["comparison_axes"], ensure_ascii=False, indent=2))}</pre>
+  {''.join(sections)}
+</body>
+</html>
+"""
+    path.write_text(body, encoding="utf-8")
+
+
+def _open_comparison_script() -> str:
+    return """$ErrorActionPreference = 'Stop'
+$previewRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$index = Join-Path $previewRoot 'subtitle_typography_decoration_comparison_report.html'
+if (-not (Test-Path -LiteralPath $index)) {
+  throw "subtitle_typography_decoration_comparison_report.html not found next to open_comparison.ps1"
+}
+Invoke-Item -LiteralPath $index
+"""
+
+
+def _rgb_hex(value: tuple[int, int, int]) -> str:
+    return "#" + "".join(f"{component:02x}" for component in value)
+
+
+def _display_path(path: Path, base: Path) -> str:
+    try:
+        text = path.resolve().relative_to(base.resolve())
+    except (OSError, ValueError):
+        text = path
+    return str(text).replace("\\", "/")
 
 
 def _select_font() -> tuple[str, str | None, str]:

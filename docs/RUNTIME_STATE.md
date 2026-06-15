@@ -58,6 +58,22 @@ instructions.
   `clip-human-preview-session-001` as a local retained artifact with the
   open command, fallback command, validation command, and same-machine evidence
   boundary.
+- latest SH-08 / ED-10f human decision consumption:
+  the human response for `clip-human-preview-session-001` is consumed as
+  `adjust_boundary`, not as production subtitle design acceptance. Font size is
+  accepted only for the current diagnostic / representative route:
+  `font_size=accepted_for_diagnostic_representative_review`. `font_family` and
+  `decoration` remain unresolved comparison axes. The successor route is
+  [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md)
+  and `ED-10g: Subtitle Typography Decoration Comparison v0`. Same-machine
+  local proof was generated under ignored
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/`
+  with artifact id `clip-typography-decoration-comparison-001`, 4 candidates,
+  16 PNG samples, a contact sheet, JSON/HTML report, and `open_comparison.ps1`.
+  Boundary flags remain `production_subtitle_design_acceptance=false`,
+  `production_render_acceptance=false`, `creative_acceptance=false`,
+  `rights_status=pending`, `publishing_acceptance=false`, and
+  `public_use_permission=false`.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle

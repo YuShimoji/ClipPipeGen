@@ -10,7 +10,7 @@ quality, rights, publishing, or public use.
 ## Active Artifact: `clip-review-acceptance-gate-001`
 
 - Slice label: `ED-10f: Representative Subtitle Design Review v1`
-- Current packet state: `representative_review_ready_cut002_cut003`
+- Current packet state: `human_response_adjust_boundary_font_family_decoration`
 - Dense/stress state: `representative_review_blocked_missing_dense_stress_proof`
   for `cut_008`
 - Packet created from parser-first readback on 2026-06-15 JST before this docs
@@ -104,6 +104,25 @@ Response options:
 - `reject`: この字幕方向は代表 evidence として不採用。
 - `blocked_missing_artifact`: 必要な proof / source media / ignored artifact が不足しているため判断不可。
 - `blocked_missing_dense_stress_proof`: `cut_008` など dense/stress evidence がないため、代表範囲を広げる前に別スライスが必要。
+
+### Human Response Consumed
+
+Human response: `adjust_boundary`
+
+The review accepted the current font-size direction only within the diagnostic
+/ representative review route. The response does not approve production
+subtitle design, production render, creative quality, rights, publishing,
+public use, or upload.
+
+| Axis | Decision readback | Next effect |
+|---|---|---|
+| `font_size` | `accepted_for_diagnostic_representative_review` | Preserve the current formula-derived size for the next diagnostic comparison proof. |
+| `font_family` | `unresolved_needs_comparison` | Compare Japanese font-family candidates before regenerating the next overlay proof direction. |
+| `decoration` | `unresolved_needs_comparison` | Compare outline, shadow, and placeholder speaker-badge accent treatment. |
+
+The successor packet is
+[SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md)
+with artifact id `clip-typography-decoration-comparison-001`.
 
 ## Route
 

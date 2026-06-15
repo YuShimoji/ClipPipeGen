@@ -430,3 +430,86 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert "dialogue_badge_left_guide_v0" in html
     assert "decorative" in html
     assert "reaction_caption" in html
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_typography_decoration_comparison_preserves_accepted_font_size_boundary(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "subtitle_typography_decoration_comparison"
+
+    report = spike.build_subtitle_typography_decoration_comparison(
+        output_dir=output_dir,
+        sample_texts=[
+            "なんで来なかったんすか！！",
+            "まあ謝るんなら許してあげます",
+        ],
+        canvas_size=(640, 360),
+        base_dir=tmp_path,
+    )
+
+    assert report["report_kind"] == "subtitle_typography_decoration_comparison"
+    assert report["artifact_id"] == "clip-typography-decoration-comparison-001"
+    assert report["human_decision_readback"]["selected_response"] == "adjust_boundary"
+    assert report["human_decision_readback"]["font_size"] == (
+        "accepted_for_diagnostic_representative_review"
+    )
+    assert report["human_decision_readback"]["font_family"] == (
+        "unresolved_needs_comparison"
+    )
+    assert report["human_decision_readback"]["decoration"] == (
+        "unresolved_needs_comparison"
+    )
+    assert report["production_candidate"] is False
+    assert report["production_subtitle_design_acceptance"] is False
+    assert report["production_render_acceptance"] is False
+    assert report["creative_acceptance"] is False
+    assert report["rights_status"] == "pending"
+    assert report["publishing_acceptance"] is False
+    assert report["public_use_permission"] is False
+    assert report["font_size_policy"]["status"] == "preserved_from_human_review"
+    assert report["font_size_policy"]["value"] == 41
+    assert report["candidate_count"] == 4
+    assert len(report["samples"]) == 8
+    assert {sample["candidate_id"] for sample in report["samples"]} == {
+        "current_yu_gothic_heavy_outline",
+        "noto_sans_jp_clean_outline",
+        "meiryo_bold_soft_shadow",
+        "gothic_high_contrast_minimal_badge",
+    }
+    for sample in report["samples"]:
+        assert Path(sample["output_image_path"]).exists()
+        assert sample["sample_variant"] == "font_family_decoration_comparison"
+        assert sample["subtitle_mode"] == "badge_left_dialogue"
+        assert sample["font_size_status"] == "accepted_for_diagnostic_representative_review"
+        assert sample["requested_font_size"] == 41
+        assert sample["style_inputs"]["font_size_axis"] == "fixed_from_human_review"
+        assert sample["style_inputs"]["font_family_axis"] == "comparison_candidate"
+        assert sample["style_inputs"]["decoration_axis"] == "comparison_candidate"
+        assert sample["wrap_algorithm"]["name"] == "japanese_boundary_font_bbox_pixel_wrap_v1"
+        assert sample["wrapping_authority"] == "font_bbox_pixel_measurement_not_grid_cell_count"
+        assert sample["production_subtitle_design_acceptance"] is False
+        assert sample["production_candidate"] is False
+
+    json_path = output_dir / "subtitle_typography_decoration_comparison_report.json"
+    html_path = output_dir / "subtitle_typography_decoration_comparison_report.html"
+    contact_sheet = output_dir / "subtitle_typography_decoration_contact_sheet.png"
+    open_helper = output_dir / "open_comparison.ps1"
+    assert json_path.exists()
+    assert html_path.exists()
+    assert contact_sheet.exists()
+    assert open_helper.exists()
+    persisted = json.loads(json_path.read_text(encoding="utf-8"))
+    assert persisted["font_size_policy"]["value"] == 41
+    assert persisted["outputs"]["html"].endswith(
+        "subtitle_typography_decoration_comparison_report.html"
+    )
+    assert "open_comparison.ps1" in persisted["open_commands"]["open_comparison"]
+    html = html_path.read_text(encoding="utf-8")
+    assert "Human readback: adjust_boundary" in html
+    assert "font family and decoration remain unresolved" in html
+    assert "production_subtitle_design_acceptance=false" in html
+    assert "Current Yu Gothic heavy outline" in html

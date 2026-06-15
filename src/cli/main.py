@@ -25,6 +25,7 @@ Subcommands:
     build-cut-decision-packet R3: classify selected cuts for next acceptance slice.
     build-operator-proxy-decision-handoff R3: cut-scoped proxy decision handoff.
     build-subtitle-overlay-visual-proof R3: cut-scoped diagnostic subtitle-overlay proof.
+    build-subtitle-typography-decoration-comparison ED-10g: review-only font/decor comparison.
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
@@ -57,6 +58,7 @@ from . import (
     build_non_repo_handoff,
     build_operator_proxy_decision_handoff,
     build_subtitle_overlay_visual_proof,
+    build_subtitle_typography_decoration_comparison,
     check_cut_context,
     export_nle,
     fetch_source_audio,
@@ -101,6 +103,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-cut-decision-packet": build_cut_decision_packet.run,
     "build-operator-proxy-decision-handoff": build_operator_proxy_decision_handoff.run,
     "build-subtitle-overlay-visual-proof": build_subtitle_overlay_visual_proof.run,
+    "build-subtitle-typography-decoration-comparison": build_subtitle_typography_decoration_comparison.run,
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
     "build-non-repo-handoff": build_non_repo_handoff.run,
