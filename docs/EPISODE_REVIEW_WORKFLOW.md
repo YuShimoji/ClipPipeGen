@@ -1,6 +1,8 @@
 # Episode Review Workflow
 
-Active Artifact: `clip-episode-review-surface-001`
+Active Artifact: `clip-human-preview-session-001`
+
+Legacy alias: `clip-episode-review-surface-001`
 
 この文書は、ClipPipeGen を「pipeline 実験集」ではなく、episode 単位で source media / transcript / cut / subtitle / diagnostic video / NLE handoff / rights readback を接続し、動画制作者が生成結果を確認できる Review Surface を持つ制作補助システムとして固定する。
 

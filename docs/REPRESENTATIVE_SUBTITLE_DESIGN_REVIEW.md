@@ -217,6 +217,31 @@ The review must cover font, size, outline, color, speaker identity, mode
 selection, safe area, line wrapping, timing impression, and the visible
 `renderer_gap`. It must keep rights/publication state separate.
 
+## Human Preview Session
+
+The current human-facing entry point for the `cut_002` / `cut_003`
+representative subtitle design review is:
+
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/index.html`
+
+Generate or refresh it with:
+
+```powershell
+uvx python -m src.cli.main build-human-preview-session `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\human_preview_session `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
+The generated session includes `review_manifest.json`, `decision_request.json`,
+`decision_template.json`, `open_preview.ps1`, `serve_preview.ps1`, and copied
+review assets under `assets/`. It is diagnostic / representative review only;
+it does not accept production subtitle design, production render, creative
+quality, rights, publishing, public use, or upload.
+
 ## Smallest Next Slice
 
 The narrowest next action is parser-first review of the combined `cut_002` /

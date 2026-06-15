@@ -11,7 +11,7 @@ instructions.
 
 - date: 2026-06-15 JST
 - latest active artifact packet:
-  `clip-episode-review-surface-001` records the review-responsibility
+  `clip-human-preview-session-001` records the review-responsibility
   correction. ClipPipeGen now explicitly owns reviewable generated output for
   diagnostic / representative review: playable MP4 when available, subtitle
   overlay proof, representative frames/contact sheet, artifact links, status
@@ -20,21 +20,25 @@ instructions.
   approval, publishing acceptance, upload, or public-use permission. The
   focused surfaces are [EPISODE_REVIEW_WORKFLOW.md](EPISODE_REVIEW_WORKFLOW.md)
   and [REVIEW_ARTIFACT_BUNDLE_CONTRACT.md](REVIEW_ARTIFACT_BUNDLE_CONTRACT.md).
-  `SH-08: Episode Review Surface Contract` adds
-  `build-episode-review-bundle`, which writes a local ignored
-  `review_manifest.json` / `index.html` bundle from existing artifacts without
+  `SH-08: Human Preview Session Bundle` adds
+  `build-human-preview-session` / `build-episode-review-bundle`, which writes a
+  local ignored `human_preview_session/index.html`, `review_manifest.json`,
+  `decision_request.json`, `decision_template.json`, `open_preview.ps1`,
+  `serve_preview.ps1`, and copied `assets/` from existing artifacts without
   rendering, fetching, uploading, or approving production use.
   Same-machine readback generated ignored
-  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/review_bundle/review_manifest.json`
+  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/review_manifest.json`
   and `index.html`. Parsed manifest state is `review_ready=true`,
-  `state=diagnostic_only`, first review item
-  `subtitle_overlay_visual_proof_cut_002.mp4` as `playable_video/mp4`,
-  screens `episode_dashboard`, `source_rights_readback`,
-  `transcript_subtitle_source`, `cut_review`, `video_review_player`,
-  `subtitle_design_review`, `export_handoff`, and `acceptance_dashboard`.
+  `state=diagnostic_only`, `target_cuts=[cut_002, cut_003]`, 28 bundled assets,
+  `<video controls>` present, `cut_002` / `cut_003` MP4 assets present, fallback
+  PNG/sample assets present, and `missing_artifacts=[]`. The exact decision
+  request allows `accept_candidate`, `adjust_boundary`, `reject`,
+  `blocked_missing_artifact`, and `blocked_missing_dense_stress_proof`.
   Boundary flags remain `production_render_acceptance=false`,
-  `production_subtitle_design_acceptance=false`, `rights_status=pending`, and
-  `publishing_acceptance=false`.
+  `production_subtitle_design_acceptance=false`, `creative_acceptance=false`,
+  `rights_status=pending`, `production_candidate=false`,
+  `production_usage_allowed=false`, `publishing_acceptance=false`, and
+  `public_use_permission=false`.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle

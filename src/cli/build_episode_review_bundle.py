@@ -15,10 +15,18 @@ from src.pipeline.episode_review_bundle import (
 
 
 def run(argv: list[str]) -> int:
+    return _run(argv, prog="build-episode-review-bundle")
+
+
+def run_human_preview_session(argv: list[str]) -> int:
+    return _run(argv, prog="build-human-preview-session")
+
+
+def _run(argv: list[str], *, prog: str) -> int:
     parser = argparse.ArgumentParser(
-        prog="build-episode-review-bundle",
+        prog=prog,
         description=(
-            "Build a single local diagnostic/representative review bundle from existing "
+            "Build a single local diagnostic/representative human preview session from existing "
             "episode artifacts. This command does not render, fetch, upload, or approve production use."
         ),
     )
@@ -59,7 +67,13 @@ def run(argv: list[str]) -> int:
         "rights_status": boundary["rights_status"],
         "publishing_acceptance": boundary["publishing_acceptance"],
         "review_manifest": str(result["manifest_path"]).replace("\\", "/"),
+        "decision_request": str(result["decision_request_path"]).replace("\\", "/"),
+        "decision_template": str(result["decision_template_path"]).replace("\\", "/"),
+        "open_preview": str(result["open_preview_path"]).replace("\\", "/"),
+        "serve_preview": str(result["serve_preview_path"]).replace("\\", "/"),
         "index_html": str(result["index_path"]).replace("\\", "/"),
+        "open_command": manifest["open_commands"]["open_preview"],
+        "serve_command": manifest["open_commands"]["serve_preview"],
     }
     if args.format == "json":
         json.dump(payload, sys.stdout, ensure_ascii=False, indent=2)
@@ -78,5 +92,10 @@ def run(argv: list[str]) -> int:
         print(f"rights_status: {payload['rights_status']}")
         print(f"publishing_acceptance: {str(payload['publishing_acceptance']).lower()}")
         print(f"review_manifest: {payload['review_manifest']}")
+        print(f"decision_request: {payload['decision_request']}")
+        print(f"decision_template: {payload['decision_template']}")
+        print(f"open_preview: {payload['open_preview']}")
+        print(f"serve_preview: {payload['serve_preview']}")
         print(f"index_html: {payload['index_html']}")
+        print(f"open_command: {payload['open_command']}")
     return 0

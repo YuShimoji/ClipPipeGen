@@ -1,6 +1,8 @@
 # Review Artifact Bundle Contract
 
-Active Artifact: `clip-episode-review-surface-001`
+Active Artifact: `clip-human-preview-session-001`
+
+Legacy alias: `clip-episode-review-surface-001`
 
 Review Artifact Bundle は、episode の review artifacts を 1 つの creator-facing entry point にまとめる contract。目的は、動画制作者を scattered local HTML paths や ignored artifact 探しに戻さず、playable video / contact sheet / artifact readback / decision question を同じ場所で確認できるようにすること。
 
@@ -50,17 +52,24 @@ Review Artifact Bundle は、episode の review artifacts を 1 つの creator-f
 ```json
 {
   "schema_version": "v1",
-  "artifact_kind": "episode_review_bundle",
-  "active_artifact": "clip-episode-review-surface-001",
+  "artifact_kind": "human_preview_session_bundle",
+  "active_artifact": "clip-human-preview-session-001",
+  "artifact_aliases": ["clip-episode-review-surface-001"],
   "created_at": "2026-06-15T00:00:00+00:00",
   "episode_id": "jp_pilot01_hololive_bancho_20260525",
   "bundle": {
-    "repo_relative_dir": "episodes/<episode_id>/review/<review_id>/review_bundle",
-    "index_html": "episodes/<episode_id>/review/<review_id>/review_bundle/index.html",
-    "review_manifest": "episodes/<episode_id>/review/<review_id>/review_bundle/review_manifest.json",
+    "repo_relative_dir": "episodes/<episode_id>/review/<review_id>/human_preview_session",
+    "index_html": "episodes/<episode_id>/review/<review_id>/human_preview_session/index.html",
+    "review_manifest": "episodes/<episode_id>/review/<review_id>/human_preview_session/review_manifest.json",
+    "decision_request": "episodes/<episode_id>/review/<review_id>/human_preview_session/decision_request.json",
+    "decision_template": "episodes/<episode_id>/review/<review_id>/human_preview_session/decision_template.json",
+    "open_preview_helper": "episodes/<episode_id>/review/<review_id>/human_preview_session/open_preview.ps1",
+    "serve_preview_helper": "episodes/<episode_id>/review/<review_id>/human_preview_session/serve_preview.ps1",
+    "assets_dir": "episodes/<episode_id>/review/<review_id>/human_preview_session/assets",
     "preferred_open_route": {
-      "repo_relative_path": "episodes/<episode_id>/review/<review_id>/review_bundle/index.html",
-      "localhost_helper": "python -m http.server --directory episodes/<episode_id>/review/<review_id>/review_bundle 8000",
+      "repo_relative_path": "episodes/<episode_id>/review/<review_id>/human_preview_session/index.html",
+      "open_helper": "powershell -ExecutionPolicy Bypass -File episodes\\<episode_id>\\review\\<review_id>\\human_preview_session\\open_preview.ps1",
+      "localhost_helper": "powershell -ExecutionPolicy Bypass -File episodes\\<episode_id>\\review\\<review_id>\\human_preview_session\\serve_preview.ps1 -Port 8000",
       "os_open_requires_confirmation": true
     },
     "path_authority": "repo_relative_paths_only; absolute local paths are not authority"
@@ -84,6 +93,19 @@ Review Artifact Bundle は、episode の review artifacts を 1 つの creator-f
   "primary_review_order": [
     {"role": "playable_video", "media_type": "mp4", "path": "episodes/.../subtitle_overlay_visual_proof_cut_002.mp4", "exists": true}
   ],
+  "decision_request": {
+    "question": "For cut_002 / cut_003, should the current diagnostic representative subtitle overlay evidence proceed to the next diagnostic step?",
+    "allowed_responses": [
+      "accept_candidate",
+      "adjust_boundary",
+      "reject",
+      "blocked_missing_artifact",
+      "blocked_missing_dense_stress_proof"
+    ]
+  },
+  "generated_files": [],
+  "assets": {"directory": "episodes/.../human_preview_session/assets", "entries": []},
+  "missing_artifacts": [],
   "required_files": [],
   "optional_files": [],
   "screens": [],
@@ -134,7 +156,7 @@ MP4 と contact sheet / representative PNG がどちらも無い場合、bundle 
 2. local browser policy で file open が不安定な場合は、bundle directory を static server で開く。
 
 ```powershell
-python -m http.server --directory episodes\<episode_id>\review\<review_id>\review_bundle 8000
+powershell -ExecutionPolicy Bypass -File episodes\<episode_id>\review\<review_id>\human_preview_session\serve_preview.ps1 -Port 8000
 ```
 
 3. OS open command はユーザーが確認した時だけ使う。
@@ -142,11 +164,33 @@ python -m http.server --directory episodes\<episode_id>\review\<review_id>\revie
 ## CLI
 
 ```powershell
-uvx python -m src.cli.main build-episode-review-bundle `
+uvx python -m src.cli.main build-human-preview-session `
   --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
   --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
-  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\review_bundle `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\human_preview_session `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
   --format json
 ```
+
+## Human Preview Session generated files
+
+`build-human-preview-session` and `build-episode-review-bundle` use the same
+builder. The default generated directory is
+`episodes/<episode_id>/review/<review_id>/human_preview_session/`.
+
+The session writes:
+
+- `index.html` as the single human entry point.
+- `review_manifest.json` with repo-relative paths, existence, sizes, sha256,
+  missing artifacts, boundary flags, and open commands.
+- `decision_request.json` with one question and the allowed responses.
+- `decision_template.json` as a blank response template; it is not a human
+  answer.
+- `open_preview.ps1` and `serve_preview.ps1`.
+- `assets/` with copied local MP4/PNG/SRT/ASS review assets when present.
+
+The allowed responses are `accept_candidate`, `adjust_boundary`, `reject`,
+`blocked_missing_artifact`, and `blocked_missing_dense_stress_proof`.
 
 この CLI は既存 artifact を読むだけで、render / fetch / upload / OAuth / rights approval / production acceptance を行わない。実 MP4/PNG/HTML/JSON/CSV がある場合は link し、欠けている場合は missing panel に出す。
