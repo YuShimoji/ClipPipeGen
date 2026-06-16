@@ -6,6 +6,86 @@ This file is the shortest project-local handoff for resuming from another termin
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
+## Immediate Resume Capsule - 2026-06-16 Open Surface Sync
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git checkout main
+git pull --ff-only origin main
+git status --short --branch
+git rev-list --left-right --count HEAD...origin/main
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected state after pulling this handoff refresh:
+
+- Branch: `main`
+- Upstream: `origin/main`
+- `HEAD...origin/main`: `0 0`
+- `git ls-files episodes`: empty
+- Latest implementation sync point before this docs-only handoff refresh:
+  `f4f67cb chore: add review surface launchers`
+
+Current open order:
+
+1. `.\open-dashboard.ps1`
+2. choose the artifact or doc from the dashboard
+3. use the artifact-specific launcher only when needed:
+   `.\open-artifacts.ps1`, `.\open-current-proof.ps1`, or
+   `.\open-font-candidates.ps1`
+
+Current active artifact is `clip-ed10g-noto-overlay-proof-001`.
+`noto_sans_jp_clean_outline` is accepted as the current diagnostic /
+representative subtitle base for `cut_002` / `cut_003` only. This consumed
+human visual judgement as `accept_diagnostic_base`; it did not approve
+production subtitle design, production render, creative quality, rights,
+publishing, upload, or public use.
+
+Tracked surfaces now holding the context:
+
+| Surface | Purpose |
+|---|---|
+| `docs/RUNTIME_STATE.md` | current resume capsule and next route boundaries |
+| `docs/index.md` | human-facing wiki entrance and open-surface order |
+| `docs/dashboard/index.html` | generated project dashboard |
+| `docs/dashboard/project-status.json` | machine-readable dashboard state |
+| `docs/features/index.md` | generated feature progress table |
+| `artifacts/ARTIFACTS.md` | artifact registry and open commands |
+| `docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md` | consumed ED-10g decision packet |
+| `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | ED-10h font candidate registry |
+
+Latest launcher validation before this handoff refresh:
+
+- `powershell -NoProfile -ExecutionPolicy Bypass -File .\open-dashboard.ps1`
+  opened `docs\dashboard\index.html`.
+- `powershell -NoProfile -ExecutionPolicy Bypass -File .\open-artifacts.ps1`
+  opened `artifacts\ARTIFACTS.md`.
+- `powershell -NoProfile -ExecutionPolicy Bypass -File .\open-current-proof.ps1`
+  opened the retained ignored ED-10g proof on this machine. In a fresh
+  terminal without retained `episodes/` evidence, the expected behavior is a
+  clear message pointing back to `.\open-dashboard.ps1` and
+  `.\open-artifacts.ps1`.
+- `powershell -NoProfile -ExecutionPolicy Bypass -File .\open-font-candidates.ps1`
+  parsed 19 font candidates and opened `docs\SUBTITLE_FONT_CANDIDATE_SWEEP.md`.
+- `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py`
+  returned `21 passed, 8 skipped`.
+
+Next useful routes are separate choices, not a reopening of the accepted
+`cut_002` / `cut_003` base:
+
+- Advance: create a dense/stress proof route for `cut_008` or another explicit
+  target if representative coverage must widen.
+- Audit: use dashboard doc-health findings to shorten or clarify
+  `docs/RUNTIME_STATE.md`, `docs/FEATURE_REGISTRY.md`, or other high-friction
+  docs.
+- Explore: choose the ED-10h font route, either no-download local/system
+  comparison or an explicitly approved download route with license metadata.
+- Verify: run a separate limitation-lift route for production render,
+  production subtitle design, rights, publishing, or public-use acceptance.
+
 ## Current Sync Point
 
 - Branch: `main`

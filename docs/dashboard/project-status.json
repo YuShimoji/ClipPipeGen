@@ -1330,7 +1330,7 @@
     {
       "path": "docs/HANDOFF.md",
       "title": "ClipPipeGen Handoff",
-      "line_count": 1026,
+      "line_count": 1106,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1338,7 +1338,7 @@
         "next": true,
         "constraints_risks": false
       },
-      "boundary_term_count": 296,
+      "boundary_term_count": 306,
       "status": "contains_done_history"
     },
     {
@@ -1673,13 +1673,13 @@
       {
         "type": "stale",
         "path": "docs/HANDOFF.md",
-        "detail": "Long active doc (1026 lines) is likely carrying history.",
+        "detail": "Long active doc (1106 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/HANDOFF.md",
-        "detail": "Boundary terms appear 296 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 306 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
