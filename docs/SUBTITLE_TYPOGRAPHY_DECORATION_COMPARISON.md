@@ -61,11 +61,14 @@ episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subt
 ```
 
 Current worktree readback on 2026-06-16 JST: the local ignored comparison JSON
-was not present. That is a same-machine artifact boundary, not a tracked Git
-failure. Because the human response is supplied explicitly as
-`small_adjustment`, this decision can be recorded from tracked docs/tests
-without regenerating SH-08 or the comparison artifact. Regenerate this packet
-only when visual judgment or exact candidate readback is needed again.
+was refreshed with the current tracked generator, without regenerating SH-08.
+It records `comparison_response_readback.selected_response=small_adjustment`,
+`next_diagnostic_overlay_proof_route.route_kind=small_adjustment_diagnostic_overlay_proof`,
+`font_size_policy.value=124`, `candidate_count=4`, `sample_count=16`, and
+false / pending production-public flags. The contact sheet was inspected as a
+nonblank same-machine visual artifact, and all generated sample text boxes
+reported inside the safe area. This is local retained evidence only, not a Git
+portable artifact.
 
 Tracked generator readback now keeps these two decisions separate:
 `human_decision_readback.selected_response=adjust_boundary` records the source
@@ -93,6 +96,29 @@ All candidates preserve:
 - placeholder-only speaker badge status
 - false / pending production, rights, publishing, and public-use flags
 
+## Small-Adjustment Decision Packet
+
+The exact adjusted candidate is still underspecified, so the next proof should
+choose one of these narrow diagnostic routes before overlay regeneration.
+
+| Option | Use as | Adoption reason | Watch item |
+|---|---|---|---|
+| `current_yu_gothic_heavy_outline` | Reference only | Keeps the accepted diagnostic baseline visible for comparison. | Does not satisfy the request to refine font family / decoration by itself. |
+| `noto_sans_jp_clean_outline` | Recommended default | Smallest readable adjustment: cleaner modern Japanese face, slightly lighter outline, cooler placeholder badge, and unchanged accepted size / placement. | Font availability can fall back locally; proof must record the resolved font file. |
+| `meiryo_bold_soft_shadow` | Alternate if the default still feels too heavy | Preserves readable boldness while testing softer decoration and stronger shadow. | Shadow softness may reduce crispness on fast video motion. |
+| `gothic_high_contrast_minimal_badge` | Alternate if badge decoration is the main concern | Reduces badge visual weight while keeping high contrast text. | MS Gothic can feel more mechanical; use only if high contrast matters more than warmth. |
+
+Rejected routes for this slice:
+
+- Regenerating SH-08 `human_preview_session/`: not required for this ED-10g
+  small-adjustment route.
+- Treating `small_adjustment` as production subtitle design acceptance:
+  explicitly out of scope.
+- Adding `cut_008` dense/stress proof now: still a separate route unless the
+  next review explicitly widens scope.
+- Mutating source media, transcript, official subtitle evidence, rights,
+  publishing, public use, or upload state: outside this diagnostic proof route.
+
 ## Next Diagnostic Overlay Proof Route
 
 The next proof route is a small-adjustment route, not a SH-08 preview-session
@@ -108,11 +134,11 @@ regeneration route.
 | acceptance boundary | Keep production subtitle design, production render, creative, rights, publishing, public-use, and upload acceptance false or pending. |
 
 Recommended next tracked route: define an adjusted diagnostic overlay proof
-packet that carries the accepted size into the next `cut_002` / `cut_003`
-subtitle overlay proof while varying only the unresolved font-family and
-decoration axes. If the local comparison artifact is missing, regenerate it
-only when the adjusted candidate needs visual confirmation before proof
-generation.
+packet using `noto_sans_jp_clean_outline` as the default base unless the human
+chooses another option. Carry the accepted size into the next `cut_002` /
+`cut_003` subtitle overlay proof and vary only font-family / decoration. If the
+local comparison artifact is missing in another worktree, regenerate it only
+when adjusted-candidate visual confirmation is needed before proof generation.
 
 ## Regeneration Command
 

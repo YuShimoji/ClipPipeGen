@@ -10,8 +10,8 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
 
 - Branch: `main`
 - Upstream: `origin/main`
-- Latest implementation resume point before this handoff refresh:
-  `9e37a02 (origin/main) docs: refresh ED-10g handoff`.
+- Latest synced base before this handoff refresh:
+  `861cce8 (origin/main) feat: record ED-10g small adjustment route`.
   A fresh terminal should run `git fetch --prune origin`,
   `git checkout main`, and `git pull --ff-only origin main`, then confirm
   `git rev-list --left-right --count HEAD...origin/main` returns `0 0`.
@@ -41,8 +41,13 @@ Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resu
   ignored
   `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/`
   contains 4 candidates, 16 PNG samples, a contact sheet, JSON/HTML report,
-  and `open_comparison.ps1`. This directory is not tracked. Another terminal
-  can regenerate it with:
+  and `open_comparison.ps1`. On 2026-06-16 JST this checkout refreshed the
+  artifact with the current tracked generator and confirmed
+  `comparison_response_readback.selected_response=small_adjustment`,
+  `next_diagnostic_overlay_proof_route.route_kind=small_adjustment_diagnostic_overlay_proof`,
+  `font_size_policy.value=124`, and safe-area readback for all generated sample
+  text boxes. This directory is not tracked. Another terminal can regenerate it
+  with:
 
 ```powershell
 uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison `
@@ -66,11 +71,18 @@ powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_202
   `rights_status=pending`, `publishing_acceptance=false`, and
   `public_use_permission=false`. `episodes/` remains ignored and
   `git ls-files episodes` must remain empty.
-- Latest validation before this handoff refresh:
+- Current small-adjustment decision packet:
+  [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md)
+  lists four narrow diagnostic routes and defaults the next proof base to
+  `noto_sans_jp_clean_outline` unless the human chooses another font-family /
+  decoration adjustment. `current_yu_gothic_heavy_outline` stays reference-only;
+  `meiryo_bold_soft_shadow` and `gothic_high_contrast_minimal_badge` remain
+  alternates. The next overlay proof should still target only `cut_002` /
+  `cut_003` and must not reopen font size.
+- Latest validation for this handoff refresh:
   `uvx pytest -q tests/test_episode_review_bundle.py tests/test_subtitle_overlay_visual_proof.py tests/test_subtitle_style_spike.py tests/test_episode_status.py`
-  -> `17 passed, 8 skipped`;
-  `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py`
-  -> `12 passed`; `git diff --check` clean; `git ls-files episodes` empty.
+  -> `17 passed, 8 skipped`; `git diff --check` clean; `git ls-files episodes`
+  empty. The pushed branch should end with `HEAD...origin/main = 0 0`.
 - Latest pushed sync point before this representative subtitle design readback
   refresh: `87eba6a docs: record cut003 diagnostic readability acceptance`;
   after pulling from another terminal, run `git log -1 --oneline --decorate`

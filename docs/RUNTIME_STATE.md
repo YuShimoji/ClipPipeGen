@@ -84,10 +84,15 @@ instructions.
   until a concrete adjusted candidate is selected, and keep production/public
   flags false or pending. This is not SH-08 regeneration and does not approve
   production subtitle design, production render, creative quality, rights,
-  publishing, public use, or upload. In this worktree, `episodes/` was absent
-  and the ignored comparison report JSON was unavailable; that is same-machine
-  local artifact absence, not remote/tracked failure. Remote evidence remains
-  the tracked docs, generator, and tests, with `git ls-files episodes` empty.
+  publishing, public use, or upload. In this worktree, the ignored comparison
+  report was refreshed on 2026-06-16 JST with current tracked generator output:
+  `comparison_response_readback.selected_response=small_adjustment`,
+  `next_diagnostic_overlay_proof_route.route_kind=small_adjustment_diagnostic_overlay_proof`,
+  `font_size_policy.value=124`, `candidate_count=4`, and `sample_count=16`.
+  The contact sheet was inspected as a nonblank local visual artifact, and all
+  generated sample text boxes reported inside the safe area. Remote evidence
+  remains tracked docs, generator, and tests; the refreshed `episodes/` artifact
+  remains ignored same-machine evidence.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle
@@ -696,12 +701,12 @@ Review focus:
      `clip-typography-decoration-comparison-001`.
    - Preserve the accepted diagnostic font-size direction
      `round(frame_height * 0.115)`.
-   - Select or refine only the unresolved font-family and decoration axes
-     before regenerating the next `cut_002` / `cut_003` diagnostic overlay
-     proof.
-   - If the ignored comparison artifact is missing in a worktree, treat that as
-     same-machine local evidence absence and regenerate only when visual
-     candidate readback is needed.
+   - Use the four-option decision packet in
+     [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md);
+     default to `noto_sans_jp_clean_outline` unless the human chooses another
+     font-family / decoration adjustment.
+   - Regenerate the next `cut_002` / `cut_003` diagnostic overlay proof only
+     after the adjusted candidate is selected; do not reopen font size.
    - Keep `rights=pending`, `production_candidate=false`,
      `production_usage_allowed=false`, and all production/public acceptance
      flags false.
