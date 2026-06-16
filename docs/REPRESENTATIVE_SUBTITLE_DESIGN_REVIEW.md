@@ -12,18 +12,18 @@ current `noto_sans_jp_clean_outline` overlay proof for `cut_002` / `cut_003`.
 
 ## Current State
 
-`clip-ed10g-noto-overlay-proof-001` is generated and waiting for human
-diagnostic / representative visual judgement. It preserves
-`round(frame_height * 0.115)` and changes only the selected font/decor base:
-Noto Sans JP route, cleaner outline, and a cool placeholder speaker badge
-accent.
+`clip-ed10g-noto-overlay-proof-001` has consumed human visual judgement as
+`accept_diagnostic_base`. The `noto_sans_jp_clean_outline` proof for
+`cut_002` / `cut_003` is accepted as the current diagnostic / representative
+base. It preserves `round(frame_height * 0.115)` and changes only the selected
+font/decor base: Noto Sans JP route, cleaner outline, and a cool placeholder
+speaker badge accent.
 
 ## Next
 
-Review the generated `subtitle_overlay_visual_proof_report.html` or the direct
-`cut_002` / `cut_003` proof MP4s. The next answer should accept this diagnostic
-base, request one bounded adjustment, reject it for an alternate candidate, or
-report that the artifact is missing/unreadable.
+Do not reopen the accepted Noto clean-outline base unless a new bounded visual
+defect is identified. The next useful route is either dense/stress coverage
+such as `cut_008`, or a separate production/public/rights limitation-lift slice.
 
 ## Constraints / Risks
 
@@ -35,7 +35,7 @@ representative coverage.
 ## Active Artifact: `clip-review-acceptance-gate-001`
 
 - Slice label: `ED-10f: Representative Subtitle Design Review v1`
-- Current packet state: `ed10g_noto_overlay_proof_generated_requires_human_review`
+- Current packet state: `ed10g_noto_overlay_proof_accepted_diagnostic_base`
 - Dense/stress state: `representative_review_blocked_missing_dense_stress_proof`
   for `cut_008`
 - Packet created from parser-first readback on 2026-06-15 JST before this docs
@@ -81,10 +81,10 @@ Existing proof was sufficient. The combined
 | font | ASS style readback `Noto Sans JP`; resolved font route `candidate_primary_font_file_found`; renderer glyph fallback remains provider-dependent | human review can assess visible readability, not production font finality |
 | size | `font_size=124` from `round(frame_height * 0.115)` on 1920x1080 proof | candidate size is visible for diagnostic review |
 | outline | `outline=11` from `max(2, round(font_size * 0.086))`, plus shadow `2` | selected clean-outline weight is visible for readability review |
-| color | selected cool placeholder badge accent is visible in proof, but color is not production-approved | human may accept or request one bounded adjustment for the representative direction |
+| color | selected cool placeholder badge accent is visible in proof, but color is not production-approved | accepted for the current diagnostic / representative base only |
 | speaker identity | real face icon assets unavailable; `SPK` speaker badge placeholder fallback is used | review can decide whether fallback evidence is acceptable, not production speaker identity |
 | mode selection | selected mode `badge_left_dialogue`; `bottom_center_emphasis` remains supported but not accepted by this proof | this gate covers the current normal dialogue mode only |
-| safe area | proof status `diagnostic_overlay_visible_human_review_required`; generated 1920x1080 PNG/MP4/sample frames exist | human review is still required for final safe-area judgment |
+| safe area | generated 1920x1080 PNG/MP4/sample frames exist and the scoped human judgement is consumed | accepted only for current diagnostic / representative use, not production layout finality |
 | line wrapping | `japanese_boundary_font_bbox_pixel_wrap_v1`, authority `font_bbox_pixel_measurement_not_grid_cell_count`, explicit ASS line breaks true, no one-character orphan or suspicious tail line | parser readback supports visual review; it does not remove renderer review |
 | timing impression | subtitle timing items are included for both cuts; proof status remains `diagnostic_timing_overlay_generated_human_review_required` | human review can judge diagnostic timing impression |
 | dense / stress evidence | absent for current proof; `cut_008` remains `needs_adjustment` with 33 subtitles | blocks widening representative design acceptance |
@@ -115,20 +115,17 @@ Optional direct proof files if the HTML viewer cannot play embedded media:
 2. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_cut_002.mp4`
 3. `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_cut_003.mp4`
 
-Ask exactly one human review question:
+Consumed proof judgement:
 
 > Diagnostic / representative review の範囲で、現在の `cut_002` / `cut_003`
 > `badge_left_dialogue` presentation を、代表字幕デザイン evidence として
 > 次工程へ進めてよいですか？ production subtitle design / production render /
 > rights / publishing / public use は承認しません。
 
-Response options:
-
-- `accept_candidate`: representative subtitle design evidence として次へ進める。ただし production/public flags は false/pending 維持。
-- `adjust_boundary`: 文字サイズ、outline、safe area、mode selection、speaker identity fallback、wrapping などの指定箇所を修正して再 proof。
-- `reject`: この字幕方向は代表 evidence として不採用。
-- `blocked_missing_artifact`: 必要な proof / source media / ignored artifact が不足しているため判断不可。
-- `blocked_missing_dense_stress_proof`: `cut_008` など dense/stress evidence がないため、代表範囲を広げる前に別スライスが必要。
+Answer consumed: `accept_diagnostic_base` for the current
+`noto_sans_jp_clean_outline` proof. This is not production/public/rights
+acceptance and does not remove the need for a separate dense/stress route if
+representative coverage widens.
 
 ### Human Response Consumed
 
@@ -172,6 +169,17 @@ The generated successor proof is registered as
 `typography_decoration_candidate_id=noto_sans_jp_clean_outline`,
 `font_size=124`, `outline=11`, `subtitle_overlay_available_count=2`,
 `production_candidate=false`, and `rights_status=pending`.
+
+### ED-10g Noto Proof Judgement Consumed
+
+Human visual judgement is now consumed as `accept_diagnostic_base` for
+`clip-ed10g-noto-overlay-proof-001`. The accepted scope is only the current
+diagnostic / representative subtitle base for `cut_002` / `cut_003`.
+
+This does not approve production subtitle design, production render, creative
+quality, rights, publishing, public use, upload, source mutation, transcript
+mutation, or dense/stress coverage. `cut_008` remains the likely next stress
+target if representative coverage needs to widen.
 
 ## Route
 

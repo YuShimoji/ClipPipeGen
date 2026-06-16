@@ -55,6 +55,12 @@ This registry is not a production subtitle design acceptance.
 
 ## 使い方・確認方法
 
+Open the registry overview:
+
+```powershell
+.\open-font-candidates.ps1
+```
+
 Parse the registry:
 
 ```powershell

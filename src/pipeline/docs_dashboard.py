@@ -19,7 +19,7 @@ FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
     "what_it_is": ("## What This Is", "## これは何か"),
-    "current_state": ("## Current State", "## 今の状態"),
+    "current_state": ("## Current State", "## Current Capsule", "## 今の状態"),
     "next": ("## Next", "## これからどうなるか", "## 次に進める入口"),
     "constraints_risks": ("## Constraints / Risks", "## Constraints/Risks"),
 }
@@ -101,13 +101,20 @@ def build_project_status(
         "current_focus": {
             "feature_id": "ED-10g",
             "artifact_id": "clip-ed10g-noto-overlay-proof-001",
-            "state": "diagnostic_overlay_proof_generated_requires_human_review",
+            "state": "diagnostic_base_accepted_next_route_needed",
+            "human_visual_judgement": "accept_diagnostic_base",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "noto_sans_jp_clean_outline",
             "production_candidate": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "production_usage_allowed": False,
+            "publishing_acceptance": False,
+            "public_use_permission": False,
             "rights_status": "pending",
         },
+        "open_surfaces": _open_surfaces(),
         "wiki_entrypoints": _wiki_entrypoints(),
         "features": features,
         "feature_summary": _feature_summary(features),
@@ -204,6 +211,11 @@ def render_dashboard_html(status: dict[str, Any]) -> str:
       <tr><th>typography base</th><td>{escape(focus["selected_typography_base"])}</td></tr>
       <tr><th>rights / production</th><td>rights={escape(focus["rights_status"])}; production_candidate={escape(str(focus["production_candidate"]).lower())}</td></tr>
     </table>
+  </section>
+  <section>
+    <h2>Open Surfaces</h2>
+    <p>Normal order: run <code>.\open-dashboard.ps1</code>, choose an artifact, then use an artifact-specific launcher only when needed.</p>
+    {_open_surfaces_table_html(status["open_surfaces"])}
   </section>
   <section>
     <h2>Feature Progress</h2>
@@ -376,6 +388,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         status = _clean_markdown(cells[2])
         summary = _clean_markdown(cells[3])
         active_artifact = _first_artifact_id(cells[3])
+        if feature_id == "ED-10g":
+            active_artifact = "clip-ed10g-noto-overlay-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -419,6 +433,7 @@ def _artifact_rows(base_dir: Path) -> list[dict[str, Any]]:
                 "purpose": fields.get("purpose", ""),
                 "storage_class": fields.get("storage class", ""),
                 "repo_relative_path": fields.get("repo_relative_path", ""),
+                "open_command": fields.get("open_command", ""),
                 "review_status": fields.get("review_status", ""),
                 "next_action": fields.get("next_action", ""),
             }
@@ -486,10 +501,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10g Noto overlay proof",
+            "item": "ED-10g accepted Noto overlay proof",
             "artifact": "clip-ed10g-noto-overlay-proof-001",
-            "question": "Is the current Noto clean-outline diagnostic proof acceptable for cut_002 / cut_003 representative review?",
-            "next_route": "Accept the base, request one bounded adjustment, or reject for an alternate candidate.",
+            "question": "Which separate route should follow the accepted cut_002 / cut_003 diagnostic base?",
+            "next_route": "Choose dense/stress proof coverage, production/render limitation lift, or rights/public-use limitation lift.",
         },
         {
             "item": "ED-10h font candidate sweep",
@@ -502,6 +517,35 @@ def _next_review_items() -> list[dict[str, str]]:
             "artifact": "docs/dashboard/project-status.json",
             "question": "Which high-friction doc should be shortened or front-mattered next?",
             "next_route": "Use doc-health findings instead of hand-scanning Markdown history.",
+        },
+    ]
+
+
+def _open_surfaces() -> list[dict[str, str]]:
+    return [
+        {
+            "label": "Dashboard",
+            "command": ".\\open-dashboard.ps1",
+            "target": "docs/dashboard/index.html",
+            "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings.",
+        },
+        {
+            "label": "Artifacts",
+            "command": ".\\open-artifacts.ps1",
+            "target": "artifacts/ARTIFACTS.md",
+            "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Current Proof",
+            "command": ".\\open-current-proof.ps1",
+            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+            "when_to_use": "Use only on a machine that retains the ignored local ED-10g proof artifact.",
+        },
+        {
+            "label": "Font Candidates",
+            "command": ".\\open-font-candidates.ps1",
+            "target": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
+            "when_to_use": "Use when ED-10h font universe or local/system font availability is the next question.",
         },
     ]
 
@@ -560,7 +604,7 @@ def _first_artifact_id(value: str) -> str:
 
 def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10g":
-        return "review_ready_diagnostic"
+        return "accepted_diagnostic_base"
     if feature_id == "ED-10h":
         return "defined_not_generated"
     if "blocked" in summary or status == "hold":
@@ -570,7 +614,7 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
 
 def _feature_progress(feature_id: str, status: str) -> int:
     if feature_id == "ED-10g":
-        return 85
+        return 100
     if feature_id == "ED-10h":
         return 15
     return STATUS_PROGRESS.get(status, 0)
@@ -578,7 +622,7 @@ def _feature_progress(feature_id: str, status: str) -> int:
 
 def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10g":
-        return "Human visual judgement of clip-ed10g-noto-overlay-proof-001."
+        return "Use the accepted Noto base; choose dense/stress proof or a separate limitation-lift route."
     if feature_id == "ED-10h":
         return "Use the font candidate registry to choose a no-download or download-approved sweep route."
     if status == "done":
@@ -648,13 +692,31 @@ def _artifacts_table_html(artifacts: list[dict[str, Any]]) -> str:
         f"<td>{escape(artifact.get('title') or '')}</td>"
         f"<td>{escape(artifact.get('storage_class') or '')}</td>"
         f"<td><code>{escape(artifact.get('repo_relative_path') or '')}</code></td>"
+        f"<td><code>{escape(artifact.get('open_command') or '')}</code></td>"
         f"<td>{escape(artifact.get('next_action') or '')}</td>"
         "</tr>"
         for artifact in artifacts
     )
     return (
         "<table><tr><th>artifact</th><th>title</th><th>storage</th>"
-        "<th>path</th><th>next action</th></tr>"
+        "<th>path</th><th>open command</th><th>next action</th></tr>"
+        f"{rows}</table>"
+    )
+
+
+def _open_surfaces_table_html(items: list[dict[str, str]]) -> str:
+    rows = "\n".join(
+        "<tr>"
+        f"<td>{escape(item['label'])}</td>"
+        f"<td><code>{escape(item['command'])}</code></td>"
+        f"<td><code>{escape(item['target'])}</code></td>"
+        f"<td>{escape(item['when_to_use'])}</td>"
+        "</tr>"
+        for item in items
+    )
+    return (
+        "<table><tr><th>surface</th><th>command</th><th>target</th>"
+        "<th>when to use</th></tr>"
         f"{rows}</table>"
     )
 

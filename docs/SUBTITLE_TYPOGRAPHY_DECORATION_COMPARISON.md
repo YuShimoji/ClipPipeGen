@@ -2,9 +2,9 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: generated_requires_human_review
+status: accepted_diagnostic_base
 health: review_ready_diagnostic
-progress_pct: 85
+progress_pct: 95
 last_touched: 2026-06-16
 next_review_due: before_ed10h_candidate_sweep
 active_artifact: clip-ed10g-noto-overlay-proof-001
@@ -33,17 +33,18 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-`clip-ed10g-noto-overlay-proof-001` は `cut_002` / `cut_003` に生成済みです。
-現在の質問は「Noto Sans JP clean-outline をこの diagnostic /
-representative base として受け入れるか」です。次に候補 universe を広げる
-作業は [SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md)
-の `ED-10h` に分離します。
+`clip-ed10g-noto-overlay-proof-001` は `cut_002` / `cut_003` に生成済みで、
+human visual judgement は `accept_diagnostic_base` として消費済みです。
+`noto_sans_jp_clean_outline` を current diagnostic / representative base として
+扱います。次に候補 universe を広げる作業は
+[SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md) の
+`ED-10h` に分離します。
 
 ## これからどうなるか
 
-1. current proof を人間が visual review する。
-2. 受け入れなら ED-10g を閉じ、dense/stress proof や production render /
-   rights slice へ進む。
+1. ED-10g の current base は受け入れ済みとして閉じる。
+2. representative coverage を広げるなら、dense/stress proof や production
+   render / rights slice とは別に `cut_008` などの明示 target を起票する。
 3. 追加比較が必要なら ED-10h registry から Google Fonts / OFL / system font
    candidates を選び、download なし route か許可付き download route を選ぶ。
 
@@ -52,7 +53,7 @@ representative base として受け入れるか」です。次に候補 universe
 Primary local proof:
 
 ```powershell
-powershell -NoProfile -Command "Invoke-Item -LiteralPath 'episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html'"
+.\open-current-proof.ps1
 ```
 
 Comparison contact sheet:
@@ -73,6 +74,9 @@ together.
 - 2026-06-16: `small_adjustment` consumed.
 - 2026-06-16: `noto_sans_jp_clean_outline` selected as next diagnostic overlay
   proof base.
+- 2026-06-16: human visual judgement accepted
+  `clip-ed10g-noto-overlay-proof-001` as the diagnostic / representative base
+  for `cut_002` / `cut_003`.
 - 2026-06-16: broader font universe moved to `ED-10h` instead of changing the
   current selected proof base.
 
@@ -114,13 +118,14 @@ Review note:
   placeholder badge accent for the next diagnostic overlay proof.
 - This is not production subtitle design acceptance.
 - The small-adjustment diagnostic overlay proof for `cut_002` / `cut_003` has
-  been generated with the selected base and now needs human visual judgement.
+  been accepted as the current diagnostic / representative base.
 
 | Axis | Current decision | Workflow effect |
 |---|---|---|
 | `font_size` | `accepted_for_diagnostic_representative_review` | Keep `round(frame_height * 0.115)` for the next diagnostic comparison proof. |
 | `font_family` | `narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof` | Use the Noto Sans JP route for the next diagnostic overlay proof, with local font fallback recorded in readback. |
 | `decoration` | `narrowed_to_clean_outline_for_next_diagnostic_proof` | Use the clean outline / cool placeholder badge accent candidate for the next diagnostic overlay proof. |
+| human visual judgement | `accept_diagnostic_base` | The selected proof base can carry forward for diagnostic / representative review only. |
 | production/public gates | false or pending | No production subtitle design, render, rights, publishing, public-use, or upload acceptance is created. |
 
 ## Active Comparison Artifact
@@ -241,7 +246,7 @@ episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subt
 Open command:
 
 ```powershell
-powershell -NoProfile -Command "Invoke-Item -LiteralPath 'episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html'"
+.\open-current-proof.ps1
 ```
 
 Generated command:
@@ -270,15 +275,15 @@ Current readback on 2026-06-16 JST: `target_cuts=[cut_002, cut_003]`,
 and `cut_003` were inspected as nonblank 1920x1080 local visual artifacts, and
 a readback-based bbox/safe-area check reported no computed failures.
 
-Review status: `generated_requires_human_review`. The proof is diagnostic /
+Review status: `accepted_diagnostic_base`. The proof is diagnostic /
 representative only; production subtitle design acceptance, production render
 acceptance, creative acceptance, rights approval, publishing acceptance, public
 use, and upload remain false or pending.
 
-Recommended next tracked route: inspect the adjusted diagnostic overlay proof
-using `noto_sans_jp_clean_outline` as the selected base. If the local
-comparison artifact is missing in another worktree, regenerate it only when
-adjusted-candidate visual confirmation is needed before proof generation.
+Recommended next tracked route: keep `noto_sans_jp_clean_outline` as the
+accepted diagnostic base. If the local comparison artifact is missing in
+another worktree, regenerate it only when adjusted-candidate visual
+confirmation is needed for audit, not to reopen this consumed decision.
 
 ## Regeneration Command
 
@@ -312,17 +317,13 @@ surface for the selected small-adjustment base. It does not regenerate SH-08
 and does not mutate source media, transcript, official subtitle evidence,
 rights, publishing, upload, or production acceptance state.
 
-## Next Human Question
+## Consumed Human Judgement
 
-Is the generated `noto_sans_jp_clean_outline` diagnostic overlay proof for
-`cut_002` / `cut_003` acceptable as the current small-adjustment base for
-diagnostic / representative review?
+Human judgement: accept the generated `noto_sans_jp_clean_outline` diagnostic
+overlay proof for `cut_002` / `cut_003` as the current small-adjustment base for
+diagnostic / representative review.
 
-Allowed next answers for that proof:
-
-- accept this diagnostic proof base
-- request a specific small adjustment to the selected base
-- reject this base and choose one alternate candidate
-- block because the overlay proof artifact is missing or unreadable
-
-Keep this as diagnostic / representative review feedback only.
+This closes the ED-10g proof-choice question. Any further work must be a new
+bounded route: dense/stress coverage, a specific visual defect adjustment, or a
+separate production/public/rights limitation-lift slice. Keep this judgement as
+diagnostic / representative review feedback only.

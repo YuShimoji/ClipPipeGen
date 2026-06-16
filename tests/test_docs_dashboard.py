@@ -28,6 +28,17 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
     assert status["current_focus"]["artifact_id"] == "clip-ed10g-noto-overlay-proof-001"
+    assert status["current_focus"]["state"] == "diagnostic_base_accepted_next_route_needed"
+    assert status["current_focus"]["human_visual_judgement"] == "accept_diagnostic_base"
+    assert status["current_focus"]["production_subtitle_design_acceptance"] is False
+    assert status["current_focus"]["production_render_acceptance"] is False
+    assert status["current_focus"]["production_usage_allowed"] is False
+    assert [item["command"] for item in status["open_surfaces"]] == [
+        ".\\open-dashboard.ps1",
+        ".\\open-artifacts.ps1",
+        ".\\open-current-proof.ps1",
+        ".\\open-font-candidates.ps1",
+    ]
     assert status["doc_health"]["finding_total"] >= status["doc_health"]["finding_count"]
     assert status["doc_health"]["finding_limit"] == 50
     assert status["feature_summary"]["status_counts"]["done"] == 1
@@ -47,6 +58,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     html = result["html_path"].read_text(encoding="utf-8")
     features_index = result["features_path"].read_text(encoding="utf-8")
     assert persisted["generated_at"] == "test-run"
+    assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
+    assert "Open Surfaces" in html
+    assert ".\\open-current-proof.ps1" in html
     assert "Doc Health Findings" in html
     assert "Feature Progress" in html
     assert "Active Artifacts" in html

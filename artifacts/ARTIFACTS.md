@@ -3,6 +3,10 @@
 This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
+Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
+dashboard, then use an artifact-specific launcher such as
+`.\open-current-proof.ps1` only when the local ignored proof is needed.
+
 ## `clip-review-acceptance-gate-001`
 
 | Field | Value |
@@ -91,13 +95,14 @@ readback on the retaining machine. `git ls-files episodes` should remain empty.
 | purpose | Apply the selected `noto_sans_jp_clean_outline` typography / decoration base to the `cut_002` / `cut_003` diagnostic subtitle overlay proof. |
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
-| open_command | `powershell -NoProfile -Command "Invoke-Item -LiteralPath 'episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html'"` |
+| open_command | `.\open-current-proof.ps1` |
 | generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id noto_sans_jp_clean_outline` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id noto_sans_jp_clean_outline --format json` plus targeted tests. |
 | latest_validation_result | `git diff --check` clean; `uvx pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` -> `18 passed, 8 skipped`; Pillow-enabled supplement `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py` -> `13 passed`. |
 | latest_local_smoke | Same-machine generation on 2026-06-16 JST returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=noto_sans_jp_clean_outline`, `typography_decoration_candidate_id=noto_sans_jp_clean_outline`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`. JSON readback resolved the `Noto Sans JP` route with `font_file_status=candidate_primary_font_file_found`, `font_size=124`, `font_size.readback=round(frame_height * 0.115)`, `outline=11`, `outline.readback=max(2, round(font_size * 0.086))`, `bbox_wrapping_applied=true`, `explicit_ass_line_breaks=true`, `one_character_orphan_present=false`, and `suspicious_tail_line_present=false`. Both target cuts had MP4/PNG/ASS assets, the `cut_002` and `cut_003` PNG frames were inspected as nonblank 1920x1080 local visual artifacts, and a readback-based bbox/safe-area check reported no computed failures. |
-| review_status | Generated and awaiting human diagnostic / representative visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
-| next_action | Ask one focused question against the generated overlay proof: whether the selected Noto clean-outline small adjustment is acceptable for diagnostic / representative review on `cut_002` / `cut_003`. |
+| human_visual_judgement | Accepted on 2026-06-16 JST as the current diagnostic / representative subtitle base for `cut_002` / `cut_003` only. |
+| review_status | Human diagnostic / representative visual judgement consumed as `accept_diagnostic_base`. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Treat `noto_sans_jp_clean_outline` as the accepted diagnostic base. Move only through a separate dense/stress proof route or a separate production/public/rights limitation-lift route. |
 
 `status-episode` can still report global `operator_review.review_ready=false`
 because the broader R3 artifact set is missing legacy `visual_proof_cut_001.png`.
@@ -130,7 +135,7 @@ failure.
 | repo_relative_path | `docs/dashboard/index.html` |
 | metadata_json | `docs/dashboard/project-status.json` |
 | features_index | `docs/features/index.md` |
-| open_command | `powershell -NoProfile -Command "Invoke-Item -LiteralPath 'docs\dashboard\index.html'"` |
+| open_command | `.\open-dashboard.ps1` |
 | generated_from | `build-docs-dashboard` reading tracked Markdown registries and docs. |
 | validation_command | `uvx python -m src.cli.main build-docs-dashboard --format json` plus `uvx pytest -q tests/test_docs_dashboard.py`. |
 | latest_validation_result | 2026-06-16 v1.5 slice: dashboard regenerated; `project-status.json` parsed; Chrome headless screenshot inspected as readable/nonblank; `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` -> `21 passed, 8 skipped`. |
@@ -146,7 +151,7 @@ failure.
 | storage class | Tracked docs/data artifact; no third-party font binaries vendored. |
 | repo_relative_path | `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` |
 | metadata_json | `docs/font_candidates/subtitle-font-candidates.json` |
-| open_command | `powershell -NoProfile -Command "Invoke-Item -LiteralPath 'docs\SUBTITLE_FONT_CANDIDATE_SWEEP.md'"` |
+| open_command | `.\open-font-candidates.ps1` |
 | generated_from | Manual v1.5 registry definition plus same-machine Windows font directory readback for local availability. |
 | validation_command | `python -m json.tool docs/font_candidates/subtitle-font-candidates.json` plus dashboard/tests. |
 | latest_validation_result | 2026-06-16 v1.5 slice: `python -m json.tool docs/font_candidates/subtitle-font-candidates.json` ok; targeted docs/subtitle/review tests -> `21 passed, 8 skipped`. |

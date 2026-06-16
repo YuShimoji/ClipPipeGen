@@ -26,7 +26,8 @@
   "current_focus": {
     "feature_id": "ED-10g",
     "artifact_id": "clip-ed10g-noto-overlay-proof-001",
-    "state": "diagnostic_overlay_proof_generated_requires_human_review",
+    "state": "diagnostic_base_accepted_next_route_needed",
+    "human_visual_judgement": "accept_diagnostic_base",
     "target_cuts": [
       "cut_002",
       "cut_003"
@@ -34,8 +35,39 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "noto_sans_jp_clean_outline",
     "production_candidate": false,
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
     "rights_status": "pending"
   },
+  "open_surfaces": [
+    {
+      "label": "Dashboard",
+      "command": ".\\open-dashboard.ps1",
+      "target": "docs/dashboard/index.html",
+      "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings."
+    },
+    {
+      "label": "Artifacts",
+      "command": ".\\open-artifacts.ps1",
+      "target": "artifacts/ARTIFACTS.md",
+      "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
+    },
+    {
+      "label": "Current Proof",
+      "command": ".\\open-current-proof.ps1",
+      "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+      "when_to_use": "Use only on a machine that retains the ignored local ED-10g proof artifact."
+    },
+    {
+      "label": "Font Candidates",
+      "command": ".\\open-font-candidates.ps1",
+      "target": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
+      "when_to_use": "Use when ED-10h font universe or local/system font availability is the next question."
+    }
+  ],
   "wiki_entrypoints": [
     {
       "path": "docs/index.md",
@@ -429,11 +461,11 @@
     {
       "id": "ED-10g",
       "title": "Subtitle Typography Decoration Comparison v0",
-      "status": "in_progress",
-      "health": "review_ready_diagnostic",
-      "progress_pct": 85,
-      "active_artifact": "clip-typography-decoration-comparison-001",
-      "next_action": "Human visual judgement of clip-ed10g-noto-overlay-proof-001.",
+      "status": "done",
+      "health": "accepted_diagnostic_base",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10g-noto-overlay-proof-001",
+      "next_action": "Use the accepted Noto base; choose dense/stress proof or a separate limitation-lift route.",
       "summary_excerpt": "adjust_boundary を受け、font size を維持したまま font family / outline / shadow / placeholder speaker-badge accent の比較 proof を作る route。build-subtitle-typography-decoration-comparison は ignored subtitle_typography_decoration_compar...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
@@ -925,9 +957,8 @@
   "feature_summary": {
     "feature_count": 78,
     "status_counts": {
-      "done": 61,
+      "done": 62,
       "proposed": 14,
-      "in_progress": 1,
       "approved": 1,
       "rejected": 1
     }
@@ -939,6 +970,7 @@
       "purpose": "Track the representative subtitle design review gate that consumed the SH-08 human response as adjust_boundary and sent font-family / decoration to ED-10g.",
       "storage_class": "Tracked decision/readback artifact; references local proof evidence but is portable as docs.",
       "repo_relative_path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
+      "open_command": "",
       "review_status": "Human response consumed as adjust_boundary; ED-10f is diagnostic / representative only and has successor work in ED-10g / ED-10h.",
       "next_action": "Use ED-10g Noto overlay proof for current visual judgement; use ED-10h registry only if the font universe must widen after that judgement."
     },
@@ -948,6 +980,7 @@
       "purpose": "Single local entry point for diagnostic / representative review of the current cut_002 / cut_003 subtitle overlay evidence.",
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/index.html",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\human_preview_session\\open_preview.ps1",
       "review_status": "Human response consumed as adjust_boundary; ED-10g successor response small_adjustment is now recorded separately. Diagnostic / representative only.",
       "next_action": "Follow the ED-10g small-adjustment route; do not regenerate SH-08 unless the active preview session itself must be inspected again."
     },
@@ -957,6 +990,7 @@
       "purpose": "Compare font-family and decorative treatment candidates while preserving the accepted diagnostic font-size direction for cut_002 / cut_003.",
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/subtitle_typography_decoration_comparison_report.html",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_typography_decoration_comparison\\open_comparison.ps1",
       "review_status": "Human response consumed as small_adjustment; diagnostic / representative only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
       "next_action": "Use noto_sans_jp_clean_outline as the selected next diagnostic overlay proof base for cut_002 / cut_003; inspect the generated overlay proof before any further subtitle-design judgment."
     },
@@ -966,8 +1000,9 @@
       "purpose": "Apply the selected noto_sans_jp_clean_outline typography / decoration base to the cut_002 / cut_003 diagnostic subtitle overlay proof.",
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
-      "review_status": "Generated and awaiting human diagnostic / representative visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
-      "next_action": "Ask one focused question against the generated overlay proof: whether the selected Noto clean-outline small adjustment is acceptable for diagnostic / representative review on cut_002 / cut_003."
+      "open_command": ".\\open-current-proof.ps1",
+      "review_status": "Human diagnostic / representative visual judgement consumed as accept_diagnostic_base. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Treat noto_sans_jp_clean_outline as the accepted diagnostic base. Move only through a separate dense/stress proof route or a separate production/public/rights limitation-lift route."
     },
     {
       "artifact_id": "clip-docs-dashboard-001",
@@ -975,6 +1010,7 @@
       "purpose": "Make the tracked Markdown corpus readable as a project wiki/dashboard with current focus, feature progress, active artifacts, doc-health findings, and next review items.",
       "storage_class": "Tracked docs artifact; portable Git evidence.",
       "repo_relative_path": "docs/dashboard/index.html",
+      "open_command": ".\\open-dashboard.ps1",
       "review_status": "Tracked dashboard entry is ready for operator navigation; not an episode media proof and not production/public acceptance.",
       "next_action": "Use this as the first docs navigation surface, then improve high-friction docs from the generated doc-health findings."
     },
@@ -984,6 +1020,7 @@
       "purpose": "Define the next subtitle font candidate universe while preserving the current ED-10g selected diagnostic proof base.",
       "storage_class": "Tracked docs/data artifact; no third-party font binaries vendored.",
       "repo_relative_path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
+      "open_command": ".\\open-font-candidates.ps1",
       "review_status": "Candidate registry defined. Downloads and vendoring are not approved; local font availability is same-machine readback only.",
       "next_action": "Choose whether ED-10h should run no-download local/system comparison first or request permission for Google Fonts downloads with captured license metadata."
     }
@@ -1007,10 +1044,10 @@
   },
   "next_review_items": [
     {
-      "item": "ED-10g Noto overlay proof",
+      "item": "ED-10g accepted Noto overlay proof",
       "artifact": "clip-ed10g-noto-overlay-proof-001",
-      "question": "Is the current Noto clean-outline diagnostic proof acceptable for cut_002 / cut_003 representative review?",
-      "next_route": "Accept the base, request one bounded adjustment, or reject for an alternate candidate."
+      "question": "Which separate route should follow the accepted cut_002 / cut_003 diagnostic base?",
+      "next_route": "Choose dense/stress proof coverage, production/render limitation lift, or rights/public-use limitation lift."
     },
     {
       "item": "ED-10h font candidate sweep",
@@ -1043,7 +1080,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 61,
+      "line_count": 82,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1057,16 +1094,16 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 899,
+      "line_count": 918,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
-        "status": "in_progress",
+        "status": "current_capsule",
         "health": "active",
-        "progress_pct": "70",
+        "progress_pct": "78",
         "last_touched": "2026-06-16",
-        "next_review_due": "before_next_subtitle_design_decision",
+        "next_review_due": "before_dense_stress_or_limitation_lift",
         "active_artifact": "clip-ed10g-noto-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
@@ -1078,8 +1115,8 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 241,
-      "status": "in_progress"
+      "boundary_term_count": 256,
+      "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
@@ -1126,14 +1163,14 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 328,
+      "line_count": 329,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "generated_requires_human_review",
+        "status": "accepted_diagnostic_base",
         "health": "review_ready_diagnostic",
-        "progress_pct": "85",
+        "progress_pct": "95",
         "last_touched": "2026-06-16",
         "next_review_due": "before_ed10h_candidate_sweep",
         "active_artifact": "clip-ed10g-noto-overlay-proof-001",
@@ -1147,13 +1184,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 52,
-      "status": "generated_requires_human_review"
+      "boundary_term_count": 54,
+      "status": "accepted_diagnostic_base"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
       "title": "Representative Subtitle Design Review",
-      "line_count": 326,
+      "line_count": 334,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1161,13 +1198,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 94,
-      "status": "review_ready_diagnostic"
+      "boundary_term_count": 104,
+      "status": "reference"
     },
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "Artifact Registry",
-      "line_count": 165,
+      "line_count": 170,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1175,7 +1212,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 56,
+      "boundary_term_count": 58,
       "status": "reference"
     },
     {
@@ -1460,7 +1497,7 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 111,
+      "line_count": 117,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
@@ -1576,7 +1613,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (899 lines) is likely carrying history.",
+        "detail": "Long active doc (918 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -1600,7 +1637,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 56 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 58 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

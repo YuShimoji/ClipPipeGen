@@ -16,8 +16,8 @@ around workflow decisions, not only around file names.
 Current active focus is `ED-10g`: the selected
 `noto_sans_jp_clean_outline` subtitle typography / decoration base has been
 applied to the `cut_002` / `cut_003` diagnostic overlay proof. The proof is
-registered as `clip-ed10g-noto-overlay-proof-001` and awaits human diagnostic /
-representative visual judgement.
+registered as `clip-ed10g-noto-overlay-proof-001` and has been accepted as the
+current diagnostic / representative subtitle base for those cuts only.
 
 Start here:
 
@@ -32,6 +32,27 @@ Start here:
 | Subtitle font candidate registry | [SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md) |
 | Operator review shape | [OPERATOR_REVIEW_UX.md](OPERATOR_REVIEW_UX.md) |
 | Review workflow map | [EPISODE_REVIEW_WORKFLOW.md](EPISODE_REVIEW_WORKFLOW.md) |
+
+## Open Surfaces
+
+Normal order:
+
+1. Run `.\open-dashboard.ps1`.
+2. Choose the artifact or doc from the dashboard.
+3. Use an artifact-specific launcher only when needed.
+
+| Command | Opens | Use when |
+|---|---|---|
+| `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for current focus, feature progress, active artifacts, and doc-health findings. |
+| `.\open-artifacts.ps1` | `artifacts/ARTIFACTS.md` | You need the artifact registry entry and exact open/readback notes. |
+| `.\open-current-proof.ps1` | ignored local ED-10g proof if present | You are on the same machine that retains `episodes/` proof artifacts. Missing proof is reported clearly and is not a Git failure. |
+| `.\open-font-candidates.ps1` | `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | You are deciding whether ED-10h should use local-only fonts or approved font downloads. |
+
+Regenerate the dashboard only after tracked docs/artifact registry changes:
+
+```powershell
+uvx python -m src.cli.main build-docs-dashboard --format json
+```
 
 ## Next
 

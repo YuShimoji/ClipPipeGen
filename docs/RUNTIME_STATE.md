@@ -2,11 +2,11 @@
 id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
-status: in_progress
+status: current_capsule
 health: active
-progress_pct: 70
+progress_pct: 78
 last_touched: 2026-06-16
-next_review_due: before_next_subtitle_design_decision
+next_review_due: before_dense_stress_or_limitation_lift
 active_artifact: clip-ed10g-noto-overlay-proof-001
 source_of_truth: true
 owner_lane: shared_infra
@@ -22,40 +22,61 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## これは何か
+## What This Is
 
-ClipPipeGen の現在位置を再開するための正本です。履歴の全文ではなく、
-「いま何を見ればよいか」「どの artifact が active か」「次にどの判断へ
-進むか」を返す resume surface として使います。
+This is the current resume capsule for ClipPipeGen. It is not the full
+history; it is the first page to read when deciding what artifact is active,
+what human judgement has already been consumed, and which narrow route can move
+next.
 
-## 何のためにあるか
+Older closeouts stay below as temporary notes or in
+[RUNTIME_HISTORY.md](RUNTIME_HISTORY.md). The capsule below is authoritative
+for restart decisions.
 
-別端末・別 agent・後日の自分が、古い closeout を全部読まずに字幕 review、
-artifact 管理、production/public boundary を復元できるようにします。詳細な
-過去ログは [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md) に逃がし、このページは
-Dashboard と active slice への案内を優先します。
+## Current Capsule
 
-## 今の状態
+Active artifact: `clip-ed10g-noto-overlay-proof-001`
 
-Current focus は `ED-10g` の後続状態です。
-`noto_sans_jp_clean_outline` は `cut_002` / `cut_003` の selected diagnostic
-overlay proof base として生成済みで、artifact は
-`clip-ed10g-noto-overlay-proof-001` です。font size policy は
-`round(frame_height * 0.115)` を維持します。production / public / rights /
-publishing の acceptance はまだ成立していません。
+Current judgement: the `noto_sans_jp_clean_outline` proof for `cut_002` /
+`cut_003` is accepted as the current diagnostic / representative subtitle
+base. This consumes the human visual judgement for this proof only.
 
-## これからどうなるか
+Current proof readback:
 
-1. 人間が current Noto clean-outline proof を diagnostic / representative base
-   として受け入れるか判断する。
-2. フォント候補 universe を広げる場合は
-   [SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md) の
-   `ED-10h` registry から、download なし route か license/readback 付き
-   download route を選ぶ。
-3. docs の一覧化は [index.md](index.md) と
-   [dashboard/index.html](dashboard/index.html) を入口にする。
+- target cuts: `cut_002`, `cut_003`
+- selected base: `noto_sans_jp_clean_outline`
+- size rule: `round(frame_height * 0.115)`; readback `font_size=124`
+- outline rule: `max(2, round(font_size * 0.086))`; readback `outline=11`
+- font route: `Noto Sans JP`; `font_file_status=candidate_primary_font_file_found`
+- overlay coverage: `all_target_cuts_have_overlay=true`
 
-## 使い方・確認方法
+This acceptance is not production subtitle design acceptance and does not lift
+production render, creative, rights, publishing, upload, or public-use gates.
+
+## Next
+
+1. Treat ED-10g as accepted for the diagnostic base and do not reopen
+   `noto_sans_jp_clean_outline` unless a new visual defect is found.
+2. If representative coverage must widen, create a separate dense/stress proof
+   route for `cut_008` or another explicitly scoped target.
+3. If moving toward production/public use, run a separate limitation-lift route
+   for production render, rights, publishing, and public-use decisions.
+
+## Constraints / Risks
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `rights_status=pending`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `episodes/` remains ignored same-machine evidence and must not be staged.
+- Font binaries are not vendored unless license metadata and repo policy are
+  explicitly approved.
+
+## Navigation
 
 - Human-readable entry: [index.md](index.md)
 - Static dashboard: [dashboard/index.html](dashboard/index.html)
@@ -69,7 +90,7 @@ Regenerate the docs dashboard with:
 uvx python -m src.cli.main build-docs-dashboard --format json
 ```
 
-## 実装・設計メモ
+## Implementation Notes
 
 `episodes/` は同端末 review evidence であり、public Git の authority では
 ありません。tracked docs/code/tests が remote evidence、ignored local reports
@@ -81,23 +102,21 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 - 2026-06-16: ED-10g の selected proof base を
   `noto_sans_jp_clean_outline` として保持し、次の font universe 拡張を
   `ED-10h` として切り出す。
+- 2026-06-16: Human visual judgement accepted
+  `clip-ed10g-noto-overlay-proof-001` as the diagnostic / representative base
+  for `cut_002` / `cut_003`; production/public/rights gates remain closed.
 - 2026-06-16: docs を v1.5 Wiki / Dashboard 入口へ寄せ、通常報告では
   next-Agent prompt を付けない運用へ戻す。
-
-## Constraints / Risks
-
-- `production_candidate=false`
-- `production_usage_allowed=false`
-- `rights_status=pending`
-- `episodes/` must remain untracked.
-- font binaries are not vendored unless license metadata and repo policy are
-  explicitly approved.
 
 ## Changelog
 
 - 2026-06-16: Added v1.5 metadata and dashboard-facing front sections.
 
-## Current Resume Capsule
+## Historical Resume Notes
+
+The current restart capsule is above. The notes below are retained as older
+slice readback until they can be moved fully into
+[RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 
 - date: 2026-06-16 JST
 - latest active artifact packet:
@@ -206,9 +225,9 @@ uvx python -m src.cli.main build-docs-dashboard --format json
   `production_subtitle_design_acceptance=false`,
   `production_render_acceptance=false`, `creative_acceptance=false`,
   `rights_status=pending`, `publishing_acceptance=false`, and
-  `public_use_permission=false`. Next action is human visual judgement of this
-  adjusted diagnostic proof: accept this base, request one bounded adjustment,
-  reject and choose an alternate, or report a missing/unreadable artifact.
+  `public_use_permission=false`. Human visual judgement has since accepted this
+  adjusted proof as the current diagnostic / representative base for `cut_002`
+  / `cut_003` only. Any further change must be a separate bounded route.
   `status-episode` still reports global `operator_review.review_ready=false`
   because legacy `visual_proof_cut_001.png` is missing; treat that as the
   broader R3 reviewability state, not as failure of the scoped ED-10g
