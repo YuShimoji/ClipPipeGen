@@ -1,6 +1,94 @@
+---
+id: subtitle-typography-decoration-comparison
+title: Subtitle Typography Decoration Comparison
+type: decision_packet
+status: generated_requires_human_review
+health: review_ready_diagnostic
+progress_pct: 85
+last_touched: 2026-06-16
+next_review_due: before_ed10h_candidate_sweep
+active_artifact: clip-ed10g-noto-overlay-proof-001
+source_of_truth: true
+owner_lane: editing
+related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
+---
+
 # Subtitle Typography Decoration Comparison
 
 Last updated: 2026-06-16 JST
+
+## これは何か
+
+ED-10g の subtitle font-family / outline / shadow / placeholder badge
+decoration 比較 packet です。`clip-typography-decoration-comparison-001` の
+人間回答 `small_adjustment` を受け、次の diagnostic overlay proof base を
+`noto_sans_jp_clean_outline` に絞った状態を記録します。
+
+## 何のためにあるか
+
+font size を再議論せず、accepted diagnostic size
+`round(frame_height * 0.115)` を維持したまま、フォントと装飾の小調整だけを
+判断できるようにするための page です。production font finality ではなく、
+representative diagnostic proof の判断面です。
+
+## 今の状態
+
+`clip-ed10g-noto-overlay-proof-001` は `cut_002` / `cut_003` に生成済みです。
+現在の質問は「Noto Sans JP clean-outline をこの diagnostic /
+representative base として受け入れるか」です。次に候補 universe を広げる
+作業は [SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md)
+の `ED-10h` に分離します。
+
+## これからどうなるか
+
+1. current proof を人間が visual review する。
+2. 受け入れなら ED-10g を閉じ、dense/stress proof や production render /
+   rights slice へ進む。
+3. 追加比較が必要なら ED-10h registry から Google Fonts / OFL / system font
+   candidates を選び、download なし route か許可付き download route を選ぶ。
+
+## 使い方・確認方法
+
+Primary local proof:
+
+```powershell
+powershell -NoProfile -Command "Invoke-Item -LiteralPath 'episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html'"
+```
+
+Comparison contact sheet:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_typography_decoration_comparison\open_comparison.ps1
+```
+
+## 実装・設計メモ
+
+The tracked generator keeps `human_decision_readback.selected_response` and
+`comparison_response_readback.selected_response` separate so the SH-08
+`adjust_boundary` answer and the ED-10g `small_adjustment` answer do not blur
+together.
+
+## Decision Log
+
+- 2026-06-16: `small_adjustment` consumed.
+- 2026-06-16: `noto_sans_jp_clean_outline` selected as next diagnostic overlay
+  proof base.
+- 2026-06-16: broader font universe moved to `ED-10h` instead of changing the
+  current selected proof base.
+
+## Constraints / Risks
+
+- This is diagnostic / representative only.
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `rights_status=pending`
+- `episodes/` artifacts are local retained evidence and must not be staged.
+
+## Changelog
+
+- 2026-06-16: Added v1.5 metadata and ED-10h successor pointer.
 
 This packet was generated from the `clip-human-preview-session-001` human
 answer `adjust_boundary`, then received the ED-10g comparison response

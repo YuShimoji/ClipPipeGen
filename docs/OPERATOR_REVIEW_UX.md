@@ -1,6 +1,29 @@
 # Operator Review UX Contract
 
+## What This Is
+
 This document defines the restart and review response shape for ClipPipeGen operator-facing work. It keeps machine evidence available, but the first thing a human sees must be reviewability: what can be reviewed now, what is missing, and what decision is being asked for.
+
+## Current State
+
+The current operator-facing review is diagnostic only. For ED-10g, the
+selected `noto_sans_jp_clean_outline` proof is generated for `cut_002` /
+`cut_003`; the operator should judge that proof, not re-answer the candidate
+selection question.
+
+## Next
+
+Reports should name the one artifact that answers the current question, then
+list fallback files only if the primary artifact is missing or unreadable. The
+next docs improvement should reduce old handoff-style command dumps in favor
+of dashboard / reviewability summaries.
+
+## Constraints / Risks
+
+Keep production render acceptance, production subtitle design acceptance,
+creative acceptance, rights approval, publishing acceptance, public-use
+permission, source mutation, transcript mutation, and credential/OAuth work out
+of routine review responses unless that exact slice has been authorized.
 
 ## Reviewability States
 

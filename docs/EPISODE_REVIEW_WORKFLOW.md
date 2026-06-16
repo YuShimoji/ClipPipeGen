@@ -4,9 +4,35 @@ Active Artifact: `clip-human-preview-session-001`
 
 Legacy alias: `clip-episode-review-surface-001`
 
+## What This Is
+
 この文書は、ClipPipeGen を「pipeline 実験集」ではなく、episode 単位で source media / transcript / cut / subtitle / diagnostic video / NLE handoff / rights readback を接続し、動画制作者が生成結果を確認できる Review Surface を持つ制作補助システムとして固定する。
 
-ここでの補正は production render や publishing の承認ではない。ClipPipeGen は production/public acceptance を勝手に行わないが、生成済みの diagnostic video、subtitle overlay proof、代表 frame/contact sheet、artifact links、status readback、human decision question を creator に渡す責務を持つ。
+ClipPipeGen は生成済みの diagnostic video、subtitle overlay proof、代表
+frame/contact sheet、artifact links、status readback、human decision question
+を creator に渡す責務を持つ。
+
+## Current State
+
+The active review surface is `clip-human-preview-session-001`, with the ED-10g
+successor proof `clip-ed10g-noto-overlay-proof-001` available for `cut_002` /
+`cut_003`. The next human-facing question is no longer "which font candidate?"
+but whether the generated `noto_sans_jp_clean_outline` diagnostic overlay proof
+is acceptable as the current representative subtitle base.
+
+## Next
+
+Use the review bundle or the direct subtitle overlay proof report before
+asking for production-adjacent acceptance. If the Noto proof is accepted, the
+next workflow bottleneck is either dense/stress coverage (`cut_008`) or a
+separate production render / rights limitation-lift slice.
+
+## Constraints / Risks
+
+ここでの補正は production render や publishing の承認ではない。
+ClipPipeGen は production/public acceptance を勝手に行わない。
+`episodes/` 配下の MP4/PNG/HTML は local retained evidence であり Git には
+入れない。rights remain pending until a separate approval path exists.
 
 ## 責務の地図
 

@@ -3,6 +3,21 @@
 This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
+## `clip-review-acceptance-gate-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10f Representative Subtitle Design Review Gate |
+| purpose | Track the representative subtitle design review gate that consumed the SH-08 human response as `adjust_boundary` and sent font-family / decoration to ED-10g. |
+| storage class | Tracked decision/readback artifact; references local proof evidence but is portable as docs. |
+| repo_relative_path | `docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md` |
+| related_local_artifact | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/index.html` |
+| generated_from | Parser-first readback plus human response consumption recorded in tracked docs. |
+| validation_command | `uvx pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` |
+| latest_validation_result | `18 passed, 8 skipped` on the 2026-06-16 targeted local validation path before the v1.5 dashboard slice. |
+| review_status | Human response consumed as `adjust_boundary`; ED-10f is diagnostic / representative only and has successor work in ED-10g / ED-10h. |
+| next_action | Use ED-10g Noto overlay proof for current visual judgement; use ED-10h registry only if the font universe must widen after that judgement. |
+
 ## `clip-human-preview-session-001`
 
 | Field | Value |
@@ -104,3 +119,47 @@ Remote Git can verify the tracked code, docs, and tests but not the ignored
 MP4/PNG/ASS files themselves. Other worktrees should treat missing
 `episodes/` proof assets as local evidence absence, not as a tracked Git
 failure.
+
+## `clip-docs-dashboard-001`
+
+| Field | Value |
+|---|---|
+| title | Docs Wiki Dashboard v1.5 |
+| purpose | Make the tracked Markdown corpus readable as a project wiki/dashboard with current focus, feature progress, active artifacts, doc-health findings, and next review items. |
+| storage class | Tracked docs artifact; portable Git evidence. |
+| repo_relative_path | `docs/dashboard/index.html` |
+| metadata_json | `docs/dashboard/project-status.json` |
+| features_index | `docs/features/index.md` |
+| open_command | `powershell -NoProfile -Command "Invoke-Item -LiteralPath 'docs\dashboard\index.html'"` |
+| generated_from | `build-docs-dashboard` reading tracked Markdown registries and docs. |
+| validation_command | `uvx python -m src.cli.main build-docs-dashboard --format json` plus `uvx pytest -q tests/test_docs_dashboard.py`. |
+| latest_validation_result | 2026-06-16 v1.5 slice: dashboard regenerated; `project-status.json` parsed; Chrome headless screenshot inspected as readable/nonblank; `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` -> `21 passed, 8 skipped`. |
+| review_status | Tracked dashboard entry is ready for operator navigation; not an episode media proof and not production/public acceptance. |
+| next_action | Use this as the first docs navigation surface, then improve high-friction docs from the generated doc-health findings. |
+
+## `clip-subtitle-font-candidate-sweep-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10h Subtitle Font Candidate Sweep v0 Registry |
+| purpose | Define the next subtitle font candidate universe while preserving the current ED-10g selected diagnostic proof base. |
+| storage class | Tracked docs/data artifact; no third-party font binaries vendored. |
+| repo_relative_path | `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` |
+| metadata_json | `docs/font_candidates/subtitle-font-candidates.json` |
+| open_command | `powershell -NoProfile -Command "Invoke-Item -LiteralPath 'docs\SUBTITLE_FONT_CANDIDATE_SWEEP.md'"` |
+| generated_from | Manual v1.5 registry definition plus same-machine Windows font directory readback for local availability. |
+| validation_command | `python -m json.tool docs/font_candidates/subtitle-font-candidates.json` plus dashboard/tests. |
+| latest_validation_result | 2026-06-16 v1.5 slice: `python -m json.tool docs/font_candidates/subtitle-font-candidates.json` ok; targeted docs/subtitle/review tests -> `21 passed, 8 skipped`. |
+| review_status | Candidate registry defined. Downloads and vendoring are not approved; local font availability is same-machine readback only. |
+| next_action | Choose whether ED-10h should run no-download local/system comparison first or request permission for Google Fonts downloads with captured license metadata. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`

@@ -1,0 +1,1724 @@
+{
+  "schema_id": "clippipegen.docs_dashboard.v1_5",
+  "schema_version": "v1.5",
+  "generated_at": "2026-06-16",
+  "project": {
+    "name": "ClipPipeGen",
+    "wiki_entry": "docs/index.md",
+    "dashboard_html": "docs/dashboard/index.html",
+    "dashboard_json": "docs/dashboard/project-status.json"
+  },
+  "metadata_schema": {
+    "doc_fields": [
+      "path",
+      "title",
+      "line_count",
+      "front_sections",
+      "status"
+    ],
+    "finding_types": [
+      "stale",
+      "unclear",
+      "over_guarded"
+    ],
+    "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
+  },
+  "current_focus": {
+    "feature_id": "ED-10g",
+    "artifact_id": "clip-ed10g-noto-overlay-proof-001",
+    "state": "diagnostic_overlay_proof_generated_requires_human_review",
+    "target_cuts": [
+      "cut_002",
+      "cut_003"
+    ],
+    "accepted_size_rule": "round(frame_height * 0.115)",
+    "selected_typography_base": "noto_sans_jp_clean_outline",
+    "production_candidate": false,
+    "rights_status": "pending"
+  },
+  "wiki_entrypoints": [
+    {
+      "path": "docs/index.md",
+      "role": "Human-readable wiki front door."
+    },
+    {
+      "path": "docs/features/index.md",
+      "role": "Generated feature progress table."
+    },
+    {
+      "path": "docs/dashboard/index.html",
+      "role": "Status dashboard generated from project metadata."
+    },
+    {
+      "path": "docs/RUNTIME_STATE.md",
+      "role": "Current resume capsule and next action."
+    },
+    {
+      "path": "artifacts/ARTIFACTS.md",
+      "role": "Reviewable local artifact registry."
+    },
+    {
+      "path": "docs/FEATURE_REGISTRY.md",
+      "role": "Feature status authority."
+    }
+  ],
+  "features": [
+    {
+      "id": "CR-01",
+      "title": "rights_manifest schema v1 と validator",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/SCHEMAS/v1/rights_manifest.md の構造を実装。compliance_check.status は readback として保持し、local CLI の hard gate にはしない。Slice 1.1 完了（commit 5be5439）",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "MS-01",
+      "title": "material_ledger schema v1 と CRUD CLI",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "素材登録・索引・sidecar 紐付け。register-material / audit-material-ledger 実装。Slice 1.2 完了",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "MS-02",
+      "title": "material_sidecar schema v1 と validator",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "出典・ライセンス・利用条件を metadata として検証・保持。source/license/restriction の値は thumbnail 実行を止めない。Slice 1.2 完了",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "MS-03",
+      "title": "透過PNG 受け入れフロー",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "is_transparent_png で PNG color_type が 4/6 かを判定、character_image + subkind=transparent_png で強制。Slice 1.2 完了",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "TH-01",
+      "title": "YMM4 サムネ slot patch（NLMYTGen CLI bridge）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "nlmytgen_bridge.py + thumbnail_patch.py orchestrator + audit-thumbnail / patch-thumbnail CLI。rights readback / material resolution / bridge audit / bridge patch / readback の流れ。Slice 1.3 完了。実 YMM4 base template に対する end-...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-01",
+      "title": "CLI runner と config（NLMYTGen path 設定含む）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "config/nlmytgen_path.json schema (例ファイル付き、本体 gitignored)、BridgeConfig.load、call_nlmytgen subprocess wrapper、BridgeExecutionError でのエラー伝搬。silent fallback 禁止。Slice 1.3 完了",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "TH-W01",
+      "title": "Slice 1 walkthrough 補助",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "YMM4 thumbnail template authoring guide、samples/episode_example、SLICE1_WALKTHROUGH ランブック。Slice 2 (d) 完了",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "HoloEN-01",
+      "title": "Phase 0.5 publish-quality diagnostic pilot",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "assistant 自律選定 URL（https://www.youtube.com/watch?v=D4i4fjs9PWc 【Kroniicle Animation】 Wisdom Teeth Removal Woes）で actual smoke を完走。Pipeline: yt-dlp-video → yt-dlp-audio → Vosk EN STT → 4 cuts (2 passed / 2 needs_review)...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "JP-STT-01",
+      "title": "Japanese STT via vosk-model-ja",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "既存 Vosk adapter (src/integrations/stt/vosk_adapter.py、ED-07b) が language-agnostic だったため adapter 変更 0 行で JP 対応完了。CLI help を補強し、JP fake runner test + JP real transcript pipeline test を追加（175 passed）。actual smoke: Windows...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "JP-Pilot-01",
+      "title": "Japanese public VOD diagnostic pilot",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "assistant 自律選定 URL（https://www.youtube.com/watch?v=7J5aS_pcBj4 公式 hololive short anime 【アニメ】押忍！！ば～んちょ だじぇ！）で actual smoke を完走。Pipeline: yt-dlp-video → yt-dlp-audio → Vosk JP STT → 6 cuts (3 passed / 3 needs_review) → 17...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "JP-Pilot-01R",
+      "title": "ED-09 corrected rerun on JP public VOD",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 で raw Vosk transcript/edit_pack を backup し、公式 Japanese subtitle track を照合材料に 7 segments を accepted に更新。Downstream rerun: 5 cuts (3 passed / 2 needs_review)、26 subtitl...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "JP-Pilot-01R2",
+      "title": "review coverage + selected cut narrowing on JP public VOD",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 で R1 transcript/edit_pack を backup し、公式 Japanese subtitle track の max-overlap alignment から追加 review patch を適用。Transcript counts: accepted 25 / rejected 1 / unreviewed...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "JP-Pilot-01R3",
+      "title": "official subtitle track import rerun on JP public VOD",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 で R2 transcript/edit_pack を backup し、ED-10 import-subtitle-track で YouTube JSON3 公式 Japanese subtitle track を transcript artifact に変換。Transcript counts: accepted 105...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-07c",
+      "title": "--language ↔ --model 一貫性 validation",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "transcribe-audio --engine vosk が Vosk model path basename から primary language を推定し、--language と不一致なら dry-run / actual とも失敗する。推定不能な model 名は warning に留め、stt.params.language_model_check に readback する。Phase 0 の \"EN model +...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-01",
+      "title": "edit_pack schema v1",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/SCHEMAS/v1/edit_pack.md / src/pipeline/edit_pack.py / init-edit-pack / validate-edit-pack。cut 候補・選択 cut・字幕案・review 状態の器を実装。ED-02 / ED-04 は後続で実装済み",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-02a",
+      "title": "手動/インポート cut candidate 追加 CLI",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "add-cut-candidate。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を edit_pack.cut_candidates[] に追加し、必要なら selected_cut_ids[] に入れる手動/インポート入力スライス",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-02",
+      "title": "カット候補抽出（音声・字幕ベース）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "generate-cuts CLI を実装。transcript.json の segment timing / text density / topic hint を使って edit_pack.cut_candidates[] を生成する。VOD / URL 取得は含めず、必要な音声素材は INT-02 から受け取る",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-03",
+      "title": "文脈チェック",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "check-cut-context CLI を実装。transcript.json の隣接 segment を参照し、cut 境界の発話途中切断、source segment 不整合、近接する前後文脈を cut_candidates[].context_check に passed / needs_review / failed と notes で返す",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-04",
+      "title": "字幕案生成",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "transcript.json の segment を edit_pack.subtitles[] に変換する generate-subtitles CLI を実装。--wrap-eaw で ED-05 の EAW 折返しを消費し、source_segment_id で transcript 由来を readback する。burned-in は外部ツール / future renderer",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-05",
+      "title": "字幕表示幅計測（EAW、stdlib のみ）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "src/pipeline/text_measure.py に EAW unit 計算と折返し、measure-subtitle-width CLI を追加。NLMYTGen の EastAsianWidthMeasurer / WpfTextMeasurer を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は docs/proposals...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-05b",
+      "title": "text_measure bridge migration",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "NLMYTGen 側で measure-text standalone CLI が採用された段階で ClipPipeGen 側の text_measure.py を bridge に縮約する。詳細: docs/proposals/0002",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-06",
+      "title": "外部 NLE 用 minimal export",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "export-nle CLI を追加し、edit_pack.json から nle_cut_list.csv / nle_export_manifest.json / nle_export_report.html を生成する。現行出口は CSV cut list + readback で、FCPXML / Resolve XML / render / encode は後続。fake / fixture transcript 由来 ex...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-07",
+      "title": "transcript schema v1 + transcribe-audio CLI",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/SCHEMAS/v1/transcript.md / src/pipeline/transcript.py / transcribe-audio / validate-transcript。初期 engine は fake adapter で、既存のローカル音声ファイル + fixture segments から transcript.json を生成する。実 whisper.cpp 接続と URL / VOD 取得は含めない",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-07b",
+      "title": "real STT transcript path",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "optional Vosk adapter を src/integrations/stt/ に追加し、明示 model path の実 source.wav から real_transcript=true の transcript.json を生成できるようにした。provider / model 不在は preflight failure で fixture fallback しない。生成 transcript は generate...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-08",
+      "title": "real STT subtitle draft linkage",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "generate-subtitles が transcript.stt.real_transcript=true を読み、edit_pack.subtitles[] に source_type=\"real_transcript\" / source_segment_ids[] / diagnostic draft flags を保持するようにした。fake / fixture transcript は source_type=\"tran...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-09",
+      "title": "transcript review / correction workflow",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "review-transcript CLI を追加し、v1 patch JSON から transcript.json の segment text / review_status / notes と top-level review を安全に更新できるようにした。status-episode は transcript review counts を readback し、export-nle は transcript review...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10",
+      "title": "official subtitle track import / transcript alignment",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "import-subtitle-track CLI と src/pipeline/subtitle_import.py を追加。v1 は YouTube JSON3 subtitle track を base transcript の source-audio readback と alignment notes 付きで transcript.json 互換 artifact に変換し、stt.engine=\"subtitle_tra...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10a",
+      "title": "R3 cut review packet / evidence summary",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-cut-review-packet CLI と src/pipeline/cut_review_packet.py を追加。既存 edit_pack.json / transcript.json / rights / NLE manifest / render manifest から selected cuts の JSON/HTML review packet と evidence summary を生成する。R3 では...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10b",
+      "title": "R3 chapter revision board / patch template",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-chapter-revision-board CLI と src/pipeline/chapter_revision_board.py を追加。既存 R3 review artifacts から static Chapter Revision Board と JSON/CSV patch template を生成する。cut_001-cut_009 は ch_001-ch_009 に対応し、current decision...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10c",
+      "title": "R3 cut decision packet",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-cut-decision-packet CLI と src/pipeline/cut_decision_packet.py を追加。R3 の 9 selected cuts を keep / needs_adjustment / reject に分類し、cut_decision_packet.json / cut_decision_report.html を生成する。今回の keep は cut_001-cut_003 の...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10d",
+      "title": "R3 cut_002/cut_003 proxy decision handoff",
+      "status": "done",
+      "health": "blocked",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-operator-proxy-decision-handoff CLI と src/pipeline/operator_proxy_decision_handoff.py を追加。Chapter Revision Board、R3 Cut Decision Packet、representative visual proof readback、edit_pack subtitles、material_ledger を読み、...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10e",
+      "title": "R3 cut boundary recommendation apply receipt",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "apply-boundary-recommendation CLI と src/pipeline/boundary_recommendation_apply.py を追加。operator-owned boundary recommendation report と edit_pack.json を照合し、cut id、現行 start/end、要求 range、selected cut overlap、subtitle assign...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10f",
+      "title": "Representative Subtitle Design Review v1",
+      "status": "done",
+      "health": "blocked",
+      "progress_pct": 100,
+      "active_artifact": "clip-review-acceptance-gate-001",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Active Artifact clip-review-acceptance-gate-001 / clip-human-preview-session-001 の人間回答を adjust_boundary として消費。font_size=accepted_for_diagnostic_representative_review を記録し、font_family / decoration は未確定比較軸として ED-10g へ送った。...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10g",
+      "title": "Subtitle Typography Decoration Comparison v0",
+      "status": "in_progress",
+      "health": "review_ready_diagnostic",
+      "progress_pct": 85,
+      "active_artifact": "clip-typography-decoration-comparison-001",
+      "next_action": "Human visual judgement of clip-ed10g-noto-overlay-proof-001.",
+      "summary_excerpt": "adjust_boundary を受け、font size を維持したまま font family / outline / shadow / placeholder speaker-badge accent の比較 proof を作る route。build-subtitle-typography-decoration-comparison は ignored subtitle_typography_decoration_compar...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10h",
+      "title": "Subtitle Font Candidate Sweep v0",
+      "status": "approved",
+      "health": "defined_not_generated",
+      "progress_pct": 15,
+      "active_artifact": "clip-subtitle-font-candidate-sweep-001",
+      "next_action": "Use the font candidate registry to choose a no-download or download-approved sweep route.",
+      "summary_excerpt": "ED-10g の selected proof base noto_sans_jp_clean_outline を維持したまま、次に font universe を広げるための候補 registry を定義する。Artifact clip-subtitle-font-candidate-sweep-001 は SUBTITLE_FONT_CANDIDATE_SWEEP.md と docs/font_candidates/subtitl...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "PB-01",
+      "title": "publish_draft schema v1",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "metadata（タイトル・説明・タグ・category）の整形",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "PB-02",
+      "title": "private/unlisted upload integration",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "src/integrations/youtube/ 経由",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "PB-03",
+      "title": "thumbnail 設定 integration",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "thumbnails.set",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "PB-04",
+      "title": "upload receipt 記録",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "upload_receipt.json",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-01",
+      "title": "YouTube OAuth flow",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "trusted application のセットアップ含む",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02",
+      "title": "asset_fetch（source audio / video 取得）",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "fetch-source-audio / fetch-source-video CLI。URL / 出力先 / 推定サイズ / 目的を preflight 表示し、実行 log / receipt / rollback 情報を残す。取得結果は material_ledger に自動登録できる。yt-dlp / ffmpeg は src/integrations/asset_fetch/ に隔離し、CI は fake downloade...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02a",
+      "title": "source audio material contract + fake fetch",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "fetch-source-audio --mode fake を実装。標準音声は source.wav（PCM WAV / mono / 16kHz / 16-bit / 1秒 silent fixture）。sidecar.json / fetch_receipt.json / material_ledger.json を生成し、kind=source_audio / subkind=wav_pcm_16k_mono / inten...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02b",
+      "title": "asset_fetch boundary spec only",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "実 downloader 実装前に docs/ASSET_FETCH_BOUNDARY.md で yt-dlp / ffmpeg の責務を固定。yt-dlp は URL から元 media を取得するだけ、ffmpeg は source audio を PCM WAV / mono / 16kHz / 16-bit に正規化するだけ。Editing core / STT / render / cut / GUI への浸透を禁止し、fu...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02c",
+      "title": "local-media-audio normalize",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "fetch-source-audio --mode local-media-audio を実装。入力はローカル media file のみ。FFmpeg は src/integrations/asset_fetch/ffmpeg_audio.py からだけ呼び、source.wav（PCM WAV / mono / 16kHz / 16-bit）、sidecar、receipt、ledger entry を生成する。dry-run は...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02d",
+      "title": "yt-dlp-audio boundary spec only",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/YTDLP_AUDIO_SPEC.md で URL fetch / network access / yt-dlp / FFmpeg 正規化 / receipt / rights readback / human responsibility / GUI 非露出 / STT 非接続を分離。実 yt-dlp-audio mode、yt-dlp 実行、network fetch、GUI fetch button は未実装",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02e",
+      "title": "yt-dlp-audio source audio URL fetch",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "fetch-source-audio --mode yt-dlp-audio を source audio URL fetch のみに限定して実装。yt-dlp は src/integrations/asset_fetch/yt_dlp_audio.py で一時 media 取得のみ、FFmpeg は source.wav 正規化のみ。sidecar / receipt / ledger を生成し、rights は readback...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02f",
+      "title": "local source video acquisition",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "fetch-source-video --mode local-media-video を追加。既存ローカル video file を source_video.ext として episode material directory にコピーし、FFprobe metadata（duration / container / video codec / audio codec / resolution / fps / stream cou...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02g",
+      "title": "yt-dlp-video boundary spec only",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/YTDLP_VIDEO_SPEC.md で yt-dlp-video の責務境界を固定。yt-dlp は URL から source video を取得し chosen format / extractor / warnings を readback するだけ、FFprobe は metadata を読むだけ、FFmpeg normalize / cut / concat / subtitle burn-in / rende...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-02h",
+      "title": "yt-dlp-video source video URL fetch",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "fetch-source-video --mode yt-dlp-video を source video URL fetch のみに限定して実装。src/integrations/asset_fetch/yt_dlp_video.py adapter は yt-dlp path discovery（--yt-dlp-path / CLIPPIPE_YTDLP / PATH）、URL scrub、dry-run safe comman...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01",
+      "title": "tiny render proof",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "render-tiny-proof を追加。source_video material / source_audio material / edit_pack の最初の selected cut から diagnostic rendered_video.mp4 または .mkv、render_receipt.json、render_manifest.json、render_report.html を生成する。timeline は sh...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01a",
+      "title": "render preflight / fallback readback",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "OUT-01 の tiny diagnostic render に、FFmpeg/FFprobe preflight、render profile fallback、attempt status、selected profile、failure classification を追加。receipt / manifest / report が environment_missing_ffmpeg、codec_or_container_u...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01b",
+      "title": "longer local video render smoke",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "OUT-01a の render path を使い、10 秒以上の local source_video + source_audio + edit_pack selected cut から diagnostic rendered_video.mp4 を再生成する。fresh smoke は duration 12.0 / h264 / aac / 640x360 / 24.0fps / stream count 2 を readba...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01c",
+      "title": "subtitle burn-in diagnostic",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "render-tiny-proof --burn-in-subtitles diagnostic を追加。edit_pack.subtitles[]（無い場合は sibling transcript.json segments）から UTF-8 SRT を生成し、FFmpeg subtitles filter で diagnostic overlay として焼き込む。render_receipt.json / render_manif...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01d",
+      "title": "subtitle timing / font-filter preflight",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "OUT-01c の diagnostic subtitle overlay を維持し、subtitle item ごとの included / clamped_to_render_window / skipped_before_render_window / skipped_after_render_window / invalid_timing / empty_text、source timeline から render timel...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01e",
+      "title": "real STT subtitle diagnostic render smoke",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "ED-08 の source_type=\"real_transcript\" subtitle drafts を OUT-01d timing diagnostic burn-in に接続し、render_receipt.json / render_manifest.json / render_report.html で subtitle source type、derived_from_real_transcript=true、tra...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-01f",
+      "title": "cut-scoped subtitle-overlay visual proof",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-subtitle-overlay-visual-proof CLI と src/integrations/render/subtitle_overlay_visual_proof.py を追加。explicit --target-cut のみを対象に、既存 edit_pack.json / material_ledger.json / representative visual proof readback から igno...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-03",
+      "title": "bg_removal 受領フロー",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "外部処理結果（透過PNG）の受け入れ。API 呼び出しは含めるか別途検討",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "INT-04",
+      "title": "bg_removal API 呼び出し",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "INT-03 の能動版。provider / 入出力 / receipt を integration として実装",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-02L",
+      "title": "episode status adapter（GUI MVP 用）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "full episode_pack の前段として、Slice 1 artifact の存在・readback・next_action を返す status-episode CLI / episode_status.py を実装。GUI MVP が読む薄い背骨",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-02",
+      "title": "episode_pack 統合 manifest",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-03",
+      "title": "GUI MVP Phase 1（read-only operator console）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Electron skeleton（gui/）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。status-episode JSON を消費して状態表示。外部 API・upload は未実装。docs/GUI_CONVENTIONS.md に整合-A 規約",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-03b",
+      "title": "GUI Phase 2（action 導線）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Rights / Materials / Thumbnail タブに set-compliance / register-material / patch-thumbnail の form を追加。確認 dialog（command / summary / reason の 3 要素）経由で実行。upload / fetch / bg-removal API は未実装であり、今後通常 integration として追加できる。args...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-03c",
+      "title": "GUI Editing tab（ED-01 / ED-02a 範囲のみ）",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Editing タブを追加し init-edit-pack / add-cut-candidate / validate-edit-pack の form を配置。confirm dialog 経由で実行、結果と editing.state badge を表示。ED-02 / ED-03 / ED-04 / ED-06 は CLI 実装済みだが GUI action form は未追加。CLI 規約「episode_id == dir...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-04",
+      "title": "NLMYTGen GUI への逆提案運用",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/proposals/ に運用パターン (README.md) と最初の提案 (0001-gui-alignment-from-clippipegen-mvp.md / state=draft) を配置。NLMYTGen 側ファイルは編集せず、提案は doc／issue ベース。採否は NLMYTGen 側判断",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-05",
+      "title": "local-preview-pack orchestrator",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-local-preview-pack CLI を追加。local media 1本から source.wav、fake/fixture transcript、cut candidates、context status、subtitle draft、preview_manifest.json、read-only preview_report.html を生成する。rendered video preview、network...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-05b",
+      "title": "local-preview-pack report QA / polish",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "preview_report.html に Status Summary、Decision Warnings、Artifact Links を追加し、not-for-acceptance、rights pending readback、manifest / receipt / source.wav links を明確化。日本語 fixture smoke を localhost / DOM readback で確認。GUI inges...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-05b+",
+      "title": "local-preview-pack visual evidence hardening",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "medium 日本語 fixture smoke で preview_report.html の実画面 screenshot / visual readback を保存。preview_manifest lightweight validation を追加し、warnings / not-for-acceptance / rights pending / artifact links / audio controls の視認性を確認。...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-05c",
+      "title": "GUI read-only preview pack ingest",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "GUI に Preview Pack tab を追加。既存 episode directory または preview_manifest.json を読み、manifest validation、Status Summary、Decision Warnings、Artifact Links を read-only 表示する。GUI から build / fetch / render / upload は実行しない",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-05d",
+      "title": "source-audio preview bridge",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-local-preview-pack --use-existing-source-audio を追加し、INT-02e などで取得済みの source.wav / fetch_receipt.json / sidecar.json / material_ledger.json を再 download なしで local preview pack の review surface / preview_manifest.jso...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-06",
+      "title": "Non-Repo Artifact Handoff",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "build-non-repo-handoff CLI と src/pipeline/non_repo_artifact_handoff.py を追加。R3 の diagnostic rendered_video.mp4 を Git に入れず、local path / size / sha256 / source identity / generation command / dependency artifacts / rights...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-07",
+      "title": "Operator Review UX contract",
+      "status": "done",
+      "health": "blocked",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/OPERATOR_REVIEW_UX.md / HTML operator summaries / status-episode.operator_review を追加。Restart response は Reviewability first とし、R3 artifacts missing では review_blocked_missing_artifacts を返す。representative_visual_proo...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-08",
+      "title": "Human Preview Session Bundle",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "clip-human-preview-session-001",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Active Artifact clip-human-preview-session-001 (legacy alias clip-episode-review-surface-001)。docs/EPISODE_REVIEW_WORKFLOW.md と docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md で、ClipPipeGen が diagnostic / representative generat...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "SH-09",
+      "title": "Docs Wiki Dashboard v1.5",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "clip-docs-dashboard-001",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "docs/index.md、docs/dashboard/project-status.json、docs/dashboard/index.html、docs/features/index.md、docs/_templates/feature.md、build-docs-dashboard CLI を追加。FEATURE_REGISTRY.md / artifacts/ARTIFACTS.md / high-value docs から...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-02",
+      "title": "音声合成（TTS）",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "未実装。必要になったら provider integration として設計",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-03",
+      "title": "visibility 更新（public 化含む）",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "未実装。YouTube integration の一部として設計",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-04",
+      "title": "完全自動サムネ合成",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "未実装。必要になったら thumbnail renderer として設計",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-05",
+      "title": ".ymmp ゼロ生成",
+      "status": "proposed",
+      "health": "backlog",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "Promote to approved only after an explicit slice decision.",
+      "summary_excerpt": "未実装。必要になったら YMM4 schema readback を伴う generator として設計",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "OUT-06",
+      "title": "NLMYTGen 側ファイル編集",
+      "status": "rejected",
+      "health": "retired",
+      "progress_pct": 0,
+      "active_artifact": "",
+      "next_action": "cross-project 指示なしには編集しない。再利用は CLI subprocess 経由",
+      "summary_excerpt": "cross-project 指示なしには編集しない。再利用は CLI subprocess 経由",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    }
+  ],
+  "feature_summary": {
+    "feature_count": 78,
+    "status_counts": {
+      "done": 61,
+      "proposed": 14,
+      "in_progress": 1,
+      "approved": 1,
+      "rejected": 1
+    }
+  },
+  "active_artifacts": [
+    {
+      "artifact_id": "clip-review-acceptance-gate-001",
+      "title": "ED-10f Representative Subtitle Design Review Gate",
+      "purpose": "Track the representative subtitle design review gate that consumed the SH-08 human response as adjust_boundary and sent font-family / decoration to ED-10g.",
+      "storage_class": "Tracked decision/readback artifact; references local proof evidence but is portable as docs.",
+      "repo_relative_path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
+      "review_status": "Human response consumed as adjust_boundary; ED-10f is diagnostic / representative only and has successor work in ED-10g / ED-10h.",
+      "next_action": "Use ED-10g Noto overlay proof for current visual judgement; use ED-10h registry only if the font universe must widen after that judgement."
+    },
+    {
+      "artifact_id": "clip-human-preview-session-001",
+      "title": "SH-08 Human Preview Session Bundle",
+      "purpose": "Single local entry point for diagnostic / representative review of the current cut_002 / cut_003 subtitle overlay evidence.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/index.html",
+      "review_status": "Human response consumed as adjust_boundary; ED-10g successor response small_adjustment is now recorded separately. Diagnostic / representative only.",
+      "next_action": "Follow the ED-10g small-adjustment route; do not regenerate SH-08 unless the active preview session itself must be inspected again."
+    },
+    {
+      "artifact_id": "clip-typography-decoration-comparison-001",
+      "title": "ED-10g Subtitle Typography Decoration Comparison v0",
+      "purpose": "Compare font-family and decorative treatment candidates while preserving the accepted diagnostic font-size direction for cut_002 / cut_003.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/subtitle_typography_decoration_comparison_report.html",
+      "review_status": "Human response consumed as small_adjustment; diagnostic / representative only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Use noto_sans_jp_clean_outline as the selected next diagnostic overlay proof base for cut_002 / cut_003; inspect the generated overlay proof before any further subtitle-design judgment."
+    },
+    {
+      "artifact_id": "clip-ed10g-noto-overlay-proof-001",
+      "title": "ED-10g Noto Sans JP Diagnostic Overlay Proof",
+      "purpose": "Apply the selected noto_sans_jp_clean_outline typography / decoration base to the cut_002 / cut_003 diagnostic subtitle overlay proof.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
+      "review_status": "Generated and awaiting human diagnostic / representative visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Ask one focused question against the generated overlay proof: whether the selected Noto clean-outline small adjustment is acceptable for diagnostic / representative review on cut_002 / cut_003."
+    },
+    {
+      "artifact_id": "clip-docs-dashboard-001",
+      "title": "Docs Wiki Dashboard v1.5",
+      "purpose": "Make the tracked Markdown corpus readable as a project wiki/dashboard with current focus, feature progress, active artifacts, doc-health findings, and next review items.",
+      "storage_class": "Tracked docs artifact; portable Git evidence.",
+      "repo_relative_path": "docs/dashboard/index.html",
+      "review_status": "Tracked dashboard entry is ready for operator navigation; not an episode media proof and not production/public acceptance.",
+      "next_action": "Use this as the first docs navigation surface, then improve high-friction docs from the generated doc-health findings."
+    },
+    {
+      "artifact_id": "clip-subtitle-font-candidate-sweep-001",
+      "title": "ED-10h Subtitle Font Candidate Sweep v0 Registry",
+      "purpose": "Define the next subtitle font candidate universe while preserving the current ED-10g selected diagnostic proof base.",
+      "storage_class": "Tracked docs/data artifact; no third-party font binaries vendored.",
+      "repo_relative_path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
+      "review_status": "Candidate registry defined. Downloads and vendoring are not approved; local font availability is same-machine readback only.",
+      "next_action": "Choose whether ED-10h should run no-download local/system comparison first or request permission for Google Fonts downloads with captured license metadata."
+    }
+  ],
+  "artifact_summary": {
+    "artifact_ids": [
+      "clip-review-acceptance-gate-001",
+      "clip-human-preview-session-001",
+      "clip-typography-decoration-comparison-001",
+      "clip-ed10g-noto-overlay-proof-001",
+      "clip-docs-dashboard-001",
+      "clip-subtitle-font-candidate-sweep-001"
+    ],
+    "artifact_count": 6
+  },
+  "artifact_coverage": {
+    "registered_artifact_count": 6,
+    "features_with_artifact_count": 5,
+    "current_focus_artifact_registered": true,
+    "missing_registered_artifact_mentions": []
+  },
+  "next_review_items": [
+    {
+      "item": "ED-10g Noto overlay proof",
+      "artifact": "clip-ed10g-noto-overlay-proof-001",
+      "question": "Is the current Noto clean-outline diagnostic proof acceptable for cut_002 / cut_003 representative review?",
+      "next_route": "Accept the base, request one bounded adjustment, or reject for an alternate candidate."
+    },
+    {
+      "item": "ED-10h font candidate sweep",
+      "artifact": "clip-subtitle-font-candidate-sweep-001",
+      "question": "Should Google Fonts / OFL candidates be downloaded or only compared when already local?",
+      "next_route": "Use the candidate registry before any font binary enters Git."
+    },
+    {
+      "item": "Docs v1.5 cleanup",
+      "artifact": "docs/dashboard/project-status.json",
+      "question": "Which high-friction doc should be shortened or front-mattered next?",
+      "next_route": "Use doc-health findings instead of hand-scanning Markdown history."
+    }
+  ],
+  "docs": [
+    {
+      "path": "README.md",
+      "title": "ClipPipeGen",
+      "line_count": 83,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 32,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/index.md",
+      "title": "ClipPipeGen Docs Wiki",
+      "line_count": 61,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 11,
+      "status": "reference"
+    },
+    {
+      "path": "docs/RUNTIME_STATE.md",
+      "title": "Runtime State - ClipPipeGen",
+      "line_count": 899,
+      "metadata": {
+        "id": "runtime-state",
+        "title": "Runtime State - ClipPipeGen",
+        "type": "resume_surface",
+        "status": "in_progress",
+        "health": "active",
+        "progress_pct": "70",
+        "last_touched": "2026-06-16",
+        "next_review_due": "before_next_subtitle_design_decision",
+        "active_artifact": "clip-ed10g-noto-overlay-proof-001",
+        "source_of_truth": "true",
+        "owner_lane": "shared_infra",
+        "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
+      },
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 241,
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/FEATURE_REGISTRY.md",
+      "title": "Feature Registry",
+      "line_count": 213,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 272,
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/EPISODE_REVIEW_WORKFLOW.md",
+      "title": "Episode Review Workflow",
+      "line_count": 113,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 71,
+      "status": "reference"
+    },
+    {
+      "path": "docs/OPERATOR_REVIEW_UX.md",
+      "title": "Operator Review UX Contract",
+      "line_count": 87,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 22,
+      "status": "reference"
+    },
+    {
+      "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
+      "title": "Subtitle Typography Decoration Comparison",
+      "line_count": 328,
+      "metadata": {
+        "id": "subtitle-typography-decoration-comparison",
+        "title": "Subtitle Typography Decoration Comparison",
+        "type": "decision_packet",
+        "status": "generated_requires_human_review",
+        "health": "review_ready_diagnostic",
+        "progress_pct": "85",
+        "last_touched": "2026-06-16",
+        "next_review_due": "before_ed10h_candidate_sweep",
+        "active_artifact": "clip-ed10g-noto-overlay-proof-001",
+        "source_of_truth": "true",
+        "owner_lane": "editing",
+        "related": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
+      },
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 52,
+      "status": "generated_requires_human_review"
+    },
+    {
+      "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
+      "title": "Representative Subtitle Design Review",
+      "line_count": 326,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 94,
+      "status": "review_ready_diagnostic"
+    },
+    {
+      "path": "artifacts/ARTIFACTS.md",
+      "title": "Artifact Registry",
+      "line_count": 165,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 56,
+      "status": "reference"
+    },
+    {
+      "path": "docs/AGENT_OPERATION_CONTRACT.md",
+      "title": "Agent Operation Contract",
+      "line_count": 138,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 8,
+      "status": "reference"
+    },
+    {
+      "path": "docs/ASSET_FETCH_BOUNDARY.md",
+      "title": "Asset Fetch Boundary — INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h",
+      "line_count": 211,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 32,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/AUTOMATION_BOUNDARY.md",
+      "title": "Automation Boundary",
+      "line_count": 147,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 47,
+      "status": "reference"
+    },
+    {
+      "path": "docs/CHAPTER_REVISION_LOOP.md",
+      "title": "Chapter Revision Loop v0",
+      "line_count": 124,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 27,
+      "status": "reference"
+    },
+    {
+      "path": "docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md",
+      "title": "cut_003 Review Contract Taxonomy Audit",
+      "line_count": 103,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 27,
+      "status": "reference"
+    },
+    {
+      "path": "docs/FIRST_SLICE.md",
+      "title": "First Slice — Material Sourcing + Thumbnail 最小実証",
+      "line_count": 247,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 21,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/GUI_CONVENTIONS.md",
+      "title": "GUI Conventions",
+      "line_count": 86,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 3,
+      "status": "reference"
+    },
+    {
+      "path": "docs/GUI_MVP_SCOPE.md",
+      "title": "GUI MVP Scope — Slice 2 / SH-03",
+      "line_count": 89,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 10,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/HANDOFF.md",
+      "title": "ClipPipeGen Handoff",
+      "line_count": 1026,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": true,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 296,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/HOLOEN_PILOT.md",
+      "title": "HoloEN-01 — Phase 0.5 publish-quality diagnostic pilot",
+      "line_count": 270,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 37,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/INVARIANTS.md",
+      "title": "Invariants",
+      "line_count": 85,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 42,
+      "status": "reference"
+    },
+    {
+      "path": "docs/JP_PILOT.md",
+      "title": "JP-Pilot-01 — Japanese Public VOD Diagnostic",
+      "line_count": 134,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 64,
+      "status": "reference"
+    },
+    {
+      "path": "docs/JP_STT_SMOKE.md",
+      "title": "JP-STT-01 — Japanese STT smoke runbook (vosk-model-ja)",
+      "line_count": 166,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 13,
+      "status": "contains_done_history"
+    },
+    {
+      "path": "docs/LANES.md",
+      "title": "Lanes",
+      "line_count": 195,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 21,
+      "status": "reference"
+    },
+    {
+      "path": "docs/NON_REPO_ARTIFACT_HANDOFF.md",
+      "title": "Non-Repo Artifact Handoff",
+      "line_count": 44,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 17,
+      "status": "reference"
+    },
+    {
+      "path": "docs/PREVIEW_PACK.md",
+      "title": "Preview Pack — SH-05 / SH-05d",
+      "line_count": 283,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 44,
+      "status": "reference"
+    },
+    {
+      "path": "docs/PROMPT_CHANGE_MANAGEMENT.md",
+      "title": "Prompt and Spec Change Management",
+      "line_count": 76,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 3,
+      "status": "reference"
+    },
+    {
+      "path": "docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md",
+      "title": "Review Artifact Bundle Contract",
+      "line_count": 314,
+      "metadata": {
+        "id": "review-artifact-bundle-contract",
+        "title": "Review Artifact Bundle Contract",
+        "type": "contract",
+        "status": "active",
+        "health": "stable",
+        "progress_pct": "90",
+        "last_touched": "2026-06-16",
+        "next_review_due": "before_next_review_bundle_schema_change",
+        "active_artifact": "clip-human-preview-session-001",
+        "source_of_truth": "true",
+        "owner_lane": "shared_infra",
+        "related": "docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md"
+      },
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 45,
+      "status": "active"
+    },
+    {
+      "path": "docs/RUNTIME_HISTORY.md",
+      "title": "Runtime History Archive",
+      "line_count": 626,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 227,
+      "status": "in_progress"
+    },
+    {
+      "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
+      "title": "Subtitle Font Candidate Sweep v0",
+      "line_count": 111,
+      "metadata": {
+        "id": "subtitle-font-candidate-sweep",
+        "title": "Subtitle Font Candidate Sweep v0",
+        "type": "candidate_registry",
+        "status": "approved",
+        "health": "defined_not_generated",
+        "progress_pct": "15",
+        "last_touched": "2026-06-16",
+        "next_review_due": "before_font_binary_download_or_new_overlay_generation",
+        "active_artifact": "clip-subtitle-font-candidate-sweep-001",
+        "source_of_truth": "true",
+        "owner_lane": "editing",
+        "related": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md"
+      },
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 10,
+      "status": "approved"
+    },
+    {
+      "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
+      "title": "Subtitle Presentation Contract",
+      "line_count": 193,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 50,
+      "status": "reference"
+    },
+    {
+      "path": "docs/SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md",
+      "title": "Subtitle Renderer Typography Spike",
+      "line_count": 221,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 25,
+      "status": "reference"
+    },
+    {
+      "path": "docs/WORKTREE_CLEANUP_POLICY.md",
+      "title": "Worktree Cleanup Policy",
+      "line_count": 49,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 0,
+      "status": "reference"
+    },
+    {
+      "path": "docs/YTDLP_AUDIO_SPEC.md",
+      "title": "INT-02d — yt-dlp-audio Boundary Spec",
+      "line_count": 63,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 11,
+      "status": "reference"
+    },
+    {
+      "path": "docs/YTDLP_VIDEO_SPEC.md",
+      "title": "INT-02g — yt-dlp-video Boundary Spec",
+      "line_count": 112,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 25,
+      "status": "reference"
+    }
+  ],
+  "doc_health": {
+    "finding_count": 23,
+    "finding_total": 23,
+    "finding_limit": 50,
+    "findings_truncated": false,
+    "findings": [
+      {
+        "type": "unclear",
+        "path": "README.md",
+        "detail": "Missing v1.5 front sections: what_it_is, current_state, next, constraints_risks",
+        "suggested_fix": "Add What This Is / Current State / Next / Constraints / Risks before historical detail."
+      },
+      {
+        "type": "over_guarded",
+        "path": "README.md",
+        "detail": "Boundary terms appear 32 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "stale",
+        "path": "docs/RUNTIME_STATE.md",
+        "detail": "Long active doc (899 lines) is likely carrying history.",
+        "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
+      },
+      {
+        "type": "unclear",
+        "path": "docs/FEATURE_REGISTRY.md",
+        "detail": "Missing v1.5 front sections: what_it_is, current_state, next, constraints_risks",
+        "suggested_fix": "Add What This Is / Current State / Next / Constraints / Risks before historical detail."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/FEATURE_REGISTRY.md",
+        "detail": "Boundary terms appear 272 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "unclear",
+        "path": "artifacts/ARTIFACTS.md",
+        "detail": "Missing v1.5 front sections: what_it_is, current_state, next, constraints_risks",
+        "suggested_fix": "Add What This Is / Current State / Next / Constraints / Risks before historical detail."
+      },
+      {
+        "type": "over_guarded",
+        "path": "artifacts/ARTIFACTS.md",
+        "detail": "Boundary terms appear 56 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/ASSET_FETCH_BOUNDARY.md",
+        "detail": "Boundary terms appear 32 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/AUTOMATION_BOUNDARY.md",
+        "detail": "Boundary terms appear 47 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/CHAPTER_REVISION_LOOP.md",
+        "detail": "Boundary terms appear 27 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md",
+        "detail": "Boundary terms appear 27 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/FIRST_SLICE.md",
+        "detail": "Boundary terms appear 21 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "stale",
+        "path": "docs/HANDOFF.md",
+        "detail": "Long active doc (1026 lines) is likely carrying history.",
+        "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/HANDOFF.md",
+        "detail": "Boundary terms appear 296 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/HOLOEN_PILOT.md",
+        "detail": "Boundary terms appear 37 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/INVARIANTS.md",
+        "detail": "Boundary terms appear 42 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/JP_PILOT.md",
+        "detail": "Boundary terms appear 64 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/LANES.md",
+        "detail": "Boundary terms appear 21 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/PREVIEW_PACK.md",
+        "detail": "Boundary terms appear 44 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/RUNTIME_HISTORY.md",
+        "detail": "Boundary terms appear 227 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
+        "detail": "Boundary terms appear 50 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md",
+        "detail": "Boundary terms appear 25 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/YTDLP_VIDEO_SPEC.md",
+        "detail": "Boundary terms appear 25 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      }
+    ]
+  },
+  "top_next_improvements": [
+    {
+      "rank": 1,
+      "path": "docs/HANDOFF.md",
+      "why": "Long historical handoff still competes with the active wiki/dashboard entry.",
+      "next_move": "Convert it to a short pointer and archive the remaining history."
+    },
+    {
+      "rank": 2,
+      "path": "docs/RUNTIME_STATE.md",
+      "why": "Active resume surface is useful but still accumulates long capsule detail.",
+      "next_move": "Keep the current capsule short and push older slices into RUNTIME_HISTORY."
+    },
+    {
+      "rank": 3,
+      "path": "docs/FEATURE_REGISTRY.md",
+      "why": "Feature rows are authoritative but hard to scan as a wiki page.",
+      "next_move": "Generate per-feature pages from docs/_templates/feature.md."
+    }
+  ]
+}

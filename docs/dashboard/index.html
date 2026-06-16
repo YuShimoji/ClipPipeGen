@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>ClipPipeGen Docs Dashboard</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; line-height: 1.5; color: #20242a; }
+    table { border-collapse: collapse; table-layout: fixed; width: 100%; margin: 12px 0 24px; }
+    th, td { border: 1px solid #c8d0d9; padding: 8px; vertical-align: top; overflow-wrap: anywhere; }
+    th { background: #edf2f7; text-align: left; }
+    .status { display: inline-block; padding: 2px 6px; border: 1px solid #9eb3c7; background: #f4f8fb; }
+    .warn { color: #7a4100; }
+    code { background: #f3f3f3; padding: 1px 4px; white-space: normal; overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <h1>ClipPipeGen Docs Dashboard</h1>
+  <p>Generated from <code>clippipegen.docs_dashboard.v1_5</code> at 2026-06-16.</p>
+  <section>
+    <h2>Current Focus</h2>
+    <p><span class="status">diagnostic_overlay_proof_generated_requires_human_review</span></p>
+    <table>
+      <tr><th>feature</th><td>ED-10g</td></tr>
+      <tr><th>artifact</th><td>clip-ed10g-noto-overlay-proof-001</td></tr>
+      <tr><th>targets</th><td>cut_002, cut_003</td></tr>
+      <tr><th>typography base</th><td>noto_sans_jp_clean_outline</td></tr>
+      <tr><th>rights / production</th><td>rights=pending; production_candidate=false</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>Feature Progress</h2>
+    <table><tr><th>id</th><th>title</th><th>status</th><th>health</th><th>progress</th><th>active artifact</th><th>next action</th></tr><tr><td><code>CR-01</code></td><td>rights_manifest schema v1 と validator</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>MS-01</code></td><td>material_ledger schema v1 と CRUD CLI</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>MS-02</code></td><td>material_sidecar schema v1 と validator</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>MS-03</code></td><td>透過PNG 受け入れフロー</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>TH-01</code></td><td>YMM4 サムネ slot patch（NLMYTGen CLI bridge）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-01</code></td><td>CLI runner と config（NLMYTGen path 設定含む）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>TH-W01</code></td><td>Slice 1 walkthrough 補助</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>HoloEN-01</code></td><td>Phase 0.5 publish-quality diagnostic pilot</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>JP-STT-01</code></td><td>Japanese STT via vosk-model-ja</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>JP-Pilot-01</code></td><td>Japanese public VOD diagnostic pilot</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>JP-Pilot-01R</code></td><td>ED-09 corrected rerun on JP public VOD</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>JP-Pilot-01R2</code></td><td>review coverage + selected cut narrowing on JP public VOD</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>JP-Pilot-01R3</code></td><td>official subtitle track import rerun on JP public VOD</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-07c</code></td><td>--language ↔ --model 一貫性 validation</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-01</code></td><td>edit_pack schema v1</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-02a</code></td><td>手動/インポート cut candidate 追加 CLI</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-02</code></td><td>カット候補抽出（音声・字幕ベース）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-03</code></td><td>文脈チェック</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-04</code></td><td>字幕案生成</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-05</code></td><td>字幕表示幅計測（EAW、stdlib のみ）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-05b</code></td><td>text_measure bridge migration</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>ED-06</code></td><td>外部 NLE 用 minimal export</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-07</code></td><td>transcript schema v1 + transcribe-audio CLI</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-07b</code></td><td>real STT transcript path</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-08</code></td><td>real STT subtitle draft linkage</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-09</code></td><td>transcript review / correction workflow</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10</code></td><td>official subtitle track import / transcript alignment</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10a</code></td><td>R3 cut review packet / evidence summary</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10b</code></td><td>R3 chapter revision board / patch template</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10c</code></td><td>R3 cut decision packet</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10d</code></td><td>R3 cut_002/cut_003 proxy decision handoff</td><td>done</td><td>blocked</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10e</code></td><td>R3 cut boundary recommendation apply receipt</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10f</code></td><td>Representative Subtitle Design Review v1</td><td>done</td><td>blocked</td><td>100%</td><td><code>clip-review-acceptance-gate-001</code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>ED-10g</code></td><td>Subtitle Typography Decoration Comparison v0</td><td>in_progress</td><td>review_ready_diagnostic</td><td>85%</td><td><code>clip-typography-decoration-comparison-001</code></td><td>Human visual judgement of clip-ed10g-noto-overlay-proof-001.</td></tr>
+<tr><td><code>ED-10h</code></td><td>Subtitle Font Candidate Sweep v0</td><td>approved</td><td>defined_not_generated</td><td>15%</td><td><code>clip-subtitle-font-candidate-sweep-001</code></td><td>Use the font candidate registry to choose a no-download or download-approved sweep route.</td></tr>
+<tr><td><code>PB-01</code></td><td>publish_draft schema v1</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>PB-02</code></td><td>private/unlisted upload integration</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>PB-03</code></td><td>thumbnail 設定 integration</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>PB-04</code></td><td>upload receipt 記録</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>INT-01</code></td><td>YouTube OAuth flow</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>INT-02</code></td><td>asset_fetch（source audio / video 取得）</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>INT-02a</code></td><td>source audio material contract + fake fetch</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02b</code></td><td>asset_fetch boundary spec only</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02c</code></td><td>local-media-audio normalize</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02d</code></td><td>yt-dlp-audio boundary spec only</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02e</code></td><td>yt-dlp-audio source audio URL fetch</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02f</code></td><td>local source video acquisition</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02g</code></td><td>yt-dlp-video boundary spec only</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-02h</code></td><td>yt-dlp-video source video URL fetch</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01</code></td><td>tiny render proof</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01a</code></td><td>render preflight / fallback readback</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01b</code></td><td>longer local video render smoke</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01c</code></td><td>subtitle burn-in diagnostic</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01d</code></td><td>subtitle timing / font-filter preflight</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01e</code></td><td>real STT subtitle diagnostic render smoke</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-01f</code></td><td>cut-scoped subtitle-overlay visual proof</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>INT-03</code></td><td>bg_removal 受領フロー</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>INT-04</code></td><td>bg_removal API 呼び出し</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>SH-02L</code></td><td>episode status adapter（GUI MVP 用）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-02</code></td><td>episode_pack 統合 manifest</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>SH-03</code></td><td>GUI MVP Phase 1（read-only operator console）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-03b</code></td><td>GUI Phase 2（action 導線）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-03c</code></td><td>GUI Editing tab（ED-01 / ED-02a 範囲のみ）</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-04</code></td><td>NLMYTGen GUI への逆提案運用</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-05</code></td><td>local-preview-pack orchestrator</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-05b</code></td><td>local-preview-pack report QA / polish</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-05b+</code></td><td>local-preview-pack visual evidence hardening</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-05c</code></td><td>GUI read-only preview pack ingest</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-05d</code></td><td>source-audio preview bridge</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-06</code></td><td>Non-Repo Artifact Handoff</td><td>done</td><td>stable</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-07</code></td><td>Operator Review UX contract</td><td>done</td><td>blocked</td><td>100%</td><td><code></code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-08</code></td><td>Human Preview Session Bundle</td><td>done</td><td>stable</td><td>100%</td><td><code>clip-human-preview-session-001</code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>SH-09</code></td><td>Docs Wiki Dashboard v1.5</td><td>done</td><td>stable</td><td>100%</td><td><code>clip-docs-dashboard-001</code></td><td>Keep as reference unless a regression or successor lane appears.</td></tr>
+<tr><td><code>OUT-02</code></td><td>音声合成（TTS）</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>OUT-03</code></td><td>visibility 更新（public 化含む）</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>OUT-04</code></td><td>完全自動サムネ合成</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>OUT-05</code></td><td>.ymmp ゼロ生成</td><td>proposed</td><td>backlog</td><td>0%</td><td><code></code></td><td>Promote to approved only after an explicit slice decision.</td></tr>
+<tr><td><code>OUT-06</code></td><td>NLMYTGen 側ファイル編集</td><td>rejected</td><td>retired</td><td>0%</td><td><code></code></td><td>cross-project 指示なしには編集しない。再利用は CLI subprocess 経由</td></tr></table>
+  </section>
+  <section>
+    <h2>Active Artifacts</h2>
+    <table><tr><th>artifact</th><th>title</th><th>storage</th><th>path</th><th>next action</th></tr><tr><td><code>clip-review-acceptance-gate-001</code></td><td>ED-10f Representative Subtitle Design Review Gate</td><td>Tracked decision/readback artifact; references local proof evidence but is portable as docs.</td><td><code>docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md</code></td><td>Use ED-10g Noto overlay proof for current visual judgement; use ED-10h registry only if the font universe must widen after that judgement.</td></tr>
+<tr><td><code>clip-human-preview-session-001</code></td><td>SH-08 Human Preview Session Bundle</td><td>Local retained artifact; same-machine evidence only.</td><td><code>episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/index.html</code></td><td>Follow the ED-10g small-adjustment route; do not regenerate SH-08 unless the active preview session itself must be inspected again.</td></tr>
+<tr><td><code>clip-typography-decoration-comparison-001</code></td><td>ED-10g Subtitle Typography Decoration Comparison v0</td><td>Local retained artifact; same-machine evidence only.</td><td><code>episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/subtitle_typography_decoration_comparison_report.html</code></td><td>Use noto_sans_jp_clean_outline as the selected next diagnostic overlay proof base for cut_002 / cut_003; inspect the generated overlay proof before any further subtitle-design judgment.</td></tr>
+<tr><td><code>clip-ed10g-noto-overlay-proof-001</code></td><td>ED-10g Noto Sans JP Diagnostic Overlay Proof</td><td>Local retained artifact; same-machine evidence only.</td><td><code>episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html</code></td><td>Ask one focused question against the generated overlay proof: whether the selected Noto clean-outline small adjustment is acceptable for diagnostic / representative review on cut_002 / cut_003.</td></tr>
+<tr><td><code>clip-docs-dashboard-001</code></td><td>Docs Wiki Dashboard v1.5</td><td>Tracked docs artifact; portable Git evidence.</td><td><code>docs/dashboard/index.html</code></td><td>Use this as the first docs navigation surface, then improve high-friction docs from the generated doc-health findings.</td></tr>
+<tr><td><code>clip-subtitle-font-candidate-sweep-001</code></td><td>ED-10h Subtitle Font Candidate Sweep v0 Registry</td><td>Tracked docs/data artifact; no third-party font binaries vendored.</td><td><code>docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md</code></td><td>Choose whether ED-10h should run no-download local/system comparison first or request permission for Google Fonts downloads with captured license metadata.</td></tr></table>
+    <p>Artifact coverage: 5 feature rows mention registered artifacts; current focus artifact registered=true.</p>
+  </section>
+  <section>
+    <h2>Next Review Items</h2>
+    <table><tr><th>item</th><th>artifact</th><th>question</th><th>next route</th></tr><tr><td>ED-10g Noto overlay proof</td><td><code>clip-ed10g-noto-overlay-proof-001</code></td><td>Is the current Noto clean-outline diagnostic proof acceptable for cut_002 / cut_003 representative review?</td><td>Accept the base, request one bounded adjustment, or reject for an alternate candidate.</td></tr>
+<tr><td>ED-10h font candidate sweep</td><td><code>clip-subtitle-font-candidate-sweep-001</code></td><td>Should Google Fonts / OFL candidates be downloaded or only compared when already local?</td><td>Use the candidate registry before any font binary enters Git.</td></tr>
+<tr><td>Docs v1.5 cleanup</td><td><code>docs/dashboard/project-status.json</code></td><td>Which high-friction doc should be shortened or front-mattered next?</td><td>Use doc-health findings instead of hand-scanning Markdown history.</td></tr></table>
+  </section>
+  <section>
+    <h2>Wiki Entrypoints</h2>
+    <ul><li><code>docs/index.md</code>: Human-readable wiki front door.</li>
+<li><code>docs/features/index.md</code>: Generated feature progress table.</li>
+<li><code>docs/dashboard/index.html</code>: Status dashboard generated from project metadata.</li>
+<li><code>docs/RUNTIME_STATE.md</code>: Current resume capsule and next action.</li>
+<li><code>artifacts/ARTIFACTS.md</code>: Reviewable local artifact registry.</li>
+<li><code>docs/FEATURE_REGISTRY.md</code>: Feature status authority.</li></ul>
+  </section>
+  <section>
+    <h2>Doc Health Findings</h2>
+    <p class="warn">23 of 23 stale / unclear / over-guarded findings shown.</p>
+    <table><tr><th>type</th><th>path</th><th>detail</th><th>suggested fix</th></tr><tr><td>unclear</td><td><code>README.md</code></td><td>Missing v1.5 front sections: what_it_is, current_state, next, constraints_risks</td><td>Add What This Is / Current State / Next / Constraints / Risks before historical detail.</td></tr>
+<tr><td>over_guarded</td><td><code>README.md</code></td><td>Boundary terms appear 32 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>stale</td><td><code>docs/RUNTIME_STATE.md</code></td><td>Long active doc (899 lines) is likely carrying history.</td><td>Move older closeouts to archive/history and keep this page as a pointer or dashboard surface.</td></tr>
+<tr><td>unclear</td><td><code>docs/FEATURE_REGISTRY.md</code></td><td>Missing v1.5 front sections: what_it_is, current_state, next, constraints_risks</td><td>Add What This Is / Current State / Next / Constraints / Risks before historical detail.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/FEATURE_REGISTRY.md</code></td><td>Boundary terms appear 272 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>unclear</td><td><code>artifacts/ARTIFACTS.md</code></td><td>Missing v1.5 front sections: what_it_is, current_state, next, constraints_risks</td><td>Add What This Is / Current State / Next / Constraints / Risks before historical detail.</td></tr>
+<tr><td>over_guarded</td><td><code>artifacts/ARTIFACTS.md</code></td><td>Boundary terms appear 56 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/ASSET_FETCH_BOUNDARY.md</code></td><td>Boundary terms appear 32 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/AUTOMATION_BOUNDARY.md</code></td><td>Boundary terms appear 47 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/CHAPTER_REVISION_LOOP.md</code></td><td>Boundary terms appear 27 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md</code></td><td>Boundary terms appear 27 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/FIRST_SLICE.md</code></td><td>Boundary terms appear 21 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>stale</td><td><code>docs/HANDOFF.md</code></td><td>Long active doc (1026 lines) is likely carrying history.</td><td>Move older closeouts to archive/history and keep this page as a pointer or dashboard surface.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/HANDOFF.md</code></td><td>Boundary terms appear 296 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/HOLOEN_PILOT.md</code></td><td>Boundary terms appear 37 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/INVARIANTS.md</code></td><td>Boundary terms appear 42 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/JP_PILOT.md</code></td><td>Boundary terms appear 64 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/LANES.md</code></td><td>Boundary terms appear 21 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/PREVIEW_PACK.md</code></td><td>Boundary terms appear 44 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/RUNTIME_HISTORY.md</code></td><td>Boundary terms appear 227 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/SUBTITLE_PRESENTATION_CONTRACT.md</code></td><td>Boundary terms appear 50 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md</code></td><td>Boundary terms appear 25 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr>
+<tr><td>over_guarded</td><td><code>docs/YTDLP_VIDEO_SPEC.md</code></td><td>Boundary terms appear 25 times without a front Constraints / Risks section.</td><td>Collect repeated caveats into Constraints / Risks and keep the opening action-oriented.</td></tr></table>
+  </section>
+  <section>
+    <h2>Tracked Docs</h2>
+    <table><tr><th>path</th><th>title</th><th>lines</th><th>front sections</th><th>status</th></tr><tr><td><code>README.md</code></td><td>ClipPipeGen</td><td>83</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/index.md</code></td><td>ClipPipeGen Docs Wiki</td><td>61</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>reference</td></tr>
+<tr><td><code>docs/RUNTIME_STATE.md</code></td><td>Runtime State - ClipPipeGen</td><td>899</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>in_progress</td></tr>
+<tr><td><code>docs/FEATURE_REGISTRY.md</code></td><td>Feature Registry</td><td>213</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>in_progress</td></tr>
+<tr><td><code>docs/EPISODE_REVIEW_WORKFLOW.md</code></td><td>Episode Review Workflow</td><td>113</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>reference</td></tr>
+<tr><td><code>docs/OPERATOR_REVIEW_UX.md</code></td><td>Operator Review UX Contract</td><td>87</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>reference</td></tr>
+<tr><td><code>docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md</code></td><td>Subtitle Typography Decoration Comparison</td><td>328</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>generated_requires_human_review</td></tr>
+<tr><td><code>docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md</code></td><td>Representative Subtitle Design Review</td><td>326</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>review_ready_diagnostic</td></tr>
+<tr><td><code>artifacts/ARTIFACTS.md</code></td><td>Artifact Registry</td><td>165</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/AGENT_OPERATION_CONTRACT.md</code></td><td>Agent Operation Contract</td><td>138</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/ASSET_FETCH_BOUNDARY.md</code></td><td>Asset Fetch Boundary — INT-02b / INT-02c / INT-02d / INT-02e / INT-02f / INT-02g / INT-02h</td><td>211</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/AUTOMATION_BOUNDARY.md</code></td><td>Automation Boundary</td><td>147</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/CHAPTER_REVISION_LOOP.md</code></td><td>Chapter Revision Loop v0</td><td>124</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md</code></td><td>cut_003 Review Contract Taxonomy Audit</td><td>103</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/FIRST_SLICE.md</code></td><td>First Slice — Material Sourcing + Thumbnail 最小実証</td><td>247</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/GUI_CONVENTIONS.md</code></td><td>GUI Conventions</td><td>86</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/GUI_MVP_SCOPE.md</code></td><td>GUI MVP Scope — Slice 2 / SH-03</td><td>89</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/HANDOFF.md</code></td><td>ClipPipeGen Handoff</td><td>1026</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: true, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/HOLOEN_PILOT.md</code></td><td>HoloEN-01 — Phase 0.5 publish-quality diagnostic pilot</td><td>270</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/INVARIANTS.md</code></td><td>Invariants</td><td>85</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/JP_PILOT.md</code></td><td>JP-Pilot-01 — Japanese Public VOD Diagnostic</td><td>134</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/JP_STT_SMOKE.md</code></td><td>JP-STT-01 — Japanese STT smoke runbook (vosk-model-ja)</td><td>166</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>contains_done_history</td></tr>
+<tr><td><code>docs/LANES.md</code></td><td>Lanes</td><td>195</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/NON_REPO_ARTIFACT_HANDOFF.md</code></td><td>Non-Repo Artifact Handoff</td><td>44</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/PREVIEW_PACK.md</code></td><td>Preview Pack — SH-05 / SH-05d</td><td>283</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/PROMPT_CHANGE_MANAGEMENT.md</code></td><td>Prompt and Spec Change Management</td><td>76</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md</code></td><td>Review Artifact Bundle Contract</td><td>314</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>active</td></tr>
+<tr><td><code>docs/RUNTIME_HISTORY.md</code></td><td>Runtime History Archive</td><td>626</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>in_progress</td></tr>
+<tr><td><code>docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md</code></td><td>Subtitle Font Candidate Sweep v0</td><td>111</td><td>{&quot;what_it_is&quot;: true, &quot;current_state&quot;: true, &quot;next&quot;: true, &quot;constraints_risks&quot;: true}</td><td>approved</td></tr>
+<tr><td><code>docs/SUBTITLE_PRESENTATION_CONTRACT.md</code></td><td>Subtitle Presentation Contract</td><td>193</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md</code></td><td>Subtitle Renderer Typography Spike</td><td>221</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/WORKTREE_CLEANUP_POLICY.md</code></td><td>Worktree Cleanup Policy</td><td>49</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/YTDLP_AUDIO_SPEC.md</code></td><td>INT-02d — yt-dlp-audio Boundary Spec</td><td>63</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr>
+<tr><td><code>docs/YTDLP_VIDEO_SPEC.md</code></td><td>INT-02g — yt-dlp-video Boundary Spec</td><td>112</td><td>{&quot;what_it_is&quot;: false, &quot;current_state&quot;: false, &quot;next&quot;: false, &quot;constraints_risks&quot;: false}</td><td>reference</td></tr></table>
+  </section>
+  <section>
+    <h2>Next Improvements</h2>
+    <table><tr><th>rank</th><th>path</th><th>why</th><th>next move</th></tr><tr><td>1</td><td><code>docs/HANDOFF.md</code></td><td>Long historical handoff still competes with the active wiki/dashboard entry.</td><td>Convert it to a short pointer and archive the remaining history.</td></tr>
+<tr><td>2</td><td><code>docs/RUNTIME_STATE.md</code></td><td>Active resume surface is useful but still accumulates long capsule detail.</td><td>Keep the current capsule short and push older slices into RUNTIME_HISTORY.</td></tr>
+<tr><td>3</td><td><code>docs/FEATURE_REGISTRY.md</code></td><td>Feature rows are authoritative but hard to scan as a wiki page.</td><td>Generate per-feature pages from docs/_templates/feature.md.</td></tr></table>
+  </section>
+</body>
+</html>

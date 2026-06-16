@@ -1,16 +1,41 @@
 # Representative Subtitle Design Review
 
-Last updated: 2026-06-15 JST
+Last updated: 2026-06-16 JST
+
+## What This Is
 
 This note records the smallest representative diagnostic subtitle design review
 start after the `cut_003` diagnostic burned-in proof readability acceptance.
-It does not approve production subtitle design, production render, creative
-quality, rights, publishing, or public use.
+
+It connects ED-10f's size acceptance to ED-10g's font/decor comparison and the
+current `noto_sans_jp_clean_outline` overlay proof for `cut_002` / `cut_003`.
+
+## Current State
+
+`clip-ed10g-noto-overlay-proof-001` is generated and waiting for human
+diagnostic / representative visual judgement. It preserves
+`round(frame_height * 0.115)` and changes only the selected font/decor base:
+Noto Sans JP route, cleaner outline, and a cool placeholder speaker badge
+accent.
+
+## Next
+
+Review the generated `subtitle_overlay_visual_proof_report.html` or the direct
+`cut_002` / `cut_003` proof MP4s. The next answer should accept this diagnostic
+base, request one bounded adjustment, reject it for an alternate candidate, or
+report that the artifact is missing/unreadable.
+
+## Constraints / Risks
+
+This does not approve production subtitle design, production render, creative
+quality, rights, publishing, public use, upload, source mutation, or transcript
+mutation. `cut_008` remains a separate dense/stress route before widening
+representative coverage.
 
 ## Active Artifact: `clip-review-acceptance-gate-001`
 
 - Slice label: `ED-10f: Representative Subtitle Design Review v1`
-- Current packet state: `human_response_adjust_boundary_font_family_decoration`
+- Current packet state: `ed10g_noto_overlay_proof_generated_requires_human_review`
 - Dense/stress state: `representative_review_blocked_missing_dense_stress_proof`
   for `cut_008`
 - Packet created from parser-first readback on 2026-06-15 JST before this docs
@@ -53,10 +78,10 @@ Existing proof was sufficient. The combined
 
 | axis | current readback for `cut_002` / `cut_003` | review effect |
 |---|---|---|
-| font | ASS style readback `Yu Gothic`; measurement family `NotoSansJP-VF`; renderer glyph fallback remains provider-dependent | human review can assess visible readability, not production font finality |
+| font | ASS style readback `Noto Sans JP`; resolved font route `candidate_primary_font_file_found`; renderer glyph fallback remains provider-dependent | human review can assess visible readability, not production font finality |
 | size | `font_size=124` from `round(frame_height * 0.115)` on 1920x1080 proof | candidate size is visible for diagnostic review |
-| outline | `outline=12` from `max(2, round(font_size * 0.096))`, plus shadow `2` | candidate outline weight is visible for readability review |
-| color | diagnostic ASS candidate color is visible in proof, but color is not production-approved | human may accept or request adjustment for the representative direction |
+| outline | `outline=11` from `max(2, round(font_size * 0.086))`, plus shadow `2` | selected clean-outline weight is visible for readability review |
+| color | selected cool placeholder badge accent is visible in proof, but color is not production-approved | human may accept or request one bounded adjustment for the representative direction |
 | speaker identity | real face icon assets unavailable; `SPK` speaker badge placeholder fallback is used | review can decide whether fallback evidence is acceptable, not production speaker identity |
 | mode selection | selected mode `badge_left_dialogue`; `bottom_center_emphasis` remains supported but not accepted by this proof | this gate covers the current normal dialogue mode only |
 | safe area | proof status `diagnostic_overlay_visible_human_review_required`; generated 1920x1080 PNG/MP4/sample frames exist | human review is still required for final safe-area judgment |
@@ -117,8 +142,8 @@ public use, or upload.
 | Axis | Decision readback | Next effect |
 |---|---|---|
 | `font_size` | `accepted_for_diagnostic_representative_review` | Preserve the current formula-derived size for the next diagnostic comparison proof. |
-| `font_family` | `unresolved_needs_comparison` | Compare Japanese font-family candidates before regenerating the next overlay proof direction. |
-| `decoration` | `unresolved_needs_comparison` | Compare outline, shadow, and placeholder speaker-badge accent treatment. |
+| `font_family` | `narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof` | ED-10g comparison selected the Noto route for the current diagnostic proof; production font finality remains unaccepted. |
+| `decoration` | `narrowed_to_clean_outline_for_next_diagnostic_proof` | ED-10g selected cleaner outline / cool placeholder badge accent for the current diagnostic proof; production decoration finality remains unaccepted. |
 
 The successor packet is
 [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md)
@@ -197,8 +222,8 @@ All `episodes/` files are ignored local artifacts and must remain untracked.
 
 | target | why selected | review purpose | current evidence | design-review state |
 |---|---|---|---|---|
-| `cut_002` | kept comparison cut with `context_status=passed` and a short subtitle surface | dialogue readability, safe area / position, timing impression, comparison against the accepted `cut_003` baseline | combined `subtitle_overlay_visual_proof_report.json` targets `cut_002` and `cut_003`; `cut_002` has `jp_clip_dialogue_badge_left_v0`, `ffmpeg_subtitles_filter_ass`, font-bbox wrapped lines, resolved PNG/MP4/sample links, `renderer_gap` visible | representative-review-ready as a diagnostic comparison target only; not production design |
-| `cut_003` | accepted diagnostic baseline and current target in `SUBTITLE_PRESENTATION_CONTRACT.md` | dialogue readability, speaker badge fallback, line wrapping / suffix-tail behavior, safe area / position, timing impression, response/referral block coverage | combined `subtitle_overlay_visual_proof_report.json` targets `cut_003`, range `22.606 -> 49.566`, `sub_010..sub_029`, response/referral block `sub_025..sub_029`, `jp_clip_dialogue_badge_left_v0`, explicit ASS line breaks, `renderer_gap` visible | accepted only as `diagnostic_subtitle_wrapping_readability_acceptance=true` for current diagnostic proof readability; not production design |
+| `cut_002` | kept comparison cut with `context_status=passed` and a short subtitle surface | dialogue readability, safe area / position, timing impression, comparison against the accepted `cut_003` baseline | combined `subtitle_overlay_visual_proof_report.json` targets `cut_002` and `cut_003`; `cut_002` has `noto_sans_jp_clean_outline`, `ffmpeg_subtitles_filter_ass`, font-bbox wrapped lines, resolved PNG/MP4/sample links, `renderer_gap` visible | representative-review-ready as a diagnostic comparison target only; not production design |
+| `cut_003` | accepted diagnostic baseline and current target in `SUBTITLE_PRESENTATION_CONTRACT.md` | dialogue readability, speaker badge fallback, line wrapping / suffix-tail behavior, safe area / position, timing impression, response/referral block coverage | combined `subtitle_overlay_visual_proof_report.json` targets `cut_003`, range `22.606 -> 49.566`, `sub_010..sub_029`, response/referral block `sub_025..sub_029`, `noto_sans_jp_clean_outline`, explicit ASS line breaks, `renderer_gap` visible | accepted only as `diagnostic_subtitle_wrapping_readability_acceptance=true` for current diagnostic proof readability; not production design |
 | `cut_008` | current `needs_adjustment` dense-subtitle stress case: 33 subtitles, high subtitle density, current decision packet says split or rewrite before production-adjacent acceptance | reading load, line wrapping pressure, safe area under density, timing impression | current decision/readback exists, but no current subtitle-overlay proof for this contract | blocked before design review by `needs_adjustment` state and missing representative proof; use only to define the next adjustment/proof prerequisite |
 
 ## Review Readback

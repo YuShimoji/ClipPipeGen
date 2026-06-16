@@ -1,3 +1,18 @@
+---
+id: runtime-state
+title: Runtime State - ClipPipeGen
+type: resume_surface
+status: in_progress
+health: active
+progress_pct: 70
+last_touched: 2026-06-16
+next_review_due: before_next_subtitle_design_decision
+active_artifact: clip-ed10g-noto-overlay-proof-001
+source_of_truth: true
+owner_lane: shared_infra
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
+---
+
 # Runtime State - ClipPipeGen
 
 This file is the active resume surface. It should answer "where are we now?"
@@ -6,6 +21,81 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## これは何か
+
+ClipPipeGen の現在位置を再開するための正本です。履歴の全文ではなく、
+「いま何を見ればよいか」「どの artifact が active か」「次にどの判断へ
+進むか」を返す resume surface として使います。
+
+## 何のためにあるか
+
+別端末・別 agent・後日の自分が、古い closeout を全部読まずに字幕 review、
+artifact 管理、production/public boundary を復元できるようにします。詳細な
+過去ログは [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md) に逃がし、このページは
+Dashboard と active slice への案内を優先します。
+
+## 今の状態
+
+Current focus は `ED-10g` の後続状態です。
+`noto_sans_jp_clean_outline` は `cut_002` / `cut_003` の selected diagnostic
+overlay proof base として生成済みで、artifact は
+`clip-ed10g-noto-overlay-proof-001` です。font size policy は
+`round(frame_height * 0.115)` を維持します。production / public / rights /
+publishing の acceptance はまだ成立していません。
+
+## これからどうなるか
+
+1. 人間が current Noto clean-outline proof を diagnostic / representative base
+   として受け入れるか判断する。
+2. フォント候補 universe を広げる場合は
+   [SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md) の
+   `ED-10h` registry から、download なし route か license/readback 付き
+   download route を選ぶ。
+3. docs の一覧化は [index.md](index.md) と
+   [dashboard/index.html](dashboard/index.html) を入口にする。
+
+## 使い方・確認方法
+
+- Human-readable entry: [index.md](index.md)
+- Static dashboard: [dashboard/index.html](dashboard/index.html)
+- Machine-readable dashboard: [dashboard/project-status.json](dashboard/project-status.json)
+- Feature table: [features/index.md](features/index.md)
+- Artifact registry: [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md)
+
+Regenerate the docs dashboard with:
+
+```powershell
+uvx python -m src.cli.main build-docs-dashboard --format json
+```
+
+## 実装・設計メモ
+
+`episodes/` は同端末 review evidence であり、public Git の authority では
+ありません。tracked docs/code/tests が remote evidence、ignored local reports
+が same-machine readback です。Dashboard は tracked Markdown と registry を
+読むだけで、source media や production acceptance を変更しません。
+
+## Decision Log
+
+- 2026-06-16: ED-10g の selected proof base を
+  `noto_sans_jp_clean_outline` として保持し、次の font universe 拡張を
+  `ED-10h` として切り出す。
+- 2026-06-16: docs を v1.5 Wiki / Dashboard 入口へ寄せ、通常報告では
+  next-Agent prompt を付けない運用へ戻す。
+
+## Constraints / Risks
+
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `rights_status=pending`
+- `episodes/` must remain untracked.
+- font binaries are not vendored unless license metadata and repo policy are
+  explicitly approved.
+
+## Changelog
+
+- 2026-06-16: Added v1.5 metadata and dashboard-facing front sections.
 
 ## Current Resume Capsule
 

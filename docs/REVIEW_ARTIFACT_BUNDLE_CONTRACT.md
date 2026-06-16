@@ -1,8 +1,86 @@
+---
+id: review-artifact-bundle-contract
+title: Review Artifact Bundle Contract
+type: contract
+status: active
+health: stable
+progress_pct: 90
+last_touched: 2026-06-16
+next_review_due: before_next_review_bundle_schema_change
+active_artifact: clip-human-preview-session-001
+source_of_truth: true
+owner_lane: shared_infra
+related: docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md
+---
+
 # Review Artifact Bundle Contract
 
 Active Artifact: `clip-human-preview-session-001`
 
 Legacy alias: `clip-episode-review-surface-001`
+
+## これは何か
+
+Episode review artifacts を scattered local files から 1 つの
+creator-facing entry point に束ねる contract です。動画・字幕・contact sheet・
+machine readback・decision question を同じ bundle に置くことで、人間が
+「どのファイルを開くべきか」を毎回探索しなくて済むようにします。
+
+## 何のためにあるか
+
+ClipPipeGen は production approval を自動で出さない一方で、diagnostic /
+representative review に必要な生成物を見える形に束ねる責任を持ちます。
+この contract は、その file role、missing behavior、path authority、open
+route を固定します。
+
+## 今の状態
+
+Current active artifact は `clip-human-preview-session-001` です。ED-10g の
+successor proof は `clip-ed10g-noto-overlay-proof-001` として別 artifact に
+登録され、review bundle は「人間が見る入口」、overlay proof は「今回の字幕
+判断対象」という関係です。
+
+## これからどうなるか
+
+Dashboard / Wiki からはこの contract を bundle schema の正本として参照し、
+実際の現在質問は [RUNTIME_STATE.md](RUNTIME_STATE.md) と
+[../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md) から辿ります。次に
+schema を変えるなら、tests と artifact registry を同じ slice で更新します。
+
+## 使い方・確認方法
+
+```powershell
+uvx pytest -q tests/test_episode_review_bundle.py tests/test_episode_status.py
+```
+
+Human preview session を再生成するのは、same-machine readback で required
+artifact が欠けている時だけです。ED-10g の Noto overlay proof 判断だけなら
+SH-08 を再生成しません。
+
+## 実装・設計メモ
+
+Manifest の authority は repo-relative path です。absolute local path は
+表示しても authority ではありません。`episodes/` は ignored local evidence
+であり、public Git に入れません。
+
+## Decision Log
+
+- 2026-06-16: v1.5 dashboard から参照される contract として front matter を
+  追加。
+- 2026-06-15: `clip-human-preview-session-001` を active retained artifact と
+  して登録。
+
+## Constraints / Risks
+
+- The bundle does not approve production render, production subtitle design,
+  creative quality, rights, publishing, upload, or public use.
+- Missing artifacts block reviewability; they do not imply production failure.
+- Active `human_preview_session/` is protected from broad ignored cleanup until
+  its human decision is consumed or explicitly retired.
+
+## Changelog
+
+- 2026-06-16: Added v1.5 metadata and Wiki-facing front sections.
 
 Review Artifact Bundle は、episode の review artifacts を 1 つの creator-facing entry point にまとめる contract。目的は、動画制作者を scattered local HTML paths や ignored artifact 探しに戻さず、playable video / contact sheet / artifact readback / decision question を同じ場所で確認できるようにすること。
 
