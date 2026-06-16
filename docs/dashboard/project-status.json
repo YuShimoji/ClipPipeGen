@@ -1094,14 +1094,14 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 918,
+      "line_count": 933,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
         "health": "active",
-        "progress_pct": "78",
+        "progress_pct": "80",
         "last_touched": "2026-06-16",
         "next_review_due": "before_dense_stress_or_limitation_lift",
         "active_artifact": "clip-ed10g-noto-overlay-proof-001",
@@ -1115,7 +1115,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 256,
+      "boundary_term_count": 260,
       "status": "current_capsule"
     },
     {
@@ -1613,7 +1613,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (918 lines) is likely carrying history.",
+        "detail": "Long active doc (933 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

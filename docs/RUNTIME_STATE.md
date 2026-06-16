@@ -4,7 +4,7 @@ title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
 health: active
-progress_pct: 78
+progress_pct: 80
 last_touched: 2026-06-16
 next_review_due: before_dense_stress_or_limitation_lift
 active_artifact: clip-ed10g-noto-overlay-proof-001
@@ -84,6 +84,14 @@ production render, creative, rights, publishing, upload, or public-use gates.
 - Feature table: [features/index.md](features/index.md)
 - Artifact registry: [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md)
 
+Repo-root launcher order for a fresh terminal:
+
+1. `.\open-dashboard.ps1`
+2. choose the artifact or doc from the dashboard
+3. use artifact-specific launchers only when needed:
+   `.\open-artifacts.ps1`, `.\open-current-proof.ps1`, or
+   `.\open-font-candidates.ps1`
+
 Regenerate the docs dashboard with:
 
 ```powershell
@@ -105,12 +113,19 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 - 2026-06-16: Human visual judgement accepted
   `clip-ed10g-noto-overlay-proof-001` as the diagnostic / representative base
   for `cut_002` / `cut_003`; production/public/rights gates remain closed.
+- 2026-06-16: Review surface launchers added and pushed. Normal open order is
+  `.\open-dashboard.ps1`, then dashboard artifact selection, then
+  artifact-specific launchers only when needed. This records navigation only;
+  it does not mutate source media, transcript, official subtitle evidence,
+  rights, publishing, upload, or production acceptance state.
 - 2026-06-16: docs を v1.5 Wiki / Dashboard 入口へ寄せ、通常報告では
   next-Agent prompt を付けない運用へ戻す。
 
 ## Changelog
 
 - 2026-06-16: Added v1.5 metadata and dashboard-facing front sections.
+- 2026-06-16: Added repo-root open surface launchers and dashboard/artifact
+  open command readback.
 
 ## Historical Resume Notes
 
