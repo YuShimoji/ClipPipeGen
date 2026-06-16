@@ -1031,9 +1031,10 @@ def build_subtitle_typography_decoration_comparison(
         "comparison_response_readback": {
             "source_artifact": "clip-typography-decoration-comparison-001",
             "selected_response": "small_adjustment",
+            "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
             "font_size": "accepted_for_diagnostic_representative_review",
-            "font_family": "unresolved_requires_comparison_or_selection",
-            "decoration": "unresolved_requires_comparison_or_selection",
+            "font_family": "narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof",
+            "decoration": "narrowed_to_clean_outline_for_next_diagnostic_proof",
             "production_subtitle_design_acceptance": False,
             "production_render_acceptance": False,
             "creative_acceptance": False,
@@ -1064,12 +1065,14 @@ def build_subtitle_typography_decoration_comparison(
         "next_diagnostic_overlay_proof_route": {
             "route_kind": "small_adjustment_diagnostic_overlay_proof",
             "target_cuts": list(target_cut_ids),
+            "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
+            "recommended_default_candidate_id": "noto_sans_jp_clean_outline",
             "font_size": {
                 "status": "preserve_accepted_diagnostic_representative_direction",
                 "formula": "round(frame_height * 0.115)",
             },
-            "font_family": "unresolved_until_concrete_adjusted_candidate_selected",
-            "decoration": "unresolved_until_outline_shadow_badge_accent_selected",
+            "font_family": "narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof",
+            "decoration": "narrowed_to_clean_outline_for_next_diagnostic_proof",
             "regenerate_sh08_required": False,
             "comparison_artifact_required": "only_when_visual_candidate_readback_is_needed",
             "episodes_artifact_tracking_allowed": False,
@@ -1080,6 +1083,9 @@ def build_subtitle_typography_decoration_comparison(
             "publishing_acceptance": False,
             "public_use_permission": False,
         },
+        "small_adjustment_decision_packet": _small_adjustment_decision_packet(
+            target_cut_ids=target_cut_ids,
+        ),
         "candidates": [_candidate_readback(candidate) for candidate in TYPOGRAPHY_DECORATION_CANDIDATES],
         "samples": samples,
         "outputs": {
@@ -1095,8 +1101,9 @@ def build_subtitle_typography_decoration_comparison(
             )
         },
         "next_decision_question": (
-            "Which concrete font-family / decoration adjustment should become "
-            "the next diagnostic subtitle overlay proof direction for cut_002 / cut_003? "
+            "After generating the next cut_002 / cut_003 diagnostic overlay proof "
+            "from noto_sans_jp_clean_outline, is this small adjustment acceptable "
+            "for diagnostic / representative review? "
             "This does not approve production subtitle design, production render, "
             "rights, publishing, public use, or upload."
         ),
@@ -1148,6 +1155,118 @@ def _dedupe_nonempty_texts(texts: list[str] | tuple[str, ...]) -> list[str]:
         seen.add(text)
         result.append(text)
     return result
+
+
+def _small_adjustment_decision_packet(
+    *,
+    target_cut_ids: tuple[str, ...],
+) -> dict[str, Any]:
+    return {
+        "decision_state": "selected_for_next_diagnostic_overlay_proof_base",
+        "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
+        "recommended_default_candidate_id": "noto_sans_jp_clean_outline",
+        "recommended_default_use": (
+            "Adopted as the next diagnostic overlay proof base for this "
+            "small-adjustment route."
+        ),
+        "target_cuts": list(target_cut_ids),
+        "font_size": {
+            "decision": "accepted_for_diagnostic_representative_review",
+            "formula": "round(frame_height * 0.115)",
+            "reopen_as_primary_axis": False,
+        },
+        "active_adjustment_axes": [
+            "font_family",
+            "outline/stroke ratio",
+            "shadow offset",
+            "placeholder speaker-badge accent",
+        ],
+        "options": [
+            {
+                "candidate_id": "current_yu_gothic_heavy_outline",
+                "use_as": "reference_only",
+                "adoption_reason": (
+                    "Keeps the accepted diagnostic baseline visible for comparison."
+                ),
+                "watch_item": (
+                    "Does not satisfy small_adjustment by itself because font family "
+                    "and decoration stay at the current baseline."
+                ),
+            },
+            {
+                "candidate_id": "noto_sans_jp_clean_outline",
+                "use_as": "selected_next_proof_base",
+                "adoption_reason": (
+                    "Smallest readable adjustment: cleaner Japanese face route, "
+                    "slightly lighter outline, cooler placeholder badge accent, "
+                    "and unchanged accepted size / placement."
+                ),
+                "watch_item": (
+                    "Font availability can fall back locally; the next proof must "
+                    "record the resolved font file."
+                ),
+            },
+            {
+                "candidate_id": "meiryo_bold_soft_shadow",
+                "use_as": "alternate_if_default_feels_too_heavy",
+                "adoption_reason": (
+                    "Preserves readable boldness while testing softer decoration "
+                    "and stronger shadow."
+                ),
+                "watch_item": "Shadow softness may reduce crispness on fast video motion.",
+            },
+            {
+                "candidate_id": "gothic_high_contrast_minimal_badge",
+                "use_as": "alternate_if_badge_decoration_is_primary_concern",
+                "adoption_reason": (
+                    "Reduces badge visual weight while keeping high contrast text."
+                ),
+                "watch_item": (
+                    "MS Gothic can feel more mechanical; use only if high contrast "
+                    "matters more than warmth."
+                ),
+            },
+        ],
+        "rejected_alternatives": [
+            {
+                "route": "regenerate_sh08_human_preview_session",
+                "reason": "Not required for this ED-10g small-adjustment route.",
+            },
+            {
+                "route": "claim_production_subtitle_design_acceptance",
+                "reason": "small_adjustment is diagnostic feedback, not production approval.",
+            },
+            {
+                "route": "add_cut_008_dense_stress_proof_now",
+                "reason": (
+                    "Dense/stress coverage remains a separate route unless the next "
+                    "review explicitly widens scope."
+                ),
+            },
+            {
+                "route": "mutate_source_or_rights_or_publishing_state",
+                "reason": (
+                    "Source media, transcript, official subtitle evidence, rights, "
+                    "publishing, public use, and upload are outside this proof route."
+                ),
+            },
+        ],
+        "smallest_next_proof_route": {
+            "route_kind": "small_adjustment_diagnostic_overlay_proof",
+            "selected_candidate_id": "noto_sans_jp_clean_outline",
+            "default_candidate_id": "noto_sans_jp_clean_outline",
+            "target_cuts": list(target_cut_ids),
+            "keep_baseline_reference": True,
+            "proof_scope": "diagnostic_representative_review_only",
+            "regenerate_sh08_required": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
+    }
 
 
 def _candidate_readback(candidate: TypographyDecorationCandidate) -> dict[str, Any]:
@@ -1518,6 +1637,8 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
   <p>{html.escape(str(report["next_decision_question"]))}</p>
   <h2>Next Diagnostic Overlay Proof Route</h2>
   <pre>{html.escape(json.dumps(report["next_diagnostic_overlay_proof_route"], ensure_ascii=False, indent=2))}</pre>
+  <h2>Small Adjustment Decision Packet</h2>
+  <pre>{html.escape(json.dumps(report["small_adjustment_decision_packet"], ensure_ascii=False, indent=2))}</pre>
   <h2>Fixed / Varied Axes</h2>
   <pre>{html.escape(json.dumps(report["comparison_axes"], ensure_ascii=False, indent=2))}</pre>
   {''.join(sections)}
@@ -2784,7 +2905,7 @@ def _speaker_identity_asset_status(mode: str) -> dict[str, Any]:
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(payload, ensure_ascii=True, indent=2) + "\n", encoding="utf-8")
 
 
 def _write_html(path: Path, report: dict[str, Any], *, output_dir: Path) -> None:

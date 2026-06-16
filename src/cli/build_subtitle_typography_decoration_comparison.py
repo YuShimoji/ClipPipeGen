@@ -58,8 +58,14 @@ def run(argv: list[str]) -> int:
         "candidate_count": report["candidate_count"],
         "font_size": report["font_size_policy"],
         "comparison_response": report["comparison_response_readback"],
+        "selected_candidate_for_next_proof_base": report[
+            "comparison_response_readback"
+        ].get("selected_candidate_for_next_proof_base"),
         "next_diagnostic_overlay_proof_route": report[
             "next_diagnostic_overlay_proof_route"
+        ],
+        "small_adjustment_decision_packet": report[
+            "small_adjustment_decision_packet"
         ],
         "review_only": report["review_only"],
         "production_candidate": report["production_candidate"],
@@ -87,6 +93,14 @@ def run(argv: list[str]) -> int:
         print(
             "next_route: "
             f"{payload['next_diagnostic_overlay_proof_route']['route_kind']}"
+        )
+        print(
+            "recommended_default_candidate: "
+            f"{payload['small_adjustment_decision_packet']['recommended_default_candidate_id']}"
+        )
+        print(
+            "selected_candidate_for_next_proof_base: "
+            f"{payload['selected_candidate_for_next_proof_base']}"
         )
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         print(

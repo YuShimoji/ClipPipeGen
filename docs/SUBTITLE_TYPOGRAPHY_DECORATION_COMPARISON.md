@@ -5,10 +5,10 @@ Last updated: 2026-06-16 JST
 This packet was generated from the `clip-human-preview-session-001` human
 answer `adjust_boundary`, then received the ED-10g comparison response
 `small_adjustment`. The new response asks for a next diagnostic overlay proof
-route that preserves the accepted font-size direction while keeping font family
-and decorative treatment unresolved. It does not approve production subtitle
-design, production render, creative quality, rights, publishing, public use, or
-upload.
+route that preserves the accepted font-size direction and adopts
+`noto_sans_jp_clean_outline` as the next diagnostic overlay proof base. It
+does not approve production subtitle design, production render, creative
+quality, rights, publishing, public use, or upload.
 
 ## Decision Readback
 
@@ -20,19 +20,19 @@ Review note:
 
 - Font size itself is acceptable for the current diagnostic / representative
   route.
-- Font family selection remains unresolved and requires comparison or a
-  concrete selection before the next overlay proof is regenerated.
-- Decorative treatment remains unresolved and requires comparison or a
-  concrete selection before the next overlay proof is regenerated.
+- Font family is narrowed to `noto_sans_jp_clean_outline` for the next
+  diagnostic overlay proof.
+- Decorative treatment is narrowed to that candidate's clean outline and cool
+  placeholder badge accent for the next diagnostic overlay proof.
 - This is not production subtitle design acceptance.
-- The next slice should preserve the accepted font-size direction and prepare a
-  small-adjustment diagnostic overlay proof route for typography / decoration.
+- The small-adjustment diagnostic overlay proof for `cut_002` / `cut_003` has
+  been generated with the selected base and now needs human visual judgement.
 
 | Axis | Current decision | Workflow effect |
 |---|---|---|
 | `font_size` | `accepted_for_diagnostic_representative_review` | Keep `round(frame_height * 0.115)` for the next diagnostic comparison proof. |
-| `font_family` | `unresolved_requires_comparison_or_selection` | Choose or refine a Japanese font-family route before regenerating the next subtitle overlay proof. |
-| `decoration` | `unresolved_requires_comparison_or_selection` | Choose or refine outline, shadow, and placeholder speaker-badge accent treatment before regenerating the next subtitle overlay proof. |
+| `font_family` | `narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof` | Use the Noto Sans JP route for the next diagnostic overlay proof, with local font fallback recorded in readback. |
+| `decoration` | `narrowed_to_clean_outline_for_next_diagnostic_proof` | Use the clean outline / cool placeholder badge accent candidate for the next diagnostic overlay proof. |
 | production/public gates | false or pending | No production subtitle design, render, rights, publishing, public-use, or upload acceptance is created. |
 
 ## Active Comparison Artifact
@@ -64,8 +64,9 @@ Current worktree readback on 2026-06-16 JST: the local ignored comparison JSON
 was refreshed with the current tracked generator, without regenerating SH-08.
 It records `comparison_response_readback.selected_response=small_adjustment`,
 `next_diagnostic_overlay_proof_route.route_kind=small_adjustment_diagnostic_overlay_proof`,
-`font_size_policy.value=124`, `candidate_count=4`, `sample_count=16`, and
-false / pending production-public flags. The contact sheet was inspected as a
+`selected_candidate_for_next_proof_base=noto_sans_jp_clean_outline`,
+`font_size_policy.value=124`, `candidate_count=4`, `sample_count=16`, and false
+/ pending production-public flags. The contact sheet was inspected as a
 nonblank same-machine visual artifact, and all generated sample text boxes
 reported inside the safe area. This is local retained evidence only, not a Git
 portable artifact.
@@ -75,9 +76,13 @@ Tracked generator readback now keeps these two decisions separate:
 SH-08 / ED-10f response, while
 `comparison_response_readback.selected_response=small_adjustment` records the
 ED-10g comparison response. The regenerated JSON/HTML also includes
-`next_diagnostic_overlay_proof_route` so a future local comparison artifact can
-point directly to the small-adjustment diagnostic overlay proof route without
-claiming production acceptance.
+`next_diagnostic_overlay_proof_route` and
+`small_adjustment_decision_packet` so a future local comparison artifact can
+point directly to the small-adjustment diagnostic overlay proof route, carry
+`noto_sans_jp_clean_outline` as the selected next proof base, and still avoid
+any production acceptance claim. The persisted report JSON is ASCII-escaped for
+stable Windows PowerShell and Python parser readback; the HTML remains the
+human-readable surface.
 
 ## Candidates
 
@@ -98,13 +103,14 @@ All candidates preserve:
 
 ## Small-Adjustment Decision Packet
 
-The exact adjusted candidate is still underspecified, so the next proof should
-choose one of these narrow diagnostic routes before overlay regeneration.
+The adjusted candidate is now selected for the next diagnostic overlay proof:
+`noto_sans_jp_clean_outline`. The other candidates remain comparison context if
+the next proof needs a fallback or alternate review path.
 
 | Option | Use as | Adoption reason | Watch item |
 |---|---|---|---|
 | `current_yu_gothic_heavy_outline` | Reference only | Keeps the accepted diagnostic baseline visible for comparison. | Does not satisfy the request to refine font family / decoration by itself. |
-| `noto_sans_jp_clean_outline` | Recommended default | Smallest readable adjustment: cleaner modern Japanese face, slightly lighter outline, cooler placeholder badge, and unchanged accepted size / placement. | Font availability can fall back locally; proof must record the resolved font file. |
+| `noto_sans_jp_clean_outline` | Selected next proof base | Smallest readable adjustment: cleaner modern Japanese face, slightly lighter outline, cooler placeholder badge, and unchanged accepted size / placement. | Font availability can fall back locally; proof must record the resolved font file. |
 | `meiryo_bold_soft_shadow` | Alternate if the default still feels too heavy | Preserves readable boldness while testing softer decoration and stronger shadow. | Shadow softness may reduce crispness on fast video motion. |
 | `gothic_high_contrast_minimal_badge` | Alternate if badge decoration is the main concern | Reduces badge visual weight while keeping high contrast text. | MS Gothic can feel more mechanical; use only if high contrast matters more than warmth. |
 
@@ -119,26 +125,72 @@ Rejected routes for this slice:
 - Mutating source media, transcript, official subtitle evidence, rights,
   publishing, public use, or upload state: outside this diagnostic proof route.
 
-## Next Diagnostic Overlay Proof Route
+## Adjusted Diagnostic Overlay Proof
 
-The next proof route is a small-adjustment route, not a SH-08 preview-session
-regeneration route.
+The current proof route is a small-adjustment route, not a SH-08
+preview-session regeneration route.
 
 | Route element | Decision |
 |---|---|
 | target cuts | Keep `cut_002` and `cut_003` as the diagnostic / representative proof targets. |
 | font size | Preserve `round(frame_height * 0.115)` and do not reopen size as the primary question. |
-| font family | Keep unresolved until a concrete family route or adjusted candidate is selected. |
-| decoration | Keep unresolved until outline, shadow, and placeholder badge accent are selected or narrowed. |
+| selected proof base | Use `noto_sans_jp_clean_outline` for the next diagnostic overlay proof. |
+| font family | Narrow to the Noto Sans JP route, while recording the local resolved font file or fallback. |
+| decoration | Narrow to clean outline plus cool placeholder badge accent for this diagnostic proof. |
 | artifact boundary | Treat `subtitle_typography_decoration_comparison/` as ignored local review evidence; do not stage `episodes/`. |
 | acceptance boundary | Keep production subtitle design, production render, creative, rights, publishing, public-use, and upload acceptance false or pending. |
 
-Recommended next tracked route: define an adjusted diagnostic overlay proof
-packet using `noto_sans_jp_clean_outline` as the default base unless the human
-chooses another option. Carry the accepted size into the next `cut_002` /
-`cut_003` subtitle overlay proof and vary only font-family / decoration. If the
-local comparison artifact is missing in another worktree, regenerate it only
-when adjusted-candidate visual confirmation is needed before proof generation.
+Artifact id: `clip-ed10g-noto-overlay-proof-001`
+
+Storage class: local retained artifact; same-machine evidence only.
+
+Primary local report:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html
+```
+
+Open command:
+
+```powershell
+powershell -NoProfile -Command "Invoke-Item -LiteralPath 'episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html'"
+```
+
+Generated command:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --typography-decoration-candidate-id noto_sans_jp_clean_outline `
+  --format json
+```
+
+Current readback on 2026-06-16 JST: `target_cuts=[cut_002, cut_003]`,
+`style_candidate_id=noto_sans_jp_clean_outline`,
+`typography_decoration_candidate_id=noto_sans_jp_clean_outline`,
+`font_size.value=124`, `font_size.readback=round(frame_height * 0.115)`,
+`outline.value=11`, `outline.readback=max(2, round(font_size * 0.086))`,
+`font_family_route.requested=Noto Sans JP`,
+`font_family_route.font_file_status=candidate_primary_font_file_found`,
+`subtitle_overlay_available_count=2`,
+`all_target_cuts_have_overlay=true`, `bbox_wrapping_applied=true`,
+`explicit_ass_line_breaks=true`, `one_character_orphan_present=false`, and
+`suspicious_tail_line_present=false`. The generated PNG frames for `cut_002`
+and `cut_003` were inspected as nonblank 1920x1080 local visual artifacts, and
+a readback-based bbox/safe-area check reported no computed failures.
+
+Review status: `generated_requires_human_review`. The proof is diagnostic /
+representative only; production subtitle design acceptance, production render
+acceptance, creative acceptance, rights approval, publishing acceptance, public
+use, and upload remain false or pending.
+
+Recommended next tracked route: inspect the adjusted diagnostic overlay proof
+using `noto_sans_jp_clean_outline` as the selected base. If the local
+comparison artifact is missing in another worktree, regenerate it only when
+adjusted-candidate visual confirmation is needed before proof generation.
 
 ## Regeneration Command
 
@@ -155,16 +207,34 @@ uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-co
 Pillow is an optional local review dependency for generating these PNG
 artifacts. It is not a project-wide production renderer dependency.
 
+## Overlay Proof Regeneration Command
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --typography-decoration-candidate-id noto_sans_jp_clean_outline `
+  --format json
+```
+
+This refreshes the existing ignored `subtitle_overlay_visual_proof_report.*`
+surface for the selected small-adjustment base. It does not regenerate SH-08
+and does not mutate source media, transcript, official subtitle evidence,
+rights, publishing, upload, or production acceptance state.
+
 ## Next Human Question
 
-Which concrete font-family / decoration adjustment should become the next
-diagnostic subtitle overlay proof direction for `cut_002` / `cut_003`?
+Is the generated `noto_sans_jp_clean_outline` diagnostic overlay proof for
+`cut_002` / `cut_003` acceptable as the current small-adjustment base for
+diagnostic / representative review?
 
-Allowed next answers for this small-adjustment route:
+Allowed next answers for that proof:
 
-- choose one candidate id
-- specify the small candidate adjustment to apply
-- reject all candidates and propose a different font/decor direction
-- block because the comparison artifact is missing or unreadable
+- accept this diagnostic proof base
+- request a specific small adjustment to the selected base
+- reject this base and choose one alternate candidate
+- block because the overlay proof artifact is missing or unreadable
 
 Keep this as diagnostic / representative review feedback only.

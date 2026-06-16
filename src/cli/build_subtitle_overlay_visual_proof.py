@@ -10,6 +10,7 @@ from pathlib import Path
 from src.integrations.render.subtitle_overlay_visual_proof import (
     SubtitleOverlayVisualProofError,
     build_subtitle_overlay_visual_proof,
+    typography_decoration_candidate_ids,
 )
 
 
@@ -32,6 +33,14 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--ffmpeg-path")
     parser.add_argument("--ffprobe-path")
     parser.add_argument("--container", choices=("mp4", "mkv"), default="mp4")
+    parser.add_argument(
+        "--typography-decoration-candidate-id",
+        choices=typography_decoration_candidate_ids(),
+        help=(
+            "Optional ED-10g typography/decoration candidate to apply to the "
+            "diagnostic overlay proof. Omit to keep the legacy overlay style."
+        ),
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
@@ -48,6 +57,7 @@ def run(argv: list[str]) -> int:
             ffmpeg_path=args.ffmpeg_path,
             ffprobe_path=args.ffprobe_path,
             container=args.container,
+            typography_decoration_candidate_id=args.typography_decoration_candidate_id,
             dry_run=args.dry_run,
             base_dir=Path.cwd(),
         )
@@ -66,6 +76,14 @@ def run(argv: list[str]) -> int:
         "visual_proof_status": result["visual_proof_status"],
         "style_direction_preset": (
             (report.get("style_direction") or {}).get("preset_name")
+        ),
+        "style_candidate_id": (
+            (report.get("style_parameters") or {}).get("style_candidate_id")
+        ),
+        "typography_decoration_candidate_id": (
+            (report.get("style_parameters") or {}).get(
+                "typography_decoration_candidate_id"
+            )
         ),
         "subtitle_overlay_available_count": (
             report.get("aggregate_summary") or {}
@@ -95,6 +113,11 @@ def run(argv: list[str]) -> int:
         print(f"source_media_status: {payload['source_media_status']}")
         print(f"visual_proof_status: {payload['visual_proof_status']}")
         print(f"style_direction_preset: {payload['style_direction_preset']}")
+        print(f"style_candidate_id: {payload['style_candidate_id']}")
+        print(
+            "typography_decoration_candidate_id: "
+            f"{payload['typography_decoration_candidate_id']}"
+        )
         print(f"subtitle_overlay_available_count: {payload['subtitle_overlay_available_count']}")
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         print(f"creative_acceptance: {str(payload['creative_acceptance']).lower()}")

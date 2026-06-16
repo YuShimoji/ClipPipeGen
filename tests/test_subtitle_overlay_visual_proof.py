@@ -321,6 +321,72 @@ def test_subtitle_overlay_visual_proof_targets_explicit_cuts_and_updates_ed10d(
     assert cut_003["operator_input_fields"]["context_risk_handling"] == "undecided"
 
 
+def test_subtitle_overlay_visual_proof_applies_ed10g_typography_candidate(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_002", "cut_003"],
+        typography_decoration_candidate_id="noto_sans_jp_clean_outline",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    assert report["target_cuts"] == ["cut_002", "cut_003"]
+    assert report["style_direction"]["ed10g_small_adjustment_selected"] is True
+    assert report["style_direction"]["typography_decoration_candidate_id"] == (
+        "noto_sans_jp_clean_outline"
+    )
+    assert report["style_parameters"]["typography_decoration_candidate_id"] == (
+        "noto_sans_jp_clean_outline"
+    )
+    assert report["style_parameters"]["style_candidate_id"] == (
+        "noto_sans_jp_clean_outline"
+    )
+    assert report["style_parameters"]["font_size"]["readback"] == (
+        "round(frame_height * 0.115)"
+    )
+    assert report["style_parameters"]["font_size"]["value"] == 21
+    assert report["style_parameters"]["outline"]["readback"] == (
+        "max(2, round(font_size * 0.086))"
+    )
+    assert report["burned_in_subtitle_style"]["typography_decoration_candidate_id"] == (
+        "noto_sans_jp_clean_outline"
+    )
+    assert report["burned_in_subtitle_style"]["font_family_route"]["requested"] == (
+        "Noto Sans JP"
+    )
+    assert report["production_candidate"] is False
+    assert report["rights_status"] == "pending"
+    assert report["production_usage_allowed"] is False
+
+    for item in report["cut_results"]:
+        assert item["style_parameters"]["typography_decoration_candidate_id"] == (
+            "noto_sans_jp_clean_outline"
+        )
+        assert item["burned_in_subtitle_style"]["style_candidate_id"] == (
+            "noto_sans_jp_clean_outline"
+        )
+        assert item["font_bbox_wrap_readback"]["typography_decoration_candidate_id"] == (
+            "noto_sans_jp_clean_outline"
+        )
+
+    ass = (
+        review_dir
+        / "subtitle_overlay_reference"
+        / "subtitle_overlay_visual_proof_cut_002.burned_in.ass"
+    ).read_text(encoding="utf-8")
+    assert "Style: ClipPipeDialogueLeft," in ass
+    assert "&H00E68B22" in ass
+
+
 def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
@@ -333,6 +399,7 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
     )
     assert help_result.returncode == 0
     assert "--target-cut" in help_result.stdout
+    assert "--typography-decoration-candidate-id" in help_result.stdout
 
     result = subprocess.run(
         [
@@ -348,6 +415,8 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
             "cut_002",
             "--target-cut",
             "cut_003",
+            "--typography-decoration-candidate-id",
+            "noto_sans_jp_clean_outline",
             "--dry-run",
             "--format",
             "json",
@@ -363,6 +432,8 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
     assert payload["dry_run"] is True
     assert payload["visual_proof_status"] == "blocked_no_cut_002_cut_003_overlay_proof"
     assert payload["style_direction_preset"] == "jp_clip_readable_v1"
+    assert payload["style_candidate_id"] == "noto_sans_jp_clean_outline"
+    assert payload["typography_decoration_candidate_id"] == "noto_sans_jp_clean_outline"
     assert payload["production_candidate"] is False
     assert payload["rights_status"] == "pending"
     assert not (review_dir / "subtitle_overlay_visual_proof_report.json").exists()

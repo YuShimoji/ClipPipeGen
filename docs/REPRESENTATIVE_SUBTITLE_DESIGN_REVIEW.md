@@ -127,10 +127,12 @@ with artifact id `clip-typography-decoration-comparison-001`.
 ### ED-10g Small Adjustment Consumed
 
 The human response for `clip-typography-decoration-comparison-001` is consumed
-as `small_adjustment`. This means the comparison did not select one production
-subtitle design. It preserves the ED-10f font-size decision for diagnostic /
-representative review only, and keeps font family plus decorative treatment as
-the unresolved axes for the next diagnostic overlay proof route.
+as `small_adjustment`. The follow-up decision adopts
+`noto_sans_jp_clean_outline` as the next diagnostic overlay proof base for
+`cut_002` / `cut_003`. This selects a diagnostic / representative proof route,
+not one production subtitle design. It preserves the ED-10f font-size decision
+for diagnostic / representative review only and narrows font family plus
+decorative treatment only for the next proof.
 
 This response does not approve production subtitle design, production render,
 creative quality, rights, publishing, public use, or upload. It also does not
@@ -138,6 +140,13 @@ require SH-08 human preview-session regeneration. If the ignored local
 comparison report is missing in a new worktree, treat that as same-machine
 local artifact absence and rely on tracked docs/tests unless visual judgment is
 needed again.
+
+The generated successor proof is registered as
+`clip-ed10g-noto-overlay-proof-001`. Same-machine readback records
+`style_candidate_id=noto_sans_jp_clean_outline`,
+`typography_decoration_candidate_id=noto_sans_jp_clean_outline`,
+`font_size=124`, `outline=11`, `subtitle_overlay_available_count=2`,
+`production_candidate=false`, and `rights_status=pending`.
 
 ## Route
 
@@ -156,6 +165,7 @@ uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
   --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
   --target-cut cut_002 `
   --target-cut cut_003 `
+  --typography-decoration-candidate-id noto_sans_jp_clean_outline `
   --format json
 ```
 

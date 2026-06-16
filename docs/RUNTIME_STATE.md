@@ -78,21 +78,51 @@ instructions.
   the human response for `clip-typography-decoration-comparison-001` is now
   consumed as `small_adjustment`. This accepts the font-size direction only for
   the current diagnostic / representative route and does not choose a final
-  font-family or decorative treatment. The next route is a small-adjustment
-  diagnostic overlay proof route for `cut_002` / `cut_003`: preserve
-  `round(frame_height * 0.115)`, keep font family and decoration unresolved
-  until a concrete adjusted candidate is selected, and keep production/public
-  flags false or pending. This is not SH-08 regeneration and does not approve
-  production subtitle design, production render, creative quality, rights,
-  publishing, public use, or upload. In this worktree, the ignored comparison
-  report was refreshed on 2026-06-16 JST with current tracked generator output:
+  production font-family or decorative treatment. The follow-up human decision
+  selected `noto_sans_jp_clean_outline` as the next diagnostic overlay proof
+  base for `cut_002` / `cut_003`, while production/public flags stay false or
+  pending. This is not SH-08 regeneration and does not approve production
+  subtitle design, production render, creative quality, rights, publishing,
+  public use, or upload. In this worktree, the ignored comparison report was
+  refreshed on 2026-06-16 JST with current tracked generator output:
   `comparison_response_readback.selected_response=small_adjustment`,
   `next_diagnostic_overlay_proof_route.route_kind=small_adjustment_diagnostic_overlay_proof`,
+  `selected_candidate_for_next_proof_base=noto_sans_jp_clean_outline`,
+  `small_adjustment_decision_packet.decision_state=selected_for_next_diagnostic_overlay_proof_base`,
   `font_size_policy.value=124`, `candidate_count=4`, and `sample_count=16`.
-  The contact sheet was inspected as a nonblank local visual artifact, and all
-  generated sample text boxes reported inside the safe area. Remote evidence
-  remains tracked docs, generator, and tests; the refreshed `episodes/` artifact
-  remains ignored same-machine evidence.
+  The persisted JSON is ASCII-escaped and parsed successfully with Windows
+  PowerShell `ConvertFrom-Json`; the contact sheet was inspected as a nonblank
+  local visual artifact, and all generated sample text boxes reported inside
+  the safe area. Remote evidence remains tracked docs, generator, and tests;
+  the refreshed `episodes/` artifact remains ignored same-machine evidence.
+- latest ED-10g small-adjustment overlay proof:
+  `clip-ed10g-noto-overlay-proof-001` has now regenerated the
+  existing ignored `subtitle_overlay_visual_proof_report.*` surface for
+  `cut_002` / `cut_003` with
+  `--typography-decoration-candidate-id noto_sans_jp_clean_outline`. Current
+  readback records `style_candidate_id=noto_sans_jp_clean_outline`,
+  `typography_decoration_candidate_id=noto_sans_jp_clean_outline`,
+  `font_size.value=124`, `font_size.readback=round(frame_height * 0.115)`,
+  `outline.value=11`, `outline.readback=max(2, round(font_size * 0.086))`,
+  `font_family_route.requested=Noto Sans JP`,
+  `font_family_route.font_file_status=candidate_primary_font_file_found`,
+  `subtitle_overlay_available_count=2`,
+  `all_target_cuts_have_overlay=true`, `bbox_wrapping_applied=true`,
+  `explicit_ass_line_breaks=true`, `one_character_orphan_present=false`, and
+  `suspicious_tail_line_present=false`. Same-machine visual/readback
+  validation found both generated PNG frames nonblank at 1920x1080 and no
+  computed bbox/safe-area failures. Boundary flags remain
+  `production_candidate=false`, `production_usage_allowed=false`,
+  `production_subtitle_design_acceptance=false`,
+  `production_render_acceptance=false`, `creative_acceptance=false`,
+  `rights_status=pending`, `publishing_acceptance=false`, and
+  `public_use_permission=false`. Next action is human visual judgement of this
+  adjusted diagnostic proof: accept this base, request one bounded adjustment,
+  reject and choose an alternate, or report a missing/unreadable artifact.
+  `status-episode` still reports global `operator_review.review_ready=false`
+  because legacy `visual_proof_cut_001.png` is missing; treat that as the
+  broader R3 reviewability state, not as failure of the scoped ED-10g
+  `cut_002` / `cut_003` proof.
 - latest pulled resume point before the SH-08 active artifact packet:
   `c6a2974 (HEAD -> main, origin/main, origin/HEAD) docs: add
   representative subtitle review gate packet`. The SH-08 review-surface bundle
@@ -697,16 +727,18 @@ Review focus:
 ## Next Actions
 
 1. Advance: ED-10g small-adjustment diagnostic overlay proof route
-   - Consume `small_adjustment` as the current human answer for
+   - `small_adjustment` and the follow-up choice of
+     `noto_sans_jp_clean_outline` have been consumed for
      `clip-typography-decoration-comparison-001`.
    - Preserve the accepted diagnostic font-size direction
      `round(frame_height * 0.115)`.
-   - Use the four-option decision packet in
+   - Use
      [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md);
-     default to `noto_sans_jp_clean_outline` unless the human chooses another
-     font-family / decoration adjustment.
-   - Regenerate the next `cut_002` / `cut_003` diagnostic overlay proof only
-     after the adjusted candidate is selected; do not reopen font size.
+     the adjusted `cut_002` / `cut_003` overlay proof is generated and ready
+     for human visual judgement.
+   - Do not reopen font size. If the proof needs revision, keep it to one
+     bounded font-family / decoration adjustment or choose an alternate
+     candidate route.
    - Keep `rights=pending`, `production_candidate=false`,
      `production_usage_allowed=false`, and all production/public acceptance
      flags false.

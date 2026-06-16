@@ -71,8 +71,138 @@ DIAGNOSTIC_ASS_STYLE = {
 }
 
 
+def typography_decoration_candidate_ids() -> tuple[str, ...]:
+    return tuple(
+        candidate.candidate_id
+        for candidate in subtitle_style_spike.TYPOGRAPHY_DECORATION_CANDIDATES
+    )
+
+
 class SubtitleOverlayVisualProofError(Exception):
     """Raised when the subtitle-overlay proof cannot be built safely."""
+
+
+def _diagnostic_ass_style_for_candidate(
+    candidate_id: str | None,
+) -> dict[str, Any]:
+    if not candidate_id:
+        return {
+            **DIAGNOSTIC_ASS_STYLE,
+            "selection_source": "legacy_overlay_default",
+            "typography_decoration_candidate_id": None,
+            "ed10g_small_adjustment_selected": False,
+            "display_name": "JP clip dialogue badge left v0",
+            "decoration_note": "existing diagnostic ASS subtitle proof style",
+            "requested_font_family": DIAGNOSTIC_ASS_STYLE["font_name"],
+            "resolved_font_family": DIAGNOSTIC_ASS_STYLE["font_name"],
+            "resolved_font_file": None,
+            "font_file_status": "legacy_overlay_default_not_resolved",
+            "font_paths": [],
+            "stroke_ratio": LAYOUT_RATIOS["outline_to_font_size"],
+            "shadow_offset_ratio": LAYOUT_RATIOS["shadow_to_font_size"],
+            "text_fill": "#ffffff",
+            "stroke_fill": "#000000",
+            "shadow_fill": "#000000",
+            "badge_fill": "#ffd700",
+            "badge_outline": "#202020",
+        }
+
+    candidate = _typography_decoration_candidate(candidate_id)
+    resolved_family, resolved_font_file, font_status = _resolve_candidate_font(candidate)
+    return {
+        "candidate_id": candidate.candidate_id,
+        "font_name": resolved_family,
+        "primary_colour": _ass_colour(candidate.text_fill),
+        "secondary_colour": _ass_colour(candidate.text_fill),
+        "outline_colour": _ass_colour(candidate.stroke_fill),
+        "back_colour": _ass_colour(candidate.shadow_fill, alpha=0x80),
+        "border_style": 1,
+        "speaker_badge_label": "SPK",
+        "speaker_accent_colour": _ass_colour(candidate.badge_fill),
+        "speaker_badge_back_colour": _ass_colour(candidate.badge_outline, alpha=0x90),
+        "selection_source": "ed10g_typography_decoration_candidate",
+        "typography_decoration_candidate_id": candidate.candidate_id,
+        "ed10g_small_adjustment_selected": True,
+        "display_name": candidate.display_name,
+        "decoration_note": candidate.decoration_note,
+        "requested_font_family": candidate.fallback_family,
+        "resolved_font_family": resolved_family,
+        "resolved_font_file": resolved_font_file,
+        "font_file_status": font_status,
+        "font_paths": [str(path).replace("\\", "/") for path in candidate.font_paths],
+        "stroke_ratio": candidate.stroke_ratio,
+        "shadow_offset_ratio": candidate.shadow_offset_ratio,
+        "text_fill": subtitle_style_spike._rgb_hex(candidate.text_fill),
+        "stroke_fill": subtitle_style_spike._rgb_hex(candidate.stroke_fill),
+        "shadow_fill": subtitle_style_spike._rgb_hex(candidate.shadow_fill),
+        "badge_fill": subtitle_style_spike._rgb_hex(candidate.badge_fill),
+        "badge_outline": subtitle_style_spike._rgb_hex(candidate.badge_outline),
+    }
+
+
+def _typography_decoration_candidate(
+    candidate_id: str,
+) -> subtitle_style_spike.TypographyDecorationCandidate:
+    for candidate in subtitle_style_spike.TYPOGRAPHY_DECORATION_CANDIDATES:
+        if candidate.candidate_id == candidate_id:
+            return candidate
+    known = ", ".join(typography_decoration_candidate_ids())
+    raise SubtitleOverlayVisualProofError(
+        f"unknown typography decoration candidate: {candidate_id}; known={known}"
+    )
+
+
+def _resolve_candidate_font(
+    candidate: subtitle_style_spike.TypographyDecorationCandidate,
+) -> tuple[str, str | None, str]:
+    for index, path in enumerate(candidate.font_paths):
+        if path.exists():
+            family = candidate.fallback_family if index == 0 else _font_family_for_path(path)
+            status = (
+                "candidate_primary_font_file_found"
+                if index == 0
+                else "candidate_primary_missing_used_candidate_fallback_font_file"
+            )
+            return family, str(path), status
+
+    family, font_file, status = subtitle_style_spike._select_font()
+    if font_file:
+        return (
+            _font_family_for_path(Path(font_file)),
+            font_file,
+            f"candidate_font_paths_missing_used_global_fallback: {status}",
+        )
+    return (
+        candidate.fallback_family,
+        None,
+        "candidate_font_paths_missing_renderer_font_provider_fallback",
+    )
+
+
+def _font_family_for_path(path: Path) -> str:
+    name = path.name.lower()
+    if "noto" in name and "jp" in name:
+        return "Noto Sans JP"
+    if "yugoth" in name:
+        return "Yu Gothic"
+    if "meiryo" in name:
+        return "Meiryo"
+    if "msgothic" in name or "ms gothic" in name:
+        return "MS Gothic"
+    return path.stem
+
+
+def _ass_colour(value: tuple[int, int, int], *, alpha: int = 0) -> str:
+    r, g, b = (max(0, min(255, int(component))) for component in value)
+    alpha = max(0, min(255, int(alpha)))
+    return f"&H{alpha:02X}{b:02X}{g:02X}{r:02X}"
+
+
+def _layout_style(layout: dict[str, Any]) -> dict[str, Any]:
+    style = layout.get("diagnostic_ass_style")
+    if isinstance(style, dict):
+        return style
+    return _diagnostic_ass_style_for_candidate(None)
 
 
 def build_subtitle_overlay_visual_proof(
@@ -87,6 +217,7 @@ def build_subtitle_overlay_visual_proof(
     ffmpeg_path: str | Path | None = None,
     ffprobe_path: str | Path | None = None,
     container: str = "mp4",
+    typography_decoration_candidate_id: str | None = None,
     dry_run: bool = False,
     base_dir: Path | None = None,
     runner: ffmpeg_tiny.Runner = subprocess.run,
@@ -121,6 +252,9 @@ def build_subtitle_overlay_visual_proof(
     if source_media["status"] != "available_from_material_ledger":
         raise SubtitleOverlayVisualProofError("source media is missing from material_ledger paths")
 
+    diagnostic_ass_style = _diagnostic_ass_style_for_candidate(
+        typography_decoration_candidate_id
+    )
     cuts = _cut_index(edit_pack)
     subtitles = _subtitle_index(edit_pack)
     output_paths = _output_paths(review_dir=review_dir)
@@ -139,6 +273,7 @@ def build_subtitle_overlay_visual_proof(
                 ffmpeg_path=ffmpeg_path,
                 ffprobe_path=ffprobe_path,
                 container=container,
+                diagnostic_ass_style=diagnostic_ass_style,
                 dry_run=dry_run,
                 base=base,
                 runner=runner,
@@ -160,6 +295,7 @@ def build_subtitle_overlay_visual_proof(
         report_html_path=report_html_path,
         base=base,
         dry_run=dry_run,
+        diagnostic_ass_style=diagnostic_ass_style,
     )
 
     updated_representative = _updated_representative_report(
@@ -204,6 +340,7 @@ def _build_cut_proof(
     ffmpeg_path: str | Path | None,
     ffprobe_path: str | Path | None,
     container: str,
+    diagnostic_ass_style: dict[str, Any],
     dry_run: bool,
     base: Path,
     runner: ffmpeg_tiny.Runner,
@@ -230,6 +367,7 @@ def _build_cut_proof(
         frame_height=DEFAULT_FRAME_HEIGHT,
         mode=DEFAULT_PRESENTATION_MODE,
         dimension_source="default_only_no_probe_performed",
+        diagnostic_ass_style=diagnostic_ass_style,
     )
     if dry_run:
         return _cut_report(
@@ -286,6 +424,7 @@ def _build_cut_proof(
     layout = _probed_subtitle_layout_contract(
         source_video_path=source_media["source_video"]["resolved_path"],
         ffprobe_path=ffprobe_path,
+        diagnostic_ass_style=diagnostic_ass_style,
         runner=runner,
     )
     presentation_items = _presentation_items(renderable_items, layout=layout)
@@ -438,7 +577,7 @@ def _cut_report(
         "replacement_behavior": _replacement_behavior_readback(presentation_items),
         "renderer_path_audit": _renderer_path_audit_readback(),
         "sample_frame_selection": _sample_frame_selection_readback(sample_frame_extracts),
-        "style_direction": _diagnostic_style_direction(),
+        "style_direction": _diagnostic_style_direction(_layout_style(layout)),
         "style_parameters": _style_parameter_readback(
             items,
             layout=layout,
@@ -572,6 +711,7 @@ def _report_payload(
     report_html_path: Path,
     base: Path,
     dry_run: bool,
+    diagnostic_ass_style: dict[str, Any],
 ) -> dict[str, Any]:
     success_count = sum(
         1 for item in cut_reports if item.get("subtitle_overlay_present") is True
@@ -589,7 +729,7 @@ def _report_payload(
             "source_video": _source_media_public(source_media["source_video"]),
             "source_audio": _source_media_public(source_media["source_audio"]),
         },
-        "style_direction": _diagnostic_style_direction(),
+        "style_direction": _diagnostic_style_direction(diagnostic_ass_style),
         "style_parameters": _report_style_parameter_summary(cut_reports),
         "font_bbox_wrap_readback": _report_font_bbox_wrap_summary(cut_reports),
         "subtitle_presentation_contract": _report_contract_summary(cut_reports),
@@ -627,11 +767,39 @@ def _report_payload(
     }
 
 
-def _diagnostic_style_direction() -> dict[str, Any]:
+def _diagnostic_style_direction(
+    diagnostic_ass_style: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    style = diagnostic_ass_style or _diagnostic_ass_style_for_candidate(None)
     return {
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
         "presentation_contract_id": SUBTITLE_PRESENTATION_CONTRACT_ID,
         "contract_status": "diagnostic_direction_readback",
+        "typography_decoration_candidate_id": style.get(
+            "typography_decoration_candidate_id"
+        ),
+        "style_candidate_id": style.get("candidate_id"),
+        "style_selection_source": style.get("selection_source"),
+        "ed10g_small_adjustment_selected": style.get(
+            "ed10g_small_adjustment_selected"
+        ),
+        "font_family_route": {
+            "requested": style.get("requested_font_family"),
+            "resolved": style.get("resolved_font_family"),
+            "resolved_font_file": style.get("resolved_font_file"),
+            "font_file_status": style.get("font_file_status"),
+        },
+        "decoration_route": {
+            "display_name": style.get("display_name"),
+            "note": style.get("decoration_note"),
+            "stroke_ratio": style.get("stroke_ratio"),
+            "shadow_offset_ratio": style.get("shadow_offset_ratio"),
+            "text_fill": style.get("text_fill"),
+            "stroke_fill": style.get("stroke_fill"),
+            "shadow_fill": style.get("shadow_fill"),
+            "badge_fill": style.get("badge_fill"),
+            "badge_outline": style.get("badge_outline"),
+        },
         "target_viewing_context": "smartphone_readable_japanese_clip_subtitle",
         "visual_weight": "large_heavily_outlined_clip_dialogue_not_restrained_movie_subtitles",
         "preferred_non_pov_pattern": "face_icon_plus_left_aligned_subtitle",
@@ -667,6 +835,7 @@ def _probed_subtitle_layout_contract(
     *,
     source_video_path: Path,
     ffprobe_path: str | Path | None,
+    diagnostic_ass_style: dict[str, Any] | None = None,
     runner: ffmpeg_tiny.Runner,
 ) -> dict[str, Any]:
     probe = ffmpeg_tiny.probe_media(
@@ -681,6 +850,7 @@ def _probed_subtitle_layout_contract(
         frame_height=height,
         mode=DEFAULT_PRESENTATION_MODE,
         dimension_source="ffprobe_source_video",
+        diagnostic_ass_style=diagnostic_ass_style,
     )
 
 
@@ -690,17 +860,21 @@ def _subtitle_layout_contract(
     frame_height: int,
     mode: str,
     dimension_source: str,
+    diagnostic_ass_style: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if mode not in SUPPORTED_PRESENTATION_MODES:
         raise SubtitleOverlayVisualProofError(f"unsupported presentation mode: {mode}")
     width = max(1, int(frame_width))
     height = max(1, int(frame_height))
+    style = diagnostic_ass_style or _diagnostic_ass_style_for_candidate(None)
+    outline_ratio = float(style.get("stroke_ratio") or LAYOUT_RATIOS["outline_to_font_size"])
+    shadow_ratio = float(style.get("shadow_offset_ratio") or LAYOUT_RATIOS["shadow_to_font_size"])
     if mode == "bottom_center_emphasis":
         font_size = _layout_round(height * LAYOUT_RATIOS["bottom_center_font_size_to_frame_height"])
     else:
         font_size = _layout_round(height * LAYOUT_RATIOS["font_size_to_frame_height"])
-    outline = max(2, _layout_round(font_size * LAYOUT_RATIOS["outline_to_font_size"]))
-    shadow = max(1, _layout_round(font_size * LAYOUT_RATIOS["shadow_to_font_size"]))
+    outline = max(2, _layout_round(font_size * outline_ratio))
+    shadow = max(1, _layout_round(font_size * shadow_ratio))
     margin_l = _layout_round(width * LAYOUT_RATIOS["horizontal_margin_to_frame_width"])
     margin_r = margin_l
     bottom_margin_ratio = (
@@ -732,8 +906,8 @@ def _subtitle_layout_contract(
             if mode == "badge_left_dialogue"
             else f"round(frame_height * {LAYOUT_RATIOS['bottom_center_font_size_to_frame_height']})"
         ),
-        "outline": f"max(2, round(font_size * {LAYOUT_RATIOS['outline_to_font_size']}))",
-        "shadow": f"max(1, round(font_size * {LAYOUT_RATIOS['shadow_to_font_size']}))",
+        "outline": f"max(2, round(font_size * {outline_ratio}))",
+        "shadow": f"max(1, round(font_size * {shadow_ratio}))",
         "horizontal_margin": (
             f"round(frame_width * {LAYOUT_RATIOS['horizontal_margin_to_frame_width']})"
         ),
@@ -786,7 +960,12 @@ def _subtitle_layout_contract(
             "for multi-line text, move the text block upward but keep the badge on the first-line center."
         ),
         "formulas": formulas,
-        "ratios": LAYOUT_RATIOS,
+        "ratios": {
+            **LAYOUT_RATIOS,
+            "outline_to_font_size": outline_ratio,
+            "shadow_to_font_size": shadow_ratio,
+        },
+        "diagnostic_ass_style": style,
         "values": {
             "font_size": font_size,
             "outline": outline,
@@ -846,13 +1025,13 @@ def _style_parameter_readback(
     presentation_items: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     style_slots = _unique_strings(item.get("style_slot") for item in items)
-    style = DIAGNOSTIC_ASS_STYLE
     layout = layout or _subtitle_layout_contract(
         frame_width=DEFAULT_FRAME_WIDTH,
         frame_height=DEFAULT_FRAME_HEIGHT,
         mode=DEFAULT_PRESENTATION_MODE,
         dimension_source="default_style_readback",
     )
+    style = _layout_style(layout)
     values = layout["values"]
     font_bbox_wrap = _font_bbox_wrap_summary(presentation_items or [])
     return {
@@ -860,6 +1039,29 @@ def _style_parameter_readback(
         "style_slot": _single_or_mixed(style_slots) or "subtitle.default",
         "style_slots": style_slots or ["subtitle.default"],
         "style_candidate_id": style["candidate_id"],
+        "typography_decoration_candidate_id": style.get(
+            "typography_decoration_candidate_id"
+        ),
+        "style_selection_source": style.get("selection_source"),
+        "ed10g_small_adjustment_selected": style.get(
+            "ed10g_small_adjustment_selected"
+        ),
+        "typography_decoration_candidate": {
+            "candidate_id": style.get("typography_decoration_candidate_id"),
+            "display_name": style.get("display_name"),
+            "decoration_note": style.get("decoration_note"),
+            "requested_font_family": style.get("requested_font_family"),
+            "resolved_font_family": style.get("resolved_font_family"),
+            "resolved_font_file": style.get("resolved_font_file"),
+            "font_file_status": style.get("font_file_status"),
+            "stroke_ratio": style.get("stroke_ratio"),
+            "shadow_offset_ratio": style.get("shadow_offset_ratio"),
+            "text_fill": style.get("text_fill"),
+            "stroke_fill": style.get("stroke_fill"),
+            "shadow_fill": style.get("shadow_fill"),
+            "badge_fill": style.get("badge_fill"),
+            "badge_outline": style.get("badge_outline"),
+        },
         "presentation_mode": layout["mode"],
         "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
         "layout_values": values,
@@ -871,6 +1073,12 @@ def _style_parameter_readback(
             "value": style["font_name"],
             "source": "explicit_diagnostic_ass_style_candidate",
             "readback": "ASS style file font name; actual glyph fallback remains renderer/font-provider dependent",
+        },
+        "font_family_route": {
+            "requested": style.get("requested_font_family"),
+            "resolved": style.get("resolved_font_family"),
+            "resolved_font_file": style.get("resolved_font_file"),
+            "font_file_status": style.get("font_file_status"),
         },
         "font_size": {
             "value": values["font_size"],
@@ -967,10 +1175,17 @@ def _line_width_readback(items: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def _burned_in_subtitle_style_readback(layout: dict[str, Any]) -> dict[str, Any]:
-    style = DIAGNOSTIC_ASS_STYLE
+    style = _layout_style(layout)
     values = layout["values"]
     return {
         "style_candidate_id": style["candidate_id"],
+        "typography_decoration_candidate_id": style.get(
+            "typography_decoration_candidate_id"
+        ),
+        "style_selection_source": style.get("selection_source"),
+        "ed10g_small_adjustment_selected": style.get(
+            "ed10g_small_adjustment_selected"
+        ),
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
         "presentation_mode": layout["mode"],
         "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
@@ -978,9 +1193,26 @@ def _burned_in_subtitle_style_readback(layout: dict[str, Any]) -> dict[str, Any]
         "comparison_baseline": "previous FFmpeg/libass SRT/default-centered proof looked too small and movie-subtitle-like for YouTube review",
         "intended_design_target": "reference-driven non-POV speaker badge plus large left-aligned Japanese clip dialogue subtitle",
         "font_name": style["font_name"],
+        "font_family_route": {
+            "requested": style.get("requested_font_family"),
+            "resolved": style.get("resolved_font_family"),
+            "resolved_font_file": style.get("resolved_font_file"),
+            "font_file_status": style.get("font_file_status"),
+        },
         "font_size": values["font_size"],
         "outline": values["outline"],
         "shadow": values["shadow"],
+        "decoration_route": {
+            "display_name": style.get("display_name"),
+            "note": style.get("decoration_note"),
+            "stroke_ratio": style.get("stroke_ratio"),
+            "shadow_offset_ratio": style.get("shadow_offset_ratio"),
+            "text_fill": style.get("text_fill"),
+            "stroke_fill": style.get("stroke_fill"),
+            "shadow_fill": style.get("shadow_fill"),
+            "badge_fill": style.get("badge_fill"),
+            "badge_outline": style.get("badge_outline"),
+        },
         "margin_v": values["bottom_margin"],
         "horizontal_margin": values["margin_l"],
         "badge_size": {
@@ -1112,6 +1344,12 @@ def _report_font_bbox_wrap_summary(cut_reports: list[dict[str, Any]]) -> dict[st
         "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
         "proof_renderer": "ffmpeg_subtitles_filter_ass",
         "renderer_gap": _font_bbox_renderer_gap(),
+        "typography_decoration_candidate_id": _single_or_mixed(
+            [str(item.get("typography_decoration_candidate_id") or "") for item in cut_readbacks]
+        ),
+        "style_selection_source": _single_or_mixed(
+            [str(item.get("style_selection_source") or "") for item in cut_readbacks]
+        ),
         "font_family": _single_or_mixed(
             [str(item.get("font_family") or "") for item in cut_readbacks]
         ),
@@ -1213,6 +1451,7 @@ def _report_contract_summary(cut_reports: list[dict[str, Any]]) -> dict[str, Any
 
 def _speaker_identity_presentation_readback(layout: dict[str, Any]) -> dict[str, Any]:
     values = layout["values"]
+    style = _layout_style(layout)
     return {
         "preferred_pattern": "face_icon_plus_left_aligned_subtitle",
         "implemented_pattern": "speaker_badge_placeholder_plus_left_aligned_subtitle",
@@ -1221,7 +1460,13 @@ def _speaker_identity_presentation_readback(layout: dict[str, Any]) -> dict[str,
         "real_face_icon_assets_available": False,
         "fallback_used": True,
         "fallback_kind": "speaker_badge_placeholder",
-        "fallback_label": DIAGNOSTIC_ASS_STYLE["speaker_badge_label"],
+        "fallback_label": style["speaker_badge_label"],
+        "placeholder_badge_decoration": {
+            "candidate_id": style.get("typography_decoration_candidate_id"),
+            "badge_fill": style.get("badge_fill"),
+            "badge_outline": style.get("badge_outline"),
+            "selection_source": style.get("selection_source"),
+        },
         "fallback_human_review_note": (
             "SPK/A/B badges are temporary speaker badge placeholders, not real "
             "face icons and not production speaker identity design. Real face "
@@ -1866,6 +2111,7 @@ def _font_bbox_wrap_readback(
     proxy_longest_line_eaw: int,
 ) -> dict[str, Any]:
     values = layout["values"]
+    style = _layout_style(layout)
     max_width = _font_bbox_max_text_width(layout)
     font_size = int(values["font_size"])
     stroke_width = int(values["outline"])
@@ -1898,7 +2144,11 @@ def _font_bbox_wrap_readback(
         "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
         "proof_renderer": "ffmpeg_subtitles_filter_ass",
         "renderer_gap": _font_bbox_renderer_gap(),
-        "proof_font_name": DIAGNOSTIC_ASS_STYLE["font_name"],
+        "proof_font_name": style["font_name"],
+        "typography_decoration_candidate_id": style.get(
+            "typography_decoration_candidate_id"
+        ),
+        "style_selection_source": style.get("selection_source"),
         "presentation_mode": layout["mode"],
         "mode_purpose": _presentation_mode_purpose(layout["mode"]),
         "style_token_readback": _style_token_readback(layout),
@@ -1943,7 +2193,7 @@ def _font_bbox_wrap_readback(
             ),
         }
 
-    font_family, font_file, font_file_status = subtitle_style_spike._select_font()
+    font_family, font_file, font_file_status = _select_font_for_layout(layout)
     try:
         font = subtitle_style_spike._load_font(font_file, font_size)
     except Exception as exc:  # pragma: no cover - depends on local font files
@@ -2060,6 +2310,25 @@ def _font_bbox_renderer_gap() -> dict[str, Any]:
     }
 
 
+def _select_font_for_layout(layout: dict[str, Any]) -> tuple[str, str | None, str]:
+    style = _layout_style(layout)
+    resolved_font_file = style.get("resolved_font_file")
+    if resolved_font_file and Path(str(resolved_font_file)).exists():
+        return (
+            str(style.get("resolved_font_family") or style.get("font_name") or ""),
+            str(resolved_font_file),
+            str(style.get("font_file_status") or "font_file_found"),
+        )
+    if style.get("ed10g_small_adjustment_selected") is True:
+        family, font_file, status = subtitle_style_spike._select_font()
+        return (
+            family,
+            font_file,
+            f"selected_candidate_font_unavailable_used_global_fallback: {status}",
+        )
+    return subtitle_style_spike._select_font()
+
+
 def _presentation_mode_purpose(mode: str) -> str:
     if mode == "bottom_center_emphasis":
         return "short emphasis or retort without speaker identity"
@@ -2068,11 +2337,20 @@ def _presentation_mode_purpose(mode: str) -> str:
 
 def _style_token_readback(layout: dict[str, Any]) -> dict[str, Any]:
     values = layout["values"]
+    style = _layout_style(layout)
     return {
         "mode": layout["mode"],
         "mode_purpose": _presentation_mode_purpose(layout["mode"]),
+        "typography_decoration_candidate_id": style.get(
+            "typography_decoration_candidate_id"
+        ),
+        "style_selection_source": style.get("selection_source"),
         "font": {
-            "proof_font_name": DIAGNOSTIC_ASS_STYLE["font_name"],
+            "proof_font_name": style["font_name"],
+            "requested_font_family": style.get("requested_font_family"),
+            "resolved_font_family": style.get("resolved_font_family"),
+            "resolved_font_file": style.get("resolved_font_file"),
+            "font_file_status": style.get("font_file_status"),
             "font_size": values["font_size"],
             "formula": layout["formulas"]["font_size"],
         },
@@ -2209,6 +2487,12 @@ def _font_bbox_wrap_summary(presentation_items: list[dict[str, Any]]) -> dict[st
         "measurement_renderer": "Pillow ImageDraw.multiline_textbbox",
         "proof_renderer": "ffmpeg_subtitles_filter_ass",
         "renderer_gap": _font_bbox_renderer_gap(),
+        "typography_decoration_candidate_id": _single_or_mixed(
+            [str(item.get("typography_decoration_candidate_id") or "") for item in readbacks]
+        ),
+        "style_selection_source": _single_or_mixed(
+            [str(item.get("style_selection_source") or "") for item in readbacks]
+        ),
         "font_family": _single_or_mixed(
             [str(item.get("font_family") or "") for item in readbacks]
         ),
@@ -2291,7 +2575,7 @@ def _bbox_dict(bbox: tuple[int, int, int, int] | None) -> dict[str, int] | None:
 
 
 def _write_ass(path: Path, items: list[dict[str, Any]], *, layout: dict[str, Any]) -> None:
-    style = DIAGNOSTIC_ASS_STYLE
+    style = _layout_style(layout)
     values = layout["values"]
     dialogue_alignment = "2" if layout["mode"] == "bottom_center_emphasis" else "7"
     lines = [
@@ -2754,6 +3038,7 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
     if not direction and not parameters:
         return "    <p>No diagnostic style direction is recorded for this report.</p>"
     font_name = parameters.get("font_name") or {}
+    font_route = parameters.get("font_family_route") or {}
     font_size = parameters.get("font_size") or {}
     outline = parameters.get("outline") or {}
     margin_v = parameters.get("margin_v") or {}
@@ -2772,6 +3057,7 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"<dt>contract</dt><dd>{escape(str(direction.get('presentation_contract_id', '')))}</dd>"
         f"<dt>renderer</dt><dd>{escape(str(parameters.get('renderer', '')))}</dd>"
         f"<dt>candidate_id</dt><dd>{escape(str(parameters.get('style_candidate_id', '')))}</dd>"
+        f"<dt>typography candidate</dt><dd>{escape(str(parameters.get('typography_decoration_candidate_id', '')))}</dd>"
         f"<dt>mode</dt><dd>{escape(str(parameters.get('presentation_mode', '')))}</dd>"
         f"<dt>supported modes</dt><dd>{escape(', '.join(parameters.get('supported_presentation_modes') or []))}</dd>"
         f"<dt>mode semantics</dt><dd>{escape(json.dumps(mode_semantics, ensure_ascii=False))}</dd>"
@@ -2782,6 +3068,9 @@ def _style_summary_html(direction: dict[str, Any], parameters: dict[str, Any]) -
         f"<dt>long-line policy</dt><dd>{escape(str(direction.get('long_line_policy', '')))}</dd>"
         f"<dt>font name</dt><dd>{escape(str(font_name.get('value', '')))} "
         f"({escape(str(font_name.get('source', '')))}; {escape(str(font_name.get('readback', '')))})</dd>"
+        f"<dt>font route</dt><dd>requested={escape(str(font_route.get('requested', '')))}; "
+        f"resolved={escape(str(font_route.get('resolved', '')))}; "
+        f"font_file_status={escape(str(font_route.get('font_file_status', '')))}</dd>"
         f"<dt>font size</dt><dd>{escape(str(font_size.get('value')))} "
         f"({escape(str(font_size.get('source', '')))}; {escape(str(font_size.get('readback', '')))})</dd>"
         f"<dt>outline</dt><dd>{escape(str(outline.get('value')))} "
@@ -2824,6 +3113,7 @@ def _style_cut_html(
     if not direction and not parameters and not line_width:
         return ""
     font_size = parameters.get("font_size") or {}
+    font_route = parameters.get("font_family_route") or {}
     outline = parameters.get("outline") or {}
     margin_v = parameters.get("margin_v") or {}
     alignment = parameters.get("alignment") or {}
@@ -2836,9 +3126,11 @@ def _style_cut_html(
             f"preset: {escape(str(direction.get('preset_name', '')))}",
             f"contract: {escape(str(direction.get('presentation_contract_id', '')))}",
             f"candidate_id: {escape(str(parameters.get('style_candidate_id', '')))}",
+            f"typography_candidate: {escape(str(parameters.get('typography_decoration_candidate_id', '')))}",
             f"mode: {escape(str(parameters.get('presentation_mode', '')))}",
             f"renderer: {escape(str(parameters.get('renderer', '')))}",
             f"style_slot: {escape(str(parameters.get('style_slot', '')))}",
+            f"font_route: requested={escape(str(font_route.get('requested', '')))}, resolved={escape(str(font_route.get('resolved', '')))}, status={escape(str(font_route.get('font_file_status', '')))}",
             f"font_size: {escape(str(font_size.get('value')))} ({escape(str(font_size.get('source', '')))})",
             f"outline: {escape(str(outline.get('value')))} ({escape(str(outline.get('source', '')))})",
             f"margin_v: {escape(str(margin_v.get('value')))} ({escape(str(margin_v.get('source', '')))})",
