@@ -1,10 +1,114 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-16 JST
+Last updated: 2026-06-17 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
+## Immediate Resume Capsule - 2026-06-17 ED-10j Font Audit
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git checkout main
+git pull --ff-only origin main
+git status --short --branch
+git rev-list --left-right --count HEAD...origin/main
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected state after pulling this handoff:
+
+- Branch: `main`
+- Upstream: `origin/main`
+- `HEAD...origin/main`: `0 0`
+- `git ls-files episodes`: empty
+- Latest sync point: `6d255ad feat: add ED-10j kirinuki font audit`
+
+Current active artifact is `clip-ed10j-kirinuki-font-audit-001`.
+The ED-10i Meiryo overlay proof `clip-ed10i-meiryo-overlay-proof-001` has been
+reviewed and is not accepted as the normal subtitle baseline. Meiryo is now a
+reviewed reference candidate only. ED-10j compares a no-download
+normal-dialogue shortlist for `cut_002` / `cut_003`:
+
+- `ed10j_reference_meiryo_reviewed_not_baseline`
+- `ed10j_biz_udgothic_bold_telop_candidate`
+- `ed10j_yu_gothic_bold_system_candidate`
+- `ed10j_noto_sans_jp_local_telop_candidate`
+
+Recommended first review candidate is
+`ed10j_biz_udgothic_bold_telop_candidate`, but the selected next proof base is
+still `pending_ed10j_human_review`.
+
+Open order:
+
+1. `.\open-dashboard.ps1`
+2. choose the ED-10j artifact from the dashboard
+3. if the same-machine ignored artifact is present, open it with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1
+```
+
+If a fresh checkout does not have `episodes/`, treat that as local evidence
+absence, not a Git failure. Regenerate the ED-10j local retained artifact only
+when the upstream episode artifacts are present:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison `
+  --comparison-profile ed10j_kirinuki_font_audit `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
+Review card for the next human response:
+
+- target: `clip-ed10j-kirinuki-font-audit-001`
+- look at glyph body thickness, outline pressure, normal subtitle stability,
+  kirinuki / telop-like feel, and whether the candidate feels deliberate rather
+  than default-OS
+- freeform review is enough; do not ask for fixed accept/reject labels
+- after review, convert the response into one next narrow overlay proof
+  candidate, likely starting from BIZ UDGothic unless the review points
+  elsewhere
+
+Tracked context surfaces:
+
+| Surface | Purpose |
+|---|---|
+| `docs/RUNTIME_STATE.md` | current resume capsule and ED-10j next route |
+| `docs/index.md` | human-facing wiki entrance and open-surface order |
+| `docs/dashboard/index.html` | generated project dashboard |
+| `docs/dashboard/project-status.json` | machine-readable dashboard state |
+| `docs/features/index.md` | generated feature progress table |
+| `artifacts/ARTIFACTS.md` | artifact registry and ED-10j open command |
+| `docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md` | route change from Meiryo proof to ED-10j audit |
+| `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | ED-10j research summary and candidate buckets |
+| `docs/font_candidates/subtitle-font-candidates.json` | machine-readable candidate registry |
+
+Validation at handoff creation:
+
+- `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py`
+  -> `22 passed, 12 skipped`
+- `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py`
+  -> `18 passed`
+- JSON parse checks passed for dashboard, font registry, and the same-machine
+  ED-10j local report
+- `git diff --check` clean
+- `git ls-files episodes` empty
+
+Boundary flags remain closed: `production_subtitle_design_acceptance=false`,
+`production_render_acceptance=false`, `creative_acceptance=false`,
+`production_candidate=false`, `production_usage_allowed=false`,
+`rights_status=pending`, `publishing_acceptance=false`, and
+`public_use_permission=false`.
 
 ## Immediate Resume Capsule - 2026-06-16 Open Surface Sync
 
