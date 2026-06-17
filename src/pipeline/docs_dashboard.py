@@ -130,26 +130,7 @@ def build_project_status(
             "findings_truncated": len(all_findings) > FINDING_DISPLAY_LIMIT,
             "findings": findings,
         },
-        "top_next_improvements": [
-            {
-                "rank": 1,
-                "path": "docs/HANDOFF.md",
-                "why": "Long historical handoff still competes with the active wiki/dashboard entry.",
-                "next_move": "Convert it to a short pointer and archive the remaining history.",
-            },
-            {
-                "rank": 2,
-                "path": "docs/RUNTIME_STATE.md",
-                "why": "Active resume surface is useful but still accumulates long capsule detail.",
-                "next_move": "Keep the current capsule short and push older slices into RUNTIME_HISTORY.",
-            },
-            {
-                "rank": 3,
-                "path": "docs/FEATURE_REGISTRY.md",
-                "why": "Feature rows are authoritative but hard to scan as a wiki page.",
-                "next_move": "Generate per-feature pages from docs/_templates/feature.md.",
-            },
-        ],
+        "top_next_improvements": _top_next_improvements(),
     }
 
 
@@ -517,6 +498,29 @@ def _next_review_items() -> list[dict[str, str]]:
             "artifact": "docs/dashboard/project-status.json",
             "question": "Which high-friction doc should be shortened or front-mattered next?",
             "next_route": "Use doc-health findings instead of hand-scanning Markdown history.",
+        },
+    ]
+
+
+def _top_next_improvements() -> list[dict[str, Any]]:
+    return [
+        {
+            "rank": 1,
+            "path": "docs/HANDOFF.md",
+            "why": "Long historical handoff still competes with the active wiki/dashboard entry.",
+            "next_move": "Convert it to a short pointer and archive the remaining history.",
+        },
+        {
+            "rank": 2,
+            "path": "artifacts/ARTIFACTS.md",
+            "why": "The registry is the active artifact map but still lacks v1.5 front sections.",
+            "next_move": "Add What This Is / Current State / Next / Constraints before older artifact detail.",
+        },
+        {
+            "rank": 3,
+            "path": "docs/FEATURE_REGISTRY.md",
+            "why": "Feature rows are authoritative but hard to scan as a wiki page.",
+            "next_move": "Generate per-feature pages from docs/_templates/feature.md.",
         },
     ]
 

@@ -1094,7 +1094,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 933,
+      "line_count": 333,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1115,7 +1115,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 260,
+      "boundary_term_count": 70,
       "status": "current_capsule"
     },
     {
@@ -1483,7 +1483,7 @@
     {
       "path": "docs/RUNTIME_HISTORY.md",
       "title": "Runtime History Archive",
-      "line_count": 626,
+      "line_count": 1239,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1491,7 +1491,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 227,
+      "boundary_term_count": 417,
       "status": "in_progress"
     },
     {
@@ -1593,8 +1593,8 @@
     }
   ],
   "doc_health": {
-    "finding_count": 23,
-    "finding_total": 23,
+    "finding_count": 22,
+    "finding_total": 22,
     "finding_limit": 50,
     "findings_truncated": false,
     "findings": [
@@ -1609,12 +1609,6 @@
         "path": "README.md",
         "detail": "Boundary terms appear 32 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
-      },
-      {
-        "type": "stale",
-        "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (933 lines) is likely carrying history.",
-        "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "unclear",
@@ -1715,7 +1709,7 @@
       {
         "type": "over_guarded",
         "path": "docs/RUNTIME_HISTORY.md",
-        "detail": "Boundary terms appear 227 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 417 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -1747,9 +1741,9 @@
     },
     {
       "rank": 2,
-      "path": "docs/RUNTIME_STATE.md",
-      "why": "Active resume surface is useful but still accumulates long capsule detail.",
-      "next_move": "Keep the current capsule short and push older slices into RUNTIME_HISTORY."
+      "path": "artifacts/ARTIFACTS.md",
+      "why": "The registry is the active artifact map but still lacks v1.5 front sections.",
+      "next_move": "Add What This Is / Current State / Next / Constraints before older artifact detail."
     },
     {
       "rank": 3,
