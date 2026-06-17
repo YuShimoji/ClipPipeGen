@@ -836,7 +836,11 @@ def test_kirinuki_font_audit_profile_consumes_meiryo_freeform_review(
     )
     assert report["comparison_response_readback"][
         "selected_candidate_for_next_proof_base"
-    ] == "pending_ed10j_human_review"
+    ] == "ed10j_biz_udgothic_bold_telop_candidate"
+    assert report["comparison_response_readback"]["blue_badge_candidate_id"] == (
+        "ed10j_noto_sans_jp_local_telop_candidate"
+    )
+    assert report["comparison_response_readback"]["blue_badge_is_meiryo_reference"] is False
     assert report["candidate_count"] == 4
     assert {candidate["candidate_id"] for candidate in report["candidates"]} == {
         "ed10j_reference_meiryo_reviewed_not_baseline",
@@ -845,20 +849,34 @@ def test_kirinuki_font_audit_profile_consumes_meiryo_freeform_review(
         "ed10j_noto_sans_jp_local_telop_candidate",
     }
     assert report["next_diagnostic_overlay_proof_route"]["route_kind"] == (
-        "kirinuki_font_audit_then_narrow_overlay_proof"
+        "ed10j_review_consumed_ed10k_biz_overlay_proof"
     )
+    assert report["next_diagnostic_overlay_proof_route"][
+        "selected_candidate_for_next_proof_base"
+    ] == "ed10j_biz_udgothic_bold_telop_candidate"
+    assert report["next_diagnostic_overlay_proof_route"][
+        "selected_overlay_artifact_id"
+    ] == "clip-ed10k-biz-overlay-proof-001"
     assert report["next_diagnostic_overlay_proof_route"][
         "recommended_default_candidate_id"
     ] == "ed10j_biz_udgothic_bold_telop_candidate"
     decision_packet = report["kirinuki_font_audit_decision_packet"]
-    assert decision_packet["decision_state"] == "generated_requires_human_review"
+    assert decision_packet["decision_state"] == "review_consumed_next_overlay_proof_selected"
     assert decision_packet["current_meiryo_proof_accepted_as_normal_baseline"] is False
+    assert decision_packet["freeform_review_consumed"][
+        "meiryo_removed_from_normal_baseline_candidates"
+    ] is True
+    assert decision_packet["badge_color_readback"]["blue_badge_candidate_id"] == (
+        "ed10j_noto_sans_jp_local_telop_candidate"
+    )
+    assert decision_packet["badge_color_readback"]["blue_badge_is_meiryo_reference"] is False
     assert decision_packet["font_size"]["reopen_as_primary_axis"] is False
     assert decision_packet["emoji_treatment"]["optimize_in_this_slice"] is False
     assert {
         bucket["bucket"] for bucket in decision_packet["candidate_buckets"]
     } == {
         "system_default_safe",
+        "reviewed_reference_only",
         "likely_video_telop_friendly_local",
         "local_only_reproducibility_weak",
         "later_download_license_decision",
@@ -933,10 +951,10 @@ def test_typography_decoration_comparison_cli_reports_ed10j_profile(
     assert payload["artifact_id"] == "clip-ed10j-kirinuki-font-audit-001"
     assert payload["comparison_profile"] == "ed10j_kirinuki_font_audit"
     assert payload["comparison_response"]["selected_response"] == (
-        "generate_kirinuki_font_research_candidate_audit"
+        "freeform_review_consumed_move_to_biz_overlay_proof"
     )
     assert payload["selected_candidate_for_next_proof_base"] == (
-        "pending_ed10j_human_review"
+        "ed10j_biz_udgothic_bold_telop_candidate"
     )
     assert payload["comparison_decision_packet"]["recommended_default_candidate_id"] == (
         "ed10j_biz_udgothic_bold_telop_candidate"

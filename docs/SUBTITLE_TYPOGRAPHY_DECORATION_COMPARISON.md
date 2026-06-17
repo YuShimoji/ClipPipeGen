@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10j_font_audit_route_open
-health: historical_reference
+status: ed10k_biz_overlay_proof_active
+health: current_proof_requires_review
 progress_pct: 100
 last_touched: 2026-06-17
-next_review_due: after_ed10j_kirinuki_font_audit_review
-active_artifact: clip-ed10j-kirinuki-font-audit-001
+next_review_due: after_ed10k_biz_overlay_proof_review
+active_artifact: clip-ed10k-biz-overlay-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -17,26 +17,33 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-17 JST
 
-## Current Update - ED-10j Reopens Font Baseline Audit
+## Current Update - ED-10k BIZ Overlay Proof
 
-The latest freeform review of `clip-ed10i-meiryo-overlay-proof-001` has been
-consumed as a baseline-font judgement. The Meiryo proof is not accepted as the
-normal subtitle baseline: it looks too thin, is not attractive enough as the
-default subtitle face, and should not be treated as a minor outline-only tweak.
+The latest freeform review of `clip-ed10j-kirinuki-font-audit-001` has been
+consumed. It removes Meiryo from the normal subtitle baseline path, says the
+remaining three candidates are broadly viable enough to stop prolonging the
+comparison, and selects the ED-10j recommended default
+`ed10j_biz_udgothic_bold_telop_candidate` as the next proof base.
 
-ED-10j now owns the next route:
-`clip-ed10j-kirinuki-font-audit-001`. Meiryo remains visible only as a reviewed
-reference candidate. The active comparison narrows normal-dialogue candidates
-to local/no-download fonts first: BIZ UDGothic, Yu Gothic, Noto Sans JP, and
-the reviewed Meiryo reference. M PLUS / Zen Kaku Gothic New / Dela Gothic One
-stay in a later download/license-decision bucket until explicitly approved.
+JSON/readback nuance: the blue badge/accent candidate is
+`ed10j_noto_sans_jp_local_telop_candidate`, not the Meiryo reference. The
+Meiryo reference candidate is `ed10j_reference_meiryo_reviewed_not_baseline`.
+This mapping does not reopen Meiryo because the actionable review explicitly
+removes it from the normal subtitle candidate path.
+
+ED-10k now owns the next route:
+`clip-ed10k-biz-overlay-proof-001`. The proof applies BIZ UDGothic to
+`cut_002` / `cut_003` on the existing subtitle overlay proof surface. M PLUS /
+Zen Kaku Gothic New / Dela Gothic One stay in a later download/license-decision
+bucket until explicitly approved.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10i-kirinuki-gothic-balance-001` | Consumed comparison / audit trail | Why the bottom candidate maps to `ed10i_meiryo_bold_fill_outline_balance` | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10i-meiryo-overlay-proof-001` | Reviewed reference proof | Shows why Meiryo should not be fixed as the normal subtitle baseline | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10j-kirinuki-font-audit-001` | Active font audit comparison | Which normal-dialogue gothic/sans candidate should become the next narrow overlay proof base | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10j-kirinuki-font-audit-001` | Consumed font audit comparison | Why Meiryo is reference-only and BIZ becomes the default proof base | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10k-biz-overlay-proof-001` | Active diagnostic overlay proof | Whether the BIZ UDGothic route should carry the next normal-dialogue proof base | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -54,15 +61,14 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-`clip-ed10i-meiryo-overlay-proof-001` はレビュー済みで、normal subtitle
-baseline としては不採用です。現在の active artifact は
-`clip-ed10j-kirinuki-font-audit-001` で、次に overlay proof 化する候補を
-freeform review で絞ります。
+`clip-ed10j-kirinuki-font-audit-001` はレビュー済みで、normal subtitle
+baseline から Meiryo を外し、BIZ UDGothic を次 proof base に選択済みです。
+現在の active artifact は `clip-ed10k-biz-overlay-proof-001` です。
 
 ## これからどうなるか
 
-1. ED-10j の font audit contact sheet を確認し、次の overlay proof 候補を
-   freeform review で絞る。
+1. ED-10k の BIZ UDGothic overlay proof を確認し、次の diagnostic step に
+   進めるか、BIZ route 内で 1 軸だけ調整するかを freeform review で判断する。
 2. Meiryo は reviewed reference としてのみ扱い、通常字幕 baseline に戻す
    場合は明示レビューを要求する。
 3. representative coverage を広げるなら、dense/stress proof や production
@@ -75,13 +81,13 @@ freeform review で絞ります。
 Primary local proof:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1
+.\open-current-proof.ps1
 ```
 
-Reviewed Meiryo reference:
+Consumed ED-10j audit:
 
 ```powershell
-.\open-current-proof.ps1
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1
 ```
 
 ## 実装・設計メモ
@@ -111,6 +117,10 @@ together.
 - 2026-06-17: freeform review of the Meiryo overlay proof consumed as
   reviewed-not-accepted for the normal subtitle baseline. ED-10j opens the
   kirinuki normal-dialogue font audit and demotes Meiryo to reference.
+- 2026-06-17: ED-10j font audit freeform review consumed. Blue badge/accent
+  maps to Noto, not Meiryo, but Meiryo is still removed from the normal
+  baseline path and BIZ UDGothic is selected as the recommended default for
+  `clip-ed10k-biz-overlay-proof-001`.
 
 ## Constraints / Risks
 
@@ -239,6 +249,52 @@ ED-10i same-machine readback: `style_candidate_id` and
 `subtitle_overlay_available_count=2`,
 `visual_proof_status=available_requires_human_review`,
 `production_candidate=false`, and `rights_status=pending`.
+
+## ED-10k BIZ Overlay Proof
+
+Artifact id: `clip-ed10k-biz-overlay-proof-001`
+
+The active proof applies `ed10j_biz_udgothic_bold_telop_candidate` to
+`cut_002` / `cut_003`. It reuses the existing subtitle overlay proof surface
+and does not regenerate SH-08.
+
+Primary local report:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html
+```
+
+Open command:
+
+```powershell
+.\open-current-proof.ps1
+```
+
+Generated command:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --typography-decoration-candidate-id ed10j_biz_udgothic_bold_telop_candidate `
+  --format json
+```
+
+ED-10k same-machine readback: `style_candidate_id` and
+`typography_decoration_candidate_id` are both
+`ed10j_biz_udgothic_bold_telop_candidate`, `ed10j_kirinuki_font_audit_candidate=true`,
+`font_family_route.requested=BIZ UDGothic`,
+`font_family_route.font_file_status=candidate_primary_font_file_found`,
+`font_size.value=124`, `outline.value=8`,
+`subtitle_overlay_available_count=2`, `all_target_cuts_have_overlay=true`,
+`visual_proof_status=available_requires_human_review`,
+`explicit_line_breaks_passed_to_ass=true`,
+`one_character_orphan_present=false`, `suspicious_tail_line_present=false`,
+`production_candidate=false`, and `rights_status=pending`. The generated PNG
+frames for `cut_002` and `cut_003` were inspected as nonblank local visual
+artifacts.
 
 Artifact id: `clip-typography-decoration-comparison-001`
 

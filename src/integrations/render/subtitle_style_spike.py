@@ -1531,9 +1531,11 @@ def _typography_comparison_profile(
             },
             "comparison_response_readback": {
                 "source_artifact": "clip-ed10j-kirinuki-font-audit-001",
-                "selected_response": "generate_kirinuki_font_research_candidate_audit",
-                "selected_candidate_for_next_proof_base": "pending_ed10j_human_review",
+                "selected_response": "freeform_review_consumed_move_to_biz_overlay_proof",
+                "selected_candidate_for_next_proof_base": "ed10j_biz_udgothic_bold_telop_candidate",
                 "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+                "blue_badge_candidate_id": "ed10j_noto_sans_jp_local_telop_candidate",
+                "blue_badge_is_meiryo_reference": False,
                 "font_size": "preserved_as_comparison_constant_not_primary_axis",
                 "font_family": "normal_dialogue_gothic_sans_audit",
                 "font_weight": "prefer_stronger_body_than_reviewed_meiryo",
@@ -1573,20 +1575,21 @@ def _typography_comparison_profile(
                 ],
             },
             "next_diagnostic_overlay_proof_route": {
-                "route_kind": "kirinuki_font_audit_then_narrow_overlay_proof",
+                "route_kind": "ed10j_review_consumed_ed10k_biz_overlay_proof",
                 "target_cuts": list(target_cut_ids),
-                "selected_candidate_for_next_proof_base": "pending_ed10j_human_review",
+                "selected_candidate_for_next_proof_base": "ed10j_biz_udgothic_bold_telop_candidate",
                 "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+                "selected_overlay_artifact_id": "clip-ed10k-biz-overlay-proof-001",
                 "font_size": {
                     "status": "preserve_existing_size_policy_as_comparison_constant",
                     "formula": "round(frame_height * 0.115)",
                 },
-                "font_family": "choose_from_ed10j_audited_normal_dialogue_shortlist",
+                "font_family": "selected_biz_udgothic_from_ed10j_non_meiryo_shortlist",
                 "font_weight": "heavier_body_than_reviewed_meiryo_preferred",
                 "outline": "restrained_enough_that_body_weight_leads",
                 "emoji_treatment": "neutral_ignore_for_evaluation",
                 "regenerate_sh08_required": False,
-                "comparison_artifact_required": "generated_for_ed10j_freeform_review",
+                "comparison_artifact_required": "ed10j_review_consumed_no_longer_blocking",
                 "episodes_artifact_tracking_allowed": False,
                 "production_subtitle_design_acceptance": False,
                 "production_render_acceptance": False,
@@ -1884,15 +1887,31 @@ def _kirinuki_font_audit_decision_packet(
     target_cut_ids: tuple[str, ...],
 ) -> dict[str, Any]:
     return {
-        "decision_state": "generated_requires_human_review",
+        "decision_state": "review_consumed_next_overlay_proof_selected",
         "source_review_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+        "source_audit_artifact": "clip-ed10j-kirinuki-font-audit-001",
         "current_meiryo_proof_accepted_as_normal_baseline": False,
         "meiryo_role": "reviewed_reference_candidate_not_selected_baseline",
         "preferred_direction": "kirinuki_youtube_normal_dialogue_gothic",
         "main_issue": "baseline_font_choice_may_be_wrong_not_only_outline_tuning",
         "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
-        "selected_candidate_for_next_proof_base": "pending_ed10j_human_review",
+        "selected_candidate_for_next_proof_base": "ed10j_biz_udgothic_bold_telop_candidate",
+        "selected_overlay_artifact_id": "clip-ed10k-biz-overlay-proof-001",
         "target_cuts": list(target_cut_ids),
+        "freeform_review_consumed": {
+            "meiryo_removed_from_normal_baseline_candidates": True,
+            "remaining_candidates_broadly_viable": True,
+            "comparison_should_not_be_prolonged": True,
+            "no_stronger_non_meiryo_preference_stated": True,
+            "selected_default_reason": "use_recommended_default_after_subtle_remaining_differences",
+        },
+        "badge_color_readback": {
+            "blue_badge_candidate_id": "ed10j_noto_sans_jp_local_telop_candidate",
+            "blue_badge_fill": "#3286d4",
+            "meiryo_reference_candidate_id": "ed10j_reference_meiryo_reviewed_not_baseline",
+            "meiryo_reference_badge_fill": "#525b68",
+            "blue_badge_is_meiryo_reference": False,
+        },
         "font_size": {
             "decision": "preserve_existing_size_policy_as_comparison_constant",
             "formula": "round(frame_height * 0.115)",
@@ -1950,13 +1969,22 @@ def _kirinuki_font_audit_decision_packet(
             {
                 "bucket": "system_default_safe",
                 "candidate_ids": [
-                    "ed10j_reference_meiryo_reviewed_not_baseline",
                     "ed10j_yu_gothic_bold_system_candidate",
                     "ed10j_biz_udgothic_bold_telop_candidate",
                 ],
                 "routing_note": (
                     "No download required, but system availability is not visual quality "
                     "or cross-machine reproducibility."
+                ),
+            },
+            {
+                "bucket": "reviewed_reference_only",
+                "candidate_ids": [
+                    "ed10j_reference_meiryo_reviewed_not_baseline",
+                ],
+                "routing_note": (
+                    "Meiryo stays visible for audit comparison but is removed from "
+                    "the normal subtitle baseline candidate path."
                 ),
             },
             {
@@ -1973,7 +2001,6 @@ def _kirinuki_font_audit_decision_packet(
                 "bucket": "local_only_reproducibility_weak",
                 "candidate_ids": [
                     "ed10j_noto_sans_jp_local_telop_candidate",
-                    "ed10j_reference_meiryo_reviewed_not_baseline",
                 ],
                 "routing_note": (
                     "Useful on this terminal; not portable until source/license/file "
@@ -2076,9 +2103,10 @@ def _kirinuki_font_audit_decision_packet(
             },
         ],
         "smallest_next_proof_route": {
-            "route_kind": "ed10j_candidate_review_then_overlay_proof",
-            "selected_candidate_id": "pending_ed10j_human_review",
+            "route_kind": "ed10k_biz_overlay_proof",
+            "selected_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
             "default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+            "artifact_id": "clip-ed10k-biz-overlay-proof-001",
             "target_cuts": list(target_cut_ids),
             "keep_meiryo_visible_as_reference": True,
             "proof_scope": "diagnostic_representative_review_only",

@@ -4,7 +4,7 @@
   "artifact_id": "clip-subtitle-font-candidate-sweep-001",
   "created_at": "2026-06-16",
   "scope": "diagnostic_representative_subtitle_font_candidate_registry",
-  "current_selected_diagnostic_overlay_proof_base": "pending_ed10j_human_review",
+  "current_selected_diagnostic_overlay_proof_base": "ed10j_biz_udgothic_bold_telop_candidate",
   "font_size_policy": {
     "status": "preserve_current_diagnostic_representative_size",
     "formula": "round(frame_height * 0.115)",
@@ -91,17 +91,18 @@
     ],
     "candidate_buckets": {
       "system_default_safe": [
-        "ed10j_reference_meiryo_reviewed_not_baseline",
         "ed10j_yu_gothic_bold_system_candidate",
         "ed10j_biz_udgothic_bold_telop_candidate"
+      ],
+      "reviewed_reference_only": [
+        "ed10j_reference_meiryo_reviewed_not_baseline"
       ],
       "likely_video_telop_friendly_local": [
         "ed10j_biz_udgothic_bold_telop_candidate",
         "ed10j_noto_sans_jp_local_telop_candidate"
       ],
       "local_only_reproducibility_weak": [
-        "ed10j_noto_sans_jp_local_telop_candidate",
-        "ed10j_reference_meiryo_reviewed_not_baseline"
+        "ed10j_noto_sans_jp_local_telop_candidate"
       ],
       "later_download_license_decision": [
         "m_plus_1p_bold",
@@ -117,14 +118,46 @@
       "ed10j_noto_sans_jp_local_telop_candidate"
     ],
     "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
-    "selected_candidate_id": "pending_ed10j_human_review",
+    "selected_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+    "selected_candidate_source": "ed10j_freeform_review_no_stronger_non_meiryo_preference",
+    "selected_overlay_artifact_id": "clip-ed10k-biz-overlay-proof-001",
+    "freeform_review_consumed": {
+      "meiryo_removed_from_normal_baseline_candidates": true,
+      "remaining_non_meiryo_candidates_broadly_viable": true,
+      "comparison_should_not_be_prolonged": true,
+      "selected_default_reason": "use_recommended_default_after_subtle_remaining_differences"
+    },
+    "badge_color_readback": {
+      "blue_badge_candidate_id": "ed10j_noto_sans_jp_local_telop_candidate",
+      "blue_badge_fill": "#3286d4",
+      "meiryo_reference_candidate_id": "ed10j_reference_meiryo_reviewed_not_baseline",
+      "meiryo_reference_badge_fill": "#525b68",
+      "blue_badge_is_meiryo_reference": false
+    },
     "font_size_policy": {
       "status": "preserve_existing_size_policy_as_comparison_constant",
       "formula": "round(frame_height * 0.115)"
     },
     "font_binaries_downloaded": false,
     "font_binaries_vendored": false,
-    "review_status": "generated_requires_human_review"
+    "review_status": "review_consumed_biz_selected_for_next_overlay_proof"
+  },
+  "ed10k_overlay_proof_slice": {
+    "feature_id": "ED-10k",
+    "artifact_id": "clip-ed10k-biz-overlay-proof-001",
+    "proof_base_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+    "source_audit_artifact_id": "clip-ed10j-kirinuki-font-audit-001",
+    "target_cuts": ["cut_002", "cut_003"],
+    "review_status": "generated_requires_human_review",
+    "scope": "diagnostic_representative_biz_udgothic_overlay_proof",
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false
   },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_name_match",
@@ -484,15 +517,15 @@
     {
       "candidate_id": "meiryo_bold_local",
       "family_name": "Meiryo",
-      "candidate_class": "system_local_japanese_sans",
+      "candidate_class": "system_local_japanese_sans_reviewed_reference_not_baseline",
       "source_type": "local_system",
       "license_status": "system_font",
       "file_status": "local_only",
       "local_font_files": ["meiryo.ttc", "meiryob.ttc"],
-      "intended_use": "normal_dialogue",
+      "intended_use": "reviewed_reference_only",
       "weight_style": "bold",
       "decoration_suggestion": "soft_shadow_clean_outline",
-      "risk_notes": "Good local readability fallback; not portable unless target machine has Meiryo.",
+      "risk_notes": "Kept as reviewed reference only after ED-10j; not a normal subtitle baseline candidate unless a later explicit review reopens it.",
       "can_reproduce_on_other_terminal": false
     },
     {
@@ -525,13 +558,14 @@
     }
   ],
   "next_decision_packet": {
-    "question": "Which ED-10j audited normal-dialogue gothic candidate should become the next narrow overlay proof base after Meiryo was reviewed as too thin?",
+    "question": "Does the ED-10k BIZ UDGothic overlay proof improve the normal-dialogue subtitle base after Meiryo was removed?",
     "allowed_responses": [
-      "freeform_review_ed10j_contact_sheet",
-      "choose_biz_udgothic_for_next_overlay_proof",
-      "choose_yu_gothic_or_noto_for_next_overlay_proof",
+      "freeform_review_ed10k_overlay_proof",
+      "keep_biz_udgothic_for_next_diagnostic_step",
+      "bounded_adjustment_to_biz_overlay_proof",
+      "fallback_to_yu_gothic_or_noto",
       "request_later_download_candidate_route"
     ],
-    "default_recommendation": "freeform_review_ed10j_contact_sheet"
+    "default_recommendation": "freeform_review_ed10k_overlay_proof"
   }
 }

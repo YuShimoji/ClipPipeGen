@@ -446,6 +446,61 @@ def test_subtitle_overlay_visual_proof_applies_selected_ed10i_meiryo_candidate(
         assert item["subtitle_overlay_present"] is True
 
 
+def test_subtitle_overlay_visual_proof_applies_selected_ed10j_biz_candidate(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_002", "cut_003"],
+        typography_decoration_candidate_id="ed10j_biz_udgothic_bold_telop_candidate",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    assert report["target_cuts"] == ["cut_002", "cut_003"]
+    assert report["style_direction"]["ed10j_kirinuki_font_audit_candidate"] is True
+    assert report["style_direction"]["ed10i_kirinuki_gothic_balance_candidate"] is False
+    assert report["style_direction"]["typography_decoration_candidate_id"] == (
+        "ed10j_biz_udgothic_bold_telop_candidate"
+    )
+    assert report["style_direction"]["decoration_route"]["outline_balance_role"] == (
+        "body_first_telop_candidate"
+    )
+    assert report["style_parameters"]["style_candidate_id"] == (
+        "ed10j_biz_udgothic_bold_telop_candidate"
+    )
+    assert report["style_parameters"]["ed10j_kirinuki_font_audit_candidate"] is True
+    assert report["style_parameters"]["typography_decoration_candidate"][
+        "requested_font_family"
+    ] == "BIZ UDGothic"
+    assert report["style_parameters"]["typography_decoration_candidate"][
+        "emoji_evaluation_scope"
+    ] == "emoji_neutral_ignored_for_ed10j"
+    assert report["burned_in_subtitle_style"][
+        "ed10j_kirinuki_font_audit_candidate"
+    ] is True
+    assert report["production_candidate"] is False
+    assert report["rights_status"] == "pending"
+    assert report["production_usage_allowed"] is False
+
+    for item in report["cut_results"]:
+        assert item["style_parameters"]["typography_decoration_candidate_id"] == (
+            "ed10j_biz_udgothic_bold_telop_candidate"
+        )
+        assert item["style_parameters"]["ed10j_kirinuki_font_audit_candidate"] is True
+        assert item["burned_in_subtitle_style"]["decoration_route"][
+            "outline_balance_role"
+        ] == "body_first_telop_candidate"
+        assert item["subtitle_overlay_present"] is True
+
+
 def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"

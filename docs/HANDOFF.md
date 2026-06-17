@@ -6,7 +6,7 @@ This file is the shortest project-local handoff for resuming from another termin
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
-## Immediate Resume Capsule - 2026-06-17 ED-10j Font Audit
+## Immediate Resume Capsule - 2026-06-17 ED-10k BIZ Overlay Proof
 
 Fresh terminal setup:
 
@@ -26,81 +26,86 @@ Expected state after pulling this handoff:
 - Upstream: `origin/main`
 - `HEAD...origin/main`: `0 0`
 - `git ls-files episodes`: empty
-- Latest sync point: `6d255ad feat: add ED-10j kirinuki font audit`
+- Latest sync point: ED-10k BIZ overlay proof update
 
-Current active artifact is `clip-ed10j-kirinuki-font-audit-001`.
-The ED-10i Meiryo overlay proof `clip-ed10i-meiryo-overlay-proof-001` has been
-reviewed and is not accepted as the normal subtitle baseline. Meiryo is now a
-reviewed reference candidate only. ED-10j compares a no-download
-normal-dialogue shortlist for `cut_002` / `cut_003`:
+Current active artifact is `clip-ed10k-biz-overlay-proof-001`.
+The ED-10j freeform review has been consumed: Meiryo is removed from the
+normal subtitle baseline candidate path, the remaining non-Meiryo candidates
+are close enough to avoid prolonging the audit, and the recommended default
+`ed10j_biz_udgothic_bold_telop_candidate` is selected as the next proof base.
 
-- `ed10j_reference_meiryo_reviewed_not_baseline`
-- `ed10j_biz_udgothic_bold_telop_candidate`
-- `ed10j_yu_gothic_bold_system_candidate`
-- `ed10j_noto_sans_jp_local_telop_candidate`
+JSON/readback confirms that the blue ED-10j badge/accent maps to
+`ed10j_noto_sans_jp_local_telop_candidate`, not the Meiryo reference
+`ed10j_reference_meiryo_reviewed_not_baseline`. That mapping does not reopen
+Meiryo because the actionable review explicitly removes Meiryo from normal
+subtitle candidates.
 
-Recommended first review candidate is
-`ed10j_biz_udgothic_bold_telop_candidate`, but the selected next proof base is
-still `pending_ed10j_human_review`.
+ED-10k generated a diagnostic overlay proof for `cut_002` / `cut_003` with:
+
+- `style_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`
+- `typography_decoration_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`
+- `font_family_route.requested=BIZ UDGothic`
+- `font_family_route.resolved=BIZ UDGothic`
+- `subtitle_overlay_available_count=2`
 
 Open order:
 
 1. `.\open-dashboard.ps1`
-2. choose the ED-10j artifact from the dashboard
+2. choose the current ED-10k BIZ proof from the dashboard
 3. if the same-machine ignored artifact is present, open it with:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1
+.\open-current-proof.ps1
 ```
 
 If a fresh checkout does not have `episodes/`, treat that as local evidence
-absence, not a Git failure. Regenerate the ED-10j local retained artifact only
+absence, not a Git failure. Regenerate the ED-10k local retained artifact only
 when the upstream episode artifacts are present:
 
 ```powershell
-uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison `
-  --comparison-profile ed10j_kirinuki_font_audit `
+uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
   --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
   --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
-  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit `
   --target-cut cut_002 `
   --target-cut cut_003 `
+  --typography-decoration-candidate-id ed10j_biz_udgothic_bold_telop_candidate `
   --format json
 ```
 
 Review card for the next human response:
 
-- target: `clip-ed10j-kirinuki-font-audit-001`
-- look at glyph body thickness, outline pressure, normal subtitle stability,
-  kirinuki / telop-like feel, and whether the candidate feels deliberate rather
-  than default-OS
+- target: `clip-ed10k-biz-overlay-proof-001`
+- look at actual subtitle readability on `cut_002` and `cut_003`, not just the
+  ED-10j contact sheet
+- judge glyph body thickness, outline pressure, line breaks, host-face
+  occlusion, normal subtitle stability, and whether BIZ UDGothic feels
+  deliberate enough for the default normal-dialogue route
 - freeform review is enough; do not ask for fixed accept/reject labels
-- after review, convert the response into one next narrow overlay proof
-  candidate, likely starting from BIZ UDGothic unless the review points
-  elsewhere
+- after review, either keep BIZ as the route, make one bounded BIZ adjustment,
+  or branch to Yu Gothic / Noto only if the proof clearly fails
 
 Tracked context surfaces:
 
 | Surface | Purpose |
 |---|---|
-| `docs/RUNTIME_STATE.md` | current resume capsule and ED-10j next route |
+| `docs/RUNTIME_STATE.md` | current resume capsule and ED-10k review route |
 | `docs/index.md` | human-facing wiki entrance and open-surface order |
 | `docs/dashboard/index.html` | generated project dashboard |
 | `docs/dashboard/project-status.json` | machine-readable dashboard state |
 | `docs/features/index.md` | generated feature progress table |
-| `artifacts/ARTIFACTS.md` | artifact registry and ED-10j open command |
-| `docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md` | route change from Meiryo proof to ED-10j audit |
-| `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | ED-10j research summary and candidate buckets |
+| `artifacts/ARTIFACTS.md` | artifact registry and ED-10k proof entry |
+| `docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md` | route change from ED-10j audit to ED-10k proof |
+| `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | ED-10j review consumption and selected BIZ proof base |
 | `docs/font_candidates/subtitle-font-candidates.json` | machine-readable candidate registry |
 
 Validation at handoff creation:
 
 - `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py`
-  -> `22 passed, 12 skipped`
+  -> `23 passed, 12 skipped`
 - `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py`
-  -> `18 passed`
+  -> `19 passed`
 - JSON parse checks passed for dashboard, font registry, and the same-machine
-  ED-10j local report
+  ED-10j/ED-10k local reports
 - `git diff --check` clean
 - `git ls-files episodes` empty
 

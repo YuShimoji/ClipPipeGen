@@ -3,11 +3,11 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10j_font_audit_active
-progress_pct: 70
+health: ed10k_biz_overlay_proof_active
+progress_pct: 85
 last_touched: 2026-06-17
-next_review_due: after_ed10j_kirinuki_font_audit_review
-active_artifact: clip-ed10j-kirinuki-font-audit-001
+next_review_due: after_ed10k_biz_overlay_proof_review
+active_artifact: clip-ed10k-biz-overlay-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md
@@ -17,10 +17,10 @@ related: docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates
 
 ## これは何か
 
-`ED-10h: Subtitle Font Candidate Sweep v0` と、その後続の
-`ED-10j: Kirinuki Subtitle Font Research & Candidate Audit v0` をつなぐ候補
-registry です。現在は Meiryo proof の freeform review を受け、通常字幕
-baseline の本命候補を調査し直す段階です。
+`ED-10h: Subtitle Font Candidate Sweep v0`、`ED-10j: Kirinuki Subtitle Font
+Research & Candidate Audit v0`、`ED-10k: BIZ UDGothic Overlay Proof v0` を
+つなぐ候補 registry です。現在は ED-10j freeform review を消費し、BIZ
+UDGothic を次の diagnostic overlay proof base として検証する段階です。
 
 ## 何のためにあるか
 
@@ -33,12 +33,14 @@ status、local availability、reproducibility、intended use で比較できる�
 ## 今の状態
 
 - Current selected diagnostic proof base:
-  `pending_ed10j_human_review`
+  `ed10j_biz_udgothic_bold_telop_candidate`
 - Reviewed Meiryo proof:
   `clip-ed10i-meiryo-overlay-proof-001` is not accepted as the normal subtitle
   baseline.
-- Active audit artifact:
+- Consumed audit artifact:
   `clip-ed10j-kirinuki-font-audit-001`
+- Active proof artifact:
+  `clip-ed10k-biz-overlay-proof-001`
 - Preserved font size policy: `round(frame_height * 0.115)`
 - 1080p readback: `font_size=124`
 - Local font readback was limited to `C:\Windows\Fonts`.
@@ -65,12 +67,19 @@ Research-backed readback is intentionally small and bounded:
 | [Google Fonts: Zen Kaku Gothic New](https://fonts.google.com/specimen/Zen+Kaku+Gothic+New) | Contemporary Japanese gothic family | Keeps Zen Kaku Gothic New in later-download bucket for normal-dialogue exploration |
 | [Google Fonts: Dela Gothic One](https://fonts.google.com/specimen/Dela+Gothic+One) | Very thick gothic body intended for strong display use | Records it as emphasis/display reference, not the normal-dialogue baseline |
 
-Current no-download shortlist:
+ED-10j freeform review is now consumed. JSON/readback confirmed that the blue
+badge/accent candidate is `ed10j_noto_sans_jp_local_telop_candidate`, while
+the Meiryo reference is `ed10j_reference_meiryo_reviewed_not_baseline`. The
+visual review still removes Meiryo from the normal baseline candidate path, and
+because no stronger preference was stated among the remaining candidates, the
+recommended default BIZ route becomes ED-10k's proof base.
+
+Current no-download shortlist after Meiryo demotion:
 
 | Candidate | Bucket | Current role |
 |---|---|---|
-| `ed10j_reference_meiryo_reviewed_not_baseline` | system/default safe reference | Reviewed reference only; not accepted as baseline |
-| `ed10j_biz_udgothic_bold_telop_candidate` | likely video/telop-friendly local | Recommended first review candidate |
+| `ed10j_reference_meiryo_reviewed_not_baseline` | reviewed reference only | Not a normal baseline candidate |
+| `ed10j_biz_udgothic_bold_telop_candidate` | likely video/telop-friendly local | Selected ED-10k proof base |
 | `ed10j_yu_gothic_bold_system_candidate` | system/default safe | Familiar Windows gothic comparison; watch for default-OS feel |
 | `ed10j_noto_sans_jp_local_telop_candidate` | likely video/telop-friendly local | Modern local sans comparison; may need heavier weight later |
 
@@ -103,8 +112,9 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10j no-download audit review**: review the current 4-candidate contact
-   sheet and choose the next narrow overlay proof candidate.
+1. **ED-10k BIZ overlay proof review**: inspect the current BIZ UDGothic proof
+   for `cut_002` / `cut_003` and decide whether it can carry the next
+   diagnostic normal-dialogue subtitle base.
 2. **Google Fonts / OFL sweep**: request permission to download specific
    families, capture license/version/source metadata, and keep binaries out of
    public Git unless a repo policy is approved.
@@ -171,6 +181,10 @@ outside public Git.
 - 2026-06-17: Consumed the ED-10i Meiryo overlay freeform review: Meiryo is not
   accepted as the normal subtitle baseline and is demoted to reviewed
   reference. ED-10j opens a no-download kirinuki normal-dialogue font audit.
+- 2026-06-17: Consumed the ED-10j font audit freeform review: Meiryo is removed
+  from the normal baseline candidate path, blue badge/accent readback maps to
+  Noto rather than Meiryo, and BIZ UDGothic is selected as the recommended
+  default for ED-10k overlay proof.
 
 ## Constraints / Risks
 

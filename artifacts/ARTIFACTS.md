@@ -165,9 +165,9 @@ tracked Git failure.
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10j_kirinuki_font_audit` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10j freeform review readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10j_kirinuki_font_audit --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
-| latest_validation_result | Same-machine ED-10j generation returned `artifact_id=clip-ed10j-kirinuki-font-audit-001`, `candidate_count=4`, `sample_count=16`, `font_size.value=124`, `recommended_default_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`, `selected_candidate_for_next_proof_base=pending_ed10j_human_review`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet plus BIZ/Noto sample PNGs were inspected as nonblank local visual evidence. |
-| review_status | Available after local generation and requires freeform human review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
-| next_action | Review the contact sheet for body thickness, outline pressure, subtitle-like / telop-like feel, and whether the candidate feels deliberate rather than default-OS. Freeform review is enough. |
+| latest_validation_result | Same-machine ED-10j regeneration returned `artifact_id=clip-ed10j-kirinuki-font-audit-001`, `candidate_count=4`, `sample_count=16`, `font_size.value=124`, `selected_candidate_for_next_proof_base=ed10j_biz_udgothic_bold_telop_candidate`, `blue_badge_candidate_id=ed10j_noto_sans_jp_local_telop_candidate`, `blue_badge_is_meiryo_reference=false`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank local visual evidence. |
+| review_status | Freeform review consumed: Meiryo is removed from normal baseline candidates, the remaining non-Meiryo candidates are close enough to avoid prolonging the audit, and BIZ UDGothic is selected as the default next proof base. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Treat this as consumed audit trail. Use `clip-ed10k-biz-overlay-proof-001` for the current visual judgement; reopen the contact sheet only if the BIZ proof fails and a fallback candidate is needed. |
 
 Boundary flags remain false or pending:
 
@@ -185,6 +185,38 @@ tests. It cannot directly verify the ignored PNG/HTML comparison artifacts
 themselves, so local artifact existence must be verified with the open command
 or JSON report readback on the retaining machine. `git ls-files episodes`
 should remain empty.
+
+## `clip-ed10k-biz-overlay-proof-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10k BIZ UDGothic Diagnostic Overlay Proof |
+| purpose | Apply the ED-10j selected default `ed10j_biz_udgothic_bold_telop_candidate` to the `cut_002` / `cut_003` diagnostic subtitle overlay proof after Meiryo was removed from normal subtitle candidates. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
+| open_command | `.\open-current-proof.ps1` |
+| generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id ed10j_biz_udgothic_bold_telop_candidate` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10j_biz_udgothic_bold_telop_candidate --format json` plus targeted tests. |
+| latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`, `typography_decoration_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`, `subtitle_overlay_available_count=2`, `all_target_cuts_have_overlay=true`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
+| latest_local_smoke | Same-machine readback resolved `font_family_route.requested=BIZ UDGothic`, `font_family_route.font_file_status=candidate_primary_font_file_found`, `font_size=124`, `outline=8`, `ed10j_kirinuki_font_audit_candidate=true`, `explicit_line_breaks_passed_to_ass=true`, `one_character_orphan_present=false`, and `suspicious_tail_line_present=false`. The `cut_002` and `cut_003` PNG frames were inspected as nonblank 1920x1080 local visual artifacts. |
+| review_status | Generated and requires freeform human visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Review the BIZ UDGothic proof for body weight, outline pressure, and whether it feels like an intentional kirinuki normal-dialogue subtitle base. Freeform review is enough. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked code, docs, dashboard metadata, and tests but
+not the ignored MP4/PNG/ASS files themselves. Other worktrees should treat
+missing `episodes/` proof assets as local evidence absence, not as a tracked
+Git failure.
 
 ## `clip-ed10g-noto-overlay-proof-001`
 

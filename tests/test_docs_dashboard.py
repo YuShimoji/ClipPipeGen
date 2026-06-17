@@ -28,16 +28,16 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10j-kirinuki-font-audit-001"
+        "clip-ed10k-biz-overlay-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10j_kirinuki_font_audit_requires_review"
+        "ed10k_biz_overlay_proof_requires_review"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "meiryo_overlay_reviewed_not_accepted_as_normal_baseline"
+        "ed10j_freeform_review_consumed_meiryo_removed"
     )
     assert status["current_focus"]["selected_typography_base"] == (
-        "pending_ed10j_human_review"
+        "ed10j_biz_udgothic_bold_telop_candidate"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -45,13 +45,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
             "jp_pilot01r3_cut_review\\subtitle_kirinuki_font_audit\\"
             "open_comparison.ps1"
         ),
-        ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
@@ -67,7 +67,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10j-kirinuki-font-audit-001"
+        "clip-ed10k-biz-overlay-proof-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -86,7 +86,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
-    assert "clip-ed10j-kirinuki-font-audit-001" in html
+    assert "clip-ed10k-biz-overlay-proof-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
 
 
@@ -138,7 +138,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
 
     assert registry["artifact_id"] == "clip-subtitle-font-candidate-sweep-001"
     assert registry["current_selected_diagnostic_overlay_proof_base"] == (
-        "pending_ed10j_human_review"
+        "ed10j_biz_udgothic_bold_telop_candidate"
     )
     assert registry["font_size_policy"]["formula"] == "round(frame_height * 0.115)"
     assert registry["boundary_flags"]["font_binaries_downloaded"] is False
@@ -164,6 +164,18 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10j_research_audit_slice"]["recommended_default_candidate_id"] == (
         "ed10j_biz_udgothic_bold_telop_candidate"
     )
+    assert registry["ed10j_research_audit_slice"]["selected_candidate_id"] == (
+        "ed10j_biz_udgothic_bold_telop_candidate"
+    )
+    assert registry["ed10j_research_audit_slice"]["selected_overlay_artifact_id"] == (
+        "clip-ed10k-biz-overlay-proof-001"
+    )
+    assert registry["ed10j_research_audit_slice"]["badge_color_readback"][
+        "blue_badge_candidate_id"
+    ] == "ed10j_noto_sans_jp_local_telop_candidate"
+    assert registry["ed10j_research_audit_slice"]["badge_color_readback"][
+        "blue_badge_is_meiryo_reference"
+    ] is False
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids
     assert "ed10i_biz_udgothic_bold_balanced_outline" in candidate_ids

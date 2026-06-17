@@ -801,6 +801,9 @@ def _diagnostic_style_direction(
         "ed10i_kirinuki_gothic_balance_candidate": style.get(
             "ed10i_kirinuki_gothic_balance_candidate"
         ),
+        "ed10j_kirinuki_font_audit_candidate": style.get(
+            "ed10j_kirinuki_font_audit_candidate"
+        ),
         "font_family_route": {
             "requested": style.get("requested_font_family"),
             "resolved": style.get("resolved_font_family"),
@@ -1070,6 +1073,9 @@ def _style_parameter_readback(
         "ed10i_kirinuki_gothic_balance_candidate": style.get(
             "ed10i_kirinuki_gothic_balance_candidate"
         ),
+        "ed10j_kirinuki_font_audit_candidate": style.get(
+            "ed10j_kirinuki_font_audit_candidate"
+        ),
         "typography_decoration_candidate": {
             "candidate_id": style.get("typography_decoration_candidate_id"),
             "display_name": style.get("display_name"),
@@ -1215,6 +1221,9 @@ def _burned_in_subtitle_style_readback(layout: dict[str, Any]) -> dict[str, Any]
         ),
         "ed10i_kirinuki_gothic_balance_candidate": style.get(
             "ed10i_kirinuki_gothic_balance_candidate"
+        ),
+        "ed10j_kirinuki_font_audit_candidate": style.get(
+            "ed10j_kirinuki_font_audit_candidate"
         ),
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
         "presentation_mode": layout["mode"],

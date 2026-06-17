@@ -99,16 +99,16 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10j",
-            "artifact_id": "clip-ed10j-kirinuki-font-audit-001",
-            "state": "ed10j_kirinuki_font_audit_requires_review",
-            "human_visual_judgement": "meiryo_overlay_reviewed_not_accepted_as_normal_baseline",
+            "feature_id": "ED-10k",
+            "artifact_id": "clip-ed10k-biz-overlay-proof-001",
+            "state": "ed10k_biz_overlay_proof_requires_review",
+            "human_visual_judgement": "ed10j_freeform_review_consumed_meiryo_removed",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "pending_ed10j_human_review",
-            "selected_typography_source": "ed10i_meiryo_overlay_freeform_review",
+            "selected_typography_base": "ed10j_biz_udgothic_bold_telop_candidate",
+            "selected_typography_source": "ed10j_freeform_review_and_recommended_default",
             "preferred_direction": "kirinuki_youtube_normal_dialogue_gothic",
-            "main_issue": "baseline_font_choice_may_be_wrong_not_only_outline_tuning",
+            "main_issue": "review_remaining_non_meiryo_candidates_are_close_enough_to_move_to_proof",
             "emoji_treatment": "neutral_ignore_for_evaluation",
             "production_candidate": False,
             "production_subtitle_design_acceptance": False,
@@ -379,6 +379,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10i-meiryo-overlay-proof-001"
         if feature_id == "ED-10j":
             active_artifact = "clip-ed10j-kirinuki-font-audit-001"
+        if feature_id == "ED-10k":
+            active_artifact = "clip-ed10k-biz-overlay-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -442,9 +444,7 @@ def _artifact_coverage(
     mentioned = [
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
-    current_focus_registered = (
-        "clip-ed10j-kirinuki-font-audit-001" in artifact_ids
-    )
+    current_focus_registered = "clip-ed10k-biz-overlay-proof-001" in artifact_ids
     return {
         "registered_artifact_count": len(artifact_ids),
         "features_with_artifact_count": len(mentioned),
@@ -490,10 +490,16 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
+            "item": "ED-10k BIZ UDGothic overlay proof",
+            "artifact": "clip-ed10k-biz-overlay-proof-001",
+            "question": "Does the BIZ UDGothic diagnostic overlay proof read as a stronger normal-dialogue subtitle base for cut_002 / cut_003?",
+            "next_route": "Open the current proof and give freeform visual review; this is not production/public acceptance.",
+        },
+        {
             "item": "ED-10j kirinuki font audit",
             "artifact": "clip-ed10j-kirinuki-font-audit-001",
-            "question": "Which audited normal-dialogue gothic candidate is closest to a deliberate kirinuki subtitle baseline for cut_002 / cut_003?",
-            "next_route": "Open the ED-10j contact sheet and give freeform review; Meiryo remains a reviewed reference, not the baseline.",
+            "question": "Was the no-download audit consumed correctly, including Meiryo reference demotion and BIZ default selection?",
+            "next_route": "Use the contact-sheet readback only for audit; do not prolong the comparison unless the BIZ proof fails.",
         },
         {
             "item": "ED-10h font candidate sweep",
@@ -548,6 +554,12 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
+            "label": "Current BIZ Proof",
+            "command": ".\\open-current-proof.ps1",
+            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+            "when_to_use": "Use on the machine retaining the ED-10k BIZ UDGothic overlay proof.",
+        },
+        {
             "label": "Font Audit",
             "command": (
                 "powershell -ExecutionPolicy Bypass -File "
@@ -559,13 +571,7 @@ def _open_surfaces() -> list[dict[str, str]]:
                 "episodes/.../subtitle_kirinuki_font_audit/"
                 "subtitle_kirinuki_font_audit_report.html"
             ),
-            "when_to_use": "Use on the machine retaining the ED-10j normal-dialogue font audit contact sheet.",
-        },
-        {
-            "label": "Reviewed Meiryo Proof",
-            "command": ".\\open-current-proof.ps1",
-            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-            "when_to_use": "Use only to re-open the reviewed ED-10i Meiryo overlay reference; it is not the active baseline decision.",
+            "when_to_use": "Use only to audit the consumed ED-10j contact sheet and candidate mapping.",
         },
         {
             "label": "Gothic Balance",
@@ -653,7 +659,9 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10i":
         return "reviewed_not_accepted_as_normal_baseline"
     if feature_id == "ED-10j":
-        return "font_audit_requires_review"
+        return "font_audit_consumed_biz_selected"
+    if feature_id == "ED-10k":
+        return "biz_overlay_proof_requires_review"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -667,6 +675,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
     if feature_id == "ED-10i":
         return 100
     if feature_id == "ED-10j":
+        return 100
+    if feature_id == "ED-10k":
         return 70
     return STATUS_PROGRESS.get(status, 0)
 
@@ -679,7 +689,9 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10i":
         return "Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline."
     if feature_id == "ED-10j":
-        return "Review the ED-10j font audit contact sheet and choose the next narrow overlay proof candidate."
+        return "Keep as consumed audit trail; BIZ UDGothic is selected for the ED-10k overlay proof."
+    if feature_id == "ED-10k":
+        return "Review the generated BIZ UDGothic overlay proof for cut_002 / cut_003."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

@@ -8,24 +8,24 @@ This note records the representative diagnostic subtitle design review path
 after the `cut_003` diagnostic burned-in proof readability acceptance.
 
 It now connects ED-10f's size acceptance, ED-10g's Noto clean-outline proof,
-ED-10i's Meiryo diagnostic overlay proof, and the ED-10j font audit route for
-`cut_002` / `cut_003`.
+ED-10i's Meiryo diagnostic overlay proof, the consumed ED-10j font audit, and
+the ED-10k BIZ UDGothic overlay proof route for `cut_002` / `cut_003`.
 
 ## Current State
 
-The latest freeform review supersedes the ED-10i Meiryo proof as the normal
-subtitle baseline. `clip-ed10i-meiryo-overlay-proof-001` is reviewed but not
-accepted: it reads too thin and not attractive enough as the default subtitle
-font. ED-10j now audits a narrower normal-dialogue gothic/sans candidate set
-before another overlay proof. The size policy `round(frame_height * 0.115)`
-remains the comparison constant, and emoji quality is ignored for this slice.
+The latest freeform review consumes the ED-10j font audit and selects
+`ed10j_biz_udgothic_bold_telop_candidate` for the next narrow overlay proof.
+Meiryo is reviewed reference only, not a normal subtitle baseline candidate.
+The size policy `round(frame_height * 0.115)` remains the comparison constant,
+and emoji quality is ignored for this slice.
 
 ## Next
 
-Open `clip-ed10j-kirinuki-font-audit-001` and judge which audited
-normal-dialogue font candidate should become the next narrow overlay proof
-base. Dense/stress coverage such as `cut_008`, and
-production/public/rights limitation lift, remain separate routes.
+Open `clip-ed10k-biz-overlay-proof-001` and judge whether the BIZ UDGothic
+proof should carry the next diagnostic normal-dialogue subtitle base. If it
+needs revision, keep the next change to one BIZ route axis. Dense/stress
+coverage such as `cut_008`, and production/public/rights limitation lift,
+remain separate routes.
 
 ## Constraints / Risks
 
