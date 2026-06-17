@@ -8,25 +8,23 @@ This note records the representative diagnostic subtitle design review path
 after the `cut_003` diagnostic burned-in proof readability acceptance.
 
 It now connects ED-10f's size acceptance, ED-10g's Noto clean-outline proof,
-and ED-10i's human-selected bottom gothic candidate to the current Meiryo
-diagnostic overlay proof for `cut_002` / `cut_003`.
+ED-10i's Meiryo diagnostic overlay proof, and the ED-10j font audit route for
+`cut_002` / `cut_003`.
 
 ## Current State
 
-The latest human review supersedes the ED-10g styling direction only:
-`clip-ed10g-noto-overlay-proof-001` is not accepted as-is for the next styling
-step. ED-10i then selected the bottom-most gothic comparison candidate as the
-next proof base. Local JSON resolves that candidate to
-`ed10i_meiryo_bold_fill_outline_balance`; the selected overlay proof is
-`clip-ed10i-meiryo-overlay-proof-001`. The size policy
-`round(frame_height * 0.115)` remains the starting reference, and emoji quality
-is ignored for this slice.
+The latest freeform review supersedes the ED-10i Meiryo proof as the normal
+subtitle baseline. `clip-ed10i-meiryo-overlay-proof-001` is reviewed but not
+accepted: it reads too thin and not attractive enough as the default subtitle
+font. ED-10j now audits a narrower normal-dialogue gothic/sans candidate set
+before another overlay proof. The size policy `round(frame_height * 0.115)`
+remains the comparison constant, and emoji quality is ignored for this slice.
 
 ## Next
 
-Open `clip-ed10i-meiryo-overlay-proof-001` and judge the selected Meiryo
-body/outline balance on `cut_002` / `cut_003`, or request one bounded
-adjustment from that base. Dense/stress coverage such as `cut_008`, and
+Open `clip-ed10j-kirinuki-font-audit-001` and judge which audited
+normal-dialogue font candidate should become the next narrow overlay proof
+base. Dense/stress coverage such as `cut_008`, and
 production/public/rights limitation lift, remain separate routes.
 
 ## Constraints / Risks

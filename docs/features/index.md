@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10i`
-- artifact: `clip-ed10i-meiryo-overlay-proof-001`
-- state: `ed10i_meiryo_overlay_proof_available_requires_review`
+- feature: `ED-10j`
+- artifact: `clip-ed10j-kirinuki-font-audit-001`
+- state: `ed10j_kirinuki_font_audit_requires_review`
 
 ## Feature Table
 
@@ -47,7 +47,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10f | Representative Subtitle Design Review v1 | done | blocked | 100 | clip-review-acceptance-gate-001 | Keep as reference unless a regression or successor lane appears. |
 | ED-10g | Subtitle Typography Decoration Comparison v0 | done | accepted_diagnostic_base | 100 | clip-ed10g-noto-overlay-proof-001 | Keep as historical diagnostic proof; the latest human review sends styling to ED-10i. |
 | ED-10h | Subtitle Font Candidate Sweep v0 | approved | defined_not_generated | 15 | clip-subtitle-font-candidate-sweep-001 | Use the font candidate registry to choose a no-download or download-approved sweep route. |
-| ED-10i | Kirinuki Gothic Weight Balance Comparison v0 | done | selected_overlay_proof_ready | 100 | clip-ed10i-meiryo-overlay-proof-001 | Review the selected Meiryo overlay proof and either accept it for diagnostic use or request one bounded body/outline adjustment. |
+| ED-10i | Kirinuki Gothic Weight Balance Comparison v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10i-meiryo-overlay-proof-001 | Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline. |
+| ED-10j | Kirinuki Subtitle Font Research & Candidate Audit v0 | in_progress | font_audit_requires_review | 70 | clip-ed10j-kirinuki-font-audit-001 | Review the ED-10j font audit contact sheet and choose the next narrow overlay proof candidate. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

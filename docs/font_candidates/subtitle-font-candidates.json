@@ -4,7 +4,7 @@
   "artifact_id": "clip-subtitle-font-candidate-sweep-001",
   "created_at": "2026-06-16",
   "scope": "diagnostic_representative_subtitle_font_candidate_registry",
-  "current_selected_diagnostic_overlay_proof_base": "ed10i_meiryo_bold_fill_outline_balance",
+  "current_selected_diagnostic_overlay_proof_base": "pending_ed10j_human_review",
   "font_size_policy": {
     "status": "preserve_current_diagnostic_representative_size",
     "formula": "round(frame_height * 0.115)",
@@ -45,14 +45,86 @@
     "selected_candidate_id": "ed10i_meiryo_bold_fill_outline_balance",
     "selected_candidate_source": "bottom_most_contact_sheet_candidate",
     "selected_overlay_artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
-    "selected_overlay_review_status": "available_requires_human_review",
+    "selected_overlay_review_status": "reviewed_not_accepted_as_normal_baseline",
     "font_size_policy": {
       "status": "preserve_existing_size_policy_as_starting_reference",
       "formula": "round(frame_height * 0.115)"
     },
     "font_binaries_downloaded": false,
     "font_binaries_vendored": false,
-    "review_status": "selected_for_next_diagnostic_overlay_proof"
+    "review_status": "reviewed_not_accepted_as_normal_baseline"
+  },
+  "ed10j_research_audit_slice": {
+    "feature_id": "ED-10j",
+    "artifact_id": "clip-ed10j-kirinuki-font-audit-001",
+    "comparison_profile": "ed10j_kirinuki_font_audit",
+    "scope": "kirinuki_normal_dialogue_font_research_and_candidate_audit",
+    "human_review_consumed": {
+      "current_proof": "clip-ed10i-meiryo-overlay-proof-001",
+      "current_meiryo_proof_accepted_as_normal_baseline": false,
+      "main_issue": "meiryo_body_too_thin_and_not_attractive_for_normal_subtitles",
+      "interpretation": "baseline_font_choice_must_be_researched_before_more_bounded_proof_tuning",
+      "meiryo_role": "reviewed_reference_candidate_not_selected_baseline",
+      "emoji_treatment": "neutral_ignore_for_evaluation"
+    },
+    "research_basis": [
+      {
+        "source": "Microsoft Learn Meiryo",
+        "url": "https://learn.microsoft.com/en-us/typography/font-list/meiryo",
+        "registry_inference": "Meiryo is optimized for clean screen/body reading, but the human proof review says that property is not enough for the desired kirinuki normal-subtitle baseline."
+      },
+      {
+        "source": "Google Fonts BIZ UDGothic",
+        "url": "https://fonts.google.com/specimen/BIZ+UDGothic",
+        "registry_inference": "BIZ UDGothic is a legibility-oriented gothic family with local bold files, making it the safest no-download body-first comparison candidate."
+      },
+      {
+        "source": "Google Fonts M PLUS 1p",
+        "url": "https://fonts.google.com/specimen/M+PLUS+1p",
+        "registry_inference": "M PLUS has heavier weights that may be better for video subtitles, but it is not locally available and needs a later download/license route."
+      },
+      {
+        "source": "Google Fonts Zen Kaku Gothic New",
+        "url": "https://fonts.google.com/specimen/Zen+Kaku+Gothic+New",
+        "registry_inference": "Zen Kaku Gothic New is a plausible later-download normal-dialogue gothic candidate, but it is excluded from the no-download proof."
+      }
+    ],
+    "candidate_buckets": {
+      "system_default_safe": [
+        "ed10j_reference_meiryo_reviewed_not_baseline",
+        "ed10j_yu_gothic_bold_system_candidate",
+        "ed10j_biz_udgothic_bold_telop_candidate"
+      ],
+      "likely_video_telop_friendly_local": [
+        "ed10j_biz_udgothic_bold_telop_candidate",
+        "ed10j_noto_sans_jp_local_telop_candidate"
+      ],
+      "local_only_reproducibility_weak": [
+        "ed10j_noto_sans_jp_local_telop_candidate",
+        "ed10j_reference_meiryo_reviewed_not_baseline"
+      ],
+      "later_download_license_decision": [
+        "m_plus_1p_bold",
+        "m_plus_2p_bold",
+        "zen_kaku_gothic_new_bold",
+        "dela_gothic_one_emphasis"
+      ]
+    },
+    "candidate_ids": [
+      "ed10j_reference_meiryo_reviewed_not_baseline",
+      "ed10j_biz_udgothic_bold_telop_candidate",
+      "ed10j_yu_gothic_bold_system_candidate",
+      "ed10j_noto_sans_jp_local_telop_candidate"
+    ],
+    "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+    "selected_candidate_id": "pending_ed10j_human_review",
+    "font_size_policy": {
+      "status": "preserve_existing_size_policy_as_comparison_constant",
+      "formula": "round(frame_height * 0.115)"
+    },
+    "font_binaries_downloaded": false,
+    "font_binaries_vendored": false,
+    "review_status": "generated_requires_human_review"
   },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_name_match",
@@ -65,6 +137,7 @@
       "biz_udgothic": ["BIZ-UDGothicB.ttc", "BIZ-UDGothicR.ttc"],
       "yu_gothic": ["YuGothB.ttc", "YuGothL.ttc", "YuGothM.ttc", "YuGothR.ttc"],
       "meiryo": ["meiryo.ttc", "meiryob.ttc"],
+      "ud_digi_kyokasho": ["UDDigiKyokashoN-B.ttc", "UDDigiKyokashoN-R.ttc"],
       "ms_gothic": ["msgothic.ttc"],
       "ms_mincho": ["msmincho.ttc"]
     }
@@ -129,15 +202,73 @@
     {
       "candidate_id": "ed10i_meiryo_bold_fill_outline_balance",
       "family_name": "Meiryo",
-      "candidate_class": "ed10i_kirinuki_gothic_local",
+      "candidate_class": "ed10i_reviewed_reference_not_baseline",
       "source_type": "local_system",
       "license_status": "system_font",
       "file_status": "local_only",
       "local_font_files": ["meiryob.ttc", "meiryo.ttc"],
-      "intended_use": "ed10i_selected_diagnostic_overlay_proof_base",
+      "intended_use": "reviewed_reference_only",
       "weight_style": "bold_body_balanced_outline",
       "decoration_suggestion": "warm_fill_restrained_outline",
-      "risk_notes": "Human review selected this bottom-most ED-10i candidate as closest to ideal for the next diagnostic overlay proof; local/system availability is not portable.",
+      "risk_notes": "Human review selected this bottom-most ED-10i candidate for a proof, but the proof was then reviewed as too thin and not accepted as the normal subtitle baseline.",
+      "reviewed_overlay_artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
+      "reviewed_overlay_status": "reviewed_not_accepted_as_normal_baseline",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10j_reference_meiryo_reviewed_not_baseline",
+      "family_name": "Meiryo",
+      "candidate_class": "ed10j_system_default_safe_reference",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["meiryob.ttc", "meiryo.ttc"],
+      "intended_use": "reviewed_reference_only",
+      "weight_style": "bold_reference",
+      "decoration_suggestion": "restrained_outline_reference",
+      "risk_notes": "Keep visible only as the reviewed Meiryo reference; the freeform review says it is too thin and not attractive enough as the normal subtitle baseline.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+      "family_name": "BIZ UDGothic",
+      "candidate_class": "ed10j_likely_video_telop_friendly_local",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["BIZ-UDGothicB.ttc", "BIZ-UDGothicR.ttc"],
+      "intended_use": "normal_dialogue",
+      "weight_style": "bold_body_restrained_outline",
+      "decoration_suggestion": "body_first_telop_candidate",
+      "risk_notes": "Recommended no-download ED-10j candidate because it has local bold files and a stronger gothic body; still same-machine evidence only.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10j_yu_gothic_bold_system_candidate",
+      "family_name": "Yu Gothic",
+      "candidate_class": "ed10j_system_default_safe_candidate",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["YuGothB.ttc", "YuGothM.ttc"],
+      "intended_use": "normal_dialogue_reference",
+      "weight_style": "bold_system_gothic",
+      "decoration_suggestion": "system_safe_comparison_candidate",
+      "risk_notes": "Useful system-safe comparison, but may retain default OS-font feeling; not portable without target-machine availability.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10j_noto_sans_jp_local_telop_candidate",
+      "family_name": "Noto Sans JP",
+      "candidate_class": "ed10j_likely_video_telop_friendly_local",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["NotoSansJP-VF.ttf"],
+      "intended_use": "normal_dialogue",
+      "weight_style": "local_variable_font_route",
+      "decoration_suggestion": "neutral_modern_sans_candidate",
+      "risk_notes": "Modern Japanese sans comparison available locally; a later proof may need explicit heavier-weight handling before production-like use.",
       "can_reproduce_on_other_terminal": false
     },
     {
@@ -394,13 +525,13 @@
     }
   ],
   "next_decision_packet": {
-    "question": "Should ED-10h run a no-download local/system-font sweep first, or request approval to download specific Google Fonts with captured license metadata?",
+    "question": "Which ED-10j audited normal-dialogue gothic candidate should become the next narrow overlay proof base after Meiryo was reviewed as too thin?",
     "allowed_responses": [
-      "run_local_only_sweep",
-      "approve_specific_google_font_downloads_with_license_capture",
-      "defer_ed10h_until_current_noto_proof_review",
-      "add_more_candidates_without_download"
+      "freeform_review_ed10j_contact_sheet",
+      "choose_biz_udgothic_for_next_overlay_proof",
+      "choose_yu_gothic_or_noto_for_next_overlay_proof",
+      "request_later_download_candidate_route"
     ],
-    "default_recommendation": "defer_ed10h_until_current_noto_proof_review"
+    "default_recommendation": "freeform_review_ed10j_contact_sheet"
   }
 }

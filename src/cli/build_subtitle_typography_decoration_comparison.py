@@ -35,7 +35,8 @@ def run(argv: list[str]) -> int:
         help=(
             "Comparison profile to generate. The default preserves the historical "
             "ED-10g artifact; ed10i_kirinuki_gothic_balance creates the narrow "
-            "gothic body/outline balance proof."
+            "gothic body/outline balance proof; ed10j_kirinuki_font_audit creates "
+            "the follow-up normal-dialogue font audit after Meiryo review."
         ),
     )
     parser.add_argument("--width", type=int, default=1920)

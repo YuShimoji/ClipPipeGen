@@ -24,19 +24,19 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10i",
-    "artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
-    "state": "ed10i_meiryo_overlay_proof_available_requires_review",
-    "human_visual_judgement": "bottom_gothic_candidate_selected_for_next_proof_base",
+    "feature_id": "ED-10j",
+    "artifact_id": "clip-ed10j-kirinuki-font-audit-001",
+    "state": "ed10j_kirinuki_font_audit_requires_review",
+    "human_visual_judgement": "meiryo_overlay_reviewed_not_accepted_as_normal_baseline",
     "target_cuts": [
       "cut_002",
       "cut_003"
     ],
     "accepted_size_rule": "round(frame_height * 0.115)",
-    "selected_typography_base": "ed10i_meiryo_bold_fill_outline_balance",
-    "selected_typography_source": "bottom_most_ed10i_contact_sheet_candidate",
-    "preferred_direction": "kirinuki_youtube_style_gothic",
-    "main_issue": "fill_outline_balance_outline_dominates",
+    "selected_typography_base": "pending_ed10j_human_review",
+    "selected_typography_source": "ed10i_meiryo_overlay_freeform_review",
+    "preferred_direction": "kirinuki_youtube_normal_dialogue_gothic",
+    "main_issue": "baseline_font_choice_may_be_wrong_not_only_outline_tuning",
     "emoji_treatment": "neutral_ignore_for_evaluation",
     "production_candidate": false,
     "production_subtitle_design_acceptance": false,
@@ -60,10 +60,16 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
-      "label": "Current Proof",
+      "label": "Font Audit",
+      "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_kirinuki_font_audit\\open_comparison.ps1",
+      "target": "episodes/.../subtitle_kirinuki_font_audit/subtitle_kirinuki_font_audit_report.html",
+      "when_to_use": "Use on the machine retaining the ED-10j normal-dialogue font audit contact sheet."
+    },
+    {
+      "label": "Reviewed Meiryo Proof",
       "command": ".\\open-current-proof.ps1",
       "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-      "when_to_use": "Use on the machine retaining the selected ED-10i Meiryo overlay proof for cut_002 / cut_003."
+      "when_to_use": "Use only to re-open the reviewed ED-10i Meiryo overlay reference; it is not the active baseline decision."
     },
     {
       "label": "Gothic Balance",
@@ -494,11 +500,22 @@
       "id": "ED-10i",
       "title": "Kirinuki Gothic Weight Balance Comparison v0",
       "status": "done",
-      "health": "selected_overlay_proof_ready",
+      "health": "reviewed_not_accepted_as_normal_baseline",
       "progress_pct": 100,
       "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
-      "next_action": "Review the selected Meiryo overlay proof and either accept it for diagnostic use or request one bounded body/outline adjustment.",
+      "next_action": "Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline.",
       "summary_excerpt": "最新の人間レビューを消費し、clip-ed10g-noto-overlay-proof-001 は styling として not accepted as-is と記録した。build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance は artifact clip-ed10i-kirinuki-go...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10j",
+      "title": "Kirinuki Subtitle Font Research & Candidate Audit v0",
+      "status": "in_progress",
+      "health": "font_audit_requires_review",
+      "progress_pct": 70,
+      "active_artifact": "clip-ed10j-kirinuki-font-audit-001",
+      "next_action": "Review the ED-10j font audit contact sheet and choose the next narrow overlay proof candidate.",
+      "summary_excerpt": "clip-ed10i-meiryo-overlay-proof-001 の freeform review を正本として消費し、Meiryo proof は「文字が細すぎる / 通常字幕として魅力不足 / baseline font choice の見直しが必要」と記録した。Meiryo を selected proof base から reviewed reference candidate に格下げし、build-subtitle...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -976,11 +993,12 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 79,
+    "feature_count": 80,
     "status_counts": {
       "done": 63,
       "proposed": 14,
       "approved": 1,
+      "in_progress": 1,
       "rejected": 1
     }
   },
@@ -1032,8 +1050,18 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
       "open_command": ".\\open-current-proof.ps1",
-      "review_status": "Available and requires human visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
-      "next_action": "Open the current proof and judge whether this selected Meiryo body/outline balance is acceptable as the next diagnostic / representative subtitle base for cut_002 / cut_003."
+      "review_status": "Reviewed and not accepted as the normal subtitle baseline. Meiryo is now an audited reference candidate only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Use clip-ed10j-kirinuki-font-audit-001 to review stronger normal-dialogue font candidates before generating another narrow overlay proof."
+    },
+    {
+      "artifact_id": "clip-ed10j-kirinuki-font-audit-001",
+      "title": "ED-10j Kirinuki Subtitle Font Research & Candidate Audit v0",
+      "purpose": "Consume the reviewed Meiryo overlay proof as not accepted for the normal subtitle baseline, then compare a no-download normal-dialogue gothic/sans shortlist before another overlay proof.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit/subtitle_kirinuki_font_audit_report.html",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_kirinuki_font_audit\\open_comparison.ps1",
+      "review_status": "Available after local generation and requires freeform human review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Review the contact sheet for body thickness, outline pressure, subtitle-like / telop-like feel, and whether the candidate feels deliberate rather than default-OS. Freeform review is enough."
     },
     {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
@@ -1073,24 +1101,25 @@
       "clip-typography-decoration-comparison-001",
       "clip-ed10i-kirinuki-gothic-balance-001",
       "clip-ed10i-meiryo-overlay-proof-001",
+      "clip-ed10j-kirinuki-font-audit-001",
       "clip-ed10g-noto-overlay-proof-001",
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 8
+    "artifact_count": 9
   },
   "artifact_coverage": {
-    "registered_artifact_count": 8,
-    "features_with_artifact_count": 6,
+    "registered_artifact_count": 9,
+    "features_with_artifact_count": 7,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "ED-10i selected Meiryo overlay proof",
-      "artifact": "clip-ed10i-meiryo-overlay-proof-001",
-      "question": "Is the selected Meiryo body/outline balance acceptable as the next diagnostic subtitle base for cut_002 / cut_003?",
-      "next_route": "Open the current proof and judge the generated MP4/PNG overlay, keeping production/public gates closed."
+      "item": "ED-10j kirinuki font audit",
+      "artifact": "clip-ed10j-kirinuki-font-audit-001",
+      "question": "Which audited normal-dialogue gothic candidate is closest to a deliberate kirinuki subtitle baseline for cut_002 / cut_003?",
+      "next_route": "Open the ED-10j contact sheet and give freeform review; Meiryo remains a reviewed reference, not the baseline."
     },
     {
       "item": "ED-10h font candidate sweep",
@@ -1131,13 +1160,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 11,
+      "boundary_term_count": 12,
       "status": "reference"
     },
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 363,
+      "line_count": 369,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1146,8 +1175,8 @@
         "health": "active",
         "progress_pct": "80",
         "last_touched": "2026-06-17",
-        "next_review_due": "before_ed10i_meiryo_overlay_visual_judgement",
-        "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+        "next_review_due": "after_ed10j_kirinuki_font_audit_review",
+        "active_artifact": "clip-ed10j-kirinuki-font-audit-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1164,7 +1193,7 @@
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 216,
+      "line_count": 218,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1172,7 +1201,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 290,
+      "boundary_term_count": 300,
       "status": "in_progress"
     },
     {
@@ -1206,17 +1235,17 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 434,
+      "line_count": 439,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "ed10i_selected_overlay_proof_ready",
+        "status": "ed10j_font_audit_route_open",
         "health": "historical_reference",
         "progress_pct": "100",
         "last_touched": "2026-06-17",
-        "next_review_due": "before_ed10i_meiryo_overlay_visual_judgement",
-        "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+        "next_review_due": "after_ed10j_kirinuki_font_audit_review",
+        "active_artifact": "clip-ed10j-kirinuki-font-audit-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1227,13 +1256,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 71,
-      "status": "ed10i_selected_overlay_proof_ready"
+      "boundary_term_count": 75,
+      "status": "ed10j_font_audit_route_open"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
       "title": "Representative Subtitle Design Review",
-      "line_count": 338,
+      "line_count": 336,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1247,7 +1276,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "Artifact Registry",
-      "line_count": 236,
+      "line_count": 269,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1255,7 +1284,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 85,
+      "boundary_term_count": 101,
       "status": "reference"
     },
     {
@@ -1508,8 +1537,8 @@
         "health": "stable",
         "progress_pct": "90",
         "last_touched": "2026-06-17",
-        "next_review_due": "before_next_review_bundle_schema_change_or_ed10i_session_refresh",
-        "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+        "next_review_due": "before_next_review_bundle_schema_change_or_ed10j_session_refresh",
+        "active_artifact": "clip-ed10j-kirinuki-font-audit-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md"
@@ -1540,17 +1569,17 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 140,
+      "line_count": 189,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
         "type": "candidate_registry",
-        "status": "approved",
-        "health": "defined_not_generated",
-        "progress_pct": "15",
+        "status": "in_progress",
+        "health": "ed10j_font_audit_active",
+        "progress_pct": "70",
         "last_touched": "2026-06-17",
-        "next_review_due": "after_ed10i_meiryo_overlay_visual_judgement",
-        "active_artifact": "clip-subtitle-font-candidate-sweep-001",
+        "next_review_due": "after_ed10j_kirinuki_font_audit_review",
+        "active_artifact": "clip-ed10j-kirinuki-font-audit-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md"
@@ -1562,7 +1591,7 @@
         "constraints_risks": true
       },
       "boundary_term_count": 10,
-      "status": "approved"
+      "status": "in_progress"
     },
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
@@ -1662,7 +1691,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 290 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 300 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -1674,7 +1703,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 85 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 101 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

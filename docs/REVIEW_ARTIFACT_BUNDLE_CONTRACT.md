@@ -6,8 +6,8 @@ status: active
 health: stable
 progress_pct: 90
 last_touched: 2026-06-17
-next_review_due: before_next_review_bundle_schema_change_or_ed10i_session_refresh
-active_artifact: clip-ed10i-meiryo-overlay-proof-001
+next_review_due: before_next_review_bundle_schema_change_or_ed10j_session_refresh
+active_artifact: clip-ed10j-kirinuki-font-audit-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md
@@ -15,13 +15,13 @@ related: docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/
 
 # Review Artifact Bundle Contract
 
-Active Artifact: `clip-ed10i-meiryo-overlay-proof-001`
+Active Artifact: `clip-ed10j-kirinuki-font-audit-001`
 
 Current review entry relationship: `clip-human-preview-session-001` remains the
 older SH-08 human preview session bundle. ED-10i used a separate local
-comparison artifact to select the bottom gothic candidate, then refreshed the
-current subtitle overlay proof with that selected Meiryo candidate. This does
-not regenerate SH-08.
+comparison artifact and Meiryo overlay proof; the follow-up review did not
+accept Meiryo as the normal subtitle baseline. ED-10j now uses a separate font
+audit contact sheet and does not regenerate SH-08.
 
 Legacy alias: `clip-episode-review-surface-001`
 
@@ -41,9 +41,9 @@ route を固定します。
 
 ## 今の状態
 
-Current active artifact は `clip-ed10i-meiryo-overlay-proof-001` です。
+Current active artifact は `clip-ed10j-kirinuki-font-audit-001` です。
 `clip-human-preview-session-001` は古い SH-08 review bundle として残りますが、
-今回の字幕 styling 判断対象は ED-10i の selected Meiryo overlay proof です。
+今回の字幕 styling 判断対象は ED-10j の kirinuki font audit contact sheet です。
 SH-08 はこの判断だけでは再生成しません。
 
 ## これからどうなるか
@@ -60,7 +60,7 @@ uvx pytest -q tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
 
 Human preview session を再生成するのは、same-machine readback で required
-artifact が欠けている時だけです。ED-10i の selected Meiryo overlay proof 判断だけなら
+artifact が欠けている時だけです。ED-10j の font audit 判断だけなら
 SH-08 を再生成しません。
 
 ## 実装・設計メモ

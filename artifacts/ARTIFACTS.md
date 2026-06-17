@@ -133,9 +133,9 @@ should remain empty.
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10i_meiryo_bold_fill_outline_balance --format json` plus targeted tests. |
 | latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10i_meiryo_bold_fill_outline_balance`, `typography_decoration_candidate_id=ed10i_meiryo_bold_fill_outline_balance`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
 | latest_local_smoke | Same-machine readback resolved `font_family_route.requested=Meiryo`, `font_family_route.font_file_status=candidate_primary_font_file_found`, `font_size=124`, `outline=9`, `bbox_wrapping_applied=true`, and target MP4/PNG artifacts for `cut_002` and `cut_003`. The generated PNG frames were inspected as nonblank 1920x1080 local visual artifacts. |
-| human_visual_judgement | Pending for the selected Meiryo overlay proof. The consumed judgement only selected the bottom ED-10i comparison candidate as the next proof base. |
-| review_status | Available and requires human visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
-| next_action | Open the current proof and judge whether this selected Meiryo body/outline balance is acceptable as the next diagnostic / representative subtitle base for `cut_002` / `cut_003`. |
+| human_visual_judgement | Freeform review consumed: the proof looks too thin and is not attractive enough as the normal subtitle baseline; the issue may be baseline font choice, not only outline tuning. |
+| review_status | Reviewed and not accepted as the normal subtitle baseline. Meiryo is now an audited reference candidate only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Use `clip-ed10j-kirinuki-font-audit-001` to review stronger normal-dialogue font candidates before generating another narrow overlay proof. |
 
 Boundary flags remain false or pending:
 
@@ -152,6 +152,39 @@ Remote Git can verify the tracked generator, docs, dashboard metadata, and
 tests but not the ignored MP4/PNG/ASS files themselves. Other worktrees should
 treat missing `episodes/` proof assets as local evidence absence, not as a
 tracked Git failure.
+
+## `clip-ed10j-kirinuki-font-audit-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10j Kirinuki Subtitle Font Research & Candidate Audit v0 |
+| purpose | Consume the reviewed Meiryo overlay proof as not accepted for the normal subtitle baseline, then compare a no-download normal-dialogue gothic/sans shortlist before another overlay proof. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit/subtitle_kirinuki_font_audit_report.html` |
+| contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit/subtitle_kirinuki_font_audit_contact_sheet.png` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |
+| generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10j_kirinuki_font_audit` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10j freeform review readback. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10j_kirinuki_font_audit --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
+| latest_validation_result | Same-machine ED-10j generation returned `artifact_id=clip-ed10j-kirinuki-font-audit-001`, `candidate_count=4`, `sample_count=16`, `font_size.value=124`, `recommended_default_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`, `selected_candidate_for_next_proof_base=pending_ed10j_human_review`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet plus BIZ/Noto sample PNGs were inspected as nonblank local visual evidence. |
+| review_status | Available after local generation and requires freeform human review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Review the contact sheet for body thickness, outline pressure, subtitle-like / telop-like feel, and whether the candidate feels deliberate rather than default-OS. Freeform review is enough. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked generator, docs, dashboard metadata, and
+tests. It cannot directly verify the ignored PNG/HTML comparison artifacts
+themselves, so local artifact existence must be verified with the open command
+or JSON report readback on the retaining machine. `git ls-files episodes`
+should remain empty.
 
 ## `clip-ed10g-noto-overlay-proof-001`
 

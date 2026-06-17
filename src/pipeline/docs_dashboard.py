@@ -99,16 +99,16 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10i",
-            "artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
-            "state": "ed10i_meiryo_overlay_proof_available_requires_review",
-            "human_visual_judgement": "bottom_gothic_candidate_selected_for_next_proof_base",
+            "feature_id": "ED-10j",
+            "artifact_id": "clip-ed10j-kirinuki-font-audit-001",
+            "state": "ed10j_kirinuki_font_audit_requires_review",
+            "human_visual_judgement": "meiryo_overlay_reviewed_not_accepted_as_normal_baseline",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "ed10i_meiryo_bold_fill_outline_balance",
-            "selected_typography_source": "bottom_most_ed10i_contact_sheet_candidate",
-            "preferred_direction": "kirinuki_youtube_style_gothic",
-            "main_issue": "fill_outline_balance_outline_dominates",
+            "selected_typography_base": "pending_ed10j_human_review",
+            "selected_typography_source": "ed10i_meiryo_overlay_freeform_review",
+            "preferred_direction": "kirinuki_youtube_normal_dialogue_gothic",
+            "main_issue": "baseline_font_choice_may_be_wrong_not_only_outline_tuning",
             "emoji_treatment": "neutral_ignore_for_evaluation",
             "production_candidate": False,
             "production_subtitle_design_acceptance": False,
@@ -199,7 +199,7 @@ def render_dashboard_html(status: dict[str, Any]) -> str:
   </section>
   <section>
     <h2>Open Surfaces</h2>
-    <p>Normal order: run <code>.\open-dashboard.ps1</code>, choose an artifact, then use an artifact-specific launcher only when needed.</p>
+    <p>Normal order: run <code>.\\open-dashboard.ps1</code>, choose an artifact, then use an artifact-specific launcher only when needed.</p>
     {_open_surfaces_table_html(status["open_surfaces"])}
   </section>
   <section>
@@ -377,6 +377,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10g-noto-overlay-proof-001"
         if feature_id == "ED-10i":
             active_artifact = "clip-ed10i-meiryo-overlay-proof-001"
+        if feature_id == "ED-10j":
+            active_artifact = "clip-ed10j-kirinuki-font-audit-001"
         features.append(
             {
                 "id": feature_id,
@@ -441,7 +443,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10i-meiryo-overlay-proof-001" in artifact_ids
+        "clip-ed10j-kirinuki-font-audit-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -488,10 +490,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10i selected Meiryo overlay proof",
-            "artifact": "clip-ed10i-meiryo-overlay-proof-001",
-            "question": "Is the selected Meiryo body/outline balance acceptable as the next diagnostic subtitle base for cut_002 / cut_003?",
-            "next_route": "Open the current proof and judge the generated MP4/PNG overlay, keeping production/public gates closed.",
+            "item": "ED-10j kirinuki font audit",
+            "artifact": "clip-ed10j-kirinuki-font-audit-001",
+            "question": "Which audited normal-dialogue gothic candidate is closest to a deliberate kirinuki subtitle baseline for cut_002 / cut_003?",
+            "next_route": "Open the ED-10j contact sheet and give freeform review; Meiryo remains a reviewed reference, not the baseline.",
         },
         {
             "item": "ED-10h font candidate sweep",
@@ -546,10 +548,24 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
-            "label": "Current Proof",
+            "label": "Font Audit",
+            "command": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
+                "jp_pilot01r3_cut_review\\subtitle_kirinuki_font_audit\\"
+                "open_comparison.ps1"
+            ),
+            "target": (
+                "episodes/.../subtitle_kirinuki_font_audit/"
+                "subtitle_kirinuki_font_audit_report.html"
+            ),
+            "when_to_use": "Use on the machine retaining the ED-10j normal-dialogue font audit contact sheet.",
+        },
+        {
+            "label": "Reviewed Meiryo Proof",
             "command": ".\\open-current-proof.ps1",
             "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-            "when_to_use": "Use on the machine retaining the selected ED-10i Meiryo overlay proof for cut_002 / cut_003.",
+            "when_to_use": "Use only to re-open the reviewed ED-10i Meiryo overlay reference; it is not the active baseline decision.",
         },
         {
             "label": "Gothic Balance",
@@ -635,7 +651,9 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10h":
         return "defined_not_generated"
     if feature_id == "ED-10i":
-        return "selected_overlay_proof_ready"
+        return "reviewed_not_accepted_as_normal_baseline"
+    if feature_id == "ED-10j":
+        return "font_audit_requires_review"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -648,6 +666,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 15
     if feature_id == "ED-10i":
         return 100
+    if feature_id == "ED-10j":
+        return 70
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -657,7 +677,9 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10h":
         return "Use the font candidate registry to choose a no-download or download-approved sweep route."
     if feature_id == "ED-10i":
-        return "Review the selected Meiryo overlay proof and either accept it for diagnostic use or request one bounded body/outline adjustment."
+        return "Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline."
+    if feature_id == "ED-10j":
+        return "Review the ED-10j font audit contact sheet and choose the next narrow overlay proof candidate."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

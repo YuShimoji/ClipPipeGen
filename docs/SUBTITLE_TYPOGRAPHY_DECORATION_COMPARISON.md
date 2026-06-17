@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10i_selected_overlay_proof_ready
+status: ed10j_font_audit_route_open
 health: historical_reference
 progress_pct: 100
 last_touched: 2026-06-17
-next_review_due: before_ed10i_meiryo_overlay_visual_judgement
-active_artifact: clip-ed10i-meiryo-overlay-proof-001
+next_review_due: after_ed10j_kirinuki_font_audit_review
+active_artifact: clip-ed10j-kirinuki-font-audit-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -17,27 +17,26 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-17 JST
 
-## Current Update - ED-10i Selected The Bottom Gothic Candidate
+## Current Update - ED-10j Reopens Font Baseline Audit
 
-The latest human review has been consumed as a new styling judgement: the
-previous `noto_sans_jp_clean_outline` proof is not accepted as-is. The desired
-direction is kirinuki YouTube style gothic, with a thicker glyph body so the
-outline no longer dominates. Emoji treatment is neutral and ignored for this
-slice.
+The latest freeform review of `clip-ed10i-meiryo-overlay-proof-001` has been
+consumed as a baseline-font judgement. The Meiryo proof is not accepted as the
+normal subtitle baseline: it looks too thin, is not attractive enough as the
+default subtitle face, and should not be treated as a minor outline-only tweak.
 
-The reviewed ED-10i contact sheet selected the bottom-most gothic candidate as
-closest to the current ideal. The local ED-10i JSON resolves that row to
-`ed10i_meiryo_bold_fill_outline_balance` / `Meiryo Bold fill/outline balance`.
-The active proof is now `clip-ed10i-meiryo-overlay-proof-001`, generated from
-that selected candidate for `cut_002` / `cut_003`. ED-10g remains useful as a
-historical reference and current-reference comparison row, but it is no longer
-the current styling decision.
+ED-10j now owns the next route:
+`clip-ed10j-kirinuki-font-audit-001`. Meiryo remains visible only as a reviewed
+reference candidate. The active comparison narrows normal-dialogue candidates
+to local/no-download fonts first: BIZ UDGothic, Yu Gothic, Noto Sans JP, and
+the reviewed Meiryo reference. M PLUS / Zen Kaku Gothic New / Dela Gothic One
+stay in a later download/license-decision bucket until explicitly approved.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10i-kirinuki-gothic-balance-001` | Consumed comparison / audit trail | Why the bottom candidate maps to `ed10i_meiryo_bold_fill_outline_balance` | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10i-meiryo-overlay-proof-001` | Active selected-candidate overlay proof | Whether Meiryo Bold fill/outline balance is acceptable as the next diagnostic subtitle base for `cut_002` / `cut_003` | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10i-meiryo-overlay-proof-001` | Reviewed reference proof | Shows why Meiryo should not be fixed as the normal subtitle baseline | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10j-kirinuki-font-audit-001` | Active font audit comparison | Which normal-dialogue gothic/sans candidate should become the next narrow overlay proof base | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -55,19 +54,20 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-`clip-ed10g-noto-overlay-proof-001` は `cut_002` / `cut_003` に生成済みで、
-human visual judgement は `accept_diagnostic_base` として消費済みです。
-`noto_sans_jp_clean_outline` を current diagnostic / representative base として
-扱います。次に候補 universe を広げる作業は
-[SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md) の
-`ED-10h` に分離します。
+`clip-ed10i-meiryo-overlay-proof-001` はレビュー済みで、normal subtitle
+baseline としては不採用です。現在の active artifact は
+`clip-ed10j-kirinuki-font-audit-001` で、次に overlay proof 化する候補を
+freeform review で絞ります。
 
 ## これからどうなるか
 
-1. ED-10g の current base は受け入れ済みとして閉じる。
-2. representative coverage を広げるなら、dense/stress proof や production
+1. ED-10j の font audit contact sheet を確認し、次の overlay proof 候補を
+   freeform review で絞る。
+2. Meiryo は reviewed reference としてのみ扱い、通常字幕 baseline に戻す
+   場合は明示レビューを要求する。
+3. representative coverage を広げるなら、dense/stress proof や production
    render / rights slice とは別に `cut_008` などの明示 target を起票する。
-3. 追加比較が必要なら ED-10h registry から Google Fonts / OFL / system font
+4. 追加比較が必要なら ED-10h registry から Google Fonts / OFL / system font
    candidates を選び、download なし route か許可付き download route を選ぶ。
 
 ## 使い方・確認方法
@@ -75,13 +75,13 @@ human visual judgement は `accept_diagnostic_base` として消費済みです�
 Primary local proof:
 
 ```powershell
-.\open-current-proof.ps1
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1
 ```
 
-Comparison contact sheet:
+Reviewed Meiryo reference:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_typography_decoration_comparison\open_comparison.ps1
+.\open-current-proof.ps1
 ```
 
 ## 実装・設計メモ
@@ -108,6 +108,9 @@ together.
   candidate as closest to ideal. Local JSON resolves it to
   `ed10i_meiryo_bold_fill_outline_balance`; a selected-candidate overlay proof
   was generated for `cut_002` / `cut_003`.
+- 2026-06-17: freeform review of the Meiryo overlay proof consumed as
+  reviewed-not-accepted for the normal subtitle baseline. ED-10j opens the
+  kirinuki normal-dialogue font audit and demotes Meiryo to reference.
 
 ## Constraints / Risks
 
@@ -146,8 +149,9 @@ Review note:
 - Decorative treatment is narrowed to that candidate's clean outline and cool
   placeholder badge accent for the next diagnostic overlay proof.
 - This is not production subtitle design acceptance.
-- The small-adjustment diagnostic overlay proof for `cut_002` / `cut_003` has
-  been accepted as the current diagnostic / representative base.
+- The small-adjustment diagnostic overlay proof for `cut_002` / `cut_003` was
+  accepted as a historical diagnostic / representative base before later
+  styling reviews superseded it.
 
 | Axis | Current decision | Workflow effect |
 |---|---|---|
@@ -157,11 +161,11 @@ Review note:
 | human visual judgement | `accept_diagnostic_base` | The selected proof base can carry forward for diagnostic / representative review only. |
 | production/public gates | false or pending | No production subtitle design, render, rights, publishing, public-use, or upload acceptance is created. |
 
-## Active Comparison Artifact
+## Historical ED-10i Comparison Artifact
 
-The current active comparison audit artifact is
-`clip-ed10i-kirinuki-gothic-balance-001`. It is a narrow same-machine
-comparison, not a broad ED-10h sweep.
+The ED-10i comparison audit artifact is
+`clip-ed10i-kirinuki-gothic-balance-001`. It remains the audit trail for how
+the bottom row resolved to Meiryo, but the active route is now ED-10j.
 
 Primary local report:
 
@@ -194,12 +198,13 @@ fill/outline balance. Font size, placement, wrapping, source media, transcript,
 official subtitle evidence, rights, publishing, upload, and production state
 remain unchanged.
 
-## Selected ED-10i Overlay Proof
+## Reviewed ED-10i Overlay Proof
 
 Artifact id: `clip-ed10i-meiryo-overlay-proof-001`
 
-The selected proof applies `ed10i_meiryo_bold_fill_outline_balance` to
-`cut_002` / `cut_003`. It reuses the existing subtitle overlay proof surface
+The reviewed proof applies `ed10i_meiryo_bold_fill_outline_balance` to
+`cut_002` / `cut_003`. The follow-up freeform review did not accept it as the
+normal subtitle baseline. It reuses the existing subtitle overlay proof surface
 and does not regenerate SH-08.
 
 Primary local report:
@@ -226,7 +231,7 @@ uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
   --format json
 ```
 
-Current same-machine readback: `style_candidate_id` and
+ED-10i same-machine readback: `style_candidate_id` and
 `typography_decoration_candidate_id` are both
 `ed10i_meiryo_bold_fill_outline_balance`, `font_size.value=124`,
 `outline.value=9`, `font_family_route.requested=Meiryo`,

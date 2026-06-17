@@ -800,3 +800,146 @@ def test_typography_decoration_comparison_cli_reports_ed10i_profile(
     )
     assert payload["production_subtitle_design_acceptance"] is False
     assert Path(payload["outputs"]["html"]).exists()
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_kirinuki_font_audit_profile_consumes_meiryo_freeform_review(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "subtitle_kirinuki_font_audit"
+
+    report = spike.build_subtitle_typography_decoration_comparison(
+        output_dir=output_dir,
+        sample_texts=[
+            "団長、ちなみに、他の番長知ってますか？",
+            "まあ謝るんなら許してあげます",
+        ],
+        canvas_size=(640, 360),
+        base_dir=tmp_path,
+        comparison_profile="ed10j_kirinuki_font_audit",
+    )
+
+    assert report["report_kind"] == "subtitle_kirinuki_font_research_candidate_audit"
+    assert report["artifact_id"] == "clip-ed10j-kirinuki-font-audit-001"
+    assert report["comparison_profile"] == "ed10j_kirinuki_font_audit"
+    assert report["human_decision_readback"]["selected_response"] == (
+        "freeform_review_not_accepted_as_normal_baseline"
+    )
+    assert report["human_decision_readback"][
+        "current_meiryo_proof_accepted_as_normal_baseline"
+    ] is False
+    assert report["human_decision_readback"]["meiryo_role"] == (
+        "reviewed_reference_candidate_not_selected_baseline"
+    )
+    assert report["comparison_response_readback"][
+        "selected_candidate_for_next_proof_base"
+    ] == "pending_ed10j_human_review"
+    assert report["candidate_count"] == 4
+    assert {candidate["candidate_id"] for candidate in report["candidates"]} == {
+        "ed10j_reference_meiryo_reviewed_not_baseline",
+        "ed10j_biz_udgothic_bold_telop_candidate",
+        "ed10j_yu_gothic_bold_system_candidate",
+        "ed10j_noto_sans_jp_local_telop_candidate",
+    }
+    assert report["next_diagnostic_overlay_proof_route"]["route_kind"] == (
+        "kirinuki_font_audit_then_narrow_overlay_proof"
+    )
+    assert report["next_diagnostic_overlay_proof_route"][
+        "recommended_default_candidate_id"
+    ] == "ed10j_biz_udgothic_bold_telop_candidate"
+    decision_packet = report["kirinuki_font_audit_decision_packet"]
+    assert decision_packet["decision_state"] == "generated_requires_human_review"
+    assert decision_packet["current_meiryo_proof_accepted_as_normal_baseline"] is False
+    assert decision_packet["font_size"]["reopen_as_primary_axis"] is False
+    assert decision_packet["emoji_treatment"]["optimize_in_this_slice"] is False
+    assert {
+        bucket["bucket"] for bucket in decision_packet["candidate_buckets"]
+    } == {
+        "system_default_safe",
+        "likely_video_telop_friendly_local",
+        "local_only_reproducibility_weak",
+        "later_download_license_decision",
+    }
+    assert {
+        route["route"] for route in decision_packet["rejected_alternatives"]
+    } >= {
+        "treat_meiryo_overlay_as_accepted_normal_baseline",
+        "minor_meiryo_outline_tweak_only",
+        "download_or_vendor_third_party_fonts_now",
+        "broaden_to_narration_mincho_or_display_fonts",
+        "claim_production_subtitle_design_acceptance",
+    }
+    assert len(report["samples"]) == 8
+    for sample in report["samples"]:
+        assert sample["sample_variant"] == "kirinuki_font_research_candidate_audit"
+        assert sample["style_inputs"]["emoji_evaluation_scope"] == (
+            "emoji_neutral_ignored_for_ed10j"
+        )
+        assert sample["production_candidate"] is False
+
+    json_path = output_dir / "subtitle_kirinuki_font_audit_report.json"
+    html_path = output_dir / "subtitle_kirinuki_font_audit_report.html"
+    contact_sheet = output_dir / "subtitle_kirinuki_font_audit_contact_sheet.png"
+    assert json_path.exists()
+    assert html_path.exists()
+    assert contact_sheet.exists()
+    persisted = json.loads(json_path.read_text(encoding="utf-8"))
+    assert json_path.read_text(encoding="utf-8").isascii()
+    assert persisted["comparison_profile"] == "ed10j_kirinuki_font_audit"
+    html = html_path.read_text(encoding="utf-8")
+    assert "ED-10j Kirinuki Subtitle Font Research" in html
+    assert "Kirinuki Font Audit Decision Packet" in html
+    assert "reviewed_reference_candidate_not_selected_baseline" in html
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_typography_decoration_comparison_cli_reports_ed10j_profile(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "ed10j_cli"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "build-subtitle-typography-decoration-comparison",
+            "--comparison-profile",
+            "ed10j_kirinuki_font_audit",
+            "--output-dir",
+            str(output_dir),
+            "--target-cut",
+            "cut_002",
+            "--target-cut",
+            "cut_003",
+            "--sample-text",
+            "ED-10j kirinuki font audit smoke",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["artifact_id"] == "clip-ed10j-kirinuki-font-audit-001"
+    assert payload["comparison_profile"] == "ed10j_kirinuki_font_audit"
+    assert payload["comparison_response"]["selected_response"] == (
+        "generate_kirinuki_font_research_candidate_audit"
+    )
+    assert payload["selected_candidate_for_next_proof_base"] == (
+        "pending_ed10j_human_review"
+    )
+    assert payload["comparison_decision_packet"]["recommended_default_candidate_id"] == (
+        "ed10j_biz_udgothic_bold_telop_candidate"
+    )
+    assert payload["production_subtitle_design_acceptance"] is False
+    assert Path(payload["outputs"]["html"]).exists()

@@ -40,11 +40,17 @@ DEFAULT_KIRINUKI_GOTHIC_BALANCE_OUTPUT_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/"
     "review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison"
 )
+DEFAULT_KIRINUKI_FONT_AUDIT_OUTPUT_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/"
+    "review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit"
+)
 ED10G_TYPOGRAPHY_DECORATION_PROFILE = "ed10g_typography_decoration"
 ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE = "ed10i_kirinuki_gothic_balance"
+ED10J_KIRINUKI_FONT_AUDIT_PROFILE = "ed10j_kirinuki_font_audit"
 TYPOGRAPHY_COMPARISON_PROFILES = (
     ED10G_TYPOGRAPHY_DECORATION_PROFILE,
     ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE,
+    ED10J_KIRINUKI_FONT_AUDIT_PROFILE,
 )
 DEFAULT_CANVAS = (1280, 720)
 SAMPLE_TEXTS = (
@@ -400,9 +406,105 @@ ED10I_KIRINUKI_GOTHIC_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
     ),
 )
 
+ED10J_KIRINUKI_FONT_AUDIT_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
+    TypographyDecorationCandidate(
+        candidate_id="ed10j_reference_meiryo_reviewed_not_baseline",
+        display_name="Reviewed reference: Meiryo Bold",
+        font_paths=(
+            Path("C:/Windows/Fonts/meiryob.ttc"),
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+        ),
+        fallback_family="Meiryo",
+        stroke_ratio=0.066,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 252, 238),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(82, 91, 104),
+        badge_outline=(22, 26, 34),
+        decoration_note=(
+            "reviewed ED-10i reference only; kept visible so stronger normal-dialogue "
+            "candidates can be judged against the too-thin Meiryo proof"
+        ),
+        body_weight_note="reviewed Meiryo route; legible but not accepted as the normal subtitle baseline",
+        outline_balance_role="reference_only_not_baseline",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10j",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10j_biz_udgothic_bold_telop_candidate",
+        display_name="BIZ UDGothic Bold telop-safe candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/BIZ-UDGothicB.ttc"),
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+        ),
+        fallback_family="BIZ UDGothic",
+        stroke_ratio=0.062,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(218, 48, 72),
+        badge_outline=(54, 12, 23),
+        decoration_note=(
+            "local universal-design gothic candidate; stronger body-first route for "
+            "normal dialogue without making the outline carry the subtitle"
+        ),
+        body_weight_note="bold UD gothic body; preferred local-safe candidate after Meiryo was demoted",
+        outline_balance_role="body_first_telop_candidate",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10j",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10j_yu_gothic_bold_system_candidate",
+        display_name="Yu Gothic Bold system-safe candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+        ),
+        fallback_family="Yu Gothic",
+        stroke_ratio=0.060,
+        shadow_offset_ratio=0.012,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(240, 154, 42),
+        badge_outline=(60, 36, 8),
+        decoration_note=(
+            "Windows gothic candidate; useful to compare a familiar system-safe "
+            "route against BIZ UDGothic without treating system availability as quality"
+        ),
+        body_weight_note="bold system gothic body; watch for default-OS subtitle feel",
+        outline_balance_role="system_safe_comparison_candidate",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10j",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10j_noto_sans_jp_local_telop_candidate",
+        display_name="Noto Sans JP local telop candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+            Path("C:/Windows/Fonts/BIZ-UDGothicB.ttc"),
+        ),
+        fallback_family="Noto Sans JP",
+        stroke_ratio=0.064,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(50, 134, 212),
+        badge_outline=(12, 34, 58),
+        decoration_note=(
+            "locally installed open Japanese sans route; compare as a neutral "
+            "modern body before any later font download decision"
+        ),
+        body_weight_note="local Noto Sans JP route; may need an explicit heavier-weight proof later",
+        outline_balance_role="neutral_modern_sans_candidate",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10j",
+    ),
+)
+
 TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
     ED10G_TYPOGRAPHY_DECORATION_CANDIDATES
     + ED10I_KIRINUKI_GOTHIC_CANDIDATES
+    + ED10J_KIRINUKI_FONT_AUDIT_CANDIDATES
 )
 
 
@@ -1389,6 +1491,118 @@ def _typography_comparison_profile(
                 "are intentionally ignored in this slice."
             ),
         }
+    if comparison_profile == ED10J_KIRINUKI_FONT_AUDIT_PROFILE:
+        decision_packet = _kirinuki_font_audit_decision_packet(
+            target_cut_ids=target_cut_ids,
+        )
+        return {
+            "output_dir_name": "subtitle_kirinuki_font_audit",
+            "default_output_dir": DEFAULT_KIRINUKI_FONT_AUDIT_OUTPUT_DIR,
+            "json_filename": "subtitle_kirinuki_font_audit_report.json",
+            "html_filename": "subtitle_kirinuki_font_audit_report.html",
+            "contact_sheet_filename": "subtitle_kirinuki_font_audit_contact_sheet.png",
+            "sample_variant": "kirinuki_font_research_candidate_audit",
+            "report_kind": "subtitle_kirinuki_font_research_candidate_audit",
+            "artifact_id": "clip-ed10j-kirinuki-font-audit-001",
+            "scope": "diagnostic_representative_kirinuki_normal_dialogue_font_audit",
+            "html_title": "ED-10j Kirinuki Subtitle Font Research & Candidate Audit",
+            "source_notice": (
+                "Human freeform review consumed: the selected Meiryo proof looks "
+                "too thin and is not attractive enough as the normal subtitle "
+                "baseline. This is not a Meiryo outline tweak; Meiryo is now a "
+                "reviewed reference while this slice audits more practical "
+                "kirinuki-style normal-dialogue font candidates."
+            ),
+            "decision_packet_title": "Kirinuki Font Audit Decision Packet",
+            "decision_packet_key": "kirinuki_font_audit_decision_packet",
+            "decision_packet": decision_packet,
+            "font_size_status": "preserved_as_comparison_constant_not_accepted_baseline",
+            "human_decision_readback": {
+                "source_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+                "selected_response": "freeform_review_not_accepted_as_normal_baseline",
+                "current_meiryo_proof_accepted_as_normal_baseline": False,
+                "main_issue": "meiryo_body_too_thin_and_not_attractive_for_normal_subtitles",
+                "interpretation": (
+                    "baseline_font_choice_must_be_researched_before_more_bounded_proof_tuning"
+                ),
+                "meiryo_role": "reviewed_reference_candidate_not_selected_baseline",
+                "font_size": "preserve_current_size_policy_as_comparison_constant",
+                "production_subtitle_design_acceptance": False,
+            },
+            "comparison_response_readback": {
+                "source_artifact": "clip-ed10j-kirinuki-font-audit-001",
+                "selected_response": "generate_kirinuki_font_research_candidate_audit",
+                "selected_candidate_for_next_proof_base": "pending_ed10j_human_review",
+                "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+                "font_size": "preserved_as_comparison_constant_not_primary_axis",
+                "font_family": "normal_dialogue_gothic_sans_audit",
+                "font_weight": "prefer_stronger_body_than_reviewed_meiryo",
+                "decoration": "restrained_outline_body_first_comparison",
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "comparison_axes": {
+                "fixed": [
+                    "font_size_policy=round(frame_height * 0.115)",
+                    "badge_left_dialogue placement",
+                    "font_bbox wrapping",
+                    "target_cuts=cut_002/cut_003",
+                ],
+                "varied": [
+                    "font_family",
+                    "glyph body thickness",
+                    "default/system feel vs deliberate video subtitle feel",
+                    "outline pressure against body weight",
+                    "local availability / reproducibility route",
+                ],
+                "out_of_scope": [
+                    "minor Meiryo outline-only tweak",
+                    "narration/mincho exploration",
+                    "display-font emphasis route",
+                    "third-party font download or vendoring",
+                    "production subtitle design acceptance",
+                    "production render acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "next_diagnostic_overlay_proof_route": {
+                "route_kind": "kirinuki_font_audit_then_narrow_overlay_proof",
+                "target_cuts": list(target_cut_ids),
+                "selected_candidate_for_next_proof_base": "pending_ed10j_human_review",
+                "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+                "font_size": {
+                    "status": "preserve_existing_size_policy_as_comparison_constant",
+                    "formula": "round(frame_height * 0.115)",
+                },
+                "font_family": "choose_from_ed10j_audited_normal_dialogue_shortlist",
+                "font_weight": "heavier_body_than_reviewed_meiryo_preferred",
+                "outline": "restrained_enough_that_body_weight_leads",
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "regenerate_sh08_required": False,
+                "comparison_artifact_required": "generated_for_ed10j_freeform_review",
+                "episodes_artifact_tracking_allowed": False,
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "candidates": ED10J_KIRINUKI_FONT_AUDIT_CANDIDATES,
+            "next_decision_question": (
+                "For cut_002 / cut_003 normal dialogue subtitles, which audited "
+                "ED-10j candidate feels most like an intentional kirinuki video "
+                "subtitle baseline rather than a default OS font? Freeform review "
+                "is enough; do not treat this as production approval."
+            ),
+        }
     known = ", ".join(TYPOGRAPHY_COMPARISON_PROFILES)
     raise ValueError(f"unknown comparison_profile: {comparison_profile}; known={known}")
 
@@ -1653,6 +1867,220 @@ def _kirinuki_gothic_balance_decision_packet(
             "default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
             "target_cuts": list(target_cut_ids),
             "keep_current_reference_visible": True,
+            "proof_scope": "diagnostic_representative_review_only",
+            "regenerate_sh08_required": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
+    }
+
+
+def _kirinuki_font_audit_decision_packet(
+    *,
+    target_cut_ids: tuple[str, ...],
+) -> dict[str, Any]:
+    return {
+        "decision_state": "generated_requires_human_review",
+        "source_review_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+        "current_meiryo_proof_accepted_as_normal_baseline": False,
+        "meiryo_role": "reviewed_reference_candidate_not_selected_baseline",
+        "preferred_direction": "kirinuki_youtube_normal_dialogue_gothic",
+        "main_issue": "baseline_font_choice_may_be_wrong_not_only_outline_tuning",
+        "recommended_default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+        "selected_candidate_for_next_proof_base": "pending_ed10j_human_review",
+        "target_cuts": list(target_cut_ids),
+        "font_size": {
+            "decision": "preserve_existing_size_policy_as_comparison_constant",
+            "formula": "round(frame_height * 0.115)",
+            "reopen_as_primary_axis": False,
+        },
+        "research_readback": {
+            "local_system_fonts_checked": [
+                "BIZ-UDGothicB.ttc",
+                "BIZ-UDGothicR.ttc",
+                "YuGothB.ttc",
+                "NotoSansJP-VF.ttf",
+                "meiryob.ttc",
+                "msgothic.ttc",
+                "UDDigiKyokashoN-B.ttc",
+            ],
+            "source_backed_inferences": [
+                {
+                    "source": "Microsoft Learn Meiryo",
+                    "url": "https://learn.microsoft.com/en-us/typography/font-list/meiryo",
+                    "inference": (
+                        "Meiryo is strong as a readable screen/body font, but the "
+                        "review shows that this does not automatically make it the "
+                        "aspirational kirinuki normal-subtitle baseline."
+                    ),
+                },
+                {
+                    "source": "Google Fonts BIZ UDGothic",
+                    "url": "https://fonts.google.com/specimen/BIZ+UDGothic",
+                    "inference": (
+                        "BIZ UDGothic is explicitly legibility-oriented and has "
+                        "local bold files, so it is the safest no-download body-first "
+                        "candidate to compare after Meiryo."
+                    ),
+                },
+                {
+                    "source": "Google Fonts M PLUS 1p",
+                    "url": "https://fonts.google.com/specimen/M+PLUS+1p",
+                    "inference": (
+                        "M PLUS offers heavier weights that may fit a video subtitle "
+                        "baseline, but it is not locally installed and needs a later "
+                        "download/license-capture route."
+                    ),
+                },
+                {
+                    "source": "Google Fonts Zen Kaku Gothic New",
+                    "url": "https://fonts.google.com/specimen/Zen+Kaku+Gothic+New",
+                    "inference": (
+                        "Zen Kaku Gothic New is a plausible later-download normal "
+                        "dialogue candidate, but it is not used in this no-download proof."
+                    ),
+                },
+            ],
+        },
+        "candidate_buckets": [
+            {
+                "bucket": "system_default_safe",
+                "candidate_ids": [
+                    "ed10j_reference_meiryo_reviewed_not_baseline",
+                    "ed10j_yu_gothic_bold_system_candidate",
+                    "ed10j_biz_udgothic_bold_telop_candidate",
+                ],
+                "routing_note": (
+                    "No download required, but system availability is not visual quality "
+                    "or cross-machine reproducibility."
+                ),
+            },
+            {
+                "bucket": "likely_video_telop_friendly_local",
+                "candidate_ids": [
+                    "ed10j_biz_udgothic_bold_telop_candidate",
+                    "ed10j_noto_sans_jp_local_telop_candidate",
+                ],
+                "routing_note": (
+                    "Best immediate comparison set for thicker body and restrained outline."
+                ),
+            },
+            {
+                "bucket": "local_only_reproducibility_weak",
+                "candidate_ids": [
+                    "ed10j_noto_sans_jp_local_telop_candidate",
+                    "ed10j_reference_meiryo_reviewed_not_baseline",
+                ],
+                "routing_note": (
+                    "Useful on this terminal; not portable until source/license/file "
+                    "metadata is pinned."
+                ),
+            },
+            {
+                "bucket": "later_download_license_decision",
+                "candidate_ids": [
+                    "m_plus_1p_bold",
+                    "m_plus_2p_bold",
+                    "zen_kaku_gothic_new_bold",
+                    "dela_gothic_one_emphasis",
+                ],
+                "routing_note": (
+                    "Promising or informative from external font sources, but excluded "
+                    "from this generated proof because download/vendor approval is absent."
+                ),
+            },
+        ],
+        "active_adjustment_axes": [
+            "font_family",
+            "glyph body thickness",
+            "outline pressure",
+            "subtitle-like / telop-like feel",
+            "local availability and reproducibility route",
+        ],
+        "emoji_treatment": {
+            "decision": "neutral_ignore_for_evaluation",
+            "optimize_in_this_slice": False,
+        },
+        "options": [
+            {
+                "candidate_id": "ed10j_reference_meiryo_reviewed_not_baseline",
+                "use_as": "reviewed_reference_only",
+                "adoption_reason": (
+                    "Keeps the user-reviewed Meiryo proof visible without preserving "
+                    "it as the current normal-subtitle baseline."
+                ),
+                "watch_item": "Review already says this route looks too thin and not attractive enough.",
+            },
+            {
+                "candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+                "use_as": "recommended_default_for_next_narrow_review",
+                "adoption_reason": (
+                    "Local bold UD gothic route with stronger body and restrained "
+                    "outline; best no-download candidate after Meiryo demotion."
+                ),
+                "watch_item": (
+                    "Legibility orientation can still feel business/default unless the "
+                    "visual proof reads as intentional video subtitle."
+                ),
+            },
+            {
+                "candidate_id": "ed10j_yu_gothic_bold_system_candidate",
+                "use_as": "system_safe_comparison",
+                "adoption_reason": (
+                    "Provides a familiar Windows gothic comparison without assuming "
+                    "system availability is enough."
+                ),
+                "watch_item": "May retain a default OS-font feeling.",
+            },
+            {
+                "candidate_id": "ed10j_noto_sans_jp_local_telop_candidate",
+                "use_as": "neutral_modern_local_comparison",
+                "adoption_reason": (
+                    "Keeps a modern Japanese sans route in the shortlist before any "
+                    "downloaded font family is approved."
+                ),
+                "watch_item": "May need a heavier-weight route for a true telop body.",
+            },
+        ],
+        "rejected_alternatives": [
+            {
+                "route": "treat_meiryo_overlay_as_accepted_normal_baseline",
+                "reason": "The freeform review explicitly says the proof is too thin and not attractive enough.",
+            },
+            {
+                "route": "minor_meiryo_outline_tweak_only",
+                "reason": "The review questions the baseline font choice itself, not only outline tuning.",
+            },
+            {
+                "route": "download_or_vendor_third_party_fonts_now",
+                "reason": "No download, vendoring, or public Git font-binary policy has been approved.",
+            },
+            {
+                "route": "broaden_to_narration_mincho_or_display_fonts",
+                "reason": "ED-10j stays on normal dialogue subtitles, not all subtitle use cases.",
+            },
+            {
+                "route": "claim_production_subtitle_design_acceptance",
+                "reason": "The generated comparison remains diagnostic / representative review only.",
+            },
+            {
+                "route": "mutate_source_or_rights_or_publishing_state",
+                "reason": (
+                    "Source media, transcript, official subtitle evidence, rights, "
+                    "publishing, public use, and upload are outside this audit route."
+                ),
+            },
+        ],
+        "smallest_next_proof_route": {
+            "route_kind": "ed10j_candidate_review_then_overlay_proof",
+            "selected_candidate_id": "pending_ed10j_human_review",
+            "default_candidate_id": "ed10j_biz_udgothic_bold_telop_candidate",
+            "target_cuts": list(target_cut_ids),
+            "keep_meiryo_visible_as_reference": True,
             "proof_scope": "diagnostic_representative_review_only",
             "regenerate_sh08_required": False,
             "production_subtitle_design_acceptance": False,

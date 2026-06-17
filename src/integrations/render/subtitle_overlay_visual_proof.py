@@ -92,6 +92,7 @@ def _diagnostic_ass_style_for_candidate(
             "typography_decoration_candidate_id": None,
             "ed10g_small_adjustment_selected": False,
             "ed10i_kirinuki_gothic_balance_candidate": False,
+            "ed10j_kirinuki_font_audit_candidate": False,
             "display_name": "JP clip dialogue badge left v0",
             "decoration_note": "existing diagnostic ASS subtitle proof style",
             "body_weight_note": "legacy overlay default",
@@ -130,6 +131,9 @@ def _diagnostic_ass_style_for_candidate(
         == "noto_sans_jp_clean_outline",
         "ed10i_kirinuki_gothic_balance_candidate": candidate.candidate_id.startswith(
             "ed10i_"
+        ),
+        "ed10j_kirinuki_font_audit_candidate": candidate.candidate_id.startswith(
+            "ed10j_"
         ),
         "display_name": candidate.display_name,
         "decoration_note": candidate.decoration_note,
