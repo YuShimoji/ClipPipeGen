@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from src.integrations.render.subtitle_style_spike import (
+    TYPOGRAPHY_COMPARISON_PROFILES,
     build_subtitle_typography_decoration_comparison,
 )
 
@@ -27,6 +28,16 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--output-dir")
     parser.add_argument("--target-cut", action="append", dest="target_cuts")
     parser.add_argument("--sample-text", action="append", dest="sample_texts")
+    parser.add_argument(
+        "--comparison-profile",
+        choices=TYPOGRAPHY_COMPARISON_PROFILES,
+        default="ed10g_typography_decoration",
+        help=(
+            "Comparison profile to generate. The default preserves the historical "
+            "ED-10g artifact; ed10i_kirinuki_gothic_balance creates the narrow "
+            "gothic body/outline balance proof."
+        ),
+    )
     parser.add_argument("--width", type=int, default=1920)
     parser.add_argument("--height", type=int, default=1080)
     parser.add_argument("--format", choices=("text", "json"), default="text")
@@ -39,6 +50,7 @@ def run(argv: list[str]) -> int:
         "sample_texts": args.sample_texts,
         "canvas_size": (args.width, args.height),
         "base_dir": Path.cwd(),
+        "comparison_profile": args.comparison_profile,
     }
     if args.output_dir:
         build_kwargs["output_dir"] = Path(args.output_dir)
@@ -49,10 +61,16 @@ def run(argv: list[str]) -> int:
         print(f"build-subtitle-typography-decoration-comparison failed: {exc}", file=sys.stderr)
         return 1
 
+    decision_packet = report.get("comparison_decision_packet") or report.get(
+        "small_adjustment_decision_packet"
+    )
+    if not isinstance(decision_packet, dict):
+        decision_packet = {}
     payload = {
         "schema_version": "v1",
         "artifact_id": report["artifact_id"],
         "scope": report["scope"],
+        "comparison_profile": report["comparison_profile"],
         "target_cuts": report["target_cuts"],
         "sample_count": len(report["samples"]),
         "candidate_count": report["candidate_count"],
@@ -64,9 +82,11 @@ def run(argv: list[str]) -> int:
         "next_diagnostic_overlay_proof_route": report[
             "next_diagnostic_overlay_proof_route"
         ],
-        "small_adjustment_decision_packet": report[
-            "small_adjustment_decision_packet"
-        ],
+        "small_adjustment_decision_packet": report.get(
+            "small_adjustment_decision_packet",
+            decision_packet,
+        ),
+        "comparison_decision_packet": decision_packet,
         "review_only": report["review_only"],
         "production_candidate": report["production_candidate"],
         "production_subtitle_design_acceptance": report[
@@ -96,7 +116,7 @@ def run(argv: list[str]) -> int:
         )
         print(
             "recommended_default_candidate: "
-            f"{payload['small_adjustment_decision_packet']['recommended_default_candidate_id']}"
+            f"{decision_packet.get('recommended_default_candidate_id', '')}"
         )
         print(
             "selected_candidate_for_next_proof_base: "

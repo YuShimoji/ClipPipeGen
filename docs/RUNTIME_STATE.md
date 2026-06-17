@@ -5,9 +5,9 @@ type: resume_surface
 status: current_capsule
 health: active
 progress_pct: 80
-last_touched: 2026-06-16
-next_review_due: before_dense_stress_or_limitation_lift
-active_artifact: clip-ed10g-noto-overlay-proof-001
+last_touched: 2026-06-17
+next_review_due: before_ed10i_candidate_selection_or_overlay_proof_generation
+active_artifact: clip-ed10i-kirinuki-gothic-balance-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,31 +35,37 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10g-noto-overlay-proof-001`
+Active artifact: `clip-ed10i-kirinuki-gothic-balance-001`
 
-Current judgement: the `noto_sans_jp_clean_outline` proof for `cut_002` /
-`cut_003` is accepted as the current diagnostic / representative subtitle
-base. This consumes the human visual judgement for this proof only.
+Current judgement: the previous `noto_sans_jp_clean_outline` proof for
+`cut_002` / `cut_003` is not accepted as-is. The consumed human review prefers
+a kirinuki YouTube style gothic direction and identifies fill/outline balance
+as the main issue: the glyph body should become thicker so the outline no
+longer dominates. Emoji rendering is neutral and ignored for this slice.
 
-Current proof readback:
+Current ED-10i proof route readback:
 
 - target cuts: `cut_002`, `cut_003`
-- selected base: `noto_sans_jp_clean_outline`
-- size rule: `round(frame_height * 0.115)`; readback `font_size=124`
-- outline rule: `max(2, round(font_size * 0.086))`; readback `outline=11`
-- font route: `Noto Sans JP`; `font_file_status=candidate_primary_font_file_found`
-- overlay coverage: `all_target_cuts_have_overlay=true`
+- route: `ed10i_kirinuki_gothic_balance`
+- size rule: keep `round(frame_height * 0.115)` as the starting reference
+- candidates: current Noto reference, BIZ UDGothic Bold balanced outline,
+  Yu Gothic Bold thinner outline, Meiryo Bold fill/outline balance
+- recommended default for the next diagnostic overlay proof:
+  `ed10i_biz_udgothic_bold_balanced_outline`
+- review status: `generated_requires_human_review`
 
-This acceptance is not production subtitle design acceptance and does not lift
+This diagnostic comparison is not production subtitle design acceptance and does not lift
 production render, creative, rights, publishing, upload, or public-use gates.
 
 ## Next
 
-1. Treat ED-10g as accepted for the diagnostic base and do not reopen
-   `noto_sans_jp_clean_outline` unless a new visual defect is found.
-2. If representative coverage must widen, create a separate dense/stress proof
+1. Open the ED-10i kirinuki gothic balance comparison artifact and choose one
+   candidate, or request one bounded body/outline adjustment.
+2. If a candidate is chosen, generate a separate diagnostic overlay proof for
+   `cut_002` / `cut_003` using that candidate id.
+3. If representative coverage must widen, create a separate dense/stress proof
    route for `cut_008` or another explicitly scoped target.
-3. If moving toward production/public use, run a separate limitation-lift route
+4. If moving toward production/public use, run a separate limitation-lift route
    for production render, rights, publishing, and public-use decisions.
 
 ## Constraints / Risks
@@ -89,8 +95,9 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, `.\open-current-proof.ps1`, or
-   `.\open-font-candidates.ps1`
+   `.\open-artifacts.ps1`, `.\open-current-proof.ps1`,
+   `.\open-font-candidates.ps1`, or the ED-10i local comparison helper:
+   `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison\open_comparison.ps1`
 
 Regenerate the docs dashboard with:
 
@@ -113,6 +120,10 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 - 2026-06-16: Human visual judgement accepted
   `clip-ed10g-noto-overlay-proof-001` as the diagnostic / representative base
   for `cut_002` / `cut_003`; production/public/rights gates remain closed.
+- 2026-06-17: A new human review superseded the ED-10g styling direction only:
+  the current Noto clean-outline proof is not accepted as-is. ED-10i now owns a
+  narrow kirinuki gothic body/outline balance comparison with emoji excluded
+  from the evaluation target. Production/public/rights gates remain closed.
 - 2026-06-16: Review surface launchers added and pushed. Normal open order is
   `.\open-dashboard.ps1`, then dashboard artifact selection, then
   artifact-specific launchers only when needed. This records navigation only;

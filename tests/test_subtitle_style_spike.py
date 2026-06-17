@@ -661,3 +661,142 @@ def test_typography_decoration_comparison_cli_reports_small_adjustment_route(
     ] == "noto_sans_jp_clean_outline"
     assert payload["production_subtitle_design_acceptance"] is False
     assert Path(payload["outputs"]["html"]).exists()
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_kirinuki_gothic_balance_profile_records_weight_outline_review(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "subtitle_kirinuki_gothic_balance_comparison"
+
+    report = spike.build_subtitle_typography_decoration_comparison(
+        output_dir=output_dir,
+        sample_texts=[
+            "なんで来なかったんすか！！",
+            "まあ謝るんなら許してあげます",
+        ],
+        canvas_size=(640, 360),
+        base_dir=tmp_path,
+        comparison_profile="ed10i_kirinuki_gothic_balance",
+    )
+
+    assert report["report_kind"] == "subtitle_kirinuki_gothic_weight_balance_comparison"
+    assert report["artifact_id"] == "clip-ed10i-kirinuki-gothic-balance-001"
+    assert report["comparison_profile"] == "ed10i_kirinuki_gothic_balance"
+    assert report["human_decision_readback"]["selected_response"] == (
+        "not_accepted_as_is"
+    )
+    assert report["human_decision_readback"]["preferred_direction"] == (
+        "kirinuki_youtube_style_gothic"
+    )
+    assert report["human_decision_readback"]["desired_adjustment"] == (
+        "make_glyph_body_thicker_so_outline_does_not_dominate"
+    )
+    assert report["comparison_response_readback"]["emoji_treatment"] == (
+        "neutral_ignore_for_evaluation"
+    )
+    assert report["comparison_response_readback"]["selected_candidate_for_next_proof_base"] == (
+        "pending_ed10i_human_review"
+    )
+    assert report["candidate_count"] == 4
+    assert {candidate["candidate_id"] for candidate in report["candidates"]} == {
+        "ed10i_reference_noto_clean_outline",
+        "ed10i_biz_udgothic_bold_balanced_outline",
+        "ed10i_yu_gothic_bold_thin_outline",
+        "ed10i_meiryo_bold_fill_outline_balance",
+    }
+    assert report["next_diagnostic_overlay_proof_route"]["route_kind"] == (
+        "kirinuki_gothic_weight_balance_diagnostic_proof"
+    )
+    assert report["next_diagnostic_overlay_proof_route"][
+        "recommended_default_candidate_id"
+    ] == "ed10i_biz_udgothic_bold_balanced_outline"
+    decision_packet = report["kirinuki_gothic_balance_decision_packet"]
+    assert decision_packet["decision_state"] == "generated_requires_human_review"
+    assert decision_packet["current_reference_not_accepted_as_is"] is True
+    assert decision_packet["font_size"]["reopen_as_primary_axis"] is False
+    assert decision_packet["emoji_treatment"]["optimize_in_this_slice"] is False
+    assert {
+        route["route"] for route in decision_packet["rejected_alternatives"]
+    } >= {
+        "broaden_to_all_font_sweep",
+        "optimize_emoji_rendering",
+        "vendor_third_party_font_binaries",
+        "claim_production_subtitle_design_acceptance",
+    }
+    assert len(report["samples"]) == 8
+    for sample in report["samples"]:
+        assert sample["sample_variant"] == "kirinuki_gothic_weight_balance_comparison"
+        assert sample["style_inputs"]["body_weight_axis"]
+        assert sample["style_inputs"]["outline_balance_axis"]
+        assert sample["style_inputs"]["emoji_evaluation_scope"] == (
+            "emoji_neutral_ignored_for_ed10i"
+        )
+        assert sample["production_candidate"] is False
+
+    json_path = output_dir / "subtitle_kirinuki_gothic_balance_comparison_report.json"
+    html_path = output_dir / "subtitle_kirinuki_gothic_balance_comparison_report.html"
+    contact_sheet = output_dir / "subtitle_kirinuki_gothic_balance_contact_sheet.png"
+    assert json_path.exists()
+    assert html_path.exists()
+    assert contact_sheet.exists()
+    persisted = json.loads(json_path.read_text(encoding="utf-8"))
+    assert json_path.read_text(encoding="utf-8").isascii()
+    assert persisted["comparison_profile"] == "ed10i_kirinuki_gothic_balance"
+    html = html_path.read_text(encoding="utf-8")
+    assert "ED-10i Kirinuki Gothic Weight Balance Comparison" in html
+    assert "Kirinuki Gothic Balance Decision Packet" in html
+    assert "emoji_neutral_ignored_for_ed10i" in html
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_typography_decoration_comparison_cli_reports_ed10i_profile(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "ed10i_cli"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "build-subtitle-typography-decoration-comparison",
+            "--comparison-profile",
+            "ed10i_kirinuki_gothic_balance",
+            "--output-dir",
+            str(output_dir),
+            "--target-cut",
+            "cut_002",
+            "--target-cut",
+            "cut_003",
+            "--sample-text",
+            "ED-10i kirinuki gothic balance smoke",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["artifact_id"] == "clip-ed10i-kirinuki-gothic-balance-001"
+    assert payload["comparison_profile"] == "ed10i_kirinuki_gothic_balance"
+    assert payload["comparison_response"]["selected_response"] == (
+        "generate_narrow_kirinuki_gothic_balance_comparison"
+    )
+    assert payload["selected_candidate_for_next_proof_base"] == (
+        "pending_ed10i_human_review"
+    )
+    assert payload["comparison_decision_packet"]["recommended_default_candidate_id"] == (
+        "ed10i_biz_udgothic_bold_balanced_outline"
+    )
+    assert payload["production_subtitle_design_acceptance"] is False
+    assert Path(payload["outputs"]["html"]).exists()

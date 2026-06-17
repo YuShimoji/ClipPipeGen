@@ -5,8 +5,8 @@ type: candidate_registry
 status: approved
 health: defined_not_generated
 progress_pct: 15
-last_touched: 2026-06-16
-next_review_due: before_font_binary_download_or_new_overlay_generation
+last_touched: 2026-06-17
+next_review_due: after_ed10i_gothic_balance_decision
 active_artifact: clip-subtitle-font-candidate-sweep-001
 source_of_truth: true
 owner_lane: editing
@@ -42,6 +42,21 @@ status、local availability、reproducibility、intended use で比較できる�
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
 This registry is not a production subtitle design acceptance.
+
+## ED-10i Narrow Gothic Slice
+
+ED-10i does not run the full ED-10h font universe. It uses a narrow
+gothic/sans-only set already available on this machine:
+
+| Candidate | Role in ED-10i | Portability note |
+|---|---|---|
+| `ed10i_reference_noto_clean_outline` | Current reference that was judged not accepted as-is | Local Noto Sans JP file readback only |
+| `ed10i_biz_udgothic_bold_balanced_outline` | Recommended default for thicker glyph body with restrained outline | Local BIZ UDGothic Bold file readback only |
+| `ed10i_yu_gothic_bold_thin_outline` | Thinner-outline variant using a familiar Windows gothic route | Local Yu Gothic Bold file readback only |
+| `ed10i_meiryo_bold_fill_outline_balance` | Balanced fill/outline variant | Local Meiryo Bold file readback only |
+
+Emoji rendering is intentionally ignored in ED-10i. No font binaries are
+downloaded, copied, vendored, or made portable through Git in this slice.
 
 ## これからどうなるか
 
@@ -99,6 +114,8 @@ outside public Git.
 - 2026-06-16: Created ED-10h registry after ED-10g selected
   `noto_sans_jp_clean_outline` for the current diagnostic overlay proof.
 - 2026-06-16: No third-party font binaries were downloaded or vendored.
+- 2026-06-17: Added ED-10i narrow gothic/sans candidate set after human review
+  rejected the current Noto clean-outline styling as-is.
 
 ## Constraints / Risks
 

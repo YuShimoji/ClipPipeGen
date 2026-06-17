@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-06-16",
+  "generated_at": "2026-06-17",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -24,16 +24,19 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10g",
-    "artifact_id": "clip-ed10g-noto-overlay-proof-001",
-    "state": "diagnostic_base_accepted_next_route_needed",
-    "human_visual_judgement": "accept_diagnostic_base",
+    "feature_id": "ED-10i",
+    "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
+    "state": "kirinuki_gothic_balance_comparison_generated_requires_review",
+    "human_visual_judgement": "current_proof_not_accepted_as_is",
     "target_cuts": [
       "cut_002",
       "cut_003"
     ],
     "accepted_size_rule": "round(frame_height * 0.115)",
-    "selected_typography_base": "noto_sans_jp_clean_outline",
+    "selected_typography_base": "pending_ed10i_human_review",
+    "preferred_direction": "kirinuki_youtube_style_gothic",
+    "main_issue": "fill_outline_balance_outline_dominates",
+    "emoji_treatment": "neutral_ignore_for_evaluation",
     "production_candidate": false,
     "production_subtitle_design_acceptance": false,
     "production_render_acceptance": false,
@@ -56,10 +59,16 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
+      "label": "Gothic Balance",
+      "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_kirinuki_gothic_balance_comparison\\open_comparison.ps1",
+      "target": "episodes/.../subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_comparison_report.html",
+      "when_to_use": "Use on the machine retaining ignored ED-10i comparison artifacts to judge gothic glyph body versus outline balance."
+    },
+    {
       "label": "Current Proof",
       "command": ".\\open-current-proof.ps1",
       "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-      "when_to_use": "Use only on a machine that retains the ignored local ED-10g proof artifact."
+      "when_to_use": "Use only when the previous ignored local ED-10g overlay proof must be audited."
     },
     {
       "label": "Font Candidates",
@@ -465,7 +474,7 @@
       "health": "accepted_diagnostic_base",
       "progress_pct": 100,
       "active_artifact": "clip-ed10g-noto-overlay-proof-001",
-      "next_action": "Use the accepted Noto base; choose dense/stress proof or a separate limitation-lift route.",
+      "next_action": "Keep as historical diagnostic proof; the latest human review sends styling to ED-10i.",
       "summary_excerpt": "adjust_boundary を受け、font size を維持したまま font family / outline / shadow / placeholder speaker-badge accent の比較 proof を作る route。build-subtitle-typography-decoration-comparison は ignored subtitle_typography_decoration_compar...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
@@ -478,6 +487,17 @@
       "active_artifact": "clip-subtitle-font-candidate-sweep-001",
       "next_action": "Use the font candidate registry to choose a no-download or download-approved sweep route.",
       "summary_excerpt": "ED-10g の selected proof base noto_sans_jp_clean_outline を維持したまま、次に font universe を広げるための候補 registry を定義する。Artifact clip-subtitle-font-candidate-sweep-001 は SUBTITLE_FONT_CANDIDATE_SWEEP.md と docs/font_candidates/subtitl...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10i",
+      "title": "Kirinuki Gothic Weight Balance Comparison v0",
+      "status": "in_progress",
+      "health": "review_ready_diagnostic",
+      "progress_pct": 70,
+      "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+      "next_action": "Review the kirinuki gothic contact sheet and choose one body/outline balance for the next diagnostic overlay proof.",
+      "summary_excerpt": "最新の人間レビューを消費し、clip-ed10g-noto-overlay-proof-001 は styling として not accepted as-is と記録する。新しい narrow route は build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance で、artifact cli...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -955,11 +975,12 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 78,
+    "feature_count": 79,
     "status_counts": {
       "done": 62,
       "proposed": 14,
       "approved": 1,
+      "in_progress": 1,
       "rejected": 1
     }
   },
@@ -992,7 +1013,17 @@
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/subtitle_typography_decoration_comparison_report.html",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_typography_decoration_comparison\\open_comparison.ps1",
       "review_status": "Human response consumed as small_adjustment; diagnostic / representative only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
-      "next_action": "Use noto_sans_jp_clean_outline as the selected next diagnostic overlay proof base for cut_002 / cut_003; inspect the generated overlay proof before any further subtitle-design judgment."
+      "next_action": "Treat this as historical ED-10g comparison context. Use clip-ed10i-kirinuki-gothic-balance-001 for the current body/outline balance decision."
+    },
+    {
+      "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
+      "title": "ED-10i Kirinuki Gothic Weight Balance Comparison v0",
+      "purpose": "Consume the latest human review that the current Noto clean-outline proof is not accepted as-is, then compare a narrow gothic/sans set by glyph body weight, outline thickness, and fill/outline balance.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_comparison_report.html",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_kirinuki_gothic_balance_comparison\\open_comparison.ps1",
+      "review_status": "Generated requires human review. Recommended default candidate is ed10i_biz_udgothic_bold_balanced_outline, but no candidate has been accepted as the next diagnostic overlay proof base yet.",
+      "next_action": "Open the contact sheet, ignore emoji rendering for this decision, and choose one candidate or one bounded body/outline adjustment before generating a new diagnostic overlay proof."
     },
     {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
@@ -1001,8 +1032,8 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
       "open_command": ".\\open-current-proof.ps1",
-      "review_status": "Human diagnostic / representative visual judgement consumed as accept_diagnostic_base. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
-      "next_action": "Treat noto_sans_jp_clean_outline as the accepted diagnostic base. Move only through a separate dense/stress proof route or a separate production/public/rights limitation-lift route."
+      "review_status": "Historical diagnostic proof / current reference only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Use clip-ed10i-kirinuki-gothic-balance-001 to choose the next body/outline balance candidate before generating any new diagnostic overlay proof."
     },
     {
       "artifact_id": "clip-docs-dashboard-001",
@@ -1030,24 +1061,25 @@
       "clip-review-acceptance-gate-001",
       "clip-human-preview-session-001",
       "clip-typography-decoration-comparison-001",
+      "clip-ed10i-kirinuki-gothic-balance-001",
       "clip-ed10g-noto-overlay-proof-001",
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 6
+    "artifact_count": 7
   },
   "artifact_coverage": {
-    "registered_artifact_count": 6,
-    "features_with_artifact_count": 5,
+    "registered_artifact_count": 7,
+    "features_with_artifact_count": 6,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "ED-10g accepted Noto overlay proof",
-      "artifact": "clip-ed10g-noto-overlay-proof-001",
-      "question": "Which separate route should follow the accepted cut_002 / cut_003 diagnostic base?",
-      "next_route": "Choose dense/stress proof coverage, production/render limitation lift, or rights/public-use limitation lift."
+      "item": "ED-10i kirinuki gothic balance proof",
+      "artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+      "question": "Which gothic fill/outline balance should become the next diagnostic overlay proof base for cut_002 / cut_003?",
+      "next_route": "Review the 4-candidate contact sheet and choose one candidate or request one bounded adjustment."
     },
     {
       "item": "ED-10h font candidate sweep",
@@ -1080,7 +1112,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 82,
+      "line_count": 84,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1094,7 +1126,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 333,
+      "line_count": 344,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1102,9 +1134,9 @@
         "status": "current_capsule",
         "health": "active",
         "progress_pct": "80",
-        "last_touched": "2026-06-16",
-        "next_review_due": "before_dense_stress_or_limitation_lift",
-        "active_artifact": "clip-ed10g-noto-overlay-proof-001",
+        "last_touched": "2026-06-17",
+        "next_review_due": "before_ed10i_candidate_selection_or_overlay_proof_generation",
+        "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1115,13 +1147,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 70,
+      "boundary_term_count": 71,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 213,
+      "line_count": 215,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1129,8 +1161,8 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 272,
-      "status": "in_progress"
+      "boundary_term_count": 283,
+      "status": "review_ready_diagnostic"
     },
     {
       "path": "docs/EPISODE_REVIEW_WORKFLOW.md",
@@ -1163,17 +1195,17 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 329,
+      "line_count": 384,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "accepted_diagnostic_base",
-        "health": "review_ready_diagnostic",
-        "progress_pct": "95",
-        "last_touched": "2026-06-16",
-        "next_review_due": "before_ed10h_candidate_sweep",
-        "active_artifact": "clip-ed10g-noto-overlay-proof-001",
+        "status": "superseded_by_ed10i",
+        "health": "historical_reference",
+        "progress_pct": "100",
+        "last_touched": "2026-06-17",
+        "next_review_due": "before_ed10i_candidate_selection",
+        "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1184,13 +1216,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 54,
-      "status": "accepted_diagnostic_base"
+      "boundary_term_count": 65,
+      "status": "superseded_by_ed10i"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
       "title": "Representative Subtitle Design Review",
-      "line_count": 334,
+      "line_count": 336,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1204,7 +1236,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "Artifact Registry",
-      "line_count": 170,
+      "line_count": 203,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1212,7 +1244,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 58,
+      "boundary_term_count": 68,
       "status": "reference"
     },
     {
@@ -1456,7 +1488,7 @@
     {
       "path": "docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md",
       "title": "Review Artifact Bundle Contract",
-      "line_count": 314,
+      "line_count": 319,
       "metadata": {
         "id": "review-artifact-bundle-contract",
         "title": "Review Artifact Bundle Contract",
@@ -1464,9 +1496,9 @@
         "status": "active",
         "health": "stable",
         "progress_pct": "90",
-        "last_touched": "2026-06-16",
-        "next_review_due": "before_next_review_bundle_schema_change",
-        "active_artifact": "clip-human-preview-session-001",
+        "last_touched": "2026-06-17",
+        "next_review_due": "before_next_review_bundle_schema_change_or_ed10i_session_refresh",
+        "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md"
@@ -1497,7 +1529,7 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 117,
+      "line_count": 134,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
@@ -1505,8 +1537,8 @@
         "status": "approved",
         "health": "defined_not_generated",
         "progress_pct": "15",
-        "last_touched": "2026-06-16",
-        "next_review_due": "before_font_binary_download_or_new_overlay_generation",
+        "last_touched": "2026-06-17",
+        "next_review_due": "after_ed10i_gothic_balance_decision",
         "active_artifact": "clip-subtitle-font-candidate-sweep-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
@@ -1619,7 +1651,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 272 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 283 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -1631,7 +1663,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 58 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 68 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

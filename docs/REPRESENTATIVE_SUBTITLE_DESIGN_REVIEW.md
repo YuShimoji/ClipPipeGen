@@ -1,29 +1,31 @@
 # Representative Subtitle Design Review
 
-Last updated: 2026-06-16 JST
+Last updated: 2026-06-17 JST
 
 ## What This Is
 
-This note records the smallest representative diagnostic subtitle design review
-start after the `cut_003` diagnostic burned-in proof readability acceptance.
+This note records the representative diagnostic subtitle design review path
+after the `cut_003` diagnostic burned-in proof readability acceptance.
 
-It connects ED-10f's size acceptance to ED-10g's font/decor comparison and the
-current `noto_sans_jp_clean_outline` overlay proof for `cut_002` / `cut_003`.
+It now connects ED-10f's size acceptance and ED-10g's Noto clean-outline proof
+to ED-10i's narrower kirinuki gothic body/outline balance comparison for
+`cut_002` / `cut_003`.
 
 ## Current State
 
-`clip-ed10g-noto-overlay-proof-001` has consumed human visual judgement as
-`accept_diagnostic_base`. The `noto_sans_jp_clean_outline` proof for
-`cut_002` / `cut_003` is accepted as the current diagnostic / representative
-base. It preserves `round(frame_height * 0.115)` and changes only the selected
-font/decor base: Noto Sans JP route, cleaner outline, and a cool placeholder
-speaker badge accent.
+The latest human review supersedes the ED-10g styling direction only:
+`clip-ed10g-noto-overlay-proof-001` is not accepted as-is for the next styling
+step. ED-10i now owns a narrow kirinuki gothic comparison focused on thicker
+glyph body versus outline thickness. The size policy
+`round(frame_height * 0.115)` remains the starting reference, and emoji quality
+is ignored for this slice.
 
 ## Next
 
-Do not reopen the accepted Noto clean-outline base unless a new bounded visual
-defect is identified. The next useful route is either dense/stress coverage
-such as `cut_008`, or a separate production/public/rights limitation-lift slice.
+Open `clip-ed10i-kirinuki-gothic-balance-001` and choose one gothic/sans
+body/outline balance candidate, or request one bounded adjustment. Dense/stress
+coverage such as `cut_008`, and production/public/rights limitation lift, remain
+separate routes.
 
 ## Constraints / Risks
 

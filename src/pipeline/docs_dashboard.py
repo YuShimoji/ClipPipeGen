@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-06-16"
+DEFAULT_GENERATED_AT = "2026-06-17"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -99,13 +99,16 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10g",
-            "artifact_id": "clip-ed10g-noto-overlay-proof-001",
-            "state": "diagnostic_base_accepted_next_route_needed",
-            "human_visual_judgement": "accept_diagnostic_base",
+            "feature_id": "ED-10i",
+            "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
+            "state": "kirinuki_gothic_balance_comparison_generated_requires_review",
+            "human_visual_judgement": "current_proof_not_accepted_as_is",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "noto_sans_jp_clean_outline",
+            "selected_typography_base": "pending_ed10i_human_review",
+            "preferred_direction": "kirinuki_youtube_style_gothic",
+            "main_issue": "fill_outline_balance_outline_dominates",
+            "emoji_treatment": "neutral_ignore_for_evaluation",
             "production_candidate": False,
             "production_subtitle_design_acceptance": False,
             "production_render_acceptance": False,
@@ -371,6 +374,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         active_artifact = _first_artifact_id(cells[3])
         if feature_id == "ED-10g":
             active_artifact = "clip-ed10g-noto-overlay-proof-001"
+        if feature_id == "ED-10i":
+            active_artifact = "clip-ed10i-kirinuki-gothic-balance-001"
         features.append(
             {
                 "id": feature_id,
@@ -435,7 +440,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10g-noto-overlay-proof-001" in artifact_ids
+        "clip-ed10i-kirinuki-gothic-balance-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -482,10 +487,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10g accepted Noto overlay proof",
-            "artifact": "clip-ed10g-noto-overlay-proof-001",
-            "question": "Which separate route should follow the accepted cut_002 / cut_003 diagnostic base?",
-            "next_route": "Choose dense/stress proof coverage, production/render limitation lift, or rights/public-use limitation lift.",
+            "item": "ED-10i kirinuki gothic balance proof",
+            "artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+            "question": "Which gothic fill/outline balance should become the next diagnostic overlay proof base for cut_002 / cut_003?",
+            "next_route": "Review the 4-candidate contact sheet and choose one candidate or request one bounded adjustment.",
         },
         {
             "item": "ED-10h font candidate sweep",
@@ -540,10 +545,27 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
+            "label": "Gothic Balance",
+            "command": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
+                "jp_pilot01r3_cut_review\\subtitle_kirinuki_gothic_balance_comparison\\"
+                "open_comparison.ps1"
+            ),
+            "target": (
+                "episodes/.../subtitle_kirinuki_gothic_balance_comparison/"
+                "subtitle_kirinuki_gothic_balance_comparison_report.html"
+            ),
+            "when_to_use": (
+                "Use on the machine retaining ignored ED-10i comparison artifacts "
+                "to judge gothic glyph body versus outline balance."
+            ),
+        },
+        {
             "label": "Current Proof",
             "command": ".\\open-current-proof.ps1",
             "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-            "when_to_use": "Use only on a machine that retains the ignored local ED-10g proof artifact.",
+            "when_to_use": "Use only when the previous ignored local ED-10g overlay proof must be audited.",
         },
         {
             "label": "Font Candidates",
@@ -611,6 +633,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "accepted_diagnostic_base"
     if feature_id == "ED-10h":
         return "defined_not_generated"
+    if feature_id == "ED-10i":
+        return "review_ready_diagnostic"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -621,14 +645,18 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10h":
         return 15
+    if feature_id == "ED-10i":
+        return 70
     return STATUS_PROGRESS.get(status, 0)
 
 
 def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10g":
-        return "Use the accepted Noto base; choose dense/stress proof or a separate limitation-lift route."
+        return "Keep as historical diagnostic proof; the latest human review sends styling to ED-10i."
     if feature_id == "ED-10h":
         return "Use the font candidate registry to choose a no-download or download-approved sweep route."
+    if feature_id == "ED-10i":
+        return "Review the kirinuki gothic contact sheet and choose one body/outline balance for the next diagnostic overlay proof."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

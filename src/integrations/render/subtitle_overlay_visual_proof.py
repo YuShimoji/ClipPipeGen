@@ -120,9 +120,13 @@ def _diagnostic_ass_style_for_candidate(
         "speaker_badge_label": "SPK",
         "speaker_accent_colour": _ass_colour(candidate.badge_fill),
         "speaker_badge_back_colour": _ass_colour(candidate.badge_outline, alpha=0x90),
-        "selection_source": "ed10g_typography_decoration_candidate",
+        "selection_source": "typography_decoration_candidate",
         "typography_decoration_candidate_id": candidate.candidate_id,
-        "ed10g_small_adjustment_selected": True,
+        "ed10g_small_adjustment_selected": candidate.candidate_id
+        == "noto_sans_jp_clean_outline",
+        "ed10i_kirinuki_gothic_balance_candidate": candidate.candidate_id.startswith(
+            "ed10i_"
+        ),
         "display_name": candidate.display_name,
         "decoration_note": candidate.decoration_note,
         "requested_font_family": candidate.fallback_family,

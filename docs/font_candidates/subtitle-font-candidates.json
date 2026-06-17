@@ -22,6 +22,34 @@
     "font_binaries_downloaded": false,
     "font_binaries_vendored": false
   },
+  "ed10i_narrow_slice": {
+    "feature_id": "ED-10i",
+    "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
+    "comparison_profile": "ed10i_kirinuki_gothic_balance",
+    "scope": "gothic_sans_only_body_weight_outline_balance",
+    "human_review_consumed": {
+      "current_proof": "clip-ed10g-noto-overlay-proof-001",
+      "current_proof_accepted_as_is": false,
+      "preferred_direction": "kirinuki_youtube_style_gothic",
+      "main_issue": "fill_outline_balance_outline_dominates",
+      "desired_adjustment": "make_glyph_body_thicker_so_outline_does_not_dominate",
+      "emoji_treatment": "neutral_ignore_for_evaluation"
+    },
+    "candidate_ids": [
+      "ed10i_reference_noto_clean_outline",
+      "ed10i_biz_udgothic_bold_balanced_outline",
+      "ed10i_yu_gothic_bold_thin_outline",
+      "ed10i_meiryo_bold_fill_outline_balance"
+    ],
+    "recommended_default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+    "font_size_policy": {
+      "status": "preserve_existing_size_policy_as_starting_reference",
+      "formula": "round(frame_height * 0.115)"
+    },
+    "font_binaries_downloaded": false,
+    "font_binaries_vendored": false,
+    "review_status": "generated_requires_human_review"
+  },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_name_match",
     "directory": "C:/Windows/Fonts",
@@ -50,6 +78,62 @@
       "weight_style": "variable_or_bold_route",
       "decoration_suggestion": "clean_outline_cool_placeholder_badge",
       "risk_notes": "Current ED-10g selected diagnostic proof base; local file presence is not portable evidence.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10i_reference_noto_clean_outline",
+      "family_name": "Noto Sans JP",
+      "candidate_class": "ed10i_current_reference",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["NotoSansJP-VF.ttf"],
+      "intended_use": "ed10i_reference_only",
+      "weight_style": "current_reference_body",
+      "decoration_suggestion": "current_clean_outline_reference_not_accepted_as_is",
+      "risk_notes": "Included only as the current reference for ED-10i; latest human review says it is not accepted as-is.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+      "family_name": "BIZ UDGothic",
+      "candidate_class": "ed10i_kirinuki_gothic_local",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["BIZ-UDGothicB.ttc", "BIZ-UDGothicR.ttc"],
+      "intended_use": "ed10i_recommended_default",
+      "weight_style": "bold_body_restrained_outline",
+      "decoration_suggestion": "balanced_outline_with_thicker_glyph_body",
+      "risk_notes": "Recommended ED-10i default, but local font presence is same-machine evidence only.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10i_yu_gothic_bold_thin_outline",
+      "family_name": "Yu Gothic",
+      "candidate_class": "ed10i_kirinuki_gothic_local",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["YuGothB.ttc", "YuGothM.ttc"],
+      "intended_use": "ed10i_thinner_outline_variant",
+      "weight_style": "bold_body_thin_outline",
+      "decoration_suggestion": "thin_outline_variant",
+      "risk_notes": "Useful to isolate outline thickness; local/system availability is not portable.",
+      "can_reproduce_on_other_terminal": false
+    },
+    {
+      "candidate_id": "ed10i_meiryo_bold_fill_outline_balance",
+      "family_name": "Meiryo",
+      "candidate_class": "ed10i_kirinuki_gothic_local",
+      "source_type": "local_system",
+      "license_status": "system_font",
+      "file_status": "local_only",
+      "local_font_files": ["meiryob.ttc", "meiryo.ttc"],
+      "intended_use": "ed10i_balanced_fill_outline_variant",
+      "weight_style": "bold_body_balanced_outline",
+      "decoration_suggestion": "warm_fill_restrained_outline",
+      "risk_notes": "May feel softer than the kirinuki target; local/system availability is not portable.",
       "can_reproduce_on_other_terminal": false
     },
     {

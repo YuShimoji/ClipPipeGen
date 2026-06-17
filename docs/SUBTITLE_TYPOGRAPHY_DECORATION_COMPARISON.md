@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: accepted_diagnostic_base
-health: review_ready_diagnostic
-progress_pct: 95
-last_touched: 2026-06-16
-next_review_due: before_ed10h_candidate_sweep
-active_artifact: clip-ed10g-noto-overlay-proof-001
+status: superseded_by_ed10i
+health: historical_reference
+progress_pct: 100
+last_touched: 2026-06-17
+next_review_due: before_ed10i_candidate_selection
+active_artifact: clip-ed10i-kirinuki-gothic-balance-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -15,7 +15,25 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 # Subtitle Typography Decoration Comparison
 
-Last updated: 2026-06-16 JST
+Last updated: 2026-06-17 JST
+
+## Current Update - ED-10i Supersedes The Styling Direction
+
+The latest human review has been consumed as a new styling judgement: the
+previous `noto_sans_jp_clean_outline` proof is not accepted as-is. The desired
+direction is kirinuki YouTube style gothic, with a thicker glyph body so the
+outline no longer dominates. Emoji treatment is neutral and ignored for this
+slice.
+
+The active route is now `ED-10i: Kirinuki Gothic Weight Balance Comparison v0`
+with artifact `clip-ed10i-kirinuki-gothic-balance-001`. ED-10g remains useful
+as a historical reference and current-reference comparison row, but it is no
+longer the current styling decision.
+
+| Route | Current role | What it can decide | What stays closed |
+|---|---|---|---|
+| `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10i-kirinuki-gothic-balance-001` | Active diagnostic comparison | Which gothic/sans body-weight and outline balance should become the next diagnostic overlay proof base | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -79,6 +97,9 @@ together.
   for `cut_002` / `cut_003`.
 - 2026-06-16: broader font universe moved to `ED-10h` instead of changing the
   current selected proof base.
+- 2026-06-17: new human review superseded the ED-10g styling direction only.
+  The current Noto clean-outline proof is not accepted as-is; the next route is
+  ED-10i kirinuki gothic weight / outline balance comparison.
 
 ## Constraints / Risks
 
@@ -129,6 +150,40 @@ Review note:
 | production/public gates | false or pending | No production subtitle design, render, rights, publishing, public-use, or upload acceptance is created. |
 
 ## Active Comparison Artifact
+
+The current active artifact is now `clip-ed10i-kirinuki-gothic-balance-001`.
+It is a narrow same-machine comparison, not a broad ED-10h sweep.
+
+Primary local report:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_comparison_report.html
+```
+
+Open command:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison\open_comparison.ps1
+```
+
+Generated command:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison `
+  --comparison-profile ed10i_kirinuki_gothic_balance `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
+The candidate set is deliberately small: current Noto reference, BIZ UDGothic
+Bold balanced outline, Yu Gothic Bold thinner outline, and Meiryo Bold
+fill/outline balance. Font size, placement, wrapping, source media, transcript,
+official subtitle evidence, rights, publishing, upload, and production state
+remain unchanged.
 
 Artifact id: `clip-typography-decoration-comparison-001`
 

@@ -36,6 +36,16 @@ DEFAULT_TYPOGRAPHY_COMPARISON_OUTPUT_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/"
     "review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison"
 )
+DEFAULT_KIRINUKI_GOTHIC_BALANCE_OUTPUT_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/"
+    "review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison"
+)
+ED10G_TYPOGRAPHY_DECORATION_PROFILE = "ed10g_typography_decoration"
+ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE = "ed10i_kirinuki_gothic_balance"
+TYPOGRAPHY_COMPARISON_PROFILES = (
+    ED10G_TYPOGRAPHY_DECORATION_PROFILE,
+    ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE,
+)
 DEFAULT_CANVAS = (1280, 720)
 SAMPLE_TEXTS = (
     "来ねぇ！！",
@@ -158,6 +168,9 @@ class TypographyDecorationCandidate:
     badge_fill: tuple[int, int, int]
     badge_outline: tuple[int, int, int]
     decoration_note: str
+    body_weight_note: str = "candidate-specific glyph body weight"
+    outline_balance_role: str = "general font-family and decoration comparison"
+    emoji_evaluation_scope: str = "neutral_not_primary_evaluation_target"
 
 
 MODE_SPECS: tuple[ModeSpec, ...] = (
@@ -224,7 +237,7 @@ MODE_SPECS: tuple[ModeSpec, ...] = (
     ),
 )
 
-TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
+ED10G_TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
     TypographyDecorationCandidate(
         candidate_id="current_yu_gothic_heavy_outline",
         display_name="Current Yu Gothic heavy outline",
@@ -293,6 +306,103 @@ TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
         badge_outline=(245, 196, 74),
         decoration_note="high-contrast text with a quieter placeholder badge block",
     ),
+)
+
+ED10I_KIRINUKI_GOTHIC_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
+    TypographyDecorationCandidate(
+        candidate_id="ed10i_reference_noto_clean_outline",
+        display_name="ED-10i reference: Noto Sans JP clean outline",
+        font_paths=(
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+        ),
+        fallback_family="Noto Sans JP",
+        stroke_ratio=0.086,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(60, 96, 140),
+        badge_outline=(18, 30, 44),
+        decoration_note=(
+            "current ED-10g reference carried forward only to show the fill/outline "
+            "balance issue; not accepted as the final route"
+        ),
+        body_weight_note="current reference body; glyph fill can feel outweighed by outline",
+        outline_balance_role="current_reference_outline_can_dominate",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10i",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10i_biz_udgothic_bold_balanced_outline",
+        display_name="BIZ UDGothic Bold balanced outline",
+        font_paths=(
+            Path("C:/Windows/Fonts/BIZ-UDGothicB.ttc"),
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+        ),
+        fallback_family="BIZ UDGothic",
+        stroke_ratio=0.066,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(210, 46, 58),
+        badge_outline=(52, 14, 18),
+        decoration_note=(
+            "local gothic bold candidate for thicker glyph body with a reduced outline"
+        ),
+        body_weight_note="bold local gothic body; intended to make fill weight lead the outline",
+        outline_balance_role="thicker_glyph_body_vs_thinner_outline",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10i",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10i_yu_gothic_bold_thin_outline",
+        display_name="Yu Gothic Bold thinner outline",
+        font_paths=(
+            Path("C:/Windows/Fonts/YuGothB.ttc"),
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+        ),
+        fallback_family="Yu Gothic",
+        stroke_ratio=0.062,
+        shadow_offset_ratio=0.012,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(244, 162, 48),
+        badge_outline=(61, 38, 8),
+        decoration_note=(
+            "system gothic bold route that isolates a thinner outline against a heavy body"
+        ),
+        body_weight_note="bold system gothic body; thinner outline isolates outline pressure",
+        outline_balance_role="thin_outline_variant",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10i",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10i_meiryo_bold_fill_outline_balance",
+        display_name="Meiryo Bold fill/outline balance",
+        font_paths=(
+            Path("C:/Windows/Fonts/meiryob.ttc"),
+            Path("C:/Windows/Fonts/NotoSansJP-VF.ttf"),
+        ),
+        fallback_family="Meiryo",
+        stroke_ratio=0.072,
+        shadow_offset_ratio=0.016,
+        text_fill=(255, 252, 238),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(44, 151, 116),
+        badge_outline=(10, 45, 36),
+        decoration_note=(
+            "balanced local gothic/sans fallback with slightly warm fill and restrained outline"
+        ),
+        body_weight_note="bold body with warm fill; tests the most balanced fill/outline read",
+        outline_balance_role="balanced_fill_outline_variant",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10i",
+    ),
+)
+
+TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
+    ED10G_TYPOGRAPHY_DECORATION_CANDIDATES
+    + ED10I_KIRINUKI_GOTHIC_CANDIDATES
 )
 
 
@@ -943,6 +1053,7 @@ def build_subtitle_typography_decoration_comparison(
     sample_texts: list[str] | tuple[str, ...] | None = None,
     canvas_size: tuple[int, int] = (1920, 1080),
     base_dir: Path | None = None,
+    comparison_profile: str = ED10G_TYPOGRAPHY_DECORATION_PROFILE,
 ) -> dict[str, Any]:
     """Generate review-only font-family / decoration comparison artifacts.
 
@@ -954,14 +1065,18 @@ def build_subtitle_typography_decoration_comparison(
         raise RuntimeError(PILLOW_OPTIONAL_DEPENDENCY_MESSAGE)
 
     base = base_dir or Path.cwd()
+    target_cut_ids = tuple(target_cut_ids or ("cut_002", "cut_003"))
+    profile = _typography_comparison_profile(
+        comparison_profile,
+        target_cut_ids=target_cut_ids,
+    )
     if output_dir is None:
         output_dir = (
-            review_dir / "subtitle_typography_decoration_comparison"
+            review_dir / profile["output_dir_name"]
             if review_dir is not None
-            else DEFAULT_TYPOGRAPHY_COMPARISON_OUTPUT_DIR
+            else profile["default_output_dir"]
         )
     output_dir = output_dir if output_dir.is_absolute() else base / output_dir
-    target_cut_ids = tuple(target_cut_ids or ("cut_002", "cut_003"))
     texts = list(
         sample_texts
         or _comparison_texts_from_edit_pack(
@@ -978,7 +1093,7 @@ def build_subtitle_typography_decoration_comparison(
     output_dir.mkdir(parents=True, exist_ok=True)
     width, height = canvas_size
     samples: list[dict[str, Any]] = []
-    for candidate in TYPOGRAPHY_DECORATION_CANDIDATES:
+    for candidate in profile["candidates"]:
         for index, text in enumerate(texts, start=1):
             samples.append(
                 _render_typography_decoration_sample(
@@ -987,26 +1102,36 @@ def build_subtitle_typography_decoration_comparison(
                     candidate=candidate,
                     text=text,
                     text_index=index,
+                    sample_variant=profile["sample_variant"],
                 )
             )
 
     contact_sheet_path = _write_typography_comparison_contact_sheet(
         samples=samples,
         output_dir=output_dir,
+        filename=profile["contact_sheet_filename"],
     )
-    json_path = output_dir / "subtitle_typography_decoration_comparison_report.json"
-    html_path = output_dir / "subtitle_typography_decoration_comparison_report.html"
+    json_path = output_dir / profile["json_filename"]
+    html_path = output_dir / profile["html_filename"]
     open_helper_path = output_dir / "open_comparison.ps1"
-    open_helper_path.write_text(_open_comparison_script(), encoding="utf-8")
+    open_helper_path.write_text(
+        _open_comparison_script(profile["html_filename"]),
+        encoding="utf-8",
+    )
     open_helper_display = _display_path(open_helper_path, base)
     open_helper_windows = open_helper_display.replace("/", "\\")
 
     report = {
         "schema_version": "v1",
-        "report_kind": "subtitle_typography_decoration_comparison",
-        "artifact_id": "clip-typography-decoration-comparison-001",
+        "report_kind": profile["report_kind"],
+        "artifact_id": profile["artifact_id"],
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "scope": "diagnostic_representative_font_family_decoration_comparison",
+        "scope": profile["scope"],
+        "comparison_profile": comparison_profile,
+        "html_title": profile["html_title"],
+        "source_notice": profile["source_notice"],
+        "decision_packet_title": profile["decision_packet_title"],
+        "decision_packet_key": profile["decision_packet_key"],
         "review_only": True,
         "production_candidate": False,
         "production_compatible": False,
@@ -1020,73 +1145,22 @@ def build_subtitle_typography_decoration_comparison(
         "transcript_mutated": False,
         "official_subtitle_evidence_mutated": False,
         "target_cuts": list(target_cut_ids),
-        "human_decision_readback": {
-            "source_artifact": "clip-human-preview-session-001",
-            "selected_response": "adjust_boundary",
-            "font_size": "accepted_for_diagnostic_representative_review",
-            "font_family": "unresolved_needs_comparison",
-            "decoration": "unresolved_needs_comparison",
-            "production_subtitle_design_acceptance": False,
-        },
-        "comparison_response_readback": {
-            "source_artifact": "clip-typography-decoration-comparison-001",
-            "selected_response": "small_adjustment",
-            "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
-            "font_size": "accepted_for_diagnostic_representative_review",
-            "font_family": "narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof",
-            "decoration": "narrowed_to_clean_outline_for_next_diagnostic_proof",
-            "production_subtitle_design_acceptance": False,
-            "production_render_acceptance": False,
-            "creative_acceptance": False,
-            "rights_status": "pending",
-            "publishing_acceptance": False,
-            "public_use_permission": False,
-        },
-        "candidate_count": len(TYPOGRAPHY_DECORATION_CANDIDATES),
+        "human_decision_readback": profile["human_decision_readback"],
+        "comparison_response_readback": profile["comparison_response_readback"],
+        "candidate_count": len(profile["candidates"]),
         "sample_texts": texts,
         "canvas_size": {"width": width, "height": height},
         "font_size_policy": {
-            "status": "preserved_from_human_review",
+            "status": profile["font_size_status"],
             "formula": "round(frame_height * 0.115)",
             "value": max(16, round(height * 0.115)),
             "scope": "diagnostic_representative_review_only",
         },
-        "comparison_axes": {
-            "fixed": ["font_size", "badge_left_dialogue placement", "font_bbox wrapping"],
-            "varied": ["font_family", "outline/stroke ratio", "shadow offset", "placeholder badge accent"],
-            "out_of_scope": [
-                "production subtitle design acceptance",
-                "production render acceptance",
-                "rights approval",
-                "publishing",
-                "public use",
-            ],
-        },
-        "next_diagnostic_overlay_proof_route": {
-            "route_kind": "small_adjustment_diagnostic_overlay_proof",
-            "target_cuts": list(target_cut_ids),
-            "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
-            "recommended_default_candidate_id": "noto_sans_jp_clean_outline",
-            "font_size": {
-                "status": "preserve_accepted_diagnostic_representative_direction",
-                "formula": "round(frame_height * 0.115)",
-            },
-            "font_family": "narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof",
-            "decoration": "narrowed_to_clean_outline_for_next_diagnostic_proof",
-            "regenerate_sh08_required": False,
-            "comparison_artifact_required": "only_when_visual_candidate_readback_is_needed",
-            "episodes_artifact_tracking_allowed": False,
-            "production_subtitle_design_acceptance": False,
-            "production_render_acceptance": False,
-            "creative_acceptance": False,
-            "rights_status": "pending",
-            "publishing_acceptance": False,
-            "public_use_permission": False,
-        },
-        "small_adjustment_decision_packet": _small_adjustment_decision_packet(
-            target_cut_ids=target_cut_ids,
-        ),
-        "candidates": [_candidate_readback(candidate) for candidate in TYPOGRAPHY_DECORATION_CANDIDATES],
+        "comparison_axes": profile["comparison_axes"],
+        "next_diagnostic_overlay_proof_route": profile["next_diagnostic_overlay_proof_route"],
+        profile["decision_packet_key"]: profile["decision_packet"],
+        "comparison_decision_packet": profile["decision_packet"],
+        "candidates": [_candidate_readback(candidate) for candidate in profile["candidates"]],
         "samples": samples,
         "outputs": {
             "json": _display_path(json_path, base),
@@ -1101,16 +1175,222 @@ def build_subtitle_typography_decoration_comparison(
             )
         },
         "next_decision_question": (
-            "After generating the next cut_002 / cut_003 diagnostic overlay proof "
-            "from noto_sans_jp_clean_outline, is this small adjustment acceptable "
-            "for diagnostic / representative review? "
-            "This does not approve production subtitle design, production render, "
-            "rights, publishing, public use, or upload."
+            profile["next_decision_question"]
         ),
     }
     _write_json(json_path, report)
     _write_typography_comparison_html(html_path, report)
     return report
+
+
+def _typography_comparison_profile(
+    comparison_profile: str,
+    *,
+    target_cut_ids: tuple[str, ...],
+) -> dict[str, Any]:
+    if comparison_profile == ED10G_TYPOGRAPHY_DECORATION_PROFILE:
+        decision_packet = _small_adjustment_decision_packet(target_cut_ids=target_cut_ids)
+        return {
+            "output_dir_name": "subtitle_typography_decoration_comparison",
+            "default_output_dir": DEFAULT_TYPOGRAPHY_COMPARISON_OUTPUT_DIR,
+            "json_filename": "subtitle_typography_decoration_comparison_report.json",
+            "html_filename": "subtitle_typography_decoration_comparison_report.html",
+            "contact_sheet_filename": "subtitle_typography_decoration_contact_sheet.png",
+            "sample_variant": "font_family_decoration_comparison",
+            "report_kind": "subtitle_typography_decoration_comparison",
+            "artifact_id": "clip-typography-decoration-comparison-001",
+            "scope": "diagnostic_representative_font_family_decoration_comparison",
+            "html_title": "Subtitle Typography Decoration Comparison",
+            "source_notice": (
+                "Source human readback: adjust_boundary. ED-10g comparison response: "
+                "small_adjustment. Font size is accepted only for the current "
+                "diagnostic / representative route; font family and decoration "
+                "remain unresolved until a concrete adjusted candidate is selected."
+            ),
+            "decision_packet_title": "Small Adjustment Decision Packet",
+            "decision_packet_key": "small_adjustment_decision_packet",
+            "decision_packet": decision_packet,
+            "font_size_status": "preserved_from_human_review",
+            "human_decision_readback": {
+                "source_artifact": "clip-human-preview-session-001",
+                "selected_response": "adjust_boundary",
+                "font_size": "accepted_for_diagnostic_representative_review",
+                "font_family": "unresolved_needs_comparison",
+                "decoration": "unresolved_needs_comparison",
+                "production_subtitle_design_acceptance": False,
+            },
+            "comparison_response_readback": {
+                "source_artifact": "clip-typography-decoration-comparison-001",
+                "selected_response": "small_adjustment",
+                "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
+                "font_size": "accepted_for_diagnostic_representative_review",
+                "font_family": "narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof",
+                "decoration": "narrowed_to_clean_outline_for_next_diagnostic_proof",
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "comparison_axes": {
+                "fixed": ["font_size", "badge_left_dialogue placement", "font_bbox wrapping"],
+                "varied": [
+                    "font_family",
+                    "outline/stroke ratio",
+                    "shadow offset",
+                    "placeholder badge accent",
+                ],
+                "out_of_scope": [
+                    "production subtitle design acceptance",
+                    "production render acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "next_diagnostic_overlay_proof_route": {
+                "route_kind": "small_adjustment_diagnostic_overlay_proof",
+                "target_cuts": list(target_cut_ids),
+                "selected_candidate_for_next_proof_base": "noto_sans_jp_clean_outline",
+                "recommended_default_candidate_id": "noto_sans_jp_clean_outline",
+                "font_size": {
+                    "status": "preserve_accepted_diagnostic_representative_direction",
+                    "formula": "round(frame_height * 0.115)",
+                },
+                "font_family": "narrowed_to_noto_sans_jp_clean_outline_for_next_diagnostic_proof",
+                "decoration": "narrowed_to_clean_outline_for_next_diagnostic_proof",
+                "regenerate_sh08_required": False,
+                "comparison_artifact_required": "only_when_visual_candidate_readback_is_needed",
+                "episodes_artifact_tracking_allowed": False,
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "candidates": ED10G_TYPOGRAPHY_DECORATION_CANDIDATES,
+            "next_decision_question": (
+                "After generating the next cut_002 / cut_003 diagnostic overlay proof "
+                "from noto_sans_jp_clean_outline, is this small adjustment acceptable "
+                "for diagnostic / representative review? "
+                "This does not approve production subtitle design, production render, "
+                "rights, publishing, public use, or upload."
+            ),
+        }
+    if comparison_profile == ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE:
+        decision_packet = _kirinuki_gothic_balance_decision_packet(
+            target_cut_ids=target_cut_ids,
+        )
+        return {
+            "output_dir_name": "subtitle_kirinuki_gothic_balance_comparison",
+            "default_output_dir": DEFAULT_KIRINUKI_GOTHIC_BALANCE_OUTPUT_DIR,
+            "json_filename": "subtitle_kirinuki_gothic_balance_comparison_report.json",
+            "html_filename": "subtitle_kirinuki_gothic_balance_comparison_report.html",
+            "contact_sheet_filename": "subtitle_kirinuki_gothic_balance_contact_sheet.png",
+            "sample_variant": "kirinuki_gothic_weight_balance_comparison",
+            "report_kind": "subtitle_kirinuki_gothic_weight_balance_comparison",
+            "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
+            "scope": "diagnostic_representative_kirinuki_gothic_weight_balance_comparison",
+            "html_title": "ED-10i Kirinuki Gothic Weight Balance Comparison",
+            "source_notice": (
+                "Human review consumed: the current Noto clean-outline proof is "
+                "not accepted as-is. Preferred direction is kirinuki YouTube style "
+                "gothic; the main issue is fill/outline balance, so this slice "
+                "compares thicker glyph bodies and restrained outline thickness. "
+                "Emoji rendering is neutral and ignored for this evaluation."
+            ),
+            "decision_packet_title": "Kirinuki Gothic Balance Decision Packet",
+            "decision_packet_key": "kirinuki_gothic_balance_decision_packet",
+            "decision_packet": decision_packet,
+            "font_size_status": "preserved_as_starting_reference_not_reopened",
+            "human_decision_readback": {
+                "source_artifact": "clip-ed10g-noto-overlay-proof-001",
+                "selected_response": "not_accepted_as_is",
+                "preferred_direction": "kirinuki_youtube_style_gothic",
+                "main_issue": "fill_outline_balance_outline_dominates",
+                "desired_adjustment": "make_glyph_body_thicker_so_outline_does_not_dominate",
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "font_size": "preserve_current_size_policy_as_starting_reference",
+                "production_subtitle_design_acceptance": False,
+            },
+            "comparison_response_readback": {
+                "source_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+                "selected_response": "generate_narrow_kirinuki_gothic_balance_comparison",
+                "selected_candidate_for_next_proof_base": "pending_ed10i_human_review",
+                "recommended_default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+                "font_size": "preserved_as_starting_reference_not_primary_axis",
+                "font_family": "gothic_sans_only",
+                "font_weight": "compare_bold_glyph_body",
+                "decoration": "compare_restrained_outline_against_body_weight",
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "comparison_axes": {
+                "fixed": [
+                    "font_size_policy=round(frame_height * 0.115)",
+                    "badge_left_dialogue placement",
+                    "font_bbox wrapping",
+                    "target_cuts=cut_002/cut_003",
+                ],
+                "varied": [
+                    "font_family",
+                    "font_weight / glyph body thickness",
+                    "outline/stroke ratio",
+                    "fill vs outline balance",
+                ],
+                "out_of_scope": [
+                    "emoji quality",
+                    "serif/mincho candidates",
+                    "display-font experimentation",
+                    "all-font sweep",
+                    "production subtitle design acceptance",
+                    "production render acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "next_diagnostic_overlay_proof_route": {
+                "route_kind": "kirinuki_gothic_weight_balance_diagnostic_proof",
+                "target_cuts": list(target_cut_ids),
+                "selected_candidate_for_next_proof_base": "pending_ed10i_human_review",
+                "recommended_default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+                "font_size": {
+                    "status": "preserve_existing_size_policy_as_starting_reference",
+                    "formula": "round(frame_height * 0.115)",
+                },
+                "font_family": "gothic_sans_only",
+                "font_weight": "heavier_body_preferred",
+                "outline": "thinner_than_current_reference_when_body_weight_allows",
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "regenerate_sh08_required": False,
+                "comparison_artifact_required": "generated_for_ed10i_human_review",
+                "episodes_artifact_tracking_allowed": False,
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "candidates": ED10I_KIRINUKI_GOTHIC_CANDIDATES,
+            "next_decision_question": (
+                "For cut_002 / cut_003, which ED-10i gothic balance candidate "
+                "should become the next diagnostic overlay proof base: the current "
+                "reference, the thicker BIZ UDGothic body, the thinner-outline Yu "
+                "Gothic variant, or the balanced Meiryo variant? Emoji differences "
+                "are intentionally ignored in this slice."
+            ),
+        }
+    known = ", ".join(TYPOGRAPHY_COMPARISON_PROFILES)
+    raise ValueError(f"unknown comparison_profile: {comparison_profile}; known={known}")
 
 
 def _comparison_texts_from_edit_pack(
@@ -1269,6 +1549,122 @@ def _small_adjustment_decision_packet(
     }
 
 
+def _kirinuki_gothic_balance_decision_packet(
+    *,
+    target_cut_ids: tuple[str, ...],
+) -> dict[str, Any]:
+    return {
+        "decision_state": "generated_requires_human_review",
+        "current_reference_not_accepted_as_is": True,
+        "preferred_direction": "kirinuki_youtube_style_gothic",
+        "main_issue": "fill_outline_balance_outline_dominates",
+        "desired_adjustment": "make_glyph_body_thicker_so_outline_does_not_dominate",
+        "recommended_default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+        "selected_candidate_for_next_proof_base": "pending_ed10i_human_review",
+        "target_cuts": list(target_cut_ids),
+        "font_size": {
+            "decision": "preserve_existing_size_policy_as_starting_reference",
+            "formula": "round(frame_height * 0.115)",
+            "reopen_as_primary_axis": False,
+        },
+        "active_adjustment_axes": [
+            "font_family",
+            "font_weight / glyph body thickness",
+            "outline/stroke ratio",
+            "fill vs outline balance",
+        ],
+        "emoji_treatment": {
+            "decision": "neutral_ignore_for_evaluation",
+            "optimize_in_this_slice": False,
+        },
+        "options": [
+            {
+                "candidate_id": "ed10i_reference_noto_clean_outline",
+                "use_as": "current_reference_only",
+                "adoption_reason": (
+                    "Keeps the visible ED-10g Noto route in the comparison so the "
+                    "new thicker-body candidates can be judged fairly."
+                ),
+                "watch_item": "Human review already says this route is not accepted as-is.",
+            },
+            {
+                "candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+                "use_as": "recommended_default_for_next_diagnostic_overlay_proof",
+                "adoption_reason": (
+                    "BIZ UDGothic Bold gives a heavier local gothic body while the "
+                    "outline is reduced enough to stop dominating the fill."
+                ),
+                "watch_item": (
+                    "Local/system font availability is same-machine evidence; a "
+                    "future reproducible route needs license/source readback."
+                ),
+            },
+            {
+                "candidate_id": "ed10i_yu_gothic_bold_thin_outline",
+                "use_as": "thinner_outline_variant",
+                "adoption_reason": (
+                    "Keeps a familiar Windows gothic route and isolates whether "
+                    "outline reduction alone solves the balance issue."
+                ),
+                "watch_item": "May retain some of the earlier system-font look.",
+            },
+            {
+                "candidate_id": "ed10i_meiryo_bold_fill_outline_balance",
+                "use_as": "balanced_fill_outline_variant",
+                "adoption_reason": (
+                    "Tests a bold readable sans route with slightly warm fill and "
+                    "a restrained outline."
+                ),
+                "watch_item": "May feel softer than the kirinuki-gothic target.",
+            },
+        ],
+        "rejected_alternatives": [
+            {
+                "route": "re_accept_current_noto_clean_outline_as_final",
+                "reason": "The consumed human review explicitly says the current proof is not accepted as-is.",
+            },
+            {
+                "route": "broaden_to_all_font_sweep",
+                "reason": "ED-10i is a narrow gothic/sans balance proof, not ED-10h all-font exploration.",
+            },
+            {
+                "route": "optimize_emoji_rendering",
+                "reason": "Emoji treatment is neutral and ignored for this slice.",
+            },
+            {
+                "route": "vendor_third_party_font_binaries",
+                "reason": "No font binary vendoring is approved for this slice.",
+            },
+            {
+                "route": "claim_production_subtitle_design_acceptance",
+                "reason": "The generated comparison remains diagnostic / representative review only.",
+            },
+            {
+                "route": "mutate_source_or_rights_or_publishing_state",
+                "reason": (
+                    "Source media, transcript, official subtitle evidence, rights, "
+                    "publishing, public use, and upload are outside this proof route."
+                ),
+            },
+        ],
+        "smallest_next_proof_route": {
+            "route_kind": "kirinuki_gothic_weight_balance_diagnostic_proof",
+            "selected_candidate_id": "pending_ed10i_human_review",
+            "default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+            "target_cuts": list(target_cut_ids),
+            "keep_current_reference_visible": True,
+            "proof_scope": "diagnostic_representative_review_only",
+            "regenerate_sh08_required": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
+    }
+
+
 def _candidate_readback(candidate: TypographyDecorationCandidate) -> dict[str, Any]:
     return {
         "candidate_id": candidate.candidate_id,
@@ -1283,6 +1679,9 @@ def _candidate_readback(candidate: TypographyDecorationCandidate) -> dict[str, A
         "badge_fill": _rgb_hex(candidate.badge_fill),
         "badge_outline": _rgb_hex(candidate.badge_outline),
         "decoration_note": candidate.decoration_note,
+        "body_weight_note": candidate.body_weight_note,
+        "outline_balance_role": candidate.outline_balance_role,
+        "emoji_evaluation_scope": candidate.emoji_evaluation_scope,
         "production_subtitle_design_acceptance": False,
     }
 
@@ -1294,6 +1693,7 @@ def _render_typography_decoration_sample(
     candidate: TypographyDecorationCandidate,
     text: str,
     text_index: int,
+    sample_variant: str = "font_family_decoration_comparison",
 ) -> dict[str, Any]:
     width, height = canvas_size
     font_size = max(16, round(height * 0.115))
@@ -1379,7 +1779,7 @@ def _render_typography_decoration_sample(
         "candidate_id": candidate.candidate_id,
         "display_name": candidate.display_name,
         "output_image_path": output_path.as_posix(),
-        "sample_variant": "font_family_decoration_comparison",
+        "sample_variant": sample_variant,
         "canvas_size": {"width": width, "height": height},
         "subtitle_mode": "badge_left_dialogue",
         "text": text,
@@ -1416,6 +1816,9 @@ def _render_typography_decoration_sample(
             "stroke_fill": _rgb_hex(candidate.stroke_fill),
             "shadow_fill": _rgb_hex(candidate.shadow_fill),
             "decoration_note": candidate.decoration_note,
+            "body_weight_axis": candidate.body_weight_note,
+            "outline_balance_axis": candidate.outline_balance_role,
+            "emoji_evaluation_scope": candidate.emoji_evaluation_scope,
         },
         "computed_layout": {
             "layout_anchor": "left_badge_first_line_center",
@@ -1464,6 +1867,9 @@ def _render_typography_decoration_sample(
             "sample_background",
         ],
         "speaker_identity_asset_status": _speaker_identity_asset_status("dialogue_badge_left"),
+        "body_weight_note": candidate.body_weight_note,
+        "outline_balance_role": candidate.outline_balance_role,
+        "emoji_evaluation_scope": candidate.emoji_evaluation_scope,
     }
 
 
@@ -1548,6 +1954,7 @@ def _write_typography_comparison_contact_sheet(
     *,
     samples: list[dict[str, Any]],
     output_dir: Path,
+    filename: str = "subtitle_typography_decoration_contact_sheet.png",
 ) -> Path:
     image_paths = [Path(sample["output_image_path"]) for sample in samples]
     thumbnails = []
@@ -1566,7 +1973,7 @@ def _write_typography_comparison_contact_sheet(
         x = (index % columns) * cell_w
         y = (index // columns) * cell_h
         sheet.paste(image, (x, y))
-    contact_sheet = output_dir / "subtitle_typography_decoration_contact_sheet.png"
+    contact_sheet = output_dir / filename
     sheet.save(contact_sheet)
     return contact_sheet
 
@@ -1591,6 +1998,9 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
                 "shadow": sample["shadow"],
                 "safe_area_status": sample["safe_area_status"],
                 "wrapped_lines": sample["wrapped_lines"],
+                "body_weight_note": sample.get("body_weight_note"),
+                "outline_balance_role": sample.get("outline_balance_role"),
+                "emoji_evaluation_scope": sample.get("emoji_evaluation_scope"),
                 "production_subtitle_design_acceptance": sample[
                     "production_subtitle_design_acceptance"
                 ],
@@ -1607,16 +2017,33 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
             "<section class=\"candidate\">"
             f"<h2>{html.escape(candidate['display_name'])}</h2>"
             f"<p>{html.escape(candidate['decoration_note'])}</p>"
+            f"<p>body weight: {html.escape(str(candidate.get('body_weight_note', '')))}</p>"
+            f"<p>outline balance: {html.escape(str(candidate.get('outline_balance_role', '')))}</p>"
+            f"<p>emoji: {html.escape(str(candidate.get('emoji_evaluation_scope', '')))}</p>"
             f"<p>font paths: {html.escape(', '.join(candidate['requested_font_paths']))}</p>"
             f"{''.join(sample_blocks)}"
             "</section>"
         )
     contact_sheet = Path(report["outputs"]["contact_sheet"]).name
+    title = str(report.get("html_title") or "Subtitle Typography Decoration Comparison")
+    source_notice = str(
+        report.get("source_notice")
+        or "Source human readback: adjust_boundary. ED-10g comparison response: small_adjustment."
+    )
+    decision_packet_key = str(
+        report.get("decision_packet_key") or "small_adjustment_decision_packet"
+    )
+    decision_packet_title = str(
+        report.get("decision_packet_title") or "Small Adjustment Decision Packet"
+    )
+    decision_packet = report.get(decision_packet_key) or report.get(
+        "small_adjustment_decision_packet"
+    )
     body = f"""<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <title>Subtitle Typography Decoration Comparison</title>
+  <title>{html.escape(title)}</title>
   <style>
     body {{ font-family: system-ui, sans-serif; margin: 24px; color: #20242a; background: #f5f7f9; }}
     .notice {{ padding: 12px 14px; border: 1px solid #aab5c0; background: #fff; }}
@@ -1627,9 +2054,9 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
   </style>
 </head>
 <body>
-  <h1>Subtitle Typography Decoration Comparison</h1>
+  <h1>{html.escape(title)}</h1>
   <p class="notice">review_only=true / production_candidate=false / production_subtitle_design_acceptance=false / rights_status=pending</p>
-  <p class="notice">Source human readback: adjust_boundary. ED-10g comparison response: small_adjustment. Font size is accepted only for the current diagnostic / representative route; font family and decoration remain unresolved until a concrete adjusted candidate is selected.</p>
+  <p class="notice">{html.escape(source_notice)}</p>
   <p class="notice">This artifact uses generated review-only PNGs. It does not mutate source media, transcript, official subtitle evidence, rights, publishing, public use, or upload state.</p>
   <h2>Contact Sheet</h2>
   <p><a href="{html.escape(contact_sheet)}"><img src="{html.escape(contact_sheet)}" alt="typography decoration contact sheet"></a></p>
@@ -1637,8 +2064,8 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
   <p>{html.escape(str(report["next_decision_question"]))}</p>
   <h2>Next Diagnostic Overlay Proof Route</h2>
   <pre>{html.escape(json.dumps(report["next_diagnostic_overlay_proof_route"], ensure_ascii=False, indent=2))}</pre>
-  <h2>Small Adjustment Decision Packet</h2>
-  <pre>{html.escape(json.dumps(report["small_adjustment_decision_packet"], ensure_ascii=False, indent=2))}</pre>
+  <h2>{html.escape(decision_packet_title)}</h2>
+  <pre>{html.escape(json.dumps(decision_packet, ensure_ascii=False, indent=2))}</pre>
   <h2>Fixed / Varied Axes</h2>
   <pre>{html.escape(json.dumps(report["comparison_axes"], ensure_ascii=False, indent=2))}</pre>
   {''.join(sections)}
@@ -1648,15 +2075,15 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
     path.write_text(body, encoding="utf-8")
 
 
-def _open_comparison_script() -> str:
+def _open_comparison_script(html_filename: str = "subtitle_typography_decoration_comparison_report.html") -> str:
     return """$ErrorActionPreference = 'Stop'
 $previewRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$index = Join-Path $previewRoot 'subtitle_typography_decoration_comparison_report.html'
+$index = Join-Path $previewRoot '%s'
 if (-not (Test-Path -LiteralPath $index)) {
-  throw "subtitle_typography_decoration_comparison_report.html not found next to open_comparison.ps1"
+  throw "%s not found next to open_comparison.ps1"
 }
 Invoke-Item -LiteralPath $index
-"""
+""" % (html_filename, html_filename)
 
 
 def _rgb_hex(value: tuple[int, int, int]) -> str:
