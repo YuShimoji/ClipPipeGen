@@ -44,13 +44,19 @@ DEFAULT_KIRINUKI_FONT_AUDIT_OUTPUT_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/"
     "review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit"
 )
+DEFAULT_KNOWN_KIRINUKI_FONT_PACK_OUTPUT_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/"
+    "review/jp_pilot01r3_cut_review/subtitle_known_kirinuki_font_pack_comparison"
+)
 ED10G_TYPOGRAPHY_DECORATION_PROFILE = "ed10g_typography_decoration"
 ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE = "ed10i_kirinuki_gothic_balance"
 ED10J_KIRINUKI_FONT_AUDIT_PROFILE = "ed10j_kirinuki_font_audit"
+ED10L_KNOWN_KIRINUKI_FONT_PACK_PROFILE = "ed10l_known_kirinuki_font_pack"
 TYPOGRAPHY_COMPARISON_PROFILES = (
     ED10G_TYPOGRAPHY_DECORATION_PROFILE,
     ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE,
     ED10J_KIRINUKI_FONT_AUDIT_PROFILE,
+    ED10L_KNOWN_KIRINUKI_FONT_PACK_PROFILE,
 )
 DEFAULT_CANVAS = (1280, 720)
 SAMPLE_TEXTS = (
@@ -501,10 +507,121 @@ ED10J_KIRINUKI_FONT_AUDIT_CANDIDATES: tuple[TypographyDecorationCandidate, ...] 
     ),
 )
 
+ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES: tuple[
+    TypographyDecorationCandidate, ...
+] = (
+    TypographyDecorationCandidate(
+        candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        display_name="Keifont pop dialogue candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/keifont.ttf"),
+            Path("C:/Windows/Fonts/Keifont.ttf"),
+        ),
+        fallback_family="Keifont",
+        stroke_ratio=0.060,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(236, 70, 88),
+        badge_outline=(58, 14, 24),
+        decoration_note=(
+            "user-known kirinuki/telop candidate for normal dialogue; requires "
+            "font install/license readback before any overlay proof can accept it"
+        ),
+        body_weight_note=(
+            "pop gothic/handwritten energy; should be judged as an intentional "
+            "YouTube subtitle face, not as a system-safe body font"
+        ),
+        outline_balance_role="known_kirinuki_pop_dialogue_candidate_requires_install",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10l",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10l_851_chikara_yowaku_dialogue_candidate",
+        display_name="851 Chikara Yowaku dialogue candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/851CHIKARA-YOWAKU_002.ttf"),
+            Path("C:/Windows/Fonts/851CHIKARA-YOWAKU.ttf"),
+        ),
+        fallback_family="851 Chikara Yowaku",
+        stroke_ratio=0.064,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 252, 240),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(74, 153, 115),
+        badge_outline=(12, 48, 34),
+        decoration_note=(
+            "known free-font candidate for softer/weak dialogue; kept in the "
+            "normal baseline audit but should not replace the shout/emphasis slot"
+        ),
+        body_weight_note=(
+            "weaker handwritten body; useful when normal dialogue should feel "
+            "less rigid than BIZ/Noto/Meiryo"
+        ),
+        outline_balance_role="known_kirinuki_soft_dialogue_candidate_requires_install",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10l",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10l_m_plus_fonts_dialogue_candidate",
+        display_name="M+ FONTS dialogue candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/MPLUS1p-Bold.ttf"),
+            Path("C:/Windows/Fonts/MPLUSRounded1c-Bold.ttf"),
+            Path("C:/Windows/Fonts/MPLUS2p-Bold.ttf"),
+        ),
+        fallback_family="M+ FONTS",
+        stroke_ratio=0.058,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(49, 128, 201),
+        badge_outline=(10, 33, 58),
+        decoration_note=(
+            "OFL-backed known family for a stronger downloaded normal-dialogue "
+            "candidate; not locally installed on this terminal"
+        ),
+        body_weight_note=(
+            "candidate family should be judged with an actual M+ bold/rounded "
+            "file before comparing against BIZ/Noto"
+        ),
+        outline_balance_role="ofl_known_dialogue_candidate_requires_install",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10l",
+    ),
+    TypographyDecorationCandidate(
+        candidate_id="ed10l_yasashisa_gothic_goodfreefonts_candidate",
+        display_name="Yasashisa Gothic goodfreefonts candidate",
+        font_paths=(
+            Path("C:/Windows/Fonts/YasashisaGothicBold-V2.otf"),
+            Path("C:/Windows/Fonts/YasashisaGothic.ttf"),
+        ),
+        fallback_family="Yasashisa Gothic",
+        stroke_ratio=0.060,
+        shadow_offset_ratio=0.014,
+        text_fill=(255, 255, 255),
+        stroke_fill=(0, 0, 0),
+        shadow_fill=(0, 0, 0),
+        badge_fill=(242, 154, 50),
+        badge_outline=(62, 36, 8),
+        decoration_note=(
+            "rounded/telop-friendly candidate surfaced from the user-provided "
+            "GoodFreeFonts roundup; official source/license capture still required"
+        ),
+        body_weight_note=(
+            "candidate is included to prevent the audit from collapsing back to "
+            "system-safe generic sans faces"
+        ),
+        outline_balance_role="goodfreefonts_round_dialogue_candidate_requires_source_review",
+        emoji_evaluation_scope="emoji_neutral_ignored_for_ed10l",
+    ),
+)
+
 TYPOGRAPHY_DECORATION_CANDIDATES: tuple[TypographyDecorationCandidate, ...] = (
     ED10G_TYPOGRAPHY_DECORATION_CANDIDATES
     + ED10I_KIRINUKI_GOTHIC_CANDIDATES
     + ED10J_KIRINUKI_FONT_AUDIT_CANDIDATES
+    + ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES
 )
 
 
@@ -1606,6 +1723,118 @@ def _typography_comparison_profile(
                 "is enough; do not treat this as production approval."
             ),
         }
+    if comparison_profile == ED10L_KNOWN_KIRINUKI_FONT_PACK_PROFILE:
+        decision_packet = _known_kirinuki_font_pack_decision_packet(
+            target_cut_ids=target_cut_ids,
+        )
+        return {
+            "output_dir_name": "subtitle_known_kirinuki_font_pack_comparison",
+            "default_output_dir": DEFAULT_KNOWN_KIRINUKI_FONT_PACK_OUTPUT_DIR,
+            "json_filename": "subtitle_known_kirinuki_font_pack_report.json",
+            "html_filename": "subtitle_known_kirinuki_font_pack_report.html",
+            "contact_sheet_filename": "subtitle_known_kirinuki_font_pack_contact_sheet.png",
+            "sample_variant": "known_kirinuki_font_pack_normal_dialogue_comparison",
+            "report_kind": "subtitle_known_kirinuki_font_pack_audit",
+            "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+            "scope": "diagnostic_representative_known_kirinuki_font_pack_normal_dialogue_audit",
+            "html_title": "ED-10l Known Kirinuki Font Pack Audit",
+            "source_notice": (
+                "Human freeform review consumed: the ED-10k BIZ UDGothic proof "
+                "is reviewed and not accepted as the normal subtitle baseline. "
+                "The issue is candidate-universe selection, not another BIZ/Noto/"
+                "Meiryo tuning pass."
+            ),
+            "decision_packet_title": "Known Kirinuki Font Pack Decision Packet",
+            "decision_packet_key": "known_kirinuki_font_pack_decision_packet",
+            "decision_packet": decision_packet,
+            "font_size_status": "preserved_as_comparison_constant_not_accepted_baseline",
+            "human_decision_readback": {
+                "source_artifact": "clip-ed10k-biz-overlay-proof-001",
+                "selected_response": "freeform_review_biz_not_accepted_as_normal_baseline",
+                "current_biz_proof_accepted_as_normal_baseline": False,
+                "main_issue": "biz_too_hard_rigid_text_thin_outline_too_strong",
+                "interpretation": (
+                    "normal_dialogue_baseline_requires_known_kirinuki_telop_fonts"
+                ),
+                "system_safe_route_role": "reference_rejected_for_this_use_case",
+                "font_size": "preserve_current_size_policy_as_comparison_constant",
+                "production_subtitle_design_acceptance": False,
+            },
+            "comparison_response_readback": {
+                "source_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+                "selected_response": "route_correction_to_known_kirinuki_font_pack_audit",
+                "selected_candidate_for_next_proof_base": "pending_ed10l_human_review_after_font_install_readback",
+                "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "font_size": "preserved_as_comparison_constant_not_primary_axis",
+                "font_family": "known_kirinuki_telop_strong_candidates",
+                "usage_slot": "normal_dialogue_baseline",
+                "decoration": "compare_known_font_body_against_restrained_outline",
+                "self_diagnosis": decision_packet["self_diagnosis"],
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "comparison_axes": {
+                "fixed": [
+                    "font_size_policy=round(frame_height * 0.115)",
+                    "badge_left_dialogue placement",
+                    "font_bbox wrapping",
+                    "target_cuts=cut_002/cut_003",
+                    "normal dialogue baseline slot only",
+                ],
+                "varied": [
+                    "known kirinuki/telop font family",
+                    "installed vs missing font readback",
+                    "body energy vs rigid system-safe feel",
+                    "outline pressure against requested font body",
+                ],
+                "out_of_scope": [
+                    "BIZ/Noto/Meiryo retuning as the main route",
+                    "emphasis/shout/tsukkomi final selection",
+                    "mood/literary mincho final selection",
+                    "font binary vendoring",
+                    "production subtitle design acceptance",
+                    "production render acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "next_diagnostic_overlay_proof_route": {
+                "route_kind": "ed10l_known_font_pack_install_or_comparison_followup",
+                "target_cuts": list(target_cut_ids),
+                "selected_candidate_for_next_proof_base": "pending_ed10l_human_review_after_font_install_readback",
+                "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+                "font_size": {
+                    "status": "preserve_existing_size_policy_as_comparison_constant",
+                    "formula": "round(frame_height * 0.115)",
+                },
+                "font_family": "install_or_review_known_kirinuki_normal_dialogue_pack",
+                "font_binaries_downloaded": False,
+                "font_binaries_vendored": False,
+                "regenerate_sh08_required": False,
+                "comparison_artifact_required": "generated_for_ed10l_human_review",
+                "episodes_artifact_tracking_allowed": False,
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "candidates": ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES,
+            "next_decision_question": (
+                "For cut_002 / cut_003 normal dialogue subtitles, which known "
+                "kirinuki/telop font should be installed or promoted to the next "
+                "diagnostic overlay proof base? Freeform review is enough; do "
+                "not treat this as production/public/rights acceptance."
+            ),
+        }
     known = ", ".join(TYPOGRAPHY_COMPARISON_PROFILES)
     raise ValueError(f"unknown comparison_profile: {comparison_profile}; known={known}")
 
@@ -2109,6 +2338,328 @@ def _kirinuki_font_audit_decision_packet(
             "artifact_id": "clip-ed10k-biz-overlay-proof-001",
             "target_cuts": list(target_cut_ids),
             "keep_meiryo_visible_as_reference": True,
+            "proof_scope": "diagnostic_representative_review_only",
+            "regenerate_sh08_required": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
+    }
+
+
+def _known_kirinuki_font_pack_decision_packet(
+    *,
+    target_cut_ids: tuple[str, ...],
+) -> dict[str, Any]:
+    return {
+        "decision_state": "route_correction_known_font_pack_audit_active",
+        "source_review_artifact": "clip-ed10k-biz-overlay-proof-001",
+        "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+        "current_biz_proof_accepted_as_normal_baseline": False,
+        "biz_role": "reviewed_reference_rejected_for_normal_dialogue_baseline",
+        "system_safe_route_role": "reference_rejected_for_this_use_case",
+        "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
+        "main_issue": "candidate_universe_was_too_system_safe_and_generic",
+        "target_cuts": list(target_cut_ids),
+        "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+        "selected_candidate_for_next_proof_base": (
+            "pending_ed10l_human_review_after_font_install_readback"
+        ),
+        "freeform_review_consumed": {
+            "biz_udgothic_proof_reviewed": True,
+            "biz_udgothic_accepted_as_normal_baseline": False,
+            "biz_udgothic_main_issues": [
+                "too_hard_rigid",
+                "text_feels_thin",
+                "black_outline_too_strong",
+            ],
+            "noto_system_safe_route_also_not_right": True,
+            "route_change": "known_kirinuki_font_pack_audit",
+        },
+        "self_diagnosis": {
+            "candidate_universe_bias": "system_safe_generic_readability",
+            "safe_reproducible_conflated_with_strong_kirinuki_design": True,
+            "user_known_good_domain_knowledge_not_elevated_early_enough": True,
+            "generic_font_docs_treated_as_sufficient_for_telop_needs": True,
+            "corrective_action": (
+                "separate license/install/reproducibility from visual suitability "
+                "and audit known Japanese YouTube telop fonts first"
+            ),
+        },
+        "usage_slots": [
+            {
+                "slot": "normal_dialogue_baseline",
+                "priority_in_this_slice": True,
+                "candidate_ids": [
+                    "ed10l_keifont_pop_dialogue_candidate",
+                    "ed10l_851_chikara_yowaku_dialogue_candidate",
+                    "ed10l_m_plus_fonts_dialogue_candidate",
+                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                ],
+                "routing_note": (
+                    "Primary ED-10l target; choose a readable but intentional "
+                    "kirinuki subtitle base before any overlay proof acceptance."
+                ),
+            },
+            {
+                "slot": "emphasis_shout_tsukkomi",
+                "priority_in_this_slice": False,
+                "candidate_ids": ["ed10l_851_chikara_zuyoku_emphasis_candidate"],
+                "routing_note": (
+                    "851 Chikara Dzuyoku is strong for tsukkomi/video telop use, "
+                    "but it should not be collapsed into the normal dialogue baseline."
+                ),
+            },
+            {
+                "slot": "mood_literary",
+                "priority_in_this_slice": False,
+                "candidate_ids": [
+                    "ed10l_source_han_serif_mood_candidate",
+                    "ed10l_shippori_mincho_mood_candidate",
+                ],
+                "routing_note": (
+                    "Mincho/serif families are parked for narrative or literary "
+                    "mood slots, not the current normal dialogue baseline."
+                ),
+            },
+        ],
+        "research_readback": {
+            "source_pages_inspected": [
+                {
+                    "source": "Keifont official specimen",
+                    "url": "https://font.sumomo.ne.jp/font_1.html",
+                    "design_inference": (
+                        "Pop, rhythmic kana energy makes it a strong normal-dialogue "
+                        "candidate when installed and reviewed visually."
+                    ),
+                    "license_install_note": (
+                        "Official source must be retained with font/install notes; "
+                        "no font binary is vendored by this slice."
+                    ),
+                },
+                {
+                    "source": "851 Chikara Yowaku official",
+                    "url": "https://pm85122.onamae.jp/851ch-yw.html",
+                    "design_inference": (
+                        "Soft/weak handwritten telop direction can counter the rigid "
+                        "BIZ/Noto/system-safe feel."
+                    ),
+                    "license_install_note": (
+                        "Source page states commercial video use and redistribution "
+                        "permissions, but this repo still keeps font binaries out of Git."
+                    ),
+                },
+                {
+                    "source": "M+ FONTS official",
+                    "url": "https://mplusfonts.github.io/",
+                    "design_inference": (
+                        "OFL-backed M+ family gives a stronger downloaded candidate "
+                        "route with reproducible licensing."
+                    ),
+                    "license_install_note": "SIL OFL route; install/readback still required.",
+                },
+                {
+                    "source": "GoodFreeFonts YouTube subtitle roundup",
+                    "url": "https://goodfreefonts.com/820/",
+                    "design_inference": (
+                        "The provided roundup confirms the candidate universe should "
+                        "include YouTube subtitle/telop-oriented faces, not only "
+                        "system readability fonts."
+                    ),
+                    "license_install_note": (
+                        "GoodFreeFonts is an index; official source and license "
+                        "capture are required before any file install route."
+                    ),
+                },
+                {
+                    "source": "Source Han Serif Japanese official",
+                    "url": "https://source.typekit.com/source-han-serif/jp/",
+                    "design_inference": (
+                        "Strong mood/literary mincho route, but not the current "
+                        "normal dialogue baseline target."
+                    ),
+                    "license_install_note": "Parked outside ED-10l normal-dialogue comparison.",
+                },
+                {
+                    "source": "Shippori Mincho official",
+                    "url": "https://fontdasu.com/shippori-mincho/",
+                    "design_inference": (
+                        "Useful mood/literary candidate with OFL-style route, "
+                        "not a normal subtitle baseline decision here."
+                    ),
+                    "license_install_note": "Parked outside ED-10l normal-dialogue comparison.",
+                },
+            ],
+            "local_font_readback": {
+                "checked_at": "2026-06-18 JST",
+                "target_fonts_found": [],
+                "target_fonts_missing": [
+                    "keifont",
+                    "851_chikara_yowaku",
+                    "851_chikara_zuyoku",
+                    "m_plus_fonts",
+                    "source_han_serif",
+                    "shippori_mincho",
+                    "yasashisa_gothic",
+                ],
+                "fallback_render_expected_in_generated_samples": True,
+                "reason": (
+                    "ED-10l artifact records the missing-font state rather than "
+                    "pretending the fallback bitmap is the target font."
+                ),
+            },
+        },
+        "candidate_buckets": [
+            {
+                "bucket": "strong_design_candidates",
+                "candidate_ids": [
+                    "ed10l_keifont_pop_dialogue_candidate",
+                    "ed10l_851_chikara_yowaku_dialogue_candidate",
+                    "ed10l_m_plus_fonts_dialogue_candidate",
+                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                ],
+                "routing_note": (
+                    "Normal-dialogue candidates worth visual comparison after "
+                    "font installation or explicit source review."
+                ),
+            },
+            {
+                "bucket": "locally_available_now",
+                "candidate_ids": [],
+                "routing_note": (
+                    "The target known-font pack is not installed on this terminal; "
+                    "generated samples must be read as fallback render evidence."
+                ),
+            },
+            {
+                "bucket": "requires_download_install",
+                "candidate_ids": [
+                    "ed10l_keifont_pop_dialogue_candidate",
+                    "ed10l_851_chikara_yowaku_dialogue_candidate",
+                    "ed10l_m_plus_fonts_dialogue_candidate",
+                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                ],
+                "routing_note": "Install/readback is required before a real overlay proof can select a target font.",
+            },
+            {
+                "bucket": "requires_explicit_license_handling",
+                "candidate_ids": [
+                    "ed10l_keifont_pop_dialogue_candidate",
+                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                ],
+                "routing_note": (
+                    "These routes need official source/license capture before a "
+                    "font file enters any reproducible local workflow."
+                ),
+            },
+            {
+                "bucket": "reference_rejected_for_normal_baseline",
+                "candidate_ids": [
+                    "ed10j_biz_udgothic_bold_telop_candidate",
+                    "ed10j_noto_sans_jp_local_telop_candidate",
+                    "ed10i_meiryo_bold_fill_outline_balance",
+                ],
+                "routing_note": (
+                    "BIZ/Noto/Meiryo remain useful references but are not the ED-10l "
+                    "candidate universe for normal-dialogue acceptance."
+                ),
+            },
+        ],
+        "active_adjustment_axes": [
+            "candidate_universe",
+            "normal_dialogue_font_family",
+            "installed_vs_missing_font_readback",
+            "design_suitability_separate_from_license_reproducibility",
+        ],
+        "font_size": {
+            "decision": "preserve_existing_size_policy_as_comparison_constant",
+            "formula": "round(frame_height * 0.115)",
+            "reopen_as_primary_axis": False,
+        },
+        "emoji_treatment": {
+            "decision": "neutral_ignore_for_evaluation",
+            "optimize_in_this_slice": False,
+        },
+        "options": [
+            {
+                "candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "use_as": "recommended_default_for_first_install_or_overlay_route",
+                "adoption_reason": (
+                    "User-known pop kirinuki/telop energy directly addresses the "
+                    "system-safe candidate-universe failure."
+                ),
+                "watch_item": "Needs actual font install and license/source capture before visual acceptance.",
+            },
+            {
+                "candidate_id": "ed10l_851_chikara_yowaku_dialogue_candidate",
+                "use_as": "soft_dialogue_candidate",
+                "adoption_reason": "Can soften rigid normal dialogue without jumping to shout/emphasis.",
+                "watch_item": "May be too characterful for all normal dialogue.",
+            },
+            {
+                "candidate_id": "ed10l_m_plus_fonts_dialogue_candidate",
+                "use_as": "ofl_reproducible_dialogue_candidate",
+                "adoption_reason": "Gives a stronger font-family route with clearer OFL reproducibility.",
+                "watch_item": "Needs installed bold/rounded file readback; generic fallback is not evidence.",
+            },
+            {
+                "candidate_id": "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                "use_as": "rounded_telop_candidate_from_user_source",
+                "adoption_reason": (
+                    "Keeps the user-provided YouTube subtitle roundup in the normal "
+                    "candidate universe."
+                ),
+                "watch_item": "Requires official source and license verification outside the roundup.",
+            },
+        ],
+        "rejected_alternatives": [
+            {
+                "route": "treat_biz_udgothic_overlay_as_accepted_normal_baseline",
+                "reason": "The freeform review explicitly rejects BIZ as too hard, rigid, thin, and outline-heavy.",
+            },
+            {
+                "route": "continue_biz_noto_meiryo_system_safe_tuning_as_main_route",
+                "reason": (
+                    "The failure is the candidate universe and genre fit, not only "
+                    "a minor outline or weight adjustment."
+                ),
+            },
+            {
+                "route": "collapse_emphasis_and_mood_fonts_into_normal_baseline",
+                "reason": (
+                    "851 Chikara Dzuyoku and mincho families have separate usage "
+                    "slots and should not decide the normal-dialogue baseline."
+                ),
+            },
+            {
+                "route": "download_or_vendor_font_binaries_now",
+                "reason": "No font binary vendoring or reproducible artifact-store strategy is approved.",
+            },
+            {
+                "route": "claim_production_subtitle_design_acceptance",
+                "reason": "The generated comparison remains diagnostic / representative review only.",
+            },
+            {
+                "route": "mutate_source_or_rights_or_publishing_state",
+                "reason": (
+                    "Source media, transcript, official subtitle evidence, rights, "
+                    "publishing, public use, and upload remain outside this route."
+                ),
+            },
+        ],
+        "smallest_next_proof_route": {
+            "route_kind": "ed10l_known_font_pack_install_or_overlay_proof",
+            "selected_candidate_id": (
+                "pending_ed10l_human_review_after_font_install_readback"
+            ),
+            "default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+            "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+            "target_cuts": list(target_cut_ids),
+            "font_install_required": True,
+            "keep_biz_noto_meiryo_visible_as_rejected_reference": True,
             "proof_scope": "diagnostic_representative_review_only",
             "regenerate_sh08_required": False,
             "production_subtitle_design_acceptance": False,

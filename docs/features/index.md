@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10k`
-- artifact: `clip-ed10k-biz-overlay-proof-001`
-- state: `ed10k_biz_overlay_proof_requires_review`
+- feature: `ED-10l`
+- artifact: `clip-ed10l-known-kirinuki-font-pack-001`
+- state: `ed10l_known_kirinuki_font_pack_audit_active`
 
 ## Feature Table
 
@@ -48,8 +48,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10g | Subtitle Typography Decoration Comparison v0 | done | accepted_diagnostic_base | 100 | clip-ed10g-noto-overlay-proof-001 | Keep as historical diagnostic proof; the latest human review sends styling to ED-10i. |
 | ED-10h | Subtitle Font Candidate Sweep v0 | approved | defined_not_generated | 15 | clip-subtitle-font-candidate-sweep-001 | Use the font candidate registry to choose a no-download or download-approved sweep route. |
 | ED-10i | Kirinuki Gothic Weight Balance Comparison v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10i-meiryo-overlay-proof-001 | Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline. |
-| ED-10j | Kirinuki Subtitle Font Research & Candidate Audit v0 | done | font_audit_consumed_biz_selected | 100 | clip-ed10j-kirinuki-font-audit-001 | Keep as consumed audit trail; BIZ UDGothic is selected for the ED-10k overlay proof. |
-| ED-10k | BIZ UDGothic Overlay Proof v0 | in_progress | biz_overlay_proof_requires_review | 70 | clip-ed10k-biz-overlay-proof-001 | Review the generated BIZ UDGothic overlay proof for cut_002 / cut_003. |
+| ED-10j | Kirinuki Subtitle Font Research & Candidate Audit v0 | done | font_audit_consumed_biz_selected | 100 | clip-ed10j-kirinuki-font-audit-001 | Keep as consumed audit trail; BIZ UDGothic selection was superseded by ED-10k review. |
+| ED-10k | BIZ UDGothic Overlay Proof v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10k-biz-overlay-proof-001 | Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline. |
+| ED-10l | Known Kirinuki Font Pack Audit v0 | in_progress | known_font_pack_audit_active | 60 | clip-ed10l-known-kirinuki-font-pack-001 | Review the known kirinuki font pack audit and choose the next install/proof route. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

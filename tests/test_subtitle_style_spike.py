@@ -917,6 +917,129 @@ def test_kirinuki_font_audit_profile_consumes_meiryo_freeform_review(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
 )
+def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "subtitle_known_kirinuki_font_pack_comparison"
+
+    report = spike.build_subtitle_typography_decoration_comparison(
+        output_dir=output_dir,
+        sample_texts=[
+            "団長、ちなみに、他の番長知ってますか？",
+            "まあ謝るんなら許してあげます",
+        ],
+        canvas_size=(640, 360),
+        base_dir=tmp_path,
+        comparison_profile="ed10l_known_kirinuki_font_pack",
+    )
+
+    assert report["report_kind"] == "subtitle_known_kirinuki_font_pack_audit"
+    assert report["artifact_id"] == "clip-ed10l-known-kirinuki-font-pack-001"
+    assert report["comparison_profile"] == "ed10l_known_kirinuki_font_pack"
+    assert report["human_decision_readback"]["selected_response"] == (
+        "freeform_review_biz_not_accepted_as_normal_baseline"
+    )
+    assert report["human_decision_readback"][
+        "current_biz_proof_accepted_as_normal_baseline"
+    ] is False
+    assert report["human_decision_readback"]["system_safe_route_role"] == (
+        "reference_rejected_for_this_use_case"
+    )
+    assert report["comparison_response_readback"]["selected_response"] == (
+        "route_correction_to_known_kirinuki_font_pack_audit"
+    )
+    assert report["comparison_response_readback"][
+        "selected_candidate_for_next_proof_base"
+    ] == "pending_ed10l_human_review_after_font_install_readback"
+    assert report["comparison_response_readback"][
+        "recommended_default_candidate_id"
+    ] == "ed10l_keifont_pop_dialogue_candidate"
+    assert report["candidate_count"] == 4
+    assert {candidate["candidate_id"] for candidate in report["candidates"]} == {
+        "ed10l_keifont_pop_dialogue_candidate",
+        "ed10l_851_chikara_yowaku_dialogue_candidate",
+        "ed10l_m_plus_fonts_dialogue_candidate",
+        "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+    }
+    route = report["next_diagnostic_overlay_proof_route"]
+    assert route["route_kind"] == "ed10l_known_font_pack_install_or_comparison_followup"
+    assert route["recommended_default_candidate_id"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert route["font_binaries_downloaded"] is False
+    decision_packet = report["known_kirinuki_font_pack_decision_packet"]
+    assert decision_packet["decision_state"] == (
+        "route_correction_known_font_pack_audit_active"
+    )
+    assert decision_packet["current_biz_proof_accepted_as_normal_baseline"] is False
+    assert decision_packet["self_diagnosis"]["candidate_universe_bias"] == (
+        "system_safe_generic_readability"
+    )
+    assert decision_packet["self_diagnosis"][
+        "safe_reproducible_conflated_with_strong_kirinuki_design"
+    ] is True
+    assert decision_packet["self_diagnosis"][
+        "user_known_good_domain_knowledge_not_elevated_early_enough"
+    ] is True
+    assert {
+        slot["slot"] for slot in decision_packet["usage_slots"]
+    } == {
+        "normal_dialogue_baseline",
+        "emphasis_shout_tsukkomi",
+        "mood_literary",
+    }
+    assert {
+        bucket["bucket"] for bucket in decision_packet["candidate_buckets"]
+    } == {
+        "strong_design_candidates",
+        "locally_available_now",
+        "requires_download_install",
+        "requires_explicit_license_handling",
+        "reference_rejected_for_normal_baseline",
+    }
+    assert decision_packet["research_readback"]["local_font_readback"][
+        "target_fonts_found"
+    ] == []
+    assert {
+        route["route"] for route in decision_packet["rejected_alternatives"]
+    } >= {
+        "treat_biz_udgothic_overlay_as_accepted_normal_baseline",
+        "continue_biz_noto_meiryo_system_safe_tuning_as_main_route",
+        "download_or_vendor_font_binaries_now",
+        "claim_production_subtitle_design_acceptance",
+    }
+    assert len(report["samples"]) == 8
+    for sample in report["samples"]:
+        assert sample["sample_variant"] == (
+            "known_kirinuki_font_pack_normal_dialogue_comparison"
+        )
+        assert sample["style_inputs"]["emoji_evaluation_scope"] == (
+            "emoji_neutral_ignored_for_ed10l"
+        )
+        assert sample["font_file_status"].startswith(
+            "requested_candidate_font_missing_used_"
+        )
+        assert sample["production_candidate"] is False
+
+    json_path = output_dir / "subtitle_known_kirinuki_font_pack_report.json"
+    html_path = output_dir / "subtitle_known_kirinuki_font_pack_report.html"
+    contact_sheet = output_dir / "subtitle_known_kirinuki_font_pack_contact_sheet.png"
+    assert json_path.exists()
+    assert html_path.exists()
+    assert contact_sheet.exists()
+    persisted = json.loads(json_path.read_text(encoding="utf-8"))
+    assert json_path.read_text(encoding="utf-8").isascii()
+    assert persisted["comparison_profile"] == "ed10l_known_kirinuki_font_pack"
+    html = html_path.read_text(encoding="utf-8")
+    assert "ED-10l Known Kirinuki Font Pack Audit" in html
+    assert "Known Kirinuki Font Pack Decision Packet" in html
+    assert "system_safe_generic_readability" in html
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
 def test_typography_decoration_comparison_cli_reports_ed10j_profile(
     tmp_path: Path,
 ):
@@ -959,5 +1082,58 @@ def test_typography_decoration_comparison_cli_reports_ed10j_profile(
     assert payload["comparison_decision_packet"]["recommended_default_candidate_id"] == (
         "ed10j_biz_udgothic_bold_telop_candidate"
     )
+    assert payload["production_subtitle_design_acceptance"] is False
+    assert Path(payload["outputs"]["html"]).exists()
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_typography_decoration_comparison_cli_reports_ed10l_profile(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "ed10l_cli"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "build-subtitle-typography-decoration-comparison",
+            "--comparison-profile",
+            "ed10l_known_kirinuki_font_pack",
+            "--output-dir",
+            str(output_dir),
+            "--target-cut",
+            "cut_002",
+            "--target-cut",
+            "cut_003",
+            "--sample-text",
+            "ED-10l known kirinuki font pack smoke",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["artifact_id"] == "clip-ed10l-known-kirinuki-font-pack-001"
+    assert payload["comparison_profile"] == "ed10l_known_kirinuki_font_pack"
+    assert payload["comparison_response"]["selected_response"] == (
+        "route_correction_to_known_kirinuki_font_pack_audit"
+    )
+    assert payload["selected_candidate_for_next_proof_base"] == (
+        "pending_ed10l_human_review_after_font_install_readback"
+    )
+    assert payload["comparison_decision_packet"]["recommended_default_candidate_id"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert payload["comparison_decision_packet"]["self_diagnosis"][
+        "candidate_universe_bias"
+    ] == "system_safe_generic_readability"
     assert payload["production_subtitle_design_acceptance"] is False
     assert Path(payload["outputs"]["html"]).exists()

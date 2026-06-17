@@ -28,16 +28,16 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10k-biz-overlay-proof-001"
+        "clip-ed10l-known-kirinuki-font-pack-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10k_biz_overlay_proof_requires_review"
+        "ed10l_known_kirinuki_font_pack_audit_active"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "ed10j_freeform_review_consumed_meiryo_removed"
+        "ed10k_biz_freeform_review_consumed_not_accepted"
     )
     assert status["current_focus"]["selected_typography_base"] == (
-        "ed10j_biz_udgothic_bold_telop_candidate"
+        "pending_known_kirinuki_font_pack_review"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -45,6 +45,12 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        (
+            "powershell -ExecutionPolicy Bypass -File "
+            "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
+            "jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\"
+            "open_comparison.ps1"
+        ),
         ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
@@ -67,7 +73,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10k-biz-overlay-proof-001"
+        "clip-ed10l-known-kirinuki-font-pack-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -81,12 +87,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert "Open Surfaces" in html
+    assert "subtitle_known_kirinuki_font_pack" in html
     assert "subtitle_kirinuki_font_audit" in html
     assert "Doc Health Findings" in html
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
-    assert "clip-ed10k-biz-overlay-proof-001" in html
+    assert "clip-ed10l-known-kirinuki-font-pack-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
 
 
@@ -138,7 +145,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
 
     assert registry["artifact_id"] == "clip-subtitle-font-candidate-sweep-001"
     assert registry["current_selected_diagnostic_overlay_proof_base"] == (
-        "ed10j_biz_udgothic_bold_telop_candidate"
+        "pending_ed10l_known_font_pack_review"
     )
     assert registry["font_size_policy"]["formula"] == "round(frame_height * 0.115)"
     assert registry["boundary_flags"]["font_binaries_downloaded"] is False
@@ -176,6 +183,24 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10j_research_audit_slice"]["badge_color_readback"][
         "blue_badge_is_meiryo_reference"
     ] is False
+    assert registry["ed10k_overlay_proof_slice"]["review_status"] == (
+        "reviewed_not_accepted_as_normal_baseline"
+    )
+    assert registry["ed10l_known_font_pack_slice"]["artifact_id"] == (
+        "clip-ed10l-known-kirinuki-font-pack-001"
+    )
+    assert registry["ed10l_known_font_pack_slice"]["recommended_default_candidate_id"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert registry["ed10l_known_font_pack_slice"]["selected_candidate_id"] == (
+        "pending_ed10l_human_review_after_font_install_readback"
+    )
+    assert registry["ed10l_known_font_pack_slice"]["self_diagnosis"][
+        "candidate_universe_bias"
+    ] == "system_safe_generic_readability"
+    assert registry["ed10l_known_font_pack_slice"]["local_font_readback"][
+        "target_fonts_found"
+    ] == []
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids
     assert "ed10i_biz_udgothic_bold_balanced_outline" in candidate_ids
@@ -185,6 +210,13 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert "ed10j_biz_udgothic_bold_telop_candidate" in candidate_ids
     assert "ed10j_yu_gothic_bold_system_candidate" in candidate_ids
     assert "ed10j_noto_sans_jp_local_telop_candidate" in candidate_ids
+    assert "ed10l_keifont_pop_dialogue_candidate" in candidate_ids
+    assert "ed10l_851_chikara_yowaku_dialogue_candidate" in candidate_ids
+    assert "ed10l_m_plus_fonts_dialogue_candidate" in candidate_ids
+    assert "ed10l_yasashisa_gothic_goodfreefonts_candidate" in candidate_ids
+    assert "ed10l_851_chikara_zuyoku_emphasis_candidate" in candidate_ids
+    assert "ed10l_source_han_serif_mood_candidate" in candidate_ids
+    assert "ed10l_shippori_mincho_mood_candidate" in candidate_ids
     assert "m_plus_1p_bold" in candidate_ids
     assert "dela_gothic_one_emphasis" in candidate_ids
     assert "noto_serif_jp_narration_local" in candidate_ids

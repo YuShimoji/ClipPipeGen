@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-06-17"
+DEFAULT_GENERATED_AT = "2026-06-18"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -99,16 +99,16 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10k",
-            "artifact_id": "clip-ed10k-biz-overlay-proof-001",
-            "state": "ed10k_biz_overlay_proof_requires_review",
-            "human_visual_judgement": "ed10j_freeform_review_consumed_meiryo_removed",
+            "feature_id": "ED-10l",
+            "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+            "state": "ed10l_known_kirinuki_font_pack_audit_active",
+            "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "ed10j_biz_udgothic_bold_telop_candidate",
-            "selected_typography_source": "ed10j_freeform_review_and_recommended_default",
-            "preferred_direction": "kirinuki_youtube_normal_dialogue_gothic",
-            "main_issue": "review_remaining_non_meiryo_candidates_are_close_enough_to_move_to_proof",
+            "selected_typography_base": "pending_known_kirinuki_font_pack_review",
+            "selected_typography_source": "user_known_good_font_review_and_source_inspection",
+            "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
+            "main_issue": "system_safe_generic_route_rejected_for_normal_baseline",
             "emoji_treatment": "neutral_ignore_for_evaluation",
             "production_candidate": False,
             "production_subtitle_design_acceptance": False,
@@ -381,6 +381,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10j-kirinuki-font-audit-001"
         if feature_id == "ED-10k":
             active_artifact = "clip-ed10k-biz-overlay-proof-001"
+        if feature_id == "ED-10l":
+            active_artifact = "clip-ed10l-known-kirinuki-font-pack-001"
         features.append(
             {
                 "id": feature_id,
@@ -444,7 +446,7 @@ def _artifact_coverage(
     mentioned = [
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
-    current_focus_registered = "clip-ed10k-biz-overlay-proof-001" in artifact_ids
+    current_focus_registered = "clip-ed10l-known-kirinuki-font-pack-001" in artifact_ids
     return {
         "registered_artifact_count": len(artifact_ids),
         "features_with_artifact_count": len(mentioned),
@@ -490,10 +492,16 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
+            "item": "ED-10l known kirinuki font pack audit",
+            "artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+            "question": "Which known Japanese kirinuki/telop font should become the next normal-dialogue install/proof route for cut_002 / cut_003?",
+            "next_route": "Open the known-font pack comparison and give freeform visual review; this is not production/public/rights acceptance.",
+        },
+        {
             "item": "ED-10k BIZ UDGothic overlay proof",
             "artifact": "clip-ed10k-biz-overlay-proof-001",
-            "question": "Does the BIZ UDGothic diagnostic overlay proof read as a stronger normal-dialogue subtitle base for cut_002 / cut_003?",
-            "next_route": "Open the current proof and give freeform visual review; this is not production/public acceptance.",
+            "question": "Was BIZ correctly kept as a reviewed rejected reference instead of the normal-dialogue baseline?",
+            "next_route": "Use only as reference evidence for why the system-safe route was stopped.",
         },
         {
             "item": "ED-10j kirinuki font audit",
@@ -554,10 +562,30 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
-            "label": "Current BIZ Proof",
+            "label": "Known Font Pack",
+            "command": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
+                "jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\"
+                "open_comparison.ps1"
+            ),
+            "target": (
+                "episodes/.../subtitle_known_kirinuki_font_pack_comparison/"
+                "subtitle_known_kirinuki_font_pack_report.html"
+            ),
+            "when_to_use": (
+                "Use first for ED-10l normal-dialogue font route review after BIZ "
+                "was rejected as the baseline."
+            ),
+        },
+        {
+            "label": "BIZ Proof Reference",
             "command": ".\\open-current-proof.ps1",
             "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-            "when_to_use": "Use on the machine retaining the ED-10k BIZ UDGothic overlay proof.",
+            "when_to_use": (
+                "Use only as the reviewed ED-10k reference that explains why the "
+                "system-safe BIZ route stopped."
+            ),
         },
         {
             "label": "Font Audit",
@@ -661,7 +689,9 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10j":
         return "font_audit_consumed_biz_selected"
     if feature_id == "ED-10k":
-        return "biz_overlay_proof_requires_review"
+        return "reviewed_not_accepted_as_normal_baseline"
+    if feature_id == "ED-10l":
+        return "known_font_pack_audit_active"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -677,7 +707,9 @@ def _feature_progress(feature_id: str, status: str) -> int:
     if feature_id == "ED-10j":
         return 100
     if feature_id == "ED-10k":
-        return 70
+        return 100
+    if feature_id == "ED-10l":
+        return 60
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -689,9 +721,11 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10i":
         return "Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline."
     if feature_id == "ED-10j":
-        return "Keep as consumed audit trail; BIZ UDGothic is selected for the ED-10k overlay proof."
+        return "Keep as consumed audit trail; BIZ UDGothic selection was superseded by ED-10k review."
     if feature_id == "ED-10k":
-        return "Review the generated BIZ UDGothic overlay proof for cut_002 / cut_003."
+        return "Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline."
+    if feature_id == "ED-10l":
+        return "Review the known kirinuki font pack audit and choose the next install/proof route."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

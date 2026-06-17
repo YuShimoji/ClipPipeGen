@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10k_biz_overlay_proof_active
-health: current_proof_requires_review
+status: ed10l_known_font_pack_audit_active
+health: route_correction_requires_review
 progress_pct: 100
-last_touched: 2026-06-17
-next_review_due: after_ed10k_biz_overlay_proof_review
-active_artifact: clip-ed10k-biz-overlay-proof-001
+last_touched: 2026-06-18
+next_review_due: after_ed10l_known_font_pack_review
+active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -15,35 +15,34 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 # Subtitle Typography Decoration Comparison
 
-Last updated: 2026-06-17 JST
+Last updated: 2026-06-18 JST
 
-## Current Update - ED-10k BIZ Overlay Proof
+## Current Update - ED-10l Known Kirinuki Font Pack
 
-The latest freeform review of `clip-ed10j-kirinuki-font-audit-001` has been
-consumed. It removes Meiryo from the normal subtitle baseline path, says the
-remaining three candidates are broadly viable enough to stop prolonging the
-comparison, and selects the ED-10j recommended default
-`ed10j_biz_udgothic_bold_telop_candidate` as the next proof base.
+The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
+consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
+the proof reads too hard/rigid, the text still feels thin, and the black
+outline pressure is too strong. This stops the BIZ/Noto/Meiryo system-safe
+route as the main path for this use case.
 
-JSON/readback nuance: the blue badge/accent candidate is
-`ed10j_noto_sans_jp_local_telop_candidate`, not the Meiryo reference. The
-Meiryo reference candidate is `ed10j_reference_meiryo_reviewed_not_baseline`.
-This mapping does not reopen Meiryo because the actionable review explicitly
-removes it from the normal subtitle candidate path.
+ED-10l now owns the next route:
+`clip-ed10l-known-kirinuki-font-pack-001`. The route correction is to audit
+known Japanese YouTube kirinuki/telop fonts first, then choose a real
+install/proof route for normal dialogue. License/install/reproducibility notes
+are recorded separately from design suitability.
 
-ED-10k now owns the next route:
-`clip-ed10k-biz-overlay-proof-001`. The proof applies BIZ UDGothic to
-`cut_002` / `cut_003` on the existing subtitle overlay proof surface. M PLUS /
-Zen Kaku Gothic New / Dela Gothic One stay in a later download/license-decision
-bucket until explicitly approved.
+Target known-font candidates were not installed on this terminal on
+2026-06-18 JST, so generated samples must be read as fallback/missing-font
+readback until a real font install is verified.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10i-kirinuki-gothic-balance-001` | Consumed comparison / audit trail | Why the bottom candidate maps to `ed10i_meiryo_bold_fill_outline_balance` | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10i-meiryo-overlay-proof-001` | Reviewed reference proof | Shows why Meiryo should not be fixed as the normal subtitle baseline | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10j-kirinuki-font-audit-001` | Consumed font audit comparison | Why Meiryo is reference-only and BIZ becomes the default proof base | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10k-biz-overlay-proof-001` | Active diagnostic overlay proof | Whether the BIZ UDGothic route should carry the next normal-dialogue proof base | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10j-kirinuki-font-audit-001` | Consumed font audit comparison | Why Meiryo was demoted and BIZ was tried next | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected reference proof | Why BIZ / system-safe route should not be the current normal-dialogue baseline | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10l-known-kirinuki-font-pack-001` | Active known-font audit | Which known kirinuki/telop font route should be installed or promoted next | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -61,24 +60,31 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-`clip-ed10j-kirinuki-font-audit-001` はレビュー済みで、normal subtitle
-baseline から Meiryo を外し、BIZ UDGothic を次 proof base に選択済みです。
-現在の active artifact は `clip-ed10k-biz-overlay-proof-001` です。
+`clip-ed10k-biz-overlay-proof-001` はレビュー済みで、normal subtitle
+baseline としては不採用です。現在の active artifact は
+`clip-ed10l-known-kirinuki-font-pack-001` です。
 
 ## これからどうなるか
 
-1. ED-10k の BIZ UDGothic overlay proof を確認し、次の diagnostic step に
-   進めるか、BIZ route 内で 1 軸だけ調整するかを freeform review で判断する。
-2. Meiryo は reviewed reference としてのみ扱い、通常字幕 baseline に戻す
-   場合は明示レビューを要求する。
+1. ED-10l の known-font pack comparison を確認し、次に実フォント install /
+   overlay proof へ進める normal-dialogue candidate を freeform review で
+   判断する。
+2. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
+   baseline に戻す場合は明示レビューを要求する。
 3. representative coverage を広げるなら、dense/stress proof や production
    render / rights slice とは別に `cut_008` などの明示 target を起票する。
-4. 追加比較が必要なら ED-10h registry から Google Fonts / OFL / system font
-   candidates を選び、download なし route か許可付き download route を選ぶ。
+4. 追加比較が必要なら ED-10h/ED-10l registry から known-font candidates を
+   選び、download なし route か許可付き install/download route を選ぶ。
 
 ## 使い方・確認方法
 
-Primary local proof:
+Primary local comparison:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1
+```
+
+Reviewed ED-10k BIZ reference:
 
 ```powershell
 .\open-current-proof.ps1
@@ -121,6 +127,10 @@ together.
   maps to Noto, not Meiryo, but Meiryo is still removed from the normal
   baseline path and BIZ UDGothic is selected as the recommended default for
   `clip-ed10k-biz-overlay-proof-001`.
+- 2026-06-18: ED-10k BIZ overlay proof freeform review consumed as not accepted
+  for the normal subtitle baseline. The active route changes to ED-10l known
+  kirinuki/telop font pack audit; system-safe font availability is now
+  reference evidence, not the main candidate universe.
 
 ## Constraints / Risks
 

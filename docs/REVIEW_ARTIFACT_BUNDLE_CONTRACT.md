@@ -5,9 +5,9 @@ type: contract
 status: active
 health: stable
 progress_pct: 90
-last_touched: 2026-06-17
-next_review_due: before_next_review_bundle_schema_change_or_ed10k_session_refresh
-active_artifact: clip-ed10k-biz-overlay-proof-001
+last_touched: 2026-06-18
+next_review_due: before_next_review_bundle_schema_change_or_ed10l_session_refresh
+active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md
@@ -15,14 +15,16 @@ related: docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/
 
 # Review Artifact Bundle Contract
 
-Active Artifact: `clip-ed10k-biz-overlay-proof-001`
+Active Artifact: `clip-ed10l-known-kirinuki-font-pack-001`
 
 Current review entry relationship: `clip-human-preview-session-001` remains the
 older SH-08 human preview session bundle. ED-10i used a separate local
 comparison artifact and Meiryo overlay proof; the follow-up review did not
 accept Meiryo as the normal subtitle baseline. ED-10j used a separate font
-audit contact sheet, and its review is now consumed. ED-10k returns to the
-subtitle overlay proof surface with BIZ UDGothic and does not regenerate SH-08.
+audit contact sheet. ED-10k returned to the subtitle overlay proof surface with
+BIZ UDGothic, and its review is now consumed as not accepted. ED-10l uses a
+separate known kirinuki font pack comparison surface and does not regenerate
+SH-08.
 
 Legacy alias: `clip-episode-review-surface-001`
 
@@ -42,10 +44,11 @@ route を固定します。
 
 ## 今の状態
 
-Current active artifact は `clip-ed10k-biz-overlay-proof-001` です。
+Current active artifact は `clip-ed10l-known-kirinuki-font-pack-001` です。
 `clip-human-preview-session-001` は古い SH-08 review bundle として残りますが、
-今回の字幕 styling 判断対象は ED-10k の BIZ UDGothic overlay proof です。SH-08 は
-この判断だけでは再生成しません。
+今回の字幕 styling 判断対象は ED-10l の known kirinuki font pack comparison
+です。BIZ proof は reviewed rejected reference として残します。SH-08 はこの判断
+だけでは再生成しません。
 
 ## これからどうなるか
 
@@ -61,7 +64,7 @@ uvx pytest -q tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
 
 Human preview session を再生成するのは、same-machine readback で required
-artifact が欠けている時だけです。ED-10j の font audit 判断だけなら
+artifact が欠けている時だけです。ED-10l の font pack audit 判断だけなら
 SH-08 を再生成しません。
 
 ## 実装・設計メモ

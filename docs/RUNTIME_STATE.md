@@ -5,9 +5,9 @@ type: resume_surface
 status: current_capsule
 health: active
 progress_pct: 85
-last_touched: 2026-06-17
-next_review_due: after_ed10k_biz_overlay_proof_review
-active_artifact: clip-ed10k-biz-overlay-proof-001
+last_touched: 2026-06-18
+next_review_due: after_ed10l_known_font_pack_review
+active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,51 +35,45 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10k-biz-overlay-proof-001`
+Active artifact: `clip-ed10l-known-kirinuki-font-pack-001`
 
-Current judgement: the ED-10j freeform review has now been consumed. The review
-removes Meiryo from the normal subtitle baseline candidate path, treats the
-remaining non-Meiryo candidates as close enough to avoid prolonging the audit,
-and selects the ED-10j recommended default
-`ed10j_biz_udgothic_bold_telop_candidate` as the next proof base. This opens
-ED-10k as a BIZ UDGothic diagnostic overlay proof for `cut_002` / `cut_003`.
+Current judgement: the ED-10k BIZ UDGothic overlay proof has now been reviewed
+and is not accepted as the normal-dialogue subtitle baseline. The review says
+the BIZ route feels too hard/rigid, the text still reads thin, and the black
+outline pressure is too strong. This also rejects the broader BIZ/Noto/Meiryo
+system-safe route for this use case. BIZ remains a reviewed reference, not the
+current baseline.
 
-ED-10j audit readback:
+The active route is ED-10l: `Known Kirinuki Font Pack Audit v0`. The task is to
+move the candidate universe toward known Japanese YouTube kirinuki/telop fonts
+before another overlay proof is selected.
+
+ED-10l route readback:
 
 - target cuts: `cut_002`, `cut_003`
-- consumed comparison profile: `ed10j_kirinuki_font_audit`
-- consumed artifact: `clip-ed10j-kirinuki-font-audit-001`
-- Meiryo role: reviewed reference candidate, not selected baseline
-- blue badge/accent readback: `ed10j_noto_sans_jp_local_telop_candidate`, not
-  the Meiryo reference
-- Meiryo reference badge/accent readback:
-  `ed10j_reference_meiryo_reviewed_not_baseline`
-- selected no-download proof base:
-  `ed10j_biz_udgothic_bold_telop_candidate`
-- compared local candidates:
-  `ed10j_reference_meiryo_reviewed_not_baseline`,
-  `ed10j_biz_udgothic_bold_telop_candidate`,
-  `ed10j_yu_gothic_bold_system_candidate`,
-  `ed10j_noto_sans_jp_local_telop_candidate`
-- normal-baseline shortlist after review:
-  `ed10j_biz_udgothic_bold_telop_candidate`,
-  `ed10j_yu_gothic_bold_system_candidate`,
-  `ed10j_noto_sans_jp_local_telop_candidate`
+- comparison profile: `ed10l_known_kirinuki_font_pack`
+- active artifact: `clip-ed10l-known-kirinuki-font-pack-001`
+- normal-dialogue candidates:
+  `ed10l_keifont_pop_dialogue_candidate`,
+  `ed10l_851_chikara_yowaku_dialogue_candidate`,
+  `ed10l_m_plus_fonts_dialogue_candidate`,
+  `ed10l_yasashisa_gothic_goodfreefonts_candidate`
+- separate emphasis/shout slot: `ed10l_851_chikara_zuyoku_emphasis_candidate`
+- separate mood/literary slot:
+  `ed10l_source_han_serif_mood_candidate`,
+  `ed10l_shippori_mincho_mood_candidate`
 - size rule: keep `round(frame_height * 0.115)` as a comparison constant
-- local availability basis: `C:/Windows/Fonts` readback only; no font binaries
-  were downloaded or vendored
-- previous ED-10i Meiryo overlay proof remains a reviewed local reference only
+- local availability basis: `C:/Windows/Fonts` readback only; target known-font
+  pack was not installed on this terminal as of 2026-06-18 JST
+- generated samples must be read as missing-font/fallback evidence until a
+  real font install/readback exists
 
-ED-10k proof route readback:
-
-- active artifact: `clip-ed10k-biz-overlay-proof-001`
-- proof base: `ed10j_biz_udgothic_bold_telop_candidate`
-- generated report path:
-  `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html`
-- open command: `.\open-current-proof.ps1`
-- source audit artifact: `clip-ed10j-kirinuki-font-audit-001`
-- review status: generated diagnostic proof requires freeform human visual
-  review
+Tracked self-diagnosis: the previous exploration over-weighted
+system-safe/generic readable fonts, conflated safe/reproducible with visually
+strong kirinuki design, did not elevate user known-good domain knowledge early
+enough, and treated general font documentation as sufficient for telop needs.
+ED-10l corrects that by separating design suitability from license/install/
+reproducibility notes.
 
 This audit/proof chain is not production subtitle design acceptance and does
 not lift production render, creative, rights, publishing, upload, or public-use
@@ -87,15 +81,15 @@ gates.
 
 ## Next
 
-1. Open the current ED-10k BIZ UDGothic overlay proof and review whether it is
-   acceptable as the next diagnostic normal-dialogue subtitle base for
-   `cut_002` / `cut_003`.
-2. If the proof needs adjustment, keep the next pass bounded to one BIZ route
-   axis such as outline pressure or body weight.
-3. Keep Meiryo visible only as the reviewed reference unless the user
-   explicitly reopens it.
-4. Use the ED-10j contact sheet only as an audit trail unless the BIZ proof
-   fails and a fallback candidate is needed.
+1. Open the ED-10l known-font pack comparison and give freeform review on which
+   normal-dialogue candidate should become the next install/proof route.
+2. If a candidate is chosen, capture official source/license/install notes and
+   verify the actual font file readback before claiming visual proof evidence.
+3. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
+   user explicitly reopens the system-safe route.
+4. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
+   emphasis/mood slots; do not collapse them into normal dialogue baseline
+   acceptance.
 5. If representative coverage must widen, create a separate dense/stress proof
    route for `cut_008` or another explicitly scoped target.
 6. If moving toward production/public use, run a separate limitation-lift route
@@ -128,8 +122,10 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current selected ED-10k overlay proof via
-   `.\open-current-proof.ps1`, consumed ED-10j font audit via
+   `.\open-artifacts.ps1`, current ED-10l known-font pack comparison via
+   `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`,
+   reviewed ED-10k BIZ reference proof via `.\open-current-proof.ps1`,
+   consumed ED-10j font audit via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1`,
    `.\open-font-candidates.ps1`, or the ED-10i
    comparison helper:
@@ -177,6 +173,13 @@ uvx python -m src.cli.main build-docs-dashboard --format json
   enough to stop prolonging the audit. BIZ UDGothic was selected as the
   recommended default for ED-10k overlay proof. Production/public/rights gates
   remain closed.
+- 2026-06-18: Freeform review of `clip-ed10k-biz-overlay-proof-001` consumed
+  as not accepted for the normal subtitle baseline. The review says BIZ is too
+  hard/rigid, the text is thin, and the black outline is too strong; BIZ/Noto/
+  Meiryo system-safe exploration is therefore kept as rejected reference for
+  this use case. ED-10l opens a known Japanese kirinuki/telop font pack audit,
+  with normal dialogue separated from emphasis/shout and mood/literary slots.
+  Production/public/rights gates remain closed.
 - 2026-06-16: Review surface launchers added and pushed. Normal open order is
   `.\open-dashboard.ps1`, then dashboard artifact selection, then
   artifact-specific launchers only when needed. This records navigation only;
