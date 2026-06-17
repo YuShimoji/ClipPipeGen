@@ -37,8 +37,9 @@ def run(argv: list[str]) -> int:
         "--typography-decoration-candidate-id",
         choices=typography_decoration_candidate_ids(),
         help=(
-            "Optional ED-10g typography/decoration candidate to apply to the "
-            "diagnostic overlay proof. Omit to keep the legacy overlay style."
+            "Optional ED-10g/ED-10i typography/decoration candidate to apply "
+            "to the diagnostic overlay proof. Omit to keep the legacy overlay "
+            "style."
         ),
     )
     parser.add_argument("--dry-run", action="store_true")

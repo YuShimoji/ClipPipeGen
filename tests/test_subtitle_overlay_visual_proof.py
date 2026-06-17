@@ -387,6 +387,65 @@ def test_subtitle_overlay_visual_proof_applies_ed10g_typography_candidate(
     assert "&H00E68B22" in ass
 
 
+def test_subtitle_overlay_visual_proof_applies_selected_ed10i_meiryo_candidate(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_002", "cut_003"],
+        typography_decoration_candidate_id="ed10i_meiryo_bold_fill_outline_balance",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    assert report["target_cuts"] == ["cut_002", "cut_003"]
+    assert report["style_direction"]["ed10i_kirinuki_gothic_balance_candidate"] is True
+    assert report["style_direction"]["ed10g_small_adjustment_selected"] is False
+    assert report["style_direction"]["typography_decoration_candidate_id"] == (
+        "ed10i_meiryo_bold_fill_outline_balance"
+    )
+    assert report["style_direction"]["decoration_route"]["body_weight_note"] == (
+        "bold body with warm fill; tests the most balanced fill/outline read"
+    )
+    assert report["style_direction"]["decoration_route"]["outline_balance_role"] == (
+        "balanced_fill_outline_variant"
+    )
+    assert report["style_parameters"]["style_candidate_id"] == (
+        "ed10i_meiryo_bold_fill_outline_balance"
+    )
+    assert report["style_parameters"]["typography_decoration_candidate"][
+        "requested_font_family"
+    ] == "Meiryo"
+    assert report["style_parameters"]["typography_decoration_candidate"][
+        "emoji_evaluation_scope"
+    ] == "emoji_neutral_ignored_for_ed10i"
+    assert report["burned_in_subtitle_style"][
+        "ed10i_kirinuki_gothic_balance_candidate"
+    ] is True
+    assert report["production_candidate"] is False
+    assert report["rights_status"] == "pending"
+    assert report["production_usage_allowed"] is False
+
+    for item in report["cut_results"]:
+        assert item["style_parameters"]["typography_decoration_candidate_id"] == (
+            "ed10i_meiryo_bold_fill_outline_balance"
+        )
+        assert item["style_parameters"][
+            "ed10i_kirinuki_gothic_balance_candidate"
+        ] is True
+        assert item["burned_in_subtitle_style"]["decoration_route"][
+            "outline_balance_role"
+        ] == "balanced_fill_outline_variant"
+        assert item["subtitle_overlay_present"] is True
+
+
 def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"

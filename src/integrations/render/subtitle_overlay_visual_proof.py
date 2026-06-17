@@ -91,8 +91,12 @@ def _diagnostic_ass_style_for_candidate(
             "selection_source": "legacy_overlay_default",
             "typography_decoration_candidate_id": None,
             "ed10g_small_adjustment_selected": False,
+            "ed10i_kirinuki_gothic_balance_candidate": False,
             "display_name": "JP clip dialogue badge left v0",
             "decoration_note": "existing diagnostic ASS subtitle proof style",
+            "body_weight_note": "legacy overlay default",
+            "outline_balance_role": "legacy overlay default",
+            "emoji_evaluation_scope": "not_evaluated",
             "requested_font_family": DIAGNOSTIC_ASS_STYLE["font_name"],
             "resolved_font_family": DIAGNOSTIC_ASS_STYLE["font_name"],
             "resolved_font_file": None,
@@ -129,6 +133,9 @@ def _diagnostic_ass_style_for_candidate(
         ),
         "display_name": candidate.display_name,
         "decoration_note": candidate.decoration_note,
+        "body_weight_note": candidate.body_weight_note,
+        "outline_balance_role": candidate.outline_balance_role,
+        "emoji_evaluation_scope": candidate.emoji_evaluation_scope,
         "requested_font_family": candidate.fallback_family,
         "resolved_font_family": resolved_family,
         "resolved_font_file": resolved_font_file,
@@ -787,6 +794,9 @@ def _diagnostic_style_direction(
         "ed10g_small_adjustment_selected": style.get(
             "ed10g_small_adjustment_selected"
         ),
+        "ed10i_kirinuki_gothic_balance_candidate": style.get(
+            "ed10i_kirinuki_gothic_balance_candidate"
+        ),
         "font_family_route": {
             "requested": style.get("requested_font_family"),
             "resolved": style.get("resolved_font_family"),
@@ -803,6 +813,9 @@ def _diagnostic_style_direction(
             "shadow_fill": style.get("shadow_fill"),
             "badge_fill": style.get("badge_fill"),
             "badge_outline": style.get("badge_outline"),
+            "body_weight_note": style.get("body_weight_note"),
+            "outline_balance_role": style.get("outline_balance_role"),
+            "emoji_evaluation_scope": style.get("emoji_evaluation_scope"),
         },
         "target_viewing_context": "smartphone_readable_japanese_clip_subtitle",
         "visual_weight": "large_heavily_outlined_clip_dialogue_not_restrained_movie_subtitles",
@@ -1050,10 +1063,16 @@ def _style_parameter_readback(
         "ed10g_small_adjustment_selected": style.get(
             "ed10g_small_adjustment_selected"
         ),
+        "ed10i_kirinuki_gothic_balance_candidate": style.get(
+            "ed10i_kirinuki_gothic_balance_candidate"
+        ),
         "typography_decoration_candidate": {
             "candidate_id": style.get("typography_decoration_candidate_id"),
             "display_name": style.get("display_name"),
             "decoration_note": style.get("decoration_note"),
+            "body_weight_note": style.get("body_weight_note"),
+            "outline_balance_role": style.get("outline_balance_role"),
+            "emoji_evaluation_scope": style.get("emoji_evaluation_scope"),
             "requested_font_family": style.get("requested_font_family"),
             "resolved_font_family": style.get("resolved_font_family"),
             "resolved_font_file": style.get("resolved_font_file"),
@@ -1190,6 +1209,9 @@ def _burned_in_subtitle_style_readback(layout: dict[str, Any]) -> dict[str, Any]
         "ed10g_small_adjustment_selected": style.get(
             "ed10g_small_adjustment_selected"
         ),
+        "ed10i_kirinuki_gothic_balance_candidate": style.get(
+            "ed10i_kirinuki_gothic_balance_candidate"
+        ),
         "preset_name": DIAGNOSTIC_STYLE_DIRECTION_NAME,
         "presentation_mode": layout["mode"],
         "supported_presentation_modes": list(SUPPORTED_PRESENTATION_MODES),
@@ -1216,6 +1238,9 @@ def _burned_in_subtitle_style_readback(layout: dict[str, Any]) -> dict[str, Any]
             "shadow_fill": style.get("shadow_fill"),
             "badge_fill": style.get("badge_fill"),
             "badge_outline": style.get("badge_outline"),
+            "body_weight_note": style.get("body_weight_note"),
+            "outline_balance_role": style.get("outline_balance_role"),
+            "emoji_evaluation_scope": style.get("emoji_evaluation_scope"),
         },
         "margin_v": values["bottom_margin"],
         "horizontal_margin": values["margin_l"],

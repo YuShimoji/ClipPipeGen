@@ -25,15 +25,16 @@
   },
   "current_focus": {
     "feature_id": "ED-10i",
-    "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
-    "state": "kirinuki_gothic_balance_comparison_generated_requires_review",
-    "human_visual_judgement": "current_proof_not_accepted_as_is",
+    "artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
+    "state": "ed10i_meiryo_overlay_proof_available_requires_review",
+    "human_visual_judgement": "bottom_gothic_candidate_selected_for_next_proof_base",
     "target_cuts": [
       "cut_002",
       "cut_003"
     ],
     "accepted_size_rule": "round(frame_height * 0.115)",
-    "selected_typography_base": "pending_ed10i_human_review",
+    "selected_typography_base": "ed10i_meiryo_bold_fill_outline_balance",
+    "selected_typography_source": "bottom_most_ed10i_contact_sheet_candidate",
     "preferred_direction": "kirinuki_youtube_style_gothic",
     "main_issue": "fill_outline_balance_outline_dominates",
     "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -59,16 +60,16 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
+      "label": "Current Proof",
+      "command": ".\\open-current-proof.ps1",
+      "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+      "when_to_use": "Use on the machine retaining the selected ED-10i Meiryo overlay proof for cut_002 / cut_003."
+    },
+    {
       "label": "Gothic Balance",
       "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_kirinuki_gothic_balance_comparison\\open_comparison.ps1",
       "target": "episodes/.../subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_comparison_report.html",
       "when_to_use": "Use on the machine retaining ignored ED-10i comparison artifacts to judge gothic glyph body versus outline balance."
-    },
-    {
-      "label": "Current Proof",
-      "command": ".\\open-current-proof.ps1",
-      "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-      "when_to_use": "Use only when the previous ignored local ED-10g overlay proof must be audited."
     },
     {
       "label": "Font Candidates",
@@ -486,18 +487,18 @@
       "progress_pct": 15,
       "active_artifact": "clip-subtitle-font-candidate-sweep-001",
       "next_action": "Use the font candidate registry to choose a no-download or download-approved sweep route.",
-      "summary_excerpt": "ED-10g の selected proof base noto_sans_jp_clean_outline を維持したまま、次に font universe を広げるための候補 registry を定義する。Artifact clip-subtitle-font-candidate-sweep-001 は SUBTITLE_FONT_CANDIDATE_SWEEP.md と docs/font_candidates/subtitl...",
+      "summary_excerpt": "ED-10g の historical proof base noto_sans_jp_clean_outline と ED-10i の selected proof base ed10i_meiryo_bold_fill_outline_balance を registry で分け、次に font universe を広げるための候補 registry を定義する。Artifact clip-subtitle-font-candid...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-10i",
       "title": "Kirinuki Gothic Weight Balance Comparison v0",
-      "status": "in_progress",
-      "health": "review_ready_diagnostic",
-      "progress_pct": 70,
-      "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
-      "next_action": "Review the kirinuki gothic contact sheet and choose one body/outline balance for the next diagnostic overlay proof.",
-      "summary_excerpt": "最新の人間レビューを消費し、clip-ed10g-noto-overlay-proof-001 は styling として not accepted as-is と記録する。新しい narrow route は build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance で、artifact cli...",
+      "status": "done",
+      "health": "selected_overlay_proof_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
+      "next_action": "Review the selected Meiryo overlay proof and either accept it for diagnostic use or request one bounded body/outline adjustment.",
+      "summary_excerpt": "最新の人間レビューを消費し、clip-ed10g-noto-overlay-proof-001 は styling として not accepted as-is と記録した。build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance は artifact clip-ed10i-kirinuki-go...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -977,10 +978,9 @@
   "feature_summary": {
     "feature_count": 79,
     "status_counts": {
-      "done": 62,
+      "done": 63,
       "proposed": 14,
       "approved": 1,
-      "in_progress": 1,
       "rejected": 1
     }
   },
@@ -1022,8 +1022,18 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_comparison_report.html",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_kirinuki_gothic_balance_comparison\\open_comparison.ps1",
-      "review_status": "Generated requires human review. Recommended default candidate is ed10i_biz_udgothic_bold_balanced_outline, but no candidate has been accepted as the next diagnostic overlay proof base yet.",
-      "next_action": "Open the contact sheet, ignore emoji rendering for this decision, and choose one candidate or one bounded body/outline adjustment before generating a new diagnostic overlay proof."
+      "review_status": "Human review consumed: the bottom-most gothic candidate was selected as closest to ideal and resolved from local JSON as ed10i_meiryo_bold_fill_outline_balance. This comparison remains the audit trail for that choice.",
+      "next_action": "Use clip-ed10i-meiryo-overlay-proof-001 for the current visual judgement. Reopen this comparison only if the candidate mapping or a bounded body/outline adjustment needs audit."
+    },
+    {
+      "artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
+      "title": "ED-10i Meiryo Selected Diagnostic Overlay Proof",
+      "purpose": "Apply the human-selected bottom ED-10i candidate, ed10i_meiryo_bold_fill_outline_balance, to the cut_002 / cut_003 diagnostic subtitle overlay proof.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
+      "open_command": ".\\open-current-proof.ps1",
+      "review_status": "Available and requires human visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Open the current proof and judge whether this selected Meiryo body/outline balance is acceptable as the next diagnostic / representative subtitle base for cut_002 / cut_003."
     },
     {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
@@ -1033,7 +1043,7 @@
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
       "open_command": ".\\open-current-proof.ps1",
       "review_status": "Historical diagnostic proof / current reference only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
-      "next_action": "Use clip-ed10i-kirinuki-gothic-balance-001 to choose the next body/outline balance candidate before generating any new diagnostic overlay proof."
+      "next_action": "Keep as historical reference. The current selected proof is clip-ed10i-meiryo-overlay-proof-001."
     },
     {
       "artifact_id": "clip-docs-dashboard-001",
@@ -1062,24 +1072,25 @@
       "clip-human-preview-session-001",
       "clip-typography-decoration-comparison-001",
       "clip-ed10i-kirinuki-gothic-balance-001",
+      "clip-ed10i-meiryo-overlay-proof-001",
       "clip-ed10g-noto-overlay-proof-001",
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 7
+    "artifact_count": 8
   },
   "artifact_coverage": {
-    "registered_artifact_count": 7,
+    "registered_artifact_count": 8,
     "features_with_artifact_count": 6,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "ED-10i kirinuki gothic balance proof",
-      "artifact": "clip-ed10i-kirinuki-gothic-balance-001",
-      "question": "Which gothic fill/outline balance should become the next diagnostic overlay proof base for cut_002 / cut_003?",
-      "next_route": "Review the 4-candidate contact sheet and choose one candidate or request one bounded adjustment."
+      "item": "ED-10i selected Meiryo overlay proof",
+      "artifact": "clip-ed10i-meiryo-overlay-proof-001",
+      "question": "Is the selected Meiryo body/outline balance acceptable as the next diagnostic subtitle base for cut_002 / cut_003?",
+      "next_route": "Open the current proof and judge the generated MP4/PNG overlay, keeping production/public gates closed."
     },
     {
       "item": "ED-10h font candidate sweep",
@@ -1112,7 +1123,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 84,
+      "line_count": 87,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1126,7 +1137,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 344,
+      "line_count": 363,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1135,8 +1146,8 @@
         "health": "active",
         "progress_pct": "80",
         "last_touched": "2026-06-17",
-        "next_review_due": "before_ed10i_candidate_selection_or_overlay_proof_generation",
-        "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+        "next_review_due": "before_ed10i_meiryo_overlay_visual_judgement",
+        "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1147,13 +1158,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 71,
+      "boundary_term_count": 75,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 215,
+      "line_count": 216,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1161,8 +1172,8 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 283,
-      "status": "review_ready_diagnostic"
+      "boundary_term_count": 290,
+      "status": "in_progress"
     },
     {
       "path": "docs/EPISODE_REVIEW_WORKFLOW.md",
@@ -1195,17 +1206,17 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 384,
+      "line_count": 434,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "superseded_by_ed10i",
+        "status": "ed10i_selected_overlay_proof_ready",
         "health": "historical_reference",
         "progress_pct": "100",
         "last_touched": "2026-06-17",
-        "next_review_due": "before_ed10i_candidate_selection",
-        "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+        "next_review_due": "before_ed10i_meiryo_overlay_visual_judgement",
+        "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1216,13 +1227,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 65,
-      "status": "superseded_by_ed10i"
+      "boundary_term_count": 71,
+      "status": "ed10i_selected_overlay_proof_ready"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
       "title": "Representative Subtitle Design Review",
-      "line_count": 336,
+      "line_count": 338,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1236,7 +1247,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "Artifact Registry",
-      "line_count": 203,
+      "line_count": 236,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1244,7 +1255,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 68,
+      "boundary_term_count": 85,
       "status": "reference"
     },
     {
@@ -1488,7 +1499,7 @@
     {
       "path": "docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md",
       "title": "Review Artifact Bundle Contract",
-      "line_count": 319,
+      "line_count": 320,
       "metadata": {
         "id": "review-artifact-bundle-contract",
         "title": "Review Artifact Bundle Contract",
@@ -1498,7 +1509,7 @@
         "progress_pct": "90",
         "last_touched": "2026-06-17",
         "next_review_due": "before_next_review_bundle_schema_change_or_ed10i_session_refresh",
-        "active_artifact": "clip-ed10i-kirinuki-gothic-balance-001",
+        "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/EPISODE_REVIEW_WORKFLOW.md, docs/OPERATOR_REVIEW_UX.md, artifacts/ARTIFACTS.md"
@@ -1529,7 +1540,7 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 134,
+      "line_count": 140,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
@@ -1538,7 +1549,7 @@
         "health": "defined_not_generated",
         "progress_pct": "15",
         "last_touched": "2026-06-17",
-        "next_review_due": "after_ed10i_gothic_balance_decision",
+        "next_review_due": "after_ed10i_meiryo_overlay_visual_judgement",
         "active_artifact": "clip-subtitle-font-candidate-sweep-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
@@ -1651,7 +1662,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 283 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 290 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -1663,7 +1674,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 68 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 85 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

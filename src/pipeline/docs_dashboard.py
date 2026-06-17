@@ -100,12 +100,13 @@ def build_project_status(
         },
         "current_focus": {
             "feature_id": "ED-10i",
-            "artifact_id": "clip-ed10i-kirinuki-gothic-balance-001",
-            "state": "kirinuki_gothic_balance_comparison_generated_requires_review",
-            "human_visual_judgement": "current_proof_not_accepted_as_is",
+            "artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
+            "state": "ed10i_meiryo_overlay_proof_available_requires_review",
+            "human_visual_judgement": "bottom_gothic_candidate_selected_for_next_proof_base",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "pending_ed10i_human_review",
+            "selected_typography_base": "ed10i_meiryo_bold_fill_outline_balance",
+            "selected_typography_source": "bottom_most_ed10i_contact_sheet_candidate",
             "preferred_direction": "kirinuki_youtube_style_gothic",
             "main_issue": "fill_outline_balance_outline_dominates",
             "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -375,7 +376,7 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         if feature_id == "ED-10g":
             active_artifact = "clip-ed10g-noto-overlay-proof-001"
         if feature_id == "ED-10i":
-            active_artifact = "clip-ed10i-kirinuki-gothic-balance-001"
+            active_artifact = "clip-ed10i-meiryo-overlay-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -440,7 +441,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10i-kirinuki-gothic-balance-001" in artifact_ids
+        "clip-ed10i-meiryo-overlay-proof-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -487,10 +488,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10i kirinuki gothic balance proof",
-            "artifact": "clip-ed10i-kirinuki-gothic-balance-001",
-            "question": "Which gothic fill/outline balance should become the next diagnostic overlay proof base for cut_002 / cut_003?",
-            "next_route": "Review the 4-candidate contact sheet and choose one candidate or request one bounded adjustment.",
+            "item": "ED-10i selected Meiryo overlay proof",
+            "artifact": "clip-ed10i-meiryo-overlay-proof-001",
+            "question": "Is the selected Meiryo body/outline balance acceptable as the next diagnostic subtitle base for cut_002 / cut_003?",
+            "next_route": "Open the current proof and judge the generated MP4/PNG overlay, keeping production/public gates closed.",
         },
         {
             "item": "ED-10h font candidate sweep",
@@ -545,6 +546,12 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
+            "label": "Current Proof",
+            "command": ".\\open-current-proof.ps1",
+            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+            "when_to_use": "Use on the machine retaining the selected ED-10i Meiryo overlay proof for cut_002 / cut_003.",
+        },
+        {
             "label": "Gothic Balance",
             "command": (
                 "powershell -ExecutionPolicy Bypass -File "
@@ -560,12 +567,6 @@ def _open_surfaces() -> list[dict[str, str]]:
                 "Use on the machine retaining ignored ED-10i comparison artifacts "
                 "to judge gothic glyph body versus outline balance."
             ),
-        },
-        {
-            "label": "Current Proof",
-            "command": ".\\open-current-proof.ps1",
-            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-            "when_to_use": "Use only when the previous ignored local ED-10g overlay proof must be audited.",
         },
         {
             "label": "Font Candidates",
@@ -634,7 +635,7 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10h":
         return "defined_not_generated"
     if feature_id == "ED-10i":
-        return "review_ready_diagnostic"
+        return "selected_overlay_proof_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -646,7 +647,7 @@ def _feature_progress(feature_id: str, status: str) -> int:
     if feature_id == "ED-10h":
         return 15
     if feature_id == "ED-10i":
-        return 70
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -656,7 +657,7 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10h":
         return "Use the font candidate registry to choose a no-download or download-approved sweep route."
     if feature_id == "ED-10i":
-        return "Review the kirinuki gothic contact sheet and choose one body/outline balance for the next diagnostic overlay proof."
+        return "Review the selected Meiryo overlay proof and either accept it for diagnostic use or request one bounded body/outline adjustment."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

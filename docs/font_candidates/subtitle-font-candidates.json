@@ -4,7 +4,7 @@
   "artifact_id": "clip-subtitle-font-candidate-sweep-001",
   "created_at": "2026-06-16",
   "scope": "diagnostic_representative_subtitle_font_candidate_registry",
-  "current_selected_diagnostic_overlay_proof_base": "noto_sans_jp_clean_outline",
+  "current_selected_diagnostic_overlay_proof_base": "ed10i_meiryo_bold_fill_outline_balance",
   "font_size_policy": {
     "status": "preserve_current_diagnostic_representative_size",
     "formula": "round(frame_height * 0.115)",
@@ -42,13 +42,17 @@
       "ed10i_meiryo_bold_fill_outline_balance"
     ],
     "recommended_default_candidate_id": "ed10i_biz_udgothic_bold_balanced_outline",
+    "selected_candidate_id": "ed10i_meiryo_bold_fill_outline_balance",
+    "selected_candidate_source": "bottom_most_contact_sheet_candidate",
+    "selected_overlay_artifact_id": "clip-ed10i-meiryo-overlay-proof-001",
+    "selected_overlay_review_status": "available_requires_human_review",
     "font_size_policy": {
       "status": "preserve_existing_size_policy_as_starting_reference",
       "formula": "round(frame_height * 0.115)"
     },
     "font_binaries_downloaded": false,
     "font_binaries_vendored": false,
-    "review_status": "generated_requires_human_review"
+    "review_status": "selected_for_next_diagnostic_overlay_proof"
   },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_name_match",
@@ -130,10 +134,10 @@
       "license_status": "system_font",
       "file_status": "local_only",
       "local_font_files": ["meiryob.ttc", "meiryo.ttc"],
-      "intended_use": "ed10i_balanced_fill_outline_variant",
+      "intended_use": "ed10i_selected_diagnostic_overlay_proof_base",
       "weight_style": "bold_body_balanced_outline",
       "decoration_suggestion": "warm_fill_restrained_outline",
-      "risk_notes": "May feel softer than the kirinuki target; local/system availability is not portable.",
+      "risk_notes": "Human review selected this bottom-most ED-10i candidate as closest to ideal for the next diagnostic overlay proof; local/system availability is not portable.",
       "can_reproduce_on_other_terminal": false
     },
     {

@@ -100,8 +100,8 @@ readback on the retaining machine. `git ls-files episodes` should remain empty.
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10i human review readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10i generation returned `artifact_id=clip-ed10i-kirinuki-gothic-balance-001`, `candidate_count=4`, `sample_count=16`, `font_size.value=124`, `recommended_default_candidate_id=ed10i_biz_udgothic_bold_balanced_outline`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank local visual evidence. |
-| review_status | Generated requires human review. Recommended default candidate is `ed10i_biz_udgothic_bold_balanced_outline`, but no candidate has been accepted as the next diagnostic overlay proof base yet. |
-| next_action | Open the contact sheet, ignore emoji rendering for this decision, and choose one candidate or one bounded body/outline adjustment before generating a new diagnostic overlay proof. |
+| review_status | Human review consumed: the bottom-most gothic candidate was selected as closest to ideal and resolved from local JSON as `ed10i_meiryo_bold_fill_outline_balance`. This comparison remains the audit trail for that choice. |
+| next_action | Use `clip-ed10i-meiryo-overlay-proof-001` for the current visual judgement. Reopen this comparison only if the candidate mapping or a bounded body/outline adjustment needs audit. |
 
 Boundary flags remain false or pending:
 
@@ -120,6 +120,39 @@ themselves, so local artifact existence must be verified with the open command
 or JSON report readback on the retaining machine. `git ls-files episodes`
 should remain empty.
 
+## `clip-ed10i-meiryo-overlay-proof-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10i Meiryo Selected Diagnostic Overlay Proof |
+| purpose | Apply the human-selected bottom ED-10i candidate, `ed10i_meiryo_bold_fill_outline_balance`, to the `cut_002` / `cut_003` diagnostic subtitle overlay proof. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
+| open_command | `.\open-current-proof.ps1` |
+| generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id ed10i_meiryo_bold_fill_outline_balance` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10i_meiryo_bold_fill_outline_balance --format json` plus targeted tests. |
+| latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10i_meiryo_bold_fill_outline_balance`, `typography_decoration_candidate_id=ed10i_meiryo_bold_fill_outline_balance`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
+| latest_local_smoke | Same-machine readback resolved `font_family_route.requested=Meiryo`, `font_family_route.font_file_status=candidate_primary_font_file_found`, `font_size=124`, `outline=9`, `bbox_wrapping_applied=true`, and target MP4/PNG artifacts for `cut_002` and `cut_003`. The generated PNG frames were inspected as nonblank 1920x1080 local visual artifacts. |
+| human_visual_judgement | Pending for the selected Meiryo overlay proof. The consumed judgement only selected the bottom ED-10i comparison candidate as the next proof base. |
+| review_status | Available and requires human visual review. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Open the current proof and judge whether this selected Meiryo body/outline balance is acceptable as the next diagnostic / representative subtitle base for `cut_002` / `cut_003`. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked generator, docs, dashboard metadata, and
+tests but not the ignored MP4/PNG/ASS files themselves. Other worktrees should
+treat missing `episodes/` proof assets as local evidence absence, not as a
+tracked Git failure.
+
 ## `clip-ed10g-noto-overlay-proof-001`
 
 | Field | Value |
@@ -135,7 +168,7 @@ should remain empty.
 | latest_local_smoke | Same-machine generation on 2026-06-16 JST returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=noto_sans_jp_clean_outline`, `typography_decoration_candidate_id=noto_sans_jp_clean_outline`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`. JSON readback resolved the `Noto Sans JP` route with `font_file_status=candidate_primary_font_file_found`, `font_size=124`, `font_size.readback=round(frame_height * 0.115)`, `outline=11`, `outline.readback=max(2, round(font_size * 0.086))`, `bbox_wrapping_applied=true`, `explicit_ass_line_breaks=true`, `one_character_orphan_present=false`, and `suspicious_tail_line_present=false`. Both target cuts had MP4/PNG/ASS assets, the `cut_002` and `cut_003` PNG frames were inspected as nonblank 1920x1080 local visual artifacts, and a readback-based bbox/safe-area check reported no computed failures. |
 | human_visual_judgement | Accepted on 2026-06-16 JST for the ED-10g diagnostic route, then superseded for styling on 2026-06-17 by a new review that says the proof is not accepted as-is. |
 | review_status | Historical diagnostic proof / current reference only. No production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
-| next_action | Use `clip-ed10i-kirinuki-gothic-balance-001` to choose the next body/outline balance candidate before generating any new diagnostic overlay proof. |
+| next_action | Keep as historical reference. The current selected proof is `clip-ed10i-meiryo-overlay-proof-001`. |
 
 `status-episode` can still report global `operator_review.review_ready=false`
 because the broader R3 artifact set is missing legacy `visual_proof_cut_001.png`.

@@ -6,8 +6,8 @@ status: current_capsule
 health: active
 progress_pct: 80
 last_touched: 2026-06-17
-next_review_due: before_ed10i_candidate_selection_or_overlay_proof_generation
-active_artifact: clip-ed10i-kirinuki-gothic-balance-001
+next_review_due: before_ed10i_meiryo_overlay_visual_judgement
+active_artifact: clip-ed10i-meiryo-overlay-proof-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,7 +35,7 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10i-kirinuki-gothic-balance-001`
+Active artifact: `clip-ed10i-meiryo-overlay-proof-001`
 
 Current judgement: the previous `noto_sans_jp_clean_outline` proof for
 `cut_002` / `cut_003` is not accepted as-is. The consumed human review prefers
@@ -43,26 +43,39 @@ a kirinuki YouTube style gothic direction and identifies fill/outline balance
 as the main issue: the glyph body should become thicker so the outline no
 longer dominates. Emoji rendering is neutral and ignored for this slice.
 
+Latest ED-10i candidate selection: the human reviewed
+`clip-ed10i-kirinuki-gothic-balance-001` and identified the bottom-most gothic
+candidate as closest to the current ideal. The local ED-10i JSON resolves that
+bottom candidate to `ed10i_meiryo_bold_fill_outline_balance` / `Meiryo Bold
+fill/outline balance`. This selection is now the next diagnostic overlay proof
+base; it is not production subtitle design acceptance.
+
 Current ED-10i proof route readback:
 
 - target cuts: `cut_002`, `cut_003`
-- route: `ed10i_kirinuki_gothic_balance`
+- selected candidate: `ed10i_meiryo_bold_fill_outline_balance`
+- selected candidate source: bottom-most ED-10i contact-sheet candidate
+- route: `kirinuki_gothic_weight_balance_diagnostic_proof`
 - size rule: keep `round(frame_height * 0.115)` as the starting reference
-- candidates: current Noto reference, BIZ UDGothic Bold balanced outline,
-  Yu Gothic Bold thinner outline, Meiryo Bold fill/outline balance
-- recommended default for the next diagnostic overlay proof:
-  `ed10i_biz_udgothic_bold_balanced_outline`
-- review status: `generated_requires_human_review`
+- generated proof: `subtitle_overlay_visual_proof_report.*` refreshed with
+  `style_candidate_id=ed10i_meiryo_bold_fill_outline_balance`
+- local readback: `font_size=124`, `outline=9`,
+  `font_family_route.requested=Meiryo`,
+  `font_family_route.font_file_status=candidate_primary_font_file_found`,
+  `subtitle_overlay_available_count=2`,
+  `visual_proof_status=available_requires_human_review`
+- comparison artifact retained for audit:
+  `clip-ed10i-kirinuki-gothic-balance-001`
 
-This diagnostic comparison is not production subtitle design acceptance and does not lift
+This diagnostic proof is not production subtitle design acceptance and does not lift
 production render, creative, rights, publishing, upload, or public-use gates.
 
 ## Next
 
-1. Open the ED-10i kirinuki gothic balance comparison artifact and choose one
-   candidate, or request one bounded body/outline adjustment.
-2. If a candidate is chosen, generate a separate diagnostic overlay proof for
-   `cut_002` / `cut_003` using that candidate id.
+1. Open the current proof and judge the selected Meiryo ED-10i overlay on
+   `cut_002` / `cut_003`.
+2. If the proof is close but not enough, request one bounded body/outline
+   adjustment from `ed10i_meiryo_bold_fill_outline_balance`.
 3. If representative coverage must widen, create a separate dense/stress proof
    route for `cut_008` or another explicitly scoped target.
 4. If moving toward production/public use, run a separate limitation-lift route
@@ -95,8 +108,9 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, `.\open-current-proof.ps1`,
-   `.\open-font-candidates.ps1`, or the ED-10i local comparison helper:
+   `.\open-artifacts.ps1`, current selected ED-10i overlay proof via
+   `.\open-current-proof.ps1`, `.\open-font-candidates.ps1`, or the ED-10i
+   comparison helper:
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison\open_comparison.ps1`
 
 Regenerate the docs dashboard with:
@@ -124,6 +138,11 @@ uvx python -m src.cli.main build-docs-dashboard --format json
   the current Noto clean-outline proof is not accepted as-is. ED-10i now owns a
   narrow kirinuki gothic body/outline balance comparison with emoji excluded
   from the evaluation target. Production/public/rights gates remain closed.
+- 2026-06-17: Human review of the ED-10i contact sheet selected the bottom-most
+  gothic candidate as closest to ideal. Local JSON resolves it to
+  `ed10i_meiryo_bold_fill_outline_balance`; a `cut_002` / `cut_003`
+  diagnostic overlay proof was generated from that candidate and is now waiting
+  for visual judgement. Production/public/rights gates remain closed.
 - 2026-06-16: Review surface launchers added and pushed. Normal open order is
   `.\open-dashboard.ps1`, then dashboard artifact selection, then
   artifact-specific launchers only when needed. This records navigation only;

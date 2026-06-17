@@ -28,13 +28,16 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10i-kirinuki-gothic-balance-001"
+        "clip-ed10i-meiryo-overlay-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "kirinuki_gothic_balance_comparison_generated_requires_review"
+        "ed10i_meiryo_overlay_proof_available_requires_review"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "current_proof_not_accepted_as_is"
+        "bottom_gothic_candidate_selected_for_next_proof_base"
+    )
+    assert status["current_focus"]["selected_typography_base"] == (
+        "ed10i_meiryo_bold_fill_outline_balance"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -42,13 +45,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
             "jp_pilot01r3_cut_review\\subtitle_kirinuki_gothic_balance_comparison\\"
             "open_comparison.ps1"
         ),
-        ".\\open-current-proof.ps1",
         ".\\open-font-candidates.ps1",
     ]
     assert status["doc_health"]["finding_total"] >= status["doc_health"]["finding_count"]
@@ -58,7 +61,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10i-kirinuki-gothic-balance-001"
+        "clip-ed10i-meiryo-overlay-proof-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -77,7 +80,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
-    assert "clip-ed10i-kirinuki-gothic-balance-001" in html
+    assert "clip-ed10i-meiryo-overlay-proof-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
 
 
@@ -129,7 +132,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
 
     assert registry["artifact_id"] == "clip-subtitle-font-candidate-sweep-001"
     assert registry["current_selected_diagnostic_overlay_proof_base"] == (
-        "noto_sans_jp_clean_outline"
+        "ed10i_meiryo_bold_fill_outline_balance"
     )
     assert registry["font_size_policy"]["formula"] == "round(frame_height * 0.115)"
     assert registry["boundary_flags"]["font_binaries_downloaded"] is False
@@ -139,6 +142,12 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     )
     assert registry["ed10i_narrow_slice"]["recommended_default_candidate_id"] == (
         "ed10i_biz_udgothic_bold_balanced_outline"
+    )
+    assert registry["ed10i_narrow_slice"]["selected_candidate_id"] == (
+        "ed10i_meiryo_bold_fill_outline_balance"
+    )
+    assert registry["ed10i_narrow_slice"]["selected_overlay_artifact_id"] == (
+        "clip-ed10i-meiryo-overlay-proof-001"
     )
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids

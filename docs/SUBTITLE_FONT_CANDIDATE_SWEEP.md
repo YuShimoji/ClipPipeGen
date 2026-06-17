@@ -6,7 +6,7 @@ status: approved
 health: defined_not_generated
 progress_pct: 15
 last_touched: 2026-06-17
-next_review_due: after_ed10i_gothic_balance_decision
+next_review_due: after_ed10i_meiryo_overlay_visual_judgement
 active_artifact: clip-subtitle-font-candidate-sweep-001
 source_of_truth: true
 owner_lane: editing
@@ -33,7 +33,7 @@ status、local availability、reproducibility、intended use で比較できる�
 ## 今の状態
 
 - Current selected diagnostic proof base:
-  `noto_sans_jp_clean_outline`
+  `ed10i_meiryo_bold_fill_outline_balance`
 - Preserved font size policy: `round(frame_height * 0.115)`
 - 1080p readback: `font_size=124`
 - Local font readback was limited to `C:\Windows\Fonts`.
@@ -53,10 +53,13 @@ gothic/sans-only set already available on this machine:
 | `ed10i_reference_noto_clean_outline` | Current reference that was judged not accepted as-is | Local Noto Sans JP file readback only |
 | `ed10i_biz_udgothic_bold_balanced_outline` | Recommended default for thicker glyph body with restrained outline | Local BIZ UDGothic Bold file readback only |
 | `ed10i_yu_gothic_bold_thin_outline` | Thinner-outline variant using a familiar Windows gothic route | Local Yu Gothic Bold file readback only |
-| `ed10i_meiryo_bold_fill_outline_balance` | Balanced fill/outline variant | Local Meiryo Bold file readback only |
+| `ed10i_meiryo_bold_fill_outline_balance` | Selected bottom candidate and current diagnostic overlay proof base | Local Meiryo Bold file readback only |
 
 Emoji rendering is intentionally ignored in ED-10i. No font binaries are
 downloaded, copied, vendored, or made portable through Git in this slice.
+The selected overlay proof is `clip-ed10i-meiryo-overlay-proof-001`; the
+comparison artifact remains the audit trail for how the bottom row resolved to
+this candidate id.
 
 ## これからどうなるか
 
@@ -116,6 +119,9 @@ outside public Git.
 - 2026-06-16: No third-party font binaries were downloaded or vendored.
 - 2026-06-17: Added ED-10i narrow gothic/sans candidate set after human review
   rejected the current Noto clean-outline styling as-is.
+- 2026-06-17: Consumed the ED-10i contact-sheet review: the bottom-most gothic
+  candidate was selected as closest to ideal and resolved to
+  `ed10i_meiryo_bold_fill_outline_balance`.
 
 ## Constraints / Risks
 

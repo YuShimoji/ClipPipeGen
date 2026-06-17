@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: superseded_by_ed10i
+status: ed10i_selected_overlay_proof_ready
 health: historical_reference
 progress_pct: 100
 last_touched: 2026-06-17
-next_review_due: before_ed10i_candidate_selection
-active_artifact: clip-ed10i-kirinuki-gothic-balance-001
+next_review_due: before_ed10i_meiryo_overlay_visual_judgement
+active_artifact: clip-ed10i-meiryo-overlay-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -17,7 +17,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-17 JST
 
-## Current Update - ED-10i Supersedes The Styling Direction
+## Current Update - ED-10i Selected The Bottom Gothic Candidate
 
 The latest human review has been consumed as a new styling judgement: the
 previous `noto_sans_jp_clean_outline` proof is not accepted as-is. The desired
@@ -25,15 +25,19 @@ direction is kirinuki YouTube style gothic, with a thicker glyph body so the
 outline no longer dominates. Emoji treatment is neutral and ignored for this
 slice.
 
-The active route is now `ED-10i: Kirinuki Gothic Weight Balance Comparison v0`
-with artifact `clip-ed10i-kirinuki-gothic-balance-001`. ED-10g remains useful
-as a historical reference and current-reference comparison row, but it is no
-longer the current styling decision.
+The reviewed ED-10i contact sheet selected the bottom-most gothic candidate as
+closest to the current ideal. The local ED-10i JSON resolves that row to
+`ed10i_meiryo_bold_fill_outline_balance` / `Meiryo Bold fill/outline balance`.
+The active proof is now `clip-ed10i-meiryo-overlay-proof-001`, generated from
+that selected candidate for `cut_002` / `cut_003`. ED-10g remains useful as a
+historical reference and current-reference comparison row, but it is no longer
+the current styling decision.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10i-kirinuki-gothic-balance-001` | Active diagnostic comparison | Which gothic/sans body-weight and outline balance should become the next diagnostic overlay proof base | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10i-kirinuki-gothic-balance-001` | Consumed comparison / audit trail | Why the bottom candidate maps to `ed10i_meiryo_bold_fill_outline_balance` | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10i-meiryo-overlay-proof-001` | Active selected-candidate overlay proof | Whether Meiryo Bold fill/outline balance is acceptable as the next diagnostic subtitle base for `cut_002` / `cut_003` | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -100,6 +104,10 @@ together.
 - 2026-06-17: new human review superseded the ED-10g styling direction only.
   The current Noto clean-outline proof is not accepted as-is; the next route is
   ED-10i kirinuki gothic weight / outline balance comparison.
+- 2026-06-17: ED-10i contact sheet review selected the bottom-most gothic
+  candidate as closest to ideal. Local JSON resolves it to
+  `ed10i_meiryo_bold_fill_outline_balance`; a selected-candidate overlay proof
+  was generated for `cut_002` / `cut_003`.
 
 ## Constraints / Risks
 
@@ -151,8 +159,9 @@ Review note:
 
 ## Active Comparison Artifact
 
-The current active artifact is now `clip-ed10i-kirinuki-gothic-balance-001`.
-It is a narrow same-machine comparison, not a broad ED-10h sweep.
+The current active comparison audit artifact is
+`clip-ed10i-kirinuki-gothic-balance-001`. It is a narrow same-machine
+comparison, not a broad ED-10h sweep.
 
 Primary local report:
 
@@ -184,6 +193,47 @@ Bold balanced outline, Yu Gothic Bold thinner outline, and Meiryo Bold
 fill/outline balance. Font size, placement, wrapping, source media, transcript,
 official subtitle evidence, rights, publishing, upload, and production state
 remain unchanged.
+
+## Selected ED-10i Overlay Proof
+
+Artifact id: `clip-ed10i-meiryo-overlay-proof-001`
+
+The selected proof applies `ed10i_meiryo_bold_fill_outline_balance` to
+`cut_002` / `cut_003`. It reuses the existing subtitle overlay proof surface
+and does not regenerate SH-08.
+
+Primary local report:
+
+```text
+episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html
+```
+
+Open command:
+
+```powershell
+.\open-current-proof.ps1
+```
+
+Generated command:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --typography-decoration-candidate-id ed10i_meiryo_bold_fill_outline_balance `
+  --format json
+```
+
+Current same-machine readback: `style_candidate_id` and
+`typography_decoration_candidate_id` are both
+`ed10i_meiryo_bold_fill_outline_balance`, `font_size.value=124`,
+`outline.value=9`, `font_family_route.requested=Meiryo`,
+`font_family_route.font_file_status=candidate_primary_font_file_found`,
+`subtitle_overlay_available_count=2`,
+`visual_proof_status=available_requires_human_review`,
+`production_candidate=false`, and `rights_status=pending`.
 
 Artifact id: `clip-typography-decoration-comparison-001`
 
