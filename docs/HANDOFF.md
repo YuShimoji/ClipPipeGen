@@ -1,12 +1,12 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-17 JST
+Last updated: 2026-06-18 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
-## Immediate Resume Capsule - 2026-06-17 ED-10k BIZ Overlay Proof
+## Immediate Resume Capsule - 2026-06-18 ED-10l Known Font Audit
 
 Fresh terminal setup:
 
@@ -26,41 +26,66 @@ Expected state after pulling this handoff:
 - Upstream: `origin/main`
 - `HEAD...origin/main`: `0 0`
 - `git ls-files episodes`: empty
-- Latest sync point: ED-10k BIZ overlay proof update
+- Latest sync point: ED-10l known kirinuki font audit handoff
+- Expected latest commit: `774c590 feat: add ED-10l known font audit`
 
-Current active artifact is `clip-ed10k-biz-overlay-proof-001`.
-The ED-10j freeform review has been consumed: Meiryo is removed from the
-normal subtitle baseline candidate path, the remaining non-Meiryo candidates
-are close enough to avoid prolonging the audit, and the recommended default
-`ed10j_biz_udgothic_bold_telop_candidate` is selected as the next proof base.
+Known same-machine caveat: this local repository currently has a broken
+`refs/codex/turn-diffs/checkpoints/...` checkpoint ref, so `git fetch --prune
+origin` can fail with `fatal: bad object refs/codex/...`. The final push still
+succeeded, and `git ls-remote origin refs/heads/main` matched local
+`HEAD=774c590f0125e85233d29cdfe1aa5f0e1d5eb054`. If fetch fails only on that
+local checkpoint ref, verify remote parity with:
 
-JSON/readback confirms that the blue ED-10j badge/accent maps to
-`ed10j_noto_sans_jp_local_telop_candidate`, not the Meiryo reference
-`ed10j_reference_meiryo_reviewed_not_baseline`. That mapping does not reopen
-Meiryo because the actionable review explicitly removes Meiryo from normal
-subtitle candidates.
+```powershell
+git ls-remote origin refs/heads/main
+git rev-list --left-right --count "HEAD...origin/main"
+git log -1 --oneline --decorate
+```
 
-ED-10k generated a diagnostic overlay proof for `cut_002` / `cut_003` with:
+Current active artifact is `clip-ed10l-known-kirinuki-font-pack-001`.
+The ED-10k BIZ UDGothic proof has been reviewed and is not accepted as the
+normal-dialogue subtitle baseline. The review says BIZ feels too hard/rigid,
+the text remains thin, and the black outline pressure is too strong. This also
+rejects the broader BIZ/Noto/Meiryo system-safe route for this use case; those
+fonts remain reference/rejected evidence only.
 
-- `style_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`
-- `typography_decoration_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`
-- `font_family_route.requested=BIZ UDGothic`
-- `font_family_route.resolved=BIZ UDGothic`
-- `subtitle_overlay_available_count=2`
+ED-10l is the active route correction. It audits known Japanese YouTube
+kirinuki/telop fonts before another overlay proof is selected:
+
+- comparison profile: `ed10l_known_kirinuki_font_pack`
+- artifact: `clip-ed10l-known-kirinuki-font-pack-001`
+- target cuts: `cut_002`, `cut_003`
+- normal-dialogue candidates:
+  `ed10l_keifont_pop_dialogue_candidate`,
+  `ed10l_851_chikara_yowaku_dialogue_candidate`,
+  `ed10l_m_plus_fonts_dialogue_candidate`,
+  `ed10l_yasashisa_gothic_goodfreefonts_candidate`
+- separate emphasis/shout slot: `ed10l_851_chikara_zuyoku_emphasis_candidate`
+- separate mood/literary slot:
+  `ed10l_source_han_serif_mood_candidate`,
+  `ed10l_shippori_mincho_mood_candidate`
+- current selected proof base:
+  `pending_ed10l_human_review_after_font_install_readback`
+- recommended first route:
+  `ed10l_keifont_pop_dialogue_candidate`
+- target fonts found locally on 2026-06-18 JST: none
+- generated samples are fallback/missing-font evidence until real font install
+  readback exists
 
 Open order:
 
 1. `.\open-dashboard.ps1`
-2. choose the current ED-10k BIZ proof from the dashboard
+2. choose the ED-10l known-font pack artifact from the dashboard
 3. if the same-machine ignored artifact is present, open it with:
 
 ```powershell
-.\open-current-proof.ps1
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1
 ```
 
 If a fresh checkout does not have `episodes/`, treat that as local evidence
-absence, not a Git failure. Regenerate the ED-10k local retained artifact only
-when the upstream episode artifacts are present:
+absence, not a Git failure. Regenerate local retained artifacts only when the
+upstream episode artifacts are present. For the reviewed ED-10k BIZ reference
+proof, use:
 
 ```powershell
 uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
@@ -72,42 +97,57 @@ uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof `
   --format json
 ```
 
+For the ED-10l comparison artifact, use:
+
+```powershell
+uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison `
+  --comparison-profile ed10l_known_kirinuki_font_pack `
+  --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 `
+  --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review `
+  --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison `
+  --target-cut cut_002 `
+  --target-cut cut_003 `
+  --format json
+```
+
 Review card for the next human response:
 
-- target: `clip-ed10k-biz-overlay-proof-001`
-- look at actual subtitle readability on `cut_002` and `cut_003`, not just the
-  ED-10j contact sheet
-- judge glyph body thickness, outline pressure, line breaks, host-face
-  occlusion, normal subtitle stability, and whether BIZ UDGothic feels
-  deliberate enough for the default normal-dialogue route
+- target: `clip-ed10l-known-kirinuki-font-pack-001`
+- judge which known normal-dialogue candidate should become the next install
+  or overlay proof route
+- do not treat fallback render as visual proof of the target font
+- keep `851チカラヅヨク` in emphasis/shout/tsukkomi and keep
+  `源ノ明朝` / `しっぽり明朝` in mood/literary; do not collapse those into
+  normal-dialogue baseline acceptance
 - freeform review is enough; do not ask for fixed accept/reject labels
-- after review, either keep BIZ as the route, make one bounded BIZ adjustment,
-  or branch to Yu Gothic / Noto only if the proof clearly fails
+- after review, capture official source/license/install notes before any real
+  font file enters a reproducible proof route
 
 Tracked context surfaces:
 
 | Surface | Purpose |
 |---|---|
-| `docs/RUNTIME_STATE.md` | current resume capsule and ED-10k review route |
+| `docs/RUNTIME_STATE.md` | current resume capsule and ED-10l review route |
 | `docs/index.md` | human-facing wiki entrance and open-surface order |
 | `docs/dashboard/index.html` | generated project dashboard |
 | `docs/dashboard/project-status.json` | machine-readable dashboard state |
 | `docs/features/index.md` | generated feature progress table |
-| `artifacts/ARTIFACTS.md` | artifact registry and ED-10k proof entry |
-| `docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md` | route change from ED-10j audit to ED-10k proof |
-| `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | ED-10j review consumption and selected BIZ proof base |
+| `artifacts/ARTIFACTS.md` | artifact registry and ED-10l known-font entry |
+| `docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md` | route change from ED-10k BIZ rejection to ED-10l known-font audit |
+| `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` | candidate registry and known-font source/readback |
 | `docs/font_candidates/subtitle-font-candidates.json` | machine-readable candidate registry |
 
 Validation at handoff creation:
 
 - `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py`
-  -> `23 passed, 12 skipped`
+  -> `23 passed, 14 skipped`
 - `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py`
-  -> `19 passed`
+  -> `21 passed`
 - JSON parse checks passed for dashboard, font registry, and the same-machine
-  ED-10j/ED-10k local reports
+  ED-10l local report
 - `git diff --check` clean
 - `git ls-files episodes` empty
+- final `HEAD...origin/main=0 0`
 
 Boundary flags remain closed: `production_subtitle_design_acceptance=false`,
 `production_render_acceptance=false`, `creative_acceptance=false`,
