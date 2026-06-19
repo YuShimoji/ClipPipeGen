@@ -37,6 +37,12 @@ for restart decisions.
 
 Active artifact: `clip-ed10l-known-kirinuki-font-pack-001`
 
+Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
+generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
+the user explicitly says to rewind. ED-10k is already generated, reviewed, and
+rejected as the normal-dialogue baseline. Continue from ED-10l real font
+source/license/install/readback instead.
+
 Current judgement: the ED-10k BIZ UDGothic overlay proof has now been reviewed
 and is not accepted as the normal-dialogue subtitle baseline. The review says
 the BIZ route feels too hard/rigid, the text still reads thin, and the black

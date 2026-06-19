@@ -24,6 +24,7 @@ Start here:
 | Need | Entry |
 |---|---|
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
+| Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
 | Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
 | Dashboard metadata | [dashboard/project-status.json](dashboard/project-status.json) |
 | Feature progress table | [features/index.md](features/index.md) |

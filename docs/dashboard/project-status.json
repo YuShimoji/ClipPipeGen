@@ -1216,7 +1216,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 88,
+      "line_count": 89,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1230,7 +1230,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 408,
+      "line_count": 414,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1406,6 +1406,33 @@
       },
       "boundary_term_count": 27,
       "status": "reference"
+    },
+    {
+      "path": "docs/CURRENT_HANDOFF.md",
+      "title": "Current Handoff - ClipPipeGen",
+      "line_count": 113,
+      "metadata": {
+        "id": "current-handoff",
+        "title": "Current Handoff - ClipPipeGen",
+        "type": "handoff",
+        "status": "active",
+        "health": "ed10l_font_fallback_confirmed_visual_selection_invalid",
+        "progress_pct": "90",
+        "last_touched": "2026-06-19",
+        "next_review_due": "after_ed10l_real_font_install_readback",
+        "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+        "source_of_truth": "false",
+        "owner_lane": "shared_infra",
+        "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
+      },
+      "front_sections": {
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
+      },
+      "boundary_term_count": 7,
+      "status": "active"
     },
     {
       "path": "docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md",
