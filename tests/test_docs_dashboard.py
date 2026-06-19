@@ -31,13 +31,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10l-known-kirinuki-font-pack-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10l_font_fallback_confirmed_visual_selection_invalid"
+        "ed10m_keifont_route_prepared_user_install_required"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10k_biz_freeform_review_consumed_not_accepted"
     )
     assert status["current_focus"]["selected_typography_base"] == (
         "pending_real_font_install_readback"
+    )
+    assert status["current_focus"]["selected_source_license_install_route"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert status["current_focus"]["route_status"] == (
+        "user_install_required_before_real_font_proof"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "invalid_fallback_render_not_target_font_visual_evidence"
@@ -195,6 +201,15 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10l_known_font_pack_slice"]["recommended_default_candidate_id"] == (
         "ed10l_keifont_pop_dialogue_candidate"
     )
+    assert registry["ed10l_known_font_pack_slice"][
+        "selected_source_license_install_route_candidate_id"
+    ] == "ed10l_keifont_pop_dialogue_candidate"
+    assert registry["ed10m_real_font_source_license_install_route"][
+        "selected_candidate_id"
+    ] == "ed10l_keifont_pop_dialogue_candidate"
+    assert registry["ed10m_real_font_source_license_install_route"][
+        "font_binaries_downloaded"
+    ] is False
     assert registry["ed10l_known_font_pack_slice"]["selected_candidate_id"] == (
         "pending_real_font_install_readback_after_fallback_confirmation"
     )

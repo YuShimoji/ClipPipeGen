@@ -3,10 +3,10 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: active
-progress_pct: 85
-last_touched: 2026-06-19
-next_review_due: after_ed10l_real_font_install_readback
+health: ed10m_keifont_route_prepared_user_install_required
+progress_pct: 88
+last_touched: 2026-06-20
+next_review_due: after_ed10m_keifont_user_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: shared_infra
@@ -80,6 +80,14 @@ ED-10l route readback:
   resolved to `NotoSansJP-VF.ttf` with
   `requested_candidate_font_missing_used_font_file_found`; the contact sheet is
   invalid for target-font visual selection
+- ED-10m selected the first real-font route as
+  `ed10l_keifont_pop_dialogue_candidate`; the official Keifont page records
+  Apache License 2.0 and no special commercial-use restriction, but the target
+  files `keifont.ttf` / `Keifont.ttf` are still absent from `C:/Windows/Fonts`
+  on this terminal as of 2026-06-20 JST
+- no font binary was downloaded, installed, copied, vendored, staged, or
+  committed; the next step is user-owned source/license inspection and local
+  font install/readback before proof regeneration
 
 Tracked self-diagnosis: the previous exploration over-weighted
 system-safe/generic readable fonts, conflated safe/reproducible with visually
@@ -96,9 +104,10 @@ gates.
 
 1. Do not choose a font from the current ED-10l fallback contact sheet; use it
    only as readback evidence that the requested fonts were missing.
-2. Pick or prepare a source/license/install/readback route for one known
-   normal-dialogue font, then regenerate the ED-10l proof after the requested
-   font file resolves.
+2. Use the ED-10m Keifont route first: inspect the official source/license,
+   install the font locally if accepted, confirm `C:/Windows/Fonts/keifont.ttf`
+   or `C:/Windows/Fonts/Keifont.ttf`, then regenerate the ED-10l proof only
+   after that requested font file resolves.
 3. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
 4. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate

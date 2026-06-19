@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-06-18"
+DEFAULT_GENERATED_AT = "2026-06-20"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -99,14 +99,17 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10l",
+            "feature_id": "ED-10m",
             "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-            "state": "ed10l_font_fallback_confirmed_visual_selection_invalid",
+            "state": "ed10m_keifont_route_prepared_user_install_required",
             "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
             "latest_review_consumed": "ed10l_candidates_too_thin_fallback_suspected",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "pending_real_font_install_readback",
+            "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
+            "route_status": "user_install_required_before_real_font_proof",
+            "user_action_type": "USER_OPEN_ONLY_then_USER_RUN_REQUIRED",
             "selected_typography_source": "user_known_good_font_review_and_source_inspection",
             "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
             "main_issue": "ed10l_contact_sheet_used_fallback_font_not_target_fonts",
@@ -196,6 +199,9 @@ def render_dashboard_html(status: dict[str, Any]) -> str:
       <tr><th>artifact</th><td>{escape(focus["artifact_id"])}</td></tr>
       <tr><th>targets</th><td>{escape(", ".join(focus["target_cuts"]))}</td></tr>
       <tr><th>typography base</th><td>{escape(focus["selected_typography_base"])}</td></tr>
+      <tr><th>source/install route</th><td>{escape(focus["selected_source_license_install_route"])}</td></tr>
+      <tr><th>route status</th><td>{escape(focus["route_status"])}</td></tr>
+      <tr><th>user action</th><td>{escape(focus["user_action_type"])}</td></tr>
       <tr><th>rights / production</th><td>rights={escape(focus["rights_status"])}; production_candidate={escape(str(focus["production_candidate"]).lower())}</td></tr>
     </table>
   </section>
@@ -385,6 +391,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10k-biz-overlay-proof-001"
         if feature_id == "ED-10l":
             active_artifact = "clip-ed10l-known-kirinuki-font-pack-001"
+        if feature_id == "ED-10m":
+            active_artifact = "clip-ed10l-known-kirinuki-font-pack-001"
         features.append(
             {
                 "id": feature_id,
@@ -494,10 +502,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10l known kirinuki font pack audit",
+            "item": "ED-10m Keifont source/license/install route",
             "artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-            "question": "Which known Japanese kirinuki/telop font should get source/license/install readback before a real visual proof?",
-            "next_route": "Do not compare the current fallback contact sheet visually; prepare an install/readback route, then regenerate proof.",
+            "question": "Can the user inspect the official Keifont source/license and install it locally for readback?",
+            "next_route": "Open the Keifont source/license, install only if acceptable, confirm keifont.ttf or Keifont.ttf in C:/Windows/Fonts, then regenerate proof.",
         },
         {
             "item": "ED-10k BIZ UDGothic overlay proof",
@@ -694,6 +702,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "reviewed_not_accepted_as_normal_baseline"
     if feature_id == "ED-10l":
         return "font_fallback_confirmed_visual_selection_invalid"
+    if feature_id == "ED-10m":
+        return "keifont_route_prepared_user_install_required"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -712,6 +722,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10l":
         return 60
+    if feature_id == "ED-10m":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -728,6 +740,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline."
     if feature_id == "ED-10l":
         return "Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof."
+    if feature_id == "ED-10m":
+        return "User should inspect/install Keifont locally; regenerate proof only after Keifont resolves."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

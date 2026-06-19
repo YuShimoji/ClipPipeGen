@@ -3,10 +3,10 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10l_font_fallback_confirmed_visual_selection_invalid
-progress_pct: 90
-last_touched: 2026-06-19
-next_review_due: after_ed10l_real_font_install_readback
+health: ed10m_keifont_route_prepared_user_install_required
+progress_pct: 92
+last_touched: 2026-06-20
+next_review_due: after_ed10m_keifont_user_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: editing
@@ -57,6 +57,10 @@ status、local availability、reproducibility、intended use で比較できる�
   is invalid for target-font visual selection until a real install/readback
   route is completed and the proof is regenerated.
 - Font binaries were not downloaded, copied, or vendored.
+- ED-10m selected `ed10l_keifont_pop_dialogue_candidate` as the first
+  source/license/install/readback route. The source/license route is prepared,
+  but local readback still requires user-owned install before any valid
+  target-font visual proof can be generated.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -94,6 +98,22 @@ Source pages inspected for ED-10l:
 | [GoodFreeFonts YouTube subtitle roundup](https://goodfreefonts.com/820/) | User-provided candidate-universe correction | Index only; official source/license capture still required |
 | [851 Chikara Dzuyoku official](https://pm85122.onamae.jp/851ch-dz.html) | Emphasis/shout/tsukkomi reference | Not normal baseline |
 | [Source Han Serif JP](https://source.typekit.com/source-han-serif/jp/) / [Shippori Mincho](https://fontdasu.com/shippori-mincho/) | Mood/literary references | Not normal baseline |
+
+## ED-10m Real Font Source / License / Install Route
+
+ED-10m keeps the ED-10l contact sheet as fallback evidence and chooses the
+first real-font route before any visual proof regeneration. The selected route
+is `ed10l_keifont_pop_dialogue_candidate` because its official page confirms a
+normal-dialogue pop/kirinuki direction, Apache License 2.0, and no special
+commercial-use restriction. The route still requires user-owned local install;
+Codex did not download, install, vendor, or commit any font binary.
+
+| Candidate | Intended slot | Source / license status | Local install/readback | Proof readiness | Risk / unknown |
+|---|---|---|---|---|---|
+| `ed10l_keifont_pop_dialogue_candidate` | normal dialogue baseline | Official source: [Keifont](https://font.sumomo.ne.jp/font_1.html). License/readback: Apache License 2.0; commercial use is not specially restricted. | Required. Expected Windows file after install: `C:\Windows\Fonts\keifont.ttf` or `C:\Windows\Fonts\Keifont.ttf`; both missing on 2026-06-20 JST. | Selected ED-10m route; regenerate proof only after requested font file resolves. | Source asks users to avoid usage that harms the reputation of the inspiration work; install is user-owned and no binary enters Git. |
+| `ed10l_851_chikara_yowaku_dialogue_candidate` | normal dialogue baseline / softer dialogue | Official source: [851 Chikara Yowaku](https://pm85122.onamae.jp/851ch-yw.html). License/readback: commercial use including video is allowed; modification/free redistribution allowed, resale and authorship misrepresentation are not. | Required. Expected Windows file: `C:\Windows\Fonts\851CHIKARA-YOWAKU_002.ttf` or `C:\Windows\Fonts\851CHIKARA-YOWAKU.ttf`; both missing on 2026-06-20 JST. | Good fallback route if Keifont is skipped. | May be too characterful for universal normal dialogue; keep separate from `851 Chikara Dzuyoku` emphasis slot. |
+| `ed10l_m_plus_fonts_dialogue_candidate` | normal dialogue baseline / reproducible sans | Official source: [M+ FONTS](https://mplusfonts.github.io/). License/readback: SIL Open Font License route. | Required. Exact weight/file must be chosen first, such as M PLUS 1/2 or rounded bold; expected local files currently missing. | Safer reproducibility route after explicit download/install approval. | More reproducible than many free-font routes, but may not solve the kirinuki/pop feel as directly as Keifont. |
+| `ed10l_yasashisa_gothic_goodfreefonts_candidate` | normal dialogue baseline / rounded gothic | Official source now identified as [Yasashisa Gothic Bold V2 on BOOTH](https://booth.pm/ja/items/1833993), while GoodFreeFonts remains only an index. License/readback: BOOTH page says commercial/non-commercial and video use are allowed; the font is M+ FONTS-derived. | Required. Expected Windows file: `C:\Windows\Fonts\YasashisaGothicBold-V2.otf`; missing on 2026-06-20 JST. | Candidate route after official source/license capture and local install. | Source was initially index-only in the registry; exact downloaded file and license/readme should be read after user download. |
 
 ## ED-10j Kirinuki Font Audit
 
@@ -160,9 +180,9 @@ to this candidate id.
 1. **ED-10l fallback audit**: treat the current comparison as readback-only
    evidence that the requested fonts were missing; do not select a visual
    candidate from those PNGs.
-2. **Official source/license/install readback**: choose one known
-   normal-dialogue font route and capture source URL, license/version notes,
-   install path, and local file readback before regenerating proof.
+2. **Official source/license/install readback**: use the selected Keifont route
+   first. Capture source URL, license/version notes, install path, and local
+   file readback before regenerating proof.
 3. **Regenerated visual proof**: rerun the ED-10l comparison only after the
    requested font resolves, then review the real target-font PNGs.
 4. **Google Fonts / OFL sweep**: request permission to download specific
@@ -239,6 +259,10 @@ outside public Git.
   feedback as missing-font fallback suspicion. Current sample readback resolves
   to `NotoSansJP-VF.ttf`, so candidate selection waits for real font
   source/license/install/readback and regenerated visual proof.
+- 2026-06-20: ED-10m prepared the first real-font route:
+  `ed10l_keifont_pop_dialogue_candidate`. Keifont source/license is recorded,
+  local install/readback is still user-owned, and font binaries remain outside
+  the repo.
 
 ## Constraints / Risks
 

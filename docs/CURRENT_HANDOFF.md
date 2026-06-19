@@ -3,10 +3,10 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10l_font_fallback_confirmed_visual_selection_invalid
-progress_pct: 90
-last_touched: 2026-06-19
-next_review_due: after_ed10l_real_font_install_readback
+health: ed10m_keifont_route_prepared_user_install_required
+progress_pct: 92
+last_touched: 2026-06-20
+next_review_due: after_ed10m_keifont_user_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: false
 owner_lane: shared_infra
@@ -42,6 +42,12 @@ current contact sheet is fallback evidence only: the requested ED-10l fonts
 were not installed, and the visible samples resolved to `NotoSansJP-VF.ttf`.
 Do not select a visual candidate from those PNGs.
 
+ED-10m prepares the first real-font source/license/install/readback route. The
+selected route is `ed10l_keifont_pop_dialogue_candidate`. The official Keifont
+page is the source target, and local readback still shows
+`C:\Windows\Fonts\keifont.ttf` / `C:\Windows\Fonts\Keifont.ttf` missing. No
+font binary was downloaded, installed, copied, vendored, staged, or committed.
+
 ## Resume Order
 
 1. Read [RUNTIME_STATE.md](RUNTIME_STATE.md).
@@ -55,15 +61,15 @@ Do not select a visual candidate from those PNGs.
 
 ## Next Move
 
-Prepare a real font source / license / install / readback route for one known
-normal-dialogue font candidate, then regenerate the ED-10l comparison or
-overlay proof only after the requested font file resolves.
+Use the Keifont source / license / install / readback route first, then
+regenerate the ED-10l comparison or overlay proof only after the requested font
+file resolves.
 
 Good immediate candidates to route:
 
 | Candidate route | Why it helps | Required before proof |
 |---|---|---|
-| `ed10l_keifont_pop_dialogue_candidate` | Strong pop/kirinuki normal-dialogue direction | Official source, license note, installed font readback |
+| `ed10l_keifont_pop_dialogue_candidate` | Strong pop/kirinuki normal-dialogue direction | User source/license inspection, local install, `keifont.ttf` / `Keifont.ttf` readback |
 | `ed10l_851_chikara_yowaku_dialogue_candidate` | Softer handwritten route that avoids rigid BIZ feel | Official source, license note, installed font readback |
 | `ed10l_m_plus_fonts_dialogue_candidate` | More reproducible OFL-backed route | Exact family/file/weight choice, source/license readback |
 

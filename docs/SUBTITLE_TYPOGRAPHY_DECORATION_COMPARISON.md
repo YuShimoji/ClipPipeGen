@@ -5,8 +5,8 @@ type: decision_packet
 status: ed10l_font_fallback_confirmed_visual_selection_invalid
 health: install_readback_required_before_visual_review
 progress_pct: 100
-last_touched: 2026-06-19
-next_review_due: after_ed10l_real_font_install_readback
+last_touched: 2026-06-20
+next_review_due: after_ed10m_keifont_user_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: editing
@@ -38,6 +38,12 @@ confirms every normal-dialogue candidate PNG resolved to `NotoSansJP-VF.ttf`
 with `requested_candidate_font_missing_used_font_file_found`, so the current
 contact sheet is invalid as target-font visual evidence. It is useful only as
 missing-font/fallback readback until a real font install is verified and the
+proof is regenerated.
+
+ED-10m selects `ed10l_keifont_pop_dialogue_candidate` as the first
+source/license/install/readback route. The current task is user-owned Keifont
+source/license inspection and local install/readback; no current ED-10l PNG
+should be used for visual font selection until Keifont resolves locally and the
 proof is regenerated.
 
 | Route | Current role | What it can decide | What stays closed |
@@ -74,9 +80,9 @@ baseline としては不採用です。現在の active artifact は
 1. 現在の ED-10l contact sheet から visual candidate を選ばない。これは
    target font ではなく `NotoSansJP-VF.ttf` fallback を見ている証跡として
    確認する。
-2. normal-dialogue candidate のうち 1 つについて、official source /
-   license / install / font-file readback を先に揃え、requested font が
-   実際に解決してから overlay proof を再生成する。
+2. `ed10l_keifont_pop_dialogue_candidate` を最初の official source /
+   license / install / font-file readback route として扱い、requested font
+   が実際に解決してから overlay proof を再生成する。
 3. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
    baseline に戻す場合は明示レビューを要求する。
 4. representative coverage を広げるなら、dense/stress proof や production
@@ -144,6 +150,9 @@ together.
   resolve to `NotoSansJP-VF.ttf`, not the requested known fonts, so the contact
   sheet is invalid for target-font visual selection until install/readback and
   regeneration happen.
+- 2026-06-20: ED-10m selected the Keifont route for source/license/install
+  readback. No font binary was downloaded, installed, copied, vendored, staged,
+  or committed.
 
 ## Constraints / Risks
 
@@ -158,6 +167,8 @@ together.
 ## Changelog
 
 - 2026-06-16: Added v1.5 metadata and ED-10h successor pointer.
+- 2026-06-20: Recorded ED-10m Keifont source/license/install route as the
+  next action before any real-font visual proof regeneration.
 
 This packet was generated from the `clip-human-preview-session-001` human
 answer `adjust_boundary`, then received the ED-10g comparison response
