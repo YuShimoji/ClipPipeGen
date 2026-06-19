@@ -5,8 +5,8 @@ type: resume_surface
 status: current_capsule
 health: active
 progress_pct: 85
-last_touched: 2026-06-18
-next_review_due: after_ed10l_known_font_pack_review
+last_touched: 2026-06-19
+next_review_due: after_ed10l_real_font_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: shared_infra
@@ -67,6 +67,13 @@ ED-10l route readback:
   pack was not installed on this terminal as of 2026-06-18 JST
 - generated samples must be read as missing-font/fallback evidence until a
   real font install/readback exists
+- latest ED-10l review was consumed as a fallback suspicion, not as a candidate
+  preference: all visible candidates looked too thin / close to BIZ because the
+  target fonts were not actually resolving
+- current ED-10l sample readback confirms every normal-dialogue candidate PNG
+  resolved to `NotoSansJP-VF.ttf` with
+  `requested_candidate_font_missing_used_font_file_found`; the contact sheet is
+  invalid for target-font visual selection
 
 Tracked self-diagnosis: the previous exploration over-weighted
 system-safe/generic readable fonts, conflated safe/reproducible with visually
@@ -81,10 +88,11 @@ gates.
 
 ## Next
 
-1. Open the ED-10l known-font pack comparison and give freeform review on which
-   normal-dialogue candidate should become the next install/proof route.
-2. If a candidate is chosen, capture official source/license/install notes and
-   verify the actual font file readback before claiming visual proof evidence.
+1. Do not choose a font from the current ED-10l fallback contact sheet; use it
+   only as readback evidence that the requested fonts were missing.
+2. Pick or prepare a source/license/install/readback route for one known
+   normal-dialogue font, then regenerate the ED-10l proof after the requested
+   font file resolves.
 3. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
 4. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
@@ -122,7 +130,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10l known-font pack comparison via
+   `.\open-artifacts.ps1`, current ED-10l fallback/readback evidence via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`,
    reviewed ED-10k BIZ reference proof via `.\open-current-proof.ps1`,
    consumed ED-10j font audit via

@@ -1330,6 +1330,10 @@ def build_subtitle_typography_decoration_comparison(
         output_dir=output_dir,
         filename=profile["contact_sheet_filename"],
     )
+    font_visual_comparison_validity = _font_visual_comparison_validity(
+        samples=samples,
+        candidates=profile["candidates"],
+    )
     json_path = output_dir / profile["json_filename"]
     html_path = output_dir / profile["html_filename"]
     open_helper_path = output_dir / "open_comparison.ps1"
@@ -1376,6 +1380,7 @@ def build_subtitle_typography_decoration_comparison(
             "scope": "diagnostic_representative_review_only",
         },
         "comparison_axes": profile["comparison_axes"],
+        "font_visual_comparison_validity": font_visual_comparison_validity,
         "next_diagnostic_overlay_proof_route": profile["next_diagnostic_overlay_proof_route"],
         profile["decision_packet_key"]: profile["decision_packet"],
         "comparison_decision_packet": profile["decision_packet"],
@@ -1762,9 +1767,15 @@ def _typography_comparison_profile(
             },
             "comparison_response_readback": {
                 "source_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-                "selected_response": "route_correction_to_known_kirinuki_font_pack_audit",
-                "selected_candidate_for_next_proof_base": "pending_ed10l_human_review_after_font_install_readback",
+                "selected_response": "fallback_confirmed_route_to_font_install_readback",
+                "selected_candidate_for_next_proof_base": (
+                    "pending_real_font_install_readback_after_fallback_confirmation"
+                ),
                 "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "current_visual_comparison_validity": (
+                    "invalid_fallback_render_not_target_font_visual_evidence"
+                ),
+                "candidate_selection_from_current_pngs_allowed": False,
                 "font_size": "preserved_as_comparison_constant_not_primary_axis",
                 "font_family": "known_kirinuki_telop_strong_candidates",
                 "usage_slot": "normal_dialogue_baseline",
@@ -1805,11 +1816,16 @@ def _typography_comparison_profile(
                 ],
             },
             "next_diagnostic_overlay_proof_route": {
-                "route_kind": "ed10l_known_font_pack_install_or_comparison_followup",
+                "route_kind": "ed10l_known_font_pack_install_readback_before_visual_proof",
                 "target_cuts": list(target_cut_ids),
-                "selected_candidate_for_next_proof_base": "pending_ed10l_human_review_after_font_install_readback",
+                "selected_candidate_for_next_proof_base": (
+                    "pending_real_font_install_readback_after_fallback_confirmation"
+                ),
                 "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
                 "comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+                "current_fallback_contact_sheet_role": (
+                    "readback_only_not_visual_selection"
+                ),
                 "font_size": {
                     "status": "preserve_existing_size_policy_as_comparison_constant",
                     "formula": "round(frame_height * 0.115)",
@@ -1818,7 +1834,9 @@ def _typography_comparison_profile(
                 "font_binaries_downloaded": False,
                 "font_binaries_vendored": False,
                 "regenerate_sh08_required": False,
-                "comparison_artifact_required": "generated_for_ed10l_human_review",
+                "comparison_artifact_required": (
+                    "regenerate_after_requested_font_resolves"
+                ),
                 "episodes_artifact_tracking_allowed": False,
                 "production_subtitle_design_acceptance": False,
                 "production_render_acceptance": False,
@@ -1829,10 +1847,11 @@ def _typography_comparison_profile(
             },
             "candidates": ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES,
             "next_decision_question": (
-                "For cut_002 / cut_003 normal dialogue subtitles, which known "
-                "kirinuki/telop font should be installed or promoted to the next "
-                "diagnostic overlay proof base? Freeform review is enough; do "
-                "not treat this as production/public/rights acceptance."
+                "The current ED-10l PNGs are fallback evidence until the requested "
+                "fonts resolve. Which known kirinuki/telop font should get "
+                "source/license/install readback before the next diagnostic "
+                "overlay proof? Freeform review is enough; do not treat this as "
+                "production/public/rights acceptance."
             ),
         }
     known = ", ".join(TYPOGRAPHY_COMPARISON_PROFILES)
@@ -2355,7 +2374,7 @@ def _known_kirinuki_font_pack_decision_packet(
     target_cut_ids: tuple[str, ...],
 ) -> dict[str, Any]:
     return {
-        "decision_state": "route_correction_known_font_pack_audit_active",
+        "decision_state": "font_fallback_confirmed_visual_selection_invalid",
         "source_review_artifact": "clip-ed10k-biz-overlay-proof-001",
         "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
         "current_biz_proof_accepted_as_normal_baseline": False,
@@ -2366,8 +2385,23 @@ def _known_kirinuki_font_pack_decision_packet(
         "target_cuts": list(target_cut_ids),
         "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
         "selected_candidate_for_next_proof_base": (
-            "pending_ed10l_human_review_after_font_install_readback"
+            "pending_real_font_install_readback_after_fallback_confirmation"
         ),
+        "current_visual_comparison_validity": (
+            "invalid_fallback_render_not_target_font_visual_evidence"
+        ),
+        "candidate_selection_from_current_pngs_allowed": False,
+        "latest_fallback_review_consumed": {
+            "review": "all_candidates_too_thin_close_to_biz_fallback_suspected",
+            "readback_result": (
+                "all_current_normal_dialogue_candidate_pngs_resolved_to_"
+                "NotoSansJP_VF"
+            ),
+            "visual_comparison_validity": (
+                "invalid_fallback_render_not_target_font_visual_evidence"
+            ),
+            "candidate_selection_from_current_pngs_allowed": False,
+        },
         "freeform_review_consumed": {
             "biz_udgothic_proof_reviewed": True,
             "biz_udgothic_accepted_as_normal_baseline": False,
@@ -2494,7 +2528,7 @@ def _known_kirinuki_font_pack_decision_packet(
                 },
             ],
             "local_font_readback": {
-                "checked_at": "2026-06-18 JST",
+                "checked_at": "2026-06-19 JST",
                 "target_fonts_found": [],
                 "target_fonts_missing": [
                     "keifont",
@@ -2506,6 +2540,8 @@ def _known_kirinuki_font_pack_decision_packet(
                     "yasashisa_gothic",
                 ],
                 "fallback_render_expected_in_generated_samples": True,
+                "fallback_font_used_in_current_samples": "NotoSansJP-VF.ttf",
+                "current_png_valid_visual_evidence": False,
                 "reason": (
                     "ED-10l artifact records the missing-font state rather than "
                     "pretending the fallback bitmap is the target font."
@@ -2639,6 +2675,13 @@ def _known_kirinuki_font_pack_decision_packet(
                 "reason": "No font binary vendoring or reproducible artifact-store strategy is approved.",
             },
             {
+                "route": "select_candidate_from_current_fallback_contact_sheet",
+                "reason": (
+                    "The current PNGs resolve to fallback NotoSansJP-VF rather "
+                    "than the requested ED-10l target fonts."
+                ),
+            },
+            {
                 "route": "claim_production_subtitle_design_acceptance",
                 "reason": "The generated comparison remains diagnostic / representative review only.",
             },
@@ -2651,14 +2694,15 @@ def _known_kirinuki_font_pack_decision_packet(
             },
         ],
         "smallest_next_proof_route": {
-            "route_kind": "ed10l_known_font_pack_install_or_overlay_proof",
+            "route_kind": "ed10l_known_font_pack_install_readback_then_overlay_proof",
             "selected_candidate_id": (
-                "pending_ed10l_human_review_after_font_install_readback"
+                "pending_real_font_install_readback_after_fallback_confirmation"
             ),
             "default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
             "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
             "target_cuts": list(target_cut_ids),
             "font_install_required": True,
+            "current_fallback_contact_sheet_valid_for_selection": False,
             "keep_biz_noto_meiryo_visible_as_rejected_reference": True,
             "proof_scope": "diagnostic_representative_review_only",
             "regenerate_sh08_required": False,
@@ -2690,6 +2734,111 @@ def _candidate_readback(candidate: TypographyDecorationCandidate) -> dict[str, A
         "outline_balance_role": candidate.outline_balance_role,
         "emoji_evaluation_scope": candidate.emoji_evaluation_scope,
         "production_subtitle_design_acceptance": False,
+    }
+
+
+def _font_fallback_status(font_file_status: str) -> str:
+    if font_file_status.startswith("candidate_primary_font_file_found"):
+        return "requested_candidate_font_file_found"
+    if font_file_status.startswith("requested_candidate_font_missing_used_"):
+        return "requested_candidate_missing_fallback_font_used"
+    if "fallback" in font_file_status or "missing" in font_file_status:
+        return "fallback_or_missing_font_used"
+    return "font_status_unclassified"
+
+
+def _visual_comparison_validity_for_font_status(font_file_status: str) -> str:
+    if font_file_status.startswith("candidate_primary_font_file_found"):
+        return "valid_requested_font_visual_evidence"
+    if font_file_status.startswith("requested_candidate_font_missing_used_"):
+        return "invalid_fallback_render_not_target_font_visual_evidence"
+    if "fallback" in font_file_status or "missing" in font_file_status:
+        return "unresolved_or_invalid_until_font_readback"
+    return "unresolved_font_readback_required"
+
+
+def _font_visual_comparison_validity(
+    *,
+    samples: list[dict[str, Any]],
+    candidates: tuple[TypographyDecorationCandidate, ...],
+) -> dict[str, Any]:
+    candidate_lookup = {candidate.candidate_id: candidate for candidate in candidates}
+    by_candidate: dict[str, list[dict[str, Any]]] = {}
+    for sample in samples:
+        by_candidate.setdefault(str(sample["candidate_id"]), []).append(sample)
+
+    candidate_rows = []
+    for candidate_id, candidate_samples in by_candidate.items():
+        statuses = sorted(
+            {
+                str(sample.get("font_file_status", ""))
+                for sample in candidate_samples
+            }
+        )
+        validities = sorted(
+            {
+                _visual_comparison_validity_for_font_status(status)
+                for status in statuses
+            }
+        )
+        resolved_families = sorted(
+            {str(sample.get("font_family", "")) for sample in candidate_samples}
+        )
+        resolved_files = sorted(
+            {str(sample.get("font_file", "")) for sample in candidate_samples}
+        )
+        candidate = candidate_lookup.get(candidate_id)
+        current_png_valid = validities == ["valid_requested_font_visual_evidence"]
+        candidate_rows.append(
+            {
+                "candidate_id": candidate_id,
+                "requested_font_family": candidate.fallback_family if candidate else "",
+                "requested_font_paths": (
+                    [path.as_posix() for path in candidate.font_paths]
+                    if candidate
+                    else []
+                ),
+                "resolved_families": resolved_families,
+                "resolved_font_files": resolved_files,
+                "font_file_statuses": statuses,
+                "fallback_status": (
+                    "real_requested_font"
+                    if current_png_valid
+                    else "fallback_or_missing_font"
+                ),
+                "current_png_valid_visual_evidence": current_png_valid,
+                "visual_comparison_validity": (
+                    "valid_requested_font_visual_evidence"
+                    if current_png_valid
+                    else "invalid_fallback_render_not_target_font_visual_evidence"
+                ),
+            }
+        )
+
+    all_valid = bool(candidate_rows) and all(
+        row["current_png_valid_visual_evidence"] for row in candidate_rows
+    )
+    any_valid = any(row["current_png_valid_visual_evidence"] for row in candidate_rows)
+    if all_valid:
+        status = "valid_requested_font_visual_evidence"
+    elif any_valid:
+        status = "mixed_real_and_fallback_font_visual_evidence"
+    else:
+        status = "invalid_fallback_render_not_target_font_visual_evidence"
+
+    return {
+        "status": status,
+        "candidate_count": len(candidate_rows),
+        "all_candidates_valid_real_font": all_valid,
+        "any_candidate_valid_real_font": any_valid,
+        "candidate_resolution": candidate_rows,
+        "selection_guidance": (
+            "Do not select a visual baseline from fallback PNGs; install or "
+            "otherwise resolve the requested font file first, then regenerate "
+            "the proof/contact sheet."
+            if not all_valid
+            else "Current PNGs resolve to requested font files and may be used for visual review."
+        ),
     }
 
 
@@ -2808,6 +2957,10 @@ def _render_typography_decoration_sample(
         "font_family": font_family,
         "font_file": font_path,
         "font_file_status": font_status,
+        "font_fallback_status": _font_fallback_status(font_status),
+        "visual_comparison_validity": _visual_comparison_validity_for_font_status(
+            font_status
+        ),
         "font_size_status": "accepted_for_diagnostic_representative_review",
         "requested_font_size": font_size,
         "font_size_formula": "round(frame_height * 0.115)",
@@ -2999,6 +3152,10 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
                 "text": sample["text"],
                 "font_family": sample["font_family"],
                 "font_file_status": sample["font_file_status"],
+                "font_fallback_status": sample.get("font_fallback_status"),
+                "visual_comparison_validity": sample.get(
+                    "visual_comparison_validity"
+                ),
                 "font_size_status": sample["font_size_status"],
                 "requested_font_size": sample["requested_font_size"],
                 "outline": sample["outline"],
@@ -3069,6 +3226,8 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
   <p><a href="{html.escape(contact_sheet)}"><img src="{html.escape(contact_sheet)}" alt="typography decoration contact sheet"></a></p>
   <h2>Decision Question</h2>
   <p>{html.escape(str(report["next_decision_question"]))}</p>
+  <h2>Font Visual Comparison Validity</h2>
+  <pre>{html.escape(json.dumps(report["font_visual_comparison_validity"], ensure_ascii=False, indent=2))}</pre>
   <h2>Next Diagnostic Overlay Proof Route</h2>
   <pre>{html.escape(json.dumps(report["next_diagnostic_overlay_proof_route"], ensure_ascii=False, indent=2))}</pre>
   <h2>{html.escape(decision_packet_title)}</h2>

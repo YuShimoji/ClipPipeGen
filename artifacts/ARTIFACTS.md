@@ -5,7 +5,7 @@ local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
 dashboard, then use an artifact-specific launcher. For the current ED-10l
-font audit, use
+font fallback/readback audit, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 use `.\open-current-proof.ps1` only when the reviewed ED-10k BIZ reference
 proof is needed.
@@ -233,9 +233,9 @@ Git failure.
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_pack` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10l route-correction readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_pack --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
-| latest_validation_result | Same-machine ED-10l generation returned `artifact_id=clip-ed10l-known-kirinuki-font-pack-001`, `comparison_profile=ed10l_known_kirinuki_font_pack`, `sample_count=16`, `candidate_count=4`, `font_size.value=124`, `selected_candidate_for_next_proof_base=pending_ed10l_human_review_after_font_install_readback`, `recommended_default_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `next_route=ed10l_known_font_pack_install_or_comparison_followup`, `font_file_status=requested_candidate_font_missing_used_font_file_found`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank fallback/missing-font local visual evidence. |
-| review_status | ED-10l audit generated/active for freeform review. Target known-font candidates were not installed on this terminal as of 2026-06-18 JST, so generated samples must be read as fallback/missing-font evidence until real font install readback exists. |
-| next_action | Review the known-font pack comparison and choose the next normal-dialogue install/proof route. Do not treat fallback render as visual acceptance of the target font. |
+| latest_validation_result | Same-machine ED-10l generation returned `artifact_id=clip-ed10l-known-kirinuki-font-pack-001`, `comparison_profile=ed10l_known_kirinuki_font_pack`, `sample_count=16`, `candidate_count=4`, `font_size.value=124`, `selected_candidate_for_next_proof_base=pending_real_font_install_readback_after_fallback_confirmation`, `recommended_default_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `next_route=ed10l_known_font_pack_install_readback_before_visual_proof`, `font_file_status=requested_candidate_font_missing_used_font_file_found`, `font_visual_comparison_validity=invalid_fallback_render_not_target_font_visual_evidence`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank fallback/missing-font local readback evidence, not target-font visual evidence. |
+| review_status | Latest ED-10l review consumed as fallback suspicion: all current normal-dialogue candidate PNGs resolved to `NotoSansJP-VF.ttf` because target known-font candidates were not installed. Current contact sheet is fallback evidence and invalid for target-font visual selection. |
+| next_action | Do not compare or select from the current PNGs. Choose or prepare a source/license/install/readback route for one known normal-dialogue font, then regenerate proof after the requested font resolves. |
 
 Boundary flags remain false or pending:
 

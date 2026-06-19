@@ -1,12 +1,12 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-18 JST
+Last updated: 2026-06-19 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
-## Immediate Resume Capsule - 2026-06-18 ED-10l Known Font Audit
+## Immediate Resume Capsule - 2026-06-19 ED-10l Font Fallback Audit
 
 Fresh terminal setup:
 
@@ -26,8 +26,9 @@ Expected state after pulling this handoff:
 - Upstream: `origin/main`
 - `HEAD...origin/main`: `0 0`
 - `git ls-files episodes`: empty
-- Latest sync point: ED-10l known kirinuki font audit handoff
-- Expected latest commit: `774c590 feat: add ED-10l known font audit`
+- Latest sync point: ED-10l known kirinuki font fallback audit handoff
+- Expected latest commit: ED-10l fallback/readback audit commit; verify with
+  `git log -1 --oneline --decorate`
 
 Known same-machine caveat: this local repository currently has a broken
 `refs/codex/turn-diffs/checkpoints/...` checkpoint ref, so `git fetch --prune
@@ -65,17 +66,21 @@ kirinuki/telop fonts before another overlay proof is selected:
   `ed10l_source_han_serif_mood_candidate`,
   `ed10l_shippori_mincho_mood_candidate`
 - current selected proof base:
-  `pending_ed10l_human_review_after_font_install_readback`
+  `pending_real_font_install_readback_after_fallback_confirmation`
 - recommended first route:
   `ed10l_keifont_pop_dialogue_candidate`
-- target fonts found locally on 2026-06-18 JST: none
-- generated samples are fallback/missing-font evidence until real font install
-  readback exists
+- target fonts found locally on 2026-06-19 JST: none
+- current generated ED-10l normal-dialogue samples resolved to
+  `NotoSansJP-VF.ttf` with
+  `requested_candidate_font_missing_used_font_file_found`
+- generated samples are fallback/missing-font evidence and are invalid for
+  target-font visual selection until real font install readback exists
 
 Open order:
 
 1. `.\open-dashboard.ps1`
-2. choose the ED-10l known-font pack artifact from the dashboard
+2. choose the ED-10l known-font pack artifact from the dashboard only to inspect
+   fallback/readback evidence
 3. if the same-machine ignored artifact is present, open it with:
 
 ```powershell
@@ -113,9 +118,11 @@ uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-co
 Review card for the next human response:
 
 - target: `clip-ed10l-known-kirinuki-font-pack-001`
-- judge which known normal-dialogue candidate should become the next install
-  or overlay proof route
-- do not treat fallback render as visual proof of the target font
+- do not choose from the current fallback contact sheet; it rendered
+  `NotoSansJP-VF.ttf`, not the requested ED-10l fonts
+- choose or prepare which known normal-dialogue font should get official
+  source/license/install/readback first
+- regenerate the visual proof only after the requested font file resolves
 - keep `851チカラヅヨク` in emphasis/shout/tsukkomi and keep
   `源ノ明朝` / `しっぽり明朝` in mood/literary; do not collapse those into
   normal-dialogue baseline acceptance

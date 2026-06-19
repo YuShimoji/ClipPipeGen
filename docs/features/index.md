@@ -6,7 +6,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `ED-10l`
 - artifact: `clip-ed10l-known-kirinuki-font-pack-001`
-- state: `ed10l_known_kirinuki_font_pack_audit_active`
+- state: `ed10l_font_fallback_confirmed_visual_selection_invalid`
 
 ## Feature Table
 
@@ -50,7 +50,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10i | Kirinuki Gothic Weight Balance Comparison v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10i-meiryo-overlay-proof-001 | Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline. |
 | ED-10j | Kirinuki Subtitle Font Research & Candidate Audit v0 | done | font_audit_consumed_biz_selected | 100 | clip-ed10j-kirinuki-font-audit-001 | Keep as consumed audit trail; BIZ UDGothic selection was superseded by ED-10k review. |
 | ED-10k | BIZ UDGothic Overlay Proof v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10k-biz-overlay-proof-001 | Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline. |
-| ED-10l | Known Kirinuki Font Pack Audit v0 | in_progress | known_font_pack_audit_active | 60 | clip-ed10l-known-kirinuki-font-pack-001 | Review the known kirinuki font pack audit and choose the next install/proof route. |
+| ED-10l | Known Kirinuki Font Pack Audit v0 | in_progress | font_fallback_confirmed_visual_selection_invalid | 60 | clip-ed10l-known-kirinuki-font-pack-001 | Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

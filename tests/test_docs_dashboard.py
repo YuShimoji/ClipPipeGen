@@ -31,13 +31,16 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10l-known-kirinuki-font-pack-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10l_known_kirinuki_font_pack_audit_active"
+        "ed10l_font_fallback_confirmed_visual_selection_invalid"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10k_biz_freeform_review_consumed_not_accepted"
     )
     assert status["current_focus"]["selected_typography_base"] == (
-        "pending_known_kirinuki_font_pack_review"
+        "pending_real_font_install_readback"
+    )
+    assert status["current_focus"]["current_visual_comparison_validity"] == (
+        "invalid_fallback_render_not_target_font_visual_evidence"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -145,7 +148,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
 
     assert registry["artifact_id"] == "clip-subtitle-font-candidate-sweep-001"
     assert registry["current_selected_diagnostic_overlay_proof_base"] == (
-        "pending_ed10l_known_font_pack_review"
+        "pending_ed10l_real_font_install_readback"
     )
     assert registry["font_size_policy"]["formula"] == "round(frame_height * 0.115)"
     assert registry["boundary_flags"]["font_binaries_downloaded"] is False
@@ -193,7 +196,18 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert registry["ed10l_known_font_pack_slice"]["selected_candidate_id"] == (
-        "pending_ed10l_human_review_after_font_install_readback"
+        "pending_real_font_install_readback_after_fallback_confirmation"
+    )
+    assert registry["ed10l_known_font_pack_slice"]["review_status"] == (
+        "fallback_confirmed_visual_selection_invalid"
+    )
+    assert registry["ed10l_known_font_pack_slice"][
+        "candidate_selection_from_current_pngs_allowed"
+    ] is False
+    assert registry["ed10l_known_font_pack_slice"][
+        "current_visual_comparison_validity"
+    ] == (
+        "invalid_fallback_render_not_target_font_visual_evidence"
     )
     assert registry["ed10l_known_font_pack_slice"]["self_diagnosis"][
         "candidate_universe_bias"

@@ -3,10 +3,10 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10l_known_font_pack_audit_active
+health: ed10l_font_fallback_confirmed_visual_selection_invalid
 progress_pct: 90
-last_touched: 2026-06-18
-next_review_due: after_ed10l_known_font_pack_review
+last_touched: 2026-06-19
+next_review_due: after_ed10l_real_font_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: editing
@@ -35,7 +35,7 @@ status、local availability、reproducibility、intended use で比較できる�
 ## 今の状態
 
 - Current selected diagnostic proof base:
-  `pending_ed10l_known_font_pack_review`
+  `pending_ed10l_real_font_install_readback`
 - Reviewed Meiryo proof:
   `clip-ed10i-meiryo-overlay-proof-001` is not accepted as the normal subtitle
   baseline.
@@ -49,9 +49,13 @@ status、local availability、reproducibility、intended use で比較できる�
 - Preserved font size policy: `round(frame_height * 0.115)`
 - 1080p readback: `font_size=124`
 - Local font readback was limited to `C:\Windows\Fonts`.
-- ED-10l target fonts were not installed locally on 2026-06-18 JST; generated
-  samples therefore carry missing-font/fallback readback until a real install
-  route is chosen.
+- ED-10l target fonts were not installed locally; the latest "all candidates
+  look thin / close to BIZ" review is consumed as a fallback suspicion, not a
+  candidate preference.
+- Current ED-10l normal-dialogue samples resolved to `NotoSansJP-VF.ttf` with
+  `requested_candidate_font_missing_used_font_file_found`, so the contact sheet
+  is invalid for target-font visual selection until a real install/readback
+  route is completed and the proof is regenerated.
 - Font binaries were not downloaded, copied, or vendored.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
@@ -76,7 +80,7 @@ ED-10l separates usage slots:
 
 | Slot | Candidates | Current role |
 |---|---|---|
-| normal dialogue baseline | `ed10l_keifont_pop_dialogue_candidate`, `ed10l_851_chikara_yowaku_dialogue_candidate`, `ed10l_m_plus_fonts_dialogue_candidate`, `ed10l_yasashisa_gothic_goodfreefonts_candidate` | Active review target |
+| normal dialogue baseline | `ed10l_keifont_pop_dialogue_candidate`, `ed10l_851_chikara_yowaku_dialogue_candidate`, `ed10l_m_plus_fonts_dialogue_candidate`, `ed10l_yasashisa_gothic_goodfreefonts_candidate` | Pending real font source/license/install/readback before visual proof |
 | emphasis / shout / tsukkomi | `ed10l_851_chikara_zuyoku_emphasis_candidate` | Parked outside normal baseline |
 | mood / literary | `ed10l_source_han_serif_mood_candidate`, `ed10l_shippori_mincho_mood_candidate` | Parked outside normal baseline |
 
@@ -153,12 +157,15 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10l known-font review**: inspect the known kirinuki font pack comparison
-   and decide which normal-dialogue candidate should get a real install/proof
-   route.
-2. **Official source/license capture**: before installing or pinning any font,
-   capture source URL, license/version notes, and local file readback.
-3. **Google Fonts / OFL sweep**: request permission to download specific
+1. **ED-10l fallback audit**: treat the current comparison as readback-only
+   evidence that the requested fonts were missing; do not select a visual
+   candidate from those PNGs.
+2. **Official source/license/install readback**: choose one known
+   normal-dialogue font route and capture source URL, license/version notes,
+   install path, and local file readback before regenerating proof.
+3. **Regenerated visual proof**: rerun the ED-10l comparison only after the
+   requested font resolves, then review the real target-font PNGs.
+4. **Google Fonts / OFL sweep**: request permission to download specific
    families, capture license/version/source metadata, and keep binaries out of
    public Git unless a repo policy is approved.
 4. **Hybrid sweep**: use local system fonts for quick proof, then reproduce the
@@ -228,6 +235,10 @@ outside public Git.
   from the normal baseline candidate path, blue badge/accent readback maps to
   Noto rather than Meiryo, and BIZ UDGothic is selected as the recommended
   default for ED-10k overlay proof.
+- 2026-06-19: Consumed the ED-10l "all candidates look thin / close to BIZ"
+  feedback as missing-font fallback suspicion. Current sample readback resolves
+  to `NotoSansJP-VF.ttf`, so candidate selection waits for real font
+  source/license/install/readback and regenerated visual proof.
 
 ## Constraints / Risks
 

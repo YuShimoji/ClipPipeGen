@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-06-18",
+  "generated_at": "2026-06-19",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -26,17 +26,19 @@
   "current_focus": {
     "feature_id": "ED-10l",
     "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-    "state": "ed10l_known_kirinuki_font_pack_audit_active",
+    "state": "ed10l_font_fallback_confirmed_visual_selection_invalid",
     "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
+    "latest_review_consumed": "ed10l_candidates_too_thin_fallback_suspected",
     "target_cuts": [
       "cut_002",
       "cut_003"
     ],
     "accepted_size_rule": "round(frame_height * 0.115)",
-    "selected_typography_base": "pending_known_kirinuki_font_pack_review",
+    "selected_typography_base": "pending_real_font_install_readback",
     "selected_typography_source": "user_known_good_font_review_and_source_inspection",
     "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
-    "main_issue": "system_safe_generic_route_rejected_for_normal_baseline",
+    "main_issue": "ed10l_contact_sheet_used_fallback_font_not_target_fonts",
+    "current_visual_comparison_validity": "invalid_fallback_render_not_target_font_visual_evidence",
     "emoji_treatment": "neutral_ignore_for_evaluation",
     "production_candidate": false,
     "production_subtitle_design_acceptance": false,
@@ -63,7 +65,7 @@
       "label": "Known Font Pack",
       "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\open_comparison.ps1",
       "target": "episodes/.../subtitle_known_kirinuki_font_pack_comparison/subtitle_known_kirinuki_font_pack_report.html",
-      "when_to_use": "Use first for ED-10l normal-dialogue font route review after BIZ was rejected as the baseline."
+      "when_to_use": "Use only as ED-10l fallback/readback evidence until the requested known fonts are installed and resolved."
     },
     {
       "label": "BIZ Proof Reference",
@@ -539,11 +541,11 @@
       "id": "ED-10l",
       "title": "Known Kirinuki Font Pack Audit v0",
       "status": "in_progress",
-      "health": "known_font_pack_audit_active",
+      "health": "font_fallback_confirmed_visual_selection_invalid",
       "progress_pct": 60,
       "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-      "next_action": "Review the known kirinuki font pack audit and choose the next install/proof route.",
-      "summary_excerpt": "clip-ed10k-biz-overlay-proof-001 の不採用レビューを正本として消費し、候補探索の軸を system-safe/generic readable fonts から、ユーザー既知の けいふぉんと、851チカラヨワク、M+ FONTS、GoodFreeFonts 由来の丸ゴシック候補へ切り替える。Active artifact は clip-ed10l-known-kirinuki-font-pack-001...",
+      "next_action": "Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof.",
+      "summary_excerpt": "clip-ed10k-biz-overlay-proof-001 の不採用レビューを正本として消費し、候補探索の軸を system-safe/generic readable fonts から、ユーザー既知の けいふぉんと、851チカラヨワク、M+ FONTS、GoodFreeFonts 由来の丸ゴシック候補へ切り替えた。Active artifact は clip-ed10l-known-kirinuki-font-pack-001...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1108,8 +1110,8 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_known_kirinuki_font_pack_comparison/subtitle_known_kirinuki_font_pack_report.html",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\open_comparison.ps1",
-      "review_status": "ED-10l audit generated/active for freeform review. Target known-font candidates were not installed on this terminal as of 2026-06-18 JST, so generated samples must be read as fallback/missing-font evidence until real font install readback exists.",
-      "next_action": "Review the known-font pack comparison and choose the next normal-dialogue install/proof route. Do not treat fallback render as visual acceptance of the target font."
+      "review_status": "Latest ED-10l review consumed as fallback suspicion: all current normal-dialogue candidate PNGs resolved to NotoSansJP-VF.ttf because target known-font candidates were not installed. Current contact sheet is fallback evidence and invalid for target-font visual selection.",
+      "next_action": "Do not compare or select from the current PNGs. Choose or prepare a source/license/install/readback route for one known normal-dialogue font, then regenerate proof after the requested font resolves."
     },
     {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
@@ -1168,8 +1170,8 @@
     {
       "item": "ED-10l known kirinuki font pack audit",
       "artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-      "question": "Which known Japanese kirinuki/telop font should become the next normal-dialogue install/proof route for cut_002 / cut_003?",
-      "next_route": "Open the known-font pack comparison and give freeform visual review; this is not production/public/rights acceptance."
+      "question": "Which known Japanese kirinuki/telop font should get source/license/install readback before a real visual proof?",
+      "next_route": "Do not compare the current fallback contact sheet visually; prepare an install/readback route, then regenerate proof."
     },
     {
       "item": "ED-10k BIZ UDGothic overlay proof",
@@ -1228,7 +1230,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 400,
+      "line_count": 408,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1236,8 +1238,8 @@
         "status": "current_capsule",
         "health": "active",
         "progress_pct": "85",
-        "last_touched": "2026-06-18",
-        "next_review_due": "after_ed10l_known_font_pack_review",
+        "last_touched": "2026-06-19",
+        "next_review_due": "after_ed10l_real_font_install_readback",
         "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
@@ -1297,16 +1299,16 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 505,
+      "line_count": 518,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "ed10l_known_font_pack_audit_active",
-        "health": "route_correction_requires_review",
+        "status": "ed10l_font_fallback_confirmed_visual_selection_invalid",
+        "health": "install_readback_required_before_visual_review",
         "progress_pct": "100",
-        "last_touched": "2026-06-18",
-        "next_review_due": "after_ed10l_known_font_pack_review",
+        "last_touched": "2026-06-19",
+        "next_review_due": "after_ed10l_real_font_install_readback",
         "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
@@ -1319,12 +1321,12 @@
         "constraints_risks": true
       },
       "boundary_term_count": 85,
-      "status": "ed10l_known_font_pack_audit_active"
+      "status": "ed10l_font_fallback_confirmed_visual_selection_invalid"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
       "title": "Representative Subtitle Design Review",
-      "line_count": 340,
+      "line_count": 344,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1346,7 +1348,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 131,
+      "boundary_term_count": 130,
       "status": "reference"
     },
     {
@@ -1464,7 +1466,7 @@
     {
       "path": "docs/HANDOFF.md",
       "title": "ClipPipeGen Handoff",
-      "line_count": 1255,
+      "line_count": 1262,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1631,16 +1633,16 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 246,
+      "line_count": 257,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
         "type": "candidate_registry",
         "status": "in_progress",
-        "health": "ed10l_known_font_pack_audit_active",
+        "health": "ed10l_font_fallback_confirmed_visual_selection_invalid",
         "progress_pct": "90",
-        "last_touched": "2026-06-18",
-        "next_review_due": "after_ed10l_known_font_pack_review",
+        "last_touched": "2026-06-19",
+        "next_review_due": "after_ed10l_real_font_install_readback",
         "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
@@ -1759,7 +1761,7 @@
       {
         "type": "stale",
         "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
-        "detail": "Long active doc (505 lines) is likely carrying history.",
+        "detail": "Long active doc (518 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -1771,7 +1773,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 131 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 130 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -1807,7 +1809,7 @@
       {
         "type": "stale",
         "path": "docs/HANDOFF.md",
-        "detail": "Long active doc (1255 lines) is likely carrying history.",
+        "detail": "Long active doc (1262 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

@@ -4,7 +4,7 @@
   "artifact_id": "clip-subtitle-font-candidate-sweep-001",
   "created_at": "2026-06-16",
   "scope": "diagnostic_representative_subtitle_font_candidate_registry",
-  "current_selected_diagnostic_overlay_proof_base": "pending_ed10l_known_font_pack_review",
+  "current_selected_diagnostic_overlay_proof_base": "pending_ed10l_real_font_install_readback",
   "font_size_policy": {
     "status": "preserve_current_diagnostic_representative_size",
     "formula": "round(frame_height * 0.115)",
@@ -230,13 +230,21 @@
       "ed10l_yasashisa_gothic_goodfreefonts_candidate"
     ],
     "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
-    "selected_candidate_id": "pending_ed10l_human_review_after_font_install_readback",
+    "selected_candidate_id": "pending_real_font_install_readback_after_fallback_confirmation",
+    "current_visual_comparison_validity": "invalid_fallback_render_not_target_font_visual_evidence",
+    "candidate_selection_from_current_pngs_allowed": false,
+    "latest_fallback_review_consumed": {
+      "review": "all_candidates_too_thin_close_to_biz_fallback_suspected",
+      "readback_result": "all_current_normal_dialogue_candidate_pngs_resolved_to_NotoSansJP_VF",
+      "visual_comparison_validity": "invalid_fallback_render_not_target_font_visual_evidence",
+      "candidate_selection_from_current_pngs_allowed": false
+    },
     "font_size_policy": {
       "status": "preserve_existing_size_policy_as_comparison_constant",
       "formula": "round(frame_height * 0.115)"
     },
     "local_font_readback": {
-      "checked_at": "2026-06-18 JST",
+      "checked_at": "2026-06-19 JST",
       "target_fonts_found": [],
       "target_fonts_missing": [
         "keifont",
@@ -247,11 +255,13 @@
         "shippori_mincho",
         "yasashisa_gothic"
       ],
-      "fallback_render_expected_in_generated_samples": true
+      "fallback_render_expected_in_generated_samples": true,
+      "fallback_font_used_in_current_samples": "NotoSansJP-VF.ttf",
+      "current_png_valid_visual_evidence": false
     },
     "font_binaries_downloaded": false,
     "font_binaries_vendored": false,
-    "review_status": "generated_requires_human_review"
+    "review_status": "fallback_confirmed_visual_selection_invalid"
   },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_name_match",
@@ -780,15 +790,15 @@
     }
   ],
   "next_decision_packet": {
-    "question": "Which ED-10l known kirinuki/telop font route should become the next normal-dialogue install or overlay proof base?",
+    "question": "Which ED-10l known kirinuki/telop font route should get source/license/install readback before the next real visual proof?",
     "allowed_responses": [
-      "freeform_review_ed10l_known_font_pack",
-      "select_keifont_install_or_overlay_route",
-      "select_851_chikara_yowaku_install_or_overlay_route",
-      "select_m_plus_fonts_install_or_overlay_route",
+      "inspect_current_contact_sheet_as_fallback_readback_only",
+      "select_keifont_source_license_install_readback",
+      "select_851_chikara_yowaku_source_license_install_readback",
+      "select_m_plus_fonts_source_license_install_readback",
       "request_official_source_license_capture_before_install",
       "request_another_known_telop_candidate"
     ],
-    "default_recommendation": "freeform_review_ed10l_known_font_pack"
+    "default_recommendation": "request_official_source_license_capture_before_install"
   }
 }

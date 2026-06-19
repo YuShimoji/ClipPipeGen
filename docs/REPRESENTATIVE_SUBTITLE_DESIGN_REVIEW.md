@@ -1,6 +1,6 @@
 # Representative Subtitle Design Review
 
-Last updated: 2026-06-18 JST
+Last updated: 2026-06-19 JST
 
 ## What This Is
 
@@ -22,14 +22,18 @@ emphasis/shout and mood/literary slots. The size policy
 `round(frame_height * 0.115)` remains the comparison constant, and emoji
 quality is ignored for this slice.
 
+The latest ED-10l feedback that all candidates looked thin / close to BIZ is
+consumed as a missing-font fallback suspicion. Current sample readback resolves
+the normal-dialogue candidate PNGs to `NotoSansJP-VF.ttf`, not the requested
+known fonts, so the contact sheet is not valid target-font visual evidence.
+
 ## Next
 
-Open `clip-ed10l-known-kirinuki-font-pack-001` and judge which known
-normal-dialogue font candidate should get a real install/proof route next.
-If a candidate is selected, capture official source/license/install readback
-before treating any overlay proof as visual evidence. Dense/stress coverage
-such as `cut_008`, and production/public/rights limitation lift, remain
-separate routes.
+Do not choose from the current ED-10l fallback contact sheet. Pick or prepare
+one known normal-dialogue font route for official source/license/install
+readback, regenerate the proof after the requested font resolves, then judge
+the real target-font PNGs. Dense/stress coverage such as `cut_008`, and
+production/public/rights limitation lift, remain separate routes.
 
 ## Constraints / Risks
 

@@ -101,14 +101,16 @@ def build_project_status(
         "current_focus": {
             "feature_id": "ED-10l",
             "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-            "state": "ed10l_known_kirinuki_font_pack_audit_active",
+            "state": "ed10l_font_fallback_confirmed_visual_selection_invalid",
             "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
+            "latest_review_consumed": "ed10l_candidates_too_thin_fallback_suspected",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "pending_known_kirinuki_font_pack_review",
+            "selected_typography_base": "pending_real_font_install_readback",
             "selected_typography_source": "user_known_good_font_review_and_source_inspection",
             "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
-            "main_issue": "system_safe_generic_route_rejected_for_normal_baseline",
+            "main_issue": "ed10l_contact_sheet_used_fallback_font_not_target_fonts",
+            "current_visual_comparison_validity": "invalid_fallback_render_not_target_font_visual_evidence",
             "emoji_treatment": "neutral_ignore_for_evaluation",
             "production_candidate": False,
             "production_subtitle_design_acceptance": False,
@@ -494,8 +496,8 @@ def _next_review_items() -> list[dict[str, str]]:
         {
             "item": "ED-10l known kirinuki font pack audit",
             "artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-            "question": "Which known Japanese kirinuki/telop font should become the next normal-dialogue install/proof route for cut_002 / cut_003?",
-            "next_route": "Open the known-font pack comparison and give freeform visual review; this is not production/public/rights acceptance.",
+            "question": "Which known Japanese kirinuki/telop font should get source/license/install readback before a real visual proof?",
+            "next_route": "Do not compare the current fallback contact sheet visually; prepare an install/readback route, then regenerate proof.",
         },
         {
             "item": "ED-10k BIZ UDGothic overlay proof",
@@ -574,8 +576,8 @@ def _open_surfaces() -> list[dict[str, str]]:
                 "subtitle_known_kirinuki_font_pack_report.html"
             ),
             "when_to_use": (
-                "Use first for ED-10l normal-dialogue font route review after BIZ "
-                "was rejected as the baseline."
+                "Use only as ED-10l fallback/readback evidence until the requested "
+                "known fonts are installed and resolved."
             ),
         },
         {
@@ -691,7 +693,7 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10k":
         return "reviewed_not_accepted_as_normal_baseline"
     if feature_id == "ED-10l":
-        return "known_font_pack_audit_active"
+        return "font_fallback_confirmed_visual_selection_invalid"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -725,7 +727,7 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10k":
         return "Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline."
     if feature_id == "ED-10l":
-        return "Review the known kirinuki font pack audit and choose the next install/proof route."
+        return "Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

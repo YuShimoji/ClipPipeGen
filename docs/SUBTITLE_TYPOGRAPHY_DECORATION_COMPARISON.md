@@ -2,11 +2,11 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10l_known_font_pack_audit_active
-health: route_correction_requires_review
+status: ed10l_font_fallback_confirmed_visual_selection_invalid
+health: install_readback_required_before_visual_review
 progress_pct: 100
-last_touched: 2026-06-18
-next_review_due: after_ed10l_known_font_pack_review
+last_touched: 2026-06-19
+next_review_due: after_ed10l_real_font_install_readback
 active_artifact: clip-ed10l-known-kirinuki-font-pack-001
 source_of_truth: true
 owner_lane: editing
@@ -15,7 +15,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 # Subtitle Typography Decoration Comparison
 
-Last updated: 2026-06-18 JST
+Last updated: 2026-06-19 JST
 
 ## Current Update - ED-10l Known Kirinuki Font Pack
 
@@ -31,9 +31,14 @@ known Japanese YouTube kirinuki/telop fonts first, then choose a real
 install/proof route for normal dialogue. License/install/reproducibility notes
 are recorded separately from design suitability.
 
-Target known-font candidates were not installed on this terminal on
-2026-06-18 JST, so generated samples must be read as fallback/missing-font
-readback until a real font install is verified.
+Target known-font candidates were not installed on this terminal. The latest
+review that the ED-10l candidates looked too thin / close to BIZ is now treated
+as a fallback suspicion, not a candidate preference. Current JSON readback
+confirms every normal-dialogue candidate PNG resolved to `NotoSansJP-VF.ttf`
+with `requested_candidate_font_missing_used_font_file_found`, so the current
+contact sheet is invalid as target-font visual evidence. It is useful only as
+missing-font/fallback readback until a real font install is verified and the
+proof is regenerated.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
@@ -42,7 +47,7 @@ readback until a real font install is verified.
 | `clip-ed10i-meiryo-overlay-proof-001` | Reviewed reference proof | Shows why Meiryo should not be fixed as the normal subtitle baseline | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed font audit comparison | Why Meiryo was demoted and BIZ was tried next | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected reference proof | Why BIZ / system-safe route should not be the current normal-dialogue baseline | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10l-known-kirinuki-font-pack-001` | Active known-font audit | Which known kirinuki/telop font route should be installed or promoted next | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10l-known-kirinuki-font-pack-001` | Fallback-confirmed known-font audit | Which known kirinuki/telop font should get source/license/install readback before a real visual proof | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -66,19 +71,22 @@ baseline としては不採用です。現在の active artifact は
 
 ## これからどうなるか
 
-1. ED-10l の known-font pack comparison を確認し、次に実フォント install /
-   overlay proof へ進める normal-dialogue candidate を freeform review で
-   判断する。
-2. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
+1. 現在の ED-10l contact sheet から visual candidate を選ばない。これは
+   target font ではなく `NotoSansJP-VF.ttf` fallback を見ている証跡として
+   確認する。
+2. normal-dialogue candidate のうち 1 つについて、official source /
+   license / install / font-file readback を先に揃え、requested font が
+   実際に解決してから overlay proof を再生成する。
+3. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
    baseline に戻す場合は明示レビューを要求する。
-3. representative coverage を広げるなら、dense/stress proof や production
+4. representative coverage を広げるなら、dense/stress proof や production
    render / rights slice とは別に `cut_008` などの明示 target を起票する。
-4. 追加比較が必要なら ED-10h/ED-10l registry から known-font candidates を
+5. 追加比較が必要なら ED-10h/ED-10l registry から known-font candidates を
    選び、download なし route か許可付き install/download route を選ぶ。
 
 ## 使い方・確認方法
 
-Primary local comparison:
+Primary local comparison (fallback/readback evidence only):
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1
@@ -131,6 +139,11 @@ together.
   for the normal subtitle baseline. The active route changes to ED-10l known
   kirinuki/telop font pack audit; system-safe font availability is now
   reference evidence, not the main candidate universe.
+- 2026-06-19: ED-10l fallback audit consumed the latest "all candidates look
+  thin / close to BIZ" review as a font-resolution suspicion. Current samples
+  resolve to `NotoSansJP-VF.ttf`, not the requested known fonts, so the contact
+  sheet is invalid for target-font visual selection until install/readback and
+  regeneration happen.
 
 ## Constraints / Risks
 
