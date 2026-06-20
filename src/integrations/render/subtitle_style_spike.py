@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import os
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -183,6 +184,69 @@ class TypographyDecorationCandidate:
     body_weight_note: str = "candidate-specific glyph body weight"
     outline_balance_role: str = "general font-family and decoration comparison"
     emoji_evaluation_scope: str = "neutral_not_primary_evaluation_target"
+
+
+def _dedupe_paths(paths: list[Path]) -> tuple[Path, ...]:
+    seen: set[str] = set()
+    result: list[Path] = []
+    for path in paths:
+        key = str(path).casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        result.append(path)
+    return tuple(result)
+
+
+def _windows_font_dirs() -> tuple[Path, ...]:
+    dirs = [Path("C:/Windows/Fonts")]
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if local_app_data:
+        dirs.append(Path(local_app_data) / "Microsoft" / "Windows" / "Fonts")
+    home = Path.home()
+    if home:
+        dirs.append(home / "AppData" / "Local" / "Microsoft" / "Windows" / "Fonts")
+    return _dedupe_paths(dirs)
+
+
+def _registry_font_paths(registry_names: tuple[str, ...]) -> tuple[Path, ...]:
+    if sys.platform != "win32" or not registry_names:
+        return ()
+    try:
+        import winreg
+    except ImportError:  # pragma: no cover - non-Windows Python
+        return ()
+
+    paths: list[Path] = []
+    registry_name_keys = {name.casefold() for name in registry_names}
+    sub_key = r"Software\Microsoft\Windows NT\CurrentVersion\Fonts"
+    for root in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+        try:
+            with winreg.OpenKey(root, sub_key) as key:
+                value_count = winreg.QueryInfoKey(key)[1]
+                for index in range(value_count):
+                    value_name, value, _ = winreg.EnumValue(key, index)
+                    if value_name.casefold() not in registry_name_keys:
+                        continue
+                    value_path = Path(os.path.expandvars(str(value)))
+                    if value_path.is_absolute():
+                        paths.append(value_path)
+                    else:
+                        paths.append(Path("C:/Windows/Fonts") / value_path)
+        except OSError:
+            continue
+    return _dedupe_paths(paths)
+
+
+def _font_paths(
+    *file_names: str,
+    registry_names: tuple[str, ...] = (),
+) -> tuple[Path, ...]:
+    paths = list(_registry_font_paths(registry_names))
+    for directory in _windows_font_dirs():
+        for file_name in file_names:
+            paths.append(directory / file_name)
+    return _dedupe_paths(paths)
 
 
 MODE_SPECS: tuple[ModeSpec, ...] = (
@@ -513,9 +577,13 @@ ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES: tuple[
     TypographyDecorationCandidate(
         candidate_id="ed10l_keifont_pop_dialogue_candidate",
         display_name="Keifont pop dialogue candidate",
-        font_paths=(
-            Path("C:/Windows/Fonts/keifont.ttf"),
-            Path("C:/Windows/Fonts/Keifont.ttf"),
+        font_paths=_font_paths(
+            "keifont.ttf",
+            "Keifont.ttf",
+            registry_names=(
+                "けいふぉんと (TrueType)",
+                "Keifont (TrueType)",
+            ),
         ),
         fallback_family="Keifont",
         stroke_ratio=0.060,
@@ -539,9 +607,13 @@ ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES: tuple[
     TypographyDecorationCandidate(
         candidate_id="ed10l_851_chikara_yowaku_dialogue_candidate",
         display_name="851 Chikara Yowaku dialogue candidate",
-        font_paths=(
-            Path("C:/Windows/Fonts/851CHIKARA-YOWAKU_002.ttf"),
-            Path("C:/Windows/Fonts/851CHIKARA-YOWAKU.ttf"),
+        font_paths=_font_paths(
+            "851CHIKARA-YOWAKU_002.ttf",
+            "851CHIKARA-YOWAKU.ttf",
+            registry_names=(
+                "851チカラヨワク (TrueType)",
+                "851 Chikara Yowaku (TrueType)",
+            ),
         ),
         fallback_family="851 Chikara Yowaku",
         stroke_ratio=0.064,
@@ -565,10 +637,17 @@ ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES: tuple[
     TypographyDecorationCandidate(
         candidate_id="ed10l_m_plus_fonts_dialogue_candidate",
         display_name="M+ FONTS dialogue candidate",
-        font_paths=(
-            Path("C:/Windows/Fonts/MPLUS1p-Bold.ttf"),
-            Path("C:/Windows/Fonts/MPLUSRounded1c-Bold.ttf"),
-            Path("C:/Windows/Fonts/MPLUS2p-Bold.ttf"),
+        font_paths=_font_paths(
+            "MPLUS1-VariableFont_wght.ttf",
+            "MPLUS1p-Bold.ttf",
+            "MPLUSRounded1c-Bold.ttf",
+            "MPLUS2p-Bold.ttf",
+            registry_names=(
+                "M PLUS 1 Thin (TrueType)",
+                "M PLUS 1p Bold (TrueType)",
+                "M PLUS Rounded 1c Bold (TrueType)",
+                "M PLUS 2p Bold (TrueType)",
+            ),
         ),
         fallback_family="M+ FONTS",
         stroke_ratio=0.058,
@@ -583,8 +662,9 @@ ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES: tuple[
             "candidate; not locally installed on this terminal"
         ),
         body_weight_note=(
-            "candidate family should be judged with an actual M+ bold/rounded "
-            "file before comparing against BIZ/Noto"
+            "installed readback currently exposes M PLUS 1 Thin via a variable "
+            "font file; do not treat it as a normal-dialogue proof winner until "
+            "weight/style is pinned"
         ),
         outline_balance_role="ofl_known_dialogue_candidate_requires_install",
         emoji_evaluation_scope="emoji_neutral_ignored_for_ed10l",
@@ -592,9 +672,13 @@ ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES: tuple[
     TypographyDecorationCandidate(
         candidate_id="ed10l_yasashisa_gothic_goodfreefonts_candidate",
         display_name="Yasashisa Gothic goodfreefonts candidate",
-        font_paths=(
-            Path("C:/Windows/Fonts/YasashisaGothicBold-V2.otf"),
-            Path("C:/Windows/Fonts/YasashisaGothic.ttf"),
+        font_paths=_font_paths(
+            "YasashisaGothicBold-V2.otf",
+            "YasashisaGothic.ttf",
+            registry_names=(
+                "やさしさゴシックボールドV2 Bold (TrueType)",
+                "Yasashisa Gothic Bold V2 Bold (TrueType)",
+            ),
         ),
         fallback_family="Yasashisa Gothic",
         stroke_ratio=0.060,
@@ -1732,6 +1816,30 @@ def _typography_comparison_profile(
         decision_packet = _known_kirinuki_font_pack_decision_packet(
             target_cut_ids=target_cut_ids,
         )
+        local_font_readback = decision_packet["research_readback"]["local_font_readback"]
+        real_font_readback_valid = (
+            local_font_readback["current_png_valid_visual_evidence"] is True
+        )
+        selected_candidate_for_next_proof = (
+            "ed10l_keifont_pop_dialogue_candidate"
+            if real_font_readback_valid
+            else "pending_real_font_install_readback_after_fallback_confirmation"
+        )
+        comparison_validity = (
+            "valid_requested_font_visual_evidence_after_per_user_font_readback"
+            if real_font_readback_valid
+            else "invalid_fallback_render_not_target_font_visual_evidence"
+        )
+        next_route_kind = (
+            "ed10n_keifont_overlay_proof_after_per_user_font_readback"
+            if real_font_readback_valid
+            else "ed10l_known_font_pack_install_readback_before_visual_proof"
+        )
+        contact_sheet_role = (
+            "real_font_visual_comparison_after_per_user_readback"
+            if real_font_readback_valid
+            else "readback_only_not_visual_selection"
+        )
         return {
             "output_dir_name": "subtitle_known_kirinuki_font_pack_comparison",
             "default_output_dir": DEFAULT_KNOWN_KIRINUKI_FONT_PACK_OUTPUT_DIR,
@@ -1767,15 +1875,15 @@ def _typography_comparison_profile(
             },
             "comparison_response_readback": {
                 "source_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-                "selected_response": "fallback_confirmed_route_to_font_install_readback",
-                "selected_candidate_for_next_proof_base": (
-                    "pending_real_font_install_readback_after_fallback_confirmation"
+                "selected_response": (
+                    "per_user_font_readback_valid_route_to_keifont_overlay_proof"
+                    if real_font_readback_valid
+                    else "fallback_confirmed_route_to_font_install_readback"
                 ),
+                "selected_candidate_for_next_proof_base": selected_candidate_for_next_proof,
                 "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
-                "current_visual_comparison_validity": (
-                    "invalid_fallback_render_not_target_font_visual_evidence"
-                ),
-                "candidate_selection_from_current_pngs_allowed": False,
+                "current_visual_comparison_validity": comparison_validity,
+                "candidate_selection_from_current_pngs_allowed": real_font_readback_valid,
                 "font_size": "preserved_as_comparison_constant_not_primary_axis",
                 "font_family": "known_kirinuki_telop_strong_candidates",
                 "usage_slot": "normal_dialogue_baseline",
@@ -1816,16 +1924,12 @@ def _typography_comparison_profile(
                 ],
             },
             "next_diagnostic_overlay_proof_route": {
-                "route_kind": "ed10l_known_font_pack_install_readback_before_visual_proof",
+                "route_kind": next_route_kind,
                 "target_cuts": list(target_cut_ids),
-                "selected_candidate_for_next_proof_base": (
-                    "pending_real_font_install_readback_after_fallback_confirmation"
-                ),
+                "selected_candidate_for_next_proof_base": selected_candidate_for_next_proof,
                 "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
                 "comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-                "current_fallback_contact_sheet_role": (
-                    "readback_only_not_visual_selection"
-                ),
+                "current_fallback_contact_sheet_role": contact_sheet_role,
                 "font_size": {
                     "status": "preserve_existing_size_policy_as_comparison_constant",
                     "formula": "round(frame_height * 0.115)",
@@ -2373,8 +2477,16 @@ def _known_kirinuki_font_pack_decision_packet(
     *,
     target_cut_ids: tuple[str, ...],
 ) -> dict[str, Any]:
+    local_font_readback = _known_kirinuki_font_pack_local_readback()
+    found_candidate_ids = local_font_readback["target_candidate_ids_found"]
+    missing_candidate_ids = local_font_readback["target_candidate_ids_missing"]
+    real_font_readback_valid = not missing_candidate_ids
     return {
-        "decision_state": "font_fallback_confirmed_visual_selection_invalid",
+        "decision_state": (
+            "per_user_font_readback_valid_real_font_evidence"
+            if real_font_readback_valid
+            else "font_fallback_confirmed_visual_selection_invalid"
+        ),
         "source_review_artifact": "clip-ed10k-biz-overlay-proof-001",
         "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
         "current_biz_proof_accepted_as_normal_baseline": False,
@@ -2385,12 +2497,16 @@ def _known_kirinuki_font_pack_decision_packet(
         "target_cuts": list(target_cut_ids),
         "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
         "selected_candidate_for_next_proof_base": (
-            "pending_real_font_install_readback_after_fallback_confirmation"
+            "ed10l_keifont_pop_dialogue_candidate"
+            if real_font_readback_valid
+            else "pending_real_font_install_readback_after_fallback_confirmation"
         ),
         "current_visual_comparison_validity": (
-            "invalid_fallback_render_not_target_font_visual_evidence"
+            "valid_requested_font_visual_evidence_after_per_user_font_readback"
+            if real_font_readback_valid
+            else "invalid_fallback_render_not_target_font_visual_evidence"
         ),
-        "candidate_selection_from_current_pngs_allowed": False,
+        "candidate_selection_from_current_pngs_allowed": real_font_readback_valid,
         "latest_fallback_review_consumed": {
             "review": "all_candidates_too_thin_close_to_biz_fallback_suspected",
             "readback_result": (
@@ -2527,26 +2643,7 @@ def _known_kirinuki_font_pack_decision_packet(
                     "license_install_note": "Parked outside ED-10l normal-dialogue comparison.",
                 },
             ],
-            "local_font_readback": {
-                "checked_at": "2026-06-19 JST",
-                "target_fonts_found": [],
-                "target_fonts_missing": [
-                    "keifont",
-                    "851_chikara_yowaku",
-                    "851_chikara_zuyoku",
-                    "m_plus_fonts",
-                    "source_han_serif",
-                    "shippori_mincho",
-                    "yasashisa_gothic",
-                ],
-                "fallback_render_expected_in_generated_samples": True,
-                "fallback_font_used_in_current_samples": "NotoSansJP-VF.ttf",
-                "current_png_valid_visual_evidence": False,
-                "reason": (
-                    "ED-10l artifact records the missing-font state rather than "
-                    "pretending the fallback bitmap is the target font."
-                ),
-            },
+            "local_font_readback": local_font_readback,
         },
         "candidate_buckets": [
             {
@@ -2564,20 +2661,15 @@ def _known_kirinuki_font_pack_decision_packet(
             },
             {
                 "bucket": "locally_available_now",
-                "candidate_ids": [],
+                "candidate_ids": found_candidate_ids,
                 "routing_note": (
-                    "The target known-font pack is not installed on this terminal; "
-                    "generated samples must be read as fallback render evidence."
+                    "These candidates resolve through Windows machine fonts, per-user "
+                    "font files, or font registry readback on this terminal."
                 ),
             },
             {
                 "bucket": "requires_download_install",
-                "candidate_ids": [
-                    "ed10l_keifont_pop_dialogue_candidate",
-                    "ed10l_851_chikara_yowaku_dialogue_candidate",
-                    "ed10l_m_plus_fonts_dialogue_candidate",
-                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
-                ],
+                "candidate_ids": missing_candidate_ids,
                 "routing_note": "Install/readback is required before a real overlay proof can select a target font.",
             },
             {
@@ -2755,6 +2847,61 @@ def _visual_comparison_validity_for_font_status(font_file_status: str) -> str:
     if "fallback" in font_file_status or "missing" in font_file_status:
         return "unresolved_or_invalid_until_font_readback"
     return "unresolved_font_readback_required"
+
+
+def _known_kirinuki_font_pack_local_readback() -> dict[str, Any]:
+    rows: list[dict[str, Any]] = []
+    found_ids: list[str] = []
+    missing_ids: list[str] = []
+    for candidate in ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES:
+        family, font_file, status = _select_candidate_font(candidate)
+        found = status.startswith("candidate_primary_font_file_found")
+        if found:
+            found_ids.append(candidate.candidate_id)
+        else:
+            missing_ids.append(candidate.candidate_id)
+        rows.append(
+            {
+                "candidate_id": candidate.candidate_id,
+                "requested_font_family": candidate.fallback_family,
+                "resolved_font_family": family,
+                "resolved_font_file": font_file,
+                "font_file_status": status,
+                "target_font_visual_evidence_valid": found,
+            }
+        )
+    return {
+        "checked_at": "2026-06-20 JST",
+        "font_readback_sources": [
+            "HKCU:Software/Microsoft/Windows NT/CurrentVersion/Fonts",
+            "HKLM:Software/Microsoft/Windows NT/CurrentVersion/Fonts",
+            "%LOCALAPPDATA%/Microsoft/Windows/Fonts",
+            "C:/Windows/Fonts",
+        ],
+        "target_candidate_ids_found": found_ids,
+        "target_candidate_ids_missing": missing_ids,
+        "target_fonts_found": [
+            row["requested_font_family"]
+            for row in rows
+            if row["target_font_visual_evidence_valid"] is True
+        ],
+        "target_fonts_missing": [
+            row["requested_font_family"]
+            for row in rows
+            if row["target_font_visual_evidence_valid"] is not True
+        ],
+        "candidate_readback": rows,
+        "fallback_render_expected_in_generated_samples": bool(missing_ids),
+        "fallback_font_used_in_current_samples": (
+            "none_for_found_candidates" if found_ids else "NotoSansJP-VF.ttf"
+        ),
+        "current_png_valid_visual_evidence": not missing_ids,
+        "m_plus_weight_style_caveat": (
+            "HKCU may expose MPLUS1-VariableFont_wght.ttf as M PLUS 1 Thin; "
+            "do not treat M PLUS as a normal-dialogue proof winner until a "
+            "non-thin weight/style is pinned."
+        ),
+    }
 
 
 def _font_visual_comparison_validity(
@@ -3038,7 +3185,7 @@ def _select_candidate_font(
 ) -> tuple[str, str | None, str]:
     for path in candidate.font_paths:
         if path.exists():
-            return path.stem, str(path), "font_file_found"
+            return candidate.fallback_family, str(path), "candidate_primary_font_file_found"
     fallback_family, fallback_path, fallback_status = _select_font()
     return (
         fallback_family or candidate.fallback_family,

@@ -196,6 +196,14 @@ def _resolve_candidate_font(
 
 def _font_family_for_path(path: Path) -> str:
     name = path.name.lower()
+    if "keifont" in name:
+        return "Keifont"
+    if "851chikara-yowaku" in name:
+        return "851 Chikara Yowaku"
+    if "mplus" in name or "m plus" in name:
+        return "M+ FONTS"
+    if "yasashisagothic" in name:
+        return "Yasashisa Gothic"
     if "noto" in name and "jp" in name:
         return "Noto Sans JP"
     if "yugoth" in name:

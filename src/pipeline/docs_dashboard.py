@@ -99,21 +99,22 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10m",
-            "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-            "state": "ed10m_keifont_route_prepared_user_install_required",
+            "feature_id": "ED-10n",
+            "artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+            "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+            "state": "ed10n_keifont_overlay_proof_ready_for_review",
             "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
-            "latest_review_consumed": "ed10l_candidates_too_thin_fallback_suspected",
+            "latest_review_consumed": "ed10l_fallback_suspicion_resolved_by_per_user_font_readback",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
-            "selected_typography_base": "pending_real_font_install_readback",
+            "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "user_install_required_before_real_font_proof",
-            "user_action_type": "USER_OPEN_ONLY_then_USER_RUN_REQUIRED",
-            "selected_typography_source": "user_known_good_font_review_and_source_inspection",
+            "route_status": "per_user_font_readback_valid_keifont_proof_generated",
+            "user_action_type": "USER_OPEN_REVIEW_ONLY",
+            "selected_typography_source": "hkcu_per_user_font_readback_and_regenerated_real_font_proof",
             "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
-            "main_issue": "ed10l_contact_sheet_used_fallback_font_not_target_fonts",
-            "current_visual_comparison_validity": "invalid_fallback_render_not_target_font_visual_evidence",
+            "main_issue": "keifont_real_overlay_proof_needs_human_visual_judgement",
+            "current_visual_comparison_validity": "valid_requested_font_visual_evidence_after_per_user_font_readback",
             "emoji_treatment": "neutral_ignore_for_evaluation",
             "production_candidate": False,
             "production_subtitle_design_acceptance": False,
@@ -393,6 +394,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10l-known-kirinuki-font-pack-001"
         if feature_id == "ED-10m":
             active_artifact = "clip-ed10l-known-kirinuki-font-pack-001"
+        if feature_id == "ED-10n":
+            active_artifact = "clip-ed10n-keifont-overlay-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -456,7 +459,7 @@ def _artifact_coverage(
     mentioned = [
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
-    current_focus_registered = "clip-ed10l-known-kirinuki-font-pack-001" in artifact_ids
+    current_focus_registered = "clip-ed10n-keifont-overlay-proof-001" in artifact_ids
     return {
         "registered_artifact_count": len(artifact_ids),
         "features_with_artifact_count": len(mentioned),
@@ -502,10 +505,16 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10m Keifont source/license/install route",
+            "item": "ED-10n Keifont overlay proof",
+            "artifact": "clip-ed10n-keifont-overlay-proof-001",
+            "question": "Does the regenerated Keifont proof fit the normal-dialogue subtitle direction better than BIZ/Noto/Meiryo?",
+            "next_route": "Open the current proof, review cut_002/cut_003 visually, and answer with freeform accept/concern/adjustment guidance.",
+        },
+        {
+            "item": "ED-10l real-font comparison readback",
             "artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-            "question": "Can the user inspect the official Keifont source/license and install it locally for readback?",
-            "next_route": "Open the Keifont source/license, install only if acceptable, confirm keifont.ttf or Keifont.ttf in C:/Windows/Fonts, then regenerate proof.",
+            "question": "Does the real-font contact sheet confirm the per-user font resolver is using requested fonts rather than fallback?",
+            "next_route": "Use the comparison only as readback support for the Keifont proof route unless another candidate must be promoted.",
         },
         {
             "item": "ED-10k BIZ UDGothic overlay proof",
@@ -572,6 +581,15 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
+            "label": "Keifont Current Proof",
+            "command": ".\\open-current-proof.ps1",
+            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+            "when_to_use": (
+                "Use first for ED-10n human visual review of the regenerated "
+                "Keifont cut_002/cut_003 overlay proof."
+            ),
+        },
+        {
             "label": "Known Font Pack",
             "command": (
                 "powershell -ExecutionPolicy Bypass -File "
@@ -584,17 +602,17 @@ def _open_surfaces() -> list[dict[str, str]]:
                 "subtitle_known_kirinuki_font_pack_report.html"
             ),
             "when_to_use": (
-                "Use only as ED-10l fallback/readback evidence until the requested "
-                "known fonts are installed and resolved."
+                "Use as ED-10l/ED-10n readback evidence that the requested "
+                "per-user fonts resolve in the regenerated comparison."
             ),
         },
         {
             "label": "BIZ Proof Reference",
-            "command": ".\\open-current-proof.ps1",
-            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+            "command": "see artifact registry for archived previous proof paths",
+            "target": "artifacts/ARTIFACTS.md",
             "when_to_use": (
                 "Use only as the reviewed ED-10k reference that explains why the "
-                "system-safe BIZ route stopped."
+                "system-safe BIZ route stopped; open-current-proof now points to ED-10n."
             ),
         },
         {
@@ -701,9 +719,11 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10k":
         return "reviewed_not_accepted_as_normal_baseline"
     if feature_id == "ED-10l":
-        return "font_fallback_confirmed_visual_selection_invalid"
+        return "per_user_font_readback_valid_comparison"
     if feature_id == "ED-10m":
-        return "keifont_route_prepared_user_install_required"
+        return "keifont_route_prepared_user_install_completed_by_user"
+    if feature_id == "ED-10n":
+        return "keifont_overlay_proof_ready_for_human_review"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -721,9 +741,11 @@ def _feature_progress(feature_id: str, status: str) -> int:
     if feature_id == "ED-10k":
         return 100
     if feature_id == "ED-10l":
-        return 60
+        return 100
     if feature_id == "ED-10m":
         return 100
+    if feature_id == "ED-10n":
+        return 95
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -739,9 +761,11 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10k":
         return "Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline."
     if feature_id == "ED-10l":
-        return "Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof."
+        return "Keep as regenerated real-font comparison; use ED-10n Keifont proof for current visual judgement."
     if feature_id == "ED-10m":
-        return "User should inspect/install Keifont locally; regenerate proof only after Keifont resolves."
+        return "Keep as source/license route record; ED-10n consumed the per-user font readback."
+    if feature_id == "ED-10n":
+        return "Open the Keifont overlay proof and collect freeform human visual judgement before more tuning."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

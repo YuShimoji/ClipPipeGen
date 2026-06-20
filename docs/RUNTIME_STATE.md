@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10m_keifont_route_prepared_user_install_required
-progress_pct: 88
+health: ed10n_keifont_overlay_proof_ready_for_review
+progress_pct: 95
 last_touched: 2026-06-20
-next_review_due: after_ed10m_keifont_user_install_readback
-active_artifact: clip-ed10l-known-kirinuki-font-pack-001
+next_review_due: after_ed10n_keifont_human_visual_review
+active_artifact: clip-ed10n-keifont-overlay-proof-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,13 +35,13 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10l-known-kirinuki-font-pack-001`
+Active artifact: `clip-ed10n-keifont-overlay-proof-001`
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
 the user explicitly says to rewind. ED-10k is already generated, reviewed, and
-rejected as the normal-dialogue baseline. Continue from ED-10l real font
-source/license/install/readback instead.
+rejected as the normal-dialogue baseline. Continue from ED-10n Keifont
+real-font overlay proof review instead.
 
 Current judgement: the ED-10k BIZ UDGothic overlay proof has now been reviewed
 and is not accepted as the normal-dialogue subtitle baseline. The review says
@@ -50,9 +50,10 @@ outline pressure is too strong. This also rejects the broader BIZ/Noto/Meiryo
 system-safe route for this use case. BIZ remains a reviewed reference, not the
 current baseline.
 
-The active route is ED-10l: `Known Kirinuki Font Pack Audit v0`. The task is to
-move the candidate universe toward known Japanese YouTube kirinuki/telop fonts
-before another overlay proof is selected.
+The active route is ED-10n: `Per-user Font Readback and Keifont Real Proof
+v0`. ED-10l remains the comparison/readback artifact, but the current human
+review target is the regenerated Keifont overlay proof for `cut_002` /
+`cut_003`.
 
 ED-10l route readback:
 
@@ -69,25 +70,25 @@ ED-10l route readback:
   `ed10l_source_han_serif_mood_candidate`,
   `ed10l_shippori_mincho_mood_candidate`
 - size rule: keep `round(frame_height * 0.115)` as a comparison constant
-- local availability basis: `C:/Windows/Fonts` readback only; target known-font
-  pack was not installed on this terminal as of 2026-06-18 JST
-- generated samples must be read as missing-font/fallback evidence until a
-  real font install/readback exists
+- local availability basis: HKCU registry, `%LOCALAPPDATA%/Microsoft/Windows/Fonts`,
+  and `C:/Windows/Fonts`
+- ED-10n regenerated samples are valid requested-font visual evidence on this
+  same machine; earlier fallback-only samples remain historical readback only
 - latest ED-10l review was consumed as a fallback suspicion, not as a candidate
   preference: all visible candidates looked too thin / close to BIZ because the
   target fonts were not actually resolving
-- current ED-10l sample readback confirms every normal-dialogue candidate PNG
-  resolved to `NotoSansJP-VF.ttf` with
-  `requested_candidate_font_missing_used_font_file_found`; the contact sheet is
-  invalid for target-font visual selection
-- ED-10m selected the first real-font route as
-  `ed10l_keifont_pop_dialogue_candidate`; the official Keifont page records
-  Apache License 2.0 and no special commercial-use restriction, but the target
-  files `keifont.ttf` / `Keifont.ttf` are still absent from `C:/Windows/Fonts`
-  on this terminal as of 2026-06-20 JST
+- current ED-10n sample readback confirms all four normal-dialogue candidates
+  resolved to requested per-user font files with
+  `candidate_primary_font_file_found`
+- Keifont resolved to
+  `C:/Users/thank/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf`, and
+  `clip-ed10n-keifont-overlay-proof-001` was generated as the current review
+  proof
+- M PLUS resolved via registry as `M PLUS 1 Thin` /
+  `MPLUS1-VariableFont_wght.ttf`; do not treat it as a winner until exact
+  weight/style is pinned
 - no font binary was downloaded, installed, copied, vendored, staged, or
-  committed; the next step is user-owned source/license inspection and local
-  font install/readback before proof regeneration
+  committed by Codex; local font files remain same-machine evidence only
 
 Tracked self-diagnosis: the previous exploration over-weighted
 system-safe/generic readable fonts, conflated safe/reproducible with visually
@@ -102,12 +103,10 @@ gates.
 
 ## Next
 
-1. Do not choose a font from the current ED-10l fallback contact sheet; use it
-   only as readback evidence that the requested fonts were missing.
-2. Use the ED-10m Keifont route first: inspect the official source/license,
-   install the font locally if accepted, confirm `C:/Windows/Fonts/keifont.ttf`
-   or `C:/Windows/Fonts/Keifont.ttf`, then regenerate the ED-10l proof only
-   after that requested font file resolves.
+1. Open `clip-ed10n-keifont-overlay-proof-001` and review the visible Keifont
+   proof for `cut_002` / `cut_003`.
+2. Judge whether Keifont solves the BIZ/Noto/Meiryo rigidity/thinness problem,
+   or whether it needs a bounded adjustment / another ED-10l candidate.
 3. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
 4. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
@@ -145,9 +144,9 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10l fallback/readback evidence via
+   `.\open-artifacts.ps1`, current ED-10n Keifont proof via
+   `.\open-current-proof.ps1`, regenerated ED-10l real-font comparison via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`,
-   reviewed ED-10k BIZ reference proof via `.\open-current-proof.ps1`,
    consumed ED-10j font audit via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1`,
    `.\open-font-candidates.ps1`, or the ED-10i

@@ -945,15 +945,25 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
     assert report["human_decision_readback"]["system_safe_route_role"] == (
         "reference_rejected_for_this_use_case"
     )
+    local_readback = report["known_kirinuki_font_pack_decision_packet"][
+        "research_readback"
+    ]["local_font_readback"]
+    all_known_fonts_found = not local_readback["target_candidate_ids_missing"]
     assert report["comparison_response_readback"]["selected_response"] == (
-        "fallback_confirmed_route_to_font_install_readback"
+        "per_user_font_readback_valid_route_to_keifont_overlay_proof"
+        if all_known_fonts_found
+        else "fallback_confirmed_route_to_font_install_readback"
     )
     assert report["comparison_response_readback"][
         "selected_candidate_for_next_proof_base"
-    ] == "pending_real_font_install_readback_after_fallback_confirmation"
+    ] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+        if all_known_fonts_found
+        else "pending_real_font_install_readback_after_fallback_confirmation"
+    )
     assert report["comparison_response_readback"][
         "candidate_selection_from_current_pngs_allowed"
-    ] is False
+    ] is all_known_fonts_found
     assert report["comparison_response_readback"][
         "recommended_default_candidate_id"
     ] == "ed10l_keifont_pop_dialogue_candidate"
@@ -966,22 +976,36 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
     }
     route = report["next_diagnostic_overlay_proof_route"]
     assert route["route_kind"] == (
-        "ed10l_known_font_pack_install_readback_before_visual_proof"
+        "ed10n_keifont_overlay_proof_after_per_user_font_readback"
+        if all_known_fonts_found
+        else "ed10l_known_font_pack_install_readback_before_visual_proof"
     )
     assert route["current_fallback_contact_sheet_role"] == (
-        "readback_only_not_visual_selection"
+        "real_font_visual_comparison_after_per_user_readback"
+        if all_known_fonts_found
+        else "readback_only_not_visual_selection"
     )
     assert route["recommended_default_candidate_id"] == (
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert route["font_binaries_downloaded"] is False
     decision_packet = report["known_kirinuki_font_pack_decision_packet"]
-    assert decision_packet["decision_state"] == (
-        "font_fallback_confirmed_visual_selection_invalid"
-    )
-    assert (
-        decision_packet["candidate_selection_from_current_pngs_allowed"] is False
-    )
+    if all_known_fonts_found:
+        assert decision_packet["decision_state"] == (
+            "per_user_font_readback_valid_real_font_evidence"
+        )
+        assert (
+            decision_packet["selected_candidate_for_next_proof_base"]
+            == "ed10l_keifont_pop_dialogue_candidate"
+        )
+        assert decision_packet["candidate_selection_from_current_pngs_allowed"] is True
+    else:
+        assert decision_packet["decision_state"] == (
+            "font_fallback_confirmed_visual_selection_invalid"
+        )
+        assert (
+            decision_packet["candidate_selection_from_current_pngs_allowed"] is False
+        )
     assert decision_packet["current_biz_proof_accepted_as_normal_baseline"] is False
     assert decision_packet["self_diagnosis"]["candidate_universe_bias"] == (
         "system_safe_generic_readability"
@@ -1008,22 +1032,39 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
         "requires_explicit_license_handling",
         "reference_rejected_for_normal_baseline",
     }
-    assert decision_packet["research_readback"]["local_font_readback"][
-        "target_fonts_found"
-    ] == []
-    assert decision_packet["research_readback"]["local_font_readback"][
-        "current_png_valid_visual_evidence"
-    ] is False
-    assert report["font_visual_comparison_validity"]["status"] == (
-        "invalid_fallback_render_not_target_font_visual_evidence"
-    )
-    assert report["font_visual_comparison_validity"][
-        "all_candidates_valid_real_font"
-    ] is False
+    assert local_readback["font_readback_sources"] == [
+        "HKCU:Software/Microsoft/Windows NT/CurrentVersion/Fonts",
+        "HKLM:Software/Microsoft/Windows NT/CurrentVersion/Fonts",
+        "%LOCALAPPDATA%/Microsoft/Windows/Fonts",
+        "C:/Windows/Fonts",
+    ]
+    if all_known_fonts_found:
+        assert set(local_readback["target_fonts_found"]) == {
+            "Keifont",
+            "851 Chikara Yowaku",
+            "M+ FONTS",
+            "Yasashisa Gothic",
+        }
+        assert local_readback["target_fonts_missing"] == []
+        assert local_readback["current_png_valid_visual_evidence"] is True
+        assert report["font_visual_comparison_validity"]["status"] == (
+            "valid_requested_font_visual_evidence"
+        )
+        assert report["font_visual_comparison_validity"][
+            "all_candidates_valid_real_font"
+        ] is True
+    else:
+        assert local_readback["current_png_valid_visual_evidence"] is False
+        assert report["font_visual_comparison_validity"]["status"] == (
+            "invalid_fallback_render_not_target_font_visual_evidence"
+        )
+        assert report["font_visual_comparison_validity"][
+            "all_candidates_valid_real_font"
+        ] is False
     assert {
         row["current_png_valid_visual_evidence"]
         for row in report["font_visual_comparison_validity"]["candidate_resolution"]
-    } == {False}
+    } == ({True} if all_known_fonts_found else {False})
     assert {
         route["route"] for route in decision_packet["rejected_alternatives"]
     } >= {
@@ -1041,15 +1082,22 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
         assert sample["style_inputs"]["emoji_evaluation_scope"] == (
             "emoji_neutral_ignored_for_ed10l"
         )
-        assert sample["font_file_status"].startswith(
-            "requested_candidate_font_missing_used_"
-        )
-        assert sample["font_fallback_status"] == (
-            "requested_candidate_missing_fallback_font_used"
-        )
-        assert sample["visual_comparison_validity"] == (
-            "invalid_fallback_render_not_target_font_visual_evidence"
-        )
+        if all_known_fonts_found:
+            assert sample["font_file_status"] == "candidate_primary_font_file_found"
+            assert sample["font_fallback_status"] == "requested_candidate_font_file_found"
+            assert sample["visual_comparison_validity"] == (
+                "valid_requested_font_visual_evidence"
+            )
+        else:
+            assert sample["font_file_status"].startswith(
+                "requested_candidate_font_missing_used_"
+            )
+            assert sample["font_fallback_status"] == (
+                "requested_candidate_missing_fallback_font_used"
+            )
+            assert sample["visual_comparison_validity"] == (
+                "invalid_fallback_render_not_target_font_visual_evidence"
+            )
         assert sample["production_candidate"] is False
 
     json_path = output_dir / "subtitle_known_kirinuki_font_pack_report.json"
@@ -1154,11 +1202,18 @@ def test_typography_decoration_comparison_cli_reports_ed10l_profile(
     payload = json.loads(result.stdout)
     assert payload["artifact_id"] == "clip-ed10l-known-kirinuki-font-pack-001"
     assert payload["comparison_profile"] == "ed10l_known_kirinuki_font_pack"
+    all_known_fonts_found = not payload["comparison_decision_packet"][
+        "research_readback"
+    ]["local_font_readback"]["target_candidate_ids_missing"]
     assert payload["comparison_response"]["selected_response"] == (
-        "fallback_confirmed_route_to_font_install_readback"
+        "per_user_font_readback_valid_route_to_keifont_overlay_proof"
+        if all_known_fonts_found
+        else "fallback_confirmed_route_to_font_install_readback"
     )
     assert payload["selected_candidate_for_next_proof_base"] == (
-        "pending_real_font_install_readback_after_fallback_confirmation"
+        "ed10l_keifont_pop_dialogue_candidate"
+        if all_known_fonts_found
+        else "pending_real_font_install_readback_after_fallback_confirmation"
     )
     assert payload["comparison_decision_packet"]["recommended_default_candidate_id"] == (
         "ed10l_keifont_pop_dialogue_candidate"

@@ -4,11 +4,12 @@ This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10l
-font fallback/readback audit, use
+dashboard, then use an artifact-specific launcher. For the current ED-10n
+Keifont proof, use `.\open-current-proof.ps1`; for the supporting regenerated
+ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
-use `.\open-current-proof.ps1` only when the reviewed ED-10k BIZ reference
-proof is needed.
+the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
+opened by the root launcher.
 
 ## `clip-review-acceptance-gate-001`
 
@@ -233,9 +234,9 @@ Git failure.
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_pack` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10l route-correction readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_pack --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
-| latest_validation_result | Same-machine ED-10l generation returned `artifact_id=clip-ed10l-known-kirinuki-font-pack-001`, `comparison_profile=ed10l_known_kirinuki_font_pack`, `sample_count=16`, `candidate_count=4`, `font_size.value=124`, `selected_candidate_for_next_proof_base=pending_real_font_install_readback_after_fallback_confirmation`, `recommended_default_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `next_route=ed10l_known_font_pack_install_readback_before_visual_proof`, `font_file_status=requested_candidate_font_missing_used_font_file_found`, `font_visual_comparison_validity=invalid_fallback_render_not_target_font_visual_evidence`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank fallback/missing-font local readback evidence, not target-font visual evidence. |
-| review_status | Latest ED-10l review consumed as fallback suspicion: all current normal-dialogue candidate PNGs resolved to `NotoSansJP-VF.ttf` because target known-font candidates were not installed. Current contact sheet is fallback evidence and invalid for target-font visual selection. |
-| next_action | ED-10m selects `ed10l_keifont_pop_dialogue_candidate` as the first source/license/install/readback route. Do not compare or select from the current PNGs; regenerate proof only after Keifont resolves locally. |
+| latest_validation_result | Same-machine ED-10n regeneration returned `artifact_id=clip-ed10l-known-kirinuki-font-pack-001`, `comparison_profile=ed10l_known_kirinuki_font_pack`, `sample_count=16`, `candidate_count=4`, `font_size.value=124`, `selected_candidate_for_next_proof_base=ed10l_keifont_pop_dialogue_candidate`, `comparison_response_readback.selected_response=per_user_font_readback_valid_route_to_keifont_overlay_proof`, `font_visual_comparison_validity=valid_requested_font_visual_evidence`, `all_candidates_valid_real_font=true`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully. |
+| review_status | Regenerated as valid requested-font comparison/readback evidence after HKCU/per-user font resolver support. It supports ED-10n proof routing but is not itself production subtitle design acceptance. |
+| next_action | Use `clip-ed10n-keifont-overlay-proof-001` for current human visual judgement. Return to this comparison only if Keifont is rejected and another ED-10l candidate should be promoted. |
 
 Boundary flags remain false or pending:
 
@@ -253,6 +254,38 @@ tests. It cannot directly verify the ignored PNG/HTML comparison artifacts
 themselves, so local artifact existence must be verified with the open command
 or JSON report readback on the retaining machine. `git ls-files episodes`
 should remain empty.
+
+## `clip-ed10n-keifont-overlay-proof-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10n Keifont Real-Font Diagnostic Overlay Proof |
+| purpose | Apply the per-user resolved `ed10l_keifont_pop_dialogue_candidate` to the `cut_002` / `cut_003` diagnostic subtitle overlay proof after ED-10l real-font readback became valid. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
+| open_command | `.\open-current-proof.ps1` |
+| generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --format json` plus targeted tests. |
+| latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `typography_decoration_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
+| latest_local_smoke | Same-machine readback resolved `font_family_route.requested=Keifont`, `font_family_route.resolved=Keifont`, `font_family_route.resolved_font_file=C:\Users\thank\AppData\Local\Microsoft\Windows\Fonts\keifont.ttf`, `font_file_status=candidate_primary_font_file_found`, and target MP4/PNG artifacts for `cut_002` and `cut_003`. |
+| review_status | Available and requires human visual review. It is not production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance. |
+| next_action | Review the visible Keifont proof and answer whether it should proceed, get one bounded adjustment, or be replaced by another ED-10l candidate. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked generator, docs, dashboard metadata, and
+tests but not the ignored MP4/PNG/ASS files themselves. Other worktrees should
+treat missing `episodes/` proof assets as local evidence absence, not as a
+tracked Git failure. `git ls-files episodes` should remain empty.
 
 ## `clip-ed10g-noto-overlay-proof-001`
 

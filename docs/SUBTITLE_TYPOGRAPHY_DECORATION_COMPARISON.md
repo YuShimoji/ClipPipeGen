@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10l_font_fallback_confirmed_visual_selection_invalid
-health: install_readback_required_before_visual_review
+status: ed10n_keifont_overlay_proof_ready_for_review
+health: per_user_font_readback_valid
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10m_keifont_user_install_readback
-active_artifact: clip-ed10l-known-kirinuki-font-pack-001
+next_review_due: after_ed10n_keifont_human_visual_review
+active_artifact: clip-ed10n-keifont-overlay-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -15,9 +15,9 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 # Subtitle Typography Decoration Comparison
 
-Last updated: 2026-06-19 JST
+Last updated: 2026-06-20 JST
 
-## Current Update - ED-10l Known Kirinuki Font Pack
+## Current Update - ED-10n Keifont Real Proof
 
 The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
 consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
@@ -25,26 +25,20 @@ the proof reads too hard/rigid, the text still feels thin, and the black
 outline pressure is too strong. This stops the BIZ/Noto/Meiryo system-safe
 route as the main path for this use case.
 
-ED-10l now owns the next route:
-`clip-ed10l-known-kirinuki-font-pack-001`. The route correction is to audit
-known Japanese YouTube kirinuki/telop fonts first, then choose a real
-install/proof route for normal dialogue. License/install/reproducibility notes
-are recorded separately from design suitability.
+ED-10l remains the comparison/readback artifact:
+`clip-ed10l-known-kirinuki-font-pack-001`. ED-10n adds the missing per-user
+font readback path and regenerates the comparison as real requested-font visual
+evidence. The resolver now reads HKCU registry entries and
+`%LOCALAPPDATA%\Microsoft\Windows\Fonts`, so the four normal-dialogue
+candidates resolve to their per-user font files instead of `NotoSansJP-VF.ttf`
+fallback.
 
-Target known-font candidates were not installed on this terminal. The latest
-review that the ED-10l candidates looked too thin / close to BIZ is now treated
-as a fallback suspicion, not a candidate preference. Current JSON readback
-confirms every normal-dialogue candidate PNG resolved to `NotoSansJP-VF.ttf`
-with `requested_candidate_font_missing_used_font_file_found`, so the current
-contact sheet is invalid as target-font visual evidence. It is useful only as
-missing-font/fallback readback until a real font install is verified and the
-proof is regenerated.
-
-ED-10m selects `ed10l_keifont_pop_dialogue_candidate` as the first
-source/license/install/readback route. The current task is user-owned Keifont
-source/license inspection and local install/readback; no current ED-10l PNG
-should be used for visual font selection until Keifont resolves locally and the
-proof is regenerated.
+ED-10n then generates the current review proof:
+`clip-ed10n-keifont-overlay-proof-001`, using
+`ed10l_keifont_pop_dialogue_candidate` for `cut_002` and `cut_003`. The task is
+now human visual judgement of that proof. M PLUS readback is valid as a file
+presence check but registry display is `M PLUS 1 Thin`, so M PLUS is not a
+winner until weight/style is pinned.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
@@ -53,7 +47,8 @@ proof is regenerated.
 | `clip-ed10i-meiryo-overlay-proof-001` | Reviewed reference proof | Shows why Meiryo should not be fixed as the normal subtitle baseline | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed font audit comparison | Why Meiryo was demoted and BIZ was tried next | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected reference proof | Why BIZ / system-safe route should not be the current normal-dialogue baseline | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10l-known-kirinuki-font-pack-001` | Fallback-confirmed known-font audit | Which known kirinuki/telop font should get source/license/install readback before a real visual proof | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback | Confirms all four normal-dialogue candidates resolve from per-user font files | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10n-keifont-overlay-proof-001` | Current Keifont real-font proof | Whether Keifont should become the next normal-dialogue baseline candidate or needs a bounded adjustment | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -73,16 +68,14 @@ representative diagnostic proof の判断面です。
 
 `clip-ed10k-biz-overlay-proof-001` はレビュー済みで、normal subtitle
 baseline としては不採用です。現在の active artifact は
-`clip-ed10l-known-kirinuki-font-pack-001` です。
+`clip-ed10n-keifont-overlay-proof-001` です。
 
 ## これからどうなるか
 
-1. 現在の ED-10l contact sheet から visual candidate を選ばない。これは
-   target font ではなく `NotoSansJP-VF.ttf` fallback を見ている証跡として
-   確認する。
-2. `ed10l_keifont_pop_dialogue_candidate` を最初の official source /
-   license / install / font-file readback route として扱い、requested font
-   が実際に解決してから overlay proof を再生成する。
+1. `clip-ed10n-keifont-overlay-proof-001` を開き、Keifont が通常字幕候補
+   として BIZ/Noto/Meiryo の硬さ・細さを解消しているか確認する。
+2. Keifont が近い場合は outline pressure や badge など 1 軸だけを次の
+   bounded adjustment として扱う。
 3. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
    baseline に戻す場合は明示レビューを要求する。
 4. representative coverage を広げるなら、dense/stress proof や production
@@ -92,16 +85,16 @@ baseline としては不採用です。現在の active artifact は
 
 ## 使い方・確認方法
 
-Primary local comparison (fallback/readback evidence only):
-
-```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1
-```
-
-Reviewed ED-10k BIZ reference:
+Primary local proof:
 
 ```powershell
 .\open-current-proof.ps1
+```
+
+Regenerated real-font comparison/readback evidence:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1
 ```
 
 Consumed ED-10j audit:
@@ -153,6 +146,9 @@ together.
 - 2026-06-20: ED-10m selected the Keifont route for source/license/install
   readback. No font binary was downloaded, installed, copied, vendored, staged,
   or committed.
+- 2026-06-20: ED-10n added HKCU/per-user font readback, regenerated the ED-10l
+  comparison as valid requested-font evidence, and generated the Keifont
+  overlay proof for `cut_002` / `cut_003`.
 
 ## Constraints / Risks
 
@@ -167,8 +163,8 @@ together.
 ## Changelog
 
 - 2026-06-16: Added v1.5 metadata and ED-10h successor pointer.
-- 2026-06-20: Recorded ED-10m Keifont source/license/install route as the
-  next action before any real-font visual proof regeneration.
+- 2026-06-20: Recorded ED-10n per-user readback and Keifont proof as the
+  current human visual review target.
 
 This packet was generated from the `clip-human-preview-session-001` human
 answer `adjust_boundary`, then received the ED-10g comparison response

@@ -27,26 +27,30 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
+    assert status["current_focus"]["feature_id"] == "ED-10n"
     assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10n-keifont-overlay-proof-001"
+    )
+    assert status["current_focus"]["source_comparison_artifact_id"] == (
         "clip-ed10l-known-kirinuki-font-pack-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10m_keifont_route_prepared_user_install_required"
+        "ed10n_keifont_overlay_proof_ready_for_review"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10k_biz_freeform_review_consumed_not_accepted"
     )
     assert status["current_focus"]["selected_typography_base"] == (
-        "pending_real_font_install_readback"
+        "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["selected_source_license_install_route"] == (
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "user_install_required_before_real_font_proof"
+        "per_user_font_readback_valid_keifont_proof_generated"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
-        "invalid_fallback_render_not_target_font_visual_evidence"
+        "valid_requested_font_visual_evidence_after_per_user_font_readback"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -54,13 +58,14 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
             "jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\"
             "open_comparison.ps1"
         ),
-        ".\\open-current-proof.ps1",
+        "see artifact registry for archived previous proof paths",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
@@ -82,7 +87,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10l-known-kirinuki-font-pack-001"
+        "clip-ed10n-keifont-overlay-proof-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -102,6 +107,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
+    assert "clip-ed10n-keifont-overlay-proof-001" in html
     assert "clip-ed10l-known-kirinuki-font-pack-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
 
@@ -154,7 +160,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
 
     assert registry["artifact_id"] == "clip-subtitle-font-candidate-sweep-001"
     assert registry["current_selected_diagnostic_overlay_proof_base"] == (
-        "pending_ed10l_real_font_install_readback"
+        "ed10l_keifont_pop_dialogue_candidate"
     )
     assert registry["font_size_policy"]["formula"] == "round(frame_height * 0.115)"
     assert registry["boundary_flags"]["font_binaries_downloaded"] is False
@@ -211,25 +217,34 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "font_binaries_downloaded"
     ] is False
     assert registry["ed10l_known_font_pack_slice"]["selected_candidate_id"] == (
-        "pending_real_font_install_readback_after_fallback_confirmation"
+        "ed10l_keifont_pop_dialogue_candidate"
     )
     assert registry["ed10l_known_font_pack_slice"]["review_status"] == (
-        "fallback_confirmed_visual_selection_invalid"
+        "per_user_font_readback_valid_keifont_proof_generated"
     )
     assert registry["ed10l_known_font_pack_slice"][
         "candidate_selection_from_current_pngs_allowed"
-    ] is False
+    ] is True
     assert registry["ed10l_known_font_pack_slice"][
         "current_visual_comparison_validity"
     ] == (
-        "invalid_fallback_render_not_target_font_visual_evidence"
+        "valid_requested_font_visual_evidence_after_per_user_font_readback"
     )
     assert registry["ed10l_known_font_pack_slice"]["self_diagnosis"][
         "candidate_universe_bias"
     ] == "system_safe_generic_readability"
     assert registry["ed10l_known_font_pack_slice"]["local_font_readback"][
         "target_fonts_found"
-    ] == []
+    ] == ["Keifont", "851 Chikara Yowaku", "M+ FONTS", "Yasashisa Gothic"]
+    assert registry["ed10m_real_font_source_license_install_route"][
+        "local_font_file_found"
+    ] is True
+    assert registry["ed10n_per_user_font_readback_and_real_proof"][
+        "selected_overlay_candidate_id"
+    ] == "ed10l_keifont_pop_dialogue_candidate"
+    assert registry["ed10n_per_user_font_readback_and_real_proof"][
+        "font_binaries_copied_or_vendored"
+    ] is False
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids
     assert "ed10i_biz_udgothic_bold_balanced_outline" in candidate_ids

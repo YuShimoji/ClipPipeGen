@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10m`
-- artifact: `clip-ed10l-known-kirinuki-font-pack-001`
-- state: `ed10m_keifont_route_prepared_user_install_required`
+- feature: `ED-10n`
+- artifact: `clip-ed10n-keifont-overlay-proof-001`
+- state: `ed10n_keifont_overlay_proof_ready_for_review`
 
 ## Feature Table
 
@@ -50,8 +50,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10i | Kirinuki Gothic Weight Balance Comparison v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10i-meiryo-overlay-proof-001 | Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline. |
 | ED-10j | Kirinuki Subtitle Font Research & Candidate Audit v0 | done | font_audit_consumed_biz_selected | 100 | clip-ed10j-kirinuki-font-audit-001 | Keep as consumed audit trail; BIZ UDGothic selection was superseded by ED-10k review. |
 | ED-10k | BIZ UDGothic Overlay Proof v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10k-biz-overlay-proof-001 | Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline. |
-| ED-10l | Known Kirinuki Font Pack Audit v0 | in_progress | font_fallback_confirmed_visual_selection_invalid | 60 | clip-ed10l-known-kirinuki-font-pack-001 | Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof. |
-| ED-10m | Real Font Source/License Install Route v0 | done | keifont_route_prepared_user_install_required | 100 | clip-ed10l-known-kirinuki-font-pack-001 | User should inspect/install Keifont locally; regenerate proof only after Keifont resolves. |
+| ED-10l | Known Kirinuki Font Pack Audit v0 | done | per_user_font_readback_valid_comparison | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as regenerated real-font comparison; use ED-10n Keifont proof for current visual judgement. |
+| ED-10m | Real Font Source/License Install Route v0 | done | keifont_route_prepared_user_install_completed_by_user | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as source/license route record; ED-10n consumed the per-user font readback. |
+| ED-10n | Per-user Font Readback and Keifont Real Proof v0 | done | keifont_overlay_proof_ready_for_human_review | 95 | clip-ed10n-keifont-overlay-proof-001 | Open the Keifont overlay proof and collect freeform human visual judgement before more tuning. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

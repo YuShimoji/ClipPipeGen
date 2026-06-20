@@ -24,24 +24,25 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10m",
-    "artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-    "state": "ed10m_keifont_route_prepared_user_install_required",
+    "feature_id": "ED-10n",
+    "artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+    "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+    "state": "ed10n_keifont_overlay_proof_ready_for_review",
     "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
-    "latest_review_consumed": "ed10l_candidates_too_thin_fallback_suspected",
+    "latest_review_consumed": "ed10l_fallback_suspicion_resolved_by_per_user_font_readback",
     "target_cuts": [
       "cut_002",
       "cut_003"
     ],
     "accepted_size_rule": "round(frame_height * 0.115)",
-    "selected_typography_base": "pending_real_font_install_readback",
+    "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "user_install_required_before_real_font_proof",
-    "user_action_type": "USER_OPEN_ONLY_then_USER_RUN_REQUIRED",
-    "selected_typography_source": "user_known_good_font_review_and_source_inspection",
+    "route_status": "per_user_font_readback_valid_keifont_proof_generated",
+    "user_action_type": "USER_OPEN_REVIEW_ONLY",
+    "selected_typography_source": "hkcu_per_user_font_readback_and_regenerated_real_font_proof",
     "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
-    "main_issue": "ed10l_contact_sheet_used_fallback_font_not_target_fonts",
-    "current_visual_comparison_validity": "invalid_fallback_render_not_target_font_visual_evidence",
+    "main_issue": "keifont_real_overlay_proof_needs_human_visual_judgement",
+    "current_visual_comparison_validity": "valid_requested_font_visual_evidence_after_per_user_font_readback",
     "emoji_treatment": "neutral_ignore_for_evaluation",
     "production_candidate": false,
     "production_subtitle_design_acceptance": false,
@@ -65,16 +66,22 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
+      "label": "Keifont Current Proof",
+      "command": ".\\open-current-proof.ps1",
+      "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+      "when_to_use": "Use first for ED-10n human visual review of the regenerated Keifont cut_002/cut_003 overlay proof."
+    },
+    {
       "label": "Known Font Pack",
       "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\open_comparison.ps1",
       "target": "episodes/.../subtitle_known_kirinuki_font_pack_comparison/subtitle_known_kirinuki_font_pack_report.html",
-      "when_to_use": "Use only as ED-10l fallback/readback evidence until the requested known fonts are installed and resolved."
+      "when_to_use": "Use as ED-10l/ED-10n readback evidence that the requested per-user fonts resolve in the regenerated comparison."
     },
     {
       "label": "BIZ Proof Reference",
-      "command": ".\\open-current-proof.ps1",
-      "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-      "when_to_use": "Use only as the reviewed ED-10k reference that explains why the system-safe BIZ route stopped."
+      "command": "see artifact registry for archived previous proof paths",
+      "target": "artifacts/ARTIFACTS.md",
+      "when_to_use": "Use only as the reviewed ED-10k reference that explains why the system-safe BIZ route stopped; open-current-proof now points to ED-10n."
     },
     {
       "label": "Font Audit",
@@ -543,23 +550,34 @@
     {
       "id": "ED-10l",
       "title": "Known Kirinuki Font Pack Audit v0",
-      "status": "in_progress",
-      "health": "font_fallback_confirmed_visual_selection_invalid",
-      "progress_pct": 60,
+      "status": "done",
+      "health": "per_user_font_readback_valid_comparison",
+      "progress_pct": 100,
       "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-      "next_action": "Do not select from the current fallback contact sheet; prepare source/license/install readback before regenerating proof.",
-      "summary_excerpt": "clip-ed10k-biz-overlay-proof-001 の不採用レビューを正本として消費し、候補探索の軸を system-safe/generic readable fonts から、ユーザー既知の けいふぉんと、851チカラヨワク、M+ FONTS、GoodFreeFonts 由来の丸ゴシック候補へ切り替えた。Active artifact は clip-ed10l-known-kirinuki-font-pack-001...",
+      "next_action": "Keep as regenerated real-font comparison; use ED-10n Keifont proof for current visual judgement.",
+      "summary_excerpt": "clip-ed10k-biz-overlay-proof-001 の不採用レビューを正本として消費し、候補探索の軸を system-safe/generic readable fonts から、ユーザー既知の けいふぉんと、851チカラヨワク、M+ FONTS、GoodFreeFonts 由来の丸ゴシック候補へ切り替えた。Active comparison artifact は clip-ed10l-known-kirinuki-fo...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-10m",
       "title": "Real Font Source/License Install Route v0",
       "status": "done",
-      "health": "keifont_route_prepared_user_install_required",
+      "health": "keifont_route_prepared_user_install_completed_by_user",
       "progress_pct": 100,
       "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-      "next_action": "User should inspect/install Keifont locally; regenerate proof only after Keifont resolves.",
+      "next_action": "Keep as source/license route record; ED-10n consumed the per-user font readback.",
       "summary_excerpt": "ED-10l fallback confirmation から継続し、normal-dialogue の first route を ed10l_keifont_pop_dialogue_candidate に決めた。Keifont official source は https://font.sumomo.ne.jp/font_1.html、license/readback は Apache License 2.0 と商用利用の特別...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10n",
+      "title": "Per-user Font Readback and Keifont Real Proof v0",
+      "status": "done",
+      "health": "keifont_overlay_proof_ready_for_human_review",
+      "progress_pct": 95,
+      "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
+      "next_action": "Open the Keifont overlay proof and collect freeform human visual judgement before more tuning.",
+      "summary_excerpt": "ユーザーが per-user install 済みだった ED-10l 候補を HKCU registry と %LOCALAPPDATA%/Microsoft/Windows/Fonts から readback する resolver を追加。build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_p...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1037,12 +1055,11 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 83,
+    "feature_count": 84,
     "status_counts": {
-      "done": 66,
+      "done": 68,
       "proposed": 14,
       "approved": 1,
-      "in_progress": 1,
       "rejected": 1
     }
   },
@@ -1124,8 +1141,18 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_known_kirinuki_font_pack_comparison/subtitle_known_kirinuki_font_pack_report.html",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_known_kirinuki_font_pack_comparison\\open_comparison.ps1",
-      "review_status": "Latest ED-10l review consumed as fallback suspicion: all current normal-dialogue candidate PNGs resolved to NotoSansJP-VF.ttf because target known-font candidates were not installed. Current contact sheet is fallback evidence and invalid for target-font visual selection.",
-      "next_action": "ED-10m selects ed10l_keifont_pop_dialogue_candidate as the first source/license/install/readback route. Do not compare or select from the current PNGs; regenerate proof only after Keifont resolves locally."
+      "review_status": "Regenerated as valid requested-font comparison/readback evidence after HKCU/per-user font resolver support. It supports ED-10n proof routing but is not itself production subtitle design acceptance.",
+      "next_action": "Use clip-ed10n-keifont-overlay-proof-001 for current human visual judgement. Return to this comparison only if Keifont is rejected and another ED-10l candidate should be promoted."
+    },
+    {
+      "artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+      "title": "ED-10n Keifont Real-Font Diagnostic Overlay Proof",
+      "purpose": "Apply the per-user resolved ed10l_keifont_pop_dialogue_candidate to the cut_002 / cut_003 diagnostic subtitle overlay proof after ED-10l real-font readback became valid.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
+      "open_command": ".\\open-current-proof.ps1",
+      "review_status": "Available and requires human visual review. It is not production subtitle design, render, creative, rights, publishing, public-use, or upload acceptance.",
+      "next_action": "Review the visible Keifont proof and answer whether it should proceed, get one bounded adjustment, or be replaced by another ED-10l candidate."
     },
     {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
@@ -1168,24 +1195,31 @@
       "clip-ed10j-kirinuki-font-audit-001",
       "clip-ed10k-biz-overlay-proof-001",
       "clip-ed10l-known-kirinuki-font-pack-001",
+      "clip-ed10n-keifont-overlay-proof-001",
       "clip-ed10g-noto-overlay-proof-001",
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 11
+    "artifact_count": 12
   },
   "artifact_coverage": {
-    "registered_artifact_count": 11,
-    "features_with_artifact_count": 10,
+    "registered_artifact_count": 12,
+    "features_with_artifact_count": 11,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "ED-10m Keifont source/license/install route",
+      "item": "ED-10n Keifont overlay proof",
+      "artifact": "clip-ed10n-keifont-overlay-proof-001",
+      "question": "Does the regenerated Keifont proof fit the normal-dialogue subtitle direction better than BIZ/Noto/Meiryo?",
+      "next_route": "Open the current proof, review cut_002/cut_003 visually, and answer with freeform accept/concern/adjustment guidance."
+    },
+    {
+      "item": "ED-10l real-font comparison readback",
       "artifact": "clip-ed10l-known-kirinuki-font-pack-001",
-      "question": "Can the user inspect the official Keifont source/license and install it locally for readback?",
-      "next_route": "Open the Keifont source/license, install only if acceptable, confirm keifont.ttf or Keifont.ttf in C:/Windows/Fonts, then regenerate proof."
+      "question": "Does the real-font contact sheet confirm the per-user font resolver is using requested fonts rather than fallback?",
+      "next_route": "Use the comparison only as readback support for the Keifont proof route unless another candidate must be promoted."
     },
     {
       "item": "ED-10k BIZ UDGothic overlay proof",
@@ -1244,17 +1278,17 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 423,
+      "line_count": 422,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "ed10m_keifont_route_prepared_user_install_required",
-        "progress_pct": "88",
+        "health": "ed10n_keifont_overlay_proof_ready_for_review",
+        "progress_pct": "95",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10m_keifont_user_install_readback",
-        "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+        "next_review_due": "after_ed10n_keifont_human_visual_review",
+        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1271,7 +1305,7 @@
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 223,
+      "line_count": 224,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1279,7 +1313,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 319,
+      "boundary_term_count": 324,
       "status": "in_progress"
     },
     {
@@ -1313,17 +1347,17 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 529,
+      "line_count": 525,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "ed10l_font_fallback_confirmed_visual_selection_invalid",
-        "health": "install_readback_required_before_visual_review",
+        "status": "ed10n_keifont_overlay_proof_ready_for_review",
+        "health": "per_user_font_readback_valid",
         "progress_pct": "100",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10m_keifont_user_install_readback",
-        "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+        "next_review_due": "after_ed10n_keifont_human_visual_review",
+        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1334,8 +1368,8 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 85,
-      "status": "ed10l_font_fallback_confirmed_visual_selection_invalid"
+      "boundary_term_count": 89,
+      "status": "ed10n_keifont_overlay_proof_ready_for_review"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
@@ -1354,7 +1388,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "Artifact Registry",
-      "line_count": 337,
+      "line_count": 370,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1362,7 +1396,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 130,
+      "boundary_term_count": 149,
       "status": "reference"
     },
     {
@@ -1424,17 +1458,17 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 119,
+      "line_count": 121,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "ed10m_keifont_route_prepared_user_install_required",
-        "progress_pct": "92",
+        "health": "ed10n_keifont_overlay_proof_ready_for_review",
+        "progress_pct": "95",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10m_keifont_user_install_readback",
-        "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+        "next_review_due": "after_ed10n_keifont_human_visual_review",
+        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
         "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1674,17 +1708,17 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 281,
+      "line_count": 290,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
         "type": "candidate_registry",
         "status": "in_progress",
-        "health": "ed10m_keifont_route_prepared_user_install_required",
-        "progress_pct": "92",
+        "health": "ed10n_keifont_overlay_proof_ready_for_review",
+        "progress_pct": "95",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10m_keifont_user_install_readback",
-        "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
+        "next_review_due": "after_ed10n_keifont_human_visual_review",
+        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md"
@@ -1796,13 +1830,13 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 319 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 324 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
-        "detail": "Long active doc (529 lines) is likely carrying history.",
+        "detail": "Long active doc (525 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -1814,7 +1848,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 130 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 149 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
