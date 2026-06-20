@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10n`
-- artifact: `clip-ed10n-keifont-overlay-proof-001`
-- state: `ed10n_keifont_overlay_proof_ready_for_review`
+- feature: `ED-10o`
+- artifact: `clip-ed10o-multifont-focused-review-001`
+- state: `ed10o_multifont_focused_review_ready`
 
 ## Feature Table
 
@@ -52,7 +52,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10k | BIZ UDGothic Overlay Proof v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10k-biz-overlay-proof-001 | Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline. |
 | ED-10l | Known Kirinuki Font Pack Audit v0 | done | per_user_font_readback_valid_comparison | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as regenerated real-font comparison; use ED-10n Keifont proof for current visual judgement. |
 | ED-10m | Real Font Source/License Install Route v0 | done | keifont_route_prepared_user_install_completed_by_user | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as source/license route record; ED-10n consumed the per-user font readback. |
-| ED-10n | Per-user Font Readback and Keifont Real Proof v0 | done | keifont_overlay_proof_ready_for_human_review | 95 | clip-ed10n-keifont-overlay-proof-001 | Open the Keifont overlay proof and collect freeform human visual judgement before more tuning. |
+| ED-10n | Per-user Font Readback and Keifont Real Proof v0 | done | keifont_overlay_proof_ready_for_human_review | 95 | clip-ed10n-keifont-overlay-proof-001 | Keep as lead proof reference; ED-10o now compares it against alternates in one focused surface. |
+| ED-10o | Multi-font Comparison and Focused Review Surface v0 | done | multifont_focused_review_ready | 100 | clip-ed10o-multifont-focused-review-001 | Collect freeform review on font preference and whether the focused matrix solves review UX. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

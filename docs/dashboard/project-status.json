@@ -24,12 +24,13 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10n",
-    "artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+    "feature_id": "ED-10o",
+    "artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-    "state": "ed10n_keifont_overlay_proof_ready_for_review",
+    "source_proof_artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+    "state": "ed10o_multifont_focused_review_ready",
     "human_visual_judgement": "ed10k_biz_freeform_review_consumed_not_accepted",
-    "latest_review_consumed": "ed10l_fallback_suspicion_resolved_by_per_user_font_readback",
+    "latest_review_consumed": "ed10n_keifont_improved_review_ux_bottleneck",
     "target_cuts": [
       "cut_002",
       "cut_003"
@@ -37,12 +38,13 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "per_user_font_readback_valid_keifont_proof_generated",
+    "route_status": "one_shot_multifont_focused_review_surface_ready",
     "user_action_type": "USER_OPEN_REVIEW_ONLY",
-    "selected_typography_source": "hkcu_per_user_font_readback_and_regenerated_real_font_proof",
+    "selected_typography_source": "hkcu_per_user_font_readback_and_ed10o_same_line_matrix",
     "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
-    "main_issue": "keifont_real_overlay_proof_needs_human_visual_judgement",
+    "main_issue": "review_ux_and_multifont_baseline_comparison",
     "current_visual_comparison_validity": "valid_requested_font_visual_evidence_after_per_user_font_readback",
+    "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
     "emoji_treatment": "neutral_ignore_for_evaluation",
     "production_candidate": false,
     "production_subtitle_design_acceptance": false,
@@ -66,10 +68,16 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
-      "label": "Keifont Current Proof",
+      "label": "Multi-font Focused Review",
+      "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_multifont_focused_review\\open_comparison.ps1",
+      "target": "episodes/.../subtitle_multifont_focused_review/subtitle_multifont_focused_review_report.html",
+      "when_to_use": "Use first for ED-10o same-line multi-font baseline comparison and focused review-surface judgement."
+    },
+    {
+      "label": "Keifont Proof Reference",
       "command": ".\\open-current-proof.ps1",
       "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
-      "when_to_use": "Use first for ED-10n human visual review of the regenerated Keifont cut_002/cut_003 overlay proof."
+      "when_to_use": "Use as the ED-10n lead proof reference after opening ED-10o."
     },
     {
       "label": "Known Font Pack",
@@ -576,8 +584,19 @@
       "health": "keifont_overlay_proof_ready_for_human_review",
       "progress_pct": 95,
       "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
-      "next_action": "Open the Keifont overlay proof and collect freeform human visual judgement before more tuning.",
+      "next_action": "Keep as lead proof reference; ED-10o now compares it against alternates in one focused surface.",
       "summary_excerpt": "ユーザーが per-user install 済みだった ED-10l 候補を HKCU registry と %LOCALAPPDATA%/Microsoft/Windows/Fonts から readback する resolver を追加。build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_p...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10o",
+      "title": "Multi-font Comparison and Focused Review Surface v0",
+      "status": "done",
+      "health": "multifont_focused_review_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10o-multifont-focused-review-001",
+      "next_action": "Collect freeform review on font preference and whether the focused matrix solves review UX.",
+      "summary_excerpt": "最新 freeform review を「Keifont proof は明確に改善し動画使用レベルに近いが、次の bottleneck は review UX」として消費。新 profile ed10o_multifont_focused_review を追加し、Keifont / 851 Chikara Yowaku / Yasashisa Gothic を同じ target cuts、同じ行、同じ font size formul...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1055,9 +1074,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 84,
+    "feature_count": 85,
     "status_counts": {
-      "done": 68,
+      "done": 69,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -1155,6 +1174,16 @@
       "next_action": "Review the visible Keifont proof and answer whether it should proceed, get one bounded adjustment, or be replaced by another ED-10l candidate."
     },
     {
+      "artifact_id": "clip-ed10o-multifont-focused-review-001",
+      "title": "ED-10o Multi-font Focused Review Surface",
+      "purpose": "Consume the latest Keifont review as improved and usable enough for serious review, then move the bottleneck to a compact one-shot comparison of Keifont, 851 Chikara Yowaku, and Yasashisa Gothic on the same subtitle lines.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_multifont_focused_review/subtitle_multifont_focused_review_report.html",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_multifont_focused_review\\open_comparison.ps1",
+      "review_status": "Available and requires human freeform review. Keifont remains the lead entering the review, but ED-10o exists to compare it against 851 Chikara Yowaku and Yasashisa Gothic without returning to a fallback-font contact sheet.",
+      "next_action": "Open the focused review surface, compare the three included fonts row by row, and answer whether Keifont remains the baseline lead and whether the new review page is easier to judge."
+    },
+    {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
       "title": "ED-10g Noto Sans JP Diagnostic Overlay Proof",
       "purpose": "Apply the selected noto_sans_jp_clean_outline typography / decoration base to the cut_002 / cut_003 diagnostic subtitle overlay proof.",
@@ -1196,24 +1225,31 @@
       "clip-ed10k-biz-overlay-proof-001",
       "clip-ed10l-known-kirinuki-font-pack-001",
       "clip-ed10n-keifont-overlay-proof-001",
+      "clip-ed10o-multifont-focused-review-001",
       "clip-ed10g-noto-overlay-proof-001",
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 12
+    "artifact_count": 13
   },
   "artifact_coverage": {
-    "registered_artifact_count": 12,
-    "features_with_artifact_count": 11,
+    "registered_artifact_count": 13,
+    "features_with_artifact_count": 12,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
+      "item": "ED-10o multi-font focused review",
+      "artifact": "clip-ed10o-multifont-focused-review-001",
+      "question": "Which font reads best for the normal-dialogue baseline when Keifont, 851 Yowaku, and Yasashisa are compared on the same lines?",
+      "next_route": "Open the focused matrix, review the same-line font columns, and answer freeform with candidate preference and page-usability notes."
+    },
+    {
       "item": "ED-10n Keifont overlay proof",
       "artifact": "clip-ed10n-keifont-overlay-proof-001",
-      "question": "Does the regenerated Keifont proof fit the normal-dialogue subtitle direction better than BIZ/Noto/Meiryo?",
-      "next_route": "Open the current proof, review cut_002/cut_003 visually, and answer with freeform accept/concern/adjustment guidance."
+      "question": "Does Keifont remain the lead when viewed against alternates in ED-10o?",
+      "next_route": "Use as the lead proof reference; do not run another isolated single-font proof unless the comparison review asks for it."
     },
     {
       "item": "ED-10l real-font comparison readback",
@@ -1278,17 +1314,17 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 422,
+      "line_count": 429,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "ed10n_keifont_overlay_proof_ready_for_review",
-        "progress_pct": "95",
+        "health": "ed10o_multifont_focused_review_ready",
+        "progress_pct": "100",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10n_keifont_human_visual_review",
-        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
+        "next_review_due": "after_ed10o_multifont_human_review",
+        "active_artifact": "clip-ed10o-multifont-focused-review-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1305,7 +1341,7 @@
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 224,
+      "line_count": 225,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1313,7 +1349,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 324,
+      "boundary_term_count": 329,
       "status": "in_progress"
     },
     {
@@ -1347,17 +1383,17 @@
     {
       "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
       "title": "Subtitle Typography Decoration Comparison",
-      "line_count": 525,
+      "line_count": 541,
       "metadata": {
         "id": "subtitle-typography-decoration-comparison",
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
-        "status": "ed10n_keifont_overlay_proof_ready_for_review",
-        "health": "per_user_font_readback_valid",
+        "status": "ed10o_multifont_focused_review_ready",
+        "health": "review_surface_ux_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10n_keifont_human_visual_review",
-        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
+        "next_review_due": "after_ed10o_multifont_human_review",
+        "active_artifact": "clip-ed10o-multifont-focused-review-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1368,8 +1404,8 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 89,
-      "status": "ed10n_keifont_overlay_proof_ready_for_review"
+      "boundary_term_count": 93,
+      "status": "ed10o_multifont_focused_review_ready"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
@@ -1388,7 +1424,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "Artifact Registry",
-      "line_count": 370,
+      "line_count": 407,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1396,7 +1432,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 149,
+      "boundary_term_count": 161,
       "status": "reference"
     },
     {
@@ -1458,17 +1494,17 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 121,
+      "line_count": 128,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "ed10n_keifont_overlay_proof_ready_for_review",
-        "progress_pct": "95",
+        "health": "ed10o_multifont_focused_review_ready",
+        "progress_pct": "100",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10n_keifont_human_visual_review",
-        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
+        "next_review_due": "after_ed10o_multifont_human_review",
+        "active_artifact": "clip-ed10o-multifont-focused-review-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
         "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1708,17 +1744,17 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 290,
+      "line_count": 308,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
         "type": "candidate_registry",
         "status": "in_progress",
-        "health": "ed10n_keifont_overlay_proof_ready_for_review",
-        "progress_pct": "95",
+        "health": "ed10o_multifont_focused_review_ready",
+        "progress_pct": "100",
         "last_touched": "2026-06-20",
-        "next_review_due": "after_ed10n_keifont_human_visual_review",
-        "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
+        "next_review_due": "after_ed10o_multifont_human_review",
+        "active_artifact": "clip-ed10o-multifont-focused-review-001",
         "source_of_truth": "true",
         "owner_lane": "editing",
         "related": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md"
@@ -1830,13 +1866,13 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 324 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 329 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md",
-        "detail": "Long active doc (525 lines) is likely carrying history.",
+        "detail": "Long active doc (541 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -1848,7 +1884,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 149 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 161 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

@@ -3,11 +3,11 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10n_keifont_overlay_proof_ready_for_review
-progress_pct: 95
+health: ed10o_multifont_focused_review_ready
+progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10n_keifont_human_visual_review
-active_artifact: clip-ed10n-keifont-overlay-proof-001
+next_review_due: after_ed10o_multifont_human_review
+active_artifact: clip-ed10o-multifont-focused-review-001
 source_of_truth: true
 owner_lane: editing
 related: docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md
@@ -54,9 +54,10 @@ status、local availability、reproducibility、intended use で比較できる�
   normal-dialogue samples now resolve to requested candidate font files and are
   valid same-machine visual evidence.
 - Font binaries were not downloaded, copied, or vendored.
-- ED-10n selected `ed10l_keifont_pop_dialogue_candidate` for the current
-  real-font overlay proof. The proof is generated and waiting for human visual
-  review.
+- ED-10n selected `ed10l_keifont_pop_dialogue_candidate` for the real-font
+  overlay proof, and the latest review says Keifont is clearly improved.
+- ED-10o is now the current review surface: a one-shot same-line comparison of
+  Keifont, 851 Chikara Yowaku, and Yasashisa Gothic.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -126,6 +127,23 @@ generated for `cut_002` / `cut_003`.
 | `ed10l_m_plus_fonts_dialogue_candidate` | `M PLUS 1 Thin (TrueType)` | `C:\Users\thank\AppData\Local\Microsoft\Windows\Fonts\MPLUS1-VariableFont_wght.ttf` | Weight/style unpinned; do not treat as winner |
 | `ed10l_yasashisa_gothic_goodfreefonts_candidate` | `やさしさゴシックボールドV2 Bold (TrueType)` | `C:\Users\thank\AppData\Local\Microsoft\Windows\Fonts\YasashisaGothicBold-V2.otf` | Valid comparison candidate; not selected yet |
 
+## ED-10o Multi-font Focused Review
+
+The latest user review changes the bottleneck from font thinness to review UX.
+Keifont is preserved as the lead candidate, but the next review should compare
+fonts in one shot rather than through another isolated single-font proof.
+
+| Included candidate | Role in ED-10o | Review question |
+|---|---|---|
+| `ed10l_keifont_pop_dialogue_candidate` | Current lead | Does it still feel best when compared against alternatives on the same lines? |
+| `ed10l_851_chikara_yowaku_dialogue_candidate` | Soft handwritten alternative | Is it more natural for usual dialogue, or too characterful? |
+| `ed10l_yasashisa_gothic_goodfreefonts_candidate` | Rounded gothic alternative | Is it more stable/readable than Keifont without becoming generic? |
+
+`ed10l_m_plus_fonts_dialogue_candidate` is excluded from ED-10o because current
+registry readback is `M PLUS 1 Thin` via `MPLUS1-VariableFont_wght.ttf`; using
+that as a baseline comparison would be misleading until a non-thin weight/style
+is pinned.
+
 ## ED-10j Kirinuki Font Audit
 
 ED-10j consumes the latest freeform review as a route change, not a minor
@@ -188,12 +206,12 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10n Keifont proof review**: open the current proof and judge whether
-   Keifont solves the normal-dialogue baseline problem.
-2. **Bounded follow-up**: if Keifont is close, adjust only one bounded axis
-   such as outline pressure or badge treatment.
-3. **Alternate ED-10l candidate**: if Keifont is the wrong personality, promote
-   851 Chikara Yowaku or Yasashisa Gothic from the now-valid comparison.
+1. **ED-10o focused review**: open the same-line matrix and compare Keifont,
+   851 Chikara Yowaku, and Yasashisa Gothic at once.
+2. **Bounded follow-up**: if Keifont is still best but slightly off, adjust only
+   one bounded axis such as outline pressure or badge treatment.
+3. **Alternate ED-10l candidate**: if another column wins, promote that
+   candidate into the next proof route.
 4. **Google Fonts / OFL sweep**: request permission to download specific
    families, capture license/version/source metadata, and keep binaries out of
    public Git unless a repo policy is approved.

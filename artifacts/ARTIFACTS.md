@@ -4,9 +4,11 @@ This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10n
-Keifont proof, use `.\open-current-proof.ps1`; for the supporting regenerated
-ED-10l real-font comparison, use
+dashboard, then use an artifact-specific launcher. For the current ED-10o
+multi-font focused review, use
+`episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`;
+for the ED-10n Keifont proof reference, use `.\open-current-proof.ps1`; for the
+supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
@@ -286,6 +288,41 @@ Remote Git can verify the tracked generator, docs, dashboard metadata, and
 tests but not the ignored MP4/PNG/ASS files themselves. Other worktrees should
 treat missing `episodes/` proof assets as local evidence absence, not as a
 tracked Git failure. `git ls-files episodes` should remain empty.
+
+## `clip-ed10o-multifont-focused-review-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10o Multi-font Focused Review Surface |
+| purpose | Consume the latest Keifont review as improved and usable enough for serious review, then move the bottleneck to a compact one-shot comparison of Keifont, 851 Chikara Yowaku, and Yasashisa Gothic on the same subtitle lines. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_multifont_focused_review/subtitle_multifont_focused_review_report.html` |
+| contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_multifont_focused_review/subtitle_multifont_focused_review_matrix.png` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
+| generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10o_multifont_focused_review` reading the existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10n review readback. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10o_multifont_focused_review --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
+| latest_validation_result | Same-machine ED-10o generation returned `artifact_id=clip-ed10o-multifont-focused-review-001`, `comparison_profile=ed10o_multifont_focused_review`, `sample_count=12`, `candidate_count=3`, `focused_review_surface.status=focused_review_surface_generated`, `focused_review_surface.primary_visual=subtitle_area_crop_matrix`, `selected_candidate_for_next_proof_base=ed10l_keifont_pop_dialogue_candidate`, `font_visual_comparison_validity=valid_requested_font_visual_evidence`, `all_candidates_valid_real_font=true`, `excluded_candidates[0].candidate_id=ed10l_m_plus_fonts_dialogue_candidate`, `production_candidate=false`, and `rights_status=pending`; JSON and HTML parsed successfully and the focused matrix PNG was inspected as a nonblank local visual artifact. |
+| review_status | Available and requires human freeform review. Keifont remains the lead entering the review, but ED-10o exists to compare it against 851 Chikara Yowaku and Yasashisa Gothic without returning to a fallback-font contact sheet. |
+| next_action | Open the focused review surface, compare the three included fonts row by row, and answer whether Keifont remains the baseline lead and whether the new review page is easier to judge. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+M+ is intentionally excluded from this one-shot comparison because current
+readback resolves to `M PLUS 1 Thin` via `MPLUS1-VariableFont_wght.ttf`; it
+should be reintroduced only after an exact non-thin weight/style route is
+pinned. Remote Git can verify the tracked generator, docs, dashboard metadata,
+and tests but not the ignored PNG/HTML artifacts themselves. Other worktrees
+should treat missing `episodes/` review assets as local evidence absence, not
+as a tracked Git failure. `git ls-files episodes` should remain empty.
 
 ## `clip-ed10g-noto-overlay-proof-001`
 

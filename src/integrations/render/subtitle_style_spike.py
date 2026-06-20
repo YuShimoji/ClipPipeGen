@@ -49,15 +49,21 @@ DEFAULT_KNOWN_KIRINUKI_FONT_PACK_OUTPUT_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/"
     "review/jp_pilot01r3_cut_review/subtitle_known_kirinuki_font_pack_comparison"
 )
+DEFAULT_MULTIFONT_FOCUSED_REVIEW_OUTPUT_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/"
+    "review/jp_pilot01r3_cut_review/subtitle_multifont_focused_review"
+)
 ED10G_TYPOGRAPHY_DECORATION_PROFILE = "ed10g_typography_decoration"
 ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE = "ed10i_kirinuki_gothic_balance"
 ED10J_KIRINUKI_FONT_AUDIT_PROFILE = "ed10j_kirinuki_font_audit"
 ED10L_KNOWN_KIRINUKI_FONT_PACK_PROFILE = "ed10l_known_kirinuki_font_pack"
+ED10O_MULTIFONT_FOCUSED_REVIEW_PROFILE = "ed10o_multifont_focused_review"
 TYPOGRAPHY_COMPARISON_PROFILES = (
     ED10G_TYPOGRAPHY_DECORATION_PROFILE,
     ED10I_KIRINUKI_GOTHIC_BALANCE_PROFILE,
     ED10J_KIRINUKI_FONT_AUDIT_PROFILE,
     ED10L_KNOWN_KIRINUKI_FONT_PACK_PROFILE,
+    ED10O_MULTIFONT_FOCUSED_REVIEW_PROFILE,
 )
 DEFAULT_CANVAS = (1280, 720)
 SAMPLE_TEXTS = (
@@ -1409,11 +1415,20 @@ def build_subtitle_typography_decoration_comparison(
                 )
             )
 
-    contact_sheet_path = _write_typography_comparison_contact_sheet(
-        samples=samples,
-        output_dir=output_dir,
-        filename=profile["contact_sheet_filename"],
-    )
+    if profile.get("contact_sheet_layout") == "subtitle_area_matrix":
+        contact_sheet_path = _write_typography_focused_review_matrix_contact_sheet(
+            samples=samples,
+            candidates=profile["candidates"],
+            texts=texts,
+            output_dir=output_dir,
+            filename=profile["contact_sheet_filename"],
+        )
+    else:
+        contact_sheet_path = _write_typography_comparison_contact_sheet(
+            samples=samples,
+            output_dir=output_dir,
+            filename=profile["contact_sheet_filename"],
+        )
     font_visual_comparison_validity = _font_visual_comparison_validity(
         samples=samples,
         candidates=profile["candidates"],
@@ -1465,6 +1480,8 @@ def build_subtitle_typography_decoration_comparison(
         },
         "comparison_axes": profile["comparison_axes"],
         "font_visual_comparison_validity": font_visual_comparison_validity,
+        "focused_review_surface": profile.get("focused_review_surface"),
+        "excluded_candidates": profile.get("excluded_candidates", []),
         "next_diagnostic_overlay_proof_route": profile["next_diagnostic_overlay_proof_route"],
         profile["decision_packet_key"]: profile["decision_packet"],
         "comparison_decision_packet": profile["decision_packet"],
@@ -1956,6 +1973,145 @@ def _typography_comparison_profile(
                 "source/license/install readback before the next diagnostic "
                 "overlay proof? Freeform review is enough; do not treat this as "
                 "production/public/rights acceptance."
+            ),
+        }
+    if comparison_profile == ED10O_MULTIFONT_FOCUSED_REVIEW_PROFILE:
+        candidate_ids = {
+            candidate.candidate_id: candidate
+            for candidate in ED10L_KNOWN_KIRINUKI_FONT_PACK_CANDIDATES
+        }
+        candidates = (
+            candidate_ids["ed10l_keifont_pop_dialogue_candidate"],
+            candidate_ids["ed10l_851_chikara_yowaku_dialogue_candidate"],
+            candidate_ids["ed10l_yasashisa_gothic_goodfreefonts_candidate"],
+        )
+        decision_packet = _ed10o_multifont_focused_review_decision_packet(
+            target_cut_ids=target_cut_ids,
+        )
+        return {
+            "output_dir_name": "subtitle_multifont_focused_review",
+            "default_output_dir": DEFAULT_MULTIFONT_FOCUSED_REVIEW_OUTPUT_DIR,
+            "json_filename": "subtitle_multifont_focused_review_report.json",
+            "html_filename": "subtitle_multifont_focused_review_report.html",
+            "contact_sheet_filename": "subtitle_multifont_focused_review_matrix.png",
+            "contact_sheet_layout": "subtitle_area_matrix",
+            "sample_variant": "ed10o_multifont_same_line_subtitle_area_comparison",
+            "report_kind": "subtitle_multifont_focused_review_surface",
+            "artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "scope": "diagnostic_multifont_same_line_focused_review_surface",
+            "html_title": "ED-10o Multi-font Focused Review Surface",
+            "source_notice": (
+                "Latest freeform review consumed: Keifont is materially improved "
+                "and usable enough for serious comparison, but the bottleneck is "
+                "now review UX. This artifact compares multiple candidate fonts "
+                "in one shot with the same lines, same frame geometry, same size "
+                "policy, and subtitle-area crops."
+            ),
+            "decision_packet_title": "ED-10o Multi-font Review Decision Packet",
+            "decision_packet_key": "ed10o_multifont_focused_review_decision_packet",
+            "decision_packet": decision_packet,
+            "font_size_status": "preserved_as_comparison_constant_not_accepted_baseline",
+            "human_decision_readback": {
+                "source_artifact": "clip-ed10n-keifont-overlay-proof-001",
+                "selected_response": "freeform_review_keifont_improved_review_ux_bottleneck",
+                "keifont_quality_level": "usable_for_video_review",
+                "new_bottleneck": "review_surface_usability_and_one_shot_font_comparison",
+                "production_subtitle_design_acceptance": False,
+            },
+            "comparison_response_readback": {
+                "source_artifact": "clip-ed10n-keifont-overlay-proof-001",
+                "selected_response": "build_one_shot_multifont_focused_review_surface",
+                "selected_candidate_for_next_proof_base": "ed10l_keifont_pop_dialogue_candidate",
+                "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "candidate_selection_from_current_pngs_allowed": True,
+                "font_size": "preserved_as_comparison_constant_not_primary_axis",
+                "font_family": "compare_keifont_851_yowaku_yasashisa_in_one_surface",
+                "usage_slot": "normal_dialogue_baseline",
+                "review_surface_goal": "compact_same_line_subtitle_area_matrix",
+                "emoji_treatment": "neutral_ignore_for_evaluation",
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "comparison_axes": {
+                "fixed": [
+                    "same target cuts: cut_002/cut_003",
+                    "same extracted review lines across all candidates",
+                    "font_size_policy=round(frame_height * 0.115)",
+                    "same badge_left_dialogue layout",
+                    "same badge logic, outline/shadow ratios from candidate definitions",
+                    "same subtitle-area crop matrix",
+                ],
+                "varied": [
+                    "font family",
+                    "candidate personality: pop vs soft handwritten vs rounded gothic",
+                    "body thickness and outline pressure as perceived in subtitle-area crops",
+                ],
+                "out_of_scope": [
+                    "M+ winner selection while registry is M PLUS 1 Thin",
+                    "new isolated single-font proof",
+                    "production subtitle design acceptance",
+                    "production render acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                    "font binary vendoring",
+                ],
+            },
+            "focused_review_surface": {
+                "status": "focused_review_surface_generated",
+                "target": "subtitle baseline candidate comparison and review page usability",
+                "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "target_cuts": list(target_cut_ids),
+                "layout": "rows_are_sample_lines_columns_are_font_candidates",
+                "primary_visual": "subtitle_area_crop_matrix",
+                "legacy_contact_sheet_problem_addressed": (
+                    "replaces wide/random primary contact sheet with a compact "
+                    "same-line font matrix near the top of the report"
+                ),
+                "freeform_review_expected": True,
+            },
+            "excluded_candidates": [
+                {
+                    "candidate_id": "ed10l_m_plus_fonts_dialogue_candidate",
+                    "reason": "weight_style_unresolved",
+                    "readback": "registry_display_name=M PLUS 1 Thin; file=MPLUS1-VariableFont_wght.ttf",
+                    "next_action": "pin an exact non-thin M+ weight/style before including it in baseline comparison",
+                }
+            ],
+            "next_diagnostic_overlay_proof_route": {
+                "route_kind": "ed10o_multifont_review_then_bounded_next_proof",
+                "target_cuts": list(target_cut_ids),
+                "selected_candidate_for_next_proof_base": "ed10l_keifont_pop_dialogue_candidate",
+                "recommended_default_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+                "comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
+                "review_surface_role": "one_shot_multifont_baseline_judgement",
+                "font_size": {
+                    "status": "preserve_existing_size_policy_as_comparison_constant",
+                    "formula": "round(frame_height * 0.115)",
+                },
+                "font_family": "compare_three_resolved_normal_dialogue_candidates",
+                "font_binaries_downloaded": False,
+                "font_binaries_vendored": False,
+                "regenerate_sh08_required": False,
+                "episodes_artifact_tracking_allowed": False,
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "creative_acceptance": False,
+                "rights_status": "pending",
+                "publishing_acceptance": False,
+                "public_use_permission": False,
+            },
+            "candidates": candidates,
+            "next_decision_question": (
+                "Which font is closest to the normal-dialogue baseline when "
+                "Keifont, 851 Chikara Yowaku, and Yasashisa Gothic are compared "
+                "side by side on the same lines? Freeform review is enough; also "
+                "say whether this focused review surface is easier to understand."
             ),
         }
     known = ", ".join(TYPOGRAPHY_COMPARISON_PROFILES)
@@ -2808,6 +2964,72 @@ def _known_kirinuki_font_pack_decision_packet(
     }
 
 
+def _ed10o_multifont_focused_review_decision_packet(
+    *,
+    target_cut_ids: tuple[str, ...],
+) -> dict[str, Any]:
+    return {
+        "decision_state": "one_shot_multifont_focused_review_surface_ready",
+        "source_artifact": "clip-ed10n-keifont-overlay-proof-001",
+        "artifact_id": "clip-ed10o-multifont-focused-review-001",
+        "target_cuts": list(target_cut_ids),
+        "latest_freeform_review_consumed": {
+            "keifont_improved": True,
+            "usable_for_video_review": True,
+            "next_bottleneck": "review_ux_not_font_thinness",
+            "wanted_comparison_style": "multiple_font_candidates_in_one_shot",
+            "legacy_contact_sheet_issue": "too_wide_random_weakly_target_aligned",
+        },
+        "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+        "candidate_ids_included": [
+            "ed10l_keifont_pop_dialogue_candidate",
+            "ed10l_851_chikara_yowaku_dialogue_candidate",
+            "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+        ],
+        "candidate_ids_excluded": [
+            {
+                "candidate_id": "ed10l_m_plus_fonts_dialogue_candidate",
+                "reason": "weight_style_unresolved",
+                "readback": "M PLUS 1 Thin via MPLUS1-VariableFont_wght.ttf",
+                "next_action": "pin non-thin M+ weight/style before including",
+            }
+        ],
+        "fixed_review_conditions": [
+            "same target cuts",
+            "same sample lines",
+            "same canvas and font-size formula",
+            "same badge-left dialogue layout",
+            "same subtitle-area crop matrix",
+        ],
+        "review_card": {
+            "target": "multi-font normal-dialogue baseline comparison and focused review surface",
+            "look_for": [
+                "which font is closest to a normal-dialogue baseline",
+                "whether Keifont still leads",
+                "whether the page is easier to understand",
+                "whether only a bounded one-axis adjustment remains",
+            ],
+            "input_mode": "freeform",
+            "interpretation": (
+                "Medium/high confidence freeform review can route the next "
+                "bounded proof or registry update; ask only one clarification "
+                "if the direction would otherwise fork."
+            ),
+        },
+        "boundary_flags": {
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "font_binaries_downloaded": False,
+            "font_binaries_vendored": False,
+            "episodes_artifact_tracking_allowed": False,
+        },
+    }
+
+
 def _candidate_readback(candidate: TypographyDecorationCandidate) -> dict[str, Any]:
     return {
         "candidate_id": candidate.candidate_id,
@@ -3083,6 +3305,7 @@ def _render_typography_decoration_sample(
         "display_name": candidate.display_name,
         "output_image_path": output_path.as_posix(),
         "sample_variant": sample_variant,
+        "sample_text_index": text_index,
         "canvas_size": {"width": width, "height": height},
         "subtitle_mode": "badge_left_dialogue",
         "text": text,
@@ -3285,6 +3508,111 @@ def _write_typography_comparison_contact_sheet(
     return contact_sheet
 
 
+def _write_typography_focused_review_matrix_contact_sheet(
+    *,
+    samples: list[dict[str, Any]],
+    candidates: tuple[TypographyDecorationCandidate, ...],
+    texts: list[str],
+    output_dir: Path,
+    filename: str,
+) -> Path:
+    by_cell = {
+        (str(sample["candidate_id"]), int(sample["sample_text_index"])): sample
+        for sample in samples
+    }
+    cell_w = 420
+    cell_h = 245
+    label_w = 260
+    header_h = 64
+    row_gap = 14
+    col_gap = 10
+    width = label_w + len(candidates) * cell_w + max(0, len(candidates) - 1) * col_gap
+    height = header_h + len(texts) * cell_h + max(0, len(texts) - 1) * row_gap
+    sheet = Image.new("RGB", (width, height), (246, 248, 250))
+    draw = ImageDraw.Draw(sheet)
+    _, label_font_path, _ = _select_font()
+    label_font = _load_font(label_font_path, 18)
+    small_font = _load_font(label_font_path, 16)
+
+    draw.rectangle((0, 0, width, header_h), fill=(32, 36, 42))
+    draw.text((16, 20), "same line", font=label_font, fill=(255, 255, 255))
+    for col, candidate in enumerate(candidates):
+        x = label_w + col * (cell_w + col_gap)
+        fill = (236, 70, 88) if candidate.candidate_id == "ed10l_keifont_pop_dialogue_candidate" else (70, 82, 96)
+        draw.rectangle((x, 10, x + cell_w, header_h - 10), fill=fill)
+        draw.text((x + 10, 24), candidate.display_name[:58], font=label_font, fill=(255, 255, 255))
+
+    for row, text in enumerate(texts, start=1):
+        y = header_h + (row - 1) * (cell_h + row_gap)
+        draw.rectangle((0, y, label_w - 12, y + cell_h), fill=(230, 235, 240))
+        draw.text((14, y + 18), f"line {row}", font=label_font, fill=(30, 36, 42))
+        wrapped_label = _short_matrix_label(text)
+        draw.multiline_text((14, y + 46), wrapped_label, font=small_font, fill=(30, 36, 42), spacing=4)
+        for col, candidate in enumerate(candidates):
+            x = label_w + col * (cell_w + col_gap)
+            sample = by_cell[(candidate.candidate_id, row)]
+            image = Image.open(sample["output_image_path"]).convert("RGB")
+            crop_top = round(image.height * 0.50)
+            cropped = image.crop((0, crop_top, image.width, image.height))
+            cropped.thumbnail((cell_w, cell_h))
+            cell = Image.new("RGB", (cell_w, cell_h), (24, 27, 31))
+            cell.paste(cropped, ((cell_w - cropped.width) // 2, (cell_h - cropped.height) // 2))
+            sheet.paste(cell, (x, y))
+            draw.rectangle((x, y, x + cell_w - 1, y + cell_h - 1), outline=(156, 168, 180), width=2)
+
+    contact_sheet = output_dir / filename
+    sheet.save(contact_sheet)
+    return contact_sheet
+
+
+def _short_matrix_label(text: str) -> str:
+    chunks: list[str] = []
+    current = ""
+    for char in text:
+        current += char
+        if len(current) >= 13:
+            chunks.append(current)
+            current = ""
+    if current:
+        chunks.append(current)
+    return "\n".join(chunks[:4])
+
+
+def _focused_review_html(report: dict[str, Any]) -> str:
+    focus = report.get("focused_review_surface")
+    if not isinstance(focus, dict):
+        return ""
+    excluded = report.get("excluded_candidates") or []
+    excluded_rows = "".join(
+        "<tr>"
+        f"<td>{html.escape(str(item.get('candidate_id', '')))}</td>"
+        f"<td>{html.escape(str(item.get('reason', '')))}</td>"
+        f"<td>{html.escape(str(item.get('next_action', '')))}</td>"
+        "</tr>"
+        for item in excluded
+        if isinstance(item, dict)
+    )
+    target_cuts = ", ".join(str(cut) for cut in focus.get("target_cuts", []))
+    return (
+        "<section class=\"review-focus\">"
+        "<h2>Review Focus</h2>"
+        "<table>"
+        f"<tr><th>target</th><td>{html.escape(str(focus.get('target', '')))}</td></tr>"
+        f"<tr><th>cuts</th><td>{html.escape(target_cuts)}</td></tr>"
+        f"<tr><th>lead candidate</th><td>{html.escape(str(focus.get('current_lead_candidate_id', '')))}</td></tr>"
+        f"<tr><th>primary visual</th><td>{html.escape(str(focus.get('primary_visual', '')))}</td></tr>"
+        f"<tr><th>layout</th><td>{html.escape(str(focus.get('layout', '')))}</td></tr>"
+        "</table>"
+        "<p class=\"notice\">Read rows as the same subtitle line and columns as font candidates. "
+        "The matrix is cropped to the subtitle area so the first impression is the review target, not a random scene strip.</p>"
+        "<h3>Excluded From This One-shot Comparison</h3>"
+        "<table><tr><th>candidate</th><th>reason</th><th>next action</th></tr>"
+        f"{excluded_rows or '<tr><td colspan=\"3\">none</td></tr>'}"
+        "</table>"
+        "</section>"
+    )
+
+
 def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> None:
     samples_by_candidate: dict[str, list[dict[str, Any]]] = {}
     for sample in report["samples"]:
@@ -3350,6 +3678,7 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
     decision_packet = report.get(decision_packet_key) or report.get(
         "small_adjustment_decision_packet"
     )
+    review_focus = _focused_review_html(report)
     body = f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -3369,8 +3698,9 @@ def _write_typography_comparison_html(path: Path, report: dict[str, Any]) -> Non
   <p class="notice">review_only=true / production_candidate=false / production_subtitle_design_acceptance=false / rights_status=pending</p>
   <p class="notice">{html.escape(source_notice)}</p>
   <p class="notice">This artifact uses generated review-only PNGs. It does not mutate source media, transcript, official subtitle evidence, rights, publishing, public use, or upload state.</p>
-  <h2>Contact Sheet</h2>
-  <p><a href="{html.escape(contact_sheet)}"><img src="{html.escape(contact_sheet)}" alt="typography decoration contact sheet"></a></p>
+  {review_focus}
+  <h2>Focused Matrix / Contact Sheet</h2>
+  <p><a href="{html.escape(contact_sheet)}"><img src="{html.escape(contact_sheet)}" alt="focused subtitle comparison matrix"></a></p>
   <h2>Decision Question</h2>
   <p>{html.escape(str(report["next_decision_question"]))}</p>
   <h2>Font Visual Comparison Validity</h2>

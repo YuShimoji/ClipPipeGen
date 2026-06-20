@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10n_keifont_overlay_proof_ready_for_review
-progress_pct: 95
+health: ed10o_multifont_focused_review_ready
+progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10n_keifont_human_visual_review
-active_artifact: clip-ed10n-keifont-overlay-proof-001
+next_review_due: after_ed10o_multifont_human_review
+active_artifact: clip-ed10o-multifont-focused-review-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,13 +35,13 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10n-keifont-overlay-proof-001`
+Active artifact: `clip-ed10o-multifont-focused-review-001`
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
 the user explicitly says to rewind. ED-10k is already generated, reviewed, and
-rejected as the normal-dialogue baseline. Continue from ED-10n Keifont
-real-font overlay proof review instead.
+rejected as the normal-dialogue baseline. Continue from ED-10o multi-font
+focused review instead.
 
 Current judgement: the ED-10k BIZ UDGothic overlay proof has now been reviewed
 and is not accepted as the normal-dialogue subtitle baseline. The review says
@@ -50,10 +50,10 @@ outline pressure is too strong. This also rejects the broader BIZ/Noto/Meiryo
 system-safe route for this use case. BIZ remains a reviewed reference, not the
 current baseline.
 
-The active route is ED-10n: `Per-user Font Readback and Keifont Real Proof
-v0`. ED-10l remains the comparison/readback artifact, but the current human
-review target is the regenerated Keifont overlay proof for `cut_002` /
-`cut_003`.
+The active route is ED-10o: `Multi-font Comparison and Focused Review Surface
+v0`. ED-10n remains the leading Keifont proof, but the current human review
+target is the one-shot same-line comparison of Keifont, 851 Chikara Yowaku, and
+Yasashisa Gothic.
 
 ED-10l route readback:
 
@@ -87,6 +87,10 @@ ED-10l route readback:
 - M PLUS resolved via registry as `M PLUS 1 Thin` /
   `MPLUS1-VariableFont_wght.ttf`; do not treat it as a winner until exact
   weight/style is pinned
+- ED-10o excludes M+ from the one-shot baseline comparison with
+  `reason=weight_style_unresolved`
+- ED-10o focused review surface uses rows as sample lines and columns as font
+  candidates, with subtitle-area crops as the primary visual
 - no font binary was downloaded, installed, copied, vendored, staged, or
   committed by Codex; local font files remain same-machine evidence only
 
@@ -103,10 +107,11 @@ gates.
 
 ## Next
 
-1. Open `clip-ed10n-keifont-overlay-proof-001` and review the visible Keifont
-   proof for `cut_002` / `cut_003`.
-2. Judge whether Keifont solves the BIZ/Noto/Meiryo rigidity/thinness problem,
-   or whether it needs a bounded adjustment / another ED-10l candidate.
+1. Open `clip-ed10o-multifont-focused-review-001` and compare Keifont, 851
+   Chikara Yowaku, and Yasashisa Gothic on the same lines.
+2. Judge whether Keifont still leads, whether another candidate is a better
+   normal-dialogue baseline, and whether the focused review page is easier to
+   understand than the previous wide contact sheet.
 3. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
 4. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
@@ -144,8 +149,10 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10n Keifont proof via
-   `.\open-current-proof.ps1`, regenerated ED-10l real-font comparison via
+   `.\open-artifacts.ps1`, current ED-10o focused comparison via
+   `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
+   ED-10n Keifont proof reference via `.\open-current-proof.ps1`,
+   regenerated ED-10l real-font comparison via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`,
    consumed ED-10j font audit via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1`,

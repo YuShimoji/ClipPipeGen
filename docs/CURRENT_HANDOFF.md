@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10n_keifont_overlay_proof_ready_for_review
-progress_pct: 95
+health: ed10o_multifont_focused_review_ready
+progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10n_keifont_human_visual_review
-active_artifact: clip-ed10n-keifont-overlay-proof-001
+next_review_due: after_ed10o_multifont_human_review
+active_artifact: clip-ed10o-multifont-focused-review-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -24,7 +24,7 @@ already advanced to ED-10l.
 
 ## Current State
 
-The active artifact is `clip-ed10n-keifont-overlay-proof-001`.
+The active artifact is `clip-ed10o-multifont-focused-review-001`.
 
 ED-10j already consumed the freeform review that removed Meiryo from normal
 subtitle baseline candidates. ED-10j readback also resolved the blue badge /
@@ -43,11 +43,16 @@ Keifont, 851 Chikara Yowaku, M+ FONTS, and Yasashisa Gothic. The regenerated
 comparison is valid requested-font visual evidence on this same machine.
 
 ED-10n generated the Keifont overlay proof for `cut_002` and `cut_003` using
-`ed10l_keifont_pop_dialogue_candidate`. The next human task is visual review of
-that proof. M PLUS is only read back as registry display `M PLUS 1 Thin` via a
-variable font file, so it should not be treated as a selected winner until
-weight/style is pinned. No font binary was downloaded, installed, copied,
-vendored, staged, or committed by Codex.
+`ed10l_keifont_pop_dialogue_candidate`. The latest review says Keifont is a
+clear improvement and usable enough to compare seriously; the bottleneck is now
+review UX and serial font comparison.
+
+ED-10o generated a one-shot focused review surface. It compares Keifont, 851
+Chikara Yowaku, and Yasashisa Gothic on the same lines in a subtitle-area crop
+matrix, with Keifont preserved as current lead. M PLUS is excluded because its
+registry readback is `M PLUS 1 Thin` via a variable font file; it needs a pinned
+non-thin weight/style before baseline comparison. No font binary was
+downloaded, installed, copied, vendored, staged, or committed by Codex.
 
 ## Resume Order
 
@@ -62,17 +67,18 @@ vendored, staged, or committed by Codex.
 
 ## Next Move
 
-Open and review the Keifont overlay proof first. Decide whether it solves the
-BIZ/Noto/Meiryo rigidity and thinness problem, or whether the next route should
-be a bounded Keifont adjustment or another ED-10l candidate.
+Open and review the ED-10o focused matrix first. Decide which font is closest
+to the normal-dialogue baseline, whether Keifont still leads, and whether the
+new page is easier to understand than the old wide contact sheet.
 
 Good immediate candidates to route:
 
 | Candidate route | Why it helps | Required before proof |
 |---|---|---|
-| `ed10l_keifont_pop_dialogue_candidate` | Strong pop/kirinuki normal-dialogue direction | Current ED-10n overlay proof review |
-| `ed10l_851_chikara_yowaku_dialogue_candidate` | Softer handwritten route that avoids rigid BIZ feel | Promote only if Keifont review asks for alternate route |
-| `ed10l_m_plus_fonts_dialogue_candidate` | More reproducible OFL-backed route | Pin exact weight/style first; current registry says `M PLUS 1 Thin` |
+| `ed10l_keifont_pop_dialogue_candidate` | Strong pop/kirinuki normal-dialogue direction | Current lead column in ED-10o |
+| `ed10l_851_chikara_yowaku_dialogue_candidate` | Softer handwritten route that avoids rigid BIZ feel | Compare directly against Keifont in ED-10o |
+| `ed10l_yasashisa_gothic_goodfreefonts_candidate` | Rounded gothic route | Compare directly against Keifont in ED-10o |
+| `ed10l_m_plus_fonts_dialogue_candidate` | More reproducible OFL-backed route | Excluded until exact non-thin weight/style is pinned |
 
 Keep `ed10l_851_chikara_zuyoku_emphasis_candidate` outside the normal dialogue
 baseline; it belongs to emphasis / shout / tsukkomi.
@@ -84,7 +90,8 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10n-keifont-overlay-proof-001` | Current Keifont real-font proof for human visual review | `.\open-current-proof.ps1` |
+| `clip-ed10o-multifont-focused-review-001` | Current one-shot multi-font focused review surface | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
+| `clip-ed10n-keifont-overlay-proof-001` | Keifont lead proof reference | `.\open-current-proof.ps1` |
 | `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback evidence | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
 | `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected BIZ reference | See artifact registry; `open-current-proof.ps1` now points to ED-10n |
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed Meiryo removal / BIZ selection audit trail | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |

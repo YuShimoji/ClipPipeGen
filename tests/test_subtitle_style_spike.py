@@ -1223,3 +1223,125 @@ def test_typography_decoration_comparison_cli_reports_ed10l_profile(
     ] == "system_safe_generic_readability"
     assert payload["production_subtitle_design_acceptance"] is False
     assert Path(payload["outputs"]["html"]).exists()
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_multifont_focused_review_profile_builds_same_line_matrix(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "ed10o_multifont"
+
+    report = spike.build_subtitle_typography_decoration_comparison(
+        output_dir=output_dir,
+        sample_texts=[
+            "なんで来なかったんすか！！",
+            "まあ謝るんなら許してあげます",
+        ],
+        canvas_size=(640, 360),
+        base_dir=tmp_path,
+        comparison_profile="ed10o_multifont_focused_review",
+    )
+
+    assert report["artifact_id"] == "clip-ed10o-multifont-focused-review-001"
+    assert report["comparison_profile"] == "ed10o_multifont_focused_review"
+    assert report["report_kind"] == "subtitle_multifont_focused_review_surface"
+    assert report["candidate_count"] == 3
+    assert len(report["samples"]) == 6
+    assert {candidate["candidate_id"] for candidate in report["candidates"]} == {
+        "ed10l_keifont_pop_dialogue_candidate",
+        "ed10l_851_chikara_yowaku_dialogue_candidate",
+        "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+    }
+    assert report["focused_review_surface"]["primary_visual"] == (
+        "subtitle_area_crop_matrix"
+    )
+    assert report["focused_review_surface"]["current_lead_candidate_id"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert report["excluded_candidates"] == [
+        {
+            "candidate_id": "ed10l_m_plus_fonts_dialogue_candidate",
+            "reason": "weight_style_unresolved",
+            "readback": (
+                "registry_display_name=M PLUS 1 Thin; "
+                "file=MPLUS1-VariableFont_wght.ttf"
+            ),
+            "next_action": (
+                "pin an exact non-thin M+ weight/style before including it "
+                "in baseline comparison"
+            ),
+        }
+    ]
+    assert {
+        sample["sample_text_index"] for sample in report["samples"]
+    } == {1, 2}
+    assert {
+        sample["sample_variant"] for sample in report["samples"]
+    } == {"ed10o_multifont_same_line_subtitle_area_comparison"}
+    assert report["next_diagnostic_overlay_proof_route"]["route_kind"] == (
+        "ed10o_multifont_review_then_bounded_next_proof"
+    )
+    assert report["production_subtitle_design_acceptance"] is False
+    assert report["rights_status"] == "pending"
+
+    html_path = output_dir / "subtitle_multifont_focused_review_report.html"
+    matrix_path = output_dir / "subtitle_multifont_focused_review_matrix.png"
+    assert html_path.exists()
+    assert matrix_path.exists()
+    html = html_path.read_text(encoding="utf-8")
+    assert "Review Focus" in html
+    assert "Focused Matrix" in html
+    assert "Excluded From This One-shot Comparison" in html
+    assert "ed10l_m_plus_fonts_dialogue_candidate" in html
+
+
+@pytest.mark.skipif(
+    spike.Image is None,
+    reason="Pillow optional local review tool is not installed",
+)
+def test_typography_decoration_comparison_cli_reports_ed10o_profile(
+    tmp_path: Path,
+):
+    output_dir = tmp_path / "ed10o_cli"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "build-subtitle-typography-decoration-comparison",
+            "--comparison-profile",
+            "ed10o_multifont_focused_review",
+            "--output-dir",
+            str(output_dir),
+            "--target-cut",
+            "cut_002",
+            "--target-cut",
+            "cut_003",
+            "--sample-text",
+            "ED-10o one-shot font comparison smoke",
+            "--format",
+            "json",
+        ],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["artifact_id"] == "clip-ed10o-multifont-focused-review-001"
+    assert payload["comparison_profile"] == "ed10o_multifont_focused_review"
+    assert payload["candidate_count"] == 3
+    assert payload["comparison_response"]["selected_response"] == (
+        "build_one_shot_multifont_focused_review_surface"
+    )
+    assert payload["focused_review_surface"]["primary_visual"] == (
+        "subtitle_area_crop_matrix"
+    )
+    assert payload["excluded_candidates"][0]["reason"] == "weight_style_unresolved"
+    assert payload["production_subtitle_design_acceptance"] is False
+    assert Path(payload["outputs"]["html"]).exists()

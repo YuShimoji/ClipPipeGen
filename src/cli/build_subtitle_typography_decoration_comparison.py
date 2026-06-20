@@ -38,7 +38,9 @@ def run(argv: list[str]) -> int:
             "gothic body/outline balance proof; ed10j_kirinuki_font_audit creates "
             "the follow-up normal-dialogue font audit after Meiryo review; "
             "ed10l_known_kirinuki_font_pack creates the route-correction audit "
-            "for known Japanese kirinuki/telop fonts after BIZ review."
+            "for known Japanese kirinuki/telop fonts after BIZ review; "
+            "ed10o_multifont_focused_review creates the one-shot multi-font "
+            "focused review surface after Keifont proof review."
         ),
     )
     parser.add_argument("--width", type=int, default=1920)
@@ -90,6 +92,8 @@ def run(argv: list[str]) -> int:
             decision_packet,
         ),
         "comparison_decision_packet": decision_packet,
+        "focused_review_surface": report.get("focused_review_surface"),
+        "excluded_candidates": report.get("excluded_candidates", []),
         "review_only": report["review_only"],
         "production_candidate": report["production_candidate"],
         "production_subtitle_design_acceptance": report[
