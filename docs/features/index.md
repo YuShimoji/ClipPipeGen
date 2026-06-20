@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10p`
+- feature: `ED-10q`
 - artifact: `clip-ed10p-keifont-lead-representative-proof-001`
-- state: `ed10p_keifont_lead_representative_proof_ready`
+- state: `ed10q_current_proof_focused_review_restored`
 
 ## Feature Table
 
@@ -52,9 +52,10 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10k | BIZ UDGothic Overlay Proof v0 | done | reviewed_not_accepted_as_normal_baseline | 100 | clip-ed10k-biz-overlay-proof-001 | Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline. |
 | ED-10l | Known Kirinuki Font Pack Audit v0 | done | per_user_font_readback_valid_comparison | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as regenerated real-font comparison; use ED-10n Keifont proof for current visual judgement. |
 | ED-10m | Real Font Source/License Install Route v0 | done | keifont_route_prepared_user_install_completed_by_user | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as source/license route record; ED-10n consumed the per-user font readback. |
-| ED-10n | Per-user Font Readback and Keifont Real Proof v0 | done | keifont_overlay_proof_ready_for_human_review | 95 | clip-ed10n-keifont-overlay-proof-001 | Keep as earlier lead proof reference; ED-10p is now the current representative proof. |
+| ED-10n | Per-user Font Readback and Keifont Real Proof v0 | done | keifont_overlay_proof_ready_for_human_review | 95 | clip-ed10n-keifont-overlay-proof-001 | Keep as earlier lead proof reference; ED-10q is now the focused current review surface for the ED-10p artifact. |
 | ED-10o | Multi-font Comparison and Focused Review Surface v0 | done | focused_review_surface_accepted_reference | 100 | clip-ed10o-multifont-focused-review-001 | Keep as accepted focused review-surface reference; it is not final baseline or production acceptance. |
-| ED-10p | Keifont Lead Representative Proof and Review Surface Standard v0 | done | keifont_lead_representative_proof_ready | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Collect freeform review on whether Keifont holds as provisional lead in the representative proof. |
+| ED-10p | Keifont Lead Representative Proof and Review Surface Standard v0 | done | keifont_lead_representative_proof_ready | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as the Keifont proof artifact; ED-10q restores the current proof review surface. |
+| ED-10q | Current Proof Focused Review Regression Fix v0 | done | current_proof_focused_review_restored | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Open the focused current proof page and collect freeform review on page clarity and Keifont viability. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

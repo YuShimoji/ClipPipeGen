@@ -2,11 +2,11 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10p_keifont_lead_representative_proof_ready
-health: keifont_lead_proof_ready
+status: ed10q_current_proof_focused_review_restored
+health: current_proof_focused_review_restored
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10p_keifont_human_review
+next_review_due: after_ed10q_focused_page_human_review
 active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: true
 owner_lane: editing
@@ -17,7 +17,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-20 JST
 
-## Current Update - ED-10p Keifont Lead Representative Proof
+## Current Update - ED-10q Current Proof Focused Review
 
 The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
 consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
@@ -54,6 +54,13 @@ the provisional lead and generates `clip-ed10p-keifont-lead-representative-proof
 for `cut_002` / `cut_003`. The proof page includes Review Focus, target lines,
 the ED-10o matrix reference, and Review Debt for `cut_008` dense/stress proof.
 
+ED-10q fixes the current-proof review surface regression reported after running
+`.\open-current-proof.ps1`. The root launcher now opens
+`current_proof_focused_review.html`, where Review Focus, target lines,
+subtitle-area evidence, ED-10o reference, and `cut_008_dense_stress_proof`
+Review Debt appear before Detailed Reports. The older detailed overlay report
+remains linked for inspection but is not the primary first view.
+
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
@@ -64,7 +71,7 @@ the ED-10o matrix reference, and Review Debt for `cut_008` dense/stress proof.
 | `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback | Confirms all four normal-dialogue candidates resolve from per-user font files | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont real-font proof | Shows the first Keifont proof before ED-10o review UX acceptance | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused multi-font review surface | Confirms the focused comparison page is easier to review and keeps alternates visible | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10p-keifont-lead-representative-proof-001` | Current Keifont lead representative proof | Whether Keifont remains the provisional normal-dialogue lead beyond the easiest sample, or needs one bounded adjustment / alternate promotion | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10p-keifont-lead-representative-proof-001` | Current focused Keifont lead representative proof | Whether the restored focused page is reviewable and whether Keifont remains the provisional normal-dialogue lead beyond the easiest sample | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -86,11 +93,12 @@ representative diagnostic proof の判断面です。
 baseline としては不採用です。現在の active artifact は
 `clip-ed10p-keifont-lead-representative-proof-001` です。ED-10o は
 focused review surface の比較参照であり、現在の active proof ではありません。
+`.\open-current-proof.ps1` は `current_proof_focused_review.html` を開きます。
 
 ## これからどうなるか
 
-1. `clip-ed10p-keifont-lead-representative-proof-001` を開き、Keifont が
-   representative proof 上でも provisional lead として成立するか確認する。
+1. `.\open-current-proof.ps1` を実行し、`Review Focus: Current Proof` から
+   Keifont が representative proof 上でも provisional lead として成立するか確認する。
 2. 必要なら `clip-ed10o-multifont-focused-review-001` を比較参照として開き、
    Keifont / 851 Yowaku / Yasashisa の同一行比較を確認する。
 3. Keifont が引き続き最良なら、outline pressure や badge など 1 軸だけを
@@ -104,14 +112,15 @@ focused review surface の比較参照であり、現在の active proof では�
 
 ## 使い方・確認方法
 
-## Current ED-10p Override
+## Current ED-10q Override
 
 The active artifact is `clip-ed10p-keifont-lead-representative-proof-001`.
 ED-10o is now the accepted focused review surface direction and comparison
-reference. ED-10p is the current proof to review: Keifont remains provisional
-lead, 851 Yowaku and Yasashisa remain alternates, and
+reference. ED-10q is the current review-surface fix: Keifont remains
+provisional lead, 851 Yowaku and Yasashisa remain alternates, and
 `cut_008_dense_stress_proof` is Review Debt until its `needs_adjustment` state
-is explicitly handled or scoped.
+is explicitly handled or scoped. The root launcher opens the focused page, not
+the old detailed/debug overlay report.
 
 Primary local proof review:
 

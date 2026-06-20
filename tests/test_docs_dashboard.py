@@ -27,7 +27,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10p"
+    assert status["current_focus"]["feature_id"] == "ED-10q"
     assert status["current_focus"]["artifact_id"] == (
         "clip-ed10p-keifont-lead-representative-proof-001"
     )
@@ -41,13 +41,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10n-keifont-overlay-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10p_keifont_lead_representative_proof_ready"
+        "ed10q_current_proof_focused_review_restored"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "ed10o_review_surface_direction_accepted_not_final_baseline"
+        "ed10p_review_blocked_by_old_layout_regression"
     )
     assert status["current_focus"]["latest_review_consumed"] == (
-        "ed10o_focused_review_surface_accepted"
+        "ed10q_current_proof_layout_regression_reported"
     )
     assert status["current_focus"]["selected_typography_base"] == (
         "ed10l_keifont_pop_dialogue_candidate"
@@ -56,13 +56,16 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "keifont_lead_representative_proof_ready"
+        "current_proof_launcher_opens_focused_review_surface"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_font_visual_evidence_after_per_user_font_readback"
     )
     assert status["current_focus"]["review_surface_direction"] == (
         "ed10o_focused_matrix_accepted_as_preferred_review_direction"
+    )
+    assert status["current_focus"]["focused_review_html"] == (
+        "episodes/.../current_proof_focused_review.html"
     )
     assert status["current_focus"]["review_debt"][0]["debt_id"] == (
         "cut_008_dense_stress_proof"
@@ -121,6 +124,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     features_index = result["features_path"].read_text(encoding="utf-8")
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
+    assert persisted["open_surfaces"][2]["target"] == (
+        "episodes/.../current_proof_focused_review.html"
+    )
     assert "Open Surfaces" in html
     assert "subtitle_known_kirinuki_font_pack" in html
     assert "subtitle_kirinuki_font_audit" in html
@@ -131,7 +137,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
-    assert "subtitle_overlay_visual_proof_report" in html
+    assert "current_proof_focused_review" in html
     assert "clip-ed10n-keifont-overlay-proof-001" in html
     assert "clip-ed10l-known-kirinuki-font-pack-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
@@ -173,6 +179,16 @@ def test_build_docs_dashboard_cli_writes_outputs(tmp_path: Path):
     assert (output_dir / "project-status.json").exists()
     assert (output_dir / "index.html").exists()
     assert (tmp_path / "docs" / "features" / "index.md").exists()
+
+
+def test_open_current_proof_launcher_targets_focused_review_surface():
+    launcher = (REPO_ROOT / "open-current-proof.ps1").read_text(encoding="utf-8")
+
+    assert "current_proof_focused_review.html" in launcher
+    relative_target_line = next(
+        line for line in launcher.splitlines() if line.startswith("$relativeTarget")
+    )
+    assert "subtitle_overlay_visual_proof_report.html" not in relative_target_line
 
 
 def test_subtitle_font_candidate_registry_is_machine_readable():
@@ -325,6 +341,12 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "ed10p_keifont_lead_representative_proof"
     )
     assert registry["ed10p_keifont_lead_representative_proof"][
+        "current_review_page"
+    ].endswith("current_proof_focused_review.html")
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "detailed_overlay_report"
+    ].endswith("subtitle_overlay_visual_proof_report.html")
+    assert registry["ed10p_keifont_lead_representative_proof"][
         "current_lead_candidate_id"
     ] == "ed10l_keifont_pop_dialogue_candidate"
     assert registry["ed10p_keifont_lead_representative_proof"]["lead_status"] == (
@@ -350,6 +372,24 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     ] is False
     assert registry["ed10p_keifont_lead_representative_proof"][
         "font_binaries_copied_or_vendored"
+    ] is False
+    assert registry["ed10q_current_proof_focused_review_fix"]["feature_id"] == (
+        "ED-10q"
+    )
+    assert registry["ed10q_current_proof_focused_review_fix"]["artifact_id"] == (
+        "clip-ed10p-keifont-lead-representative-proof-001"
+    )
+    assert registry["ed10q_current_proof_focused_review_fix"][
+        "launcher_target"
+    ].endswith("current_proof_focused_review.html")
+    assert registry["ed10q_current_proof_focused_review_fix"][
+        "debug_tables_primary"
+    ] is False
+    assert registry["ed10q_current_proof_focused_review_fix"][
+        "first_view_order"
+    ][0] == "Review Focus: Current Proof"
+    assert registry["ed10q_current_proof_focused_review_fix"][
+        "production_subtitle_design_acceptance"
     ] is False
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids

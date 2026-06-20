@@ -3,10 +3,10 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10p_keifont_lead_representative_proof_ready
+health: ed10q_current_proof_focused_review_restored
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10p_keifont_human_review
+next_review_due: after_ed10q_focused_page_human_review
 active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: true
 owner_lane: shared_infra
@@ -50,14 +50,17 @@ outline pressure is too strong. This also rejects the broader BIZ/Noto/Meiryo
 system-safe route for this use case. BIZ remains a reviewed reference, not the
 current baseline.
 
-The active route is ED-10p: `Keifont Lead Representative Proof and Focused
-Review Surface Standard v0`. ED-10o was reviewed as easier to see and accepted
+The active route is ED-10q: `Current Proof Focused Review Regression Fix v0`.
+The artifact remains `clip-ed10p-keifont-lead-representative-proof-001`, but
+the root launcher now opens `current_proof_focused_review.html` instead of the
+old detailed overlay report. ED-10o was reviewed as easier to see and accepted
 as the preferred review-surface direction, not as production subtitle design
 acceptance. Because the user did not choose 851 Chikara Yowaku or Yasashisa
 Gothic over Keifont, Keifont remains the provisional normal-dialogue lead.
-ED-10p regenerated the Keifont proof for `cut_002` / `cut_003` and puts Review
-Focus, target lines, the ED-10o reference, and `cut_008` dense/stress Review
-Debt near the top of the proof page.
+ED-10q restores the review surface so the page starts with Review Focus,
+target lines, subtitle-area evidence for `cut_002` / `cut_003`, the ED-10o
+reference, and `cut_008` dense/stress Review Debt; long diagnostic/debug
+tables are demoted to linked detailed reports.
 
 ED-10l route readback:
 
@@ -99,6 +102,9 @@ ED-10l route readback:
   `focused_review_surface_accepted_as_review_direction`
 - ED-10p generated `clip-ed10p-keifont-lead-representative-proof-001` using
   `ed10l_keifont_pop_dialogue_candidate` as provisional lead
+- ED-10q fixed the current-proof launcher/page regression: `.\open-current-proof.ps1`
+  now opens `episodes/.../current_proof_focused_review.html`, where Review
+  Focus and subtitle-area evidence appear before detailed/debug reports
 - `cut_008` remains Review Debt for a dedicated dense/stress proof because its
   current decision state is still `needs_adjustment`
 - no font binary was downloaded, installed, copied, vendored, staged, or
@@ -117,11 +123,10 @@ gates.
 
 ## Next
 
-1. Open `clip-ed10p-keifont-lead-representative-proof-001` and review the
-   Keifont lead proof for `cut_002` / `cut_003`.
-2. Judge whether Keifont still works beyond the easiest sample, whether body
-   thickness / outline pressure are acceptable, and whether the focused proof
-   page remains easy to judge.
+1. Run `.\open-current-proof.ps1` and verify the page starts with
+   `Review Focus: Current Proof`, not the old detailed/debug report layout.
+2. Review the Keifont lead proof for `cut_002` / `cut_003` from the focused
+   page and judge whether body thickness / outline pressure are acceptable.
 3. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont remains the default lead while 851 Chikara Yowaku and Yasashisa
    Gothic remain alternates.
@@ -163,7 +168,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10p Keifont proof via
+   `.\open-artifacts.ps1`, current ED-10q/ED-10p focused Keifont proof via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
    regenerated ED-10l real-font comparison via

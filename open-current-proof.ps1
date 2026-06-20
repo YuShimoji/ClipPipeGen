@@ -4,7 +4,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $repoRoot = $PSScriptRoot
-$relativeTarget = "episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_overlay_visual_proof_report.html"
+$relativeTarget = "episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\current_proof_focused_review.html"
 $dashboard = "docs\dashboard\index.html"
 $artifacts = "artifacts\ARTIFACTS.md"
 $target = Join-Path $repoRoot $relativeTarget

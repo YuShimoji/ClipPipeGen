@@ -3,10 +3,10 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10p_keifont_lead_representative_proof_ready
+health: ed10q_current_proof_focused_review_restored
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10p_keifont_human_review
+next_review_due: after_ed10q_focused_page_human_review
 active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: false
 owner_lane: shared_infra
@@ -59,8 +59,14 @@ surface as the preferred review direction, not final subtitle design or
 production acceptance. Because the user did not promote 851 Chikara Yowaku or
 Yasashisa Gothic over Keifont, ED-10p keeps Keifont as the provisional
 normal-dialogue lead and regenerates the representative proof for `cut_002` /
-`cut_003`. The proof page now starts with Review Focus, target lines, the ED-10o
-reference, and Review Debt for `cut_008` dense/stress coverage.
+`cut_003`.
+
+ED-10q fixes the current proof review-surface regression reported after the
+user ran `.\open-current-proof.ps1`: the launcher now opens
+`current_proof_focused_review.html`, which starts with Review Focus, target
+lines, subtitle-area evidence, the ED-10o reference, and Review Debt for
+`cut_008` dense/stress coverage. The old detailed/debug overlay report remains
+available from the focused page, but it is no longer the primary first view.
 
 ## Resume Order
 
@@ -75,10 +81,10 @@ reference, and Review Debt for `cut_008` dense/stress coverage.
 
 ## Next Move
 
-Open and review the ED-10p Keifont lead proof first. Decide whether Keifont
-still works as the provisional normal-dialogue lead beyond the easiest sample,
-whether body thickness / outline pressure are acceptable, and whether the new
-focused proof page remains easy to judge.
+Open the current proof with `.\open-current-proof.ps1` first. The page should
+start with `Review Focus: Current Proof`; use it to decide whether Keifont
+still works as the provisional normal-dialogue lead beyond the easiest sample
+and whether body thickness / outline pressure are acceptable.
 
 Good immediate candidates to route:
 
@@ -99,11 +105,11 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10p-keifont-lead-representative-proof-001` | Current Keifont lead representative proof | `.\open-current-proof.ps1` |
+| `clip-ed10p-keifont-lead-representative-proof-001` | Current focused Keifont lead representative proof | `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused review UX direction / font comparison reference | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
-| `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | `.\open-current-proof.ps1` |
+| `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | See artifact registry; root launcher now opens ED-10q focused current proof |
 | `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback evidence | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
-| `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected BIZ reference | See artifact registry; `open-current-proof.ps1` now points to ED-10n |
+| `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected BIZ reference | See artifact registry; root launcher no longer opens old BIZ/ED-10n proof surfaces |
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed Meiryo removal / BIZ selection audit trail | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |
 
 ## Remote Verification Commands

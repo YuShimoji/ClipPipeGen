@@ -113,6 +113,9 @@ def run(argv: list[str]) -> int:
         "production_usage_allowed": report.get("production_usage_allowed"),
         "report": str(result["report_path"]).replace("\\", "/"),
         "report_html": str(result["report_html_path"]).replace("\\", "/"),
+        "focused_review_html": str(result["focused_review_html_path"]).replace(
+            "\\", "/"
+        ),
         "representative_visual_proof_report": str(
             result["representative_visual_proof_report_path"]
         ).replace("\\", "/"),
@@ -146,6 +149,7 @@ def run(argv: list[str]) -> int:
         print(f"production_usage_allowed: {str(payload['production_usage_allowed']).lower()}")
         print(f"report: {payload['report']}")
         print(f"report_html: {payload['report_html']}")
+        print(f"focused_review_html: {payload['focused_review_html']}")
         print(f"representative_visual_proof_report: {payload['representative_visual_proof_report']}")
         print(
             "representative_visual_proof_report_html: "

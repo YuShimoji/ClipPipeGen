@@ -428,6 +428,7 @@ def build_subtitle_overlay_visual_proof(
 
     report_path = review_dir / "subtitle_overlay_visual_proof_report.json"
     report_html_path = review_dir / "subtitle_overlay_visual_proof_report.html"
+    focused_review_html_path = review_dir / "current_proof_focused_review.html"
     updated_representative_path = representative_path
     updated_representative_html_path = review_dir / "representative_visual_proof_report.html"
     report = _report_payload(
@@ -439,6 +440,7 @@ def build_subtitle_overlay_visual_proof(
         representative_report=representative_report,
         report_path=report_path,
         report_html_path=report_html_path,
+        focused_review_html_path=focused_review_html_path,
         base=base,
         dry_run=dry_run,
         diagnostic_ass_style=diagnostic_ass_style,
@@ -456,6 +458,10 @@ def build_subtitle_overlay_visual_proof(
         review_dir.mkdir(parents=True, exist_ok=True)
         _write_json(report, report_path)
         report_html_path.write_text(_overlay_report_html(report), encoding="utf-8")
+        focused_review_html_path.write_text(
+            _focused_current_proof_html(report),
+            encoding="utf-8",
+        )
         _write_json(updated_representative, updated_representative_path)
         updated_representative_html_path.write_text(
             _representative_report_html(updated_representative),
@@ -471,6 +477,7 @@ def build_subtitle_overlay_visual_proof(
         "representative_visual_proof_report": updated_representative,
         "report_path": report_path,
         "report_html_path": report_html_path,
+        "focused_review_html_path": focused_review_html_path,
         "representative_visual_proof_report_path": updated_representative_path,
         "representative_visual_proof_report_html_path": updated_representative_html_path,
         "visual_proof_status": visual_proof_status,
@@ -857,6 +864,7 @@ def _report_payload(
     representative_report: dict[str, Any],
     report_path: Path,
     report_html_path: Path,
+    focused_review_html_path: Path,
     base: Path,
     dry_run: bool,
     diagnostic_ass_style: dict[str, Any],
@@ -912,6 +920,7 @@ def _report_payload(
         "outputs": {
             "json": _display_path(report_path, base),
             "html": _display_path(report_html_path, base),
+            "focused_review_html": _display_path(focused_review_html_path, base),
         },
         "production_candidate": False,
         "rights_status": "pending",
@@ -3195,6 +3204,133 @@ def _representative_report_html(report: dict[str, Any]) -> str:
 """
 
 
+def _focused_current_proof_html(report: dict[str, Any]) -> str:
+    proof_focus = _proof_focus_html(report)
+    cut_evidence = _focused_cut_evidence_html(report)
+    detail_links = _focused_detail_links_html(report)
+    style = report.get("style_parameters") or {}
+    font_name = style.get("font_name") or {}
+    font_route = style.get("font_family_route") or {}
+    aggregate = report.get("aggregate_summary") or {}
+    return f"""<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Current Proof Focused Review</title>
+  <style>
+    body {{ font-family: system-ui, sans-serif; margin: 0; line-height: 1.5; color: #1f2933; background: #f7f8fa; }}
+    main {{ max-width: 1180px; margin: 0 auto; padding: 24px; }}
+    h1 {{ margin: 0 0 8px; font-size: 30px; }}
+    h2 {{ margin-top: 0; }}
+    table {{ border-collapse: collapse; width: 100%; background: #fff; }}
+    th, td {{ border: 1px solid #d8dde6; padding: 8px; vertical-align: top; }}
+    th {{ background: #eef2f6; text-align: left; }}
+    .hero, .review-focus, .evidence, .details, .boundary {{ background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 16px; margin: 0 0 16px; }}
+    .hero {{ border-left: 6px solid #2f6f9f; }}
+    .warn {{ color: #8a4b00; }}
+    .meta {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 16px; margin-top: 12px; }}
+    dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
+    dt {{ font-weight: 700; }}
+    .cut-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }}
+    .cut-card {{ border: 1px solid #d8dde6; border-radius: 8px; padding: 12px; background: #fff; }}
+    .proof-frame {{ max-width: 100%; width: 100%; border: 1px solid #c7ced8; display: block; margin-bottom: 8px; }}
+    .sample-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 8px; }}
+    figure {{ margin: 0; }}
+    figcaption {{ font-size: 12px; color: #52616f; }}
+    video {{ max-width: 100%; width: 100%; display: block; margin-top: 8px; }}
+    .detail-links {{ display: grid; gap: 6px; }}
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>Review Focus: Current Proof</h1>
+    <p>Use this page for ED-10p Keifont review. Detailed diagnostic tables are linked below, not used as the first review surface.</p>
+    <div class="meta">
+      <div><strong>artifact</strong><br>{escape(str(report.get("artifact_id") or ""))}</div>
+      <div><strong>candidate</strong><br>{escape(str(style.get("typography_decoration_candidate_id") or style.get("style_candidate_id") or ""))}</div>
+      <div><strong>font</strong><br>{escape(str(font_name.get("value") or font_route.get("resolved") or ""))}</div>
+      <div><strong>target cuts</strong><br>{escape(", ".join(report.get("target_cuts") or []))}</div>
+      <div><strong>overlays available</strong><br>{escape(str(aggregate.get("subtitle_overlay_available_count") or ""))}</div>
+      <div><strong>rights / production</strong><br>{escape(str(report.get("rights_status") or ""))} / production_candidate={escape(str(report.get("production_candidate")))}</div>
+    </div>
+  </section>
+{proof_focus}
+{cut_evidence}
+{detail_links}
+  <section class="boundary warn">
+    <h2>Boundary</h2>
+    <p>Diagnostic review only. This page does not grant production subtitle design acceptance, production render acceptance, rights approval, publishing acceptance, or public-use permission.</p>
+  </section>
+</main>
+</body>
+</html>
+"""
+
+
+def _focused_cut_evidence_html(report: dict[str, Any]) -> str:
+    cut_results = report.get("cut_results")
+    if not isinstance(cut_results, list) or not cut_results:
+        return ""
+    cards = "\n".join(_focused_cut_card_html(item) for item in cut_results)
+    return f"""  <section class="evidence">
+    <h2>Subtitle-Area Evidence</h2>
+    <div class="cut-grid">
+{cards}
+    </div>
+  </section>
+"""
+
+
+def _focused_cut_card_html(item: dict[str, Any]) -> str:
+    artifacts = item.get("generated_artifacts") or {}
+    visual = _visual_embed_html(
+        frame=artifacts.get("frame"),
+        video=artifacts.get("video"),
+        alt=f"{item.get('cut_id', '')} focused current proof",
+    )
+    samples = _sample_frames_html(artifacts.get("sample_frames") or [])
+    timing = item.get("subtitle_timing") or {}
+    items = timing.get("items") if isinstance(timing, dict) else []
+    renderable = [
+        subtitle
+        for subtitle in items
+        if str(subtitle.get("status") or "") in RENDERABLE_SUBTITLE_STATUSES
+    ] if isinstance(items, list) else []
+    line_count = len(renderable)
+    return f"""      <article class="cut-card">
+        <h3>{escape(str(item.get("cut_id") or ""))}</h3>
+        <p>status: {escape(str(item.get("visual_proof_status") or ""))}; overlay_present={escape(str(item.get("subtitle_overlay_present") or ""))}; target_lines={escape(str(line_count))}</p>
+        {visual}
+        <h4>Subtitle-bearing samples</h4>
+        {samples or "<p>No sample frames recorded.</p>"}
+      </article>"""
+
+
+def _focused_detail_links_html(report: dict[str, Any]) -> str:
+    focus = report.get("focused_proof_review") or {}
+    outputs = report.get("outputs") or {}
+    reference = focus.get("ed10o_reference_report") if isinstance(focus, dict) else ""
+    links: list[tuple[str, Any]] = [
+        ("ED-10o focused comparison reference", reference),
+        ("Detailed subtitle overlay proof report", outputs.get("html")),
+        ("Representative visual proof report", "representative_visual_proof_report.html"),
+        ("Machine-readable proof JSON", outputs.get("json")),
+    ]
+    rows = "\n".join(
+        f'      <a href="{_review_dir_relative_href(value)}">{escape(label)}</a>'
+        for label, value in links
+        if value
+    )
+    return f"""  <section class="details">
+    <h2>Detailed Reports</h2>
+    <div class="detail-links">
+{rows}
+    </div>
+  </section>
+"""
+
+
 def _representative_cut_row(item: dict[str, Any]) -> str:
     artifacts = [
         ("frame", item.get("visual_proof_artifact_path")),
@@ -3245,7 +3381,7 @@ def _proof_focus_html(report: dict[str, Any]) -> str:
     target_lines = _target_lines_html(report)
     reference = str(focus.get("ed10o_reference_report") or "")
     reference_html = (
-        f'<p>ED-10o reference: <a href="{escape(reference)}">{escape(reference)}</a></p>'
+        f'<p>ED-10o reference: <a href="{_review_dir_relative_href(reference)}">{escape(reference)}</a></p>'
         if reference
         else ""
     )
@@ -3530,6 +3666,20 @@ def _artifact_href(value: Any) -> str:
         index = parts.index("subtitle_overlay_reference")
         return escape("/".join(parts[index:]), quote=True)
     return escape(Path(text).name, quote=True)
+
+
+def _review_dir_relative_href(value: Any) -> str:
+    text = str(value).replace("\\", "/")
+    if text.startswith(("http://", "https://")):
+        return escape(text, quote=True)
+    marker = "jp_pilot01r3_cut_review/"
+    if marker in text:
+        text = text.split(marker, 1)[1]
+    elif "/" in text:
+        parts = [part for part in text.split("/") if part]
+        if parts:
+            text = parts[-1]
+    return escape(text, quote=True)
 
 
 def _resolve_existing_path(value: Any, *, base: Path) -> Path | None:

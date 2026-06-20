@@ -538,6 +538,9 @@ def test_subtitle_overlay_visual_proof_ed10p_keifont_profile(tmp_path: Path):
     assert report["focused_proof_review"]["current_lead_candidate_id"] == (
         "ed10l_keifont_pop_dialogue_candidate"
     )
+    assert report["outputs"]["focused_review_html"].endswith(
+        "current_proof_focused_review.html"
+    )
     assert report["review_surface_direction"]["status"] == (
         "accepted_as_review_direction_not_production_acceptance"
     )
@@ -559,9 +562,32 @@ def test_subtitle_overlay_visual_proof_ed10p_keifont_profile(tmp_path: Path):
     report_html = (review_dir / "subtitle_overlay_visual_proof_report.html").read_text(
         encoding="utf-8"
     )
+    focused_html = (review_dir / "current_proof_focused_review.html").read_text(
+        encoding="utf-8"
+    )
     representative_html = (
         review_dir / "representative_visual_proof_report.html"
     ).read_text(encoding="utf-8")
+    assert result["focused_review_html_path"] == (
+        review_dir / "current_proof_focused_review.html"
+    )
+    assert "Review Focus: Current Proof" in focused_html
+    assert "Subtitle-Area Evidence" in focused_html
+    assert "Detailed Reports" in focused_html
+    assert focused_html.index("Review Focus") < focused_html.index(
+        "Subtitle-Area Evidence"
+    )
+    assert focused_html.index("Subtitle-Area Evidence") < focused_html.index(
+        "Detailed Reports"
+    )
+    assert "subtitle_overlay_visual_proof_cut_002.png" in focused_html
+    assert "subtitle_overlay_visual_proof_cut_003.png" in focused_html
+    assert (
+        'href="subtitle_multifont_focused_review/subtitle_multifont_focused_review_report.html"'
+        in focused_html
+    )
+    assert "cut_008_dense_stress_proof" in focused_html
+    assert "<tr><th>cut</th><th>status</th><th>visual</th>" not in focused_html
     assert "Review Focus" in report_html
     assert "Target Lines" in report_html
     assert "clip-ed10o-multifont-focused-review-001" in report_html
@@ -635,6 +661,9 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
     assert payload["style_direction_preset"] == "jp_clip_readable_v1"
     assert payload["style_candidate_id"] == "noto_sans_jp_clean_outline"
     assert payload["typography_decoration_candidate_id"] == "noto_sans_jp_clean_outline"
+    assert payload["focused_review_html"].endswith(
+        "current_proof_focused_review.html"
+    )
     assert payload["production_candidate"] is False
     assert payload["rights_status"] == "pending"
     assert not (review_dir / "subtitle_overlay_visual_proof_report.json").exists()

@@ -3,10 +3,10 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10p_keifont_lead_representative_proof_ready
+health: ed10q_current_proof_focused_review_restored
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10p_keifont_human_review
+next_review_due: after_ed10q_focused_page_human_review
 active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: true
 owner_lane: editing
@@ -60,6 +60,11 @@ status、local availability、reproducibility、intended use で比較できる�
   Keifont, 851 Chikara Yowaku, and Yasashisa Gothic.
 - ED-10o review surface was accepted as easier to see; ED-10p now keeps
   Keifont as provisional lead and regenerates the current representative proof.
+- ED-10q restores the current proof launcher/review page after the old-layout
+  regression: `.\open-current-proof.ps1` now opens
+  `current_proof_focused_review.html`, with Review Focus, target lines,
+  subtitle-area evidence, ED-10o reference, and `cut_008` Review Debt before
+  detailed/debug reports.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -227,7 +232,8 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10p Keifont proof review**: open the representative proof and judge
+1. **ED-10q focused current proof review**: run `.\open-current-proof.ps1` and
+   confirm the page starts with `Review Focus: Current Proof`, then judge
    whether Keifont remains the provisional normal-dialogue lead.
 2. **ED-10o focused review reference**: use the same-line matrix as accepted
    review UX direction and comparison evidence.

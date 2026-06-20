@@ -99,27 +99,28 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10p",
+            "feature_id": "ED-10q",
             "artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
             "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
             "source_proof_artifact_id": "clip-ed10n-keifont-overlay-proof-001",
-            "state": "ed10p_keifont_lead_representative_proof_ready",
-            "human_visual_judgement": "ed10o_review_surface_direction_accepted_not_final_baseline",
-            "latest_review_consumed": "ed10o_focused_review_surface_accepted",
+            "state": "ed10q_current_proof_focused_review_restored",
+            "human_visual_judgement": "ed10p_review_blocked_by_old_layout_regression",
+            "latest_review_consumed": "ed10q_current_proof_layout_regression_reported",
             "target_cuts": ["cut_002", "cut_003"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "keifont_lead_representative_proof_ready",
+            "route_status": "current_proof_launcher_opens_focused_review_surface",
             "user_action_type": "USER_OPEN_REVIEW_ONLY",
-            "selected_typography_source": "hkcu_per_user_font_readback_and_ed10p_keifont_proof",
+            "selected_typography_source": "hkcu_per_user_font_readback_and_ed10q_focused_current_proof",
             "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
-            "main_issue": "keifont_lead_representative_proof_review",
+            "main_issue": "current_proof_focused_review_surface_regression",
             "current_visual_comparison_validity": "valid_requested_font_visual_evidence_after_per_user_font_readback",
             "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
             "lead_status": "provisional_normal_dialogue_lead",
             "review_surface_direction": "ed10o_focused_matrix_accepted_as_preferred_review_direction",
+            "focused_review_html": "episodes/.../current_proof_focused_review.html",
             "review_debt": [
                 {
                     "debt_id": "cut_008_dense_stress_proof",
@@ -412,6 +413,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10o-multifont-focused-review-001"
         if feature_id == "ED-10p":
             active_artifact = "clip-ed10p-keifont-lead-representative-proof-001"
+        if feature_id == "ED-10q":
+            active_artifact = "clip-ed10p-keifont-lead-representative-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -523,10 +526,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10p Keifont lead representative proof",
+            "item": "ED-10q focused current proof review",
             "artifact": "clip-ed10p-keifont-lead-representative-proof-001",
-            "question": "Does Keifont hold up as the provisional normal-dialogue lead on the representative cut_002/cut_003 proof?",
-            "next_route": "Open the current proof, check the Review Focus and target lines, then answer freeform with approval, concern, or adjustment request.",
+            "question": "Does the restored current proof page start with a clear Review Focus and make Keifont review possible again?",
+            "next_route": "Open the current proof; it should show Review Focus, target lines, subtitle-area evidence, ED-10o reference, and cut_008 Review Debt before detailed/debug reports.",
         },
         {
             "item": "ED-10o multi-font focused review reference",
@@ -613,10 +616,10 @@ def _open_surfaces() -> list[dict[str, str]]:
         {
             "label": "Keifont Lead Proof",
             "command": ".\\open-current-proof.ps1",
-            "target": "episodes/.../subtitle_overlay_visual_proof_report.html",
+            "target": "episodes/.../current_proof_focused_review.html",
             "when_to_use": (
-                "Use first for ED-10p Keifont lead review; the page includes "
-                "Review Focus, target lines, ED-10o reference, and cut_008 review debt."
+                "Use first for ED-10q restored focused current proof review; "
+                "detailed/debug reports are linked lower on the page."
             ),
         },
         {
@@ -775,6 +778,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "focused_review_surface_accepted_reference"
     if feature_id == "ED-10p":
         return "keifont_lead_representative_proof_ready"
+    if feature_id == "ED-10q":
+        return "current_proof_focused_review_restored"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -801,6 +806,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10p":
         return 100
+    if feature_id == "ED-10q":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -820,11 +827,13 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10m":
         return "Keep as source/license route record; ED-10n consumed the per-user font readback."
     if feature_id == "ED-10n":
-        return "Keep as earlier lead proof reference; ED-10p is now the current representative proof."
+        return "Keep as earlier lead proof reference; ED-10q is now the focused current review surface for the ED-10p artifact."
     if feature_id == "ED-10o":
         return "Keep as accepted focused review-surface reference; it is not final baseline or production acceptance."
     if feature_id == "ED-10p":
-        return "Collect freeform review on whether Keifont holds as provisional lead in the representative proof."
+        return "Keep as the Keifont proof artifact; ED-10q restores the current proof review surface."
+    if feature_id == "ED-10q":
+        return "Open the focused current proof page and collect freeform review on page clarity and Keifont viability."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":
