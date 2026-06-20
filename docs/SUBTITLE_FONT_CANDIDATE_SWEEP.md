@@ -3,11 +3,11 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10o_multifont_focused_review_ready
+health: ed10p_keifont_lead_representative_proof_ready
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10o_multifont_human_review
-active_artifact: clip-ed10o-multifont-focused-review-001
+next_review_due: after_ed10p_keifont_human_review
+active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md
@@ -58,6 +58,8 @@ status、local availability、reproducibility、intended use で比較できる�
   overlay proof, and the latest review says Keifont is clearly improved.
 - ED-10o is now the current review surface: a one-shot same-line comparison of
   Keifont, 851 Chikara Yowaku, and Yasashisa Gothic.
+- ED-10o review surface was accepted as easier to see; ED-10p now keeps
+  Keifont as provisional lead and regenerates the current representative proof.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -144,6 +146,25 @@ registry readback is `M PLUS 1 Thin` via `MPLUS1-VariableFont_wght.ttf`; using
 that as a baseline comparison would be misleading until a non-thin weight/style
 is pinned.
 
+ED-10o has now been reviewed as easier to see. This accepts the focused matrix
+as the preferred review-surface direction. It does not accept a final baseline,
+production subtitle design, production render, creative, rights, publishing, or
+public-use state.
+
+## ED-10p Keifont Lead Representative Proof
+
+ED-10p continues from the accepted ED-10o review surface direction. The user did
+not select 851 Chikara Yowaku or Yasashisa Gothic over Keifont, so Keifont stays
+the provisional normal-dialogue lead by default. The generated artifact is
+`clip-ed10p-keifont-lead-representative-proof-001`, produced with
+`ed10l_keifont_pop_dialogue_candidate` for `cut_002` / `cut_003`.
+
+The proof page now starts with Review Focus, target lines, the ED-10o focused
+matrix reference, and Review Debt for the dense/stress path. `cut_008` remains
+deferred because its current decision state is still `needs_adjustment`; it
+should get a dedicated dense/stress proof only after that scope is explicitly
+handled.
+
 ## ED-10j Kirinuki Font Audit
 
 ED-10j consumes the latest freeform review as a route change, not a minor
@@ -206,16 +227,18 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10o focused review**: open the same-line matrix and compare Keifont,
-   851 Chikara Yowaku, and Yasashisa Gothic at once.
-2. **Bounded follow-up**: if Keifont is still best but slightly off, adjust only
+1. **ED-10p Keifont proof review**: open the representative proof and judge
+   whether Keifont remains the provisional normal-dialogue lead.
+2. **ED-10o focused review reference**: use the same-line matrix as accepted
+   review UX direction and comparison evidence.
+3. **Bounded follow-up**: if Keifont is still best but slightly off, adjust only
    one bounded axis such as outline pressure or badge treatment.
-3. **Alternate ED-10l candidate**: if another column wins, promote that
+4. **Alternate ED-10l candidate**: if another column wins, promote that
    candidate into the next proof route.
-4. **Google Fonts / OFL sweep**: request permission to download specific
+5. **Google Fonts / OFL sweep**: request permission to download specific
    families, capture license/version/source metadata, and keep binaries out of
    public Git unless a repo policy is approved.
-4. **Hybrid sweep**: use local system fonts for quick proof, then reproduce the
+6. **Hybrid sweep**: use local system fonts for quick proof, then reproduce the
    selected family through a licensed pinned source later.
 
 ## 使い方・確認方法

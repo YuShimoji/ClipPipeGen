@@ -4,11 +4,11 @@ This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10o
-multi-font focused review, use
+dashboard, then use an artifact-specific launcher. For the current ED-10p
+Keifont lead representative proof, use `.\open-current-proof.ps1`; for the
+accepted ED-10o focused comparison reference, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`;
-for the ED-10n Keifont proof reference, use `.\open-current-proof.ps1`; for the
-supporting regenerated ED-10l real-font comparison, use
+for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
@@ -302,8 +302,8 @@ tracked Git failure. `git ls-files episodes` should remain empty.
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10o_multifont_focused_review` reading the existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10n review readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10o_multifont_focused_review --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10o generation returned `artifact_id=clip-ed10o-multifont-focused-review-001`, `comparison_profile=ed10o_multifont_focused_review`, `sample_count=12`, `candidate_count=3`, `focused_review_surface.status=focused_review_surface_generated`, `focused_review_surface.primary_visual=subtitle_area_crop_matrix`, `selected_candidate_for_next_proof_base=ed10l_keifont_pop_dialogue_candidate`, `font_visual_comparison_validity=valid_requested_font_visual_evidence`, `all_candidates_valid_real_font=true`, `excluded_candidates[0].candidate_id=ed10l_m_plus_fonts_dialogue_candidate`, `production_candidate=false`, and `rights_status=pending`; JSON and HTML parsed successfully and the focused matrix PNG was inspected as a nonblank local visual artifact. |
-| review_status | Available and requires human freeform review. Keifont remains the lead entering the review, but ED-10o exists to compare it against 851 Chikara Yowaku and Yasashisa Gothic without returning to a fallback-font contact sheet. |
-| next_action | Open the focused review surface, compare the three included fonts row by row, and answer whether Keifont remains the baseline lead and whether the new review page is easier to judge. |
+| review_status | Human review consumed as focused review surface accepted/easier to see. Keifont remains the lead entering ED-10p, with 851 Chikara Yowaku and Yasashisa Gothic preserved as alternates. This is not final baseline or production subtitle design acceptance. |
+| next_action | Use as the accepted review UX direction and comparison reference while reviewing `clip-ed10p-keifont-lead-representative-proof-001`. |
 
 Boundary flags remain false or pending:
 
@@ -323,6 +323,40 @@ pinned. Remote Git can verify the tracked generator, docs, dashboard metadata,
 and tests but not the ignored PNG/HTML artifacts themselves. Other worktrees
 should treat missing `episodes/` review assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
+
+## `clip-ed10p-keifont-lead-representative-proof-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10p Keifont Lead Representative Proof |
+| purpose | Consume the ED-10o review that the font comparison and review screen are easier to see, keep Keifont as the provisional normal-dialogue lead, and generate the next representative proof for `cut_002` / `cut_003`. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
+| representative_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html` |
+| open_command | `.\open-current-proof.ps1` |
+| generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10p_keifont_lead_representative_proof --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_002 --target-cut cut_003` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10p_keifont_lead_representative_proof --format json` plus targeted tests. |
+| latest_validation_result | Same-machine ED-10p generation returned `artifact_id=clip-ed10p-keifont-lead-representative-proof-001`, `proof_profile=ed10p_keifont_lead_representative_proof`, `source_review_artifact_id=clip-ed10o-multifont-focused-review-001`, `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `typography_decoration_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `subtitle_overlay_available_count=2`, `focused_proof_review.status=representative_keifont_lead_proof_ready`, `review_debt[0].debt_id=cut_008_dense_stress_proof`, `production_candidate=false`, and `rights_status=pending`; JSON and HTML parsed successfully and representative PNG frames were inspected as nonblank local visual artifacts. |
+| review_status | Available and requires human freeform review. ED-10o review UX is accepted as direction, but Keifont remains only the provisional lead; final baseline, production render, creative, rights, publishing, and public-use gates remain closed. |
+| next_action | Review whether Keifont works beyond the easiest sample, whether body thickness / outline pressure need one bounded adjustment, whether dense/stress-like lines remain readable, and whether the focused proof page remains easy to judge. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+`cut_008` is recorded as Review Debt, not part of the ED-10p proof, because its
+current decision state remains `needs_adjustment`. Remote Git can verify the
+tracked builder, docs, dashboard metadata, and tests but not the ignored
+MP4/PNG/ASS artifacts themselves. Other worktrees should treat missing
+`episodes/` proof assets as local evidence absence, not as a tracked Git
+failure. `git ls-files episodes` should remain empty.
 
 ## `clip-ed10g-noto-overlay-proof-001`
 

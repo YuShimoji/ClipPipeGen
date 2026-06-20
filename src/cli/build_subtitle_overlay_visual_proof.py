@@ -10,6 +10,7 @@ from pathlib import Path
 from src.integrations.render.subtitle_overlay_visual_proof import (
     SubtitleOverlayVisualProofError,
     build_subtitle_overlay_visual_proof,
+    subtitle_overlay_proof_profiles,
     typography_decoration_candidate_ids,
 )
 
@@ -42,6 +43,16 @@ def run(argv: list[str]) -> int:
             "style."
         ),
     )
+    parser.add_argument(
+        "--proof-profile",
+        choices=subtitle_overlay_proof_profiles(),
+        default="default",
+        help=(
+            "Optional proof metadata profile. Use "
+            "ed10p_keifont_lead_representative_proof to consume the ED-10o "
+            "review-surface acceptance and produce the next Keifont lead proof."
+        ),
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
@@ -59,6 +70,7 @@ def run(argv: list[str]) -> int:
             ffprobe_path=args.ffprobe_path,
             container=args.container,
             typography_decoration_candidate_id=args.typography_decoration_candidate_id,
+            proof_profile=args.proof_profile,
             dry_run=args.dry_run,
             base_dir=Path.cwd(),
         )
@@ -70,6 +82,9 @@ def run(argv: list[str]) -> int:
     payload = {
         "schema_version": "v1",
         "episode_id": report.get("episode_id"),
+        "artifact_id": report.get("artifact_id"),
+        "proof_profile": report.get("proof_profile"),
+        "source_review_artifact_id": report.get("source_review_artifact_id"),
         "scope": report.get("scope"),
         "target_cuts": report.get("target_cuts") or [],
         "dry_run": result["dry_run"],
@@ -89,6 +104,8 @@ def run(argv: list[str]) -> int:
         "subtitle_overlay_available_count": (
             report.get("aggregate_summary") or {}
         ).get("subtitle_overlay_available_count"),
+        "focused_proof_review": report.get("focused_proof_review"),
+        "review_debt": report.get("review_debt", []),
         "production_candidate": report.get("production_candidate"),
         "creative_acceptance": report.get("creative_acceptance"),
         "publish_acceptance": report.get("publish_acceptance"),
@@ -108,6 +125,8 @@ def run(argv: list[str]) -> int:
         sys.stdout.write("\n")
     else:
         print(f"episode_id: {payload['episode_id']}")
+        print(f"artifact_id: {payload['artifact_id']}")
+        print(f"proof_profile: {payload['proof_profile']}")
         print(f"scope: {payload['scope']}")
         print(f"target_cuts: {', '.join(payload['target_cuts'])}")
         print(f"dry_run: {str(payload['dry_run']).lower()}")

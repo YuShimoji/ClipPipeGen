@@ -24,6 +24,15 @@ from src.pipeline.text_measure import measure_subtitle
 
 SCHEMA_VERSION = "v1"
 REPORT_KIND = "subtitle_overlay_visual_proof_report"
+DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE = "default"
+ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE = (
+    "ed10p_keifont_lead_representative_proof"
+)
+SUBTITLE_OVERLAY_PROOF_PROFILES = (
+    DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
+    ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
+)
+ED10L_KEIFONT_CANDIDATE_ID = "ed10l_keifont_pop_dialogue_candidate"
 DEFAULT_SOURCE_VIDEO_MATERIAL_ID = "src_video_jp_pilot01"
 DEFAULT_SOURCE_AUDIO_MATERIAL_ID = "src_audio_jp_pilot01"
 DEFAULT_REVIEW_DIR_NAME = "jp_pilot01r3_cut_review"
@@ -76,6 +85,10 @@ def typography_decoration_candidate_ids() -> tuple[str, ...]:
         candidate.candidate_id
         for candidate in subtitle_style_spike.TYPOGRAPHY_DECORATION_CANDIDATES
     )
+
+
+def subtitle_overlay_proof_profiles() -> tuple[str, ...]:
+    return SUBTITLE_OVERLAY_PROOF_PROFILES
 
 
 class SubtitleOverlayVisualProofError(Exception):
@@ -228,6 +241,110 @@ def _layout_style(layout: dict[str, Any]) -> dict[str, Any]:
     return _diagnostic_ass_style_for_candidate(None)
 
 
+def _subtitle_overlay_proof_profile(
+    *,
+    proof_profile: str | None,
+    target_cut_ids: tuple[str, ...],
+    typography_decoration_candidate_id: str | None,
+) -> dict[str, Any]:
+    profile = proof_profile or DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE
+    if profile == DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE:
+        return {
+            "proof_profile": DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
+            "artifact_id": None,
+        }
+    if profile != ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE:
+        known = ", ".join(SUBTITLE_OVERLAY_PROOF_PROFILES)
+        raise SubtitleOverlayVisualProofError(
+            f"unknown subtitle overlay proof profile: {profile}; known={known}"
+        )
+    if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
+        raise SubtitleOverlayVisualProofError(
+            "ed10p_keifont_lead_representative_proof requires "
+            f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
+        )
+    return {
+        "proof_profile": ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
+        "artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+        "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
+        "source_proof_artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+        "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+        "target_cuts": list(target_cut_ids),
+        "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+        "review_surface_direction": {
+            "status": "accepted_as_review_direction_not_production_acceptance",
+            "accepted_surface_artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "accepted_surface": "same-line multi-font focused matrix",
+            "confidence": "high",
+            "not_accepted": [
+                "final normal-dialogue baseline",
+                "production subtitle design",
+                "production render",
+                "creative acceptance",
+                "rights approval",
+                "publishing",
+                "public use",
+            ],
+        },
+        "candidate_state": {
+            "keifont_lead_confidence": "medium_high",
+            "keifont_is_provisional_lead": True,
+            "alternates_preserved": [
+                "ed10l_851_chikara_yowaku_dialogue_candidate",
+                "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+            ],
+            "excluded_until_weight_style_pinned": [
+                "ed10l_m_plus_fonts_dialogue_candidate"
+            ],
+        },
+        "focused_proof_review": {
+            "status": "representative_keifont_lead_proof_ready",
+            "target": "Keifont lead normal-dialogue representative proof",
+            "input_mode": "freeform",
+            "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+            "target_cuts": list(target_cut_ids),
+            "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "source_review_surface": "ED-10o focused matrix accepted as easier to see",
+            "ed10o_reference_report": (
+                "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+                "jp_pilot01r3_cut_review/subtitle_multifont_focused_review/"
+                "subtitle_multifont_focused_review_report.html"
+            ),
+            "look_for": [
+                "whether Keifont works beyond the easy initial sample",
+                "whether body thickness and outline pressure are acceptable",
+                "whether dense/stress-like lines in the current representative proof remain readable",
+                "whether the focused proof page remains easy to judge",
+            ],
+            "completion_signal": (
+                "any concrete impression, concern, approval, or adjustment request"
+            ),
+        },
+        "review_debt": [
+            {
+                "debt_id": "cut_008_dense_stress_proof",
+                "status": "deferred_not_blocking_ed10p",
+                "reason": (
+                    "cut_008 is the known dense/stress representative target, "
+                    "but tracked/current decision state still treats it as "
+                    "needs_adjustment before production-adjacent promotion."
+                ),
+                "next_action": (
+                    "create a dedicated dense/stress proof after cut_008 "
+                    "context/boundary handling is explicitly accepted or scoped"
+                ),
+            }
+        ],
+        "production_candidate": False,
+        "production_subtitle_design_acceptance": False,
+        "production_render_acceptance": False,
+        "creative_acceptance": False,
+        "rights_status": "pending",
+        "publishing_acceptance": False,
+        "public_use_permission": False,
+    }
+
+
 def build_subtitle_overlay_visual_proof(
     *,
     episode_dir: Path,
@@ -241,6 +358,7 @@ def build_subtitle_overlay_visual_proof(
     ffprobe_path: str | Path | None = None,
     container: str = "mp4",
     typography_decoration_candidate_id: str | None = None,
+    proof_profile: str | None = None,
     dry_run: bool = False,
     base_dir: Path | None = None,
     runner: ffmpeg_tiny.Runner = subprocess.run,
@@ -277,6 +395,11 @@ def build_subtitle_overlay_visual_proof(
 
     diagnostic_ass_style = _diagnostic_ass_style_for_candidate(
         typography_decoration_candidate_id
+    )
+    proof_profile_data = _subtitle_overlay_proof_profile(
+        proof_profile=proof_profile,
+        target_cut_ids=target_cut_ids,
+        typography_decoration_candidate_id=typography_decoration_candidate_id,
     )
     cuts = _cut_index(edit_pack)
     subtitles = _subtitle_index(edit_pack)
@@ -319,6 +442,7 @@ def build_subtitle_overlay_visual_proof(
         base=base,
         dry_run=dry_run,
         diagnostic_ass_style=diagnostic_ass_style,
+        proof_profile=proof_profile_data,
     )
 
     updated_representative = _updated_representative_report(
@@ -326,6 +450,7 @@ def build_subtitle_overlay_visual_proof(
         overlay_report=report,
         cut_reports=cut_reports,
         base=base,
+        proof_profile=proof_profile_data,
     )
     if not dry_run:
         review_dir.mkdir(parents=True, exist_ok=True)
@@ -735,6 +860,7 @@ def _report_payload(
     base: Path,
     dry_run: bool,
     diagnostic_ass_style: dict[str, Any],
+    proof_profile: dict[str, Any],
 ) -> dict[str, Any]:
     success_count = sum(
         1 for item in cut_reports if item.get("subtitle_overlay_present") is True
@@ -742,6 +868,13 @@ def _report_payload(
     return {
         "schema_version": SCHEMA_VERSION,
         "report_kind": REPORT_KIND,
+        "artifact_id": proof_profile.get("artifact_id"),
+        "proof_profile": proof_profile.get("proof_profile"),
+        "source_review_artifact_id": proof_profile.get("source_review_artifact_id"),
+        "source_proof_artifact_id": proof_profile.get("source_proof_artifact_id"),
+        "source_comparison_artifact_id": proof_profile.get(
+            "source_comparison_artifact_id"
+        ),
         "created_at": _now(),
         "episode_id": episode_id,
         "scope": "cut_scoped_subtitle_overlay_visual_proof",
@@ -754,6 +887,10 @@ def _report_payload(
         },
         "style_direction": _diagnostic_style_direction(diagnostic_ass_style),
         "style_parameters": _report_style_parameter_summary(cut_reports),
+        "review_surface_direction": proof_profile.get("review_surface_direction"),
+        "candidate_state": proof_profile.get("candidate_state"),
+        "focused_proof_review": proof_profile.get("focused_proof_review"),
+        "review_debt": proof_profile.get("review_debt", []),
         "font_bbox_wrap_readback": _report_font_bbox_wrap_summary(cut_reports),
         "subtitle_presentation_contract": _report_contract_summary(cut_reports),
         "speaker_identity_presentation": _report_speaker_identity_summary(cut_reports),
@@ -1651,9 +1788,18 @@ def _updated_representative_report(
     overlay_report: dict[str, Any],
     cut_reports: list[dict[str, Any]],
     base: Path,
+    proof_profile: dict[str, Any],
 ) -> dict[str, Any]:
     updated = copy.deepcopy(representative_report)
     updated["updated_at"] = _now()
+    updated["active_overlay_artifact_id"] = proof_profile.get("artifact_id")
+    updated["proof_profile"] = proof_profile.get("proof_profile")
+    updated["source_review_artifact_id"] = proof_profile.get("source_review_artifact_id")
+    updated["source_proof_artifact_id"] = proof_profile.get("source_proof_artifact_id")
+    updated["review_surface_direction"] = proof_profile.get("review_surface_direction")
+    updated["candidate_state"] = proof_profile.get("candidate_state")
+    updated["focused_proof_review"] = proof_profile.get("focused_proof_review")
+    updated["review_debt"] = proof_profile.get("review_debt", [])
     updated["production_candidate"] = False
     updated["creative_acceptance"] = False
     updated["publish_acceptance"] = False
@@ -2903,6 +3049,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
         report.get("style_direction") or {},
         report.get("style_parameters") or {},
     )
+    proof_focus = _proof_focus_html(report)
     review_warning = _review_warning_html(report.get("review_warning") or {})
     related_visuals = _related_visuals_html(report.get("related_visual_artifacts") or {})
     return f"""<!doctype html>
@@ -2934,6 +3081,7 @@ def _overlay_report_html(report: dict[str, Any]) -> str:
   <p>target cuts: {escape(", ".join(report.get("target_cuts") or []))}</p>
   <p>rights_status: {escape(str(report.get("rights_status", "")))} / production_candidate: {escape(str(report.get("production_candidate", "")))}</p>
 {review_warning}
+{proof_focus}
   <section>
     <h2>Diagnostic Style Direction</h2>
 {style_summary}
@@ -3001,6 +3149,7 @@ def _representative_report_html(report: dict[str, Any]) -> str:
         report.get("diagnostic_style_direction") or {},
         report.get("diagnostic_style_parameters") or {},
     )
+    proof_focus = _proof_focus_html(report)
     review_warning = _review_warning_html(report.get("review_warning") or {})
     related_visuals = _related_visuals_html(report.get("outputs") or {})
     return f"""<!doctype html>
@@ -3031,6 +3180,7 @@ def _representative_report_html(report: dict[str, Any]) -> str:
   <p class="warn">SPK/A/B are temporary speaker badge placeholders. They are not real face icons and not production speaker identity design. Real face icon asset intake is a separate future slice.</p>
   <p>episode: {escape(str(report.get("episode_id", "")))}</p>
 {review_warning}
+{proof_focus}
   <section>
     <h2>Diagnostic Style Direction</h2>
 {style_summary}
@@ -3081,6 +3231,110 @@ def _representative_cut_row(item: dict[str, Any]) -> str:
         f"<td>{statuses}</td>"
         f"<td>{limitations}</td>"
         "</tr>"
+    )
+
+
+def _proof_focus_html(report: dict[str, Any]) -> str:
+    focus = report.get("focused_proof_review")
+    if not isinstance(focus, dict) or not focus:
+        return ""
+    look_for = "\n".join(
+        f"      <li>{escape(str(item))}</li>" for item in focus.get("look_for") or []
+    )
+    review_debt = _review_debt_html(report.get("review_debt") or [])
+    target_lines = _target_lines_html(report)
+    reference = str(focus.get("ed10o_reference_report") or "")
+    reference_html = (
+        f'<p>ED-10o reference: <a href="{escape(reference)}">{escape(reference)}</a></p>'
+        if reference
+        else ""
+    )
+    return f"""  <section class="review-focus">
+    <h2>Review Focus</h2>
+    <dl>
+      <dt>artifact</dt><dd>{escape(str(report.get("artifact_id") or ""))}</dd>
+      <dt>source review</dt><dd>{escape(str(focus.get("source_review_artifact_id") or report.get("source_review_artifact_id") or ""))}</dd>
+      <dt>target</dt><dd>{escape(str(focus.get("target") or ""))}</dd>
+      <dt>current lead</dt><dd>{escape(str(focus.get("current_lead_candidate_id") or ""))}</dd>
+      <dt>input mode</dt><dd>{escape(str(focus.get("input_mode") or ""))}</dd>
+      <dt>completion signal</dt><dd>{escape(str(focus.get("completion_signal") or ""))}</dd>
+    </dl>
+    <h3>Look For</h3>
+    <ul>
+{look_for}
+    </ul>
+{reference_html}
+{review_debt}
+{target_lines}
+  </section>
+"""
+
+
+def _review_debt_html(review_debt: list[dict[str, Any]]) -> str:
+    if not review_debt:
+        return ""
+    rows = "\n".join(
+        "<tr>"
+        f"<td>{escape(str(item.get('debt_id') or ''))}</td>"
+        f"<td>{escape(str(item.get('status') or ''))}</td>"
+        f"<td>{escape(str(item.get('reason') or ''))}</td>"
+        f"<td>{escape(str(item.get('next_action') or ''))}</td>"
+        "</tr>"
+        for item in review_debt
+    )
+    return (
+        "    <h3>Review Debt</h3>\n"
+        "    <table>\n"
+        "      <tr><th>debt</th><th>status</th><th>reason</th><th>next action</th></tr>\n"
+        f"{rows}\n"
+        "    </table>\n"
+    )
+
+
+def _target_lines_html(report: dict[str, Any]) -> str:
+    cut_results = report.get("cut_results")
+    if not isinstance(cut_results, list) or not cut_results:
+        return ""
+    rows: list[str] = []
+    for cut in cut_results:
+        cut_id = str(cut.get("cut_id") or "")
+        timing = cut.get("subtitle_timing") or {}
+        items = timing.get("items") if isinstance(timing, dict) else []
+        if not isinstance(items, list):
+            continue
+        renderable = [
+            item
+            for item in items
+            if str(item.get("status") or "") in RENDERABLE_SUBTITLE_STATUSES
+        ]
+        for item in renderable[:8]:
+            rows.append(
+                "<tr>"
+                f"<td>{escape(cut_id)}</td>"
+                f"<td>{escape(str(item.get('subtitle_id') or ''))}</td>"
+                f"<td>{escape(str(item.get('render_start_seconds') or ''))}-"
+                f"{escape(str(item.get('render_end_seconds') or ''))}</td>"
+                f"<td>{escape(str(item.get('text') or ''))}</td>"
+                "</tr>"
+            )
+        if len(renderable) > 8:
+            rows.append(
+                "<tr>"
+                f"<td>{escape(cut_id)}</td>"
+                "<td colspan=\"3\">"
+                f"{escape(str(len(renderable) - 8))} more subtitle cues in this cut; "
+                "see the cut table below for the full timing readback."
+                "</td>"
+                "</tr>"
+            )
+    if not rows:
+        return ""
+    return (
+        "    <h3>Target Lines</h3>\n"
+        "    <table>\n"
+        "      <tr><th>cut</th><th>subtitle</th><th>render time</th><th>text</th></tr>\n"
+        f"{''.join(rows)}\n"
+        "    </table>\n"
     )
 
 

@@ -2,12 +2,12 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10o_multifont_focused_review_ready
-health: review_surface_ux_ready
+status: ed10p_keifont_lead_representative_proof_ready
+health: keifont_lead_proof_ready
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10o_multifont_human_review
-active_artifact: clip-ed10o-multifont-focused-review-001
+next_review_due: after_ed10p_keifont_human_review
+active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -17,7 +17,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-20 JST
 
-## Current Update - ED-10o Multi-font Focused Review
+## Current Update - ED-10p Keifont Lead Representative Proof
 
 The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
 consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
@@ -46,6 +46,14 @@ the top of the HTML. M PLUS remains excluded because current readback is
 `M PLUS 1 Thin` via a variable font file; using it without a pinned non-thin
 weight/style would make the comparison misleading.
 
+The ED-10o review was then consumed as "the font comparison and review screen
+are easier to see." That accepts the focused review surface direction, not a
+final baseline or production subtitle design. Because the user did not promote
+851 Chikara Yowaku or Yasashisa Gothic over Keifont, ED-10p keeps Keifont as
+the provisional lead and generates `clip-ed10p-keifont-lead-representative-proof-001`
+for `cut_002` / `cut_003`. The proof page includes Review Focus, target lines,
+the ED-10o matrix reference, and Review Debt for `cut_008` dense/stress proof.
+
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
@@ -54,8 +62,9 @@ weight/style would make the comparison misleading.
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed font audit comparison | Why Meiryo was demoted and BIZ was tried next | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected reference proof | Why BIZ / system-safe route should not be the current normal-dialogue baseline | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback | Confirms all four normal-dialogue candidates resolve from per-user font files | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10n-keifont-overlay-proof-001` | Current Keifont real-font proof | Whether Keifont should become the next normal-dialogue baseline candidate or needs a bounded adjustment | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10o-multifont-focused-review-001` | Current focused multi-font review surface | Which candidate wins when Keifont / 851 Yowaku / Yasashisa are compared on the same subtitle lines, and whether the page is easier to review | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont real-font proof | Shows the first Keifont proof before ED-10o review UX acceptance | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10o-multifont-focused-review-001` | Accepted focused multi-font review surface | Confirms the focused comparison page is easier to review and keeps alternates visible | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10p-keifont-lead-representative-proof-001` | Current Keifont lead representative proof | Whether Keifont remains the provisional normal-dialogue lead beyond the easiest sample, or needs one bounded adjustment / alternate promotion | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -75,33 +84,45 @@ representative diagnostic proof の判断面です。
 
 `clip-ed10k-biz-overlay-proof-001` はレビュー済みで、normal subtitle
 baseline としては不採用です。現在の active artifact は
-`clip-ed10o-multifont-focused-review-001` です。
+`clip-ed10p-keifont-lead-representative-proof-001` です。ED-10o は
+focused review surface の比較参照であり、現在の active proof ではありません。
 
 ## これからどうなるか
 
-1. `clip-ed10o-multifont-focused-review-001` を開き、同じ行で Keifont /
-   851 Yowaku / Yasashisa を比較する。
-2. Keifont が引き続き最良なら、outline pressure や badge など 1 軸だけを
+1. `clip-ed10p-keifont-lead-representative-proof-001` を開き、Keifont が
+   representative proof 上でも provisional lead として成立するか確認する。
+2. 必要なら `clip-ed10o-multifont-focused-review-001` を比較参照として開き、
+   Keifont / 851 Yowaku / Yasashisa の同一行比較を確認する。
+3. Keifont が引き続き最良なら、outline pressure や badge など 1 軸だけを
    次の bounded adjustment として扱う。
-3. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
+4. BIZ/Noto/Meiryo は reviewed rejected reference としてのみ扱い、通常字幕
    baseline に戻す場合は明示レビューを要求する。
-4. representative coverage を広げるなら、dense/stress proof や production
+5. representative coverage を広げるなら、dense/stress proof や production
    render / rights slice とは別に `cut_008` などの明示 target を起票する。
-5. 追加比較が必要なら ED-10h/ED-10l registry から known-font candidates を
+6. 追加比較が必要なら ED-10h/ED-10l registry から known-font candidates を
    選び、download なし route か許可付き install/download route を選ぶ。
 
 ## 使い方・確認方法
 
-Primary local focused review:
+## Current ED-10p Override
 
-```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1
-```
+The active artifact is `clip-ed10p-keifont-lead-representative-proof-001`.
+ED-10o is now the accepted focused review surface direction and comparison
+reference. ED-10p is the current proof to review: Keifont remains provisional
+lead, 851 Yowaku and Yasashisa remain alternates, and
+`cut_008_dense_stress_proof` is Review Debt until its `needs_adjustment` state
+is explicitly handled or scoped.
 
-Keifont lead proof reference:
+Primary local proof review:
 
 ```powershell
 .\open-current-proof.ps1
+```
+
+Focused comparison reference:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1
 ```
 
 Regenerated real-font comparison/readback evidence:
@@ -165,6 +186,9 @@ together.
 - 2026-06-20: ED-10o consumed the review that Keifont is improved and the
   bottleneck is review UX, then generated a same-line multi-font focused review
   surface. M+ is excluded until non-thin weight/style is pinned.
+- 2026-06-20: ED-10p consumed the review that the font comparison and review
+  screen are easier to see, accepted the focused surface direction, kept
+  Keifont as provisional lead, and generated the current representative proof.
 
 ## Constraints / Risks
 
@@ -179,8 +203,8 @@ together.
 ## Changelog
 
 - 2026-06-16: Added v1.5 metadata and ED-10h successor pointer.
-- 2026-06-20: Recorded ED-10o multi-font focused review as the current human
-  visual review target.
+- 2026-06-20: Recorded ED-10p Keifont lead proof as the current human visual
+  review target.
 
 This packet was generated from the `clip-human-preview-session-001` human
 answer `adjust_boundary`, then received the ED-10g comparison response

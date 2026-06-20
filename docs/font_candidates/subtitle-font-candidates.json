@@ -363,7 +363,15 @@
     "comparison_profile": "ed10o_multifont_focused_review",
     "target_cuts": ["cut_002", "cut_003"],
     "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
-    "review_surface_status": "focused_review_surface_generated",
+    "review_surface_status": "focused_review_surface_accepted_as_review_direction",
+    "human_review_consumed": {
+      "target": "clip-ed10o-multifont-focused-review-001",
+      "intent": "accept focused review surface improvement and continue from current lead",
+      "focused_review_surface_easier_to_understand": true,
+      "final_baseline_acceptance": false,
+      "production_subtitle_design_acceptance": false,
+      "confidence": "high_for_review_surface_acceptance_medium_high_for_keifont_lead"
+    },
     "primary_visual": "subtitle_area_crop_matrix",
     "layout": "rows_are_sample_lines_columns_are_font_candidates",
     "included_candidate_ids": [
@@ -389,6 +397,58 @@
     "latest_review_consumed": "ed10n_keifont_improved_review_ux_bottleneck",
     "next_user_action": "USER_OPEN_REVIEW_ONLY",
     "next_decision_question": "Compare Keifont, 851 Chikara Yowaku, and Yasashisa Gothic on the same lines; decide whether Keifont remains the lead and whether the focused review page is easier to judge.",
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "font_binaries_downloaded": false,
+    "font_binaries_installed_by_agent": false,
+    "font_binaries_copied_or_vendored": false
+  },
+  "ed10p_keifont_lead_representative_proof": {
+    "feature_id": "ED-10p",
+    "artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+    "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
+    "source_proof_artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+    "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+    "proof_profile": "ed10p_keifont_lead_representative_proof",
+    "target_cuts": ["cut_002", "cut_003"],
+    "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+    "lead_status": "provisional_normal_dialogue_lead",
+    "review_surface_direction": "ed10o_focused_matrix_accepted_as_preferred_review_direction",
+    "included_candidate_ids": [
+      "ed10l_keifont_pop_dialogue_candidate"
+    ],
+    "alternates_preserved": [
+      "ed10l_851_chikara_yowaku_dialogue_candidate",
+      "ed10l_yasashisa_gothic_goodfreefonts_candidate"
+    ],
+    "excluded_until_weight_style_pinned": [
+      "ed10l_m_plus_fonts_dialogue_candidate"
+    ],
+    "focused_proof_review": {
+      "status": "representative_keifont_lead_proof_ready",
+      "input_mode": "freeform",
+      "look_for": [
+        "whether Keifont works beyond the easy initial sample",
+        "whether body thickness and outline pressure are acceptable",
+        "whether dense/stress-like lines in the current representative proof remain readable",
+        "whether the focused proof page remains easy to judge"
+      ],
+      "completion_signal": "any concrete impression, concern, approval, or adjustment request"
+    },
+    "review_debt": [
+      {
+        "debt_id": "cut_008_dense_stress_proof",
+        "status": "deferred_not_blocking_ed10p",
+        "reason": "cut_008 is the known dense/stress representative target but remains needs_adjustment before production-adjacent promotion",
+        "next_action": "create a dedicated dense/stress proof after cut_008 context/boundary handling is explicitly accepted or scoped"
+      }
+    ],
     "production_subtitle_design_acceptance": false,
     "production_render_acceptance": false,
     "creative_acceptance": false,

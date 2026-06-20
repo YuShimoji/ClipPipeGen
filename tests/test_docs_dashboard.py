@@ -27,8 +27,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10o"
+    assert status["current_focus"]["feature_id"] == "ED-10p"
     assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10p-keifont-lead-representative-proof-001"
+    )
+    assert status["current_focus"]["source_review_artifact_id"] == (
         "clip-ed10o-multifont-focused-review-001"
     )
     assert status["current_focus"]["source_comparison_artifact_id"] == (
@@ -38,10 +41,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10n-keifont-overlay-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10o_multifont_focused_review_ready"
+        "ed10p_keifont_lead_representative_proof_ready"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "ed10k_biz_freeform_review_consumed_not_accepted"
+        "ed10o_review_surface_direction_accepted_not_final_baseline"
+    )
+    assert status["current_focus"]["latest_review_consumed"] == (
+        "ed10o_focused_review_surface_accepted"
     )
     assert status["current_focus"]["selected_typography_base"] == (
         "ed10l_keifont_pop_dialogue_candidate"
@@ -50,10 +56,16 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "one_shot_multifont_focused_review_surface_ready"
+        "keifont_lead_representative_proof_ready"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_font_visual_evidence_after_per_user_font_readback"
+    )
+    assert status["current_focus"]["review_surface_direction"] == (
+        "ed10o_focused_matrix_accepted_as_preferred_review_direction"
+    )
+    assert status["current_focus"]["review_debt"][0]["debt_id"] == (
+        "cut_008_dense_stress_proof"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -61,13 +73,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
             "jp_pilot01r3_cut_review\\subtitle_multifont_focused_review\\"
             "open_comparison.ps1"
         ),
-        ".\\open-current-proof.ps1",
         (
             "powershell -ExecutionPolicy Bypass -File "
             "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\"
@@ -96,7 +108,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10o-multifont-focused-review-001"
+        "clip-ed10p-keifont-lead-representative-proof-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -116,8 +128,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
+    assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
+    assert "subtitle_overlay_visual_proof_report" in html
     assert "clip-ed10n-keifont-overlay-proof-001" in html
     assert "clip-ed10l-known-kirinuki-font-pack-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
@@ -259,6 +273,15 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10o_multifont_focused_review"]["artifact_id"] == (
         "clip-ed10o-multifont-focused-review-001"
     )
+    assert registry["ed10o_multifont_focused_review"]["review_surface_status"] == (
+        "focused_review_surface_accepted_as_review_direction"
+    )
+    assert registry["ed10o_multifont_focused_review"]["human_review_consumed"][
+        "focused_review_surface_easier_to_understand"
+    ] is True
+    assert registry["ed10o_multifont_focused_review"]["human_review_consumed"][
+        "final_baseline_acceptance"
+    ] is False
     assert registry["ed10o_multifont_focused_review"][
         "source_proof_artifact_id"
     ] == "clip-ed10n-keifont-overlay-proof-001"
@@ -290,6 +313,42 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "production_subtitle_design_acceptance"
     ] is False
     assert registry["ed10o_multifont_focused_review"][
+        "font_binaries_copied_or_vendored"
+    ] is False
+    assert registry["ed10p_keifont_lead_representative_proof"]["artifact_id"] == (
+        "clip-ed10p-keifont-lead-representative-proof-001"
+    )
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "source_review_artifact_id"
+    ] == "clip-ed10o-multifont-focused-review-001"
+    assert registry["ed10p_keifont_lead_representative_proof"]["proof_profile"] == (
+        "ed10p_keifont_lead_representative_proof"
+    )
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "current_lead_candidate_id"
+    ] == "ed10l_keifont_pop_dialogue_candidate"
+    assert registry["ed10p_keifont_lead_representative_proof"]["lead_status"] == (
+        "provisional_normal_dialogue_lead"
+    )
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "review_surface_direction"
+    ] == "ed10o_focused_matrix_accepted_as_preferred_review_direction"
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "included_candidate_ids"
+    ] == ["ed10l_keifont_pop_dialogue_candidate"]
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "alternates_preserved"
+    ] == [
+        "ed10l_851_chikara_yowaku_dialogue_candidate",
+        "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+    ]
+    assert registry["ed10p_keifont_lead_representative_proof"]["review_debt"][0][
+        "debt_id"
+    ] == "cut_008_dense_stress_proof"
+    assert registry["ed10p_keifont_lead_representative_proof"][
+        "production_subtitle_design_acceptance"
+    ] is False
+    assert registry["ed10p_keifont_lead_representative_proof"][
         "font_binaries_copied_or_vendored"
     ] is False
     assert "noto_sans_jp_clean_outline" in candidate_ids

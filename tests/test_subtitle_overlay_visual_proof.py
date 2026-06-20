@@ -12,6 +12,7 @@ import pytest
 from src.pipeline.operator_proxy_decision_handoff import build_operator_proxy_decision_handoff
 from src.integrations.render import subtitle_style_spike as spike
 from src.integrations.render.subtitle_overlay_visual_proof import (
+    SubtitleOverlayVisualProofError,
     _presentation_items,
     _subtitle_layout_contract,
     _write_ass,
@@ -501,6 +502,91 @@ def test_subtitle_overlay_visual_proof_applies_selected_ed10j_biz_candidate(
         assert item["subtitle_overlay_present"] is True
 
 
+def test_subtitle_overlay_visual_proof_ed10p_keifont_profile(tmp_path: Path):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_002", "cut_003"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10p_keifont_lead_representative_proof",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    representative = result["representative_visual_proof_report"]
+    assert report["artifact_id"] == "clip-ed10p-keifont-lead-representative-proof-001"
+    assert report["proof_profile"] == "ed10p_keifont_lead_representative_proof"
+    assert report["source_review_artifact_id"] == (
+        "clip-ed10o-multifont-focused-review-001"
+    )
+    assert report["source_proof_artifact_id"] == (
+        "clip-ed10n-keifont-overlay-proof-001"
+    )
+    assert report["style_parameters"]["typography_decoration_candidate_id"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert report["focused_proof_review"]["status"] == (
+        "representative_keifont_lead_proof_ready"
+    )
+    assert report["focused_proof_review"]["input_mode"] == "freeform"
+    assert report["focused_proof_review"]["current_lead_candidate_id"] == (
+        "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert report["review_surface_direction"]["status"] == (
+        "accepted_as_review_direction_not_production_acceptance"
+    )
+    assert report["candidate_state"]["alternates_preserved"] == [
+        "ed10l_851_chikara_yowaku_dialogue_candidate",
+        "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+    ]
+    assert report["review_debt"][0]["debt_id"] == "cut_008_dense_stress_proof"
+    assert report["production_candidate"] is False
+    assert report["rights_status"] == "pending"
+    assert representative["active_overlay_artifact_id"] == (
+        "clip-ed10p-keifont-lead-representative-proof-001"
+    )
+    assert representative["focused_proof_review"]["source_review_artifact_id"] == (
+        "clip-ed10o-multifont-focused-review-001"
+    )
+    assert representative["review_debt"][0]["status"] == "deferred_not_blocking_ed10p"
+
+    report_html = (review_dir / "subtitle_overlay_visual_proof_report.html").read_text(
+        encoding="utf-8"
+    )
+    representative_html = (
+        review_dir / "representative_visual_proof_report.html"
+    ).read_text(encoding="utf-8")
+    assert "Review Focus" in report_html
+    assert "Target Lines" in report_html
+    assert "clip-ed10o-multifont-focused-review-001" in report_html
+    assert "cut_008_dense_stress_proof" in report_html
+    assert "Review Focus" in representative_html
+
+
+def test_subtitle_overlay_visual_proof_ed10p_profile_requires_keifont(tmp_path: Path):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    with pytest.raises(SubtitleOverlayVisualProofError, match="requires"):
+        build_subtitle_overlay_visual_proof(
+            episode_dir=episode_dir,
+            review_dir=review_dir,
+            target_cut_ids=["cut_002", "cut_003"],
+            typography_decoration_candidate_id="ed10j_biz_udgothic_bold_telop_candidate",
+            proof_profile="ed10p_keifont_lead_representative_proof",
+            ffmpeg_path="fake-ffmpeg",
+            ffprobe_path="fake-ffprobe",
+            base_dir=tmp_path,
+            runner=_fake_runner,
+        )
+
+
 def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
@@ -514,6 +600,7 @@ def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: 
     assert help_result.returncode == 0
     assert "--target-cut" in help_result.stdout
     assert "--typography-decoration-candidate-id" in help_result.stdout
+    assert "--proof-profile" in help_result.stdout
 
     result = subprocess.run(
         [

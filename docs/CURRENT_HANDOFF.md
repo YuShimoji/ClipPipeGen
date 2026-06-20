@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10o_multifont_focused_review_ready
+health: ed10p_keifont_lead_representative_proof_ready
 progress_pct: 100
 last_touched: 2026-06-20
-next_review_due: after_ed10o_multifont_human_review
-active_artifact: clip-ed10o-multifont-focused-review-001
+next_review_due: after_ed10p_keifont_human_review
+active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -24,7 +24,7 @@ already advanced to ED-10l.
 
 ## Current State
 
-The active artifact is `clip-ed10o-multifont-focused-review-001`.
+The active artifact is `clip-ed10p-keifont-lead-representative-proof-001`.
 
 ED-10j already consumed the freeform review that removed Meiryo from normal
 subtitle baseline candidates. ED-10j readback also resolved the blue badge /
@@ -54,6 +54,14 @@ registry readback is `M PLUS 1 Thin` via a variable font file; it needs a pinned
 non-thin weight/style before baseline comparison. No font binary was
 downloaded, installed, copied, vendored, staged, or committed by Codex.
 
+ED-10o was then reviewed as easier to see. That accepts the focused review
+surface as the preferred review direction, not final subtitle design or
+production acceptance. Because the user did not promote 851 Chikara Yowaku or
+Yasashisa Gothic over Keifont, ED-10p keeps Keifont as the provisional
+normal-dialogue lead and regenerates the representative proof for `cut_002` /
+`cut_003`. The proof page now starts with Review Focus, target lines, the ED-10o
+reference, and Review Debt for `cut_008` dense/stress coverage.
+
 ## Resume Order
 
 1. Read [RUNTIME_STATE.md](RUNTIME_STATE.md).
@@ -67,9 +75,10 @@ downloaded, installed, copied, vendored, staged, or committed by Codex.
 
 ## Next Move
 
-Open and review the ED-10o focused matrix first. Decide which font is closest
-to the normal-dialogue baseline, whether Keifont still leads, and whether the
-new page is easier to understand than the old wide contact sheet.
+Open and review the ED-10p Keifont lead proof first. Decide whether Keifont
+still works as the provisional normal-dialogue lead beyond the easiest sample,
+whether body thickness / outline pressure are acceptable, and whether the new
+focused proof page remains easy to judge.
 
 Good immediate candidates to route:
 
@@ -90,8 +99,9 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10o-multifont-focused-review-001` | Current one-shot multi-font focused review surface | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
-| `clip-ed10n-keifont-overlay-proof-001` | Keifont lead proof reference | `.\open-current-proof.ps1` |
+| `clip-ed10p-keifont-lead-representative-proof-001` | Current Keifont lead representative proof | `.\open-current-proof.ps1` |
+| `clip-ed10o-multifont-focused-review-001` | Accepted focused review UX direction / font comparison reference | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
+| `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | `.\open-current-proof.ps1` |
 | `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback evidence | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
 | `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected BIZ reference | See artifact registry; `open-current-proof.ps1` now points to ED-10n |
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed Meiryo removal / BIZ selection audit trail | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |
