@@ -3,7 +3,7 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10s_keifont_dense_stress_font_evidence_blocked
+health: ed10t_keifont_dense_stress_proof_review_ready
 progress_pct: 100
 last_touched: 2026-06-22
 next_review_due: after_ed10r_cut_008_dense_stress_review
@@ -65,15 +65,12 @@ status、local availability、reproducibility、intended use で比較できる�
   `current_proof_focused_review.html`, with Review Focus, target lines,
   subtitle-area evidence, ED-10o reference, and `cut_008` Review Debt before
   detailed/debug reports.
-- ED-10r is now the current proof route. Keifont is treated as diagnostic
-  representative normal-dialogue provisional baseline based on the ED-10n/ED-10o
-  review history. Do not ask for another general Keifont review on `cut_002` /
-  `cut_003`; after Keifont resolves, review only `cut_008` dense/stress
-  behavior.
-- Current workspace caveat: ED-10r local generation warns
-  `font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`.
-  The current Windows profile resolved Noto Sans JP fallback, not Keifont.
-  Regenerate after Keifont resolves before asking for dense/stress judgement.
+- ED-10t regenerated the ED-10r dense/stress proof after the current Windows
+  user `PLANNER007` installed Keifont and the related ED-10l font candidates.
+  The resolver now reports `requested=Keifont`, `resolved=Keifont`, and
+  `font_visual_evidence.status=valid_requested_keifont_visual_evidence`.
+  Review only `cut_008` dense/stress behavior; do not ask for another general
+  Keifont review on `cut_002` / `cut_003`.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -193,11 +190,11 @@ dense/stress conditions: wrapping, rapid cue replacement, safe area, and
 bounded outline/shadow/badge pressure. If it fails, create a bounded adjustment
 slice rather than reopening the font-family sweep.
 
-Current same-machine generation is not valid Keifont visual evidence yet:
-`requested=Keifont`, `resolved=Noto Sans JP`, and
-`font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`.
-Resolve/install Keifont for this Windows profile and regenerate ED-10r before
-human dense/stress review.
+ED-10t regenerated this route after the current Windows user installed the
+fonts. Current same-machine generation is valid Keifont visual evidence:
+`requested=Keifont`, `resolved=Keifont`, `resolved_font_file=C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf`,
+and `font_visual_evidence.status=valid_requested_keifont_visual_evidence`.
+Human review is now allowed only for the `cut_008` dense/stress axis.
 
 ## ED-10j Kirinuki Font Audit
 

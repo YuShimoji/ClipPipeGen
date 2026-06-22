@@ -457,9 +457,9 @@ def _subtitle_overlay_proof_profile(
                         "the remaining review debt is dense/stress behavior."
                     ),
                     "next_action": (
-                        "after requested Keifont resolves, review cut_008 only "
-                        "for dense/stress readability, wrapping, timing replacement, "
-                        "and bounded style adjustment needs"
+                        "review cut_008 only for dense/stress readability, "
+                        "wrapping, timing replacement, and bounded style "
+                        "adjustment needs"
                     ),
                 }
             ],
@@ -609,6 +609,9 @@ def build_subtitle_overlay_visual_proof(
         updated_representative[
             "review_card_status"
         ] = "review_card_allowed_after_scope_checks"
+    updated_representative.setdefault("subtitle_overlay_visual_proof", {})[
+        "review_card_status"
+    ] = updated_representative["review_card_status"]
     report["visual_proof_status"] = visual_proof_status
     updated_representative["visual_proof_status"] = visual_proof_status
     if not dry_run:
@@ -1031,6 +1034,17 @@ def _report_payload(
         proof_profile=proof_profile,
         style_parameters=style_parameters,
     )
+    review_memory = copy.deepcopy(proof_profile.get("review_memory"))
+    if isinstance(review_memory, dict) and (
+        font_visual_evidence.get("valid_requested_font_visual_evidence") is True
+    ):
+        if review_memory.get("current_blocker") == "font_evidence_fallback":
+            review_memory["current_blocker"] = "none_for_font_evidence"
+        review_memory["font_evidence_gate"] = "valid_requested_keifont_visual_evidence"
+    elif isinstance(review_memory, dict) and (
+        font_visual_evidence.get("valid_requested_font_visual_evidence") is False
+    ):
+        review_memory["font_evidence_gate"] = "blocked_requested_keifont_font_missing_uses_fallback"
     warnings = [
         "Diagnostic overlay proof only; production render acceptance is not claimed.",
         "Production subtitle design, creative acceptance, publishing acceptance, and rights approval are out of scope.",
@@ -1064,7 +1078,7 @@ def _report_payload(
         "font_visual_evidence": font_visual_evidence,
         "review_surface_direction": proof_profile.get("review_surface_direction"),
         "candidate_state": proof_profile.get("candidate_state"),
-        "review_memory": proof_profile.get("review_memory"),
+        "review_memory": review_memory,
         "focused_proof_review": proof_profile.get("focused_proof_review"),
         "review_debt": proof_profile.get("review_debt", []),
         "font_bbox_wrap_readback": _report_font_bbox_wrap_summary(cut_reports),
@@ -2030,7 +2044,9 @@ def _updated_representative_report(
     )
     updated["review_surface_direction"] = proof_profile.get("review_surface_direction")
     updated["candidate_state"] = proof_profile.get("candidate_state")
-    updated["review_memory"] = proof_profile.get("review_memory")
+    updated["review_memory"] = overlay_report.get("review_memory") or proof_profile.get(
+        "review_memory"
+    )
     updated["focused_proof_review"] = proof_profile.get("focused_proof_review")
     updated["review_debt"] = proof_profile.get("review_debt", [])
     updated["production_candidate"] = False
@@ -2076,6 +2092,7 @@ def _updated_representative_report(
         "burned_in_subtitle_style": overlay_report.get("burned_in_subtitle_style") or {},
         "sidecar_srt_reference": overlay_report.get("sidecar_srt_reference") or {},
         "review_warning": overlay_report.get("review_warning") or {},
+        "review_card_status": overlay_report.get("review_card_status"),
     }
     by_cut = {str(item.get("cut_id")): item for item in cut_reports}
     assessments = updated.get("per_cut_visual_assessment") or []

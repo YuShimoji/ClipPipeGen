@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10r`
+- feature: `ED-10t`
 - artifact: `clip-ed10r-keifont-dense-stress-proof-001`
-- state: `ed10r_keifont_dense_stress_proof_current`
+- state: `ed10t_keifont_dense_stress_proof_review_ready`
 
 ## Feature Table
 
@@ -56,7 +56,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10o | Multi-font Comparison and Focused Review Surface v0 | done | focused_review_surface_accepted_reference | 100 | clip-ed10o-multifont-focused-review-001 | Keep as accepted focused review-surface reference; it is not final baseline or production acceptance. |
 | ED-10p | Keifont Lead Representative Proof and Review Surface Standard v0 | done | keifont_lead_representative_proof_ready | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as consumed Keifont provisional baseline evidence; ED-10r is now the dense/stress proof route. |
 | ED-10q | Current Proof Focused Review Regression Fix v0 | done | current_proof_focused_review_restored | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as the page-format regression fix; do not treat it as new Keifont font-quality review. |
-| ED-10r | Keifont Dense/Stress Proof v0 | done | keifont_dense_stress_font_evidence_blocked | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Resolve Keifont for the current Windows profile, regenerate ED-10r, then review only cut_008 dense/stress behavior. |
+| ED-10r | Keifont Dense/Stress Proof v0 | done | superseded_by_ed10t_valid_keifont_regeneration | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Superseded by ED-10t valid Keifont regeneration; review only cut_008 dense/stress behavior. |
+| ED-10t | Regenerated Keifont Dense/Stress Proof v0 | done | keifont_dense_stress_proof_review_ready | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Review only cut_008 dense/stress behavior; do not reopen general cut_002/cut_003 Keifont acceptance. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

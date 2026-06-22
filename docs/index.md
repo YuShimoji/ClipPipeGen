@@ -13,14 +13,13 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current active focus is `ED-10r`: Keifont is now treated as diagnostic
+Current active focus is `ED-10t`: Keifont is now treated as diagnostic
 representative normal-dialogue provisional baseline evidence from the ED-10n
 and ED-10o review history. Do not ask for another general Keifont review on
 `cut_002` / `cut_003`; the active route is the `cut_008` dense/stress proof:
-`clip-ed10r-keifont-dense-stress-proof-001`. The current Windows profile must
-resolve Keifont before human dense/stress judgement; the latest local
-generation fell back to Noto Sans JP and is marked with a font evidence
-warning.
+`clip-ed10r-keifont-dense-stress-proof-001`. The current Windows profile now
+resolves Keifont as the requested font, so the regenerated local proof can be
+reviewed for dense/stress behavior only.
 
 Start here:
 
@@ -49,7 +48,7 @@ Normal order:
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for current focus, feature progress, active artifacts, and doc-health findings. |
 | `.\open-artifacts.ps1` | `artifacts/ARTIFACTS.md` | You need the artifact registry entry and exact open/readback notes. |
-| `.\open-current-proof.ps1` | ignored local ED-10r current focused proof if present | Use after Keifont resolves and ED-10r is regenerated; then review only `cut_008` dense/stress wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge pressure. Missing proof is reported clearly and is not a Git failure. |
+| `.\open-current-proof.ps1` | ignored local ED-10t current focused proof if present | Use now for the regenerated Keifont proof; review only `cut_008` dense/stress wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge pressure. Missing proof is reported clearly and is not a Git failure. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` | ignored local ED-10o focused comparison if present | You need the accepted same-line comparison reference; it is not a request to rerun general Keifont acceptance. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` | ignored local ED-10l known-font comparison if present | You need source/readback history for known kirinuki/telop font candidates, not the current proof target. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` | ignored local ED-10j font audit if present | You need to audit the consumed contact sheet, including Meiryo reference demotion and the BIZ default selection. |

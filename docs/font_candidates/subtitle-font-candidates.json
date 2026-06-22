@@ -495,7 +495,7 @@
     "public_use_permission": false
   },
   "ed10r_keifont_dense_stress_proof": {
-    "feature_id": "ED-10r",
+    "feature_id": "ED-10t",
     "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
     "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
@@ -507,8 +507,8 @@
     "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
     "baseline_scope": "diagnostic_representative_normal_dialogue_provisional",
     "keifont_general_acceptance_reopened": false,
-    "user_action_type": "USER_RUN_REQUIRED",
-    "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY_AFTER_KEIFONT_RESOLVES",
+    "user_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
+    "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
     "review_surface_direction": "cut_008_dense_stress_only_not_cut_002_cut_003_general_replay",
     "review_memory": {
       "subject": "Keifont normal-dialogue subtitle direction",
@@ -528,20 +528,21 @@
       "next_nonredundant_axis": "dense_stress",
       "repeated_general_review": false,
       "review_reset_trigger_active": ["new_dense_stress_sample"],
-      "current_blocker": "font_evidence_fallback"
+      "current_blocker": "none_for_font_evidence",
+      "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "current_workspace_font_visual_evidence": {
-      "status": "blocked_requested_keifont_font_missing_uses_fallback",
+      "status": "valid_requested_keifont_visual_evidence",
       "current_windows_user": "DESKTOP-U9P4LKJ/PLANNER007",
       "requested_font_family": "Keifont",
-      "resolved_font_family": "Noto Sans JP",
-      "resolved_font_file": "C:/Windows/Fonts/NotoSansJP-VF.ttf",
-      "font_file_status": "candidate_font_paths_missing_used_global_fallback: font_file_found",
+      "resolved_font_family": "Keifont",
+      "resolved_font_file": "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf",
+      "font_file_status": "candidate_primary_font_file_found",
       "font_readback_table": [
         {
           "source": "HKCU fonts registry",
           "location": "Software/Microsoft/Windows NT/CurrentVersion/Fonts",
-          "keifont_match": false
+          "keifont_match": true
         },
         {
           "source": "HKLM fonts registry",
@@ -551,7 +552,7 @@
         {
           "source": "current user font directory",
           "location": "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts",
-          "keifont_match": false
+          "keifont_match": true
         },
         {
           "source": "machine font directory",
@@ -559,13 +560,16 @@
           "keifont_match": false
         }
       ],
-      "review_implication": "Do not treat the current same-machine ED-10r render as Keifont visual evidence until Keifont resolves on this Windows profile."
+      "review_implication": "The regenerated same-machine ED-10r render can be reviewed as Keifont visual evidence for the cut_008 dense/stress axis only."
     },
-    "user_action_card": {
-      "action_type": "USER_RUN_REQUIRED",
-      "target": "install Keifont for current Windows user profile",
-      "completion_signal": "Keifont is found in the current user font resolver and ED-10r regenerates with requested=Keifont, resolved=Keifont, no fallback warning",
-      "review_card_withheld": true
+    "review_card": {
+      "action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
+      "target": "ED-10t regenerated Keifont cut_008 dense/stress proof",
+      "axis": "dense_stress",
+      "prior_review_count": "2+",
+      "what_this_review_decides": "whether Keifont survives dense subtitle wrapping, rapid cue replacement, safe area pressure, and bounded outline/shadow/badge stress",
+      "not_asking": "general Keifont acceptance on cut_002 or cut_003",
+      "completion_signal": "dense/stress pass, concrete dense/stress concern, or bounded adjustment request"
     },
     "review_history_consumed": [
       "ED-10n Keifont proof judged clearly improved and video-usable",
@@ -588,7 +592,7 @@
         "debt_id": "cut_008_dense_stress_proof",
         "status": "current_target",
         "reason": "Keifont normal-dialogue review history is already consumed; the remaining review debt is dense/stress behavior.",
-        "next_action": "after Keifont resolves, review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs"
+        "next_action": "review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs"
       }
     ],
     "production_subtitle_design_acceptance": false,

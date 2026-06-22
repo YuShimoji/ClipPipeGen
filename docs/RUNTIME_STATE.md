@@ -3,7 +3,7 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10s_keifont_dense_stress_font_evidence_blocked
+health: ed10t_keifont_dense_stress_proof_review_ready
 progress_pct: 100
 last_touched: 2026-06-22
 next_review_due: after_ed10r_cut_008_dense_stress_review
@@ -48,29 +48,24 @@ normal-dialogue provisional baseline, while keeping production subtitle design,
 production render, creative acceptance, rights, publishing, and public-use
 gates false or pending.
 
-The active route is ED-10r: `Keifont Dense/Stress Proof v0`. The current proof
-profile is `ed10r_keifont_dense_stress_proof`, and it is intentionally narrow:
-it only accepts `--target-cut cut_008`. The next human judgement should happen
-only after Keifont resolves on this Windows profile and ED-10r is regenerated;
-then inspect `cut_008` for dense subtitle wrapping, rapid cue replacement, safe
-area, and bounded outline/shadow/badge adjustment needs. If a style issue
+The active route is ED-10t: regenerated ED-10r `Keifont Dense/Stress Proof v0`.
+The proof profile remains `ed10r_keifont_dense_stress_proof`, and it is
+intentionally narrow: it only accepts `--target-cut cut_008`. The current
+Windows profile now resolves Keifont correctly, and the regenerated report
+records `font_visual_evidence.status=valid_requested_keifont_visual_evidence`
+with `requested=Keifont`, `resolved=Keifont`, and
+`font_file_status=candidate_primary_font_file_found`. The next human judgement
+may inspect only `cut_008` for dense subtitle wrapping, rapid cue replacement,
+safe area, and bounded outline/shadow/badge adjustment needs. If a style issue
 appears, open a bounded adjustment slice instead of reopening font-family
 selection.
-
-Same-machine generation on 2026-06-22 created the ED-10r local files, but the
-current Windows profile did not resolve the Keifont font file. The report
-therefore records
-`font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`
-with `requested=Keifont` and `resolved=Noto Sans JP`. The route is ready, but
-the generated local proof must not be judged as Keifont visual evidence until
-Keifont resolves on this profile and ED-10r is regenerated.
 
 Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=2+`
 and is accepted only as `diagnostic_representative_review` /
 `provisional_normal_dialogue_baseline`. It is not accepted for production
 subtitle design, production render, creative acceptance, rights, publishing, or
 public use. The next non-redundant review axis is `dense_stress`, and that axis
-is currently blocked by font evidence fallback.
+is now reviewable from the regenerated `cut_008` proof.
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
@@ -136,9 +131,9 @@ ED-10l route readback:
   Focus and subtitle-area evidence appear before detailed/debug reports
 - ED-10r owns `cut_008` as the current dense/stress proof route; do not replay
   general Keifont review on `cut_002` / `cut_003`
-- current ED-10r local generation warns that Keifont is missing on this Windows
-  profile and Noto Sans JP fallback was used; resolve font availability before
-  visual judgement
+- ED-10t regenerated the ED-10r proof after PLANNER007 installed Keifont; the
+  current report reads `requested=Keifont`, `resolved=Keifont`, and
+  `font_visual_evidence.status=valid_requested_keifont_visual_evidence`
 - no font binary was downloaded, installed, copied, vendored, staged, or
   committed by Codex; local font files remain same-machine evidence only
 
@@ -155,10 +150,11 @@ gates.
 
 ## Next
 
-1. Restore/confirm Keifont font availability for the current Windows profile,
-   then regenerate ED-10r so `requested=Keifont` and `resolved=Keifont`.
-2. After valid Keifont readback, run `.\open-current-proof.ps1` and review only
-   `cut_008` dense/stress behavior.
+1. Run `.\open-current-proof.ps1` and review only `cut_008` dense/stress
+   behavior from the regenerated Keifont proof.
+2. Confirm the review answer is about wrapping, rapid cue replacement, safe
+   area, or bounded outline/shadow/badge pressure, not general Keifont
+   acceptance on `cut_002` / `cut_003`.
 3. Judge whether dense wrapping, rapid cue replacement, safe area, or
    outline/shadow/badge pressure needs a bounded adjustment slice.
 4. Keep ED-10o as accepted review UX direction and reference evidence for why

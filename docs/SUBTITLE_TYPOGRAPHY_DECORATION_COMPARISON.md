@@ -3,7 +3,7 @@ id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
 status: ed10r_keifont_dense_stress_proof_current
-health: ed10s_keifont_dense_stress_font_evidence_blocked
+health: ed10t_keifont_dense_stress_proof_review_ready
 progress_pct: 100
 last_touched: 2026-06-22
 next_review_due: after_ed10r_cut_008_dense_stress_review
@@ -17,7 +17,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-22 JST
 
-## Current Update - ED-10r Keifont Dense/Stress Proof
+## Current Update - ED-10t Regenerated Keifont Dense/Stress Proof
 
 The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
 consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
@@ -69,11 +69,11 @@ history. The current question is only whether dense/stress behavior works:
 wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge
 pressure.
 
-Current workspace caveat: the ED-10r local generation currently records
-`font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`
-because Keifont did not resolve on this Windows profile and the renderer used
-Noto Sans JP fallback. Regenerate after Keifont resolves before human
-dense/stress judgement.
+ED-10t reran font resolver readback after the current Windows user installed
+Keifont and the related ED-10l fonts. The regenerated proof records
+`requested=Keifont`, `resolved=Keifont`, and
+`font_visual_evidence.status=valid_requested_keifont_visual_evidence`, so the
+focused HTML is reviewable as Keifont evidence for `cut_008` dense/stress only.
 
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
@@ -104,11 +104,11 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-Current authoritative state: active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10p is consumed baseline evidence, ED-10q is the completed page-format regression fix, and ED-10r is the current `cut_008` dense/stress review target. Current local visual evidence is blocked until Keifont resolves on this Windows profile. Do not request another general Keifont acceptance review on `cut_002` / `cut_003`.
+Current authoritative state: active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10p is consumed baseline evidence, ED-10q is the completed page-format regression fix, and ED-10t is the regenerated Keifont `cut_008` dense/stress review target. Current local visual evidence resolves Keifont for the Windows user `PLANNER007`, so review may proceed only on dense/stress behavior. Do not request another general Keifont acceptance review on `cut_002` / `cut_003`.
 
 ## これからどうなるか
 
-1. Resolve Keifont on this Windows profile and regenerate ED-10r. Only after the report shows `requested=Keifont` and `resolved=Keifont`, run `.\open-current-proof.ps1` and review the `cut_008` dense/stress proof.
+1. Run `.\open-current-proof.ps1` and review the regenerated Keifont `cut_008` dense/stress proof.
 2. Judge wrapping, rapid cue replacement, safe area, and outline/shadow/badge pressure as bounded adjustment questions.
 3. Treat `clip-ed10p-keifont-lead-representative-proof-001` as consumed baseline evidence; do not request another general Keifont review on `cut_002` / `cut_003`.
 4. Keep production render, rights, publishing, and public-use as separate limitation-lift decisions.
@@ -125,7 +125,7 @@ Yasashisa remain alternates, and `cut_008_dense_stress_proof` is the current
 target. The root launcher opens the focused page, not the old detailed/debug
 overlay report.
 
-Primary local proof review after valid Keifont regeneration:
+Primary local proof review:
 
 ```powershell
 .\open-current-proof.ps1

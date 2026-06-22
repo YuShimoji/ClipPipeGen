@@ -27,7 +27,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10r"
+    assert status["current_focus"]["feature_id"] == "ED-10t"
     assert status["current_focus"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
@@ -41,7 +41,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10p-keifont-lead-representative-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10r_keifont_dense_stress_proof_current"
+        "ed10t_keifont_dense_stress_proof_review_ready"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "keifont_provisional_baseline_from_ed10n_ed10o_review_history"
@@ -57,35 +57,44 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "cut_008_dense_stress_proof_is_current_review_target"
+        "cut_008_dense_stress_proof_regenerated_with_valid_keifont"
     )
-    assert status["current_focus"]["user_action_type"] == "USER_RUN_REQUIRED"
+    assert status["current_focus"]["user_action_type"] == (
+        "USER_REVIEW_DENSE_STRESS_ONLY"
+    )
     assert status["current_focus"]["next_review_action_type"] == (
-        "USER_REVIEW_DENSE_STRESS_ONLY_AFTER_KEIFONT_RESOLVES"
+        "USER_REVIEW_DENSE_STRESS_ONLY"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
-        "blocked_until_keifont_resolves_on_current_windows_profile"
+        "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
         "ed10o_focused_matrix_accepted_as_preferred_review_direction"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
-        "blocked_requested_keifont_font_missing_uses_fallback_on_current_windows_profile"
+        "valid_requested_keifont_visual_evidence_on_current_windows_profile"
     )
     assert status["current_focus"]["review_memory"]["prior_review_count"] == "2+"
     assert status["current_focus"]["review_memory"]["next_nonredundant_axis"] == (
         "dense_stress"
     )
     assert status["current_focus"]["review_memory"]["repeated_general_review"] is False
-    assert status["current_focus"]["user_action_card"]["action_type"] == (
-        "USER_RUN_REQUIRED"
+    assert status["current_focus"]["review_memory"]["current_blocker"] == (
+        "none_for_font_evidence"
     )
-    assert status["current_focus"]["user_action_card"]["target"] == (
-        "install_or_restore_keifont_for_current_windows_user_profile"
+    assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
+        "valid_requested_keifont_visual_evidence"
     )
-    assert "not valid Keifont visual evidence" in status["current_focus"][
-        "user_action_card"
-    ]["not_a_review_card_reason"]
+    assert status["current_focus"]["review_card"]["action_type"] == (
+        "USER_REVIEW_DENSE_STRESS_ONLY"
+    )
+    assert status["current_focus"]["review_card"]["target"] == (
+        "ED-10t regenerated Keifont cut_008 dense/stress proof"
+    )
+    assert status["current_focus"]["review_card"]["axis"] == "dense_stress"
+    assert "cut_002 or cut_003" in status["current_focus"]["review_card"][
+        "not_asking"
+    ]
     assert status["current_focus"]["focused_review_html"] == (
         "episodes/.../current_proof_focused_review.html"
     )
@@ -421,7 +430,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10q_current_proof_focused_review_fix"][
         "production_subtitle_design_acceptance"
     ] is False
-    assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10r"
+    assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10t"
     assert registry["ed10r_keifont_dense_stress_proof"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
@@ -438,11 +447,11 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "keifont_general_acceptance_reopened"
     ] is False
     assert registry["ed10r_keifont_dense_stress_proof"]["user_action_type"] == (
-        "USER_RUN_REQUIRED"
+        "USER_REVIEW_DENSE_STRESS_ONLY"
     )
     assert registry["ed10r_keifont_dense_stress_proof"][
         "next_review_action_type"
-    ] == "USER_REVIEW_DENSE_STRESS_ONLY_AFTER_KEIFONT_RESOLVES"
+    ] == "USER_REVIEW_DENSE_STRESS_ONLY"
     assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
         "prior_review_count"
     ] == "2+"
@@ -452,18 +461,24 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
         "repeated_general_review"
     ] is False
+    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
+        "current_blocker"
+    ] == "none_for_font_evidence"
+    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
+        "font_evidence_gate"
+    ] == "valid_requested_keifont_visual_evidence"
     assert registry["ed10r_keifont_dense_stress_proof"]["review_debt"][0][
         "status"
     ] == "current_target"
     assert registry["ed10r_keifont_dense_stress_proof"][
         "current_workspace_font_visual_evidence"
-    ]["status"] == "blocked_requested_keifont_font_missing_uses_fallback"
-    assert registry["ed10r_keifont_dense_stress_proof"]["user_action_card"][
+    ]["status"] == "valid_requested_keifont_visual_evidence"
+    assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
         "action_type"
-    ] == "USER_RUN_REQUIRED"
-    assert registry["ed10r_keifont_dense_stress_proof"]["user_action_card"][
-        "review_card_withheld"
-    ] is True
+    ] == "USER_REVIEW_DENSE_STRESS_ONLY"
+    assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
+        "axis"
+    ] == "dense_stress"
     assert registry["ed10r_keifont_dense_stress_proof"][
         "production_subtitle_design_acceptance"
     ] is False

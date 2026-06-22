@@ -674,6 +674,10 @@ def test_subtitle_overlay_visual_proof_ed10r_keifont_dense_stress_profile(
     assert report["font_visual_evidence"]["status"] == (
         "valid_requested_keifont_visual_evidence"
     )
+    assert report["review_memory"]["current_blocker"] == "none_for_font_evidence"
+    assert report["review_memory"]["font_evidence_gate"] == (
+        "valid_requested_keifont_visual_evidence"
+    )
     assert report["review_card_status"] == "review_card_allowed_after_scope_checks"
     assert {item["cut_id"] for item in report["cut_results"]} == {"cut_008"}
     assert result["visual_proof_status"] == "available_requires_human_review"
@@ -684,6 +688,12 @@ def test_subtitle_overlay_visual_proof_ed10r_keifont_dense_stress_profile(
         "clip-ed10p-keifont-lead-representative-proof-001"
     )
     assert representative["review_debt"][0]["status"] == "current_target"
+    assert representative["review_memory"]["current_blocker"] == (
+        "none_for_font_evidence"
+    )
+    assert representative["subtitle_overlay_visual_proof"]["review_card_status"] == (
+        "review_card_allowed_after_scope_checks"
+    )
 
     focused_html = (review_dir / "current_proof_focused_review.html").read_text(
         encoding="utf-8"
@@ -750,8 +760,15 @@ def test_subtitle_overlay_visual_proof_ed10r_marks_fallback_font_invalid(
     assert representative["review_card_status"] == (
         "withheld_font_visual_evidence_invalid"
     )
+    assert representative["subtitle_overlay_visual_proof"]["review_card_status"] == (
+        "withheld_font_visual_evidence_invalid"
+    )
     assert report["review_memory"]["repeated_general_review"] is False
     assert report["review_memory"]["next_nonredundant_axis"] == "dense_stress"
+    assert report["review_memory"]["current_blocker"] == "font_evidence_fallback"
+    assert report["review_memory"]["font_evidence_gate"] == (
+        "blocked_requested_keifont_font_missing_uses_fallback"
+    )
 
     focused_html = (review_dir / "current_proof_focused_review.html").read_text(
         encoding="utf-8"

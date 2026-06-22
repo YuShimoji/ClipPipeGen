@@ -99,29 +99,29 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10r",
+            "feature_id": "ED-10t",
             "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
             "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
             "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "source_proof_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
-            "state": "ed10r_keifont_dense_stress_proof_current",
+            "state": "ed10t_keifont_dense_stress_proof_review_ready",
             "human_visual_judgement": "keifont_provisional_baseline_from_ed10n_ed10o_review_history",
             "latest_review_consumed": "ed10q_page_regression_fix_not_font_quality_review",
             "target_cuts": ["cut_008"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "cut_008_dense_stress_proof_is_current_review_target",
-            "user_action_type": "USER_RUN_REQUIRED",
-            "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY_AFTER_KEIFONT_RESOLVES",
+            "route_status": "cut_008_dense_stress_proof_regenerated_with_valid_keifont",
+            "user_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
+            "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
             "selected_typography_source": "ed10n_ed10o_review_history_and_ed10q_page_regression_fix",
             "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
             "main_issue": "dense_stress_review_debt",
-            "current_visual_comparison_validity": "blocked_until_keifont_resolves_on_current_windows_profile",
+            "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
             "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
             "lead_status": "diagnostic_representative_normal_dialogue_provisional_baseline",
-            "font_visual_evidence_status": "blocked_requested_keifont_font_missing_uses_fallback_on_current_windows_profile",
-            "local_generation_status": "route_generated_but_not_valid_keifont_visual_evidence_until_font_resolves",
+            "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
+            "local_generation_status": "regenerated_with_real_keifont_ready_for_dense_stress_review",
             "review_memory": {
                 "subject": "Keifont normal-dialogue subtitle direction",
                 "prior_review_count": "2+",
@@ -140,14 +140,21 @@ def build_project_status(
                 "next_nonredundant_axis": "dense_stress",
                 "repeated_general_review": False,
                 "review_reset_trigger_active": ["new_dense_stress_sample"],
-                "current_blocker": "font_evidence_fallback",
+                "current_blocker": "none_for_font_evidence",
+                "font_evidence_gate": "valid_requested_keifont_visual_evidence",
             },
-            "user_action_card": {
-                "action_type": "USER_RUN_REQUIRED",
-                "target": "install_or_restore_keifont_for_current_windows_user_profile",
-                "current_windows_user": "current_user_profile",
-                "completion_signal": "Keifont found by current user font resolver and ED-10r report shows requested=Keifont, resolved=Keifont, no fallback warning",
-                "not_a_review_card_reason": "current ED-10r render resolves Noto Sans JP fallback and is not valid Keifont visual evidence",
+            "review_card": {
+                "action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
+                "target": "ED-10t regenerated Keifont cut_008 dense/stress proof",
+                "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+                "axis": "dense_stress",
+                "prior_review_count": "2+",
+                "prior_signal_summary": "Keifont normal-dialogue direction was positive enough for a diagnostic representative provisional baseline.",
+                "what_changed": "cut_008 was regenerated with requested=Keifont and resolved=Keifont for the current Windows user.",
+                "what_this_review_decides": "whether Keifont survives dense subtitle wrapping, rapid cue replacement, safe area pressure, and bounded outline/shadow/badge stress.",
+                "not_asking": "Do not re-decide general Keifont acceptance on cut_002 or cut_003.",
+                "input_mode": "freeform",
+                "completion_signal": "dense/stress pass, concrete dense/stress concern, or bounded adjustment request",
             },
             "review_surface_direction": "ed10o_focused_matrix_accepted_as_preferred_review_direction",
             "focused_review_html": "episodes/.../current_proof_focused_review.html",
@@ -155,7 +162,7 @@ def build_project_status(
                 {
                     "debt_id": "cut_008_dense_stress_proof",
                     "status": "current_target",
-                    "next_action": "after Keifont resolves, review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs",
+                    "next_action": "review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs",
                 }
             ],
             "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -448,6 +455,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10p-keifont-lead-representative-proof-001"
         if feature_id == "ED-10r":
             active_artifact = "clip-ed10r-keifont-dense-stress-proof-001"
+        if feature_id == "ED-10t":
+            active_artifact = "clip-ed10r-keifont-dense-stress-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -559,10 +568,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10r cut_008 dense/stress proof",
+            "item": "ED-10t regenerated cut_008 dense/stress proof",
             "artifact": "clip-ed10r-keifont-dense-stress-proof-001",
-            "question": "After Keifont resolves on this Windows profile, does cut_008 stay readable under dense/stress timing?",
-            "next_route": "Resolve Keifont font availability, regenerate ED-10r, then review cut_008 only for dense/stress wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge adjustment needs.",
+            "question": "With requested=Keifont and resolved=Keifont, does cut_008 stay readable under dense/stress timing?",
+            "next_route": "Review cut_008 only for dense/stress wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge adjustment needs.",
         },
         {
             "item": "ED-10p Keifont representative proof baseline",
@@ -657,8 +666,8 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-current-proof.ps1",
             "target": "episodes/.../current_proof_focused_review.html",
             "when_to_use": (
-                "Use after Keifont resolves on this Windows profile; review "
-                "only ED-10r cut_008 dense/stress behavior and do not reopen "
+                "Use now for the ED-10t regenerated Keifont proof; review "
+                "only ED-10r/ED-10t cut_008 dense/stress behavior and do not reopen "
                 "general cut_002/cut_003 Keifont acceptance."
             ),
         },
@@ -821,7 +830,9 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10q":
         return "current_proof_focused_review_restored"
     if feature_id == "ED-10r":
-        return "keifont_dense_stress_font_evidence_blocked"
+        return "superseded_by_ed10t_valid_keifont_regeneration"
+    if feature_id == "ED-10t":
+        return "keifont_dense_stress_proof_review_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -852,6 +863,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10r":
         return 100
+    if feature_id == "ED-10t":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -879,7 +892,9 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10q":
         return "Keep as the page-format regression fix; do not treat it as new Keifont font-quality review."
     if feature_id == "ED-10r":
-        return "Resolve Keifont for the current Windows profile, regenerate ED-10r, then review only cut_008 dense/stress behavior."
+        return "Superseded by ED-10t valid Keifont regeneration; review only cut_008 dense/stress behavior."
+    if feature_id == "ED-10t":
+        return "Review only cut_008 dense/stress behavior; do not reopen general cut_002/cut_003 Keifont acceptance."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

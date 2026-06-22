@@ -24,12 +24,12 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10r",
+    "feature_id": "ED-10t",
     "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
     "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
-    "state": "ed10r_keifont_dense_stress_proof_current",
+    "state": "ed10t_keifont_dense_stress_proof_review_ready",
     "human_visual_judgement": "keifont_provisional_baseline_from_ed10n_ed10o_review_history",
     "latest_review_consumed": "ed10q_page_regression_fix_not_font_quality_review",
     "target_cuts": [
@@ -38,17 +38,17 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "cut_008_dense_stress_proof_is_current_review_target",
-    "user_action_type": "USER_RUN_REQUIRED",
-    "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY_AFTER_KEIFONT_RESOLVES",
+    "route_status": "cut_008_dense_stress_proof_regenerated_with_valid_keifont",
+    "user_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
+    "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
     "selected_typography_source": "ed10n_ed10o_review_history_and_ed10q_page_regression_fix",
     "preferred_direction": "known_japanese_youtube_kirinuki_telop_fonts",
     "main_issue": "dense_stress_review_debt",
-    "current_visual_comparison_validity": "blocked_until_keifont_resolves_on_current_windows_profile",
+    "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
     "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
     "lead_status": "diagnostic_representative_normal_dialogue_provisional_baseline",
-    "font_visual_evidence_status": "blocked_requested_keifont_font_missing_uses_fallback_on_current_windows_profile",
-    "local_generation_status": "route_generated_but_not_valid_keifont_visual_evidence_until_font_resolves",
+    "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
+    "local_generation_status": "regenerated_with_real_keifont_ready_for_dense_stress_review",
     "review_memory": {
       "subject": "Keifont normal-dialogue subtitle direction",
       "prior_review_count": "2+",
@@ -69,14 +69,21 @@
       "review_reset_trigger_active": [
         "new_dense_stress_sample"
       ],
-      "current_blocker": "font_evidence_fallback"
+      "current_blocker": "none_for_font_evidence",
+      "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
-    "user_action_card": {
-      "action_type": "USER_RUN_REQUIRED",
-      "target": "install_or_restore_keifont_for_current_windows_user_profile",
-      "current_windows_user": "current_user_profile",
-      "completion_signal": "Keifont found by current user font resolver and ED-10r report shows requested=Keifont, resolved=Keifont, no fallback warning",
-      "not_a_review_card_reason": "current ED-10r render resolves Noto Sans JP fallback and is not valid Keifont visual evidence"
+    "review_card": {
+      "action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
+      "target": "ED-10t regenerated Keifont cut_008 dense/stress proof",
+      "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+      "axis": "dense_stress",
+      "prior_review_count": "2+",
+      "prior_signal_summary": "Keifont normal-dialogue direction was positive enough for a diagnostic representative provisional baseline.",
+      "what_changed": "cut_008 was regenerated with requested=Keifont and resolved=Keifont for the current Windows user.",
+      "what_this_review_decides": "whether Keifont survives dense subtitle wrapping, rapid cue replacement, safe area pressure, and bounded outline/shadow/badge stress.",
+      "not_asking": "Do not re-decide general Keifont acceptance on cut_002 or cut_003.",
+      "input_mode": "freeform",
+      "completion_signal": "dense/stress pass, concrete dense/stress concern, or bounded adjustment request"
     },
     "review_surface_direction": "ed10o_focused_matrix_accepted_as_preferred_review_direction",
     "focused_review_html": "episodes/.../current_proof_focused_review.html",
@@ -84,7 +91,7 @@
       {
         "debt_id": "cut_008_dense_stress_proof",
         "status": "current_target",
-        "next_action": "after Keifont resolves, review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs"
+        "next_action": "review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs"
       }
     ],
     "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -113,7 +120,7 @@
       "label": "Keifont Dense/Stress Proof",
       "command": ".\\open-current-proof.ps1",
       "target": "episodes/.../current_proof_focused_review.html",
-      "when_to_use": "Use after Keifont resolves on this Windows profile; review only ED-10r cut_008 dense/stress behavior and do not reopen general cut_002/cut_003 Keifont acceptance."
+      "when_to_use": "Use now for the ED-10t regenerated Keifont proof; review only ED-10r/ED-10t cut_008 dense/stress behavior and do not reopen general cut_002/cut_003 Keifont acceptance."
     },
     {
       "label": "Multi-font Focused Review Reference",
@@ -667,11 +674,22 @@
       "id": "ED-10r",
       "title": "Keifont Dense/Stress Proof v0",
       "status": "done",
-      "health": "keifont_dense_stress_font_evidence_blocked",
+      "health": "superseded_by_ed10t_valid_keifont_regeneration",
       "progress_pct": 100,
       "active_artifact": "clip-ed10r-keifont-dense-stress-proof-001",
-      "next_action": "Resolve Keifont for the current Windows profile, regenerate ED-10r, then review only cut_008 dense/stress behavior.",
+      "next_action": "Superseded by ED-10t valid Keifont regeneration; review only cut_008 dense/stress behavior.",
       "summary_excerpt": "Keifont review history を消費し、ユーザー評価済みの cut_002 / cut_003 general acceptance を再要求しないよう current route を切り替えた。ed10l_keifont_pop_dialogue_candidate は diagnostic / representative normal-dialogue provisional baseline として扱い、ED-...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-10t",
+      "title": "Regenerated Keifont Dense/Stress Proof v0",
+      "status": "done",
+      "health": "keifont_dense_stress_proof_review_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10r-keifont-dense-stress-proof-001",
+      "next_action": "Review only cut_008 dense/stress behavior; do not reopen general cut_002/cut_003 Keifont acceptance.",
+      "summary_excerpt": "ユーザーが Keifont / 851 Chikara Yowaku / M+ FONTS / Yasashisa Gothic を現在の Windows user PLANNER007 に install 済みと報告したため、font resolver readback を再実行。ed10l_keifont_pop_dialogue_candidate は requested=Keifont / resolved=Keifont /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1149,9 +1167,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 88,
+    "feature_count": 89,
     "status_counts": {
-      "done": 72,
+      "done": 73,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -1275,8 +1293,8 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/current_proof_focused_review.html",
       "open_command": ".\\open-current-proof.ps1",
-      "review_status": "Current dense/stress route is established, but current same-machine visual evidence is blocked by missing Keifont font resolution. User-side work should not judge the fallback render as Keifont; first restore/install the Keifont font for this Windows profile, then regenerate and review cut_008 for dense wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge adjustment needs. Do not re-decide general Keifont acceptance from cut_002 / cut_003.",
-      "next_action": "Resolve Keifont font availability for the current Windows profile and regenerate ED-10r. If the regenerated proof resolves requested=Keifont; resolved=Keifont, review only the dense/stress target."
+      "review_status": "Current dense/stress route is established and the regenerated same-machine visual evidence is valid Keifont evidence for the dense/stress axis only. This is still diagnostic review, not production subtitle design, render, creative, rights, publishing, or public-use acceptance.",
+      "next_action": "Open .\\open-current-proof.ps1 and review only the cut_008 dense/stress target."
     },
     {
       "artifact_id": "clip-ed10g-noto-overlay-proof-001",
@@ -1331,16 +1349,16 @@
   },
   "artifact_coverage": {
     "registered_artifact_count": 15,
-    "features_with_artifact_count": 15,
+    "features_with_artifact_count": 16,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "ED-10r cut_008 dense/stress proof",
+      "item": "ED-10t regenerated cut_008 dense/stress proof",
       "artifact": "clip-ed10r-keifont-dense-stress-proof-001",
-      "question": "After Keifont resolves on this Windows profile, does cut_008 stay readable under dense/stress timing?",
-      "next_route": "Resolve Keifont font availability, regenerate ED-10r, then review cut_008 only for dense/stress wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge adjustment needs."
+      "question": "With requested=Keifont and resolved=Keifont, does cut_008 stay readable under dense/stress timing?",
+      "next_route": "Review cut_008 only for dense/stress wrapping, rapid cue replacement, safe area, and bounded outline/shadow/badge adjustment needs."
     },
     {
       "item": "ED-10p Keifont representative proof baseline",
@@ -1409,7 +1427,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 94,
+      "line_count": 93,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -1423,13 +1441,13 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 481,
+      "line_count": 477,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "ed10s_keifont_dense_stress_font_evidence_blocked",
+        "health": "ed10t_keifont_dense_stress_proof_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-22",
         "next_review_due": "after_ed10r_cut_008_dense_stress_review",
@@ -1444,13 +1462,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 93,
+      "boundary_term_count": 94,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 228,
+      "line_count": 229,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1458,7 +1476,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 343,
+      "boundary_term_count": 348,
       "status": "in_progress"
     },
     {
@@ -1498,7 +1516,7 @@
         "title": "Subtitle Typography Decoration Comparison",
         "type": "decision_packet",
         "status": "ed10r_keifont_dense_stress_proof_current",
-        "health": "ed10s_keifont_dense_stress_font_evidence_blocked",
+        "health": "ed10t_keifont_dense_stress_proof_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-22",
         "next_review_due": "after_ed10r_cut_008_dense_stress_review",
@@ -1541,7 +1559,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 200,
+      "boundary_term_count": 204,
       "status": "reference"
     },
     {
@@ -1603,13 +1621,13 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 164,
+      "line_count": 163,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "ed10s_keifont_dense_stress_font_evidence_blocked",
+        "health": "ed10t_keifont_dense_stress_proof_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-22",
         "next_review_due": "after_ed10r_cut_008_dense_stress_review",
@@ -1853,13 +1871,13 @@
     {
       "path": "docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md",
       "title": "Subtitle Font Candidate Sweep v0",
-      "line_count": 370,
+      "line_count": 367,
       "metadata": {
         "id": "subtitle-font-candidate-sweep",
         "title": "Subtitle Font Candidate Sweep v0",
         "type": "candidate_registry",
         "status": "in_progress",
-        "health": "ed10s_keifont_dense_stress_font_evidence_blocked",
+        "health": "ed10t_keifont_dense_stress_proof_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-22",
         "next_review_due": "after_ed10r_cut_008_dense_stress_review",
@@ -1969,7 +1987,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (481 lines) is likely carrying history.",
+        "detail": "Long active doc (477 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -1981,7 +1999,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 343 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 348 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2005,7 +2023,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 200 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 204 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
