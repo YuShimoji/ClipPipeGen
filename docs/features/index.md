@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10q`
-- artifact: `clip-ed10p-keifont-lead-representative-proof-001`
-- state: `ed10q_current_proof_focused_review_restored`
+- feature: `ED-10r`
+- artifact: `clip-ed10r-keifont-dense-stress-proof-001`
+- state: `ed10r_keifont_dense_stress_proof_current`
 
 ## Feature Table
 
@@ -54,8 +54,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10m | Real Font Source/License Install Route v0 | done | keifont_route_prepared_user_install_completed_by_user | 100 | clip-ed10l-known-kirinuki-font-pack-001 | Keep as source/license route record; ED-10n consumed the per-user font readback. |
 | ED-10n | Per-user Font Readback and Keifont Real Proof v0 | done | keifont_overlay_proof_ready_for_human_review | 95 | clip-ed10n-keifont-overlay-proof-001 | Keep as earlier lead proof reference; ED-10q is now the focused current review surface for the ED-10p artifact. |
 | ED-10o | Multi-font Comparison and Focused Review Surface v0 | done | focused_review_surface_accepted_reference | 100 | clip-ed10o-multifont-focused-review-001 | Keep as accepted focused review-surface reference; it is not final baseline or production acceptance. |
-| ED-10p | Keifont Lead Representative Proof and Review Surface Standard v0 | done | keifont_lead_representative_proof_ready | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as the Keifont proof artifact; ED-10q restores the current proof review surface. |
-| ED-10q | Current Proof Focused Review Regression Fix v0 | done | current_proof_focused_review_restored | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Open the focused current proof page and collect freeform review on page clarity and Keifont viability. |
+| ED-10p | Keifont Lead Representative Proof and Review Surface Standard v0 | done | keifont_lead_representative_proof_ready | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as consumed Keifont provisional baseline evidence; ED-10r is now the dense/stress proof route. |
+| ED-10q | Current Proof Focused Review Regression Fix v0 | done | current_proof_focused_review_restored | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as the page-format regression fix; do not treat it as new Keifont font-quality review. |
+| ED-10r | Keifont Dense/Stress Proof v0 | done | keifont_dense_stress_font_evidence_blocked | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Resolve Keifont for the current Windows profile, regenerate ED-10r, then review only cut_008 dense/stress behavior. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10q_current_proof_focused_review_restored
+health: ed10s_keifont_dense_stress_font_evidence_blocked
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10q_focused_page_human_review
-active_artifact: clip-ed10p-keifont-lead-representative-proof-001
+next_review_due: after_ed10r_cut_008_dense_stress_review
+active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -19,12 +19,12 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
-Use this page to avoid replaying stale ED-10k prompts after the project has
-already advanced to ED-10l.
+Use this page to avoid replaying stale font-family prompts after the project
+has advanced to the ED-10r dense/stress proof route.
 
 ## Current State
 
-The active artifact is `clip-ed10p-keifont-lead-representative-proof-001`.
+The active artifact is `clip-ed10r-keifont-dense-stress-proof-001`.
 
 ED-10j already consumed the freeform review that removed Meiryo from normal
 subtitle baseline candidates. ED-10j readback also resolved the blue badge /
@@ -61,22 +61,30 @@ Yasashisa Gothic over Keifont, ED-10p keeps Keifont as the provisional
 normal-dialogue lead and regenerates the representative proof for `cut_002` /
 `cut_003`.
 
-ED-10q fixes the current proof review-surface regression reported after the
+ED-10q fixed the current proof review-surface regression reported after the
 user ran `.\open-current-proof.ps1`: the launcher now opens
 `current_proof_focused_review.html`, which starts with Review Focus, target
 lines, subtitle-area evidence, the ED-10o reference, and Review Debt for
 `cut_008` dense/stress coverage. The old detailed/debug overlay report remains
 available from the focused page, but it is no longer the primary first view.
 
-2026-06-22 handoff refresh: remote parity was verified before this handoff
-(`HEAD...origin/main=0 0`, `HEAD=499de35`). The current ED-10p proof was
-regenerated on this machine with the ED-10p proof profile and Keifont candidate.
-The regenerated focused HTML was inspected mechanically: `Review Focus:
-Current Proof` appears before subtitle-area evidence, detailed reports are
-lower on the page, the ED-10o reference is linked, and `cut_008_dense_stress_proof`
-remains Review Debt. JSON parse checks passed and the targeted validation set
-reported `18 passed`. `episodes/` remains ignored same-machine evidence and is
-not tracked.
+2026-06-22 ED-10r handoff refresh: Keifont review history is now consumed as
+diagnostic representative normal-dialogue provisional baseline evidence. The
+user already judged the Keifont proof clearly improved and video-usable, and
+also judged the ED-10o font/review surface easier to see. ED-10q is recorded
+as page-format regression repair, not font-quality review. Do not request
+another general Keifont acceptance pass on `cut_002` / `cut_003`. The current
+route is `ed10r_keifont_dense_stress_proof`, which only targets `cut_008`.
+Same-machine generation created the ED-10r files, but the current Windows
+profile did not resolve Keifont and fell back to Noto Sans JP. The focused
+HTML shows a Font evidence warning. Treat this as route readiness plus a local
+font-availability blocker, not as valid Keifont visual evidence.
+
+Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=2+`
+and is accepted only for diagnostic representative review / provisional
+normal-dialogue baseline. Production subtitle design, production render,
+creative acceptance, rights, publishing, and public use remain unaccepted. The
+only next review axis is dense/stress, and it is blocked until Keifont resolves.
 
 ## Resume Order
 
@@ -91,19 +99,20 @@ not tracked.
 
 ## Next Move
 
-Open the current proof with `.\open-current-proof.ps1` first. The page should
-start with `Review Focus: Current Proof`; use it to decide whether Keifont
-still works as the provisional normal-dialogue lead beyond the easiest sample
-and whether body thickness / outline pressure are acceptable.
+Restore/confirm Keifont font availability for the current Windows profile,
+then regenerate ED-10r. After the report shows `requested=Keifont` and
+`resolved=Keifont`, open the current proof with `.\open-current-proof.ps1` and
+review only `cut_008` dense/stress behavior: wrapping, rapid cue replacement,
+safe area, and whether outline/shadow/badge needs a bounded adjustment slice.
+Do not reopen general font-family acceptance from `cut_002` / `cut_003`.
 
-Good immediate candidates to route:
+Good immediate routes:
 
-| Candidate route | Why it helps | Required before proof |
+| Route | Why it helps | What it should enable |
 |---|---|---|
-| `ed10l_keifont_pop_dialogue_candidate` | Strong pop/kirinuki normal-dialogue direction | Current lead column in ED-10o |
-| `ed10l_851_chikara_yowaku_dialogue_candidate` | Softer handwritten route that avoids rigid BIZ feel | Compare directly against Keifont in ED-10o |
-| `ed10l_yasashisa_gothic_goodfreefonts_candidate` | Rounded gothic route | Compare directly against Keifont in ED-10o |
-| `ed10l_m_plus_fonts_dialogue_candidate` | More reproducible OFL-backed route | Excluded until exact non-thin weight/style is pinned |
+| `ed10r_keifont_dense_stress_proof` | Resolves the remaining review debt without repeating accepted Keifont history | User can judge dense/stress behavior after Keifont resolves on this Windows profile |
+| bounded outline/shadow/badge adjustment | Keeps style fixes scoped if `cut_008` reveals pressure under dense lines | A small successor slice can tune presentation without reopening font-family selection |
+| production limitation-lift route | Separates diagnostic proof from public/render/rights decisions | Production subtitle design, render, rights, publishing, and public-use gates can be judged explicitly later |
 
 Keep `ed10l_851_chikara_zuyoku_emphasis_candidate` outside the normal dialogue
 baseline; it belongs to emphasis / shout / tsukkomi.
@@ -115,9 +124,10 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10p-keifont-lead-representative-proof-001` | Current focused Keifont lead representative proof | `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
+| `clip-ed10r-keifont-dense-stress-proof-001` | Current cut_008 dense/stress route; visual judgement blocked until Keifont resolves | `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` after valid Keifont regeneration |
+| `clip-ed10p-keifont-lead-representative-proof-001` | Consumed provisional normal-dialogue baseline evidence | See artifact registry; do not request another general cut_002/cut_003 Keifont review |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused review UX direction / font comparison reference | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
-| `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | See artifact registry; root launcher now opens ED-10q focused current proof |
+| `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | See artifact registry; root launcher now opens ED-10r dense/stress proof |
 | `clip-ed10l-known-kirinuki-font-pack-001` | Regenerated real-font comparison/readback evidence | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
 | `clip-ed10k-biz-overlay-proof-001` | Reviewed rejected BIZ reference | See artifact registry; root launcher no longer opens old BIZ/ED-10n proof surfaces |
 | `clip-ed10j-kirinuki-font-audit-001` | Consumed Meiryo removal / BIZ selection audit trail | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |

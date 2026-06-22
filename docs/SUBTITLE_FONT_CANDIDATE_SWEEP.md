@@ -3,11 +3,11 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10q_current_proof_focused_review_restored
+health: ed10s_keifont_dense_stress_font_evidence_blocked
 progress_pct: 100
-last_touched: 2026-06-20
-next_review_due: after_ed10q_focused_page_human_review
-active_artifact: clip-ed10p-keifont-lead-representative-proof-001
+last_touched: 2026-06-22
+next_review_due: after_ed10r_cut_008_dense_stress_review
+active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: editing
 related: docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/font_candidates/subtitle-font-candidates.json, docs/FEATURE_REGISTRY.md
@@ -59,12 +59,21 @@ status、local availability、reproducibility、intended use で比較できる�
 - ED-10o is now the current review surface: a one-shot same-line comparison of
   Keifont, 851 Chikara Yowaku, and Yasashisa Gothic.
 - ED-10o review surface was accepted as easier to see; ED-10p now keeps
-  Keifont as provisional lead and regenerates the current representative proof.
-- ED-10q restores the current proof launcher/review page after the old-layout
+  Keifont as provisional lead and regenerates the representative proof.
+- ED-10q restored the current proof launcher/review page after the old-layout
   regression: `.\open-current-proof.ps1` now opens
   `current_proof_focused_review.html`, with Review Focus, target lines,
   subtitle-area evidence, ED-10o reference, and `cut_008` Review Debt before
   detailed/debug reports.
+- ED-10r is now the current proof route. Keifont is treated as diagnostic
+  representative normal-dialogue provisional baseline based on the ED-10n/ED-10o
+  review history. Do not ask for another general Keifont review on `cut_002` /
+  `cut_003`; after Keifont resolves, review only `cut_008` dense/stress
+  behavior.
+- Current workspace caveat: ED-10r local generation warns
+  `font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`.
+  The current Windows profile resolved Noto Sans JP fallback, not Keifont.
+  Regenerate after Keifont resolves before asking for dense/stress judgement.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -156,19 +165,39 @@ as the preferred review-surface direction. It does not accept a final baseline,
 production subtitle design, production render, creative, rights, publishing, or
 public-use state.
 
-## ED-10p Keifont Lead Representative Proof
+## ED-10p Keifont Provisional Baseline Evidence
 
-ED-10p continues from the accepted ED-10o review surface direction. The user did
-not select 851 Chikara Yowaku or Yasashisa Gothic over Keifont, so Keifont stays
-the provisional normal-dialogue lead by default. The generated artifact is
+ED-10p continues from the accepted ED-10o review surface direction. The user
+had already judged the Keifont proof clearly improved and video-usable, and did
+not select 851 Chikara Yowaku or Yasashisa Gothic over Keifont, so Keifont is
+kept as diagnostic representative normal-dialogue provisional baseline
+evidence. The generated artifact is
 `clip-ed10p-keifont-lead-representative-proof-001`, produced with
 `ed10l_keifont_pop_dialogue_candidate` for `cut_002` / `cut_003`.
 
-The proof page now starts with Review Focus, target lines, the ED-10o focused
-matrix reference, and Review Debt for the dense/stress path. `cut_008` remains
-deferred because its current decision state is still `needs_adjustment`; it
-should get a dedicated dense/stress proof only after that scope is explicitly
-handled.
+ED-10q repaired the page shape for this artifact, but that was not a
+font-quality review. Do not request another general Keifont acceptance pass on
+`cut_002` / `cut_003`. Production subtitle design, render, creative, rights,
+publishing, and public-use gates remain false or pending.
+
+## ED-10r Keifont Dense/Stress Proof
+
+ED-10r moves the remaining Review Debt into a narrow current proof:
+`clip-ed10r-keifont-dense-stress-proof-001`. The proof profile is
+`ed10r_keifont_dense_stress_proof`; it requires
+`ed10l_keifont_pop_dialogue_candidate` and exactly `--target-cut cut_008`.
+
+The review question is no longer "is Keifont generally acceptable on
+`cut_002` / `cut_003`?" The question is whether `cut_008` stays readable under
+dense/stress conditions: wrapping, rapid cue replacement, safe area, and
+bounded outline/shadow/badge pressure. If it fails, create a bounded adjustment
+slice rather than reopening the font-family sweep.
+
+Current same-machine generation is not valid Keifont visual evidence yet:
+`requested=Keifont`, `resolved=Noto Sans JP`, and
+`font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`.
+Resolve/install Keifont for this Windows profile and regenerate ED-10r before
+human dense/stress review.
 
 ## ED-10j Kirinuki Font Audit
 
@@ -232,19 +261,23 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10q focused current proof review**: run `.\open-current-proof.ps1` and
-   confirm the page starts with `Review Focus: Current Proof`, then judge
-   whether Keifont remains the provisional normal-dialogue lead.
-2. **ED-10o focused review reference**: use the same-line matrix as accepted
+1. **ED-10r dense/stress proof**: first resolve Keifont on this Windows
+   profile and regenerate; only after `requested=Keifont` and
+   `resolved=Keifont`, run `.\open-current-proof.ps1` and review `cut_008`
+   dense/stress behavior.
+2. **ED-10p baseline evidence**: keep the Keifont `cut_002` / `cut_003` proof
+   as consumed history; do not ask for another general acceptance review.
+3. **ED-10o focused review reference**: use the same-line matrix as accepted
    review UX direction and comparison evidence.
-3. **Bounded follow-up**: if Keifont is still best but slightly off, adjust only
+4. **Bounded follow-up**: if Keifont is still best but slightly off, adjust only
    one bounded axis such as outline pressure or badge treatment.
-4. **Alternate ED-10l candidate**: if another column wins, promote that
+5. **Alternate ED-10l candidate**: if the user explicitly reopens font-family
+   selection, promote that
    candidate into the next proof route.
-5. **Google Fonts / OFL sweep**: request permission to download specific
+6. **Google Fonts / OFL sweep**: request permission to download specific
    families, capture license/version/source metadata, and keep binaries out of
    public Git unless a repo policy is approved.
-6. **Hybrid sweep**: use local system fonts for quick proof, then reproduce the
+7. **Hybrid sweep**: use local system fonts for quick proof, then reproduce the
    selected family through a licensed pinned source later.
 
 ## 使い方・確認方法

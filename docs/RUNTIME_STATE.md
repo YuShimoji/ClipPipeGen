@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10q_current_proof_focused_review_restored
+health: ed10s_keifont_dense_stress_font_evidence_blocked
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10q_focused_page_human_review
-active_artifact: clip-ed10p-keifont-lead-representative-proof-001
+next_review_due: after_ed10r_cut_008_dense_stress_review
+active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,19 +35,42 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10p-keifont-lead-representative-proof-001`
+Active artifact: `clip-ed10r-keifont-dense-stress-proof-001`
 
-Remote handoff checkpoint, 2026-06-22: local regeneration and validation
-confirmed ED-10q remains the current restart point. `origin/main` matched
-local `HEAD=499de35` before the handoff refresh. The current proof was
-regenerated with `--proof-profile ed10p_keifont_lead_representative_proof`
-and `--typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate`;
-the JSON readback returned the ED-10p artifact id, the ED-10o source review,
-two subtitle overlays, `current_proof_focused_review.html`, and
-`cut_008_dense_stress_proof` as Review Debt. Focused HTML order was verified as
-`Review Focus: Current Proof` before subtitle-area evidence and detailed
-reports. Targeted validation passed with 18 tests. No `episodes/` files are
-tracked.
+Current handoff checkpoint, 2026-06-22: ED-10q has been consumed as a
+page-format regression fix, not as a new Keifont font-quality review. The
+Keifont review history is already sufficient for the next diagnostic step:
+the user judged the Keifont proof clearly improved and video-usable, and also
+judged the ED-10o font/review screen easier to see. Do not ask for another
+general Keifont acceptance pass on `cut_002` / `cut_003`. Treat
+`ed10l_keifont_pop_dialogue_candidate` as a diagnostic representative
+normal-dialogue provisional baseline, while keeping production subtitle design,
+production render, creative acceptance, rights, publishing, and public-use
+gates false or pending.
+
+The active route is ED-10r: `Keifont Dense/Stress Proof v0`. The current proof
+profile is `ed10r_keifont_dense_stress_proof`, and it is intentionally narrow:
+it only accepts `--target-cut cut_008`. The next human judgement should happen
+only after Keifont resolves on this Windows profile and ED-10r is regenerated;
+then inspect `cut_008` for dense subtitle wrapping, rapid cue replacement, safe
+area, and bounded outline/shadow/badge adjustment needs. If a style issue
+appears, open a bounded adjustment slice instead of reopening font-family
+selection.
+
+Same-machine generation on 2026-06-22 created the ED-10r local files, but the
+current Windows profile did not resolve the Keifont font file. The report
+therefore records
+`font_visual_evidence.status=blocked_requested_keifont_font_missing_uses_fallback`
+with `requested=Keifont` and `resolved=Noto Sans JP`. The route is ready, but
+the generated local proof must not be judged as Keifont visual evidence until
+Keifont resolves on this profile and ED-10r is regenerated.
+
+Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=2+`
+and is accepted only as `diagnostic_representative_review` /
+`provisional_normal_dialogue_baseline`. It is not accepted for production
+subtitle design, production render, creative acceptance, rights, publishing, or
+public use. The next non-redundant review axis is `dense_stress`, and that axis
+is currently blocked by font evidence fallback.
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
@@ -62,17 +85,10 @@ outline pressure is too strong. This also rejects the broader BIZ/Noto/Meiryo
 system-safe route for this use case. BIZ remains a reviewed reference, not the
 current baseline.
 
-The active route is ED-10q: `Current Proof Focused Review Regression Fix v0`.
-The artifact remains `clip-ed10p-keifont-lead-representative-proof-001`, but
-the root launcher now opens `current_proof_focused_review.html` instead of the
-old detailed overlay report. ED-10o was reviewed as easier to see and accepted
-as the preferred review-surface direction, not as production subtitle design
-acceptance. Because the user did not choose 851 Chikara Yowaku or Yasashisa
-Gothic over Keifont, Keifont remains the provisional normal-dialogue lead.
-ED-10q restores the review surface so the page starts with Review Focus,
-target lines, subtitle-area evidence for `cut_002` / `cut_003`, the ED-10o
-reference, and `cut_008` dense/stress Review Debt; long diagnostic/debug
-tables are demoted to linked detailed reports.
+The prior active route, ED-10q, restored `current_proof_focused_review.html`
+after the root launcher appeared to open the old detailed/debug report layout.
+That fix remains valid, but it is historical. Its purpose was review-surface
+repair, not a re-vote on Keifont quality.
 
 ED-10l route readback:
 
@@ -113,12 +129,16 @@ ED-10l route readback:
 - ED-10o human review was consumed as:
   `focused_review_surface_accepted_as_review_direction`
 - ED-10p generated `clip-ed10p-keifont-lead-representative-proof-001` using
-  `ed10l_keifont_pop_dialogue_candidate` as provisional lead
+  `ed10l_keifont_pop_dialogue_candidate`; it is now consumed as provisional
+  normal-dialogue baseline evidence
 - ED-10q fixed the current-proof launcher/page regression: `.\open-current-proof.ps1`
   now opens `episodes/.../current_proof_focused_review.html`, where Review
   Focus and subtitle-area evidence appear before detailed/debug reports
-- `cut_008` remains Review Debt for a dedicated dense/stress proof because its
-  current decision state is still `needs_adjustment`
+- ED-10r owns `cut_008` as the current dense/stress proof route; do not replay
+  general Keifont review on `cut_002` / `cut_003`
+- current ED-10r local generation warns that Keifont is missing on this Windows
+  profile and Noto Sans JP fallback was used; resolve font availability before
+  visual judgement
 - no font binary was downloaded, installed, copied, vendored, staged, or
   committed by Codex; local font files remain same-machine evidence only
 
@@ -135,22 +155,23 @@ gates.
 
 ## Next
 
-1. Run `.\open-current-proof.ps1` and verify the page starts with
-   `Review Focus: Current Proof`, not the old detailed/debug report layout.
-2. Review the Keifont lead proof for `cut_002` / `cut_003` from the focused
-   page and judge whether body thickness / outline pressure are acceptable.
-3. Keep ED-10o as accepted review UX direction and reference evidence for why
-   Keifont remains the default lead while 851 Chikara Yowaku and Yasashisa
-   Gothic remain alternates.
-4. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
+1. Restore/confirm Keifont font availability for the current Windows profile,
+   then regenerate ED-10r so `requested=Keifont` and `resolved=Keifont`.
+2. After valid Keifont readback, run `.\open-current-proof.ps1` and review only
+   `cut_008` dense/stress behavior.
+3. Judge whether dense wrapping, rapid cue replacement, safe area, or
+   outline/shadow/badge pressure needs a bounded adjustment slice.
+4. Keep ED-10o as accepted review UX direction and reference evidence for why
+   Keifont is the provisional normal-dialogue baseline while 851 Chikara
+   Yowaku and Yasashisa Gothic remain alternates.
+5. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
-5. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
+6. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
    emphasis/mood slots; do not collapse them into normal dialogue baseline
    acceptance.
-6. If representative coverage must widen, create a separate dense/stress proof
-   route for `cut_008` only after its `needs_adjustment` state is explicitly
-   handled or scoped as diagnostic debt.
-7. If moving toward production/public use, run a separate limitation-lift route
+7. Do not request another general `cut_002` / `cut_003` Keifont acceptance
+   review unless the user explicitly reopens font-family selection.
+8. If moving toward production/public use, run a separate limitation-lift route
    for production render, rights, publishing, and public-use decisions.
 
 ## Constraints / Risks
@@ -180,7 +201,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10q/ED-10p focused Keifont proof via
+   `.\open-artifacts.ps1`, current ED-10r Keifont dense/stress proof via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
    regenerated ED-10l real-font comparison via

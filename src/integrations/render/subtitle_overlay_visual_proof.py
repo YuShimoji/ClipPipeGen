@@ -28,9 +28,11 @@ DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE = "default"
 ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE = (
     "ed10p_keifont_lead_representative_proof"
 )
+ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE = "ed10r_keifont_dense_stress_proof"
 SUBTITLE_OVERLAY_PROOF_PROFILES = (
     DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
     ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
+    ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
 )
 ED10L_KEIFONT_CANDIDATE_ID = "ed10l_keifont_pop_dialogue_candidate"
 DEFAULT_SOURCE_VIDEO_MATERIAL_ID = "src_video_jp_pilot01"
@@ -253,96 +255,229 @@ def _subtitle_overlay_proof_profile(
             "proof_profile": DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
             "artifact_id": None,
         }
-    if profile != ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE:
+    if profile == ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE:
+        if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
+            raise SubtitleOverlayVisualProofError(
+                "ed10p_keifont_lead_representative_proof requires "
+                f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
+            )
+        return {
+            "proof_profile": ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
+            "artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+            "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "source_proof_artifact_id": "clip-ed10n-keifont-overlay-proof-001",
+            "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
+            "target_cuts": list(target_cut_ids),
+            "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+            "review_surface_direction": {
+                "status": "accepted_as_review_direction_not_production_acceptance",
+                "accepted_surface_artifact_id": "clip-ed10o-multifont-focused-review-001",
+                "accepted_surface": "same-line multi-font focused matrix",
+                "confidence": "high",
+                "not_accepted": [
+                    "final normal-dialogue baseline",
+                    "production subtitle design",
+                    "production render",
+                    "creative acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "candidate_state": {
+                "keifont_lead_confidence": "medium_high",
+                "keifont_is_provisional_lead": True,
+                "alternates_preserved": [
+                    "ed10l_851_chikara_yowaku_dialogue_candidate",
+                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                ],
+                "excluded_until_weight_style_pinned": [
+                    "ed10l_m_plus_fonts_dialogue_candidate"
+                ],
+            },
+            "focused_proof_review": {
+                "status": "representative_keifont_lead_proof_ready",
+                "target": "Keifont lead normal-dialogue representative proof",
+                "input_mode": "freeform",
+                "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+                "target_cuts": list(target_cut_ids),
+                "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
+                "source_review_surface": "ED-10o focused matrix accepted as easier to see",
+                "ed10o_reference_report": (
+                    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+                    "jp_pilot01r3_cut_review/subtitle_multifont_focused_review/"
+                    "subtitle_multifont_focused_review_report.html"
+                ),
+                "look_for": [
+                    "whether Keifont works beyond the easy initial sample",
+                    "whether body thickness and outline pressure are acceptable",
+                    "whether dense/stress-like lines in the current representative proof remain readable",
+                    "whether the focused proof page remains easy to judge",
+                ],
+                "completion_signal": (
+                    "any concrete impression, concern, approval, or adjustment request"
+                ),
+            },
+            "review_debt": [
+                {
+                    "debt_id": "cut_008_dense_stress_proof",
+                    "status": "deferred_not_blocking_ed10p",
+                    "reason": (
+                        "cut_008 is the known dense/stress representative target, "
+                        "but tracked/current decision state still treats it as "
+                        "needs_adjustment before production-adjacent promotion."
+                    ),
+                    "next_action": (
+                        "create a dedicated dense/stress proof after cut_008 "
+                        "context/boundary handling is explicitly accepted or scoped"
+                    ),
+                }
+            ],
+            "production_candidate": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        }
+    if profile == ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE:
+        if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
+            raise SubtitleOverlayVisualProofError(
+                "ed10r_keifont_dense_stress_proof requires "
+                f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
+            )
+        if tuple(target_cut_ids) != ("cut_008",):
+            raise SubtitleOverlayVisualProofError(
+                "ed10r_keifont_dense_stress_proof requires exactly "
+                "--target-cut cut_008; do not replay cut_002/cut_003 general "
+                "Keifont acceptance review"
+            )
+        return {
+            "proof_profile": ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+            "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+            "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+            "source_proof_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+            "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "target_cuts": list(target_cut_ids),
+            "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+            "review_surface_direction": {
+                "status": "keifont_provisional_baseline_not_general_acceptance_replay",
+                "accepted_surface_artifact_id": "clip-ed10o-multifont-focused-review-001",
+                "accepted_surface": "same-line multi-font focused matrix",
+                "consumed_review_history": [
+                    "ED-10n Keifont proof judged clearly improved and video-usable",
+                    "ED-10o focused review surface judged easier to see",
+                    "ED-10q was a page-format regression fix, not font-quality review",
+                ],
+                "not_reopened": [
+                    "cut_002 general Keifont acceptance",
+                    "cut_003 general Keifont acceptance",
+                ],
+                "not_accepted": [
+                    "production subtitle design",
+                    "production render",
+                    "creative acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "candidate_state": {
+                "keifont_baseline_confidence": "provisional",
+                "keifont_is_diagnostic_representative_normal_dialogue_provisional_baseline": True,
+                "keifont_general_acceptance_reopened": False,
+                "baseline_scope": "diagnostic_representative_normal_dialogue",
+                "dense_stress_scope": "current_proof_target_only",
+                "alternates_preserved": [
+                    "ed10l_851_chikara_yowaku_dialogue_candidate",
+                    "ed10l_yasashisa_gothic_goodfreefonts_candidate",
+                ],
+                "excluded_until_weight_style_pinned": [
+                    "ed10l_m_plus_fonts_dialogue_candidate"
+                ],
+            },
+            "review_memory": {
+                "subject": "Keifont normal-dialogue subtitle direction",
+                "prior_review_count": "2+",
+                "accepted_scope": [
+                    "diagnostic_representative_review",
+                    "provisional_normal_dialogue_baseline",
+                ],
+                "not_accepted_scope": [
+                    "production_subtitle_design",
+                    "production_render",
+                    "creative_acceptance",
+                    "rights",
+                    "publishing",
+                    "public_use",
+                ],
+                "next_nonredundant_axis": "dense_stress",
+                "repeated_general_review": False,
+                "review_reset_trigger_active": ["new_dense_stress_sample"],
+                "current_blocker": "font_evidence_fallback",
+            },
+            "focused_proof_review": {
+                "status": "dense_stress_keifont_proof_ready",
+                "target": (
+                    "cut_008 dense/stress diagnostic proof using Keifont as the "
+                    "normal-dialogue provisional baseline"
+                ),
+                "input_mode": "dense_stress_diagnostic_review",
+                "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+                "target_cuts": list(target_cut_ids),
+                "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+                "source_review_surface": (
+                    "ED-10n/ED-10o Keifont review history consumed; ED-10q page "
+                    "regression fix is not treated as font-quality feedback"
+                ),
+                "ed10o_reference_report": (
+                    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+                    "jp_pilot01r3_cut_review/subtitle_multifont_focused_review/"
+                    "subtitle_multifont_focused_review_report.html"
+                ),
+                "look_for": [
+                    "cut_008 dense subtitle wrapping and safe-area behavior",
+                    "rapid cue replacement readability under Keifont",
+                    "outline, shadow, and badge pressure only as bounded adjustment candidates",
+                    "whether any dense/stress issue blocks moving from proof debt into a bounded adjustment slice",
+                    "do not re-decide general Keifont acceptance from cut_002/cut_003",
+                ],
+                "completion_signal": (
+                    "dense/stress pass, concrete dense/stress concern, or a bounded "
+                    "adjustment request for outline/shadow/badge handling"
+                ),
+            },
+            "review_debt": [
+                {
+                    "debt_id": "cut_008_dense_stress_proof",
+                    "status": "current_target",
+                    "reason": (
+                        "Keifont normal-dialogue review history is already consumed; "
+                        "the remaining review debt is dense/stress behavior."
+                    ),
+                    "next_action": (
+                        "after requested Keifont resolves, review cut_008 only "
+                        "for dense/stress readability, wrapping, timing replacement, "
+                        "and bounded style adjustment needs"
+                    ),
+                }
+            ],
+            "production_candidate": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        }
+
+    if profile not in SUBTITLE_OVERLAY_PROOF_PROFILES:
         known = ", ".join(SUBTITLE_OVERLAY_PROOF_PROFILES)
         raise SubtitleOverlayVisualProofError(
             f"unknown subtitle overlay proof profile: {profile}; known={known}"
         )
-    if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
-        raise SubtitleOverlayVisualProofError(
-            "ed10p_keifont_lead_representative_proof requires "
-            f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
-        )
-    return {
-        "proof_profile": ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
-        "artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
-        "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
-        "source_proof_artifact_id": "clip-ed10n-keifont-overlay-proof-001",
-        "source_comparison_artifact_id": "clip-ed10l-known-kirinuki-font-pack-001",
-        "target_cuts": list(target_cut_ids),
-        "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
-        "review_surface_direction": {
-            "status": "accepted_as_review_direction_not_production_acceptance",
-            "accepted_surface_artifact_id": "clip-ed10o-multifont-focused-review-001",
-            "accepted_surface": "same-line multi-font focused matrix",
-            "confidence": "high",
-            "not_accepted": [
-                "final normal-dialogue baseline",
-                "production subtitle design",
-                "production render",
-                "creative acceptance",
-                "rights approval",
-                "publishing",
-                "public use",
-            ],
-        },
-        "candidate_state": {
-            "keifont_lead_confidence": "medium_high",
-            "keifont_is_provisional_lead": True,
-            "alternates_preserved": [
-                "ed10l_851_chikara_yowaku_dialogue_candidate",
-                "ed10l_yasashisa_gothic_goodfreefonts_candidate",
-            ],
-            "excluded_until_weight_style_pinned": [
-                "ed10l_m_plus_fonts_dialogue_candidate"
-            ],
-        },
-        "focused_proof_review": {
-            "status": "representative_keifont_lead_proof_ready",
-            "target": "Keifont lead normal-dialogue representative proof",
-            "input_mode": "freeform",
-            "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
-            "target_cuts": list(target_cut_ids),
-            "source_review_artifact_id": "clip-ed10o-multifont-focused-review-001",
-            "source_review_surface": "ED-10o focused matrix accepted as easier to see",
-            "ed10o_reference_report": (
-                "episodes/jp_pilot01_hololive_bancho_20260525/review/"
-                "jp_pilot01r3_cut_review/subtitle_multifont_focused_review/"
-                "subtitle_multifont_focused_review_report.html"
-            ),
-            "look_for": [
-                "whether Keifont works beyond the easy initial sample",
-                "whether body thickness and outline pressure are acceptable",
-                "whether dense/stress-like lines in the current representative proof remain readable",
-                "whether the focused proof page remains easy to judge",
-            ],
-            "completion_signal": (
-                "any concrete impression, concern, approval, or adjustment request"
-            ),
-        },
-        "review_debt": [
-            {
-                "debt_id": "cut_008_dense_stress_proof",
-                "status": "deferred_not_blocking_ed10p",
-                "reason": (
-                    "cut_008 is the known dense/stress representative target, "
-                    "but tracked/current decision state still treats it as "
-                    "needs_adjustment before production-adjacent promotion."
-                ),
-                "next_action": (
-                    "create a dedicated dense/stress proof after cut_008 "
-                    "context/boundary handling is explicitly accepted or scoped"
-                ),
-            }
-        ],
-        "production_candidate": False,
-        "production_subtitle_design_acceptance": False,
-        "production_render_acceptance": False,
-        "creative_acceptance": False,
-        "rights_status": "pending",
-        "publishing_acceptance": False,
-        "public_use_permission": False,
-    }
+    raise SubtitleOverlayVisualProofError(f"unhandled subtitle overlay proof profile: {profile}")
 
 
 def build_subtitle_overlay_visual_proof(
@@ -454,6 +589,28 @@ def build_subtitle_overlay_visual_proof(
         base=base,
         proof_profile=proof_profile_data,
     )
+    visual_proof_status = _aggregate_visual_proof_status(
+        updated_representative.get("per_cut_visual_assessment") or [],
+        target_cut_ids=target_cut_ids,
+    )
+    if (
+        report.get("font_visual_evidence", {}).get(
+            "valid_requested_font_visual_evidence"
+        )
+        is False
+    ):
+        visual_proof_status = "blocked_invalid_requested_font_visual_evidence"
+        report["review_card_status"] = "withheld_font_visual_evidence_invalid"
+        updated_representative[
+            "review_card_status"
+        ] = "withheld_font_visual_evidence_invalid"
+    else:
+        report["review_card_status"] = "review_card_allowed_after_scope_checks"
+        updated_representative[
+            "review_card_status"
+        ] = "review_card_allowed_after_scope_checks"
+    report["visual_proof_status"] = visual_proof_status
+    updated_representative["visual_proof_status"] = visual_proof_status
     if not dry_run:
         review_dir.mkdir(parents=True, exist_ok=True)
         _write_json(report, report_path)
@@ -468,10 +625,6 @@ def build_subtitle_overlay_visual_proof(
             encoding="utf-8",
         )
 
-    visual_proof_status = _aggregate_visual_proof_status(
-        updated_representative.get("per_cut_visual_assessment") or [],
-        target_cut_ids=target_cut_ids,
-    )
     return {
         "report": report,
         "representative_visual_proof_report": updated_representative,
@@ -873,6 +1026,19 @@ def _report_payload(
     success_count = sum(
         1 for item in cut_reports if item.get("subtitle_overlay_present") is True
     )
+    style_parameters = _report_style_parameter_summary(cut_reports)
+    font_visual_evidence = _font_visual_evidence_readback(
+        proof_profile=proof_profile,
+        style_parameters=style_parameters,
+    )
+    warnings = [
+        "Diagnostic overlay proof only; production render acceptance is not claimed.",
+        "Production subtitle design, creative acceptance, publishing acceptance, and rights approval are out of scope.",
+        "Generated artifacts are local review artifacts and must not be staged from episodes/.",
+        "Burned-in subtitles are inside the proof video; sidecar SRT files are reference-only and should not be enabled as a VLC subtitle track during embedded-subtitle review.",
+    ]
+    if font_visual_evidence.get("valid_requested_font_visual_evidence") is False:
+        warnings.append(str(font_visual_evidence.get("warning") or "requested font visual evidence is not valid"))
     return {
         "schema_version": SCHEMA_VERSION,
         "report_kind": REPORT_KIND,
@@ -894,9 +1060,11 @@ def _report_payload(
             "source_audio": _source_media_public(source_media["source_audio"]),
         },
         "style_direction": _diagnostic_style_direction(diagnostic_ass_style),
-        "style_parameters": _report_style_parameter_summary(cut_reports),
+        "style_parameters": style_parameters,
+        "font_visual_evidence": font_visual_evidence,
         "review_surface_direction": proof_profile.get("review_surface_direction"),
         "candidate_state": proof_profile.get("candidate_state"),
+        "review_memory": proof_profile.get("review_memory"),
         "focused_proof_review": proof_profile.get("focused_proof_review"),
         "review_debt": proof_profile.get("review_debt", []),
         "font_bbox_wrap_readback": _report_font_bbox_wrap_summary(cut_reports),
@@ -927,12 +1095,64 @@ def _report_payload(
         "production_usage_allowed": False,
         "creative_acceptance": False,
         "publish_acceptance": False,
-        "warnings": [
-            "Diagnostic overlay proof only; production render acceptance is not claimed.",
-            "Production subtitle design, creative acceptance, publishing acceptance, and rights approval are out of scope.",
-            "Generated artifacts are local review artifacts and must not be staged from episodes/.",
-            "Burned-in subtitles are inside the proof video; sidecar SRT files are reference-only and should not be enabled as a VLC subtitle track during embedded-subtitle review.",
-        ],
+        "warnings": warnings,
+    }
+
+
+def _font_visual_evidence_readback(
+    *,
+    proof_profile: dict[str, Any],
+    style_parameters: dict[str, Any],
+) -> dict[str, Any]:
+    route = style_parameters.get("font_family_route") or {}
+    profile = str(proof_profile.get("proof_profile") or "")
+    requested = str(route.get("requested") or "")
+    resolved = str(route.get("resolved") or "")
+    font_file_status = str(route.get("font_file_status") or "")
+    resolved_font_file = route.get("resolved_font_file")
+    requires_keifont = profile in {
+        ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
+        ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+    }
+    valid_keifont = (
+        requested == "Keifont"
+        and resolved == "Keifont"
+        and font_file_status.startswith("candidate_primary_font_file_found")
+    )
+    if requires_keifont and not valid_keifont:
+        return {
+            "status": "blocked_requested_keifont_font_missing_uses_fallback",
+            "valid_requested_font_visual_evidence": False,
+            "requested_font_family": requested,
+            "resolved_font_family": resolved,
+            "resolved_font_file": resolved_font_file,
+            "font_file_status": font_file_status,
+            "review_implication": (
+                "Do not treat this generated proof as Keifont visual evidence until "
+                "the Keifont font file resolves on this Windows profile."
+            ),
+            "warning": (
+                "Keifont proof profile is active, but the requested Keifont font "
+                "file was not found and the renderer fell back to another font."
+            ),
+        }
+    if requires_keifont:
+        return {
+            "status": "valid_requested_keifont_visual_evidence",
+            "valid_requested_font_visual_evidence": True,
+            "requested_font_family": requested,
+            "resolved_font_family": resolved,
+            "resolved_font_file": resolved_font_file,
+            "font_file_status": font_file_status,
+            "review_implication": "The proof can be reviewed as Keifont visual evidence.",
+        }
+    return {
+        "status": "not_required_for_profile",
+        "valid_requested_font_visual_evidence": None,
+        "requested_font_family": requested,
+        "resolved_font_family": resolved,
+        "resolved_font_file": resolved_font_file,
+        "font_file_status": font_file_status,
     }
 
 
@@ -1805,8 +2025,12 @@ def _updated_representative_report(
     updated["proof_profile"] = proof_profile.get("proof_profile")
     updated["source_review_artifact_id"] = proof_profile.get("source_review_artifact_id")
     updated["source_proof_artifact_id"] = proof_profile.get("source_proof_artifact_id")
+    updated["source_comparison_artifact_id"] = proof_profile.get(
+        "source_comparison_artifact_id"
+    )
     updated["review_surface_direction"] = proof_profile.get("review_surface_direction")
     updated["candidate_state"] = proof_profile.get("candidate_state")
+    updated["review_memory"] = proof_profile.get("review_memory")
     updated["focused_proof_review"] = proof_profile.get("focused_proof_review")
     updated["review_debt"] = proof_profile.get("review_debt", [])
     updated["production_candidate"] = False
@@ -1816,6 +2040,7 @@ def _updated_representative_report(
     updated["production_usage_allowed"] = False
     updated["diagnostic_style_direction"] = overlay_report["style_direction"]
     updated["diagnostic_style_parameters"] = overlay_report["style_parameters"]
+    updated["font_visual_evidence"] = overlay_report.get("font_visual_evidence") or {}
     updated["font_bbox_wrap_readback"] = overlay_report.get("font_bbox_wrap_readback") or {}
     updated["subtitle_presentation_contract"] = overlay_report.get(
         "subtitle_presentation_contract"
@@ -1837,6 +2062,7 @@ def _updated_representative_report(
         ],
         "style_direction": overlay_report["style_direction"],
         "style_parameters": overlay_report["style_parameters"],
+        "font_visual_evidence": overlay_report.get("font_visual_evidence") or {},
         "font_bbox_wrap_readback": overlay_report.get("font_bbox_wrap_readback") or {},
         "subtitle_presentation_contract": overlay_report.get(
             "subtitle_presentation_contract"
@@ -1969,6 +2195,8 @@ def _aggregate_visual_proof_status(
         or "visual_proof_required" in str(item.get("safe_area_status") or "")
         for item in target
     ):
+        if set(target_cut_ids) != {"cut_002", "cut_003"}:
+            return "blocked_no_target_overlay_proof"
         return "blocked_no_cut_002_cut_003_overlay_proof"
     return "available_requires_human_review"
 
@@ -3212,6 +3440,14 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
     font_name = style.get("font_name") or {}
     font_route = style.get("font_family_route") or {}
     aggregate = report.get("aggregate_summary") or {}
+    focus = report.get("focused_proof_review") or {}
+    focus_target = focus.get("target") if isinstance(focus, dict) else None
+    intro = (
+        f"Use this page for {focus_target}. Detailed diagnostic tables are linked below, not used as the first review surface."
+        if focus_target
+        else "Use this page for the current focused proof review. Detailed diagnostic tables are linked below, not used as the first review surface."
+    )
+    font_evidence_warning = _font_visual_evidence_warning_html(report)
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -3228,6 +3464,7 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
     .hero, .review-focus, .evidence, .details, .boundary {{ background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 16px; margin: 0 0 16px; }}
     .hero {{ border-left: 6px solid #2f6f9f; }}
     .warn {{ color: #8a4b00; }}
+    .font-warning {{ background: #fff7ed; border: 1px solid #f59e0b; border-left: 6px solid #f59e0b; border-radius: 8px; padding: 12px; margin-top: 12px; }}
     .meta {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 16px; margin-top: 12px; }}
     dl {{ display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; }}
     dt {{ font-weight: 700; }}
@@ -3245,7 +3482,7 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
 <main>
   <section class="hero">
     <h1>Review Focus: Current Proof</h1>
-    <p>Use this page for ED-10p Keifont review. Detailed diagnostic tables are linked below, not used as the first review surface.</p>
+    <p>{escape(intro)}</p>
     <div class="meta">
       <div><strong>artifact</strong><br>{escape(str(report.get("artifact_id") or ""))}</div>
       <div><strong>candidate</strong><br>{escape(str(style.get("typography_decoration_candidate_id") or style.get("style_candidate_id") or ""))}</div>
@@ -3254,6 +3491,7 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
       <div><strong>overlays available</strong><br>{escape(str(aggregate.get("subtitle_overlay_available_count") or ""))}</div>
       <div><strong>rights / production</strong><br>{escape(str(report.get("rights_status") or ""))} / production_candidate={escape(str(report.get("production_candidate")))}</div>
     </div>
+{font_evidence_warning}
   </section>
 {proof_focus}
 {cut_evidence}
@@ -3266,6 +3504,25 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
 </body>
 </html>
 """
+
+
+def _font_visual_evidence_warning_html(report: dict[str, Any]) -> str:
+    evidence = report.get("font_visual_evidence")
+    if not isinstance(evidence, dict):
+        return ""
+    if evidence.get("valid_requested_font_visual_evidence") is not False:
+        return ""
+    warning = evidence.get("warning") or "Requested font visual evidence is not valid."
+    implication = evidence.get("review_implication") or ""
+    requested = evidence.get("requested_font_family") or ""
+    resolved = evidence.get("resolved_font_family") or ""
+    status = evidence.get("font_file_status") or ""
+    return f"""    <div class="font-warning">
+      <strong>Font evidence warning</strong>
+      <p>{escape(str(warning))}</p>
+      <p>{escape(str(implication))}</p>
+      <p>requested={escape(str(requested))}; resolved={escape(str(resolved))}; status={escape(str(status))}</p>
+    </div>"""
 
 
 def _focused_cut_evidence_html(report: dict[str, Any]) -> str:

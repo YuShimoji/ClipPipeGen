@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from src.pipeline.operator_proxy_decision_handoff import build_operator_proxy_decision_handoff
+from src.integrations.render import subtitle_overlay_visual_proof as overlay_proof
 from src.integrations.render import subtitle_style_spike as spike
 from src.integrations.render.subtitle_overlay_visual_proof import (
     SubtitleOverlayVisualProofError,
@@ -613,6 +614,193 @@ def test_subtitle_overlay_visual_proof_ed10p_profile_requires_keifont(tmp_path: 
         )
 
 
+def test_subtitle_overlay_visual_proof_ed10r_keifont_dense_stress_profile(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    monkeypatch.setattr(
+        overlay_proof,
+        "_resolve_candidate_font",
+        lambda candidate: (
+            "Keifont",
+            "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf",
+            "candidate_primary_font_file_found",
+        ),
+    )
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_008"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10r_keifont_dense_stress_proof",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    representative = result["representative_visual_proof_report"]
+    assert report["artifact_id"] == "clip-ed10r-keifont-dense-stress-proof-001"
+    assert report["proof_profile"] == "ed10r_keifont_dense_stress_proof"
+    assert report["target_cuts"] == ["cut_008"]
+    assert report["source_review_artifact_id"] == (
+        "clip-ed10p-keifont-lead-representative-proof-001"
+    )
+    assert report["source_comparison_artifact_id"] == (
+        "clip-ed10o-multifont-focused-review-001"
+    )
+    assert report["focused_proof_review"]["status"] == (
+        "dense_stress_keifont_proof_ready"
+    )
+    assert report["focused_proof_review"]["input_mode"] == (
+        "dense_stress_diagnostic_review"
+    )
+    assert report["candidate_state"][
+        "keifont_is_diagnostic_representative_normal_dialogue_provisional_baseline"
+    ] is True
+    assert report["candidate_state"]["keifont_general_acceptance_reopened"] is False
+    assert report["review_debt"][0]["status"] == "current_target"
+    assert report["production_candidate"] is False
+    assert report["production_usage_allowed"] is False
+    assert report["creative_acceptance"] is False
+    assert report["rights_status"] == "pending"
+    assert report["publish_acceptance"] is False
+    assert report["aggregate_summary"]["subtitle_overlay_available_count"] == 1
+    assert report["font_visual_evidence"]["status"] == (
+        "valid_requested_keifont_visual_evidence"
+    )
+    assert report["review_card_status"] == "review_card_allowed_after_scope_checks"
+    assert {item["cut_id"] for item in report["cut_results"]} == {"cut_008"}
+    assert result["visual_proof_status"] == "available_requires_human_review"
+    assert representative["active_overlay_artifact_id"] == (
+        "clip-ed10r-keifont-dense-stress-proof-001"
+    )
+    assert representative["source_review_artifact_id"] == (
+        "clip-ed10p-keifont-lead-representative-proof-001"
+    )
+    assert representative["review_debt"][0]["status"] == "current_target"
+
+    focused_html = (review_dir / "current_proof_focused_review.html").read_text(
+        encoding="utf-8"
+    )
+    assert "cut_008 dense/stress diagnostic proof" in focused_html
+    assert "subtitle_overlay_visual_proof_cut_008.png" in focused_html
+    assert "do not re-decide general Keifont acceptance" in focused_html
+    assert "Use this page for ED-10p Keifont review" not in focused_html
+    assert "subtitle_overlay_visual_proof_cut_002.png" not in focused_html
+    assert "subtitle_overlay_visual_proof_cut_003.png" not in focused_html
+
+
+def test_subtitle_overlay_visual_proof_ed10r_marks_fallback_font_invalid(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    monkeypatch.setattr(
+        overlay_proof,
+        "_resolve_candidate_font",
+        lambda candidate: (
+            "Noto Sans JP",
+            "C:/Windows/Fonts/NotoSansJP-VF.ttf",
+            "candidate_font_paths_missing_used_global_fallback: font_file_found",
+        ),
+    )
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_008"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10r_keifont_dense_stress_proof",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    representative = result["representative_visual_proof_report"]
+    evidence = report["font_visual_evidence"]
+    assert result["visual_proof_status"] == (
+        "blocked_invalid_requested_font_visual_evidence"
+    )
+    assert report["visual_proof_status"] == (
+        "blocked_invalid_requested_font_visual_evidence"
+    )
+    assert report["review_card_status"] == "withheld_font_visual_evidence_invalid"
+    assert evidence["status"] == "blocked_requested_keifont_font_missing_uses_fallback"
+    assert evidence["valid_requested_font_visual_evidence"] is False
+    assert evidence["requested_font_family"] == "Keifont"
+    assert evidence["resolved_font_family"] == "Noto Sans JP"
+    assert evidence["resolved_font_file"] == "C:/Windows/Fonts/NotoSansJP-VF.ttf"
+    assert any(
+        warning.startswith("Keifont proof profile is active")
+        for warning in report["warnings"]
+    )
+    assert representative["font_visual_evidence"]["status"] == (
+        "blocked_requested_keifont_font_missing_uses_fallback"
+    )
+    assert representative["review_card_status"] == (
+        "withheld_font_visual_evidence_invalid"
+    )
+    assert report["review_memory"]["repeated_general_review"] is False
+    assert report["review_memory"]["next_nonredundant_axis"] == "dense_stress"
+
+    focused_html = (review_dir / "current_proof_focused_review.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Font evidence warning" in focused_html
+    assert "requested=Keifont; resolved=Noto Sans JP" in focused_html
+    assert "do not re-decide general Keifont acceptance" in focused_html
+
+
+def test_subtitle_overlay_visual_proof_ed10r_profile_requires_cut_008(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    with pytest.raises(SubtitleOverlayVisualProofError, match="cut_008"):
+        build_subtitle_overlay_visual_proof(
+            episode_dir=episode_dir,
+            review_dir=review_dir,
+            target_cut_ids=["cut_002", "cut_003"],
+            typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+            proof_profile="ed10r_keifont_dense_stress_proof",
+            ffmpeg_path="fake-ffmpeg",
+            ffprobe_path="fake-ffprobe",
+            base_dir=tmp_path,
+            runner=_fake_runner,
+        )
+
+
+def test_subtitle_overlay_visual_proof_ed10r_profile_requires_keifont(
+    tmp_path: Path,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    with pytest.raises(SubtitleOverlayVisualProofError, match="requires"):
+        build_subtitle_overlay_visual_proof(
+            episode_dir=episode_dir,
+            review_dir=review_dir,
+            target_cut_ids=["cut_008"],
+            typography_decoration_candidate_id="ed10j_biz_udgothic_bold_telop_candidate",
+            proof_profile="ed10r_keifont_dense_stress_proof",
+            ffmpeg_path="fake-ffmpeg",
+            ffprobe_path="fake-ffprobe",
+            base_dir=tmp_path,
+            runner=_fake_runner,
+        )
+
+
 def test_build_subtitle_overlay_visual_proof_cli_dry_run_outputs_plan(tmp_path: Path):
     episode_dir = _write_episode(tmp_path)
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
@@ -877,13 +1065,15 @@ def _edit_pack(episode_id: str) -> dict:
             _cut("cut_001", 2.453, 9.293, "passed"),
             _cut("cut_002", 12.329, 17.167, "passed"),
             _cut("cut_003", 22.606, 49.566, "needs_review"),
+            _cut("cut_008", 116.934, 135.219, "needs_review"),
         ],
-        "selected_cut_ids": ["cut_001", "cut_002", "cut_003"],
+        "selected_cut_ids": ["cut_001", "cut_002", "cut_003", "cut_008"],
         "subtitles": [
             _subtitle("sub_001", "cut_001", 2.453, 3.32, "cut 1"),
             _subtitle("sub_008", "cut_002", 12.329, 14.298, "subtitle 2a"),
             _subtitle("sub_009", "cut_002", 14.298, 17.167, "subtitle 2b"),
             *_cut_003_subtitles(),
+            *_cut_008_subtitles(),
         ],
         "review": {
             "status": "draft",
@@ -948,6 +1138,26 @@ def _cut_003_subtitles() -> list[dict]:
     return [_subtitle(subtitle_id, "cut_003", start, end, text) for subtitle_id, start, end, text in rows]
 
 
+def _cut_008_subtitles() -> list[dict]:
+    rows = [
+        ("sub_069", 116.934, 117.402, "dense stress opening"),
+        ("sub_070", 117.402, 118.236, "rapid handoff with longer dialogue"),
+        ("sub_071", 118.236, 119.204, "wrap pressure continues across the same beat"),
+        ("sub_072", 119.204, 120.204, "short response"),
+        ("sub_073", 120.204, 120.671, "very fast cue"),
+        ("sub_074", 120.671, 121.238, "another fast cue"),
+        ("sub_075", 121.238, 121.672, "timing replacement check"),
+        ("sub_076", 121.672, 123.672, "dense subtitle line with punctuation and extra length"),
+        ("sub_077", 123.672, 126.000, "badge and outline pressure should stay reviewable"),
+        ("sub_078", 126.000, 129.500, "stress block keeps going without becoming production approval"),
+        ("sub_079", 129.500, 135.219, "final dense stress line closes the proof"),
+    ]
+    return [
+        _subtitle(subtitle_id, "cut_008", start, end, text)
+        for subtitle_id, start, end, text in rows
+    ]
+
+
 def _material_ledger(episode_dir: Path) -> dict:
     return {
         "schema_version": "v1",
@@ -979,6 +1189,7 @@ def _chapter_revision_board(episode_id: str) -> dict:
         "chapters": [
             _chapter("ch_002", "cut_002", "passed", False, 4.838, 2),
             _chapter("ch_003", "cut_003", "needs_review", True, 26.96, 20),
+            _chapter("ch_008", "cut_008", "needs_review", True, 18.285, 11),
         ],
     }
 
@@ -1032,6 +1243,14 @@ def _cut_decision_packet(episode_id: str) -> dict:
                 "subtitle_event_count": 20,
                 "manual_override_reason": "retained risk stays visible",
             },
+            {
+                "cut_id": "cut_008",
+                "final_cut_decision": "keep",
+                "context_status": "needs_review",
+                "duration_seconds": 18.285,
+                "subtitle_event_count": 11,
+                "manual_override_reason": "dense stress target stays diagnostic",
+            },
         ],
     }
 
@@ -1060,6 +1279,7 @@ def _representative_visual_report(episode_id: str) -> dict:
             },
             _source_frame_assessment("cut_002", False),
             _source_frame_assessment("cut_003", True),
+            _source_frame_assessment("cut_008", True),
         ],
         "outputs": {
             "json": f"episodes/{episode_id}/review/jp_pilot01r3_cut_review/representative_visual_proof_report.json",

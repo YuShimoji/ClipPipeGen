@@ -420,8 +420,15 @@
     "detailed_overlay_report": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
     "target_cuts": ["cut_002", "cut_003"],
     "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
-    "lead_status": "provisional_normal_dialogue_lead",
+    "lead_status": "diagnostic_representative_normal_dialogue_provisional_baseline",
     "review_surface_direction": "ed10o_focused_matrix_accepted_as_preferred_review_direction",
+    "review_history_consumed": [
+      "user judged the Keifont proof clearly improved and video-usable",
+      "user judged the ED-10o font/review surface easier to see",
+      "ED-10q was a page-format regression fix, not a font-quality review"
+    ],
+    "current_route_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+    "keifont_general_acceptance_reopened": false,
     "included_candidate_ids": [
       "ed10l_keifont_pop_dialogue_candidate"
     ],
@@ -446,9 +453,9 @@
     "review_debt": [
       {
         "debt_id": "cut_008_dense_stress_proof",
-        "status": "deferred_not_blocking_ed10p",
-        "reason": "cut_008 is the known dense/stress representative target but remains needs_adjustment before production-adjacent promotion",
-        "next_action": "create a dedicated dense/stress proof after cut_008 context/boundary handling is explicitly accepted or scoped"
+        "status": "superseded_by_ed10r_current_target",
+        "reason": "cut_008 is the known dense/stress representative target and ED-10r is now the narrow proof route",
+        "next_action": "use ed10r_keifont_dense_stress_proof instead of asking for another general cut_002/cut_003 Keifont review"
       }
     ],
     "production_subtitle_design_acceptance": false,
@@ -486,6 +493,115 @@
     "rights_status": "pending",
     "publishing_acceptance": false,
     "public_use_permission": false
+  },
+  "ed10r_keifont_dense_stress_proof": {
+    "feature_id": "ED-10r",
+    "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+    "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+    "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
+    "source_proof_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
+    "proof_profile": "ed10r_keifont_dense_stress_proof",
+    "current_review_page": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/current_proof_focused_review.html",
+    "detailed_overlay_report": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html",
+    "target_cut_ids": ["cut_008"],
+    "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+    "baseline_scope": "diagnostic_representative_normal_dialogue_provisional",
+    "keifont_general_acceptance_reopened": false,
+    "user_action_type": "USER_RUN_REQUIRED",
+    "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY_AFTER_KEIFONT_RESOLVES",
+    "review_surface_direction": "cut_008_dense_stress_only_not_cut_002_cut_003_general_replay",
+    "review_memory": {
+      "subject": "Keifont normal-dialogue subtitle direction",
+      "prior_review_count": "2+",
+      "accepted_scope": [
+        "diagnostic_representative_review",
+        "provisional_normal_dialogue_baseline"
+      ],
+      "not_accepted_scope": [
+        "production_subtitle_design",
+        "production_render",
+        "creative_acceptance",
+        "rights",
+        "publishing",
+        "public_use"
+      ],
+      "next_nonredundant_axis": "dense_stress",
+      "repeated_general_review": false,
+      "review_reset_trigger_active": ["new_dense_stress_sample"],
+      "current_blocker": "font_evidence_fallback"
+    },
+    "current_workspace_font_visual_evidence": {
+      "status": "blocked_requested_keifont_font_missing_uses_fallback",
+      "current_windows_user": "DESKTOP-U9P4LKJ/PLANNER007",
+      "requested_font_family": "Keifont",
+      "resolved_font_family": "Noto Sans JP",
+      "resolved_font_file": "C:/Windows/Fonts/NotoSansJP-VF.ttf",
+      "font_file_status": "candidate_font_paths_missing_used_global_fallback: font_file_found",
+      "font_readback_table": [
+        {
+          "source": "HKCU fonts registry",
+          "location": "Software/Microsoft/Windows NT/CurrentVersion/Fonts",
+          "keifont_match": false
+        },
+        {
+          "source": "HKLM fonts registry",
+          "location": "Software/Microsoft/Windows NT/CurrentVersion/Fonts",
+          "keifont_match": false
+        },
+        {
+          "source": "current user font directory",
+          "location": "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts",
+          "keifont_match": false
+        },
+        {
+          "source": "machine font directory",
+          "location": "C:/Windows/Fonts",
+          "keifont_match": false
+        }
+      ],
+      "review_implication": "Do not treat the current same-machine ED-10r render as Keifont visual evidence until Keifont resolves on this Windows profile."
+    },
+    "user_action_card": {
+      "action_type": "USER_RUN_REQUIRED",
+      "target": "install Keifont for current Windows user profile",
+      "completion_signal": "Keifont is found in the current user font resolver and ED-10r regenerates with requested=Keifont, resolved=Keifont, no fallback warning",
+      "review_card_withheld": true
+    },
+    "review_history_consumed": [
+      "ED-10n Keifont proof judged clearly improved and video-usable",
+      "ED-10o font and review screen judged easier to see",
+      "ED-10q page-format regression fix consumed as non-font-quality feedback"
+    ],
+    "focused_proof_review": {
+      "status": "dense_stress_keifont_proof_ready",
+      "input_mode": "dense_stress_diagnostic_review",
+      "look_for": [
+        "cut_008 dense subtitle wrapping and safe-area behavior",
+        "rapid cue replacement readability under Keifont",
+        "outline, shadow, and badge pressure only as bounded adjustment candidates",
+        "do not re-decide general Keifont acceptance from cut_002/cut_003"
+      ],
+      "completion_signal": "dense/stress pass, concrete dense/stress concern, or bounded adjustment request"
+    },
+    "review_debt": [
+      {
+        "debt_id": "cut_008_dense_stress_proof",
+        "status": "current_target",
+        "reason": "Keifont normal-dialogue review history is already consumed; the remaining review debt is dense/stress behavior.",
+        "next_action": "after Keifont resolves, review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs"
+      }
+    ],
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "font_binaries_downloaded": false,
+    "font_binaries_installed_by_agent": false,
+    "font_binaries_copied_or_vendored": false
   },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_and_registry_name_match",

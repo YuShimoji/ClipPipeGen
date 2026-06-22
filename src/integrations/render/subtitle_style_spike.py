@@ -3593,6 +3593,7 @@ def _focused_review_html(report: dict[str, Any]) -> str:
         if isinstance(item, dict)
     )
     target_cuts = ", ".join(str(cut) for cut in focus.get("target_cuts", []))
+    excluded_rows_html = excluded_rows or '<tr><td colspan="3">none</td></tr>'
     return (
         "<section class=\"review-focus\">"
         "<h2>Review Focus</h2>"
@@ -3607,7 +3608,7 @@ def _focused_review_html(report: dict[str, Any]) -> str:
         "The matrix is cropped to the subtitle area so the first impression is the review target, not a random scene strip.</p>"
         "<h3>Excluded From This One-shot Comparison</h3>"
         "<table><tr><th>candidate</th><th>reason</th><th>next action</th></tr>"
-        f"{excluded_rows or '<tr><td colspan=\"3\">none</td></tr>'}"
+        f"{excluded_rows_html}"
         "</table>"
         "</section>"
     )

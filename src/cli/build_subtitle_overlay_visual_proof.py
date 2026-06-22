@@ -50,7 +50,9 @@ def run(argv: list[str]) -> int:
         help=(
             "Optional proof metadata profile. Use "
             "ed10p_keifont_lead_representative_proof to consume the ED-10o "
-            "review-surface acceptance and produce the next Keifont lead proof."
+            "review-surface acceptance and produce the next Keifont lead proof; "
+            "use ed10r_keifont_dense_stress_proof with --target-cut cut_008 "
+            "after Keifont is treated as the provisional normal-dialogue baseline."
         ),
     )
     parser.add_argument("--dry-run", action="store_true")
@@ -90,6 +92,7 @@ def run(argv: list[str]) -> int:
         "dry_run": result["dry_run"],
         "source_media_status": report.get("source_media_status"),
         "visual_proof_status": result["visual_proof_status"],
+        "review_card_status": report.get("review_card_status"),
         "style_direction_preset": (
             (report.get("style_direction") or {}).get("preset_name")
         ),
@@ -104,8 +107,10 @@ def run(argv: list[str]) -> int:
         "subtitle_overlay_available_count": (
             report.get("aggregate_summary") or {}
         ).get("subtitle_overlay_available_count"),
+        "review_memory": report.get("review_memory") or {},
         "focused_proof_review": report.get("focused_proof_review"),
         "review_debt": report.get("review_debt", []),
+        "font_visual_evidence": report.get("font_visual_evidence") or {},
         "production_candidate": report.get("production_candidate"),
         "creative_acceptance": report.get("creative_acceptance"),
         "publish_acceptance": report.get("publish_acceptance"),
@@ -135,12 +140,16 @@ def run(argv: list[str]) -> int:
         print(f"dry_run: {str(payload['dry_run']).lower()}")
         print(f"source_media_status: {payload['source_media_status']}")
         print(f"visual_proof_status: {payload['visual_proof_status']}")
+        print(f"review_card_status: {payload['review_card_status']}")
         print(f"style_direction_preset: {payload['style_direction_preset']}")
         print(f"style_candidate_id: {payload['style_candidate_id']}")
         print(
             "typography_decoration_candidate_id: "
             f"{payload['typography_decoration_candidate_id']}"
         )
+        font_evidence = payload.get("font_visual_evidence") or {}
+        if font_evidence:
+            print(f"font_visual_evidence: {font_evidence.get('status')}")
         print(f"subtitle_overlay_available_count: {payload['subtitle_overlay_available_count']}")
         print(f"production_candidate: {str(payload['production_candidate']).lower()}")
         print(f"creative_acceptance: {str(payload['creative_acceptance']).lower()}")
