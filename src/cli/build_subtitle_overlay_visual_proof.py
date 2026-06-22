@@ -122,6 +122,12 @@ def run(argv: list[str]) -> int:
         "focused_review_html": str(result["focused_review_html_path"]).replace(
             "\\", "/"
         ),
+        "subtitle_presentation_review_pack": str(
+            result["subtitle_presentation_review_pack_path"]
+        ).replace("\\", "/"),
+        "subtitle_presentation_review_pack_html": str(
+            result["subtitle_presentation_review_pack_html_path"]
+        ).replace("\\", "/"),
         "representative_visual_proof_report": str(
             result["representative_visual_proof_report_path"]
         ).replace("\\", "/"),
@@ -160,6 +166,14 @@ def run(argv: list[str]) -> int:
         print(f"report: {payload['report']}")
         print(f"report_html: {payload['report_html']}")
         print(f"focused_review_html: {payload['focused_review_html']}")
+        print(
+            "subtitle_presentation_review_pack: "
+            f"{payload['subtitle_presentation_review_pack']}"
+        )
+        print(
+            "subtitle_presentation_review_pack_html: "
+            f"{payload['subtitle_presentation_review_pack_html']}"
+        )
         print(f"representative_visual_proof_report: {payload['representative_visual_proof_report']}")
         print(
             "representative_visual_proof_report_html: "

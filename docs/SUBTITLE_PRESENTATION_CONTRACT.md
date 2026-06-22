@@ -183,13 +183,33 @@ same `cut_008` evidence unless a new axis or changed evidence is introduced.
 New review needs must be genuinely new, such as bounded decoration adjustment,
 production limitation-lift, or a render-path probe.
 
+## Current ED-10w Presentation Review Pack
+
+ED-10w is the current new-axis review surface after the ED-10v pass. It uses
+`clip-ed10r-keifont-dense-stress-proof-001` as source evidence and emits
+`clip-ed10w-subtitle-presentation-review-pack-001` for one freeform judgement.
+It does not reopen the general Keifont review on `cut_002` / `cut_003`, and it
+does not ask for another pass/fail judgement on the same `cut_008` multiline
+evidence.
+
+The bounded presentation candidates are:
+
+- `ed10w_current_pass_reference`
+- `ed10w_lighter_outline_shadow_pressure`
+- `ed10w_badge_label_pressure_adjustment`
+- `ed10w_balanced_combined_low_risk`
+
+The render-path readiness card in the pack is a diagnostic planning probe only.
+It may justify a later tiny render-path slice, but it does not approve
+ASS/libass, YMM4, Premiere, production render, publishing, or public use.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
-future slice can evaluate sharing it with NLMYTGen. ED-10v does not read, edit,
-or depend on NLMYTGen files, and it does not extract a shared package. Any later
-reuse should happen through an explicit boundary, contract, or subprocess/API
-route rather than by mixing repository internals.
+future slice can evaluate sharing it with NLMYTGen. ED-10v and ED-10w do not
+read, edit, or depend on NLMYTGen files, and they do not extract a shared
+package. Any later reuse should happen through an explicit boundary, contract,
+or subprocess/API route rather than by mixing repository internals.
 
 The production/public boundary remains:
 

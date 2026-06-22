@@ -718,6 +718,90 @@ def test_subtitle_overlay_visual_proof_ed10r_keifont_dense_stress_profile(
     assert "subtitle_overlay_visual_proof_cut_003.png" not in focused_html
 
 
+def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    monkeypatch.setattr(
+        overlay_proof,
+        "_resolve_candidate_font",
+        lambda candidate: (
+            "Keifont",
+            "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf",
+            "candidate_primary_font_file_found",
+        ),
+    )
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_008"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10w_subtitle_presentation_review_pack",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    pack = result["subtitle_presentation_review_pack"]
+    assert report["artifact_id"] == "clip-ed10w-subtitle-presentation-review-pack-001"
+    assert report["proof_profile"] == "ed10w_subtitle_presentation_review_pack"
+    assert report["target_cuts"] == ["cut_008"]
+    assert report["review_memory"]["prior_review_count"] == "3+"
+    assert report["review_memory"]["repeated_general_review"] is False
+    assert report["review_memory"]["repeated_cut_008_review_allowed"] is False
+    assert report["review_card_status"] == "review_card_allowed_after_scope_checks"
+    assert report["subtitle_presentation_review_pack"]["html"].endswith(
+        "subtitle_presentation_review_pack.html"
+    )
+    assert pack["artifact_id"] == "clip-ed10w-subtitle-presentation-review-pack-001"
+    assert pack["axis"] == "bounded_decoration_adjustment + render_path_readiness"
+    assert pack["evidence"]["multiline_wrap_evidence_status"] == (
+        "multiline_wrap_evidence_surfaced"
+    )
+    assert pack["evidence"]["multiline_screenshot"].endswith(
+        "subtitle_overlay_visual_proof_cut_008.sample_multiline_wrap_1.png"
+    )
+    assert len(pack["bounded_decoration_candidates"]) == 4
+    assert [item["candidate_id"] for item in pack["bounded_decoration_candidates"]] == [
+        "ed10w_current_pass_reference",
+        "ed10w_lighter_outline_shadow_pressure",
+        "ed10w_badge_label_pressure_adjustment",
+        "ed10w_balanced_combined_low_risk",
+    ]
+    assert pack["review_card"]["target"] == (
+        "clip-ed10w-subtitle-presentation-review-pack-001"
+    )
+    assert "same cut_008 dense/multiline pass" in pack["review_card"]["not_asking"]
+    assert pack["render_path_readiness"]["status"] == (
+        "decision_card_included_no_production_claim"
+    )
+    assert pack["production_subtitle_design_acceptance"] is False
+    assert pack["production_render_acceptance"] is False
+    assert pack["production_usage_allowed"] is False
+    assert pack["rights_status"] == "pending"
+
+    pack_path = review_dir / "subtitle_presentation_review_pack.json"
+    pack_html_path = review_dir / "subtitle_presentation_review_pack.html"
+    assert result["subtitle_presentation_review_pack_path"] == pack_path
+    assert result["subtitle_presentation_review_pack_html_path"] == pack_html_path
+    persisted_pack = json.loads(pack_path.read_text(encoding="utf-8"))
+    assert persisted_pack["render_path_readiness"][
+        "recommended_minimal_next_route"
+    ] == "tiny_final_path_nearer_diagnostic_probe"
+    pack_html = pack_html_path.read_text(encoding="utf-8")
+    assert "Subtitle Presentation Review Pack" in pack_html
+    assert "Bounded Decoration Candidates" in pack_html
+    assert "Render Path Decision Card" in pack_html
+    assert "general Keifont acceptance" in pack_html
+    assert "production subtitle design" in pack_html
+
+
 def test_subtitle_overlay_visual_proof_ed10r_withholds_review_without_multiline_evidence(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

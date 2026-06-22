@@ -649,6 +649,93 @@
     "font_binaries_installed_by_agent": false,
     "font_binaries_copied_or_vendored": false
   },
+  "ed10w_subtitle_presentation_review_pack": {
+    "feature_id": "ED-10w",
+    "artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+    "source_review_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+    "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
+    "proof_profile": "ed10w_subtitle_presentation_review_pack",
+    "current_review_page": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html",
+    "metadata_json": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json",
+    "target_cut_ids": ["cut_008"],
+    "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
+    "baseline_scope": "diagnostic_representative_normal_dialogue_provisional",
+    "keifont_general_acceptance_reopened": false,
+    "user_action_type": "ONE_REVIEW_CARD_NEW_AXIS",
+    "next_review_action_type": "FREEFORM_ONE_PASS_REVIEW",
+    "review_surface_direction": "one_pass_subtitle_presentation_review_pack",
+    "review_memory": {
+      "subject": "Keifont normal-dialogue subtitle direction",
+      "prior_review_count": "3+",
+      "accepted_scope": [
+        "diagnostic_representative_review",
+        "provisional_normal_dialogue_baseline",
+        "diagnostic_dense_stress_pass"
+      ],
+      "not_accepted_scope": [
+        "production_subtitle_design",
+        "production_render",
+        "creative_acceptance",
+        "rights",
+        "publishing",
+        "public_use"
+      ],
+      "next_nonredundant_axis": [
+        "bounded_decoration_adjustment",
+        "render_path_readiness_probe",
+        "linebreak_policy_readback"
+      ],
+      "repeated_general_review": false,
+      "review_reset_trigger_active": ["new_axis_or_changed_evidence_only"],
+      "current_blocker": "none_for_ed10w_review_pack",
+      "font_evidence_gate": "valid_requested_keifont_visual_evidence"
+    },
+    "bounded_decoration_candidates": [
+      "ed10w_current_pass_reference",
+      "ed10w_lighter_outline_shadow_pressure",
+      "ed10w_badge_label_pressure_adjustment",
+      "ed10w_balanced_combined_low_risk"
+    ],
+    "render_path_readiness": {
+      "status": "decision_card_included_no_production_claim",
+      "allowed_next_step": "tiny_diagnostic_probe_only",
+      "production_render_acceptance": false
+    },
+    "review_card": {
+      "status": "emitted_nonredundant_new_axis",
+      "action_type": "ONE_REVIEW_CARD_NEW_AXIS",
+      "target": "clip-ed10w-subtitle-presentation-review-pack-001",
+      "axis": "bounded_decoration_adjustment + render_path_readiness",
+      "prior_review_count": "3+",
+      "what_this_review_decides": "whether to keep the passed presentation, apply one bounded decoration adjustment, or run a tiny render-path readiness probe",
+      "not_asking": "general Keifont acceptance on cut_002/cut_003 or another pass/fail review of the same cut_008 multiline evidence",
+      "completion_signal": "one freeform presentation judgement"
+    },
+    "review_history_consumed": [
+      "ED-10n Keifont proof judged clearly improved and video-usable",
+      "ED-10o font and review screen judged easier to see",
+      "ED-10v corrected cut_008 multiline dense/stress proof judged good and all pass"
+    ],
+    "review_debt": [
+      {
+        "debt_id": "render_path_readiness_probe",
+        "status": "decision_card_included",
+        "reason": "Render-path work is a separate readiness question, not production render acceptance.",
+        "next_action": "run only a tiny diagnostic probe if the ED-10w review selects that route"
+      }
+    ],
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "font_binaries_downloaded": false,
+    "font_binaries_installed_by_agent": false,
+    "font_binaries_copied_or_vendored": false
+  },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_and_registry_name_match",
     "directory": "C:/Windows/Fonts plus %LOCALAPPDATA%/Microsoft/Windows/Fonts",

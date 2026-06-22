@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10v_dense_stress_pass_linebreak_policy_recorded
+health: ed10w_subtitle_presentation_review_pack_ready
 progress_pct: 100
-last_touched: 2026-06-22
-next_review_due: new_axis_only_after_ed10v_dense_stress_pass
-active_artifact: clip-ed10r-keifont-dense-stress-proof-001
+last_touched: 2026-06-23
+next_review_due: review_ed10w_subtitle_presentation_pack
+active_artifact: clip-ed10w-subtitle-presentation-review-pack-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,7 +35,30 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10r-keifont-dense-stress-proof-001`
+Active artifact: `clip-ed10w-subtitle-presentation-review-pack-001`
+
+Current handoff checkpoint, 2026-06-23: ED-10w is the active review surface.
+It packages one new review axis after the ED-10v diagnostic pass: bounded
+subtitle decoration adjustment plus render-path readiness. The pack is generated
+as
+`episodes/.../subtitle_presentation_review_pack.html` and is opened by
+`.\open-current-proof.ps1` when the ignored local artifact is present. The older
+ED-10r/ED-10v `current_proof_focused_review.html` remains retained source
+evidence and launcher fallback, not the primary review request.
+
+The ED-10w Review Card asks for one freeform judgement on four bounded
+presentation candidates:
+
+- `ed10w_current_pass_reference`
+- `ed10w_lighter_outline_shadow_pressure`
+- `ed10w_badge_label_pressure_adjustment`
+- `ed10w_balanced_combined_low_risk`
+
+It also includes a render-path readiness decision card. That card is a
+diagnostic planning/readiness probe only; it does not approve production
+subtitle design, production render, creative use, rights, publishing, or public
+use. ED-10w does not read, edit, import from, or extract a shared package with
+NLMYTGen.
 
 Current handoff checkpoint, 2026-06-22: ED-10q has been consumed as a
 page-format regression fix, not as a new Keifont font-quality review. The
@@ -177,25 +200,33 @@ gates.
 
 ## Next
 
-1. Do not request another Review Card for the same ED-10u `cut_008`
-   multiline/dense-stress evidence; ED-10v records it as diagnostic pass.
-2. If subtitle work continues, choose a genuinely new axis: line-break policy
-   tuning, bounded outline/shadow/badge adjustment, production limitation-lift,
-   or render-path probe.
-3. Keep line-break behavior policy/readback-driven: line length, max lines,
+1. Review `clip-ed10w-subtitle-presentation-review-pack-001` as one freeform
+   subtitle presentation judgement: keep current pass, use lighter
+   outline/shadow pressure, adjust badge label pressure, or take the balanced
+   low-risk combination.
+2. Use the included render-path readiness card only to decide whether a tiny
+   diagnostic render-path probe should follow. Do not treat it as production
+   render acceptance.
+3. Do not request another Review Card for the same ED-10u `cut_008`
+   multiline/dense-stress evidence; ED-10v already records it as diagnostic
+   pass.
+4. If subtitle work continues beyond ED-10w, keep it on a genuinely new axis:
+   line-break policy tuning, production limitation-lift, or a scoped
+   render-path probe.
+5. Keep line-break behavior policy/readback-driven: line length, max lines,
    orphan control, suffix-tail control, safe-area pressure, and rapid cue
    replacement are future bounded tuning areas.
-4. Keep ED-10o as accepted review UX direction and reference evidence for why
+6. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont is the provisional normal-dialogue baseline while 851 Chikara
    Yowaku and Yasashisa Gothic remain alternates.
-5. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
+7. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
-6. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
+8. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
    emphasis/mood slots; do not collapse them into normal dialogue baseline
    acceptance.
-7. Do not request another general `cut_002` / `cut_003` Keifont acceptance
+9. Do not request another general `cut_002` / `cut_003` Keifont acceptance
    review unless the user explicitly reopens font-family selection.
-8. If moving toward production/public use, run a separate limitation-lift route
+10. If moving toward production/public use, run a separate limitation-lift route
    for production render, rights, publishing, and public-use decisions.
 
 ## Constraints / Risks
@@ -225,7 +256,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, ED-10v consumed Keifont dense/stress proof via
+   `.\open-artifacts.ps1`, ED-10w subtitle presentation review pack via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
    regenerated ED-10l real-font comparison via

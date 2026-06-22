@@ -4,8 +4,10 @@ This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10r
-Keifont dense/stress proof on `cut_008`, use `.\open-current-proof.ps1`;
+dashboard, then use an artifact-specific launcher. For the current ED-10w
+subtitle presentation review pack, use `.\open-current-proof.ps1`; if that
+ignored local pack is absent, the launcher falls back to the retained ED-10v
+focused proof on this machine;
 for the accepted ED-10o focused comparison
 reference, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`;
@@ -359,6 +361,43 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10w-subtitle-presentation-review-pack-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10w Subtitle Presentation Review Pack |
+| purpose | Combine the already-passed ED-10v dense/stress evidence with one genuinely new review axis: bounded decoration adjustment plus render-path readiness. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html` |
+| metadata_json | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json` |
+| open_command | `.\open-current-proof.ps1` |
+| source_review_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
+| source_comparison_artifact | `clip-ed10o-multifont-focused-review-001` |
+| generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10w_subtitle_presentation_review_pack --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10w_subtitle_presentation_review_pack --format json` plus targeted tests. |
+| review_card | One new-axis Review Card: `bounded_decoration_adjustment + render_path_readiness`. It does not ask for another general `cut_002` / `cut_003` Keifont review and does not ask for another pass/fail judgement on the same `cut_008` multiline evidence. |
+| bounded_candidates | `ed10w_current_pass_reference`, `ed10w_lighter_outline_shadow_pressure`, `ed10w_badge_label_pressure_adjustment`, `ed10w_balanced_combined_low_risk` |
+| render_path_readiness | Diagnostic decision card only. It may authorize a later tiny render-path probe, but it is not production render acceptance. |
+| review_status | Ready for one freeform subtitle presentation review after ED-10v pass. |
+| next_action | Review the pack once and choose whether to keep the current pass, apply a bounded presentation adjustment, or run only a tiny render-path readiness probe. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked generator, docs, dashboard metadata, and
+tests but not the ignored HTML/JSON/PNG/MP4/ASS artifacts themselves. Other
+worktrees should treat missing `episodes/` review assets as local evidence
+absence, not as a tracked Git failure. `git ls-files episodes` should remain
+empty.
+
 ## `clip-ed10r-keifont-dense-stress-proof-001`
 
 | Field | Value |
@@ -369,7 +408,7 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/current_proof_focused_review.html` |
 | detailed_overlay_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
 | representative_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html` |
-| open_command | `.\open-current-proof.ps1` |
+| open_command | Fallback from `.\open-current-proof.ps1`; root launcher now opens the ED-10w review pack first. |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10r_keifont_dense_stress_proof --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10r_keifont_dense_stress_proof --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10u regeneration returned `artifact_id=clip-ed10r-keifont-dense-stress-proof-001`, `proof_profile=ed10r_keifont_dense_stress_proof`, `target_cuts=[cut_008]`, `visual_proof_status=available_requires_human_review`, `review_card_status=review_card_allowed_after_scope_checks`, `subtitle_overlay_available_count=1`, `focused_proof_review.status=dense_stress_keifont_proof_ready`, `font_visual_evidence.status=valid_requested_keifont_visual_evidence`, `requested_font_family=Keifont`, `resolved_font_family=Keifont`, `resolved_font_file=C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf`, `multiline_wrap_evidence.status=multiline_wrap_evidence_surfaced`, `multiline_wrap_evidence.subtitle_id=sub_096`, `wrapped_line_count=2`, `screenshot_count=1`, `screenshot_role=multiline_wrap_1`, `screenshot_path=episodes/.../subtitle_overlay_reference/subtitle_overlay_visual_proof_cut_008.sample_multiline_wrap_1.png`, `focused_html_multiline_image_max_width=220px`, `production_candidate=false`, and `rights_status=pending`. ED-10v then consumed the user review as `diagnostic_dense_stress_passed` for subtitle display / all-pass, without changing production/public gates. |

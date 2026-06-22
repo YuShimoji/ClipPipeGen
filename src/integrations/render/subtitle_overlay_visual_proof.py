@@ -29,10 +29,14 @@ ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE = (
     "ed10p_keifont_lead_representative_proof"
 )
 ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE = "ed10r_keifont_dense_stress_proof"
+ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE = (
+    "ed10w_subtitle_presentation_review_pack"
+)
 SUBTITLE_OVERLAY_PROOF_PROFILES = (
     DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
     ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
     ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+    ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
 )
 ED10L_KEIFONT_CANDIDATE_ID = "ed10l_keifont_pop_dialogue_candidate"
 DEFAULT_SOURCE_VIDEO_MATERIAL_ID = "src_video_jp_pilot01"
@@ -472,6 +476,124 @@ def _subtitle_overlay_proof_profile(
             "publishing_acceptance": False,
             "public_use_permission": False,
         }
+    if profile == ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE:
+        if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
+            raise SubtitleOverlayVisualProofError(
+                "ed10w_subtitle_presentation_review_pack requires "
+                f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
+            )
+        if tuple(target_cut_ids) != ("cut_008",):
+            raise SubtitleOverlayVisualProofError(
+                "ed10w_subtitle_presentation_review_pack requires exactly "
+                "--target-cut cut_008; do not replay cut_002/cut_003 general "
+                "Keifont acceptance review"
+            )
+        return {
+            "proof_profile": ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+            "artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+            "source_review_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+            "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+            "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "target_cuts": list(target_cut_ids),
+            "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+            "review_surface_direction": {
+                "status": "new_axis_after_ed10v_pass",
+                "accepted_surface_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+                "accepted_surface": "ED-10u corrected cut_008 multiline evidence consumed as ED-10v pass",
+                "not_reopened": [
+                    "cut_002 general Keifont acceptance",
+                    "cut_003 general Keifont acceptance",
+                    "same cut_008 dense/multiline pass",
+                ],
+                "not_accepted": [
+                    "production subtitle design",
+                    "production render",
+                    "creative acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "candidate_state": {
+                "keifont_is_diagnostic_representative_normal_dialogue_provisional_baseline": True,
+                "ed10v_dense_stress_pass_consumed": True,
+                "ed10w_axis": "bounded_decoration_adjustment + render_path_readiness",
+                "font_family_changed": False,
+                "broad_style_gallery": False,
+            },
+            "review_memory": {
+                "subject": "Keifont subtitle direction",
+                "prior_review_count": "3+",
+                "accepted_scope": [
+                    "diagnostic_representative_review",
+                    "provisional_normal_dialogue_baseline",
+                    "diagnostic_dense_stress_pass",
+                    "diagnostic_multiline_wrap_pass",
+                ],
+                "not_accepted_scope": [
+                    "production_subtitle_design",
+                    "production_render",
+                    "creative_acceptance",
+                    "rights",
+                    "publishing",
+                    "public_use",
+                ],
+                "next_nonredundant_axis": [
+                    "bounded_decoration_adjustment",
+                    "render_path_probe",
+                    "future_shared_subtitle_layout_policy",
+                ],
+                "repeated_general_review": False,
+                "repeated_cut_008_review_allowed": False,
+                "current_blocker": "none_for_ed10w_review_pack",
+            },
+            "focused_proof_review": {
+                "status": "subtitle_presentation_review_pack_ready",
+                "target": "one-pass subtitle presentation review pack",
+                "input_mode": "freeform",
+                "current_lead_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
+                "target_cuts": list(target_cut_ids),
+                "source_review_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+                "source_review_surface": "ED-10v consumed Keifont dense/stress multiline proof as pass",
+                "ed10o_reference_report": (
+                    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+                    "jp_pilot01r3_cut_review/subtitle_multifont_focused_review/"
+                    "subtitle_multifont_focused_review_report.html"
+                ),
+                "look_for": [
+                    "whether to keep current passed baseline decoration",
+                    "whether a lighter outline/shadow pressure candidate is preferred",
+                    "whether SPK badge/label pressure should be reduced",
+                    "whether the render-path decision card is enough to start the next tiny diagnostic probe",
+                    "do not re-accept Keifont, cut_002/cut_003, or the same cut_008 dense/multiline pass",
+                ],
+                "completion_signal": (
+                    "user chooses pass, a bounded adjustment candidate, a "
+                    "render-path next route, or names a concern"
+                ),
+            },
+            "review_debt": [
+                {
+                    "debt_id": "render_path_readiness_probe",
+                    "status": "decision_card_included",
+                    "reason": (
+                        "ED-10w keeps render-path work to a tiny diagnostic "
+                        "decision surface instead of expanding into production render."
+                    ),
+                    "next_action": (
+                        "choose whether the next slice should run a final-path-nearer "
+                        "diagnostic probe; do not claim production render acceptance"
+                    ),
+                }
+            ],
+            "production_candidate": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        }
 
     if profile not in SUBTITLE_OVERLAY_PROOF_PROFILES:
         known = ", ".join(SUBTITLE_OVERLAY_PROOF_PROFILES)
@@ -566,6 +688,8 @@ def build_subtitle_overlay_visual_proof(
     report_path = review_dir / "subtitle_overlay_visual_proof_report.json"
     report_html_path = review_dir / "subtitle_overlay_visual_proof_report.html"
     focused_review_html_path = review_dir / "current_proof_focused_review.html"
+    presentation_review_pack_path = review_dir / "subtitle_presentation_review_pack.json"
+    presentation_review_pack_html_path = review_dir / "subtitle_presentation_review_pack.html"
     updated_representative_path = representative_path
     updated_representative_html_path = review_dir / "representative_visual_proof_report.html"
     report = _report_payload(
@@ -627,6 +751,28 @@ def build_subtitle_overlay_visual_proof(
     ] = updated_representative["review_card_status"]
     report["visual_proof_status"] = visual_proof_status
     updated_representative["visual_proof_status"] = visual_proof_status
+    presentation_review_pack = None
+    if (
+        proof_profile_data.get("proof_profile")
+        == ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE
+    ):
+        presentation_review_pack = _subtitle_presentation_review_pack(
+            report=report,
+            pack_path=presentation_review_pack_path,
+            pack_html_path=presentation_review_pack_html_path,
+            base=base,
+        )
+        report["subtitle_presentation_review_pack"] = {
+            "json": _display_path(presentation_review_pack_path, base),
+            "html": _display_path(presentation_review_pack_html_path, base),
+            "artifact_id": presentation_review_pack["artifact_id"],
+        }
+        report.setdefault("outputs", {})["subtitle_presentation_review_pack"] = (
+            _display_path(presentation_review_pack_path, base)
+        )
+        report.setdefault("outputs", {})["subtitle_presentation_review_pack_html"] = (
+            _display_path(presentation_review_pack_html_path, base)
+        )
     if not dry_run:
         review_dir.mkdir(parents=True, exist_ok=True)
         _write_json(report, report_path)
@@ -635,6 +781,12 @@ def build_subtitle_overlay_visual_proof(
             _focused_current_proof_html(report),
             encoding="utf-8",
         )
+        if presentation_review_pack is not None:
+            _write_json(presentation_review_pack, presentation_review_pack_path)
+            presentation_review_pack_html_path.write_text(
+                _subtitle_presentation_review_pack_html(presentation_review_pack),
+                encoding="utf-8",
+            )
         _write_json(updated_representative, updated_representative_path)
         updated_representative_html_path.write_text(
             _representative_report_html(updated_representative),
@@ -647,6 +799,9 @@ def build_subtitle_overlay_visual_proof(
         "report_path": report_path,
         "report_html_path": report_html_path,
         "focused_review_html_path": focused_review_html_path,
+        "subtitle_presentation_review_pack_path": presentation_review_pack_path,
+        "subtitle_presentation_review_pack_html_path": presentation_review_pack_html_path,
+        "subtitle_presentation_review_pack": presentation_review_pack,
         "representative_visual_proof_report_path": updated_representative_path,
         "representative_visual_proof_report_html_path": updated_representative_html_path,
         "visual_proof_status": visual_proof_status,
@@ -783,7 +938,10 @@ def _build_cut_proof(
                 presentation_items,
                 duration,
                 include_multiline_wrap_evidence=proof_profile_id
-                == ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+                in {
+                    ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+                    ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+                },
             ),
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
@@ -3623,6 +3781,345 @@ def _representative_report_html(report: dict[str, Any]) -> str:
     <tr><th>cut</th><th>visual proof</th><th>visual</th><th>artifacts</th><th>style readback</th><th>review status</th><th>limitations</th></tr>
     {rows}
   </table>
+</body>
+</html>
+"""
+
+
+def _subtitle_presentation_review_pack(
+    *,
+    report: dict[str, Any],
+    pack_path: Path,
+    pack_html_path: Path,
+    base: Path,
+) -> dict[str, Any]:
+    evidence = _subtitle_presentation_pack_evidence(report)
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "report_kind": "subtitle_presentation_review_pack",
+        "artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+        "source_artifact_id": report.get("artifact_id"),
+        "source_review_artifact_id": report.get("source_review_artifact_id"),
+        "created_at": _now(),
+        "episode_id": report.get("episode_id"),
+        "axis": "bounded_decoration_adjustment + render_path_readiness",
+        "target_cuts": report.get("target_cuts") or [],
+        "prior_review": {
+            "prior_review_count": "3+",
+            "prior_signal_summary": (
+                "Keifont normal-dialogue and dense/multiline routes have "
+                "passed diagnostic review."
+            ),
+            "accepted_scope": [
+                "diagnostic_representative_review",
+                "provisional_normal_dialogue_baseline",
+                "diagnostic_dense_stress_pass",
+                "diagnostic_multiline_wrap_pass",
+            ],
+            "not_accepted_scope": [
+                "production_subtitle_design",
+                "production_render",
+                "creative_acceptance",
+                "rights",
+                "publishing",
+                "public_use",
+            ],
+        },
+        "review_card": {
+            "target": "clip-ed10w-subtitle-presentation-review-pack-001",
+            "axis": "bounded_decoration_adjustment + render_path_readiness",
+            "prior_review_count": "3+",
+            "prior_signal_summary": (
+                "Keifont normal-dialogue and dense/multiline route passed "
+                "diagnostically."
+            ),
+            "what_changed": (
+                "New bounded decoration candidates and a render-path readiness "
+                "decision card are presented in one page."
+            ),
+            "what_this_review_decides": [
+                "whether to keep current baseline decoration",
+                "whether to choose a bounded adjustment candidate",
+                "whether render-path route is ready for the next tiny probe",
+            ],
+            "not_asking": [
+                "general Keifont acceptance",
+                "cut_002 / cut_003 review",
+                "same cut_008 dense/multiline pass",
+                "production subtitle design acceptance",
+            ],
+            "input_mode": "freeform",
+            "completion_signal": (
+                "user chooses pass, an adjustment candidate, a render-path next "
+                "route, or names a concern"
+            ),
+        },
+        "bounded_decoration_candidates": _bounded_decoration_candidates(report),
+        "render_path_readiness": _render_path_decision_card(report),
+        "evidence": evidence,
+        "outputs": {
+            "json": _display_path(pack_path, base),
+            "html": _display_path(pack_html_path, base),
+            "source_focused_review_html": (
+                report.get("outputs") or {}
+            ).get("focused_review_html"),
+        },
+        "production_subtitle_design_acceptance": False,
+        "production_render_acceptance": False,
+        "creative_acceptance": False,
+        "rights_status": "pending",
+        "production_candidate": False,
+        "production_usage_allowed": False,
+        "publishing_acceptance": False,
+        "public_use_permission": False,
+    }
+
+
+def _subtitle_presentation_pack_evidence(report: dict[str, Any]) -> dict[str, Any]:
+    cut_results = (
+        report.get("cut_results") if isinstance(report.get("cut_results"), list) else []
+    )
+    cut = cut_results[0] if cut_results else {}
+    artifacts = cut.get("generated_artifacts") if isinstance(cut, dict) else {}
+    multiline = report.get("multiline_wrap_evidence") or {}
+    first_wrap: dict[str, Any] = {}
+    per_cut = (
+        multiline.get("per_cut") if isinstance(multiline.get("per_cut"), dict) else {}
+    )
+    for cut_evidence in per_cut.values():
+        if not isinstance(cut_evidence, dict):
+            continue
+        items = cut_evidence.get("evidence_items") or []
+        if items:
+            first_wrap = items[0]
+            break
+    return {
+        "source_cut": cut.get("cut_id") if isinstance(cut, dict) else None,
+        "baseline_frame": artifacts.get("frame") if isinstance(artifacts, dict) else None,
+        "baseline_video": artifacts.get("video") if isinstance(artifacts, dict) else None,
+        "multiline_screenshot": first_wrap.get("screenshot_path"),
+        "multiline_subtitle_id": first_wrap.get("subtitle_id"),
+        "multiline_timing": {
+            "display_start_seconds": first_wrap.get("display_start_seconds"),
+            "display_end_seconds": first_wrap.get("display_end_seconds"),
+            "screenshot_frame_seconds": first_wrap.get("screenshot_frame_seconds"),
+        },
+        "wrapped_lines": first_wrap.get("wrapped_lines") or [],
+        "selected_break_reason": first_wrap.get("selected_break_reason"),
+        "multiline_wrap_evidence_status": multiline.get("status"),
+    }
+
+
+def _bounded_decoration_candidates(report: dict[str, Any]) -> list[dict[str, Any]]:
+    style = report.get("style_parameters") or {}
+    outline = (style.get("outline") or {}).get("value")
+    shadow = (style.get("shadow") or {}).get("value")
+    badge = (style.get("speaker_badge") or {}).get("label") or "SPK"
+    return [
+        {
+            "candidate_id": "ed10w_current_pass_reference",
+            "label": "Current passed baseline reference",
+            "changes_from_ed10v": "none",
+            "outline_pressure": "current",
+            "shadow_pressure": "current",
+            "badge_pressure": "current",
+            "font_family_changed": False,
+            "deterministic": True,
+            "recommended_when": "current pass already feels balanced",
+            "readback": {"outline": outline, "shadow": shadow, "badge_label": badge},
+        },
+        {
+            "candidate_id": "ed10w_lighter_outline_shadow_pressure",
+            "label": "Lighter outline / shadow pressure",
+            "changes_from_ed10v": "reduce outline and shadow pressure by one bounded step",
+            "outline_pressure": "slightly_lighter",
+            "shadow_pressure": "slightly_lighter",
+            "badge_pressure": "current",
+            "font_family_changed": False,
+            "deterministic": True,
+            "recommended_when": (
+                "current baseline feels a little heavy or black-pressure dominant"
+            ),
+            "readback": {"outline_delta_px": -1, "shadow_delta_px": -1},
+        },
+        {
+            "candidate_id": "ed10w_badge_label_pressure_adjustment",
+            "label": "SPK badge / label pressure adjustment",
+            "changes_from_ed10v": (
+                "keep subtitle text treatment and reduce placeholder badge visual pressure"
+            ),
+            "outline_pressure": "current",
+            "shadow_pressure": "current",
+            "badge_pressure": "lighter_placeholder",
+            "font_family_changed": False,
+            "deterministic": True,
+            "recommended_when": "text is acceptable but SPK placeholder draws too much attention",
+            "readback": {"badge_label": badge, "badge_fill_alpha": "reduced"},
+        },
+        {
+            "candidate_id": "ed10w_balanced_combined_low_risk",
+            "label": "Balanced combined low-risk adjustment",
+            "changes_from_ed10v": (
+                "combine lighter outline/shadow with lighter placeholder badge pressure"
+            ),
+            "outline_pressure": "slightly_lighter",
+            "shadow_pressure": "slightly_lighter",
+            "badge_pressure": "lighter_placeholder",
+            "font_family_changed": False,
+            "deterministic": True,
+            "recommended_when": (
+                "both outline pressure and placeholder badge pressure feel slightly high"
+            ),
+            "readback": {
+                "outline_delta_px": -1,
+                "shadow_delta_px": -1,
+                "badge_fill_alpha": "reduced",
+            },
+        },
+    ]
+
+
+def _render_path_decision_card(report: dict[str, Any]) -> dict[str, Any]:
+    renderer = report.get("renderer_path_audit") or {}
+    return {
+        "status": "decision_card_included_no_production_claim",
+        "safe_existing_path_available": True,
+        "current_renderer_path": (
+            renderer.get("renderer_path") or "ffmpeg_libass_diagnostic_overlay"
+        ),
+        "recommended_minimal_next_route": "tiny_final_path_nearer_diagnostic_probe",
+        "candidate_routes": [
+            {
+                "route_id": "reuse_current_ffmpeg_libass_probe",
+                "what_it_would_prove": (
+                    "diagnostic overlay timing, line breaks, and exported "
+                    "frame/video readback remain stable"
+                ),
+                "not_accepted": "production render acceptance",
+            },
+            {
+                "route_id": "nle_or_ymm4_path_probe_later",
+                "what_it_would_prove": (
+                    "whether the accepted policy survives the intended editor/render path"
+                ),
+                "not_accepted": "upload, publishing, public use, or rights approval",
+            },
+        ],
+        "explicitly_not_accepted": [
+            "production subtitle design acceptance",
+            "production render acceptance",
+            "creative acceptance",
+            "rights clearance",
+            "publishing acceptance",
+            "public-use permission",
+        ],
+    }
+
+
+def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
+    evidence = pack.get("evidence") or {}
+    candidates = pack.get("bounded_decoration_candidates") or []
+    review_card = pack.get("review_card") or {}
+    render_card = pack.get("render_path_readiness") or {}
+    baseline_frame = evidence.get("baseline_frame")
+    multiline_frame = evidence.get("multiline_screenshot")
+    candidate_rows = "\n".join(
+        "<tr>"
+        f"<td>{escape(str(item.get('candidate_id') or ''))}</td>"
+        f"<td>{escape(str(item.get('label') or ''))}</td>"
+        f"<td>{escape(str(item.get('changes_from_ed10v') or ''))}</td>"
+        f"<td>{escape(str(item.get('recommended_when') or ''))}</td>"
+        "</tr>"
+        for item in candidates
+    )
+    not_asking = "\n".join(
+        f"<li>{escape(str(item))}</li>" for item in review_card.get("not_asking") or []
+    )
+    decides = "\n".join(
+        f"<li>{escape(str(item))}</li>"
+        for item in review_card.get("what_this_review_decides") or []
+    )
+    routes = "\n".join(
+        "<tr>"
+        f"<td>{escape(str(item.get('route_id') or ''))}</td>"
+        f"<td>{escape(str(item.get('what_it_would_prove') or ''))}</td>"
+        f"<td>{escape(str(item.get('not_accepted') or ''))}</td>"
+        "</tr>"
+        for item in render_card.get("candidate_routes") or []
+    )
+    baseline_img = (
+        f'<a href="{_artifact_href(baseline_frame)}"><img class="proof" src="{_artifact_href(baseline_frame)}" alt="baseline frame"></a>'
+        if baseline_frame
+        else "<p>No baseline frame recorded.</p>"
+    )
+    multiline_img = (
+        f'<a href="{_artifact_href(multiline_frame)}"><img class="proof compact" src="{_artifact_href(multiline_frame)}" alt="multiline wrap evidence"></a>'
+        if multiline_frame
+        else "<p>No multiline screenshot recorded.</p>"
+    )
+    wrapped_lines = "<br>".join(
+        escape(str(line)) for line in evidence.get("wrapped_lines") or []
+    )
+    return f"""<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Subtitle Presentation Review Pack</title>
+  <style>
+    body {{ font-family: system-ui, sans-serif; margin: 0; line-height: 1.5; color: #1f2933; background: #f7f8fa; }}
+    main {{ max-width: 1120px; margin: 0 auto; padding: 24px; }}
+    section {{ background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 16px; margin: 0 0 16px; }}
+    .hero {{ border-left: 6px solid #2f6f9f; }}
+    .warning {{ color: #8a4b00; }}
+    .evidence-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }}
+    .proof {{ max-width: 480px; width: 100%; border: 1px solid #c7ced8; display: block; }}
+    .compact {{ max-width: 220px; }}
+    table {{ border-collapse: collapse; width: 100%; }}
+    th, td {{ border: 1px solid #d8dde6; padding: 8px; vertical-align: top; }}
+    th {{ background: #eef2f6; text-align: left; }}
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <h1>Subtitle Presentation Review Pack</h1>
+    <p>Artifact: {escape(str(pack.get("artifact_id") or ""))}</p>
+    <p>Axis: {escape(str(pack.get("axis") or ""))}</p>
+    <p class="warning">Diagnostic review only. This page does not approve production subtitle design, production render, creative use, rights, publishing, or public use.</p>
+  </section>
+  <section>
+    <h2>Non-Redundant Review Card</h2>
+    <p><strong>What changed:</strong> {escape(str(review_card.get("what_changed") or ""))}</p>
+    <p><strong>Completion signal:</strong> {escape(str(review_card.get("completion_signal") or ""))}</p>
+    <h3>This review decides</h3>
+    <ul>{decides}</ul>
+    <h3>Not asking</h3>
+    <ul>{not_asking}</ul>
+  </section>
+  <section>
+    <h2>Evidence</h2>
+    <div class="evidence-grid">
+      <figure>{baseline_img}<figcaption>Current passed baseline frame</figcaption></figure>
+      <figure>{multiline_img}<figcaption>{escape(str(evidence.get("multiline_subtitle_id") or ""))}: {wrapped_lines}</figcaption></figure>
+    </div>
+  </section>
+  <section>
+    <h2>Bounded Decoration Candidates</h2>
+    <table>
+      <tr><th>candidate</th><th>label</th><th>change</th><th>use when</th></tr>
+{candidate_rows}
+    </table>
+  </section>
+  <section>
+    <h2>Render Path Decision Card</h2>
+    <p>Status: {escape(str(render_card.get("status") or ""))}</p>
+    <p>Recommended next route: {escape(str(render_card.get("recommended_minimal_next_route") or ""))}</p>
+    <table>
+      <tr><th>route</th><th>what it would prove</th><th>not accepted</th></tr>
+{routes}
+    </table>
+  </section>
+</main>
 </body>
 </html>
 """

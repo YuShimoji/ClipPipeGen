@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10v_dense_stress_pass_linebreak_policy_recorded
+health: ed10w_subtitle_presentation_review_pack_ready
 progress_pct: 100
-last_touched: 2026-06-22
-next_review_due: new_axis_only_after_ed10v_dense_stress_pass
-active_artifact: clip-ed10r-keifont-dense-stress-proof-001
+last_touched: 2026-06-23
+next_review_due: review_ed10w_subtitle_presentation_pack
+active_artifact: clip-ed10w-subtitle-presentation-review-pack-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -20,11 +20,27 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family prompts after the project
-has advanced to the ED-10r dense/stress proof route.
+has advanced to the ED-10w subtitle presentation review pack route.
 
 ## Current State
 
-The active artifact is `clip-ed10r-keifont-dense-stress-proof-001`.
+The active artifact is `clip-ed10w-subtitle-presentation-review-pack-001`.
+
+ED-10w is now the current handoff target. It consumes ED-10v as a passed
+diagnostic dense/stress + multiline/wrap source proof and creates one new
+review surface:
+`episodes/.../subtitle_presentation_review_pack.html`. The root launcher
+`.\open-current-proof.ps1` opens that pack when the ignored same-machine file
+exists; otherwise it falls back to the retained ED-10v focused proof. The pack
+does not ask for another general Keifont review on `cut_002` / `cut_003`, and
+does not ask for another pass/fail judgement on the same `cut_008` multiline
+evidence.
+
+The only current ED-10w judgement is a freeform subtitle presentation choice:
+keep the current pass, lighten outline/shadow pressure, adjust badge label
+pressure, or use the balanced low-risk combination. A render-path readiness
+card is included as a diagnostic planning probe only. It is not production
+render acceptance.
 
 ED-10j already consumed the freeform review that removed Meiryo from normal
 subtitle baseline candidates. ED-10j readback also resolved the blue badge /
@@ -117,19 +133,17 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Do not request another review of the corrected ED-10u `cut_008`
-multiline/dense-stress surface; ED-10v records it as passed. If the next move
-is subtitle work, choose a new axis: line-break policy tuning, bounded
-outline/shadow/badge adjustment, production limitation-lift, or render-path
-probe. Do not reopen general font-family acceptance from `cut_002` /
-`cut_003`.
+Review `clip-ed10w-subtitle-presentation-review-pack-001` once, as a new-axis
+subtitle presentation pack. Do not request another review of the corrected
+ED-10u `cut_008` multiline/dense-stress surface; ED-10v records it as passed.
+Do not reopen general font-family acceptance from `cut_002` / `cut_003`.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
-| `ed10v_dense_stress_pass_linebreak_policy` | Closes the current user review loop and records line-break behavior as policy/readback | The same `cut_008` evidence no longer needs a Review Card |
-| bounded outline/shadow/badge adjustment | Keeps any style polish scoped after the dense/stress pass | A small successor slice can tune presentation without reopening font-family selection |
+| `ed10w_subtitle_presentation_review_pack` | Combines bounded decoration candidates with render-path readiness in one page | A single freeform review can choose the next subtitle presentation move without replaying old proof acceptance |
+| render-path readiness probe | Keeps renderer work tiny and diagnostic | A later slice can test output-readiness without claiming production render acceptance |
 | production limitation-lift route | Separates diagnostic proof from public/render/rights decisions | Production subtitle design, render, rights, publishing, and public-use gates can be judged explicitly later |
 
 Keep `ed10l_851_chikara_zuyoku_emphasis_candidate` outside the normal dialogue
@@ -142,7 +156,8 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10r-keifont-dense-stress-proof-001` | Consumed cut_008 multiline/dense-stress diagnostic pass with valid Keifont evidence and compact `sub_096` screenshot evidence | `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
+| `clip-ed10w-subtitle-presentation-review-pack-001` | Current one-pass presentation review pack with bounded decoration candidates and render-path readiness card | `.\open-current-proof.ps1` -> `episodes/.../subtitle_presentation_review_pack.html` |
+| `clip-ed10r-keifont-dense-stress-proof-001` | Consumed cut_008 multiline/dense-stress diagnostic pass with valid Keifont evidence and compact `sub_096` screenshot evidence | Fallback from `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
 | `clip-ed10p-keifont-lead-representative-proof-001` | Consumed provisional normal-dialogue baseline evidence | See artifact registry; do not request another general cut_002/cut_003 Keifont review |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused review UX direction / font comparison reference | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
 | `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | See artifact registry; root launcher now opens ED-10r dense/stress proof |
