@@ -125,3 +125,5 @@ NLMYTGen 側の FEATURE ID（A-* / B-* 等）とは独立。混同しない。
 cross-project 作業の冒頭 1 行 scope 宣言 (例: `Scope: NLMYTGen / WritingPage / ClipPipeGen`) は、guardrails の cross-project pattern を満たす最小宣言として使う。毎回再正当化しない。
 
 スライス区切りでは drift を内部チェックする (個別ケース過剰調整 / 工程内最適化 / docs だけ増えて実装に戻れていない / 単発 artifact を統合無しで完了扱い / ユーザーが毎回方向検知を強いられる / 次工程の consumer 不明確)。発火している項目だけ次の一手への影響と合わせて自然文で触れる。発火がなければその旨を一文で済ます。固定見出しを並べる出力はしない。
+
+## Imported Claude Cowork project instructions

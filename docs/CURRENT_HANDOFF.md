@@ -5,7 +5,7 @@ type: handoff
 status: active
 health: ed10q_current_proof_focused_review_restored
 progress_pct: 100
-last_touched: 2026-06-20
+last_touched: 2026-06-22
 next_review_due: after_ed10q_focused_page_human_review
 active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: false
@@ -68,6 +68,16 @@ lines, subtitle-area evidence, the ED-10o reference, and Review Debt for
 `cut_008` dense/stress coverage. The old detailed/debug overlay report remains
 available from the focused page, but it is no longer the primary first view.
 
+2026-06-22 handoff refresh: remote parity was verified before this handoff
+(`HEAD...origin/main=0 0`, `HEAD=499de35`). The current ED-10p proof was
+regenerated on this machine with the ED-10p proof profile and Keifont candidate.
+The regenerated focused HTML was inspected mechanically: `Review Focus:
+Current Proof` appears before subtitle-area evidence, detailed reports are
+lower on the page, the ED-10o reference is linked, and `cut_008_dense_stress_proof`
+remains Review Debt. JSON parse checks passed and the targeted validation set
+reported `18 passed`. `episodes/` remains ignored same-machine evidence and is
+not tracked.
+
 ## Resume Order
 
 1. Read [RUNTIME_STATE.md](RUNTIME_STATE.md).
@@ -120,8 +130,8 @@ Run these after pulling on another terminal:
 git status --short --branch
 git rev-list --left-right --count HEAD...origin/main
 git ls-files episodes
-python -m json.tool docs\dashboard\project-status.json
-python -m json.tool docs\font_candidates\subtitle-font-candidates.json
+uvx python -m json.tool docs\dashboard\project-status.json
+uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
 

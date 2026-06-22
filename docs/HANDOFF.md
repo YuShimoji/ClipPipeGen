@@ -1,10 +1,78 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-19 JST
+Last updated: 2026-06-22 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
+## Immediate Resume Capsule - 2026-06-22 ED-10q Current Proof Handoff
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git checkout main
+git pull --ff-only origin main
+git status --short --branch
+git rev-list --left-right --count HEAD...origin/main
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected state after pulling this handoff:
+
+- Branch: `main`
+- Upstream: `origin/main`
+- `HEAD...origin/main`: `0 0`
+- `git ls-files episodes`: empty
+- Current active artifact: `clip-ed10p-keifont-lead-representative-proof-001`
+- Current route: `ED-10q Current Proof Focused Review Regression Fix v0`
+- Current proof launcher: `.\open-current-proof.ps1`
+- Current proof page:
+  `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\current_proof_focused_review.html`
+
+The ED-10q handoff point is a review-surface fix, not a visual acceptance of
+Keifont. The launcher now opens the focused page instead of the old detailed
+overlay/debug report. The focused page starts with `Review Focus: Current
+Proof`, target lines, subtitle-area evidence for `cut_002` / `cut_003`, the
+ED-10o focused comparison reference, and `cut_008_dense_stress_proof` as
+Review Debt. Detailed diagnostic reports remain available lower on the page.
+
+Same-machine validation performed before this handoff:
+
+- `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10p_keifont_lead_representative_proof --format json`
+  returned `artifact_id=clip-ed10p-keifont-lead-representative-proof-001`,
+  `source_review_artifact_id=clip-ed10o-multifont-focused-review-001`,
+  `subtitle_overlay_available_count=2`, `focused_review_html=episodes/.../current_proof_focused_review.html`,
+  `review_debt[0].debt_id=cut_008_dense_stress_proof`,
+  `production_candidate=false`, and `rights_status=pending`.
+- Focused HTML order check confirmed `Review Focus: Current Proof` before
+  subtitle-area evidence and detailed reports; no debug table is primary on
+  the focused page.
+- `uvx python -m json.tool` parsed the dashboard JSON and regenerated proof
+  JSON files.
+- `uvx --with pillow pytest -q tests/test_subtitle_overlay_visual_proof.py tests/test_docs_dashboard.py tests/test_episode_review_bundle.py`
+  -> `18 passed`.
+- `git diff --check` exited successfully; the only earlier warning was the
+  pre-existing `AGENTS.md` line-ending notice.
+- `git ls-files episodes` printed nothing.
+
+Next human review:
+
+- Open `.\open-current-proof.ps1`.
+- Verify the page starts with `Review Focus: Current Proof`.
+- Review Keifont as the provisional normal-dialogue lead only: body thickness,
+  outline pressure, and whether the subtitle-area evidence is enough to decide.
+- Keep ED-10o as the accepted review UX direction and comparison reference.
+- Keep `cut_008` dense/stress coverage as Review Debt until its
+  `needs_adjustment` state is explicitly handled or scoped.
+
+Boundary flags remain closed: `production_subtitle_design_acceptance=false`,
+`production_render_acceptance=false`, `creative_acceptance=false`,
+`production_candidate=false`, `production_usage_allowed=false`,
+`rights_status=pending`, `publishing_acceptance=false`, and
+`public_use_permission=false`.
 
 ## Immediate Resume Capsule - 2026-06-19 ED-10l Font Fallback Audit
 

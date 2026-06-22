@@ -5,7 +5,7 @@ type: resume_surface
 status: current_capsule
 health: ed10q_current_proof_focused_review_restored
 progress_pct: 100
-last_touched: 2026-06-20
+last_touched: 2026-06-22
 next_review_due: after_ed10q_focused_page_human_review
 active_artifact: clip-ed10p-keifont-lead-representative-proof-001
 source_of_truth: true
@@ -36,6 +36,18 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10p-keifont-lead-representative-proof-001`
+
+Remote handoff checkpoint, 2026-06-22: local regeneration and validation
+confirmed ED-10q remains the current restart point. `origin/main` matched
+local `HEAD=499de35` before the handoff refresh. The current proof was
+regenerated with `--proof-profile ed10p_keifont_lead_representative_proof`
+and `--typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate`;
+the JSON readback returned the ED-10p artifact id, the ED-10o source review,
+two subtitle overlays, `current_proof_focused_review.html`, and
+`cut_008_dense_stress_proof` as Review Debt. Focused HTML order was verified as
+`Review Focus: Current Proof` before subtitle-area evidence and detailed
+reports. Targeted validation passed with 18 tests. No `episodes/` files are
+tracked.
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
