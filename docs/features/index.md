@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10u`
+- feature: `ED-10v`
 - artifact: `clip-ed10r-keifont-dense-stress-proof-001`
-- state: `ed10u_dense_stress_multiline_evidence_review_ready`
+- state: `ed10v_dense_stress_pass_linebreak_policy_recorded`
 
 ## Feature Table
 
@@ -58,7 +58,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10q | Current Proof Focused Review Regression Fix v0 | done | current_proof_focused_review_restored | 100 | clip-ed10p-keifont-lead-representative-proof-001 | Keep as the page-format regression fix; do not treat it as new Keifont font-quality review. |
 | ED-10r | Keifont Dense/Stress Proof v0 | done | superseded_by_ed10u_multiline_evidence_correction | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Superseded by ED-10u focused multiline evidence correction; review only corrected cut_008 multiline/dense-stress behavior. |
 | ED-10t | Regenerated Keifont Dense/Stress Proof v0 | done | keifont_dense_stress_proof_review_ready | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Superseded by ED-10u focused multiline evidence correction; keep font readback as valid. |
-| ED-10u | Dense/Stress Multiline Evidence Fix v0 | done | dense_stress_multiline_evidence_review_ready | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Review only the compact multiline/wrap evidence on cut_008; do not reopen general cut_002/cut_003 Keifont acceptance. |
+| ED-10u | Dense/Stress Multiline Evidence Fix v0 | done | superseded_by_ed10v_dense_stress_pass | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Consumed by ED-10v user pass; keep as the corrected evidence surface. |
+| ED-10v | Dense/Stress Pass and Linebreak Policy v0 | done | dense_stress_pass_linebreak_policy_recorded | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Current dense/stress axis is passed; continue only through a new axis such as line-break policy tuning, bounded decoration adjustment, or production limitation-lift. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

@@ -3,10 +3,10 @@ id: subtitle-font-candidate-sweep
 title: Subtitle Font Candidate Sweep v0
 type: candidate_registry
 status: in_progress
-health: ed10u_dense_stress_multiline_evidence_review_ready
+health: ed10v_dense_stress_pass_linebreak_policy_recorded
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10u_cut_008_multiline_dense_stress_review
+next_review_due: new_axis_only_after_ed10v_dense_stress_pass
 active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: editing
@@ -77,6 +77,11 @@ status、local availability、reproducibility、intended use で比較できる�
   (`下界ニ呼ビ出シタノハキサ` / `マカ。`). The focused page now surfaces that cue
   as compact `Multiline / Wrap Evidence` near the top, with the screenshot
   capped at 220px by default.
+- ED-10v consumed the user's review of that corrected proof as all pass for
+  subtitle display. Keifont remains diagnostic/provisional, and `cut_008`
+  dense/stress + multiline/wrap behavior is now diagnostic pass. Do not ask for
+  another Review Card on this same evidence or another general `cut_002` /
+  `cut_003` Keifont acceptance review.
 - Machine-readable registry:
   [font_candidates/subtitle-font-candidates.json](font_candidates/subtitle-font-candidates.json)
 
@@ -205,6 +210,14 @@ in `cut_008` is a real two-line cue, and the focused page now shows
 `sample_multiline_wrap_1.png` in a compact evidence grid. Human review is now
 allowed only for the corrected `cut_008` multiline/dense-stress axis.
 
+ED-10v consumes that human review as pass. The current scope accepted is
+diagnostic dense/stress readability and multiline/wrap behavior for `cut_008`;
+the route still does not accept production subtitle design, production render,
+creative, rights, publishing, or public use. Future line-break work should be
+recorded as policy/readback tuning around line length, maximum lines, orphan
+control, safe area, and rapid cue replacement instead of replaying the same
+visual acceptance question.
+
 ## ED-10j Kirinuki Font Audit
 
 ED-10j consumes the latest freeform review as a route change, not a minor
@@ -267,9 +280,9 @@ to this candidate id.
 
 ## これからどうなるか
 
-1. **ED-10u multiline/dense-stress proof**: run `.\open-current-proof.ps1` and
-   review the compact `sub_096` two-line screenshot plus `cut_008`
-   dense/stress behavior.
+1. **ED-10v pass record**: keep the `cut_008` multiline/dense-stress proof as
+   consumed diagnostic pass; do not ask for another Review Card on the same
+   evidence.
 2. **ED-10p baseline evidence**: keep the Keifont `cut_002` / `cut_003` proof
    as consumed history; do not ask for another general acceptance review.
 3. **ED-10o focused review reference**: use the same-line matrix as accepted

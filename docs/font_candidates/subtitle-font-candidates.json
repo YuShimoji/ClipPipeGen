@@ -495,7 +495,7 @@
     "public_use_permission": false
   },
   "ed10r_keifont_dense_stress_proof": {
-    "feature_id": "ED-10u",
+    "feature_id": "ED-10v",
     "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
     "source_review_artifact_id": "clip-ed10p-keifont-lead-representative-proof-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
@@ -507,15 +507,16 @@
     "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
     "baseline_scope": "diagnostic_representative_normal_dialogue_provisional",
     "keifont_general_acceptance_reopened": false,
-    "user_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
-    "next_review_action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
-    "review_surface_direction": "cut_008_dense_stress_only_not_cut_002_cut_003_general_replay",
+    "user_action_type": "NO_REVIEW_CARD_CURRENT_AXIS_PASSED",
+    "next_review_action_type": "NEW_AXIS_ONLY",
+    "review_surface_direction": "cut_008_dense_stress_passed_no_same_evidence_replay",
     "review_memory": {
       "subject": "Keifont normal-dialogue subtitle direction",
-      "prior_review_count": "2+",
+      "prior_review_count": "3+",
       "accepted_scope": [
         "diagnostic_representative_review",
-        "provisional_normal_dialogue_baseline"
+        "provisional_normal_dialogue_baseline",
+        "diagnostic_dense_stress_pass"
       ],
       "not_accepted_scope": [
         "production_subtitle_design",
@@ -525,10 +526,14 @@
         "publishing",
         "public_use"
       ],
-      "next_nonredundant_axis": "dense_stress",
+      "next_nonredundant_axis": [
+        "linebreak_policy_readback",
+        "bounded_decoration_adjustment",
+        "future_shared_subtitle_layout_policy"
+      ],
       "repeated_general_review": false,
-      "review_reset_trigger_active": ["new_dense_stress_sample"],
-      "current_blocker": "none_for_font_evidence",
+      "review_reset_trigger_active": ["new_axis_or_changed_evidence_only"],
+      "current_blocker": "none_for_diagnostic_dense_stress",
       "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "current_workspace_font_visual_evidence": {
@@ -560,10 +565,10 @@
           "keifont_match": false
         }
       ],
-      "review_implication": "The regenerated same-machine ED-10r render can be reviewed as Keifont visual evidence for the cut_008 dense/stress axis only."
+      "review_implication": "The regenerated same-machine ED-10r render has been reviewed as Keifont visual evidence for the cut_008 dense/stress diagnostic axis."
     },
     "multiline_wrap_evidence": {
-      "status": "multiline_wrap_evidence_surfaced",
+      "status": "passed_diagnostic_review",
       "target_cut_id": "cut_008",
       "subtitle_id": "sub_096",
       "wrapped_line_count": 2,
@@ -574,24 +579,47 @@
       "screenshot_role": "multiline_wrap_1",
       "screenshot_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_reference/subtitle_overlay_visual_proof_cut_008.sample_multiline_wrap_1.png",
       "default_display_max_width_px": 220,
-      "review_implication": "The corrected focused page now surfaces the actual two-line cue with a compact screenshot before the larger proof media."
+      "review_implication": "The corrected two-line cue has passed diagnostic dense/stress review."
+    },
+    "line_break_policy_readback": {
+      "status": "diagnostic_policy_recorded",
+      "authority": "japanese_boundary_font_bbox_pixel_wrap_v1",
+      "measurement_authority": "font_bbox_pixel_measurement_not_grid_cell_count",
+      "accepted_evidence": "cut_008/sub_096 two-line wrap",
+      "accepted_scope": "diagnostic_dense_stress_multiline_wrap_pass",
+      "future_tuning_areas": [
+        "line_length",
+        "max_lines",
+        "orphan_control",
+        "short_suffix_tail_control",
+        "safe_area_pressure",
+        "rapid_cue_replacement"
+      ],
+      "nlmytgen_portability_note": "Future sharing may be considered through an explicit boundary; ED-10v does not read, edit, or depend on NLMYTGen and does not extract a shared package."
     },
     "review_card": {
-      "action_type": "USER_REVIEW_DENSE_STRESS_ONLY",
-      "target": "ED-10u corrected Keifont cut_008 dense/stress proof",
+      "status": "withheld_no_redundant_review_after_pass",
+      "action_type": "NO_REVIEW_CARD_CURRENT_AXIS_PASSED",
+      "target": "ED-10v consumed Keifont cut_008 dense/stress pass",
       "axis": "dense_stress",
-      "prior_review_count": "2+",
-      "what_this_review_decides": "whether the surfaced multiline cue remains readable under dense subtitle wrapping, rapid cue replacement, safe area pressure, and bounded outline/shadow/badge stress",
+      "prior_review_count": "3+",
+      "what_this_review_decides": "nothing further on this same evidence; the current axis is closed as diagnostic pass",
       "not_asking": "general Keifont acceptance on cut_002 or cut_003",
-      "completion_signal": "multiline/dense-stress pass, concrete concern, or bounded adjustment request"
+      "completion_signal": "withheld because the current dense/stress evidence already passed",
+      "next_allowed_review_axes": [
+        "bounded_decoration_adjustment",
+        "production_limitation_lift",
+        "render_path_probe"
+      ]
     },
     "review_history_consumed": [
       "ED-10n Keifont proof judged clearly improved and video-usable",
       "ED-10o font and review screen judged easier to see",
-      "ED-10q page-format regression fix consumed as non-font-quality feedback"
+      "ED-10q page-format regression fix consumed as non-font-quality feedback",
+      "ED-10v corrected cut_008 multiline dense/stress proof judged good and all pass"
     ],
     "focused_proof_review": {
-      "status": "dense_stress_keifont_proof_ready",
+      "status": "dense_stress_keifont_proof_passed",
       "input_mode": "dense_stress_diagnostic_review",
       "look_for": [
         "cut_008 dense subtitle wrapping and safe-area behavior",
@@ -599,14 +627,14 @@
         "outline, shadow, and badge pressure only as bounded adjustment candidates",
         "do not re-decide general Keifont acceptance from cut_002/cut_003"
       ],
-      "completion_signal": "dense/stress pass, concrete dense/stress concern, or bounded adjustment request"
+      "completion_signal": "diagnostic dense/stress pass consumed; future review must use a new axis"
     },
     "review_debt": [
       {
         "debt_id": "cut_008_dense_stress_proof",
-        "status": "current_target",
-        "reason": "Keifont normal-dialogue review history is already consumed; the remaining review debt is dense/stress behavior.",
-        "next_action": "review cut_008 only for dense/stress readability, wrapping, timing replacement, and bounded style adjustment needs"
+        "status": "closed_diagnostic_pass",
+        "reason": "Keifont normal-dialogue review history and cut_008 dense/stress behavior are both consumed diagnostically.",
+        "next_action": "do not request another review for the same cut_008 evidence; use only new axes such as bounded decoration adjustment, production limitation-lift, or render-path probe"
       }
     ],
     "production_subtitle_design_acceptance": false,

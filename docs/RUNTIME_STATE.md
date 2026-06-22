@@ -3,10 +3,10 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10u_dense_stress_multiline_evidence_review_ready
+health: ed10v_dense_stress_pass_linebreak_policy_recorded
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10u_cut_008_multiline_dense_stress_review
+next_review_due: new_axis_only_after_ed10v_dense_stress_pass
 active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: shared_infra
@@ -48,9 +48,8 @@ normal-dialogue provisional baseline, while keeping production subtitle design,
 production render, creative acceptance, rights, publishing, and public-use
 gates false or pending.
 
-The active route is ED-10u: a focused evidence-surface correction on the same
-ED-10r dense/stress artifact after the user reported that the visible video
-did not appear to contain any two-line subtitles. The proof profile remains
+The active route is ED-10v: the ED-10u corrected dense/stress proof has now
+been reviewed and passed. The proof profile remains
 `ed10r_keifont_dense_stress_proof`, and it is intentionally narrow: it only
 accepts `--target-cut cut_008`. The current Windows profile resolves Keifont
 correctly, with `font_visual_evidence.status=valid_requested_keifont_visual_evidence`,
@@ -63,18 +62,26 @@ real multiline/wrap cue: `sub_096`, displayed at `8.008-9.776`, wrapping as
 frame from that cue, so the user could not reasonably judge multiline behavior.
 `current_proof_focused_review.html` now places a `Multiline / Wrap Evidence`
 section near the top, before the broader evidence, with a compact screenshot
-for `sample_multiline_wrap_1.png` capped at 220px by default. The next human
-judgement may inspect only this corrected `cut_008` multiline/dense-stress
-surface for wrapping, rapid cue replacement, safe area, and bounded
-outline/shadow/badge adjustment needs. If a style issue appears, open a bounded
-adjustment slice instead of reopening font-family selection.
+for `sample_multiline_wrap_1.png` capped at 220px by default.
 
-Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=2+`
+ED-10v consumes the latest user review of that corrected surface: subtitle
+display is good, all pass. This is accepted only as a diagnostic
+dense/stress + multiline/wrap pass for the current Keifont subtitle route. Do
+not emit another Review Card for the same `cut_008` evidence and do not reopen
+general Keifont acceptance on `cut_002` / `cut_003`. Future work may refine
+line-break behavior as more material appears, but that should be handled as a
+policy/readback or bounded adjustment slice, not as a replay of the current
+review.
+
+Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=3+`
 and is accepted only as `diagnostic_representative_review` /
-`provisional_normal_dialogue_baseline`. It is not accepted for production
-subtitle design, production render, creative acceptance, rights, publishing, or
-public use. The next non-redundant review axis remains `dense_stress`, now with
-explicit multiline/wrap evidence for `cut_008` surfaced on the focused page.
+`provisional_normal_dialogue_baseline` plus
+`diagnostic_dense_stress_pass`. It is not accepted for production subtitle
+design, production render, creative acceptance, rights, publishing, or public
+use. The current dense/stress axis is closed as diagnostic pass. Next
+non-redundant axes are line-break policy readback, bounded decoration
+adjustment, future shared subtitle layout policy, production limitation-lift,
+or render-path probe.
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
@@ -147,6 +154,13 @@ ED-10l route readback:
   subtitles, kept `cut_008` as the correct target because font-bbox readback
   found `sub_096` wrapping to two lines, and added compact multiline screenshot
   evidence near the top of `current_proof_focused_review.html`
+- ED-10v consumed the user's pass review of that corrected surface; no further
+  Review Card should be emitted for the same `cut_008` evidence unless a new
+  axis or changed evidence is introduced
+- line-break policy/readback is now recorded in
+  `docs/SUBTITLE_PRESENTATION_CONTRACT.md`; future NLMYTGen sharing is only a
+  design consideration in this slice, with no NLMYTGen reads, edits, imports,
+  or shared package extraction
 - no font binary was downloaded, installed, copied, vendored, staged, or
   committed by Codex; local font files remain same-machine evidence only
 
@@ -163,13 +177,14 @@ gates.
 
 ## Next
 
-1. Run `.\open-current-proof.ps1` and review the corrected ED-10u focused page:
-   only `cut_008` multiline/dense-stress behavior is in scope.
-2. Confirm the answer is about the compact `sub_096` multiline screenshot,
-   wrapping, rapid cue replacement, safe area, or bounded outline/shadow/badge
-   pressure, not general Keifont acceptance on `cut_002` / `cut_003`.
-3. Judge whether multiline wrapping, rapid cue replacement, safe area, or
-   outline/shadow/badge pressure needs a bounded adjustment slice.
+1. Do not request another Review Card for the same ED-10u `cut_008`
+   multiline/dense-stress evidence; ED-10v records it as diagnostic pass.
+2. If subtitle work continues, choose a genuinely new axis: line-break policy
+   tuning, bounded outline/shadow/badge adjustment, production limitation-lift,
+   or render-path probe.
+3. Keep line-break behavior policy/readback-driven: line length, max lines,
+   orphan control, suffix-tail control, safe-area pressure, and rapid cue
+   replacement are future bounded tuning areas.
 4. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont is the provisional normal-dialogue baseline while 851 Chikara
    Yowaku and Yasashisa Gothic remain alternates.
@@ -210,7 +225,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10r Keifont dense/stress proof via
+   `.\open-artifacts.ps1`, ED-10v consumed Keifont dense/stress proof via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
    regenerated ED-10l real-font comparison via

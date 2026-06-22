@@ -11,9 +11,11 @@ render, creative use, rights, publishing, or public use.
 - active diagnostic candidate: `jp_clip_dialogue_badge_left_v0`
 - scope: dialogue subtitles in local diagnostic proof artifacts under
   `src/integrations/render/`
-- current target cut: `cut_003`
+- current baseline target cut: `cut_003`
+- current dense/stress target cut: `cut_008`
 - current authority boundary: keep `cut_003=22.606 -> 49.566`,
-  `sub_010..sub_029` included, and `sub_030` excluded
+  `sub_010..sub_029` included, and `sub_030` excluded; keep `cut_008`
+  as the consumed dense/stress diagnostic pass route
 
 ## Dialogue Subtitle Style
 
@@ -112,6 +114,20 @@ proof is rendered through FFmpeg/libass. Reports must expose this
 `renderer_gap` and must not describe Pillow bbox measurement as final
 ASS/libass, YMM4, Premiere, or production typography readiness.
 
+ED-10v records the current line-break behavior as accepted diagnostic readback
+for the Keifont dense/stress proof. The reviewed evidence is `cut_008` /
+`sub_096`, where the font-bbox wrapper selected two lines:
+`下界ニ呼ビ出シタノハキサ` / `マカ。`. The user reviewed the corrected
+multiline/dense-stress proof and said the subtitle display is good and all pass.
+This closes the current visual review loop for diagnostic dense/stress behavior,
+but it does not freeze the algorithm as final production subtitle design.
+
+Future tuning should stay policy/readback-driven rather than ad hoc to a single
+frame. The bounded areas are line length, maximum line count, orphan control,
+short suffix-tail control, safe-area pressure, and rapid cue replacement. Any
+future change should preserve the selected `wrapped_lines`, break reason, and
+renderer-gap readback so the visual proof can explain why a line broke.
+
 ## Speaker Badge Placeholder Semantics
 
 When placeholder speaker badges appear as `SPK`, `A`, or `B`, the report must
@@ -146,6 +162,34 @@ readability. It covers the current diagnostic proof's
 wrapping/readability/safe-area/timing impression only, and it does not approve
 production subtitle design, production render, creative quality, rights,
 publishing, or public use.
+
+## Current Cut_008 Dense/Stress Diagnostic Pass
+
+ED-10v consumes the latest review of
+`clip-ed10r-keifont-dense-stress-proof-001`. The accepted diagnostic scope is:
+
+- `cut_008` dense/stress readability
+- `sub_096` multiline/wrap evidence
+- current Keifont provisional subtitle route under the shown rapid cue and
+  safe-area pressure
+
+Keifont remains a diagnostic/provisional subtitle baseline. This is not a
+production subtitle design acceptance, not production render acceptance, not
+creative acceptance, not rights clearance, not publishing acceptance, and not
+public-use permission.
+
+The current axis is passed, so no further Review Card should be emitted for the
+same `cut_008` evidence unless a new axis or changed evidence is introduced.
+New review needs must be genuinely new, such as bounded decoration adjustment,
+production limitation-lift, or a render-path probe.
+
+## Future Shared Line-Break Policy Note
+
+The subtitle line-break and layout policy should remain structured enough that a
+future slice can evaluate sharing it with NLMYTGen. ED-10v does not read, edit,
+or depend on NLMYTGen files, and it does not extract a shared package. Any later
+reuse should happen through an explicit boundary, contract, or subprocess/API
+route rather than by mixing repository internals.
 
 The production/public boundary remains:
 

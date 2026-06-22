@@ -27,7 +27,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10u"
+    assert status["current_focus"]["feature_id"] == "ED-10v"
     assert status["current_focus"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
@@ -41,13 +41,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10p-keifont-lead-representative-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10u_dense_stress_multiline_evidence_review_ready"
+        "ed10v_dense_stress_pass_linebreak_policy_recorded"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "keifont_provisional_baseline_from_ed10n_ed10o_review_history"
+        "keifont_dense_stress_multiline_pass_from_ed10u_review"
     )
     assert status["current_focus"]["latest_review_consumed"] == (
-        "ed10u_user_review_requested_multiline_screenshot_evidence"
+        "ed10v_user_review_confirmed_subtitle_display_good_all_pass"
     )
     assert status["current_focus"]["target_cuts"] == ["cut_008"]
     assert status["current_focus"]["selected_typography_base"] == (
@@ -57,13 +57,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "cut_008_dense_stress_multiline_evidence_surfaced"
+        "cut_008_dense_stress_multiline_passed_diagnostic"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "USER_REVIEW_DENSE_STRESS_ONLY"
+        "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "USER_REVIEW_DENSE_STRESS_ONLY"
+        "NEW_AXIS_ONLY"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
@@ -75,7 +75,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
     )
     assert status["current_focus"]["multiline_wrap_evidence_status"] == (
-        "multiline_wrap_evidence_surfaced"
+        "passed_diagnostic_review"
     )
     assert status["current_focus"]["multiline_wrap_evidence"]["subtitle_id"] == (
         "sub_096"
@@ -83,22 +83,34 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["multiline_wrap_evidence"][
         "screenshot_default_max_width_px"
     ] == 220
-    assert status["current_focus"]["review_memory"]["prior_review_count"] == "2+"
-    assert status["current_focus"]["review_memory"]["next_nonredundant_axis"] == (
-        "dense_stress"
+    assert status["current_focus"]["line_break_policy_readback"]["status"] == (
+        "diagnostic_policy_recorded"
     )
+    assert status["current_focus"]["line_break_policy_readback"][
+        "accepted_evidence"
+    ] == "cut_008/sub_096 two-line wrap"
+    assert "NLMYTGen" in status["current_focus"]["line_break_policy_readback"][
+        "shared_policy_note"
+    ]
+    assert status["current_focus"]["review_memory"]["prior_review_count"] == "3+"
+    assert "linebreak_policy_readback" in status["current_focus"]["review_memory"][
+        "next_nonredundant_axis"
+    ]
     assert status["current_focus"]["review_memory"]["repeated_general_review"] is False
     assert status["current_focus"]["review_memory"]["current_blocker"] == (
-        "none_for_font_evidence"
+        "none_for_diagnostic_dense_stress"
     )
     assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "USER_REVIEW_DENSE_STRESS_ONLY"
+        "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
+    )
+    assert status["current_focus"]["review_card"]["status"] == (
+        "withheld_no_redundant_review_after_pass"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "ED-10u corrected Keifont cut_008 dense/stress proof"
+        "ED-10v consumed Keifont cut_008 dense/stress pass"
     )
     assert status["current_focus"]["review_card"]["axis"] == "dense_stress"
     assert "cut_002 or cut_003" in status["current_focus"]["review_card"][
@@ -110,7 +122,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["review_debt"][0]["debt_id"] == (
         "cut_008_dense_stress_proof"
     )
-    assert status["current_focus"]["review_debt"][0]["status"] == "current_target"
+    assert status["current_focus"]["review_debt"][0]["status"] == (
+        "closed_diagnostic_pass"
+    )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
     assert status["current_focus"]["production_usage_allowed"] is False
@@ -439,7 +453,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10q_current_proof_focused_review_fix"][
         "production_subtitle_design_acceptance"
     ] is False
-    assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10u"
+    assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10v"
     assert registry["ed10r_keifont_dense_stress_proof"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
@@ -456,44 +470,53 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "keifont_general_acceptance_reopened"
     ] is False
     assert registry["ed10r_keifont_dense_stress_proof"]["user_action_type"] == (
-        "USER_REVIEW_DENSE_STRESS_ONLY"
+        "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
     )
     assert registry["ed10r_keifont_dense_stress_proof"][
         "next_review_action_type"
-    ] == "USER_REVIEW_DENSE_STRESS_ONLY"
+    ] == "NEW_AXIS_ONLY"
     assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
         "prior_review_count"
-    ] == "2+"
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
-        "next_nonredundant_axis"
-    ] == "dense_stress"
+    ] == "3+"
+    assert "linebreak_policy_readback" in registry[
+        "ed10r_keifont_dense_stress_proof"
+    ]["review_memory"]["next_nonredundant_axis"]
     assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
         "repeated_general_review"
     ] is False
     assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
         "current_blocker"
-    ] == "none_for_font_evidence"
+    ] == "none_for_diagnostic_dense_stress"
     assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
         "font_evidence_gate"
     ] == "valid_requested_keifont_visual_evidence"
     assert registry["ed10r_keifont_dense_stress_proof"]["review_debt"][0][
         "status"
-    ] == "current_target"
+    ] == "closed_diagnostic_pass"
     assert registry["ed10r_keifont_dense_stress_proof"][
         "current_workspace_font_visual_evidence"
     ]["status"] == "valid_requested_keifont_visual_evidence"
     assert registry["ed10r_keifont_dense_stress_proof"][
         "multiline_wrap_evidence"
-    ]["status"] == "multiline_wrap_evidence_surfaced"
+    ]["status"] == "passed_diagnostic_review"
     assert registry["ed10r_keifont_dense_stress_proof"][
         "multiline_wrap_evidence"
     ]["subtitle_id"] == "sub_096"
     assert registry["ed10r_keifont_dense_stress_proof"][
         "multiline_wrap_evidence"
     ]["default_display_max_width_px"] == 220
+    assert registry["ed10r_keifont_dense_stress_proof"][
+        "line_break_policy_readback"
+    ]["status"] == "diagnostic_policy_recorded"
+    assert "NLMYTGen" in registry["ed10r_keifont_dense_stress_proof"][
+        "line_break_policy_readback"
+    ]["nlmytgen_portability_note"]
     assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
         "action_type"
-    ] == "USER_REVIEW_DENSE_STRESS_ONLY"
+    ] == "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
+    assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
+        "status"
+    ] == "withheld_no_redundant_review_after_pass"
     assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
         "axis"
     ] == "dense_stress"
@@ -525,6 +548,20 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert "m_plus_1p_bold" in candidate_ids
     assert "dela_gothic_one_emphasis" in candidate_ids
     assert "noto_serif_jp_narration_local" in candidate_ids
+
+
+def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
+    text = (REPO_ROOT / "docs" / "SUBTITLE_PRESENTATION_CONTRACT.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "ED-10v records the current line-break behavior" in text
+    assert "Current Cut_008 Dense/Stress Diagnostic Pass" in text
+    assert "diagnostic dense/stress behavior" in text
+    assert "`sub_096` multiline/wrap evidence" in text
+    assert "Future Shared Line-Break Policy Note" in text
+    compact_text = " ".join(text.split())
+    assert "does not read, edit, or depend on NLMYTGen files" in compact_text
 
 
 def _write_fixture_docs(base: Path) -> None:

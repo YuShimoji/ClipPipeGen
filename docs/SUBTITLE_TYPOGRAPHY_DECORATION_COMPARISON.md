@@ -2,11 +2,11 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10u_dense_stress_multiline_evidence_review_current
-health: ed10u_dense_stress_multiline_evidence_review_ready
+status: ed10v_dense_stress_pass_linebreak_policy_current
+health: ed10v_dense_stress_pass_linebreak_policy_recorded
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10u_cut_008_multiline_dense_stress_review
+next_review_due: new_axis_only_after_ed10v_dense_stress_pass
 active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: editing
@@ -17,7 +17,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-22 JST
 
-## Current Update - ED-10u Multiline Dense/Stress Evidence
+## Current Update - ED-10v Dense/Stress Pass
 
 The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
 consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
@@ -84,6 +84,14 @@ screenshots for that evidence. The cut remains valid: font-bbox readback finds
 capped at 220px by default. The review card stays narrow: judge only the
 surfaced multiline/dense-stress behavior, not general Keifont acceptance.
 
+ED-10v consumes the follow-up user review of that corrected proof as pass:
+subtitle display is good, and all pass. The current Keifont route is therefore
+accepted for diagnostic dense/stress + multiline/wrap behavior on `cut_008`.
+The same evidence should not get another Review Card. Line-break behavior can
+still be refined later as policy/readback tuning when more material appears,
+especially line length, max lines, orphan control, safe area pressure, and rapid
+cue replacement.
+
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
@@ -95,7 +103,7 @@ surfaced multiline/dense-stress behavior, not general Keifont acceptance.
 | `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont real-font proof | Shows the first Keifont proof before ED-10o review UX acceptance | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused multi-font review surface | Confirms the focused comparison page is easier to review and keeps alternates visible | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10p-keifont-lead-representative-proof-001` | Consumed Keifont provisional baseline evidence | Records `cut_002` / `cut_003` proof history without reopening general acceptance | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10r-keifont-dense-stress-proof-001` | Current ED-10u corrected cut_008 multiline/dense-stress proof | Whether the surfaced `sub_096` two-line cue and surrounding dense/stress behavior remain readable, including rapid cue replacement, safe area, and bounded style pressure | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10r-keifont-dense-stress-proof-001` | ED-10v consumed cut_008 multiline/dense-stress diagnostic pass | Records that the surfaced `sub_096` two-line cue and surrounding dense/stress behavior passed diagnostic review; later review must use a new axis | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -113,27 +121,27 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-Current authoritative state: active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10p is consumed baseline evidence, ED-10q is the completed page-format regression fix, ED-10t is the valid Keifont regeneration on `cut_008`, and ED-10u is the corrected multiline evidence surface. Current local visual evidence resolves Keifont for the Windows user `PLANNER007`, and the focused page now shows the real `sub_096` two-line cue in compact form. Review may proceed only on multiline/dense-stress behavior. Do not request another general Keifont acceptance review on `cut_002` / `cut_003`.
+Current authoritative state: active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10p is consumed baseline evidence, ED-10q is the completed page-format regression fix, ED-10t is the valid Keifont regeneration on `cut_008`, ED-10u is the corrected multiline evidence surface, and ED-10v records the user pass. Current local visual evidence resolves Keifont for the Windows user `PLANNER007`, and the focused page shows the real `sub_096` two-line cue in compact form. Do not request another general Keifont acceptance review on `cut_002` / `cut_003`, and do not request another Review Card for the same `cut_008` evidence.
 
 ## これからどうなるか
 
-1. Run `.\open-current-proof.ps1` and review the corrected ED-10u `cut_008` multiline/dense-stress proof.
-2. Judge the compact `sub_096` two-line screenshot, wrapping, rapid cue replacement, safe area, and outline/shadow/badge pressure as bounded adjustment questions.
+1. Keep the corrected ED-10u `cut_008` multiline/dense-stress proof as ED-10v diagnostic pass.
+2. If more subtitle work is needed, move only through a new axis: line-break policy tuning, bounded outline/shadow/badge adjustment, production limitation-lift, or render-path probe.
 3. Treat `clip-ed10p-keifont-lead-representative-proof-001` as consumed baseline evidence; do not request another general Keifont review on `cut_002` / `cut_003`.
 4. Keep production render, rights, publishing, and public-use as separate limitation-lift decisions.
 
 ## 使い方・確認方法
 
-## Current ED-10u Override
+## Current ED-10v Override
 
 The active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10o is
 the accepted focused review surface direction and comparison reference. ED-10q
 is a completed review-surface fix, not a font-quality decision. Keifont is a
 diagnostic representative normal-dialogue provisional baseline, 851 Yowaku and
 Yasashisa remain alternates, and the corrected ED-10u `cut_008` multiline
-dense/stress proof is the current target. The root launcher opens the focused
-page, where the compact multiline evidence appears before the broader
-detailed/debug report links.
+dense/stress proof has passed diagnostic review in ED-10v. The root launcher
+opens the focused page as retained local evidence, not as a request for another
+Review Card on the same axis.
 
 Primary local proof review:
 
