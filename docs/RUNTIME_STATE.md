@@ -3,10 +3,10 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10t_keifont_dense_stress_proof_review_ready
+health: ed10u_dense_stress_multiline_evidence_review_ready
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10r_cut_008_dense_stress_review
+next_review_due: after_ed10u_cut_008_multiline_dense_stress_review
 active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: shared_infra
@@ -48,24 +48,33 @@ normal-dialogue provisional baseline, while keeping production subtitle design,
 production render, creative acceptance, rights, publishing, and public-use
 gates false or pending.
 
-The active route is ED-10t: regenerated ED-10r `Keifont Dense/Stress Proof v0`.
-The proof profile remains `ed10r_keifont_dense_stress_proof`, and it is
-intentionally narrow: it only accepts `--target-cut cut_008`. The current
-Windows profile now resolves Keifont correctly, and the regenerated report
-records `font_visual_evidence.status=valid_requested_keifont_visual_evidence`
-with `requested=Keifont`, `resolved=Keifont`, and
-`font_file_status=candidate_primary_font_file_found`. The next human judgement
-may inspect only `cut_008` for dense subtitle wrapping, rapid cue replacement,
-safe area, and bounded outline/shadow/badge adjustment needs. If a style issue
-appears, open a bounded adjustment slice instead of reopening font-family
-selection.
+The active route is ED-10u: a focused evidence-surface correction on the same
+ED-10r dense/stress artifact after the user reported that the visible video
+did not appear to contain any two-line subtitles. The proof profile remains
+`ed10r_keifont_dense_stress_proof`, and it is intentionally narrow: it only
+accepts `--target-cut cut_008`. The current Windows profile resolves Keifont
+correctly, with `font_visual_evidence.status=valid_requested_keifont_visual_evidence`,
+`requested=Keifont`, `resolved=Keifont`, and
+`font_file_status=candidate_primary_font_file_found`.
+
+ED-10u inspected the generated cut and found that `cut_008` does contain one
+real multiline/wrap cue: `sub_096`, displayed at `8.008-9.776`, wrapping as
+`下界ニ呼ビ出シタノハキサ` / `マカ。`. The earlier focused page did not surface a
+frame from that cue, so the user could not reasonably judge multiline behavior.
+`current_proof_focused_review.html` now places a `Multiline / Wrap Evidence`
+section near the top, before the broader evidence, with a compact screenshot
+for `sample_multiline_wrap_1.png` capped at 220px by default. The next human
+judgement may inspect only this corrected `cut_008` multiline/dense-stress
+surface for wrapping, rapid cue replacement, safe area, and bounded
+outline/shadow/badge adjustment needs. If a style issue appears, open a bounded
+adjustment slice instead of reopening font-family selection.
 
 Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=2+`
 and is accepted only as `diagnostic_representative_review` /
 `provisional_normal_dialogue_baseline`. It is not accepted for production
 subtitle design, production render, creative acceptance, rights, publishing, or
-public use. The next non-redundant review axis is `dense_stress`, and that axis
-is now reviewable from the regenerated `cut_008` proof.
+public use. The next non-redundant review axis remains `dense_stress`, now with
+explicit multiline/wrap evidence for `cut_008` surfaced on the focused page.
 
 Remote handoff checkpoint, 2026-06-19: if a pasted or queued prompt asks to
 generate `clip-ed10k-biz-overlay-proof-001`, treat that prompt as stale unless
@@ -134,6 +143,10 @@ ED-10l route readback:
 - ED-10t regenerated the ED-10r proof after PLANNER007 installed Keifont; the
   current report reads `requested=Keifont`, `resolved=Keifont`, and
   `font_visual_evidence.status=valid_requested_keifont_visual_evidence`
+- ED-10u consumed the user's note that the visible proof did not show two-line
+  subtitles, kept `cut_008` as the correct target because font-bbox readback
+  found `sub_096` wrapping to two lines, and added compact multiline screenshot
+  evidence near the top of `current_proof_focused_review.html`
 - no font binary was downloaded, installed, copied, vendored, staged, or
   committed by Codex; local font files remain same-machine evidence only
 
@@ -150,12 +163,12 @@ gates.
 
 ## Next
 
-1. Run `.\open-current-proof.ps1` and review only `cut_008` dense/stress
-   behavior from the regenerated Keifont proof.
-2. Confirm the review answer is about wrapping, rapid cue replacement, safe
-   area, or bounded outline/shadow/badge pressure, not general Keifont
-   acceptance on `cut_002` / `cut_003`.
-3. Judge whether dense wrapping, rapid cue replacement, safe area, or
+1. Run `.\open-current-proof.ps1` and review the corrected ED-10u focused page:
+   only `cut_008` multiline/dense-stress behavior is in scope.
+2. Confirm the answer is about the compact `sub_096` multiline screenshot,
+   wrapping, rapid cue replacement, safe area, or bounded outline/shadow/badge
+   pressure, not general Keifont acceptance on `cut_002` / `cut_003`.
+3. Judge whether multiline wrapping, rapid cue replacement, safe area, or
    outline/shadow/badge pressure needs a bounded adjustment slice.
 4. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont is the provisional normal-dialogue baseline while 851 Chikara

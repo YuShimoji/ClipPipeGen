@@ -674,6 +674,14 @@ def test_subtitle_overlay_visual_proof_ed10r_keifont_dense_stress_profile(
     assert report["font_visual_evidence"]["status"] == (
         "valid_requested_keifont_visual_evidence"
     )
+    assert report["multiline_wrap_evidence"]["status"] == (
+        "multiline_wrap_evidence_surfaced"
+    )
+    assert report["multiline_wrap_evidence"]["multiline_item_count"] >= 1
+    assert report["multiline_wrap_evidence"]["screenshot_count"] >= 1
+    assert report["multiline_wrap_evidence"]["per_cut"]["cut_008"][
+        "evidence_items"
+    ][0]["screenshot_path"].endswith(".png")
     assert report["review_memory"]["current_blocker"] == "none_for_font_evidence"
     assert report["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
@@ -699,11 +707,75 @@ def test_subtitle_overlay_visual_proof_ed10r_keifont_dense_stress_profile(
         encoding="utf-8"
     )
     assert "cut_008 dense/stress diagnostic proof" in focused_html
+    assert "Multiline / Wrap Evidence" in focused_html
+    assert "multiline_wrap_evidence_surfaced" in focused_html
+    assert "wrap-evidence-frame" in focused_html
+    assert "sample_multiline_wrap_1.png" in focused_html
     assert "subtitle_overlay_visual_proof_cut_008.png" in focused_html
     assert "do not re-decide general Keifont acceptance" in focused_html
     assert "Use this page for ED-10p Keifont review" not in focused_html
     assert "subtitle_overlay_visual_proof_cut_002.png" not in focused_html
     assert "subtitle_overlay_visual_proof_cut_003.png" not in focused_html
+
+
+def test_subtitle_overlay_visual_proof_ed10r_withholds_review_without_multiline_evidence(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+    edit_pack_path = episode_dir / "edit_pack.json"
+    edit_pack = json.loads(edit_pack_path.read_text(encoding="utf-8"))
+    edit_pack["subtitles"] = [
+        {
+            **item,
+            "text": "short cue",
+        }
+        if item.get("cut_id") == "cut_008"
+        else item
+        for item in edit_pack["subtitles"]
+    ]
+    _write_json(edit_pack, edit_pack_path)
+
+    monkeypatch.setattr(
+        overlay_proof,
+        "_resolve_candidate_font",
+        lambda candidate: (
+            "Keifont",
+            "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf",
+            "candidate_primary_font_file_found",
+        ),
+    )
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_008"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10r_keifont_dense_stress_proof",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    representative = result["representative_visual_proof_report"]
+    assert result["visual_proof_status"] == "blocked_missing_multiline_wrap_evidence"
+    assert report["review_card_status"] == "withheld_multiline_wrap_evidence_missing"
+    assert report["multiline_wrap_evidence"]["status"] == (
+        "no_multiline_wrap_cues_detected"
+    )
+    assert report["multiline_wrap_evidence"]["screenshot_count"] == 0
+    assert representative["subtitle_overlay_visual_proof"]["review_card_status"] == (
+        "withheld_multiline_wrap_evidence_missing"
+    )
+
+    focused_html = (review_dir / "current_proof_focused_review.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Multiline / Wrap Evidence" in focused_html
+    assert "do not use it for multiline/wrap judgement yet" in focused_html
 
 
 def test_subtitle_overlay_visual_proof_ed10r_marks_fallback_font_invalid(

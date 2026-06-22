@@ -46,6 +46,7 @@ PRESENTATION_WRAP_EAW = 28
 FONT_BBOX_WRAP_AUTHORITY = "font_bbox_pixel_measurement_not_grid_cell_count"
 FONT_BBOX_WRAP_SOURCE = "subtitle_style_spike._wrap_text_to_width"
 RESPONSE_REFERRAL_SUBTITLE_IDS = {f"sub_{index:03d}" for index in range(25, 30)}
+MAX_MULTILINE_WRAP_EVIDENCE_SAMPLES = 4
 ASS_DIALOGUE_STYLE_NAME = "ClipPipeDialogueLeft"
 ASS_SPEAKER_BADGE_STYLE_NAME = "ClipPipeSpeakerBadge"
 DEFAULT_FRAME_WIDTH = 1920
@@ -555,6 +556,7 @@ def build_subtitle_overlay_visual_proof(
                 ffprobe_path=ffprobe_path,
                 container=container,
                 diagnostic_ass_style=diagnostic_ass_style,
+                proof_profile_id=str(proof_profile_data.get("proof_profile") or ""),
                 dry_run=dry_run,
                 base=base,
                 runner=runner,
@@ -604,6 +606,17 @@ def build_subtitle_overlay_visual_proof(
         updated_representative[
             "review_card_status"
         ] = "withheld_font_visual_evidence_invalid"
+    elif (
+        proof_profile_data.get("proof_profile")
+        == ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE
+        and (report.get("multiline_wrap_evidence") or {}).get("status")
+        != "multiline_wrap_evidence_surfaced"
+    ):
+        visual_proof_status = "blocked_missing_multiline_wrap_evidence"
+        report["review_card_status"] = "withheld_multiline_wrap_evidence_missing"
+        updated_representative[
+            "review_card_status"
+        ] = "withheld_multiline_wrap_evidence_missing"
     else:
         report["review_card_status"] = "review_card_allowed_after_scope_checks"
         updated_representative[
@@ -652,6 +665,7 @@ def _build_cut_proof(
     ffprobe_path: str | Path | None,
     container: str,
     diagnostic_ass_style: dict[str, Any],
+    proof_profile_id: str,
     dry_run: bool,
     base: Path,
     runner: ffmpeg_tiny.Runner,
@@ -765,7 +779,12 @@ def _build_cut_proof(
         sample_frame_extracts = _extract_sample_frames(
             video_path=video_path,
             cut_paths=cut_paths,
-            sample_specs=_sample_frame_specs(presentation_items, duration),
+            sample_specs=_sample_frame_specs(
+                presentation_items,
+                duration,
+                include_multiline_wrap_evidence=proof_profile_id
+                == ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+            ),
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
         )
@@ -849,6 +868,11 @@ def _cut_report(
         item for item in items if item.get("status") in RENDERABLE_SUBTITLE_STATUSES
     ]
     font_bbox_wrap = _font_bbox_wrap_summary(presentation_items)
+    multiline_wrap_evidence = _multiline_wrap_evidence_readback(
+        presentation_items=presentation_items,
+        sample_frame_extracts=sample_frame_extracts,
+        base=base,
+    )
     return {
         "episode_id": episode_id,
         "cut_id": cut_id,
@@ -888,6 +912,7 @@ def _cut_report(
         "replacement_behavior": _replacement_behavior_readback(presentation_items),
         "renderer_path_audit": _renderer_path_audit_readback(),
         "sample_frame_selection": _sample_frame_selection_readback(sample_frame_extracts),
+        "multiline_wrap_evidence": multiline_wrap_evidence,
         "style_direction": _diagnostic_style_direction(_layout_style(layout)),
         "style_parameters": _style_parameter_readback(
             items,
@@ -1081,6 +1106,9 @@ def _report_payload(
         "review_memory": review_memory,
         "focused_proof_review": proof_profile.get("focused_proof_review"),
         "review_debt": proof_profile.get("review_debt", []),
+        "multiline_wrap_evidence": _report_multiline_wrap_evidence_summary(
+            cut_reports
+        ),
         "font_bbox_wrap_readback": _report_font_bbox_wrap_summary(cut_reports),
         "subtitle_presentation_contract": _report_contract_summary(cut_reports),
         "speaker_identity_presentation": _report_speaker_identity_summary(cut_reports),
@@ -1992,16 +2020,93 @@ def _renderer_path_audit_readback() -> dict[str, Any]:
 def _sample_frame_selection_readback(sample_frame_extracts: list[dict[str, Any]]) -> dict[str, Any]:
     roles = [str(item.get("role") or "") for item in sample_frame_extracts]
     subtitle_ids = [str(item.get("subtitle_id") or "") for item in sample_frame_extracts]
+    multiline_roles = [
+        role for role in roles if role.startswith("multiline_wrap_")
+    ]
     return {
         "policy": "subtitle_bearing_active_cues_only",
         "roles": roles,
         "subtitle_ids": subtitle_ids,
+        "multiline_wrap_roles": multiline_roles,
+        "has_multiline_wrap_screenshot": bool(multiline_roles),
         "includes_response_referral_block": any(
             subtitle_id in RESPONSE_REFERRAL_SUBTITLE_IDS for subtitle_id in subtitle_ids
         ),
         "sample_count": len(sample_frame_extracts),
         "ocr_verified": False,
         "human_visual_review_required": True,
+    }
+
+
+def _multiline_wrap_evidence_readback(
+    *,
+    presentation_items: list[dict[str, Any]],
+    sample_frame_extracts: list[dict[str, Any]],
+    base: Path,
+) -> dict[str, Any]:
+    multiline_items = [
+        item
+        for item in presentation_items
+        if int(item.get("wrapped_line_count") or 0) > 1
+    ]
+    screenshots_by_subtitle: dict[str, dict[str, Any]] = {}
+    for extract in sample_frame_extracts:
+        role = str(extract.get("role") or "")
+        subtitle_id = str(extract.get("subtitle_id") or "")
+        if role.startswith("multiline_wrap_") and subtitle_id:
+            screenshots_by_subtitle[subtitle_id] = extract
+    evidence_items: list[dict[str, Any]] = []
+    for item in multiline_items[:MAX_MULTILINE_WRAP_EVIDENCE_SAMPLES]:
+        subtitle_id = str(item.get("subtitle_id") or "")
+        screenshot = screenshots_by_subtitle.get(subtitle_id)
+        evidence_items.append(
+            {
+                "subtitle_id": subtitle_id,
+                "display_start_seconds": item.get("display_start_seconds"),
+                "display_end_seconds": item.get("display_end_seconds"),
+                "wrapped_line_count": item.get("wrapped_line_count"),
+                "wrapped_lines": item.get("wrapped_lines") or [],
+                "text": item.get("text"),
+                "selected_break_reason": item.get("selected_break_reason"),
+                "screenshot_role": screenshot.get("role") if screenshot else None,
+                "screenshot_frame_seconds": (
+                    screenshot.get("frame_seconds") if screenshot else None
+                ),
+                "screenshot_path": (
+                    _display_path(Path(str(screenshot.get("path") or "")), base)
+                    if screenshot
+                    else None
+                ),
+            }
+        )
+    screenshot_count = len(
+        [
+            extract
+            for extract in sample_frame_extracts
+            if str(extract.get("role") or "").startswith("multiline_wrap_")
+        ]
+    )
+    if multiline_items and screenshot_count:
+        status = "multiline_wrap_evidence_surfaced"
+    elif multiline_items:
+        status = "multiline_wrap_cues_present_but_screenshots_missing"
+    else:
+        status = "no_multiline_wrap_cues_detected"
+    return {
+        "status": status,
+        "has_multiline_wrapped_cues": bool(multiline_items),
+        "multiline_item_count": len(multiline_items),
+        "max_wrapped_line_count": max(
+            (int(item.get("wrapped_line_count") or 0) for item in multiline_items),
+            default=0,
+        ),
+        "screenshot_count": screenshot_count,
+        "evidence_items": evidence_items,
+        "review_implication": (
+            "Review multiline readability from the compact screenshot evidence."
+            if status == "multiline_wrap_evidence_surfaced"
+            else "Do not treat this focused proof as multiline/wrap review-ready."
+        ),
     }
 
 
@@ -2013,6 +2118,41 @@ def _report_sample_frame_selection_summary(cut_reports: list[dict[str, Any]]) ->
             str(cut.get("cut_id")): cut.get("sample_frame_selection") or {}
             for cut in cut_reports
         },
+    }
+
+
+def _report_multiline_wrap_evidence_summary(
+    cut_reports: list[dict[str, Any]]
+) -> dict[str, Any]:
+    per_cut = {
+        str(cut.get("cut_id")): cut.get("multiline_wrap_evidence") or {}
+        for cut in cut_reports
+    }
+    total_multiline = sum(
+        int((evidence or {}).get("multiline_item_count") or 0)
+        for evidence in per_cut.values()
+    )
+    total_screenshots = sum(
+        int((evidence or {}).get("screenshot_count") or 0)
+        for evidence in per_cut.values()
+    )
+    if total_multiline and total_screenshots:
+        status = "multiline_wrap_evidence_surfaced"
+    elif total_multiline:
+        status = "multiline_wrap_cues_present_but_screenshots_missing"
+    else:
+        status = "no_multiline_wrap_cues_detected"
+    return {
+        "status": status,
+        "has_multiline_wrapped_cues": total_multiline > 0,
+        "multiline_item_count": total_multiline,
+        "screenshot_count": total_screenshots,
+        "per_cut": per_cut,
+        "review_implication": (
+            "The focused review can ask about multiline readability."
+            if status == "multiline_wrap_evidence_surfaced"
+            else "Withhold dense/stress Review Card until multiline evidence is surfaced."
+        ),
     }
 
 
@@ -2049,6 +2189,9 @@ def _updated_representative_report(
     )
     updated["focused_proof_review"] = proof_profile.get("focused_proof_review")
     updated["review_debt"] = proof_profile.get("review_debt", [])
+    updated["multiline_wrap_evidence"] = (
+        overlay_report.get("multiline_wrap_evidence") or {}
+    )
     updated["production_candidate"] = False
     updated["creative_acceptance"] = False
     updated["publish_acceptance"] = False
@@ -2079,6 +2222,8 @@ def _updated_representative_report(
         "style_direction": overlay_report["style_direction"],
         "style_parameters": overlay_report["style_parameters"],
         "font_visual_evidence": overlay_report.get("font_visual_evidence") or {},
+        "multiline_wrap_evidence": overlay_report.get("multiline_wrap_evidence")
+        or {},
         "font_bbox_wrap_readback": overlay_report.get("font_bbox_wrap_readback") or {},
         "subtitle_presentation_contract": overlay_report.get(
             "subtitle_presentation_contract"
@@ -3173,6 +3318,12 @@ def _extract_sample_frames(
                 "sample_id": spec["sample_id"],
                 "role": role,
                 "subtitle_id": spec.get("subtitle_id"),
+                "display_start_seconds": spec.get("display_start_seconds"),
+                "display_end_seconds": spec.get("display_end_seconds"),
+                "wrapped_line_count": spec.get("wrapped_line_count"),
+                "wrapped_lines": spec.get("wrapped_lines"),
+                "text": spec.get("text"),
+                "selected_break_reason": spec.get("selected_break_reason"),
                 "frame_selection_reason": spec.get("frame_selection_reason"),
                 "subtitle_bearing_expected": True,
             }
@@ -3180,7 +3331,12 @@ def _extract_sample_frames(
     return extracts
 
 
-def _sample_frame_specs(items: list[dict[str, Any]], duration: float) -> list[dict[str, Any]]:
+def _sample_frame_specs(
+    items: list[dict[str, Any]],
+    duration: float,
+    *,
+    include_multiline_wrap_evidence: bool = False,
+) -> list[dict[str, Any]]:
     if not items:
         return []
     candidates: list[tuple[str, dict[str, Any], str]] = [
@@ -3209,6 +3365,25 @@ def _sample_frame_specs(items: list[dict[str, Any]], duration: float) -> list[di
         )
     candidates.append(("final", items[-1], "final active subtitle cue"))
 
+    if include_multiline_wrap_evidence:
+        multiline_items = [
+            item
+            for item in items
+            if int(item.get("wrapped_line_count") or 0) > 1
+        ][:MAX_MULTILINE_WRAP_EVIDENCE_SAMPLES]
+        for index, item in enumerate(multiline_items, start=1):
+            candidates.append(
+                (
+                    f"multiline_wrap_{index}",
+                    item,
+                    (
+                        "font-bbox multiline wrap evidence; this screenshot "
+                        "is the dense/stress cue that proves the proof contains "
+                        "multi-line subtitle behavior"
+                    ),
+                )
+            )
+
     specs: list[dict[str, Any]] = []
     for role, item, reason in candidates:
         specs.append(
@@ -3219,6 +3394,10 @@ def _sample_frame_specs(items: list[dict[str, Any]], duration: float) -> list[di
                 "frame_seconds": _subtitle_frame_seconds(item, duration),
                 "display_start_seconds": item.get("display_start_seconds"),
                 "display_end_seconds": item.get("display_end_seconds"),
+                "wrapped_line_count": item.get("wrapped_line_count"),
+                "wrapped_lines": item.get("wrapped_lines"),
+                "text": item.get("text"),
+                "selected_break_reason": item.get("selected_break_reason"),
                 "frame_selection_reason": reason,
             }
         )
@@ -3451,6 +3630,7 @@ def _representative_report_html(report: dict[str, Any]) -> str:
 
 def _focused_current_proof_html(report: dict[str, Any]) -> str:
     proof_focus = _proof_focus_html(report)
+    multiline_evidence = _focused_multiline_wrap_evidence_html(report)
     cut_evidence = _focused_cut_evidence_html(report)
     detail_links = _focused_detail_links_html(report)
     style = report.get("style_parameters") or {}
@@ -3478,7 +3658,7 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
     table {{ border-collapse: collapse; width: 100%; background: #fff; }}
     th, td {{ border: 1px solid #d8dde6; padding: 8px; vertical-align: top; }}
     th {{ background: #eef2f6; text-align: left; }}
-    .hero, .review-focus, .evidence, .details, .boundary {{ background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 16px; margin: 0 0 16px; }}
+    .hero, .review-focus, .evidence, .wrap-evidence, .details, .boundary {{ background: #fff; border: 1px solid #d8dde6; border-radius: 8px; padding: 16px; margin: 0 0 16px; }}
     .hero {{ border-left: 6px solid #2f6f9f; }}
     .warn {{ color: #8a4b00; }}
     .font-warning {{ background: #fff7ed; border: 1px solid #f59e0b; border-left: 6px solid #f59e0b; border-radius: 8px; padding: 12px; margin-top: 12px; }}
@@ -3487,7 +3667,11 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
     dt {{ font-weight: 700; }}
     .cut-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }}
     .cut-card {{ border: 1px solid #d8dde6; border-radius: 8px; padding: 12px; background: #fff; }}
-    .proof-frame {{ max-width: 100%; width: 100%; border: 1px solid #c7ced8; display: block; margin-bottom: 8px; }}
+    .proof-frame {{ max-width: 520px; width: 100%; border: 1px solid #c7ced8; display: block; margin-bottom: 8px; }}
+    .wrap-evidence-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 240px)); gap: 12px; align-items: start; }}
+    .wrap-evidence-card {{ border: 1px solid #d8dde6; border-radius: 6px; padding: 8px; background: #fbfcfe; }}
+    .wrap-evidence-frame {{ max-width: 220px; width: 100%; border: 1px solid #c7ced8; display: block; margin-bottom: 6px; }}
+    .wrap-lines {{ font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-line; font-size: 12px; }}
     .sample-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 8px; }}
     figure {{ margin: 0; }}
     figcaption {{ font-size: 12px; color: #52616f; }}
@@ -3511,6 +3695,7 @@ def _focused_current_proof_html(report: dict[str, Any]) -> str:
 {font_evidence_warning}
   </section>
 {proof_focus}
+{multiline_evidence}
 {cut_evidence}
 {detail_links}
   <section class="boundary warn">
@@ -3540,6 +3725,60 @@ def _font_visual_evidence_warning_html(report: dict[str, Any]) -> str:
       <p>{escape(str(implication))}</p>
       <p>requested={escape(str(requested))}; resolved={escape(str(resolved))}; status={escape(str(status))}</p>
     </div>"""
+
+
+def _focused_multiline_wrap_evidence_html(report: dict[str, Any]) -> str:
+    evidence = report.get("multiline_wrap_evidence")
+    if not isinstance(evidence, dict):
+        return ""
+    status = str(evidence.get("status") or "")
+    has_evidence = status == "multiline_wrap_evidence_surfaced"
+    intro = (
+        "This proof includes visible multiline subtitle evidence. Review the compact screenshots below before judging wrapping and dense readability."
+        if has_evidence
+        else "This proof does not currently surface multiline screenshot evidence; do not use it for multiline/wrap judgement yet."
+    )
+    cards: list[str] = []
+    per_cut = evidence.get("per_cut") if isinstance(evidence.get("per_cut"), dict) else {}
+    for cut_id, cut_evidence in per_cut.items():
+        if not isinstance(cut_evidence, dict):
+            continue
+        for item in cut_evidence.get("evidence_items") or []:
+            screenshot_path = item.get("screenshot_path")
+            if not screenshot_path:
+                continue
+            href = _artifact_href(screenshot_path)
+            wrapped_lines = "\n".join(str(line) for line in item.get("wrapped_lines") or [])
+            caption = (
+                f"{cut_id} / {item.get('subtitle_id')} / "
+                f"{item.get('screenshot_frame_seconds')}s"
+            )
+            cards.append(
+                '<figure class="wrap-evidence-card">'
+                f'<a href="{href}"><img class="wrap-evidence-frame" src="{href}" alt="{escape(caption)}"></a>'
+                f"<figcaption><strong>{escape(caption)}</strong><br>"
+                f"display={escape(str(item.get('display_start_seconds')))}-{escape(str(item.get('display_end_seconds')))}s; "
+                f"lines={escape(str(item.get('wrapped_line_count')))}; "
+                f"break={escape(str(item.get('selected_break_reason') or ''))}"
+                f'<div class="wrap-lines">{escape(wrapped_lines)}</div>'
+                "</figcaption></figure>"
+            )
+    grid = (
+        '<div class="wrap-evidence-grid">' + "\n".join(cards) + "</div>"
+        if cards
+        else "<p>No compact multiline screenshots were generated.</p>"
+    )
+    return f"""  <section class="wrap-evidence">
+    <h2>Multiline / Wrap Evidence</h2>
+    <p>{escape(intro)}</p>
+    <dl>
+      <dt>status</dt><dd>{escape(status)}</dd>
+      <dt>multiline cues</dt><dd>{escape(str(evidence.get("multiline_item_count") or 0))}</dd>
+      <dt>screenshots</dt><dd>{escape(str(evidence.get("screenshot_count") or 0))}</dd>
+    </dl>
+{grid}
+  </section>
+"""
 
 
 def _focused_cut_evidence_html(report: dict[str, Any]) -> str:

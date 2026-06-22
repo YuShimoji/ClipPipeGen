@@ -110,6 +110,7 @@ def run(argv: list[str]) -> int:
         "review_memory": report.get("review_memory") or {},
         "focused_proof_review": report.get("focused_proof_review"),
         "review_debt": report.get("review_debt", []),
+        "multiline_wrap_evidence": report.get("multiline_wrap_evidence") or {},
         "font_visual_evidence": report.get("font_visual_evidence") or {},
         "production_candidate": report.get("production_candidate"),
         "creative_acceptance": report.get("creative_acceptance"),

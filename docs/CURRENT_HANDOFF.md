@@ -3,10 +3,10 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10t_keifont_dense_stress_proof_review_ready
+health: ed10u_dense_stress_multiline_evidence_review_ready
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10r_cut_008_dense_stress_review
+next_review_due: after_ed10u_cut_008_multiline_dense_stress_review
 active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: false
 owner_lane: shared_infra
@@ -68,24 +68,30 @@ lines, subtitle-area evidence, the ED-10o reference, and Review Debt for
 `cut_008` dense/stress coverage. The old detailed/debug overlay report remains
 available from the focused page, but it is no longer the primary first view.
 
-2026-06-22 ED-10t handoff refresh: Keifont review history is now consumed as
+2026-06-22 ED-10u handoff refresh: Keifont review history is now consumed as
 diagnostic representative normal-dialogue provisional baseline evidence. The
 user already judged the Keifont proof clearly improved and video-usable, and
 also judged the ED-10o font/review surface easier to see. ED-10q is recorded
 as page-format regression repair, not font-quality review. Do not request
-another general Keifont acceptance pass on `cut_002` / `cut_003`. The current
-route is `ed10r_keifont_dense_stress_proof`, which only targets `cut_008`.
-After the user installed Keifont and the related ED-10l fonts for the current
-Windows user, same-machine regeneration now resolves `requested=Keifont` and
-`resolved=Keifont` with `candidate_primary_font_file_found`. The focused HTML
-has no Font evidence warning and is reviewable as Keifont evidence for
-`cut_008` dense/stress only.
+another general Keifont acceptance pass on `cut_002` / `cut_003`.
+
+ED-10t regenerated the dense/stress route after the user installed Keifont and
+the related ED-10l fonts for the current Windows user; same-machine generation
+now resolves `requested=Keifont` and `resolved=Keifont` with
+`candidate_primary_font_file_found`. ED-10u then consumed the user's note that
+the visible proof did not appear to contain two-line subtitles. The cut itself
+is still valid: font-bbox readback finds `sub_096` in `cut_008`, displayed at
+`8.008-9.776`, wrapping as `下界ニ呼ビ出シタノハキサ` / `マカ。`. The focused HTML
+now adds `Multiline / Wrap Evidence` near the top with a compact
+`sample_multiline_wrap_1.png` screenshot capped at 220px by default. Review is
+therefore allowed only for the corrected `cut_008` multiline/dense-stress axis.
 
 Review Memory Ledger: Keifont normal-dialogue direction has `prior_review_count=2+`
 and is accepted only for diagnostic representative review / provisional
 normal-dialogue baseline. Production subtitle design, production render,
 creative acceptance, rights, publishing, and public use remain unaccepted. The
-only next review axis is dense/stress, and it is now available on `cut_008`.
+only next review axis is dense/stress, and it is now available on `cut_008`
+with explicit multiline/wrap screenshot evidence.
 
 ## Resume Order
 
@@ -100,16 +106,17 @@ only next review axis is dense/stress, and it is now available on `cut_008`.
 
 ## Next Move
 
-Open the current proof with `.\open-current-proof.ps1` and review only
-`cut_008` dense/stress behavior: wrapping, rapid cue replacement, safe area,
-and whether outline/shadow/badge needs a bounded adjustment slice. Do not
-reopen general font-family acceptance from `cut_002` / `cut_003`.
+Open the current proof with `.\open-current-proof.ps1` and review only the
+corrected ED-10u `cut_008` multiline/dense-stress surface: the compact
+`sub_096` two-line screenshot, wrapping, rapid cue replacement, safe area, and
+whether outline/shadow/badge needs a bounded adjustment slice. Do not reopen
+general font-family acceptance from `cut_002` / `cut_003`.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
-| `ed10r_keifont_dense_stress_proof` | Resolves the remaining review debt without repeating accepted Keifont history | User can judge dense/stress behavior now that Keifont resolves on this Windows profile |
+| `ed10u_dense_stress_multiline_evidence_review` | Resolves the user's concern that the visible proof did not show two-line subtitles | User can judge the actual `sub_096` multiline cue without repeating accepted Keifont history |
 | bounded outline/shadow/badge adjustment | Keeps style fixes scoped if `cut_008` reveals pressure under dense lines | A small successor slice can tune presentation without reopening font-family selection |
 | production limitation-lift route | Separates diagnostic proof from public/render/rights decisions | Production subtitle design, render, rights, publishing, and public-use gates can be judged explicitly later |
 
@@ -123,7 +130,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10r-keifont-dense-stress-proof-001` | Current cut_008 dense/stress review target with valid Keifont evidence | `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
+| `clip-ed10r-keifont-dense-stress-proof-001` | Current cut_008 multiline/dense-stress review target with valid Keifont evidence and compact `sub_096` screenshot evidence | `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
 | `clip-ed10p-keifont-lead-representative-proof-001` | Consumed provisional normal-dialogue baseline evidence | See artifact registry; do not request another general cut_002/cut_003 Keifont review |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused review UX direction / font comparison reference | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
 | `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont proof reference | See artifact registry; root launcher now opens ED-10r dense/stress proof |

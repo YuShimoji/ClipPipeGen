@@ -27,7 +27,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10t"
+    assert status["current_focus"]["feature_id"] == "ED-10u"
     assert status["current_focus"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
@@ -41,13 +41,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10p-keifont-lead-representative-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "ed10t_keifont_dense_stress_proof_review_ready"
+        "ed10u_dense_stress_multiline_evidence_review_ready"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "keifont_provisional_baseline_from_ed10n_ed10o_review_history"
     )
     assert status["current_focus"]["latest_review_consumed"] == (
-        "ed10q_page_regression_fix_not_font_quality_review"
+        "ed10u_user_review_requested_multiline_screenshot_evidence"
     )
     assert status["current_focus"]["target_cuts"] == ["cut_008"]
     assert status["current_focus"]["selected_typography_base"] == (
@@ -57,7 +57,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "cut_008_dense_stress_proof_regenerated_with_valid_keifont"
+        "cut_008_dense_stress_multiline_evidence_surfaced"
     )
     assert status["current_focus"]["user_action_type"] == (
         "USER_REVIEW_DENSE_STRESS_ONLY"
@@ -74,6 +74,15 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
     )
+    assert status["current_focus"]["multiline_wrap_evidence_status"] == (
+        "multiline_wrap_evidence_surfaced"
+    )
+    assert status["current_focus"]["multiline_wrap_evidence"]["subtitle_id"] == (
+        "sub_096"
+    )
+    assert status["current_focus"]["multiline_wrap_evidence"][
+        "screenshot_default_max_width_px"
+    ] == 220
     assert status["current_focus"]["review_memory"]["prior_review_count"] == "2+"
     assert status["current_focus"]["review_memory"]["next_nonredundant_axis"] == (
         "dense_stress"
@@ -89,7 +98,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "USER_REVIEW_DENSE_STRESS_ONLY"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "ED-10t regenerated Keifont cut_008 dense/stress proof"
+        "ED-10u corrected Keifont cut_008 dense/stress proof"
     )
     assert status["current_focus"]["review_card"]["axis"] == "dense_stress"
     assert "cut_002 or cut_003" in status["current_focus"]["review_card"][
@@ -430,7 +439,7 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10q_current_proof_focused_review_fix"][
         "production_subtitle_design_acceptance"
     ] is False
-    assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10t"
+    assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10u"
     assert registry["ed10r_keifont_dense_stress_proof"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
@@ -473,6 +482,15 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10r_keifont_dense_stress_proof"][
         "current_workspace_font_visual_evidence"
     ]["status"] == "valid_requested_keifont_visual_evidence"
+    assert registry["ed10r_keifont_dense_stress_proof"][
+        "multiline_wrap_evidence"
+    ]["status"] == "multiline_wrap_evidence_surfaced"
+    assert registry["ed10r_keifont_dense_stress_proof"][
+        "multiline_wrap_evidence"
+    ]["subtitle_id"] == "sub_096"
+    assert registry["ed10r_keifont_dense_stress_proof"][
+        "multiline_wrap_evidence"
+    ]["default_display_max_width_px"] == 220
     assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
         "action_type"
     ] == "USER_REVIEW_DENSE_STRESS_ONLY"

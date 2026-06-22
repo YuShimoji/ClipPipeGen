@@ -2,11 +2,11 @@
 id: subtitle-typography-decoration-comparison
 title: Subtitle Typography Decoration Comparison
 type: decision_packet
-status: ed10r_keifont_dense_stress_proof_current
-health: ed10t_keifont_dense_stress_proof_review_ready
+status: ed10u_dense_stress_multiline_evidence_review_current
+health: ed10u_dense_stress_multiline_evidence_review_ready
 progress_pct: 100
 last_touched: 2026-06-22
-next_review_due: after_ed10r_cut_008_dense_stress_review
+next_review_due: after_ed10u_cut_008_multiline_dense_stress_review
 active_artifact: clip-ed10r-keifont-dense-stress-proof-001
 source_of_truth: true
 owner_lane: editing
@@ -17,7 +17,7 @@ related: docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md, docs/SUBTITLE_FONT_CANDI
 
 Last updated: 2026-06-22 JST
 
-## Current Update - ED-10t Regenerated Keifont Dense/Stress Proof
+## Current Update - ED-10u Multiline Dense/Stress Evidence
 
 The latest freeform review of `clip-ed10k-biz-overlay-proof-001` has been
 consumed. It does not accept BIZ UDGothic as the normal subtitle baseline:
@@ -75,6 +75,15 @@ Keifont and the related ED-10l fonts. The regenerated proof records
 `font_visual_evidence.status=valid_requested_keifont_visual_evidence`, so the
 focused HTML is reviewable as Keifont evidence for `cut_008` dense/stress only.
 
+ED-10u consumes the user's review note that the visible proof did not appear to
+show any two-line subtitles and that the review page should include smaller
+screenshots for that evidence. The cut remains valid: font-bbox readback finds
+`sub_096` in `cut_008`, displayed at `8.008-9.776`, wrapping as
+`下界ニ呼ビ出シタノハキサ` / `マカ。`. The focused HTML now places
+`Multiline / Wrap Evidence` near the top with `sample_multiline_wrap_1.png`
+capped at 220px by default. The review card stays narrow: judge only the
+surfaced multiline/dense-stress behavior, not general Keifont acceptance.
+
 | Route | Current role | What it can decide | What stays closed |
 |---|---|---|---|
 | `clip-ed10g-noto-overlay-proof-001` | Previous diagnostic proof / reference only | Shows the Noto clean-outline baseline that was judged insufficient as-is | Production subtitle design, render, creative, rights, publishing, public use |
@@ -86,7 +95,7 @@ focused HTML is reviewable as Keifont evidence for `cut_008` dense/stress only.
 | `clip-ed10n-keifont-overlay-proof-001` | Earlier Keifont real-font proof | Shows the first Keifont proof before ED-10o review UX acceptance | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused multi-font review surface | Confirms the focused comparison page is easier to review and keeps alternates visible | Production subtitle design, render, creative, rights, publishing, public use |
 | `clip-ed10p-keifont-lead-representative-proof-001` | Consumed Keifont provisional baseline evidence | Records `cut_002` / `cut_003` proof history without reopening general acceptance | Production subtitle design, render, creative, rights, publishing, public use |
-| `clip-ed10r-keifont-dense-stress-proof-001` | Current cut_008 dense/stress proof | Whether Keifont baseline survives dense/stress wrapping, rapid cue replacement, safe area, and bounded style pressure | Production subtitle design, render, creative, rights, publishing, public use |
+| `clip-ed10r-keifont-dense-stress-proof-001` | Current ED-10u corrected cut_008 multiline/dense-stress proof | Whether the surfaced `sub_096` two-line cue and surrounding dense/stress behavior remain readable, including rapid cue replacement, safe area, and bounded style pressure | Production subtitle design, render, creative, rights, publishing, public use |
 
 ## これは何か
 
@@ -104,26 +113,27 @@ representative diagnostic proof の判断面です。
 
 ## 今の状態
 
-Current authoritative state: active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10p is consumed baseline evidence, ED-10q is the completed page-format regression fix, and ED-10t is the regenerated Keifont `cut_008` dense/stress review target. Current local visual evidence resolves Keifont for the Windows user `PLANNER007`, so review may proceed only on dense/stress behavior. Do not request another general Keifont acceptance review on `cut_002` / `cut_003`.
+Current authoritative state: active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10p is consumed baseline evidence, ED-10q is the completed page-format regression fix, ED-10t is the valid Keifont regeneration on `cut_008`, and ED-10u is the corrected multiline evidence surface. Current local visual evidence resolves Keifont for the Windows user `PLANNER007`, and the focused page now shows the real `sub_096` two-line cue in compact form. Review may proceed only on multiline/dense-stress behavior. Do not request another general Keifont acceptance review on `cut_002` / `cut_003`.
 
 ## これからどうなるか
 
-1. Run `.\open-current-proof.ps1` and review the regenerated Keifont `cut_008` dense/stress proof.
-2. Judge wrapping, rapid cue replacement, safe area, and outline/shadow/badge pressure as bounded adjustment questions.
+1. Run `.\open-current-proof.ps1` and review the corrected ED-10u `cut_008` multiline/dense-stress proof.
+2. Judge the compact `sub_096` two-line screenshot, wrapping, rapid cue replacement, safe area, and outline/shadow/badge pressure as bounded adjustment questions.
 3. Treat `clip-ed10p-keifont-lead-representative-proof-001` as consumed baseline evidence; do not request another general Keifont review on `cut_002` / `cut_003`.
 4. Keep production render, rights, publishing, and public-use as separate limitation-lift decisions.
 
 ## 使い方・確認方法
 
-## Current ED-10r Override
+## Current ED-10u Override
 
 The active artifact is `clip-ed10r-keifont-dense-stress-proof-001`. ED-10o is
 the accepted focused review surface direction and comparison reference. ED-10q
 is a completed review-surface fix, not a font-quality decision. Keifont is a
 diagnostic representative normal-dialogue provisional baseline, 851 Yowaku and
-Yasashisa remain alternates, and `cut_008_dense_stress_proof` is the current
-target. The root launcher opens the focused page, not the old detailed/debug
-overlay report.
+Yasashisa remain alternates, and the corrected ED-10u `cut_008` multiline
+dense/stress proof is the current target. The root launcher opens the focused
+page, where the compact multiline evidence appears before the broader
+detailed/debug report links.
 
 Primary local proof review:
 
