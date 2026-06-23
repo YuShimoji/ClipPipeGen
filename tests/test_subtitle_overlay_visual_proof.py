@@ -790,6 +790,7 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
     pack_html_path = review_dir / "subtitle_presentation_review_pack.html"
     assert result["subtitle_presentation_review_pack_path"] == pack_path
     assert result["subtitle_presentation_review_pack_html_path"] == pack_html_path
+    assert pack_path.read_text(encoding="utf-8").isascii()
     persisted_pack = json.loads(pack_path.read_text(encoding="utf-8"))
     assert persisted_pack["render_path_readiness"][
         "recommended_minimal_next_route"

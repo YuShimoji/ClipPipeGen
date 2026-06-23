@@ -3630,7 +3630,7 @@ def _load_required_json(path: Path) -> dict[str, Any]:
 def _write_json(payload: dict[str, Any], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
-        json.dump(payload, f, ensure_ascii=False, indent=2)
+        json.dump(payload, f, ensure_ascii=True, indent=2)
         f.write("\n")
 
 
