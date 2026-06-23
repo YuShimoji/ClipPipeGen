@@ -46,6 +46,13 @@ as
 ED-10r/ED-10v `current_proof_focused_review.html` remains retained source
 evidence and launcher fallback, not the primary review request.
 
+ED-10x consumes the latest review of that pack: Candidate 0-3 images were
+visible and reviewed in order, but the visual differences were almost
+indistinguishable. Treat the previous candidate image generation as technically
+working but not reviewable enough. The current regenerated pack keeps the same
+artifact/path and makes the deltas visible with compact subtitle-body crops,
+compact SPK badge crops, and actual style parameter delta readback.
+
 The ED-10w Review Card asks for one freeform judgement on four bounded
 presentation candidates:
 

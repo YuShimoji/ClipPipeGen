@@ -375,11 +375,12 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | source_comparison_artifact | `clip-ed10o-multifont-focused-review-001` |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10w_subtitle_presentation_review_pack --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10w_subtitle_presentation_review_pack --format json` plus targeted tests. |
-| review_card | One new-axis Review Card: `bounded_decoration_adjustment + render_path_readiness`. It does not ask for another general `cut_002` / `cut_003` Keifont review and does not ask for another pass/fail judgement on the same `cut_008` multiline evidence. |
+| latest_local_smoke | ED-10x regeneration keeps the same artifact/path and adds compact subtitle-body crops, SPK badge crops, and Candidate Delta Readback. Same-machine readback: Candidate 0 baseline `outline=7`, `shadow=2`, badge text opacity `1.0`; Candidate 1 `outline=5`, `shadow=1`; Candidate 2 badge text/background opacity `0.435/0.122`; Candidate 3 combines both axes. All Candidate 1-3 delta statuses are `visible`; full-frame images remain secondary click-through context. |
+| review_card | One updated new-axis Review Card: `bounded_decoration_adjustment + render_path_readiness`. It asks whether Candidate 0 remains best, whether Candidate 1/2/3 is preferable, and whether the render-path probe should proceed. It does not ask for another general `cut_002` / `cut_003` Keifont review and does not ask for another pass/fail judgement on the same `cut_008` multiline evidence. |
 | bounded_candidates | `ed10w_current_pass_reference`, `ed10w_lighter_outline_shadow_pressure`, `ed10w_badge_label_pressure_adjustment`, `ed10w_balanced_combined_low_risk` |
 | render_path_readiness | Diagnostic decision card only. It may authorize a later tiny render-path probe, but it is not production render acceptance. |
-| review_status | Ready for one freeform subtitle presentation review after ED-10v pass. |
-| next_action | Review the pack once and choose whether to keep the current pass, apply a bounded presentation adjustment, or run only a tiny render-path readiness probe. |
+| review_status | Ready for one freeform subtitle presentation review after ED-10x candidate-delta visibility fix. |
+| next_action | Review the crop-first pack once and choose whether Candidate 0 remains best, Candidate 1/2/3 is preferable, or only the tiny render-path readiness probe should proceed. |
 
 Boundary flags remain false or pending:
 

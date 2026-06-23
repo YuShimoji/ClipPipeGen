@@ -199,6 +199,15 @@ The bounded presentation candidates are:
 - `ed10w_badge_label_pressure_adjustment`
 - `ed10w_balanced_combined_low_risk`
 
+ED-10x records a reviewability correction for these candidates. Full-frame
+candidate images alone are not sufficient when the bounded deltas are difficult
+to perceive. The review pack must surface compact subtitle-body crops, compact
+SPK badge crops, and actual style delta readback for Candidate 0-3. Candidate
+0 remains the current baseline reference; Candidate 1 must visibly change
+outline/shadow readback; Candidate 2 must visibly change badge pressure
+readback; Candidate 3 must combine both axes. These remain bounded diagnostic
+contrasts, not a broad style gallery and not production subtitle design.
+
 The render-path readiness card in the pack is a diagnostic planning probe only.
 It may justify a later tiny render-path slice, but it does not approve
 ASS/libass, YMM4, Premiere, production render, publishing, or public use.

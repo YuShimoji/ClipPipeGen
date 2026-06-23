@@ -136,6 +136,15 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10w_badge_label_pressure_adjustment",
         "ed10w_balanced_combined_low_risk",
     ]
+    assert status["current_focus"]["candidate_delta_visibility"]["status"] == (
+        "reviewable_after_ed10x_fix"
+    )
+    assert "compact subtitle body crops" in status["current_focus"][
+        "candidate_delta_visibility"
+    ]["default_evidence"]
+    assert "whether Candidate 1 lighter outline/shadow is preferable" in status[
+        "current_focus"
+    ]["review_card"]["what_this_review_decides"]
     assert status["current_focus"]["render_path_readiness"]["status"] == (
         "decision_card_included_no_production_claim"
     )
@@ -196,6 +205,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["open_surfaces"][2]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
+    assert "compact candidate crops" in persisted["open_surfaces"][2][
+        "when_to_use"
+    ]
     assert "Open Surfaces" in html
     assert "subtitle_known_kirinuki_font_pack" in html
     assert "subtitle_kirinuki_font_audit" in html
@@ -569,6 +581,14 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10w_subtitle_presentation_review_pack"][
         "render_path_readiness"
     ]["status"] == "decision_card_included_no_production_claim"
+    assert registry["ed10w_subtitle_presentation_review_pack"][
+        "candidate_delta_visibility"
+    ]["status"] == "reviewable_after_ed10x_fix"
+    assert registry["ed10w_subtitle_presentation_review_pack"][
+        "candidate_delta_visibility"
+    ]["candidate_3_expected_delta"] == (
+        "combined_outline_shadow_and_badge_pressure_reduction"
+    )
     assert registry["ed10w_subtitle_presentation_review_pack"]["review_card"][
         "status"
     ] == "emitted_nonredundant_new_axis"

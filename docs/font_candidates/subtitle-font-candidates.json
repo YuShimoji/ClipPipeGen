@@ -696,6 +696,18 @@
       "ed10w_badge_label_pressure_adjustment",
       "ed10w_balanced_combined_low_risk"
     ],
+    "candidate_delta_visibility": {
+      "status": "reviewable_after_ed10x_fix",
+      "default_evidence": [
+        "compact_subtitle_body_crops",
+        "compact_spk_badge_crops",
+        "actual_style_delta_readback"
+      ],
+      "full_frame_evidence": "secondary_click_through_context",
+      "candidate_1_expected_delta": "outline_shadow_visibly_lighter",
+      "candidate_2_expected_delta": "spk_badge_pressure_visibly_reduced",
+      "candidate_3_expected_delta": "combined_outline_shadow_and_badge_pressure_reduction"
+    },
     "render_path_readiness": {
       "status": "decision_card_included_no_production_claim",
       "allowed_next_step": "tiny_diagnostic_probe_only",
@@ -707,14 +719,15 @@
       "target": "clip-ed10w-subtitle-presentation-review-pack-001",
       "axis": "bounded_decoration_adjustment + render_path_readiness",
       "prior_review_count": "3+",
-      "what_this_review_decides": "whether to keep the passed presentation, apply one bounded decoration adjustment, or run a tiny render-path readiness probe",
+      "what_this_review_decides": "whether Candidate 0 remains best, Candidate 1/2/3 is preferable, or the tiny render-path readiness probe should proceed",
       "not_asking": "general Keifont acceptance on cut_002/cut_003 or another pass/fail review of the same cut_008 multiline evidence",
       "completion_signal": "one freeform presentation judgement"
     },
     "review_history_consumed": [
       "ED-10n Keifont proof judged clearly improved and video-usable",
       "ED-10o font and review screen judged easier to see",
-      "ED-10v corrected cut_008 multiline dense/stress proof judged good and all pass"
+      "ED-10v corrected cut_008 multiline dense/stress proof judged good and all pass",
+      "ED-10x consumed the review that candidate images existed but deltas were too subtle, then regenerated crop-first candidate evidence"
     ],
     "review_debt": [
       {

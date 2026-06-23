@@ -121,7 +121,7 @@ def build_project_status(
             "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
             "lead_status": "diagnostic_representative_normal_dialogue_provisional_baseline",
             "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-            "local_generation_status": "ed10w_review_pack_generated_from_ed10v_pass_state",
+            "local_generation_status": "ed10x_review_pack_regenerated_with_delta_readback_and_crops",
             "user_review_status": "new_axis_review_pending",
             "multiline_wrap_evidence_status": "passed_diagnostic_review",
             "multiline_wrap_evidence": {
@@ -139,6 +139,22 @@ def build_project_status(
                 "ed10w_badge_label_pressure_adjustment",
                 "ed10w_balanced_combined_low_risk",
             ],
+            "candidate_delta_visibility": {
+                "status": "reviewable_after_ed10x_fix",
+                "source_review": "candidate images were present but visual deltas were too subtle for one-pass review",
+                "default_evidence": [
+                    "compact subtitle body crops",
+                    "compact SPK badge crops",
+                    "actual style parameter delta readback",
+                ],
+                "full_frame_evidence": "secondary click-through context",
+                "candidate_delta_expectation": {
+                    "candidate_0": "baseline reference; no visual delta",
+                    "candidate_1": "outline/shadow visibly lighter than baseline",
+                    "candidate_2": "SPK badge text/background opacity visibly reduced",
+                    "candidate_3": "combined outline/shadow and SPK badge pressure reduction",
+                },
+            },
             "render_path_readiness": {
                 "status": "decision_card_included_no_production_claim",
                 "recommended_minimal_next_route": "tiny_final_path_nearer_diagnostic_probe",
@@ -211,11 +227,13 @@ def build_project_status(
                 "axis": "bounded_decoration_adjustment + render_path_readiness",
                 "prior_review_count": "3+",
                 "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-                "what_changed": "New bounded decoration candidates and a render-path readiness decision card are presented in one page.",
+                "what_changed": "Candidate deltas are now reviewable with compact subtitle/body crops, SPK badge crops, and actual style delta readback; the render-path readiness decision card remains diagnostic.",
                 "what_this_review_decides": [
-                    "whether to keep current baseline decoration",
-                    "whether to choose a bounded adjustment candidate",
-                    "whether render-path route is ready for the next tiny probe",
+                    "whether Candidate 0 current baseline remains best",
+                    "whether Candidate 1 lighter outline/shadow is preferable",
+                    "whether Candidate 2 badge pressure adjustment is preferable",
+                    "whether Candidate 3 combined adjustment is preferable",
+                    "whether render-path probe should proceed after this",
                 ],
                 "not_asking": [
                     "general Keifont acceptance",
@@ -748,9 +766,10 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-current-proof.ps1",
             "target": "episodes/.../subtitle_presentation_review_pack.html",
             "when_to_use": (
-                "Use as the ED-10w one-pass review surface for bounded "
-                "decoration adjustment and render-path readiness; do not "
-                "reopen general Keifont acceptance or the same cut_008 pass."
+                "Use as the ED-10w/ED-10x one-pass review surface with "
+                "compact candidate crops, delta readback, and render-path "
+                "readiness; do not reopen general Keifont acceptance or the "
+                "same cut_008 pass."
             ),
         },
         {
@@ -994,7 +1013,7 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10v":
         return "Current dense/stress axis is passed; continue only through a new axis such as line-break policy tuning, bounded decoration adjustment, or production limitation-lift."
     if feature_id == "ED-10w":
-        return "Use the one-pass review pack to choose baseline/pass, a bounded decoration adjustment, or the next tiny render-path diagnostic probe."
+        return "Use the crop-first review pack to choose Candidate 0 baseline, Candidate 1/2/3 bounded adjustment, or the next tiny render-path diagnostic probe."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

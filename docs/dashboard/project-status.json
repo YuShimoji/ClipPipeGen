@@ -48,7 +48,7 @@
     "current_lead_candidate_id": "ed10l_keifont_pop_dialogue_candidate",
     "lead_status": "diagnostic_representative_normal_dialogue_provisional_baseline",
     "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-    "local_generation_status": "ed10w_review_pack_generated_from_ed10v_pass_state",
+    "local_generation_status": "ed10x_review_pack_regenerated_with_delta_readback_and_crops",
     "user_review_status": "new_axis_review_pending",
     "multiline_wrap_evidence_status": "passed_diagnostic_review",
     "multiline_wrap_evidence": {
@@ -66,6 +66,22 @@
       "ed10w_badge_label_pressure_adjustment",
       "ed10w_balanced_combined_low_risk"
     ],
+    "candidate_delta_visibility": {
+      "status": "reviewable_after_ed10x_fix",
+      "source_review": "candidate images were present but visual deltas were too subtle for one-pass review",
+      "default_evidence": [
+        "compact subtitle body crops",
+        "compact SPK badge crops",
+        "actual style parameter delta readback"
+      ],
+      "full_frame_evidence": "secondary click-through context",
+      "candidate_delta_expectation": {
+        "candidate_0": "baseline reference; no visual delta",
+        "candidate_1": "outline/shadow visibly lighter than baseline",
+        "candidate_2": "SPK badge text/background opacity visibly reduced",
+        "candidate_3": "combined outline/shadow and SPK badge pressure reduction"
+      }
+    },
     "render_path_readiness": {
       "status": "decision_card_included_no_production_claim",
       "recommended_minimal_next_route": "tiny_final_path_nearer_diagnostic_probe",
@@ -133,11 +149,13 @@
       "axis": "bounded_decoration_adjustment + render_path_readiness",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "New bounded decoration candidates and a render-path readiness decision card are presented in one page.",
+      "what_changed": "Candidate deltas are now reviewable with compact subtitle/body crops, SPK badge crops, and actual style delta readback; the render-path readiness decision card remains diagnostic.",
       "what_this_review_decides": [
-        "whether to keep current baseline decoration",
-        "whether to choose a bounded adjustment candidate",
-        "whether render-path route is ready for the next tiny probe"
+        "whether Candidate 0 current baseline remains best",
+        "whether Candidate 1 lighter outline/shadow is preferable",
+        "whether Candidate 2 badge pressure adjustment is preferable",
+        "whether Candidate 3 combined adjustment is preferable",
+        "whether render-path probe should proceed after this"
       ],
       "not_asking": [
         "general Keifont acceptance",
@@ -183,7 +201,7 @@
       "label": "Subtitle Presentation Review Pack",
       "command": ".\\open-current-proof.ps1",
       "target": "episodes/.../subtitle_presentation_review_pack.html",
-      "when_to_use": "Use as the ED-10w one-pass review surface for bounded decoration adjustment and render-path readiness; do not reopen general Keifont acceptance or the same cut_008 pass."
+      "when_to_use": "Use as the ED-10w/ED-10x one-pass review surface with compact candidate crops, delta readback, and render-path readiness; do not reopen general Keifont acceptance or the same cut_008 pass."
     },
     {
       "label": "Multi-font Focused Review Reference",
@@ -784,8 +802,8 @@
       "health": "subtitle_presentation_review_pack_ready",
       "progress_pct": 100,
       "active_artifact": "clip-ed10w-subtitle-presentation-review-pack-001",
-      "next_action": "Use the one-pass review pack to choose baseline/pass, a bounded decoration adjustment, or the next tiny render-path diagnostic probe.",
-      "summary_excerpt": "ED-10v の diagnostic dense/stress pass を source evidence として消費し、同じ cut_008 evidence や cut_002 / cut_003 の一般 Keifont acceptance を再レビューしない one-pass review pack を生成する。新しい artifact は clip-ed10w-subtitle-presentation-review-p...",
+      "next_action": "Use the crop-first review pack to choose Candidate 0 baseline, Candidate 1/2/3 bounded adjustment, or the next tiny render-path diagnostic probe.",
+      "summary_excerpt": "ED-10v の diagnostic dense/stress pass を source evidence として消費し、同じ cut_008 evidence や cut_002 / cut_003 の一般 Keifont acceptance を再レビューしない one-pass review pack を生成する。clip-ed10w-subtitle-presentation-review-pack-001 は ED-10...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1389,8 +1407,8 @@
       "storage_class": "Local retained artifact; same-machine evidence only.",
       "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html",
       "open_command": ".\\open-current-proof.ps1",
-      "review_status": "Ready for one freeform subtitle presentation review after ED-10v pass.",
-      "next_action": "Review the pack once and choose whether to keep the current pass, apply a bounded presentation adjustment, or run only a tiny render-path readiness probe."
+      "review_status": "Ready for one freeform subtitle presentation review after ED-10x candidate-delta visibility fix.",
+      "next_action": "Review the crop-first pack once and choose whether Candidate 0 remains best, Candidate 1/2/3 is preferable, or only the tiny render-path readiness probe should proceed."
     },
     {
       "artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
@@ -1554,7 +1572,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 536,
+      "line_count": 543,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -1664,7 +1682,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 516,
+      "line_count": 517,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1734,7 +1752,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 197,
+      "line_count": 204,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -2011,7 +2029,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "Subtitle Presentation Contract",
-      "line_count": 257,
+      "line_count": 266,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2019,7 +2037,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 63,
+      "boundary_term_count": 64,
       "status": "reference"
     },
     {
@@ -2100,7 +2118,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (536 lines) is likely carrying history.",
+        "detail": "Long active doc (543 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -2130,7 +2148,7 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (516 lines) is likely carrying history.",
+        "detail": "Long active doc (517 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -2220,7 +2238,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 63 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 64 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

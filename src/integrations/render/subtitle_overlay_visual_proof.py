@@ -54,6 +54,10 @@ MAX_MULTILINE_WRAP_EVIDENCE_SAMPLES = 4
 ASS_DIALOGUE_STYLE_NAME = "ClipPipeDialogueLeft"
 ASS_SPEAKER_BADGE_STYLE_NAME = "ClipPipeSpeakerBadge"
 ASS_REVIEW_LABEL_STYLE_NAME = "ClipPipeReviewLabel"
+ED10W_REVIEWABLE_OUTLINE_REDUCTION_PX = 2
+ED10W_REVIEWABLE_SHADOW_REDUCTION_PX = 1
+ED10W_REVIEWABLE_BADGE_TEXT_ALPHA = 0x90
+ED10W_REVIEWABLE_BADGE_BACKGROUND_ALPHA = 0xE0
 DEFAULT_FRAME_WIDTH = 1920
 DEFAULT_FRAME_HEIGHT = 1080
 DEFAULT_PRESENTATION_MODE = "badge_left_dialogue"
@@ -1500,8 +1504,18 @@ def _subtitle_layout_contract(
         font_size = _layout_round(height * LAYOUT_RATIOS["bottom_center_font_size_to_frame_height"])
     else:
         font_size = _layout_round(height * LAYOUT_RATIOS["font_size_to_frame_height"])
-    outline = max(2, _layout_round(font_size * outline_ratio))
-    shadow = max(1, _layout_round(font_size * shadow_ratio))
+    outline_override = style.get("outline_px_override")
+    shadow_override = style.get("shadow_px_override")
+    outline = (
+        max(1, _layout_round(float(outline_override)))
+        if outline_override is not None
+        else max(2, _layout_round(font_size * outline_ratio))
+    )
+    shadow = (
+        max(0, _layout_round(float(shadow_override)))
+        if shadow_override is not None
+        else max(1, _layout_round(font_size * shadow_ratio))
+    )
     margin_l = _layout_round(width * LAYOUT_RATIOS["horizontal_margin_to_frame_width"])
     margin_r = margin_l
     bottom_margin_ratio = (
@@ -3621,6 +3635,22 @@ def _render_ed10w_candidate_visuals(
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
         )
+        crop_images = _extract_ed10w_candidate_crops(
+            frame_path=frame_path,
+            layout=layout,
+            frame_spec=frame_spec,
+            presentation_items=presentation_items,
+            ffmpeg_path=render_result.ffmpeg_path,
+            runner=runner,
+            base=base,
+        )
+        style_delta_readback = _ed10w_candidate_style_delta_readback(
+            candidate=candidate,
+            base_layout=base_layout,
+            base_style=base_style,
+            candidate_layout=layout,
+            candidate_style=candidate_style,
+        )
         visuals.append(
             {
                 "candidate_number": candidate_number,
@@ -3637,12 +3667,31 @@ def _render_ed10w_candidate_visuals(
                 "image_path": _display_path(frame_path, base),
                 "video_path": _display_path(Path(render_result.output_path), base),
                 "ass_path": _display_path(ass_path, base),
+                "crop_images": crop_images,
+                "style_delta_readback": style_delta_readback,
                 "style_readback": {
                     "outline": layout["values"].get("outline"),
                     "shadow": layout["values"].get("shadow"),
                     "badge_pressure": candidate.get("badge_pressure"),
+                    "badge_text_colour": style_delta_readback["actual"].get(
+                        "badge_text_colour"
+                    ),
+                    "badge_text_opacity": style_delta_readback["actual"].get(
+                        "badge_text_opacity"
+                    ),
+                    "badge_background_colour": style_delta_readback["actual"].get(
+                        "badge_background_colour"
+                    ),
+                    "badge_background_opacity": style_delta_readback["actual"].get(
+                        "badge_background_opacity"
+                    ),
+                    "font_family": style_delta_readback["actual"].get("font_family"),
+                    "font_size": style_delta_readback["actual"].get("font_size"),
                     "font_family_changed": False,
                 },
+                "visual_delta_status": style_delta_readback.get(
+                    "visual_delta_status"
+                ),
                 "production_subtitle_design_acceptance": False,
                 "production_render_acceptance": False,
                 "production_candidate": False,
@@ -3650,6 +3699,319 @@ def _render_ed10w_candidate_visuals(
             }
         )
     return visuals
+
+
+def _extract_ed10w_candidate_crops(
+    *,
+    frame_path: Path,
+    layout: dict[str, Any],
+    frame_spec: dict[str, Any],
+    presentation_items: list[dict[str, Any]],
+    ffmpeg_path: str,
+    runner: ffmpeg_tiny.Runner,
+    base: Path,
+) -> dict[str, Any]:
+    crop_specs = _ed10w_candidate_crop_specs(
+        layout=layout,
+        frame_spec=frame_spec,
+        presentation_items=presentation_items,
+    )
+    crops: dict[str, Any] = {}
+    for crop_id, spec in crop_specs.items():
+        crop_path = frame_path.with_name(f"{frame_path.stem}.crop_{crop_id}.png")
+        extract = _extract_image_crop(
+            image_path=frame_path,
+            crop_path=crop_path,
+            crop=spec["crop"],
+            ffmpeg_path=ffmpeg_path,
+            runner=runner,
+        )
+        crops[crop_id] = {
+            **extract,
+            "label": spec["label"],
+            "role": crop_id,
+            "image_path": _display_path(crop_path, base),
+            "compact_initial_display": True,
+        }
+    return crops
+
+
+def _ed10w_candidate_crop_specs(
+    *,
+    layout: dict[str, Any],
+    frame_spec: dict[str, Any],
+    presentation_items: list[dict[str, Any]],
+) -> dict[str, Any]:
+    frame_width = int(layout["frame"]["width"])
+    frame_height = int(layout["frame"]["height"])
+    values = layout["values"]
+    target_subtitle_id = frame_spec.get("subtitle_id")
+    target_item = next(
+        (
+            item
+            for item in presentation_items
+            if item.get("subtitle_id") == target_subtitle_id
+        ),
+        presentation_items[0] if presentation_items else {},
+    )
+    line_count = max(1, int(target_item.get("wrapped_line_count") or 1))
+    item_layout = _item_layout(layout, wrapped_line_count=line_count)
+    font_size = int(values["font_size"])
+    line_height = int(values["line_height"])
+    outline = int(values["outline"])
+    subtitle_pad_x = max(24, font_size // 2)
+    subtitle_pad_y = max(18, font_size // 3 + outline)
+    badge_pad_x = max(18, font_size // 3)
+    badge_pad_y = max(14, font_size // 4)
+    subtitle_crop = _bounded_crop(
+        left=int(item_layout["dialogue_x"]) - subtitle_pad_x,
+        top=int(item_layout["dialogue_y"]) - subtitle_pad_y,
+        right=frame_width - int(values["margin_r"]) + subtitle_pad_x,
+        bottom=(
+            int(item_layout["dialogue_y"])
+            + (line_height * line_count)
+            + subtitle_pad_y
+        ),
+        frame_width=frame_width,
+        frame_height=frame_height,
+    )
+    badge_crop = _bounded_crop(
+        left=(
+            int(item_layout["badge_center_x"])
+            - int(values["badge_width"])
+            // 2
+            - badge_pad_x
+        ),
+        top=(
+            int(item_layout["badge_center_y"])
+            - int(values["badge_height"])
+            // 2
+            - badge_pad_y
+        ),
+        right=(
+            int(item_layout["badge_center_x"])
+            + int(values["badge_width"])
+            // 2
+            + badge_pad_x
+        ),
+        bottom=(
+            int(item_layout["badge_center_y"])
+            + int(values["badge_height"])
+            // 2
+            + badge_pad_y
+        ),
+        frame_width=frame_width,
+        frame_height=frame_height,
+    )
+    return {
+        "subtitle_body": {
+            "label": "subtitle body crop",
+            "crop": subtitle_crop,
+        },
+        "spk_badge": {
+            "label": "SPK badge crop",
+            "crop": badge_crop,
+        },
+    }
+
+
+def _bounded_crop(
+    *,
+    left: int,
+    top: int,
+    right: int,
+    bottom: int,
+    frame_width: int,
+    frame_height: int,
+) -> dict[str, int]:
+    x = max(0, min(frame_width - 1, int(left)))
+    y = max(0, min(frame_height - 1, int(top)))
+    bounded_right = max(x + 1, min(frame_width, int(right)))
+    bounded_bottom = max(y + 1, min(frame_height, int(bottom)))
+    return {
+        "x": x,
+        "y": y,
+        "width": bounded_right - x,
+        "height": bounded_bottom - y,
+    }
+
+
+def _extract_image_crop(
+    *,
+    image_path: Path,
+    crop_path: Path,
+    crop: dict[str, int],
+    ffmpeg_path: str,
+    runner: ffmpeg_tiny.Runner,
+) -> dict[str, Any]:
+    crop_path.parent.mkdir(parents=True, exist_ok=True)
+    crop_filter = (
+        f"crop={int(crop['width'])}:{int(crop['height'])}:"
+        f"{int(crop['x'])}:{int(crop['y'])}"
+    )
+    command = [
+        ffmpeg_path,
+        "-y",
+        "-i",
+        str(image_path),
+        "-vf",
+        crop_filter,
+        "-frames:v",
+        "1",
+        str(crop_path),
+    ]
+    result = runner(
+        command,
+        capture_output=True,
+        text=True,
+        timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS,
+    )
+    return {
+        "status": "succeeded"
+        if result.returncode == 0 and crop_path.exists()
+        else "failed",
+        "exit_code": result.returncode,
+        "crop": crop,
+        "path": str(crop_path).replace("\\", "/"),
+        "stderr_digest": ffmpeg_tiny.build_stderr_digest(result.stderr),
+    }
+
+
+def _ed10w_candidate_style_delta_readback(
+    *,
+    candidate: dict[str, Any],
+    base_layout: dict[str, Any],
+    base_style: dict[str, Any],
+    candidate_layout: dict[str, Any],
+    candidate_style: dict[str, Any],
+) -> dict[str, Any]:
+    baseline = _ed10w_style_parameter_snapshot(base_layout, base_style)
+    actual = _ed10w_style_parameter_snapshot(candidate_layout, candidate_style)
+    baseline_badge_text_opacity = float(baseline.get("badge_text_opacity") or 0.0)
+    actual_badge_text_opacity = float(actual.get("badge_text_opacity") or 0.0)
+    baseline_badge_background_opacity = float(
+        baseline.get("badge_background_opacity") or 0.0
+    )
+    actual_badge_background_opacity = float(
+        actual.get("badge_background_opacity") or 0.0
+    )
+    delta = {
+        "outline_px": int(actual["outline"] or 0) - int(baseline["outline"] or 0),
+        "shadow_px": int(actual["shadow"] or 0) - int(baseline["shadow"] or 0),
+        "badge_text_opacity": round(
+            actual_badge_text_opacity - baseline_badge_text_opacity,
+            3,
+        ),
+        "badge_background_opacity": round(
+            actual_badge_background_opacity - baseline_badge_background_opacity,
+            3,
+        ),
+        "font_family_changed": actual["font_family"] != baseline["font_family"],
+        "font_size_px": int(actual["font_size"] or 0) - int(baseline["font_size"] or 0),
+    }
+    axes: list[str] = []
+    if delta["outline_px"] or delta["shadow_px"]:
+        axes.append("outline_shadow")
+    if delta["badge_text_opacity"] or delta["badge_background_opacity"]:
+        axes.append("badge_pressure")
+    return {
+        "candidate_number": candidate.get("candidate_number"),
+        "candidate_id": candidate.get("candidate_id"),
+        "label": candidate.get("label"),
+        "intended_change": candidate.get("changes_from_ed10v"),
+        "baseline": baseline,
+        "actual": actual,
+        "delta": delta,
+        "visual_delta_axes": axes,
+        "visual_delta_status": _ed10w_visual_delta_status(
+            candidate=candidate,
+            delta=delta,
+        ),
+        "bounded_diagnostic_only": True,
+        "production_subtitle_design_acceptance": False,
+        "production_render_acceptance": False,
+        "rights_status": "pending",
+    }
+
+
+def _ed10w_style_parameter_snapshot(
+    layout: dict[str, Any],
+    style: dict[str, Any],
+) -> dict[str, Any]:
+    values = layout["values"]
+    badge_text = _ass_colour_readback(style.get("speaker_accent_colour"))
+    badge_background = _ass_colour_readback(style.get("speaker_badge_back_colour"))
+    return {
+        "font_family": style.get("font_name"),
+        "font_size": values.get("font_size"),
+        "outline": values.get("outline"),
+        "shadow": values.get("shadow"),
+        "badge_label": style.get("speaker_badge_label"),
+        "badge_text_colour": badge_text.get("rgb_hex"),
+        "badge_text_ass_colour": badge_text.get("ass_colour"),
+        "badge_text_alpha": badge_text.get("alpha"),
+        "badge_text_opacity": badge_text.get("opacity"),
+        "badge_background_colour": badge_background.get("rgb_hex"),
+        "badge_background_ass_colour": badge_background.get("ass_colour"),
+        "badge_background_alpha": badge_background.get("alpha"),
+        "badge_background_opacity": badge_background.get("opacity"),
+    }
+
+
+def _ass_colour_readback(value: Any) -> dict[str, Any]:
+    text = str(value or "").strip()
+    if text.startswith("&H") and len(text) == 10:
+        try:
+            alpha = int(text[2:4], 16)
+            blue = int(text[4:6], 16)
+            green = int(text[6:8], 16)
+            red = int(text[8:10], 16)
+        except ValueError:
+            return {
+                "ass_colour": text,
+                "alpha": None,
+                "opacity": None,
+                "rgb_hex": None,
+            }
+        return {
+            "ass_colour": text,
+            "alpha": alpha,
+            "opacity": round((255 - alpha) / 255, 3),
+            "rgb_hex": f"#{red:02x}{green:02x}{blue:02x}",
+        }
+    return {
+        "ass_colour": text,
+        "alpha": None,
+        "opacity": None,
+        "rgb_hex": None,
+    }
+
+
+def _ed10w_visual_delta_status(
+    *,
+    candidate: dict[str, Any],
+    delta: dict[str, Any],
+) -> str:
+    if int(candidate.get("candidate_number") or 0) == 0:
+        return "not visible"
+    outline_visible = abs(int(delta.get("outline_px") or 0)) >= 2
+    shadow_visible = abs(int(delta.get("shadow_px") or 0)) >= 1
+    badge_visible = (
+        abs(float(delta.get("badge_text_opacity") or 0.0)) >= 0.25
+        or abs(float(delta.get("badge_background_opacity") or 0.0)) >= 0.2
+    )
+    if outline_visible or shadow_visible or badge_visible:
+        return "visible"
+    if any(
+        [
+            delta.get("outline_px"),
+            delta.get("shadow_px"),
+            delta.get("badge_text_opacity"),
+            delta.get("badge_background_opacity"),
+        ]
+    ):
+        return "subtle"
+    return "not visible"
 
 
 def _ed10w_candidate_visual_frame_spec(
@@ -3707,8 +4069,12 @@ def _ed10w_candidate_ass_style(
         "ed10w_lighter_outline_shadow_pressure",
         "ed10w_balanced_combined_low_risk",
     }:
-        style["stroke_ratio"] = max(2, outline - 1) / font_size
-        style["shadow_offset_ratio"] = max(1, shadow - 1) / font_size
+        target_outline = max(1, outline - ED10W_REVIEWABLE_OUTLINE_REDUCTION_PX)
+        target_shadow = max(0, shadow - ED10W_REVIEWABLE_SHADOW_REDUCTION_PX)
+        style["outline_px_override"] = target_outline
+        style["shadow_px_override"] = target_shadow
+        style["stroke_ratio"] = target_outline / font_size
+        style["shadow_offset_ratio"] = target_shadow / font_size
     if candidate_id in {
         "ed10w_badge_label_pressure_adjustment",
         "ed10w_balanced_combined_low_risk",
@@ -3718,8 +4084,14 @@ def _ed10w_candidate_ass_style(
             style.get("badge_outline"),
             fallback=(58, 14, 24),
         )
-        style["speaker_accent_colour"] = _ass_colour(badge_fill, alpha=0x55)
-        style["speaker_badge_back_colour"] = _ass_colour(badge_outline, alpha=0xB8)
+        style["speaker_accent_colour"] = _ass_colour(
+            badge_fill,
+            alpha=ED10W_REVIEWABLE_BADGE_TEXT_ALPHA,
+        )
+        style["speaker_badge_back_colour"] = _ass_colour(
+            badge_outline,
+            alpha=ED10W_REVIEWABLE_BADGE_BACKGROUND_ALPHA,
+        )
     return style
 
 
@@ -4082,13 +4454,16 @@ def _subtitle_presentation_review_pack(
                 "diagnostically."
             ),
             "what_changed": (
-                "New bounded decoration candidates and a render-path readiness "
-                "decision card are presented in one page."
+                "Candidate deltas are now reviewable with compact subtitle/body "
+                "crops, SPK badge crops, and actual style delta readback; the "
+                "render-path readiness decision card remains diagnostic."
             ),
             "what_this_review_decides": [
-                "whether to keep current baseline decoration",
-                "whether to choose a bounded adjustment candidate",
-                "whether render-path route is ready for the next tiny probe",
+                "whether Candidate 0 current baseline remains best",
+                "whether Candidate 1 lighter outline/shadow is preferable",
+                "whether Candidate 2 badge pressure adjustment is preferable",
+                "whether Candidate 3 combined adjustment is preferable",
+                "whether render-path probe should proceed after this",
             ],
             "not_asking": [
                 "general Keifont acceptance",
@@ -4104,6 +4479,9 @@ def _subtitle_presentation_review_pack(
         },
         "bounded_decoration_candidates": _bounded_decoration_candidates(report),
         "candidate_visual_evidence": _subtitle_presentation_candidate_visual_evidence(
+            report
+        ),
+        "candidate_delta_readback": _subtitle_presentation_candidate_delta_readback(
             report
         ),
         "render_path_readiness": _render_path_decision_card(report),
@@ -4137,6 +4515,17 @@ def _subtitle_presentation_candidate_visual_evidence(
     artifacts = cut_results[0].get("generated_artifacts") or {}
     visuals = artifacts.get("ed10w_candidate_visuals") or []
     return [item for item in visuals if isinstance(item, dict)]
+
+
+def _subtitle_presentation_candidate_delta_readback(
+    report: dict[str, Any],
+) -> list[dict[str, Any]]:
+    visuals = _subtitle_presentation_candidate_visual_evidence(report)
+    return [
+        item["style_delta_readback"]
+        for item in visuals
+        if isinstance(item.get("style_delta_readback"), dict)
+    ]
 
 
 def _subtitle_presentation_pack_evidence(report: dict[str, Any]) -> dict[str, Any]:
@@ -4214,51 +4603,64 @@ def _ed10w_bounded_decoration_candidates(
             "candidate_number": 1,
             "candidate_id": "ed10w_lighter_outline_shadow_pressure",
             "label": "Lighter outline / shadow pressure",
-            "changes_from_ed10v": "reduce outline and shadow pressure by one bounded step",
-            "outline_pressure": "slightly_lighter",
-            "shadow_pressure": "slightly_lighter",
+            "changes_from_ed10v": (
+                "reduce outline by two bounded pixels and shadow by one bounded pixel "
+                "for reviewable diagnostic contrast"
+            ),
+            "outline_pressure": "reviewably_lighter",
+            "shadow_pressure": "reviewably_lighter",
             "badge_pressure": "current",
             "font_family_changed": False,
             "deterministic": True,
             "recommended_when": (
                 "current baseline feels a little heavy or black-pressure dominant"
             ),
-            "readback": {"outline_delta_px": -1, "shadow_delta_px": -1},
+            "readback": {
+                "outline_delta_px": -ED10W_REVIEWABLE_OUTLINE_REDUCTION_PX,
+                "shadow_delta_px": -ED10W_REVIEWABLE_SHADOW_REDUCTION_PX,
+            },
         },
         {
             "candidate_number": 2,
             "candidate_id": "ed10w_badge_label_pressure_adjustment",
             "label": "SPK badge / label pressure adjustment",
             "changes_from_ed10v": (
-                "keep subtitle text treatment and reduce placeholder badge visual pressure"
+                "keep subtitle text treatment and visibly reduce placeholder badge "
+                "text/background pressure"
             ),
             "outline_pressure": "current",
             "shadow_pressure": "current",
-            "badge_pressure": "lighter_placeholder",
+            "badge_pressure": "reviewably_lighter_placeholder",
             "font_family_changed": False,
             "deterministic": True,
             "recommended_when": "text is acceptable but SPK placeholder draws too much attention",
-            "readback": {"badge_label": badge, "badge_fill_alpha": "reduced"},
+            "readback": {
+                "badge_label": badge,
+                "badge_text_alpha": ED10W_REVIEWABLE_BADGE_TEXT_ALPHA,
+                "badge_background_alpha": ED10W_REVIEWABLE_BADGE_BACKGROUND_ALPHA,
+            },
         },
         {
             "candidate_number": 3,
             "candidate_id": "ed10w_balanced_combined_low_risk",
             "label": "Balanced combined low-risk adjustment",
             "changes_from_ed10v": (
-                "combine lighter outline/shadow with lighter placeholder badge pressure"
+                "combine reviewably lighter outline/shadow with visibly lighter "
+                "placeholder badge pressure"
             ),
-            "outline_pressure": "slightly_lighter",
-            "shadow_pressure": "slightly_lighter",
-            "badge_pressure": "lighter_placeholder",
+            "outline_pressure": "reviewably_lighter",
+            "shadow_pressure": "reviewably_lighter",
+            "badge_pressure": "reviewably_lighter_placeholder",
             "font_family_changed": False,
             "deterministic": True,
             "recommended_when": (
                 "both outline pressure and placeholder badge pressure feel slightly high"
             ),
             "readback": {
-                "outline_delta_px": -1,
-                "shadow_delta_px": -1,
-                "badge_fill_alpha": "reduced",
+                "outline_delta_px": -ED10W_REVIEWABLE_OUTLINE_REDUCTION_PX,
+                "shadow_delta_px": -ED10W_REVIEWABLE_SHADOW_REDUCTION_PX,
+                "badge_text_alpha": ED10W_REVIEWABLE_BADGE_TEXT_ALPHA,
+                "badge_background_alpha": ED10W_REVIEWABLE_BADGE_BACKGROUND_ALPHA,
             },
         },
     ]
@@ -4305,6 +4707,7 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     evidence = pack.get("evidence") or {}
     candidates = pack.get("bounded_decoration_candidates") or []
     candidate_visuals = pack.get("candidate_visual_evidence") or []
+    candidate_delta_readback = pack.get("candidate_delta_readback") or []
     review_card = pack.get("review_card") or {}
     render_card = pack.get("render_path_readiness") or {}
     baseline_frame = evidence.get("baseline_frame")
@@ -4350,6 +4753,9 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     candidate_visual_grid = _subtitle_presentation_candidate_visuals_html(
         candidate_visuals
     )
+    candidate_delta_rows = _subtitle_presentation_candidate_delta_readback_html(
+        candidate_delta_readback
+    )
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -4364,11 +4770,15 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     .evidence-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }}
     .proof {{ max-width: 480px; width: 100%; border: 1px solid #c7ced8; display: block; }}
     .compact {{ max-width: 220px; }}
-    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 260px)); gap: 12px; align-items: start; }}
+    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: start; }}
     .candidate-visual {{ margin: 0; padding: 8px; border-left: 4px solid #2f6f9f; background: #fbfcfe; }}
     .candidate-visual h3 {{ margin: 0 0 6px; font-size: 16px; line-height: 1.3; }}
-    .candidate-proof {{ max-width: 260px; width: 100%; border: 1px solid #c7ced8; display: block; }}
+    .candidate-crop-grid {{ display: grid; grid-template-columns: repeat(2, minmax(110px, 1fr)); gap: 8px; align-items: start; }}
+    .candidate-crop {{ max-width: 100%; width: 100%; border: 1px solid #c7ced8; display: block; background: #fff; }}
+    .candidate-proof {{ max-width: 220px; width: 100%; border: 1px solid #c7ced8; display: block; }}
     .candidate-change {{ margin: 6px 0 0; font-size: 12px; color: #52616f; }}
+    .secondary-frame {{ margin-top: 8px; }}
+    .delta-status {{ font-weight: 700; }}
     table {{ border-collapse: collapse; width: 100%; }}
     th, td {{ border: 1px solid #d8dde6; padding: 8px; vertical-align: top; }}
     th {{ background: #eef2f6; text-align: left; }}
@@ -4400,10 +4810,17 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
   </section>
   <section>
     <h2>Candidate Visual Evidence</h2>
-    <p>Same cut/cue comparison for the bounded decoration candidates. Each image is compact here and opens larger when clicked.</p>
+    <p>Same cut/cue comparison for the bounded decoration candidates. Compact crops are the default evidence; full-frame context stays behind click-through detail.</p>
     <div class="candidate-visual-grid">
 {candidate_visual_grid}
     </div>
+  </section>
+  <section>
+    <h2>Candidate Delta Readback</h2>
+    <table>
+      <tr><th>#</th><th>intended change</th><th>actual outline / shadow delta</th><th>badge opacity delta</th><th>font</th><th>visual delta status</th></tr>
+{candidate_delta_rows}
+    </table>
   </section>
   <section>
     <h2>Bounded Decoration Candidates</h2>
@@ -4452,16 +4869,78 @@ def _subtitle_presentation_candidate_visuals_html(
             if image_path
             else "<p>No candidate screenshot recorded.</p>"
         )
+        crop_images = item.get("crop_images") if isinstance(item.get("crop_images"), dict) else {}
+        crop_html = _subtitle_presentation_candidate_crop_images_html(crop_images)
         cue = item.get("source_subtitle_id") or "representative frame"
         cards.append(
-            "      <figure class=\"candidate-visual\">"
+            "      <article class=\"candidate-visual\">"
             f"<h3>Candidate {escape(str(candidate_number))}: {escape(label)}</h3>"
-            f"{image_html}"
-            f"<figcaption>{escape(str(cue))} / {escape(str(item.get('same_frame_basis') or 'same frame comparison'))}</figcaption>"
+            f"{crop_html}"
+            f"<p class=\"candidate-change\">{escape(str(cue))} / {escape(str(item.get('same_frame_basis') or 'same frame comparison'))}</p>"
             f"<p class=\"candidate-change\">{escape(change)}</p>"
-            "</figure>"
+            "<details class=\"secondary-frame\"><summary>Full-frame context</summary>"
+            f"{image_html}"
+            "</details>"
+            "</article>"
         )
     return "\n".join(cards)
+
+
+def _subtitle_presentation_candidate_crop_images_html(
+    crop_images: dict[str, Any],
+) -> str:
+    if not crop_images:
+        return "<p>No compact crops recorded.</p>"
+    chunks = ['<div class="candidate-crop-grid">']
+    for crop_id in ("subtitle_body", "spk_badge"):
+        crop = crop_images.get(crop_id) or {}
+        image_path = crop.get("image_path")
+        label = crop.get("label") or crop_id
+        if image_path:
+            href = _artifact_href(image_path)
+            chunks.append(
+                "<figure>"
+                f'<a href="{href}"><img class="candidate-crop" '
+                f'src="{href}" alt="{escape(str(label))}"></a>'
+                f"<figcaption>{escape(str(label))}</figcaption>"
+                "</figure>"
+            )
+        else:
+            chunks.append(
+                "<figure>"
+                "<p>No crop image.</p>"
+                f"<figcaption>{escape(str(label))}</figcaption>"
+                "</figure>"
+            )
+    chunks.append("</div>")
+    return "".join(chunks)
+
+
+def _subtitle_presentation_candidate_delta_readback_html(
+    readbacks: list[dict[str, Any]],
+) -> str:
+    if not readbacks:
+        return (
+            '<tr><td colspan="6">No candidate delta readback was recorded.</td></tr>'
+        )
+    rows: list[str] = []
+    for item in sorted(
+        readbacks,
+        key=lambda readback: int(readback.get("candidate_number") or 0),
+    ):
+        delta = item.get("delta") if isinstance(item.get("delta"), dict) else {}
+        actual = item.get("actual") if isinstance(item.get("actual"), dict) else {}
+        rows.append(
+            "<tr>"
+            f"<td>{escape(str(item.get('candidate_number')))}</td>"
+            f"<td>{escape(str(item.get('intended_change') or ''))}</td>"
+            f"<td>outline {escape(str(delta.get('outline_px')))}px / shadow {escape(str(delta.get('shadow_px')))}px</td>"
+            f"<td>text {escape(str(delta.get('badge_text_opacity')))} / background {escape(str(delta.get('badge_background_opacity')))}</td>"
+            f"<td>{escape(str(actual.get('font_family') or ''))} / {escape(str(actual.get('font_size') or ''))}px</td>"
+            f"<td><span class=\"delta-status\">{escape(str(item.get('visual_delta_status') or ''))}</span></td>"
+            "</tr>"
+        )
+    return "\n".join(rows)
 
 
 def _focused_current_proof_html(report: dict[str, Any]) -> str:

@@ -783,6 +783,23 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
     assert [item["candidate_id"] for item in candidate_visuals] == [
         item["candidate_id"] for item in pack["bounded_decoration_candidates"]
     ]
+    delta_readbacks = pack["candidate_delta_readback"]
+    assert len(delta_readbacks) == 4
+    deltas_by_number = {
+        item["candidate_number"]: item for item in delta_readbacks
+    }
+    assert deltas_by_number[0]["visual_delta_status"] == "not visible"
+    assert deltas_by_number[1]["delta"]["outline_px"] < 0
+    assert deltas_by_number[1]["delta"]["shadow_px"] < 0
+    assert deltas_by_number[1]["visual_delta_status"] == "visible"
+    assert deltas_by_number[2]["delta"]["badge_text_opacity"] < 0
+    assert deltas_by_number[2]["delta"]["badge_background_opacity"] < 0
+    assert deltas_by_number[2]["visual_delta_status"] == "visible"
+    assert deltas_by_number[3]["delta"]["outline_px"] < 0
+    assert deltas_by_number[3]["delta"]["shadow_px"] < 0
+    assert deltas_by_number[3]["delta"]["badge_text_opacity"] < 0
+    assert deltas_by_number[3]["delta"]["badge_background_opacity"] < 0
+    assert deltas_by_number[3]["visual_delta_status"] == "visible"
     for visual in candidate_visuals:
         assert visual["source_cut"] == "cut_008"
         assert visual["visual_label_baked_in"] is True
@@ -793,6 +810,14 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
         assert visual["image_path"].endswith(".png")
         assert f"ed10w_candidate_{visual['candidate_number']}_" in visual["image_path"]
         assert (tmp_path / visual["image_path"]).exists()
+        assert visual["style_delta_readback"]["actual"]["font_family"] == "Keifont"
+        assert visual["style_delta_readback"]["actual"]["font_size"] > 0
+        assert set(visual["crop_images"]) == {"subtitle_body", "spk_badge"}
+        for crop in visual["crop_images"].values():
+            assert crop["status"] == "succeeded"
+            assert crop["compact_initial_display"] is True
+            assert crop["image_path"].endswith(".png")
+            assert (tmp_path / crop["image_path"]).exists()
     assert pack["review_card"]["target"] == (
         "clip-ed10w-subtitle-presentation-review-pack-001"
     )
@@ -817,17 +842,29 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
     assert [
         item["candidate_number"] for item in persisted_pack["candidate_visual_evidence"]
     ] == [0, 1, 2, 3]
+    assert [
+        item["visual_delta_status"]
+        for item in persisted_pack["candidate_delta_readback"]
+    ] == ["not visible", "visible", "visible", "visible"]
     pack_html = pack_html_path.read_text(encoding="utf-8")
     assert "Subtitle Presentation Review Pack" in pack_html
     assert "Candidate Visual Evidence" in pack_html
+    assert "Candidate Delta Readback" in pack_html
     assert "Bounded Decoration Candidates" in pack_html
     assert "<th>#</th>" in pack_html
     assert pack_html.count('class="candidate-proof"') == 4
+    assert pack_html.count('class="candidate-crop"') == 8
+    assert "subtitle body crop" in pack_html
+    assert "SPK badge crop" in pack_html
+    assert "outline -" in pack_html
+    assert "shadow -" in pack_html
     for candidate_number in range(4):
         assert f"Candidate {candidate_number}" in pack_html
         assert f"ed10w_candidate_{candidate_number}_" in pack_html
     assert "Render Path Decision Card" in pack_html
     assert "general Keifont acceptance" in pack_html
+    assert "whether Candidate 1 lighter outline/shadow is preferable" in pack_html
+    assert "whether Candidate 2 badge pressure adjustment is preferable" in pack_html
     assert "production subtitle design" in pack_html
 
 

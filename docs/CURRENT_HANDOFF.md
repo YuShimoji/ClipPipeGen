@@ -36,6 +36,13 @@ does not ask for another general Keifont review on `cut_002` / `cut_003`, and
 does not ask for another pass/fail judgement on the same `cut_008` multiline
 evidence.
 
+ED-10x consumed the latest review that Candidate 0-3 images were present but
+their differences were almost indistinguishable. Candidate image generation is
+therefore treated as technically working but not reviewable enough in the old
+full-frame-only view. The regenerated pack now surfaces compact subtitle-body
+crops, SPK badge crops, and actual style delta readback before the secondary
+full-frame context.
+
 The only current ED-10w judgement is a freeform subtitle presentation choice:
 keep the current pass, lighten outline/shadow pressure, adjust badge label
 pressure, or use the balanced low-risk combination. A render-path readiness
