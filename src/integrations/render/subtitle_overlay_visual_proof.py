@@ -53,6 +53,7 @@ RESPONSE_REFERRAL_SUBTITLE_IDS = {f"sub_{index:03d}" for index in range(25, 30)}
 MAX_MULTILINE_WRAP_EVIDENCE_SAMPLES = 4
 ASS_DIALOGUE_STYLE_NAME = "ClipPipeDialogueLeft"
 ASS_SPEAKER_BADGE_STYLE_NAME = "ClipPipeSpeakerBadge"
+ASS_REVIEW_LABEL_STYLE_NAME = "ClipPipeReviewLabel"
 DEFAULT_FRAME_WIDTH = 1920
 DEFAULT_FRAME_HEIGHT = 1080
 DEFAULT_PRESENTATION_MODE = "badge_left_dialogue"
@@ -870,6 +871,7 @@ def _build_cut_proof(
             error=None,
             legacy_autoload_srt=None,
             previous_proof_artifacts=None,
+            candidate_visuals=[],
             base=base,
         )
 
@@ -894,6 +896,7 @@ def _build_cut_proof(
             error="no renderable subtitle items for target cut",
             legacy_autoload_srt=None,
             previous_proof_artifacts=None,
+            candidate_visuals=[],
             base=base,
         )
 
@@ -946,6 +949,22 @@ def _build_cut_proof(
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
         )
+        candidate_visuals = (
+            _render_ed10w_candidate_visuals(
+                source_media=source_media,
+                cut=cut,
+                renderable_items=renderable_items,
+                base_layout=layout,
+                cut_paths=cut_paths,
+                ffmpeg_path=render_result.ffmpeg_path,
+                ffprobe_path=ffprobe_path,
+                container=container,
+                base=base,
+                runner=runner,
+            )
+            if proof_profile_id == ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE
+            else []
+        )
         return _cut_report(
             episode_id=episode_id,
             cut=cut,
@@ -967,6 +986,7 @@ def _build_cut_proof(
             previous_proof_artifacts=previous_proof_artifacts,
             error=None,
             base=base,
+            candidate_visuals=candidate_visuals,
         )
     except (OSError, ffmpeg_tiny.TinyRenderError) as exc:
         failure_reason = getattr(exc, "failure_reason", "subtitle_overlay_render_failed")
@@ -992,6 +1012,7 @@ def _build_cut_proof(
             legacy_autoload_srt=locals().get("legacy_autoload_srt"),
             previous_proof_artifacts=locals().get("previous_proof_artifacts"),
             error=f"{failure_reason}: {exc}",
+            candidate_visuals=locals().get("candidate_visuals", []),
             base=base,
         )
 
@@ -1017,6 +1038,7 @@ def _cut_report(
     error: str | None,
     legacy_autoload_srt: dict[str, Any] | None,
     previous_proof_artifacts: dict[str, Path] | None,
+    candidate_visuals: list[dict[str, Any]],
     base: Path,
 ) -> dict[str, Any]:
     cut_id = str(cut.get("id") or "")
@@ -1117,6 +1139,7 @@ def _cut_report(
                 }
                 for extract in sample_frame_extracts
             ],
+            "ed10w_candidate_visuals": candidate_visuals,
             "diagnostic_subtitle_file": _display_path(
                 cut_paths["burned_in_subtitle_file"], base
             ),
@@ -1135,6 +1158,12 @@ def _cut_report(
                     str(extract.get("path") or "")
                 ).exists()
                 for extract in sample_frame_extracts
+            },
+            "ed10w_candidate_visuals": {
+                str(item.get("candidate_number")): Path(
+                    str(item.get("image_path") or "")
+                ).exists()
+                for item in candidate_visuals
             },
             "diagnostic_subtitle_file": cut_paths["burned_in_subtitle_file"].exists(),
             "burned_in_subtitle_file": cut_paths["burned_in_subtitle_file"].exists(),
@@ -3327,7 +3356,13 @@ def _bbox_dict(bbox: tuple[int, int, int, int] | None) -> dict[str, int] | None:
     }
 
 
-def _write_ass(path: Path, items: list[dict[str, Any]], *, layout: dict[str, Any]) -> None:
+def _write_ass(
+    path: Path,
+    items: list[dict[str, Any]],
+    *,
+    layout: dict[str, Any],
+    review_label: str | None = None,
+) -> None:
     style = _layout_style(layout)
     values = layout["values"]
     dialogue_alignment = "2" if layout["mode"] == "bottom_center_emphasis" else "7"
@@ -3358,6 +3393,13 @@ def _write_ass(path: Path, items: list[dict[str, Any]], *, layout: dict[str, Any
             f"{style['speaker_accent_colour']},{style['speaker_badge_back_colour']},"
             "1,0,0,0,100,100,0,0,"
             "3,3,0,5,0,0,0,1"
+        ),
+        (
+            f"Style: {ASS_REVIEW_LABEL_STYLE_NAME},Arial,"
+            f"{max(18, round(values['font_size'] * 0.28))},"
+            "&H00FFFFFF,&H00FFFFFF,&H00333A42,&HCC1F2933,"
+            "1,0,0,0,100,100,0,0,"
+            "3,2,0,7,0,0,0,1"
         ),
         "",
         "[Events]",
@@ -3394,6 +3436,17 @@ def _write_ass(path: Path, items: list[dict[str, Any]], *, layout: dict[str, Any
         lines.append(
             f"Dialogue: 1,{start},{end},{ASS_DIALOGUE_STYLE_NAME},,0,0,0,,"
             f"{dialogue_override}{text}"
+        )
+    if review_label:
+        label = _ass_text(review_label)
+        label_end = max(
+            (float(item.get("display_end_seconds") or 0.0) for item in items),
+            default=1.0,
+        )
+        lines.append(
+            f"Dialogue: 20,{_ass_time(0.0)},{_ass_time(label_end)},"
+            f"{ASS_REVIEW_LABEL_STYLE_NAME},,0,0,0,,"
+            f"{{\\an7\\pos(32,28)}}{label}"
         )
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -3487,6 +3540,201 @@ def _extract_sample_frames(
             }
         )
     return extracts
+
+
+def _render_ed10w_candidate_visuals(
+    *,
+    source_media: dict[str, Any],
+    cut: dict[str, Any],
+    renderable_items: list[dict[str, Any]],
+    base_layout: dict[str, Any],
+    cut_paths: dict[str, Path],
+    ffmpeg_path: str,
+    ffprobe_path: str | Path | None,
+    container: str,
+    base: Path,
+    runner: ffmpeg_tiny.Runner,
+) -> list[dict[str, Any]]:
+    cut_id = str(cut.get("id") or "")
+    start_seconds = _required_float(cut.get("start_seconds"), f"{cut_id}.start_seconds")
+    end_seconds = _required_float(cut.get("end_seconds"), f"{cut_id}.end_seconds")
+    duration = round(end_seconds - start_seconds, 3)
+    base_style = _layout_style(base_layout)
+    base_candidates = _ed10w_bounded_decoration_candidates(
+        style={
+            "outline": base_layout["values"].get("outline"),
+            "shadow": base_layout["values"].get("shadow"),
+            "speaker_badge": {"label": base_style.get("speaker_badge_label") or "SPK"},
+        }
+    )
+    visuals: list[dict[str, Any]] = []
+    for candidate in base_candidates:
+        candidate_number = int(candidate["candidate_number"])
+        candidate_id = str(candidate["candidate_id"])
+        candidate_style = _ed10w_candidate_ass_style(
+            base_style=base_style,
+            base_layout=base_layout,
+            candidate=candidate,
+        )
+        layout = _subtitle_layout_contract(
+            frame_width=int(base_layout["frame"]["width"]),
+            frame_height=int(base_layout["frame"]["height"]),
+            mode=str(base_layout["mode"]),
+            dimension_source="ed10w_candidate_visual_same_probe_frame",
+            diagnostic_ass_style=candidate_style,
+        )
+        presentation_items = _presentation_items(renderable_items, layout=layout)
+        frame_spec = _ed10w_candidate_visual_frame_spec(presentation_items, duration)
+        stem = (
+            f"{cut_paths['stem']}.ed10w_candidate_"
+            f"{candidate_number}_{candidate_id}"
+        )
+        ass_path = cut_paths["reference_dir"] / f"{stem}.burned_in.ass"
+        video_path = cut_paths["reference_dir"] / f"{stem}.{container}"
+        frame_path = cut_paths["reference_dir"] / f"{stem}.png"
+        review_label = (
+            f"Candidate {candidate_number}: {candidate['label']}\n"
+            f"{candidate['changes_from_ed10v']}"
+        )
+        _write_ass(
+            ass_path,
+            presentation_items,
+            layout=layout,
+            review_label=review_label,
+        )
+        render_result = ffmpeg_tiny.render_tiny_proof(
+            source_video_path=source_media["source_video"]["resolved_path"],
+            source_audio_path=source_media["source_audio"]["resolved_path"],
+            output_path=video_path,
+            start_seconds=start_seconds,
+            duration_seconds=duration,
+            ffmpeg_path=ffmpeg_path,
+            ffprobe_path=ffprobe_path,
+            container=container,
+            subtitle_file_path=ass_path,
+            runner=runner,
+        )
+        extract = _extract_frame(
+            video_path=Path(render_result.output_path),
+            frame_path=frame_path,
+            seconds=float(frame_spec["frame_seconds"]),
+            ffmpeg_path=render_result.ffmpeg_path,
+            runner=runner,
+        )
+        visuals.append(
+            {
+                "candidate_number": candidate_number,
+                "candidate_id": candidate_id,
+                "label": candidate["label"],
+                "changes_from_ed10v": candidate["changes_from_ed10v"],
+                "source_cut": cut_id,
+                "source_subtitle_id": frame_spec.get("subtitle_id"),
+                "frame_seconds": frame_spec.get("frame_seconds"),
+                "same_frame_basis": frame_spec.get("frame_selection_reason"),
+                "visual_label_baked_in": True,
+                "compact_initial_display": True,
+                "image_status": extract.get("status"),
+                "image_path": _display_path(frame_path, base),
+                "video_path": _display_path(Path(render_result.output_path), base),
+                "ass_path": _display_path(ass_path, base),
+                "style_readback": {
+                    "outline": layout["values"].get("outline"),
+                    "shadow": layout["values"].get("shadow"),
+                    "badge_pressure": candidate.get("badge_pressure"),
+                    "font_family_changed": False,
+                },
+                "production_subtitle_design_acceptance": False,
+                "production_render_acceptance": False,
+                "production_candidate": False,
+                "rights_status": "pending",
+            }
+        )
+    return visuals
+
+
+def _ed10w_candidate_visual_frame_spec(
+    items: list[dict[str, Any]],
+    duration: float,
+) -> dict[str, Any]:
+    target = next(
+        (
+            item
+            for item in items
+            if item.get("subtitle_id") == "sub_096"
+            and int(item.get("wrapped_line_count") or 1) >= 2
+        ),
+        None,
+    )
+    if target is None:
+        target = next(
+            (
+                item
+                for item in items
+                if int(item.get("wrapped_line_count") or 1) >= 2
+            ),
+            None,
+        )
+    if target is not None:
+        start = float(target.get("display_start_seconds") or 0.0)
+        end = float(target.get("display_end_seconds") or start)
+        frame_seconds = min(max(start + 0.55, 0.05), max(0.05, end - 0.05))
+        return {
+            "subtitle_id": target.get("subtitle_id"),
+            "frame_seconds": round(min(frame_seconds, max(0.05, duration - 0.05)), 3),
+            "frame_selection_reason": (
+                "same cut_008/sub_096 multiline cue when available"
+            ),
+        }
+    return {
+        "subtitle_id": None,
+        "frame_seconds": round(_representative_frame_seconds(items, duration), 3),
+        "frame_selection_reason": "same representative baseline frame fallback",
+    }
+
+
+def _ed10w_candidate_ass_style(
+    *,
+    base_style: dict[str, Any],
+    base_layout: dict[str, Any],
+    candidate: dict[str, Any],
+) -> dict[str, Any]:
+    style = copy.deepcopy(base_style)
+    candidate_id = str(candidate.get("candidate_id") or "")
+    font_size = max(1, int(base_layout["values"].get("font_size") or 1))
+    outline = max(2, int(base_layout["values"].get("outline") or 2))
+    shadow = max(1, int(base_layout["values"].get("shadow") or 1))
+    if candidate_id in {
+        "ed10w_lighter_outline_shadow_pressure",
+        "ed10w_balanced_combined_low_risk",
+    }:
+        style["stroke_ratio"] = max(2, outline - 1) / font_size
+        style["shadow_offset_ratio"] = max(1, shadow - 1) / font_size
+    if candidate_id in {
+        "ed10w_badge_label_pressure_adjustment",
+        "ed10w_balanced_combined_low_risk",
+    }:
+        badge_fill = _rgb_from_hex(style.get("badge_fill"), fallback=(236, 70, 88))
+        badge_outline = _rgb_from_hex(
+            style.get("badge_outline"),
+            fallback=(58, 14, 24),
+        )
+        style["speaker_accent_colour"] = _ass_colour(badge_fill, alpha=0x55)
+        style["speaker_badge_back_colour"] = _ass_colour(badge_outline, alpha=0xB8)
+    return style
+
+
+def _rgb_from_hex(value: Any, *, fallback: tuple[int, int, int]) -> tuple[int, int, int]:
+    text = str(value or "").strip()
+    if text.startswith("#") and len(text) == 7:
+        try:
+            return (
+                int(text[1:3], 16),
+                int(text[3:5], 16),
+                int(text[5:7], 16),
+            )
+        except ValueError:
+            return fallback
+    return fallback
 
 
 def _sample_frame_specs(
@@ -3855,6 +4103,9 @@ def _subtitle_presentation_review_pack(
             ),
         },
         "bounded_decoration_candidates": _bounded_decoration_candidates(report),
+        "candidate_visual_evidence": _subtitle_presentation_candidate_visual_evidence(
+            report
+        ),
         "render_path_readiness": _render_path_decision_card(report),
         "evidence": evidence,
         "outputs": {
@@ -3873,6 +4124,19 @@ def _subtitle_presentation_review_pack(
         "publishing_acceptance": False,
         "public_use_permission": False,
     }
+
+
+def _subtitle_presentation_candidate_visual_evidence(
+    report: dict[str, Any],
+) -> list[dict[str, Any]]:
+    cut_results = (
+        report.get("cut_results") if isinstance(report.get("cut_results"), list) else []
+    )
+    if not cut_results:
+        return []
+    artifacts = cut_results[0].get("generated_artifacts") or {}
+    visuals = artifacts.get("ed10w_candidate_visuals") or []
+    return [item for item in visuals if isinstance(item, dict)]
 
 
 def _subtitle_presentation_pack_evidence(report: dict[str, Any]) -> dict[str, Any]:
@@ -3912,11 +4176,29 @@ def _subtitle_presentation_pack_evidence(report: dict[str, Any]) -> dict[str, An
 
 def _bounded_decoration_candidates(report: dict[str, Any]) -> list[dict[str, Any]]:
     style = report.get("style_parameters") or {}
-    outline = (style.get("outline") or {}).get("value")
-    shadow = (style.get("shadow") or {}).get("value")
+    return _ed10w_bounded_decoration_candidates(style=style)
+
+
+def _ed10w_bounded_decoration_candidates(
+    *,
+    style: dict[str, Any],
+) -> list[dict[str, Any]]:
+    outline_raw = style.get("outline")
+    shadow_raw = style.get("shadow")
+    outline = (
+        outline_raw.get("value")
+        if isinstance(outline_raw, dict)
+        else outline_raw
+    )
+    shadow = (
+        shadow_raw.get("value")
+        if isinstance(shadow_raw, dict)
+        else shadow_raw
+    )
     badge = (style.get("speaker_badge") or {}).get("label") or "SPK"
     return [
         {
+            "candidate_number": 0,
             "candidate_id": "ed10w_current_pass_reference",
             "label": "Current passed baseline reference",
             "changes_from_ed10v": "none",
@@ -3929,6 +4211,7 @@ def _bounded_decoration_candidates(report: dict[str, Any]) -> list[dict[str, Any
             "readback": {"outline": outline, "shadow": shadow, "badge_label": badge},
         },
         {
+            "candidate_number": 1,
             "candidate_id": "ed10w_lighter_outline_shadow_pressure",
             "label": "Lighter outline / shadow pressure",
             "changes_from_ed10v": "reduce outline and shadow pressure by one bounded step",
@@ -3943,6 +4226,7 @@ def _bounded_decoration_candidates(report: dict[str, Any]) -> list[dict[str, Any
             "readback": {"outline_delta_px": -1, "shadow_delta_px": -1},
         },
         {
+            "candidate_number": 2,
             "candidate_id": "ed10w_badge_label_pressure_adjustment",
             "label": "SPK badge / label pressure adjustment",
             "changes_from_ed10v": (
@@ -3957,6 +4241,7 @@ def _bounded_decoration_candidates(report: dict[str, Any]) -> list[dict[str, Any
             "readback": {"badge_label": badge, "badge_fill_alpha": "reduced"},
         },
         {
+            "candidate_number": 3,
             "candidate_id": "ed10w_balanced_combined_low_risk",
             "label": "Balanced combined low-risk adjustment",
             "changes_from_ed10v": (
@@ -4019,12 +4304,14 @@ def _render_path_decision_card(report: dict[str, Any]) -> dict[str, Any]:
 def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     evidence = pack.get("evidence") or {}
     candidates = pack.get("bounded_decoration_candidates") or []
+    candidate_visuals = pack.get("candidate_visual_evidence") or []
     review_card = pack.get("review_card") or {}
     render_card = pack.get("render_path_readiness") or {}
     baseline_frame = evidence.get("baseline_frame")
     multiline_frame = evidence.get("multiline_screenshot")
     candidate_rows = "\n".join(
         "<tr>"
+        f"<td>{escape(str(item.get('candidate_number') if item.get('candidate_number') is not None else ''))}</td>"
         f"<td>{escape(str(item.get('candidate_id') or ''))}</td>"
         f"<td>{escape(str(item.get('label') or ''))}</td>"
         f"<td>{escape(str(item.get('changes_from_ed10v') or ''))}</td>"
@@ -4060,6 +4347,9 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     wrapped_lines = "<br>".join(
         escape(str(line)) for line in evidence.get("wrapped_lines") or []
     )
+    candidate_visual_grid = _subtitle_presentation_candidate_visuals_html(
+        candidate_visuals
+    )
     return f"""<!doctype html>
 <html lang="ja">
 <head>
@@ -4074,6 +4364,11 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     .evidence-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }}
     .proof {{ max-width: 480px; width: 100%; border: 1px solid #c7ced8; display: block; }}
     .compact {{ max-width: 220px; }}
+    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 260px)); gap: 12px; align-items: start; }}
+    .candidate-visual {{ margin: 0; padding: 8px; border-left: 4px solid #2f6f9f; background: #fbfcfe; }}
+    .candidate-visual h3 {{ margin: 0 0 6px; font-size: 16px; line-height: 1.3; }}
+    .candidate-proof {{ max-width: 260px; width: 100%; border: 1px solid #c7ced8; display: block; }}
+    .candidate-change {{ margin: 6px 0 0; font-size: 12px; color: #52616f; }}
     table {{ border-collapse: collapse; width: 100%; }}
     th, td {{ border: 1px solid #d8dde6; padding: 8px; vertical-align: top; }}
     th {{ background: #eef2f6; text-align: left; }}
@@ -4104,9 +4399,16 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     </div>
   </section>
   <section>
+    <h2>Candidate Visual Evidence</h2>
+    <p>Same cut/cue comparison for the bounded decoration candidates. Each image is compact here and opens larger when clicked.</p>
+    <div class="candidate-visual-grid">
+{candidate_visual_grid}
+    </div>
+  </section>
+  <section>
     <h2>Bounded Decoration Candidates</h2>
     <table>
-      <tr><th>candidate</th><th>label</th><th>change</th><th>use when</th></tr>
+      <tr><th>#</th><th>candidate</th><th>label</th><th>change</th><th>use when</th></tr>
 {candidate_rows}
     </table>
   </section>
@@ -4123,6 +4425,43 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
 </body>
 </html>
 """
+
+
+def _subtitle_presentation_candidate_visuals_html(
+    candidate_visuals: list[dict[str, Any]],
+) -> str:
+    if not candidate_visuals:
+        return (
+            '<p class="warning">Candidate visual evidence was not generated. '
+            "Bounded decoration candidates still require image evidence before "
+            "one-pass review acceptance.</p>"
+        )
+    cards: list[str] = []
+    for item in sorted(
+        candidate_visuals,
+        key=lambda visual: int(visual.get("candidate_number") or 0),
+    ):
+        candidate_number = item.get("candidate_number")
+        label = str(item.get("label") or "")
+        change = str(item.get("changes_from_ed10v") or "")
+        image_path = item.get("image_path")
+        image_html = (
+            f'<a href="{_artifact_href(image_path)}"><img class="candidate-proof" '
+            f'src="{_artifact_href(image_path)}" '
+            f'alt="Candidate {escape(str(candidate_number))}: {escape(label)}"></a>'
+            if image_path
+            else "<p>No candidate screenshot recorded.</p>"
+        )
+        cue = item.get("source_subtitle_id") or "representative frame"
+        cards.append(
+            "      <figure class=\"candidate-visual\">"
+            f"<h3>Candidate {escape(str(candidate_number))}: {escape(label)}</h3>"
+            f"{image_html}"
+            f"<figcaption>{escape(str(cue))} / {escape(str(item.get('same_frame_basis') or 'same frame comparison'))}</figcaption>"
+            f"<p class=\"candidate-change\">{escape(change)}</p>"
+            "</figure>"
+        )
+    return "\n".join(cards)
 
 
 def _focused_current_proof_html(report: dict[str, Any]) -> str:

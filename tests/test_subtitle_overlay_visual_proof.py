@@ -768,12 +768,31 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
         "subtitle_overlay_visual_proof_cut_008.sample_multiline_wrap_1.png"
     )
     assert len(pack["bounded_decoration_candidates"]) == 4
+    assert [
+        item["candidate_number"] for item in pack["bounded_decoration_candidates"]
+    ] == [0, 1, 2, 3]
     assert [item["candidate_id"] for item in pack["bounded_decoration_candidates"]] == [
         "ed10w_current_pass_reference",
         "ed10w_lighter_outline_shadow_pressure",
         "ed10w_badge_label_pressure_adjustment",
         "ed10w_balanced_combined_low_risk",
     ]
+    candidate_visuals = pack["candidate_visual_evidence"]
+    assert len(candidate_visuals) == 4
+    assert [item["candidate_number"] for item in candidate_visuals] == [0, 1, 2, 3]
+    assert [item["candidate_id"] for item in candidate_visuals] == [
+        item["candidate_id"] for item in pack["bounded_decoration_candidates"]
+    ]
+    for visual in candidate_visuals:
+        assert visual["source_cut"] == "cut_008"
+        assert visual["visual_label_baked_in"] is True
+        assert visual["compact_initial_display"] is True
+        assert visual["image_status"] == "succeeded"
+        assert visual["production_candidate"] is False
+        assert visual["rights_status"] == "pending"
+        assert visual["image_path"].endswith(".png")
+        assert f"ed10w_candidate_{visual['candidate_number']}_" in visual["image_path"]
+        assert (tmp_path / visual["image_path"]).exists()
     assert pack["review_card"]["target"] == (
         "clip-ed10w-subtitle-presentation-review-pack-001"
     )
@@ -795,9 +814,18 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
     assert persisted_pack["render_path_readiness"][
         "recommended_minimal_next_route"
     ] == "tiny_final_path_nearer_diagnostic_probe"
+    assert [
+        item["candidate_number"] for item in persisted_pack["candidate_visual_evidence"]
+    ] == [0, 1, 2, 3]
     pack_html = pack_html_path.read_text(encoding="utf-8")
     assert "Subtitle Presentation Review Pack" in pack_html
+    assert "Candidate Visual Evidence" in pack_html
     assert "Bounded Decoration Candidates" in pack_html
+    assert "<th>#</th>" in pack_html
+    assert pack_html.count('class="candidate-proof"') == 4
+    for candidate_number in range(4):
+        assert f"Candidate {candidate_number}" in pack_html
+        assert f"ed10w_candidate_{candidate_number}_" in pack_html
     assert "Render Path Decision Card" in pack_html
     assert "general Keifont acceptance" in pack_html
     assert "production subtitle design" in pack_html
