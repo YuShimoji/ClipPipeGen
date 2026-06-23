@@ -4,8 +4,8 @@ This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10w
-subtitle presentation review pack, use `.\open-current-proof.ps1`; if that
+dashboard, then use an artifact-specific launcher. For the current ED-10y
+Candidate 2 carry-forward pack, use `.\open-current-proof.ps1`; if that
 ignored local pack is absent, the launcher falls back to the retained ED-10v
 focused proof on this machine;
 for the accepted ED-10o focused comparison
@@ -360,6 +360,41 @@ proof. Remote Git can verify the tracked builder, docs, dashboard metadata,
 and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
+
+## `clip-ed10y-candidate2-carry-forward-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10y Candidate 2 Carry-Forward Pack |
+| purpose | Consume the latest ED-10w/ED-10x freeform review, promote Candidate 2 as provisional bounded-decoration lead, retain Candidate 0 as fallback, and hold Candidate 1 / 3 because they read too thin. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html` |
+| metadata_json | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json` |
+| open_command | `.\open-current-proof.ps1` |
+| source_review_artifact | `clip-ed10w-subtitle-presentation-review-pack-001` |
+| source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
+| generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10y_candidate2_carry_forward --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10y_candidate2_carry_forward --format json` plus targeted tests. |
+| latest_local_smoke | Same-machine ED-10y regeneration writes the same current `subtitle_presentation_review_pack.html` / `.json` path with `artifact_id=clip-ed10y-candidate2-carry-forward-001`, `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, Candidate 2 as `provisional_bounded_decoration_lead`, Candidate 0 as `fallback_reference`, Candidate 1 / 3 as `held_reference`, and `render_path_readiness.status=candidate2_tiny_render_path_nearer_diagnostic_probe_completed`. Full-frame context is no longer constrained to the old cramped 220px proof width. |
+| review_status | Latest freeform review consumed. Do not request another Candidate 0-3 comparison review, general Keifont acceptance, cut_002/cut_003 review, or the same cut_008 dense/multiline pass. |
+| next_action | Use Candidate 2 as the provisional bounded-decoration lead. Next movement should be a genuinely new axis such as production limitation-lift or final render-path probe, not another same-candidate comparison. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked generator, docs, dashboard metadata, and
+tests but not the ignored HTML/JSON/PNG/MP4/ASS artifacts themselves. Other
+worktrees should treat missing `episodes/` review assets as local evidence
+absence, not as a tracked Git failure. `git ls-files episodes` should remain
+empty.
 
 ## `clip-ed10w-subtitle-presentation-review-pack-001`
 

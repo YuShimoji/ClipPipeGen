@@ -32,13 +32,19 @@ ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE = "ed10r_keifont_dense_stress_proof"
 ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE = (
     "ed10w_subtitle_presentation_review_pack"
 )
+ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE = "ed10y_candidate2_carry_forward"
 SUBTITLE_OVERLAY_PROOF_PROFILES = (
     DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
     ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
     ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
     ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+    ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
 )
 ED10L_KEIFONT_CANDIDATE_ID = "ed10l_keifont_pop_dialogue_candidate"
+ED10W_CANDIDATE0_BASELINE_ID = "ed10w_current_pass_reference"
+ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID = "ed10w_lighter_outline_shadow_pressure"
+ED10W_CANDIDATE2_BADGE_PRESSURE_ID = "ed10w_badge_label_pressure_adjustment"
+ED10W_CANDIDATE3_BALANCED_ID = "ed10w_balanced_combined_low_risk"
 DEFAULT_SOURCE_VIDEO_MATERIAL_ID = "src_video_jp_pilot01"
 DEFAULT_SOURCE_AUDIO_MATERIAL_ID = "src_audio_jp_pilot01"
 DEFAULT_REVIEW_DIR_NAME = "jp_pilot01r3_cut_review"
@@ -599,6 +605,166 @@ def _subtitle_overlay_proof_profile(
             "publishing_acceptance": False,
             "public_use_permission": False,
         }
+    if profile == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
+            raise SubtitleOverlayVisualProofError(
+                "ed10y_candidate2_carry_forward requires "
+                f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
+            )
+        if tuple(target_cut_ids) != ("cut_008",):
+            raise SubtitleOverlayVisualProofError(
+                "ed10y_candidate2_carry_forward requires exactly "
+                "--target-cut cut_008; do not replay cut_002/cut_003 general "
+                "Keifont acceptance review"
+            )
+        return {
+            "proof_profile": ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+            "artifact_id": "clip-ed10y-candidate2-carry-forward-001",
+            "source_review_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+            "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+            "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
+            "target_cuts": list(target_cut_ids),
+            "current_lead_candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+            "fallback_reference_candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
+            "held_reference_candidate_ids": [
+                ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+                ED10W_CANDIDATE3_BALANCED_ID,
+            ],
+            "selected_typography_base": ED10L_KEIFONT_CANDIDATE_ID,
+            "review_surface_direction": {
+                "status": "latest_review_consumed_candidate2_carry_forward",
+                "accepted_surface_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+                "accepted_surface": (
+                    "ED-10w/ED-10x crop-first pack reviewed; Candidate 2 is "
+                    "the bounded-decoration lead and Candidate 0 is fallback."
+                ),
+                "not_reopened": [
+                    "Candidate 0-3 comparison review",
+                    "cut_002 general Keifont acceptance",
+                    "cut_003 general Keifont acceptance",
+                    "same cut_008 dense/multiline pass",
+                ],
+                "not_accepted": [
+                    "production subtitle design",
+                    "production render",
+                    "creative acceptance",
+                    "rights approval",
+                    "publishing",
+                    "public use",
+                ],
+            },
+            "candidate_state": {
+                "keifont_is_diagnostic_representative_normal_dialogue_provisional_baseline": True,
+                "ed10v_dense_stress_pass_consumed": True,
+                "ed10w_review_consumed": True,
+                "ed10y_axis": "candidate2_carry_forward + render_path_nearer_probe",
+                "lead_bounded_decoration_candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+                "lead_candidate_label": "Candidate 2 / SPK badge / label pressure adjustment",
+                "fallback_reference_candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
+                "fallback_reference_label": "Candidate 0 / current passed baseline",
+                "held_reference_candidate_ids": [
+                    ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+                    ED10W_CANDIDATE3_BALANCED_ID,
+                ],
+                "held_reference_reason": (
+                    "latest review says Candidate 1 and Candidate 3 read too "
+                    "thin compared with Candidate 0 and Candidate 2"
+                ),
+                "font_family_changed": False,
+                "broad_style_gallery": False,
+                "same_candidate_comparison_review_allowed": False,
+                "user_review_required_now": False,
+            },
+            "review_memory": {
+                "subject": "ED-10w bounded subtitle presentation candidates",
+                "latest_freeform_review_consumed": True,
+                "latest_freeform_review_summary": (
+                    "Candidate 0 and Candidate 2 are acceptable/good; "
+                    "Candidate 1 and Candidate 3 look too thin; full-frame "
+                    "context was still somewhat small."
+                ),
+                "lead_candidate": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+                "fallback_reference": ED10W_CANDIDATE0_BASELINE_ID,
+                "held_references": [
+                    {
+                        "candidate_id": ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+                        "reason": "too_thin_compared_with_0_and_2",
+                    },
+                    {
+                        "candidate_id": ED10W_CANDIDATE3_BALANCED_ID,
+                        "reason": "too_thin_compared_with_0_and_2",
+                    },
+                ],
+                "accepted_scope": [
+                    "diagnostic_representative_review",
+                    "provisional_normal_dialogue_baseline",
+                    "diagnostic_dense_stress_pass",
+                    "diagnostic_multiline_wrap_pass",
+                    "candidate2_bounded_badge_pressure_adjustment_lead",
+                ],
+                "not_accepted_scope": [
+                    "production_subtitle_design",
+                    "production_render",
+                    "creative_acceptance",
+                    "rights",
+                    "publishing",
+                    "public_use",
+                ],
+                "next_nonredundant_axis": [
+                    "candidate2_render_path_nearer_probe_readback",
+                    "production_limitation_lift",
+                    "future_shared_subtitle_layout_policy",
+                ],
+                "repeated_general_review": False,
+                "repeated_cut_008_review_allowed": False,
+                "same_candidate_comparison_review_allowed": False,
+                "current_blocker": "none_for_candidate2_carry_forward",
+            },
+            "focused_proof_review": {
+                "status": "candidate2_carry_forward_ready",
+                "target": "Candidate 2 lead carry-forward proof surface",
+                "input_mode": "none_latest_review_already_consumed",
+                "current_lead_candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+                "fallback_reference_candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
+                "target_cuts": list(target_cut_ids),
+                "source_review_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+                "source_review_surface": (
+                    "ED-10w/ED-10x crop-first candidate pack consumed by "
+                    "latest user freeform review"
+                ),
+                "look_for": [
+                    "Candidate 2 is visible as the carry-forward lead",
+                    "Candidate 0 remains visible as fallback/reference",
+                    "Candidate 1 and Candidate 3 are held because they read too thin",
+                    "do not ask for another Candidate 0-3 comparison review",
+                ],
+                "completion_signal": (
+                    "tracked state records Candidate 2 lead and a tiny "
+                    "diagnostic render-path-nearer probe readback"
+                ),
+            },
+            "review_debt": [
+                {
+                    "debt_id": "render_path_nearer_probe",
+                    "status": "candidate2_tiny_diagnostic_probe_included",
+                    "reason": (
+                        "Candidate 2 is rendered through the current FFmpeg/libass "
+                        "diagnostic path as a tiny path-nearer probe."
+                    ),
+                    "next_action": (
+                        "use the Candidate 2 probe readback as diagnostic evidence "
+                        "only; production render acceptance remains separate"
+                    ),
+                }
+            ],
+            "production_candidate": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        }
 
     if profile not in SUBTITLE_OVERLAY_PROOF_PROFILES:
         known = ", ".join(SUBTITLE_OVERLAY_PROOF_PROFILES)
@@ -746,6 +912,14 @@ def build_subtitle_overlay_visual_proof(
         updated_representative[
             "review_card_status"
         ] = "withheld_multiline_wrap_evidence_missing"
+    elif (
+        proof_profile_data.get("proof_profile")
+        == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE
+    ):
+        report["review_card_status"] = "withheld_review_already_consumed_candidate2_promoted"
+        updated_representative[
+            "review_card_status"
+        ] = "withheld_review_already_consumed_candidate2_promoted"
     else:
         report["review_card_status"] = "review_card_allowed_after_scope_checks"
         updated_representative[
@@ -759,7 +933,10 @@ def build_subtitle_overlay_visual_proof(
     presentation_review_pack = None
     if (
         proof_profile_data.get("proof_profile")
-        == ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE
+        in {
+            ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+            ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+        }
     ):
         presentation_review_pack = _subtitle_presentation_review_pack(
             report=report,
@@ -948,6 +1125,7 @@ def _build_cut_proof(
                 in {
                     ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
                     ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+                    ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
                 },
             ),
             ffmpeg_path=render_result.ffmpeg_path,
@@ -966,7 +1144,11 @@ def _build_cut_proof(
                 base=base,
                 runner=runner,
             )
-            if proof_profile_id == ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE
+            if proof_profile_id
+            in {
+                ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+                ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+            }
             else []
         )
         return _cut_report(
@@ -1279,6 +1461,14 @@ def _report_payload(
         "source_comparison_artifact_id": proof_profile.get(
             "source_comparison_artifact_id"
         ),
+        "current_lead_candidate_id": proof_profile.get("current_lead_candidate_id"),
+        "fallback_reference_candidate_id": proof_profile.get(
+            "fallback_reference_candidate_id"
+        ),
+        "held_reference_candidate_ids": proof_profile.get(
+            "held_reference_candidate_ids", []
+        ),
+        "selected_typography_base": proof_profile.get("selected_typography_base"),
         "created_at": _now(),
         "episode_id": episode_id,
         "scope": "cut_scoped_subtitle_overlay_visual_proof",
@@ -1346,6 +1536,8 @@ def _font_visual_evidence_readback(
     requires_keifont = profile in {
         ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
         ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
+        ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
+        ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
     }
     valid_keifont = (
         requested == "Keifont"
@@ -4066,8 +4258,8 @@ def _ed10w_candidate_ass_style(
     outline = max(2, int(base_layout["values"].get("outline") or 2))
     shadow = max(1, int(base_layout["values"].get("shadow") or 1))
     if candidate_id in {
-        "ed10w_lighter_outline_shadow_pressure",
-        "ed10w_balanced_combined_low_risk",
+        ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+        ED10W_CANDIDATE3_BALANCED_ID,
     }:
         target_outline = max(1, outline - ED10W_REVIEWABLE_OUTLINE_REDUCTION_PX)
         target_shadow = max(0, shadow - ED10W_REVIEWABLE_SHADOW_REDUCTION_PX)
@@ -4076,8 +4268,8 @@ def _ed10w_candidate_ass_style(
         style["stroke_ratio"] = target_outline / font_size
         style["shadow_offset_ratio"] = target_shadow / font_size
     if candidate_id in {
-        "ed10w_badge_label_pressure_adjustment",
-        "ed10w_balanced_combined_low_risk",
+        ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+        ED10W_CANDIDATE3_BALANCED_ID,
     }:
         badge_fill = _rgb_from_hex(style.get("badge_fill"), fallback=(236, 70, 88))
         badge_outline = _rgb_from_hex(
@@ -4414,16 +4606,22 @@ def _subtitle_presentation_review_pack(
     base: Path,
 ) -> dict[str, Any]:
     evidence = _subtitle_presentation_pack_evidence(report)
+    artifact_id = str(
+        report.get("artifact_id") or "clip-ed10w-subtitle-presentation-review-pack-001"
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "report_kind": "subtitle_presentation_review_pack",
-        "artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+        "artifact_id": artifact_id,
         "source_artifact_id": report.get("artifact_id"),
         "source_review_artifact_id": report.get("source_review_artifact_id"),
         "created_at": _now(),
         "episode_id": report.get("episode_id"),
         "axis": "bounded_decoration_adjustment + render_path_readiness",
+        "state": _subtitle_presentation_pack_state(report),
         "target_cuts": report.get("target_cuts") or [],
+        "review_consumption": _subtitle_presentation_review_consumption(report),
+        "lead_fallback_readback": _subtitle_presentation_lead_fallback_readback(report),
         "prior_review": {
             "prior_review_count": "3+",
             "prior_signal_summary": (
@@ -4445,38 +4643,10 @@ def _subtitle_presentation_review_pack(
                 "public_use",
             ],
         },
-        "review_card": {
-            "target": "clip-ed10w-subtitle-presentation-review-pack-001",
-            "axis": "bounded_decoration_adjustment + render_path_readiness",
-            "prior_review_count": "3+",
-            "prior_signal_summary": (
-                "Keifont normal-dialogue and dense/multiline route passed "
-                "diagnostically."
-            ),
-            "what_changed": (
-                "Candidate deltas are now reviewable with compact subtitle/body "
-                "crops, SPK badge crops, and actual style delta readback; the "
-                "render-path readiness decision card remains diagnostic."
-            ),
-            "what_this_review_decides": [
-                "whether Candidate 0 current baseline remains best",
-                "whether Candidate 1 lighter outline/shadow is preferable",
-                "whether Candidate 2 badge pressure adjustment is preferable",
-                "whether Candidate 3 combined adjustment is preferable",
-                "whether render-path probe should proceed after this",
-            ],
-            "not_asking": [
-                "general Keifont acceptance",
-                "cut_002 / cut_003 review",
-                "same cut_008 dense/multiline pass",
-                "production subtitle design acceptance",
-            ],
-            "input_mode": "freeform",
-            "completion_signal": (
-                "user chooses pass, an adjustment candidate, a render-path next "
-                "route, or names a concern"
-            ),
-        },
+        "review_card": _subtitle_presentation_review_card(report),
+        "operator_observation_card": _subtitle_presentation_operator_observation_card(
+            report
+        ),
         "bounded_decoration_candidates": _bounded_decoration_candidates(report),
         "candidate_visual_evidence": _subtitle_presentation_candidate_visual_evidence(
             report
@@ -4504,6 +4674,159 @@ def _subtitle_presentation_review_pack(
     }
 
 
+def _subtitle_presentation_pack_state(report: dict[str, Any]) -> str:
+    if report.get("proof_profile") == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        return "candidate2_carry_forward_ready"
+    return "one_pass_review_pending"
+
+
+def _subtitle_presentation_review_consumption(report: dict[str, Any]) -> dict[str, Any]:
+    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        return {
+            "latest_review_consumed": False,
+            "user_review_required_now": True,
+            "same_candidate_comparison_review_allowed": True,
+        }
+    review_memory = report.get("review_memory") or {}
+    return {
+        "latest_review_consumed": True,
+        "source_review": review_memory.get("latest_freeform_review_summary"),
+        "lead_candidate": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+        "fallback_reference": ED10W_CANDIDATE0_BASELINE_ID,
+        "held_references": [
+            ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+            ED10W_CANDIDATE3_BALANCED_ID,
+        ],
+        "user_review_required_now": False,
+        "same_candidate_comparison_review_allowed": False,
+        "review_card_reemitted": False,
+    }
+
+
+def _subtitle_presentation_lead_fallback_readback(
+    report: dict[str, Any],
+) -> dict[str, Any]:
+    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        return {
+            "lead_candidate": None,
+            "fallback_reference": None,
+            "held_references": [],
+            "status": "not_promoted_yet",
+        }
+    return {
+        "status": "candidate2_promoted_to_provisional_bounded_decoration_lead",
+        "lead_candidate": {
+            "candidate_number": 2,
+            "candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+            "label": "SPK badge / label pressure adjustment",
+            "reason": "latest review says Candidate 0 and Candidate 2 are acceptable/good",
+        },
+        "fallback_reference": {
+            "candidate_number": 0,
+            "candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
+            "label": "current passed baseline reference",
+            "reason": "latest review keeps Candidate 0 acceptable as fallback/reference",
+        },
+        "held_references": [
+            {
+                "candidate_number": 1,
+                "candidate_id": ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+                "reason": "too_thin_compared_with_0_and_2",
+            },
+            {
+                "candidate_number": 3,
+                "candidate_id": ED10W_CANDIDATE3_BALANCED_ID,
+                "reason": "too_thin_compared_with_0_and_2",
+            },
+        ],
+    }
+
+
+def _subtitle_presentation_review_card(report: dict[str, Any]) -> dict[str, Any]:
+    artifact_id = str(
+        report.get("artifact_id") or "clip-ed10w-subtitle-presentation-review-pack-001"
+    )
+    if report.get("proof_profile") == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        return {
+            "target": artifact_id,
+            "status": "withheld_latest_review_already_consumed",
+            "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
+            "axis": "candidate2_carry_forward + render_path_nearer_probe",
+            "reason": (
+                "The latest freeform review already selected Candidate 2 as "
+                "lead and kept Candidate 0 as fallback; repeating the same "
+                "Candidate 0-3 review is disallowed."
+            ),
+            "not_asking": [
+                "Candidate 0-3 comparison review",
+                "general Keifont acceptance",
+                "cut_002 / cut_003 review",
+                "same cut_008 dense/multiline pass",
+                "production subtitle design acceptance",
+            ],
+            "input_mode": "none",
+            "completion_signal": "review memory consumed; proceed from Candidate 2 lead",
+        }
+    return {
+        "target": artifact_id,
+        "status": "emitted_nonredundant_new_axis",
+        "action_type": "ONE_REVIEW_CARD_NEW_AXIS",
+        "axis": "bounded_decoration_adjustment + render_path_readiness",
+        "prior_review_count": "3+",
+        "prior_signal_summary": (
+            "Keifont normal-dialogue and dense/multiline route passed "
+            "diagnostically."
+        ),
+        "what_changed": (
+            "Candidate deltas are now reviewable with compact subtitle/body "
+            "crops, SPK badge crops, and actual style delta readback; the "
+            "render-path readiness decision card remains diagnostic."
+        ),
+        "what_this_review_decides": [
+            "whether Candidate 0 current baseline remains best",
+            "whether Candidate 1 lighter outline/shadow is preferable",
+            "whether Candidate 2 badge pressure adjustment is preferable",
+            "whether Candidate 3 combined adjustment is preferable",
+            "whether render-path probe should proceed after this",
+        ],
+        "not_asking": [
+            "general Keifont acceptance",
+            "cut_002 / cut_003 review",
+            "same cut_008 dense/multiline pass",
+            "production subtitle design acceptance",
+        ],
+        "input_mode": "freeform",
+        "completion_signal": (
+            "user chooses pass, an adjustment candidate, a render-path next "
+            "route, or names a concern"
+        ),
+    }
+
+
+def _subtitle_presentation_operator_observation_card(
+    report: dict[str, Any],
+) -> dict[str, Any]:
+    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        return {
+            "status": "not_needed_review_card_emitted",
+            "reason": "ED-10w still needs one bounded presentation review.",
+        }
+    return {
+        "status": "no_user_action_required",
+        "reason": (
+            "Latest user review is already consumed; this surface is a "
+            "carry-forward/readback and tiny diagnostic probe, not another "
+            "Candidate 0-3 review request."
+        ),
+        "observe": [
+            "Candidate 2 is the provisional bounded-decoration lead",
+            "Candidate 0 remains fallback/reference",
+            "Candidate 1 and Candidate 3 are held because they read too thin",
+            "production/public/rights gates remain closed",
+        ],
+    }
+
+
 def _subtitle_presentation_candidate_visual_evidence(
     report: dict[str, Any],
 ) -> list[dict[str, Any]]:
@@ -4514,7 +4837,11 @@ def _subtitle_presentation_candidate_visual_evidence(
         return []
     artifacts = cut_results[0].get("generated_artifacts") or {}
     visuals = artifacts.get("ed10w_candidate_visuals") or []
-    return [item for item in visuals if isinstance(item, dict)]
+    return [
+        _with_ed10y_candidate_role(item, report=report)
+        for item in visuals
+        if isinstance(item, dict)
+    ]
 
 
 def _subtitle_presentation_candidate_delta_readback(
@@ -4522,7 +4849,7 @@ def _subtitle_presentation_candidate_delta_readback(
 ) -> list[dict[str, Any]]:
     visuals = _subtitle_presentation_candidate_visual_evidence(report)
     return [
-        item["style_delta_readback"]
+        _with_ed10y_candidate_role(item["style_delta_readback"], report=report)
         for item in visuals
         if isinstance(item.get("style_delta_readback"), dict)
     ]
@@ -4565,7 +4892,62 @@ def _subtitle_presentation_pack_evidence(report: dict[str, Any]) -> dict[str, An
 
 def _bounded_decoration_candidates(report: dict[str, Any]) -> list[dict[str, Any]]:
     style = report.get("style_parameters") or {}
-    return _ed10w_bounded_decoration_candidates(style=style)
+    return [
+        _with_ed10y_candidate_role(candidate, report=report)
+        for candidate in _ed10w_bounded_decoration_candidates(style=style)
+    ]
+
+
+def _with_ed10y_candidate_role(
+    item: dict[str, Any],
+    *,
+    report: dict[str, Any],
+) -> dict[str, Any]:
+    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        return item
+    candidate_number = int(item.get("candidate_number") or 0)
+    role = _ed10y_candidate_role(candidate_number)
+    updated = copy.deepcopy(item)
+    updated.update(role)
+    return updated
+
+
+def _ed10y_candidate_role(candidate_number: int) -> dict[str, Any]:
+    roles = {
+        0: {
+            "role_in_current_path": "fallback_reference",
+            "current_path_status": "retained_as_acceptable_fallback",
+            "review_consumed_reason": "Candidate 0 is acceptable/good but no longer the lead",
+            "display_priority": 2,
+        },
+        1: {
+            "role_in_current_path": "held_reference",
+            "current_path_status": "held_too_thin_for_current_path",
+            "review_consumed_reason": "Candidate 1 looked too thin compared with 0 and 2",
+            "display_priority": 3,
+        },
+        2: {
+            "role_in_current_path": "provisional_bounded_decoration_lead",
+            "current_path_status": "promoted_to_candidate2_lead",
+            "review_consumed_reason": "Candidate 2 is acceptable/good and carries the badge-pressure adjustment forward",
+            "display_priority": 1,
+        },
+        3: {
+            "role_in_current_path": "held_reference",
+            "current_path_status": "held_too_thin_for_current_path",
+            "review_consumed_reason": "Candidate 3 looked too thin compared with 0 and 2",
+            "display_priority": 4,
+        },
+    }
+    return roles.get(
+        candidate_number,
+        {
+            "role_in_current_path": "unknown",
+            "current_path_status": "unknown",
+            "review_consumed_reason": "",
+            "display_priority": 99,
+        },
+    )
 
 
 def _ed10w_bounded_decoration_candidates(
@@ -4588,7 +4970,7 @@ def _ed10w_bounded_decoration_candidates(
     return [
         {
             "candidate_number": 0,
-            "candidate_id": "ed10w_current_pass_reference",
+            "candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
             "label": "Current passed baseline reference",
             "changes_from_ed10v": "none",
             "outline_pressure": "current",
@@ -4601,7 +4983,7 @@ def _ed10w_bounded_decoration_candidates(
         },
         {
             "candidate_number": 1,
-            "candidate_id": "ed10w_lighter_outline_shadow_pressure",
+            "candidate_id": ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
             "label": "Lighter outline / shadow pressure",
             "changes_from_ed10v": (
                 "reduce outline by two bounded pixels and shadow by one bounded pixel "
@@ -4622,7 +5004,7 @@ def _ed10w_bounded_decoration_candidates(
         },
         {
             "candidate_number": 2,
-            "candidate_id": "ed10w_badge_label_pressure_adjustment",
+            "candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
             "label": "SPK badge / label pressure adjustment",
             "changes_from_ed10v": (
                 "keep subtitle text treatment and visibly reduce placeholder badge "
@@ -4642,7 +5024,7 @@ def _ed10w_bounded_decoration_candidates(
         },
         {
             "candidate_number": 3,
-            "candidate_id": "ed10w_balanced_combined_low_risk",
+            "candidate_id": ED10W_CANDIDATE3_BALANCED_ID,
             "label": "Balanced combined low-risk adjustment",
             "changes_from_ed10v": (
                 "combine reviewably lighter outline/shadow with visibly lighter "
@@ -4668,6 +5050,42 @@ def _ed10w_bounded_decoration_candidates(
 
 def _render_path_decision_card(report: dict[str, Any]) -> dict[str, Any]:
     renderer = report.get("renderer_path_audit") or {}
+    if report.get("proof_profile") == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+        lead_visual = next(
+            (
+                item
+                for item in _subtitle_presentation_candidate_visual_evidence(report)
+                if int(item.get("candidate_number") or 0) == 2
+            ),
+            {},
+        )
+        return {
+            "status": "candidate2_tiny_render_path_nearer_diagnostic_probe_completed",
+            "safe_existing_path_available": True,
+            "current_renderer_path": (
+                renderer.get("renderer_path") or "ffmpeg_libass_diagnostic_overlay"
+            ),
+            "recommended_minimal_next_route": "candidate2_probe_completed_no_production_claim",
+            "candidate2_probe": {
+                "candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+                "source_cut": lead_visual.get("source_cut"),
+                "source_subtitle_id": lead_visual.get("source_subtitle_id"),
+                "video_path": lead_visual.get("video_path"),
+                "image_path": lead_visual.get("image_path"),
+                "crop_images": lead_visual.get("crop_images") or {},
+                "image_status": lead_visual.get("image_status"),
+                "style_delta_readback": lead_visual.get("style_delta_readback") or {},
+            },
+            "next_route": "production_limitation_lift_or_final_render_path_probe_only_after_explicit_acceptance",
+            "explicitly_not_accepted": [
+                "production subtitle design acceptance",
+                "production render acceptance",
+                "creative acceptance",
+                "rights clearance",
+                "publishing acceptance",
+                "public-use permission",
+            ],
+        }
     return {
         "status": "decision_card_included_no_production_claim",
         "safe_existing_path_available": True,
@@ -4710,6 +5128,11 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     candidate_delta_readback = pack.get("candidate_delta_readback") or []
     review_card = pack.get("review_card") or {}
     render_card = pack.get("render_path_readiness") or {}
+    title = (
+        "Candidate 2 Carry-Forward Pack"
+        if pack.get("state") == "candidate2_carry_forward_ready"
+        else "Subtitle Presentation Review Pack"
+    )
     baseline_frame = evidence.get("baseline_frame")
     multiline_frame = evidence.get("multiline_screenshot")
     candidate_rows = "\n".join(
@@ -4753,14 +5176,17 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     candidate_visual_grid = _subtitle_presentation_candidate_visuals_html(
         candidate_visuals
     )
+    candidate_visual_intro = _subtitle_presentation_candidate_visual_intro(pack)
     candidate_delta_rows = _subtitle_presentation_candidate_delta_readback_html(
         candidate_delta_readback
     )
+    review_action_section = _subtitle_presentation_review_action_section_html(pack)
+    lead_summary = _subtitle_presentation_lead_summary_html(pack)
     return f"""<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
-  <title>Subtitle Presentation Review Pack</title>
+  <title>{escape(title)}</title>
   <style>
     body {{ font-family: system-ui, sans-serif; margin: 0; line-height: 1.5; color: #1f2933; background: #f7f8fa; }}
     main {{ max-width: 1120px; margin: 0 auto; padding: 24px; }}
@@ -4770,12 +5196,17 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     .evidence-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }}
     .proof {{ max-width: 480px; width: 100%; border: 1px solid #c7ced8; display: block; }}
     .compact {{ max-width: 220px; }}
-    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: start; }}
+    .lead-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; align-items: start; }}
+    .lead-tile {{ border-left: 5px solid #306c46; background: #f8fcf9; padding: 10px; }}
+    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; align-items: start; }}
     .candidate-visual {{ margin: 0; padding: 8px; border-left: 4px solid #2f6f9f; background: #fbfcfe; }}
+    .candidate-visual.provisional_bounded_decoration_lead {{ border-left-color: #306c46; background: #f8fcf9; }}
+    .candidate-visual.fallback_reference {{ border-left-color: #6b7280; }}
+    .candidate-visual.held_reference {{ border-left-color: #b7791f; background: #fffaf0; }}
     .candidate-visual h3 {{ margin: 0 0 6px; font-size: 16px; line-height: 1.3; }}
     .candidate-crop-grid {{ display: grid; grid-template-columns: repeat(2, minmax(110px, 1fr)); gap: 8px; align-items: start; }}
     .candidate-crop {{ max-width: 100%; width: 100%; border: 1px solid #c7ced8; display: block; background: #fff; }}
-    .candidate-proof {{ max-width: 220px; width: 100%; border: 1px solid #c7ced8; display: block; }}
+    .candidate-proof {{ max-width: 720px; width: 100%; border: 1px solid #c7ced8; display: block; }}
     .candidate-change {{ margin: 6px 0 0; font-size: 12px; color: #52616f; }}
     .secondary-frame {{ margin-top: 8px; }}
     .delta-status {{ font-weight: 700; }}
@@ -4787,20 +5218,13 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
 <body>
 <main>
   <section class="hero">
-    <h1>Subtitle Presentation Review Pack</h1>
+    <h1>{escape(title)}</h1>
     <p>Artifact: {escape(str(pack.get("artifact_id") or ""))}</p>
     <p>Axis: {escape(str(pack.get("axis") or ""))}</p>
     <p class="warning">Diagnostic review only. This page does not approve production subtitle design, production render, creative use, rights, publishing, or public use.</p>
   </section>
-  <section>
-    <h2>Non-Redundant Review Card</h2>
-    <p><strong>What changed:</strong> {escape(str(review_card.get("what_changed") or ""))}</p>
-    <p><strong>Completion signal:</strong> {escape(str(review_card.get("completion_signal") or ""))}</p>
-    <h3>This review decides</h3>
-    <ul>{decides}</ul>
-    <h3>Not asking</h3>
-    <ul>{not_asking}</ul>
-  </section>
+{review_action_section}
+{lead_summary}
   <section>
     <h2>Evidence</h2>
     <div class="evidence-grid">
@@ -4810,7 +5234,7 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
   </section>
   <section>
     <h2>Candidate Visual Evidence</h2>
-    <p>Same cut/cue comparison for the bounded decoration candidates. Compact crops are the default evidence; full-frame context stays behind click-through detail.</p>
+    <p>{escape(candidate_visual_intro)}</p>
     <div class="candidate-visual-grid">
 {candidate_visual_grid}
     </div>
@@ -4844,6 +5268,104 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
 """
 
 
+def _subtitle_presentation_review_action_section_html(pack: dict[str, Any]) -> str:
+    review_card = pack.get("review_card") or {}
+    not_asking = "\n".join(
+        f"<li>{escape(str(item))}</li>" for item in review_card.get("not_asking") or []
+    )
+    if pack.get("state") == "candidate2_carry_forward_ready":
+        observation = pack.get("operator_observation_card") or {}
+        observe = "\n".join(
+            f"<li>{escape(str(item))}</li>" for item in observation.get("observe") or []
+        )
+        return f"""  <section>
+    <h2>Review Consumed / Operator Observation</h2>
+    <p><strong>Status:</strong> {escape(str(review_card.get("status") or ""))}</p>
+    <p>{escape(str(review_card.get("reason") or observation.get("reason") or ""))}</p>
+    <h3>Current readback</h3>
+    <ul>{observe}</ul>
+    <h3>Not asking</h3>
+    <ul>{not_asking}</ul>
+  </section>"""
+    decides = "\n".join(
+        f"<li>{escape(str(item))}</li>"
+        for item in review_card.get("what_this_review_decides") or []
+    )
+    return f"""  <section>
+    <h2>Non-Redundant Review Card</h2>
+    <p><strong>What changed:</strong> {escape(str(review_card.get("what_changed") or ""))}</p>
+    <p><strong>Completion signal:</strong> {escape(str(review_card.get("completion_signal") or ""))}</p>
+    <h3>This review decides</h3>
+    <ul>{decides}</ul>
+    <h3>Not asking</h3>
+    <ul>{not_asking}</ul>
+  </section>"""
+
+
+def _subtitle_presentation_lead_summary_html(pack: dict[str, Any]) -> str:
+    if pack.get("state") != "candidate2_carry_forward_ready":
+        return ""
+    readback = pack.get("lead_fallback_readback") or {}
+    visuals = {
+        int(item.get("candidate_number") or 0): item
+        for item in pack.get("candidate_visual_evidence") or []
+        if isinstance(item, dict)
+    }
+    lead = readback.get("lead_candidate") or {}
+    fallback = readback.get("fallback_reference") or {}
+    held = readback.get("held_references") or []
+    held_items = "\n".join(
+        "<li>"
+        f"Candidate {escape(str(item.get('candidate_number')))} / "
+        f"{escape(str(item.get('candidate_id') or ''))}: "
+        f"{escape(str(item.get('reason') or ''))}"
+        "</li>"
+        for item in held
+        if isinstance(item, dict)
+    )
+    return f"""  <section>
+    <h2>Candidate 2 Lead / Candidate 0 Fallback</h2>
+    <div class="lead-grid">
+{_subtitle_presentation_lead_tile_html(lead, visuals.get(2), role="Lead")}
+{_subtitle_presentation_lead_tile_html(fallback, visuals.get(0), role="Fallback")}
+    </div>
+    <h3>Held references</h3>
+    <ul>{held_items}</ul>
+  </section>"""
+
+
+def _subtitle_presentation_lead_tile_html(
+    readback: dict[str, Any],
+    visual: dict[str, Any] | None,
+    *,
+    role: str,
+) -> str:
+    crop_images = (visual or {}).get("crop_images") or {}
+    crops = _subtitle_presentation_candidate_crop_images_html(crop_images)
+    return (
+        '      <article class="lead-tile">'
+        f"<h3>{escape(role)}: Candidate {escape(str(readback.get('candidate_number') or ''))}</h3>"
+        f"<p>{escape(str(readback.get('label') or readback.get('candidate_id') or ''))}</p>"
+        f"<p class=\"candidate-change\">{escape(str(readback.get('reason') or ''))}</p>"
+        f"{crops}"
+        "</article>"
+    )
+
+
+def _subtitle_presentation_candidate_visual_intro(pack: dict[str, Any]) -> str:
+    if pack.get("state") == "candidate2_carry_forward_ready":
+        return (
+            "Candidate 2 is the lead treatment and Candidate 0 is the fallback "
+            "reference. Compact crops are shown first; full-frame context is "
+            "available at a larger size inside each details block."
+        )
+    return (
+        "Same cut/cue comparison for the bounded decoration candidates. Compact "
+        "crops are the default evidence; full-frame context stays behind "
+        "click-through detail."
+    )
+
+
 def _subtitle_presentation_candidate_visuals_html(
     candidate_visuals: list[dict[str, Any]],
 ) -> str:
@@ -4856,11 +5378,17 @@ def _subtitle_presentation_candidate_visuals_html(
     cards: list[str] = []
     for item in sorted(
         candidate_visuals,
-        key=lambda visual: int(visual.get("candidate_number") or 0),
+        key=lambda visual: (
+            int(visual.get("display_priority") or 100),
+            int(visual.get("candidate_number") or 0),
+        ),
     ):
         candidate_number = item.get("candidate_number")
         label = str(item.get("label") or "")
         change = str(item.get("changes_from_ed10v") or "")
+        role = str(item.get("role_in_current_path") or "")
+        current_path_status = str(item.get("current_path_status") or "")
+        role_class = f" {role}" if role else ""
         image_path = item.get("image_path")
         image_html = (
             f'<a href="{_artifact_href(image_path)}"><img class="candidate-proof" '
@@ -4873,9 +5401,10 @@ def _subtitle_presentation_candidate_visuals_html(
         crop_html = _subtitle_presentation_candidate_crop_images_html(crop_images)
         cue = item.get("source_subtitle_id") or "representative frame"
         cards.append(
-            "      <article class=\"candidate-visual\">"
+            f"      <article class=\"candidate-visual{escape(role_class)}\">"
             f"<h3>Candidate {escape(str(candidate_number))}: {escape(label)}</h3>"
             f"{crop_html}"
+            f"<p class=\"candidate-change\">{escape(current_path_status)}</p>"
             f"<p class=\"candidate-change\">{escape(str(cue))} / {escape(str(item.get('same_frame_basis') or 'same frame comparison'))}</p>"
             f"<p class=\"candidate-change\">{escape(change)}</p>"
             "<details class=\"secondary-frame\"><summary>Full-frame context</summary>"

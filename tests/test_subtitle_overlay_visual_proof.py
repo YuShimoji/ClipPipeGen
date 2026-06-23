@@ -868,6 +868,137 @@ def test_subtitle_overlay_visual_proof_ed10w_presentation_review_pack(
     assert "production subtitle design" in pack_html
 
 
+def test_subtitle_overlay_visual_proof_ed10y_consumes_candidate2_review(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    monkeypatch.setattr(
+        overlay_proof,
+        "_resolve_candidate_font",
+        lambda candidate: (
+            "Keifont",
+            "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf",
+            "candidate_primary_font_file_found",
+        ),
+    )
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_008"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10y_candidate2_carry_forward",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    pack = result["subtitle_presentation_review_pack"]
+    assert report["artifact_id"] == "clip-ed10y-candidate2-carry-forward-001"
+    assert report["proof_profile"] == "ed10y_candidate2_carry_forward"
+    assert report["current_lead_candidate_id"] == "ed10w_badge_label_pressure_adjustment"
+    assert report["review_card_status"] == (
+        "withheld_review_already_consumed_candidate2_promoted"
+    )
+    assert report["review_memory"]["latest_freeform_review_consumed"] is True
+    assert report["review_memory"]["lead_candidate"] == (
+        "ed10w_badge_label_pressure_adjustment"
+    )
+    assert report["review_memory"]["fallback_reference"] == (
+        "ed10w_current_pass_reference"
+    )
+    assert report["review_memory"]["same_candidate_comparison_review_allowed"] is False
+    assert report["focused_proof_review"]["input_mode"] == (
+        "none_latest_review_already_consumed"
+    )
+
+    assert pack["artifact_id"] == "clip-ed10y-candidate2-carry-forward-001"
+    assert pack["state"] == "candidate2_carry_forward_ready"
+    assert pack["review_consumption"]["latest_review_consumed"] is True
+    assert pack["review_consumption"]["user_review_required_now"] is False
+    assert pack["review_consumption"]["same_candidate_comparison_review_allowed"] is False
+    assert pack["review_card"]["action_type"] == "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    assert pack["review_card"]["status"] == "withheld_latest_review_already_consumed"
+    assert "Candidate 0-3 comparison review" in pack["review_card"]["not_asking"]
+    assert pack["operator_observation_card"]["status"] == "no_user_action_required"
+    assert pack["lead_fallback_readback"]["status"] == (
+        "candidate2_promoted_to_provisional_bounded_decoration_lead"
+    )
+    assert pack["lead_fallback_readback"]["lead_candidate"]["candidate_number"] == 2
+    assert pack["lead_fallback_readback"]["fallback_reference"]["candidate_number"] == 0
+    assert [
+        item["candidate_number"]
+        for item in pack["lead_fallback_readback"]["held_references"]
+    ] == [1, 3]
+
+    candidates_by_number = {
+        item["candidate_number"]: item for item in pack["bounded_decoration_candidates"]
+    }
+    assert candidates_by_number[2]["role_in_current_path"] == (
+        "provisional_bounded_decoration_lead"
+    )
+    assert candidates_by_number[0]["role_in_current_path"] == "fallback_reference"
+    assert candidates_by_number[1]["role_in_current_path"] == "held_reference"
+    assert candidates_by_number[3]["current_path_status"] == (
+        "held_too_thin_for_current_path"
+    )
+
+    visuals_by_number = {
+        item["candidate_number"]: item for item in pack["candidate_visual_evidence"]
+    }
+    assert visuals_by_number[2]["role_in_current_path"] == (
+        "provisional_bounded_decoration_lead"
+    )
+    assert visuals_by_number[2]["visual_delta_status"] == "visible"
+    assert visuals_by_number[0]["role_in_current_path"] == "fallback_reference"
+    assert visuals_by_number[1]["role_in_current_path"] == "held_reference"
+    assert visuals_by_number[3]["role_in_current_path"] == "held_reference"
+    assert visuals_by_number[2]["video_path"].endswith(".mp4")
+    assert (tmp_path / visuals_by_number[2]["video_path"]).exists()
+
+    render_path = pack["render_path_readiness"]
+    assert render_path["status"] == (
+        "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
+    )
+    assert render_path["candidate2_probe"]["candidate_id"] == (
+        "ed10w_badge_label_pressure_adjustment"
+    )
+    assert render_path["candidate2_probe"]["video_path"] == visuals_by_number[2][
+        "video_path"
+    ]
+    assert "production render acceptance" in render_path["explicitly_not_accepted"]
+    assert pack["production_subtitle_design_acceptance"] is False
+    assert pack["production_render_acceptance"] is False
+    assert pack["production_usage_allowed"] is False
+    assert pack["rights_status"] == "pending"
+
+    persisted_pack = json.loads(
+        (review_dir / "subtitle_presentation_review_pack.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert persisted_pack["artifact_id"] == "clip-ed10y-candidate2-carry-forward-001"
+    assert persisted_pack["review_card"]["action_type"] == (
+        "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    )
+    pack_html = (review_dir / "subtitle_presentation_review_pack.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Candidate 2 Carry-Forward Pack" in pack_html
+    assert "Review Consumed / Operator Observation" in pack_html
+    assert "Candidate 2 Lead / Candidate 0 Fallback" in pack_html
+    assert "candidate2_tiny_render_path_nearer_diagnostic_probe_completed" in pack_html
+    assert "promoted_to_candidate2_lead" in pack_html
+    assert "held_too_thin_for_current_path" in pack_html
+    assert "Candidate 0-3 comparison review" in pack_html
+    assert "production subtitle design" in pack_html
+
+
 def test_subtitle_overlay_visual_proof_ed10r_withholds_review_without_multiline_evidence(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

@@ -212,11 +212,38 @@ The render-path readiness card in the pack is a diagnostic planning probe only.
 It may justify a later tiny render-path slice, but it does not approve
 ASS/libass, YMM4, Premiere, production render, publishing, or public use.
 
+## Current ED-10y Candidate 2 Carry-Forward
+
+ED-10y consumes the latest freeform review of the ED-10w/ED-10x pack. The
+review says Candidate 0 and Candidate 2 are acceptable/good, while Candidate 1
+and Candidate 3 look too thin compared with 0 and 2. It also records that the
+full-frame context was still somewhat small, so the current pack layout keeps
+compact crops as the first evidence but allows larger full-frame detail views.
+
+Current bounded-decoration state:
+
+- lead candidate: `ed10w_badge_label_pressure_adjustment`
+- fallback/reference: `ed10w_current_pass_reference`
+- held references: `ed10w_lighter_outline_shadow_pressure`,
+  `ed10w_balanced_combined_low_risk`
+- same Candidate 0-3 comparison review allowed: `false`
+- user review required now: `false`
+
+Candidate 2 is only a provisional bounded-decoration lead for the diagnostic
+Keifont route. It carries forward the current subtitle body treatment and
+reduces placeholder SPK badge/label pressure. It does not approve production
+subtitle design, production render, creative use, rights, publishing, or public
+use.
+
+The ED-10y pack may include a tiny FFmpeg/libass diagnostic render-path-nearer
+probe for Candidate 2. That probe is readback only; it does not lift production
+render or public-use gates.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
-future slice can evaluate sharing it with NLMYTGen. ED-10v and ED-10w do not
-read, edit, or depend on NLMYTGen files, and they do not extract a shared
+future slice can evaluate sharing it with NLMYTGen. ED-10v, ED-10w, and ED-10y
+do not read, edit, or depend on NLMYTGen files, and they do not extract a shared
 package. Any later reuse should happen through an explicit boundary, contract,
 or subprocess/API route rather than by mixing repository internals.
 

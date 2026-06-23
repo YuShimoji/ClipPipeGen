@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10w`
-- artifact: `clip-ed10w-subtitle-presentation-review-pack-001`
-- state: `subtitle_presentation_review_pack_ready`
+- feature: `ED-10y`
+- artifact: `clip-ed10y-candidate2-carry-forward-001`
+- state: `candidate2_carry_forward_ready`
 
 ## Feature Table
 
@@ -61,6 +61,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10u | Dense/Stress Multiline Evidence Fix v0 | done | superseded_by_ed10v_dense_stress_pass | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Consumed by ED-10v user pass; keep as the corrected evidence surface. |
 | ED-10v | Dense/Stress Pass and Linebreak Policy v0 | done | dense_stress_pass_linebreak_policy_recorded | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Current dense/stress axis is passed; continue only through a new axis such as line-break policy tuning, bounded decoration adjustment, or production limitation-lift. |
 | ED-10w | Subtitle Presentation Review Pack v0 | done | subtitle_presentation_review_pack_ready | 100 | clip-ed10w-subtitle-presentation-review-pack-001 | Use the crop-first review pack to choose Candidate 0 baseline, Candidate 1/2/3 bounded adjustment, or the next tiny render-path diagnostic probe. |
+| ED-10y | Candidate 2 Carry-Forward and Layout Fix v0 | done | candidate2_carry_forward_ready | 100 | clip-ed10y-candidate2-carry-forward-001 | Continue from Candidate 2 as provisional bounded-decoration lead; do not repeat the Candidate 0-3 review. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

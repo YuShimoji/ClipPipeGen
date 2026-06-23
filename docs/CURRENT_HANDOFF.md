@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10w_subtitle_presentation_review_pack_ready
+health: ed10y_candidate2_carry_forward_ready
 progress_pct: 100
-last_touched: 2026-06-23
-next_review_due: review_ed10w_subtitle_presentation_pack
-active_artifact: clip-ed10w-subtitle-presentation-review-pack-001
+last_touched: 2026-06-24
+next_review_due: none_review_consumed_candidate2_carry_forward
+active_artifact: clip-ed10y-candidate2-carry-forward-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -19,14 +19,30 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
-Use this page to avoid replaying stale font-family prompts after the project
-has advanced to the ED-10w subtitle presentation review pack route.
+Use this page to avoid replaying stale font-family or Candidate 0-3 comparison
+prompts after the project has advanced to the ED-10y Candidate 2 carry-forward
+route.
 
 ## Current State
 
-The active artifact is `clip-ed10w-subtitle-presentation-review-pack-001`.
+The active artifact is `clip-ed10y-candidate2-carry-forward-001`.
 
-ED-10w is now the current handoff target. It consumes ED-10v as a passed
+ED-10y consumes the latest freeform review of the ED-10w/ED-10x presentation
+pack. Candidate 2 (`ed10w_badge_label_pressure_adjustment`) is now the
+provisional bounded-decoration lead. Candidate 0
+(`ed10w_current_pass_reference`) remains fallback/current-baseline reference.
+Candidate 1 and Candidate 3 are held because they read too thin compared with
+0 and 2. The same Candidate 0-3 comparison should not be repeated.
+
+The current launcher still opens
+`episodes/.../subtitle_presentation_review_pack.html`, but the page is now a
+Candidate 2 carry-forward/readback surface. It keeps Candidate 2 lead and
+Candidate 0 fallback visible at a glance, allows larger full-frame detail
+views, and records a tiny Candidate 2 diagnostic render-path-nearer probe. The
+probe does not approve production subtitle design, production render, creative
+use, rights, publishing, or public use.
+
+ED-10w is now a consumed source review target. It consumes ED-10v as a passed
 diagnostic dense/stress + multiline/wrap source proof and creates one new
 review surface:
 `episodes/.../subtitle_presentation_review_pack.html`. The root launcher
@@ -140,17 +156,18 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Review `clip-ed10w-subtitle-presentation-review-pack-001` once, as a new-axis
-subtitle presentation pack. Do not request another review of the corrected
-ED-10u `cut_008` multiline/dense-stress surface; ED-10v records it as passed.
-Do not reopen general font-family acceptance from `cut_002` / `cut_003`.
+Continue from `clip-ed10y-candidate2-carry-forward-001`. The latest
+presentation review is already consumed, so do not request another Candidate
+0-3 comparison, another review of the corrected ED-10u `cut_008`
+multiline/dense-stress surface, or general font-family acceptance from
+`cut_002` / `cut_003`.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
-| `ed10w_subtitle_presentation_review_pack` | Combines bounded decoration candidates with render-path readiness in one page | A single freeform review can choose the next subtitle presentation move without replaying old proof acceptance |
-| render-path readiness probe | Keeps renderer work tiny and diagnostic | A later slice can test output-readiness without claiming production render acceptance |
+| `ed10y_candidate2_carry_forward` | Records Candidate 2 as lead, Candidate 0 as fallback, and Candidate 1/3 as held | Another terminal can continue without replaying the same comparison review |
+| Candidate 2 render-path-nearer probe | Keeps renderer work tiny and diagnostic | A later slice can test output-readiness without claiming production render acceptance |
 | production limitation-lift route | Separates diagnostic proof from public/render/rights decisions | Production subtitle design, render, rights, publishing, and public-use gates can be judged explicitly later |
 
 Keep `ed10l_851_chikara_zuyoku_emphasis_candidate` outside the normal dialogue
@@ -163,7 +180,8 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10w-subtitle-presentation-review-pack-001` | Current one-pass presentation review pack with bounded decoration candidates and render-path readiness card | `.\open-current-proof.ps1` -> `episodes/.../subtitle_presentation_review_pack.html` |
+| `clip-ed10y-candidate2-carry-forward-001` | Current Candidate 2 lead carry-forward pack with Candidate 0 fallback and Candidate 2 diagnostic probe readback | `.\open-current-proof.ps1` -> `episodes/.../subtitle_presentation_review_pack.html` |
+| `clip-ed10w-subtitle-presentation-review-pack-001` | Consumed one-pass presentation review pack that selected Candidate 2 as lead and Candidate 0 as fallback | Same local path/history; do not request the same comparison again |
 | `clip-ed10r-keifont-dense-stress-proof-001` | Consumed cut_008 multiline/dense-stress diagnostic pass with valid Keifont evidence and compact `sub_096` screenshot evidence | Fallback from `.\open-current-proof.ps1` -> `episodes/.../current_proof_focused_review.html` |
 | `clip-ed10p-keifont-lead-representative-proof-001` | Consumed provisional normal-dialogue baseline evidence | See artifact registry; do not request another general cut_002/cut_003 Keifont review |
 | `clip-ed10o-multifont-focused-review-001` | Accepted focused review UX direction / font comparison reference | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |

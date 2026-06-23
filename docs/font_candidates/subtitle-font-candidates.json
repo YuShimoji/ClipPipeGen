@@ -749,6 +749,66 @@
     "font_binaries_installed_by_agent": false,
     "font_binaries_copied_or_vendored": false
   },
+  "ed10y_candidate2_carry_forward": {
+    "feature_id": "ED-10y",
+    "artifact_id": "clip-ed10y-candidate2-carry-forward-001",
+    "source_review_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+    "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
+    "proof_profile": "ed10y_candidate2_carry_forward",
+    "current_review_page": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html",
+    "metadata_json": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json",
+    "target_cut_ids": ["cut_008"],
+    "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
+    "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
+    "fallback_reference_candidate_id": "ed10w_current_pass_reference",
+    "held_reference_candidate_ids": [
+      "ed10w_lighter_outline_shadow_pressure",
+      "ed10w_balanced_combined_low_risk"
+    ],
+    "user_action_type": "NO_USER_ACTION_REVIEW_CONSUMED",
+    "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
+    "review_surface_direction": "candidate2_carry_forward_readback",
+    "review_memory": {
+      "latest_freeform_review_consumed": true,
+      "latest_freeform_review_summary": "Candidate 0 and Candidate 2 are acceptable/good; Candidate 1 and Candidate 3 read too thin; full-frame context was still somewhat small.",
+      "lead_candidate": "ed10w_badge_label_pressure_adjustment",
+      "fallback_reference": "ed10w_current_pass_reference",
+      "held_references": [
+        "ed10w_lighter_outline_shadow_pressure",
+        "ed10w_balanced_combined_low_risk"
+      ],
+      "same_candidate_comparison_review_allowed": false,
+      "user_review_required_now": false,
+      "current_blocker": "none_for_candidate2_carry_forward"
+    },
+    "layout_fix": {
+      "candidate2_lead_candidate0_fallback_visible_at_glance": true,
+      "full_frame_context": "larger_details_view",
+      "compact_crops_remain_primary": true
+    },
+    "render_path_readiness": {
+      "status": "candidate2_tiny_render_path_nearer_diagnostic_probe_completed",
+      "allowed_next_step": "production_limitation_lift_or_final_render_path_probe_only_after_explicit_acceptance",
+      "production_render_acceptance": false
+    },
+    "review_card": {
+      "status": "withheld_latest_review_already_consumed",
+      "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
+      "target": "clip-ed10y-candidate2-carry-forward-001",
+      "not_asking": "Candidate 0-3 comparison review, general Keifont acceptance, cut_002/cut_003 review, same cut_008 dense/multiline pass, or production subtitle design acceptance"
+    },
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "font_binaries_downloaded": false,
+    "font_binaries_installed_by_agent": false,
+    "font_binaries_copied_or_vendored": false
+  },
   "local_font_readback": {
     "method": "same_machine_windows_font_directory_and_registry_name_match",
     "directory": "C:/Windows/Fonts plus %LOCALAPPDATA%/Microsoft/Windows/Fonts",

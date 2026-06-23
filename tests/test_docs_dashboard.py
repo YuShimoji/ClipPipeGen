@@ -27,12 +27,12 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10w"
+    assert status["current_focus"]["feature_id"] == "ED-10y"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10w-subtitle-presentation-review-pack-001"
+        "clip-ed10y-candidate2-carry-forward-001"
     )
     assert status["current_focus"]["source_review_artifact_id"] == (
-        "clip-ed10r-keifont-dense-stress-proof-001"
+        "clip-ed10w-subtitle-presentation-review-pack-001"
     )
     assert status["current_focus"]["source_comparison_artifact_id"] == (
         "clip-ed10o-multifont-focused-review-001"
@@ -41,13 +41,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "subtitle_presentation_review_pack_ready"
+        "candidate2_carry_forward_ready"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "ed10v_keifont_dense_stress_multiline_pass_consumed"
+        "ed10w_candidate2_lead_freeform_review_consumed"
     )
     assert status["current_focus"]["latest_review_consumed"] == (
-        "ed10v_user_review_confirmed_subtitle_display_good_all_pass"
+        "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin"
     )
     assert status["current_focus"]["target_cuts"] == ["cut_008"]
     assert status["current_focus"]["selected_typography_base"] == (
@@ -57,13 +57,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "one_pass_presentation_review_pack_ready"
+        "candidate2_promoted_to_provisional_bounded_decoration_lead"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "ONE_REVIEW_CARD_NEW_AXIS"
+        "NO_USER_ACTION_REVIEW_CONSUMED"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "FREEFORM_ONE_PASS_REVIEW"
+        "NO_REVIEW_CARD_REVIEW_CONSUMED"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
@@ -93,30 +93,36 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "shared_policy_note"
     ]
     assert status["current_focus"]["review_memory"]["prior_review_count"] == "3+"
-    assert "bounded_decoration_adjustment" in status["current_focus"]["review_memory"][
-        "next_nonredundant_axis"
-    ]
-    assert "render_path_probe" in status["current_focus"]["review_memory"][
+    assert status["current_focus"]["review_memory"][
+        "latest_freeform_review_consumed"
+    ] is True
+    assert status["current_focus"]["review_memory"]["lead_candidate"] == (
+        "ed10w_badge_label_pressure_adjustment"
+    )
+    assert "candidate2_render_path_nearer_probe_readback" in status["current_focus"]["review_memory"][
         "next_nonredundant_axis"
     ]
     assert status["current_focus"]["review_memory"]["repeated_general_review"] is False
+    assert status["current_focus"]["review_memory"][
+        "same_candidate_comparison_review_allowed"
+    ] is False
     assert status["current_focus"]["review_memory"]["current_blocker"] == (
-        "none_for_ed10w_review_pack"
+        "none_for_candidate2_carry_forward"
     )
     assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "ONE_REVIEW_CARD_NEW_AXIS"
+        "NO_REVIEW_CARD_REVIEW_CONSUMED"
     )
     assert status["current_focus"]["review_card"]["status"] == (
-        "emitted_nonredundant_new_axis"
+        "withheld_latest_review_already_consumed"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10w-subtitle-presentation-review-pack-001"
+        "clip-ed10y-candidate2-carry-forward-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "bounded_decoration_adjustment + render_path_readiness"
+        "candidate2_carry_forward + render_path_nearer_probe"
     )
     assert "cut_002 / cut_003 review" in status["current_focus"]["review_card"][
         "not_asking"
@@ -125,10 +131,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "episodes/.../subtitle_presentation_review_pack.html"
     )
     assert status["current_focus"]["review_debt"][0]["debt_id"] == (
-        "render_path_readiness_probe"
+        "render_path_nearer_probe"
     )
     assert status["current_focus"]["review_debt"][0]["status"] == (
-        "decision_card_included"
+        "candidate2_tiny_diagnostic_probe_included"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
         "ed10w_current_pass_reference",
@@ -137,16 +143,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10w_balanced_combined_low_risk",
     ]
     assert status["current_focus"]["candidate_delta_visibility"]["status"] == (
-        "reviewable_after_ed10x_fix"
+        "consumed_candidate2_promoted_after_ed10x_fix"
     )
     assert "compact subtitle body crops" in status["current_focus"][
         "candidate_delta_visibility"
     ]["default_evidence"]
-    assert "whether Candidate 1 lighter outline/shadow is preferable" in status[
-        "current_focus"
-    ]["review_card"]["what_this_review_decides"]
+    assert status["current_focus"]["lead_fallback_readback"]["lead_candidate"] == (
+        "ed10w_badge_label_pressure_adjustment"
+    )
+    assert status["current_focus"]["lead_fallback_readback"]["fallback_reference"] == (
+        "ed10w_current_pass_reference"
+    )
     assert status["current_focus"]["render_path_readiness"]["status"] == (
-        "decision_card_included_no_production_claim"
+        "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -189,7 +198,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10w-subtitle-presentation-review-pack-001"
+        "clip-ed10y-candidate2-carry-forward-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -205,7 +214,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["open_surfaces"][2]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "compact candidate crops" in persisted["open_surfaces"][2][
+    assert "Candidate 2 lead" in persisted["open_surfaces"][2][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -216,7 +225,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
     assert "clip-ed10r-keifont-dense-stress-proof-001" in html
-    assert "clip-ed10w-subtitle-presentation-review-pack-001" in html
+    assert "clip-ed10y-candidate2-carry-forward-001" in html
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
@@ -604,6 +613,43 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10w_subtitle_presentation_review_pack"][
         "font_binaries_copied_or_vendored"
     ] is False
+    assert registry["ed10y_candidate2_carry_forward"]["feature_id"] == "ED-10y"
+    assert registry["ed10y_candidate2_carry_forward"]["artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert registry["ed10y_candidate2_carry_forward"]["proof_profile"] == (
+        "ed10y_candidate2_carry_forward"
+    )
+    assert registry["ed10y_candidate2_carry_forward"]["current_lead_candidate_id"] == (
+        "ed10w_badge_label_pressure_adjustment"
+    )
+    assert registry["ed10y_candidate2_carry_forward"][
+        "fallback_reference_candidate_id"
+    ] == "ed10w_current_pass_reference"
+    assert registry["ed10y_candidate2_carry_forward"][
+        "held_reference_candidate_ids"
+    ] == [
+        "ed10w_lighter_outline_shadow_pressure",
+        "ed10w_balanced_combined_low_risk",
+    ]
+    assert registry["ed10y_candidate2_carry_forward"]["review_memory"][
+        "latest_freeform_review_consumed"
+    ] is True
+    assert registry["ed10y_candidate2_carry_forward"]["review_memory"][
+        "same_candidate_comparison_review_allowed"
+    ] is False
+    assert registry["ed10y_candidate2_carry_forward"]["render_path_readiness"][
+        "status"
+    ] == "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
+    assert registry["ed10y_candidate2_carry_forward"]["review_card"][
+        "action_type"
+    ] == "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    assert registry["ed10y_candidate2_carry_forward"][
+        "production_subtitle_design_acceptance"
+    ] is False
+    assert registry["ed10y_candidate2_carry_forward"][
+        "font_binaries_copied_or_vendored"
+    ] is False
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids
     assert "ed10i_biz_udgothic_bold_balanced_outline" in candidate_ids
@@ -633,7 +679,9 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     assert "ED-10v records the current line-break behavior" in text
     assert "Current Cut_008 Dense/Stress Diagnostic Pass" in text
     assert "Current ED-10w Presentation Review Pack" in text
+    assert "Current ED-10y Candidate 2 Carry-Forward" in text
     assert "clip-ed10w-subtitle-presentation-review-pack-001" in text
+    assert "ed10w_badge_label_pressure_adjustment" in text
     assert "ed10w_balanced_combined_low_risk" in text
     assert "diagnostic dense/stress behavior" in text
     assert "`sub_096` multiline/wrap evidence" in text

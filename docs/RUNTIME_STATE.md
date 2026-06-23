@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10w_subtitle_presentation_review_pack_ready
+health: ed10y_candidate2_carry_forward_ready
 progress_pct: 100
-last_touched: 2026-06-23
-next_review_due: review_ed10w_subtitle_presentation_pack
-active_artifact: clip-ed10w-subtitle-presentation-review-pack-001
+last_touched: 2026-06-24
+next_review_due: none_review_consumed_candidate2_carry_forward
+active_artifact: clip-ed10y-candidate2-carry-forward-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,10 +35,27 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10w-subtitle-presentation-review-pack-001`
+Active artifact: `clip-ed10y-candidate2-carry-forward-001`
 
-Current handoff checkpoint, 2026-06-23: ED-10w is the active review surface.
-It packages one new review axis after the ED-10v diagnostic pass: bounded
+Current handoff checkpoint, 2026-06-24: ED-10y has consumed the latest
+freeform review of the ED-10w/ED-10x subtitle presentation pack. Candidate 2
+(`ed10w_badge_label_pressure_adjustment`) is now the provisional
+bounded-decoration lead. Candidate 0 (`ed10w_current_pass_reference`) remains
+the fallback/current-baseline reference. Candidate 1 and Candidate 3 are held
+for the current path because the review says they look too thin compared with
+0 and 2.
+
+The current `subtitle_presentation_review_pack.html` path is still the root
+launcher target, but it is no longer asking for the same Candidate 0-3 review.
+It is a Candidate 2 carry-forward/readback surface with Candidate 2 lead and
+Candidate 0 fallback visible at a glance, larger full-frame detail views, and a
+tiny Candidate 2 diagnostic render-path-nearer probe. The probe remains
+diagnostic only; it does not approve production subtitle design, production
+render, creative use, rights, publishing, or public use.
+
+Previous handoff checkpoint, 2026-06-23: ED-10w was the review surface before
+the ED-10y review consumption. It packaged one new review axis after the ED-10v
+diagnostic pass: bounded
 subtitle decoration adjustment plus render-path readiness. The pack is generated
 as
 `episodes/.../subtitle_presentation_review_pack.html` and is opened by
@@ -207,19 +224,17 @@ gates.
 
 ## Next
 
-1. Review `clip-ed10w-subtitle-presentation-review-pack-001` as one freeform
-   subtitle presentation judgement: keep current pass, use lighter
-   outline/shadow pressure, adjust badge label pressure, or take the balanced
-   low-risk combination.
-2. Use the included render-path readiness card only to decide whether a tiny
-   diagnostic render-path probe should follow. Do not treat it as production
-   render acceptance.
+1. Continue from `clip-ed10y-candidate2-carry-forward-001`: Candidate 2 is the
+   provisional bounded-decoration lead and Candidate 0 is fallback/reference.
+   Do not ask for another Candidate 0-3 comparison review.
+2. Treat the included Candidate 2 tiny render-path-nearer probe as diagnostic
+   readback only. Do not treat it as production render acceptance.
 3. Do not request another Review Card for the same ED-10u `cut_008`
    multiline/dense-stress evidence; ED-10v already records it as diagnostic
    pass.
-4. If subtitle work continues beyond ED-10w, keep it on a genuinely new axis:
-   line-break policy tuning, production limitation-lift, or a scoped
-   render-path probe.
+4. If subtitle work continues beyond ED-10y, keep it on a genuinely new axis:
+   production limitation-lift, final render-path probe, or policy/readback
+   tuning from new evidence.
 5. Keep line-break behavior policy/readback-driven: line length, max lines,
    orphan control, suffix-tail control, safe-area pressure, and rapid cue
    replacement are future bounded tuning areas.
