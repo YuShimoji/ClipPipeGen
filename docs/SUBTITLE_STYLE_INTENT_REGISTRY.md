@@ -6,8 +6,8 @@ status: diagnostic_intent_registry_ready
 health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-24
-active_artifact: clip-ed10ab-subtitle-preset-selector-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, artifacts/ARTIFACTS.md
+active_artifact: clip-ed10ac-visual-selector-proof-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -102,6 +102,15 @@ and `accent_color_token`; it does not change body glyph fill. The examples
 cover neutral dialogue intensity 0, shout intensity 2, whisper intensity 1,
 ominous intensity 2, narration, and system note. This is readback only and
 does not create a new visual proof.
+
+ED-10ac adds the current visual selector proof artifact:
+`clip-ed10ac-visual-selector-proof-001`. The tracked proof lives at
+[`docs/style_intent/subtitle-visual-selector-proof.json`](style_intent/subtitle-visual-selector-proof.json)
+and
+[`docs/style_intent/subtitle-visual-selector-proof.html`](style_intent/subtitle-visual-selector-proof.html).
+It makes those six selector examples inspectable as static badge/accent/
+backplate/size/motion/line-break differences while preserving stable body text
+color. It does not run a new render or approve production/public use.
 
 ## Review Surface Layout Debt
 

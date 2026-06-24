@@ -83,6 +83,58 @@ def test_subtitle_preset_selector_readback_examples_match_tracked_json():
     assert tracked["boundaries"]["production_render_acceptance"] is False
 
 
+def test_subtitle_visual_selector_proof_matches_tracked_json():
+    proof = preset_selector.build_subtitle_visual_selector_proof()
+    tracked_path = (
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-visual-selector-proof.json"
+    )
+    tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
+
+    assert tracked["artifact_id"] == preset_selector.VISUAL_PROOF_ARTIFACT_ID
+    assert tracked["schema_id"] == preset_selector.VISUAL_PROOF_SCHEMA_ID
+    assert tracked["feature_id"] == "ED-10ac"
+    assert tracked["source_selector_artifact_id"] == preset_selector.ARTIFACT_ID
+    assert tracked["examples_represented"] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert tracked["body_text_color_policy"] == proof["body_text_color_policy"]
+    assert tracked["body_text_color_policy"]["stable_across_examples"] is True
+    assert tracked["existing_output_first"]["considered"] is True
+    assert tracked["existing_output_first"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["review_policy"]["human_review_required"] is False
+    assert tracked["review_policy"]["candidate_comparison_reopened"] is False
+    assert tracked["examples"] == proof["examples"]
+    assert {
+        example["readback_tokens"]["body_text_color_token"]
+        for example in tracked["examples"]
+    } == {"stable_default_body_text"}
+    assert {
+        example["readback_tokens"]["body_text_color_changed"]
+        for example in tracked["examples"]
+    } == {False}
+
+
+def test_subtitle_visual_selector_proof_html_is_static_readback():
+    html_path = (
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-visual-selector-proof.html"
+    )
+    html = html_path.read_text(encoding="utf-8")
+
+    assert "ED-10ac Visual Selector Proof" in html
+    assert "clip-ed10ac-visual-selector-proof-001" in html
+    assert "stable_default_body_text" in html
+    assert "neutral_dialogue_intensity_0" in html
+    assert "system_note_intensity_0" in html
+    assert "New render run: <code>false</code>" in html
+    assert "production subtitle design" in html
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: subtitle_preset_selector_ready
+health: visual_selector_proof_ready
 progress_pct: 100
 last_touched: 2026-06-24
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ab-subtitle-preset-selector-001
+active_artifact: clip-ed10ac-visual-selector-proof-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,9 +35,25 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10ab-subtitle-preset-selector-001`
+Active artifact: `clip-ed10ac-visual-selector-proof-001`
 
-ED-10ab current checkpoint, 2026-06-24 JST: the active artifact is now
+ED-10ac current checkpoint, 2026-06-24 JST: the active artifact is now
+`clip-ed10ac-visual-selector-proof-001`. It uses the ED-10ab selector examples
+and writes tracked static readback at
+`docs/style_intent/subtitle-visual-selector-proof.json` and
+`docs/style_intent/subtitle-visual-selector-proof.html`. The proof represents
+neutral dialogue intensity 0, shout intensity 2, whisper intensity 1, ominous
+intensity 2, narration intensity 0, and system note intensity 0 as visible
+differences in badge token, accent token, backplate/box token, font size scale,
+outline/shadow token, motion placeholder, and safe-area/line-break behavior.
+Body subtitle text color remains `stable_default_body_text` for every example;
+character-specific color is still badge/accent first. ED-10ac considered L1
+Existing Output First and did not run a new render because static HTML/JSON is
+adequate for this selector proof. This is diagnostic readback only and does
+not approve production subtitle design, production render, creative use,
+rights, publishing, or public use.
+
+ED-10ab source checkpoint, 2026-06-24 JST: the source selector artifact is
 `clip-ed10ab-subtitle-preset-selector-001`. It adds
 `src/integrations/render/subtitle_preset_selector.py` and
 `docs/style_intent/subtitle-preset-selector.json` as a deterministic selector

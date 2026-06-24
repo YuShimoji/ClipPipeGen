@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>ED-10ac Visual Selector Proof</title>
+  <style>
+    :root { color-scheme: light; --body-text: #ffffff; --ink: #222831; --line: #c8d0d9; }
+    body { margin: 24px; font-family: system-ui, sans-serif; background: #f6f7f9; color: var(--ink); line-height: 1.5; }
+    h1, h2, h3 { margin: 0 0 8px; }
+    .meta, .gate { margin: 0 0 18px; padding: 12px; border: 1px solid var(--line); background: #fff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+    .card { border: 1px solid var(--line); background: #fff; padding: 14px; }
+    .sample { background: #242830; min-height: 128px; padding: 18px; display: flex; align-items: flex-end; }
+    .subtitle { width: 100%; }
+    .backplate { display: inline-block; padding: 8px 10px; border-radius: 4px; background: rgba(0, 0, 0, var(--backplate-alpha)); }
+    .badge { display: inline-block; min-width: 42px; text-align: center; margin-right: 8px; padding: 2px 5px; border: 2px solid var(--accent); background: var(--badge); color: #20242a; font-weight: 700; font-size: 13px; }
+    .line { color: var(--body-text); font-size: var(--font-size); font-weight: 800; text-shadow: 0 0 var(--outline) #000, 3px 3px var(--shadow) #000; }
+    .token-table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+    .token-table th, .token-table td { border: 1px solid var(--line); padding: 5px; text-align: left; overflow-wrap: anywhere; }
+    .token-table th { width: 38%; background: #edf2f7; }
+    code { background: #edf2f7; padding: 1px 4px; overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <h1>ED-10ac Visual Selector Proof</h1>
+  <p class="meta">Artifact <code>clip-ed10ac-visual-selector-proof-001</code> visualizes the six ED-10ab semantic preset examples as static diagnostic readback. Body subtitle text stays on <code>stable_default_body_text</code>; speaker or emotion color appears through badge and accent tokens first.</p>
+  <p class="gate">Render gate: <code>L1 Existing Output First</code>. New render run: <code>false</code>. This proof does not approve production subtitle design, production render, rights, publishing, or public use.</p>
+  <section class="grid">
+    <article class="card" style="--badge: #6ec6ff; --accent: #6ec6ff; --font-size: 100%; --backplate-alpha: 0.34; --outline: 5px; --shadow: 3px;">
+      <h2>neutral_dialogue_intensity_0</h2>
+      <div class="sample">
+        <div class="subtitle">
+          <span class="backplate"><span class="badge">SPK</span><span class="line">いつもの声で話す</span></span>
+        </div>
+      </div>
+      <table class="token-table">
+      <tr><th>preset</th><td><code>character.dialogue.neutral.i0.high</code></td></tr>
+      <tr><th>font family</th><td><code>current_keifont_dialogue_role</code></td></tr>
+      <tr><th>font size</th><td><code>1.0</code></td></tr>
+      <tr><th>outline/shadow</th><td><code>current_lead</code></td></tr>
+      <tr><th>badge</th><td><code>speaker_bancho_badge_default</code></td></tr>
+      <tr><th>accent</th><td><code>speaker_bancho_speaker_default_subtle_accent</code></td></tr>
+      <tr><th>backplate</th><td><code>optional_high_readability</code></td></tr>
+      <tr><th>motion</th><td><code>none</code></td></tr>
+      <tr><th>line break</th><td><code>high_readability</code></td></tr>
+      <tr><th>body text</th><td><code>stable_default_body_text</code></td></tr>
+      <tr><th>review</th><td><code>False</code></td></tr>
+      </table>
+    </article>
+    <article class="card" style="--badge: #6ec6ff; --accent: #ffcc33; --font-size: 116%; --backplate-alpha: 0.34; --outline: 6px; --shadow: 4px;">
+      <h2>shout_intensity_2</h2>
+      <div class="sample">
+        <div class="subtitle">
+          <span class="backplate"><span class="badge">SPK</span><span class="line">来ねぇ！！</span></span>
+        </div>
+      </div>
+      <table class="token-table">
+      <tr><th>preset</th><td><code>character.dialogue.shout.i2.high</code></td></tr>
+      <tr><th>font family</th><td><code>current_keifont_dialogue_role</code></td></tr>
+      <tr><th>font size</th><td><code>1.16</code></td></tr>
+      <tr><th>outline/shadow</th><td><code>strong</code></td></tr>
+      <tr><th>badge</th><td><code>speaker_bancho_badge_default</code></td></tr>
+      <tr><th>accent</th><td><code>speaker_bancho_high_energy_accent</code></td></tr>
+      <tr><th>backplate</th><td><code>optional_high_readability</code></td></tr>
+      <tr><th>motion</th><td><code>impact_placeholder</code></td></tr>
+      <tr><th>line break</th><td><code>prefer_shorter_lines_max_two</code></td></tr>
+      <tr><th>body text</th><td><code>stable_default_body_text</code></td></tr>
+      <tr><th>review</th><td><code>False</code></td></tr>
+      </table>
+    </article>
+    <article class="card" style="--badge: #6ec6ff; --accent: #9fb7c9; --font-size: 98%; --backplate-alpha: 0.34; --outline: 3px; --shadow: 2px;">
+      <h2>whisper_intensity_1</h2>
+      <div class="sample">
+        <div class="subtitle">
+          <span class="backplate"><span class="badge">SPK</span><span class="line">ちょっと小声で</span></span>
+        </div>
+      </div>
+      <table class="token-table">
+      <tr><th>preset</th><td><code>character.dialogue.whisper.i1.normal</code></td></tr>
+      <tr><th>font family</th><td><code>current_keifont_dialogue_role</code></td></tr>
+      <tr><th>font size</th><td><code>0.98</code></td></tr>
+      <tr><th>outline/shadow</th><td><code>soft_readable</code></td></tr>
+      <tr><th>badge</th><td><code>speaker_bancho_badge_default</code></td></tr>
+      <tr><th>accent</th><td><code>speaker_bancho_quiet_accent</code></td></tr>
+      <tr><th>backplate</th><td><code>soft</code></td></tr>
+      <tr><th>motion</th><td><code>none</code></td></tr>
+      <tr><th>line break</th><td><code>normal</code></td></tr>
+      <tr><th>body text</th><td><code>stable_default_body_text</code></td></tr>
+      <tr><th>review</th><td><code>False</code></td></tr>
+      </table>
+    </article>
+    <article class="card" style="--badge: #b8c0cc; --accent: #7e6aa8; --font-size: 108%; --backplate-alpha: 0.62; --outline: 7px; --shadow: 5px;">
+      <h2>ominous_intensity_2</h2>
+      <div class="sample">
+        <div class="subtitle">
+          <span class="backplate"><span class="badge">SPK</span><span class="line">その影が近づく</span></span>
+        </div>
+      </div>
+      <table class="token-table">
+      <tr><th>preset</th><td><code>character.inner_voice.ominous.i2.maximum</code></td></tr>
+      <tr><th>font family</th><td><code>current_keifont_dialogue_role</code></td></tr>
+      <tr><th>font size</th><td><code>1.08</code></td></tr>
+      <tr><th>outline/shadow</th><td><code>heavy_low_glow_placeholder_maximum_readability</code></td></tr>
+      <tr><th>badge</th><td><code>speaker_default_badge</code></td></tr>
+      <tr><th>accent</th><td><code>dark_accent</code></td></tr>
+      <tr><th>backplate</th><td><code>soft_maximum_readability</code></td></tr>
+      <tr><th>motion</th><td><code>slow_weight_placeholder</code></td></tr>
+      <tr><th>line break</th><td><code>maximum_readability</code></td></tr>
+      <tr><th>body text</th><td><code>stable_default_body_text</code></td></tr>
+      <tr><th>review</th><td><code>False</code></td></tr>
+      </table>
+    </article>
+    <article class="card" style="--badge: #b8c0cc; --accent: #9cc7a5; --font-size: 98%; --backplate-alpha: 0.34; --outline: 5px; --shadow: 3px;">
+      <h2>narration_intensity_0</h2>
+      <div class="sample">
+        <div class="subtitle">
+          <span class="backplate"><span class="badge">SPK</span><span class="line">ここで場面が変わる</span></span>
+        </div>
+      </div>
+      <table class="token-table">
+      <tr><th>preset</th><td><code>narrator.narration.narration.i0.high</code></td></tr>
+      <tr><th>font family</th><td><code>narration_current_family_role</code></td></tr>
+      <tr><th>font size</th><td><code>0.98</code></td></tr>
+      <tr><th>outline/shadow</th><td><code>current_lead</code></td></tr>
+      <tr><th>badge</th><td><code>narrator_badge_optional</code></td></tr>
+      <tr><th>accent</th><td><code>narration_neutral_accent</code></td></tr>
+      <tr><th>backplate</th><td><code>optional</code></td></tr>
+      <tr><th>motion</th><td><code>none</code></td></tr>
+      <tr><th>line break</th><td><code>high_readability</code></td></tr>
+      <tr><th>body text</th><td><code>stable_default_body_text</code></td></tr>
+      <tr><th>review</th><td><code>False</code></td></tr>
+      </table>
+    </article>
+    <article class="card" style="--badge: #e8e8e8; --accent: #e8e8e8; --font-size: 94%; --backplate-alpha: 0.62; --outline: 7px; --shadow: 5px;">
+      <h2>system_note_intensity_0</h2>
+      <div class="sample">
+        <div class="subtitle">
+          <span class="backplate"><span class="badge">SPK</span><span class="line">SYSTEM NOTE</span></span>
+        </div>
+      </div>
+      <table class="token-table">
+      <tr><th>preset</th><td><code>system.warning.system_note.i0.maximum</code></td></tr>
+      <tr><th>font family</th><td><code>system_note_current_family_role</code></td></tr>
+      <tr><th>font size</th><td><code>0.94</code></td></tr>
+      <tr><th>outline/shadow</th><td><code>current_lead_maximum_readability</code></td></tr>
+      <tr><th>badge</th><td><code>system_badge</code></td></tr>
+      <tr><th>accent</th><td><code>system_accent</code></td></tr>
+      <tr><th>backplate</th><td><code>on_maximum_readability</code></td></tr>
+      <tr><th>motion</th><td><code>none</code></td></tr>
+      <tr><th>line break</th><td><code>maximum_readability</code></td></tr>
+      <tr><th>body text</th><td><code>stable_default_body_text</code></td></tr>
+      <tr><th>review</th><td><code>False</code></td></tr>
+      </table>
+    </article>
+  </section>
+</body>
+</html>

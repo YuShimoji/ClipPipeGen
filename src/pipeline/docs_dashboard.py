@@ -100,23 +100,24 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10ab",
-            "artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+            "feature_id": "ED-10ac",
+            "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+            "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
             "source_style_intent_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
             "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
             "source_review_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-            "state": "subtitle_preset_selector_ready",
+            "state": "visual_selector_proof_ready",
             "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
             "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
             "target_cuts": ["cut_008"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "ed10ab_preset_selector_ready_no_new_render_existing_ed10z_readback",
-            "user_action_type": "NO_USER_ACTION_SELECTOR_READBACK_ONLY",
+            "route_status": "ed10ac_visual_selector_proof_ready_static_readback_no_new_render",
+            "user_action_type": "OPTIONAL_OPEN_ONLY_FREEFORM_OBSERVATION",
             "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
             "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
             "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
@@ -247,6 +248,35 @@ def build_project_status(
                 "character_color_policy": "badge_and_accent_first",
                 "new_render_run": False,
             },
+            "subtitle_visual_selector_proof": {
+                "status": "visual_selector_proof_ready",
+                "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+                "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+                "metadata_json": "docs/style_intent/subtitle-visual-selector-proof.json",
+                "html": "docs/style_intent/subtitle-visual-selector-proof.html",
+                "proof_kind": "tracked_static_html_json_readback",
+                "example_ids": [
+                    "neutral_dialogue_intensity_0",
+                    "shout_intensity_2",
+                    "whisper_intensity_1",
+                    "ominous_intensity_2",
+                    "narration_intensity_0",
+                    "system_note_intensity_0",
+                ],
+                "visual_differentiators": [
+                    "badge_color_token",
+                    "accent_color_token",
+                    "backplate_box_token",
+                    "font_size_scale",
+                    "outline_shadow_strength",
+                    "motion_primitive",
+                    "safe_area_line_break_behavior",
+                ],
+                "body_text_color_policy": "stable_default_body_text",
+                "character_color_policy": "badge_and_accent_first",
+                "existing_output_first_considered": True,
+                "new_render_run": False,
+            },
             "review_surface_layout_debt": {
                 "status": "recorded_minimal_primary_layout_improvement_applied",
                 "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -323,12 +353,12 @@ def build_project_status(
             "review_card": {
                 "status": "withheld_latest_review_already_consumed",
                 "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-                "target": "clip-ed10ab-subtitle-preset-selector-001",
-                "artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
-                "axis": "subtitle_preset_selector_readback",
+                "target": "clip-ed10ac-visual-selector-proof-001",
+                "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+                "axis": "visual_selector_proof_readback",
                 "prior_review_count": "3+",
                 "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-                "what_changed": "ED-10ab maps the ED-10aa semantic intent axes to deterministic style token candidates while preserving ED-10z as existing visual readback.",
+                "what_changed": "ED-10ac renders the ED-10ab semantic preset examples as tracked static JSON/HTML proof while preserving ED-10z as existing visual readback.",
                 "what_this_review_decides": [],
                 "not_asking": [
                     "Candidate 0-3 comparison review",
@@ -338,7 +368,7 @@ def build_project_status(
                     "production subtitle design acceptance",
                 ],
                 "input_mode": "none",
-                "completion_signal": "use selector readback before future visual style proof; open a separate route for new style family, palette, body text color, production route, rights, publishing, or public use",
+                "completion_signal": "use the visual selector proof for optional open-only observation; open a separate route for new style family, palette, body text color, production route, rights, publishing, or public use",
             },
             "lead_fallback_readback": {
                 "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -349,7 +379,7 @@ def build_project_status(
                     "ed10w_balanced_combined_low_risk",
                 ],
             },
-            "review_surface_direction": "semantic_preset_selector_readback_existing_output_first",
+            "review_surface_direction": "visual_selector_proof_static_readback_existing_output_first",
             "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
             "review_debt": [
                 {
@@ -664,6 +694,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10aa-subtitle-style-intent-registry-001"
         if feature_id == "ED-10ab":
             active_artifact = "clip-ed10ab-subtitle-preset-selector-001"
+        if feature_id == "ED-10ac":
+            active_artifact = "clip-ed10ac-visual-selector-proof-001"
         features.append(
             {
                 "id": feature_id,
@@ -728,7 +760,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10ab-subtitle-preset-selector-001" in artifact_ids
+        "clip-ed10ac-visual-selector-proof-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -775,10 +807,16 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
+            "item": "ED-10ac visual selector proof",
+            "artifact": "clip-ed10ac-visual-selector-proof-001",
+            "question": "Can the six semantic preset examples be inspected as badge/accent/backplate/size/motion/line-break differences while body text color stays stable?",
+            "next_route": "Use this static proof for optional open-only observation before opening any new style-family, palette, production, rights, publishing, or public-use route.",
+        },
+        {
             "item": "ED-10ab subtitle preset selector",
             "artifact": "clip-ed10ab-subtitle-preset-selector-001",
-            "question": "Can the six semantic intent axes map deterministically to style token candidates without a new visual proof?",
-            "next_route": "Use this selector readback before opening any future visual selector proof or style-family/palette route.",
+            "question": "Can the six semantic intent axes map deterministically to style token candidates without raw numeric review?",
+            "next_route": "Use as source selector for ED-10ac and future visual style proof work.",
         },
         {
             "item": "ED-10aa subtitle style intent registry",
@@ -885,6 +923,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Visual Selector Proof",
+            "command": "see docs\\style_intent\\subtitle-visual-selector-proof.html",
+            "target": "docs/style_intent/subtitle-visual-selector-proof.html",
+            "when_to_use": (
+                "Use to inspect the ED-10ab semantic presets as badge, accent, "
+                "backplate, size, motion, and line-break token differences "
+                "while body subtitle text color stays stable."
+            ),
         },
         {
             "label": "Preset Selector",
@@ -1092,6 +1140,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "subtitle_style_intent_registry_ready"
     if feature_id == "ED-10ab":
         return "subtitle_preset_selector_ready"
+    if feature_id == "ED-10ac":
+        return "visual_selector_proof_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1138,6 +1188,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ab":
         return 100
+    if feature_id == "ED-10ac":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1182,6 +1234,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the semantic style intent registry for future emotion/speaker/readability preset mapping; ED-10z actual local proof now exists and any limitation-lift/final render-path work should be a separate route."
     if feature_id == "ED-10ab":
         return "Use the deterministic preset selector as readback before future visual style proof; open new style-family, palette, production, rights, publishing, or public-use work as separate routes."
+    if feature_id == "ED-10ac":
+        return "Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

@@ -278,6 +278,26 @@ create a new visual proof, does not reopen the Candidate 0-3 comparison, and
 does not approve production subtitle design, production render, creative use,
 rights, publishing, or public use.
 
+## Current ED-10ac Visual Selector Proof
+
+ED-10ac records `clip-ed10ac-visual-selector-proof-001` as a tracked static
+JSON/HTML proof. It consumes the ED-10ab examples and shows how neutral,
+shout, whisper, ominous, narration, and system note presets differ by badge
+token, accent token, backplate/box token, font size scale, outline/shadow
+token, motion placeholder, and safe-area/line-break behavior.
+
+The proof keeps body subtitle text color stable across every example with
+`stable_default_body_text`. Character and emotion color remains badge/accent
+first, not body glyph fill. ED-10ac uses L1 Existing Output First and does not
+run a new render because the selector differences can be inspected in tracked
+static readback.
+
+ED-10ac does not reopen the Candidate 0-3 comparison, does not emit a required
+Review Card, and does not approve production subtitle design, production
+render, creative use, rights, publishing, or public use. If opened by the
+operator, the only expected input is optional freeform observation, maximum 3
+points.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

@@ -1,0 +1,304 @@
+{
+  "schema_id": "clippipegen.subtitle_visual_selector_proof.v1",
+  "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+  "feature_id": "ED-10ac",
+  "status": "visual_selector_proof_ready",
+  "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+  "source_registry_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+  "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+  "proof_kind": "tracked_static_html_json_readback",
+  "examples_represented": [
+    "neutral_dialogue_intensity_0",
+    "shout_intensity_2",
+    "whisper_intensity_1",
+    "ominous_intensity_2",
+    "narration_intensity_0",
+    "system_note_intensity_0"
+  ],
+  "visual_differentiators": [
+    "badge_color_token",
+    "accent_color_token",
+    "backplate_box_token",
+    "font_size_scale",
+    "outline_shadow_strength",
+    "motion_primitive",
+    "safe_area_line_break_behavior"
+  ],
+  "body_text_color_policy": {
+    "token": "stable_default_body_text",
+    "stable_across_examples": true,
+    "changed_in_any_example": false,
+    "character_color_first_surfaces": [
+      "badge_color_token",
+      "accent_color_token"
+    ]
+  },
+  "existing_output_first": {
+    "considered": true,
+    "level": "L1 Existing Output First",
+    "source_visual_readback": "clip-ed10z-tiny-render-path-nearer-probe-001",
+    "new_render_run": false,
+    "reason": "The six ED-10ab examples can be inspected as static HTML/JSON token proof without generating new frames."
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-visual-selector-proof.json",
+    "html": "docs/style_intent/subtitle-visual-selector-proof.html"
+  },
+  "examples": [
+    {
+      "order": 1,
+      "example_id": "neutral_dialogue_intensity_0",
+      "intent": {
+        "speaker_id": "bancho",
+        "speaker_role": "character",
+        "emotion": "neutral",
+        "intensity": 0,
+        "utterance_role": "dialogue",
+        "readability_priority": "high"
+      },
+      "preset_key": "character.dialogue.neutral.i0.high",
+      "display_sample_text": "いつもの声で話す",
+      "visual_sample": {
+        "font_size_percent": 100,
+        "badge_swatch": "#6ec6ff",
+        "accent_swatch": "#6ec6ff",
+        "backplate_alpha": "0.34",
+        "outline_px_placeholder": 5,
+        "shadow_px_placeholder": 3,
+        "motion_label": "none",
+        "line_break_label": "high_readability"
+      },
+      "readback_tokens": {
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 1.0,
+        "outline_shadow_strength": "current_lead",
+        "badge_color_token": "speaker_bancho_badge_default",
+        "accent_color_token": "speaker_bancho_speaker_default_subtle_accent",
+        "backplate_box_token": "optional_high_readability",
+        "motion_primitive": "none",
+        "safe_area_line_break_behavior": "high_readability",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "human_review_required": false
+    },
+    {
+      "order": 2,
+      "example_id": "shout_intensity_2",
+      "intent": {
+        "speaker_id": "bancho",
+        "speaker_role": "character",
+        "emotion": "shout",
+        "intensity": 2,
+        "utterance_role": "dialogue",
+        "readability_priority": "high"
+      },
+      "preset_key": "character.dialogue.shout.i2.high",
+      "display_sample_text": "来ねぇ！！",
+      "visual_sample": {
+        "font_size_percent": 116,
+        "badge_swatch": "#6ec6ff",
+        "accent_swatch": "#ffcc33",
+        "backplate_alpha": "0.34",
+        "outline_px_placeholder": 6,
+        "shadow_px_placeholder": 4,
+        "motion_label": "impact_placeholder",
+        "line_break_label": "prefer_shorter_lines_max_two"
+      },
+      "readback_tokens": {
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 1.16,
+        "outline_shadow_strength": "strong",
+        "badge_color_token": "speaker_bancho_badge_default",
+        "accent_color_token": "speaker_bancho_high_energy_accent",
+        "backplate_box_token": "optional_high_readability",
+        "motion_primitive": "impact_placeholder",
+        "safe_area_line_break_behavior": "prefer_shorter_lines_max_two",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "human_review_required": false
+    },
+    {
+      "order": 3,
+      "example_id": "whisper_intensity_1",
+      "intent": {
+        "speaker_id": "bancho",
+        "speaker_role": "character",
+        "emotion": "whisper",
+        "intensity": 1,
+        "utterance_role": "dialogue",
+        "readability_priority": "normal"
+      },
+      "preset_key": "character.dialogue.whisper.i1.normal",
+      "display_sample_text": "ちょっと小声で",
+      "visual_sample": {
+        "font_size_percent": 98,
+        "badge_swatch": "#6ec6ff",
+        "accent_swatch": "#9fb7c9",
+        "backplate_alpha": "0.34",
+        "outline_px_placeholder": 3,
+        "shadow_px_placeholder": 2,
+        "motion_label": "none",
+        "line_break_label": "normal"
+      },
+      "readback_tokens": {
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 0.98,
+        "outline_shadow_strength": "soft_readable",
+        "badge_color_token": "speaker_bancho_badge_default",
+        "accent_color_token": "speaker_bancho_quiet_accent",
+        "backplate_box_token": "soft",
+        "motion_primitive": "none",
+        "safe_area_line_break_behavior": "normal",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "human_review_required": false
+    },
+    {
+      "order": 4,
+      "example_id": "ominous_intensity_2",
+      "intent": {
+        "speaker_id": "unknown",
+        "speaker_role": "character",
+        "emotion": "ominous",
+        "intensity": 2,
+        "utterance_role": "inner_voice",
+        "readability_priority": "maximum"
+      },
+      "preset_key": "character.inner_voice.ominous.i2.maximum",
+      "display_sample_text": "その影が近づく",
+      "visual_sample": {
+        "font_size_percent": 108,
+        "badge_swatch": "#b8c0cc",
+        "accent_swatch": "#7e6aa8",
+        "backplate_alpha": "0.62",
+        "outline_px_placeholder": 7,
+        "shadow_px_placeholder": 5,
+        "motion_label": "slow_weight_placeholder",
+        "line_break_label": "maximum_readability"
+      },
+      "readback_tokens": {
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 1.08,
+        "outline_shadow_strength": "heavy_low_glow_placeholder_maximum_readability",
+        "badge_color_token": "speaker_default_badge",
+        "accent_color_token": "dark_accent",
+        "backplate_box_token": "soft_maximum_readability",
+        "motion_primitive": "slow_weight_placeholder",
+        "safe_area_line_break_behavior": "maximum_readability",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "human_review_required": false
+    },
+    {
+      "order": 5,
+      "example_id": "narration_intensity_0",
+      "intent": {
+        "speaker_id": "narrator",
+        "speaker_role": "narrator",
+        "emotion": "narration",
+        "intensity": 0,
+        "utterance_role": "narration",
+        "readability_priority": "high"
+      },
+      "preset_key": "narrator.narration.narration.i0.high",
+      "display_sample_text": "ここで場面が変わる",
+      "visual_sample": {
+        "font_size_percent": 98,
+        "badge_swatch": "#b8c0cc",
+        "accent_swatch": "#9cc7a5",
+        "backplate_alpha": "0.34",
+        "outline_px_placeholder": 5,
+        "shadow_px_placeholder": 3,
+        "motion_label": "none",
+        "line_break_label": "high_readability"
+      },
+      "readback_tokens": {
+        "font_family_role": "narration_current_family_role",
+        "font_size_scale": 0.98,
+        "outline_shadow_strength": "current_lead",
+        "badge_color_token": "narrator_badge_optional",
+        "accent_color_token": "narration_neutral_accent",
+        "backplate_box_token": "optional",
+        "motion_primitive": "none",
+        "safe_area_line_break_behavior": "high_readability",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "human_review_required": false
+    },
+    {
+      "order": 6,
+      "example_id": "system_note_intensity_0",
+      "intent": {
+        "speaker_id": "system",
+        "speaker_role": "system",
+        "emotion": "system_note",
+        "intensity": 0,
+        "utterance_role": "warning",
+        "readability_priority": "maximum"
+      },
+      "preset_key": "system.warning.system_note.i0.maximum",
+      "display_sample_text": "SYSTEM NOTE",
+      "visual_sample": {
+        "font_size_percent": 94,
+        "badge_swatch": "#e8e8e8",
+        "accent_swatch": "#e8e8e8",
+        "backplate_alpha": "0.62",
+        "outline_px_placeholder": 7,
+        "shadow_px_placeholder": 5,
+        "motion_label": "none",
+        "line_break_label": "maximum_readability"
+      },
+      "readback_tokens": {
+        "font_family_role": "system_note_current_family_role",
+        "font_size_scale": 0.94,
+        "outline_shadow_strength": "current_lead_maximum_readability",
+        "badge_color_token": "system_badge",
+        "accent_color_token": "system_accent",
+        "backplate_box_token": "on_maximum_readability",
+        "motion_primitive": "none",
+        "safe_area_line_break_behavior": "maximum_readability",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "human_review_required": false
+    }
+  ],
+  "review_policy": {
+    "human_review_required": false,
+    "optional_user_observation": "open_only_freeform_max_3_points",
+    "human_review_required_only_for": [
+      "new_style_family",
+      "new_palette",
+      "body_text_color_policy_change",
+      "production_route_change",
+      "rights",
+      "publishing",
+      "public_use"
+    ],
+    "candidate_comparison_reopened": false,
+    "raw_numeric_review_required": false
+  },
+  "render_gate": {
+    "level": "L1 Existing Output First",
+    "new_render_run": false,
+    "milestone_gated_not_change_gated": true,
+    "documented": true
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false
+  }
+}

@@ -361,6 +361,37 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10ac-visual-selector-proof-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ac Visual Selector Proof |
+| purpose | Make the ED-10ab semantic preset examples visually inspectable as token differences without reopening raw numeric review or running a new render. |
+| storage class | Tracked docs/readback artifact. |
+| repo_relative_path | `docs/style_intent/subtitle-visual-selector-proof.html` |
+| metadata_json | `docs/style_intent/subtitle-visual-selector-proof.json` |
+| open_command | `see docs\style_intent\subtitle-visual-selector-proof.html` |
+| source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
+| source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
+| source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
+| implementation | `src/integrations/render/subtitle_preset_selector.py` |
+| generated_from | ED-10ac bounded visual selector proof slice using ED-10ab selector examples and L1 Existing Output First. |
+| validation_command | Parse `docs/style_intent/subtitle-style-intent-registry.json`, parse `docs/style_intent/subtitle-preset-selector.json`, parse `docs/style_intent/subtitle-visual-selector-proof.json`, parse dashboard JSON, run targeted subtitle/dashboard/review tests, `git diff --check`, and verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | The tracked proof represents neutral dialogue intensity 0, shout intensity 2, whisper intensity 1, ominous intensity 2, narration intensity 0, and system note intensity 0. Each card shows intent axes, preset key, font family role, font size scale, outline/shadow token, badge color token, accent color token, backplate/box token, motion placeholder, safe-area/line-break behavior, stable body text color token, and human review status. |
+| review_status | No Review Card. The proof introduces no new style family, palette, body text color policy, production route, rights, publishing, or public-use decision. Optional user-side work is open-only freeform observation, maximum 3 points. |
+| next_action | Use this proof as the current tracked selector readback. Future movement should be a separate new axis such as style-family exploration, palette proposal, line-break policy tuning, production limitation-lift, final render-path probe, rights, publishing, or public-use clearance. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## `clip-ed10ab-subtitle-preset-selector-001`
 
 | Field | Value |

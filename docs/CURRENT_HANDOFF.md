@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: subtitle_preset_selector_ready
+health: visual_selector_proof_ready
 progress_pct: 100
 last_touched: 2026-06-24
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ab-subtitle-preset-selector-001
+active_artifact: clip-ed10ac-visual-selector-proof-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -25,7 +25,19 @@ route.
 
 ## Current State
 
-The active artifact is `clip-ed10ab-subtitle-preset-selector-001`.
+The active artifact is `clip-ed10ac-visual-selector-proof-001`.
+
+ED-10ac adds a tracked static visual selector proof at
+`docs/style_intent/subtitle-visual-selector-proof.json` and
+`docs/style_intent/subtitle-visual-selector-proof.html`. It uses the ED-10ab
+examples to make neutral / shout / whisper / ominous / narration / system note
+differences visible as badge, accent, backplate, size, outline/shadow, motion,
+and line-break token readback. Body subtitle text color remains stable across
+all six examples; speaker and emotion color remain badge/accent-first. No new
+render was run because L1 Existing Output First was sufficient for this static
+proof. This does not approve production subtitle design, production render,
+creative use, rights, publishing, or public use. Optional user-side work is
+open-only freeform observation, maximum 3 points, not a required Review Card.
 
 ED-10ab adds a deterministic subtitle preset selector in
 `src/integrations/render/subtitle_preset_selector.py` with a tracked readback

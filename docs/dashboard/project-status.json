@@ -24,15 +24,16 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10ab",
-    "artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+    "feature_id": "ED-10ac",
+    "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+    "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
     "source_style_intent_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
     "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
     "source_review_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "subtitle_preset_selector_ready",
+    "state": "visual_selector_proof_ready",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -41,8 +42,8 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "ed10ab_preset_selector_ready_no_new_render_existing_ed10z_readback",
-    "user_action_type": "NO_USER_ACTION_SELECTOR_READBACK_ONLY",
+    "route_status": "ed10ac_visual_selector_proof_ready_static_readback_no_new_render",
+    "user_action_type": "OPTIONAL_OPEN_ONLY_FREEFORM_OBSERVATION",
     "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
@@ -169,6 +170,35 @@
       "character_color_policy": "badge_and_accent_first",
       "new_render_run": false
     },
+    "subtitle_visual_selector_proof": {
+      "status": "visual_selector_proof_ready",
+      "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+      "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+      "metadata_json": "docs/style_intent/subtitle-visual-selector-proof.json",
+      "html": "docs/style_intent/subtitle-visual-selector-proof.html",
+      "proof_kind": "tracked_static_html_json_readback",
+      "example_ids": [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0"
+      ],
+      "visual_differentiators": [
+        "badge_color_token",
+        "accent_color_token",
+        "backplate_box_token",
+        "font_size_scale",
+        "outline_shadow_strength",
+        "motion_primitive",
+        "safe_area_line_break_behavior"
+      ],
+      "body_text_color_policy": "stable_default_body_text",
+      "character_color_policy": "badge_and_accent_first",
+      "existing_output_first_considered": true,
+      "new_render_run": false
+    },
     "review_surface_layout_debt": {
       "status": "recorded_minimal_primary_layout_improvement_applied",
       "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -236,12 +266,12 @@
     "review_card": {
       "status": "withheld_latest_review_already_consumed",
       "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-      "target": "clip-ed10ab-subtitle-preset-selector-001",
-      "artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
-      "axis": "subtitle_preset_selector_readback",
+      "target": "clip-ed10ac-visual-selector-proof-001",
+      "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+      "axis": "visual_selector_proof_readback",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "ED-10ab maps the ED-10aa semantic intent axes to deterministic style token candidates while preserving ED-10z as existing visual readback.",
+      "what_changed": "ED-10ac renders the ED-10ab semantic preset examples as tracked static JSON/HTML proof while preserving ED-10z as existing visual readback.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -251,7 +281,7 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "use selector readback before future visual style proof; open a separate route for new style family, palette, body text color, production route, rights, publishing, or public use"
+      "completion_signal": "use the visual selector proof for optional open-only observation; open a separate route for new style family, palette, body text color, production route, rights, publishing, or public use"
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -262,7 +292,7 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "semantic_preset_selector_readback_existing_output_first",
+    "review_surface_direction": "visual_selector_proof_static_readback_existing_output_first",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
@@ -292,6 +322,12 @@
       "command": ".\\open-artifacts.ps1",
       "target": "artifacts/ARTIFACTS.md",
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
+    },
+    {
+      "label": "Visual Selector Proof",
+      "command": "see docs\\style_intent\\subtitle-visual-selector-proof.html",
+      "target": "docs/style_intent/subtitle-visual-selector-proof.html",
+      "when_to_use": "Use to inspect the ED-10ab semantic presets as badge, accent, backplate, size, motion, and line-break token differences while body subtitle text color stays stable."
     },
     {
       "label": "Preset Selector",
@@ -959,6 +995,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10ac",
+      "title": "Visual Selector Proof v0",
+      "status": "done",
+      "health": "visual_selector_proof_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10ac-visual-selector-proof-001",
+      "next_action": "Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes.",
+      "summary_excerpt": "clip-ed10ac-visual-selector-proof-001 として ED-10ab の 6 examples を tracked static JSON/HTML proof に展開した。docs/style_intent/subtitle-visual-selector-proof.json / .html は neutral / shout / whisper / ominous / narration / sys...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -1433,9 +1480,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 96,
+    "feature_count": 97,
     "status_counts": {
-      "done": 80,
+      "done": 81,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -1553,6 +1600,16 @@
       "next_action": "Use clip-ed10r-keifont-dense-stress-proof-001 for the active review. Keep this artifact as history and baseline evidence only."
     },
     {
+      "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+      "title": "ED-10ac Visual Selector Proof",
+      "purpose": "Make the ED-10ab semantic preset examples visually inspectable as token differences without reopening raw numeric review or running a new render.",
+      "storage_class": "Tracked docs/readback artifact.",
+      "repo_relative_path": "docs/style_intent/subtitle-visual-selector-proof.html",
+      "open_command": "see docs\\style_intent\\subtitle-visual-selector-proof.html",
+      "review_status": "No Review Card. The proof introduces no new style family, palette, body text color policy, production route, rights, publishing, or public-use decision. Optional user-side work is open-only freeform observation, maximum 3 points.",
+      "next_action": "Use this proof as the current tracked selector readback. Future movement should be a separate new axis such as style-family exploration, palette proposal, line-break policy tuning, production limitation-lift, final render-path probe, rights, publishing, or public-use clearance."
+    },
+    {
       "artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
       "title": "ED-10ab Subtitle Preset Selector",
       "purpose": "Connect the ED-10aa semantic intent registry to a deterministic selector that maps subtitle intent axes to style token candidates without asking for repeated raw numeric reviews.",
@@ -1656,6 +1713,7 @@
       "clip-ed10n-keifont-overlay-proof-001",
       "clip-ed10o-multifont-focused-review-001",
       "clip-ed10p-keifont-lead-representative-proof-001",
+      "clip-ed10ac-visual-selector-proof-001",
       "clip-ed10ab-subtitle-preset-selector-001",
       "clip-ed10aa-subtitle-style-intent-registry-001",
       "clip-ed10z-tiny-render-path-nearer-probe-001",
@@ -1666,20 +1724,26 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 20
+    "artifact_count": 21
   },
   "artifact_coverage": {
-    "registered_artifact_count": 20,
-    "features_with_artifact_count": 23,
+    "registered_artifact_count": 21,
+    "features_with_artifact_count": 24,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
+      "item": "ED-10ac visual selector proof",
+      "artifact": "clip-ed10ac-visual-selector-proof-001",
+      "question": "Can the six semantic preset examples be inspected as badge/accent/backplate/size/motion/line-break differences while body text color stays stable?",
+      "next_route": "Use this static proof for optional open-only observation before opening any new style-family, palette, production, rights, publishing, or public-use route."
+    },
+    {
       "item": "ED-10ab subtitle preset selector",
       "artifact": "clip-ed10ab-subtitle-preset-selector-001",
-      "question": "Can the six semantic intent axes map deterministically to style token candidates without a new visual proof?",
-      "next_route": "Use this selector readback before opening any future visual selector proof or style-family/palette route."
+      "question": "Can the six semantic intent axes map deterministically to style token candidates without raw numeric review?",
+      "next_route": "Use as source selector for ED-10ac and future visual style proof work."
     },
     {
       "item": "ED-10aa subtitle style intent registry",
@@ -1780,17 +1844,17 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 619,
+      "line_count": 635,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "subtitle_preset_selector_ready",
+        "health": "visual_selector_proof_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-24",
         "next_review_due": "none_probe_readback_only",
-        "active_artifact": "clip-ed10ab-subtitle-preset-selector-001",
+        "active_artifact": "clip-ed10ac-visual-selector-proof-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1801,13 +1865,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 114,
+      "boundary_term_count": 119,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 236,
+      "line_count": 237,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1815,7 +1879,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 383,
+      "boundary_term_count": 388,
       "status": "in_progress"
     },
     {
@@ -1876,7 +1940,7 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 130,
+      "line_count": 139,
       "metadata": {
         "id": "subtitle-style-intent-registry",
         "title": "Subtitle Style Intent Registry",
@@ -1885,8 +1949,8 @@
         "health": "semantic_style_control_ready_for_future_mapping",
         "progress_pct": "100",
         "last_touched": "2026-06-24",
-        "active_artifact": "clip-ed10ab-subtitle-preset-selector-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, artifacts/ARTIFACTS.md"
+        "active_artifact": "clip-ed10ac-visual-selector-proof-001",
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -1894,7 +1958,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 9,
+      "boundary_term_count": 11,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -1914,7 +1978,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 648,
+      "line_count": 679,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1922,7 +1986,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 271,
+      "boundary_term_count": 287,
       "status": "reference"
     },
     {
@@ -1984,17 +2048,17 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 290,
+      "line_count": 302,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "subtitle_preset_selector_ready",
+        "health": "visual_selector_proof_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-24",
         "next_review_due": "none_probe_readback_only",
-        "active_artifact": "clip-ed10ab-subtitle-preset-selector-001",
+        "active_artifact": "clip-ed10ac-visual-selector-proof-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
         "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -2005,7 +2069,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 46,
+      "boundary_term_count": 51,
       "status": "active"
     },
     {
@@ -2261,7 +2325,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "Subtitle Presentation Contract",
-      "line_count": 332,
+      "line_count": 352,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2269,7 +2333,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 80,
+      "boundary_term_count": 85,
       "status": "reference"
     },
     {
@@ -2350,7 +2414,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (619 lines) is likely carrying history.",
+        "detail": "Long active doc (635 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -2362,7 +2426,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 383 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 388 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2380,13 +2444,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (648 lines) is likely carrying history.",
+        "detail": "Long active doc (679 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 271 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 287 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2470,7 +2534,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 80 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 85 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
