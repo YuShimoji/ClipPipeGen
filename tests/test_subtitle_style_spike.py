@@ -948,7 +948,9 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
     local_readback = report["known_kirinuki_font_pack_decision_packet"][
         "research_readback"
     ]["local_font_readback"]
+    found_known_font_candidate_ids = set(local_readback["target_candidate_ids_found"])
     all_known_fonts_found = not local_readback["target_candidate_ids_missing"]
+    any_known_fonts_found = bool(found_known_font_candidate_ids)
     assert report["comparison_response_readback"]["selected_response"] == (
         "per_user_font_readback_valid_route_to_keifont_overlay_proof"
         if all_known_fonts_found
@@ -1055,16 +1057,28 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
         ] is True
     else:
         assert local_readback["current_png_valid_visual_evidence"] is False
+        expected_status = (
+            "mixed_real_and_fallback_font_visual_evidence"
+            if any_known_fonts_found
+            else "invalid_fallback_render_not_target_font_visual_evidence"
+        )
         assert report["font_visual_comparison_validity"]["status"] == (
-            "invalid_fallback_render_not_target_font_visual_evidence"
+            expected_status
         )
         assert report["font_visual_comparison_validity"][
             "all_candidates_valid_real_font"
         ] is False
+        assert report["font_visual_comparison_validity"][
+            "any_candidate_valid_real_font"
+        ] is any_known_fonts_found
     assert {
         row["current_png_valid_visual_evidence"]
         for row in report["font_visual_comparison_validity"]["candidate_resolution"]
-    } == ({True} if all_known_fonts_found else {False})
+    } == (
+        {True}
+        if all_known_fonts_found
+        else ({True, False} if any_known_fonts_found else {False})
+    )
     assert {
         route["route"] for route in decision_packet["rejected_alternatives"]
     } >= {
@@ -1083,6 +1097,12 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
             "emoji_neutral_ignored_for_ed10l"
         )
         if all_known_fonts_found:
+            assert sample["font_file_status"] == "candidate_primary_font_file_found"
+            assert sample["font_fallback_status"] == "requested_candidate_font_file_found"
+            assert sample["visual_comparison_validity"] == (
+                "valid_requested_font_visual_evidence"
+            )
+        elif sample["candidate_id"] in found_known_font_candidate_ids:
             assert sample["font_file_status"] == "candidate_primary_font_file_found"
             assert sample["font_fallback_status"] == "requested_candidate_font_file_found"
             assert sample["visual_comparison_validity"] == (
