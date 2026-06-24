@@ -27,8 +27,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10aa"
+    assert status["current_focus"]["feature_id"] == "ED-10ab"
     assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10ab-subtitle-preset-selector-001"
+    )
+    assert status["current_focus"]["source_style_intent_artifact_id"] == (
         "clip-ed10aa-subtitle-style-intent-registry-001"
     )
     assert status["current_focus"]["source_render_path_artifact_id"] == (
@@ -46,7 +49,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["source_proof_artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
-    assert status["current_focus"]["state"] == "subtitle_style_intent_registry_ready"
+    assert status["current_focus"]["state"] == "subtitle_preset_selector_ready"
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -61,10 +64,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10aa_intent_registry_ready_ed10z_actual_generation_available_requires_human_review"
+        "ed10ab_preset_selector_ready_no_new_render_existing_ed10z_readback"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_PROBE_READBACK_ONLY"
+        "NO_USER_ACTION_SELECTOR_READBACK_ONLY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         "NO_REVIEW_CARD_REVIEW_CONSUMED"
@@ -73,7 +76,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "semantic_style_intent_registry_and_primary_layout_debt_readback"
+        "semantic_preset_selector_readback_existing_output_first"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -123,11 +126,21 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "withheld_latest_review_already_consumed"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10aa-subtitle-style-intent-registry-001"
+        "clip-ed10ab-subtitle-preset-selector-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "subtitle_style_intent_registry + review_surface_layout_debt"
+        "subtitle_preset_selector_readback"
     )
+    assert status["current_focus"]["subtitle_preset_selector"]["artifact_id"] == (
+        "clip-ed10ab-subtitle-preset-selector-001"
+    )
+    assert status["current_focus"]["subtitle_preset_selector"][
+        "body_text_color_policy"
+    ] == "stable_default_body_text"
+    assert "shout_intensity_2" in status["current_focus"]["subtitle_preset_selector"][
+        "example_ids"
+    ]
+    assert status["current_focus"]["subtitle_preset_selector"]["new_render_run"] is False
     assert status["current_focus"]["subtitle_style_intent_registry"][
         "body_text_color_policy"
     ] == "stable_by_default"
@@ -179,6 +192,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        "see docs\\style_intent\\subtitle-preset-selector.json",
         "see docs\\SUBTITLE_STYLE_INTENT_REGISTRY.md",
         ".\\open-current-proof.ps1",
         (
@@ -215,7 +229,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10aa-subtitle-style-intent-registry-001"
+        "clip-ed10ab-subtitle-preset-selector-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -229,12 +243,15 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert persisted["open_surfaces"][2]["target"] == (
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+        "docs/style_intent/subtitle-preset-selector.json"
     )
     assert persisted["open_surfaces"][3]["target"] == (
+        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+    )
+    assert persisted["open_surfaces"][4]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "ED-10z local readback" in persisted["open_surfaces"][3][
+    assert "ED-10z local readback" in persisted["open_surfaces"][4][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -247,6 +264,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10r-keifont-dense-stress-proof-001" in html
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in html
     assert "clip-ed10aa-subtitle-style-intent-registry-001" in html
+    assert "clip-ed10ab-subtitle-preset-selector-001" in html
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
@@ -348,6 +366,60 @@ def test_subtitle_style_intent_registry_is_machine_readable():
     ] is True
     assert registry["boundaries"]["broad_renderer_style_system_built"] is False
     assert registry["boundaries"]["production_render_acceptance"] is False
+
+
+def test_subtitle_preset_selector_readback_is_machine_readable():
+    selector_path = (
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-preset-selector.json"
+    )
+
+    selector = json.loads(selector_path.read_text(encoding="utf-8"))
+    examples = {item["example_id"]: item for item in selector["examples"]}
+
+    assert selector["artifact_id"] == "clip-ed10ab-subtitle-preset-selector-001"
+    assert selector["source_registry_artifact_id"] == (
+        "clip-ed10aa-subtitle-style-intent-registry-001"
+    )
+    assert selector["source_render_path_artifact_id"] == (
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
+    )
+    assert selector["input_axes"] == [
+        "speaker_id",
+        "speaker_role",
+        "emotion",
+        "intensity",
+        "utterance_role",
+        "readability_priority",
+    ]
+    assert "badge_color_token" in selector["output_style_tokens"]
+    assert selector["selector_contract"]["deterministic"] is True
+    assert selector["selector_contract"]["body_text_color_default"] == (
+        "stable_default_body_text"
+    )
+    assert selector["selector_contract"]["character_color_first_surfaces"] == [
+        "badge_color_token",
+        "accent_color_token",
+    ]
+    assert selector["selector_contract"]["same_candidate_comparison_reopened"] is False
+    assert examples["neutral_dialogue_intensity_0"]["style_tokens"][
+        "body_text_color_changed"
+    ] is False
+    assert examples["shout_intensity_2"]["style_tokens"]["font_size_scale"] == 1.16
+    assert examples["whisper_intensity_1"]["style_tokens"][
+        "outline_shadow_strength"
+    ] == "soft_readable"
+    assert examples["ominous_intensity_2"]["style_tokens"][
+        "safe_area_line_break_behavior"
+    ] == "maximum_readability"
+    assert examples["narration_intensity_0"]["style_tokens"][
+        "font_family_role"
+    ] == "narration_current_family_role"
+    assert examples["system_note_intensity_0"]["style_tokens"][
+        "badge_color_token"
+    ] == "system_badge"
+    assert selector["render_gate"]["new_render_run"] is False
+    assert selector["boundaries"]["new_render_created"] is False
+    assert selector["boundaries"]["production_subtitle_design_acceptance"] is False
 
 
 def test_subtitle_font_candidate_registry_is_machine_readable():
@@ -839,7 +911,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_ed10aa_artifact(
+def test_docs_dashboard_current_focus_registration_uses_ed10ab_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -852,7 +924,7 @@ def test_docs_dashboard_current_focus_registration_uses_ed10aa_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10aa-subtitle-style-intent-registry-001"
+        "clip-ed10ab-subtitle-preset-selector-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]

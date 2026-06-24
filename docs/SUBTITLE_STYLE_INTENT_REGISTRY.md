@@ -6,8 +6,8 @@ status: diagnostic_intent_registry_ready
 health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-24
-active_artifact: clip-ed10aa-subtitle-style-intent-registry-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, artifacts/ARTIFACTS.md
+active_artifact: clip-ed10ab-subtitle-preset-selector-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -75,6 +75,33 @@ those tags to an existing preset without asking for raw numeric parameters.
 Human review is needed only for a new style family, a new color palette, body
 text color policy changes, production-route changes, rights, publishing, or
 public-use decisions.
+
+## Preset Selector Readback
+
+ED-10ab adds a deterministic selector artifact:
+`clip-ed10ab-subtitle-preset-selector-001`. The selector readback lives at
+[`docs/style_intent/subtitle-preset-selector.json`](style_intent/subtitle-preset-selector.json),
+and the reusable implementation is
+`src/integrations/render/subtitle_preset_selector.py`.
+
+The selector consumes the six registry axes and returns token names for:
+
+- `font_family_role`
+- `font_size_scale`
+- `outline_shadow_strength`
+- `badge_color_token`
+- `accent_color_token`
+- `backplate_box_token`
+- `motion_primitive`
+- `safe_area_line_break_behavior`
+- `body_text_color_token`
+
+The selector keeps `body_text_color_token=stable_default_body_text` for all
+current examples. Character-specific color first changes `badge_color_token`
+and `accent_color_token`; it does not change body glyph fill. The examples
+cover neutral dialogue intensity 0, shout intensity 2, whisper intensity 1,
+ominous intensity 2, narration, and system note. This is readback only and
+does not create a new visual proof.
 
 ## Review Surface Layout Debt
 

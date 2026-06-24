@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: subtitle_style_intent_registry_ready
+health: subtitle_preset_selector_ready
 progress_pct: 100
 last_touched: 2026-06-24
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10aa-subtitle-style-intent-registry-001
+active_artifact: clip-ed10ab-subtitle-preset-selector-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -20,12 +20,24 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family or Candidate 0-3 comparison
-prompts after the project has advanced to the ED-10aa subtitle style intent
-registry route.
+prompts after the project has advanced to the ED-10ab subtitle preset selector
+route.
 
 ## Current State
 
-The active artifact is `clip-ed10aa-subtitle-style-intent-registry-001`.
+The active artifact is `clip-ed10ab-subtitle-preset-selector-001`.
+
+ED-10ab adds a deterministic subtitle preset selector in
+`src/integrations/render/subtitle_preset_selector.py` with a tracked readback
+at `docs/style_intent/subtitle-preset-selector.json`. It consumes the ED-10aa
+axes (`speaker_id`, `speaker_role`, `emotion`, `intensity`, `utterance_role`,
+`readability_priority`) and returns token candidates for font family role, font
+size scale, outline/shadow strength, badge color, accent color, backplate/box,
+motion placeholder, safe-area/line-break behavior, and stable body text color.
+The examples cover neutral dialogue intensity 0, shout intensity 2, whisper
+intensity 1, ominous intensity 2, narration, and system note. ED-10ab did not
+run a new render; it uses the existing ED-10z readback as visual source under
+the L1 Existing Output First gate.
 
 ED-10aa adds a subtitle style intent registry in
 `docs/SUBTITLE_STYLE_INTENT_REGISTRY.md` and
@@ -259,14 +271,14 @@ Expected tracked state:
 - dashboard JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
-- latest pushed checkpoint is `0cf35da` or a later successor commit
+- latest pushed checkpoint is `ce24fcc` or a later successor commit
 - ED-10z dry-run JSON reads `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`,
   `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
   `ed10w_badge_label_pressure_adjustment`, fallback
   `ed10w_current_pass_reference`
-- actual non-dry-run materialization currently stops at
-  `environment_missing_ffprobe`; once FFprobe is provided, the regenerated pack
-  should read `render_path_readiness.status=ed10z_tiny_render_path_nearer_probe_completed`
+- ED-10z actual rerun with explicit FFmpeg/FFprobe paths reads
+  `visual_proof_status=available_requires_human_review` and
+  `focused_proof_review.status=tiny_render_path_nearer_probe_completed`
 
 ## Constraints / Risks
 

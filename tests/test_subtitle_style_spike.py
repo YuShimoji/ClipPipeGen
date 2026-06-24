@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 
+from src.integrations.render import subtitle_preset_selector as preset_selector
 from src.integrations.render import subtitle_style_spike as spike
 
 
@@ -19,6 +20,67 @@ def test_subtitle_style_spike_records_optional_pillow_boundary():
     assert spike.PILLOW_OPTIONAL_DEPENDENCY_MESSAGE.startswith("Pillow is an optional")
     assert "review-only PNG measurement artifacts" in spike.PILLOW_OPTIONAL_DEPENDENCY_MESSAGE
     assert "production renderer dependency" in spike.PILLOW_OPTIONAL_DEPENDENCY_MESSAGE
+
+
+def test_subtitle_preset_selector_maps_semantic_intent_to_stable_tokens():
+    selection = preset_selector.select_subtitle_preset(
+        {
+            "speaker_id": "Bancho",
+            "speaker_role": "character",
+            "emotion": "shout",
+            "intensity": 2,
+            "utterance_role": "dialogue",
+            "readability_priority": "high",
+        }
+    )
+
+    assert selection["preset_key"] == "character.dialogue.shout.i2.high"
+    assert selection["style_tokens"]["font_family_role"] == (
+        "current_keifont_dialogue_role"
+    )
+    assert selection["style_tokens"]["font_size_scale"] == 1.16
+    assert selection["style_tokens"]["outline_shadow_strength"] == "strong"
+    assert selection["style_tokens"]["badge_color_token"] == (
+        "speaker_bancho_badge_default"
+    )
+    assert selection["style_tokens"]["accent_color_token"] == (
+        "speaker_bancho_high_energy_accent"
+    )
+    assert selection["style_tokens"]["body_text_color_token"] == (
+        "stable_default_body_text"
+    )
+    assert selection["style_tokens"]["body_text_color_changed"] is False
+    assert selection["review_policy"]["human_review_required"] is False
+    assert selection["review_policy"]["candidate_comparison_reopened"] is False
+    assert selection["render_gate"]["new_render_required"] is False
+
+
+def test_subtitle_preset_selector_readback_examples_match_tracked_json():
+    readback = preset_selector.build_subtitle_preset_selector_readback()
+    tracked_path = (
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-preset-selector.json"
+    )
+    tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
+
+    assert tracked["artifact_id"] == preset_selector.ARTIFACT_ID
+    assert tracked["schema_id"] == preset_selector.SCHEMA_ID
+    assert tracked["input_axes"] == readback["input_axes"]
+    assert tracked["output_style_tokens"] == readback["output_style_tokens"]
+    assert tracked["selector_contract"] == readback["selector_contract"]
+    assert tracked["human_review_required_only_for"] == (
+        readback["human_review_required_only_for"]
+    )
+    assert [item["example_id"] for item in tracked["examples"]] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert tracked["examples"] == readback["examples"]
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
 
 
 @pytest.mark.skipif(

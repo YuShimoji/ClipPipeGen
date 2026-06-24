@@ -361,6 +361,36 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10ab-subtitle-preset-selector-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ab Subtitle Preset Selector |
+| purpose | Connect the ED-10aa semantic intent registry to a deterministic selector that maps subtitle intent axes to style token candidates without asking for repeated raw numeric reviews. |
+| storage class | Tracked docs/readback artifact. |
+| repo_relative_path | `docs/style_intent/subtitle-preset-selector.json` |
+| metadata_json | `docs/style_intent/subtitle-preset-selector.json` |
+| open_command | `see docs\style_intent\subtitle-preset-selector.json` |
+| source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
+| source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
+| implementation | `src/integrations/render/subtitle_preset_selector.py` |
+| generated_from | Prompt-authorized ED-10ab selector/readback slice consuming the ED-10aa axes and preserving ED-10z as existing visual evidence. |
+| validation_command | Parse `docs/style_intent/subtitle-style-intent-registry.json`, parse `docs/style_intent/subtitle-preset-selector.json`, regenerate docs dashboard, run targeted subtitle/dashboard tests, `git diff --check`, and verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | Selector examples cover neutral dialogue intensity 0, shout intensity 2, whisper intensity 1, ominous intensity 2, narration, and system note. Each returns font family role, font size scale, outline/shadow strength, badge color, accent color, backplate/box, motion placeholder, safe-area/line-break behavior, and stable body text color token. |
+| review_status | No new Review Card. No new visual proof or style family is introduced, and the same Candidate 0-3 comparison remains closed. |
+| next_action | Use this selector as a deterministic preset readback before any future visual selector proof. Open a separate route for new style family, new palette, body text color policy change, production route, rights, publishing, or public-use decisions. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## `clip-ed10aa-subtitle-style-intent-registry-001`
 
 | Field | Value |

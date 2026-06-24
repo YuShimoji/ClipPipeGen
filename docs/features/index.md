@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10aa`
-- artifact: `clip-ed10aa-subtitle-style-intent-registry-001`
-- state: `subtitle_style_intent_registry_ready`
+- feature: `ED-10ab`
+- artifact: `clip-ed10ab-subtitle-preset-selector-001`
+- state: `subtitle_preset_selector_ready`
 
 ## Feature Table
 
@@ -64,6 +64,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10y | Candidate 2 Carry-Forward and Layout Fix v0 | done | candidate2_carry_forward_ready | 100 | clip-ed10y-candidate2-carry-forward-001 | Continue from Candidate 2 as provisional bounded-decoration lead; do not repeat the Candidate 0-3 review. |
 | ED-10z | Tiny Render-Path-Nearer Probe v0 | done | tiny_render_path_nearer_probe_ready | 100 | clip-ed10z-tiny-render-path-nearer-probe-001 | Use the Candidate 2 tiny render-path-nearer probe as local readback; open production limitation-lift or final render-path work only as a separate scope. |
 | ED-10aa | Subtitle Style Intent Registry and Review Layout Debt v0 | done | subtitle_style_intent_registry_ready | 100 | clip-ed10aa-subtitle-style-intent-registry-001 | Use the semantic style intent registry for future emotion/speaker/readability preset mapping; ED-10z actual local proof now exists and any limitation-lift/final render-path work should be a separate route. |
+| ED-10ab | Subtitle Preset Selector v0 | done | subtitle_preset_selector_ready | 100 | clip-ed10ab-subtitle-preset-selector-001 | Use the deterministic preset selector as readback before future visual style proof; open new style-family, palette, production, rights, publishing, or public-use work as separate routes. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

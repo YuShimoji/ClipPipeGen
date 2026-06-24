@@ -258,6 +258,26 @@ probe completed as diagnostic evidence only. A production limitation-lift,
 final render-path, rights, publishing, or public-use decision needs a separate
 future route.
 
+## Current ED-10ab Preset Selector
+
+ED-10ab records `clip-ed10ab-subtitle-preset-selector-001` as a tracked
+selector/readback artifact. It consumes the ED-10aa semantic axes
+(`speaker_id`, `speaker_role`, `emotion`, `intensity`, `utterance_role`,
+`readability_priority`) and returns token candidates for font family role, font
+size scale, outline/shadow strength, badge color, accent color, backplate/box,
+motion placeholder, safe-area/line-break behavior, and stable body text color.
+
+The selector is deterministic and does not ask for raw numeric outline, shadow,
+or opacity review. Character-specific color must appear first in badge/accent
+tokens, not body glyph fill. Human review is required only for new style
+families, new palettes, body text color policy changes, production-route
+changes, rights, publishing, or public-use decisions.
+
+ED-10ab is selector/readback only. It does not run a new render, does not
+create a new visual proof, does not reopen the Candidate 0-3 comparison, and
+does not approve production subtitle design, production render, creative use,
+rights, publishing, or public use.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

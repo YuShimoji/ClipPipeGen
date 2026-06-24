@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: subtitle_style_intent_registry_ready
+health: subtitle_preset_selector_ready
 progress_pct: 100
 last_touched: 2026-06-24
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10aa-subtitle-style-intent-registry-001
+active_artifact: clip-ed10ab-subtitle-preset-selector-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,9 +35,24 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10aa-subtitle-style-intent-registry-001`
+Active artifact: `clip-ed10ab-subtitle-preset-selector-001`
 
-ED-10aa current checkpoint, 2026-06-24 JST: the active artifact is now
+ED-10ab current checkpoint, 2026-06-24 JST: the active artifact is now
+`clip-ed10ab-subtitle-preset-selector-001`. It adds
+`src/integrations/render/subtitle_preset_selector.py` and
+`docs/style_intent/subtitle-preset-selector.json` as a deterministic selector
+that maps ED-10aa semantic axes (`speaker_id`, `speaker_role`, `emotion`,
+`intensity`, `utterance_role`, `readability_priority`) to style token
+candidates. The selector returns font family role, font size scale,
+outline/shadow strength, badge color, accent color, backplate/box, motion
+placeholder, safe-area/line-break behavior, and stable body text color token.
+It includes examples for neutral dialogue intensity 0, shout intensity 2,
+whisper intensity 1, ominous intensity 2, narration, and system note.
+Character-specific color still affects badge/accent first, not body glyph fill.
+No new render was run for ED-10ab because this is selector/readback-only work
+under the L1 Existing Output First gate.
+
+ED-10aa source checkpoint, 2026-06-24 JST: the source registry artifact is
 `clip-ed10aa-subtitle-style-intent-registry-001`. It adds
 `docs/SUBTITLE_STYLE_INTENT_REGISTRY.md` and
 `docs/style_intent/subtitle-style-intent-registry.json` so future subtitle
