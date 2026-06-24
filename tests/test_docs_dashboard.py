@@ -739,3 +739,24 @@ def _write_fixture_docs(base: Path) -> None:
         "# Artifact Registry\n\n## `clip-test-artifact`\n",
         encoding="utf-8",
     )
+
+
+def test_docs_dashboard_current_focus_registration_uses_ed10y_artifact(
+    tmp_path: Path,
+):
+    _write_fixture_docs(tmp_path)
+    (tmp_path / "artifacts" / "ARTIFACTS.md").write_text(
+        "# Artifact Registry\n\n"
+        "## `clip-ed10r-keifont-dense-stress-proof-001`\n",
+        encoding="utf-8",
+    )
+
+    status = build_project_status(base_dir=tmp_path, generated_at="test-run")
+
+    assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert (
+        status["artifact_coverage"]["current_focus_artifact_registered"]
+        is False
+    )

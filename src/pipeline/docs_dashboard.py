@@ -644,7 +644,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10r-keifont-dense-stress-proof-001" in artifact_ids
+        "clip-ed10y-candidate2-carry-forward-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
