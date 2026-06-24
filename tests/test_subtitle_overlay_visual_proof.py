@@ -971,6 +971,18 @@ def test_subtitle_overlay_visual_proof_ed10y_consumes_candidate2_review(
     assert render_path["candidate2_probe"]["video_path"] == visuals_by_number[2][
         "video_path"
     ]
+    assert pack["review_surface_layout_debt"]["status"] == (
+        "recorded_minimal_primary_layout_improvement_applied"
+    )
+    assert pack["review_surface_layout_debt"]["primary_surface_policy"][
+        "primary_grid_max_columns"
+    ] == 2
+    assert pack["review_surface_layout_debt"]["primary_surface_policy"][
+        "lead_and_fallback_prominent"
+    ] is True
+    assert pack["review_surface_layout_debt"]["primary_surface_policy"][
+        "held_references_secondary_collapsible"
+    ] is True
     assert "production render acceptance" in render_path["explicitly_not_accepted"]
     assert pack["production_subtitle_design_acceptance"] is False
     assert pack["production_render_acceptance"] is False
@@ -992,6 +1004,9 @@ def test_subtitle_overlay_visual_proof_ed10y_consumes_candidate2_review(
     assert "Candidate 2 Carry-Forward Pack" in pack_html
     assert "Review Consumed / Operator Observation" in pack_html
     assert "Candidate 2 Lead / Candidate 0 Fallback" in pack_html
+    assert "Review Surface Layout Debt" in pack_html
+    assert "primary-candidate" in pack_html
+    assert "secondary-held-reference" in pack_html
     assert "candidate2_tiny_render_path_nearer_diagnostic_probe_completed" in pack_html
     assert "promoted_to_candidate2_lead" in pack_html
     assert "held_too_thin_for_current_path" in pack_html
@@ -1087,6 +1102,9 @@ def test_subtitle_overlay_visual_proof_ed10z_records_tiny_probe(
     assert render_path["candidate2_probe"]["video_path"] == visuals_by_number[2][
         "video_path"
     ]
+    assert pack["review_surface_layout_debt"]["primary_surface_policy"][
+        "full_frame_context_visible_for_lead_and_fallback"
+    ] is True
     assert pack["production_render_acceptance"] is False
     assert pack["production_usage_allowed"] is False
 
@@ -1103,6 +1121,9 @@ def test_subtitle_overlay_visual_proof_ed10z_records_tiny_probe(
     )
     assert "Tiny Render-Path Nearer Probe" in pack_html
     assert "ed10z_tiny_render_path_nearer_probe_completed" in pack_html
+    assert "Review Surface Layout Debt" in pack_html
+    assert "primary-candidate" in pack_html
+    assert "secondary-held-reference" in pack_html
     assert "Candidate 0-3 comparison review" in pack_html
     assert "production subtitle design" in pack_html
 

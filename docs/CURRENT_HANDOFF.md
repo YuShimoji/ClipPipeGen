@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: ed10z_tiny_render_path_nearer_probe_ready
+health: subtitle_style_intent_registry_ready
 progress_pct: 100
 last_touched: 2026-06-24
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10z-tiny-render-path-nearer-probe-001
+active_artifact: clip-ed10aa-subtitle-style-intent-registry-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -20,30 +20,48 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family or Candidate 0-3 comparison
-prompts after the project has advanced to the ED-10z tiny render-path probe
-route.
+prompts after the project has advanced to the ED-10aa subtitle style intent
+registry route.
 
 ## Current State
 
-The active artifact is `clip-ed10z-tiny-render-path-nearer-probe-001`.
+The active artifact is `clip-ed10aa-subtitle-style-intent-registry-001`.
 
-ED-10z consumes `clip-ed10y-candidate2-carry-forward-001` as the source/previous
-state and records a tiny render-path-nearer diagnostic probe for Candidate 2
-(`ed10w_badge_label_pressure_adjustment`). Candidate 0 remains the
-fallback/current-baseline reference. Candidate 1 and Candidate 3 remain held
-because the consumed review says they read too thin compared with 0 and 2.
-The same Candidate 0-3 comparison should not be repeated. This probe does not
-approve production subtitle design, production render, creative use, rights,
-publishing, upload, or public use.
+ED-10aa adds a subtitle style intent registry in
+`docs/SUBTITLE_STYLE_INTENT_REGISTRY.md` and
+`docs/style_intent/subtitle-style-intent-registry.json`. Future subtitle style
+work should use semantic tags (`speaker_id`, `speaker_role`, `emotion`,
+`intensity`, `utterance_role`, `readability_priority`) and map them to presets
+instead of asking for repeated tiny outline/shadow/opacity judgements. Body
+text color remains stable by default; character-specific color should normally
+appear first in speaker badge/accent surfaces. Human review is reserved for new
+style families, new palettes, body text color policy changes, production-route
+changes, rights, publishing, or public-use decisions.
 
-Validation note for this handoff: the ED-10z dry-run returns the expected
-artifact id, source artifact, no-review-card state, and Candidate 2 lead
-readback. The non-dry-run command was attempted in this turn, but this machine
-does not expose FFmpeg/FFprobe through PATH or `CLIPPIPE_FFMPEG` /
-`CLIPPIPE_FFPROBE`, so actual ignored proof materialization stopped with
-`environment_missing_ffprobe`. Rerun the same ED-10z command after providing
-tool paths before treating `subtitle_presentation_review_pack.html` / `.json`
-as refreshed ED-10z local evidence.
+ED-10z remains the current render-path-nearer probe source. It consumes
+`clip-ed10y-candidate2-carry-forward-001` as source/previous and records a tiny
+diagnostic probe for Candidate 2 (`ed10w_badge_label_pressure_adjustment`).
+Candidate 0 remains fallback/current-baseline reference. Candidate 1 and
+Candidate 3 remain held because the consumed review says they read too thin
+compared with 0 and 2. The same Candidate 0-3 comparison should not be repeated.
+Neither ED-10aa nor ED-10z approves production subtitle design, production
+render, creative use, rights, publishing, upload, or public use.
+
+Layout note for this handoff: ED-10aa records that Candidate Visual Evidence
+primary samples were too small/compressed. The generator now avoids a cramped
+four-column primary grid, keeps Candidate 2 lead and Candidate 0 fallback more
+prominent, and treats Candidate 1 / 3 as secondary held references. This is
+development readback, not a new review card.
+
+Validation note for this handoff: the ED-10z actual rerun now succeeds when
+explicit FFmpeg/FFprobe paths are supplied. It returned
+`visual_proof_status=available_requires_human_review`,
+`review_card_status=withheld_tiny_render_path_nearer_probe_completed`,
+`subtitle_overlay_available_count=1`, and
+`focused_proof_review.status=tiny_render_path_nearer_probe_completed`.
+Treat `subtitle_presentation_review_pack.html` / `.json` as refreshed
+same-machine local evidence only; production subtitle design, production
+render, creative use, rights, publishing, upload, and public use remain closed.
 
 ED-10y implementation checkpoint, 2026-06-24 JST: `0cf35da` was pushed to
 `origin/main`. This handoff note is part of a later successor commit. A

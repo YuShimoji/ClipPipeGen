@@ -41,6 +41,7 @@ PRIORITY_DOCS = (
     Path("docs/EPISODE_REVIEW_WORKFLOW.md"),
     Path("docs/OPERATOR_REVIEW_UX.md"),
     Path("docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md"),
+    Path("docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"),
     Path("docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md"),
     Path("artifacts/ARTIFACTS.md"),
 )
@@ -99,25 +100,26 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10z",
-            "artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+            "feature_id": "ED-10aa",
+            "artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+            "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
             "source_review_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-            "state": "tiny_render_path_nearer_probe_ready",
+            "state": "subtitle_style_intent_registry_ready",
             "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
             "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
             "target_cuts": ["cut_008"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "ed10z_profile_ready_actual_generation_blocked_environment_missing_ffprobe",
+            "route_status": "ed10aa_intent_registry_ready_ed10z_actual_generation_available_requires_human_review",
             "user_action_type": "NO_USER_ACTION_PROBE_READBACK_ONLY",
             "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
             "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
             "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-            "main_issue": "candidate2_tiny_render_path_nearer_probe_readback",
+            "main_issue": "semantic_subtitle_style_control_and_review_surface_layout_debt",
             "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
             "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
             "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -127,7 +129,7 @@ def build_project_status(
             ],
             "lead_status": "provisional_bounded_decoration_lead",
             "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-            "local_generation_status": "ed10z_profile_ready_actual_generation_blocked_environment_missing_ffprobe",
+            "local_generation_status": "ed10aa_registry_ready_ed10z_actual_generation_available_requires_human_review",
             "user_review_status": "consumed_no_user_review_required_now",
             "multiline_wrap_evidence_status": "passed_diagnostic_review",
             "multiline_wrap_evidence": {
@@ -166,8 +168,14 @@ def build_project_status(
                 },
             },
             "render_path_readiness": {
-                "status": "blocked_environment_missing_ffprobe_after_ed10z_profile_readback",
-                "recommended_minimal_next_route": "provide_ffmpeg_ffprobe_then_rerun_same_ed10z_probe",
+                "status": "ed10z_actual_generation_available_requires_human_review_after_explicit_ffmpeg_ffprobe_paths",
+                "recommended_minimal_next_route": "use_ed10z_as_local_readback_then_open_separate_limitation_lift_or_final_render_path_route_if_needed",
+                "latest_actual_rerun": {
+                    "visual_proof_status": "available_requires_human_review",
+                    "review_card_status": "withheld_tiny_render_path_nearer_probe_completed",
+                    "subtitle_overlay_available_count": 1,
+                    "focused_proof_review_status": "tiny_render_path_nearer_probe_completed",
+                },
                 "not_accepted": [
                     "production_subtitle_design_acceptance",
                     "production_render_acceptance",
@@ -176,6 +184,36 @@ def build_project_status(
                     "publishing_acceptance",
                     "public_use_permission",
                 ],
+            },
+            "subtitle_style_intent_registry": {
+                "status": "diagnostic_intent_registry_ready",
+                "artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+                "doc": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
+                "metadata_json": "docs/style_intent/subtitle-style-intent-registry.json",
+                "axes": [
+                    "speaker_id",
+                    "speaker_role",
+                    "emotion",
+                    "intensity",
+                    "utterance_role",
+                    "readability_priority",
+                ],
+                "body_text_color_policy": "stable_by_default",
+                "character_color_policy": "speaker_badge_and_accent_before_body_text",
+                "agent_proposal_rule": "map_semantic_tags_to_presets_without_raw_numeric_review",
+                "human_review_required_for": [
+                    "new_style_family",
+                    "new_color_palette",
+                    "body_text_color_policy_change",
+                    "production_route_change",
+                    "rights_or_publication_decision",
+                ],
+            },
+            "review_surface_layout_debt": {
+                "status": "recorded_minimal_primary_layout_improvement_applied",
+                "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
+                "safe_improvement": "avoid cramped four-column grid; keep Candidate 2 lead and Candidate 0 fallback prominent; keep Candidate 1/3 secondary/collapsible",
+                "same_candidate_review_reopened": False,
             },
             "line_break_policy_readback": {
                 "status": "diagnostic_policy_recorded",
@@ -247,12 +285,12 @@ def build_project_status(
             "review_card": {
                 "status": "withheld_latest_review_already_consumed",
                 "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-                "target": "clip-ed10z-tiny-render-path-nearer-probe-001",
-                "artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
-                "axis": "tiny_render_path_nearer_probe",
+                "target": "clip-ed10aa-subtitle-style-intent-registry-001",
+                "artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+                "axis": "subtitle_style_intent_registry + review_surface_layout_debt",
                 "prior_review_count": "3+",
                 "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-                "what_changed": "ED-10z records the Candidate 2 tiny render-path-nearer route; actual materialization in this turn is blocked until FFprobe is available.",
+                "what_changed": "ED-10aa records semantic subtitle style intent and review-surface layout debt while preserving ED-10z as the current render-path-nearer probe; actual ED-10z materialization remains blocked until FFprobe is available.",
                 "what_this_review_decides": [],
                 "not_asking": [
                     "Candidate 0-3 comparison review",
@@ -262,7 +300,7 @@ def build_project_status(
                     "production subtitle design acceptance",
                 ],
                 "input_mode": "none",
-                "completion_signal": "rerun the same ED-10z probe with FFmpeg/FFprobe available before treating same-machine HTML/JSON as refreshed",
+                "completion_signal": "use semantic style intent presets for future subtitle styling; rerun the same ED-10z probe with FFmpeg/FFprobe available before treating same-machine render-path evidence as refreshed",
             },
             "lead_fallback_readback": {
                 "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -273,13 +311,13 @@ def build_project_status(
                     "ed10w_balanced_combined_low_risk",
                 ],
             },
-            "review_surface_direction": "tiny_render_path_nearer_probe_readback",
+            "review_surface_direction": "semantic_style_intent_registry_and_primary_layout_debt_readback",
             "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
             "review_debt": [
                 {
-                    "debt_id": "environment_missing_ffprobe",
-                    "status": "blocks_actual_tiny_probe_materialization",
-                    "next_action": "install or provide FFmpeg/FFprobe via PATH, CLIPPIPE_FFMPEG/CLIPPIPE_FFPROBE, or --ffmpeg-path/--ffprobe-path, then rerun the same ED-10z command",
+                    "debt_id": "production_limitation_lift",
+                    "status": "not_started_after_tiny_probe",
+                    "next_action": "start a separate limitation-lift/final render-path route only after explicit acceptance scope is opened",
                 }
             ],
             "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -584,6 +622,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10y-candidate2-carry-forward-001"
         if feature_id == "ED-10z":
             active_artifact = "clip-ed10z-tiny-render-path-nearer-probe-001"
+        if feature_id == "ED-10aa":
+            active_artifact = "clip-ed10aa-subtitle-style-intent-registry-001"
         features.append(
             {
                 "id": feature_id,
@@ -648,7 +688,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10z-tiny-render-path-nearer-probe-001" in artifact_ids
+        "clip-ed10aa-subtitle-style-intent-registry-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -694,6 +734,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 
 def _next_review_items() -> list[dict[str, str]]:
     return [
+        {
+            "item": "ED-10aa subtitle style intent registry",
+            "artifact": "clip-ed10aa-subtitle-style-intent-registry-001",
+            "question": "Can future subtitle styling map speaker/emotion/readability tags to presets without asking for tiny numeric adjustments?",
+            "next_route": "Use the registry for semantic style-control work; keep ED-10z as the current render-path-nearer probe until FFmpeg/FFprobe is available.",
+        },
         {
             "item": "ED-10z tiny render-path-nearer probe",
             "artifact": "clip-ed10z-tiny-render-path-nearer-probe-001",
@@ -793,6 +839,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Style Intent Registry",
+            "command": "see docs\\SUBTITLE_STYLE_INTENT_REGISTRY.md",
+            "target": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
+            "when_to_use": (
+                "Use before future subtitle style work so speaker, emotion, "
+                "intensity, utterance role, and readability tags map to presets "
+                "instead of repeated tiny numeric review loops."
+            ),
         },
         {
             "label": "Tiny Render-Path Probe",
@@ -976,6 +1032,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "candidate2_carry_forward_ready"
     if feature_id == "ED-10z":
         return "tiny_render_path_nearer_probe_ready"
+    if feature_id == "ED-10aa":
+        return "subtitle_style_intent_registry_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1018,6 +1076,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10z":
         return 100
+    if feature_id == "ED-10aa":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1058,6 +1118,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Continue from Candidate 2 as provisional bounded-decoration lead; do not repeat the Candidate 0-3 review."
     if feature_id == "ED-10z":
         return "Use the Candidate 2 tiny render-path-nearer probe as local readback; open production limitation-lift or final render-path work only as a separate scope."
+    if feature_id == "ED-10aa":
+        return "Use the semantic style intent registry for future emotion/speaker/readability preset mapping; ED-10z actual local proof now exists and any limitation-lift/final render-path work should be a separate route."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

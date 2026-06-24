@@ -1,0 +1,212 @@
+{
+  "schema_id": "clippipegen.subtitle_style_intent_registry.v1",
+  "artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+  "feature_id": "ED-10aa",
+  "status": "diagnostic_intent_registry_ready",
+  "source_artifacts": [
+    "clip-ed10z-tiny-render-path-nearer-probe-001",
+    "clip-ed10y-candidate2-carry-forward-001",
+    "clip-ed10r-keifont-dense-stress-proof-001"
+  ],
+  "active_normal_dialogue_lead": "ed10w_badge_label_pressure_adjustment",
+  "fallback_reference": "ed10w_current_pass_reference",
+  "axes": {
+    "speaker_id": {
+      "type": "string",
+      "required": false,
+      "purpose": "stable character or narrator identity when known"
+    },
+    "speaker_role": {
+      "type": "enum",
+      "values": [
+        "character",
+        "narrator",
+        "system",
+        "unknown"
+      ]
+    },
+    "emotion": {
+      "type": "enum",
+      "values": [
+        "neutral",
+        "emphasis",
+        "shout",
+        "whisper",
+        "ominous",
+        "narration",
+        "system_note"
+      ],
+      "default": "neutral"
+    },
+    "intensity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3,
+      "default": 0
+    },
+    "utterance_role": {
+      "type": "enum",
+      "values": [
+        "dialogue",
+        "narration",
+        "sfx",
+        "quote",
+        "warning",
+        "inner_voice"
+      ],
+      "default": "dialogue"
+    },
+    "readability_priority": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "high",
+        "maximum"
+      ],
+      "default": "high"
+    }
+  },
+  "style_tokens": {
+    "font_family": "Keifont route for current normal dialogue diagnostic baseline",
+    "font_size_scale": "relative multiplier on frame-derived base size; default 1.0",
+    "outline_shadow": "semantic strength token, not raw px by default",
+    "speaker_badge_color": "first character-color surface when speaker identity exists",
+    "accent_color": "secondary character/emotion color surface",
+    "backplate_box": "readability/backplate token for dense, warning, whisper, or system cases",
+    "motion_primitive": "placeholder only; no broad renderer motion system in ED-10aa",
+    "safe_area_line_break": "safe-area and line-break behavior token tied to readability priority"
+  },
+  "emotion_presets": {
+    "neutral": {
+      "font_size_scale": 1.0,
+      "outline_shadow": "current_lead",
+      "speaker_badge_color": "speaker_default",
+      "accent_color": "speaker_default_subtle",
+      "backplate_box": "off",
+      "motion_primitive": "none",
+      "safe_area_line_break": "normal"
+    },
+    "emphasis": {
+      "font_size_scale": 1.04,
+      "outline_shadow": "current_lead_plus",
+      "speaker_badge_color": "speaker_default",
+      "accent_color": "emotion_warm_accent",
+      "backplate_box": "off",
+      "motion_primitive": "emphasis_pop_placeholder",
+      "safe_area_line_break": "prefer_shorter_lines"
+    },
+    "shout": {
+      "font_size_scale": 1.1,
+      "outline_shadow": "strong",
+      "speaker_badge_color": "speaker_default",
+      "accent_color": "high_energy_accent",
+      "backplate_box": "optional_high_readability",
+      "motion_primitive": "impact_placeholder",
+      "safe_area_line_break": "prefer_shorter_lines_max_two"
+    },
+    "whisper": {
+      "font_size_scale": 0.96,
+      "outline_shadow": "soft_readable",
+      "speaker_badge_color": "speaker_default_muted",
+      "accent_color": "quiet_accent",
+      "backplate_box": "soft",
+      "motion_primitive": "none",
+      "safe_area_line_break": "normal"
+    },
+    "ominous": {
+      "font_size_scale": 1.02,
+      "outline_shadow": "heavy_low_glow_placeholder",
+      "speaker_badge_color": "speaker_default",
+      "accent_color": "dark_accent",
+      "backplate_box": "soft",
+      "motion_primitive": "slow_weight_placeholder",
+      "safe_area_line_break": "high_readability"
+    },
+    "narration": {
+      "font_size_scale": 0.98,
+      "outline_shadow": "current_lead",
+      "speaker_badge_color": "none_or_narrator",
+      "accent_color": "narration_neutral",
+      "backplate_box": "optional",
+      "motion_primitive": "none",
+      "safe_area_line_break": "normal"
+    },
+    "system_note": {
+      "font_size_scale": 0.94,
+      "outline_shadow": "current_lead",
+      "speaker_badge_color": "system",
+      "accent_color": "system_accent",
+      "backplate_box": "on",
+      "motion_primitive": "none",
+      "safe_area_line_break": "maximum_readability"
+    }
+  },
+  "intensity_scale": {
+    "0": "baseline preset with no extra emphasis",
+    "1": "minor semantic accent; prefer badge/accent changes over body text color",
+    "2": "visible emphasis with size, outline, backplate, or line-break support",
+    "3": "reserved for rare high-impact cues; requires readability-first treatment"
+  },
+  "body_text_color_policy": {
+    "default": "stable",
+    "reason": "Character colors should usually appear first in badge/accent surfaces, not body text, so readability and contrast remain predictable.",
+    "body_text_color_change_requires": [
+      "new_style_family_review",
+      "new_palette_review",
+      "explicit production-route design work"
+    ]
+  },
+  "perceptual_impact": {
+    "high": [
+      "position",
+      "font_size",
+      "line_count",
+      "backplate_box",
+      "speaker_badge_presence",
+      "accent_block_or_rule"
+    ],
+    "medium": [
+      "accent_color",
+      "outline_color",
+      "motion_primitive"
+    ],
+    "low": [
+      "one_pixel_outline_delta",
+      "one_pixel_shadow_delta",
+      "tiny_opacity_delta"
+    ]
+  },
+  "agent_rule": {
+    "semantic_tags_to_presets_without_numeric_review": true,
+    "default_mapping_path": "speaker_id + speaker_role + emotion + intensity + utterance_role + readability_priority",
+    "avoid_asking_for": [
+      "raw outline pixels",
+      "raw shadow pixels",
+      "tiny opacity deltas",
+      "same Candidate 0-3 comparison"
+    ],
+    "human_review_required_for": [
+      "new_style_family",
+      "new_color_palette",
+      "body_text_color_policy_change",
+      "production_route_change",
+      "rights_or_publication_decision"
+    ]
+  },
+  "review_surface_layout_debt": {
+    "status": "recorded_minimal_primary_layout_improvement_applied",
+    "issue": "Candidate Visual Evidence primary samples were too small and compressed; dropdown full-frame helped but primary evidence should be larger.",
+    "safe_improvement": "Primary review grid avoids a cramped four-column layout, keeps Candidate 2 lead and Candidate 0 fallback prominent, and treats Candidate 1/3 as secondary held references.",
+    "not_a_new_review_request": true
+  },
+  "boundaries": {
+    "broad_renderer_style_system_built": false,
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "cross_repo_source_read": false
+  }
+}

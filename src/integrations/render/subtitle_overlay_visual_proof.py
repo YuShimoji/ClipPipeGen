@@ -4743,6 +4743,9 @@ def _subtitle_presentation_review_pack(
         "candidate_delta_readback": _subtitle_presentation_candidate_delta_readback(
             report
         ),
+        "review_surface_layout_debt": _subtitle_presentation_review_surface_layout_debt(
+            report
+        ),
         "render_path_readiness": _render_path_decision_card(report),
         "evidence": evidence,
         "outputs": {
@@ -4760,6 +4763,50 @@ def _subtitle_presentation_review_pack(
         "production_usage_allowed": False,
         "publishing_acceptance": False,
         "public_use_permission": False,
+    }
+
+
+def _subtitle_presentation_review_surface_layout_debt(
+    report: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "status": "recorded_minimal_primary_layout_improvement_applied",
+        "source_review": (
+            "Primary Candidate Visual Evidence samples were still too small and "
+            "compressed; the dropdown full-frame context helped but should not "
+            "be the only readable full-frame surface."
+        ),
+        "primary_surface_policy": {
+            "avoid_cramped_four_column_grid": True,
+            "primary_grid_max_columns": 2,
+            "lead_and_fallback_prominent": True,
+            "held_references_secondary_collapsible": True,
+            "crop_evidence_retained": True,
+            "full_frame_context_visible_for_lead_and_fallback": True,
+        },
+        "candidate_roles": {
+            "lead": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
+            "fallback": ED10W_CANDIDATE0_BASELINE_ID,
+            "held": [
+                ED10W_CANDIDATE1_LIGHTER_OUTLINE_ID,
+                ED10W_CANDIDATE3_BALANCED_ID,
+            ],
+        },
+        "not_reopened": [
+            "Candidate 0-3 comparison review",
+            "general Keifont acceptance",
+            "cut_002 / cut_003 review",
+            "same cut_008 dense/multiline pass",
+        ],
+        "next_route": (
+            "Use this as review-surface debt readback; future development should "
+            "fold larger primary evidence and semantic style controls into the "
+            "normal generator path instead of asking for repeated tiny numeric "
+            "comparisons."
+        ),
+        "production_subtitle_design_acceptance": False,
+        "production_render_acceptance": False,
+        "rights_status": "pending",
     }
 
 
@@ -5309,6 +5356,7 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     candidate_delta_rows = _subtitle_presentation_candidate_delta_readback_html(
         candidate_delta_readback
     )
+    layout_debt_section = _subtitle_presentation_layout_debt_section_html(pack)
     review_action_section = _subtitle_presentation_review_action_section_html(pack)
     lead_summary = _subtitle_presentation_lead_summary_html(pack)
     return f"""<!doctype html>
@@ -5327,17 +5375,22 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     .compact {{ max-width: 220px; }}
     .lead-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; align-items: start; }}
     .lead-tile {{ border-left: 5px solid #306c46; background: #f8fcf9; padding: 10px; }}
-    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; align-items: start; }}
-    .candidate-visual {{ margin: 0; padding: 8px; border-left: 4px solid #2f6f9f; background: #fbfcfe; }}
+    .candidate-visual-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 16px; align-items: start; }}
+    @media (min-width: 980px) {{ .candidate-visual-grid {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }} }}
+    .candidate-visual {{ margin: 0; padding: 12px; border: 1px solid #d8dde6; border-left: 5px solid #2f6f9f; background: #fbfcfe; }}
+    .candidate-visual.primary-candidate {{ box-shadow: 0 1px 0 rgba(31, 41, 51, 0.08); }}
     .candidate-visual.provisional_bounded_decoration_lead {{ border-left-color: #306c46; background: #f8fcf9; }}
     .candidate-visual.fallback_reference {{ border-left-color: #6b7280; }}
     .candidate-visual.held_reference {{ border-left-color: #b7791f; background: #fffaf0; }}
     .candidate-visual h3 {{ margin: 0 0 6px; font-size: 16px; line-height: 1.3; }}
-    .candidate-crop-grid {{ display: grid; grid-template-columns: repeat(2, minmax(110px, 1fr)); gap: 8px; align-items: start; }}
+    .candidate-crop-grid {{ display: grid; grid-template-columns: repeat(2, minmax(150px, 1fr)); gap: 10px; align-items: start; }}
     .candidate-crop {{ max-width: 100%; width: 100%; border: 1px solid #c7ced8; display: block; background: #fff; }}
-    .candidate-proof {{ max-width: 720px; width: 100%; border: 1px solid #c7ced8; display: block; }}
+    .candidate-proof {{ max-width: 860px; width: 100%; border: 1px solid #c7ced8; display: block; }}
     .candidate-change {{ margin: 6px 0 0; font-size: 12px; color: #52616f; }}
     .secondary-frame {{ margin-top: 8px; }}
+    .primary-frame {{ margin-top: 10px; }}
+    .layout-debt {{ border-left: 6px solid #b7791f; }}
+    .secondary-held-reference summary {{ cursor: pointer; font-weight: 700; }}
     .delta-status {{ font-weight: 700; }}
     table {{ border-collapse: collapse; width: 100%; }}
     th, td {{ border: 1px solid #d8dde6; padding: 8px; vertical-align: top; }}
@@ -5354,6 +5407,7 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
   </section>
 {review_action_section}
 {lead_summary}
+{layout_debt_section}
   <section>
     <h2>Evidence</h2>
     <div class="evidence-grid">
@@ -5428,6 +5482,28 @@ def _subtitle_presentation_review_action_section_html(pack: dict[str, Any]) -> s
     <ul>{decides}</ul>
     <h3>Not asking</h3>
     <ul>{not_asking}</ul>
+  </section>"""
+
+
+def _subtitle_presentation_layout_debt_section_html(pack: dict[str, Any]) -> str:
+    debt = pack.get("review_surface_layout_debt")
+    if not isinstance(debt, dict):
+        return ""
+    policy = debt.get("primary_surface_policy") or {}
+    policy_items = "\n".join(
+        f"<li>{escape(str(key))}: {escape(str(value).lower())}</li>"
+        for key, value in policy.items()
+    )
+    not_reopened = "\n".join(
+        f"<li>{escape(str(item))}</li>" for item in debt.get("not_reopened") or []
+    )
+    return f"""  <section class="layout-debt">
+    <h2>Review Surface Layout Debt</h2>
+    <p><strong>Status:</strong> {escape(str(debt.get("status") or ""))}</p>
+    <p>{escape(str(debt.get("source_review") or ""))}</p>
+    <ul>{policy_items}</ul>
+    <h3>Not reopened</h3>
+    <ul>{not_reopened}</ul>
   </section>"""
 
 
@@ -5523,7 +5599,15 @@ def _subtitle_presentation_candidate_visuals_html(
         change = str(item.get("changes_from_ed10v") or "")
         role = str(item.get("role_in_current_path") or "")
         current_path_status = str(item.get("current_path_status") or "")
-        role_class = f" {role}" if role else ""
+        role_classes = [role] if role else []
+        if role in {
+            "provisional_bounded_decoration_lead",
+            "fallback_reference",
+        }:
+            role_classes.append("primary-candidate")
+        if role == "held_reference":
+            role_classes.append("secondary-held-reference")
+        role_class = " " + " ".join(role_classes) if role_classes else ""
         image_path = item.get("image_path")
         image_html = (
             f'<a href="{_artifact_href(image_path)}"><img class="candidate-proof" '
@@ -5535,16 +5619,26 @@ def _subtitle_presentation_candidate_visuals_html(
         crop_images = item.get("crop_images") if isinstance(item.get("crop_images"), dict) else {}
         crop_html = _subtitle_presentation_candidate_crop_images_html(crop_images)
         cue = item.get("source_subtitle_id") or "representative frame"
+        full_frame_html = (
+            f'<div class="primary-frame">{image_html}</div>'
+            if role in {
+                "provisional_bounded_decoration_lead",
+                "fallback_reference",
+            }
+            else (
+                "<details class=\"secondary-frame\"><summary>Full-frame context</summary>"
+                f"{image_html}"
+                "</details>"
+            )
+        )
         cards.append(
             f"      <article class=\"candidate-visual{escape(role_class)}\">"
             f"<h3>Candidate {escape(str(candidate_number))}: {escape(label)}</h3>"
             f"{crop_html}"
+            f"{full_frame_html}"
             f"<p class=\"candidate-change\">{escape(current_path_status)}</p>"
             f"<p class=\"candidate-change\">{escape(str(cue))} / {escape(str(item.get('same_frame_basis') or 'same frame comparison'))}</p>"
             f"<p class=\"candidate-change\">{escape(change)}</p>"
-            "<details class=\"secondary-frame\"><summary>Full-frame context</summary>"
-            f"{image_html}"
-            "</details>"
             "</article>"
         )
     return "\n".join(cards)

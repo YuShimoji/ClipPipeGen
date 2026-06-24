@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10z_tiny_render_path_nearer_probe_ready
+health: subtitle_style_intent_registry_ready
 progress_pct: 100
 last_touched: 2026-06-24
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10z-tiny-render-path-nearer-probe-001
+active_artifact: clip-ed10aa-subtitle-style-intent-registry-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,26 +35,40 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10z-tiny-render-path-nearer-probe-001`
+Active artifact: `clip-ed10aa-subtitle-style-intent-registry-001`
 
-ED-10z current checkpoint, 2026-06-24 JST: the active artifact is now
-`clip-ed10z-tiny-render-path-nearer-probe-001`. It preserves
-`clip-ed10y-candidate2-carry-forward-001` as the source/previous artifact and
-passes Candidate 2 (`ed10w_badge_label_pressure_adjustment`) through the
-current FFmpeg/libass diagnostic path as a tiny render-path-nearer probe.
-Candidate 0 remains fallback/reference, Candidate 1 and Candidate 3 remain
-held because the consumed review says they read too thin, and the Candidate
-0-3 comparison is closed. This is local diagnostic readback only; it does not
-approve production subtitle design, production render, creative use, rights,
-publishing, or public use. The next valid movement is a separate production
-limitation-lift, final render-path, or policy/readback route, not another
-review card for the same candidates.
+ED-10aa current checkpoint, 2026-06-24 JST: the active artifact is now
+`clip-ed10aa-subtitle-style-intent-registry-001`. It adds
+`docs/SUBTITLE_STYLE_INTENT_REGISTRY.md` and
+`docs/style_intent/subtitle-style-intent-registry.json` so future subtitle
+styling can use semantic tags (`speaker_id`, `speaker_role`, `emotion`,
+`intensity`, `utterance_role`, `readability_priority`) instead of asking the
+operator to judge every tiny outline/shadow/opacity adjustment. Body text color
+stays stable by default; character color normally appears first in speaker
+badge/accent surfaces. Human review is required only for new style families,
+new palettes, body text color policy changes, production-route changes, rights,
+publishing, or public-use decisions.
 
-This turn's actual non-dry-run proof materialization is blocked by the local
-tool environment: `ffprobe` is not on PATH and `CLIPPIPE_FFPROBE` is unset.
-The ED-10z dry-run and targeted fake-runner tests validate the profile/artifact
-route, but ignored local HTML/JSON/PNG/MP4 proof files need FFmpeg/FFprobe
-provided through PATH, env, or explicit CLI paths before they can be refreshed.
+ED-10z remains the current render-path-nearer probe source:
+`clip-ed10z-tiny-render-path-nearer-probe-001` preserves
+`clip-ed10y-candidate2-carry-forward-001` as source/previous and keeps
+Candidate 2 (`ed10w_badge_label_pressure_adjustment`) as lead, Candidate 0 as
+fallback/reference, and Candidate 1 / 3 held because the consumed review says
+they read too thin. The Candidate 0-3 comparison is closed and should not be
+asked again. ED-10aa also records review-surface layout debt: primary Candidate
+Visual Evidence was too small/compressed, so future surfaces should avoid a
+cramped four-column primary grid, show Candidate 2 lead and Candidate 0
+fallback larger by default, and keep Candidate 1 / 3 secondary.
+
+The actual ED-10z non-dry-run proof materialization was rerun with explicit
+FFmpeg/FFprobe paths on 2026-06-24 JST. It returned
+`visual_proof_status=available_requires_human_review`,
+`review_card_status=withheld_tiny_render_path_nearer_probe_completed`,
+`subtitle_overlay_available_count=1`, and
+`focused_proof_review.status=tiny_render_path_nearer_probe_completed`.
+This refreshes same-machine ignored HTML/JSON/PNG/MP4 proof files, but it still
+does not approve production subtitle design, production render, creative use,
+rights, publishing, or public use.
 
 ED-10y implementation checkpoint, 2026-06-24 JST: commit `0cf35da` was pushed
 to `origin/main` and local/remote parity was verified with

@@ -1,0 +1,103 @@
+---
+id: subtitle-style-intent-registry
+title: Subtitle Style Intent Registry
+type: design_readback
+status: diagnostic_intent_registry_ready
+health: semantic_style_control_ready_for_future_mapping
+progress_pct: 100
+last_touched: 2026-06-24
+active_artifact: clip-ed10aa-subtitle-style-intent-registry-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, artifacts/ARTIFACTS.md
+---
+
+# Subtitle Style Intent Registry
+
+## What This Is
+
+This registry converts future subtitle styling work from tiny numeric deltas
+into semantic intent. It records the vocabulary an agent can use when proposing
+emotion expression, speaker-specific badge/accent treatment, and readability
+presets without asking the operator to judge every 1px outline, shadow, or
+opacity adjustment.
+
+The machine-readable readback is
+[`docs/style_intent/subtitle-style-intent-registry.json`](style_intent/subtitle-style-intent-registry.json).
+
+## Current State
+
+ED-10aa keeps ED-10z as the current render-path-nearer probe while adding a
+separate intent registry artifact:
+`clip-ed10aa-subtitle-style-intent-registry-001`. Candidate 2 remains the
+normal dialogue lead, Candidate 0 remains fallback, and Candidate 1 / 3 remain
+held because the consumed review says they read too thin. This document does
+not reopen the Candidate 0-3 comparison.
+
+The default body text color stays stable. Speaker or character-specific color
+should usually appear first in speaker badge and accent surfaces, not in the
+body glyph fill. Body text color changes require a new style-family, palette,
+or production-route review.
+
+## Intent Axes
+
+| Axis | Values / shape | Why it matters |
+|---|---|---|
+| `speaker_id` | stable string when known | lets character color/accent proposals attach to identity without changing body text color by default |
+| `speaker_role` | `character`, `narrator`, `system`, `unknown` | separates dialogue, narration, and system notes before visual styling |
+| `emotion` | `neutral`, `emphasis`, `shout`, `whisper`, `ominous`, `narration`, `system_note` | gives future agents semantic routes instead of raw px questions |
+| `intensity` | `0` to `3` | scales a preset from baseline to rare high-impact cues |
+| `utterance_role` | `dialogue`, `narration`, `sfx`, `quote`, `warning`, `inner_voice` | distinguishes speech from captions, warnings, and internal voice |
+| `readability_priority` | `normal`, `high`, `maximum` | decides whether backplate, shorter lines, or stricter safe-area behavior should win |
+
+## Token Mapping
+
+| Semantic input | Token surfaces |
+|---|---|
+| normal dialogue | current Keifont route, frame-derived base size, Candidate 2 badge-pressure lead, Candidate 0 fallback |
+| emotion / intensity | font size scale, outline/shadow strength token, accent color, optional backplate, motion primitive placeholder |
+| speaker identity | speaker badge color first, accent color second, body text color stable unless a new palette/style route is opened |
+| dense or high-risk readability | line-break policy, safe-area behavior, backplate/box, and line count before tiny outline deltas |
+| narration / system note | optional or system badge, lower visual aggression, higher readability priority |
+
+## Perceptual Weight
+
+High-impact changes are position, size, line count, backplate/box, badge
+presence, and visible accent blocks. Medium-impact changes are accent color,
+outline color, and motion primitives. Low-impact changes are 1px outline,
+1px shadow, and tiny opacity adjustments. Future prompts should treat low-impact
+numeric tweaks as implementation details once the semantic preset is known.
+
+## Agent Rule
+
+When future subtitle work supplies semantic tags such as
+`speaker_id=bancho`, `emotion=shout`, `intensity=2`,
+`utterance_role=dialogue`, and `readability_priority=high`, the agent may map
+those tags to an existing preset without asking for raw numeric parameters.
+Human review is needed only for a new style family, a new color palette, body
+text color policy changes, production-route changes, rights, publishing, or
+public-use decisions.
+
+## Review Surface Layout Debt
+
+The latest review also says the primary Candidate Visual Evidence samples were
+still too small/compressed. The dropdown full-frame context helped, but it
+should not be the only readable full-frame surface. ED-10aa records this as
+layout debt and applies a small generator-side improvement: avoid a cramped
+four-column primary grid, keep Candidate 2 lead and Candidate 0 fallback larger
+and prominent by default, retain crop evidence, and make Candidate 1 / 3
+secondary held references.
+
+This is not another review request. It is a development note for future review
+surfaces so the operator is not forced into repeated manual comparison loops.
+
+## Next
+
+Use this registry before opening another subtitle style slice. A future agent
+can add a small preset selector or renderer readback that consumes these axes,
+but ED-10aa intentionally does not build a broad renderer style system.
+
+## Constraints / Risks
+
+This artifact is diagnostic planning/readback only. It does not approve
+production subtitle design, production render, creative use, rights, publishing,
+or public use. It does not read or edit any other repository, and it does not
+vendor font binaries or source media.

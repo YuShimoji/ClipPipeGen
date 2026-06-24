@@ -361,6 +361,36 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10aa-subtitle-style-intent-registry-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10aa Subtitle Style Intent Registry |
+| purpose | Record semantic subtitle style-control axes so future agents can map speaker, emotion, intensity, utterance role, and readability tags to presets instead of asking for repeated tiny numeric outline/shadow/opacity reviews. |
+| storage class | Tracked docs/readback artifact. |
+| repo_relative_path | `docs/SUBTITLE_STYLE_INTENT_REGISTRY.md` |
+| metadata_json | `docs/style_intent/subtitle-style-intent-registry.json` |
+| open_command | `see docs\SUBTITLE_STYLE_INTENT_REGISTRY.md` |
+| source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
+| source_previous_artifact | `clip-ed10y-candidate2-carry-forward-001` |
+| source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
+| generated_from | Prompt-authorized ED-10aa design/readback slice consuming the latest review that Candidate 0/2 are acceptable, Candidate 1/3 are thin, primary review samples were too small, and future styling should move toward emotion/speaker/readability semantics. |
+| validation_command | Parse `docs/style_intent/subtitle-style-intent-registry.json`, regenerate docs dashboard, run targeted subtitle/dashboard tests, `git diff --check`, and verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | Registry records axes `speaker_id`, `speaker_role`, `emotion`, `intensity`, `utterance_role`, and `readability_priority`; maps them to font family, font size scale, outline/shadow, badge color, accent color, backplate/box, motion placeholder, and safe-area/line-break tokens; keeps body text color stable by default; and marks human review as required only for new style family, new color palette, body text color policy change, production-route change, rights, publishing, or public-use decisions. |
+| review_status | No new Review Card. The same Candidate 0-3 comparison, Keifont acceptance, cut_002/cut_003 review, and cut_008/sub_096 pass remain closed. |
+| next_action | Use this registry before future subtitle style work. ED-10z remains the current render-path-nearer probe source and now has refreshed same-machine local proof output; any limitation-lift or final render-path work should be opened as a separate route. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## `clip-ed10z-tiny-render-path-nearer-probe-001`
 
 | Field | Value |
@@ -376,9 +406,9 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10z_tiny_render_path_nearer_probe --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10z_tiny_render_path_nearer_probe --format json` plus targeted tests. |
-| latest_local_smoke | ED-10z dry-run returned `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`, `proof_profile=ed10z_tiny_render_path_nearer_probe`, `source_review_artifact_id=clip-ed10y-candidate2-carry-forward-001`, `focused_proof_review.status=tiny_render_path_nearer_probe_completed`, Candidate 2 as current lead, Candidate 0 as fallback/reference, Candidate 1 / 3 as held references, and no same-candidate review request. The non-dry-run command was attempted but stopped before materializing ignored HTML/JSON/PNG/MP4 artifacts because neither `ffprobe` nor `CLIPPIPE_FFPROBE` was available on this machine (`environment_missing_ffprobe`). Targeted fake-runner tests cover the completed render path status when FFmpeg/FFprobe are available. |
+| latest_local_smoke | ED-10z actual rerun with explicit FFmpeg/FFprobe paths returned `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`, `proof_profile=ed10z_tiny_render_path_nearer_probe`, `source_review_artifact_id=clip-ed10y-candidate2-carry-forward-001`, `visual_proof_status=available_requires_human_review`, `review_card_status=withheld_tiny_render_path_nearer_probe_completed`, `focused_proof_review.status=tiny_render_path_nearer_probe_completed`, `subtitle_overlay_available_count=1`, Candidate 2 as current lead, Candidate 0 as fallback/reference, Candidate 1 / 3 as held references, and no same-candidate review request. |
 | review_status | No new Review Card. The latest Candidate 0-3 review is already consumed; this is diagnostic probe readback only. |
-| next_action | Provide FFmpeg/FFprobe through PATH, `CLIPPIPE_FFMPEG` / `CLIPPIPE_FFPROBE`, or explicit `--ffmpeg-path` / `--ffprobe-path`, then rerun the same ED-10z command to materialize ignored local proof files. Any production limitation-lift, final render-path, rights, publishing, or public-use decision remains a separate route. |
+| next_action | Use this as refreshed same-machine local readback only. Any production limitation-lift, final render-path, rights, publishing, or public-use decision remains a separate route. |
 
 Boundary flags remain false or pending:
 
