@@ -27,12 +27,15 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10y"
+    assert status["current_focus"]["feature_id"] == "ED-10z"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10y-candidate2-carry-forward-001"
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
     )
     assert status["current_focus"]["source_review_artifact_id"] == (
-        "clip-ed10w-subtitle-presentation-review-pack-001"
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert status["current_focus"]["source_previous_artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
     )
     assert status["current_focus"]["source_comparison_artifact_id"] == (
         "clip-ed10o-multifont-focused-review-001"
@@ -41,10 +44,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "candidate2_carry_forward_ready"
+        "tiny_render_path_nearer_probe_ready"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
-        "ed10w_candidate2_lead_freeform_review_consumed"
+        "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
     assert status["current_focus"]["latest_review_consumed"] == (
         "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin"
@@ -57,10 +60,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "candidate2_promoted_to_provisional_bounded_decoration_lead"
+        "ed10z_profile_ready_actual_generation_blocked_environment_missing_ffprobe"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_REVIEW_CONSUMED"
+        "NO_USER_ACTION_PROBE_READBACK_ONLY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         "NO_REVIEW_CARD_REVIEW_CONSUMED"
@@ -69,7 +72,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "one_pass_subtitle_presentation_review_pack"
+        "tiny_render_path_nearer_probe_readback"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -99,7 +102,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["review_memory"]["lead_candidate"] == (
         "ed10w_badge_label_pressure_adjustment"
     )
-    assert "candidate2_render_path_nearer_probe_readback" in status["current_focus"]["review_memory"][
+    assert "production_limitation_lift" in status["current_focus"]["review_memory"][
         "next_nonredundant_axis"
     ]
     assert status["current_focus"]["review_memory"]["repeated_general_review"] is False
@@ -107,7 +110,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "same_candidate_comparison_review_allowed"
     ] is False
     assert status["current_focus"]["review_memory"]["current_blocker"] == (
-        "none_for_candidate2_carry_forward"
+        "none_for_tiny_render_path_nearer_probe"
     )
     assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
@@ -119,10 +122,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "withheld_latest_review_already_consumed"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10y-candidate2-carry-forward-001"
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "candidate2_carry_forward + render_path_nearer_probe"
+        "tiny_render_path_nearer_probe"
     )
     assert "cut_002 / cut_003 review" in status["current_focus"]["review_card"][
         "not_asking"
@@ -131,10 +134,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "episodes/.../subtitle_presentation_review_pack.html"
     )
     assert status["current_focus"]["review_debt"][0]["debt_id"] == (
-        "render_path_nearer_probe"
+        "environment_missing_ffprobe"
     )
     assert status["current_focus"]["review_debt"][0]["status"] == (
-        "candidate2_tiny_diagnostic_probe_included"
+        "blocks_actual_tiny_probe_materialization"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
         "ed10w_current_pass_reference",
@@ -143,7 +146,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10w_balanced_combined_low_risk",
     ]
     assert status["current_focus"]["candidate_delta_visibility"]["status"] == (
-        "consumed_candidate2_promoted_after_ed10x_fix"
+        "consumed_candidate2_probe_profile_ready_after_ed10y"
     )
     assert "compact subtitle body crops" in status["current_focus"][
         "candidate_delta_visibility"
@@ -155,7 +158,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10w_current_pass_reference"
     )
     assert status["current_focus"]["render_path_readiness"]["status"] == (
-        "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
+        "blocked_environment_missing_ffprobe_after_ed10z_profile_readback"
     )
     assert status["current_focus"]["production_subtitle_design_acceptance"] is False
     assert status["current_focus"]["production_render_acceptance"] is False
@@ -198,7 +201,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10y-candidate2-carry-forward-001"
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -214,7 +217,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["open_surfaces"][2]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "Candidate 2 lead" in persisted["open_surfaces"][2][
+    assert "ED-10z local readback" in persisted["open_surfaces"][2][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -225,7 +228,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
     assert "clip-ed10r-keifont-dense-stress-proof-001" in html
-    assert "clip-ed10y-candidate2-carry-forward-001" in html
+    assert "clip-ed10z-tiny-render-path-nearer-probe-001" in html
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
@@ -650,6 +653,37 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10y_candidate2_carry_forward"][
         "font_binaries_copied_or_vendored"
     ] is False
+    assert registry["ed10z_tiny_render_path_nearer_probe"]["feature_id"] == "ED-10z"
+    assert registry["ed10z_tiny_render_path_nearer_probe"]["artifact_id"] == (
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
+    )
+    assert registry["ed10z_tiny_render_path_nearer_probe"]["proof_profile"] == (
+        "ed10z_tiny_render_path_nearer_probe"
+    )
+    assert registry["ed10z_tiny_render_path_nearer_probe"][
+        "source_previous_artifact_id"
+    ] == "clip-ed10y-candidate2-carry-forward-001"
+    assert registry["ed10z_tiny_render_path_nearer_probe"][
+        "current_lead_candidate_id"
+    ] == "ed10w_badge_label_pressure_adjustment"
+    assert registry["ed10z_tiny_render_path_nearer_probe"][
+        "fallback_reference_candidate_id"
+    ] == "ed10w_current_pass_reference"
+    assert registry["ed10z_tiny_render_path_nearer_probe"]["render_path_readiness"][
+        "status"
+    ] == "ed10z_tiny_render_path_nearer_probe_completed"
+    assert registry["ed10z_tiny_render_path_nearer_probe"][
+        "actual_materialization_status"
+    ]["status"] == "blocked_environment_missing_ffprobe"
+    assert registry["ed10z_tiny_render_path_nearer_probe"]["review_card"][
+        "action_type"
+    ] == "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    assert registry["ed10z_tiny_render_path_nearer_probe"][
+        "production_render_acceptance"
+    ] is False
+    assert registry["ed10z_tiny_render_path_nearer_probe"][
+        "font_binaries_copied_or_vendored"
+    ] is False
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids
     assert "ed10i_biz_udgothic_bold_balanced_outline" in candidate_ids
@@ -680,6 +714,8 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     assert "Current Cut_008 Dense/Stress Diagnostic Pass" in text
     assert "Current ED-10w Presentation Review Pack" in text
     assert "Current ED-10y Candidate 2 Carry-Forward" in text
+    assert "Current ED-10z Tiny Render-Path-Nearer Probe" in text
+    assert "clip-ed10z-tiny-render-path-nearer-probe-001" in text
     assert "clip-ed10w-subtitle-presentation-review-pack-001" in text
     assert "ed10w_badge_label_pressure_adjustment" in text
     assert "ed10w_balanced_combined_low_risk" in text
@@ -741,7 +777,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_ed10y_artifact(
+def test_docs_dashboard_current_focus_registration_uses_ed10z_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -754,7 +790,7 @@ def test_docs_dashboard_current_focus_registration_uses_ed10y_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10y-candidate2-carry-forward-001"
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]

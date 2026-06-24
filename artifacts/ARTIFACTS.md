@@ -4,8 +4,8 @@ This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10y
-Candidate 2 carry-forward pack, use `.\open-current-proof.ps1`; if that
+dashboard, then use an artifact-specific launcher. For the current ED-10z
+tiny render-path-nearer probe pack, use `.\open-current-proof.ps1`; if that
 ignored local pack is absent, the launcher falls back to the retained ED-10v
 focused proof on this machine;
 for the accepted ED-10o focused comparison
@@ -360,6 +360,42 @@ proof. Remote Git can verify the tracked builder, docs, dashboard metadata,
 and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
+
+## `clip-ed10z-tiny-render-path-nearer-probe-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10z Tiny Render-Path-Nearer Probe |
+| purpose | Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous state and pass Candidate 2 through the current FFmpeg/libass diagnostic path as a tiny local readback probe. |
+| storage class | Local retained artifact; same-machine evidence only. |
+| repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html` |
+| metadata_json | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json` |
+| open_command | `.\open-current-proof.ps1` |
+| source_previous_artifact | `clip-ed10y-candidate2-carry-forward-001` |
+| source_review_artifact | `clip-ed10y-candidate2-carry-forward-001` |
+| source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
+| generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10z_tiny_render_path_nearer_probe --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
+| validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10z_tiny_render_path_nearer_probe --format json` plus targeted tests. |
+| latest_local_smoke | ED-10z dry-run returned `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`, `proof_profile=ed10z_tiny_render_path_nearer_probe`, `source_review_artifact_id=clip-ed10y-candidate2-carry-forward-001`, `focused_proof_review.status=tiny_render_path_nearer_probe_completed`, Candidate 2 as current lead, Candidate 0 as fallback/reference, Candidate 1 / 3 as held references, and no same-candidate review request. The non-dry-run command was attempted but stopped before materializing ignored HTML/JSON/PNG/MP4 artifacts because neither `ffprobe` nor `CLIPPIPE_FFPROBE` was available on this machine (`environment_missing_ffprobe`). Targeted fake-runner tests cover the completed render path status when FFmpeg/FFprobe are available. |
+| review_status | No new Review Card. The latest Candidate 0-3 review is already consumed; this is diagnostic probe readback only. |
+| next_action | Provide FFmpeg/FFprobe through PATH, `CLIPPIPE_FFMPEG` / `CLIPPIPE_FFPROBE`, or explicit `--ffmpeg-path` / `--ffprobe-path`, then rerun the same ED-10z command to materialize ignored local proof files. Any production limitation-lift, final render-path, rights, publishing, or public-use decision remains a separate route. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+Remote Git can verify the tracked generator, docs, dashboard metadata, and
+tests but not the ignored HTML/JSON/PNG/MP4/ASS artifacts themselves. Other
+worktrees should treat missing `episodes/` review assets as local evidence
+absence, not as a tracked Git failure. `git ls-files episodes` should remain
+empty.
 
 ## `clip-ed10y-candidate2-carry-forward-001`
 

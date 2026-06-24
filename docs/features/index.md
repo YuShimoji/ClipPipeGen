@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10y`
-- artifact: `clip-ed10y-candidate2-carry-forward-001`
-- state: `candidate2_carry_forward_ready`
+- feature: `ED-10z`
+- artifact: `clip-ed10z-tiny-render-path-nearer-probe-001`
+- state: `tiny_render_path_nearer_probe_ready`
 
 ## Feature Table
 
@@ -62,6 +62,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10v | Dense/Stress Pass and Linebreak Policy v0 | done | dense_stress_pass_linebreak_policy_recorded | 100 | clip-ed10r-keifont-dense-stress-proof-001 | Current dense/stress axis is passed; continue only through a new axis such as line-break policy tuning, bounded decoration adjustment, or production limitation-lift. |
 | ED-10w | Subtitle Presentation Review Pack v0 | done | subtitle_presentation_review_pack_ready | 100 | clip-ed10w-subtitle-presentation-review-pack-001 | Use the crop-first review pack to choose Candidate 0 baseline, Candidate 1/2/3 bounded adjustment, or the next tiny render-path diagnostic probe. |
 | ED-10y | Candidate 2 Carry-Forward and Layout Fix v0 | done | candidate2_carry_forward_ready | 100 | clip-ed10y-candidate2-carry-forward-001 | Continue from Candidate 2 as provisional bounded-decoration lead; do not repeat the Candidate 0-3 review. |
+| ED-10z | Tiny Render-Path-Nearer Probe v0 | done | tiny_render_path_nearer_probe_ready | 100 | clip-ed10z-tiny-render-path-nearer-probe-001 | Use the Candidate 2 tiny render-path-nearer probe as local readback; open production limitation-lift or final render-path work only as a separate scope. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

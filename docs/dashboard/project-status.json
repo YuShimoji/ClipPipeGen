@@ -24,13 +24,14 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10y",
-    "artifact_id": "clip-ed10y-candidate2-carry-forward-001",
-    "source_review_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+    "feature_id": "ED-10z",
+    "artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+    "source_review_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
+    "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "candidate2_carry_forward_ready",
-    "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed",
+    "state": "tiny_render_path_nearer_probe_ready",
+    "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
       "cut_008"
@@ -38,12 +39,12 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "candidate2_promoted_to_provisional_bounded_decoration_lead",
-    "user_action_type": "NO_USER_ACTION_REVIEW_CONSUMED",
+    "route_status": "ed10z_profile_ready_actual_generation_blocked_environment_missing_ffprobe",
+    "user_action_type": "NO_USER_ACTION_PROBE_READBACK_ONLY",
     "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-    "selected_typography_source": "ed10v_pass_state_plus_ed10w_review_consumed_candidate2",
+    "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-    "main_issue": "candidate2_carry_forward_and_render_path_nearer_probe",
+    "main_issue": "candidate2_tiny_render_path_nearer_probe_readback",
     "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
     "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
     "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -53,7 +54,7 @@
     ],
     "lead_status": "provisional_bounded_decoration_lead",
     "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-    "local_generation_status": "ed10y_candidate2_carry_forward_pack_generated_with_lead_fallback_layout",
+    "local_generation_status": "ed10z_profile_ready_actual_generation_blocked_environment_missing_ffprobe",
     "user_review_status": "consumed_no_user_review_required_now",
     "multiline_wrap_evidence_status": "passed_diagnostic_review",
     "multiline_wrap_evidence": {
@@ -72,14 +73,14 @@
       "ed10w_balanced_combined_low_risk"
     ],
     "candidate_delta_visibility": {
-      "status": "consumed_candidate2_promoted_after_ed10x_fix",
+      "status": "consumed_candidate2_probe_profile_ready_after_ed10y",
       "source_review": "Candidate 0 and Candidate 2 are acceptable/good; Candidate 1 and Candidate 3 read too thin; full-frame context was still somewhat small.",
       "default_evidence": [
         "compact subtitle body crops",
         "compact SPK badge crops",
         "actual style parameter delta readback"
       ],
-      "full_frame_evidence": "larger details view after ED-10y layout fix",
+      "full_frame_evidence": "larger details view retained from ED-10y source state",
       "candidate_delta_expectation": {
         "candidate_0": "baseline reference; no visual delta",
         "candidate_1": "outline/shadow visibly lighter than baseline",
@@ -88,8 +89,8 @@
       }
     },
     "render_path_readiness": {
-      "status": "candidate2_tiny_render_path_nearer_diagnostic_probe_completed",
-      "recommended_minimal_next_route": "candidate2_probe_completed_no_production_claim",
+      "status": "blocked_environment_missing_ffprobe_after_ed10z_profile_readback",
+      "recommended_minimal_next_route": "provide_ffmpeg_ffprobe_then_rerun_same_ed10z_probe",
       "not_accepted": [
         "production_subtitle_design_acceptance",
         "production_render_acceptance",
@@ -114,7 +115,7 @@
         "rapid_cue_replacement",
         "outline_shadow_badge_pressure"
       ],
-      "shared_policy_note": "Keep line-break/layout/decoration policy structured for future NLMYTGen sharing consideration; ED-10y does not read, edit, or depend on NLMYTGen files and does not extract a shared package."
+      "shared_policy_note": "Keep line-break/layout/decoration policy structured for future NLMYTGen sharing consideration; ED-10z does not read, edit, or depend on NLMYTGen files and does not extract a shared package."
     },
     "review_memory": {
       "subject": "ED-10w bounded subtitle presentation candidates",
@@ -132,7 +133,8 @@
         "provisional_normal_dialogue_baseline",
         "diagnostic_dense_stress_pass",
         "diagnostic_multiline_wrap_pass",
-        "candidate2_bounded_badge_pressure_adjustment_lead"
+        "candidate2_bounded_badge_pressure_adjustment_lead",
+        "tiny_render_path_nearer_probe_profile_readback"
       ],
       "not_accepted_scope": [
         "production_subtitle_design",
@@ -143,8 +145,8 @@
         "public_use"
       ],
       "next_nonredundant_axis": [
-        "candidate2_render_path_nearer_probe_readback",
         "production_limitation_lift",
+        "final_render_path_probe",
         "future_shared_subtitle_layout_policy"
       ],
       "repeated_general_review": false,
@@ -153,18 +155,18 @@
       "review_reset_trigger_active": [
         "new_axis_or_changed_evidence_only"
       ],
-      "current_blocker": "none_for_candidate2_carry_forward",
+      "current_blocker": "none_for_tiny_render_path_nearer_probe",
       "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "review_card": {
       "status": "withheld_latest_review_already_consumed",
       "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-      "target": "clip-ed10y-candidate2-carry-forward-001",
-      "artifact_id": "clip-ed10y-candidate2-carry-forward-001",
-      "axis": "candidate2_carry_forward + render_path_nearer_probe",
+      "target": "clip-ed10z-tiny-render-path-nearer-probe-001",
+      "artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+      "axis": "tiny_render_path_nearer_probe",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "Latest freeform review is consumed; Candidate 2 is promoted and Candidate 0 is fallback.",
+      "what_changed": "ED-10z records the Candidate 2 tiny render-path-nearer route; actual materialization in this turn is blocked until FFprobe is available.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -174,10 +176,10 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "review memory consumed; proceed from Candidate 2 lead"
+      "completion_signal": "rerun the same ED-10z probe with FFmpeg/FFprobe available before treating same-machine HTML/JSON as refreshed"
     },
     "lead_fallback_readback": {
-      "status": "candidate2_promoted_to_provisional_bounded_decoration_lead",
+      "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
       "lead_candidate": "ed10w_badge_label_pressure_adjustment",
       "fallback_reference": "ed10w_current_pass_reference",
       "held_references": [
@@ -185,13 +187,13 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "one_pass_subtitle_presentation_review_pack",
+    "review_surface_direction": "tiny_render_path_nearer_probe_readback",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
-        "debt_id": "render_path_nearer_probe",
-        "status": "candidate2_tiny_diagnostic_probe_included",
-        "next_action": "use the Candidate 2 diagnostic probe as readback only; production render acceptance remains separate"
+        "debt_id": "environment_missing_ffprobe",
+        "status": "blocks_actual_tiny_probe_materialization",
+        "next_action": "install or provide FFmpeg/FFprobe via PATH, CLIPPIPE_FFMPEG/CLIPPIPE_FFPROBE, or --ffmpeg-path/--ffprobe-path, then rerun the same ED-10z command"
       }
     ],
     "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -217,10 +219,10 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
-      "label": "Candidate 2 Carry-Forward Pack",
+      "label": "Tiny Render-Path Probe",
       "command": ".\\open-current-proof.ps1",
       "target": "episodes/.../subtitle_presentation_review_pack.html",
-      "when_to_use": "Use as the ED-10y Candidate 2 lead / Candidate 0 fallback carry-forward surface with compact crops, larger full-frame details, and Candidate 2 diagnostic probe readback; do not repeat the Candidate 0-3 comparison review."
+      "when_to_use": "Use as the ED-10z local readback that passes Candidate 2 through the current diagnostic render path while preserving Candidate 0 as fallback and Candidate 1/3 as held references."
     },
     {
       "label": "Multi-font Focused Review Reference",
@@ -837,6 +839,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10z",
+      "title": "Tiny Render-Path-Nearer Probe v0",
+      "status": "done",
+      "health": "tiny_render_path_nearer_probe_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10z-tiny-render-path-nearer-probe-001",
+      "next_action": "Use the Candidate 2 tiny render-path-nearer probe as local readback; open production limitation-lift or final render-path work only as a separate scope.",
+      "summary_excerpt": "clip-ed10y-candidate2-carry-forward-001 を source/previous artifact として保持し、Candidate 2 ed10w_badge_label_pressure_adjustment を current FFmpeg/libass diagnostic path に通す tiny render-path-nearer probe profile を clip-ed10z-...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -1311,9 +1324,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 93,
+    "feature_count": 94,
     "status_counts": {
-      "done": 77,
+      "done": 78,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -1431,6 +1444,16 @@
       "next_action": "Use clip-ed10r-keifont-dense-stress-proof-001 for the active review. Keep this artifact as history and baseline evidence only."
     },
     {
+      "artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+      "title": "ED-10z Tiny Render-Path-Nearer Probe",
+      "purpose": "Preserve clip-ed10y-candidate2-carry-forward-001 as source/previous state and pass Candidate 2 through the current FFmpeg/libass diagnostic path as a tiny local readback probe.",
+      "storage_class": "Local retained artifact; same-machine evidence only.",
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html",
+      "open_command": ".\\open-current-proof.ps1",
+      "review_status": "No new Review Card. The latest Candidate 0-3 review is already consumed; this is diagnostic probe readback only.",
+      "next_action": "Provide FFmpeg/FFprobe through PATH, CLIPPIPE_FFMPEG / CLIPPIPE_FFPROBE, or explicit --ffmpeg-path / --ffprobe-path, then rerun the same ED-10z command to materialize ignored local proof files. Any production limitation-lift, final render-path, rights, publishing, or public-use decision remains a separate route."
+    },
+    {
       "artifact_id": "clip-ed10y-candidate2-carry-forward-001",
       "title": "ED-10y Candidate 2 Carry-Forward Pack",
       "purpose": "Consume the latest ED-10w/ED-10x freeform review, promote Candidate 2 as provisional bounded-decoration lead, retain Candidate 0 as fallback, and hold Candidate 1 / 3 because they read too thin.",
@@ -1504,6 +1527,7 @@
       "clip-ed10n-keifont-overlay-proof-001",
       "clip-ed10o-multifont-focused-review-001",
       "clip-ed10p-keifont-lead-representative-proof-001",
+      "clip-ed10z-tiny-render-path-nearer-probe-001",
       "clip-ed10y-candidate2-carry-forward-001",
       "clip-ed10w-subtitle-presentation-review-pack-001",
       "clip-ed10r-keifont-dense-stress-proof-001",
@@ -1511,26 +1535,26 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 17
+    "artifact_count": 18
   },
   "artifact_coverage": {
-    "registered_artifact_count": 17,
-    "features_with_artifact_count": 20,
+    "registered_artifact_count": 18,
+    "features_with_artifact_count": 21,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "ED-10y Candidate 2 carry-forward pack",
-      "artifact": "clip-ed10y-candidate2-carry-forward-001",
-      "question": "Has the latest freeform review been consumed with Candidate 2 as lead, Candidate 0 as fallback, and Candidate 1/3 held?",
-      "next_route": "No same-candidate review is needed; use the Candidate 2 diagnostic probe readback or move to a genuinely new production limitation-lift/render-path axis."
+      "item": "ED-10z tiny render-path-nearer probe",
+      "artifact": "clip-ed10z-tiny-render-path-nearer-probe-001",
+      "question": "Has Candidate 2 been passed through the current diagnostic render path without reopening the Candidate 0-3 comparison?",
+      "next_route": "Use the probe as local readback only; open production limitation-lift or final render-path work as a separate route."
     },
     {
       "item": "ED-10v dense/stress pass and line-break policy readback",
       "artifact": "clip-ed10r-keifont-dense-stress-proof-001",
       "question": "Is the ED-10u cut_008 multiline/dense-stress pass preserved as prior state?",
-      "next_route": "Use as source evidence only; ED-10y owns the Candidate 2 carry-forward readback."
+      "next_route": "Use as source evidence only; ED-10z owns the current tiny render-path-nearer readback."
     },
     {
       "item": "ED-10p Keifont representative proof baseline",
@@ -1613,17 +1637,17 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 569,
+      "line_count": 590,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "ed10y_candidate2_carry_forward_ready",
+        "health": "ed10z_tiny_render_path_nearer_probe_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-24",
-        "next_review_due": "none_review_consumed_candidate2_carry_forward",
-        "active_artifact": "clip-ed10y-candidate2-carry-forward-001",
+        "next_review_due": "none_probe_readback_only",
+        "active_artifact": "clip-ed10z-tiny-render-path-nearer-probe-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
         "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
@@ -1634,13 +1658,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 106,
+      "boundary_term_count": 112,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 233,
+      "line_count": 234,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1648,7 +1672,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 368,
+      "boundary_term_count": 373,
       "status": "in_progress"
     },
     {
@@ -1723,7 +1747,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 552,
+      "line_count": 588,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1731,7 +1755,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 231,
+      "boundary_term_count": 244,
       "status": "reference"
     },
     {
@@ -1793,17 +1817,17 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 237,
+      "line_count": 260,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "ed10y_candidate2_carry_forward_ready",
+        "health": "ed10z_tiny_render_path_nearer_probe_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-24",
-        "next_review_due": "none_review_consumed_candidate2_carry_forward",
-        "active_artifact": "clip-ed10y-candidate2-carry-forward-001",
+        "next_review_due": "none_probe_readback_only",
+        "active_artifact": "clip-ed10z-tiny-render-path-nearer-probe-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
         "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
@@ -1814,7 +1838,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 33,
+      "boundary_term_count": 38,
       "status": "active"
     },
     {
@@ -2070,7 +2094,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "Subtitle Presentation Contract",
-      "line_count": 293,
+      "line_count": 312,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2078,7 +2102,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 69,
+      "boundary_term_count": 72,
       "status": "reference"
     },
     {
@@ -2159,7 +2183,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (569 lines) is likely carrying history.",
+        "detail": "Long active doc (590 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -2171,7 +2195,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 368 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 373 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2189,13 +2213,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (552 lines) is likely carrying history.",
+        "detail": "Long active doc (588 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 231 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 244 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2279,7 +2303,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 69 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 72 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

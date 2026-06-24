@@ -33,12 +33,16 @@ ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE = (
     "ed10w_subtitle_presentation_review_pack"
 )
 ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE = "ed10y_candidate2_carry_forward"
+ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE = (
+    "ed10z_tiny_render_path_nearer_probe"
+)
 SUBTITLE_OVERLAY_PROOF_PROFILES = (
     DEFAULT_SUBTITLE_OVERLAY_PROOF_PROFILE,
     ED10P_KEIFONT_LEAD_REPRESENTATIVE_PROOF_PROFILE,
     ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
     ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
     ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+    ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE,
 )
 ED10L_KEIFONT_CANDIDATE_ID = "ed10l_keifont_pop_dialogue_candidate"
 ED10W_CANDIDATE0_BASELINE_ID = "ed10w_current_pass_reference"
@@ -107,6 +111,24 @@ def typography_decoration_candidate_ids() -> tuple[str, ...]:
 
 def subtitle_overlay_proof_profiles() -> tuple[str, ...]:
     return SUBTITLE_OVERLAY_PROOF_PROFILES
+
+
+def _is_candidate2_lead_probe_profile(profile: str | None) -> bool:
+    return str(profile or "") in {
+        ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+        ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE,
+    }
+
+
+def _is_tiny_render_path_probe_profile(profile: str | None) -> bool:
+    return str(profile or "") == ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE
+
+
+def _is_candidate2_lead_probe_state(state: str | None) -> bool:
+    return str(state or "") in {
+        "candidate2_carry_forward_ready",
+        "tiny_render_path_nearer_probe_ready",
+    }
 
 
 class SubtitleOverlayVisualProofError(Exception):
@@ -605,22 +627,49 @@ def _subtitle_overlay_proof_profile(
             "publishing_acceptance": False,
             "public_use_permission": False,
         }
-    if profile == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if _is_candidate2_lead_probe_profile(profile):
         if typography_decoration_candidate_id != ED10L_KEIFONT_CANDIDATE_ID:
             raise SubtitleOverlayVisualProofError(
-                "ed10y_candidate2_carry_forward requires "
+                f"{profile} requires "
                 f"--typography-decoration-candidate-id {ED10L_KEIFONT_CANDIDATE_ID}"
             )
         if tuple(target_cut_ids) != ("cut_008",):
             raise SubtitleOverlayVisualProofError(
-                "ed10y_candidate2_carry_forward requires exactly "
+                f"{profile} requires exactly "
                 "--target-cut cut_008; do not replay cut_002/cut_003 general "
                 "Keifont acceptance review"
             )
+        is_ed10z = profile == ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE
+        artifact_id = (
+            "clip-ed10z-tiny-render-path-nearer-probe-001"
+            if is_ed10z
+            else "clip-ed10y-candidate2-carry-forward-001"
+        )
+        source_review_artifact_id = (
+            "clip-ed10y-candidate2-carry-forward-001"
+            if is_ed10z
+            else "clip-ed10w-subtitle-presentation-review-pack-001"
+        )
+        axis = (
+            "tiny_render_path_nearer_probe"
+            if is_ed10z
+            else "candidate2_carry_forward + render_path_nearer_probe"
+        )
+        focused_status = (
+            "tiny_render_path_nearer_probe_completed"
+            if is_ed10z
+            else "candidate2_carry_forward_ready"
+        )
+        current_blocker = (
+            "none_for_tiny_render_path_nearer_probe"
+            if is_ed10z
+            else "none_for_candidate2_carry_forward"
+        )
         return {
-            "proof_profile": ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
-            "artifact_id": "clip-ed10y-candidate2-carry-forward-001",
-            "source_review_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+            "proof_profile": profile,
+            "artifact_id": artifact_id,
+            "source_review_artifact_id": source_review_artifact_id,
+            "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
             "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "target_cuts": list(target_cut_ids),
@@ -632,10 +681,18 @@ def _subtitle_overlay_proof_profile(
             ],
             "selected_typography_base": ED10L_KEIFONT_CANDIDATE_ID,
             "review_surface_direction": {
-                "status": "latest_review_consumed_candidate2_carry_forward",
-                "accepted_surface_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+                "status": (
+                    "candidate2_tiny_render_path_nearer_probe_completed"
+                    if is_ed10z
+                    else "latest_review_consumed_candidate2_carry_forward"
+                ),
+                "accepted_surface_artifact_id": source_review_artifact_id,
                 "accepted_surface": (
-                    "ED-10w/ED-10x crop-first pack reviewed; Candidate 2 is "
+                    "ED-10y Candidate 2 carry-forward source state; Candidate "
+                    "2 is the bounded-decoration lead and Candidate 0 is "
+                    "fallback."
+                    if is_ed10z
+                    else "ED-10w/ED-10x crop-first pack reviewed; Candidate 2 is "
                     "the bounded-decoration lead and Candidate 0 is fallback."
                 ),
                 "not_reopened": [
@@ -657,7 +714,8 @@ def _subtitle_overlay_proof_profile(
                 "keifont_is_diagnostic_representative_normal_dialogue_provisional_baseline": True,
                 "ed10v_dense_stress_pass_consumed": True,
                 "ed10w_review_consumed": True,
-                "ed10y_axis": "candidate2_carry_forward + render_path_nearer_probe",
+                "ed10y_review_consumed": True,
+                "ed10z_probe_axis": axis,
                 "lead_bounded_decoration_candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
                 "lead_candidate_label": "Candidate 2 / SPK badge / label pressure adjustment",
                 "fallback_reference_candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
@@ -701,6 +759,7 @@ def _subtitle_overlay_proof_profile(
                     "diagnostic_dense_stress_pass",
                     "diagnostic_multiline_wrap_pass",
                     "candidate2_bounded_badge_pressure_adjustment_lead",
+                    "tiny_render_path_nearer_probe_readback",
                 ],
                 "not_accepted_scope": [
                     "production_subtitle_design",
@@ -711,48 +770,66 @@ def _subtitle_overlay_proof_profile(
                     "public_use",
                 ],
                 "next_nonredundant_axis": [
-                    "candidate2_render_path_nearer_probe_readback",
                     "production_limitation_lift",
+                    "final_render_path_probe",
                     "future_shared_subtitle_layout_policy",
                 ],
                 "repeated_general_review": False,
                 "repeated_cut_008_review_allowed": False,
                 "same_candidate_comparison_review_allowed": False,
-                "current_blocker": "none_for_candidate2_carry_forward",
+                "current_blocker": current_blocker,
             },
             "focused_proof_review": {
-                "status": "candidate2_carry_forward_ready",
-                "target": "Candidate 2 lead carry-forward proof surface",
+                "status": focused_status,
+                "target": (
+                    "Candidate 2 tiny render-path-nearer diagnostic probe"
+                    if is_ed10z
+                    else "Candidate 2 lead carry-forward proof surface"
+                ),
                 "input_mode": "none_latest_review_already_consumed",
                 "current_lead_candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
                 "fallback_reference_candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
                 "target_cuts": list(target_cut_ids),
-                "source_review_artifact_id": "clip-ed10w-subtitle-presentation-review-pack-001",
+                "source_review_artifact_id": source_review_artifact_id,
                 "source_review_surface": (
-                    "ED-10w/ED-10x crop-first candidate pack consumed by "
+                    "ED-10y Candidate 2 carry-forward consumed the latest user "
+                    "freeform review and is now the source state"
+                    if is_ed10z
+                    else "ED-10w/ED-10x crop-first candidate pack consumed by "
                     "latest user freeform review"
                 ),
                 "look_for": [
-                    "Candidate 2 is visible as the carry-forward lead",
-                    "Candidate 0 remains visible as fallback/reference",
-                    "Candidate 1 and Candidate 3 are held because they read too thin",
+                    "Candidate 2 is passed through the current FFmpeg/libass diagnostic path",
+                    "Candidate 0 remains fallback/reference only",
+                    "Candidate 1 and Candidate 3 remain held because they read too thin",
                     "do not ask for another Candidate 0-3 comparison review",
                 ],
                 "completion_signal": (
-                    "tracked state records Candidate 2 lead and a tiny "
-                    "diagnostic render-path-nearer probe readback"
+                    "tracked state records Candidate 2 tiny render-path-nearer "
+                    "probe readback without production acceptance"
                 ),
             },
             "review_debt": [
                 {
-                    "debt_id": "render_path_nearer_probe",
-                    "status": "candidate2_tiny_diagnostic_probe_included",
+                    "debt_id": (
+                        "production_limitation_lift"
+                        if is_ed10z
+                        else "render_path_nearer_probe"
+                    ),
+                    "status": (
+                        "not_started_after_tiny_probe"
+                        if is_ed10z
+                        else "candidate2_tiny_diagnostic_probe_included"
+                    ),
                     "reason": (
                         "Candidate 2 is rendered through the current FFmpeg/libass "
                         "diagnostic path as a tiny path-nearer probe."
                     ),
                     "next_action": (
-                        "use the Candidate 2 probe readback as diagnostic evidence "
+                        "start a separate limitation-lift/final render-path route "
+                        "only after explicit acceptance scope is opened"
+                        if is_ed10z
+                        else "use the Candidate 2 probe readback as diagnostic evidence "
                         "only; production render acceptance remains separate"
                     ),
                 }
@@ -912,14 +989,18 @@ def build_subtitle_overlay_visual_proof(
         updated_representative[
             "review_card_status"
         ] = "withheld_multiline_wrap_evidence_missing"
-    elif (
-        proof_profile_data.get("proof_profile")
-        == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE
+    elif _is_candidate2_lead_probe_profile(
+        str(proof_profile_data.get("proof_profile") or "")
     ):
-        report["review_card_status"] = "withheld_review_already_consumed_candidate2_promoted"
-        updated_representative[
-            "review_card_status"
-        ] = "withheld_review_already_consumed_candidate2_promoted"
+        review_card_status = (
+            "withheld_tiny_render_path_nearer_probe_completed"
+            if _is_tiny_render_path_probe_profile(
+                str(proof_profile_data.get("proof_profile") or "")
+            )
+            else "withheld_review_already_consumed_candidate2_promoted"
+        )
+        report["review_card_status"] = review_card_status
+        updated_representative["review_card_status"] = review_card_status
     else:
         report["review_card_status"] = "review_card_allowed_after_scope_checks"
         updated_representative[
@@ -936,6 +1017,7 @@ def build_subtitle_overlay_visual_proof(
         in {
             ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
             ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+            ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE,
         }
     ):
         presentation_review_pack = _subtitle_presentation_review_pack(
@@ -1125,8 +1207,8 @@ def _build_cut_proof(
                 in {
                     ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
                     ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
-                    ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
-                },
+                }
+                or _is_candidate2_lead_probe_profile(proof_profile_id),
             ),
             ffmpeg_path=render_result.ffmpeg_path,
             runner=runner,
@@ -1147,8 +1229,8 @@ def _build_cut_proof(
             if proof_profile_id
             in {
                 ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
-                ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
             }
+            or _is_candidate2_lead_probe_profile(proof_profile_id)
             else []
         )
         return _cut_report(
@@ -1457,6 +1539,7 @@ def _report_payload(
         "artifact_id": proof_profile.get("artifact_id"),
         "proof_profile": proof_profile.get("proof_profile"),
         "source_review_artifact_id": proof_profile.get("source_review_artifact_id"),
+        "source_previous_artifact_id": proof_profile.get("source_previous_artifact_id"),
         "source_proof_artifact_id": proof_profile.get("source_proof_artifact_id"),
         "source_comparison_artifact_id": proof_profile.get(
             "source_comparison_artifact_id"
@@ -1538,6 +1621,7 @@ def _font_visual_evidence_readback(
         ED10R_KEIFONT_DENSE_STRESS_PROOF_PROFILE,
         ED10W_SUBTITLE_PRESENTATION_REVIEW_PACK_PROFILE,
         ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE,
+        ED10Z_TINY_RENDER_PATH_NEARER_PROBE_PROFILE,
     }
     valid_keifont = (
         requested == "Keifont"
@@ -4615,9 +4699,14 @@ def _subtitle_presentation_review_pack(
         "artifact_id": artifact_id,
         "source_artifact_id": report.get("artifact_id"),
         "source_review_artifact_id": report.get("source_review_artifact_id"),
+        "source_previous_artifact_id": report.get("source_previous_artifact_id"),
         "created_at": _now(),
         "episode_id": report.get("episode_id"),
-        "axis": "bounded_decoration_adjustment + render_path_readiness",
+        "axis": (
+            "tiny_render_path_nearer_probe"
+            if _is_tiny_render_path_probe_profile(report.get("proof_profile"))
+            else "bounded_decoration_adjustment + render_path_readiness"
+        ),
         "state": _subtitle_presentation_pack_state(report),
         "target_cuts": report.get("target_cuts") or [],
         "review_consumption": _subtitle_presentation_review_consumption(report),
@@ -4675,13 +4764,15 @@ def _subtitle_presentation_review_pack(
 
 
 def _subtitle_presentation_pack_state(report: dict[str, Any]) -> str:
+    if _is_tiny_render_path_probe_profile(report.get("proof_profile")):
+        return "tiny_render_path_nearer_probe_ready"
     if report.get("proof_profile") == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
         return "candidate2_carry_forward_ready"
     return "one_pass_review_pending"
 
 
 def _subtitle_presentation_review_consumption(report: dict[str, Any]) -> dict[str, Any]:
-    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if not _is_candidate2_lead_probe_profile(report.get("proof_profile")):
         return {
             "latest_review_consumed": False,
             "user_review_required_now": True,
@@ -4700,13 +4791,16 @@ def _subtitle_presentation_review_consumption(report: dict[str, Any]) -> dict[st
         "user_review_required_now": False,
         "same_candidate_comparison_review_allowed": False,
         "review_card_reemitted": False,
+        "tiny_render_path_nearer_probe_completed": _is_tiny_render_path_probe_profile(
+            report.get("proof_profile")
+        ),
     }
 
 
 def _subtitle_presentation_lead_fallback_readback(
     report: dict[str, Any],
 ) -> dict[str, Any]:
-    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if not _is_candidate2_lead_probe_profile(report.get("proof_profile")):
         return {
             "lead_candidate": None,
             "fallback_reference": None,
@@ -4714,7 +4808,11 @@ def _subtitle_presentation_lead_fallback_readback(
             "status": "not_promoted_yet",
         }
     return {
-        "status": "candidate2_promoted_to_provisional_bounded_decoration_lead",
+        "status": (
+            "candidate2_promoted_to_tiny_render_path_nearer_probe_lead"
+            if _is_tiny_render_path_probe_profile(report.get("proof_profile"))
+            else "candidate2_promoted_to_provisional_bounded_decoration_lead"
+        ),
         "lead_candidate": {
             "candidate_number": 2,
             "candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
@@ -4746,14 +4844,23 @@ def _subtitle_presentation_review_card(report: dict[str, Any]) -> dict[str, Any]
     artifact_id = str(
         report.get("artifact_id") or "clip-ed10w-subtitle-presentation-review-pack-001"
     )
-    if report.get("proof_profile") == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if _is_candidate2_lead_probe_profile(report.get("proof_profile")):
+        is_ed10z = _is_tiny_render_path_probe_profile(report.get("proof_profile"))
         return {
             "target": artifact_id,
             "status": "withheld_latest_review_already_consumed",
             "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-            "axis": "candidate2_carry_forward + render_path_nearer_probe",
+            "axis": (
+                "tiny_render_path_nearer_probe"
+                if is_ed10z
+                else "candidate2_carry_forward + render_path_nearer_probe"
+            ),
             "reason": (
-                "The latest freeform review already selected Candidate 2 as "
+                "Candidate 2 has already been carried forward and this ED-10z "
+                "surface only records the tiny render-path-nearer probe; "
+                "repeating the same Candidate 0-3 review is disallowed."
+                if is_ed10z
+                else "The latest freeform review already selected Candidate 2 as "
                 "lead and kept Candidate 0 as fallback; repeating the same "
                 "Candidate 0-3 review is disallowed."
             ),
@@ -4806,15 +4913,20 @@ def _subtitle_presentation_review_card(report: dict[str, Any]) -> dict[str, Any]
 def _subtitle_presentation_operator_observation_card(
     report: dict[str, Any],
 ) -> dict[str, Any]:
-    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if not _is_candidate2_lead_probe_profile(report.get("proof_profile")):
         return {
             "status": "not_needed_review_card_emitted",
             "reason": "ED-10w still needs one bounded presentation review.",
         }
+    is_ed10z = _is_tiny_render_path_probe_profile(report.get("proof_profile"))
     return {
         "status": "no_user_action_required",
         "reason": (
-            "Latest user review is already consumed; this surface is a "
+            "Latest user review is already consumed; this ED-10z surface records "
+            "the tiny diagnostic render-path-nearer probe, not another decision "
+            "request."
+            if is_ed10z
+            else "Latest user review is already consumed; this surface is a "
             "carry-forward/readback and tiny diagnostic probe, not another "
             "Candidate 0-3 review request."
         ),
@@ -4903,7 +5015,7 @@ def _with_ed10y_candidate_role(
     *,
     report: dict[str, Any],
 ) -> dict[str, Any]:
-    if report.get("proof_profile") != ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if not _is_candidate2_lead_probe_profile(report.get("proof_profile")):
         return item
     candidate_number = int(item.get("candidate_number") or 0)
     role = _ed10y_candidate_role(candidate_number)
@@ -5050,7 +5162,8 @@ def _ed10w_bounded_decoration_candidates(
 
 def _render_path_decision_card(report: dict[str, Any]) -> dict[str, Any]:
     renderer = report.get("renderer_path_audit") or {}
-    if report.get("proof_profile") == ED10Y_CANDIDATE2_CARRY_FORWARD_PROFILE:
+    if _is_candidate2_lead_probe_profile(report.get("proof_profile")):
+        is_ed10z = _is_tiny_render_path_probe_profile(report.get("proof_profile"))
         lead_visual = next(
             (
                 item
@@ -5060,12 +5173,22 @@ def _render_path_decision_card(report: dict[str, Any]) -> dict[str, Any]:
             {},
         )
         return {
-            "status": "candidate2_tiny_render_path_nearer_diagnostic_probe_completed",
+            "status": (
+                "ed10z_tiny_render_path_nearer_probe_completed"
+                if is_ed10z
+                else "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
+            ),
             "safe_existing_path_available": True,
             "current_renderer_path": (
                 renderer.get("renderer_path") or "ffmpeg_libass_diagnostic_overlay"
             ),
-            "recommended_minimal_next_route": "candidate2_probe_completed_no_production_claim",
+            "recommended_minimal_next_route": (
+                "separate_production_limitation_lift_or_final_render_path_route"
+                if is_ed10z
+                else "candidate2_probe_completed_no_production_claim"
+            ),
+            "artifact_id": report.get("artifact_id"),
+            "source_previous_artifact_id": report.get("source_previous_artifact_id"),
             "candidate2_probe": {
                 "candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
                 "source_cut": lead_visual.get("source_cut"),
@@ -5076,7 +5199,11 @@ def _render_path_decision_card(report: dict[str, Any]) -> dict[str, Any]:
                 "image_status": lead_visual.get("image_status"),
                 "style_delta_readback": lead_visual.get("style_delta_readback") or {},
             },
-            "next_route": "production_limitation_lift_or_final_render_path_probe_only_after_explicit_acceptance",
+            "next_route": (
+                "open_separate_scope_for_limitation_lift_or_final_render_path_only"
+                if is_ed10z
+                else "production_limitation_lift_or_final_render_path_probe_only_after_explicit_acceptance"
+            ),
             "explicitly_not_accepted": [
                 "production subtitle design acceptance",
                 "production render acceptance",
@@ -5128,11 +5255,13 @@ def _subtitle_presentation_review_pack_html(pack: dict[str, Any]) -> str:
     candidate_delta_readback = pack.get("candidate_delta_readback") or []
     review_card = pack.get("review_card") or {}
     render_card = pack.get("render_path_readiness") or {}
-    title = (
-        "Candidate 2 Carry-Forward Pack"
-        if pack.get("state") == "candidate2_carry_forward_ready"
-        else "Subtitle Presentation Review Pack"
-    )
+    pack_state = str(pack.get("state") or "")
+    if pack_state == "tiny_render_path_nearer_probe_ready":
+        title = "Tiny Render-Path Nearer Probe"
+    elif pack_state == "candidate2_carry_forward_ready":
+        title = "Candidate 2 Carry-Forward Pack"
+    else:
+        title = "Subtitle Presentation Review Pack"
     baseline_frame = evidence.get("baseline_frame")
     multiline_frame = evidence.get("multiline_screenshot")
     candidate_rows = "\n".join(
@@ -5273,7 +5402,7 @@ def _subtitle_presentation_review_action_section_html(pack: dict[str, Any]) -> s
     not_asking = "\n".join(
         f"<li>{escape(str(item))}</li>" for item in review_card.get("not_asking") or []
     )
-    if pack.get("state") == "candidate2_carry_forward_ready":
+    if _is_candidate2_lead_probe_state(pack.get("state")):
         observation = pack.get("operator_observation_card") or {}
         observe = "\n".join(
             f"<li>{escape(str(item))}</li>" for item in observation.get("observe") or []
@@ -5303,7 +5432,7 @@ def _subtitle_presentation_review_action_section_html(pack: dict[str, Any]) -> s
 
 
 def _subtitle_presentation_lead_summary_html(pack: dict[str, Any]) -> str:
-    if pack.get("state") != "candidate2_carry_forward_ready":
+    if not _is_candidate2_lead_probe_state(pack.get("state")):
         return ""
     readback = pack.get("lead_fallback_readback") or {}
     visuals = {
@@ -5353,6 +5482,12 @@ def _subtitle_presentation_lead_tile_html(
 
 
 def _subtitle_presentation_candidate_visual_intro(pack: dict[str, Any]) -> str:
+    if pack.get("state") == "tiny_render_path_nearer_probe_ready":
+        return (
+            "Candidate 2 is the lead treatment passed through the current "
+            "diagnostic render path. Candidate 0 remains fallback/reference; "
+            "Candidate 1 and Candidate 3 stay held from the consumed review."
+        )
     if pack.get("state") == "candidate2_carry_forward_ready":
         return (
             "Candidate 2 is the lead treatment and Candidate 0 is the fallback "

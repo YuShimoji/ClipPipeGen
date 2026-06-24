@@ -239,10 +239,29 @@ The ED-10y pack may include a tiny FFmpeg/libass diagnostic render-path-nearer
 probe for Candidate 2. That probe is readback only; it does not lift production
 render or public-use gates.
 
+## Current ED-10z Tiny Render-Path-Nearer Probe
+
+ED-10z preserves `clip-ed10y-candidate2-carry-forward-001` as the
+source/previous artifact and records `clip-ed10z-tiny-render-path-nearer-probe-001`
+as the current local diagnostic readback. The profile
+`ed10z_tiny_render_path_nearer_probe` keeps Candidate 2
+(`ed10w_badge_label_pressure_adjustment`) as the lead treatment and passes it
+through the current FFmpeg/libass diagnostic path. Candidate 0 remains
+fallback/reference, and Candidate 1 / Candidate 3 remain held references
+because the consumed review says they read too thin.
+
+The ED-10z pack must not reopen the same Candidate 0-3 comparison and must not
+emit a new Review Card. When the ignored local proof files are materialized
+with FFmpeg/FFprobe available, its `render_path_readiness.status` is
+`ed10z_tiny_render_path_nearer_probe_completed`, which means the tiny local
+probe completed as diagnostic evidence only. A production limitation-lift,
+final render-path, rights, publishing, or public-use decision needs a separate
+future route.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
-future slice can evaluate sharing it with NLMYTGen. ED-10v, ED-10w, and ED-10y
+future slice can evaluate sharing it with NLMYTGen. ED-10v, ED-10w, ED-10y, and ED-10z
 do not read, edit, or depend on NLMYTGen files, and they do not extract a shared
 package. Any later reuse should happen through an explicit boundary, contract,
 or subprocess/API route rather than by mixing repository internals.

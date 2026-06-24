@@ -999,6 +999,114 @@ def test_subtitle_overlay_visual_proof_ed10y_consumes_candidate2_review(
     assert "production subtitle design" in pack_html
 
 
+def test_subtitle_overlay_visual_proof_ed10z_records_tiny_probe(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    episode_dir = _write_episode(tmp_path)
+    review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
+
+    monkeypatch.setattr(
+        overlay_proof,
+        "_resolve_candidate_font",
+        lambda candidate: (
+            "Keifont",
+            "C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf",
+            "candidate_primary_font_file_found",
+        ),
+    )
+
+    result = build_subtitle_overlay_visual_proof(
+        episode_dir=episode_dir,
+        review_dir=review_dir,
+        target_cut_ids=["cut_008"],
+        typography_decoration_candidate_id="ed10l_keifont_pop_dialogue_candidate",
+        proof_profile="ed10z_tiny_render_path_nearer_probe",
+        ffmpeg_path="fake-ffmpeg",
+        ffprobe_path="fake-ffprobe",
+        base_dir=tmp_path,
+        runner=_fake_runner,
+    )
+
+    report = result["report"]
+    pack = result["subtitle_presentation_review_pack"]
+    assert report["artifact_id"] == "clip-ed10z-tiny-render-path-nearer-probe-001"
+    assert report["proof_profile"] == "ed10z_tiny_render_path_nearer_probe"
+    assert report["source_review_artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert report["source_previous_artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert report["review_card_status"] == (
+        "withheld_tiny_render_path_nearer_probe_completed"
+    )
+    assert report["focused_proof_review"]["status"] == (
+        "tiny_render_path_nearer_probe_completed"
+    )
+    assert report["focused_proof_review"]["source_review_artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert report["review_memory"]["same_candidate_comparison_review_allowed"] is False
+
+    assert pack["artifact_id"] == "clip-ed10z-tiny-render-path-nearer-probe-001"
+    assert pack["source_previous_artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert pack["axis"] == "tiny_render_path_nearer_probe"
+    assert pack["state"] == "tiny_render_path_nearer_probe_ready"
+    assert pack["review_consumption"]["latest_review_consumed"] is True
+    assert (
+        pack["review_consumption"]["tiny_render_path_nearer_probe_completed"] is True
+    )
+    assert pack["review_card"]["action_type"] == "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    assert pack["review_card"]["axis"] == "tiny_render_path_nearer_probe"
+    assert pack["lead_fallback_readback"]["status"] == (
+        "candidate2_promoted_to_tiny_render_path_nearer_probe_lead"
+    )
+
+    visuals_by_number = {
+        item["candidate_number"]: item for item in pack["candidate_visual_evidence"]
+    }
+    assert visuals_by_number[2]["role_in_current_path"] == (
+        "provisional_bounded_decoration_lead"
+    )
+    assert (tmp_path / visuals_by_number[2]["video_path"]).exists()
+
+    render_path = pack["render_path_readiness"]
+    assert render_path["status"] == "ed10z_tiny_render_path_nearer_probe_completed"
+    assert render_path["artifact_id"] == (
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
+    )
+    assert render_path["source_previous_artifact_id"] == (
+        "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert render_path["recommended_minimal_next_route"] == (
+        "separate_production_limitation_lift_or_final_render_path_route"
+    )
+    assert render_path["candidate2_probe"]["video_path"] == visuals_by_number[2][
+        "video_path"
+    ]
+    assert pack["production_render_acceptance"] is False
+    assert pack["production_usage_allowed"] is False
+
+    persisted_pack = json.loads(
+        (review_dir / "subtitle_presentation_review_pack.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert persisted_pack["artifact_id"] == (
+        "clip-ed10z-tiny-render-path-nearer-probe-001"
+    )
+    pack_html = (review_dir / "subtitle_presentation_review_pack.html").read_text(
+        encoding="utf-8"
+    )
+    assert "Tiny Render-Path Nearer Probe" in pack_html
+    assert "ed10z_tiny_render_path_nearer_probe_completed" in pack_html
+    assert "Candidate 0-3 comparison review" in pack_html
+    assert "production subtitle design" in pack_html
+
+
 def test_subtitle_overlay_visual_proof_ed10r_withholds_review_without_multiline_evidence(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

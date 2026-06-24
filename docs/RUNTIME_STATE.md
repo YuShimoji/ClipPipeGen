@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: ed10y_candidate2_carry_forward_ready
+health: ed10z_tiny_render_path_nearer_probe_ready
 progress_pct: 100
 last_touched: 2026-06-24
-next_review_due: none_review_consumed_candidate2_carry_forward
-active_artifact: clip-ed10y-candidate2-carry-forward-001
+next_review_due: none_probe_readback_only
+active_artifact: clip-ed10z-tiny-render-path-nearer-probe-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,7 +35,26 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10y-candidate2-carry-forward-001`
+Active artifact: `clip-ed10z-tiny-render-path-nearer-probe-001`
+
+ED-10z current checkpoint, 2026-06-24 JST: the active artifact is now
+`clip-ed10z-tiny-render-path-nearer-probe-001`. It preserves
+`clip-ed10y-candidate2-carry-forward-001` as the source/previous artifact and
+passes Candidate 2 (`ed10w_badge_label_pressure_adjustment`) through the
+current FFmpeg/libass diagnostic path as a tiny render-path-nearer probe.
+Candidate 0 remains fallback/reference, Candidate 1 and Candidate 3 remain
+held because the consumed review says they read too thin, and the Candidate
+0-3 comparison is closed. This is local diagnostic readback only; it does not
+approve production subtitle design, production render, creative use, rights,
+publishing, or public use. The next valid movement is a separate production
+limitation-lift, final render-path, or policy/readback route, not another
+review card for the same candidates.
+
+This turn's actual non-dry-run proof materialization is blocked by the local
+tool environment: `ffprobe` is not on PATH and `CLIPPIPE_FFPROBE` is unset.
+The ED-10z dry-run and targeted fake-runner tests validate the profile/artifact
+route, but ignored local HTML/JSON/PNG/MP4 proof files need FFmpeg/FFprobe
+provided through PATH, env, or explicit CLI paths before they can be refreshed.
 
 ED-10y implementation checkpoint, 2026-06-24 JST: commit `0cf35da` was pushed
 to `origin/main` and local/remote parity was verified with
@@ -48,7 +67,7 @@ a fresh terminal should `git pull --ff-only`, read this file, then use
 packet. Keep `episodes/` as ignored same-machine evidence; `git ls-files
 episodes` must remain empty.
 
-Current handoff checkpoint, 2026-06-24: ED-10y has consumed the latest
+Previous handoff checkpoint, 2026-06-24: ED-10y has consumed the latest
 freeform review of the ED-10w/ED-10x subtitle presentation pack. Candidate 2
 (`ed10w_badge_label_pressure_adjustment`) is now the provisional
 bounded-decoration lead. Candidate 0 (`ed10w_current_pass_reference`) remains
@@ -235,15 +254,17 @@ gates.
 
 ## Next
 
-1. Continue from `clip-ed10y-candidate2-carry-forward-001`: Candidate 2 is the
-   provisional bounded-decoration lead and Candidate 0 is fallback/reference.
+1. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
+   has now passed the current diagnostic render path as a tiny readback probe.
    Do not ask for another Candidate 0-3 comparison review.
-2. Treat the included Candidate 2 tiny render-path-nearer probe as diagnostic
-   readback only. Do not treat it as production render acceptance.
+2. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
+   evidence. Treat ED-10z as diagnostic readback only, not production render
+   acceptance. Rerun the ED-10z command after FFmpeg/FFprobe paths are
+   available to materialize ignored local proof files.
 3. Do not request another Review Card for the same ED-10u `cut_008`
    multiline/dense-stress evidence; ED-10v already records it as diagnostic
    pass.
-4. If subtitle work continues beyond ED-10y, keep it on a genuinely new axis:
+4. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
    production limitation-lift, final render-path probe, or policy/readback
    tuning from new evidence.
 5. Keep line-break behavior policy/readback-driven: line length, max lines,
@@ -289,7 +310,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, current ED-10y Candidate 2 carry-forward pack via
+   `.\open-artifacts.ps1`, current ED-10z tiny render-path probe via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
    regenerated ED-10l real-font comparison via

@@ -12,13 +12,13 @@ $target = Join-Path $repoRoot $relativeTarget
 $fallback = Join-Path $repoRoot $fallbackTarget
 
 if (Test-Path -LiteralPath $target -PathType Leaf) {
-    Write-Host "Opening current ED-10y Candidate 2 carry-forward pack: $relativeTarget"
+    Write-Host "Opening current ED-10z tiny render-path-nearer probe pack: $relativeTarget"
     Invoke-Item -LiteralPath $target
     exit 0
 }
 
 if (Test-Path -LiteralPath $fallback -PathType Leaf) {
-    Write-Host "Current ED-10y Candidate 2 carry-forward pack is not present on this machine:"
+    Write-Host "Current ED-10z tiny render-path-nearer probe pack is not present on this machine:"
     Write-Host "  $relativeTarget"
     Write-Host "Opening retained ED-10v focused proof instead:"
     Write-Host "  $fallbackTarget"
