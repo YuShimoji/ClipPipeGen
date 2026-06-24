@@ -27,13 +27,14 @@ route.
 
 The active artifact is `clip-ed10y-candidate2-carry-forward-001`.
 
-Latest remote checkpoint, 2026-06-24 JST: `0cf35da` is pushed to
-`origin/main`. A separate terminal can resume by pulling `main`, confirming
-`HEAD...origin/main` is `0 0`, then opening `.\open-current-proof.ps1` if the
-ignored same-machine `episodes/` artifacts are present. The tracked commit
-contains the ED-10y generator/profile changes, dashboard refresh, handoff docs,
-launcher label update, and tests. The local proof pack remains ignored
-same-machine evidence, not Git authority.
+ED-10y implementation checkpoint, 2026-06-24 JST: `0cf35da` was pushed to
+`origin/main`. This handoff note is part of a later successor commit. A
+separate terminal can resume by pulling `main`, confirming `HEAD...origin/main`
+is `0 0`, then opening `.\open-current-proof.ps1` if the ignored same-machine
+`episodes/` artifacts are present. The tracked implementation checkpoint
+contains the ED-10y generator/profile changes, dashboard refresh, launcher
+label update, and tests. The local proof pack remains ignored same-machine
+evidence, not Git authority.
 
 ED-10y consumes the latest freeform review of the ED-10w/ED-10x presentation
 pack. Candidate 2 (`ed10w_badge_label_pressure_adjustment`) is now the

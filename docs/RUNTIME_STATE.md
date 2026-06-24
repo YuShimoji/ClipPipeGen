@@ -37,12 +37,13 @@ for restart decisions.
 
 Active artifact: `clip-ed10y-candidate2-carry-forward-001`
 
-Remote checkpoint, 2026-06-24 JST: commit `0cf35da` is pushed to
-`origin/main` and local/remote parity was verified with
+ED-10y implementation checkpoint, 2026-06-24 JST: commit `0cf35da` was pushed
+to `origin/main` and local/remote parity was verified with
 `git rev-list --left-right --count "HEAD...origin/main"` -> `0 0`. This
-checkpoint includes the ED-10y Candidate 2 carry-forward implementation,
-dashboard/doc refresh, launcher update, and targeted validation. A fresh
-terminal should `git pull --ff-only`, read this file, then use
+implementation checkpoint includes the ED-10y Candidate 2 carry-forward
+generator/profile changes, dashboard/doc refresh, launcher update, and
+targeted validation. This handoff note is part of a later successor commit, so
+a fresh terminal should `git pull --ff-only`, read this file, then use
 `docs/CURRENT_HANDOFF.md` and `artifacts/ARTIFACTS.md` for the compact restart
 packet. Keep `episodes/` as ignored same-machine evidence; `git ls-files
 episodes` must remain empty.
