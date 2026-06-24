@@ -37,6 +37,16 @@ for restart decisions.
 
 Active artifact: `clip-ed10y-candidate2-carry-forward-001`
 
+Remote checkpoint, 2026-06-24 JST: commit `0cf35da` is pushed to
+`origin/main` and local/remote parity was verified with
+`git rev-list --left-right --count "HEAD...origin/main"` -> `0 0`. This
+checkpoint includes the ED-10y Candidate 2 carry-forward implementation,
+dashboard/doc refresh, launcher update, and targeted validation. A fresh
+terminal should `git pull --ff-only`, read this file, then use
+`docs/CURRENT_HANDOFF.md` and `artifacts/ARTIFACTS.md` for the compact restart
+packet. Keep `episodes/` as ignored same-machine evidence; `git ls-files
+episodes` must remain empty.
+
 Current handoff checkpoint, 2026-06-24: ED-10y has consumed the latest
 freeform review of the ED-10w/ED-10x subtitle presentation pack. Candidate 2
 (`ed10w_badge_label_pressure_adjustment`) is now the provisional
@@ -278,7 +288,7 @@ Repo-root launcher order for a fresh terminal:
 1. `.\open-dashboard.ps1`
 2. choose the artifact or doc from the dashboard
 3. use artifact-specific launchers only when needed:
-   `.\open-artifacts.ps1`, ED-10w subtitle presentation review pack via
+   `.\open-artifacts.ps1`, current ED-10y Candidate 2 carry-forward pack via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
    regenerated ED-10l real-font comparison via

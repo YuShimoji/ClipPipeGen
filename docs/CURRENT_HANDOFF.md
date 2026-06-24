@@ -27,6 +27,14 @@ route.
 
 The active artifact is `clip-ed10y-candidate2-carry-forward-001`.
 
+Latest remote checkpoint, 2026-06-24 JST: `0cf35da` is pushed to
+`origin/main`. A separate terminal can resume by pulling `main`, confirming
+`HEAD...origin/main` is `0 0`, then opening `.\open-current-proof.ps1` if the
+ignored same-machine `episodes/` artifacts are present. The tracked commit
+contains the ED-10y generator/profile changes, dashboard refresh, handoff docs,
+launcher label update, and tests. The local proof pack remains ignored
+same-machine evidence, not Git authority.
+
 ED-10y consumes the latest freeform review of the ED-10w/ED-10x presentation
 pack. Candidate 2 (`ed10w_badge_label_pressure_adjustment`) is now the
 provisional bounded-decoration lead. Candidate 0
@@ -211,6 +219,12 @@ Expected tracked state:
 - dashboard JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
+- latest pushed checkpoint is `0cf35da` or a later successor commit
+- current pack JSON reads `artifact_id=clip-ed10y-candidate2-carry-forward-001`,
+  `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
+  `ed10w_badge_label_pressure_adjustment`, fallback
+  `ed10w_current_pass_reference`, and
+  `render_path_readiness.status=candidate2_tiny_render_path_nearer_diagnostic_probe_completed`
 
 ## Constraints / Risks
 
