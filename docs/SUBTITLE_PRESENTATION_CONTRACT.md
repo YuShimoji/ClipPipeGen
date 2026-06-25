@@ -50,7 +50,7 @@ left alignment is not a universal rule.
   where a speaker badge or left anchor is not appropriate, such as emphasized
   dialogue or a strong one-liner.
 - `reaction_caption`: punchline, surprise, or instant reaction treatment such
-  as `来ねぇ！！`. This is tracked in the typography spike and is not the
+  as `譚･縺ｭ縺・ｼ・ｼ～. This is tracked in the typography spike and is not the
   default for ordinary dialogue.
 - `speaker_badge_stack`: comparison-only placeholder stack for multi-speaker or
   future face-icon/nameplate work. It is not production speaker identity
@@ -102,7 +102,7 @@ wrapping.
 The wrapper still chooses only measured-valid candidates: punctuation,
 particle, and phrase-boundary preferences are applied after each candidate line
 passes font bbox pixel-width measurement. It also avoids one-character orphan
-lines, and now treats short suffix-only tails such as isolated `ます` or `か`
+lines, and now treats short suffix-only tails such as isolated `縺ｾ縺兪 or `縺義
 plus punctuation as suspicious when a nearby measured-safe break is available.
 Reports must read back selected `wrapped_lines`, `candidate_breaks`,
 `selected_break_reason`, `orphan_prevention_applied`,
@@ -117,7 +117,7 @@ ASS/libass, YMM4, Premiere, or production typography readiness.
 ED-10v records the current line-break behavior as accepted diagnostic readback
 for the Keifont dense/stress proof. The reviewed evidence is `cut_008` /
 `sub_096`, where the font-bbox wrapper selected two lines:
-`下界ニ呼ビ出シタノハキサ` / `マカ。`. The user reviewed the corrected
+`荳狗阜繝句他繝灘・繧ｷ繧ｿ繝弱ワ繧ｭ繧ｵ` / `繝槭き縲Ａ. The user reviewed the corrected
 multiline/dense-stress proof and said the subtitle display is good and all pass.
 This closes the current visual review loop for diagnostic dense/stress behavior,
 but it does not freeze the algorithm as final production subtitle design.
@@ -358,7 +358,28 @@ outputs only and remain outside Git. ED-10af does not approve production
 subtitle design, production render, creative use, rights, publishing, or public
 use.
 
-## Future Shared Line-Break Policy Note## Future Shared Line-Break Policy Note
+## Current ED-10ag L2 Tiny Render Path Probe
+
+ED-10ag records `clip-ed10ag-l2-tiny-render-path-probe-001` as a tracked
+L2 tiny render-path probe. The active artifact remains
+`clip-ed10af-l2-render-path-selector-probe-001`; the restored
+`clip-ed10af-render-contract-consumer-dry-read-001` remains predecessor evidence
+rather than a deleted or invalidated route.
+
+The dry-read remains useful because it proves all six ED-10ae contract payloads
+can be normalized without media output. The ED-10af L2 selector probe supplies
+bounded FFmpeg/libass render-path evidence for three representative examples:
+neutral, shout, and whisper. ED-10ag applies Existing Output First, so it records
+L2 readback access without running ffmpeg again.
+
+The ED-10ag surface lists the reused local ignored ASS, MP4, manifest, and
+contact-sheet paths. Those files may be absent on another clone and are diagnostic
+same-machine evidence only. ED-10ag records
+`new_render_run=false`, does not request user review, does not create tracked
+binary media, and does not approve production subtitle design, production
+render, creative use, rights, publishing, or public-use decisions.
+
+## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
 future slice can evaluate sharing it with NLMYTGen. ED-10v, ED-10w, ED-10y, and ED-10z

@@ -1,0 +1,190 @@
+{
+  "schema_id": "clippipegen.subtitle_l2_tiny_render_path_probe.v1",
+  "artifact_id": "clip-ed10ag-l2-tiny-render-path-probe-001",
+  "feature_id": "ED-10ag",
+  "status": "l2_tiny_render_path_probe_ready",
+  "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+  "source_render_path_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+  "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+  "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
+  "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+  "source_registry_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+  "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+  "probe_kind": "existing_output_first_l2_tiny_render_path_readback",
+  "render_level": "L2 Tiny Smoke Render",
+  "existing_output_first": {
+    "considered": true,
+    "decision": "reuse_existing_ed10af_l2_selector_probe_no_rerender",
+    "reason": "The existing ED-10af L2 selector probe already contains a local ignored ASS/MP4/manifest render-path readback for neutral, shout, and whisper representative payloads. ED-10ag therefore records the L2 milestone without running ffmpeg again.",
+    "existing_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "source_probe_status": "l2_render_path_selector_probe_ready",
+    "source_probe_local_status": "local_ignored_probe_generated",
+    "source_probe_render_level": "L2 tiny render path selector probe",
+    "source_probe_new_render_run": true,
+    "new_render_run": false
+  },
+  "diagnostic_scope": {
+    "source_dry_read_payload_count": 6,
+    "source_dry_read_payload_ids": [
+      "neutral_dialogue_intensity_0",
+      "shout_intensity_2",
+      "whisper_intensity_1",
+      "ominous_intensity_2",
+      "narration_intensity_0",
+      "system_note_intensity_0"
+    ],
+    "selected_example_count": 3,
+    "selected_example_ids": [
+      "neutral_dialogue_intensity_0",
+      "shout_intensity_2",
+      "whisper_intensity_1"
+    ],
+    "selected_examples": [
+      {
+        "order": 0,
+        "example_id": "neutral_dialogue_intensity_0",
+        "role": "normal_dialogue",
+        "preset_key": "character.dialogue.neutral.i0.high",
+        "emotion": "neutral",
+        "style_family": "current dialogue family",
+        "palette_route": "speaker_identity_blue",
+        "body_text_color_token": "stable_default_body_text",
+        "ass_text": "NORMAL DIALOGUE CUE"
+      },
+      {
+        "order": 1,
+        "example_id": "shout_intensity_2",
+        "role": "shout_high_intensity",
+        "preset_key": "character.dialogue.shout.i2.high",
+        "emotion": "shout",
+        "style_family": "high-energy emphasis family",
+        "palette_route": "high_energy_warm",
+        "body_text_color_token": "stable_default_body_text",
+        "ass_text": "SHOUT HIGH INTENSITY"
+      },
+      {
+        "order": 2,
+        "example_id": "whisper_intensity_1",
+        "role": "low_pressure_whisper",
+        "preset_key": "character.dialogue.whisper.i1.normal",
+        "emotion": "whisper",
+        "style_family": "quiet readable dialogue family",
+        "palette_route": "quiet_cool",
+        "body_text_color_token": "stable_default_body_text",
+        "ass_text": "LOW PRESSURE\\NWHISPER CUE"
+      }
+    ],
+    "local_probe_status": "local_ignored_probe_generated",
+    "local_outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json"
+    },
+    "source_probe_render_command_recorded": true,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false
+  },
+  "body_text_color_policy": {
+    "reference": "stable_default_body_text",
+    "stable_across_examples": true,
+    "body_text_color_changed": false
+  },
+  "color_route": {
+    "semantic_variation_surface_priority": [
+      "badge_color_token",
+      "accent_color_token",
+      "backplate_box_token",
+      "body_text_color_token"
+    ],
+    "badge_accent_backplate_first": true,
+    "body_text_color_changes_allowed": false
+  },
+  "motion_line_break_policy": {
+    "motion_metadata_survived": true,
+    "safe_area_line_break_metadata_survived": true,
+    "ass_newline_probe_example_id": "whisper_intensity_1"
+  },
+  "validation": {
+    "dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "source_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "dry_read_all_payloads_consumer_ready": true,
+    "dry_read_payload_count": 6,
+    "expected_dry_read_payload_count": 6,
+    "dry_read_body_text_color_policy_drift": false,
+    "dry_read_render_boundary_leakage": false,
+    "dry_read_production_public_boundary_leakage": false,
+    "source_probe_all_checks_passed": true,
+    "source_probe_local_status": "local_ignored_probe_generated",
+    "source_probe_selected_example_count": 3,
+    "source_probe_selected_examples": [
+      "neutral_dialogue_intensity_0",
+      "shout_intensity_2",
+      "whisper_intensity_1"
+    ],
+    "selected_examples_covered_by_dry_read": true,
+    "new_render_run": false,
+    "source_probe_new_render_run": true,
+    "stable_body_text_preserved": true,
+    "badge_accent_backplate_route_preserved": true,
+    "safe_area_line_break_metadata_survived": true,
+    "local_outputs_ignored": true,
+    "tracked_binary_artifact_created": false,
+    "production_public_boundary_closed": true,
+    "episodes_tracked": false,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-l2-tiny-render-path-probe.json",
+    "doc": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "human_review_required_only_for": [
+      "new_style_family",
+      "new_palette",
+      "body_text_color_policy_change",
+      "production_route_change",
+      "rights",
+      "publishing",
+      "public_use"
+    ]
+  },
+  "render_gate": {
+    "level": "L2 Tiny Smoke Render",
+    "milestone_gated_not_change_gated": true,
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "source_probe_new_render_run": true,
+    "reason": "Existing Output First found the ED-10af L2 selector probe sufficient for this bounded diagnostic.",
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "readiness_separation": {
+    "subtitle_style_readiness": "selector_l2_tiny_render_path_probe_ready",
+    "video_render_readiness": "existing_local_ignored_l2_probe_reused",
+    "production_readiness": "not_accepted",
+    "rights_public_use_readiness": "not_accepted"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "source_probe_new_render_created": true,
+    "diagnostic_local_ignored_render_reused": true,
+    "tracked_binary_artifact_created": false
+  }
+}

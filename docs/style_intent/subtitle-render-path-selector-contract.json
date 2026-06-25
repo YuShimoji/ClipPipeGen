@@ -285,7 +285,7 @@
       }
     }
   ],
-  "later_l2_tiny_render_trigger": {
+  "later_l2_render_path_probe_trigger": {
     "status": "not_triggered_in_this_slice",
     "allowed_future_trigger": [
       "explicit render-path probe milestone",

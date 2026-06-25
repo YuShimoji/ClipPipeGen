@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: l2_render_path_selector_probe_ready
+health: l2_tiny_render_path_probe_ready
 progress_pct: 100
 last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -20,11 +20,23 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family, Candidate 0-3 comparison,
-or stale static prompts after the project has advanced to the ED-10af L2 render-path selector probe route.
+or stale static prompts after the project has advanced to the ED-10ag L2 tiny render-path probe route.
 
 ## Current State
 
 The active artifact is `clip-ed10af-l2-render-path-selector-probe-001`.
+
+ED-10ag records Existing Output First reuse of the active ED-10af L2 selector
+probe. The earlier ED-10af dry-read
+`clip-ed10af-render-contract-consumer-dry-read-001` remains source coverage for
+all six semantic presets at
+`docs/style_intent/subtitle-render-contract-consumer-dry-read.json` and
+`docs/style_intent/subtitle-render-contract-consumer-dry-read.md`. The tracked
+ED-10ag L2 tiny render-path probe is
+`docs/style_intent/subtitle-l2-tiny-render-path-probe.json` and
+`docs/style_intent/subtitle-l2-tiny-render-path-probe.md`; it
+records no new render and lists the local ignored ASS/MP4/manifest/contact-sheet
+evidence from the source probe.
 
 ED-10af adds a tracked L2 render-path selector probe at `docs/style_intent/subtitle-render-path-selector-probe.json` and
 `docs/style_intent/subtitle-render-path-selector-probe.md`. It consumes the ED-10ae render-path selector contract and selects
@@ -231,7 +243,7 @@ now resolves `requested=Keifont` and `resolved=Keifont` with
 `candidate_primary_font_file_found`. ED-10u then consumed the user's note that
 the visible proof did not appear to contain two-line subtitles. The cut itself
 is still valid: font-bbox readback finds `sub_096` in `cut_008`, displayed at
-`8.008-9.776`, wrapping as `下界ニ呼ビ出シタノハキサ` / `マカ。`. The focused HTML
+`8.008-9.776`, wrapping as `荳狗阜繝句他繝灘・繧ｷ繧ｿ繝弱ワ繧ｭ繧ｵ` / `繝槭き縲Ａ. The focused HTML
 now adds `Multiline / Wrap Evidence` near the top with a compact
 `sample_multiline_wrap_1.png` screenshot capped at 220px by default. Review is
 therefore allowed only for the corrected `cut_008` multiline/dense-stress axis.
@@ -267,9 +279,14 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`. The latest
-presentation review is already consumed and Candidate 2 has now passed through
-the current diagnostic render path, so do not request another Candidate 0-3
+Continue from `clip-ed10af-l2-render-path-selector-probe-001` when the next
+terminal needs active L2 render-path readiness. Use
+`clip-ed10ag-l2-tiny-render-path-probe-001` when the next terminal needs
+dry-read source and no-rerender readback paths. The L2 probe readback reuses
+the ED-10af L2 selector probe's ignored ASS / MP4 / manifest / contact-sheet
+evidence while the restored dry-read keeps all six semantic presets as static source coverage. The
+latest presentation review is already consumed and
+Candidate 2 has now passed through the current diagnostic render path, so do not request another Candidate 0-3
 comparison, another review of the corrected ED-10u `cut_008`
 multiline/dense-stress surface, or general font-family acceptance from
 `cut_002` / `cut_003`.
@@ -278,6 +295,7 @@ Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
+| `ed10ag_l2_tiny_render_path_probe` | Records Existing Output First reuse of the active ED-10af L2 selector probe while preserving the dry-read predecessor | Another terminal can inspect source and local proof paths without rerendering or opening production/public-use gates |
 | `ed10z_tiny_render_path_nearer_probe` | Records Candidate 2 through the current diagnostic render path while keeping Candidate 0 fallback and Candidate 1/3 held | Another terminal can continue from probe readback without replaying the same comparison review |
 | Audit ED-10y source state | Keeps the carry-forward source and probe artifact separated | A later slice can compare source/readback without treating ED-10z as production acceptance |
 | FFmpeg/FFprobe tool-path rerun | Removes the current environment blocker for actual ignored proof materialization | The ED-10z HTML/JSON/PNG/MP4 proof files can be regenerated on this machine |
@@ -293,6 +311,9 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10ag-l2-tiny-render-path-probe-001` | Tracked ED-10ag L2 tiny render-path probe readback; keeps ED-10af L2 active and records no new render | `see docs\style_intent\subtitle-l2-tiny-render-path-probe.md` |
+| `clip-ed10af-render-contract-consumer-dry-read-001` | Restored L0 dry-read source for all six semantic presets | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
+| `clip-ed10af-l2-render-path-selector-probe-001` | Source L2 selector probe with local ignored ASS/MP4/manifest evidence | `see docs\style_intent\subtitle-render-path-selector-probe.md` |
 | `clip-ed10z-tiny-render-path-nearer-probe-001` | Current tiny render-path-nearer diagnostic probe using Candidate 2, with Candidate 0 fallback and Candidate 1/3 held | `.\open-current-proof.ps1` -> `episodes/.../subtitle_presentation_review_pack.html` |
 | `clip-ed10y-candidate2-carry-forward-001` | Source/previous Candidate 2 lead carry-forward pack with Candidate 0 fallback | Same local path history; ED-10z is the current readback |
 | `clip-ed10w-subtitle-presentation-review-pack-001` | Consumed one-pass presentation review pack that selected Candidate 2 as lead and Candidate 0 as fallback | Same local path/history; do not request the same comparison again |
@@ -313,6 +334,9 @@ git status --short --branch
 git rev-list --left-right --count HEAD...origin/main
 git ls-files episodes
 uvx python -m json.tool docs\dashboard\project-status.json
+uvx python -m json.tool docs\style_intent\subtitle-render-contract-consumer-dry-read.json
+uvx python -m json.tool docs\style_intent\subtitle-render-path-selector-probe.json
+uvx python -m json.tool docs\style_intent\subtitle-l2-tiny-render-path-probe.json
 uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
@@ -323,6 +347,8 @@ Expected tracked state:
 - `HEAD...origin/main` is `0 0`
 - `git ls-files episodes` prints nothing
 - dashboard JSON parses
+- restored dry-read JSON parses
+- ED-10ag L2 tiny render-path probe JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
 - latest pushed checkpoint is `ce24fcc` or a later successor commit

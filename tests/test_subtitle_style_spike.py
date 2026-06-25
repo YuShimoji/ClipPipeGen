@@ -231,7 +231,7 @@ def test_subtitle_render_path_selector_contract_matches_tracked_json():
         entry["contract_assertions"]["render_artifact_created"]
         for entry in tracked["contract_entries"]
     } == {False}
-    assert tracked["later_l2_tiny_render_trigger"]["status"] == (
+    assert tracked["later_l2_render_path_probe_trigger"]["status"] == (
         "not_triggered_in_this_slice"
     )
     assert tracked["render_gate"]["new_render_run"] is False
@@ -340,6 +340,139 @@ def test_subtitle_render_path_selector_probe_doc_records_l2_readback():
     assert "do not approve production subtitle design" in text
 
 
+def test_restored_render_contract_consumer_dry_read_records_static_payloads():
+    dry_read_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-contract-consumer-dry-read.json"
+    )
+    dry_read_doc_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-contract-consumer-dry-read.md"
+    )
+    dry_read = json.loads(dry_read_path.read_text(encoding="utf-8"))
+    dry_read_doc = dry_read_doc_path.read_text(encoding="utf-8")
+
+    assert dry_read["artifact_id"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+    )
+    assert dry_read["schema_id"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_SCHEMA_ID
+    )
+    assert dry_read["feature_id"] == "ED-10af"
+    assert dry_read["status"] == "render_contract_consumer_dry_read_ready"
+    assert dry_read["render_gate"]["level"] == "L0 No Render"
+    assert dry_read["render_gate"]["new_render_run"] is False
+    assert dry_read["render_gate"]["consumer_dry_read_only"] is True
+    assert len(dry_read["consumer_payloads"]) == 6
+    assert dry_read["dry_read_validation"]["all_payloads_consumer_ready"] is True
+    assert dry_read["dry_read_validation"]["render_boundary_leakage"] is False
+    assert dry_read["dry_read_validation"][
+        "production_public_boundary_leakage"
+    ] is False
+    assert dry_read["boundaries"]["production_render_acceptance"] is False
+    assert dry_read["boundaries"]["episodes_tracked"] is False
+    assert "ED-10af Render Contract Consumer Dry-Read" in dry_read_doc
+    assert "L0 No Render" in dry_read_doc
+
+
+
+def test_subtitle_l2_tiny_render_path_probe_matches_tracked_json():
+    dry_read = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "style_intent"
+            / "subtitle-render-contract-consumer-dry-read.json"
+        ).read_text(encoding="utf-8")
+    )
+    source_probe = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "style_intent"
+            / "subtitle-render-path-selector-probe.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-l2-tiny-render-path-probe.json"
+    )
+    tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
+    generated = preset_selector.build_subtitle_l2_tiny_render_path_probe(
+        dry_read=dry_read,
+        source_probe=source_probe,
+    )
+
+    assert tracked == generated
+    assert tracked["artifact_id"] == (
+        preset_selector.L2_TINY_RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert tracked["schema_id"] == preset_selector.L2_TINY_RENDER_PATH_PROBE_SCHEMA_ID
+    assert tracked["feature_id"] == "ED-10ag"
+    assert tracked["status"] == "l2_tiny_render_path_probe_ready"
+    assert tracked["source_render_contract_consumer_dry_read_artifact_id"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+    )
+    assert tracked["source_render_path_selector_probe_artifact_id"] == (
+        preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert tracked["existing_output_first"]["decision"] == (
+        "reuse_existing_ed10af_l2_selector_probe_no_rerender"
+    )
+    assert tracked["existing_output_first"]["new_render_run"] is False
+    assert tracked["diagnostic_scope"]["source_dry_read_payload_count"] == 6
+    assert tracked["diagnostic_scope"]["selected_example_count"] == 3
+    assert tracked["diagnostic_scope"]["local_probe_status"] == (
+        "local_ignored_probe_generated"
+    )
+    assert tracked["validation"]["dry_read_all_payloads_consumer_ready"] is True
+    assert tracked["validation"]["source_probe_all_checks_passed"] is True
+    assert tracked["validation"]["selected_examples_covered_by_dry_read"] is True
+    assert tracked["validation"]["stable_body_text_preserved"] is True
+    assert tracked["validation"]["production_public_boundary_closed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+    assert tracked["render_gate"]["level"] == "L2 Tiny Smoke Render"
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["existing_output_first_reused"] is True
+    assert tracked["render_gate"]["source_probe_new_render_run"] is True
+    assert tracked["boundaries"]["new_render_created"] is False
+    assert tracked["boundaries"]["diagnostic_local_ignored_render_reused"] is True
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert "subtitle_render_path_selector_probe.mp4" in tracked[
+        "diagnostic_scope"
+    ]["local_outputs"]["video"]
+    assert "subtitle_render_path_selector_probe.local.json" in tracked[
+        "diagnostic_scope"
+    ]["local_outputs"]["manifest"]
+
+
+def test_subtitle_l2_tiny_render_path_probe_doc_records_existing_output_first():
+    doc_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-l2-tiny-render-path-probe.md"
+    )
+    text = doc_path.read_text(encoding="utf-8")
+
+    assert "ED-10ag L2 Tiny Render Path Probe" in text
+    assert "Existing Output First" in text
+    assert "new_render_run: `false`" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
+    assert "dry-read payloads: `6` / `6`" in text
+    assert "local_ignored_probe_generated" in text
+    assert "subtitle_render_path_selector_probe.mp4" in text
+    assert "stable_body_text_preserved: `true`" in text
+    assert "episodes_tracked: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
@@ -349,7 +482,7 @@ def test_japanese_wrapper_prevents_one_character_orphan_when_measured_alternativ
     draw = spike.ImageDraw.Draw(image)
     _, font_path, _ = spike._select_font()
     font = spike._load_font(font_path, 42)
-    text = "あいうえお"
+    text = "\u3042\u3044\u3046\u3048\u304a"
     spacing = 0
     stroke_width = 0
     max_width = spike._text_size(
@@ -381,7 +514,7 @@ def test_japanese_wrapper_prevents_one_character_orphan_when_measured_alternativ
     assert result.orphan_prevention_applied is True
     assert result.selected_break_reason == "orphan_prevention_shifted_break"
     assert spike._visible_char_count(result.lines[-1]) > 1
-    assert result.lines != ["あいうえ", "お"]
+    assert result.lines != ["\u3042\u3044\u3046\u3048", "\u304a"]
     assert all(width <= max_width for width in result.measured_width_by_line)
     assert any(candidate["would_leave_one_character_orphan"] for candidate in result.candidate_breaks)
 
@@ -399,10 +532,10 @@ def test_japanese_wrapper_prevents_suffix_only_tail_when_measured_alternative_ex
     font = spike._load_font(font_path, 124)
     spacing = 19
     stroke_width = 12
-    text = "まあ謝るんなら許してあげます"
+    text = "\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052\u307e\u3059"
     max_width = spike._text_size(
         draw=draw,
-        text="まあ謝るんなら許してあげ",
+        text="\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052",
         font=font,
         spacing=spacing,
         stroke_width=stroke_width,
@@ -419,11 +552,11 @@ def test_japanese_wrapper_prevents_suffix_only_tail_when_measured_alternative_ex
 
     assert result.suffix_tail_prevention_applied is True
     assert result.selected_break_reason == "suffix_tail_prevention_shifted_break"
-    assert result.lines != ["まあ謝るんなら許してあげ", "ます"]
-    assert result.lines[-1] in {"あげます", "てあげます", "許してあげます"}
+    assert result.lines != ["\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052", "\u307e\u3059"]
+    assert result.lines[-1] in {"\u3042\u3052\u307e\u3059", "\u3066\u3042\u3052\u307e\u3059", "\u8a31\u3057\u3066\u3042\u3052\u307e\u3059"}
     assert result.suspicious_tail_line_present is False
     assert any(
-        candidate["remaining_text"] == "ます"
+        candidate["remaining_text"] == "\u307e\u3059"
         and candidate["would_leave_suspicious_tail_line"] is True
         for candidate in result.candidate_breaks
     )
@@ -442,10 +575,10 @@ def test_japanese_wrapper_marks_question_particle_tail_suspicious():
     font = spike._load_font(font_path, 124)
     spacing = 19
     stroke_width = 12
-    text = "なんで来なかったんすか！！"
+    text = "\u306a\u3093\u3067\u6765\u306a\u304b\u3063\u305f\u3093\u3059\u304b\uff01\uff01"
     max_width = spike._text_size(
         draw=draw,
-        text="なんで来なかったんす",
+        text="\u306a\u3093\u3067\u6765\u306a\u304b\u3063\u305f\u3093\u3059",
         font=font,
         spacing=spacing,
         stroke_width=stroke_width,
@@ -461,10 +594,10 @@ def test_japanese_wrapper_marks_question_particle_tail_suspicious():
     )
 
     assert result.suffix_tail_prevention_applied is True
-    assert result.lines == ["なんで来なかった", "んすか！！"]
+    assert result.lines == ["\u306a\u3093\u3067\u6765\u306a\u304b\u3063\u305f", "\u3093\u3059\u304b\uff01\uff01"]
     assert result.suspicious_tail_line_present is False
     assert any(
-        candidate["remaining_text"] == "か！！"
+        candidate["remaining_text"] == "\u304b\uff01\uff01"
         and candidate["would_leave_suspicious_tail_line"] is True
         for candidate in result.candidate_breaks
     )
@@ -539,7 +672,7 @@ def test_subtitle_style_spike_writes_png_json_and_html_readback(tmp_path: Path):
     assert authority["sample_mode_label"]["authority_class"] == "visual_guide_only"
     assert authority["sample_background"]["authority_class"] == "decorative"
     assert authority["html_sample_image_frame"]["authority_class"] == "decorative"
-    assert report["mode_decision"]["line"] == "来ねぇ！！"
+    assert report["mode_decision"]["line"] == "\u6765\u306d\u3047\uff01\uff01"
     assert report["mode_decision"]["not_recommended_default"] == "dialogue_badge_left"
     assert set(report["mode_decision"]["recommended_modes"]) == {
         "reaction_caption",
@@ -768,8 +901,8 @@ def test_typography_decoration_comparison_preserves_accepted_font_size_boundary(
     report = spike.build_subtitle_typography_decoration_comparison(
         output_dir=output_dir,
         sample_texts=[
-            "なんで来なかったんすか！！",
-            "まあ謝るんなら許してあげます",
+            "\u306a\u3093\u3067\u6765\u306a\u304b\u3063\u305f\u3093\u3059\u304b\uff01\uff01",
+            "\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052\u307e\u3059",
         ],
         canvas_size=(640, 360),
         base_dir=tmp_path,
@@ -994,8 +1127,8 @@ def test_kirinuki_gothic_balance_profile_records_weight_outline_review(
     report = spike.build_subtitle_typography_decoration_comparison(
         output_dir=output_dir,
         sample_texts=[
-            "なんで来なかったんすか！！",
-            "まあ謝るんなら許してあげます",
+            "\u306a\u3093\u3067\u6765\u306a\u304b\u3063\u305f\u3093\u3059\u304b\uff01\uff01",
+            "\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052\u307e\u3059",
         ],
         canvas_size=(640, 360),
         base_dir=tmp_path,
@@ -1133,8 +1266,8 @@ def test_kirinuki_font_audit_profile_consumes_meiryo_freeform_review(
     report = spike.build_subtitle_typography_decoration_comparison(
         output_dir=output_dir,
         sample_texts=[
-            "団長、ちなみに、他の番長知ってますか？",
-            "まあ謝るんなら許してあげます",
+            "\u56e3\u9577\u3001\u3061\u306a\u307f\u306b\u3001\u4ed6\u306e\u756a\u9577\u77e5\u3063\u3066\u307e\u3059\u304b\uff1f",
+            "\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052\u307e\u3059",
         ],
         canvas_size=(640, 360),
         base_dir=tmp_path,
@@ -1244,8 +1377,8 @@ def test_known_kirinuki_font_pack_profile_consumes_biz_freeform_review(
     report = spike.build_subtitle_typography_decoration_comparison(
         output_dir=output_dir,
         sample_texts=[
-            "団長、ちなみに、他の番長知ってますか？",
-            "まあ謝るんなら許してあげます",
+            "\u56e3\u9577\u3001\u3061\u306a\u307f\u306b\u3001\u4ed6\u306e\u756a\u9577\u77e5\u3063\u3066\u307e\u3059\u304b\uff1f",
+            "\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052\u307e\u3059",
         ],
         canvas_size=(640, 360),
         base_dir=tmp_path,
@@ -1576,8 +1709,8 @@ def test_multifont_focused_review_profile_builds_same_line_matrix(
     report = spike.build_subtitle_typography_decoration_comparison(
         output_dir=output_dir,
         sample_texts=[
-            "なんで来なかったんすか！！",
-            "まあ謝るんなら許してあげます",
+            "\u306a\u3093\u3067\u6765\u306a\u304b\u3063\u305f\u3093\u3059\u304b\uff01\uff01",
+            "\u307e\u3042\u8b1d\u308b\u3093\u306a\u3089\u8a31\u3057\u3066\u3042\u3052\u307e\u3059",
         ],
         canvas_size=(640, 360),
         base_dir=tmp_path,

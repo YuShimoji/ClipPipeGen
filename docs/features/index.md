@@ -4,36 +4,36 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10af`
-- artifact: `clip-ed10af-l2-render-path-selector-probe-001`
-- state: `l2_render_path_selector_probe_ready`
+- feature: `ED-10ag`
+- artifact: `clip-ed10ag-l2-tiny-render-path-probe-001`
+- state: `l2_tiny_render_path_probe_ready`
 
 ## Feature Table
 
 | id | title | status | health | progress_pct | active_artifact | next_action |
 |---|---|---|---|---:|---|---|
-| CR-01 | rights_manifest schema v1 と validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| MS-01 | material_ledger schema v1 と CRUD CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| MS-02 | material_sidecar schema v1 と validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| MS-03 | 透過PNG 受け入れフロー | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| TH-01 | YMM4 サムネ slot patch（NLMYTGen CLI bridge） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-01 | CLI runner と config（NLMYTGen path 設定含む） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| TH-W01 | Slice 1 walkthrough 補助 | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| MS-01 | material_ledger schema v1 縺ｨ CRUD CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| MS-02 | material_sidecar schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| MS-03 | 騾城℃PNG 蜿励￠蜈･繧後ヵ繝ｭ繝ｼ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| TH-01 | YMM4 繧ｵ繝繝・slot patch・・LMYTGen CLI bridge・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| SH-01 | CLI runner 縺ｨ config・・LMYTGen path 險ｭ螳壼性繧・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| TH-W01 | Slice 1 walkthrough 陬懷勧 | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | HoloEN-01 | Phase 0.5 publish-quality diagnostic pilot | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | JP-STT-01 | Japanese STT via vosk-model-ja | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | JP-Pilot-01 | Japanese public VOD diagnostic pilot | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | JP-Pilot-01R | ED-09 corrected rerun on JP public VOD | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | JP-Pilot-01R2 | review coverage + selected cut narrowing on JP public VOD | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | JP-Pilot-01R3 | official subtitle track import rerun on JP public VOD | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| ED-07c | --language ↔ --model 一貫性 validation | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-07c | --language 竊・--model 荳雋ｫ諤ｧ validation | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | ED-01 | edit_pack schema v1 | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| ED-02a | 手動/インポート cut candidate 追加 CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| ED-02 | カット候補抽出（音声・字幕ベース） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| ED-03 | 文脈チェック | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| ED-04 | 字幕案生成 | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| ED-05 | 字幕表示幅計測（EAW、stdlib のみ） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-02a | 謇句虚/繧､繝ｳ繝昴・繝・cut candidate 霑ｽ蜉 CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-02 | 繧ｫ繝・ヨ蛟呵｣懈歓蜃ｺ・磯浹螢ｰ繝ｻ蟄怜ｹ輔・繝ｼ繧ｹ・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-03 | 譁・ц繝√ぉ繝・け | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-04 | 蟄怜ｹ墓｡育函謌・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-05 | 蟄怜ｹ戊｡ｨ遉ｺ蟷・ｨ域ｸｬ・・AW縲《tdlib 縺ｮ縺ｿ・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | ED-05b | text_measure bridge migration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| ED-06 | 外部 NLE 用 minimal export | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| ED-06 | 螟夜Κ NLE 逕ｨ minimal export | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | ED-07 | transcript schema v1 + transcribe-audio CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | ED-07b | real STT transcript path | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | ED-08 | real STT subtitle draft linkage | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -67,14 +67,15 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10ab | Subtitle Preset Selector v0 | done | subtitle_preset_selector_ready | 100 | clip-ed10ab-subtitle-preset-selector-001 | Use the deterministic preset selector as readback before future visual style proof; open new style-family, palette, production, rights, publishing, or public-use work as separate routes. |
 | ED-10ac | Visual Selector Proof v0 | done | visual_selector_proof_ready | 100 | clip-ed10ac-visual-selector-proof-001 | Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes. |
 | ED-10ad | Style Family / Palette Axis Proof v0 | done | style_family_palette_axis_proof_ready | 100 | clip-ed10ad-style-family-palette-axis-proof-001 | Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route. |
-| ED-10ae | Render Path Selector Contract Probe v0 | done | render_path_selector_contract_ready | 100 | clip-ed10ae-render-path-selector-contract-probe-001 | Use the selector-to-render-path contract as L0 static readback before a later L2 tiny render-path probe; do not infer actual render or production readiness. |
+| ED-10ae | Render Path Selector Contract Probe v0 | done | render_path_selector_contract_ready | 100 | clip-ed10ae-render-path-selector-contract-probe-001 | Use the selector-to-render-path contract as L0 static readback before a later L2 render-path probe; do not infer actual render or production readiness. |
 | ED-10af | L2 Render Path Selector Probe v0 | done | l2_render_path_selector_probe_ready | 100 | clip-ed10af-l2-render-path-selector-probe-001 | Use the L2 selector probe readback before opening a separate production limitation-lift, rights, publishing, or public-use route. |
+| ED-10ag | L2 Tiny Render Path Probe v0 | done | l2_tiny_render_path_probe_ready | 100 | clip-ed10ag-l2-tiny-render-path-probe-001 | Use the L2 tiny render-path probe readback to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| PB-04 | upload receipt 記録 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| PB-04 | upload receipt 險倬鹸 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | INT-01 | YouTube OAuth flow | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| INT-02 | asset_fetch（source audio / video 取得） | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| INT-02 | asset_fetch・・ource audio / video 蜿門ｾ暦ｼ・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | INT-02a | source audio material contract + fake fetch | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | INT-02b | asset_fetch boundary spec only | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | INT-02c | local-media-audio normalize | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -90,14 +91,14 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | OUT-01d | subtitle timing / font-filter preflight | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | OUT-01e | real STT subtitle diagnostic render smoke | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | OUT-01f | cut-scoped subtitle-overlay visual proof | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| INT-03 | bg_removal 受領フロー | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| INT-04 | bg_removal API 呼び出し | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| SH-02L | episode status adapter（GUI MVP 用） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-02 | episode_pack 統合 manifest | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| SH-03 | GUI MVP Phase 1（read-only operator console） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-03b | GUI Phase 2（action 導線） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-03c | GUI Editing tab（ED-01 / ED-02a 範囲のみ） | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-04 | NLMYTGen GUI への逆提案運用 | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| INT-03 | bg_removal 蜿鈴倥ヵ繝ｭ繝ｼ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| INT-04 | bg_removal API 蜻ｼ縺ｳ蜃ｺ縺・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| SH-02L | episode status adapter・・UI MVP 逕ｨ・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| SH-02 | episode_pack 邨ｱ蜷・manifest | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| SH-03 | GUI MVP Phase 1・・ead-only operator console・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| SH-03b | GUI Phase 2・・ction 蟆守ｷ夲ｼ・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| SH-03c | GUI Editing tab・・D-01 / ED-02a 遽・峇縺ｮ縺ｿ・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| SH-04 | NLMYTGen GUI 縺ｸ縺ｮ騾・署譯磯°逕ｨ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05 | local-preview-pack orchestrator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05b | local-preview-pack report QA / polish | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05b+ | local-preview-pack visual evidence hardening | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -107,8 +108,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-07 | Operator Review UX contract | done | blocked | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-08 | Human Preview Session Bundle | done | stable | 100 | clip-human-preview-session-001 | Keep as reference unless a regression or successor lane appears. |
 | SH-09 | Docs Wiki Dashboard v1.5 | done | stable | 100 | clip-docs-dashboard-001 | Keep as reference unless a regression or successor lane appears. |
-| OUT-02 | 音声合成（TTS） | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-03 | visibility 更新（public 化含む） | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-04 | 完全自動サムネ合成 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-05 | .ymmp ゼロ生成 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-06 | NLMYTGen 側ファイル編集 | rejected | retired | 0 |  | cross-project 指示なしには編集しない。再利用は CLI subprocess 経由 |
+| OUT-02 | 髻ｳ螢ｰ蜷域・・・TS・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| OUT-03 | visibility 譖ｴ譁ｰ・・ublic 蛹門性繧・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| OUT-04 | 螳悟・閾ｪ蜍輔し繝繝榊粋謌・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| OUT-05 | .ymmp 繧ｼ繝ｭ逕滓・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
+| OUT-06 | NLMYTGen 蛛ｴ繝輔ぃ繧､繝ｫ邱ｨ髮・ | rejected | retired | 0 |  | cross-project 謖・､ｺ縺ｪ縺励↓縺ｯ邱ｨ髮・＠縺ｪ縺・ょ・蛻ｩ逕ｨ縺ｯ CLI subprocess 邨檎罰 |

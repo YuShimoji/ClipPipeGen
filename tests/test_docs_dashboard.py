@@ -27,9 +27,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10af"
+    assert status["current_focus"]["feature_id"] == "ED-10ag"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10af-l2-render-path-selector-probe-001"
+        "clip-ed10ag-l2-tiny-render-path-probe-001"
     )
     assert status["current_focus"][
         "source_render_path_selector_contract_artifact_id"
@@ -64,7 +64,18 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "l2_render_path_selector_probe_ready"
+        "l2_tiny_render_path_probe_ready"
+    )
+    assert status["current_focus"][
+        "source_render_contract_consumer_dry_read_artifact_id"
+    ] == (
+        "clip-ed10af-render-contract-consumer-dry-read-001"
+    )
+    assert status["current_focus"]["source_l2_selector_probe_artifact_id"] == (
+        "clip-ed10af-l2-render-path-selector-probe-001"
+    )
+    assert status["current_focus"]["l2_tiny_render_path_probe_artifact_id"] == (
+        "clip-ed10ag-l2-tiny-render-path-probe-001"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
@@ -80,10 +91,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10af_l2_render_path_selector_probe_ready"
+        "ed10ag_l2_tiny_render_path_probe_ready_existing_ed10af_l2_reused"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_PROBE_READBACK_ONLY"
+        "NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         "NO_REVIEW_CARD_REVIEW_CONSUMED"
@@ -92,7 +103,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "l2_render_path_selector_probe_readback_no_review_card"
+        "l2_tiny_render_path_probe_no_review_card"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -145,7 +156,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10af-l2-render-path-selector-probe-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "l2_render_path_selector_probe"
+        "l2_tiny_render_path_probe"
     )
     assert status["current_focus"]["subtitle_preset_selector"]["artifact_id"] == (
         "clip-ed10ab-subtitle-preset-selector-001"
@@ -206,7 +217,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "subtitle_render_path_selector_contract"
     ]["color_surface_fields"]
     assert status["current_focus"]["subtitle_render_path_selector_contract"][
-        "later_l2_tiny_render_trigger"
+        "later_l2_render_path_probe_trigger"
     ] == "not_triggered_in_this_slice"
     assert status["current_focus"]["subtitle_render_path_selector_contract"][
         "new_render_run"
@@ -266,6 +277,47 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["subtitle_render_path_selector_probe"][
         "public_use_permission"
     ] is False
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "artifact_id"
+    ] == (
+        "clip-ed10af-render-contract-consumer-dry-read-001"
+    )
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "payload_count"
+    ] == 6
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "all_payloads_consumer_ready"
+    ] is True
+    l2_tiny_probe = status["current_focus"]["subtitle_l2_tiny_render_path_probe"]
+    assert l2_tiny_probe[
+        "artifact_id"
+    ] == "clip-ed10ag-l2-tiny-render-path-probe-001"
+    assert l2_tiny_probe["active_artifact_id"] == "clip-ed10af-l2-render-path-selector-probe-001"
+    assert l2_tiny_probe[
+        "source_render_path_selector_probe_artifact_id"
+    ] == "clip-ed10af-l2-render-path-selector-probe-001"
+    assert l2_tiny_probe[
+        "source_render_contract_consumer_dry_read_artifact_id"
+    ] == "clip-ed10af-render-contract-consumer-dry-read-001"
+    assert l2_tiny_probe["dry_read_source_commit"] == "7e96a28"
+    assert l2_tiny_probe["dry_read_invalidated"] is False
+    assert l2_tiny_probe["existing_output_first_reused"] is True
+    assert l2_tiny_probe["new_render_run"] is False
+    assert l2_tiny_probe["source_probe_new_render_run"] is True
+    assert l2_tiny_probe["same_machine_only"] is True
+    assert l2_tiny_probe["may_be_absent_on_other_clone"] is True
+    assert l2_tiny_probe["source_dry_read_payload_count"] == 6
+    assert l2_tiny_probe["selected_example_count"] == 3
+    assert (
+        "subtitle_render_path_selector_probe.mp4"
+        in l2_tiny_probe["local_outputs"]["video"]
+    )
+    assert (
+        "subtitle_render_path_selector_probe_contact_sheet.jpg"
+        in l2_tiny_probe["local_outputs"]["contact_sheet"]
+    )
+    assert l2_tiny_probe["production_render_acceptance"] is False
+    assert l2_tiny_probe["public_use_permission"] is False
     assert status["current_focus"]["subtitle_style_intent_registry"][
         "body_text_color_policy"
     ] == "stable_by_default"
@@ -318,6 +370,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
         "see docs\\style_intent\\subtitle-render-path-selector-probe.md",
+        "see docs\\style_intent\\subtitle-l2-tiny-render-path-probe.md",
         "see docs\\style_intent\\subtitle-render-path-selector-contract.md",
         "see docs\\style_intent\\subtitle-style-family-palette-proof.html",
         "see docs\\style_intent\\subtitle-visual-selector-proof.html",
@@ -358,6 +411,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
+        "clip-ed10ag-l2-tiny-render-path-probe-001"
+    )
+    assert status["next_review_items"][1]["artifact"] == (
         "clip-ed10af-l2-render-path-selector-probe-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
@@ -375,24 +431,27 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "docs/style_intent/subtitle-render-path-selector-probe.md"
     )
     assert persisted["open_surfaces"][3]["target"] == (
-        "docs/style_intent/subtitle-render-path-selector-contract.md"
+        "docs/style_intent/subtitle-l2-tiny-render-path-probe.md"
     )
     assert persisted["open_surfaces"][4]["target"] == (
-        "docs/style_intent/subtitle-style-family-palette-proof.html"
+        "docs/style_intent/subtitle-render-path-selector-contract.md"
     )
     assert persisted["open_surfaces"][5]["target"] == (
-        "docs/style_intent/subtitle-visual-selector-proof.html"
+        "docs/style_intent/subtitle-style-family-palette-proof.html"
     )
     assert persisted["open_surfaces"][6]["target"] == (
-        "docs/style_intent/subtitle-preset-selector.json"
+        "docs/style_intent/subtitle-visual-selector-proof.html"
     )
     assert persisted["open_surfaces"][7]["target"] == (
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+        "docs/style_intent/subtitle-preset-selector.json"
     )
     assert persisted["open_surfaces"][8]["target"] == (
+        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+    )
+    assert persisted["open_surfaces"][9]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "ED-10z local readback" in persisted["open_surfaces"][8][
+    assert "ED-10z local readback" in persisted["open_surfaces"][9][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -410,6 +469,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10ad-style-family-palette-axis-proof-001" in html
     assert "clip-ed10ae-render-path-selector-contract-probe-001" in html
     assert "clip-ed10af-l2-render-path-selector-probe-001" in html
+    assert "clip-ed10ag-l2-tiny-render-path-probe-001" in html
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
@@ -726,10 +786,10 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
         entry["contract_assertions"]["render_artifact_created"]
         for entry in contract["contract_entries"]
     } == {False}
-    assert contract["later_l2_tiny_render_trigger"]["status"] == (
+    assert contract["later_l2_render_path_probe_trigger"]["status"] == (
         "not_triggered_in_this_slice"
     )
-    assert "HTML proof updates" in contract["later_l2_tiny_render_trigger"][
+    assert "HTML proof updates" in contract["later_l2_render_path_probe_trigger"][
         "not_triggered_by"
     ]
     assert contract["render_gate"]["new_render_run"] is False
@@ -1217,8 +1277,12 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     assert "Current ED-10w Presentation Review Pack" in text
     assert "Current ED-10y Candidate 2 Carry-Forward" in text
     assert "Current ED-10z Tiny Render-Path-Nearer Probe" in text
+    assert "Current ED-10ag L2 Tiny Render Path Probe" in text
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in text
     assert "clip-ed10w-subtitle-presentation-review-pack-001" in text
+    assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "clip-ed10ag-l2-tiny-render-path-probe-001" in text
     assert "ed10w_badge_label_pressure_adjustment" in text
     assert "ed10w_balanced_combined_low_risk" in text
     assert "diagnostic dense/stress behavior" in text
@@ -1252,7 +1316,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
     boundary_sentence = (
         "production rights publishing public use acceptance "
-        "承認 権利 公開 "
+        "隰・ｽｿ髫ｱ繝ｻ隶難ｽｩ陋ｻ・ｩ 陷茨ｽｬ鬮｢繝ｻ"
     )
     (base / "docs" / "EPISODE_REVIEW_WORKFLOW.md").write_text(
         "# Episode Review Workflow\n\n" + boundary_sentence * 4,
@@ -1279,7 +1343,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_ed10af_artifact(
+def test_docs_dashboard_current_focus_registration_uses_ed10ag_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -1292,9 +1356,33 @@ def test_docs_dashboard_current_focus_registration_uses_ed10af_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10af-l2-render-path-selector-probe-001"
+        "clip-ed10ag-l2-tiny-render-path-probe-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
         is False
     )
+
+
+def test_artifact_registry_records_ed10ag_source_observation_sources():
+    status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
+    artifact_ids = set(status["artifact_summary"]["artifact_ids"])
+
+    assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10ag-l2-tiny-render-path-probe-001"
+    )
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
+    assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
+    assert "clip-ed10ag-l2-tiny-render-path-probe-001" in artifact_ids
+    assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
+    l2_tiny_probe = status["current_focus"]["subtitle_l2_tiny_render_path_probe"]
+    assert l2_tiny_probe[
+        "source_render_contract_consumer_dry_read_artifact_id"
+    ] == "clip-ed10af-render-contract-consumer-dry-read-001"
+    assert l2_tiny_probe[
+        "source_render_path_selector_probe_artifact_id"
+    ] == "clip-ed10af-l2-render-path-selector-probe-001"
+    assert l2_tiny_probe["active_artifact_id"] == "clip-ed10af-l2-render-path-selector-probe-001"
+    assert l2_tiny_probe["dry_read_source_commit"] == "7e96a28"
+    assert status["current_focus"]["production_render_acceptance"] is False
+    assert status["current_focus"]["public_use_permission"] is False

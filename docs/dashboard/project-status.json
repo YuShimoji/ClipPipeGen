@@ -24,8 +24,8 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10af",
-    "artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "feature_id": "ED-10ag",
+    "artifact_id": "clip-ed10ag-l2-tiny-render-path-probe-001",
     "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
     "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
     "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
@@ -36,7 +36,10 @@
     "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "l2_render_path_selector_probe_ready",
+    "state": "l2_tiny_render_path_probe_ready",
+    "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "source_l2_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "l2_tiny_render_path_probe_artifact_id": "clip-ed10ag-l2-tiny-render-path-probe-001",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -45,12 +48,12 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "ed10af_l2_render_path_selector_probe_ready",
-    "user_action_type": "NO_USER_ACTION_PROBE_READBACK_ONLY",
+    "route_status": "ed10ag_l2_tiny_render_path_probe_ready_existing_ed10af_l2_reused",
+    "user_action_type": "NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY",
     "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-    "main_issue": "l2_render_path_selector_probe_readback",
+    "main_issue": "l2_tiny_probe_existing_output_readback_recorded",
     "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
     "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
     "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -288,8 +291,23 @@
         "motion_primitive",
         "safe_area_line_break_behavior"
       ],
-      "later_l2_tiny_render_trigger": "not_triggered_in_this_slice",
+      "later_l2_render_path_probe_trigger": "not_triggered_in_this_slice",
       "new_render_run": false
+    },
+    "subtitle_render_contract_consumer_dry_read": {
+      "status": "render_contract_consumer_dry_read_ready",
+      "artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+      "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "metadata_json": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+      "doc": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md",
+      "render_level": "L0 No Render",
+      "payload_count": 6,
+      "all_payloads_consumer_ready": true,
+      "body_text_color_policy": "stable_default_body_text",
+      "consumer_dry_read_only": true,
+      "new_render_run": false,
+      "production_render_acceptance": false,
+      "public_use_permission": false
     },
     "subtitle_render_path_selector_probe": {
       "status": "l2_render_path_selector_probe_ready",
@@ -317,6 +335,43 @@
         "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json"
       },
       "new_render_run": true,
+      "tracked_binary_artifact_created": false,
+      "production_render_acceptance": false,
+      "public_use_permission": false
+    },
+    "subtitle_l2_tiny_render_path_probe": {
+      "status": "l2_tiny_render_path_probe_ready",
+      "artifact_id": "clip-ed10ag-l2-tiny-render-path-probe-001",
+      "active_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+      "source_render_path_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "dry_read_source_commit": "7e96a28",
+      "dry_read_invalidated": false,
+      "metadata_json": "docs/style_intent/subtitle-l2-tiny-render-path-probe.json",
+      "doc": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md",
+      "render_level": "L2 Tiny Smoke Render",
+      "existing_output_first_reused": true,
+      "new_render_run": false,
+      "source_probe_new_render_run": true,
+      "same_machine_only": true,
+      "may_be_absent_on_other_clone": true,
+      "source_dry_read_payload_count": 6,
+      "selected_example_count": 3,
+      "selected_example_ids": [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1"
+      ],
+      "stable_body_text_preserved": true,
+      "badge_accent_backplate_route_preserved": true,
+      "safe_area_line_break_metadata_survived": true,
+      "local_probe_status": "local_ignored_probe_generated",
+      "local_outputs": {
+        "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+        "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+        "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+        "contact_sheet": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+      },
       "tracked_binary_artifact_created": false,
       "production_render_acceptance": false,
       "public_use_permission": false
@@ -389,11 +444,11 @@
       "status": "withheld_latest_review_already_consumed",
       "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
       "target": "clip-ed10af-l2-render-path-selector-probe-001",
-      "artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
-      "axis": "l2_render_path_selector_probe",
+      "artifact_id": "clip-ed10ag-l2-tiny-render-path-probe-001",
+      "axis": "l2_tiny_render_path_probe",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "ED-10af selects normal dialogue, shout, and whisper examples from the ED-10ae contract and runs a tiny FFmpeg/libass diagnostic probe with ignored ASS/MP4 evidence.",
+      "what_changed": "ED-10ag records the restored ED-10af dry-read as predecessor evidence, preserves the ED-10af L2 selector probe as active, and adds same-machine observation paths without rerendering.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -403,7 +458,7 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "use this L2 diagnostic probe as render-path readback; production, rights, publishing, and public-use routes remain separate"
+      "completion_signal": "use the ED-10af L2 probe as active render-path evidence and the ED-10ag L2 tiny render-path probe as readback; production, rights, publishing, and public-use routes remain separate"
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -414,7 +469,7 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "l2_render_path_selector_probe_readback_no_review_card",
+    "review_surface_direction": "l2_tiny_render_path_probe_no_review_card",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
@@ -450,6 +505,12 @@
       "command": "see docs\\style_intent\\subtitle-render-path-selector-probe.md",
       "target": "docs/style_intent/subtitle-render-path-selector-probe.md",
       "when_to_use": "Use to inspect the ED-10af L2 selector probe rows, local ignored ASS/MP4/manifest paths, and boundary readback from the ED-10ae contract."
+    },
+    {
+      "label": "L2 Tiny Render Path Probe",
+      "command": "see docs\\style_intent\\subtitle-l2-tiny-render-path-probe.md",
+      "target": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md",
+      "when_to_use": "Use to inspect the restored dry-read predecessor, active ED-10af L2 probe, and local ignored ASS/MP4/manifest/contact-sheet readback."
     },
     {
       "label": "Render Path Selector Contract",
@@ -553,79 +614,79 @@
   "features": [
     {
       "id": "CR-01",
-      "title": "rights_manifest schema v1 と validator",
+      "title": "rights_manifest schema v1 縺ｨ validator",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/SCHEMAS/v1/rights_manifest.md の構造を実装。compliance_check.status は readback として保持し、local CLI の hard gate にはしない。Slice 1.1 完了（commit 5be5439）",
+      "summary_excerpt": "docs/SCHEMAS/v1/rights_manifest.md 縺ｮ讒矩繧貞ｮ溯｣・Ａcompliance_check.status 縺ｯ readback 縺ｨ縺励※菫晄戟縺励〕ocal CLI 縺ｮ hard gate 縺ｫ縺ｯ縺励↑縺・４lice 1.1 螳御ｺ・ｼ・ommit 5be5439・・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "MS-01",
-      "title": "material_ledger schema v1 と CRUD CLI",
+      "title": "material_ledger schema v1 縺ｨ CRUD CLI",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "素材登録・索引・sidecar 紐付け。register-material / audit-material-ledger 実装。Slice 1.2 完了",
+      "summary_excerpt": "邏譚千匳骭ｲ繝ｻ邏｢蠑輔・sidecar 邏蝉ｻ倥￠縲Ａregister-material / audit-material-ledger 螳溯｣・４lice 1.2 螳御ｺ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "MS-02",
-      "title": "material_sidecar schema v1 と validator",
+      "title": "material_sidecar schema v1 縺ｨ validator",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "出典・ライセンス・利用条件を metadata として検証・保持。source/license/restriction の値は thumbnail 実行を止めない。Slice 1.2 完了",
+      "summary_excerpt": "蜃ｺ蜈ｸ繝ｻ繝ｩ繧､繧ｻ繝ｳ繧ｹ繝ｻ蛻ｩ逕ｨ譚｡莉ｶ繧・metadata 縺ｨ縺励※讀懆ｨｼ繝ｻ菫晄戟縲Ｔource/license/restriction 縺ｮ蛟､縺ｯ thumbnail 螳溯｡後ｒ豁｢繧√↑縺・４lice 1.2 螳御ｺ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "MS-03",
-      "title": "透過PNG 受け入れフロー",
+      "title": "騾城℃PNG 蜿励￠蜈･繧後ヵ繝ｭ繝ｼ",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "is_transparent_png で PNG color_type が 4/6 かを判定、character_image + subkind=transparent_png で強制。Slice 1.2 完了",
+      "summary_excerpt": "is_transparent_png 縺ｧ PNG color_type 縺・4/6 縺九ｒ蛻､螳壹～character_image + subkind=transparent_png 縺ｧ蠑ｷ蛻ｶ縲４lice 1.2 螳御ｺ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "TH-01",
-      "title": "YMM4 サムネ slot patch（NLMYTGen CLI bridge）",
+      "title": "YMM4 繧ｵ繝繝・slot patch・・LMYTGen CLI bridge・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "nlmytgen_bridge.py + thumbnail_patch.py orchestrator + audit-thumbnail / patch-thumbnail CLI。rights readback / material resolution / bridge audit / bridge patch / readback の流れ。Slice 1.3 完了。実 YMM4 base template に対する end-...",
+      "summary_excerpt": "nlmytgen_bridge.py + thumbnail_patch.py orchestrator + audit-thumbnail / patch-thumbnail CLI縲Ｓights readback / material resolution / bridge audit / bridge patch / readback 縺ｮ豬√ｌ縲４lice 1.3 螳御ｺ・ょｮ・YMM4 base template 縺ｫ蟇ｾ...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-01",
-      "title": "CLI runner と config（NLMYTGen path 設定含む）",
+      "title": "CLI runner 縺ｨ config・・LMYTGen path 險ｭ螳壼性繧・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "config/nlmytgen_path.json schema (例ファイル付き、本体 gitignored)、BridgeConfig.load、call_nlmytgen subprocess wrapper、BridgeExecutionError でのエラー伝搬。silent fallback 禁止。Slice 1.3 完了",
+      "summary_excerpt": "config/nlmytgen_path.json schema (萓九ヵ繧｡繧､繝ｫ莉倥″縲∵悽菴・gitignored)縲～BridgeConfig.load縲～call_nlmytgen subprocess wrapper縲～BridgeExecutionError 縺ｧ縺ｮ繧ｨ繝ｩ繝ｼ莨晄成縲Ｔilent fallback 遖∵ｭ｢縲４lice 1.3 螳御ｺ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "TH-W01",
-      "title": "Slice 1 walkthrough 補助",
+      "title": "Slice 1 walkthrough 陬懷勧",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "YMM4 thumbnail template authoring guide、samples/episode_example、SLICE1_WALKTHROUGH ランブック。Slice 2 (d) 完了",
+      "summary_excerpt": "YMM4 thumbnail template authoring guide縲《amples/episode_example縲ヾLICE1_WALKTHROUGH 繝ｩ繝ｳ繝悶ャ繧ｯ縲４lice 2 (d) 螳御ｺ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -636,7 +697,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "assistant 自律選定 URL（https://www.youtube.com/watch?v=D4i4fjs9PWc 【Kroniicle Animation】 Wisdom Teeth Removal Woes）で actual smoke を完走。Pipeline: yt-dlp-video → yt-dlp-audio → Vosk EN STT → 4 cuts (2 passed / 2 needs_review)...",
+      "summary_excerpt": "assistant 閾ｪ蠕矩∈螳・URL・・https://www.youtube.com/watch?v=D4i4fjs9PWc> 縲尻roniicle Animation縲・Wisdom Teeth Removal Woes・峨〒 actual smoke 繧貞ｮ瑚ｵｰ縲１ipeline: yt-dlp-video 竊・yt-dlp-audio 竊・Vosk EN STT 竊・4 cuts (2 passed / 2 needs_...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -647,7 +708,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "既存 Vosk adapter (src/integrations/stt/vosk_adapter.py、ED-07b) が language-agnostic だったため adapter 変更 0 行で JP 対応完了。CLI help を補強し、JP fake runner test + JP real transcript pipeline test を追加（175 passed）。actual smoke: Windows...",
+      "summary_excerpt": "譌｢蟄・Vosk adapter (src/integrations/stt/vosk_adapter.py縲・D-07b) 縺・language-agnostic 縺縺｣縺溘◆繧・adapter 螟画峩 0 陦後〒 JP 蟇ｾ蠢懷ｮ御ｺ・・LI help 繧定｣懷ｼｷ縺励゛P fake runner test + JP real transcript pipeline test 繧定ｿｽ蜉・・75 passed・峨Ｂctu...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -658,7 +719,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "assistant 自律選定 URL（https://www.youtube.com/watch?v=7J5aS_pcBj4 公式 hololive short anime 【アニメ】押忍！！ば～んちょ だじぇ！）で actual smoke を完走。Pipeline: yt-dlp-video → yt-dlp-audio → Vosk JP STT → 6 cuts (3 passed / 3 needs_review) → 17...",
+      "summary_excerpt": "assistant 閾ｪ蠕矩∈螳・URL・・https://www.youtube.com/watch?v=7J5aS_pcBj4> 蜈ｬ蠑・hololive short anime 縲舌い繝九Γ縲第款蠢搾ｼ・ｼ√・・槭ｓ縺｡繧・縺縺倥∞・～・峨〒 actual smoke 繧貞ｮ瑚ｵｰ縲１ipeline: yt-dlp-video 竊・yt-dlp-audio 竊・Vosk JP STT 竊・6 cuts (3 passed /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -669,7 +730,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 で raw Vosk transcript/edit_pack を backup し、公式 Japanese subtitle track を照合材料に 7 segments を accepted に更新。Downstream rerun: 5 cuts (3 passed / 2 needs_review)、26 subtitl...",
+      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 縺ｧ raw Vosk transcript/edit_pack 繧・backup 縺励∝・蠑・Japanese subtitle track 繧堤・蜷域攝譁吶↓ 7 segments 繧・accepted 縺ｫ譖ｴ譁ｰ縲・ownstream rerun: 5 cuts (3 passed / 2 needs_review)縲・...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -680,7 +741,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 で R1 transcript/edit_pack を backup し、公式 Japanese subtitle track の max-overlap alignment から追加 review patch を適用。Transcript counts: accepted 25 / rejected 1 / unreviewed...",
+      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 縺ｧ R1 transcript/edit_pack 繧・backup 縺励∝・蠑・Japanese subtitle track 縺ｮ max-overlap alignment 縺九ｉ霑ｽ蜉 review patch 繧帝←逕ｨ縲５ranscript counts: accepted 25 / rejected 1 / u...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -691,18 +752,18 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 で R2 transcript/edit_pack を backup し、ED-10 import-subtitle-track で YouTube JSON3 公式 Japanese subtitle track を transcript artifact に変換。Transcript counts: accepted 105...",
+      "summary_excerpt": "ignored episodes/jp_pilot01_hololive_bancho_20260525 縺ｧ R2 transcript/edit_pack 繧・backup 縺励・D-10 import-subtitle-track 縺ｧ YouTube JSON3 蜈ｬ蠑・Japanese subtitle track 繧・transcript artifact 縺ｫ螟画鋤縲５ranscript counts: accepte...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-07c",
-      "title": "--language ↔ --model 一貫性 validation",
+      "title": "--language 竊・--model 荳雋ｫ諤ｧ validation",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "transcribe-audio --engine vosk が Vosk model path basename から primary language を推定し、--language と不一致なら dry-run / actual とも失敗する。推定不能な model 名は warning に留め、stt.params.language_model_check に readback する。Phase 0 の \"EN model +...",
+      "summary_excerpt": "transcribe-audio --engine vosk 縺・Vosk model path basename 縺九ｉ primary language 繧呈耳螳壹＠縲～--language 縺ｨ荳堺ｸ閾ｴ縺ｪ繧・dry-run / actual 縺ｨ繧ょ､ｱ謨励☆繧九よ耳螳壻ｸ崎・縺ｪ model 蜷阪・ warning 縺ｫ逡吶ａ縲～stt.params.language_model_check 縺ｫ readback 縺...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -713,62 +774,62 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/SCHEMAS/v1/edit_pack.md / src/pipeline/edit_pack.py / init-edit-pack / validate-edit-pack。cut 候補・選択 cut・字幕案・review 状態の器を実装。ED-02 / ED-04 は後続で実装済み",
+      "summary_excerpt": "docs/SCHEMAS/v1/edit_pack.md / src/pipeline/edit_pack.py / init-edit-pack / validate-edit-pack縲Ｄut 蛟呵｣懊・驕ｸ謚・cut繝ｻ蟄怜ｹ墓｡医・review 迥ｶ諷九・蝎ｨ繧貞ｮ溯｣・・D-02 / ED-04 縺ｯ蠕檎ｶ壹〒螳溯｣・ｸ医∩",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-02a",
-      "title": "手動/インポート cut candidate 追加 CLI",
+      "title": "謇句虚/繧､繝ｳ繝昴・繝・cut candidate 霑ｽ蜉 CLI",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "add-cut-candidate。元動画解析・speech-to-text は行わず、人手または別ツールで得た秒数を edit_pack.cut_candidates[] に追加し、必要なら selected_cut_ids[] に入れる手動/インポート入力スライス",
+      "summary_excerpt": "add-cut-candidate縲ょ・蜍慕判隗｣譫舌・speech-to-text 縺ｯ陦後ｏ縺壹∽ｺｺ謇九∪縺溘・蛻･繝・・繝ｫ縺ｧ蠕励◆遘呈焚繧・edit_pack.cut_candidates[] 縺ｫ霑ｽ蜉縺励∝ｿ・ｦ√↑繧・selected_cut_ids[] 縺ｫ蜈･繧後ｋ謇句虚/繧､繝ｳ繝昴・繝亥・蜉帙せ繝ｩ繧､繧ｹ",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-02",
-      "title": "カット候補抽出（音声・字幕ベース）",
+      "title": "繧ｫ繝・ヨ蛟呵｣懈歓蜃ｺ・磯浹螢ｰ繝ｻ蟄怜ｹ輔・繝ｼ繧ｹ・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "generate-cuts CLI を実装。transcript.json の segment timing / text density / topic hint を使って edit_pack.cut_candidates[] を生成する。VOD / URL 取得は含めず、必要な音声素材は INT-02 から受け取る",
+      "summary_excerpt": "generate-cuts CLI 繧貞ｮ溯｣・Ａtranscript.json 縺ｮ segment timing / text density / topic hint 繧剃ｽｿ縺｣縺ｦ edit_pack.cut_candidates[] 繧堤函謌舌☆繧九７OD / URL 蜿門ｾ励・蜷ｫ繧√★縲∝ｿ・ｦ√↑髻ｳ螢ｰ邏譚舌・ INT-02 縺九ｉ蜿励￠蜿悶ｋ",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-03",
-      "title": "文脈チェック",
+      "title": "譁・ц繝√ぉ繝・け",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "check-cut-context CLI を実装。transcript.json の隣接 segment を参照し、cut 境界の発話途中切断、source segment 不整合、近接する前後文脈を cut_candidates[].context_check に passed / needs_review / failed と notes で返す",
+      "summary_excerpt": "check-cut-context CLI 繧貞ｮ溯｣・Ａtranscript.json 縺ｮ髫｣謗･ segment 繧貞盾辣ｧ縺励…ut 蠅・阜縺ｮ逋ｺ隧ｱ騾比ｸｭ蛻・妙縲《ource segment 荳肴紛蜷医∬ｿ第磁縺吶ｋ蜑榊ｾ梧枚閼医ｒ cut_candidates[].context_check 縺ｫ passed / needs_review / failed 縺ｨ notes 縺ｧ霑斐☆",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-04",
-      "title": "字幕案生成",
+      "title": "蟄怜ｹ墓｡育函謌・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "transcript.json の segment を edit_pack.subtitles[] に変換する generate-subtitles CLI を実装。--wrap-eaw で ED-05 の EAW 折返しを消費し、source_segment_id で transcript 由来を readback する。burned-in は外部ツール / future renderer",
+      "summary_excerpt": "transcript.json 縺ｮ segment 繧・edit_pack.subtitles[] 縺ｫ螟画鋤縺吶ｋ generate-subtitles CLI 繧貞ｮ溯｣・Ａ--wrap-eaw 縺ｧ ED-05 縺ｮ EAW 謚倩ｿ斐＠繧呈ｶ郁ｲｻ縺励～source_segment_id 縺ｧ transcript 逕ｱ譚･繧・readback 縺吶ｋ縲Ｃurned-in 縺ｯ螟夜Κ繝・・繝ｫ / future rende...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-05",
-      "title": "字幕表示幅計測（EAW、stdlib のみ）",
+      "title": "蟄怜ｹ戊｡ｨ遉ｺ蟷・ｨ域ｸｬ・・AW縲《tdlib 縺ｮ縺ｿ・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "src/pipeline/text_measure.py に EAW unit 計算と折返し、measure-subtitle-width CLI を追加。NLMYTGen の EastAsianWidthMeasurer / WpfTextMeasurer を bridge する設計だったが NLMYTGen 側に standalone CLI が無いため重複実装を選択。WPF 精度の bridge は docs/proposals...",
+      "summary_excerpt": "src/pipeline/text_measure.py 縺ｫ EAW unit 險育ｮ励→謚倩ｿ斐＠縲～measure-subtitle-width CLI 繧定ｿｽ蜉縲・LMYTGen 縺ｮ EastAsianWidthMeasurer / WpfTextMeasurer 繧・bridge 縺吶ｋ險ｭ險医□縺｣縺溘′ NLMYTGen 蛛ｴ縺ｫ standalone CLI 縺檎┌縺・◆繧・㍾隍・ｮ溯｣・ｒ驕ｸ謚槭８PF 邊ｾ...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -779,18 +840,18 @@
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "NLMYTGen 側で measure-text standalone CLI が採用された段階で ClipPipeGen 側の text_measure.py を bridge に縮約する。詳細: docs/proposals/0002",
+      "summary_excerpt": "NLMYTGen 蛛ｴ縺ｧ measure-text standalone CLI 縺梧治逕ｨ縺輔ｌ縺滓ｮｵ髫弱〒 ClipPipeGen 蛛ｴ縺ｮ text_measure.py 繧・bridge 縺ｫ邵ｮ邏・☆繧九りｩｳ邏ｰ: docs/proposals/0002",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-06",
-      "title": "外部 NLE 用 minimal export",
+      "title": "螟夜Κ NLE 逕ｨ minimal export",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "export-nle CLI を追加し、edit_pack.json から nle_cut_list.csv / nle_export_manifest.json / nle_export_report.html を生成する。現行出口は CSV cut list + readback で、FCPXML / Resolve XML / render / encode は後続。fake / fixture transcript 由来 ex...",
+      "summary_excerpt": "export-nle CLI 繧定ｿｽ蜉縺励～edit_pack.json 縺九ｉ nle_cut_list.csv / nle_export_manifest.json / nle_export_report.html 繧堤函謌舌☆繧九ら樟陦悟・蜿｣縺ｯ CSV cut list + readback 縺ｧ縲：CPXML / Resolve XML / render / encode 縺ｯ蠕檎ｶ壹Ｇake / fixture...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -801,7 +862,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/SCHEMAS/v1/transcript.md / src/pipeline/transcript.py / transcribe-audio / validate-transcript。初期 engine は fake adapter で、既存のローカル音声ファイル + fixture segments から transcript.json を生成する。実 whisper.cpp 接続と URL / VOD 取得は含めない",
+      "summary_excerpt": "docs/SCHEMAS/v1/transcript.md / src/pipeline/transcript.py / transcribe-audio / validate-transcript縲ょ・譛・engine 縺ｯ fake adapter 縺ｧ縲∵里蟄倥・繝ｭ繝ｼ繧ｫ繝ｫ髻ｳ螢ｰ繝輔ぃ繧､繝ｫ + fixture segments 縺九ｉ transcript.json 繧堤函謌舌☆繧九ょｮ・whisper.cpp 謗...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -812,7 +873,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "optional Vosk adapter を src/integrations/stt/ に追加し、明示 model path の実 source.wav から real_transcript=true の transcript.json を生成できるようにした。provider / model 不在は preflight failure で fixture fallback しない。生成 transcript は generate...",
+      "summary_excerpt": "optional Vosk adapter 繧・src/integrations/stt/ 縺ｫ霑ｽ蜉縺励∵・遉ｺ model path 縺ｮ螳・source.wav 縺九ｉ real_transcript=true 縺ｮ transcript.json 繧堤函謌舌〒縺阪ｋ繧医≧縺ｫ縺励◆縲Ｑrovider / model 荳榊惠縺ｯ preflight failure 縺ｧ fixture fallback 縺励↑縺・ら函謌・...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -823,7 +884,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "generate-subtitles が transcript.stt.real_transcript=true を読み、edit_pack.subtitles[] に source_type=\"real_transcript\" / source_segment_ids[] / diagnostic draft flags を保持するようにした。fake / fixture transcript は source_type=\"tran...",
+      "summary_excerpt": "generate-subtitles 縺・transcript.stt.real_transcript=true 繧定ｪｭ縺ｿ縲～edit_pack.subtitles[] 縺ｫ source_type=\"real_transcript\" / source_segment_ids[] / diagnostic draft flags 繧剃ｿ晄戟縺吶ｋ繧医≧縺ｫ縺励◆縲Ｇake / fixture transcript 縺ｯ sourc...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -834,7 +895,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "review-transcript CLI を追加し、v1 patch JSON から transcript.json の segment text / review_status / notes と top-level review を安全に更新できるようにした。status-episode は transcript review counts を readback し、export-nle は transcript review...",
+      "summary_excerpt": "review-transcript CLI 繧定ｿｽ蜉縺励」1 patch JSON 縺九ｉ transcript.json 縺ｮ segment text / review_status / notes 縺ｨ top-level review 繧貞ｮ牙・縺ｫ譖ｴ譁ｰ縺ｧ縺阪ｋ繧医≧縺ｫ縺励◆縲Ａstatus-episode 縺ｯ transcript review counts 繧・readback 縺励～export-nle...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -845,7 +906,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "import-subtitle-track CLI と src/pipeline/subtitle_import.py を追加。v1 は YouTube JSON3 subtitle track を base transcript の source-audio readback と alignment notes 付きで transcript.json 互換 artifact に変換し、stt.engine=\"subtitle_tra...",
+      "summary_excerpt": "import-subtitle-track CLI 縺ｨ src/pipeline/subtitle_import.py 繧定ｿｽ蜉縲Ｗ1 縺ｯ YouTube JSON3 subtitle track 繧・base transcript 縺ｮ source-audio readback 縺ｨ alignment notes 莉倥″縺ｧ transcript.json 莠呈鋤 artifact 縺ｫ螟画鋤縺励～stt.engine...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -856,7 +917,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-cut-review-packet CLI と src/pipeline/cut_review_packet.py を追加。既存 edit_pack.json / transcript.json / rights / NLE manifest / render manifest から selected cuts の JSON/HTML review packet と evidence summary を生成する。R3 では...",
+      "summary_excerpt": "build-cut-review-packet CLI 縺ｨ src/pipeline/cut_review_packet.py 繧定ｿｽ蜉縲よ里蟄・edit_pack.json / transcript.json / rights / NLE manifest / render manifest 縺九ｉ selected cuts 縺ｮ JSON/HTML review packet 縺ｨ evidence summary 繧堤函...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -867,7 +928,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-chapter-revision-board CLI と src/pipeline/chapter_revision_board.py を追加。既存 R3 review artifacts から static Chapter Revision Board と JSON/CSV patch template を生成する。cut_001-cut_009 は ch_001-ch_009 に対応し、current decision...",
+      "summary_excerpt": "build-chapter-revision-board CLI 縺ｨ src/pipeline/chapter_revision_board.py 繧定ｿｽ蜉縲よ里蟄・R3 review artifacts 縺九ｉ static Chapter Revision Board 縺ｨ JSON/CSV patch template 繧堤函謌舌☆繧九Ａcut_001-cut_009 縺ｯ ch_001-ch_009 縺ｫ蟇ｾ蠢懊＠縲…...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -878,7 +939,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-cut-decision-packet CLI と src/pipeline/cut_decision_packet.py を追加。R3 の 9 selected cuts を keep / needs_adjustment / reject に分類し、cut_decision_packet.json / cut_decision_report.html を生成する。今回の keep は cut_001-cut_003 の...",
+      "summary_excerpt": "build-cut-decision-packet CLI 縺ｨ src/pipeline/cut_decision_packet.py 繧定ｿｽ蜉縲３3 縺ｮ 9 selected cuts 繧・keep / needs_adjustment / reject 縺ｫ蛻・｡槭＠縲～cut_decision_packet.json / cut_decision_report.html 繧堤函謌舌☆繧九ゆｻ雁屓縺ｮ keep 縺ｯ c...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -889,7 +950,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-operator-proxy-decision-handoff CLI と src/pipeline/operator_proxy_decision_handoff.py を追加。Chapter Revision Board、R3 Cut Decision Packet、representative visual proof readback、edit_pack subtitles、material_ledger を読み、...",
+      "summary_excerpt": "build-operator-proxy-decision-handoff CLI 縺ｨ src/pipeline/operator_proxy_decision_handoff.py 繧定ｿｽ蜉縲・hapter Revision Board縲ヽ3 Cut Decision Packet縲〉epresentative visual proof readback縲‘dit_pack subtitles縲［aterial_ledger...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -900,7 +961,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "apply-boundary-recommendation CLI と src/pipeline/boundary_recommendation_apply.py を追加。operator-owned boundary recommendation report と edit_pack.json を照合し、cut id、現行 start/end、要求 range、selected cut overlap、subtitle assign...",
+      "summary_excerpt": "apply-boundary-recommendation CLI 縺ｨ src/pipeline/boundary_recommendation_apply.py 繧定ｿｽ蜉縲Ｐperator-owned boundary recommendation report 縺ｨ edit_pack.json 繧堤・蜷医＠縲…ut id縲∫樟陦・start/end縲∬ｦ∵ｱ・range縲《elected cut overlap縲《ubti...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -911,7 +972,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-review-acceptance-gate-001",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "Active Artifact clip-review-acceptance-gate-001 / clip-human-preview-session-001 の人間回答を adjust_boundary として消費。font_size=accepted_for_diagnostic_representative_review を記録し、font_family / decoration は未確定比較軸として ED-10g へ送った。...",
+      "summary_excerpt": "Active Artifact clip-review-acceptance-gate-001 / clip-human-preview-session-001 縺ｮ莠ｺ髢灘屓遲斐ｒ adjust_boundary 縺ｨ縺励※豸郁ｲｻ縲Ａfont_size=accepted_for_diagnostic_representative_review 繧定ｨ倬鹸縺励～font_family / decoration 縺ｯ譛ｪ遒ｺ螳壽ｯ碑...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -922,7 +983,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10g-noto-overlay-proof-001",
       "next_action": "Keep as historical diagnostic proof; the latest human review sends styling to ED-10i.",
-      "summary_excerpt": "adjust_boundary を受け、font size を維持したまま font family / outline / shadow / placeholder speaker-badge accent の比較 proof を作る route。build-subtitle-typography-decoration-comparison は ignored subtitle_typography_decoration_compar...",
+      "summary_excerpt": "adjust_boundary 繧貞女縺代’ont size 繧堤ｶｭ謖√＠縺溘∪縺ｾ font family / outline / shadow / placeholder speaker-badge accent 縺ｮ豈碑ｼ・proof 繧剃ｽ懊ｋ route縲Ａbuild-subtitle-typography-decoration-comparison 縺ｯ ignored subtitle_typography_deco...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -933,7 +994,7 @@
       "progress_pct": 15,
       "active_artifact": "clip-subtitle-font-candidate-sweep-001",
       "next_action": "Use the font candidate registry to choose a no-download or download-approved sweep route.",
-      "summary_excerpt": "ED-10g の historical proof base noto_sans_jp_clean_outline と ED-10i の selected proof base ed10i_meiryo_bold_fill_outline_balance を registry で分け、次に font universe を広げるための候補 registry を定義する。Artifact clip-subtitle-font-candid...",
+      "summary_excerpt": "ED-10g 縺ｮ historical proof base noto_sans_jp_clean_outline 縺ｨ ED-10i 縺ｮ selected proof base ed10i_meiryo_bold_fill_outline_balance 繧・registry 縺ｧ蛻・￠縲∵ｬ｡縺ｫ font universe 繧貞ｺ・￡繧九◆繧√・蛟呵｣・registry 繧貞ｮ夂ｾｩ縺吶ｋ縲・rtifact clip-sub...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -944,7 +1005,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10i-meiryo-overlay-proof-001",
       "next_action": "Keep the Meiryo proof as reviewed reference; do not treat it as the normal subtitle baseline.",
-      "summary_excerpt": "最新の人間レビューを消費し、clip-ed10g-noto-overlay-proof-001 は styling として not accepted as-is と記録した。build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance は artifact clip-ed10i-kirinuki-go...",
+      "summary_excerpt": "譛譁ｰ縺ｮ莠ｺ髢薙Ξ繝薙Η繝ｼ繧呈ｶ郁ｲｻ縺励～clip-ed10g-noto-overlay-proof-001 縺ｯ styling 縺ｨ縺励※ not accepted as-is 縺ｨ險倬鹸縺励◆縲Ａbuild-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance 縺ｯ artifact cl...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -955,7 +1016,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10j-kirinuki-font-audit-001",
       "next_action": "Keep as consumed audit trail; BIZ UDGothic selection was superseded by ED-10k review.",
-      "summary_excerpt": "clip-ed10i-meiryo-overlay-proof-001 の freeform review を正本として消費し、Meiryo proof は「文字が細すぎる / 通常字幕として魅力不足 / baseline font choice の見直しが必要」と記録した。Meiryo を reviewed reference candidate に格下げし、build-subtitle-typography-decoration-...",
+      "summary_excerpt": "clip-ed10i-meiryo-overlay-proof-001 縺ｮ freeform review 繧呈ｭ｣譛ｬ縺ｨ縺励※豸郁ｲｻ縺励｀eiryo proof 縺ｯ縲梧枚蟄励′邏ｰ縺吶℃繧・/ 騾壼ｸｸ蟄怜ｹ輔→縺励※鬲・鴨荳崎ｶｳ / baseline font choice 縺ｮ隕狗峩縺励′蠢・ｦ√阪→險倬鹸縺励◆縲・eiryo 繧・reviewed reference candidate 縺ｫ譬ｼ荳九￡縺励～bu...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -966,7 +1027,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10k-biz-overlay-proof-001",
       "next_action": "Keep as reviewed rejected reference; do not treat BIZ as the normal-dialogue baseline.",
-      "summary_excerpt": "ED-10j review を受け、ed10j_biz_udgothic_bold_telop_candidate を cut_002 / cut_003 の diagnostic overlay proof base として clip-ed10k-biz-overlay-proof-001 を生成した。後続 freeform review により BIZ UDGothic は「硬い / rigid / 文字が薄い / 黒 outli...",
+      "summary_excerpt": "ED-10j review 繧貞女縺代～ed10j_biz_udgothic_bold_telop_candidate 繧・cut_002 / cut_003 縺ｮ diagnostic overlay proof base 縺ｨ縺励※ clip-ed10k-biz-overlay-proof-001 繧堤函謌舌＠縺溘ょｾ檎ｶ・freeform review 縺ｫ繧医ｊ BIZ UDGothic 縺ｯ縲檎｡ｬ縺・/ rigid /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -977,7 +1038,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
       "next_action": "Keep as regenerated real-font comparison; use ED-10n Keifont proof for current visual judgement.",
-      "summary_excerpt": "clip-ed10k-biz-overlay-proof-001 の不採用レビューを正本として消費し、候補探索の軸を system-safe/generic readable fonts から、ユーザー既知の けいふぉんと、851チカラヨワク、M+ FONTS、GoodFreeFonts 由来の丸ゴシック候補へ切り替えた。Active comparison artifact は clip-ed10l-known-kirinuki-fo...",
+      "summary_excerpt": "clip-ed10k-biz-overlay-proof-001 縺ｮ荳肴治逕ｨ繝ｬ繝薙Η繝ｼ繧呈ｭ｣譛ｬ縺ｨ縺励※豸郁ｲｻ縺励∝呵｣懈爾邏｢縺ｮ霆ｸ繧・system-safe/generic readable fonts 縺九ｉ縲√Θ繝ｼ繧ｶ繝ｼ譌｢遏･縺ｮ 縺代＞縺ｵ縺峨ｓ縺ｨ縲～851繝√き繝ｩ繝ｨ繝ｯ繧ｯ縲～M+ FONTS縲；oodFreeFonts 逕ｱ譚･縺ｮ荳ｸ繧ｴ繧ｷ繝・け蛟呵｣懊∈蛻・ｊ譖ｿ縺医◆縲・ctive...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -988,7 +1049,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10l-known-kirinuki-font-pack-001",
       "next_action": "Keep as source/license route record; ED-10n consumed the per-user font readback.",
-      "summary_excerpt": "ED-10l fallback confirmation から継続し、normal-dialogue の first route を ed10l_keifont_pop_dialogue_candidate に決めた。Keifont official source は https://font.sumomo.ne.jp/font_1.html、license/readback は Apache License 2.0 と商用利用の特別...",
+      "summary_excerpt": "ED-10l fallback confirmation 縺九ｉ邯咏ｶ壹＠縲］ormal-dialogue 縺ｮ first route 繧・ed10l_keifont_pop_dialogue_candidate 縺ｫ豎ｺ繧√◆縲・eifont official source 縺ｯ https://font.sumomo.ne.jp/font_1.html縲〕icense/readback 縺ｯ Apache License 2.0...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -999,7 +1060,7 @@
       "progress_pct": 95,
       "active_artifact": "clip-ed10n-keifont-overlay-proof-001",
       "next_action": "Keep as earlier lead proof reference; ED-10q is now the focused current review surface for the ED-10p artifact.",
-      "summary_excerpt": "ユーザーが per-user install 済みだった ED-10l 候補を HKCU registry と %LOCALAPPDATA%/Microsoft/Windows/Fonts から readback する resolver を追加。build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_p...",
+      "summary_excerpt": "繝ｦ繝ｼ繧ｶ繝ｼ縺・per-user install 貂医∩縺縺｣縺・ED-10l 蛟呵｣懊ｒ HKCU registry 縺ｨ %LOCALAPPDATA%/Microsoft/Windows/Fonts 縺九ｉ readback 縺吶ｋ resolver 繧定ｿｽ蜉縲Ａbuild-subtitle-typography-decoration-comparison --comparison-profile ed10l_known...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1010,7 +1071,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10o-multifont-focused-review-001",
       "next_action": "Keep as accepted focused review-surface reference; it is not final baseline or production acceptance.",
-      "summary_excerpt": "最新 freeform review を「Keifont proof は明確に改善し動画使用レベルに近いが、次の bottleneck は review UX」として消費。新 profile ed10o_multifont_focused_review を追加し、Keifont / 851 Chikara Yowaku / Yasashisa Gothic を同じ target cuts、同じ行、同じ font size formul...",
+      "summary_excerpt": "譛譁ｰ freeform review 繧偵桑eifont proof 縺ｯ譏守｢ｺ縺ｫ謾ｹ蝟・＠蜍慕判菴ｿ逕ｨ繝ｬ繝吶Ν縺ｫ霑代＞縺後∵ｬ｡縺ｮ bottleneck 縺ｯ review UX縲阪→縺励※豸郁ｲｻ縲よ眠 profile ed10o_multifont_focused_review 繧定ｿｽ蜉縺励゜eifont / 851 Chikara Yowaku / Yasashisa Gothic 繧貞酔縺・targ...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1021,7 +1082,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10p-keifont-lead-representative-proof-001",
       "next_action": "Keep as consumed Keifont provisional baseline evidence; ED-10u is now the multiline/dense-stress review route.",
-      "summary_excerpt": "ED-10o への最新 freeform review を「font comparison と review screen が見やすくなった」として消費し、focused matrix を今後の preferred review surface direction として受け入れた。ただし final baseline / production subtitle design / render / creative / rights...",
+      "summary_excerpt": "ED-10o 縺ｸ縺ｮ譛譁ｰ freeform review 繧偵掲ont comparison 縺ｨ review screen 縺瑚ｦ九ｄ縺吶￥縺ｪ縺｣縺溘阪→縺励※豸郁ｲｻ縺励’ocused matrix 繧剃ｻ雁ｾ後・ preferred review surface direction 縺ｨ縺励※蜿励￠蜈･繧後◆縲ゅ◆縺縺・final baseline / production subtitle design /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1032,7 +1093,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10p-keifont-lead-representative-proof-001",
       "next_action": "Keep as the page-format regression fix; do not treat it as new Keifont font-quality review.",
-      "summary_excerpt": "ユーザーが .\\open-current-proof.ps1 を実行したところ current proof が旧 detailed/debug layout に戻ったように見え、ED-10p の有効な human review が止まったため、review-surface regression として修正。artifact id は clip-ed10p-keifont-lead-representative-proof-001 のま...",
+      "summary_excerpt": "繝ｦ繝ｼ繧ｶ繝ｼ縺・.\\open-current-proof.ps1 繧貞ｮ溯｡後＠縺溘→縺薙ｍ current proof 縺梧立 detailed/debug layout 縺ｫ謌ｻ縺｣縺溘ｈ縺・↓隕九∴縲・D-10p 縺ｮ譛牙柑縺ｪ human review 縺梧ｭ｢縺ｾ縺｣縺溘◆繧√〉eview-surface regression 縺ｨ縺励※菫ｮ豁｣縲Ｂrtifact id 縺ｯ clip-ed10p-keifont-le...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1043,7 +1104,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10r-keifont-dense-stress-proof-001",
       "next_action": "Superseded by ED-10u focused multiline evidence correction; review only corrected cut_008 multiline/dense-stress behavior.",
-      "summary_excerpt": "Keifont review history を消費し、ユーザー評価済みの cut_002 / cut_003 general acceptance を再要求しないよう current route を切り替えた。ed10l_keifont_pop_dialogue_candidate は diagnostic / representative normal-dialogue provisional baseline として扱い、ED-...",
+      "summary_excerpt": "Keifont review history 繧呈ｶ郁ｲｻ縺励√Θ繝ｼ繧ｶ繝ｼ隧穂ｾ｡貂医∩縺ｮ cut_002 / cut_003 general acceptance 繧貞・隕∵ｱゅ＠縺ｪ縺・ｈ縺・current route 繧貞・繧頑崛縺医◆縲Ａed10l_keifont_pop_dialogue_candidate 縺ｯ diagnostic / representative normal-dialogue provisio...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1054,7 +1115,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10r-keifont-dense-stress-proof-001",
       "next_action": "Superseded by ED-10u focused multiline evidence correction; keep font readback as valid.",
-      "summary_excerpt": "ユーザーが Keifont / 851 Chikara Yowaku / M+ FONTS / Yasashisa Gothic を現在の Windows user PLANNER007 に install 済みと報告したため、font resolver readback を再実行。ed10l_keifont_pop_dialogue_candidate は requested=Keifont / resolved=Keifont /...",
+      "summary_excerpt": "繝ｦ繝ｼ繧ｶ繝ｼ縺・Keifont / 851 Chikara Yowaku / M+ FONTS / Yasashisa Gothic 繧堤樟蝨ｨ縺ｮ Windows user PLANNER007 縺ｫ install 貂医∩縺ｨ蝣ｱ蜻翫＠縺溘◆繧√’ont resolver readback 繧貞・螳溯｡後Ａed10l_keifont_pop_dialogue_candidate 縺ｯ requested=Keifont /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1065,7 +1126,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10r-keifont-dense-stress-proof-001",
       "next_action": "Consumed by ED-10v user pass; keep as the corrected evidence surface.",
-      "summary_excerpt": "ED-10t のユーザー freeform review で「動画を見る限り2行字幕がなさそう」「そのスクショを review page に置いてほしい」「画像サイズを小さくしてほしい」と指摘されたため、clip-ed10r-keifont-dense-stress-proof-001 の evidence surface を修正。cut_008 自体は維持し、font-bbox readback で実際に2行化する sub_096...",
+      "summary_excerpt": "ED-10t 縺ｮ繝ｦ繝ｼ繧ｶ繝ｼ freeform review 縺ｧ縲悟虚逕ｻ繧定ｦ九ｋ髯舌ｊ2陦悟ｭ怜ｹ輔′縺ｪ縺輔◎縺・阪後◎縺ｮ繧ｹ繧ｯ繧ｷ繝ｧ繧・review page 縺ｫ鄂ｮ縺・※縺ｻ縺励＞縲阪檎判蜒上し繧､繧ｺ繧貞ｰ上＆縺上＠縺ｦ縺ｻ縺励＞縲阪→謖・遭縺輔ｌ縺溘◆繧√～clip-ed10r-keifont-dense-stress-proof-001 縺ｮ evidence surface 繧剃ｿｮ豁｣縲Ａc...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1076,7 +1137,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10r-keifont-dense-stress-proof-001",
       "next_action": "Current dense/stress axis is passed; continue only through a new axis such as line-break policy tuning, bounded decoration adjustment, or production limitation-lift.",
-      "summary_excerpt": "ED-10u corrected proof への最新 user review を「字幕表示は良い」「全部 Pass」として消費し、clip-ed10r-keifont-dense-stress-proof-001 / cut_008 / sub_096 の multiline dense/stress 軸を diagnostic pass として記録した。Keifont は diagnostic representative nor...",
+      "summary_excerpt": "ED-10u corrected proof 縺ｸ縺ｮ譛譁ｰ user review 繧偵悟ｭ怜ｹ戊｡ｨ遉ｺ縺ｯ濶ｯ縺・阪悟・驛ｨ Pass縲阪→縺励※豸郁ｲｻ縺励～clip-ed10r-keifont-dense-stress-proof-001 / cut_008 / sub_096 縺ｮ multiline dense/stress 霆ｸ繧・diagnostic pass 縺ｨ縺励※險倬鹸縺励◆縲・eifont 縺ｯ...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1087,7 +1148,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10w-subtitle-presentation-review-pack-001",
       "next_action": "Use the crop-first review pack to choose Candidate 0 baseline, Candidate 1/2/3 bounded adjustment, or the next tiny render-path diagnostic probe.",
-      "summary_excerpt": "ED-10v の diagnostic dense/stress pass を source evidence として消費し、同じ cut_008 evidence や cut_002 / cut_003 の一般 Keifont acceptance を再レビューしない one-pass review pack を生成する。clip-ed10w-subtitle-presentation-review-pack-001 は ED-10...",
+      "summary_excerpt": "ED-10v 縺ｮ diagnostic dense/stress pass 繧・source evidence 縺ｨ縺励※豸郁ｲｻ縺励∝酔縺・cut_008 evidence 繧・cut_002 / cut_003 縺ｮ荳闊ｬ Keifont acceptance 繧貞・繝ｬ繝薙Η繝ｼ縺励↑縺・one-pass review pack 繧堤函謌舌☆繧九Ａclip-ed10w-subtitle-presentation-revi...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1098,7 +1159,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10y-candidate2-carry-forward-001",
       "next_action": "Continue from Candidate 2 as provisional bounded-decoration lead; do not repeat the Candidate 0-3 review.",
-      "summary_excerpt": "ED-10w/ED-10x crop-first review pack への最新 freeform review を消費し、Candidate 2 ed10w_badge_label_pressure_adjustment を provisional bounded-decoration lead、Candidate 0 ed10w_current_pass_reference を fallback/baseline referen...",
+      "summary_excerpt": "ED-10w/ED-10x crop-first review pack 縺ｸ縺ｮ譛譁ｰ freeform review 繧呈ｶ郁ｲｻ縺励，andidate 2 ed10w_badge_label_pressure_adjustment 繧・provisional bounded-decoration lead縲，andidate 0 ed10w_current_pass_reference 繧・fallback/baseline...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1109,7 +1170,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10z-tiny-render-path-nearer-probe-001",
       "next_action": "Use the Candidate 2 tiny render-path-nearer probe as local readback; open production limitation-lift or final render-path work only as a separate scope.",
-      "summary_excerpt": "clip-ed10y-candidate2-carry-forward-001 を source/previous artifact として保持し、Candidate 2 ed10w_badge_label_pressure_adjustment を current FFmpeg/libass diagnostic path に通す tiny render-path-nearer probe profile を clip-ed10z-...",
+      "summary_excerpt": "clip-ed10y-candidate2-carry-forward-001 繧・source/previous artifact 縺ｨ縺励※菫晄戟縺励，andidate 2 ed10w_badge_label_pressure_adjustment 繧・current FFmpeg/libass diagnostic path 縺ｫ騾壹☆ tiny render-path-nearer probe profile 繧・clip-...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1120,7 +1181,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10aa-subtitle-style-intent-registry-001",
       "next_action": "Use the semantic style intent registry for future emotion/speaker/readability preset mapping; ED-10z actual local proof now exists and any limitation-lift/final render-path work should be a separate route.",
-      "summary_excerpt": "clip-ed10aa-subtitle-style-intent-registry-001 として docs/SUBTITLE_STYLE_INTENT_REGISTRY.md / docs/style_intent/subtitle-style-intent-registry.json を追加し、speaker_id / speaker_role / emotion / intensity / utterance_role / r...",
+      "summary_excerpt": "clip-ed10aa-subtitle-style-intent-registry-001 縺ｨ縺励※ docs/SUBTITLE_STYLE_INTENT_REGISTRY.md / docs/style_intent/subtitle-style-intent-registry.json 繧定ｿｽ蜉縺励《peaker_id / speaker_role / emotion / intensity / utterance_ro...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1131,7 +1192,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10ab-subtitle-preset-selector-001",
       "next_action": "Use the deterministic preset selector as readback before future visual style proof; open new style-family, palette, production, rights, publishing, or public-use work as separate routes.",
-      "summary_excerpt": "clip-ed10ab-subtitle-preset-selector-001 として src/integrations/render/subtitle_preset_selector.py と docs/style_intent/subtitle-preset-selector.json を追加し、ED-10aa の speaker_id / speaker_role / emotion / intensity / utteran...",
+      "summary_excerpt": "clip-ed10ab-subtitle-preset-selector-001 縺ｨ縺励※ src/integrations/render/subtitle_preset_selector.py 縺ｨ docs/style_intent/subtitle-preset-selector.json 繧定ｿｽ蜉縺励・D-10aa 縺ｮ speaker_id / speaker_role / emotion / intensity /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1142,7 +1203,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10ac-visual-selector-proof-001",
       "next_action": "Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes.",
-      "summary_excerpt": "clip-ed10ac-visual-selector-proof-001 として ED-10ab の 6 examples を tracked static JSON/HTML proof に展開した。docs/style_intent/subtitle-visual-selector-proof.json / .html は neutral / shout / whisper / ominous / narration / sys...",
+      "summary_excerpt": "clip-ed10ac-visual-selector-proof-001 縺ｨ縺励※ ED-10ab 縺ｮ 6 examples 繧・tracked static JSON/HTML proof 縺ｫ螻暮幕縺励◆縲Ａdocs/style_intent/subtitle-visual-selector-proof.json / .html 縺ｯ neutral / shout / whisper / ominous / narrati...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1153,7 +1214,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-ed10ad-style-family-palette-axis-proof-001",
       "next_action": "Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route.",
-      "summary_excerpt": "clip-ed10ad-style-family-palette-axis-proof-001 として ED-10ac の 6 examples を style-family axis と palette axis に整理した tracked static JSON/HTML proof を追加した。docs/style_intent/subtitle-style-family-palette-proof.json / .html は...",
+      "summary_excerpt": "clip-ed10ad-style-family-palette-axis-proof-001 縺ｨ縺励※ ED-10ac 縺ｮ 6 examples 繧・style-family axis 縺ｨ palette axis 縺ｫ謨ｴ逅・＠縺・tracked static JSON/HTML proof 繧定ｿｽ蜉縺励◆縲Ａdocs/style_intent/subtitle-style-family-palette-proof.js...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1163,8 +1224,8 @@
       "health": "render_path_selector_contract_ready",
       "progress_pct": 100,
       "active_artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
-      "next_action": "Use the selector-to-render-path contract as L0 static readback before a later L2 tiny render-path probe; do not infer actual render or production readiness.",
-      "summary_excerpt": "clip-ed10ae-render-path-selector-contract-probe-001 として ED-10ab selector、ED-10ac visual proof、ED-10ad family/palette proof を later render adapter input contract に接続する tracked static JSON/Markdown readback を追加した。docs/sty...",
+      "next_action": "Use the selector-to-render-path contract as L0 static readback before a later L2 render-path probe; do not infer actual render or production readiness.",
+      "summary_excerpt": "clip-ed10ae-render-path-selector-contract-probe-001 縺ｨ縺励※ ED-10ab selector縲・D-10ac visual proof縲・D-10ad family/palette proof 繧・later render adapter input contract 縺ｫ謗･邯壹☆繧・tracked static JSON/Markdown readback 繧定ｿｽ蜉縺励◆...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1179,6 +1240,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10ag",
+      "title": "L2 Tiny Render Path Probe v0",
+      "status": "done",
+      "health": "l2_tiny_render_path_probe_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10ag-l2-tiny-render-path-probe-001",
+      "next_action": "Use the L2 tiny render-path probe readback to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone.",
+      "summary_excerpt": "clip-ed10ag-l2-tiny-render-path-probe-001 records source relationship between the restored clip-ed10af-render-contract-consumer-dry-read-001 predecessor and the active clip-ed10af-l2-render-path-selector-probe-001. Exis...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -1186,7 +1258,7 @@
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "metadata（タイトル・説明・タグ・category）の整形",
+      "summary_excerpt": "metadata・医ち繧､繝医Ν繝ｻ隱ｬ譏弱・繧ｿ繧ｰ繝ｻcategory・峨・謨ｴ蠖｢",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1197,12 +1269,12 @@
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "src/integrations/youtube/ 経由",
+      "summary_excerpt": "src/integrations/youtube/ 邨檎罰",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "PB-03",
-      "title": "thumbnail 設定 integration",
+      "title": "thumbnail 險ｭ螳・integration",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
@@ -1213,7 +1285,7 @@
     },
     {
       "id": "PB-04",
-      "title": "upload receipt 記録",
+      "title": "upload receipt 險倬鹸",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
@@ -1230,18 +1302,18 @@
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "trusted application のセットアップ含む",
+      "summary_excerpt": "trusted application 縺ｮ繧ｻ繝・ヨ繧｢繝・・蜷ｫ繧",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "INT-02",
-      "title": "asset_fetch（source audio / video 取得）",
+      "title": "asset_fetch・・ource audio / video 蜿門ｾ暦ｼ・",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "fetch-source-audio / fetch-source-video CLI。URL / 出力先 / 推定サイズ / 目的を preflight 表示し、実行 log / receipt / rollback 情報を残す。取得結果は material_ledger に自動登録できる。yt-dlp / ffmpeg は src/integrations/asset_fetch/ に隔離し、CI は fake downloade...",
+      "summary_excerpt": "fetch-source-audio / fetch-source-video CLI縲６RL / 蜃ｺ蜉帛・ / 謗ｨ螳壹し繧､繧ｺ / 逶ｮ逧・ｒ preflight 陦ｨ遉ｺ縺励∝ｮ溯｡・log / receipt / rollback 諠・ｱ繧呈ｮ九☆縲ょ叙蠕礼ｵ先棡縺ｯ material_ledger 縺ｫ閾ｪ蜍慕匳骭ｲ縺ｧ縺阪ｋ縲Ｚt-dlp / ffmpeg 縺ｯ src/integrations/asset_fet...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1252,7 +1324,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "fetch-source-audio --mode fake を実装。標準音声は source.wav（PCM WAV / mono / 16kHz / 16-bit / 1秒 silent fixture）。sidecar.json / fetch_receipt.json / material_ledger.json を生成し、kind=source_audio / subkind=wav_pcm_16k_mono / inten...",
+      "summary_excerpt": "fetch-source-audio --mode fake 繧貞ｮ溯｣・よｨ呎ｺ夜浹螢ｰ縺ｯ source.wav・・CM WAV / mono / 16kHz / 16-bit / 1遘・silent fixture・峨Ａsidecar.json / fetch_receipt.json / material_ledger.json 繧堤函謌舌＠縲～kind=source_audio / subkind=wav_pcm_16k...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1263,7 +1335,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "実 downloader 実装前に docs/ASSET_FETCH_BOUNDARY.md で yt-dlp / ffmpeg の責務を固定。yt-dlp は URL から元 media を取得するだけ、ffmpeg は source audio を PCM WAV / mono / 16kHz / 16-bit に正規化するだけ。Editing core / STT / render / cut / GUI への浸透を禁止し、fu...",
+      "summary_excerpt": "螳・downloader 螳溯｣・燕縺ｫ docs/ASSET_FETCH_BOUNDARY.md 縺ｧ yt-dlp / ffmpeg 縺ｮ雋ｬ蜍吶ｒ蝗ｺ螳壹Ｚt-dlp 縺ｯ URL 縺九ｉ蜈・media 繧貞叙蠕励☆繧九□縺代’fmpeg 縺ｯ source audio 繧・PCM WAV / mono / 16kHz / 16-bit 縺ｫ豁｣隕丞喧縺吶ｋ縺縺代・diting core / STT / render /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1274,7 +1346,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "fetch-source-audio --mode local-media-audio を実装。入力はローカル media file のみ。FFmpeg は src/integrations/asset_fetch/ffmpeg_audio.py からだけ呼び、source.wav（PCM WAV / mono / 16kHz / 16-bit）、sidecar、receipt、ledger entry を生成する。dry-run は...",
+      "summary_excerpt": "fetch-source-audio --mode local-media-audio 繧貞ｮ溯｣・ょ・蜉帙・繝ｭ繝ｼ繧ｫ繝ｫ media file 縺ｮ縺ｿ縲・Fmpeg 縺ｯ src/integrations/asset_fetch/ffmpeg_audio.py 縺九ｉ縺縺大他縺ｳ縲～source.wav・・CM WAV / mono / 16kHz / 16-bit・峨《idecar縲〉eceipt縲〕edger ent...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1285,7 +1357,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/YTDLP_AUDIO_SPEC.md で URL fetch / network access / yt-dlp / FFmpeg 正規化 / receipt / rights readback / human responsibility / GUI 非露出 / STT 非接続を分離。実 yt-dlp-audio mode、yt-dlp 実行、network fetch、GUI fetch button は未実装",
+      "summary_excerpt": "docs/YTDLP_AUDIO_SPEC.md 縺ｧ URL fetch / network access / yt-dlp / FFmpeg 豁｣隕丞喧 / receipt / rights readback / human responsibility / GUI 髱樣愆蜃ｺ / STT 髱樊磁邯壹ｒ蛻・屬縲ょｮ・yt-dlp-audio mode縲【t-dlp 螳溯｡後］etwork fetch縲；UI fetch butt...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1296,7 +1368,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "fetch-source-audio --mode yt-dlp-audio を source audio URL fetch のみに限定して実装。yt-dlp は src/integrations/asset_fetch/yt_dlp_audio.py で一時 media 取得のみ、FFmpeg は source.wav 正規化のみ。sidecar / receipt / ledger を生成し、rights は readback...",
+      "summary_excerpt": "fetch-source-audio --mode yt-dlp-audio 繧・source audio URL fetch 縺ｮ縺ｿ縺ｫ髯仙ｮ壹＠縺ｦ螳溯｣・Ｚt-dlp 縺ｯ src/integrations/asset_fetch/yt_dlp_audio.py 縺ｧ荳譎・media 蜿門ｾ励・縺ｿ縲：Fmpeg 縺ｯ source.wav 豁｣隕丞喧縺ｮ縺ｿ縲Ｔidecar / receipt / ledger 繧堤函謌...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1307,7 +1379,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "fetch-source-video --mode local-media-video を追加。既存ローカル video file を source_video.ext として episode material directory にコピーし、FFprobe metadata（duration / container / video codec / audio codec / resolution / fps / stream cou...",
+      "summary_excerpt": "fetch-source-video --mode local-media-video 繧定ｿｽ蜉縲よ里蟄倥Ο繝ｼ繧ｫ繝ｫ video file 繧・source_video.ext 縺ｨ縺励※ episode material directory 縺ｫ繧ｳ繝斐・縺励：Fprobe metadata・・uration / container / video codec / audio codec / resolution / fp...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1318,7 +1390,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/YTDLP_VIDEO_SPEC.md で yt-dlp-video の責務境界を固定。yt-dlp は URL から source video を取得し chosen format / extractor / warnings を readback するだけ、FFprobe は metadata を読むだけ、FFmpeg normalize / cut / concat / subtitle burn-in / rende...",
+      "summary_excerpt": "docs/YTDLP_VIDEO_SPEC.md 縺ｧ yt-dlp-video 縺ｮ雋ｬ蜍吝｢・阜繧貞崋螳壹Ｚt-dlp 縺ｯ URL 縺九ｉ source video 繧貞叙蠕励＠ chosen format / extractor / warnings 繧・readback 縺吶ｋ縺縺代：Fprobe 縺ｯ metadata 繧定ｪｭ繧縺縺代：Fmpeg normalize / cut / concat / subt...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1329,7 +1401,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "fetch-source-video --mode yt-dlp-video を source video URL fetch のみに限定して実装。src/integrations/asset_fetch/yt_dlp_video.py adapter は yt-dlp path discovery（--yt-dlp-path / CLIPPIPE_YTDLP / PATH）、URL scrub、dry-run safe comman...",
+      "summary_excerpt": "fetch-source-video --mode yt-dlp-video 繧・source video URL fetch 縺ｮ縺ｿ縺ｫ髯仙ｮ壹＠縺ｦ螳溯｣・Ａsrc/integrations/asset_fetch/yt_dlp_video.py adapter 縺ｯ yt-dlp path discovery・・--yt-dlp-path / CLIPPIPE_YTDLP / PATH・峨ゞRL scrub縲‥ry-run...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1340,7 +1412,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "render-tiny-proof を追加。source_video material / source_audio material / edit_pack の最初の selected cut から diagnostic rendered_video.mp4 または .mkv、render_receipt.json、render_manifest.json、render_report.html を生成する。timeline は sh...",
+      "summary_excerpt": "render-tiny-proof 繧定ｿｽ蜉縲Ｔource_video material / source_audio material / edit_pack 縺ｮ譛蛻昴・ selected cut 縺九ｉ diagnostic rendered_video.mp4 縺ｾ縺溘・ .mkv縲～render_receipt.json縲～render_manifest.json縲～render_report.html 繧堤函謌舌☆繧...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1351,7 +1423,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "OUT-01 の tiny diagnostic render に、FFmpeg/FFprobe preflight、render profile fallback、attempt status、selected profile、failure classification を追加。receipt / manifest / report が environment_missing_ffmpeg、codec_or_container_u...",
+      "summary_excerpt": "OUT-01 縺ｮ tiny diagnostic render 縺ｫ縲：Fmpeg/FFprobe preflight縲〉ender profile fallback縲∥ttempt status縲《elected profile縲’ailure classification 繧定ｿｽ蜉縲Ｓeceipt / manifest / report 縺・environment_missing_ffmpeg縲～codec_or_conta...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1362,7 +1434,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "OUT-01a の render path を使い、10 秒以上の local source_video + source_audio + edit_pack selected cut から diagnostic rendered_video.mp4 を再生成する。fresh smoke は duration 12.0 / h264 / aac / 640x360 / 24.0fps / stream count 2 を readba...",
+      "summary_excerpt": "OUT-01a 縺ｮ render path 繧剃ｽｿ縺・・0 遘剃ｻ･荳翫・ local source_video + source_audio + edit_pack selected cut 縺九ｉ diagnostic rendered_video.mp4 繧貞・逕滓・縺吶ｋ縲Ｇresh smoke 縺ｯ duration 12.0 / h264 / aac / 640x360 / 24.0fps / stream coun...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1373,7 +1445,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "render-tiny-proof --burn-in-subtitles diagnostic を追加。edit_pack.subtitles[]（無い場合は sibling transcript.json segments）から UTF-8 SRT を生成し、FFmpeg subtitles filter で diagnostic overlay として焼き込む。render_receipt.json / render_manif...",
+      "summary_excerpt": "render-tiny-proof --burn-in-subtitles diagnostic 繧定ｿｽ蜉縲Ａedit_pack.subtitles[]・育┌縺・ｴ蜷医・ sibling transcript.json segments・峨°繧・UTF-8 SRT 繧堤函謌舌＠縲：Fmpeg subtitles filter 縺ｧ diagnostic overlay 縺ｨ縺励※辟ｼ縺崎ｾｼ繧縲Ａrender_receipt....",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1384,7 +1456,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "OUT-01c の diagnostic subtitle overlay を維持し、subtitle item ごとの included / clamped_to_render_window / skipped_before_render_window / skipped_after_render_window / invalid_timing / empty_text、source timeline から render timel...",
+      "summary_excerpt": "OUT-01c 縺ｮ diagnostic subtitle overlay 繧堤ｶｭ謖√＠縲《ubtitle item 縺斐→縺ｮ included / clamped_to_render_window / skipped_before_render_window / skipped_after_render_window / invalid_timing / empty_text縲《ource timeline 縺九ｉ rende...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1395,7 +1467,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "ED-08 の source_type=\"real_transcript\" subtitle drafts を OUT-01d timing diagnostic burn-in に接続し、render_receipt.json / render_manifest.json / render_report.html で subtitle source type、derived_from_real_transcript=true、tra...",
+      "summary_excerpt": "ED-08 縺ｮ source_type=\"real_transcript\" subtitle drafts 繧・OUT-01d timing diagnostic burn-in 縺ｫ謗･邯壹＠縲～render_receipt.json / render_manifest.json / render_report.html 縺ｧ subtitle source type縲～derived_from_real_transcript=t...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1406,95 +1478,95 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-subtitle-overlay-visual-proof CLI と src/integrations/render/subtitle_overlay_visual_proof.py を追加。explicit --target-cut のみを対象に、既存 edit_pack.json / material_ledger.json / representative visual proof readback から igno...",
+      "summary_excerpt": "build-subtitle-overlay-visual-proof CLI 縺ｨ src/integrations/render/subtitle_overlay_visual_proof.py 繧定ｿｽ蜉縲Ｆxplicit --target-cut 縺ｮ縺ｿ繧貞ｯｾ雎｡縺ｫ縲∵里蟄・edit_pack.json / material_ledger.json / representative visual proof readb...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "INT-03",
-      "title": "bg_removal 受領フロー",
+      "title": "bg_removal 蜿鈴倥ヵ繝ｭ繝ｼ",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "外部処理結果（透過PNG）の受け入れ。API 呼び出しは含めるか別途検討",
+      "summary_excerpt": "螟夜Κ蜃ｦ逅・ｵ先棡・磯城℃PNG・峨・蜿励￠蜈･繧後・PI 蜻ｼ縺ｳ蜃ｺ縺励・蜷ｫ繧√ｋ縺句挨騾疲､懆ｨ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "INT-04",
-      "title": "bg_removal API 呼び出し",
+      "title": "bg_removal API 蜻ｼ縺ｳ蜃ｺ縺・",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "INT-03 の能動版。provider / 入出力 / receipt を integration として実装",
+      "summary_excerpt": "INT-03 縺ｮ閭ｽ蜍慕沿縲Ｑrovider / 蜈･蜃ｺ蜉・/ receipt 繧・integration 縺ｨ縺励※螳溯｣・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-02L",
-      "title": "episode status adapter（GUI MVP 用）",
+      "title": "episode status adapter・・UI MVP 逕ｨ・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "full episode_pack の前段として、Slice 1 artifact の存在・readback・next_action を返す status-episode CLI / episode_status.py を実装。GUI MVP が読む薄い背骨",
+      "summary_excerpt": "full episode_pack 縺ｮ蜑肴ｮｵ縺ｨ縺励※縲ヾlice 1 artifact 縺ｮ蟄伜惠繝ｻreadback繝ｻnext_action 繧定ｿ斐☆ status-episode CLI / episode_status.py 繧貞ｮ溯｣・・UI MVP 縺瑚ｪｭ繧阮・＞閭碁ｪｨ",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-02",
-      "title": "episode_pack 統合 manifest",
+      "title": "episode_pack 邨ｱ蜷・manifest",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft を episode 単位で連結",
+      "summary_excerpt": "rights_manifest / material_ledger / edit_pack / thumbnail_patch / publish_draft 繧・episode 蜊倅ｽ阪〒騾｣邨・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-03",
-      "title": "GUI MVP Phase 1（read-only operator console）",
+      "title": "GUI MVP Phase 1・・ead-only operator console・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "Electron skeleton（gui/）と 5 タブ（Episode / Rights / Materials / Thumbnail / Settings）。status-episode JSON を消費して状態表示。外部 API・upload は未実装。docs/GUI_CONVENTIONS.md に整合-A 規約",
+      "summary_excerpt": "Electron skeleton・・gui/・峨→ 5 繧ｿ繝厄ｼ・pisode / Rights / Materials / Thumbnail / Settings・峨Ａstatus-episode JSON 繧呈ｶ郁ｲｻ縺励※迥ｶ諷玖｡ｨ遉ｺ縲ょ､夜Κ API繝ｻupload 縺ｯ譛ｪ螳溯｣・Ａdocs/GUI_CONVENTIONS.md 縺ｫ謨ｴ蜷・A 隕冗ｴ・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-03b",
-      "title": "GUI Phase 2（action 導線）",
+      "title": "GUI Phase 2・・ction 蟆守ｷ夲ｼ・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "Rights / Materials / Thumbnail タブに set-compliance / register-material / patch-thumbnail の form を追加。確認 dialog（command / summary / reason の 3 要素）経由で実行。upload / fetch / bg-removal API は未実装であり、今後通常 integration として追加できる。args...",
+      "summary_excerpt": "Rights / Materials / Thumbnail 繧ｿ繝悶↓ set-compliance / register-material / patch-thumbnail 縺ｮ form 繧定ｿｽ蜉縲ら｢ｺ隱・dialog・・ommand / summary / reason 縺ｮ 3 隕∫ｴ・臥ｵ檎罰縺ｧ螳溯｡後Ｖpload / fetch / bg-removal API 縺ｯ譛ｪ螳溯｣・〒縺ゅｊ縲∽ｻ雁ｾ碁壼ｸｸ...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-03c",
-      "title": "GUI Editing tab（ED-01 / ED-02a 範囲のみ）",
+      "title": "GUI Editing tab・・D-01 / ED-02a 遽・峇縺ｮ縺ｿ・・",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "Editing タブを追加し init-edit-pack / add-cut-candidate / validate-edit-pack の form を配置。confirm dialog 経由で実行、結果と editing.state badge を表示。ED-02 / ED-03 / ED-04 / ED-06 は CLI 実装済みだが GUI action form は未追加。CLI 規約「episode_id == dir...",
+      "summary_excerpt": "Editing 繧ｿ繝悶ｒ霑ｽ蜉縺・init-edit-pack / add-cut-candidate / validate-edit-pack 縺ｮ form 繧帝・鄂ｮ縲Ｄonfirm dialog 邨檎罰縺ｧ螳溯｡後∫ｵ先棡縺ｨ editing.state badge 繧定｡ｨ遉ｺ縲・D-02 / ED-03 / ED-04 / ED-06 縺ｯ CLI 螳溯｣・ｸ医∩縺縺・GUI action form 縺ｯ譛ｪ霑ｽ蜉...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "SH-04",
-      "title": "NLMYTGen GUI への逆提案運用",
+      "title": "NLMYTGen GUI 縺ｸ縺ｮ騾・署譯磯°逕ｨ",
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/proposals/ に運用パターン (README.md) と最初の提案 (0001-gui-alignment-from-clippipegen-mvp.md / state=draft) を配置。NLMYTGen 側ファイルは編集せず、提案は doc／issue ベース。採否は NLMYTGen 側判断",
+      "summary_excerpt": "docs/proposals/ 縺ｫ驕狗畑繝代ち繝ｼ繝ｳ (README.md) 縺ｨ譛蛻昴・謠先｡・(0001-gui-alignment-from-clippipegen-mvp.md / state=draft) 繧帝・鄂ｮ縲・LMYTGen 蛛ｴ繝輔ぃ繧､繝ｫ縺ｯ邱ｨ髮・○縺壹∵署譯医・ doc・淑ssue 繝吶・繧ｹ縲よ治蜷ｦ縺ｯ NLMYTGen 蛛ｴ蛻､譁ｭ",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1505,7 +1577,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-local-preview-pack CLI を追加。local media 1本から source.wav、fake/fixture transcript、cut candidates、context status、subtitle draft、preview_manifest.json、read-only preview_report.html を生成する。rendered video preview、network...",
+      "summary_excerpt": "build-local-preview-pack CLI 繧定ｿｽ蜉縲Ｍocal media 1譛ｬ縺九ｉ source.wav縲’ake/fixture transcript縲…ut candidates縲…ontext status縲《ubtitle draft縲～preview_manifest.json縲〉ead-only preview_report.html 繧堤函謌舌☆繧九Ｓendered video preview...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1516,7 +1588,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "preview_report.html に Status Summary、Decision Warnings、Artifact Links を追加し、not-for-acceptance、rights pending readback、manifest / receipt / source.wav links を明確化。日本語 fixture smoke を localhost / DOM readback で確認。GUI inges...",
+      "summary_excerpt": "preview_report.html 縺ｫ Status Summary縲．ecision Warnings縲、rtifact Links 繧定ｿｽ蜉縺励］ot-for-acceptance縲〉ights pending readback縲［anifest / receipt / source.wav links 繧呈・遒ｺ蛹悶よ律譛ｬ隱・fixture smoke 繧・localhost / DOM readback 縺ｧ遒...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1527,7 +1599,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "medium 日本語 fixture smoke で preview_report.html の実画面 screenshot / visual readback を保存。preview_manifest lightweight validation を追加し、warnings / not-for-acceptance / rights pending / artifact links / audio controls の視認性を確認。...",
+      "summary_excerpt": "medium 譌･譛ｬ隱・fixture smoke 縺ｧ preview_report.html 縺ｮ螳溽判髱｢ screenshot / visual readback 繧剃ｿ晏ｭ倥Ａpreview_manifest lightweight validation 繧定ｿｽ蜉縺励『arnings / not-for-acceptance / rights pending / artifact links / audio con...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1538,7 +1610,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "GUI に Preview Pack tab を追加。既存 episode directory または preview_manifest.json を読み、manifest validation、Status Summary、Decision Warnings、Artifact Links を read-only 表示する。GUI から build / fetch / render / upload は実行しない",
+      "summary_excerpt": "GUI 縺ｫ Preview Pack tab 繧定ｿｽ蜉縲よ里蟄・episode directory 縺ｾ縺溘・ preview_manifest.json 繧定ｪｭ縺ｿ縲［anifest validation縲ヾtatus Summary縲．ecision Warnings縲、rtifact Links 繧・read-only 陦ｨ遉ｺ縺吶ｋ縲・UI 縺九ｉ build / fetch / render / upload 縺ｯ螳...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1549,7 +1621,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-local-preview-pack --use-existing-source-audio を追加し、INT-02e などで取得済みの source.wav / fetch_receipt.json / sidecar.json / material_ledger.json を再 download なしで local preview pack の review surface / preview_manifest.jso...",
+      "summary_excerpt": "build-local-preview-pack --use-existing-source-audio 繧定ｿｽ蜉縺励！NT-02e 縺ｪ縺ｩ縺ｧ蜿門ｾ玲ｸ医∩縺ｮ source.wav / fetch_receipt.json / sidecar.json / material_ledger.json 繧貞・ download 縺ｪ縺励〒 local preview pack 縺ｮ review surface / previ...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1560,7 +1632,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-non-repo-handoff CLI と src/pipeline/non_repo_artifact_handoff.py を追加。R3 の diagnostic rendered_video.mp4 を Git に入れず、local path / size / sha256 / source identity / generation command / dependency artifacts / rights...",
+      "summary_excerpt": "build-non-repo-handoff CLI 縺ｨ src/pipeline/non_repo_artifact_handoff.py 繧定ｿｽ蜉縲３3 縺ｮ diagnostic rendered_video.mp4 繧・Git 縺ｫ蜈･繧後★縲〕ocal path / size / sha256 / source identity / generation command / dependency artifacts /...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1571,7 +1643,7 @@
       "progress_pct": 100,
       "active_artifact": "",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/OPERATOR_REVIEW_UX.md / HTML operator summaries / status-episode.operator_review を追加。Restart response は Reviewability first とし、R3 artifacts missing では review_blocked_missing_artifacts を返す。representative_visual_proo...",
+      "summary_excerpt": "docs/OPERATOR_REVIEW_UX.md / HTML operator summaries / status-episode.operator_review 繧定ｿｽ蜉縲３estart response 縺ｯ Reviewability first 縺ｨ縺励ヽ3 artifacts missing 縺ｧ縺ｯ review_blocked_missing_artifacts 繧定ｿ斐☆縲Ａrepresentative_...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1582,7 +1654,7 @@
       "progress_pct": 100,
       "active_artifact": "clip-human-preview-session-001",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "Active Artifact clip-human-preview-session-001 (legacy alias clip-episode-review-surface-001)。docs/EPISODE_REVIEW_WORKFLOW.md と docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md で、ClipPipeGen が diagnostic / representative generat...",
+      "summary_excerpt": "Active Artifact clip-human-preview-session-001 (legacy alias clip-episode-review-surface-001)縲Ａdocs/EPISODE_REVIEW_WORKFLOW.md 縺ｨ docs/REVIEW_ARTIFACT_BUNDLE_CONTRACT.md 縺ｧ縲，lipPipeGen 縺・diagnostic / representative gene...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1593,69 +1665,69 @@
       "progress_pct": 100,
       "active_artifact": "clip-docs-dashboard-001",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "docs/index.md、docs/dashboard/project-status.json、docs/dashboard/index.html、docs/features/index.md、docs/_templates/feature.md、build-docs-dashboard CLI を追加。FEATURE_REGISTRY.md / artifacts/ARTIFACTS.md / high-value docs から...",
+      "summary_excerpt": "docs/index.md縲～docs/dashboard/project-status.json縲～docs/dashboard/index.html縲～docs/features/index.md縲～docs/_templates/feature.md縲～build-docs-dashboard CLI 繧定ｿｽ蜉縲ＡFEATURE_REGISTRY.md / artifacts/ARTIFACTS.md / high-valu...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "OUT-02",
-      "title": "音声合成（TTS）",
+      "title": "髻ｳ螢ｰ蜷域・・・TS・・",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "未実装。必要になったら provider integration として設計",
+      "summary_excerpt": "譛ｪ螳溯｣・ょｿ・ｦ√↓縺ｪ縺｣縺溘ｉ provider integration 縺ｨ縺励※險ｭ險・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "OUT-03",
-      "title": "visibility 更新（public 化含む）",
+      "title": "visibility 譖ｴ譁ｰ・・ublic 蛹門性繧・・",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "未実装。YouTube integration の一部として設計",
+      "summary_excerpt": "譛ｪ螳溯｣・・ouTube integration 縺ｮ荳驛ｨ縺ｨ縺励※險ｭ險・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "OUT-04",
-      "title": "完全自動サムネ合成",
+      "title": "螳悟・閾ｪ蜍輔し繝繝榊粋謌・",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "未実装。必要になったら thumbnail renderer として設計",
+      "summary_excerpt": "譛ｪ螳溯｣・ょｿ・ｦ√↓縺ｪ縺｣縺溘ｉ thumbnail renderer 縺ｨ縺励※險ｭ險・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "OUT-05",
-      "title": ".ymmp ゼロ生成",
+      "title": ".ymmp 繧ｼ繝ｭ逕滓・",
       "status": "proposed",
       "health": "backlog",
       "progress_pct": 0,
       "active_artifact": "",
       "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "未実装。必要になったら YMM4 schema readback を伴う generator として設計",
+      "summary_excerpt": "譛ｪ螳溯｣・ょｿ・ｦ√↓縺ｪ縺｣縺溘ｉ YMM4 schema readback 繧剃ｼｴ縺・generator 縺ｨ縺励※險ｭ險・",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "OUT-06",
-      "title": "NLMYTGen 側ファイル編集",
+      "title": "NLMYTGen 蛛ｴ繝輔ぃ繧､繝ｫ邱ｨ髮・",
       "status": "rejected",
       "health": "retired",
       "progress_pct": 0,
       "active_artifact": "",
-      "next_action": "cross-project 指示なしには編集しない。再利用は CLI subprocess 経由",
-      "summary_excerpt": "cross-project 指示なしには編集しない。再利用は CLI subprocess 経由",
+      "next_action": "cross-project 謖・､ｺ縺ｪ縺励↓縺ｯ邱ｨ髮・＠縺ｪ縺・ょ・蛻ｩ逕ｨ縺ｯ CLI subprocess 邨檎罰",
+      "summary_excerpt": "cross-project 謖・､ｺ縺ｪ縺励↓縺ｯ邱ｨ髮・＠縺ｪ縺・ょ・蛻ｩ逕ｨ縺ｯ CLI subprocess 邨檎罰",
       "source_path": "docs/FEATURE_REGISTRY.md"
     }
   ],
   "feature_summary": {
-    "feature_count": 100,
+    "feature_count": 101,
     "status_counts": {
-      "done": 84,
+      "done": 85,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -1773,6 +1845,16 @@
       "next_action": "Use clip-ed10r-keifont-dense-stress-proof-001 for the active review. Keep this artifact as history and baseline evidence only."
     },
     {
+      "artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+      "title": "ED-10af Render Contract Consumer Dry-Read",
+      "purpose": "Preserve the L0 static consumer payload evidence that was originally added in commit 7e96a28, before the active L2 probe existed.",
+      "storage_class": "Tracked JSON/Markdown predecessor readback; no local media output.",
+      "repo_relative_path": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md",
+      "open_command": "see docs\\style_intent\\subtitle-render-contract-consumer-dry-read.md",
+      "review_status": "Superseded by the L2 selector probe, but not invalidated. Keep as predecessor source evidence for the full six-example contract consumer payload.",
+      "next_action": "Use only as static predecessor evidence. The active artifact remains clip-ed10af-l2-render-path-selector-probe-001."
+    },
+    {
       "artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
       "title": "ED-10af L2 Render Path Selector Probe",
       "purpose": "Consume the ED-10ae render-path selector contract into a tiny FFmpeg/libass diagnostic path for normal dialogue, shout, and whisper semantic examples.",
@@ -1781,6 +1863,16 @@
       "open_command": "see docs\\style_intent\\subtitle-render-path-selector-probe.md",
       "review_status": "No Review Card and no user-side judgement requested. This is diagnostic render-path readback only.",
       "next_action": "Use this L2 selector probe readback before opening a separate production limitation-lift, final render-path, rights, publishing, or public-use route."
+    },
+    {
+      "artifact_id": "clip-ed10ag-l2-tiny-render-path-probe-001",
+      "title": "ED-10ag L2 Tiny Render Path Probe",
+      "purpose": "Record that the restored ED-10af dry-read remains predecessor evidence while the active ED-10af L2 selector probe supplies bounded render-path proof.",
+      "storage_class": "Tracked JSON/Markdown L2 readback; references ignored same-machine ASS/MP4/manifest/contact-sheet evidence only.",
+      "repo_relative_path": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md",
+      "open_command": "see docs\\style_intent\\subtitle-l2-tiny-render-path-probe.md",
+      "review_status": "No Review Card and no required user-side observation. The artifact is bounded L2 technical readback, not new subtitle design or render acceptance.",
+      "next_action": "Use this surface to inspect the predecessor/current artifact relationship and local ignored proof paths before opening any production limitation-lift, final render-path, rights, publishing, or public-use route."
     },
     {
       "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
@@ -1916,7 +2008,9 @@
       "clip-ed10n-keifont-overlay-proof-001",
       "clip-ed10o-multifont-focused-review-001",
       "clip-ed10p-keifont-lead-representative-proof-001",
+      "clip-ed10af-render-contract-consumer-dry-read-001",
       "clip-ed10af-l2-render-path-selector-probe-001",
+      "clip-ed10ag-l2-tiny-render-path-probe-001",
       "clip-ed10ae-render-path-selector-contract-probe-001",
       "clip-ed10ad-style-family-palette-axis-proof-001",
       "clip-ed10ac-visual-selector-proof-001",
@@ -1930,15 +2024,21 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 24
+    "artifact_count": 26
   },
   "artifact_coverage": {
-    "registered_artifact_count": 24,
-    "features_with_artifact_count": 27,
+    "registered_artifact_count": 26,
+    "features_with_artifact_count": 28,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
+    {
+      "item": "ED-10ag L2 tiny render-path probe readback",
+      "artifact": "clip-ed10ag-l2-tiny-render-path-probe-001",
+      "question": "Does the restored ED-10af dry-read reach a bounded L2 render-path readback by reusing the existing ED-10af L2 selector probe output?",
+      "next_route": "Use this readback to inspect source and local ignored proof paths; keep production, rights, publishing, and public-use routes separate."
+    },
     {
       "item": "ED-10af L2 render path selector probe",
       "artifact": "clip-ed10af-l2-render-path-selector-probe-001",
@@ -1949,7 +2049,7 @@
       "item": "ED-10ae render-path selector contract",
       "artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
       "question": "Are selector, family, palette, color-surface, motion, and line-break fields ready as a static input contract before any render probe?",
-      "next_route": "Use this contract before a later L2 tiny render-path probe; do not infer actual render or production readiness."
+      "next_route": "Use this contract before a later L2 render-path probe; do not infer actual render or production readiness."
     },
     {
       "item": "ED-10ad style-family / palette axis proof",
@@ -2021,7 +2121,7 @@
       "item": "ED-10j kirinuki font audit",
       "artifact": "clip-ed10j-kirinuki-font-audit-001",
       "question": "Was the no-download audit consumed correctly, including Meiryo reference demotion and BIZ default selection?",
-      "next_route": "Use the contact-sheet readback only for audit; do not prolong the comparison unless the BIZ proof fails."
+      "next_route": "Use the manifest readback only for audit; do not prolong the comparison unless the BIZ proof fails."
     },
     {
       "item": "ED-10h font candidate sweep",
@@ -2068,20 +2168,20 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 686,
+      "line_count": 702,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "l2_render_path_selector_probe_ready",
+        "health": "l2_tiny_render_path_probe_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-25",
         "next_review_due": "none_probe_readback_only",
         "active_artifact": "clip-ed10af-l2-render-path-selector-probe-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
-        "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md"
+        "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.json, docs/style_intent/subtitle-l2-tiny-render-path-probe.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -2089,13 +2189,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 135,
+      "boundary_term_count": 139,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 240,
+      "line_count": 168,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2103,7 +2203,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 403,
+      "boundary_term_count": 212,
       "status": "in_progress"
     },
     {
@@ -2164,7 +2264,7 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 177,
+      "line_count": 190,
       "metadata": {
         "id": "subtitle-style-intent-registry",
         "title": "Subtitle Style Intent Registry",
@@ -2174,7 +2274,7 @@
         "progress_pct": "100",
         "last_touched": "2026-06-25",
         "active_artifact": "clip-ed10af-l2-render-path-selector-probe-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.json, docs/style_intent/subtitle-l2-tiny-render-path-probe.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -2182,7 +2282,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 13,
+      "boundary_term_count": 16,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -2201,8 +2301,8 @@
     },
     {
       "path": "artifacts/ARTIFACTS.md",
-      "title": "ARTIFACTS",
-      "line_count": 783,
+      "title": "Artifact Registry",
+      "line_count": 852,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2210,7 +2310,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 330,
+      "boundary_term_count": 356,
       "status": "reference"
     },
     {
@@ -2272,20 +2372,20 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 344,
+      "line_count": 370,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "l2_render_path_selector_probe_ready",
+        "health": "l2_tiny_render_path_probe_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-25",
         "next_review_due": "none_probe_readback_only",
         "active_artifact": "clip-ed10af-l2-render-path-selector-probe-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
-        "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, artifacts/ARTIFACTS.md"
+        "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -2293,7 +2393,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 66,
+      "boundary_term_count": 67,
       "status": "active"
     },
     {
@@ -2549,7 +2649,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "Subtitle Presentation Contract",
-      "line_count": 412,
+      "line_count": 433,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2557,7 +2657,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 100,
+      "boundary_term_count": 104,
       "status": "reference"
     },
     {
@@ -2638,7 +2738,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (686 lines) is likely carrying history.",
+        "detail": "Long active doc (702 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -2650,7 +2750,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 403 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 212 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2668,13 +2768,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (783 lines) is likely carrying history.",
+        "detail": "Long active doc (852 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 330 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 356 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2758,7 +2858,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 100 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 104 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

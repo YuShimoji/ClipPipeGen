@@ -1,4 +1,4 @@
-﻿# Artifact Registry
+# Artifact Registry
 
 This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
@@ -361,6 +361,39 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10af-render-contract-consumer-dry-read-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10af Render Contract Consumer Dry-Read |
+| purpose | Preserve the L0 static consumer payload evidence that was originally added in commit `7e96a28`, before the active L2 probe existed. |
+| storage class | Tracked JSON/Markdown predecessor readback; no local media output. |
+| repo_relative_path | `docs/style_intent/subtitle-render-contract-consumer-dry-read.md` |
+| metadata_json | `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` |
+| open_command | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
+| predecessor_commit | `7e96a28 Add ED-10af render contract consumer dry read` |
+| successor_artifact | `clip-ed10af-l2-render-path-selector-probe-001` |
+| source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
+| implementation | `src/integrations/render/subtitle_preset_selector.py` dry-read builder plus restored tracked readback files. |
+| generated_from | ED-10af dry-read commit `7e96a28`; restored as predecessor evidence after the L2 probe replaced the active surface. |
+| validation_command | Parse dry-read JSON, ED-10ag L2 readback JSON, ED-10af probe JSON, and dashboard JSON; run targeted subtitle/dashboard/review tests; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | Restored JSON reports six static consumer payloads, `render_level=L0 No Render`, `consumer_dry_read_only=true`, no render boundary leakage, no production/public boundary leakage, and `all_payloads_consumer_ready=true`. |
+| review_status | Superseded by the L2 selector probe, but not invalidated. Keep as predecessor source evidence for the full six-example contract consumer payload. |
+| next_action | Use only as static predecessor evidence. The active artifact remains `clip-ed10af-l2-render-path-selector-probe-001`. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+
 ## `clip-ed10af-l2-render-path-selector-probe-001`
 
 | Field | Value |
@@ -374,6 +407,7 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | local_ignored_ass | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass` |
 | local_ignored_video | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4` |
 | local_ignored_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json` |
+| | predecessor_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
 | source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
 | source_style_family_palette_artifact | `clip-ed10ad-style-family-palette-axis-proof-001` |
 | source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
@@ -386,6 +420,41 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | latest_local_smoke | Local ignored FFmpeg/libass probe generated ASS/MP4/manifest; metadata readback reports 1920x1080, 4.2s, h264/aac. Tracked JSON reports 3 examples, stable body text, badge/accent/backplate route, safe-area/line-break metadata, and closed production/public boundaries. |
 | review_status | No Review Card and no user-side judgement requested. This is diagnostic render-path readback only. |
 | next_action | Use this L2 selector probe readback before opening a separate production limitation-lift, final render-path, rights, publishing, or public-use route. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+
+## `clip-ed10ag-l2-tiny-render-path-probe-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ag L2 Tiny Render Path Probe |
+| purpose | Record that the restored ED-10af dry-read remains predecessor evidence while the active ED-10af L2 selector probe supplies bounded render-path proof. |
+| storage class | Tracked JSON/Markdown L2 readback; references ignored same-machine ASS/MP4/manifest/contact-sheet evidence only. |
+| repo_relative_path | `docs/style_intent/subtitle-l2-tiny-render-path-probe.md` |
+| metadata_json | `docs/style_intent/subtitle-l2-tiny-render-path-probe.json` |
+| open_command | `see docs\style_intent\subtitle-l2-tiny-render-path-probe.md` |
+| source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
+| source_l2_selector_probe_artifact | `clip-ed10af-l2-render-path-selector-probe-001` |
+| source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
+| local_ignored_ass | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass` |
+| local_ignored_video | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4` |
+| local_ignored_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json` |
+| | generated_from | ED-10ag Existing Output First L2 readback using the restored ED-10af dry-read and the existing active ED-10af L2 selector probe; no new render was run. |
+| validation_command | Parse ED-10ag L2 probe JSON, ED-10af probe JSON, restored dry-read JSON, and dashboard JSON; run targeted subtitle/dashboard/review tests; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | ED-10ag JSON reports `existing_output_first_reused=true`, `new_render_run=false`, `source_probe_new_render_run=true`, `dry_read_all_payloads_consumer_ready=true`, `stable_body_text_preserved=true`, `production_public_boundary_closed=true`, and `episodes_tracked=false`. |
+| review_status | No Review Card and no required user-side observation. The artifact is bounded L2 technical readback, not new subtitle design or render acceptance. |
+| next_action | Use this surface to inspect the predecessor/current artifact relationship and local ignored proof paths before opening any production limitation-lift, final render-path, rights, publishing, or public-use route. |
 
 Boundary flags remain false or pending:
 

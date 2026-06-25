@@ -1,0 +1,543 @@
+{
+  "schema_id": "clippipegen.subtitle_render_contract_consumer_dry_read.v1",
+  "artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+  "feature_id": "ED-10af",
+  "status": "render_contract_consumer_dry_read_ready",
+  "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+  "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+  "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
+  "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+  "source_registry_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+  "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+  "dry_read_kind": "static_contract_consumer_payload_readback",
+  "consumer_name": "subtitle_render_adapter_contract_consumer_v0",
+  "render_level": "L0 No Render",
+  "examples_represented": [
+    "neutral_dialogue_intensity_0",
+    "shout_intensity_2",
+    "whisper_intensity_1",
+    "ominous_intensity_2",
+    "narration_intensity_0",
+    "system_note_intensity_0"
+  ],
+  "adapter_payload_schema": {
+    "semantic_fields": [
+      "semantic_preset_id",
+      "preset_key",
+      "speaker_id",
+      "speaker_role",
+      "emotion",
+      "intensity",
+      "utterance_role",
+      "readability_priority"
+    ],
+    "style_fields": [
+      "family_id",
+      "palette_route",
+      "font_family_role",
+      "font_size_scale",
+      "outline_shadow_strength"
+    ],
+    "color_surface_fields": [
+      "badge_color_token",
+      "accent_color_token",
+      "backplate_box_token",
+      "body_text_color_policy_reference",
+      "body_text_color_token",
+      "body_text_color_changed"
+    ],
+    "motion_fields": [
+      "motion_primitive"
+    ],
+    "line_break_fields": [
+      "safe_area_line_break_behavior"
+    ],
+    "render_boundary_fields": [
+      "render_level",
+      "new_render_run",
+      "render_artifact_created",
+      "video_artifact_created",
+      "audio_artifact_created",
+      "frame_artifact_created",
+      "ass_artifact_created",
+      "episode_artifact_created",
+      "consumer_dry_read_only"
+    ],
+    "production_public_boundary_fields": [
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission"
+    ],
+    "body_text_color_policy_reference": "stable_default_body_text"
+  },
+  "consumer_payloads": [
+    {
+      "payload_id": "consumer_dry_read:neutral_dialogue_intensity_0",
+      "semantic_preset_id": "neutral_dialogue_intensity_0",
+      "preset_key": "character.dialogue.neutral.i0.high",
+      "normalized_render_adapter_payload": {
+        "semantic": {
+          "semantic_preset_id": "neutral_dialogue_intensity_0",
+          "preset_key": "character.dialogue.neutral.i0.high",
+          "speaker_id": "bancho",
+          "speaker_role": "character",
+          "emotion": "neutral",
+          "intensity": 0,
+          "utterance_role": "dialogue",
+          "readability_priority": "high"
+        },
+        "style": {
+          "family_id": "dialogue_current_keifont_family",
+          "palette_route": "speaker_identity_blue",
+          "font_family_role": "current_keifont_dialogue_role",
+          "font_size_scale": 1.0,
+          "outline_shadow_strength": "current_lead"
+        },
+        "color_surfaces": {
+          "badge_color_token": "speaker_bancho_badge_default",
+          "accent_color_token": "speaker_bancho_speaker_default_subtle_accent",
+          "backplate_box_token": "optional_high_readability",
+          "body_text_color_policy_reference": "stable_default_body_text",
+          "body_text_color_token": "stable_default_body_text",
+          "body_text_color_changed": false
+        },
+        "motion": {
+          "motion_primitive": "none"
+        },
+        "line_break": {
+          "safe_area_line_break_behavior": "high_readability"
+        },
+        "render_boundary": {
+          "render_level": "L0 No Render",
+          "new_render_run": false,
+          "render_artifact_created": false,
+          "video_artifact_created": false,
+          "audio_artifact_created": false,
+          "frame_artifact_created": false,
+          "ass_artifact_created": false,
+          "episode_artifact_created": false,
+          "consumer_dry_read_only": true
+        },
+        "production_public_boundary": {
+          "production_subtitle_design_acceptance": false,
+          "production_render_acceptance": false,
+          "creative_acceptance": false,
+          "rights_status": "pending",
+          "publishing_acceptance": false,
+          "public_use_permission": false
+        }
+      },
+      "dry_read_assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "family_palette_route_preserved": true,
+        "motion_line_break_metadata_preserved": true,
+        "render_boundary_preserved": true,
+        "production_public_boundary_preserved": true
+      }
+    },
+    {
+      "payload_id": "consumer_dry_read:shout_intensity_2",
+      "semantic_preset_id": "shout_intensity_2",
+      "preset_key": "character.dialogue.shout.i2.high",
+      "normalized_render_adapter_payload": {
+        "semantic": {
+          "semantic_preset_id": "shout_intensity_2",
+          "preset_key": "character.dialogue.shout.i2.high",
+          "speaker_id": "bancho",
+          "speaker_role": "character",
+          "emotion": "shout",
+          "intensity": 2,
+          "utterance_role": "dialogue",
+          "readability_priority": "high"
+        },
+        "style": {
+          "family_id": "emphasis_energy_family",
+          "palette_route": "high_energy_warm",
+          "font_family_role": "current_keifont_dialogue_role",
+          "font_size_scale": 1.16,
+          "outline_shadow_strength": "strong"
+        },
+        "color_surfaces": {
+          "badge_color_token": "speaker_bancho_badge_default",
+          "accent_color_token": "speaker_bancho_high_energy_accent",
+          "backplate_box_token": "optional_high_readability",
+          "body_text_color_policy_reference": "stable_default_body_text",
+          "body_text_color_token": "stable_default_body_text",
+          "body_text_color_changed": false
+        },
+        "motion": {
+          "motion_primitive": "impact_placeholder"
+        },
+        "line_break": {
+          "safe_area_line_break_behavior": "prefer_shorter_lines_max_two"
+        },
+        "render_boundary": {
+          "render_level": "L0 No Render",
+          "new_render_run": false,
+          "render_artifact_created": false,
+          "video_artifact_created": false,
+          "audio_artifact_created": false,
+          "frame_artifact_created": false,
+          "ass_artifact_created": false,
+          "episode_artifact_created": false,
+          "consumer_dry_read_only": true
+        },
+        "production_public_boundary": {
+          "production_subtitle_design_acceptance": false,
+          "production_render_acceptance": false,
+          "creative_acceptance": false,
+          "rights_status": "pending",
+          "publishing_acceptance": false,
+          "public_use_permission": false
+        }
+      },
+      "dry_read_assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "family_palette_route_preserved": true,
+        "motion_line_break_metadata_preserved": true,
+        "render_boundary_preserved": true,
+        "production_public_boundary_preserved": true
+      }
+    },
+    {
+      "payload_id": "consumer_dry_read:whisper_intensity_1",
+      "semantic_preset_id": "whisper_intensity_1",
+      "preset_key": "character.dialogue.whisper.i1.normal",
+      "normalized_render_adapter_payload": {
+        "semantic": {
+          "semantic_preset_id": "whisper_intensity_1",
+          "preset_key": "character.dialogue.whisper.i1.normal",
+          "speaker_id": "bancho",
+          "speaker_role": "character",
+          "emotion": "whisper",
+          "intensity": 1,
+          "utterance_role": "dialogue",
+          "readability_priority": "normal"
+        },
+        "style": {
+          "family_id": "quiet_soft_readability_family",
+          "palette_route": "quiet_cool",
+          "font_family_role": "current_keifont_dialogue_role",
+          "font_size_scale": 0.98,
+          "outline_shadow_strength": "soft_readable"
+        },
+        "color_surfaces": {
+          "badge_color_token": "speaker_bancho_badge_default",
+          "accent_color_token": "speaker_bancho_quiet_accent",
+          "backplate_box_token": "soft",
+          "body_text_color_policy_reference": "stable_default_body_text",
+          "body_text_color_token": "stable_default_body_text",
+          "body_text_color_changed": false
+        },
+        "motion": {
+          "motion_primitive": "none"
+        },
+        "line_break": {
+          "safe_area_line_break_behavior": "normal"
+        },
+        "render_boundary": {
+          "render_level": "L0 No Render",
+          "new_render_run": false,
+          "render_artifact_created": false,
+          "video_artifact_created": false,
+          "audio_artifact_created": false,
+          "frame_artifact_created": false,
+          "ass_artifact_created": false,
+          "episode_artifact_created": false,
+          "consumer_dry_read_only": true
+        },
+        "production_public_boundary": {
+          "production_subtitle_design_acceptance": false,
+          "production_render_acceptance": false,
+          "creative_acceptance": false,
+          "rights_status": "pending",
+          "publishing_acceptance": false,
+          "public_use_permission": false
+        }
+      },
+      "dry_read_assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "family_palette_route_preserved": true,
+        "motion_line_break_metadata_preserved": true,
+        "render_boundary_preserved": true,
+        "production_public_boundary_preserved": true
+      }
+    },
+    {
+      "payload_id": "consumer_dry_read:ominous_intensity_2",
+      "semantic_preset_id": "ominous_intensity_2",
+      "preset_key": "character.inner_voice.ominous.i2.maximum",
+      "normalized_render_adapter_payload": {
+        "semantic": {
+          "semantic_preset_id": "ominous_intensity_2",
+          "preset_key": "character.inner_voice.ominous.i2.maximum",
+          "speaker_id": "unknown",
+          "speaker_role": "character",
+          "emotion": "ominous",
+          "intensity": 2,
+          "utterance_role": "inner_voice",
+          "readability_priority": "maximum"
+        },
+        "style": {
+          "family_id": "ominous_inner_voice_family",
+          "palette_route": "ominous_dark",
+          "font_family_role": "current_keifont_dialogue_role",
+          "font_size_scale": 1.08,
+          "outline_shadow_strength": "heavy_low_glow_placeholder_maximum_readability"
+        },
+        "color_surfaces": {
+          "badge_color_token": "speaker_default_badge",
+          "accent_color_token": "dark_accent",
+          "backplate_box_token": "soft_maximum_readability",
+          "body_text_color_policy_reference": "stable_default_body_text",
+          "body_text_color_token": "stable_default_body_text",
+          "body_text_color_changed": false
+        },
+        "motion": {
+          "motion_primitive": "slow_weight_placeholder"
+        },
+        "line_break": {
+          "safe_area_line_break_behavior": "maximum_readability"
+        },
+        "render_boundary": {
+          "render_level": "L0 No Render",
+          "new_render_run": false,
+          "render_artifact_created": false,
+          "video_artifact_created": false,
+          "audio_artifact_created": false,
+          "frame_artifact_created": false,
+          "ass_artifact_created": false,
+          "episode_artifact_created": false,
+          "consumer_dry_read_only": true
+        },
+        "production_public_boundary": {
+          "production_subtitle_design_acceptance": false,
+          "production_render_acceptance": false,
+          "creative_acceptance": false,
+          "rights_status": "pending",
+          "publishing_acceptance": false,
+          "public_use_permission": false
+        }
+      },
+      "dry_read_assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "family_palette_route_preserved": true,
+        "motion_line_break_metadata_preserved": true,
+        "render_boundary_preserved": true,
+        "production_public_boundary_preserved": true
+      }
+    },
+    {
+      "payload_id": "consumer_dry_read:narration_intensity_0",
+      "semantic_preset_id": "narration_intensity_0",
+      "preset_key": "narrator.narration.narration.i0.high",
+      "normalized_render_adapter_payload": {
+        "semantic": {
+          "semantic_preset_id": "narration_intensity_0",
+          "preset_key": "narrator.narration.narration.i0.high",
+          "speaker_id": "narrator",
+          "speaker_role": "narrator",
+          "emotion": "narration",
+          "intensity": 0,
+          "utterance_role": "narration",
+          "readability_priority": "high"
+        },
+        "style": {
+          "family_id": "narration_family",
+          "palette_route": "narration_neutral_green",
+          "font_family_role": "narration_current_family_role",
+          "font_size_scale": 0.98,
+          "outline_shadow_strength": "current_lead"
+        },
+        "color_surfaces": {
+          "badge_color_token": "narrator_badge_optional",
+          "accent_color_token": "narration_neutral_accent",
+          "backplate_box_token": "optional",
+          "body_text_color_policy_reference": "stable_default_body_text",
+          "body_text_color_token": "stable_default_body_text",
+          "body_text_color_changed": false
+        },
+        "motion": {
+          "motion_primitive": "none"
+        },
+        "line_break": {
+          "safe_area_line_break_behavior": "high_readability"
+        },
+        "render_boundary": {
+          "render_level": "L0 No Render",
+          "new_render_run": false,
+          "render_artifact_created": false,
+          "video_artifact_created": false,
+          "audio_artifact_created": false,
+          "frame_artifact_created": false,
+          "ass_artifact_created": false,
+          "episode_artifact_created": false,
+          "consumer_dry_read_only": true
+        },
+        "production_public_boundary": {
+          "production_subtitle_design_acceptance": false,
+          "production_render_acceptance": false,
+          "creative_acceptance": false,
+          "rights_status": "pending",
+          "publishing_acceptance": false,
+          "public_use_permission": false
+        }
+      },
+      "dry_read_assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "family_palette_route_preserved": true,
+        "motion_line_break_metadata_preserved": true,
+        "render_boundary_preserved": true,
+        "production_public_boundary_preserved": true
+      }
+    },
+    {
+      "payload_id": "consumer_dry_read:system_note_intensity_0",
+      "semantic_preset_id": "system_note_intensity_0",
+      "preset_key": "system.warning.system_note.i0.maximum",
+      "normalized_render_adapter_payload": {
+        "semantic": {
+          "semantic_preset_id": "system_note_intensity_0",
+          "preset_key": "system.warning.system_note.i0.maximum",
+          "speaker_id": "system",
+          "speaker_role": "system",
+          "emotion": "system_note",
+          "intensity": 0,
+          "utterance_role": "warning",
+          "readability_priority": "maximum"
+        },
+        "style": {
+          "family_id": "system_note_family",
+          "palette_route": "system_neutral",
+          "font_family_role": "system_note_current_family_role",
+          "font_size_scale": 0.94,
+          "outline_shadow_strength": "current_lead_maximum_readability"
+        },
+        "color_surfaces": {
+          "badge_color_token": "system_badge",
+          "accent_color_token": "system_accent",
+          "backplate_box_token": "on_maximum_readability",
+          "body_text_color_policy_reference": "stable_default_body_text",
+          "body_text_color_token": "stable_default_body_text",
+          "body_text_color_changed": false
+        },
+        "motion": {
+          "motion_primitive": "none"
+        },
+        "line_break": {
+          "safe_area_line_break_behavior": "maximum_readability"
+        },
+        "render_boundary": {
+          "render_level": "L0 No Render",
+          "new_render_run": false,
+          "render_artifact_created": false,
+          "video_artifact_created": false,
+          "audio_artifact_created": false,
+          "frame_artifact_created": false,
+          "ass_artifact_created": false,
+          "episode_artifact_created": false,
+          "consumer_dry_read_only": true
+        },
+        "production_public_boundary": {
+          "production_subtitle_design_acceptance": false,
+          "production_render_acceptance": false,
+          "creative_acceptance": false,
+          "rights_status": "pending",
+          "publishing_acceptance": false,
+          "public_use_permission": false
+        }
+      },
+      "dry_read_assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "family_palette_route_preserved": true,
+        "motion_line_break_metadata_preserved": true,
+        "render_boundary_preserved": true,
+        "production_public_boundary_preserved": true
+      }
+    }
+  ],
+  "dry_read_validation": {
+    "source_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+    "source_contract_status": "render_path_selector_contract_ready",
+    "expected_payload_count": 6,
+    "actual_payload_count": 6,
+    "missing_required_fields": [],
+    "type_mismatches": [],
+    "body_text_color_policy_drift": false,
+    "render_boundary_leakage": false,
+    "production_public_boundary_leakage": false,
+    "all_payloads_consumer_ready": true
+  },
+  "later_l2_render_path_probe_trigger": {
+    "status": "not_triggered_in_this_slice",
+    "allowed_future_trigger": [
+      "explicit L2 render path probe milestone",
+      "consumer payload needs FFmpeg/libass timing or visual readback",
+      "operator opens production-limitation or final render-path route"
+    ],
+    "not_triggered_by": [
+      "consumer dry-read JSON generation",
+      "consumer dry-read Markdown generation",
+      "dashboard or handoff updates",
+      "static contract drift checks"
+    ]
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+    "doc": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "human_review_required_only_for": [
+      "new_style_family",
+      "new_palette",
+      "body_text_color_policy_change",
+      "production_route_change",
+      "rights",
+      "publishing",
+      "public_use"
+    ]
+  },
+  "render_gate": {
+    "level": "L0 No Render",
+    "new_render_run": false,
+    "consumer_dry_read_only": true,
+    "next_render_level": "L2 tiny render path probe milestone"
+  },
+  "readiness_separation": {
+    "subtitle_style_readiness": "selector_static_proof_render_path_contract_consumer_dry_read_ready",
+    "video_render_readiness": "not_run_no_render_pass_implied",
+    "production_readiness": "not_accepted",
+    "rights_public_use_readiness": "not_accepted"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false
+  }
+}

@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10af',
-         'artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+        "current_focus": {'feature_id': 'ED-10ag',
+         'artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,19 +111,22 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'l2_render_path_selector_probe_ready',
+         'state': 'l2_tiny_render_path_probe_ready',
+         'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+         'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+         'l2_tiny_render_path_probe_artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10af_l2_render_path_selector_probe_ready',
-         'user_action_type': 'NO_USER_ACTION_PROBE_READBACK_ONLY',
+         'route_status': 'ed10ag_l2_tiny_render_path_probe_ready_existing_ed10af_l2_reused',
+         'user_action_type': 'NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'l2_render_path_selector_probe_readback',
+         'main_issue': 'l2_tiny_probe_existing_output_readback_recorded',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -329,8 +332,21 @@ def build_project_status(
                                                                              'body_text_color_changed'],
                                                     'motion_line_break_fields': ['motion_primitive',
                                                                                  'safe_area_line_break_behavior'],
-                                                    'later_l2_tiny_render_trigger': 'not_triggered_in_this_slice',
+                                                    'later_l2_render_path_probe_trigger': 'not_triggered_in_this_slice',
                                                     'new_render_run': False},
+         'subtitle_render_contract_consumer_dry_read': {'status': 'render_contract_consumer_dry_read_ready',
+                                                        'artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+                                                        'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
+                                                        'metadata_json': 'docs/style_intent/subtitle-render-contract-consumer-dry-read.json',
+                                                        'doc': 'docs/style_intent/subtitle-render-contract-consumer-dry-read.md',
+                                                        'render_level': 'L0 No Render',
+                                                        'payload_count': 6,
+                                                        'all_payloads_consumer_ready': True,
+                                                        'body_text_color_policy': 'stable_default_body_text',
+                                                        'consumer_dry_read_only': True,
+                                                        'new_render_run': False,
+                                                        'production_render_acceptance': False,
+                                                        'public_use_permission': False},
          'subtitle_render_path_selector_probe': {'status': 'l2_render_path_selector_probe_ready',
                                            'artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
                                            'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
@@ -355,6 +371,37 @@ def build_project_status(
                                            'tracked_binary_artifact_created': False,
                                            'production_render_acceptance': False,
                                            'public_use_permission': False},
+         'subtitle_l2_tiny_render_path_probe': {'status': 'l2_tiny_render_path_probe_ready',
+                                                              'artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
+                                                              'active_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                              'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+                                                              'source_render_path_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                              'dry_read_source_commit': '7e96a28',
+                                                              'dry_read_invalidated': False,
+                                                              'metadata_json': 'docs/style_intent/subtitle-l2-tiny-render-path-probe.json',
+                                                              'doc': 'docs/style_intent/subtitle-l2-tiny-render-path-probe.md',
+                                                              'render_level': 'L2 Tiny Smoke Render',
+                                                              'existing_output_first_reused': True,
+                                                              'new_render_run': False,
+                                                              'source_probe_new_render_run': True,
+                                                              'same_machine_only': True,
+                                                              'may_be_absent_on_other_clone': True,
+                                                              'source_dry_read_payload_count': 6,
+                                                              'selected_example_count': 3,
+                                                              'selected_example_ids': ['neutral_dialogue_intensity_0',
+                                                                                       'shout_intensity_2',
+                                                                                       'whisper_intensity_1'],
+                                                              'stable_body_text_preserved': True,
+                                                              'badge_accent_backplate_route_preserved': True,
+                                                              'safe_area_line_break_metadata_survived': True,
+                                                              'local_probe_status': 'local_ignored_probe_generated',
+                                                              'local_outputs': {'ass': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass',
+                                                                                'video': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4',
+                                                                                'manifest': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json',
+                                                                                'contact_sheet': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg'},
+                                                              'tracked_binary_artifact_created': False,
+                                                              'production_render_acceptance': False,
+                                                              'public_use_permission': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -420,12 +467,12 @@ def build_project_status(
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'axis': 'l2_render_path_selector_probe',
+                         'artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
+                         'axis': 'l2_tiny_render_path_probe',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10af selects normal dialogue, shout, and whisper examples from the ED-10ae contract and runs a tiny FFmpeg/libass diagnostic probe with ignored ASS/MP4 evidence.',
+                         'what_changed': 'ED-10ag records the restored ED-10af dry-read as predecessor evidence, preserves the ED-10af L2 selector probe as active, and adds same-machine observation paths without rerendering.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -433,13 +480,13 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use this L2 diagnostic probe as render-path readback; production, rights, publishing, and public-use routes remain separate'},
+                         'completion_signal': 'use the ED-10af L2 probe as active render-path evidence and the ED-10ag L2 tiny render-path probe as readback; production, rights, publishing, and public-use routes remain separate'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'l2_render_path_selector_probe_readback_no_review_card',
+         'review_surface_direction': 'l2_tiny_render_path_probe_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'production_limitation_lift',
                           'status': 'not_started_after_tiny_probe',
@@ -759,6 +806,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10ae-render-path-selector-contract-probe-001"
         if feature_id == "ED-10af":
             active_artifact = "clip-ed10af-l2-render-path-selector-probe-001"
+        if feature_id == "ED-10ag":
+            active_artifact = "clip-ed10ag-l2-tiny-render-path-probe-001"
         features.append(
             {
                 "id": feature_id,
@@ -823,7 +872,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
+        "clip-ed10ag-l2-tiny-render-path-probe-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -870,6 +919,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
+            "item": "ED-10ag L2 tiny render-path probe readback",
+            "artifact": "clip-ed10ag-l2-tiny-render-path-probe-001",
+            "question": "Does the restored ED-10af dry-read reach a bounded L2 render-path readback by reusing the existing ED-10af L2 selector probe output?",
+            "next_route": "Use this readback to inspect source and local ignored proof paths; keep production, rights, publishing, and public-use routes separate.",
+        },
+        {
             "item": "ED-10af L2 render path selector probe",
             "artifact": "clip-ed10af-l2-render-path-selector-probe-001",
             "question": "Do normal dialogue, shout, and whisper examples from the ED-10ae contract survive a tiny FFmpeg/libass render-path probe with stable body text and badge/accent/backplate routing?",
@@ -879,7 +934,7 @@ def _next_review_items() -> list[dict[str, str]]:
             "item": "ED-10ae render-path selector contract",
             "artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
             "question": "Are selector, family, palette, color-surface, motion, and line-break fields ready as a static input contract before any render probe?",
-            "next_route": "Use this contract before a later L2 tiny render-path probe; do not infer actual render or production readiness.",
+            "next_route": "Use this contract before a later L2 render-path probe; do not infer actual render or production readiness.",
         },
         {
             "item": "ED-10ad style-family / palette axis proof",
@@ -951,7 +1006,7 @@ def _next_review_items() -> list[dict[str, str]]:
             "item": "ED-10j kirinuki font audit",
             "artifact": "clip-ed10j-kirinuki-font-audit-001",
             "question": "Was the no-download audit consumed correctly, including Meiryo reference demotion and BIZ default selection?",
-            "next_route": "Use the contact-sheet readback only for audit; do not prolong the comparison unless the BIZ proof fails.",
+            "next_route": "Use the manifest readback only for audit; do not prolong the comparison unless the BIZ proof fails.",
         },
         {
             "item": "ED-10h font candidate sweep",
@@ -1007,9 +1062,18 @@ def _open_surfaces() -> list[dict[str, str]]:
         },
         {
             "label": "Render Path Selector Probe",
-            "command": "see docs\style_intent\subtitle-render-path-selector-probe.md",
+            "command": "see docs\\style_intent\\subtitle-render-path-selector-probe.md",
             "target": "docs/style_intent/subtitle-render-path-selector-probe.md",
             "when_to_use": "Use to inspect the ED-10af L2 selector probe rows, local ignored ASS/MP4/manifest paths, and boundary readback from the ED-10ae contract.",
+        },
+        {
+            "label": "L2 Tiny Render Path Probe",
+            "command": "see docs\\style_intent\\subtitle-l2-tiny-render-path-probe.md",
+            "target": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md",
+            "when_to_use": (
+                "Use to inspect the restored dry-read predecessor, active ED-10af "
+                "L2 probe, and local ignored ASS/MP4/manifest/contact-sheet readback."
+            ),
         },
         {
             "label": "Render Path Selector Contract",
@@ -1255,6 +1319,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "render_path_selector_contract_ready"
     if feature_id == "ED-10af":
         return "l2_render_path_selector_probe_ready"
+    if feature_id == "ED-10ag":
+        return "l2_tiny_render_path_probe_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1309,6 +1375,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10af":
         return 100
+    if feature_id == "ED-10ag":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1358,9 +1426,11 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10ad":
         return "Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route."
     if feature_id == "ED-10ae":
-        return "Use the selector-to-render-path contract as L0 static readback before a later L2 tiny render-path probe; do not infer actual render or production readiness."
+        return "Use the selector-to-render-path contract as L0 static readback before a later L2 render-path probe; do not infer actual render or production readiness."
     if feature_id == "ED-10af":
         return "Use the L2 selector probe readback before opening a separate production limitation-lift, rights, publishing, or public-use route."
+    if feature_id == "ED-10ag":
+        return "Use the L2 tiny render-path probe readback to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: l2_render_path_selector_probe_ready
+health: l2_tiny_render_path_probe_ready
 progress_pct: 100
 last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.json, docs/style_intent/subtitle-l2-tiny-render-path-probe.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,6 +36,24 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+
+ED-10ag checkpoint, 2026-06-25 JST: the active artifact remains the ED-10af
+L2 selector probe `clip-ed10af-l2-render-path-selector-probe-001`. ED-10ag adds
+`clip-ed10ag-l2-tiny-render-path-probe-001` to connect that active probe
+with the restored ED-10af dry-read
+`clip-ed10af-render-contract-consumer-dry-read-001`. The tracked L2 probe readback
+lives at `docs/style_intent/subtitle-l2-tiny-render-path-probe.json`
+and `docs/style_intent/subtitle-l2-tiny-render-path-probe.md`.
+
+Existing Output First was honored for ED-10ag: the existing ED-10af L2 selector
+probe already records local ignored ASS, MP4, manifest, and contact-sheet paths
+for neutral, shout, and whisper representative payloads, so ED-10ag runs no new
+ffmpeg render. The dry-read keeps all six semantic presets as static source
+coverage while the L2 source probe supplies the bounded render-path readback.
+
+The ED-10ag surface creates no tracked binary, keeps `episodes/` ignored, and
+keeps production subtitle design, production render, creative, rights,
+publishing, and public-use gates closed or pending.
 
 ED-10af current checkpoint, 2026-06-25 JST: the active artifact is now
 `clip-ed10af-l2-render-path-selector-probe-001`. It consumes the ED-10ae render-path selector contract and writes
@@ -231,7 +249,7 @@ correctly, with `font_visual_evidence.status=valid_requested_keifont_visual_evid
 
 ED-10u inspected the generated cut and found that `cut_008` does contain one
 real multiline/wrap cue: `sub_096`, displayed at `8.008-9.776`, wrapping as
-`下界ニ呼ビ出シタノハキサ` / `マカ。`. The earlier focused page did not surface a
+`荳狗阜繝句他繝灘・繧ｷ繧ｿ繝弱ワ繧ｭ繧ｵ` / `繝槭き縲Ａ. The earlier focused page did not surface a
 frame from that cue, so the user could not reasonably judge multiline behavior.
 `current_proof_focused_review.html` now places a `Multiline / Wrap Evidence`
 section near the top, before the broader evidence, with a compact screenshot
@@ -350,33 +368,37 @@ gates.
 
 ## Next
 
-1. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
+1. Continue from `clip-ed10af-l2-render-path-selector-probe-001` as the active
+   L2 render-path evidence. Use `clip-ed10ag-l2-tiny-render-path-probe-001`
+   when the next terminal needs dry-read source, ignored ASS / MP4 /
+   manifest / contact-sheet paths, and no-rerender observation commands.
+2. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
    has now passed the current diagnostic render path as a tiny readback probe.
    Do not ask for another Candidate 0-3 comparison review.
-2. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
+3. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
    evidence. Treat ED-10z as diagnostic readback only, not production render
    acceptance. Rerun the ED-10z command after FFmpeg/FFprobe paths are
    available to materialize ignored local proof files.
-3. Do not request another Review Card for the same ED-10u `cut_008`
+4. Do not request another Review Card for the same ED-10u `cut_008`
    multiline/dense-stress evidence; ED-10v already records it as diagnostic
    pass.
-4. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
+5. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
    production limitation-lift, final render-path probe, or policy/readback
    tuning from new evidence.
-5. Keep line-break behavior policy/readback-driven: line length, max lines,
+6. Keep line-break behavior policy/readback-driven: line length, max lines,
    orphan control, suffix-tail control, safe-area pressure, and rapid cue
    replacement are future bounded tuning areas.
-6. Keep ED-10o as accepted review UX direction and reference evidence for why
+7. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont is the provisional normal-dialogue baseline while 851 Chikara
    Yowaku and Yasashisa Gothic remain alternates.
-7. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
+8. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
-8. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
+9. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
    emphasis/mood slots; do not collapse them into normal dialogue baseline
    acceptance.
-9. Do not request another general `cut_002` / `cut_003` Keifont acceptance
+10. Do not request another general `cut_002` / `cut_003` Keifont acceptance
    review unless the user explicitly reopens font-family selection.
-10. If moving toward production/public use, run a separate limitation-lift route
+11. If moving toward production/public use, run a separate limitation-lift route
    for production render, rights, publishing, and public-use decisions.
 
 ## Constraints / Risks
@@ -425,17 +447,12 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Implementation Notes
 
-`episodes/` は同端末 review evidence であり、public Git の authority では
-ありません。tracked docs/code/tests が remote evidence、ignored local reports
-が same-machine readback です。Dashboard は tracked Markdown と registry を
-読むだけで、source media や production acceptance を変更しません。
-
+`episodes/` 縺ｯ蜷檎ｫｯ譛ｫ review evidence 縺ｧ縺ゅｊ縲｝ublic Git 縺ｮ authority 縺ｧ縺ｯ
+縺ゅｊ縺ｾ縺帙ｓ縲Ｕracked docs/code/tests 縺・remote evidence縲（gnored local reports
+縺・same-machine readback 縺ｧ縺吶・ashboard 縺ｯ tracked Markdown 縺ｨ registry 繧・隱ｭ繧縺縺代〒縲《ource media 繧・production acceptance 繧貞､画峩縺励∪縺帙ｓ縲・
 ## Decision Log
 
-- 2026-06-16: ED-10g の selected proof base を
-  `noto_sans_jp_clean_outline` として保持し、次の font universe 拡張を
-  `ED-10h` として切り出す。
-- 2026-06-16: Human visual judgement accepted
+- 2026-06-16: ED-10g 縺ｮ selected proof base 繧・  `noto_sans_jp_clean_outline` 縺ｨ縺励※菫晄戟縺励∵ｬ｡縺ｮ font universe 諡｡蠑ｵ繧・  `ED-10h` 縺ｨ縺励※蛻・ｊ蜃ｺ縺吶・- 2026-06-16: Human visual judgement accepted
   `clip-ed10g-noto-overlay-proof-001` as the diagnostic / representative base
   for `cut_002` / `cut_003`; production/public/rights gates remain closed.
 - 2026-06-17: A new human review superseded the ED-10g styling direction only:
@@ -471,9 +488,8 @@ uvx python -m src.cli.main build-docs-dashboard --format json
   artifact-specific launchers only when needed. This records navigation only;
   it does not mutate source media, transcript, official subtitle evidence,
   rights, publishing, upload, or production acceptance state.
-- 2026-06-16: docs を v1.5 Wiki / Dashboard 入口へ寄せ、通常報告では
-  next-Agent prompt を付けない運用へ戻す。
-
+- 2026-06-16: docs 繧・v1.5 Wiki / Dashboard 蜈･蜿｣縺ｸ蟇・○縲・壼ｸｸ蝣ｱ蜻翫〒縺ｯ
+  next-Agent prompt 繧剃ｻ倥￠縺ｪ縺・°逕ｨ縺ｸ謌ｻ縺吶・
 ## Changelog
 
 - 2026-06-16: Added v1.5 metadata and dashboard-facing front sections.
