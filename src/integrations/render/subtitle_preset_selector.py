@@ -20,6 +20,9 @@ FEATURE_ID = "ED-10ab"
 VISUAL_PROOF_SCHEMA_ID = "clippipegen.subtitle_visual_selector_proof.v1"
 VISUAL_PROOF_ARTIFACT_ID = "clip-ed10ac-visual-selector-proof-001"
 VISUAL_PROOF_FEATURE_ID = "ED-10ac"
+STYLE_AXIS_PROOF_SCHEMA_ID = "clippipegen.subtitle_style_family_palette_axis_proof.v1"
+STYLE_AXIS_PROOF_ARTIFACT_ID = "clip-ed10ad-style-family-palette-axis-proof-001"
+STYLE_AXIS_PROOF_FEATURE_ID = "ED-10ad"
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -428,6 +431,118 @@ def write_subtitle_visual_selector_proof(output_dir: Path) -> dict[str, Path]:
     return {"json": json_path, "html": html_path}
 
 
+def build_subtitle_style_family_palette_axis_proof() -> dict[str, Any]:
+    visual_proof = build_subtitle_visual_selector_proof()
+    axis_examples = [
+        _style_axis_example(example)
+        for example in visual_proof["examples"]
+    ]
+    body_text_tokens = {
+        example["readback_tokens"]["body_text_color_token"]
+        for example in visual_proof["examples"]
+    }
+    return {
+        "schema_id": STYLE_AXIS_PROOF_SCHEMA_ID,
+        "artifact_id": STYLE_AXIS_PROOF_ARTIFACT_ID,
+        "feature_id": STYLE_AXIS_PROOF_FEATURE_ID,
+        "status": "style_family_palette_axis_proof_ready",
+        "source_visual_selector_artifact_id": VISUAL_PROOF_ARTIFACT_ID,
+        "source_selector_artifact_id": ARTIFACT_ID,
+        "source_registry_artifact_id": SOURCE_REGISTRY_ARTIFACT_ID,
+        "source_render_path_artifact_id": SOURCE_RENDER_PATH_ARTIFACT_ID,
+        "proof_kind": "tracked_static_html_json_readback",
+        "axis_contract": {
+            "style_family_axis": [
+                "dialogue_current_keifont_family",
+                "emphasis_energy_family",
+                "quiet_soft_readability_family",
+                "ominous_inner_voice_family",
+                "narration_family",
+                "system_note_family",
+            ],
+            "palette_axis": [
+                "speaker_identity_blue",
+                "high_energy_warm",
+                "quiet_cool",
+                "ominous_dark",
+                "narration_neutral_green",
+                "system_neutral",
+            ],
+            "body_text_color_policy": "stable_default_body_text",
+            "body_text_color_changed": False,
+            "character_color_first_surfaces": [
+                "badge_color_token",
+                "accent_color_token",
+            ],
+            "new_palette_created": False,
+            "new_style_family_created": False,
+            "raw_numeric_review_required": False,
+        },
+        "examples_represented": [
+            example["example_id"] for example in visual_proof["examples"]
+        ],
+        "axis_summary": _style_axis_summary(axis_examples),
+        "examples": axis_examples,
+        "outputs": {
+            "json": "docs/style_intent/subtitle-style-family-palette-proof.json",
+            "html": "docs/style_intent/subtitle-style-family-palette-proof.html",
+        },
+        "existing_output_first": {
+            "considered": True,
+            "level": "L0 No Render / Existing Output First",
+            "source_static_proof": VISUAL_PROOF_ARTIFACT_ID,
+            "new_render_run": False,
+            "reason": (
+                "Family and palette grouping can be reviewed as deterministic "
+                "selector readback without generating video or frames."
+            ),
+        },
+        "body_text_color_policy": {
+            "token": "stable_default_body_text",
+            "stable_across_examples": body_text_tokens == {"stable_default_body_text"},
+            "changed_in_any_example": False,
+            "palette_surfaces": [
+                "badge_color_token",
+                "accent_color_token",
+                "backplate_box_token",
+            ],
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none",
+            "human_review_required_only_for": list(HUMAN_REVIEW_REQUIRED_FOR),
+            "candidate_comparison_reopened": False,
+            "fixed_form_required": False,
+            "screenshot_required": False,
+        },
+        "render_gate": {
+            "level": "L0 No Render / Existing Output First",
+            "new_render_run": False,
+            "milestone_gated_not_change_gated": True,
+            "documented": True,
+        },
+        "boundaries": _boundary_flags(),
+    }
+
+
+def write_subtitle_style_family_palette_axis_proof(
+    output_dir: Path,
+) -> dict[str, Path]:
+    proof = build_subtitle_style_family_palette_axis_proof()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-style-family-palette-proof.json"
+    html_path = output_dir / "subtitle-style-family-palette-proof.html"
+    json_path.write_text(
+        json.dumps(proof, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    html_path.write_text(
+        render_subtitle_style_family_palette_axis_proof_html(proof),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "html": html_path}
+
+
 def render_subtitle_visual_selector_proof_html(proof: Mapping[str, Any]) -> str:
     cards = "\n".join(_visual_proof_card(example) for example in proof["examples"])
     return f"""<!doctype html>
@@ -457,6 +572,59 @@ def render_subtitle_visual_selector_proof_html(proof: Mapping[str, Any]) -> str:
   <h1>ED-10ac Visual Selector Proof</h1>
   <p class="meta">Artifact <code>{escape(str(proof["artifact_id"]))}</code> visualizes the six ED-10ab semantic preset examples as static diagnostic readback. Body subtitle text stays on <code>stable_default_body_text</code>; speaker or emotion color appears through badge and accent tokens first.</p>
   <p class="gate">Render gate: <code>{escape(str(proof["render_gate"]["level"]))}</code>. New render run: <code>false</code>. This proof does not approve production subtitle design, production render, rights, publishing, or public use.</p>
+  <section class="grid">
+{cards}
+  </section>
+</body>
+</html>
+"""
+
+
+def render_subtitle_style_family_palette_axis_proof_html(
+    proof: Mapping[str, Any],
+) -> str:
+    cards = "\n".join(_style_axis_card(example) for example in proof["examples"])
+    summary_rows = "\n".join(
+        (
+            "      <tr>"
+            f"<td><code>{escape(str(row['family_group']))}</code></td>"
+            f"<td><code>{escape(str(row['palette_route']))}</code></td>"
+            f"<td>{escape(', '.join(row['examples']))}</td>"
+            "</tr>"
+        )
+        for row in proof["axis_summary"]
+    )
+    return f"""<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>ED-10ad Style Family / Palette Axis Proof</title>
+  <style>
+    :root {{ color-scheme: light; --body-text: #ffffff; --ink: #222831; --line: #c8d0d9; }}
+    body {{ margin: 24px; font-family: system-ui, sans-serif; background: #f6f7f9; color: var(--ink); line-height: 1.5; }}
+    h1, h2, h3 {{ margin: 0 0 8px; }}
+    .meta, .gate {{ margin: 0 0 18px; padding: 12px; border: 1px solid var(--line); background: #fff; }}
+    .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; }}
+    .card {{ border: 1px solid var(--line); background: #fff; padding: 14px; }}
+    .sample {{ background: #242830; min-height: 128px; padding: 18px; display: flex; align-items: flex-end; border-left: 12px solid var(--accent); }}
+    .backplate {{ display: inline-block; padding: 8px 10px; border-radius: 4px; background: rgba(0, 0, 0, var(--backplate-alpha)); }}
+    .badge {{ display: inline-block; min-width: 42px; text-align: center; margin-right: 8px; padding: 2px 5px; border: 2px solid var(--accent); background: var(--badge); color: #20242a; font-weight: 700; font-size: 13px; }}
+    .line {{ color: var(--body-text); font-size: var(--font-size); font-weight: 800; text-shadow: 0 0 var(--outline) #000, 3px 3px var(--shadow) #000; }}
+    table {{ width: 100%; border-collapse: collapse; margin: 10px 0 18px; table-layout: fixed; }}
+    th, td {{ border: 1px solid var(--line); padding: 6px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }}
+    th {{ background: #edf2f7; }}
+    code {{ background: #edf2f7; padding: 1px 4px; overflow-wrap: anywhere; }}
+  </style>
+</head>
+<body>
+  <h1>ED-10ad Style Family / Palette Axis Proof</h1>
+  <p class="meta">Artifact <code>{escape(str(proof["artifact_id"]))}</code> groups the ED-10ac examples by style family and palette route while keeping body subtitle text on <code>stable_default_body_text</code>. Palette remains badge/accent/backplate-first.</p>
+  <p class="gate">Render gate: <code>{escape(str(proof["render_gate"]["level"]))}</code>. New render run: <code>false</code>. This proof does not create a new palette, approve production subtitle design, approve production render, or open rights/public-use decisions.</p>
+  <h2>Axis Summary</h2>
+  <table>
+    <tr><th>family group</th><th>palette route</th><th>examples</th></tr>
+{summary_rows}
+  </table>
   <section class="grid">
 {cards}
   </section>
@@ -510,6 +678,46 @@ def _visual_proof_example(index: int, example: Mapping[str, Any]) -> dict[str, A
     }
 
 
+def _style_axis_example(example: Mapping[str, Any]) -> dict[str, Any]:
+    tokens = example["readback_tokens"]
+    axis = _style_axis_for_example(str(example["example_id"]))
+    return {
+        "order": example["order"],
+        "example_id": example["example_id"],
+        "preset_key": example["preset_key"],
+        "intent": example["intent"],
+        "display_sample_text": example["display_sample_text"],
+        "style_family": axis["style_family"],
+        "family_group": axis["family_group"],
+        "palette_route": axis["palette_route"],
+        "palette_surfaces": {
+            "badge_color_token": tokens["badge_color_token"],
+            "accent_color_token": tokens["accent_color_token"],
+            "backplate_box_token": tokens["backplate_box_token"],
+            "body_text_color_token": tokens["body_text_color_token"],
+            "body_text_color_changed": tokens["body_text_color_changed"],
+        },
+        "expression_surfaces": {
+            "font_family_role": tokens["font_family_role"],
+            "font_size_scale": tokens["font_size_scale"],
+            "outline_shadow_strength": tokens["outline_shadow_strength"],
+            "motion_primitive": tokens["motion_primitive"],
+            "safe_area_line_break_behavior": tokens["safe_area_line_break_behavior"],
+        },
+        "visual_sample": example["visual_sample"],
+        "axis_readback": {
+            "body_text_color_policy_preserved": (
+                tokens["body_text_color_token"] == "stable_default_body_text"
+                and tokens["body_text_color_changed"] is False
+            ),
+            "palette_changes_body_text": False,
+            "new_palette_created": False,
+            "new_style_family_created": False,
+            "review_required": False,
+        },
+    }
+
+
 def _visual_proof_card(example: Mapping[str, Any]) -> str:
     sample = example["visual_sample"]
     tokens = example["readback_tokens"]
@@ -549,6 +757,97 @@ def _visual_proof_card(example: Mapping[str, Any]) -> str:
 {rows}
       </table>
     </article>"""
+
+
+def _style_axis_card(example: Mapping[str, Any]) -> str:
+    sample = example["visual_sample"]
+    palette = example["palette_surfaces"]
+    expression = example["expression_surfaces"]
+    rows = "\n".join(
+        (
+            f"      <tr><th>{escape(label)}</th><td><code>{escape(str(value))}</code></td></tr>"
+        )
+        for label, value in [
+            ("family group", example["family_group"]),
+            ("style family", example["style_family"]),
+            ("palette route", example["palette_route"]),
+            ("badge", palette["badge_color_token"]),
+            ("accent", palette["accent_color_token"]),
+            ("backplate", palette["backplate_box_token"]),
+            ("body text", palette["body_text_color_token"]),
+            ("font role", expression["font_family_role"]),
+            ("motion", expression["motion_primitive"]),
+            ("line break", expression["safe_area_line_break_behavior"]),
+        ]
+    )
+    style = (
+        f"--badge: {sample['badge_swatch']}; --accent: {sample['accent_swatch']}; "
+        f"--font-size: {sample['font_size_percent']}%; "
+        f"--backplate-alpha: {sample['backplate_alpha']}; "
+        f"--outline: {sample['outline_px_placeholder']}px; "
+        f"--shadow: {sample['shadow_px_placeholder']}px;"
+    )
+    return f"""    <article class="card" style="{escape(style)}">
+      <h2>{escape(str(example["example_id"]))}</h2>
+      <div class="sample">
+        <div>
+          <span class="backplate"><span class="badge">SPK</span><span class="line">{escape(str(example["display_sample_text"]))}</span></span>
+        </div>
+      </div>
+      <table>
+{rows}
+      </table>
+    </article>"""
+
+
+def _style_axis_for_example(example_id: str) -> dict[str, str]:
+    return {
+        "neutral_dialogue_intensity_0": {
+            "style_family": "current dialogue family",
+            "family_group": "dialogue_current_keifont_family",
+            "palette_route": "speaker_identity_blue",
+        },
+        "shout_intensity_2": {
+            "style_family": "high-energy emphasis family",
+            "family_group": "emphasis_energy_family",
+            "palette_route": "high_energy_warm",
+        },
+        "whisper_intensity_1": {
+            "style_family": "quiet readable dialogue family",
+            "family_group": "quiet_soft_readability_family",
+            "palette_route": "quiet_cool",
+        },
+        "ominous_intensity_2": {
+            "style_family": "ominous inner-voice family",
+            "family_group": "ominous_inner_voice_family",
+            "palette_route": "ominous_dark",
+        },
+        "narration_intensity_0": {
+            "style_family": "narration family",
+            "family_group": "narration_family",
+            "palette_route": "narration_neutral_green",
+        },
+        "system_note_intensity_0": {
+            "style_family": "system note family",
+            "family_group": "system_note_family",
+            "palette_route": "system_neutral",
+        },
+    }[example_id]
+
+
+def _style_axis_summary(examples: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    summary: dict[tuple[str, str], list[str]] = {}
+    for example in examples:
+        key = (str(example["family_group"]), str(example["palette_route"]))
+        summary.setdefault(key, []).append(str(example["example_id"]))
+    return [
+        {
+            "family_group": family_group,
+            "palette_route": palette_route,
+            "examples": example_ids,
+        }
+        for (family_group, palette_route), example_ids in summary.items()
+    ]
 
 
 def _sample_text_for_example(example_id: str) -> str:

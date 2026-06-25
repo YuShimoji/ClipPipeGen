@@ -135,6 +135,65 @@ def test_subtitle_visual_selector_proof_html_is_static_readback():
     assert "production subtitle design" in html
 
 
+def test_subtitle_style_family_palette_axis_proof_matches_tracked_json():
+    proof = preset_selector.build_subtitle_style_family_palette_axis_proof()
+    tracked_path = (
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-style-family-palette-proof.json"
+    )
+    tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
+
+    assert tracked["artifact_id"] == preset_selector.STYLE_AXIS_PROOF_ARTIFACT_ID
+    assert tracked["schema_id"] == preset_selector.STYLE_AXIS_PROOF_SCHEMA_ID
+    assert tracked["feature_id"] == "ED-10ad"
+    assert tracked["source_visual_selector_artifact_id"] == (
+        preset_selector.VISUAL_PROOF_ARTIFACT_ID
+    )
+    assert tracked["examples_represented"] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert tracked["axis_contract"]["body_text_color_policy"] == (
+        "stable_default_body_text"
+    )
+    assert tracked["axis_contract"]["body_text_color_changed"] is False
+    assert tracked["axis_contract"]["new_palette_created"] is False
+    assert tracked["axis_contract"]["new_style_family_created"] is False
+    assert tracked["body_text_color_policy"]["stable_across_examples"] is True
+    assert tracked["existing_output_first"]["new_render_run"] is False
+    assert tracked["render_gate"]["level"] == "L0 No Render / Existing Output First"
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["review_policy"]["human_review_required"] is False
+    assert tracked["examples"] == proof["examples"]
+    assert {
+        example["palette_surfaces"]["body_text_color_token"]
+        for example in tracked["examples"]
+    } == {"stable_default_body_text"}
+    assert {
+        example["axis_readback"]["palette_changes_body_text"]
+        for example in tracked["examples"]
+    } == {False}
+
+
+def test_subtitle_style_family_palette_axis_proof_html_is_static_readback():
+    html_path = (
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-style-family-palette-proof.html"
+    )
+    html = html_path.read_text(encoding="utf-8")
+
+    assert "ED-10ad Style Family / Palette Axis Proof" in html
+    assert "clip-ed10ad-style-family-palette-axis-proof-001" in html
+    assert "dialogue_current_keifont_family" in html
+    assert "high_energy_warm" in html
+    assert "system_note_family" in html
+    assert "stable_default_body_text" in html
+    assert "New render run: <code>false</code>" in html
+    assert "does not create a new palette" in html
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

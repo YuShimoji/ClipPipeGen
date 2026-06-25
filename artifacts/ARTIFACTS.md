@@ -361,6 +361,38 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10ad-style-family-palette-axis-proof-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ad Style Family / Palette Axis Proof |
+| purpose | Group the ED-10ac semantic preset examples by style family and palette route without changing body text color policy or running a render. |
+| storage class | Tracked docs/readback artifact. |
+| repo_relative_path | `docs/style_intent/subtitle-style-family-palette-proof.html` |
+| metadata_json | `docs/style_intent/subtitle-style-family-palette-proof.json` |
+| open_command | `see docs\style_intent\subtitle-style-family-palette-proof.html` |
+| source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
+| source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
+| source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
+| source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
+| implementation | `src/integrations/render/subtitle_preset_selector.py` |
+| generated_from | ED-10ad bounded static proof/readback slice using ED-10ac examples and L0 No Render / Existing Output First. |
+| validation_command | Parse style intent registry, preset selector, ED-10ac visual selector proof, ED-10ad style-family/palette proof, dashboard JSON, and font candidates; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | The tracked proof represents all six semantic presets and groups them into dialogue current Keifont, emphasis energy, quiet soft readability, ominous inner voice, narration, and system note families. Palette routes are speaker identity blue, high energy warm, quiet cool, ominous dark, narration neutral green, and system neutral. Body text color remains `stable_default_body_text`; palette variation stays on badge/accent/backplate surfaces. |
+| review_status | No Review Card and no user-side work. The proof introduces no new style family, no new palette, no body text color policy change, no production route, and no rights, publishing, or public-use decision. |
+| next_action | Use this static axis proof before a later render-path probe. Any actual new style family, new palette, body text color policy change, production limitation-lift, rights, publishing, or public-use clearance remains a separate route. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## `clip-ed10ac-visual-selector-proof-001`
 
 | Field | Value |

@@ -5,9 +5,9 @@ type: design_readback
 status: diagnostic_intent_registry_ready
 health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
-last_touched: 2026-06-24
-active_artifact: clip-ed10ac-visual-selector-proof-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, artifacts/ARTIFACTS.md
+last_touched: 2026-06-25
+active_artifact: clip-ed10ad-style-family-palette-axis-proof-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -111,6 +111,15 @@ and
 It makes those six selector examples inspectable as static badge/accent/
 backplate/size/motion/line-break differences while preserving stable body text
 color. It does not run a new render or approve production/public use.
+
+ED-10ad adds the current style-family / palette axis proof artifact:
+`clip-ed10ad-style-family-palette-axis-proof-001`. The tracked proof lives at
+[`docs/style_intent/subtitle-style-family-palette-proof.json`](style_intent/subtitle-style-family-palette-proof.json)
+and
+[`docs/style_intent/subtitle-style-family-palette-proof.html`](style_intent/subtitle-style-family-palette-proof.html).
+It groups the same six examples by family and palette route while preserving
+`stable_default_body_text`. The routes are readback vocabulary only; they do
+not approve a new style family or new palette.
 
 ## Review Surface Layout Debt
 

@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: visual_selector_proof_ready
+health: style_family_palette_axis_proof_ready
 progress_pct: 100
-last_touched: 2026-06-24
+last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ac-visual-selector-proof-001
+active_artifact: clip-ed10ad-style-family-palette-axis-proof-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
@@ -25,7 +25,21 @@ route.
 
 ## Current State
 
-The active artifact is `clip-ed10ac-visual-selector-proof-001`.
+The active artifact is `clip-ed10ad-style-family-palette-axis-proof-001`.
+
+ED-10ad adds a tracked static style-family / palette axis proof at
+`docs/style_intent/subtitle-style-family-palette-proof.json` and
+`docs/style_intent/subtitle-style-family-palette-proof.html`. It consumes the
+ED-10ac visual selector proof and keeps the same neutral / shout / whisper /
+ominous / narration / system note examples, then groups them by family and
+palette route. The family groups are dialogue current Keifont, emphasis
+energy, quiet soft readability, ominous inner voice, narration, and system
+note. The palette routes are speaker identity blue, high energy warm, quiet
+cool, ominous dark, narration neutral green, and system neutral. Body subtitle
+text color remains `stable_default_body_text`; palette variation stays on
+badge, accent, and backplate surfaces. No render was run. No new style family
+or new palette was approved. Production subtitle design, production render,
+creative use, rights, publishing, and public use remain closed or pending.
 
 ED-10ac adds a tracked static visual selector proof at
 `docs/style_intent/subtitle-visual-selector-proof.json` and

@@ -3,11 +3,11 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: visual_selector_proof_ready
+health: style_family_palette_axis_proof_ready
 progress_pct: 100
-last_touched: 2026-06-24
+last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ac-visual-selector-proof-001
+active_artifact: clip-ed10ad-style-family-palette-axis-proof-001
 source_of_truth: true
 owner_lane: shared_infra
 related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
@@ -35,9 +35,25 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10ac-visual-selector-proof-001`
+Active artifact: `clip-ed10ad-style-family-palette-axis-proof-001`
 
-ED-10ac current checkpoint, 2026-06-24 JST: the active artifact is now
+ED-10ad current checkpoint, 2026-06-25 JST: the active artifact is now
+`clip-ed10ad-style-family-palette-axis-proof-001`. It consumes the ED-10ac
+static visual selector proof and writes tracked static readback at
+`docs/style_intent/subtitle-style-family-palette-proof.json` and
+`docs/style_intent/subtitle-style-family-palette-proof.html`. The proof keeps
+the same six semantic examples while grouping them by style family and palette
+route: dialogue current Keifont / speaker identity blue, emphasis energy /
+high energy warm, quiet soft readability / quiet cool, ominous inner voice /
+ominous dark, narration / narration neutral green, and system note / system
+neutral. Body subtitle text color remains `stable_default_body_text` for every
+example; palette variation is limited to badge, accent, and backplate surfaces.
+ED-10ad uses L0 No Render / Existing Output First and does not create a new
+style family, create a new palette, run a render, approve production subtitle
+design, approve production render, or open rights, publishing, or public use.
+
+ED-10ac source checkpoint, 2026-06-24 JST: the source visual proof artifact is
+now
 `clip-ed10ac-visual-selector-proof-001`. It uses the ED-10ab selector examples
 and writes tracked static readback at
 `docs/style_intent/subtitle-visual-selector-proof.json` and

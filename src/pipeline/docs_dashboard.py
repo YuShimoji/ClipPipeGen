@@ -100,8 +100,9 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10ac",
-            "artifact_id": "clip-ed10ac-visual-selector-proof-001",
+            "feature_id": "ED-10ad",
+            "artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+            "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
             "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
             "source_style_intent_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
             "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
@@ -109,19 +110,19 @@ def build_project_status(
             "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-            "state": "visual_selector_proof_ready",
+            "state": "style_family_palette_axis_proof_ready",
             "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
             "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
             "target_cuts": ["cut_008"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "ed10ac_visual_selector_proof_ready_static_readback_no_new_render",
-            "user_action_type": "OPTIONAL_OPEN_ONLY_FREEFORM_OBSERVATION",
+            "route_status": "ed10ad_style_family_palette_axis_proof_ready_static_readback_no_render",
+            "user_action_type": "NO_USER_ACTION_STATIC_READBACK_ONLY",
             "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
             "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
             "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-            "main_issue": "deterministic_semantic_subtitle_preset_selection",
+            "main_issue": "deterministic_semantic_style_family_palette_axis_readback",
             "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
             "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
             "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -131,7 +132,7 @@ def build_project_status(
             ],
             "lead_status": "provisional_bounded_decoration_lead",
             "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-            "local_generation_status": "ed10ab_selector_readback_ready_existing_ed10z_generation_available_requires_human_review",
+            "local_generation_status": "ed10ad_static_style_family_palette_axis_ready_no_render",
             "user_review_status": "consumed_no_user_review_required_now",
             "multiline_wrap_evidence_status": "passed_diagnostic_review",
             "multiline_wrap_evidence": {
@@ -277,6 +278,48 @@ def build_project_status(
                 "existing_output_first_considered": True,
                 "new_render_run": False,
             },
+            "subtitle_style_family_palette_axis_proof": {
+                "status": "style_family_palette_axis_proof_ready",
+                "artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+                "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
+                "metadata_json": "docs/style_intent/subtitle-style-family-palette-proof.json",
+                "html": "docs/style_intent/subtitle-style-family-palette-proof.html",
+                "proof_kind": "tracked_static_html_json_readback",
+                "example_ids": [
+                    "neutral_dialogue_intensity_0",
+                    "shout_intensity_2",
+                    "whisper_intensity_1",
+                    "ominous_intensity_2",
+                    "narration_intensity_0",
+                    "system_note_intensity_0",
+                ],
+                "style_family_axis": [
+                    "dialogue_current_keifont_family",
+                    "emphasis_energy_family",
+                    "quiet_soft_readability_family",
+                    "ominous_inner_voice_family",
+                    "narration_family",
+                    "system_note_family",
+                ],
+                "palette_axis": [
+                    "speaker_identity_blue",
+                    "high_energy_warm",
+                    "quiet_cool",
+                    "ominous_dark",
+                    "narration_neutral_green",
+                    "system_neutral",
+                ],
+                "body_text_color_policy": "stable_default_body_text",
+                "palette_surfaces": [
+                    "badge_color_token",
+                    "accent_color_token",
+                    "backplate_box_token",
+                ],
+                "new_style_family_created": False,
+                "new_palette_created": False,
+                "existing_output_first_considered": True,
+                "new_render_run": False,
+            },
             "review_surface_layout_debt": {
                 "status": "recorded_minimal_primary_layout_improvement_applied",
                 "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -353,12 +396,12 @@ def build_project_status(
             "review_card": {
                 "status": "withheld_latest_review_already_consumed",
                 "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-                "target": "clip-ed10ac-visual-selector-proof-001",
-                "artifact_id": "clip-ed10ac-visual-selector-proof-001",
-                "axis": "visual_selector_proof_readback",
+                "target": "clip-ed10ad-style-family-palette-axis-proof-001",
+                "artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+                "axis": "style_family_palette_axis_readback",
                 "prior_review_count": "3+",
                 "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-                "what_changed": "ED-10ac renders the ED-10ab semantic preset examples as tracked static JSON/HTML proof while preserving ED-10z as existing visual readback.",
+                "what_changed": "ED-10ad groups the ED-10ac examples into deterministic style-family and palette axes while keeping body text color stable and preserving no-render readback.",
                 "what_this_review_decides": [],
                 "not_asking": [
                     "Candidate 0-3 comparison review",
@@ -368,7 +411,7 @@ def build_project_status(
                     "production subtitle design acceptance",
                 ],
                 "input_mode": "none",
-                "completion_signal": "use the visual selector proof for optional open-only observation; open a separate route for new style family, palette, body text color, production route, rights, publishing, or public use",
+                "completion_signal": "use the style-family/palette proof as static readback before a later render-path probe or separate style-family, palette, production, rights, publishing, or public-use route",
             },
             "lead_fallback_readback": {
                 "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -379,7 +422,7 @@ def build_project_status(
                     "ed10w_balanced_combined_low_risk",
                 ],
             },
-            "review_surface_direction": "visual_selector_proof_static_readback_existing_output_first",
+            "review_surface_direction": "style_family_palette_axis_static_readback_no_render",
             "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
             "review_debt": [
                 {
@@ -807,6 +850,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
+            "item": "ED-10ad style-family / palette axis proof",
+            "artifact": "clip-ed10ad-style-family-palette-axis-proof-001",
+            "question": "Can the six semantic presets be grouped by style family and palette route while body text color stays stable?",
+            "next_route": "Use this static axis proof before any later render-path probe or separate style-family, palette, production, rights, publishing, or public-use route.",
+        },
+        {
             "item": "ED-10ac visual selector proof",
             "artifact": "clip-ed10ac-visual-selector-proof-001",
             "question": "Can the six semantic preset examples be inspected as badge/accent/backplate/size/motion/line-break differences while body text color stays stable?",
@@ -923,6 +972,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Style Family Palette Proof",
+            "command": "see docs\\style_intent\\subtitle-style-family-palette-proof.html",
+            "target": "docs/style_intent/subtitle-style-family-palette-proof.html",
+            "when_to_use": (
+                "Use to inspect the ED-10ad family and palette axes while "
+                "body subtitle text color remains stable and palette changes "
+                "stay on badge, accent, and backplate surfaces."
+            ),
         },
         {
             "label": "Visual Selector Proof",
@@ -1142,6 +1201,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "subtitle_preset_selector_ready"
     if feature_id == "ED-10ac":
         return "visual_selector_proof_ready"
+    if feature_id == "ED-10ad":
+        return "style_family_palette_axis_proof_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1190,6 +1251,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ac":
         return 100
+    if feature_id == "ED-10ad":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1236,6 +1299,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the deterministic preset selector as readback before future visual style proof; open new style-family, palette, production, rights, publishing, or public-use work as separate routes."
     if feature_id == "ED-10ac":
         return "Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes."
+    if feature_id == "ED-10ad":
+        return "Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

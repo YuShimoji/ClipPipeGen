@@ -298,6 +298,26 @@ render, creative use, rights, publishing, or public use. If opened by the
 operator, the only expected input is optional freeform observation, maximum 3
 points.
 
+## Current ED-10ad Style Family / Palette Axis Proof
+
+ED-10ad records `clip-ed10ad-style-family-palette-axis-proof-001` as a
+tracked static JSON/HTML proof. It consumes the ED-10ac visual selector proof
+and groups the six semantic presets by style family and palette route before
+any later render-path probe.
+
+The current family groups are dialogue current Keifont, emphasis energy, quiet
+soft readability, ominous inner voice, narration, and system note. The current
+palette routes are speaker identity blue, high energy warm, quiet cool,
+ominous dark, narration neutral green, and system neutral. These routes are
+readback vocabulary only; ED-10ad does not create or approve a new style
+family or new palette.
+
+Body subtitle text color remains `stable_default_body_text` across every
+example. Palette expression stays on badge, accent, and backplate surfaces.
+ED-10ad uses L0 No Render / Existing Output First, does not ask the operator
+for visual review, and does not approve production subtitle design,
+production render, creative use, rights, publishing, or public use.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

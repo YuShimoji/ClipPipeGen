@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10ac`
-- artifact: `clip-ed10ac-visual-selector-proof-001`
-- state: `visual_selector_proof_ready`
+- feature: `ED-10ad`
+- artifact: `clip-ed10ad-style-family-palette-axis-proof-001`
+- state: `style_family_palette_axis_proof_ready`
 
 ## Feature Table
 
@@ -66,6 +66,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10aa | Subtitle Style Intent Registry and Review Layout Debt v0 | done | subtitle_style_intent_registry_ready | 100 | clip-ed10aa-subtitle-style-intent-registry-001 | Use the semantic style intent registry for future emotion/speaker/readability preset mapping; ED-10z actual local proof now exists and any limitation-lift/final render-path work should be a separate route. |
 | ED-10ab | Subtitle Preset Selector v0 | done | subtitle_preset_selector_ready | 100 | clip-ed10ab-subtitle-preset-selector-001 | Use the deterministic preset selector as readback before future visual style proof; open new style-family, palette, production, rights, publishing, or public-use work as separate routes. |
 | ED-10ac | Visual Selector Proof v0 | done | visual_selector_proof_ready | 100 | clip-ed10ac-visual-selector-proof-001 | Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes. |
+| ED-10ad | Style Family / Palette Axis Proof v0 | done | style_family_palette_axis_proof_ready | 100 | clip-ed10ad-style-family-palette-axis-proof-001 | Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
