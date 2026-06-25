@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: render_contract_consumer_dry_read_ready
+health: l2_render_path_selector_probe_ready
 progress_pct: 100
 last_touched: 2026-06-25
-next_review_due: none_static_readback_only
-active_artifact: clip-ed10af-render-contract-consumer-dry-read-001
+next_review_due: none_probe_readback_only
+active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -35,28 +35,26 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10af-render-contract-consumer-dry-read-001`
+Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
 
 ED-10af current checkpoint, 2026-06-25 JST: the active artifact is now
-`clip-ed10af-render-contract-consumer-dry-read-001`. It consumes the ED-10ae render-path selector contract and writes a
-tracked static consumer dry-read at `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` and `docs/style_intent/subtitle-render-contract-consumer-dry-read.md`. The dry-read
-normalizes adapter-facing payloads for all six semantic presets: neutral
-dialogue, shout / high intensity, whisper, ominous inner voice, narration, and
-system note.
+`clip-ed10af-l2-render-path-selector-probe-001`. It consumes the ED-10ae render-path selector contract and writes
+tracked probe readback at `docs/style_intent/subtitle-render-path-selector-probe.json` and `docs/style_intent/subtitle-render-path-selector-probe.md`. The probe selects
+three representative semantic presets: normal dialogue, shout / high intensity,
+and low-pressure whisper. It carries semantic preset id, preset key, family id,
+palette route, font role, size / outline metadata, badge/accent/backplate
+surfaces, stable body text color, motion metadata, and safe-area / line-break
+metadata into a tiny FFmpeg/libass diagnostic path.
 
-Each payload carries semantic preset id, preset key, speaker/emotion/readability
-axes, family id, palette route, font role, size / outline metadata,
-badge/accent/backplate surfaces, `stable_default_body_text`, motion metadata,
-safe-area / line-break behavior, render boundary flags, and production/public-use
-boundary flags. Static validation reports six payloads, zero missing fields,
-zero type mismatches, no body text color policy drift, no render boundary
-leakage, and no production/public-use leakage.
-
-ED-10af is L0 No Render. It does not create video, audio, frame, ASS, render,
-episode, or local ignored probe artifacts. A later L2 tiny render-path probe is
-recorded as a separate milestone, not triggered by this slice. Production
-subtitle design, production render, creative use, rights, publishing, and public
-use remain closed or pending; `git ls-files episodes` must remain empty.
+Existing Output First was honored: local ignored source video and audio were
+present, so ED-10af generated same-machine ignored ASS, MP4, and local manifest
+outputs at `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass`, `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4`, and `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json`. The tracked
+JSON records selected example count 3, stable body text preserved true,
+badge/accent/backplate route present true, safe-area/line-break metadata
+survived true, and production/public boundary closed true. The ignored MP4/ASS
+are diagnostic evidence only; `git ls-files episodes` must remain empty.
+Production subtitle design, production render, creative use, rights,
+publishing, and public use remain closed or pending.
 
 ED-10ae source checkpoint, 2026-06-25 JST: the source contract artifact is
 `clip-ed10ae-render-path-selector-contract-probe-001`. It consumes the ED-10ad

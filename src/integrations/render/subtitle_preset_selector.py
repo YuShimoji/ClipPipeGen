@@ -14,6 +14,8 @@ from html import escape
 from pathlib import Path
 from typing import Any, Mapping
 
+from src.integrations.render import ffmpeg_tiny
+
 SCHEMA_ID = "clippipegen.subtitle_preset_selector.v1"
 ARTIFACT_ID = "clip-ed10ab-subtitle-preset-selector-001"
 FEATURE_ID = "ED-10ab"
@@ -27,9 +29,26 @@ RENDER_PATH_CONTRACT_SCHEMA_ID = "clippipegen.subtitle_render_path_selector_cont
 RENDER_PATH_CONTRACT_ARTIFACT_ID = "clip-ed10ae-render-path-selector-contract-probe-001"
 RENDER_PATH_CONTRACT_FEATURE_ID = "ED-10ae"
 
-CONSUMER_DRY_READ_SCHEMA_ID = "clippipegen.subtitle_render_contract_consumer_dry_read.v1"
-CONSUMER_DRY_READ_ARTIFACT_ID = "clip-ed10af-render-contract-consumer-dry-read-001"
-CONSUMER_DRY_READ_FEATURE_ID = "ED-10af"
+RENDER_PATH_PROBE_SCHEMA_ID = "clippipegen.subtitle_render_path_selector_probe.v1"
+RENDER_PATH_PROBE_ARTIFACT_ID = "clip-ed10af-l2-render-path-selector-probe-001"
+RENDER_PATH_PROBE_FEATURE_ID = "ED-10af"
+RENDER_PATH_PROBE_SELECTED_EXAMPLE_IDS = (
+    "neutral_dialogue_intensity_0",
+    "shout_intensity_2",
+    "whisper_intensity_1",
+)
+RENDER_PATH_PROBE_SOURCE_VIDEO_RELATIVE_PATH = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/materials/"
+    "src_video_jp_pilot01/source_video.mp4"
+)
+RENDER_PATH_PROBE_SOURCE_AUDIO_RELATIVE_PATH = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/materials/"
+    "src_audio_jp_pilot01/source.wav"
+)
+RENDER_PATH_PROBE_LOCAL_OUTPUT_RELATIVE_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+    "jp_pilot01r3_cut_review/subtitle_render_path_selector_probe"
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -662,23 +681,28 @@ def write_subtitle_render_path_selector_contract(
     return {"json": json_path, "doc": doc_path}
 
 
-def build_subtitle_render_contract_consumer_dry_read(
+def build_subtitle_render_path_selector_probe(
     contract: Mapping[str, Any] | None = None,
+    *,
+    local_probe: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     source_contract = contract or build_subtitle_render_path_selector_contract()
-    consumer_payloads = [
-        _render_contract_consumer_payload(entry)
-        for entry in source_contract["contract_entries"]
-    ]
-    dry_read_validation = _render_contract_consumer_validation(
-        source_contract,
-        consumer_payloads,
+    local_readback = (
+        dict(local_probe)
+        if local_probe is not None
+        else _default_render_path_probe_local_readback()
+    )
+    examples = _render_path_probe_examples(source_contract)
+    validation = _render_path_probe_validation(
+        source_contract=source_contract,
+        examples=examples,
+        local_probe=local_readback,
     )
     return {
-        "schema_id": CONSUMER_DRY_READ_SCHEMA_ID,
-        "artifact_id": CONSUMER_DRY_READ_ARTIFACT_ID,
-        "feature_id": CONSUMER_DRY_READ_FEATURE_ID,
-        "status": "render_contract_consumer_dry_read_ready",
+        "schema_id": RENDER_PATH_PROBE_SCHEMA_ID,
+        "artifact_id": RENDER_PATH_PROBE_ARTIFACT_ID,
+        "feature_id": RENDER_PATH_PROBE_FEATURE_ID,
+        "status": "l2_render_path_selector_probe_ready",
         "source_render_path_selector_contract_artifact_id": (
             RENDER_PATH_CONTRACT_ARTIFACT_ID
         ),
@@ -687,80 +711,40 @@ def build_subtitle_render_contract_consumer_dry_read(
         "source_selector_artifact_id": ARTIFACT_ID,
         "source_registry_artifact_id": SOURCE_REGISTRY_ARTIFACT_ID,
         "source_render_path_artifact_id": SOURCE_RENDER_PATH_ARTIFACT_ID,
-        "dry_read_kind": "static_contract_consumer_payload_readback",
-        "consumer_name": "subtitle_render_adapter_contract_consumer_v0",
-        "render_level": "L0 No Render",
-        "examples_represented": [
-            payload["semantic_preset_id"] for payload in consumer_payloads
-        ],
-        "adapter_payload_schema": {
-            "semantic_fields": [
-                "semantic_preset_id",
-                "preset_key",
-                "speaker_id",
-                "speaker_role",
-                "emotion",
-                "intensity",
-                "utterance_role",
-                "readability_priority",
-            ],
-            "style_fields": [
-                "family_id",
-                "palette_route",
-                "font_family_role",
-                "font_size_scale",
-                "outline_shadow_strength",
-            ],
-            "color_surface_fields": [
+        "probe_kind": "tiny_ffmpeg_libass_selector_probe_readback",
+        "render_level": "L2 tiny render path selector probe",
+        "selected_example_ids": list(RENDER_PATH_PROBE_SELECTED_EXAMPLE_IDS),
+        "selected_example_count": len(examples),
+        "examples": examples,
+        "body_text_color_policy": {
+            "reference": "stable_default_body_text",
+            "stable_across_examples": validation["stable_body_text_preserved"],
+            "body_text_color_changed": False,
+        },
+        "color_route": {
+            "semantic_variation_surface_priority": [
                 "badge_color_token",
                 "accent_color_token",
                 "backplate_box_token",
-                "body_text_color_policy_reference",
                 "body_text_color_token",
-                "body_text_color_changed",
             ],
-            "motion_fields": ["motion_primitive"],
-            "line_break_fields": ["safe_area_line_break_behavior"],
-            "render_boundary_fields": [
-                "render_level",
-                "new_render_run",
-                "render_artifact_created",
-                "video_artifact_created",
-                "audio_artifact_created",
-                "frame_artifact_created",
-                "ass_artifact_created",
-                "episode_artifact_created",
-                "consumer_dry_read_only",
-            ],
-            "production_public_boundary_fields": [
-                "production_subtitle_design_acceptance",
-                "production_render_acceptance",
-                "creative_acceptance",
-                "rights_status",
-                "publishing_acceptance",
-                "public_use_permission",
-            ],
-            "body_text_color_policy_reference": "stable_default_body_text",
+            "badge_accent_backplate_first": (
+                validation["badge_accent_backplate_route_preserved"]
+            ),
+            "body_text_color_changes_allowed": False,
         },
-        "consumer_payloads": consumer_payloads,
-        "dry_read_validation": dry_read_validation,
-        "later_l2_tiny_render_trigger": {
-            "status": "not_triggered_in_this_slice",
-            "allowed_future_trigger": [
-                "explicit L2 tiny render path probe milestone",
-                "consumer payload needs FFmpeg/libass timing or visual readback",
-                "operator opens production-limitation or final render-path route",
-            ],
-            "not_triggered_by": [
-                "consumer dry-read JSON generation",
-                "consumer dry-read Markdown generation",
-                "dashboard or handoff updates",
-                "static contract drift checks",
-            ],
+        "motion_line_break_policy": {
+            "motion_metadata_survived": validation["motion_metadata_survived"],
+            "safe_area_line_break_metadata_survived": (
+                validation["safe_area_line_break_metadata_survived"]
+            ),
+            "ass_newline_probe_example_id": "whisper_intensity_1",
         },
+        "local_probe": local_readback,
+        "validation": validation,
         "outputs": {
-            "json": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
-            "doc": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md",
+            "json": "docs/style_intent/subtitle-render-path-selector-probe.json",
+            "doc": "docs/style_intent/subtitle-render-path-selector-probe.md",
         },
         "review_policy": {
             "human_review_required": False,
@@ -770,40 +754,118 @@ def build_subtitle_render_contract_consumer_dry_read(
             "human_review_required_only_for": list(HUMAN_REVIEW_REQUIRED_FOR),
         },
         "render_gate": {
-            "level": "L0 No Render",
-            "new_render_run": False,
-            "consumer_dry_read_only": True,
-            "next_render_level": "L2 tiny render path probe milestone",
+            "level": "L2 tiny render path selector probe",
+            "new_render_run": local_readback["status"] == "local_ignored_probe_generated",
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "local_outputs_ignored": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
         },
         "readiness_separation": {
-            "subtitle_style_readiness": (
-                "selector_static_proof_render_path_contract_consumer_dry_read_ready"
-            ),
-            "video_render_readiness": "not_run_no_render_pass_implied",
+            "subtitle_style_readiness": "selector_l2_render_path_probe_ready",
+            "video_render_readiness": "diagnostic_local_probe_only",
             "production_readiness": "not_accepted",
             "rights_public_use_readiness": "not_accepted",
         },
-        "boundaries": _boundary_flags(),
+        "boundaries": _render_path_probe_boundary_flags(local_readback),
     }
 
 
-def write_subtitle_render_contract_consumer_dry_read(
+def write_subtitle_render_path_selector_probe(
     output_dir: Path,
+    *,
+    local_probe: Mapping[str, Any] | None = None,
 ) -> dict[str, Path]:
-    dry_read = build_subtitle_render_contract_consumer_dry_read()
+    probe = build_subtitle_render_path_selector_probe(local_probe=local_probe)
     output_dir.mkdir(parents=True, exist_ok=True)
-    json_path = output_dir / "subtitle-render-contract-consumer-dry-read.json"
-    doc_path = output_dir / "subtitle-render-contract-consumer-dry-read.md"
+    json_path = output_dir / "subtitle-render-path-selector-probe.json"
+    doc_path = output_dir / "subtitle-render-path-selector-probe.md"
     json_path.write_text(
-        json.dumps(dry_read, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(probe, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
     doc_path.write_text(
-        render_subtitle_render_contract_consumer_dry_read_markdown(dry_read),
+        render_subtitle_render_path_selector_probe_markdown(probe),
         encoding="utf-8",
     )
     return {"json": json_path, "doc": doc_path}
 
+
+def write_subtitle_render_path_selector_probe_local_artifacts(
+    *,
+    output_dir: Path,
+    source_video_path: Path,
+    source_audio_path: Path,
+    base_dir: Path | None = None,
+    ffmpeg_path: str | Path | None = None,
+    ffprobe_path: str | Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    ass_path = output_dir / "subtitle_render_path_selector_probe.ass"
+    video_path = output_dir / "subtitle_render_path_selector_probe.mp4"
+    manifest_path = output_dir / "subtitle_render_path_selector_probe.local.json"
+    probe = build_subtitle_render_path_selector_probe(
+        local_probe=_default_render_path_probe_local_readback(
+            ass_path=ass_path,
+            video_path=video_path,
+            manifest_path=manifest_path,
+            base_dir=base,
+        )
+    )
+    ass_path.write_text(
+        render_subtitle_render_path_selector_probe_ass(probe),
+        encoding="utf-8",
+    )
+    if not source_video_path.exists() or not source_audio_path.exists():
+        local = _default_render_path_probe_local_readback(
+            status="local_source_media_missing",
+            ass_path=ass_path,
+            video_path=video_path,
+            manifest_path=manifest_path,
+            base_dir=base,
+        )
+        local["missing_inputs"] = [
+            _probe_display_path(path, base)
+            for path in (source_video_path, source_audio_path)
+            if not path.exists()
+        ]
+    else:
+        try:
+            result = ffmpeg_tiny.render_tiny_proof(
+                source_video_path=source_video_path,
+                source_audio_path=source_audio_path,
+                output_path=video_path,
+                start_seconds=0.0,
+                duration_seconds=4.2,
+                subtitle_file_path=ass_path,
+                ffmpeg_path=ffmpeg_path,
+                ffprobe_path=ffprobe_path,
+            )
+            local = _local_probe_readback_from_render_result(
+                render_result=result,
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base,
+            )
+        except ffmpeg_tiny.TinyRenderError as exc:
+            local = _default_render_path_probe_local_readback(
+                status="local_probe_failed",
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base,
+            )
+            local["failure_reason"] = exc.failure_reason
+            local["preflight"] = exc.preflight
+            local["attempts"] = [attempt.to_dict() for attempt in exc.attempts]
+    manifest_path.write_text(
+        json.dumps(local, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return local
 
 def render_subtitle_visual_selector_proof_html(proof: Mapping[str, Any]) -> str:
     cards = "\n".join(_visual_proof_card(example) for example in proof["examples"])
@@ -948,69 +1010,87 @@ def render_subtitle_render_path_selector_contract_markdown(
     )
 
 
-def render_subtitle_render_contract_consumer_dry_read_markdown(
-    dry_read: Mapping[str, Any],
+def render_subtitle_render_path_selector_probe_markdown(
+    probe: Mapping[str, Any],
 ) -> str:
     rows = "\n".join(
         (
             "| "
-            f"`{payload['semantic_preset_id']}` | "
-            f"`{payload['normalized_render_adapter_payload']['style']['family_id']}` | "
-            f"`{payload['normalized_render_adapter_payload']['style']['palette_route']}` | "
-            f"`{payload['normalized_render_adapter_payload']['color_surfaces']['badge_color_token']}` | "
-            f"`{payload['normalized_render_adapter_payload']['color_surfaces']['accent_color_token']}` | "
-            f"`{payload['normalized_render_adapter_payload']['line_break']['safe_area_line_break_behavior']}` |"
+            f"`{example['example_id']}` | "
+            f"`{example['ass_probe']['text']}` | "
+            f"`{example['style']['family_id']}` | "
+            f"`{example['style']['palette_route']}` | "
+            f"`{example['color_surfaces']['body_text_color_token']}` | "
+            f"`{example['line_break']['safe_area_line_break_behavior']}` |"
         )
-        for payload in dry_read["consumer_payloads"]
+        for example in probe["examples"]
     )
-    validation = dry_read["dry_read_validation"]
+    local_probe = probe["local_probe"]
+    validation = probe["validation"]
+    outputs = local_probe["outputs"]
     return (
-        "# ED-10af Render Contract Consumer Dry-Read\n\n"
-        "This tracked dry-read consumes the ED-10ae render-path selector "
-        "contract and normalizes the adapter-facing payload a later render "
-        "adapter would receive. It is static readback only.\n\n"
+        "# ED-10af L2 Render Path Selector Probe\n\n"
+        "This tracked probe consumes the ED-10ae selector-to-render contract and "
+        "selects three representative semantic presets for a tiny FFmpeg/libass "
+        "diagnostic path: normal dialogue, shout/high-intensity, and low-pressure "
+        "whisper. The local media outputs are ignored same-machine evidence; this "
+        "document is the tracked readback.\n\n"
         "## Render Gate\n\n"
-        f"- level: `{dry_read['render_gate']['level']}`\n"
-        "- new_render_run: `false`\n"
-        "- consumer_dry_read_only: `true`\n"
-        "- next_render_level: `L2 tiny render path probe milestone`\n"
-        "- no video, audio, frame, ASS, render, or episode artifact is generated here.\n\n"
-        "## Consumer Payload Fields\n\n"
-        "- semantic: `semantic_preset_id`, `preset_key`, `speaker_id`, "
-        "`speaker_role`, `emotion`, `intensity`, `utterance_role`, "
-        "`readability_priority`\n"
-        "- style: `family_id`, `palette_route`, `font_family_role`, "
-        "`font_size_scale`, `outline_shadow_strength`\n"
-        "- color surfaces: `badge_color_token`, `accent_color_token`, "
-        "`backplate_box_token`, `body_text_color_policy_reference`, "
-        "`body_text_color_token`, `body_text_color_changed`\n"
-        "- motion / line break: `motion_primitive`, "
-        "`safe_area_line_break_behavior`\n"
-        "- boundaries: `render_boundary`, `production_public_boundary`\n\n"
-        "## Payload Rows\n\n"
-        "| semantic preset | family | palette | badge | accent | line-break |\n"
+        f"- level: `{probe['render_gate']['level']}`\n"
+        f"- new_render_run: `{str(probe['render_gate']['new_render_run']).lower()}`\n"
+        "- diagnostic_only: `true`\n"
+        "- tracked_binary_artifact_created: `false`\n"
+        "- production_render_acceptance: `false`\n"
+        "- public_use_permission: `false`\n\n"
+        "## Local Ignored Outputs\n\n"
+        f"- status: `{local_probe['status']}`\n"
+        f"- ASS: `{outputs['ass']}`\n"
+        f"- video: `{outputs['video']}`\n"
+        f"- manifest: `{outputs['manifest']}`\n\n"
+        "## Probe Rows\n\n"
+        "| semantic preset | ASS cue text | family | palette | body text | line-break |\n"
         "|---|---|---|---|---|---|\n"
         f"{rows}\n\n"
-        "## Static Drift Checks\n\n"
-        f"- all_payloads_consumer_ready: `{str(validation['all_payloads_consumer_ready']).lower()}`\n"
-        f"- missing_required_fields: `{len(validation['missing_required_fields'])}`\n"
-        f"- type_mismatches: `{len(validation['type_mismatches'])}`\n"
-        f"- body_text_color_policy_drift: `{str(validation['body_text_color_policy_drift']).lower()}`\n"
-        f"- render_boundary_leakage: `{str(validation['render_boundary_leakage']).lower()}`\n"
-        f"- production_public_boundary_leakage: `{str(validation['production_public_boundary_leakage']).lower()}`\n\n"
-        "## Readiness Separation\n\n"
-        "- subtitle_style_readiness: "
-        "`selector_static_proof_render_path_contract_consumer_dry_read_ready`\n"
-        "- video_render_readiness: `not_run_no_render_pass_implied`\n"
-        "- production_readiness: `not_accepted`\n"
-        "- rights_public_use_readiness: `not_accepted`\n\n"
+        "## Validation\n\n"
+        f"- source_contract_referenced: `{str(validation['source_contract_referenced']).lower()}`\n"
+        f"- selected_example_count: `{validation['selected_example_count']}`\n"
+        f"- stable_body_text_preserved: `{str(validation['stable_body_text_preserved']).lower()}`\n"
+        "- badge_accent_backplate_route_preserved: "
+        f"`{str(validation['badge_accent_backplate_route_preserved']).lower()}`\n"
+        "- safe_area_line_break_metadata_survived: "
+        f"`{str(validation['safe_area_line_break_metadata_survived']).lower()}`\n"
+        f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`\n"
+        f"- tracked_binary_artifact_created: `{str(validation['tracked_binary_artifact_created']).lower()}`\n\n"
         "## Boundary\n\n"
-        "This dry-read preserves `stable_default_body_text`, badge/accent/"
-        "backplate-first color surfaces, family and palette routes, and all "
-        "production / rights / public-use boundaries. A later L2 render probe "
-        "is a separate milestone and is not triggered by this document.\n"
+        "The probe preserves `stable_default_body_text`; semantic variation stays "
+        "badge/accent/backplate-first. The generated ASS/MP4/manifest paths stay "
+        "under ignored `episodes/` and do not approve production subtitle design, "
+        "production render, creative use, rights, publishing, or public use.\n"
     )
 
+
+def render_subtitle_render_path_selector_probe_ass(
+    probe: Mapping[str, Any],
+) -> str:
+    styles = "\n".join(_ass_style(example) for example in probe["examples"])
+    dialogues = "\n".join(_ass_probe_dialogue(example) for example in probe["examples"])
+    return (
+        "[Script Info]\n"
+        "ScriptType: v4.00+\n"
+        "PlayResX: 1920\n"
+        "PlayResY: 1080\n"
+        "ScaledBorderAndShadow: yes\n\n"
+        "[V4+ Styles]\n"
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, "
+        "OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, "
+        "ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, "
+        "MarginL, MarginR, MarginV, Encoding\n"
+        f"{styles}\n\n"
+        "[Events]\n"
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, "
+        "Effect, Text\n"
+        f"{dialogues}\n"
+    )
 
 def _example(example_id: str, intent: Mapping[str, Any]) -> dict[str, Any]:
     selection = select_subtitle_preset(intent)
@@ -1147,13 +1227,36 @@ def _render_path_contract_entry(example: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def _render_contract_consumer_payload(entry: Mapping[str, Any]) -> dict[str, Any]:
+def _render_path_probe_examples(
+    source_contract: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    entries_by_id = {
+        entry["semantic_preset_id"]: entry
+        for entry in source_contract["contract_entries"]
+    }
+    return [
+        _render_path_probe_example(index=index, entry=entries_by_id[example_id])
+        for index, example_id in enumerate(RENDER_PATH_PROBE_SELECTED_EXAMPLE_IDS)
+        if example_id in entries_by_id
+    ]
+
+
+def _render_path_probe_example(
+    *,
+    index: int,
+    entry: Mapping[str, Any],
+) -> dict[str, Any]:
     adapter_input = entry["render_adapter_input"]
     semantic = adapter_input["semantic"]
     style = adapter_input["style"]
     color = adapter_input["color_surfaces"]
     motion_line_break = adapter_input["motion_line_break"]
-    normalized_payload = {
+    role = _render_path_probe_role(str(entry["semantic_preset_id"]))
+    cue = _render_path_probe_cue(str(entry["semantic_preset_id"]))
+    return {
+        "order": index,
+        "example_id": entry["semantic_preset_id"],
+        "role": role,
         "semantic": {
             "semantic_preset_id": entry["semantic_preset_id"],
             "preset_key": entry["preset_key"],
@@ -1166,6 +1269,7 @@ def _render_contract_consumer_payload(entry: Mapping[str, Any]) -> dict[str, Any
         },
         "style": {
             "family_id": style["family_id"],
+            "style_family": style["style_family"],
             "palette_route": style["palette_route"],
             "font_family_role": style["font_family_role"],
             "font_size_scale": style["font_size_scale"],
@@ -1186,237 +1290,306 @@ def _render_contract_consumer_payload(entry: Mapping[str, Any]) -> dict[str, Any
             "safe_area_line_break_behavior": motion_line_break[
                 "safe_area_line_break_behavior"
             ],
+            "ass_text_contains_line_break": "\\N" in cue,
+            "safe_area_note": "bottom_center_title_safe_probe",
         },
-        "render_boundary": {
-            "render_level": "L0 No Render",
-            "new_render_run": False,
-            "render_artifact_created": False,
-            "video_artifact_created": False,
-            "audio_artifact_created": False,
-            "frame_artifact_created": False,
-            "ass_artifact_created": False,
-            "episode_artifact_created": False,
-            "consumer_dry_read_only": True,
+        "ass_probe": {
+            "style": f"Probe{index + 1}",
+            "start": _probe_ass_time(index * 1.35 + 0.2),
+            "end": _probe_ass_time(index * 1.35 + 1.25),
+            "text": cue,
         },
-        "production_public_boundary": {
-            "production_subtitle_design_acceptance": False,
-            "production_render_acceptance": False,
-            "creative_acceptance": False,
-            "rights_status": "pending",
-            "publishing_acceptance": False,
-            "public_use_permission": False,
-        },
-    }
-    color_payload = normalized_payload["color_surfaces"]
-    render_boundary = normalized_payload["render_boundary"]
-    production_public_boundary = normalized_payload["production_public_boundary"]
-    return {
-        "payload_id": f"consumer_dry_read:{entry['semantic_preset_id']}",
-        "semantic_preset_id": entry["semantic_preset_id"],
-        "preset_key": entry["preset_key"],
-        "normalized_render_adapter_payload": normalized_payload,
-        "dry_read_assertions": {
+        "assertions": {
             "source_contract_entry_consumed": True,
             "body_text_color_policy_preserved": (
-                color_payload["body_text_color_policy_reference"]
-                == "stable_default_body_text"
-                and color_payload["body_text_color_token"] == "stable_default_body_text"
-                and color_payload["body_text_color_changed"] is False
+                color["body_text_color_token"] == "stable_default_body_text"
+                and color["body_text_color_changed"] is False
             ),
             "badge_accent_backplate_preserved": all(
-                bool(color_payload[field])
+                bool(color[field])
                 for field in (
                     "badge_color_token",
                     "accent_color_token",
                     "backplate_box_token",
                 )
             ),
-            "family_palette_route_preserved": (
-                bool(normalized_payload["style"]["family_id"])
-                and bool(normalized_payload["style"]["palette_route"])
-            ),
+            "style_axis_preserved": bool(style["family_id"])
+            and bool(style["palette_route"])
+            and bool(style["font_family_role"]),
             "motion_line_break_metadata_preserved": (
-                bool(normalized_payload["motion"]["motion_primitive"])
-                and bool(
-                    normalized_payload["line_break"][
-                        "safe_area_line_break_behavior"
-                    ]
-                )
-            ),
-            "render_boundary_preserved": (
-                render_boundary["render_level"] == "L0 No Render"
-                and render_boundary["new_render_run"] is False
-                and render_boundary["consumer_dry_read_only"] is True
-                and all(
-                    render_boundary[field] is False
-                    for field in (
-                        "render_artifact_created",
-                        "video_artifact_created",
-                        "audio_artifact_created",
-                        "frame_artifact_created",
-                        "ass_artifact_created",
-                        "episode_artifact_created",
-                    )
-                )
-            ),
-            "production_public_boundary_preserved": (
-                production_public_boundary["rights_status"] == "pending"
-                and all(
-                    production_public_boundary[field] is False
-                    for field in (
-                        "production_subtitle_design_acceptance",
-                        "production_render_acceptance",
-                        "creative_acceptance",
-                        "publishing_acceptance",
-                        "public_use_permission",
-                    )
-                )
+                bool(motion_line_break["motion_primitive"])
+                and bool(motion_line_break["safe_area_line_break_behavior"])
             ),
         },
     }
 
 
-def _render_contract_consumer_validation(
+def _render_path_probe_role(example_id: str) -> str:
+    if example_id == "shout_intensity_2":
+        return "shout_high_intensity"
+    if example_id == "whisper_intensity_1":
+        return "low_pressure_whisper"
+    return "normal_dialogue"
+
+
+def _render_path_probe_cue(example_id: str) -> str:
+    if example_id == "shout_intensity_2":
+        return "SHOUT HIGH INTENSITY"
+    if example_id == "whisper_intensity_1":
+        return "LOW PRESSURE\\NWHISPER CUE"
+    return "NORMAL DIALOGUE CUE"
+
+
+def _render_path_probe_validation(
+    *,
     source_contract: Mapping[str, Any],
-    consumer_payloads: list[dict[str, Any]],
+    examples: list[dict[str, Any]],
+    local_probe: Mapping[str, Any],
 ) -> dict[str, Any]:
-    required_fields: tuple[tuple[str, str], ...] = (
-        ("semantic.semantic_preset_id", "str"),
-        ("semantic.preset_key", "str"),
-        ("semantic.speaker_id", "str"),
-        ("semantic.speaker_role", "str"),
-        ("semantic.emotion", "str"),
-        ("semantic.intensity", "int"),
-        ("semantic.utterance_role", "str"),
-        ("semantic.readability_priority", "str"),
-        ("style.family_id", "str"),
-        ("style.palette_route", "str"),
-        ("style.font_family_role", "str"),
-        ("style.font_size_scale", "number"),
-        ("style.outline_shadow_strength", "str"),
-        ("color_surfaces.badge_color_token", "str"),
-        ("color_surfaces.accent_color_token", "str"),
-        ("color_surfaces.backplate_box_token", "str"),
-        ("color_surfaces.body_text_color_policy_reference", "str"),
-        ("color_surfaces.body_text_color_token", "str"),
-        ("color_surfaces.body_text_color_changed", "bool"),
-        ("motion.motion_primitive", "str"),
-        ("line_break.safe_area_line_break_behavior", "str"),
-        ("render_boundary.render_level", "str"),
-        ("render_boundary.new_render_run", "bool"),
-        ("render_boundary.render_artifact_created", "bool"),
-        ("render_boundary.video_artifact_created", "bool"),
-        ("render_boundary.audio_artifact_created", "bool"),
-        ("render_boundary.frame_artifact_created", "bool"),
-        ("render_boundary.ass_artifact_created", "bool"),
-        ("render_boundary.episode_artifact_created", "bool"),
-        ("render_boundary.consumer_dry_read_only", "bool"),
-        ("production_public_boundary.production_subtitle_design_acceptance", "bool"),
-        ("production_public_boundary.production_render_acceptance", "bool"),
-        ("production_public_boundary.creative_acceptance", "bool"),
-        ("production_public_boundary.rights_status", "str"),
-        ("production_public_boundary.publishing_acceptance", "bool"),
-        ("production_public_boundary.public_use_permission", "bool"),
+    selected_ids = [example["example_id"] for example in examples]
+    missing_selected_examples = [
+        example_id
+        for example_id in RENDER_PATH_PROBE_SELECTED_EXAMPLE_IDS
+        if example_id not in selected_ids
+    ]
+    stable_body_text_preserved = all(
+        example["assertions"]["body_text_color_policy_preserved"]
+        for example in examples
     )
-    missing_required_fields: list[str] = []
-    type_mismatches: list[str] = []
-    body_text_color_policy_drift = False
-    render_boundary_leakage = False
-    production_public_boundary_leakage = False
-
-    for payload in consumer_payloads:
-        payload_id = str(payload["semantic_preset_id"])
-        normalized = payload["normalized_render_adapter_payload"]
-        for path, expected_type in required_fields:
-            value = _nested_value(normalized, path)
-            if value is None:
-                missing_required_fields.append(f"{payload_id}:{path}")
-            elif not _matches_dry_read_type(value, expected_type):
-                type_mismatches.append(f"{payload_id}:{path}:expected_{expected_type}")
-
-        color = normalized["color_surfaces"]
-        body_text_color_policy_drift = body_text_color_policy_drift or not (
-            color["body_text_color_policy_reference"] == "stable_default_body_text"
-            and color["body_text_color_token"] == "stable_default_body_text"
-            and color["body_text_color_changed"] is False
-        )
-
-        render_boundary = normalized["render_boundary"]
-        render_boundary_leakage = render_boundary_leakage or not (
-            render_boundary["render_level"] == "L0 No Render"
-            and render_boundary["new_render_run"] is False
-            and render_boundary["consumer_dry_read_only"] is True
-            and all(
-                render_boundary[field] is False
-                for field in (
-                    "render_artifact_created",
-                    "video_artifact_created",
-                    "audio_artifact_created",
-                    "frame_artifact_created",
-                    "ass_artifact_created",
-                    "episode_artifact_created",
-                )
+    badge_route = all(
+        example["assertions"]["badge_accent_backplate_preserved"]
+        for example in examples
+    )
+    style_axis = all(example["assertions"]["style_axis_preserved"] for example in examples)
+    motion_survived = all(
+        example["assertions"]["motion_line_break_metadata_preserved"]
+        for example in examples
+    )
+    line_break_survived = all(
+        bool(example["line_break"]["safe_area_line_break_behavior"])
+        for example in examples
+    ) and any(
+        example["line_break"]["ass_text_contains_line_break"]
+        for example in examples
+    )
+    boundaries = _render_path_probe_boundary_flags(local_probe)
+    production_public_boundary_closed = (
+        boundaries["rights_status"] == "pending"
+        and all(
+            boundaries[field] is False
+            for field in (
+                "production_subtitle_design_acceptance",
+                "production_render_acceptance",
+                "creative_acceptance",
+                "publishing_acceptance",
+                "public_use_permission",
             )
         )
-
-        production_public_boundary = normalized["production_public_boundary"]
-        production_public_boundary_leakage = production_public_boundary_leakage or not (
-            production_public_boundary["rights_status"] == "pending"
-            and all(
-                production_public_boundary[field] is False
-                for field in (
-                    "production_subtitle_design_acceptance",
-                    "production_render_acceptance",
-                    "creative_acceptance",
-                    "publishing_acceptance",
-                    "public_use_permission",
-                )
-            )
-        )
-
-    expected_count = len(source_contract["examples_represented"])
-    actual_count = len(consumer_payloads)
+    )
+    all_checks_passed = (
+        source_contract["artifact_id"] == RENDER_PATH_CONTRACT_ARTIFACT_ID
+        and len(examples) >= 3
+        and not missing_selected_examples
+        and stable_body_text_preserved
+        and badge_route
+        and style_axis
+        and motion_survived
+        and line_break_survived
+        and production_public_boundary_closed
+        and boundaries["tracked_binary_artifact_created"] is False
+    )
     return {
         "source_contract_artifact_id": source_contract["artifact_id"],
         "source_contract_status": source_contract["status"],
-        "expected_payload_count": expected_count,
-        "actual_payload_count": actual_count,
-        "missing_required_fields": missing_required_fields,
-        "type_mismatches": type_mismatches,
-        "body_text_color_policy_drift": body_text_color_policy_drift,
-        "render_boundary_leakage": render_boundary_leakage,
-        "production_public_boundary_leakage": production_public_boundary_leakage,
-        "all_payloads_consumer_ready": (
-            expected_count == actual_count
-            and not missing_required_fields
-            and not type_mismatches
-            and not body_text_color_policy_drift
-            and not render_boundary_leakage
-            and not production_public_boundary_leakage
+        "source_contract_referenced": (
+            source_contract["artifact_id"] == RENDER_PATH_CONTRACT_ARTIFACT_ID
         ),
+        "selected_example_count": len(examples),
+        "selected_example_ids": selected_ids,
+        "missing_selected_examples": missing_selected_examples,
+        "stable_body_text_preserved": stable_body_text_preserved,
+        "badge_accent_backplate_route_preserved": badge_route,
+        "style_axis_preserved": style_axis,
+        "motion_metadata_survived": motion_survived,
+        "safe_area_line_break_metadata_survived": line_break_survived,
+        "local_probe_status": local_probe["status"],
+        "production_public_boundary_closed": production_public_boundary_closed,
+        "tracked_binary_artifact_created": boundaries["tracked_binary_artifact_created"],
+        "all_checks_passed": all_checks_passed,
     }
 
 
-def _nested_value(mapping: Mapping[str, Any], path: str) -> Any:
-    current: Any = mapping
-    for part in path.split("."):
-        if not isinstance(current, Mapping) or part not in current:
-            return None
-        current = current[part]
-    return current
+def _default_render_path_probe_local_readback(
+    *,
+    status: str = "local_probe_not_attempted",
+    ass_path: Path | None = None,
+    video_path: Path | None = None,
+    manifest_path: Path | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    output_dir = base / RENDER_PATH_PROBE_LOCAL_OUTPUT_RELATIVE_DIR
+    ass = ass_path or output_dir / "subtitle_render_path_selector_probe.ass"
+    video = video_path or output_dir / "subtitle_render_path_selector_probe.mp4"
+    manifest = manifest_path or output_dir / "subtitle_render_path_selector_probe.local.json"
+    return {
+        "status": status,
+        "source_policy": "existing_output_first_local_ignored_source_media",
+        "outputs": {
+            "ass": _probe_display_path(ass, base),
+            "video": _probe_display_path(video, base),
+            "manifest": _probe_display_path(manifest, base),
+        },
+        "metadata": {},
+        "render_command_summary": None,
+        "ffmpeg_path_source": None,
+        "ffprobe_path_source": None,
+        "ffmpeg_version": None,
+        "ffprobe_version": None,
+        "fallback_used": False,
+        "attempts": [],
+        "warnings": [],
+        "ignored_by_git": True,
+        "tracked_binary_artifact_created": False,
+        "production_render_acceptance": False,
+        "public_use_permission": False,
+    }
 
 
-def _matches_dry_read_type(value: Any, expected_type: str) -> bool:
-    if expected_type == "bool":
-        return isinstance(value, bool)
-    if expected_type == "int":
-        return isinstance(value, int) and not isinstance(value, bool)
-    if expected_type == "number":
-        return isinstance(value, (int, float)) and not isinstance(value, bool)
-    if expected_type == "str":
-        return isinstance(value, str) and bool(value)
-    return False
+def _render_path_probe_boundary_flags(
+    local_probe: Mapping[str, Any],
+) -> dict[str, Any]:
+    flags = _boundary_flags()
+    local_generated = local_probe["status"] == "local_ignored_probe_generated"
+    flags.update(
+        {
+            "new_render_created": local_generated,
+            "diagnostic_local_ignored_render_created": local_generated,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+            "rights_status": "pending",
+        }
+    )
+    return flags
 
+
+def _local_probe_readback_from_render_result(
+    *,
+    render_result: ffmpeg_tiny.RenderResult,
+    ass_path: Path,
+    video_path: Path,
+    manifest_path: Path,
+    base_dir: Path,
+) -> dict[str, Any]:
+    selected_profile = render_result.selected_profile.to_dict()
+    selected_profile["output_path"] = _probe_display_path(
+        Path(selected_profile["output_path"]),
+        base_dir,
+    )
+    attempts = []
+    for attempt in render_result.attempts:
+        item = attempt.to_dict()
+        item["summary"] = _probe_command_summary(item["summary"], base_dir)
+        item["profile"]["output_path"] = _probe_display_path(
+            Path(item["profile"]["output_path"]),
+            base_dir,
+        )
+        attempts.append(item)
+    return {
+        "status": "local_ignored_probe_generated",
+        "source_policy": "existing_output_first_local_ignored_source_media",
+        "outputs": {
+            "ass": _probe_display_path(ass_path, base_dir),
+            "video": _probe_display_path(video_path, base_dir),
+            "manifest": _probe_display_path(manifest_path, base_dir),
+        },
+        "metadata": render_result.metadata,
+        "render_command_summary": _probe_command_summary(
+            render_result.command_summary,
+            base_dir,
+        ),
+        "ffmpeg_path_source": render_result.ffmpeg_path_source,
+        "ffprobe_path_source": render_result.ffprobe_path_source,
+        "ffmpeg_version": render_result.ffmpeg_version,
+        "ffprobe_version": render_result.ffprobe_version,
+        "fallback_used": render_result.fallback_used,
+        "selected_profile": selected_profile,
+        "attempts": attempts,
+        "warnings": render_result.warnings,
+        "ignored_by_git": True,
+        "tracked_binary_artifact_created": False,
+        "production_render_acceptance": False,
+        "public_use_permission": False,
+    }
+
+
+def _ass_style(example: Mapping[str, Any]) -> str:
+    style = example["style"]
+    color = example["color_surfaces"]
+    font_size = int(round(64 * float(style["font_size_scale"])))
+    outline, shadow = _ass_outline_shadow(str(style["outline_shadow_strength"]))
+    return (
+        f"Style: {example['ass_probe']['style']},Arial,{font_size},"
+        "&H00FFFFFF,&H000000FF,&H00000000,"
+        f"{_ass_backplate_color(str(color['backplate_box_token']))},"
+        "1,0,0,0,100,100,0,0,3,"
+        f"{outline},{shadow},2,120,120,90,1"
+    )
+
+
+def _ass_probe_dialogue(example: Mapping[str, Any]) -> str:
+    probe = example["ass_probe"]
+    return (
+        f"Dialogue: 0,{probe['start']},{probe['end']},{probe['style']},"
+        f"{example['semantic']['speaker_id']},0,0,0,,{_probe_ass_text(probe['text'])}"
+    )
+
+
+def _ass_backplate_color(backplate_token: str) -> str:
+    if "soft" in backplate_token:
+        return "&H88000000"
+    if "on" in backplate_token or "high_readability" in backplate_token:
+        return "&H66000000"
+    return "&HAA000000"
+
+
+def _ass_outline_shadow(outline_token: str) -> tuple[int, int]:
+    if "strong" in outline_token:
+        return (6, 3)
+    if "soft" in outline_token:
+        return (3, 1)
+    if "heavy" in outline_token:
+        return (5, 2)
+    return (4, 2)
+
+
+def _probe_ass_text(text: str) -> str:
+    return "{\\an2}" + text.replace("\n", "\\N")
+
+
+def _probe_ass_time(seconds: float) -> str:
+    centiseconds = int(round(seconds * 100))
+    hours, remainder = divmod(centiseconds, 360000)
+    minutes, remainder = divmod(remainder, 6000)
+    seconds_part, centiseconds_part = divmod(remainder, 100)
+    return f"{hours}:{minutes:02d}:{seconds_part:02d}.{centiseconds_part:02d}"
+
+
+def _probe_display_path(path: Path, base_dir: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(base_dir.resolve())).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
+
+
+def _probe_command_summary(summary: str, base_dir: Path) -> str:
+    display = summary.replace("\\", "/")
+    base = str(base_dir.resolve()).replace("\\", "/")
+    display = display.replace(base, ".")
+    display = display.replace(base.replace(":", "/:"), ".")
+    return re.sub(r"^\S*ffmpeg(?:\.EXE|\.exe)?", "ffmpeg", display)
 
 def _visual_proof_card(example: Mapping[str, Any]) -> str:
     sample = example["visual_sample"]

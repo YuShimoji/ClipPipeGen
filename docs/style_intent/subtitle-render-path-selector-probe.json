@@ -1,0 +1,340 @@
+{
+  "schema_id": "clippipegen.subtitle_render_path_selector_probe.v1",
+  "artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "feature_id": "ED-10af",
+  "status": "l2_render_path_selector_probe_ready",
+  "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+  "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+  "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
+  "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+  "source_registry_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+  "source_render_path_artifact_id": "clip-ed10z-tiny-render-path-nearer-probe-001",
+  "probe_kind": "tiny_ffmpeg_libass_selector_probe_readback",
+  "render_level": "L2 tiny render path selector probe",
+  "selected_example_ids": [
+    "neutral_dialogue_intensity_0",
+    "shout_intensity_2",
+    "whisper_intensity_1"
+  ],
+  "selected_example_count": 3,
+  "examples": [
+    {
+      "order": 0,
+      "example_id": "neutral_dialogue_intensity_0",
+      "role": "normal_dialogue",
+      "semantic": {
+        "semantic_preset_id": "neutral_dialogue_intensity_0",
+        "preset_key": "character.dialogue.neutral.i0.high",
+        "speaker_id": "bancho",
+        "speaker_role": "character",
+        "emotion": "neutral",
+        "intensity": 0,
+        "utterance_role": "dialogue",
+        "readability_priority": "high"
+      },
+      "style": {
+        "family_id": "dialogue_current_keifont_family",
+        "style_family": "current dialogue family",
+        "palette_route": "speaker_identity_blue",
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 1.0,
+        "outline_shadow_strength": "current_lead"
+      },
+      "color_surfaces": {
+        "badge_color_token": "speaker_bancho_badge_default",
+        "accent_color_token": "speaker_bancho_speaker_default_subtle_accent",
+        "backplate_box_token": "optional_high_readability",
+        "body_text_color_policy_reference": "stable_default_body_text",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "motion": {
+        "motion_primitive": "none"
+      },
+      "line_break": {
+        "safe_area_line_break_behavior": "high_readability",
+        "ass_text_contains_line_break": false,
+        "safe_area_note": "bottom_center_title_safe_probe"
+      },
+      "ass_probe": {
+        "style": "Probe1",
+        "start": "0:00:00.20",
+        "end": "0:00:01.25",
+        "text": "NORMAL DIALOGUE CUE"
+      },
+      "assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "style_axis_preserved": true,
+        "motion_line_break_metadata_preserved": true
+      }
+    },
+    {
+      "order": 1,
+      "example_id": "shout_intensity_2",
+      "role": "shout_high_intensity",
+      "semantic": {
+        "semantic_preset_id": "shout_intensity_2",
+        "preset_key": "character.dialogue.shout.i2.high",
+        "speaker_id": "bancho",
+        "speaker_role": "character",
+        "emotion": "shout",
+        "intensity": 2,
+        "utterance_role": "dialogue",
+        "readability_priority": "high"
+      },
+      "style": {
+        "family_id": "emphasis_energy_family",
+        "style_family": "high-energy emphasis family",
+        "palette_route": "high_energy_warm",
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 1.16,
+        "outline_shadow_strength": "strong"
+      },
+      "color_surfaces": {
+        "badge_color_token": "speaker_bancho_badge_default",
+        "accent_color_token": "speaker_bancho_high_energy_accent",
+        "backplate_box_token": "optional_high_readability",
+        "body_text_color_policy_reference": "stable_default_body_text",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "motion": {
+        "motion_primitive": "impact_placeholder"
+      },
+      "line_break": {
+        "safe_area_line_break_behavior": "prefer_shorter_lines_max_two",
+        "ass_text_contains_line_break": false,
+        "safe_area_note": "bottom_center_title_safe_probe"
+      },
+      "ass_probe": {
+        "style": "Probe2",
+        "start": "0:00:01.55",
+        "end": "0:00:02.60",
+        "text": "SHOUT HIGH INTENSITY"
+      },
+      "assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "style_axis_preserved": true,
+        "motion_line_break_metadata_preserved": true
+      }
+    },
+    {
+      "order": 2,
+      "example_id": "whisper_intensity_1",
+      "role": "low_pressure_whisper",
+      "semantic": {
+        "semantic_preset_id": "whisper_intensity_1",
+        "preset_key": "character.dialogue.whisper.i1.normal",
+        "speaker_id": "bancho",
+        "speaker_role": "character",
+        "emotion": "whisper",
+        "intensity": 1,
+        "utterance_role": "dialogue",
+        "readability_priority": "normal"
+      },
+      "style": {
+        "family_id": "quiet_soft_readability_family",
+        "style_family": "quiet readable dialogue family",
+        "palette_route": "quiet_cool",
+        "font_family_role": "current_keifont_dialogue_role",
+        "font_size_scale": 0.98,
+        "outline_shadow_strength": "soft_readable"
+      },
+      "color_surfaces": {
+        "badge_color_token": "speaker_bancho_badge_default",
+        "accent_color_token": "speaker_bancho_quiet_accent",
+        "backplate_box_token": "soft",
+        "body_text_color_policy_reference": "stable_default_body_text",
+        "body_text_color_token": "stable_default_body_text",
+        "body_text_color_changed": false
+      },
+      "motion": {
+        "motion_primitive": "none"
+      },
+      "line_break": {
+        "safe_area_line_break_behavior": "normal",
+        "ass_text_contains_line_break": true,
+        "safe_area_note": "bottom_center_title_safe_probe"
+      },
+      "ass_probe": {
+        "style": "Probe3",
+        "start": "0:00:02.90",
+        "end": "0:00:03.95",
+        "text": "LOW PRESSURE\\NWHISPER CUE"
+      },
+      "assertions": {
+        "source_contract_entry_consumed": true,
+        "body_text_color_policy_preserved": true,
+        "badge_accent_backplate_preserved": true,
+        "style_axis_preserved": true,
+        "motion_line_break_metadata_preserved": true
+      }
+    }
+  ],
+  "body_text_color_policy": {
+    "reference": "stable_default_body_text",
+    "stable_across_examples": true,
+    "body_text_color_changed": false
+  },
+  "color_route": {
+    "semantic_variation_surface_priority": [
+      "badge_color_token",
+      "accent_color_token",
+      "backplate_box_token",
+      "body_text_color_token"
+    ],
+    "badge_accent_backplate_first": true,
+    "body_text_color_changes_allowed": false
+  },
+  "motion_line_break_policy": {
+    "motion_metadata_survived": true,
+    "safe_area_line_break_metadata_survived": true,
+    "ass_newline_probe_example_id": "whisper_intensity_1"
+  },
+  "local_probe": {
+    "status": "local_ignored_probe_generated",
+    "source_policy": "existing_output_first_local_ignored_source_media",
+    "outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json"
+    },
+    "metadata": {
+      "duration_seconds": 4.2,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "container_long_name": "QuickTime / MOV",
+      "video_codec": "h264",
+      "video_codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "audio_codec": "aac",
+      "audio_codec_long_name": "AAC (Advanced Audio Coding)",
+      "width": 1920,
+      "height": 1080,
+      "resolution": "1920x1080",
+      "fps": 30.0,
+      "frame_rate": "30/1",
+      "stream_count": 2,
+      "stream_counts": {
+        "video": 1,
+        "audio": 1,
+        "other": 0
+      }
+    },
+    "render_command_summary": "ffmpeg -y -ss 0 -t 4.2 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 -ss 0 -t 4.2 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav -map 0:v:0 -map 1:a:0 -vf scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p,subtitles=filename='./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass' -c:v libx264 -c:a aac -shortest ./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+    "ffmpeg_path_source": "PATH",
+    "ffprobe_path_source": "PATH",
+    "ffmpeg_version": "ffmpeg version 8.1.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe_version": "ffprobe version 8.1.1-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+    "fallback_used": false,
+    "selected_profile": {
+      "profile_id": "mp4_h264_aac",
+      "container": "mp4",
+      "video_codec": "libx264",
+      "audio_codec": "aac",
+      "output_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4"
+    },
+    "attempts": [
+      {
+        "profile": {
+          "profile_id": "mp4_h264_aac",
+          "container": "mp4",
+          "video_codec": "libx264",
+          "audio_codec": "aac",
+          "output_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4"
+        },
+        "summary": "ffmpeg -y -ss 0 -t 4.2 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 -ss 0 -t 4.2 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav -map 0:v:0 -map 1:a:0 -vf scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p,subtitles=filename='./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass' -c:v libx264 -c:a aac -shortest ./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+        "status": "succeeded",
+        "exit_code": 0,
+        "stderr_digest": {
+          "algorithm": "sha256",
+          "sha256": "3039943e25ab1693fe33cb6ba8d384715af11997d9e72d92a87c88f5e410b9b5",
+          "tail": " 1.8%  3.4%  1.4%  P16..4: 25.0%  7.0%  3.9%  0.0%  0.0%    skip:57.4%\n[libx264 @ 0000027cb77f9500] mb B  I16..4:  0.1%  0.1%  0.0%  B16..8: 23.0%  1.6%  0.3%  direct: 0.2%  skip:74.6%  L0:46.4% L1:49.1% BI: 4.4%\n[libx264 @ 0000027cb77f9500] 8x8 transform intra:55.1% inter:65.3%\n[libx264 @ 0000027cb77f9500] coded y,uvDC,uvAC intra: 40.5% 24.3% 10.8% inter: 3.1% 1.7% 0.1%\n[libx264 @ 0000027cb77f9500] i16 v,h,dc,p: 20% 55% 12% 14%\n[libx264 @ 0000027cb77f9500] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 27% 24%  4%  3%  4%  3%  3%  3%\n[libx264 @ 0000027cb77f9500] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 33% 22% 13%  6%  5%  6%  6%  5%  5%\n[libx264 @ 0000027cb77f9500] i8c dc,h,v,p: 67% 18% 13%  3%\n[libx264 @ 0000027cb77f9500] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0000027cb77f9500] ref P L0: 71.3% 10.6% 14.3%  3.8%\n[libx264 @ 0000027cb77f9500] ref B L0: 89.9%  8.6%  1.4%\n[libx264 @ 0000027cb77f9500] ref B L1: 98.8%  1.2%\n[libx264 @ 0000027cb77f9500] kb/s:2079.14\n[aac @ 0000027cb533dd40] Qavg: 1826.829\n",
+          "tail_chars": 1000,
+          "truncated": true
+        },
+        "failure_reason": null,
+        "selected": true
+      }
+    ],
+    "warnings": [
+      "OUT-01 tiny render proof is diagnostic and not production/creative/publish acceptance",
+      "diagnostic subtitle burn-in enabled; typography/safe-area/font polish is not claimed"
+    ],
+    "ignored_by_git": true,
+    "tracked_binary_artifact_created": false,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "source_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+    "source_contract_status": "render_path_selector_contract_ready",
+    "source_contract_referenced": true,
+    "selected_example_count": 3,
+    "selected_example_ids": [
+      "neutral_dialogue_intensity_0",
+      "shout_intensity_2",
+      "whisper_intensity_1"
+    ],
+    "missing_selected_examples": [],
+    "stable_body_text_preserved": true,
+    "badge_accent_backplate_route_preserved": true,
+    "style_axis_preserved": true,
+    "motion_metadata_survived": true,
+    "safe_area_line_break_metadata_survived": true,
+    "local_probe_status": "local_ignored_probe_generated",
+    "production_public_boundary_closed": true,
+    "tracked_binary_artifact_created": false,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-render-path-selector-probe.json",
+    "doc": "docs/style_intent/subtitle-render-path-selector-probe.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "human_review_required_only_for": [
+      "new_style_family",
+      "new_palette",
+      "body_text_color_policy_change",
+      "production_route_change",
+      "rights",
+      "publishing",
+      "public_use"
+    ]
+  },
+  "render_gate": {
+    "level": "L2 tiny render path selector probe",
+    "new_render_run": true,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "readiness_separation": {
+    "subtitle_style_readiness": "selector_l2_render_path_probe_ready",
+    "video_render_readiness": "diagnostic_local_probe_only",
+    "production_readiness": "not_accepted",
+    "rights_public_use_readiness": "not_accepted"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": true,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "diagnostic_local_ignored_render_created": true,
+    "tracked_binary_artifact_created": false
+  }
+}

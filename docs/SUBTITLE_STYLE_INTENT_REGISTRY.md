@@ -6,8 +6,8 @@ status: diagnostic_intent_registry_ready
 health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-25
-active_artifact: clip-ed10af-render-contract-consumer-dry-read-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, artifacts/ARTIFACTS.md
+active_artifact: clip-ed10af-l2-render-path-selector-probe-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -39,8 +39,7 @@ or production-route review.
 
 ED-10af is the current successor readback for this registry route. It consumes
 the ED-10ae render-path selector contract into normalized adapter-facing
-payloads for all six semantic presets while keeping the route static and L0 No
-Render.
+a three-example L2 FFmpeg/libass selector probe while keeping the route diagnostic only.
 
 ## Intent Axes
 
@@ -137,18 +136,19 @@ line-break fields a later render adapter would receive. This is L0 static
 readback only; the later L2 tiny render-path probe remains a separate
 milestone, and production/public-use boundaries stay closed or pending.
 
-ED-10af adds the current render contract consumer dry-read artifact:
-`clip-ed10af-render-contract-consumer-dry-read-001`. The tracked dry-read lives at
-[`docs/style_intent/subtitle-render-contract-consumer-dry-read.json`](style_intent/subtitle-render-contract-consumer-dry-read.json)
+ED-10af adds the current L2 render-path selector probe artifact:
+`clip-ed10af-l2-render-path-selector-probe-001`. The tracked probe readback lives at
+[`docs/style_intent/subtitle-render-path-selector-probe.json`](style_intent/subtitle-render-path-selector-probe.json)
 and
-[`docs/style_intent/subtitle-render-contract-consumer-dry-read.md`](style_intent/subtitle-render-contract-consumer-dry-read.md).
-It consumes the ED-10ae contract into six normalized payloads: neutral dialogue,
-shout / high intensity, whisper, ominous inner voice, narration, and system note.
-The dry-read preserves `stable_default_body_text`, keeps color on
+[`docs/style_intent/subtitle-render-path-selector-probe.md`](style_intent/subtitle-render-path-selector-probe.md).
+It consumes the ED-10ae contract and selects three semantic examples: neutral
+dialogue, shout / high intensity, and low-pressure whisper.
+
+The probe preserves `stable_default_body_text`, keeps semantic variation on
 badge/accent/backplate surfaces, carries family/palette route plus motion and
-line-break metadata, and records L0 no-render plus production/public-use boundary
-flags. No ASS/MP4/manifest or other render artifact is created; production/public-use
-boundaries remain closed or pending.
+line-break metadata, and records local ignored ASS/MP4/manifest evidence. It is
+L2 diagnostic readback only; production/public-use boundaries remain closed or
+pending.
 
 ## Review Surface Layout Debt## Review Surface Layout Debt
 

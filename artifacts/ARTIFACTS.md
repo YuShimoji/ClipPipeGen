@@ -361,16 +361,19 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
-## `clip-ed10af-render-contract-consumer-dry-read-001`
+## `clip-ed10af-l2-render-path-selector-probe-001`
 
 | Field | Value |
 |---|---|
-| title | ED-10af Render Contract Consumer Dry-Read |
-| purpose | Consume the ED-10ae render-path selector contract into normalized adapter-facing payloads for all six semantic presets without running render. |
-| storage class | Tracked JSON/Markdown static readback. No video, audio, frame, ASS, render, episode, or local ignored artifact is created by this slice. |
-| repo_relative_path | `docs/style_intent/subtitle-render-contract-consumer-dry-read.md` |
-| metadata_json | `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` |
-| open_command | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
+| title | ED-10af L2 Render Path Selector Probe |
+| purpose | Consume the ED-10ae render-path selector contract into a tiny FFmpeg/libass diagnostic path for normal dialogue, shout, and whisper semantic examples. |
+| storage class | Tracked JSON/Markdown readback plus ignored same-machine ASS/MP4/manifest evidence. |
+| repo_relative_path | `docs/style_intent/subtitle-render-path-selector-probe.md` |
+| metadata_json | `docs/style_intent/subtitle-render-path-selector-probe.json` |
+| open_command | `see docs\style_intent\subtitle-render-path-selector-probe.md` |
+| local_ignored_ass | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass` |
+| local_ignored_video | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4` |
+| local_ignored_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json` |
 | source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
 | source_style_family_palette_artifact | `clip-ed10ad-style-family-palette-axis-proof-001` |
 | source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
@@ -378,11 +381,11 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
 | source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
 | implementation | `src/integrations/render/subtitle_preset_selector.py` |
-| generated_from | ED-10af static consumer dry-read using the ED-10ae contract entries. |
-| validation_command | Parse ED-10af dry-read JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
-| latest_local_smoke | Static dry-read validation reports six payloads, zero missing fields, zero type mismatches, no body text color drift, no render boundary leakage, and no production/public boundary leakage. |
-| review_status | No Review Card and no user-side judgement requested. This is L0 static readback only. |
-| next_action | Use this normalized consumer payload before a later L2 tiny render-path probe; do not infer actual render, production render, rights, publishing, or public-use readiness. |
+| generated_from | ED-10af L2 selector probe using ED-10ae contract entries and existing ignored local source media. |
+| validation_command | Parse ED-10af probe JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | Local ignored FFmpeg/libass probe generated ASS/MP4/manifest; metadata readback reports 1920x1080, 4.2s, h264/aac. Tracked JSON reports 3 examples, stable body text, badge/accent/backplate route, safe-area/line-break metadata, and closed production/public boundaries. |
+| review_status | No Review Card and no user-side judgement requested. This is diagnostic render-path readback only. |
+| next_action | Use this L2 selector probe readback before opening a separate production limitation-lift, final render-path, rights, publishing, or public-use route. |
 
 Boundary flags remain false or pending:
 
@@ -394,6 +397,8 @@ Boundary flags remain false or pending:
 - `production_usage_allowed=false`
 - `publishing_acceptance=false`
 - `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
 
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 

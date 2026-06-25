@@ -339,25 +339,24 @@ production-render readiness. The later L2 tiny render-path probe trigger is a
 separate milestone. ED-10ae does not approve production subtitle design,
 production render, creative use, rights, publishing, or public use.
 
-## Current ED-10af Render Contract Consumer Dry-Read
+## Current ED-10af L2 Render Path Selector Probe
 
-ED-10af records `clip-ed10af-render-contract-consumer-dry-read-001` as a tracked JSON/Markdown static dry-read. It
-consumes the ED-10ae render-path selector contract and normalizes the
-adapter-facing payload a later render adapter would receive for all six semantic
-examples: neutral dialogue, shout / high intensity, whisper, ominous inner
-voice, narration, and system note.
+ED-10af records `clip-ed10af-l2-render-path-selector-probe-001` as a tracked JSON/Markdown L2 diagnostic probe. It
+consumes the ED-10ae render-path selector contract and selects normal dialogue,
+shout / high intensity, and low-pressure whisper examples for a tiny
+FFmpeg/libass readback path.
 
-The dry-read carries semantic preset id, preset key, family id, palette route,
-font role, size / outline metadata, badge/accent/backplate fields, stable body
-text color, motion metadata, safe-area / line-break metadata, render boundary
-flags, and production/public-use boundary flags. Body subtitle text color remains
-`stable_default_body_text`; speaker or emotion color remains badge/accent and
-backplate first.
+The probe carries semantic preset id, preset key, family id, palette route, font
+role, size / outline metadata, badge/accent/backplate fields, stable body text
+color, motion metadata, and safe-area / line-break metadata. Body subtitle text
+color remains `stable_default_body_text`; speaker or emotion color remains
+badge/accent and backplate first.
 
-ED-10af is L0 No Render. It creates no video, audio, frame, ASS, render, episode,
-or local ignored probe artifact. The later L2 tiny render-path probe remains a
-separate milestone. ED-10af does not approve production subtitle design,
-production render, creative use, rights, publishing, or public use.
+ED-10af generated same-machine ignored ASS, MP4, and local manifest evidence at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass`, `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4`, and `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json`. These are diagnostic proof
+outputs only and remain outside Git. ED-10af does not approve production
+subtitle design, production render, creative use, rights, publishing, or public
+use.
 
 ## Future Shared Line-Break Policy Note## Future Shared Line-Break Policy Note
 
