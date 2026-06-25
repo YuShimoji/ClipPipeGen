@@ -27,8 +27,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10ae"
+    assert status["current_focus"]["feature_id"] == "ED-10af"
     assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10af-render-contract-consumer-dry-read-001"
+    )
+    assert status["current_focus"][
+        "source_render_path_selector_contract_artifact_id"
+    ] == (
         "clip-ed10ae-render-path-selector-contract-probe-001"
     )
     assert status["current_focus"]["source_style_family_palette_artifact_id"] == (
@@ -58,7 +63,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["source_proof_artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
-    assert status["current_focus"]["state"] == "render_path_selector_contract_ready"
+    assert status["current_focus"]["state"] == (
+        "render_contract_consumer_dry_read_ready"
+    )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -73,7 +80,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ae_render_path_selector_contract_ready_l0_no_render"
+        "ed10af_render_contract_consumer_dry_read_ready_l0_no_render"
     )
     assert status["current_focus"]["user_action_type"] == (
         "NO_USER_ACTION_STATIC_READBACK_ONLY"
@@ -85,7 +92,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "render_path_selector_contract_static_readback_no_render"
+        "render_contract_consumer_dry_read_static_readback_no_render"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -135,10 +142,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "withheld_latest_review_already_consumed"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10ae-render-path-selector-contract-probe-001"
+        "clip-ed10af-render-contract-consumer-dry-read-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "render_path_selector_contract_readback"
+        "render_contract_consumer_dry_read"
     )
     assert status["current_focus"]["subtitle_preset_selector"]["artifact_id"] == (
         "clip-ed10ab-subtitle-preset-selector-001"
@@ -204,6 +211,55 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["subtitle_render_path_selector_contract"][
         "new_render_run"
     ] is False
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "artifact_id"
+    ] == "clip-ed10af-render-contract-consumer-dry-read-001"
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "source_render_path_selector_contract_artifact_id"
+    ] == "clip-ed10ae-render-path-selector-contract-probe-001"
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "render_level"
+    ] == "L0 No Render"
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "example_ids"
+    ] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert "render_boundary" in status["current_focus"][
+        "subtitle_render_contract_consumer_dry_read"
+    ]["payload_field_groups"]
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "body_text_color_policy"
+    ] == "stable_default_body_text"
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "dry_read_validation"
+    ] == "all_payloads_consumer_ready"
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "missing_required_fields"
+    ] == 0
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "type_mismatches"
+    ] == 0
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "body_text_color_policy_drift"
+    ] is False
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "render_boundary_leakage"
+    ] is False
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "production_public_boundary_leakage"
+    ] is False
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "later_l2_tiny_render_trigger"
+    ] == "not_triggered_in_this_slice"
+    assert status["current_focus"]["subtitle_render_contract_consumer_dry_read"][
+        "new_render_run"
+    ] is False
     assert status["current_focus"]["subtitle_style_intent_registry"][
         "body_text_color_policy"
     ] == "stable_by_default"
@@ -255,6 +311,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        "see docs\\style_intent\\subtitle-render-contract-consumer-dry-read.md",
         "see docs\\style_intent\\subtitle-render-path-selector-contract.md",
         "see docs\\style_intent\\subtitle-style-family-palette-proof.html",
         "see docs\\style_intent\\subtitle-visual-selector-proof.html",
@@ -295,7 +352,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10ae-render-path-selector-contract-probe-001"
+        "clip-ed10af-render-contract-consumer-dry-read-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -309,24 +366,27 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert persisted["open_surfaces"][2]["target"] == (
-        "docs/style_intent/subtitle-render-path-selector-contract.md"
+        "docs/style_intent/subtitle-render-contract-consumer-dry-read.md"
     )
     assert persisted["open_surfaces"][3]["target"] == (
-        "docs/style_intent/subtitle-style-family-palette-proof.html"
+        "docs/style_intent/subtitle-render-path-selector-contract.md"
     )
     assert persisted["open_surfaces"][4]["target"] == (
-        "docs/style_intent/subtitle-visual-selector-proof.html"
+        "docs/style_intent/subtitle-style-family-palette-proof.html"
     )
     assert persisted["open_surfaces"][5]["target"] == (
-        "docs/style_intent/subtitle-preset-selector.json"
+        "docs/style_intent/subtitle-visual-selector-proof.html"
     )
     assert persisted["open_surfaces"][6]["target"] == (
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+        "docs/style_intent/subtitle-preset-selector.json"
     )
     assert persisted["open_surfaces"][7]["target"] == (
+        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+    )
+    assert persisted["open_surfaces"][8]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "ED-10z local readback" in persisted["open_surfaces"][7][
+    assert "ED-10z local readback" in persisted["open_surfaces"][8][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -343,6 +403,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10ac-visual-selector-proof-001" in html
     assert "clip-ed10ad-style-family-palette-axis-proof-001" in html
     assert "clip-ed10ae-render-path-selector-contract-probe-001" in html
+    assert "clip-ed10af-render-contract-consumer-dry-read-001" in html
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
@@ -668,6 +729,82 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
     assert contract["render_gate"]["new_render_run"] is False
     assert contract["readiness_separation"]["production_readiness"] == "not_accepted"
     assert contract["boundaries"]["production_render_acceptance"] is False
+
+
+def test_subtitle_render_contract_consumer_dry_read_is_machine_readable():
+    dry_read_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-contract-consumer-dry-read.json"
+    )
+    dry_read = json.loads(dry_read_path.read_text(encoding="utf-8"))
+
+    assert dry_read["artifact_id"] == (
+        "clip-ed10af-render-contract-consumer-dry-read-001"
+    )
+    assert dry_read["source_render_path_selector_contract_artifact_id"] == (
+        "clip-ed10ae-render-path-selector-contract-probe-001"
+    )
+    assert dry_read["status"] == "render_contract_consumer_dry_read_ready"
+    assert dry_read["dry_read_kind"] == "static_contract_consumer_payload_readback"
+    assert dry_read["render_level"] == "L0 No Render"
+    assert dry_read["examples_represented"] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert "semantic_preset_id" in dry_read["adapter_payload_schema"][
+        "semantic_fields"
+    ]
+    assert "palette_route" in dry_read["adapter_payload_schema"]["style_fields"]
+    assert "badge_color_token" in dry_read["adapter_payload_schema"][
+        "color_surface_fields"
+    ]
+    assert "body_text_color_policy_reference" in dry_read["adapter_payload_schema"][
+        "color_surface_fields"
+    ]
+    assert "render_artifact_created" in dry_read["adapter_payload_schema"][
+        "render_boundary_fields"
+    ]
+    assert "public_use_permission" in dry_read["adapter_payload_schema"][
+        "production_public_boundary_fields"
+    ]
+    assert dry_read["dry_read_validation"]["expected_payload_count"] == 6
+    assert dry_read["dry_read_validation"]["actual_payload_count"] == 6
+    assert dry_read["dry_read_validation"]["missing_required_fields"] == []
+    assert dry_read["dry_read_validation"]["type_mismatches"] == []
+    assert dry_read["dry_read_validation"]["body_text_color_policy_drift"] is False
+    assert dry_read["dry_read_validation"]["render_boundary_leakage"] is False
+    assert (
+        dry_read["dry_read_validation"]["production_public_boundary_leakage"]
+        is False
+    )
+    assert dry_read["dry_read_validation"]["all_payloads_consumer_ready"] is True
+    shout_payload = next(
+        payload
+        for payload in dry_read["consumer_payloads"]
+        if payload["semantic_preset_id"] == "shout_intensity_2"
+    )["normalized_render_adapter_payload"]
+    assert shout_payload["style"]["family_id"] == "emphasis_energy_family"
+    assert shout_payload["style"]["palette_route"] == "high_energy_warm"
+    assert shout_payload["color_surfaces"]["body_text_color_policy_reference"] == (
+        "stable_default_body_text"
+    )
+    assert shout_payload["color_surfaces"]["body_text_color_token"] == (
+        "stable_default_body_text"
+    )
+    assert shout_payload["render_boundary"]["render_level"] == "L0 No Render"
+    assert shout_payload["render_boundary"]["new_render_run"] is False
+    assert shout_payload["render_boundary"]["render_artifact_created"] is False
+    assert dry_read["render_gate"]["new_render_run"] is False
+    assert dry_read["render_gate"]["consumer_dry_read_only"] is True
+    assert dry_read["boundaries"]["production_render_acceptance"] is False
+    assert dry_read["boundaries"]["rights_status"] == "pending"
+    assert dry_read["boundaries"]["public_use_permission"] is False
 
 
 def test_subtitle_font_candidate_registry_is_machine_readable():
@@ -1159,7 +1296,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_ed10ae_artifact(
+def test_docs_dashboard_current_focus_registration_uses_ed10af_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -1172,7 +1309,7 @@ def test_docs_dashboard_current_focus_registration_uses_ed10ae_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ae-render-path-selector-contract-probe-001"
+        "clip-ed10af-render-contract-consumer-dry-read-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]

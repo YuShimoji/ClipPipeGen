@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: render_path_selector_contract_ready
+health: render_contract_consumer_dry_read_ready
 progress_pct: 100
 last_touched: 2026-06-25
-next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ae-render-path-selector-contract-probe-001
+next_review_due: none_static_readback_only
+active_artifact: clip-ed10af-render-contract-consumer-dry-read-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -35,9 +35,30 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10ae-render-path-selector-contract-probe-001`
+Active artifact: `clip-ed10af-render-contract-consumer-dry-read-001`
 
-ED-10ae current checkpoint, 2026-06-25 JST: the active artifact is now
+ED-10af current checkpoint, 2026-06-25 JST: the active artifact is now
+`clip-ed10af-render-contract-consumer-dry-read-001`. It consumes the ED-10ae render-path selector contract and writes a
+tracked static consumer dry-read at `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` and `docs/style_intent/subtitle-render-contract-consumer-dry-read.md`. The dry-read
+normalizes adapter-facing payloads for all six semantic presets: neutral
+dialogue, shout / high intensity, whisper, ominous inner voice, narration, and
+system note.
+
+Each payload carries semantic preset id, preset key, speaker/emotion/readability
+axes, family id, palette route, font role, size / outline metadata,
+badge/accent/backplate surfaces, `stable_default_body_text`, motion metadata,
+safe-area / line-break behavior, render boundary flags, and production/public-use
+boundary flags. Static validation reports six payloads, zero missing fields,
+zero type mismatches, no body text color policy drift, no render boundary
+leakage, and no production/public-use leakage.
+
+ED-10af is L0 No Render. It does not create video, audio, frame, ASS, render,
+episode, or local ignored probe artifacts. A later L2 tiny render-path probe is
+recorded as a separate milestone, not triggered by this slice. Production
+subtitle design, production render, creative use, rights, publishing, and public
+use remain closed or pending; `git ls-files episodes` must remain empty.
+
+ED-10ae source checkpoint, 2026-06-25 JST: the source contract artifact is
 `clip-ed10ae-render-path-selector-contract-probe-001`. It consumes the ED-10ad
 style-family / palette proof and writes tracked static contract readback at
 `docs/style_intent/subtitle-render-path-selector-contract.json` and

@@ -361,6 +361,40 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10af-render-contract-consumer-dry-read-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10af Render Contract Consumer Dry-Read |
+| purpose | Consume the ED-10ae render-path selector contract into normalized adapter-facing payloads for all six semantic presets without running render. |
+| storage class | Tracked JSON/Markdown static readback. No video, audio, frame, ASS, render, episode, or local ignored artifact is created by this slice. |
+| repo_relative_path | `docs/style_intent/subtitle-render-contract-consumer-dry-read.md` |
+| metadata_json | `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` |
+| open_command | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
+| source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
+| source_style_family_palette_artifact | `clip-ed10ad-style-family-palette-axis-proof-001` |
+| source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
+| source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
+| source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
+| source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
+| implementation | `src/integrations/render/subtitle_preset_selector.py` |
+| generated_from | ED-10af static consumer dry-read using the ED-10ae contract entries. |
+| validation_command | Parse ED-10af dry-read JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | Static dry-read validation reports six payloads, zero missing fields, zero type mismatches, no body text color drift, no render boundary leakage, and no production/public boundary leakage. |
+| review_status | No Review Card and no user-side judgement requested. This is L0 static readback only. |
+| next_action | Use this normalized consumer payload before a later L2 tiny render-path probe; do not infer actual render, production render, rights, publishing, or public-use readiness. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

@@ -100,8 +100,9 @@ def build_project_status(
             ),
         },
         "current_focus": {
-            "feature_id": "ED-10ae",
-            "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+            "feature_id": "ED-10af",
+            "artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+            "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
             "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
             "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
             "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
@@ -111,19 +112,19 @@ def build_project_status(
             "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
             "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
             "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-            "state": "render_path_selector_contract_ready",
+            "state": "render_contract_consumer_dry_read_ready",
             "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
             "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
             "target_cuts": ["cut_008"],
             "accepted_size_rule": "round(frame_height * 0.115)",
             "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
             "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-            "route_status": "ed10ae_render_path_selector_contract_ready_l0_no_render",
+            "route_status": "ed10af_render_contract_consumer_dry_read_ready_l0_no_render",
             "user_action_type": "NO_USER_ACTION_STATIC_READBACK_ONLY",
             "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
             "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
             "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-            "main_issue": "static_selector_to_render_path_contract_readback",
+            "main_issue": "static_render_contract_consumer_payload_readback",
             "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
             "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
             "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -133,7 +134,7 @@ def build_project_status(
             ],
             "lead_status": "provisional_bounded_decoration_lead",
             "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-            "local_generation_status": "ed10ae_render_path_contract_ready_no_render",
+            "local_generation_status": "ed10af_render_contract_consumer_dry_read_ready_no_render",
             "user_review_status": "consumed_no_user_review_required_now",
             "multiline_wrap_evidence_status": "passed_diagnostic_review",
             "multiline_wrap_evidence": {
@@ -368,6 +369,42 @@ def build_project_status(
                 "later_l2_tiny_render_trigger": "not_triggered_in_this_slice",
                 "new_render_run": False,
             },
+            "subtitle_render_contract_consumer_dry_read": {
+                "status": "render_contract_consumer_dry_read_ready",
+                "artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+                "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+                "metadata_json": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+                "doc": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md",
+                "dry_read_kind": "static_contract_consumer_payload_readback",
+                "consumer_name": "subtitle_render_adapter_contract_consumer_v0",
+                "render_level": "L0 No Render",
+                "example_ids": [
+                    "neutral_dialogue_intensity_0",
+                    "shout_intensity_2",
+                    "whisper_intensity_1",
+                    "ominous_intensity_2",
+                    "narration_intensity_0",
+                    "system_note_intensity_0",
+                ],
+                "payload_field_groups": [
+                    "semantic",
+                    "style",
+                    "color_surfaces",
+                    "motion",
+                    "line_break",
+                    "render_boundary",
+                    "production_public_boundary",
+                ],
+                "body_text_color_policy": "stable_default_body_text",
+                "dry_read_validation": "all_payloads_consumer_ready",
+                "missing_required_fields": 0,
+                "type_mismatches": 0,
+                "body_text_color_policy_drift": False,
+                "render_boundary_leakage": False,
+                "production_public_boundary_leakage": False,
+                "later_l2_tiny_render_trigger": "not_triggered_in_this_slice",
+                "new_render_run": False,
+            },
             "review_surface_layout_debt": {
                 "status": "recorded_minimal_primary_layout_improvement_applied",
                 "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -444,12 +481,12 @@ def build_project_status(
             "review_card": {
                 "status": "withheld_latest_review_already_consumed",
                 "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-                "target": "clip-ed10ae-render-path-selector-contract-probe-001",
-                "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
-                "axis": "render_path_selector_contract_readback",
+                "target": "clip-ed10af-render-contract-consumer-dry-read-001",
+                "artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+                "axis": "render_contract_consumer_dry_read",
                 "prior_review_count": "3+",
                 "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-                "what_changed": "ED-10ae maps the static selector, family, palette, color surface, motion, and line-break fields to a no-render render-adapter input contract.",
+                "what_changed": "ED-10af consumes the ED-10ae contract into normalized adapter-facing payloads and static drift checks without running render.",
                 "what_this_review_decides": [],
                 "not_asking": [
                     "Candidate 0-3 comparison review",
@@ -459,7 +496,7 @@ def build_project_status(
                     "production subtitle design acceptance",
                 ],
                 "input_mode": "none",
-                "completion_signal": "use the selector-to-render-path contract before a later L2 tiny render probe; production, rights, publishing, and public-use routes remain separate",
+                "completion_signal": "use the consumer dry-read payload before a later L2 tiny render probe; production, rights, publishing, and public-use routes remain separate",
             },
             "lead_fallback_readback": {
                 "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -470,7 +507,7 @@ def build_project_status(
                     "ed10w_balanced_combined_low_risk",
                 ],
             },
-            "review_surface_direction": "render_path_selector_contract_static_readback_no_render",
+            "review_surface_direction": "render_contract_consumer_dry_read_static_readback_no_render",
             "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
             "review_debt": [
                 {
@@ -787,6 +824,12 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10ab-subtitle-preset-selector-001"
         if feature_id == "ED-10ac":
             active_artifact = "clip-ed10ac-visual-selector-proof-001"
+        if feature_id == "ED-10ad":
+            active_artifact = "clip-ed10ad-style-family-palette-axis-proof-001"
+        if feature_id == "ED-10ae":
+            active_artifact = "clip-ed10ae-render-path-selector-contract-probe-001"
+        if feature_id == "ED-10af":
+            active_artifact = "clip-ed10af-render-contract-consumer-dry-read-001"
         features.append(
             {
                 "id": feature_id,
@@ -851,7 +894,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10ac-visual-selector-proof-001" in artifact_ids
+        "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -897,6 +940,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 
 def _next_review_items() -> list[dict[str, str]]:
     return [
+        {
+            "item": "ED-10af render contract consumer dry-read",
+            "artifact": "clip-ed10af-render-contract-consumer-dry-read-001",
+            "question": "Can the ED-10ae contract be consumed as normalized adapter-facing payloads for all six presets without field drift, type drift, render leakage, or production/public-use leakage?",
+            "next_route": "Use this dry-read before a later L2 tiny render-path probe; do not infer actual render or production readiness.",
+        },
         {
             "item": "ED-10ae render-path selector contract",
             "artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
@@ -1026,6 +1075,12 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Render Contract Consumer Dry-Read",
+            "command": "see docs\style_intent\subtitle-render-contract-consumer-dry-read.md",
+            "target": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md",
+            "when_to_use": "Use to inspect the normalized adapter-facing payloads and static drift checks produced from the ED-10ae contract; this is L0 static readback, not an actual render pass.",
         },
         {
             "label": "Render Path Selector Contract",
@@ -1269,6 +1324,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "style_family_palette_axis_proof_ready"
     if feature_id == "ED-10ae":
         return "render_path_selector_contract_ready"
+    if feature_id == "ED-10af":
+        return "render_contract_consumer_dry_read_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1321,6 +1378,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ae":
         return 100
+    if feature_id == "ED-10af":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1371,6 +1430,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route."
     if feature_id == "ED-10ae":
         return "Use the selector-to-render-path contract as L0 static readback before a later L2 tiny render-path probe; do not infer actual render or production readiness."
+    if feature_id == "ED-10af":
+        return "Use the normalized consumer dry-read payload and static drift checks before a later L2 tiny render-path probe; do not infer actual render or production readiness."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

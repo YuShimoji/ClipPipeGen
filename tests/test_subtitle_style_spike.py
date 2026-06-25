@@ -259,6 +259,93 @@ def test_subtitle_render_path_selector_contract_doc_is_static_readback():
     assert "no video, audio, frame, ASS, or episode artifact" in text
 
 
+def test_subtitle_render_contract_consumer_dry_read_matches_tracked_json():
+    dry_read = preset_selector.build_subtitle_render_contract_consumer_dry_read()
+    tracked_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-contract-consumer-dry-read.json"
+    )
+    tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
+
+    assert tracked["artifact_id"] == preset_selector.CONSUMER_DRY_READ_ARTIFACT_ID
+    assert tracked["schema_id"] == preset_selector.CONSUMER_DRY_READ_SCHEMA_ID
+    assert tracked["feature_id"] == "ED-10af"
+    assert tracked["source_render_path_selector_contract_artifact_id"] == (
+        preset_selector.RENDER_PATH_CONTRACT_ARTIFACT_ID
+    )
+    assert tracked["dry_read_kind"] == "static_contract_consumer_payload_readback"
+    assert tracked["render_level"] == "L0 No Render"
+    assert tracked["examples_represented"] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert tracked["adapter_payload_schema"] == dry_read["adapter_payload_schema"]
+    assert tracked["consumer_payloads"] == dry_read["consumer_payloads"]
+    assert tracked["dry_read_validation"] == dry_read["dry_read_validation"]
+    assert tracked["dry_read_validation"]["expected_payload_count"] == 6
+    assert tracked["dry_read_validation"]["actual_payload_count"] == 6
+    assert tracked["dry_read_validation"]["missing_required_fields"] == []
+    assert tracked["dry_read_validation"]["type_mismatches"] == []
+    assert tracked["dry_read_validation"]["body_text_color_policy_drift"] is False
+    assert tracked["dry_read_validation"]["render_boundary_leakage"] is False
+    assert (
+        tracked["dry_read_validation"]["production_public_boundary_leakage"]
+        is False
+    )
+    assert tracked["dry_read_validation"]["all_payloads_consumer_ready"] is True
+    assert {
+        payload["normalized_render_adapter_payload"]["color_surfaces"][
+            "body_text_color_token"
+        ]
+        for payload in tracked["consumer_payloads"]
+    } == {"stable_default_body_text"}
+    assert all(
+        payload["dry_read_assertions"]["badge_accent_backplate_preserved"]
+        for payload in tracked["consumer_payloads"]
+    )
+    assert all(
+        payload["normalized_render_adapter_payload"]["render_boundary"][
+            "render_artifact_created"
+        ]
+        is False
+        for payload in tracked["consumer_payloads"]
+    )
+    assert tracked["render_gate"]["level"] == "L0 No Render"
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["consumer_dry_read_only"] is True
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+
+
+def test_subtitle_render_contract_consumer_dry_read_doc_is_static_readback():
+    doc_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-contract-consumer-dry-read.md"
+    )
+    text = doc_path.read_text(encoding="utf-8")
+
+    assert "ED-10af Render Contract Consumer Dry-Read" in text
+    assert "consumes the ED-10ae render-path selector contract" in text
+    assert "static readback only" in text
+    assert "`L0 No Render`" in text
+    assert "`L2 tiny render path probe milestone`" in text
+    assert "no video, audio, frame, ASS, render, or episode artifact" in text
+    assert "`neutral_dialogue_intensity_0`" in text
+    assert "`shout_intensity_2`" in text
+    assert "`system_note_intensity_0`" in text
+    assert "stable_default_body_text" in text
+    assert "production / rights / public-use boundaries" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

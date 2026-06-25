@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10ae`
-- artifact: `clip-ed10ae-render-path-selector-contract-probe-001`
-- state: `render_path_selector_contract_ready`
+- feature: `ED-10af`
+- artifact: `clip-ed10af-render-contract-consumer-dry-read-001`
+- state: `render_contract_consumer_dry_read_ready`
 
 ## Feature Table
 
@@ -68,6 +68,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10ac | Visual Selector Proof v0 | done | visual_selector_proof_ready | 100 | clip-ed10ac-visual-selector-proof-001 | Use the static visual selector proof for optional open-only observation; keep new style-family, palette, production, rights, publishing, and public-use decisions in separate routes. |
 | ED-10ad | Style Family / Palette Axis Proof v0 | done | style_family_palette_axis_proof_ready | 100 | clip-ed10ad-style-family-palette-axis-proof-001 | Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route. |
 | ED-10ae | Render Path Selector Contract Probe v0 | done | render_path_selector_contract_ready | 100 | clip-ed10ae-render-path-selector-contract-probe-001 | Use the selector-to-render-path contract as L0 static readback before a later L2 tiny render-path probe; do not infer actual render or production readiness. |
+| ED-10af | Render Contract Consumer Dry-Read v0 | done | render_contract_consumer_dry_read_ready | 100 | clip-ed10af-render-contract-consumer-dry-read-001 | Use the normalized consumer dry-read payload and static drift checks before a later L2 tiny render-path probe; do not infer actual render or production readiness. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 設定 integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

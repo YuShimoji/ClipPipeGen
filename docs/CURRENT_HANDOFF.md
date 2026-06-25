@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: render_path_selector_contract_ready
+health: render_contract_consumer_dry_read_ready
 progress_pct: 100
 last_touched: 2026-06-25
-next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ae-render-path-selector-contract-probe-001
+next_review_due: none_static_readback_only
+active_artifact: clip-ed10af-render-contract-consumer-dry-read-001
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, artifacts/ARTIFACTS.md
@@ -19,13 +19,29 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
-Use this page to avoid replaying stale font-family or Candidate 0-3 comparison
-prompts after the project has advanced to the ED-10ae render-path selector
-contract route.
+Use this page to avoid replaying stale font-family, Candidate 0-3 comparison,
+or L2 render probe prompts after the project has advanced to the ED-10af render
+contract consumer dry-read route.
 
 ## Current State
 
-The active artifact is `clip-ed10ae-render-path-selector-contract-probe-001`.
+The active artifact is `clip-ed10af-render-contract-consumer-dry-read-001`.
+
+ED-10af adds a tracked static consumer dry-read at `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` and
+`docs/style_intent/subtitle-render-contract-consumer-dry-read.md`. It consumes the ED-10ae render-path selector contract and writes the
+normalized adapter-facing payload a later render adapter would receive for all
+six semantic presets: neutral dialogue, shout, whisper, ominous inner voice,
+narration, and system note. The readback preserves `stable_default_body_text`,
+routes speaker/emotion color through badge/accent/backplate surfaces, carries
+style-family / palette route fields, and retains motion plus safe-area /
+line-break metadata.
+
+This slice is L0 No Render. It creates no video, audio, frame, ASS, render,
+episode, or local ignored probe artifact. The static drift checks report zero
+missing fields, zero type mismatches, no body text color policy drift, no render
+boundary leakage, and no production/public-use leakage. No Review Card is open.
+Production subtitle design, production render, creative use, rights, publishing,
+and public use remain closed or pending.
 
 ED-10ae adds a tracked static selector-to-render-path contract at
 `docs/style_intent/subtitle-render-path-selector-contract.json` and

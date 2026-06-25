@@ -339,7 +339,27 @@ production-render readiness. The later L2 tiny render-path probe trigger is a
 separate milestone. ED-10ae does not approve production subtitle design,
 production render, creative use, rights, publishing, or public use.
 
-## Future Shared Line-Break Policy Note
+## Current ED-10af Render Contract Consumer Dry-Read
+
+ED-10af records `clip-ed10af-render-contract-consumer-dry-read-001` as a tracked JSON/Markdown static dry-read. It
+consumes the ED-10ae render-path selector contract and normalizes the
+adapter-facing payload a later render adapter would receive for all six semantic
+examples: neutral dialogue, shout / high intensity, whisper, ominous inner
+voice, narration, and system note.
+
+The dry-read carries semantic preset id, preset key, family id, palette route,
+font role, size / outline metadata, badge/accent/backplate fields, stable body
+text color, motion metadata, safe-area / line-break metadata, render boundary
+flags, and production/public-use boundary flags. Body subtitle text color remains
+`stable_default_body_text`; speaker or emotion color remains badge/accent and
+backplate first.
+
+ED-10af is L0 No Render. It creates no video, audio, frame, ASS, render, episode,
+or local ignored probe artifact. The later L2 tiny render-path probe remains a
+separate milestone. ED-10af does not approve production subtitle design,
+production render, creative use, rights, publishing, or public use.
+
+## Future Shared Line-Break Policy Note## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
 future slice can evaluate sharing it with NLMYTGen. ED-10v, ED-10w, ED-10y, and ED-10z
