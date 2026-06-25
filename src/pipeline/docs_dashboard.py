@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10ag',
-         'artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
+        "current_focus": {'feature_id': 'ED-10af',
+         'artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,22 +111,22 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'l2_tiny_render_path_probe_ready',
+         'state': 'l2_render_path_selector_probe_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
-         'l2_tiny_render_path_probe_artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
+         'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ag_l2_tiny_render_path_probe_ready_existing_ed10af_l2_reused',
+         'route_status': 'ed10ag_lineage_observation_surface_ready_active_ed10af_l2_preserved',
          'user_action_type': 'NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'l2_tiny_probe_existing_output_readback_recorded',
+         'main_issue': 'artifact_lineage_gap_repaired_observation_surface_added',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -371,16 +371,16 @@ def build_project_status(
                                            'tracked_binary_artifact_created': False,
                                            'production_render_acceptance': False,
                                            'public_use_permission': False},
-         'subtitle_l2_tiny_render_path_probe': {'status': 'l2_tiny_render_path_probe_ready',
-                                                              'artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
+         'subtitle_render_path_lineage_observation_surface': {'status': 'lineage_observation_surface_ready',
+                                                              'artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
                                                               'active_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
                                                               'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
                                                               'source_render_path_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
                                                               'dry_read_source_commit': '7e96a28',
                                                               'dry_read_invalidated': False,
-                                                              'metadata_json': 'docs/style_intent/subtitle-l2-tiny-render-path-probe.json',
-                                                              'doc': 'docs/style_intent/subtitle-l2-tiny-render-path-probe.md',
-                                                              'render_level': 'L2 Tiny Smoke Render',
+                                                              'metadata_json': 'docs/style_intent/subtitle-render-path-lineage-observation-surface.json',
+                                                              'doc': 'docs/style_intent/subtitle-render-path-lineage-observation-surface.md',
+                                                              'render_level': 'lineage_only_no_new_render',
                                                               'existing_output_first_reused': True,
                                                               'new_render_run': False,
                                                               'source_probe_new_render_run': True,
@@ -467,8 +467,8 @@ def build_project_status(
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10ag-l2-tiny-render-path-probe-001',
-                         'axis': 'l2_tiny_render_path_probe',
+                         'artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
+                         'axis': 'lineage_observation_surface',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
@@ -480,13 +480,13 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use the ED-10af L2 probe as active render-path evidence and the ED-10ag L2 tiny render-path probe as readback; production, rights, publishing, and public-use routes remain separate'},
+                         'completion_signal': 'use the ED-10af L2 probe as active render-path evidence and the ED-10ag lineage observation surface as readback; production, rights, publishing, and public-use routes remain separate'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'l2_tiny_render_path_probe_no_review_card',
+         'review_surface_direction': 'lineage_observation_surface_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'production_limitation_lift',
                           'status': 'not_started_after_tiny_probe',
@@ -807,7 +807,7 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         if feature_id == "ED-10af":
             active_artifact = "clip-ed10af-l2-render-path-selector-probe-001"
         if feature_id == "ED-10ag":
-            active_artifact = "clip-ed10ag-l2-tiny-render-path-probe-001"
+            active_artifact = "clip-ed10ag-lineage-and-observation-surface-001"
         features.append(
             {
                 "id": feature_id,
@@ -872,7 +872,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10ag-l2-tiny-render-path-probe-001" in artifact_ids
+        "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -919,10 +919,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10ag L2 tiny render-path probe readback",
-            "artifact": "clip-ed10ag-l2-tiny-render-path-probe-001",
-            "question": "Does the restored ED-10af dry-read reach a bounded L2 render-path readback by reusing the existing ED-10af L2 selector probe output?",
-            "next_route": "Use this readback to inspect source and local ignored proof paths; keep production, rights, publishing, and public-use routes separate.",
+            "item": "ED-10ag lineage and observation surface",
+            "artifact": "clip-ed10ag-lineage-and-observation-surface-001",
+            "question": "Does the restored ED-10af dry-read remain preserved as predecessor evidence while the active ED-10af L2 selector probe keeps its observation paths?",
+            "next_route": "Use this surface to inspect lineage and same-machine proof paths; keep production, rights, publishing, and public-use routes separate.",
         },
         {
             "item": "ED-10af L2 render path selector probe",
@@ -1067,9 +1067,9 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use to inspect the ED-10af L2 selector probe rows, local ignored ASS/MP4/manifest paths, and boundary readback from the ED-10ae contract.",
         },
         {
-            "label": "L2 Tiny Render Path Probe",
-            "command": "see docs\\style_intent\\subtitle-l2-tiny-render-path-probe.md",
-            "target": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md",
+            "label": "Lineage Observation Surface",
+            "command": "see docs\\style_intent\\subtitle-render-path-lineage-observation-surface.md",
+            "target": "docs/style_intent/subtitle-render-path-lineage-observation-surface.md",
             "when_to_use": (
                 "Use to inspect the restored dry-read predecessor, active ED-10af "
                 "L2 probe, and local ignored ASS/MP4/manifest/contact-sheet readback."
@@ -1320,7 +1320,7 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10af":
         return "l2_render_path_selector_probe_ready"
     if feature_id == "ED-10ag":
-        return "l2_tiny_render_path_probe_ready"
+        return "lineage_observation_surface_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1430,7 +1430,7 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10af":
         return "Use the L2 selector probe readback before opening a separate production limitation-lift, rights, publishing, or public-use route."
     if feature_id == "ED-10ag":
-        return "Use the L2 tiny render-path probe readback to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone."
+        return "Use the lineage and observation surface to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

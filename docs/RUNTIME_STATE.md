@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: l2_tiny_render_path_probe_ready
+health: lineage_observation_surface_ready
 progress_pct: 100
 last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.json, docs/style_intent/subtitle-l2-tiny-render-path-probe.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -39,11 +39,12 @@ Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
 
 ED-10ag checkpoint, 2026-06-25 JST: the active artifact remains the ED-10af
 L2 selector probe `clip-ed10af-l2-render-path-selector-probe-001`. ED-10ag adds
-`clip-ed10ag-l2-tiny-render-path-probe-001` to connect that active probe
+`clip-ed10ag-lineage-and-observation-surface-001` to connect that active probe
 with the restored ED-10af dry-read
-`clip-ed10af-render-contract-consumer-dry-read-001`. The tracked L2 probe readback
-lives at `docs/style_intent/subtitle-l2-tiny-render-path-probe.json`
-and `docs/style_intent/subtitle-l2-tiny-render-path-probe.md`.
+`clip-ed10af-render-contract-consumer-dry-read-001`. The tracked lineage and
+observation surface lives at
+`docs/style_intent/subtitle-render-path-lineage-observation-surface.json`
+and `docs/style_intent/subtitle-render-path-lineage-observation-surface.md`.
 
 Existing Output First was honored for ED-10ag: the existing ED-10af L2 selector
 probe already records local ignored ASS, MP4, manifest, and contact-sheet paths
@@ -369,7 +370,7 @@ gates.
 ## Next
 
 1. Continue from `clip-ed10af-l2-render-path-selector-probe-001` as the active
-   L2 render-path evidence. Use `clip-ed10ag-l2-tiny-render-path-probe-001`
+   L2 render-path evidence. Use `clip-ed10ag-lineage-and-observation-surface-001`
    when the next terminal needs dry-read source, ignored ASS / MP4 /
    manifest / contact-sheet paths, and no-rerender observation commands.
 2. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2

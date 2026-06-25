@@ -358,10 +358,10 @@ outputs only and remain outside Git. ED-10af does not approve production
 subtitle design, production render, creative use, rights, publishing, or public
 use.
 
-## Current ED-10ag L2 Tiny Render Path Probe
+## Current ED-10ag Lineage and Observation Surface
 
-ED-10ag records `clip-ed10ag-l2-tiny-render-path-probe-001` as a tracked
-L2 tiny render-path probe. The active artifact remains
+ED-10ag records `clip-ed10ag-lineage-and-observation-surface-001` as a tracked
+lineage and same-machine observation surface. The active artifact remains
 `clip-ed10af-l2-render-path-selector-probe-001`; the restored
 `clip-ed10af-render-contract-consumer-dry-read-001` remains predecessor evidence
 rather than a deleted or invalidated route.
@@ -370,7 +370,7 @@ The dry-read remains useful because it proves all six ED-10ae contract payloads
 can be normalized without media output. The ED-10af L2 selector probe supplies
 bounded FFmpeg/libass render-path evidence for three representative examples:
 neutral, shout, and whisper. ED-10ag applies Existing Output First, so it records
-L2 readback access without running ffmpeg again.
+lineage and observation access without running ffmpeg again.
 
 The ED-10ag surface lists the reused local ignored ASS, MP4, manifest, and
 contact-sheet paths. Those files may be absent on another clone and are diagnostic

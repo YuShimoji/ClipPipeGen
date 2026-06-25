@@ -380,7 +380,7 @@ def test_restored_render_contract_consumer_dry_read_records_static_payloads():
 
 
 
-def test_subtitle_l2_tiny_render_path_probe_matches_tracked_json():
+def test_subtitle_render_path_lineage_observation_surface_matches_tracked_json():
     dry_read = json.loads(
         (
             REPO_ROOT
@@ -401,43 +401,62 @@ def test_subtitle_l2_tiny_render_path_probe_matches_tracked_json():
         REPO_ROOT
         / "docs"
         / "style_intent"
-        / "subtitle-l2-tiny-render-path-probe.json"
+        / "subtitle-render-path-lineage-observation-surface.json"
     )
     tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
-    generated = preset_selector.build_subtitle_l2_tiny_render_path_probe(
+    generated = preset_selector.build_subtitle_render_path_lineage_observation_surface(
         dry_read=dry_read,
         source_probe=source_probe,
     )
 
     assert tracked == generated
     assert tracked["artifact_id"] == (
-        preset_selector.L2_TINY_RENDER_PATH_PROBE_ARTIFACT_ID
+        preset_selector.LINEAGE_OBSERVATION_ARTIFACT_ID
     )
-    assert tracked["schema_id"] == preset_selector.L2_TINY_RENDER_PATH_PROBE_SCHEMA_ID
+    assert tracked["schema_id"] == preset_selector.LINEAGE_OBSERVATION_SCHEMA_ID
     assert tracked["feature_id"] == "ED-10ag"
-    assert tracked["status"] == "l2_tiny_render_path_probe_ready"
+    assert tracked["status"] == "lineage_observation_surface_ready"
+    assert tracked["active_artifact_id"] == preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
     assert tracked["source_render_contract_consumer_dry_read_artifact_id"] == (
         preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
     )
     assert tracked["source_render_path_selector_probe_artifact_id"] == (
         preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
     )
+    predecessor = tracked["lineage"]["predecessor_artifacts"][0]
+    assert predecessor["artifact_id"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+    )
+    assert predecessor["source_commit"] == "7e96a28"
+    assert predecessor["invalidated"] is False
+    assert predecessor["superseded_by"] == preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
     assert tracked["existing_output_first"]["decision"] == (
-        "reuse_existing_ed10af_l2_selector_probe_no_rerender"
+        "preserve_active_ed10af_l2_probe_and_record_lineage_no_rerender"
     )
     assert tracked["existing_output_first"]["new_render_run"] is False
-    assert tracked["diagnostic_scope"]["source_dry_read_payload_count"] == 6
-    assert tracked["diagnostic_scope"]["selected_example_count"] == 3
-    assert tracked["diagnostic_scope"]["local_probe_status"] == (
+    assert tracked["observation_surface"]["source_dry_read_payload_count"] == 6
+    assert tracked["observation_surface"]["selected_example_count"] == 3
+    assert tracked["observation_surface"]["same_machine_only"] is True
+    assert tracked["observation_surface"]["may_be_absent_on_other_clone"] is True
+    assert tracked["observation_surface"]["user_review_required"] is False
+    assert tracked["observation_surface"]["local_probe_status"] == (
         "local_ignored_probe_generated"
     )
+    assert "subtitle_render_path_selector_probe_contact_sheet.jpg" in tracked[
+        "observation_surface"
+    ]["local_outputs"]["contact_sheet"]
+    assert len(tracked["observation_surface"]["open_commands"]) == 4
+    assert tracked["validation"]["active_artifact_preserved"] is True
+    assert tracked["validation"]["predecessor_lineage_present"] is True
+    assert tracked["validation"]["observation_paths_present"] is True
+    assert tracked["validation"]["contact_sheet_path_recorded"] is True
     assert tracked["validation"]["dry_read_all_payloads_consumer_ready"] is True
     assert tracked["validation"]["source_probe_all_checks_passed"] is True
     assert tracked["validation"]["selected_examples_covered_by_dry_read"] is True
     assert tracked["validation"]["stable_body_text_preserved"] is True
     assert tracked["validation"]["production_public_boundary_closed"] is True
     assert tracked["validation"]["all_checks_passed"] is True
-    assert tracked["render_gate"]["level"] == "L2 Tiny Smoke Render"
+    assert tracked["render_gate"]["level"] == "lineage_only_no_new_render"
     assert tracked["render_gate"]["new_render_run"] is False
     assert tracked["render_gate"]["existing_output_first_reused"] is True
     assert tracked["render_gate"]["source_probe_new_render_run"] is True
@@ -445,30 +464,34 @@ def test_subtitle_l2_tiny_render_path_probe_matches_tracked_json():
     assert tracked["boundaries"]["diagnostic_local_ignored_render_reused"] is True
     assert tracked["boundaries"]["episodes_tracked"] is False
     assert "subtitle_render_path_selector_probe.mp4" in tracked[
-        "diagnostic_scope"
+        "observation_surface"
     ]["local_outputs"]["video"]
     assert "subtitle_render_path_selector_probe.local.json" in tracked[
-        "diagnostic_scope"
+        "observation_surface"
     ]["local_outputs"]["manifest"]
 
 
-def test_subtitle_l2_tiny_render_path_probe_doc_records_existing_output_first():
+def test_subtitle_render_path_lineage_observation_surface_doc_records_existing_output_first():
     doc_path = (
         REPO_ROOT
         / "docs"
         / "style_intent"
-        / "subtitle-l2-tiny-render-path-probe.md"
+        / "subtitle-render-path-lineage-observation-surface.md"
     )
     text = doc_path.read_text(encoding="utf-8")
 
-    assert "ED-10ag L2 Tiny Render Path Probe" in text
+    assert "ED-10ag Lineage and Observation Surface" in text
     assert "Existing Output First" in text
     assert "new_render_run: `false`" in text
     assert "clip-ed10af-l2-render-path-selector-probe-001" in text
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
+    assert "predecessor source commit: `7e96a28`" in text
+    assert "predecessor invalidated: `false`" in text
     assert "dry-read payloads: `6` / `6`" in text
     assert "local_ignored_probe_generated" in text
     assert "subtitle_render_path_selector_probe.mp4" in text
+    assert "subtitle_render_path_selector_probe_contact_sheet.jpg" in text
+    assert "Start-Process" in text
     assert "stable_body_text_preserved: `true`" in text
     assert "episodes_tracked: `false`" in text
 

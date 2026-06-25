@@ -434,26 +434,28 @@ Boundary flags remain false or pending:
 - `tracked_binary_artifact_created=false`
 - `episodes_tracked=false`
 
-## `clip-ed10ag-l2-tiny-render-path-probe-001`
+## `clip-ed10ag-lineage-and-observation-surface-001`
 
 | Field | Value |
 |---|---|
-| title | ED-10ag L2 Tiny Render Path Probe |
+| title | ED-10ag Lineage and Observation Surface |
 | purpose | Record that the restored ED-10af dry-read remains predecessor evidence while the active ED-10af L2 selector probe supplies bounded render-path proof. |
-| storage class | Tracked JSON/Markdown L2 readback; references ignored same-machine ASS/MP4/manifest/contact-sheet evidence only. |
-| repo_relative_path | `docs/style_intent/subtitle-l2-tiny-render-path-probe.md` |
-| metadata_json | `docs/style_intent/subtitle-l2-tiny-render-path-probe.json` |
-| open_command | `see docs\style_intent\subtitle-l2-tiny-render-path-probe.md` |
+| storage class | Tracked JSON/Markdown lineage and observation surface; references ignored same-machine ASS/MP4/manifest/contact-sheet evidence only. |
+| repo_relative_path | `docs/style_intent/subtitle-render-path-lineage-observation-surface.md` |
+| metadata_json | `docs/style_intent/subtitle-render-path-lineage-observation-surface.json` |
+| open_command | `see docs\style_intent\subtitle-render-path-lineage-observation-surface.md` |
 | source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
+| source_dry_read_commit | `7e96a28` |
 | source_l2_selector_probe_artifact | `clip-ed10af-l2-render-path-selector-probe-001` |
 | source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
 | local_ignored_ass | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass` |
 | local_ignored_video | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4` |
 | local_ignored_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json` |
-| | generated_from | ED-10ag Existing Output First L2 readback using the restored ED-10af dry-read and the existing active ED-10af L2 selector probe; no new render was run. |
-| validation_command | Parse ED-10ag L2 probe JSON, ED-10af probe JSON, restored dry-read JSON, and dashboard JSON; run targeted subtitle/dashboard/review tests; verify `git ls-files episodes` remains empty. |
+| local_ignored_contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg` |
+| generated_from | ED-10ag Existing Output First lineage surface using the restored ED-10af dry-read and the existing active ED-10af L2 selector probe; no new render was run. |
+| validation_command | Parse ED-10ag lineage JSON, ED-10af probe JSON, restored dry-read JSON, and dashboard JSON; run targeted subtitle/dashboard/review tests; verify `git ls-files episodes` remains empty. |
 | latest_local_smoke | ED-10ag JSON reports `existing_output_first_reused=true`, `new_render_run=false`, `source_probe_new_render_run=true`, `dry_read_all_payloads_consumer_ready=true`, `stable_body_text_preserved=true`, `production_public_boundary_closed=true`, and `episodes_tracked=false`. |
-| review_status | No Review Card and no required user-side observation. The artifact is bounded L2 technical readback, not new subtitle design or render acceptance. |
+| review_status | No Review Card and no required user-side observation. The artifact is bounded lineage/observation technical readback, not new subtitle design or render acceptance. |
 | next_action | Use this surface to inspect the predecessor/current artifact relationship and local ignored proof paths before opening any production limitation-lift, final render-path, rights, publishing, or public-use route. |
 
 Boundary flags remain false or pending:

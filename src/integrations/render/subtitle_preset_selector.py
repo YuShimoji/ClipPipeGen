@@ -57,13 +57,16 @@ RENDER_PATH_PROBE_LOCAL_OUTPUT_RELATIVE_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/review/"
     "jp_pilot01r3_cut_review/subtitle_render_path_selector_probe"
 )
-L2_TINY_RENDER_PATH_PROBE_SCHEMA_ID = (
-    "clippipegen.subtitle_l2_tiny_render_path_probe.v1"
+LINEAGE_OBSERVATION_SCHEMA_ID = (
+    "clippipegen.subtitle_render_path_lineage_observation_surface.v1"
 )
-L2_TINY_RENDER_PATH_PROBE_ARTIFACT_ID = (
-    "clip-ed10ag-l2-tiny-render-path-probe-001"
+LINEAGE_OBSERVATION_ARTIFACT_ID = (
+    "clip-ed10ag-lineage-and-observation-surface-001"
 )
-L2_TINY_RENDER_PATH_PROBE_FEATURE_ID = "ED-10ag"
+LINEAGE_OBSERVATION_FEATURE_ID = "ED-10ag"
+LINEAGE_OBSERVATION_CONTACT_SHEET_FILENAME = (
+    "subtitle_render_path_selector_probe_contact_sheet.jpg"
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -950,14 +953,28 @@ def write_subtitle_render_path_selector_probe(
     return {"json": json_path, "doc": doc_path}
 
 
-def build_subtitle_l2_tiny_render_path_probe(
+def build_subtitle_render_path_lineage_observation_surface(
     *,
     dry_read: Mapping[str, Any] | None = None,
     source_probe: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    dry = dict(dry_read) if dry_read is not None else build_subtitle_render_contract_consumer_dry_read()
-    probe = dict(source_probe) if source_probe is not None else build_subtitle_render_path_selector_probe()
+    dry = (
+        deepcopy(dry_read)
+        if dry_read is not None
+        else build_subtitle_render_contract_consumer_dry_read()
+    )
+    probe = (
+        deepcopy(source_probe)
+        if source_probe is not None
+        else build_subtitle_render_path_selector_probe()
+    )
     local_outputs = dict(probe["local_probe"]["outputs"])
+    contact_sheet_path = _probe_display_path(
+        RENDER_PATH_PROBE_LOCAL_OUTPUT_RELATIVE_DIR
+        / LINEAGE_OBSERVATION_CONTACT_SHEET_FILENAME,
+        Path.cwd(),
+    )
+    local_outputs["contact_sheet"] = contact_sheet_path
     selected_examples = [
         {
             "order": example["order"],
@@ -972,12 +989,40 @@ def build_subtitle_l2_tiny_render_path_probe(
         }
         for example in probe["examples"]
     ]
-    validation = _l2_tiny_render_path_probe_validation(dry, probe)
+    observation_surface = {
+        "same_machine_only": True,
+        "may_be_absent_on_other_clone": True,
+        "user_review_required": False,
+        "source_dry_read_payload_count": len(dry["consumer_payloads"]),
+        "source_dry_read_payload_ids": [
+            payload["semantic_preset_id"] for payload in dry["consumer_payloads"]
+        ],
+        "selected_example_count": probe["selected_example_count"],
+        "selected_example_ids": list(probe["selected_example_ids"]),
+        "selected_examples": selected_examples,
+        "local_probe_status": probe["local_probe"]["status"],
+        "local_outputs": local_outputs,
+        "open_commands": [
+            _open_command(target, display_path)
+            for target, display_path in local_outputs.items()
+        ],
+        "source_probe_render_command_recorded": bool(
+            probe["local_probe"].get("render_command_summary")
+        ),
+        "tracked_binary_artifact_created": False,
+        "episodes_tracked": False,
+    }
+    validation = _lineage_observation_surface_validation(
+        dry,
+        probe,
+        observation_surface,
+    )
     return {
-        "schema_id": L2_TINY_RENDER_PATH_PROBE_SCHEMA_ID,
-        "artifact_id": L2_TINY_RENDER_PATH_PROBE_ARTIFACT_ID,
-        "feature_id": L2_TINY_RENDER_PATH_PROBE_FEATURE_ID,
-        "status": "l2_tiny_render_path_probe_ready",
+        "schema_id": LINEAGE_OBSERVATION_SCHEMA_ID,
+        "artifact_id": LINEAGE_OBSERVATION_ARTIFACT_ID,
+        "feature_id": LINEAGE_OBSERVATION_FEATURE_ID,
+        "status": "lineage_observation_surface_ready",
+        "active_artifact_id": probe["artifact_id"],
         "source_render_contract_consumer_dry_read_artifact_id": dry["artifact_id"],
         "source_render_path_selector_probe_artifact_id": probe["artifact_id"],
         "source_render_path_selector_contract_artifact_id": probe["source_render_path_selector_contract_artifact_id"],
@@ -986,12 +1031,35 @@ def build_subtitle_l2_tiny_render_path_probe(
         "source_selector_artifact_id": probe["source_selector_artifact_id"],
         "source_registry_artifact_id": probe["source_registry_artifact_id"],
         "source_render_path_artifact_id": probe["source_render_path_artifact_id"],
-        "probe_kind": "existing_output_first_l2_tiny_render_path_readback",
-        "render_level": "L2 Tiny Smoke Render",
+        "surface_kind": "lineage_and_same_machine_observation_readback",
+        "render_level": "lineage_only_no_new_render",
+        "lineage": {
+            "active_artifact": {
+                "artifact_id": probe["artifact_id"],
+                "status": probe["status"],
+                "metadata_json": "docs/style_intent/subtitle-render-path-selector-probe.json",
+                "doc": "docs/style_intent/subtitle-render-path-selector-probe.md",
+                "render_level": probe["render_level"],
+                "new_render_run": probe["render_gate"]["new_render_run"],
+                "supersedes_predecessor_readback": True,
+            },
+            "predecessor_artifacts": [
+                {
+                    "artifact_id": dry["artifact_id"],
+                    "role": "render_contract_consumer_dry_read",
+                    "source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+                    "metadata_json": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+                    "doc": "docs/style_intent/subtitle-render-contract-consumer-dry-read.md",
+                    "invalidated": False,
+                    "superseded_by": probe["artifact_id"],
+                    "preserved_as_evidence": True,
+                }
+            ],
+        },
         "existing_output_first": {
             "considered": True,
-            "decision": "reuse_existing_ed10af_l2_selector_probe_no_rerender",
-            "reason": "The existing ED-10af L2 selector probe already contains a local ignored ASS/MP4/manifest render-path readback for neutral, shout, and whisper representative payloads. ED-10ag therefore records the L2 milestone without running ffmpeg again.",
+            "decision": "preserve_active_ed10af_l2_probe_and_record_lineage_no_rerender",
+            "reason": "The active ED-10af L2 selector probe already contains a local ignored ASS/MP4/manifest render-path readback for neutral, shout, and whisper representative payloads. ED-10ag records the active/predecessor relationship and same-machine observation commands without running ffmpeg again.",
             "existing_artifact_id": probe["artifact_id"],
             "source_probe_status": probe["status"],
             "source_probe_local_status": probe["local_probe"]["status"],
@@ -999,25 +1067,14 @@ def build_subtitle_l2_tiny_render_path_probe(
             "source_probe_new_render_run": probe["render_gate"]["new_render_run"],
             "new_render_run": False,
         },
-        "diagnostic_scope": {
-            "source_dry_read_payload_count": len(dry["consumer_payloads"]),
-            "source_dry_read_payload_ids": [payload["semantic_preset_id"] for payload in dry["consumer_payloads"]],
-            "selected_example_count": probe["selected_example_count"],
-            "selected_example_ids": list(probe["selected_example_ids"]),
-            "selected_examples": selected_examples,
-            "local_probe_status": probe["local_probe"]["status"],
-            "local_outputs": local_outputs,
-            "source_probe_render_command_recorded": bool(probe["local_probe"].get("render_command_summary")),
-            "tracked_binary_artifact_created": False,
-            "episodes_tracked": False,
-        },
+        "observation_surface": observation_surface,
         "body_text_color_policy": probe["body_text_color_policy"],
         "color_route": probe["color_route"],
         "motion_line_break_policy": probe["motion_line_break_policy"],
         "validation": validation,
         "outputs": {
-            "json": "docs/style_intent/subtitle-l2-tiny-render-path-probe.json",
-            "doc": "docs/style_intent/subtitle-l2-tiny-render-path-probe.md",
+            "json": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+            "doc": "docs/style_intent/subtitle-render-path-lineage-observation-surface.md",
         },
         "review_policy": {
             "human_review_required": False,
@@ -1027,12 +1084,12 @@ def build_subtitle_l2_tiny_render_path_probe(
             "human_review_required_only_for": list(HUMAN_REVIEW_REQUIRED_FOR),
         },
         "render_gate": {
-            "level": "L2 Tiny Smoke Render",
+            "level": "lineage_only_no_new_render",
             "milestone_gated_not_change_gated": True,
             "existing_output_first_reused": True,
             "new_render_run": False,
             "source_probe_new_render_run": probe["render_gate"]["new_render_run"],
-            "reason": "Existing Output First found the ED-10af L2 selector probe sufficient for this bounded diagnostic.",
+            "reason": "Existing Output First found the ED-10af L2 selector probe sufficient for lineage and observation; ED-10ag adds no new render.",
             "diagnostic_only": True,
             "tracked_binary_artifact_created": False,
             "local_outputs_ignored": True,
@@ -1040,27 +1097,38 @@ def build_subtitle_l2_tiny_render_path_probe(
             "public_use_permission": False,
         },
         "readiness_separation": {
-            "subtitle_style_readiness": "selector_l2_tiny_render_path_probe_ready",
+            "subtitle_style_readiness": "lineage_observation_surface_ready",
             "video_render_readiness": "existing_local_ignored_l2_probe_reused",
             "production_readiness": "not_accepted",
             "rights_public_use_readiness": "not_accepted",
         },
-        "boundaries": _l2_tiny_render_path_probe_boundary_flags(probe),
+        "boundaries": _lineage_observation_surface_boundary_flags(probe),
     }
 
 
-def write_subtitle_l2_tiny_render_path_probe(
+def write_subtitle_render_path_lineage_observation_surface(
     output_dir: Path,
     *,
     dry_read: Mapping[str, Any] | None = None,
     source_probe: Mapping[str, Any] | None = None,
 ) -> dict[str, Path]:
-    readback = build_subtitle_l2_tiny_render_path_probe(dry_read=dry_read, source_probe=source_probe)
+    readback = build_subtitle_render_path_lineage_observation_surface(
+        dry_read=dry_read,
+        source_probe=source_probe,
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
-    json_path = output_dir / "subtitle-l2-tiny-render-path-probe.json"
-    doc_path = output_dir / "subtitle-l2-tiny-render-path-probe.md"
-    json_path.write_text(json.dumps(readback, ensure_ascii=False, indent=2) + chr(10), encoding="utf-8")
-    doc_path.write_text(render_subtitle_l2_tiny_render_path_probe_markdown(readback), encoding="utf-8")
+    json_path = output_dir / "subtitle-render-path-lineage-observation-surface.json"
+    doc_path = output_dir / "subtitle-render-path-lineage-observation-surface.md"
+    json_path.write_text(
+        json.dumps(readback, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_render_path_lineage_observation_surface_markdown(
+            readback,
+        ),
+        encoding="utf-8",
+    )
     return {"json": json_path, "doc": doc_path}
 
 
@@ -1405,27 +1473,42 @@ def render_subtitle_render_path_selector_probe_markdown(
     )
 
 
-def render_subtitle_l2_tiny_render_path_probe_markdown(readback: Mapping[str, Any]) -> str:
+def render_subtitle_render_path_lineage_observation_surface_markdown(
+    readback: Mapping[str, Any],
+) -> str:
     existing = readback["existing_output_first"]
-    diagnostic = readback["diagnostic_scope"]
+    lineage = readback["lineage"]
+    predecessor = lineage["predecessor_artifacts"][0]
+    observation = readback["observation_surface"]
     validation = readback["validation"]
     render_gate = readback["render_gate"]
     boundaries = readback["boundaries"]
-    outputs = diagnostic["local_outputs"]
+    outputs = observation["local_outputs"]
     nl = chr(10)
-    rows = nl.join(
+    example_rows = nl.join(
         "| {example_id} | {role} | {style_family} | {palette_route} | {body_text_color_token} |".format(**example)
-        for example in diagnostic["selected_examples"]
+        for example in observation["selected_examples"]
+    )
+    output_rows = nl.join(
+        f"| {target} | `{path}` |"
+        for target, path in outputs.items()
+    )
+    command_rows = nl.join(
+        f"| {command['target']} | `{command['command']}` |"
+        for command in observation["open_commands"]
     )
     lines = [
-        "# ED-10ag L2 Tiny Render Path Probe",
+        "# ED-10ag Lineage and Observation Surface",
         "",
-        "This tracked readback closes the L2 tiny render-path milestone by using Existing Output First. It consumes the restored ED-10af dry-read and reuses the existing ED-10af L2 selector probe output, so no new ffmpeg render is run in ED-10ag.",
+        "This tracked surface keeps the ED-10af L2 selector probe as the active artifact, preserves the restored ED-10af dry-read as predecessor evidence from commit `7e96a28`, and records same-machine observation paths without running a new render.",
         "",
         "## Source Artifacts",
         "",
-        f"- dry-read artifact: `{readback['source_render_contract_consumer_dry_read_artifact_id']}`",
-        f"- source L2 selector probe artifact: `{readback['source_render_path_selector_probe_artifact_id']}`",
+        f"- active artifact: `{readback['active_artifact_id']}`",
+        f"- predecessor dry-read artifact: `{predecessor['artifact_id']}`",
+        f"- predecessor source commit: `{predecessor['source_commit']}`",
+        f"- predecessor invalidated: `{str(predecessor['invalidated']).lower()}`",
+        f"- predecessor superseded_by: `{predecessor['superseded_by']}`",
         f"- source render-path contract: `{readback['source_render_path_selector_contract_artifact_id']}`",
         f"- render level: `{readback['render_level']}`",
         "",
@@ -1437,18 +1520,26 @@ def render_subtitle_l2_tiny_render_path_probe_markdown(readback: Mapping[str, An
         f"- source_probe_new_render_run: `{str(existing['source_probe_new_render_run']).lower()}`",
         f"- new_render_run: `{str(existing['new_render_run']).lower()}`",
         "",
-        "## Diagnostic Scope",
+        "## Observation Surface",
         "",
-        f"- dry-read payloads: `{diagnostic['source_dry_read_payload_count']}` / `6`",
-        f"- selected examples: `{diagnostic['selected_example_count']}`",
-        f"- local probe status: `{diagnostic['local_probe_status']}`",
-        f"- ASS: `{outputs['ass']}`",
-        f"- video: `{outputs['video']}`",
-        f"- manifest: `{outputs['manifest']}`",
+        f"- same_machine_only: `{str(observation['same_machine_only']).lower()}`",
+        f"- may_be_absent_on_other_clone: `{str(observation['may_be_absent_on_other_clone']).lower()}`",
+        f"- user_review_required: `{str(observation['user_review_required']).lower()}`",
+        f"- dry-read payloads: `{observation['source_dry_read_payload_count']}` / `6`",
+        f"- selected examples: `{observation['selected_example_count']}`",
+        f"- local probe status: `{observation['local_probe_status']}`",
+        "",
+        "| output | repo-relative path |",
+        "|---|---|",
+        output_rows,
+        "",
+        "| output | open command |",
+        "|---|---|",
+        command_rows,
         "",
         "| example | role | family | palette | body text |",
         "|---|---|---|---|---|",
-        rows,
+        example_rows,
         "",
         "## Render Gate",
         "",
@@ -1460,6 +1551,10 @@ def render_subtitle_l2_tiny_render_path_probe_markdown(readback: Mapping[str, An
         "",
         "## Validation",
         "",
+        f"- active_artifact_preserved: `{str(validation['active_artifact_preserved']).lower()}`",
+        f"- predecessor_lineage_present: `{str(validation['predecessor_lineage_present']).lower()}`",
+        f"- observation_paths_present: `{str(validation['observation_paths_present']).lower()}`",
+        f"- contact_sheet_path_recorded: `{str(validation['contact_sheet_path_recorded']).lower()}`",
         f"- dry_read_all_payloads_consumer_ready: `{str(validation['dry_read_all_payloads_consumer_ready']).lower()}`",
         f"- source_probe_all_checks_passed: `{str(validation['source_probe_all_checks_passed']).lower()}`",
         f"- selected_examples_covered_by_dry_read: `{str(validation['selected_examples_covered_by_dry_read']).lower()}`",
@@ -2161,7 +2256,9 @@ def _render_path_probe_boundary_flags(
     return flags
 
 
-def _l2_tiny_render_path_probe_boundary_flags(source_probe: Mapping[str, Any]) -> dict[str, Any]:
+def _lineage_observation_surface_boundary_flags(
+    source_probe: Mapping[str, Any],
+) -> dict[str, Any]:
     flags = _boundary_flags()
     flags.update(
         {
@@ -2178,11 +2275,12 @@ def _l2_tiny_render_path_probe_boundary_flags(source_probe: Mapping[str, Any]) -
     return flags
 
 
-def _l2_tiny_render_path_probe_validation(
+def _lineage_observation_surface_validation(
     dry_read: Mapping[str, Any],
     source_probe: Mapping[str, Any],
+    observation_surface: Mapping[str, Any],
 ) -> dict[str, Any]:
-    boundaries = _l2_tiny_render_path_probe_boundary_flags(source_probe)
+    boundaries = _lineage_observation_surface_boundary_flags(source_probe)
     production_public_boundary_closed = (
         boundaries["rights_status"] == "pending"
         and boundaries["production_subtitle_design_acceptance"] is False
@@ -2199,9 +2297,31 @@ def _l2_tiny_render_path_probe_validation(
         payload["normalized_render_adapter_payload"]["color_surfaces"]["body_text_color_token"]
         for payload in dry_read["consumer_payloads"]
     }
+    local_outputs = observation_surface["local_outputs"]
+    required_output_keys = {"ass", "video", "manifest", "contact_sheet"}
+    observation_paths_present = required_output_keys.issubset(local_outputs) and all(
+        bool(local_outputs[key]) for key in required_output_keys
+    )
+    contact_sheet_path_recorded = (
+        bool(local_outputs.get("contact_sheet"))
+        and local_outputs["contact_sheet"].endswith(
+            LINEAGE_OBSERVATION_CONTACT_SHEET_FILENAME
+        )
+    )
+    active_artifact_preserved = source_probe["artifact_id"] == RENDER_PATH_PROBE_ARTIFACT_ID
+    predecessor_lineage_present = (
+        dry_read["artifact_id"] == RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+        and RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT == "7e96a28"
+    )
     return {
         "dry_read_artifact_id": dry_read["artifact_id"],
         "source_probe_artifact_id": source_probe["artifact_id"],
+        "active_artifact_preserved": active_artifact_preserved,
+        "predecessor_lineage_present": predecessor_lineage_present,
+        "predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+        "predecessor_invalidated": False,
+        "observation_paths_present": observation_paths_present,
+        "contact_sheet_path_recorded": contact_sheet_path_recorded,
         "dry_read_all_payloads_consumer_ready": dry_validation["all_payloads_consumer_ready"],
         "dry_read_payload_count": dry_validation["actual_payload_count"],
         "expected_dry_read_payload_count": dry_validation["expected_payload_count"],
@@ -2229,10 +2349,12 @@ def _l2_tiny_render_path_probe_validation(
             and dry_validation["production_public_boundary_leakage"] is False
             and source_probe_validation["all_checks_passed"]
             and source_probe["local_probe"]["status"] == "local_ignored_probe_generated"
-            and source_probe["artifact_id"] == RENDER_PATH_PROBE_ARTIFACT_ID
-            and dry_read["artifact_id"] == RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+            and active_artifact_preserved
+            and predecessor_lineage_present
             and selected_examples_covered
             and dry_payload_body_tokens == {"stable_default_body_text"}
+            and observation_paths_present
+            and contact_sheet_path_recorded
             and production_public_boundary_closed
             and boundaries["episodes_tracked"] is False
             and boundaries["tracked_binary_artifact_created"] is False

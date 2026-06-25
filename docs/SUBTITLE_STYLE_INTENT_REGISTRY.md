@@ -7,7 +7,7 @@ health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-25
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-l2-tiny-render-path-probe.json, docs/style_intent/subtitle-l2-tiny-render-path-probe.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -153,11 +153,11 @@ line-break metadata, and records local ignored ASS/MP4/manifest evidence. It is
 L2 diagnostic readback only; production/public-use boundaries remain closed or
 pending.
 
-ED-10ag adds the L2 tiny render-path probe readback:
-`clip-ed10ag-l2-tiny-render-path-probe-001`. The tracked readback lives at
-[`docs/style_intent/subtitle-l2-tiny-render-path-probe.json`](style_intent/subtitle-l2-tiny-render-path-probe.json)
+ED-10ag adds the lineage and observation surface:
+`clip-ed10ag-lineage-and-observation-surface-001`. The tracked surface lives at
+[`docs/style_intent/subtitle-render-path-lineage-observation-surface.json`](style_intent/subtitle-render-path-lineage-observation-surface.json)
 and
-[`docs/style_intent/subtitle-l2-tiny-render-path-probe.md`](style_intent/subtitle-l2-tiny-render-path-probe.md).
+[`docs/style_intent/subtitle-render-path-lineage-observation-surface.md`](style_intent/subtitle-render-path-lineage-observation-surface.md).
 It consumes the restored dry-read files, keeps the ED-10af L2 probe as active
 render-path evidence, lists ASS / MP4 / manifest / contact-sheet paths, and records
 `new_render_run=false` for ED-10ag. It does not request user review or change

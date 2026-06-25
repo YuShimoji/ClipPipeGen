@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10ag`
-- artifact: `clip-ed10ag-l2-tiny-render-path-probe-001`
-- state: `l2_tiny_render_path_probe_ready`
+- feature: `ED-10af`
+- artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+- state: `l2_render_path_selector_probe_ready`
 
 ## Feature Table
 
@@ -69,7 +69,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10ad | Style Family / Palette Axis Proof v0 | done | style_family_palette_axis_proof_ready | 100 | clip-ed10ad-style-family-palette-axis-proof-001 | Use the style-family/palette axis proof as no-render static readback before a later render-path probe or separate production/rights/public-use route. |
 | ED-10ae | Render Path Selector Contract Probe v0 | done | render_path_selector_contract_ready | 100 | clip-ed10ae-render-path-selector-contract-probe-001 | Use the selector-to-render-path contract as L0 static readback before a later L2 render-path probe; do not infer actual render or production readiness. |
 | ED-10af | L2 Render Path Selector Probe v0 | done | l2_render_path_selector_probe_ready | 100 | clip-ed10af-l2-render-path-selector-probe-001 | Use the L2 selector probe readback before opening a separate production limitation-lift, rights, publishing, or public-use route. |
-| ED-10ag | L2 Tiny Render Path Probe v0 | done | l2_tiny_render_path_probe_ready | 100 | clip-ed10ag-l2-tiny-render-path-probe-001 | Use the L2 tiny render-path probe readback to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone. |
+| ED-10ag | Lineage and Observation Surface v0 | done | lineage_observation_surface_ready | 100 | clip-ed10ag-lineage-and-observation-surface-001 | Use the lineage and observation surface to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
