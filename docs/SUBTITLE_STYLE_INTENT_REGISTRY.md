@@ -6,8 +6,8 @@ status: diagnostic_intent_registry_ready
 health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-25
-active_artifact: clip-ed10ad-style-family-palette-axis-proof-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, artifacts/ARTIFACTS.md
+active_artifact: clip-ed10ae-render-path-selector-contract-probe-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -36,6 +36,11 @@ The default body text color stays stable. Speaker or character-specific color
 should usually appear first in speaker badge and accent surfaces, not in the
 body glyph fill. Body text color changes require a new style-family, palette,
 or production-route review.
+
+ED-10ae is the current successor readback for this registry route. It converts
+the ED-10ad family / palette proof into a static selector-to-render-path input
+contract without running render or creating video/audio/frame/ASS/episode
+artifacts.
 
 ## Intent Axes
 
@@ -112,7 +117,7 @@ It makes those six selector examples inspectable as static badge/accent/
 backplate/size/motion/line-break differences while preserving stable body text
 color. It does not run a new render or approve production/public use.
 
-ED-10ad adds the current style-family / palette axis proof artifact:
+ED-10ad adds the style-family / palette axis proof artifact:
 `clip-ed10ad-style-family-palette-axis-proof-001`. The tracked proof lives at
 [`docs/style_intent/subtitle-style-family-palette-proof.json`](style_intent/subtitle-style-family-palette-proof.json)
 and
@@ -120,6 +125,17 @@ and
 It groups the same six examples by family and palette route while preserving
 `stable_default_body_text`. The routes are readback vocabulary only; they do
 not approve a new style family or new palette.
+
+ED-10ae adds the current render-path selector contract artifact:
+`clip-ed10ae-render-path-selector-contract-probe-001`. The tracked contract
+lives at
+[`docs/style_intent/subtitle-render-path-selector-contract.json`](style_intent/subtitle-render-path-selector-contract.json)
+and
+[`docs/style_intent/subtitle-render-path-selector-contract.md`](style_intent/subtitle-render-path-selector-contract.md).
+It lists the semantic, style-family, palette, color-surface, motion, and
+line-break fields a later render adapter would receive. This is L0 static
+readback only; the later L2 tiny render-path probe remains a separate
+milestone, and production/public-use boundaries stay closed or pending.
 
 ## Review Surface Layout Debt
 

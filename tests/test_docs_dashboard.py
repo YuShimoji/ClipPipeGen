@@ -27,8 +27,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10ad"
+    assert status["current_focus"]["feature_id"] == "ED-10ae"
     assert status["current_focus"]["artifact_id"] == (
+        "clip-ed10ae-render-path-selector-contract-probe-001"
+    )
+    assert status["current_focus"]["source_style_family_palette_artifact_id"] == (
         "clip-ed10ad-style-family-palette-axis-proof-001"
     )
     assert status["current_focus"]["source_visual_selector_artifact_id"] == (
@@ -55,7 +58,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["source_proof_artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
-    assert status["current_focus"]["state"] == "style_family_palette_axis_proof_ready"
+    assert status["current_focus"]["state"] == "render_path_selector_contract_ready"
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -70,7 +73,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ad_style_family_palette_axis_proof_ready_static_readback_no_render"
+        "ed10ae_render_path_selector_contract_ready_l0_no_render"
     )
     assert status["current_focus"]["user_action_type"] == (
         "NO_USER_ACTION_STATIC_READBACK_ONLY"
@@ -82,7 +85,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "style_family_palette_axis_static_readback_no_render"
+        "render_path_selector_contract_static_readback_no_render"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -132,10 +135,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "withheld_latest_review_already_consumed"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10ad-style-family-palette-axis-proof-001"
+        "clip-ed10ae-render-path-selector-contract-probe-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "style_family_palette_axis_readback"
+        "render_path_selector_contract_readback"
     )
     assert status["current_focus"]["subtitle_preset_selector"]["artifact_id"] == (
         "clip-ed10ab-subtitle-preset-selector-001"
@@ -178,6 +181,27 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "new_palette_created"
     ] is False
     assert status["current_focus"]["subtitle_style_family_palette_axis_proof"][
+        "new_render_run"
+    ] is False
+    assert status["current_focus"]["subtitle_render_path_selector_contract"][
+        "artifact_id"
+    ] == "clip-ed10ae-render-path-selector-contract-probe-001"
+    assert status["current_focus"]["subtitle_render_path_selector_contract"][
+        "source_style_family_palette_artifact_id"
+    ] == "clip-ed10ad-style-family-palette-axis-proof-001"
+    assert status["current_focus"]["subtitle_render_path_selector_contract"][
+        "render_level"
+    ] == "L0 No Render"
+    assert "semantic_preset_id" in status["current_focus"][
+        "subtitle_render_path_selector_contract"
+    ]["semantic_fields"]
+    assert "badge_color_token" in status["current_focus"][
+        "subtitle_render_path_selector_contract"
+    ]["color_surface_fields"]
+    assert status["current_focus"]["subtitle_render_path_selector_contract"][
+        "later_l2_tiny_render_trigger"
+    ] == "not_triggered_in_this_slice"
+    assert status["current_focus"]["subtitle_render_path_selector_contract"][
         "new_render_run"
     ] is False
     assert status["current_focus"]["subtitle_style_intent_registry"][
@@ -231,6 +255,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        "see docs\\style_intent\\subtitle-render-path-selector-contract.md",
         "see docs\\style_intent\\subtitle-style-family-palette-proof.html",
         "see docs\\style_intent\\subtitle-visual-selector-proof.html",
         "see docs\\style_intent\\subtitle-preset-selector.json",
@@ -270,7 +295,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10ad-style-family-palette-axis-proof-001"
+        "clip-ed10ae-render-path-selector-contract-probe-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -284,21 +309,24 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert persisted["open_surfaces"][2]["target"] == (
-        "docs/style_intent/subtitle-style-family-palette-proof.html"
+        "docs/style_intent/subtitle-render-path-selector-contract.md"
     )
     assert persisted["open_surfaces"][3]["target"] == (
-        "docs/style_intent/subtitle-visual-selector-proof.html"
+        "docs/style_intent/subtitle-style-family-palette-proof.html"
     )
     assert persisted["open_surfaces"][4]["target"] == (
-        "docs/style_intent/subtitle-preset-selector.json"
+        "docs/style_intent/subtitle-visual-selector-proof.html"
     )
     assert persisted["open_surfaces"][5]["target"] == (
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+        "docs/style_intent/subtitle-preset-selector.json"
     )
     assert persisted["open_surfaces"][6]["target"] == (
+        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+    )
+    assert persisted["open_surfaces"][7]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "ED-10z local readback" in persisted["open_surfaces"][6][
+    assert "ED-10z local readback" in persisted["open_surfaces"][7][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -314,6 +342,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10ab-subtitle-preset-selector-001" in html
     assert "clip-ed10ac-visual-selector-proof-001" in html
     assert "clip-ed10ad-style-family-palette-axis-proof-001" in html
+    assert "clip-ed10ae-render-path-selector-contract-probe-001" in html
     assert "clip-ed10p-keifont-lead-representative-proof-001" in html
     assert "clip-ed10o-multifont-focused-review-001" in html
     assert "subtitle_multifont_focused_review" in html
@@ -571,6 +600,74 @@ def test_subtitle_style_family_palette_axis_proof_is_machine_readable():
     assert proof["review_policy"]["user_side_work"] == "none"
     assert proof["render_gate"]["new_render_run"] is False
     assert proof["boundaries"]["production_render_acceptance"] is False
+
+
+def test_subtitle_render_path_selector_contract_is_machine_readable():
+    contract_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-path-selector-contract.json"
+    )
+
+    contract = json.loads(contract_path.read_text(encoding="utf-8"))
+    entries = {
+        item["semantic_preset_id"]: item
+        for item in contract["contract_entries"]
+    }
+
+    assert contract["artifact_id"] == (
+        "clip-ed10ae-render-path-selector-contract-probe-001"
+    )
+    assert contract["source_style_family_palette_artifact_id"] == (
+        "clip-ed10ad-style-family-palette-axis-proof-001"
+    )
+    assert contract["status"] == "render_path_selector_contract_ready"
+    assert contract["contract_kind"] == "static_selector_to_render_path_readback"
+    assert contract["render_level"] == "L0 No Render"
+    assert "semantic_preset_id" in contract["render_adapter_input_contract"][
+        "semantic_fields"
+    ]
+    assert "palette_route" in contract["render_adapter_input_contract"][
+        "style_axis_fields"
+    ]
+    assert "body_text_color_token" in contract["render_adapter_input_contract"][
+        "color_surface_fields"
+    ]
+    assert "safe_area_line_break_behavior" in contract[
+        "render_adapter_input_contract"
+    ]["motion_line_break_fields"]
+    assert contract["examples_represented"] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert entries["shout_intensity_2"]["render_adapter_input"]["style"][
+        "family_id"
+    ] == "emphasis_energy_family"
+    assert entries["ominous_intensity_2"]["render_adapter_input"]["style"][
+        "palette_route"
+    ] == "ominous_dark"
+    assert {
+        entry["render_adapter_input"]["color_surfaces"]["body_text_color_token"]
+        for entry in contract["contract_entries"]
+    } == {"stable_default_body_text"}
+    assert {
+        entry["contract_assertions"]["render_artifact_created"]
+        for entry in contract["contract_entries"]
+    } == {False}
+    assert contract["later_l2_tiny_render_trigger"]["status"] == (
+        "not_triggered_in_this_slice"
+    )
+    assert "HTML proof updates" in contract["later_l2_tiny_render_trigger"][
+        "not_triggered_by"
+    ]
+    assert contract["render_gate"]["new_render_run"] is False
+    assert contract["readiness_separation"]["production_readiness"] == "not_accepted"
+    assert contract["boundaries"]["production_render_acceptance"] is False
 
 
 def test_subtitle_font_candidate_registry_is_machine_readable():
@@ -1062,7 +1159,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_ed10ad_artifact(
+def test_docs_dashboard_current_focus_registration_uses_ed10ae_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -1075,7 +1172,7 @@ def test_docs_dashboard_current_focus_registration_uses_ed10ad_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ad-style-family-palette-axis-proof-001"
+        "clip-ed10ae-render-path-selector-contract-probe-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]

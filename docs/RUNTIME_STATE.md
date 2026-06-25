@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: style_family_palette_axis_proof_ready
+health: render_path_selector_contract_ready
 progress_pct: 100
 last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ad-style-family-palette-axis-proof-001
+active_artifact: clip-ed10ae-render-path-selector-contract-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -35,11 +35,27 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10ad-style-family-palette-axis-proof-001`
+Active artifact: `clip-ed10ae-render-path-selector-contract-probe-001`
 
-ED-10ad current checkpoint, 2026-06-25 JST: the active artifact is now
-`clip-ed10ad-style-family-palette-axis-proof-001`. It consumes the ED-10ac
-static visual selector proof and writes tracked static readback at
+ED-10ae current checkpoint, 2026-06-25 JST: the active artifact is now
+`clip-ed10ae-render-path-selector-contract-probe-001`. It consumes the ED-10ad
+style-family / palette proof and writes tracked static contract readback at
+`docs/style_intent/subtitle-render-path-selector-contract.json` and
+`docs/style_intent/subtitle-render-path-selector-contract.md`. The contract
+enumerates the fields a later render adapter would receive: semantic preset id,
+preset key, speaker/emotion/readability axes, family id, palette route, font
+family role, font size scale, outline/shadow strength, badge/accent/backplate
+tokens, stable body text color policy, motion primitive, and safe-area /
+line-break behavior. It represents the same six semantic examples and keeps
+`stable_default_body_text` across all examples. ED-10ae uses L0 No Render and
+does not generate video, audio, frame, ASS, or episode artifacts. A later L2
+tiny render-path probe is recorded as a separate milestone, not triggered by
+this slice. Production subtitle design, production render, creative use,
+rights, publishing, and public use remain closed or pending.
+
+ED-10ad source checkpoint, 2026-06-25 JST: the source style-family / palette
+artifact is `clip-ed10ad-style-family-palette-axis-proof-001`. It consumes the
+ED-10ac static visual selector proof and writes tracked static readback at
 `docs/style_intent/subtitle-style-family-palette-proof.json` and
 `docs/style_intent/subtitle-style-family-palette-proof.html`. The proof keeps
 the same six semantic examples while grouping them by style family and palette

@@ -24,8 +24,9 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10ad",
-    "artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+    "feature_id": "ED-10ae",
+    "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+    "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
     "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
     "source_selector_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
     "source_style_intent_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
@@ -34,7 +35,7 @@
     "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "style_family_palette_axis_proof_ready",
+    "state": "render_path_selector_contract_ready",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -43,12 +44,12 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "ed10ad_style_family_palette_axis_proof_ready_static_readback_no_render",
+    "route_status": "ed10ae_render_path_selector_contract_ready_l0_no_render",
     "user_action_type": "NO_USER_ACTION_STATIC_READBACK_ONLY",
     "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-    "main_issue": "deterministic_semantic_style_family_palette_axis_readback",
+    "main_issue": "static_selector_to_render_path_contract_readback",
     "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
     "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
     "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -58,7 +59,7 @@
     ],
     "lead_status": "provisional_bounded_decoration_lead",
     "font_visual_evidence_status": "valid_requested_keifont_visual_evidence_on_current_windows_profile",
-    "local_generation_status": "ed10ad_static_style_family_palette_axis_ready_no_render",
+    "local_generation_status": "ed10ae_render_path_contract_ready_no_render",
     "user_review_status": "consumed_no_user_review_required_now",
     "multiline_wrap_evidence_status": "passed_diagnostic_review",
     "multiline_wrap_evidence": {
@@ -242,6 +243,53 @@
       "existing_output_first_considered": true,
       "new_render_run": false
     },
+    "subtitle_render_path_selector_contract": {
+      "status": "render_path_selector_contract_ready",
+      "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
+      "metadata_json": "docs/style_intent/subtitle-render-path-selector-contract.json",
+      "doc": "docs/style_intent/subtitle-render-path-selector-contract.md",
+      "contract_kind": "static_selector_to_render_path_readback",
+      "render_level": "L0 No Render",
+      "example_ids": [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0"
+      ],
+      "semantic_fields": [
+        "semantic_preset_id",
+        "preset_key",
+        "speaker_id",
+        "speaker_role",
+        "emotion",
+        "intensity",
+        "utterance_role",
+        "readability_priority"
+      ],
+      "style_axis_fields": [
+        "family_id",
+        "palette_route",
+        "font_family_role",
+        "font_size_scale",
+        "outline_shadow_strength"
+      ],
+      "color_surface_fields": [
+        "badge_color_token",
+        "accent_color_token",
+        "backplate_box_token",
+        "body_text_color_token",
+        "body_text_color_changed"
+      ],
+      "motion_line_break_fields": [
+        "motion_primitive",
+        "safe_area_line_break_behavior"
+      ],
+      "later_l2_tiny_render_trigger": "not_triggered_in_this_slice",
+      "new_render_run": false
+    },
     "review_surface_layout_debt": {
       "status": "recorded_minimal_primary_layout_improvement_applied",
       "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -309,12 +357,12 @@
     "review_card": {
       "status": "withheld_latest_review_already_consumed",
       "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-      "target": "clip-ed10ad-style-family-palette-axis-proof-001",
-      "artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
-      "axis": "style_family_palette_axis_readback",
+      "target": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "axis": "render_path_selector_contract_readback",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "ED-10ad groups the ED-10ac examples into deterministic style-family and palette axes while keeping body text color stable and preserving no-render readback.",
+      "what_changed": "ED-10ae maps the static selector, family, palette, color surface, motion, and line-break fields to a no-render render-adapter input contract.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -324,7 +372,7 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "use the style-family/palette proof as static readback before a later render-path probe or separate style-family, palette, production, rights, publishing, or public-use route"
+      "completion_signal": "use the selector-to-render-path contract before a later L2 tiny render probe; production, rights, publishing, and public-use routes remain separate"
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -335,7 +383,7 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "style_family_palette_axis_static_readback_no_render",
+    "review_surface_direction": "render_path_selector_contract_static_readback_no_render",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
@@ -365,6 +413,12 @@
       "command": ".\\open-artifacts.ps1",
       "target": "artifacts/ARTIFACTS.md",
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
+    },
+    {
+      "label": "Render Path Selector Contract",
+      "command": "see docs\\style_intent\\subtitle-render-path-selector-contract.md",
+      "target": "docs/style_intent/subtitle-render-path-selector-contract.md",
+      "when_to_use": "Use to inspect which selector, family, palette, color, motion, and line-break fields a later render adapter would receive; this is L0 static readback, not an actual render pass."
     },
     {
       "label": "Style Family Palette Proof",
@@ -1066,6 +1120,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10ae",
+      "title": "Render Path Selector Contract Probe v0",
+      "status": "done",
+      "health": "render_path_selector_contract_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "next_action": "Use the selector-to-render-path contract as L0 static readback before a later L2 tiny render-path probe; do not infer actual render or production readiness.",
+      "summary_excerpt": "clip-ed10ae-render-path-selector-contract-probe-001 として ED-10ab selector、ED-10ac visual proof、ED-10ad family/palette proof を later render adapter input contract に接続する tracked static JSON/Markdown readback を追加した。docs/sty...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -1540,9 +1605,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 98,
+    "feature_count": 99,
     "status_counts": {
-      "done": 82,
+      "done": 83,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -1658,6 +1723,16 @@
       "open_command": ".\\open-current-proof.ps1",
       "review_status": "Consumed as provisional normal-dialogue baseline evidence. ED-10q restored the focused page after the old-layout regression, but ED-10q was not font-quality review. Do not request another general Keifont acceptance pass on cut_002 / cut_003. Final baseline, production render, creative, rights, publishing, and public-use gates remain closed.",
       "next_action": "Use clip-ed10r-keifont-dense-stress-proof-001 for the active review. Keep this artifact as history and baseline evidence only."
+    },
+    {
+      "artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "title": "ED-10ae Render Path Selector Contract Probe",
+      "purpose": "Define the static selector-to-render-path input contract for a later render adapter without running render or creating video/audio/frame artifacts.",
+      "storage_class": "Tracked docs/readback artifact.",
+      "repo_relative_path": "docs/style_intent/subtitle-render-path-selector-contract.md",
+      "open_command": "see docs\\style_intent\\subtitle-render-path-selector-contract.md",
+      "review_status": "No Review Card and no user-side work. The contract is static readback only and records later L2 tiny render path probe triggers as a separate milestone.",
+      "next_action": "Use this selector-to-render-path contract before opening a later L2 tiny render probe. Production limitation-lift, rights, publishing, and public-use clearance remain separate routes."
     },
     {
       "artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
@@ -1783,6 +1858,7 @@
       "clip-ed10n-keifont-overlay-proof-001",
       "clip-ed10o-multifont-focused-review-001",
       "clip-ed10p-keifont-lead-representative-proof-001",
+      "clip-ed10ae-render-path-selector-contract-probe-001",
       "clip-ed10ad-style-family-palette-axis-proof-001",
       "clip-ed10ac-visual-selector-proof-001",
       "clip-ed10ab-subtitle-preset-selector-001",
@@ -1795,15 +1871,21 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 22
+    "artifact_count": 23
   },
   "artifact_coverage": {
-    "registered_artifact_count": 22,
-    "features_with_artifact_count": 25,
+    "registered_artifact_count": 23,
+    "features_with_artifact_count": 26,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
+    {
+      "item": "ED-10ae render-path selector contract",
+      "artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "question": "Are selector, family, palette, color-surface, motion, and line-break fields ready as a static input contract before any render probe?",
+      "next_route": "Use this contract before a later L2 tiny render-path probe; do not infer actual render or production readiness."
+    },
     {
       "item": "ED-10ad style-family / palette axis proof",
       "artifact": "clip-ed10ad-style-family-palette-axis-proof-001",
@@ -1921,20 +2003,20 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 651,
+      "line_count": 667,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "style_family_palette_axis_proof_ready",
+        "health": "render_path_selector_contract_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-25",
         "next_review_due": "none_probe_readback_only",
-        "active_artifact": "clip-ed10ad-style-family-palette-axis-proof-001",
+        "active_artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
         "source_of_truth": "true",
         "owner_lane": "shared_infra",
-        "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md"
+        "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -1942,13 +2024,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 124,
+      "boundary_term_count": 129,
       "status": "current_capsule"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "Feature Registry",
-      "line_count": 238,
+      "line_count": 239,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -1956,7 +2038,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 393,
+      "boundary_term_count": 398,
       "status": "in_progress"
     },
     {
@@ -2017,7 +2099,7 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 148,
+      "line_count": 164,
       "metadata": {
         "id": "subtitle-style-intent-registry",
         "title": "Subtitle Style Intent Registry",
@@ -2026,8 +2108,8 @@
         "health": "semantic_style_control_ready_for_future_mapping",
         "progress_pct": "100",
         "last_touched": "2026-06-25",
-        "active_artifact": "clip-ed10ad-style-family-palette-axis-proof-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, artifacts/ARTIFACTS.md"
+        "active_artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -2035,7 +2117,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 11,
+      "boundary_term_count": 12,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -2055,7 +2137,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 711,
+      "line_count": 744,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2063,7 +2145,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 303,
+      "boundary_term_count": 316,
       "status": "reference"
     },
     {
@@ -2125,20 +2207,20 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 316,
+      "line_count": 331,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "style_family_palette_axis_proof_ready",
+        "health": "render_path_selector_contract_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-25",
         "next_review_due": "none_probe_readback_only",
-        "active_artifact": "clip-ed10ad-style-family-palette-axis-proof-001",
+        "active_artifact": "clip-ed10ae-render-path-selector-contract-probe-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
-        "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md"
+        "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -2146,7 +2228,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 56,
+      "boundary_term_count": 61,
       "status": "active"
     },
     {
@@ -2402,7 +2484,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "Subtitle Presentation Contract",
-      "line_count": 372,
+      "line_count": 393,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2410,7 +2492,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 90,
+      "boundary_term_count": 96,
       "status": "reference"
     },
     {
@@ -2491,7 +2573,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (651 lines) is likely carrying history.",
+        "detail": "Long active doc (667 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -2503,7 +2585,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 393 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 398 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2521,13 +2603,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (711 lines) is likely carrying history.",
+        "detail": "Long active doc (744 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 303 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 316 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -2611,7 +2693,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 90 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 96 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

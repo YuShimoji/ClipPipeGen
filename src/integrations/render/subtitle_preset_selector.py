@@ -23,6 +23,9 @@ VISUAL_PROOF_FEATURE_ID = "ED-10ac"
 STYLE_AXIS_PROOF_SCHEMA_ID = "clippipegen.subtitle_style_family_palette_axis_proof.v1"
 STYLE_AXIS_PROOF_ARTIFACT_ID = "clip-ed10ad-style-family-palette-axis-proof-001"
 STYLE_AXIS_PROOF_FEATURE_ID = "ED-10ad"
+RENDER_PATH_CONTRACT_SCHEMA_ID = "clippipegen.subtitle_render_path_selector_contract.v1"
+RENDER_PATH_CONTRACT_ARTIFACT_ID = "clip-ed10ae-render-path-selector-contract-probe-001"
+RENDER_PATH_CONTRACT_FEATURE_ID = "ED-10ae"
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -543,6 +546,118 @@ def write_subtitle_style_family_palette_axis_proof(
     return {"json": json_path, "html": html_path}
 
 
+def build_subtitle_render_path_selector_contract() -> dict[str, Any]:
+    style_axis_proof = build_subtitle_style_family_palette_axis_proof()
+    contract_entries = [
+        _render_path_contract_entry(example)
+        for example in style_axis_proof["examples"]
+    ]
+    return {
+        "schema_id": RENDER_PATH_CONTRACT_SCHEMA_ID,
+        "artifact_id": RENDER_PATH_CONTRACT_ARTIFACT_ID,
+        "feature_id": RENDER_PATH_CONTRACT_FEATURE_ID,
+        "status": "render_path_selector_contract_ready",
+        "source_style_family_palette_artifact_id": STYLE_AXIS_PROOF_ARTIFACT_ID,
+        "source_visual_selector_artifact_id": VISUAL_PROOF_ARTIFACT_ID,
+        "source_selector_artifact_id": ARTIFACT_ID,
+        "source_registry_artifact_id": SOURCE_REGISTRY_ARTIFACT_ID,
+        "source_render_path_artifact_id": SOURCE_RENDER_PATH_ARTIFACT_ID,
+        "contract_kind": "static_selector_to_render_path_readback",
+        "render_level": "L0 No Render",
+        "examples_represented": [
+            example["example_id"] for example in style_axis_proof["examples"]
+        ],
+        "render_adapter_input_contract": {
+            "semantic_fields": [
+                "semantic_preset_id",
+                "preset_key",
+                "speaker_id",
+                "speaker_role",
+                "emotion",
+                "intensity",
+                "utterance_role",
+                "readability_priority",
+            ],
+            "style_axis_fields": [
+                "family_id",
+                "palette_route",
+                "font_family_role",
+                "font_size_scale",
+                "outline_shadow_strength",
+            ],
+            "color_surface_fields": [
+                "badge_color_token",
+                "accent_color_token",
+                "backplate_box_token",
+                "body_text_color_token",
+                "body_text_color_changed",
+            ],
+            "motion_line_break_fields": [
+                "motion_primitive",
+                "safe_area_line_break_behavior",
+            ],
+            "body_text_color_policy_reference": "stable_default_body_text",
+        },
+        "contract_entries": contract_entries,
+        "later_l2_tiny_render_trigger": {
+            "status": "not_triggered_in_this_slice",
+            "allowed_future_trigger": [
+                "explicit render-path probe milestone",
+                "static contract consumer needs FFmpeg/libass readback",
+                "operator opens production-limitation or final render-path route",
+            ],
+            "not_triggered_by": [
+                "HTML proof updates",
+                "JSON readback updates",
+                "dashboard or handoff updates",
+                "style-family or palette grouping readback",
+            ],
+        },
+        "outputs": {
+            "json": "docs/style_intent/subtitle-render-path-selector-contract.json",
+            "doc": "docs/style_intent/subtitle-render-path-selector-contract.md",
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none",
+            "fixed_form_required": False,
+            "screenshot_required": False,
+            "human_review_required_only_for": list(HUMAN_REVIEW_REQUIRED_FOR),
+        },
+        "render_gate": {
+            "level": "L0 No Render",
+            "new_render_run": False,
+            "contract_readback_only": True,
+            "next_render_level": "L2 tiny render path probe milestone",
+        },
+        "readiness_separation": {
+            "subtitle_style_readiness": "selector_static_proof_render_path_contract_ready",
+            "video_render_readiness": "not_run_no_render_pass_implied",
+            "production_readiness": "not_accepted",
+            "rights_public_use_readiness": "not_accepted",
+        },
+        "boundaries": _boundary_flags(),
+    }
+
+
+def write_subtitle_render_path_selector_contract(
+    output_dir: Path,
+) -> dict[str, Path]:
+    contract = build_subtitle_render_path_selector_contract()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-render-path-selector-contract.json"
+    doc_path = output_dir / "subtitle-render-path-selector-contract.md"
+    json_path.write_text(
+        json.dumps(contract, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_render_path_selector_contract_markdown(contract),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "doc": doc_path}
+
+
 def render_subtitle_visual_selector_proof_html(proof: Mapping[str, Any]) -> str:
     cards = "\n".join(_visual_proof_card(example) for example in proof["examples"])
     return f"""<!doctype html>
@@ -633,6 +748,59 @@ def render_subtitle_style_family_palette_axis_proof_html(
 """
 
 
+def render_subtitle_render_path_selector_contract_markdown(
+    contract: Mapping[str, Any],
+) -> str:
+    rows = "\n".join(
+        (
+            "| "
+            f"`{entry['semantic_preset_id']}` | "
+            f"`{entry['preset_key']}` | "
+            f"`{entry['render_adapter_input']['style']['family_id']}` | "
+            f"`{entry['render_adapter_input']['style']['palette_route']}` | "
+            f"`{entry['render_adapter_input']['color_surfaces']['body_text_color_token']}` | "
+            f"`{entry['render_adapter_input']['motion_line_break']['safe_area_line_break_behavior']}` |"
+        )
+        for entry in contract["contract_entries"]
+    )
+    return (
+        "# ED-10ae Render Path Selector Contract Probe\n\n"
+        "This tracked contract connects the ED-10ab selector, ED-10ac visual "
+        "selector proof, and ED-10ad family / palette proof to the fields a "
+        "later render adapter would receive. It is static readback only.\n\n"
+        "## Render Gate\n\n"
+        f"- level: `{contract['render_gate']['level']}`\n"
+        "- new_render_run: `false`\n"
+        "- next_render_level: `L2 tiny render path probe milestone`\n"
+        "- no video, audio, frame, ASS, or episode artifact is generated here.\n\n"
+        "## Contract Fields\n\n"
+        "- semantic: `semantic_preset_id`, `preset_key`, `speaker_id`, "
+        "`speaker_role`, `emotion`, `intensity`, `utterance_role`, "
+        "`readability_priority`\n"
+        "- style: `family_id`, `palette_route`, `font_family_role`, "
+        "`font_size_scale`, `outline_shadow_strength`\n"
+        "- color surfaces: `badge_color_token`, `accent_color_token`, "
+        "`backplate_box_token`, `body_text_color_token`, "
+        "`body_text_color_changed`\n"
+        "- motion / line break: `motion_primitive`, "
+        "`safe_area_line_break_behavior`\n\n"
+        "## Preset Contract Rows\n\n"
+        "| semantic preset | preset key | family | palette | body text | line-break |\n"
+        "|---|---|---|---|---|---|\n"
+        f"{rows}\n\n"
+        "## Readiness Separation\n\n"
+        "- subtitle_style_readiness: `selector_static_proof_render_path_contract_ready`\n"
+        "- video_render_readiness: `not_run_no_render_pass_implied`\n"
+        "- production_readiness: `not_accepted`\n"
+        "- rights_public_use_readiness: `not_accepted`\n\n"
+        "## Boundary\n\n"
+        "This contract preserves `stable_default_body_text`, badge/accent-first "
+        "character color, and all production / rights / public-use boundaries. "
+        "A later L2 render probe is a separate milestone and is not triggered "
+        "by this document.\n"
+    )
+
+
 def _example(example_id: str, intent: Mapping[str, Any]) -> dict[str, Any]:
     selection = select_subtitle_preset(intent)
     return {
@@ -714,6 +882,56 @@ def _style_axis_example(example: Mapping[str, Any]) -> dict[str, Any]:
             "new_palette_created": False,
             "new_style_family_created": False,
             "review_required": False,
+        },
+    }
+
+
+def _render_path_contract_entry(example: Mapping[str, Any]) -> dict[str, Any]:
+    palette = example["palette_surfaces"]
+    expression = example["expression_surfaces"]
+    intent = example["intent"]
+    return {
+        "semantic_preset_id": example["example_id"],
+        "preset_key": example["preset_key"],
+        "render_adapter_input": {
+            "semantic": {
+                "speaker_id": intent["speaker_id"],
+                "speaker_role": intent["speaker_role"],
+                "emotion": intent["emotion"],
+                "intensity": intent["intensity"],
+                "utterance_role": intent["utterance_role"],
+                "readability_priority": intent["readability_priority"],
+            },
+            "style": {
+                "family_id": example["family_group"],
+                "style_family": example["style_family"],
+                "palette_route": example["palette_route"],
+                "font_family_role": expression["font_family_role"],
+                "font_size_scale": expression["font_size_scale"],
+                "outline_shadow_strength": expression["outline_shadow_strength"],
+            },
+            "color_surfaces": {
+                "badge_color_token": palette["badge_color_token"],
+                "accent_color_token": palette["accent_color_token"],
+                "backplate_box_token": palette["backplate_box_token"],
+                "body_text_color_token": palette["body_text_color_token"],
+                "body_text_color_changed": palette["body_text_color_changed"],
+            },
+            "motion_line_break": {
+                "motion_primitive": expression["motion_primitive"],
+                "safe_area_line_break_behavior": (
+                    expression["safe_area_line_break_behavior"]
+                ),
+            },
+        },
+        "contract_assertions": {
+            "body_text_color_policy_preserved": (
+                palette["body_text_color_token"] == "stable_default_body_text"
+                and palette["body_text_color_changed"] is False
+            ),
+            "render_artifact_created": False,
+            "production_acceptance": False,
+            "rights_public_use_acceptance": False,
         },
     }
 

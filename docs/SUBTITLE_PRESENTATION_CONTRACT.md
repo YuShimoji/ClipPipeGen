@@ -318,6 +318,27 @@ ED-10ad uses L0 No Render / Existing Output First, does not ask the operator
 for visual review, and does not approve production subtitle design,
 production render, creative use, rights, publishing, or public use.
 
+## Current ED-10ae Render Path Selector Contract Probe
+
+ED-10ae records `clip-ed10ae-render-path-selector-contract-probe-001` as a
+tracked static JSON/Markdown contract. It consumes the ED-10ad style-family /
+palette axis proof and states the selector fields a later render adapter would
+receive before any tiny render-path probe is opened.
+
+The contract readback covers semantic preset id, preset key, speaker/emotion/
+readability axes, family id, palette route, font family role, font size scale,
+outline/shadow strength, badge color, accent color, backplate/box, stable body
+text color policy, motion primitive, and safe-area / line-break behavior for
+the same six semantic examples. Body subtitle text color remains
+`stable_default_body_text`; speaker or emotion color remains badge/accent and
+backplate first.
+
+ED-10ae is L0 No Render. It does not create a video, audio, frame, ASS, or
+episode artifact, and it does not imply FFmpeg/libass, YMM4, Premiere, or final
+production-render readiness. The later L2 tiny render-path probe trigger is a
+separate milestone. ED-10ae does not approve production subtitle design,
+production render, creative use, rights, publishing, or public use.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

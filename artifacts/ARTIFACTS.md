@@ -361,6 +361,39 @@ and tests but not the ignored MP4/PNG/ASS artifacts themselves. Other worktrees
 should treat missing `episodes/` proof assets as local evidence absence, not
 as a tracked Git failure. `git ls-files episodes` should remain empty.
 
+## `clip-ed10ae-render-path-selector-contract-probe-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ae Render Path Selector Contract Probe |
+| purpose | Define the static selector-to-render-path input contract for a later render adapter without running render or creating video/audio/frame artifacts. |
+| storage class | Tracked docs/readback artifact. |
+| repo_relative_path | `docs/style_intent/subtitle-render-path-selector-contract.md` |
+| metadata_json | `docs/style_intent/subtitle-render-path-selector-contract.json` |
+| open_command | `see docs\style_intent\subtitle-render-path-selector-contract.md` |
+| source_style_family_palette_artifact | `clip-ed10ad-style-family-palette-axis-proof-001` |
+| source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
+| source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
+| source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
+| source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
+| implementation | `src/integrations/render/subtitle_preset_selector.py` |
+| generated_from | ED-10ae bounded static contract/readback slice using ED-10ad examples and L0 No Render. |
+| validation_command | Parse style intent registry, preset selector, ED-10ac proof, ED-10ad proof, ED-10ae contract, dashboard JSON, and font candidates; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | The tracked contract represents all six semantic presets and lists semantic preset id, preset key, speaker/emotion/readability axes, family id, palette route, font family role, font size scale, outline/shadow token, badge/accent/backplate/body text color tokens, motion primitive, and safe-area/line-break behavior. Body text color remains `stable_default_body_text`; no render artifact is created. |
+| review_status | No Review Card and no user-side work. The contract is static readback only and records later L2 tiny render path probe triggers as a separate milestone. |
+| next_action | Use this selector-to-render-path contract before opening a later L2 tiny render probe. Production limitation-lift, rights, publishing, and public-use clearance remain separate routes. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
 ## `clip-ed10ad-style-family-palette-axis-proof-001`
 
 | Field | Value |

@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: style_family_palette_axis_proof_ready
+health: render_path_selector_contract_ready
 progress_pct: 100
 last_touched: 2026-06-25
 next_review_due: none_probe_readback_only
-active_artifact: clip-ed10ad-style-family-palette-axis-proof-001
+active_artifact: clip-ed10ae-render-path-selector-contract-probe-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -20,12 +20,27 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family or Candidate 0-3 comparison
-prompts after the project has advanced to the ED-10ab subtitle preset selector
-route.
+prompts after the project has advanced to the ED-10ae render-path selector
+contract route.
 
 ## Current State
 
-The active artifact is `clip-ed10ad-style-family-palette-axis-proof-001`.
+The active artifact is `clip-ed10ae-render-path-selector-contract-probe-001`.
+
+ED-10ae adds a tracked static selector-to-render-path contract at
+`docs/style_intent/subtitle-render-path-selector-contract.json` and
+`docs/style_intent/subtitle-render-path-selector-contract.md`. It consumes the
+ED-10ad style-family / palette proof and lists the exact fields a later render
+adapter would receive: semantic preset id, preset key, speaker/emotion/
+readability axes, family id, palette route, font family role, font size scale,
+outline/shadow strength, badge/accent/backplate tokens, stable body text color
+policy, motion primitive, and safe-area / line-break behavior. All six
+semantic presets remain represented, `stable_default_body_text` is preserved,
+and badge/accent/backplate surfaces remain the color route. ED-10ae is L0 No
+Render: no video, audio, frame, ASS, or episode artifact was generated. A later
+L2 tiny render-path probe is a separate milestone. Production subtitle design,
+production render, creative use, rights, publishing, and public use remain
+closed or pending.
 
 ED-10ad adds a tracked static style-family / palette axis proof at
 `docs/style_intent/subtitle-style-family-palette-proof.json` and

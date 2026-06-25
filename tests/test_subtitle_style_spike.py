@@ -194,6 +194,71 @@ def test_subtitle_style_family_palette_axis_proof_html_is_static_readback():
     assert "does not create a new palette" in html
 
 
+def test_subtitle_render_path_selector_contract_matches_tracked_json():
+    contract = preset_selector.build_subtitle_render_path_selector_contract()
+    tracked_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-path-selector-contract.json"
+    )
+    tracked = json.loads(tracked_path.read_text(encoding="utf-8"))
+
+    assert tracked["artifact_id"] == preset_selector.RENDER_PATH_CONTRACT_ARTIFACT_ID
+    assert tracked["schema_id"] == preset_selector.RENDER_PATH_CONTRACT_SCHEMA_ID
+    assert tracked["feature_id"] == "ED-10ae"
+    assert tracked["source_style_family_palette_artifact_id"] == (
+        preset_selector.STYLE_AXIS_PROOF_ARTIFACT_ID
+    )
+    assert tracked["render_level"] == "L0 No Render"
+    assert tracked["examples_represented"] == [
+        "neutral_dialogue_intensity_0",
+        "shout_intensity_2",
+        "whisper_intensity_1",
+        "ominous_intensity_2",
+        "narration_intensity_0",
+        "system_note_intensity_0",
+    ]
+    assert tracked["render_adapter_input_contract"] == (
+        contract["render_adapter_input_contract"]
+    )
+    assert tracked["contract_entries"] == contract["contract_entries"]
+    assert {
+        entry["render_adapter_input"]["color_surfaces"]["body_text_color_token"]
+        for entry in tracked["contract_entries"]
+    } == {"stable_default_body_text"}
+    assert {
+        entry["contract_assertions"]["render_artifact_created"]
+        for entry in tracked["contract_entries"]
+    } == {False}
+    assert tracked["later_l2_tiny_render_trigger"]["status"] == (
+        "not_triggered_in_this_slice"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["readiness_separation"]["video_render_readiness"] == (
+        "not_run_no_render_pass_implied"
+    )
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+
+
+def test_subtitle_render_path_selector_contract_doc_is_static_readback():
+    doc_path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-path-selector-contract.md"
+    )
+    text = doc_path.read_text(encoding="utf-8")
+
+    assert "ED-10ae Render Path Selector Contract Probe" in text
+    assert "`semantic_preset_id`" in text
+    assert "`font_size_scale`" in text
+    assert "`stable_default_body_text`" in text
+    assert "`L0 No Render`" in text
+    assert "`L2 tiny render path probe milestone`" in text
+    assert "no video, audio, frame, ASS, or episode artifact" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
