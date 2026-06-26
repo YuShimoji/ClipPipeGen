@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: final_render_path_readiness_packet_ready
+health: final_render_path_stage_1_ready
 progress_pct: 100
 last_touched: 2026-06-26
-next_review_due: none_readiness_packet_only
+next_review_due: none_stage_1_packet_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,6 +36,24 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+
+ED-10aj checkpoint, 2026-06-26 JST:
+`clip-ed10aj-final-render-path-stage-1-001` now lives at
+`docs/style_intent/subtitle-final-render-path-stage-1.json` and
+`docs/style_intent/subtitle-final-render-path-stage-1.md`. It consumes the
+ED-10ai readiness packet and selects the FFmpeg/libass diagnostic subtitle
+overlay path from ED-10af as the stage-1 final render-path candidate. This is
+path selection and preparation only: no new render is run, no proof media is
+tracked, and `episodes/` remains untracked.
+
+The ED-10aj checklist records that ASS generation, semantic selector contract,
+stable body text policy, badge/accent/backplate routing, line-break/safe-area
+metadata, and same-machine ignored ASS/MP4/manifest/contact-sheet evidence are
+available for stage-1 preparation. Production subtitle design acceptance,
+production render acceptance, creative acceptance, rights, publishing, and
+public-use decisions remain false or pending. The next executable route is
+`final-render-path-stage-2` or `production-limitation-lift-stage-1`, still as
+readiness/preparation only.
 
 ED-10ai checkpoint, 2026-06-26 JST:
 `clip-ed10ai-final-render-path-readiness-packet-001` now lives at

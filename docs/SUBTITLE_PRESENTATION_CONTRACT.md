@@ -427,6 +427,23 @@ decisions are still missing or pending. ED-10ai runs no render and does not
 approve production/public use; it only prepares `final-render-path-stage-1` or
 `production-limitation-lift-stage-1`.
 
+## Current ED-10aj Final Render-Path Stage 1
+
+ED-10aj records `clip-ed10aj-final-render-path-stage-1-001` as a tracked
+stage-1 packet at `docs/style_intent/subtitle-final-render-path-stage-1.json`
+and `docs/style_intent/subtitle-final-render-path-stage-1.md`. It consumes
+ED-10ai as the readiness source and selects the FFmpeg/libass diagnostic
+subtitle overlay path from ED-10af as the stage-1 final render-path candidate.
+
+The ED-10aj checklist says ASS generation, semantic selector contract, stable
+body text policy, badge/accent/backplate routing, line-break/safe-area
+metadata, local ignored proof media, and no tracked binary media are ready for
+stage-1 preparation. Production subtitle design, production render, creative
+acceptance, rights, publishing, and public-use decisions remain missing or
+pending. ED-10aj runs no render and does not approve production/public use; it
+only prepares `final-render-path-stage-2` or
+`production-limitation-lift-stage-1`.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

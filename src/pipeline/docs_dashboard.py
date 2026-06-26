@@ -118,13 +118,14 @@ def build_project_status(
          'production_limitation_lift_entry_artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
          'render_readiness_separation_readback_artifact_id': 'clip-ed10ah-render-readiness-separation-readback-001',
          'final_render_path_readiness_packet_artifact_id': 'clip-ed10ai-final-render-path-readiness-packet-001',
+         'final_render_path_stage_1_artifact_id': 'clip-ed10aj-final-render-path-stage-1-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ai_final_render_path_readiness_packet_ready_active_ed10af_l2_preserved',
+         'route_status': 'ed10aj_final_render_path_stage_1_ready_active_ed10af_l2_preserved',
          'user_action_type': 'NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
@@ -511,6 +512,43 @@ def build_project_status(
                                                          'new_render_run': False,
                                                          'tracked_binary_artifact_created': False,
                                                          'episodes_tracked': False},
+         'subtitle_final_render_path_stage_1': {'status': 'final_render_path_stage_1_ready',
+                                                'artifact_id': 'clip-ed10aj-final-render-path-stage-1-001',
+                                                'metadata_json': 'docs/style_intent/subtitle-final-render-path-stage-1.json',
+                                                'doc': 'docs/style_intent/subtitle-final-render-path-stage-1.md',
+                                                'source_final_render_path_readiness_artifact_id': 'clip-ed10ai-final-render-path-readiness-packet-001',
+                                                'active_diagnostic_proof_source_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                'support_lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
+                                                'source_production_limitation_lift_entry_artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
+                                                'dry_read_predecessor_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+                                                'selected_render_adapter_path': 'ffmpeg/libass diagnostic subtitle overlay path',
+                                                'stage_1_checklist_ids': ['render_adapter_path_selected',
+                                                                        'subtitle_ass_generation_path_available',
+                                                                        'semantic_selector_contract_available',
+                                                                        'stable_body_text_policy_preserved',
+                                                                        'badge_accent_backplate_routing_preserved',
+                                                                        'line_break_safe_area_metadata_preserved',
+                                                                        'local_ignored_proof_media_recorded',
+                                                                        'no_tracked_binary_media',
+                                                                        'production_gates_still_closed',
+                                                                        'publishing_public_use_gates_still_closed'],
+                                                'semantic_selector_contract': 'available',
+                                                'stable_body_text_policy': 'preserved',
+                                                'badge_accent_backplate_routing': 'preserved',
+                                                'line_break_safe_area_metadata': 'preserved',
+                                                'local_ignored_proof_media': 'recorded_same_machine_may_be_absent_elsewhere',
+                                                'production_subtitle_design_acceptance': False,
+                                                'production_render_acceptance': False,
+                                                'creative_acceptance': False,
+                                                'rights_status': 'pending',
+                                                'publishing_acceptance': False,
+                                                'public_use_permission': False,
+                                                'next_executable_route': 'final-render-path-stage-2',
+                                                'alternate_next_executable_route': 'production-limitation-lift-stage-1',
+                                                'new_render_run': False,
+                                                'tracked_binary_artifact_created': False,
+                                                'episodes_tracked': False,
+                                                'final_render_path_approved': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -571,17 +609,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_final_render_path_readiness_packet',
+                           'current_blocker': 'none_for_final_render_path_stage_1',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10ai-final-render-path-readiness-packet-001',
-                         'axis': 'final_render_path_readiness_packet',
+                         'artifact_id': 'clip-ed10aj-final-render-path-stage-1-001',
+                         'axis': 'final_render_path_stage_1',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10ai consumes the ED-10ah gate entry, preserves ED-10af as active diagnostic proof, keeps ED-10ag as lineage support, and records what is ready or still missing before a final render-path route.',
+                         'what_changed': 'ED-10aj consumes the ED-10ai readiness packet, selects the FFmpeg/libass diagnostic subtitle overlay path from ED-10af as stage-1 candidate, and keeps production/public gates closed.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -589,19 +627,19 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use ED-10ai as the final render-path readiness packet; production subtitle design, production render, creative, rights, publishing, and public-use decisions remain separate'},
+                         'completion_signal': 'use ED-10aj as the final render-path stage-1 packet; production subtitle design, production render, creative, rights, publishing, and public-use decisions remain separate'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'final_render_path_readiness_packet_no_review_card',
+         'review_surface_direction': 'final_render_path_stage_1_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'production_limitation_lift',
-                          'status': 'final_readiness_packet_ready_stage_1_next',
-                          'next_action': 'start final-render-path-stage-1 or '
+                          'status': 'final_render_path_stage_1_ready_stage_2_next',
+                          'next_action': 'start final-render-path-stage-2 or '
                                          'production-limitation-lift-stage-1 from the '
-                                         'ED-10ai readiness matrix without inferring '
+                                         'ED-10aj selected path without inferring '
                                          'production/public approval'}],
          'emoji_treatment': 'neutral_ignore_for_evaluation',
          'production_candidate': False,
@@ -922,6 +960,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10ah-production-limitation-lift-entry-001"
         if feature_id == "ED-10ai":
             active_artifact = "clip-ed10ai-final-render-path-readiness-packet-001"
+        if feature_id == "ED-10aj":
+            active_artifact = "clip-ed10aj-final-render-path-stage-1-001"
         features.append(
             {
                 "id": feature_id,
@@ -1032,6 +1072,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 
 def _next_review_items() -> list[dict[str, str]]:
     return [
+        {
+            "item": "ED-10aj final render-path stage 1",
+            "artifact": "clip-ed10aj-final-render-path-stage-1-001",
+            "question": "Does the stage-1 packet select the FFmpeg/libass diagnostic path while keeping production, creative, rights, publishing, and public-use gates closed?",
+            "next_route": "Start final-render-path-stage-2 or production-limitation-lift-stage-1 from this selected path; do not infer production/public approval.",
+        },
         {
             "item": "ED-10ai final render-path readiness packet",
             "artifact": "clip-ed10ai-final-render-path-readiness-packet-001",
@@ -1191,6 +1237,15 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Final Render Path Stage 1",
+            "command": "see docs\\style_intent\\subtitle-final-render-path-stage-1.md",
+            "target": "docs/style_intent/subtitle-final-render-path-stage-1.md",
+            "when_to_use": (
+                "Use to inspect the ED-10aj selected FFmpeg/libass path, "
+                "stage-1 checklist, and closed production/public gates."
+            ),
         },
         {
             "label": "Final Render Path Readiness",
@@ -1485,6 +1540,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "production_limitation_lift_entry_ready"
     if feature_id == "ED-10ai":
         return "final_render_path_readiness_packet_ready"
+    if feature_id == "ED-10aj":
+        return "final_render_path_stage_1_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1545,6 +1602,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ai":
         return 100
+    if feature_id == "ED-10aj":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1603,6 +1662,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the limitation-lift entry to start production-limitation-lift-stage-1 or final-render-path-readiness; keep production, rights, publishing, and public-use approvals explicit."
     if feature_id == "ED-10ai":
         return "Use the final render-path readiness packet to start final-render-path-stage-1 or production-limitation-lift-stage-1; keep production/public approvals explicit."
+    if feature_id == "ED-10aj":
+        return "Use the final render-path stage-1 packet to start final-render-path-stage-2 or production-limitation-lift-stage-1; keep production/public approvals explicit."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

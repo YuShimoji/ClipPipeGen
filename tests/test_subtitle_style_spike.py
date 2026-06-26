@@ -798,6 +798,136 @@ def test_subtitle_final_render_path_readiness_packet_doc_records_matrix():
     assert "episodes_tracked: `false`" in text
 
 
+def test_subtitle_final_render_path_stage1_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    dry_read = json.loads(
+        (style_dir / "subtitle-render-contract-consumer-dry-read.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    source_probe = json.loads(
+        (style_dir / "subtitle-render-path-selector-probe.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    lineage_surface = json.loads(
+        (
+            style_dir / "subtitle-render-path-lineage-observation-surface.json"
+        ).read_text(encoding="utf-8")
+    )
+    gate_entry = json.loads(
+        (style_dir / "subtitle-production-limitation-lift-entry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    readiness_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-readiness.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_subtitle_final_render_path_stage1(
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == preset_selector.FINAL_RENDER_PATH_STAGE1_SCHEMA_ID
+    assert tracked["artifact_id"] == preset_selector.FINAL_RENDER_PATH_STAGE1_ARTIFACT_ID
+    assert tracked["feature_id"] == "ED-10aj"
+    assert tracked["status"] == "final_render_path_stage_1_ready"
+    assert tracked["source_final_render_path_readiness_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_READINESS_ARTIFACT_ID
+    )
+    assert tracked["active_diagnostic_proof_source_artifact_id"] == (
+        preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert tracked["stage_1_candidate"]["render_adapter_path"] == (
+        "ffmpeg/libass diagnostic subtitle overlay path"
+    )
+    assert tracked["stage_1_candidate"][
+        "stage_1_candidate_not_production_render"
+    ] is True
+    assert tracked["stage_1_checklist_ids"] == list(
+        preset_selector.FINAL_RENDER_PATH_STAGE1_REQUIRED_CHECK_IDS
+    )
+    by_check = {row["check_id"]: row for row in tracked["stage_1_checklist"]}
+    assert by_check["render_adapter_path_selected"]["status"] == (
+        "selected_for_stage_1_preparation"
+    )
+    assert by_check["subtitle_ass_generation_path_available"]["status"] == (
+        "available_same_machine_diagnostic_only"
+    )
+    assert by_check["semantic_selector_contract_available"][
+        "source_artifact_id"
+    ] == preset_selector.ARTIFACT_ID
+    assert by_check["stable_body_text_policy_preserved"]["status"] == "preserved"
+    assert by_check["badge_accent_backplate_routing_preserved"]["status"] == (
+        "preserved"
+    )
+    assert by_check["line_break_safe_area_metadata_preserved"]["status"] == (
+        "preserved"
+    )
+    assert by_check["local_ignored_proof_media_recorded"]["status"] == (
+        "recorded_same_machine_may_be_absent_elsewhere"
+    )
+    assert by_check["no_tracked_binary_media"]["status"] == "closed"
+    assert by_check["production_gates_still_closed"]["status"] == "closed"
+    assert by_check["publishing_public_use_gates_still_closed"]["status"] == (
+        "closed_or_pending"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_subtitle_design_acceptance"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["creative_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["publishing_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["final_render_path_approved"] is False
+    assert tracked["validation"]["readiness_source_preserved"] is True
+    assert tracked["validation"]["active_diagnostic_source_preserved"] is True
+    assert tracked["validation"]["required_checklist_present"] is True
+    assert tracked["validation"]["production_public_boundary_closed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_final_render_path_stage1_doc_records_checklist():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-final-render-path-stage-1.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10aj Final Render-Path Stage 1" in text
+    assert "ffmpeg/libass diagnostic subtitle overlay path" in text
+    assert "clip-ed10ai-final-render-path-readiness-packet-001" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "clip-ed10ag-lineage-and-observation-surface-001" in text
+    assert "clip-ed10ah-production-limitation-lift-entry-001" in text
+    assert "render_adapter_path_selected" in text
+    assert "subtitle_ass_generation_path_available" in text
+    assert "semantic_selector_contract_available" in text
+    assert "stable_body_text_policy_preserved" in text
+    assert "badge_accent_backplate_routing_preserved" in text
+    assert "line_break_safe_area_metadata_preserved" in text
+    assert "local_ignored_proof_media_recorded" in text
+    assert "production_gates_still_closed" in text
+    assert "publishing_public_use_gates_still_closed" in text
+    assert "route_id: `final-render-path-stage-2`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "final_render_path_approved: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

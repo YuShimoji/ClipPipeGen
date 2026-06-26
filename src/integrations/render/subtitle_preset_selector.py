@@ -102,6 +102,25 @@ FINAL_RENDER_PATH_READINESS_REQUIRED_ROW_IDS = (
     "missing_creative_acceptance",
     "missing_rights_publication_public_use_decisions",
 )
+FINAL_RENDER_PATH_STAGE1_SCHEMA_ID = (
+    "clippipegen.subtitle_final_render_path_stage_1.v1"
+)
+FINAL_RENDER_PATH_STAGE1_ARTIFACT_ID = (
+    "clip-ed10aj-final-render-path-stage-1-001"
+)
+FINAL_RENDER_PATH_STAGE1_FEATURE_ID = "ED-10aj"
+FINAL_RENDER_PATH_STAGE1_REQUIRED_CHECK_IDS = (
+    "render_adapter_path_selected",
+    "subtitle_ass_generation_path_available",
+    "semantic_selector_contract_available",
+    "stable_body_text_policy_preserved",
+    "badge_accent_backplate_routing_preserved",
+    "line_break_safe_area_metadata_preserved",
+    "local_ignored_proof_media_recorded",
+    "no_tracked_binary_media",
+    "production_gates_still_closed",
+    "publishing_public_use_gates_still_closed",
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -1631,6 +1650,233 @@ def write_subtitle_final_render_path_readiness_packet(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_subtitle_final_render_path_stage1(
+    *,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    dry = (
+        deepcopy(dry_read)
+        if dry_read is not None
+        else build_subtitle_render_contract_consumer_dry_read()
+    )
+    probe = (
+        deepcopy(source_probe)
+        if source_probe is not None
+        else build_subtitle_render_path_selector_probe()
+    )
+    lineage = (
+        deepcopy(lineage_surface)
+        if lineage_surface is not None
+        else build_subtitle_render_path_lineage_observation_surface(
+            dry_read=dry,
+            source_probe=probe,
+        )
+    )
+    gate = (
+        deepcopy(gate_entry)
+        if gate_entry is not None
+        else build_subtitle_production_limitation_lift_entry(
+            dry_read=dry,
+            source_probe=probe,
+            lineage_surface=lineage,
+        )
+    )
+    readiness = (
+        deepcopy(readiness_packet)
+        if readiness_packet is not None
+        else build_subtitle_final_render_path_readiness_packet(
+            dry_read=dry,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+        )
+    )
+    local_outputs = dict(readiness["source_evidence"]["local_ignored_outputs"])
+    candidate = {
+        "candidate_id": "ffmpeg_libass_diagnostic_path_stage_1",
+        "render_adapter_path": "ffmpeg/libass diagnostic subtitle overlay path",
+        "selected_from_artifact_id": probe["artifact_id"],
+        "selection_status": "selected_for_stage_1_preparation_only",
+        "selection_reason": (
+            "ED-10af already proves representative selector payloads can pass "
+            "through FFmpeg/libass with ASS subtitle overlay output, while ED-10ai "
+            "keeps production/public approvals closed."
+        ),
+        "source_policy": "existing_output_first_reuse_ed10af_ed10ag_ed10ai_no_new_render",
+        "subtitle_ass_generation_path": local_outputs.get("ass", ""),
+        "video_probe_path": local_outputs.get("video", ""),
+        "manifest_path": local_outputs.get("manifest", ""),
+        "contact_sheet_path": local_outputs.get("contact_sheet", ""),
+        "same_machine_evidence_may_be_absent_on_other_clone": True,
+        "stage_1_candidate_not_production_render": True,
+    }
+    checklist = _final_render_path_stage1_checklist(
+        probe=probe,
+        lineage=lineage,
+        readiness=readiness,
+        local_outputs=local_outputs,
+    )
+    boundaries = _final_render_path_stage1_boundary_flags(readiness)
+    validation = _final_render_path_stage1_validation(
+        probe=probe,
+        lineage=lineage,
+        gate=gate,
+        dry=dry,
+        readiness=readiness,
+        checklist=checklist,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": FINAL_RENDER_PATH_STAGE1_SCHEMA_ID,
+        "artifact_id": FINAL_RENDER_PATH_STAGE1_ARTIFACT_ID,
+        "feature_id": FINAL_RENDER_PATH_STAGE1_FEATURE_ID,
+        "status": "final_render_path_stage_1_ready",
+        "surface_kind": "final_render_path_stage_1_preparation",
+        "render_level": "stage_1_path_selection_no_new_render",
+        "source_final_render_path_readiness_artifact_id": readiness["artifact_id"],
+        "source_render_path_selector_probe_artifact_id": probe["artifact_id"],
+        "source_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+        "source_production_limitation_lift_entry_artifact_id": gate["artifact_id"],
+        "source_render_contract_consumer_dry_read_artifact_id": dry["artifact_id"],
+        "active_diagnostic_proof_source_artifact_id": probe["artifact_id"],
+        "stage_1_candidate": candidate,
+        "source_evidence": {
+            "readiness_packet_artifact_id": readiness["artifact_id"],
+            "readiness_packet_path": "docs/style_intent/subtitle-final-render-path-readiness.json",
+            "active_diagnostic_proof_source_artifact_id": probe["artifact_id"],
+            "active_diagnostic_proof_source_path": "docs/style_intent/subtitle-render-path-selector-probe.json",
+            "support_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+            "support_lineage_observation_surface_path": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+            "gate_separation_source_artifact_id": gate["artifact_id"],
+            "gate_separation_source_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+            "dry_read_predecessor_artifact_id": dry["artifact_id"],
+            "dry_read_predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+            "selector_semantic_style_contract_artifact_id": ARTIFACT_ID,
+            "render_adapter_input_contract_artifact_id": RENDER_PATH_CONTRACT_ARTIFACT_ID,
+            "local_ignored_outputs": local_outputs,
+            "local_ignored_output_policy": "same_machine_diagnostic_only_may_be_absent_on_other_clone",
+        },
+        "stage_1_checklist_ids": list(FINAL_RENDER_PATH_STAGE1_REQUIRED_CHECK_IDS),
+        "stage_1_checklist": checklist,
+        "next_executable_route": {
+            "route_id": "final-render-path-stage-2",
+            "alternate_route_id": "production-limitation-lift-stage-1",
+            "agent_can_start_without_user_judgement": True,
+            "purpose": (
+                "Use the selected FFmpeg/libass diagnostic path candidate to "
+                "prepare a later final render-path stage without granting "
+                "production, publishing, or public-use approval."
+            ),
+            "first_steps": [
+                "Carry ED-10aj selected path and checklist into final-render-path-stage-2.",
+                "Keep ED-10ai missing production/public decision rows attached.",
+                "Reuse ignored proof paths only as same-machine diagnostic evidence.",
+            ],
+            "must_not_do": [
+                "approve production subtitle design",
+                "approve production render",
+                "approve creative use",
+                "make rights claims",
+                "upload or publish",
+                "grant public-use permission",
+                "request display/layout polish or old comparison reviews",
+                "add episodes/ or binary proof media to Git",
+            ],
+            "completion_signal": (
+                "A final render-path stage-1 candidate is selected and all "
+                "closed production/public gates remain explicit."
+            ),
+        },
+        "render_gate": {
+            "level": "stage_1_path_selection_no_new_render",
+            "existing_output_first_reused": True,
+            "new_render_run": False,
+            "source_probe_new_render_run": probe["render_gate"]["new_render_run"],
+            "source_lineage_new_render_run": lineage["render_gate"]["new_render_run"],
+            "source_readiness_new_render_run": readiness["render_gate"]["new_render_run"],
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "local_outputs_ignored": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "production_public_readiness": {
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "missing_before_production_render_approval": [
+                "Explicit production subtitle design acceptance.",
+                "Accepted final production render output.",
+                "Final production render command/output manifest and review result.",
+                "Explicit creative acceptance for production use.",
+            ],
+            "missing_before_publishing_public_use": [
+                "Rights clearance or owner decision.",
+                "Publishing acceptance.",
+                "Explicit public-use permission.",
+            ],
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/subtitle-final-render-path-stage-1.json",
+            "doc": "docs/style_intent/subtitle-final-render-path-stage-1.md",
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none_for_this_stage_1_packet",
+            "fixed_form_required": False,
+            "screenshot_required": False,
+            "layout_polish_required_before_next_step": False,
+            "human_review_required_only_for": [
+                "production_subtitle_design_acceptance",
+                "production_render_acceptance",
+                "creative_acceptance",
+                "rights_status",
+                "publishing_acceptance",
+                "public_use_permission",
+            ],
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_subtitle_final_render_path_stage1(
+    output_dir: Path,
+    *,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+) -> dict[str, Path]:
+    packet = build_subtitle_final_render_path_stage1(
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-final-render-path-stage-1.json"
+    doc_path = output_dir / "subtitle-final-render-path-stage-1.md"
+    json_path.write_text(
+        json.dumps(packet, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_final_render_path_stage1_markdown(packet),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "doc": doc_path}
+
+
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
     output_dir: Path,
@@ -2275,6 +2521,129 @@ def render_subtitle_final_render_path_readiness_packet_markdown(
         f"- render_adapter_input_contract_present: `{str(validation['render_adapter_input_contract_present']).lower()}`",
         f"- local_ignored_proof_media_referenced: `{str(validation['local_ignored_proof_media_referenced']).lower()}`",
         f"- missing_production_public_decisions_explicit: `{str(validation['missing_production_public_decisions_explicit']).lower()}`",
+        f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`",
+        f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
+        "",
+        "## Boundary",
+        "",
+        closed_boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_subtitle_final_render_path_stage1_markdown(
+    packet: Mapping[str, Any],
+) -> str:
+    source = packet["source_evidence"]
+    candidate = packet["stage_1_candidate"]
+    route = packet["next_executable_route"]
+    validation = packet["validation"]
+    boundaries = packet["boundaries"]
+    readiness = packet["production_public_readiness"]
+    nl = chr(10)
+    checklist_rows = nl.join(
+        "| {check_id} | {status} | {source} | {evidence} | {missing} |".format(
+            check_id=row["check_id"],
+            status=row["status"],
+            source=row["source_artifact_id"],
+            evidence=_markdown_cell_list(row["evidence"]),
+            missing=_markdown_cell_list(row["missing_before_approval"]) or "none",
+        )
+        for row in packet["stage_1_checklist"]
+    )
+    local_rows = nl.join(
+        f"| {target} | `{path}` |"
+        for target, path in source["local_ignored_outputs"].items()
+    )
+    route_steps = nl.join(f"- {step}" for step in route["first_steps"])
+    route_boundaries = nl.join(f"- {item}" for item in route["must_not_do"])
+    missing_render = nl.join(
+        f"- {item}" for item in readiness["missing_before_production_render_approval"]
+    )
+    missing_public = nl.join(
+        f"- {item}" for item in readiness["missing_before_publishing_public_use"]
+    )
+    closed_boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "new_render_created",
+            "final_render_path_approved",
+        )
+    )
+    lines = [
+        "# ED-10aj Final Render-Path Stage 1",
+        "",
+        "This tracked stage-1 packet selects a final render-path candidate from existing diagnostic evidence. It does not approve production subtitle design, production render, creative use, rights, publishing, or public use.",
+        "",
+        "## Stage-1 Candidate",
+        "",
+        f"- candidate_id: `{candidate['candidate_id']}`",
+        f"- render_adapter_path: `{candidate['render_adapter_path']}`",
+        f"- selection_status: `{candidate['selection_status']}`",
+        f"- selected_from_artifact_id: `{candidate['selected_from_artifact_id']}`",
+        f"- source_policy: `{candidate['source_policy']}`",
+        f"- stage_1_candidate_not_production_render: `{str(candidate['stage_1_candidate_not_production_render']).lower()}`",
+        f"- reason: {candidate['selection_reason']}",
+        "",
+        "## Source Evidence",
+        "",
+        f"- readiness packet: `{source['readiness_packet_artifact_id']}`",
+        f"- active diagnostic proof source: `{source['active_diagnostic_proof_source_artifact_id']}`",
+        f"- lineage observation support: `{source['support_lineage_observation_surface_artifact_id']}`",
+        f"- gate separation source: `{source['gate_separation_source_artifact_id']}`",
+        f"- dry-read predecessor: `{source['dry_read_predecessor_artifact_id']}`",
+        f"- dry-read predecessor source commit: `{source['dry_read_predecessor_source_commit']}`",
+        f"- selector semantic style contract: `{source['selector_semantic_style_contract_artifact_id']}`",
+        f"- render adapter input contract: `{source['render_adapter_input_contract_artifact_id']}`",
+        "",
+        "| local output | same-machine path |",
+        "|---|---|",
+        local_rows,
+        "",
+        "## Stage-1 Checklist",
+        "",
+        "| check | status | source artifact | evidence | missing before approval |",
+        "|---|---|---|---|---|",
+        checklist_rows,
+        "",
+        "## Still Missing Before Production Render Approval",
+        "",
+        missing_render,
+        "",
+        "## Still Missing Before Publishing/Public Use",
+        "",
+        missing_public,
+        "",
+        "## Next Executable Route",
+        "",
+        f"- route_id: `{route['route_id']}`",
+        f"- alternate_route_id: `{route['alternate_route_id']}`",
+        f"- agent_can_start_without_user_judgement: `{str(route['agent_can_start_without_user_judgement']).lower()}`",
+        f"- purpose: {route['purpose']}",
+        "",
+        route_steps,
+        "",
+        "This route must not:",
+        "",
+        route_boundaries,
+        "",
+        "## Validation",
+        "",
+        f"- required_checklist_present: `{str(validation['required_checklist_present']).lower()}`",
+        f"- readiness_source_preserved: `{str(validation['readiness_source_preserved']).lower()}`",
+        f"- active_diagnostic_source_preserved: `{str(validation['active_diagnostic_source_preserved']).lower()}`",
+        f"- stage_1_candidate_defined: `{str(validation['stage_1_candidate_defined']).lower()}`",
+        f"- semantic_selector_contract_available: `{str(validation['semantic_selector_contract_available']).lower()}`",
+        f"- local_ignored_proof_media_referenced: `{str(validation['local_ignored_proof_media_referenced']).lower()}`",
+        f"- no_tracked_binary_media: `{str(validation['no_tracked_binary_media']).lower()}`",
         f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`",
         f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
         "",
@@ -3560,6 +3929,302 @@ def _final_render_path_readiness_validation(
             and boundaries["new_render_created"] is False
             and boundaries["tracked_binary_artifact_created"] is False
             and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _final_render_path_stage1_checklist(
+    *,
+    probe: Mapping[str, Any],
+    lineage: Mapping[str, Any],
+    readiness: Mapping[str, Any],
+    local_outputs: Mapping[str, str],
+) -> list[dict[str, Any]]:
+    def row(
+        check_id: str,
+        status: str,
+        source_artifact_id: str,
+        evidence: list[str],
+        *,
+        missing: list[str] | None = None,
+        agent_can_continue: bool = True,
+    ) -> dict[str, Any]:
+        return {
+            "check_id": check_id,
+            "status": status,
+            "source_artifact_id": source_artifact_id,
+            "evidence": evidence,
+            "missing_before_approval": missing or [],
+            "agent_can_continue_without_user_judgement": agent_can_continue,
+        }
+
+    return [
+        row(
+            "render_adapter_path_selected",
+            "selected_for_stage_1_preparation",
+            probe["artifact_id"],
+            [
+                "FFmpeg/libass diagnostic subtitle overlay path is selected from ED-10af as the stage-1 candidate.",
+                "Selection is preparation only and does not approve production render.",
+            ],
+            missing=["Production render acceptance remains missing."],
+        ),
+        row(
+            "subtitle_ass_generation_path_available",
+            "available_same_machine_diagnostic_only",
+            probe["artifact_id"],
+            [
+                "ED-10af records an ignored ASS output path.",
+                f"ASS path: {local_outputs.get('ass', '')}",
+            ],
+            missing=["Portable/tracked production ASS artifact strategy remains missing."],
+        ),
+        row(
+            "semantic_selector_contract_available",
+            "available",
+            ARTIFACT_ID,
+            [
+                "The deterministic preset selector and ED-10ae render adapter input contract are available.",
+                "ED-10ai records selector/semantic and render adapter evidence as ready.",
+            ],
+        ),
+        row(
+            "stable_body_text_policy_preserved",
+            "preserved",
+            probe["artifact_id"],
+            [
+                "ED-10af validation keeps stable body text across selected examples.",
+                f"body_text_color_policy: {probe['body_text_color_policy']['reference']}",
+            ],
+        ),
+        row(
+            "badge_accent_backplate_routing_preserved",
+            "preserved",
+            probe["artifact_id"],
+            [
+                "ED-10af preserves badge/accent/backplate-first semantic variation.",
+                "Body subtitle text color is not used as the primary semantic variation surface.",
+            ],
+        ),
+        row(
+            "line_break_safe_area_metadata_preserved",
+            "preserved",
+            probe["artifact_id"],
+            [
+                "ED-10af validation keeps safe-area line-break metadata.",
+                "Whisper selected example records ASS newline behavior.",
+            ],
+        ),
+        row(
+            "local_ignored_proof_media_recorded",
+            "recorded_same_machine_may_be_absent_elsewhere",
+            lineage["artifact_id"],
+            [
+                "ED-10ag and ED-10ai record ignored ASS/MP4/manifest/contact-sheet paths.",
+                readiness["source_evidence"]["local_ignored_output_policy"],
+            ],
+            missing=["If absent on another clone, regenerate or observe under an explicit diagnostic route only."],
+        ),
+        row(
+            "no_tracked_binary_media",
+            "closed",
+            readiness["artifact_id"],
+            [
+                "ED-10ai render gate records no tracked binary artifact.",
+                "episodes/ remains outside tracked artifact scope.",
+            ],
+        ),
+        row(
+            "production_gates_still_closed",
+            "closed",
+            readiness["artifact_id"],
+            [
+                "Production subtitle design, production render, and creative acceptance remain false.",
+            ],
+            missing=[
+                "Explicit production subtitle design acceptance.",
+                "Accepted production render output.",
+                "Explicit creative acceptance.",
+            ],
+            agent_can_continue=False,
+        ),
+        row(
+            "publishing_public_use_gates_still_closed",
+            "closed_or_pending",
+            readiness["artifact_id"],
+            [
+                "Rights status remains pending.",
+                "Publishing acceptance and public-use permission remain false.",
+            ],
+            missing=[
+                "Rights clearance or owner decision.",
+                "Publishing acceptance.",
+                "Explicit public-use permission.",
+            ],
+            agent_can_continue=False,
+        ),
+    ]
+
+
+def _final_render_path_stage1_boundary_flags(
+    readiness: Mapping[str, Any],
+) -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_created": False,
+            "source_readiness_new_render_created": readiness["render_gate"]["new_render_run"],
+            "diagnostic_local_ignored_render_reused": True,
+            "stage_1_path_selected": True,
+            "stage_1_candidate_not_production_render": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "final_render_path_approved": False,
+        }
+    )
+    return flags
+
+
+def _final_render_path_stage1_validation(
+    *,
+    probe: Mapping[str, Any],
+    lineage: Mapping[str, Any],
+    gate: Mapping[str, Any],
+    dry: Mapping[str, Any],
+    readiness: Mapping[str, Any],
+    checklist: list[Mapping[str, Any]],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    actual_check_ids = [row["check_id"] for row in checklist]
+    expected_check_ids = list(FINAL_RENDER_PATH_STAGE1_REQUIRED_CHECK_IDS)
+    by_check = {row["check_id"]: row for row in checklist}
+    required_checklist_present = actual_check_ids == expected_check_ids
+    readiness_source_preserved = (
+        readiness["artifact_id"] == FINAL_RENDER_PATH_READINESS_ARTIFACT_ID
+        and readiness["validation"]["all_checks_passed"] is True
+        and readiness["boundaries"]["final_render_path_approved"] is False
+    )
+    active_diagnostic_source_preserved = (
+        probe["artifact_id"] == RENDER_PATH_PROBE_ARTIFACT_ID
+        and probe["validation"]["all_checks_passed"] is True
+    )
+    lineage_source_preserved = (
+        lineage["artifact_id"] == LINEAGE_OBSERVATION_ARTIFACT_ID
+        and lineage["validation"]["predecessor_lineage_present"] is True
+    )
+    gate_source_preserved = (
+        gate["artifact_id"] == PRODUCTION_LIMITATION_LIFT_ARTIFACT_ID
+        and gate["validation"]["all_checks_passed"] is True
+    )
+    dry_read_predecessor_preserved = (
+        dry["artifact_id"] == RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+        and RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT == "7e96a28"
+    )
+    stage_1_candidate_defined = (
+        by_check.get("render_adapter_path_selected", {}).get("status")
+        == "selected_for_stage_1_preparation"
+        and boundaries["stage_1_path_selected"] is True
+        and boundaries["stage_1_candidate_not_production_render"] is True
+    )
+    semantic_selector_contract_available = (
+        by_check.get("semantic_selector_contract_available", {}).get(
+            "source_artifact_id"
+        )
+        == ARTIFACT_ID
+        and readiness["validation"]["selector_semantic_contract_present"] is True
+        and readiness["validation"]["render_adapter_input_contract_present"] is True
+    )
+    stable_body_text_policy_preserved = (
+        by_check.get("stable_body_text_policy_preserved", {}).get("status")
+        == "preserved"
+        and probe["validation"]["stable_body_text_preserved"] is True
+    )
+    badge_accent_backplate_routing_preserved = (
+        by_check.get("badge_accent_backplate_routing_preserved", {}).get("status")
+        == "preserved"
+        and probe["validation"]["badge_accent_backplate_route_preserved"] is True
+    )
+    line_break_safe_area_metadata_preserved = (
+        by_check.get("line_break_safe_area_metadata_preserved", {}).get("status")
+        == "preserved"
+        and probe["validation"]["safe_area_line_break_metadata_survived"] is True
+    )
+    local_outputs = readiness["source_evidence"]["local_ignored_outputs"]
+    local_ignored_proof_media_referenced = (
+        isinstance(local_outputs, Mapping)
+        and {"ass", "video", "manifest", "contact_sheet"}.issubset(local_outputs)
+        and by_check.get("local_ignored_proof_media_recorded", {}).get("status")
+        == "recorded_same_machine_may_be_absent_elsewhere"
+    )
+    no_tracked_binary_media = (
+        by_check.get("no_tracked_binary_media", {}).get("status") == "closed"
+        and boundaries["tracked_binary_artifact_created"] is False
+        and boundaries["episodes_tracked"] is False
+    )
+    production_public_boundary_closed = (
+        by_check.get("production_gates_still_closed", {}).get("status") == "closed"
+        and by_check.get("publishing_public_use_gates_still_closed", {}).get(
+            "status"
+        )
+        == "closed_or_pending"
+        and boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["final_render_path_approved"] is False
+    )
+    return {
+        "expected_check_ids": expected_check_ids,
+        "actual_check_ids": actual_check_ids,
+        "required_checklist_present": required_checklist_present,
+        "readiness_source_preserved": readiness_source_preserved,
+        "readiness_source_artifact_id": readiness["artifact_id"],
+        "active_diagnostic_source_preserved": active_diagnostic_source_preserved,
+        "active_diagnostic_source_artifact_id": probe["artifact_id"],
+        "lineage_source_preserved": lineage_source_preserved,
+        "lineage_support_artifact_id": lineage["artifact_id"],
+        "gate_source_preserved": gate_source_preserved,
+        "gate_source_artifact_id": gate["artifact_id"],
+        "dry_read_predecessor_preserved": dry_read_predecessor_preserved,
+        "dry_read_predecessor_artifact_id": dry["artifact_id"],
+        "dry_read_predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+        "stage_1_candidate_defined": stage_1_candidate_defined,
+        "semantic_selector_contract_available": semantic_selector_contract_available,
+        "stable_body_text_policy_preserved": stable_body_text_policy_preserved,
+        "badge_accent_backplate_routing_preserved": badge_accent_backplate_routing_preserved,
+        "line_break_safe_area_metadata_preserved": line_break_safe_area_metadata_preserved,
+        "local_ignored_proof_media_referenced": local_ignored_proof_media_referenced,
+        "no_tracked_binary_media": no_tracked_binary_media,
+        "production_public_boundary_closed": production_public_boundary_closed,
+        "new_render_run": False,
+        "next_executable_route_defined": True,
+        "all_checks_passed": (
+            required_checklist_present
+            and readiness_source_preserved
+            and active_diagnostic_source_preserved
+            and lineage_source_preserved
+            and gate_source_preserved
+            and dry_read_predecessor_preserved
+            and stage_1_candidate_defined
+            and semantic_selector_contract_available
+            and stable_body_text_policy_preserved
+            and badge_accent_backplate_routing_preserved
+            and line_break_safe_area_metadata_preserved
+            and local_ignored_proof_media_referenced
+            and no_tracked_binary_media
+            and production_public_boundary_closed
+            and boundaries["new_render_created"] is False
         ),
     }
 

@@ -565,6 +565,42 @@ Boundary flags remain false or pending:
 - `tracked_binary_artifact_created=false`
 - `episodes_tracked=false`
 
+## `clip-ed10aj-final-render-path-stage-1-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10aj Final Render-Path Stage 1 |
+| purpose | Select the stage-1 final render-path candidate from existing diagnostic evidence without approving production render or public use. |
+| storage class | Tracked JSON/Markdown stage-1 packet; references ignored same-machine diagnostic media only. |
+| repo_relative_path | `docs/style_intent/subtitle-final-render-path-stage-1.md` |
+| metadata_json | `docs/style_intent/subtitle-final-render-path-stage-1.json` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-stage-1.md` |
+| source_readiness_packet | `clip-ed10ai-final-render-path-readiness-packet-001` |
+| active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
+| support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
+| source_gate_entry | `clip-ed10ah-production-limitation-lift-entry-001` |
+| source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
+| selected_path | FFmpeg/libass diagnostic subtitle overlay path, selected for stage-1 preparation only. |
+| generated_from | ED-10aj uses ED-10ai readiness plus ED-10af/ED-10ag diagnostic evidence to define `final-render-path-stage-1` without running a render or approving production/public use. |
+| validation_command | Parse ED-10aj stage-1 JSON plus related style intent JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | JSON records all required stage-1 checklist rows, ED-10ai readiness source, ED-10af active diagnostic source, FFmpeg/libass candidate path, closed production/public boundaries, `new_render_run=false`, and `episodes_tracked=false`. |
+| review_status | No Review Card and no user-side work. This packet is preparation only, not production subtitle design, production render, creative, rights, publishing, or public-use approval. |
+| next_action | Start `final-render-path-stage-2` or `production-limitation-lift-stage-1` from this selected path while keeping all production/public decisions explicit. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `final_render_path_approved=false`
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

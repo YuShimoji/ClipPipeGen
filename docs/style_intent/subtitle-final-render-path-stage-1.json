@@ -1,0 +1,328 @@
+{
+  "schema_id": "clippipegen.subtitle_final_render_path_stage_1.v1",
+  "artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+  "feature_id": "ED-10aj",
+  "status": "final_render_path_stage_1_ready",
+  "surface_kind": "final_render_path_stage_1_preparation",
+  "render_level": "stage_1_path_selection_no_new_render",
+  "source_final_render_path_readiness_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+  "source_render_path_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+  "source_production_limitation_lift_entry_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+  "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "stage_1_candidate": {
+    "candidate_id": "ffmpeg_libass_diagnostic_path_stage_1",
+    "render_adapter_path": "ffmpeg/libass diagnostic subtitle overlay path",
+    "selected_from_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "selection_status": "selected_for_stage_1_preparation_only",
+    "selection_reason": "ED-10af already proves representative selector payloads can pass through FFmpeg/libass with ASS subtitle overlay output, while ED-10ai keeps production/public approvals closed.",
+    "source_policy": "existing_output_first_reuse_ed10af_ed10ag_ed10ai_no_new_render",
+    "subtitle_ass_generation_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+    "video_probe_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+    "manifest_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+    "contact_sheet_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg",
+    "same_machine_evidence_may_be_absent_on_other_clone": true,
+    "stage_1_candidate_not_production_render": true
+  },
+  "source_evidence": {
+    "readiness_packet_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+    "readiness_packet_path": "docs/style_intent/subtitle-final-render-path-readiness.json",
+    "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "active_diagnostic_proof_source_path": "docs/style_intent/subtitle-render-path-selector-probe.json",
+    "support_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+    "support_lineage_observation_surface_path": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+    "gate_separation_source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+    "gate_separation_source_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+    "dry_read_predecessor_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "dry_read_predecessor_source_commit": "7e96a28",
+    "selector_semantic_style_contract_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+    "render_adapter_input_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+    "local_ignored_outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+      "contact_sheet": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+    },
+    "local_ignored_output_policy": "same_machine_diagnostic_only_may_be_absent_on_other_clone"
+  },
+  "stage_1_checklist_ids": [
+    "render_adapter_path_selected",
+    "subtitle_ass_generation_path_available",
+    "semantic_selector_contract_available",
+    "stable_body_text_policy_preserved",
+    "badge_accent_backplate_routing_preserved",
+    "line_break_safe_area_metadata_preserved",
+    "local_ignored_proof_media_recorded",
+    "no_tracked_binary_media",
+    "production_gates_still_closed",
+    "publishing_public_use_gates_still_closed"
+  ],
+  "stage_1_checklist": [
+    {
+      "check_id": "render_adapter_path_selected",
+      "status": "selected_for_stage_1_preparation",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "evidence": [
+        "FFmpeg/libass diagnostic subtitle overlay path is selected from ED-10af as the stage-1 candidate.",
+        "Selection is preparation only and does not approve production render."
+      ],
+      "missing_before_approval": [
+        "Production render acceptance remains missing."
+      ],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "subtitle_ass_generation_path_available",
+      "status": "available_same_machine_diagnostic_only",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "evidence": [
+        "ED-10af records an ignored ASS output path.",
+        "ASS path: episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass"
+      ],
+      "missing_before_approval": [
+        "Portable/tracked production ASS artifact strategy remains missing."
+      ],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "semantic_selector_contract_available",
+      "status": "available",
+      "source_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+      "evidence": [
+        "The deterministic preset selector and ED-10ae render adapter input contract are available.",
+        "ED-10ai records selector/semantic and render adapter evidence as ready."
+      ],
+      "missing_before_approval": [],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "stable_body_text_policy_preserved",
+      "status": "preserved",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "evidence": [
+        "ED-10af validation keeps stable body text across selected examples.",
+        "body_text_color_policy: stable_default_body_text"
+      ],
+      "missing_before_approval": [],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "badge_accent_backplate_routing_preserved",
+      "status": "preserved",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "evidence": [
+        "ED-10af preserves badge/accent/backplate-first semantic variation.",
+        "Body subtitle text color is not used as the primary semantic variation surface."
+      ],
+      "missing_before_approval": [],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "line_break_safe_area_metadata_preserved",
+      "status": "preserved",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "evidence": [
+        "ED-10af validation keeps safe-area line-break metadata.",
+        "Whisper selected example records ASS newline behavior."
+      ],
+      "missing_before_approval": [],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "local_ignored_proof_media_recorded",
+      "status": "recorded_same_machine_may_be_absent_elsewhere",
+      "source_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+      "evidence": [
+        "ED-10ag and ED-10ai record ignored ASS/MP4/manifest/contact-sheet paths.",
+        "same_machine_diagnostic_only_may_be_absent_on_other_clone"
+      ],
+      "missing_before_approval": [
+        "If absent on another clone, regenerate or observe under an explicit diagnostic route only."
+      ],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "no_tracked_binary_media",
+      "status": "closed",
+      "source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+      "evidence": [
+        "ED-10ai render gate records no tracked binary artifact.",
+        "episodes/ remains outside tracked artifact scope."
+      ],
+      "missing_before_approval": [],
+      "agent_can_continue_without_user_judgement": true
+    },
+    {
+      "check_id": "production_gates_still_closed",
+      "status": "closed",
+      "source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+      "evidence": [
+        "Production subtitle design, production render, and creative acceptance remain false."
+      ],
+      "missing_before_approval": [
+        "Explicit production subtitle design acceptance.",
+        "Accepted production render output.",
+        "Explicit creative acceptance."
+      ],
+      "agent_can_continue_without_user_judgement": false
+    },
+    {
+      "check_id": "publishing_public_use_gates_still_closed",
+      "status": "closed_or_pending",
+      "source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+      "evidence": [
+        "Rights status remains pending.",
+        "Publishing acceptance and public-use permission remain false."
+      ],
+      "missing_before_approval": [
+        "Rights clearance or owner decision.",
+        "Publishing acceptance.",
+        "Explicit public-use permission."
+      ],
+      "agent_can_continue_without_user_judgement": false
+    }
+  ],
+  "next_executable_route": {
+    "route_id": "final-render-path-stage-2",
+    "alternate_route_id": "production-limitation-lift-stage-1",
+    "agent_can_start_without_user_judgement": true,
+    "purpose": "Use the selected FFmpeg/libass diagnostic path candidate to prepare a later final render-path stage without granting production, publishing, or public-use approval.",
+    "first_steps": [
+      "Carry ED-10aj selected path and checklist into final-render-path-stage-2.",
+      "Keep ED-10ai missing production/public decision rows attached.",
+      "Reuse ignored proof paths only as same-machine diagnostic evidence."
+    ],
+    "must_not_do": [
+      "approve production subtitle design",
+      "approve production render",
+      "approve creative use",
+      "make rights claims",
+      "upload or publish",
+      "grant public-use permission",
+      "request display/layout polish or old comparison reviews",
+      "add episodes/ or binary proof media to Git"
+    ],
+    "completion_signal": "A final render-path stage-1 candidate is selected and all closed production/public gates remain explicit."
+  },
+  "render_gate": {
+    "level": "stage_1_path_selection_no_new_render",
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "source_probe_new_render_run": true,
+    "source_lineage_new_render_run": false,
+    "source_readiness_new_render_run": false,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "production_public_readiness": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "missing_before_production_render_approval": [
+      "Explicit production subtitle design acceptance.",
+      "Accepted final production render output.",
+      "Final production render command/output manifest and review result.",
+      "Explicit creative acceptance for production use."
+    ],
+    "missing_before_publishing_public_use": [
+      "Rights clearance or owner decision.",
+      "Publishing acceptance.",
+      "Explicit public-use permission."
+    ]
+  },
+  "validation": {
+    "expected_check_ids": [
+      "render_adapter_path_selected",
+      "subtitle_ass_generation_path_available",
+      "semantic_selector_contract_available",
+      "stable_body_text_policy_preserved",
+      "badge_accent_backplate_routing_preserved",
+      "line_break_safe_area_metadata_preserved",
+      "local_ignored_proof_media_recorded",
+      "no_tracked_binary_media",
+      "production_gates_still_closed",
+      "publishing_public_use_gates_still_closed"
+    ],
+    "actual_check_ids": [
+      "render_adapter_path_selected",
+      "subtitle_ass_generation_path_available",
+      "semantic_selector_contract_available",
+      "stable_body_text_policy_preserved",
+      "badge_accent_backplate_routing_preserved",
+      "line_break_safe_area_metadata_preserved",
+      "local_ignored_proof_media_recorded",
+      "no_tracked_binary_media",
+      "production_gates_still_closed",
+      "publishing_public_use_gates_still_closed"
+    ],
+    "required_checklist_present": true,
+    "readiness_source_preserved": true,
+    "readiness_source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+    "active_diagnostic_source_preserved": true,
+    "active_diagnostic_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "lineage_source_preserved": true,
+    "lineage_support_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+    "gate_source_preserved": true,
+    "gate_source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+    "dry_read_predecessor_preserved": true,
+    "dry_read_predecessor_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "dry_read_predecessor_source_commit": "7e96a28",
+    "stage_1_candidate_defined": true,
+    "semantic_selector_contract_available": true,
+    "stable_body_text_policy_preserved": true,
+    "badge_accent_backplate_routing_preserved": true,
+    "line_break_safe_area_metadata_preserved": true,
+    "local_ignored_proof_media_referenced": true,
+    "no_tracked_binary_media": true,
+    "production_public_boundary_closed": true,
+    "new_render_run": false,
+    "next_executable_route_defined": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-final-render-path-stage-1.json",
+    "doc": "docs/style_intent/subtitle-final-render-path-stage-1.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none_for_this_stage_1_packet",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "layout_polish_required_before_next_step": false,
+    "human_review_required_only_for": [
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission"
+    ]
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "source_readiness_new_render_created": false,
+    "diagnostic_local_ignored_render_reused": true,
+    "stage_1_path_selected": true,
+    "stage_1_candidate_not_production_render": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "final_render_path_approved": false
+  }
+}
