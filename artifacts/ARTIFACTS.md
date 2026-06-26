@@ -601,6 +601,43 @@ Boundary flags remain false or pending:
 - `episodes_tracked=false`
 - `final_render_path_approved=false`
 
+## `clip-ed10ak-final-render-path-stage-2-replayability-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ak Final Render-Path Stage 2 Replayability |
+| purpose | Record how a later agent/operator can inspect or replay the selected FFmpeg/libass diagnostic subtitle overlay path without approving production render or public use. |
+| storage class | Tracked JSON/Markdown operation packet; references ignored same-machine diagnostic media only. |
+| repo_relative_path | `docs/style_intent/subtitle-final-render-path-stage-2.md` |
+| metadata_json | `docs/style_intent/subtitle-final-render-path-stage-2.json` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-stage-2.md` |
+| source_stage_1_packet | `clip-ed10aj-final-render-path-stage-1-001` |
+| source_readiness_packet | `clip-ed10ai-final-render-path-readiness-packet-001` |
+| active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
+| support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
+| selected_path | FFmpeg/libass diagnostic subtitle overlay path. |
+| operation_matrix | Tracks selected path, tracked inputs, same-machine source inputs, ignored outputs, expected output types, command family, validation/readback commands, fresh-clone absence behavior, diagnostic-only scope, and missing production render approvals. |
+| generated_from | ED-10ak uses ED-10aj stage-1 plus ED-10af/ED-10ag diagnostic evidence to define replayability/operation handoff without running a render/replay or approving production/public use. |
+| validation_command | Parse ED-10ak stage-2 JSON plus related style intent JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | JSON records all required operation rows, ED-10aj stage-1 source, ED-10af active diagnostic source, FFmpeg/libass command family, fresh-clone absence behavior, closed production/public boundaries, `new_render_run=false`, `new_replay_run=false`, and `episodes_tracked=false`. |
+| review_status | No Review Card and no user-side work. This packet is replayability/readback only, not production subtitle design, production render, creative, rights, publishing, or public-use approval. |
+| next_action | Start `final-render-path-stage-3` or `production-limitation-lift-stage-1` from this operation packet while keeping all production/public decisions explicit. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_replay_run=false`
+- `final_render_path_approved=false`
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

@@ -1,0 +1,316 @@
+{
+  "schema_id": "clippipegen.subtitle_final_render_path_stage_2_replayability.v1",
+  "artifact_id": "clip-ed10ak-final-render-path-stage-2-replayability-001",
+  "feature_id": "ED-10ak",
+  "status": "final_render_path_stage_2_replayability_ready",
+  "surface_kind": "final_render_path_stage_2_replayability_operation_packet",
+  "render_level": "stage_2_replayability_no_new_render",
+  "source_final_render_path_stage_1_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+  "source_final_render_path_readiness_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+  "source_render_path_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+  "source_production_limitation_lift_entry_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+  "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "replay_operation": {
+    "operation_id": "ffmpeg_libass_diagnostic_replay_operation",
+    "selected_render_path": "ffmpeg/libass diagnostic subtitle overlay path",
+    "operation_status": "replayability_packet_ready_no_new_replay",
+    "existing_output_first_reused": true,
+    "new_replay_run": false,
+    "replay_required_now": false,
+    "diagnostic_only": true,
+    "tracked_inputs": [
+      "docs/style_intent/subtitle-final-render-path-stage-1.json",
+      "docs/style_intent/subtitle-final-render-path-readiness.json",
+      "docs/style_intent/subtitle-render-path-selector-probe.json",
+      "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+      "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+      "docs/style_intent/subtitle-render-path-selector-contract.json",
+      "src/integrations/render/subtitle_preset_selector.py",
+      "src/integrations/render/ffmpeg_tiny.py"
+    ],
+    "same_machine_local_inputs": {
+      "source_video": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+      "source_audio": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav"
+    },
+    "ignored_output_paths": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+      "contact_sheet": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+    },
+    "expected_output_types": [
+      "ass",
+      "mp4",
+      "local_manifest_json",
+      "contact_sheet_jpg"
+    ],
+    "command_family": "ffmpeg with libass subtitles filter plus ffprobe readback",
+    "source_probe_render_command_summary": "ffmpeg -y -ss 0 -t 4.2 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 -ss 0 -t 4.2 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav -map 0:v:0 -map 1:a:0 -vf scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p,subtitles=filename='./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass' -c:v libx264 -c:a aac -shortest ./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+    "validation_readback_commands": [
+      "uvx python -m json.tool docs\\style_intent\\subtitle-final-render-path-stage-2.json",
+      "uvx python -m json.tool docs\\style_intent\\subtitle-render-path-selector-probe.json",
+      "git ls-files episodes",
+      "git check-ignore -v -- episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+    ],
+    "fresh_clone_absence_behavior": "Same-machine ignored media may be absent on a fresh clone. That absence is non-fatal for tracked docs; rerun only under a separate explicit diagnostic replay route."
+  },
+  "operation_matrix_row_ids": [
+    "selected_render_path",
+    "required_tracked_inputs",
+    "required_same_machine_local_inputs",
+    "ignored_output_paths",
+    "expected_output_types",
+    "command_family",
+    "validation_readback_commands",
+    "fresh_clone_absence_behavior",
+    "diagnostic_only_scope",
+    "missing_before_production_render"
+  ],
+  "operation_matrix": [
+    {
+      "row_id": "selected_render_path",
+      "operation_area": "selected render path",
+      "status": "selected_for_replayability",
+      "source_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+      "details": [
+        "ffmpeg/libass diagnostic subtitle overlay path",
+        "Selected by ED-10aj as preparation only, not production render approval."
+      ]
+    },
+    {
+      "row_id": "required_tracked_inputs",
+      "operation_area": "required tracked inputs",
+      "status": "available",
+      "source_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+      "details": [
+        "docs/style_intent/subtitle-final-render-path-stage-1.json",
+        "docs/style_intent/subtitle-final-render-path-readiness.json",
+        "docs/style_intent/subtitle-render-path-selector-probe.json",
+        "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+        "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+        "docs/style_intent/subtitle-render-path-selector-contract.json",
+        "src/integrations/render/subtitle_preset_selector.py",
+        "src/integrations/render/ffmpeg_tiny.py"
+      ]
+    },
+    {
+      "row_id": "required_same_machine_local_inputs",
+      "operation_area": "required same-machine local inputs",
+      "status": "same_machine_may_be_absent",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "details": [
+        "source_video: episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+        "source_audio: episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav"
+      ]
+    },
+    {
+      "row_id": "ignored_output_paths",
+      "operation_area": "ignored output paths",
+      "status": "recorded_same_machine_may_be_absent",
+      "source_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+      "details": [
+        "ass: episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+        "video: episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+        "manifest: episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+        "contact_sheet: episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+      ]
+    },
+    {
+      "row_id": "expected_output_types",
+      "operation_area": "expected output types",
+      "status": "recorded",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "details": [
+        "ass",
+        "mp4",
+        "local_manifest_json",
+        "contact_sheet_jpg"
+      ]
+    },
+    {
+      "row_id": "command_family",
+      "operation_area": "command or command family",
+      "status": "recorded_from_source_probe",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "details": [
+        "ffmpeg with libass subtitles filter plus ffprobe readback",
+        "Source probe command summary is retained for readback; ED-10ak does not rerun it."
+      ]
+    },
+    {
+      "row_id": "validation_readback_commands",
+      "operation_area": "validation/readback commands",
+      "status": "recorded",
+      "source_artifact_id": "clip-ed10ak-final-render-path-stage-2-replayability-001",
+      "details": [
+        "uvx python -m json.tool docs\\style_intent\\subtitle-final-render-path-stage-2.json",
+        "uvx python -m json.tool docs\\style_intent\\subtitle-render-path-selector-probe.json",
+        "git ls-files episodes",
+        "git check-ignore -v -- episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4 episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+      ]
+    },
+    {
+      "row_id": "fresh_clone_absence_behavior",
+      "operation_area": "absence behavior on fresh clone",
+      "status": "non_fatal_for_tracked_docs",
+      "source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+      "details": [
+        "Same-machine ignored media may be absent on a fresh clone. That absence is non-fatal for tracked docs; rerun only under a separate explicit diagnostic replay route."
+      ]
+    },
+    {
+      "row_id": "diagnostic_only_scope",
+      "operation_area": "diagnostic-only scope",
+      "status": "closed_to_production_public_use",
+      "source_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+      "details": [
+        "The operation packet reuses ignored diagnostic proof only.",
+        "It does not approve production subtitle design, production render, creative use, rights, publishing, or public use."
+      ]
+    },
+    {
+      "row_id": "missing_before_production_render",
+      "operation_area": "missing before production render",
+      "status": "missing",
+      "source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+      "details": [
+        "Explicit production subtitle design acceptance.",
+        "Accepted final production render output.",
+        "Final production render command/output manifest and review result.",
+        "Explicit creative acceptance for production use."
+      ]
+    }
+  ],
+  "handoff_routes": {
+    "primary_route_id": "final-render-path-stage-3",
+    "alternate_route_id": "production-limitation-lift-stage-1",
+    "stage_3_purpose": "Prepare an actual final-path rehearsal from the replayability packet while retaining diagnostic and production boundaries.",
+    "production_limitation_lift_stage_1_purpose": "Prepare human, rights, publishing, and public-use decision packets without approving those decisions.",
+    "neither_route_approves_production_public_use": true
+  },
+  "render_gate": {
+    "level": "stage_2_replayability_no_new_render",
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "source_probe_new_render_run": true,
+    "source_stage1_new_render_run": false,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "production_public_readiness": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "missing_before_production_render_approval": [
+      "Explicit production subtitle design acceptance.",
+      "Accepted final production render output.",
+      "Final production render command/output manifest and review result.",
+      "Explicit creative acceptance for production use."
+    ],
+    "missing_before_publishing_public_use": [
+      "Rights clearance or owner decision.",
+      "Publishing acceptance.",
+      "Explicit public-use permission."
+    ]
+  },
+  "validation": {
+    "expected_row_ids": [
+      "selected_render_path",
+      "required_tracked_inputs",
+      "required_same_machine_local_inputs",
+      "ignored_output_paths",
+      "expected_output_types",
+      "command_family",
+      "validation_readback_commands",
+      "fresh_clone_absence_behavior",
+      "diagnostic_only_scope",
+      "missing_before_production_render"
+    ],
+    "actual_row_ids": [
+      "selected_render_path",
+      "required_tracked_inputs",
+      "required_same_machine_local_inputs",
+      "ignored_output_paths",
+      "expected_output_types",
+      "command_family",
+      "validation_readback_commands",
+      "fresh_clone_absence_behavior",
+      "diagnostic_only_scope",
+      "missing_before_production_render"
+    ],
+    "required_rows_present": true,
+    "stage1_source_preserved": true,
+    "stage1_source_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+    "readiness_source_preserved": true,
+    "readiness_source_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+    "active_diagnostic_source_preserved": true,
+    "active_diagnostic_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "lineage_source_preserved": true,
+    "lineage_support_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+    "gate_source_preserved": true,
+    "gate_source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+    "dry_read_predecessor_preserved": true,
+    "dry_read_predecessor_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "dry_read_predecessor_source_commit": "7e96a28",
+    "operation_replayability_defined": true,
+    "existing_output_first_applied": true,
+    "tracked_inputs_available": true,
+    "same_machine_inputs_recorded": true,
+    "local_ignored_outputs_referenced": true,
+    "fresh_clone_absence_nonfatal": true,
+    "diagnostic_only_scope_preserved": true,
+    "production_public_boundary_closed": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "next_executable_route_defined": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-final-render-path-stage-2.json",
+    "doc": "docs/style_intent/subtitle-final-render-path-stage-2.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none_for_this_stage_2_packet",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "layout_polish_required_before_next_step": false,
+    "human_review_required_only_for": [
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission"
+    ]
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "new_replay_run": false,
+    "source_stage1_new_render_created": false,
+    "diagnostic_local_ignored_render_reused": true,
+    "stage_2_replayability_packet_created": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "final_render_path_approved": false
+  }
+}

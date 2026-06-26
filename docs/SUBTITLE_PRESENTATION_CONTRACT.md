@@ -444,6 +444,24 @@ pending. ED-10aj runs no render and does not approve production/public use; it
 only prepares `final-render-path-stage-2` or
 `production-limitation-lift-stage-1`.
 
+## Current ED-10ak Final Render-Path Stage 2 Replayability
+
+ED-10ak records `clip-ed10ak-final-render-path-stage-2-replayability-001` as a
+tracked stage-2 operation packet at
+`docs/style_intent/subtitle-final-render-path-stage-2.json` and
+`docs/style_intent/subtitle-final-render-path-stage-2.md`. It consumes ED-10aj
+as the selected-path source and records how a later route can inspect or replay
+the same FFmpeg/libass diagnostic subtitle overlay path without assuming that a
+new replay is required now.
+
+The ED-10ak operation matrix records the selected render path, required tracked
+inputs, same-machine local inputs, ignored output paths, expected ASS/MP4/local
+manifest/contact-sheet outputs, command family, validation/readback commands,
+fresh-clone absence behavior, diagnostic-only scope, and what is still missing
+before production render approval. ED-10ak runs no render or replay and does not
+approve production/public use; it only prepares `final-render-path-stage-3` or
+`production-limitation-lift-stage-1`.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

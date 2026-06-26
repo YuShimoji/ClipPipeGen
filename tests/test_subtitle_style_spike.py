@@ -928,6 +928,144 @@ def test_subtitle_final_render_path_stage1_doc_records_checklist():
     assert "final_render_path_approved: `false`" in text
 
 
+def test_subtitle_final_render_path_stage2_replayability_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    dry_read = json.loads(
+        (style_dir / "subtitle-render-contract-consumer-dry-read.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    source_probe = json.loads(
+        (style_dir / "subtitle-render-path-selector-probe.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    lineage_surface = json.loads(
+        (
+            style_dir / "subtitle-render-path-lineage-observation-surface.json"
+        ).read_text(encoding="utf-8")
+    )
+    gate_entry = json.loads(
+        (style_dir / "subtitle-production-limitation-lift-entry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    readiness_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-readiness.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stage1_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-2.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_subtitle_final_render_path_stage2_replayability(
+        stage1_packet=stage1_packet,
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == preset_selector.FINAL_RENDER_PATH_STAGE2_SCHEMA_ID
+    assert tracked["artifact_id"] == preset_selector.FINAL_RENDER_PATH_STAGE2_ARTIFACT_ID
+    assert tracked["feature_id"] == "ED-10ak"
+    assert tracked["status"] == "final_render_path_stage_2_replayability_ready"
+    assert tracked["source_final_render_path_stage_1_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["source_final_render_path_readiness_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_READINESS_ARTIFACT_ID
+    )
+    assert tracked["active_diagnostic_proof_source_artifact_id"] == (
+        preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert tracked["replay_operation"]["selected_render_path"] == (
+        "ffmpeg/libass diagnostic subtitle overlay path"
+    )
+    assert tracked["replay_operation"]["new_replay_run"] is False
+    assert tracked["replay_operation"]["existing_output_first_reused"] is True
+    assert tracked["operation_matrix_row_ids"] == list(
+        preset_selector.FINAL_RENDER_PATH_STAGE2_REQUIRED_ROW_IDS
+    )
+    by_row = {row["row_id"]: row for row in tracked["operation_matrix"]}
+    assert by_row["selected_render_path"]["status"] == "selected_for_replayability"
+    assert by_row["required_tracked_inputs"]["status"] == "available"
+    assert by_row["required_same_machine_local_inputs"]["status"] == (
+        "same_machine_may_be_absent"
+    )
+    assert by_row["ignored_output_paths"]["status"] == (
+        "recorded_same_machine_may_be_absent"
+    )
+    assert by_row["expected_output_types"]["status"] == "recorded"
+    assert by_row["command_family"]["status"] == "recorded_from_source_probe"
+    assert by_row["validation_readback_commands"]["status"] == "recorded"
+    assert by_row["fresh_clone_absence_behavior"]["status"] == (
+        "non_fatal_for_tracked_docs"
+    )
+    assert by_row["diagnostic_only_scope"]["status"] == (
+        "closed_to_production_public_use"
+    )
+    assert by_row["missing_before_production_render"]["status"] == "missing"
+    assert tracked["handoff_routes"]["primary_route_id"] == (
+        "final-render-path-stage-3"
+    )
+    assert tracked["handoff_routes"]["alternate_route_id"] == (
+        "production-limitation-lift-stage-1"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_replay_run"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["final_render_path_approved"] is False
+    assert tracked["validation"]["stage1_source_preserved"] is True
+    assert tracked["validation"]["active_diagnostic_source_preserved"] is True
+    assert tracked["validation"]["operation_replayability_defined"] is True
+    assert tracked["validation"]["existing_output_first_applied"] is True
+    assert tracked["validation"]["production_public_boundary_closed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_final_render_path_stage2_doc_records_operation_matrix():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-final-render-path-stage-2.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10ak Final Render-Path Stage 2 Replayability" in text
+    assert "clip-ed10aj-final-render-path-stage-1-001" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "ffmpeg/libass diagnostic subtitle overlay path" in text
+    assert "selected_render_path" in text
+    assert "required_tracked_inputs" in text
+    assert "required_same_machine_local_inputs" in text
+    assert "ignored_output_paths" in text
+    assert "expected_output_types" in text
+    assert "command_family" in text
+    assert "validation_readback_commands" in text
+    assert "fresh_clone_absence_behavior" in text
+    assert "diagnostic_only_scope" in text
+    assert "missing_before_production_render" in text
+    assert "primary_route_id: `final-render-path-stage-3`" in text
+    assert "alternate_route_id: `production-limitation-lift-stage-1`" in text
+    assert "new_replay_run: `false`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "final_render_path_approved: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
