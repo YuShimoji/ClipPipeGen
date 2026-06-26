@@ -140,6 +140,26 @@ FINAL_RENDER_PATH_STAGE2_REQUIRED_ROW_IDS = (
     "diagnostic_only_scope",
     "missing_before_production_render",
 )
+FINAL_RENDER_PATH_STAGE3_SCHEMA_ID = (
+    "clippipegen.subtitle_final_render_path_stage_3_rehearsal.v1"
+)
+FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID = (
+    "clip-ed10al-final-render-path-stage-3-rehearsal-001"
+)
+FINAL_RENDER_PATH_STAGE3_FEATURE_ID = "ED-10al"
+FINAL_RENDER_PATH_STAGE3_REQUIRED_ROW_IDS = (
+    "selected_render_path",
+    "tracked_inputs_used",
+    "same_machine_inputs_used",
+    "ignored_outputs_generated_or_recorded",
+    "command_and_command_family",
+    "output_metadata_available",
+    "ass_style_tokens_survived",
+    "stable_body_text_policy_survived",
+    "badge_accent_backplate_route_survived",
+    "line_break_safe_area_metadata_survived",
+    "production_public_gates_still_closed",
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -2136,6 +2156,300 @@ def write_subtitle_final_render_path_stage2_replayability(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_subtitle_final_render_path_stage3_rehearsal(
+    *,
+    stage2_packet: Mapping[str, Any] | None = None,
+    stage1_packet: Mapping[str, Any] | None = None,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+    rehearsal_local_probe: Mapping[str, Any] | None = None,
+    rehearsal_invocation_command: str | None = None,
+) -> dict[str, Any]:
+    dry = (
+        deepcopy(dry_read)
+        if dry_read is not None
+        else build_subtitle_render_contract_consumer_dry_read()
+    )
+    probe = (
+        deepcopy(source_probe)
+        if source_probe is not None
+        else build_subtitle_render_path_selector_probe()
+    )
+    lineage = (
+        deepcopy(lineage_surface)
+        if lineage_surface is not None
+        else build_subtitle_render_path_lineage_observation_surface(
+            dry_read=dry,
+            source_probe=probe,
+        )
+    )
+    gate = (
+        deepcopy(gate_entry)
+        if gate_entry is not None
+        else build_subtitle_production_limitation_lift_entry(
+            dry_read=dry,
+            source_probe=probe,
+            lineage_surface=lineage,
+        )
+    )
+    readiness = (
+        deepcopy(readiness_packet)
+        if readiness_packet is not None
+        else build_subtitle_final_render_path_readiness_packet(
+            dry_read=dry,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+        )
+    )
+    stage1 = (
+        deepcopy(stage1_packet)
+        if stage1_packet is not None
+        else build_subtitle_final_render_path_stage1(
+            readiness_packet=readiness,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+            dry_read=dry,
+        )
+    )
+    stage2 = (
+        deepcopy(stage2_packet)
+        if stage2_packet is not None
+        else build_subtitle_final_render_path_stage2_replayability(
+            stage1_packet=stage1,
+            readiness_packet=readiness,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+            dry_read=dry,
+        )
+    )
+    local_probe = (
+        deepcopy(rehearsal_local_probe)
+        if rehearsal_local_probe is not None
+        else deepcopy(probe["local_probe"])
+    )
+    recorded_outputs = dict(stage2["replay_operation"]["ignored_output_paths"])
+    generated_outputs = dict(local_probe.get("outputs") or {})
+    output_status = {
+        "ass": "generated" if generated_outputs.get("ass") else "not_generated",
+        "video": "generated" if generated_outputs.get("video") else "not_generated",
+        "manifest": "generated" if generated_outputs.get("manifest") else "not_generated",
+        "contact_sheet": (
+            "recorded_not_generated_by_stage_3_rehearsal"
+            if recorded_outputs.get("contact_sheet")
+            else "not_recorded"
+        ),
+    }
+    rehearsal = {
+        "rehearsal_id": "ffmpeg_libass_diagnostic_stage_3_rehearsal",
+        "selected_render_path": stage2["replay_operation"]["selected_render_path"],
+        "rehearsal_status": "diagnostic_rehearsal_completed",
+        "diagnostic_only": True,
+        "existing_output_first_applied": True,
+        "existing_output_first_reused": False,
+        "new_rehearsal_run": True,
+        "new_render_run": True,
+        "rehearsal_run_reason": (
+            "Tracked ED-10af/ED-10ag readback existed, but the same-machine "
+            "ignored ASS/MP4/manifest outputs were absent before this slice "
+            "while source video/audio were present."
+        ),
+        "tracked_inputs": list(stage2["replay_operation"]["tracked_inputs"]),
+        "same_machine_local_inputs": dict(
+            stage2["replay_operation"]["same_machine_local_inputs"]
+        ),
+        "recorded_ignored_outputs": recorded_outputs,
+        "generated_ignored_outputs": generated_outputs,
+        "output_status": output_status,
+        "expected_output_types": [
+            "ass",
+            "mp4",
+            "local_manifest_json",
+            "contact_sheet_jpg_recorded_not_generated",
+        ],
+        "command_family": stage2["replay_operation"]["command_family"],
+        "rehearsal_invocation_command": rehearsal_invocation_command
+        or "write_subtitle_render_path_selector_probe_local_artifacts(...)",
+        "render_command_summary": local_probe.get("render_command_summary"),
+        "local_probe_readback": local_probe,
+        "output_metadata": dict(local_probe.get("metadata") or {}),
+        "why_diagnostic_only": (
+            "The rehearsal uses ignored local source media and writes ignored "
+            "local diagnostic proof only. It does not approve production "
+            "subtitle design, production render, creative use, rights, "
+            "publishing, or public use."
+        ),
+    }
+    survival = {
+        "ass_subtitle_style_tokens_survived": (
+            probe["validation"]["style_axis_preserved"] is True
+            and local_probe.get("status") == "local_ignored_probe_generated"
+        ),
+        "stable_body_text_policy_survived": probe["validation"][
+            "stable_body_text_preserved"
+        ],
+        "badge_accent_backplate_route_survived": probe["validation"][
+            "badge_accent_backplate_route_preserved"
+        ],
+        "line_break_safe_area_metadata_survived": probe["validation"][
+            "safe_area_line_break_metadata_survived"
+        ],
+        "production_public_gates_still_closed": True,
+    }
+    matrix = _final_render_path_stage3_rehearsal_matrix(
+        stage2=stage2,
+        probe=probe,
+        lineage=lineage,
+        rehearsal=rehearsal,
+        survival=survival,
+    )
+    boundaries = _final_render_path_stage3_boundary_flags()
+    validation = _final_render_path_stage3_validation(
+        stage2=stage2,
+        stage1=stage1,
+        readiness=readiness,
+        probe=probe,
+        lineage=lineage,
+        gate=gate,
+        dry=dry,
+        rehearsal=rehearsal,
+        survival=survival,
+        matrix=matrix,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": FINAL_RENDER_PATH_STAGE3_SCHEMA_ID,
+        "artifact_id": FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID,
+        "feature_id": FINAL_RENDER_PATH_STAGE3_FEATURE_ID,
+        "status": "final_render_path_stage_3_diagnostic_rehearsal_ready",
+        "surface_kind": "final_render_path_stage_3_diagnostic_rehearsal_readback",
+        "render_level": "stage_3_diagnostic_rehearsal_ignored_local_render",
+        "source_final_render_path_stage_2_artifact_id": stage2["artifact_id"],
+        "source_final_render_path_stage_1_artifact_id": stage1["artifact_id"],
+        "source_final_render_path_readiness_artifact_id": readiness["artifact_id"],
+        "source_render_path_selector_probe_artifact_id": probe["artifact_id"],
+        "source_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+        "source_production_limitation_lift_entry_artifact_id": gate["artifact_id"],
+        "source_render_contract_consumer_dry_read_artifact_id": dry["artifact_id"],
+        "active_diagnostic_proof_source_artifact_id": probe["artifact_id"],
+        "rehearsal": rehearsal,
+        "survival_readback": survival,
+        "rehearsal_matrix_row_ids": list(FINAL_RENDER_PATH_STAGE3_REQUIRED_ROW_IDS),
+        "rehearsal_matrix": matrix,
+        "handoff_routes": {
+            "primary_route_id": "production-limitation-lift-stage-1",
+            "alternate_route_id": "final-render-path-stage-4",
+            "production_limitation_lift_stage_1_purpose": (
+                "Prepare explicit human, rights, publishing, and public-use "
+                "decision packets after the diagnostic final-path rehearsal "
+                "without approving those decisions."
+            ),
+            "stage_4_purpose": (
+                "Inspect or package a later final render-path route only if a "
+                "new explicit milestone needs more diagnostic readback."
+            ),
+            "neither_route_approves_production_public_use": True,
+        },
+        "render_gate": {
+            "level": "stage_3_diagnostic_rehearsal_ignored_local_render",
+            "existing_output_first_applied": True,
+            "existing_output_first_reused": False,
+            "new_render_run": True,
+            "new_rehearsal_run": True,
+            "source_probe_new_render_run": probe["render_gate"]["new_render_run"],
+            "source_stage2_new_render_run": stage2["render_gate"]["new_render_run"],
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "local_outputs_ignored": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "production_public_readiness": {
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "missing_before_production_render_approval": [
+                "Explicit production subtitle design acceptance.",
+                "Accepted final production render output.",
+                "Final production render command/output manifest and review result.",
+                "Explicit creative acceptance for production use.",
+            ],
+            "missing_before_publishing_public_use": [
+                "Rights clearance or owner decision.",
+                "Publishing acceptance.",
+                "Explicit public-use permission.",
+            ],
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/subtitle-final-render-path-stage-3.json",
+            "doc": "docs/style_intent/subtitle-final-render-path-stage-3.md",
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none_for_this_stage_3_diagnostic_rehearsal",
+            "fixed_form_required": False,
+            "screenshot_required": False,
+            "layout_polish_required_before_next_step": False,
+            "human_review_required_only_for": [
+                "production_subtitle_design_acceptance",
+                "production_render_acceptance",
+                "creative_acceptance",
+                "rights_status",
+                "publishing_acceptance",
+                "public_use_permission",
+            ],
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_subtitle_final_render_path_stage3_rehearsal(
+    output_dir: Path,
+    *,
+    stage2_packet: Mapping[str, Any] | None = None,
+    stage1_packet: Mapping[str, Any] | None = None,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+    rehearsal_local_probe: Mapping[str, Any] | None = None,
+    rehearsal_invocation_command: str | None = None,
+) -> dict[str, Path]:
+    packet = build_subtitle_final_render_path_stage3_rehearsal(
+        stage2_packet=stage2_packet,
+        stage1_packet=stage1_packet,
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+        rehearsal_local_probe=rehearsal_local_probe,
+        rehearsal_invocation_command=rehearsal_invocation_command,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-final-render-path-stage-3.json"
+    doc_path = output_dir / "subtitle-final-render-path-stage-3.md"
+    json_path.write_text(
+        json.dumps(packet, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_final_render_path_stage3_rehearsal_markdown(packet),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "doc": doc_path}
+
+
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
     output_dir: Path,
@@ -3041,6 +3355,189 @@ def render_subtitle_final_render_path_stage2_replayability_markdown(
         f"- operation_replayability_defined: `{str(validation['operation_replayability_defined']).lower()}`",
         f"- existing_output_first_applied: `{str(validation['existing_output_first_applied']).lower()}`",
         f"- local_ignored_outputs_referenced: `{str(validation['local_ignored_outputs_referenced']).lower()}`",
+        f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`",
+        f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
+        "",
+        "## Boundary",
+        "",
+        closed_boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_subtitle_final_render_path_stage3_rehearsal_markdown(
+    packet: Mapping[str, Any],
+) -> str:
+    rehearsal = packet["rehearsal"]
+    survival = packet["survival_readback"]
+    routes = packet["handoff_routes"]
+    validation = packet["validation"]
+    boundaries = packet["boundaries"]
+    readiness = packet["production_public_readiness"]
+    metadata = rehearsal["output_metadata"]
+    nl = chr(10)
+    matrix_rows = nl.join(
+        "| {row_id} | {area} | {status} | {source} | {detail} |".format(
+            row_id=row["row_id"],
+            area=row["rehearsal_area"],
+            status=row["status"],
+            source=row["source_artifact_id"],
+            detail=_markdown_cell_list(row["details"]),
+        )
+        for row in packet["rehearsal_matrix"]
+    )
+    tracked_rows = nl.join(f"- `{path}`" for path in rehearsal["tracked_inputs"])
+    local_input_rows = nl.join(
+        f"| {name} | `{path}` |"
+        for name, path in rehearsal["same_machine_local_inputs"].items()
+    )
+    generated_rows = nl.join(
+        f"| {name} | `{path}` |"
+        for name, path in rehearsal["generated_ignored_outputs"].items()
+    )
+    recorded_rows = nl.join(
+        f"| {name} | `{path}` |"
+        for name, path in rehearsal["recorded_ignored_outputs"].items()
+    )
+    status_rows = nl.join(
+        f"| {name} | `{status}` |"
+        for name, status in rehearsal["output_status"].items()
+    )
+    metadata_rows = nl.join(
+        f"- {key}: `{value}`"
+        for key, value in metadata.items()
+        if key
+        in {
+            "duration_seconds",
+            "resolution",
+            "width",
+            "height",
+            "video_codec",
+            "audio_codec",
+            "fps",
+            "frame_rate",
+            "stream_count",
+        }
+    )
+    missing_render = nl.join(
+        f"- {item}" for item in readiness["missing_before_production_render_approval"]
+    )
+    missing_public = nl.join(
+        f"- {item}" for item in readiness["missing_before_publishing_public_use"]
+    )
+    survival_rows = nl.join(
+        f"- {key}: `{str(value).lower()}`" for key, value in survival.items()
+    )
+    closed_boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "new_render_created",
+            "new_rehearsal_run",
+            "final_render_path_approved",
+        )
+    )
+    lines = [
+        "# ED-10al Final Render-Path Stage 3 Diagnostic Rehearsal",
+        "",
+        "This tracked stage-3 artifact records a bounded diagnostic final-path rehearsal of the selected FFmpeg/libass subtitle overlay path. It uses ignored local media and ignored local outputs only; it does not approve production subtitle design, production render, creative use, rights, publishing, or public use.",
+        "",
+        "## Rehearsal",
+        "",
+        f"- rehearsal_id: `{rehearsal['rehearsal_id']}`",
+        f"- selected_render_path: `{rehearsal['selected_render_path']}`",
+        f"- rehearsal_status: `{rehearsal['rehearsal_status']}`",
+        f"- existing_output_first_applied: `{str(rehearsal['existing_output_first_applied']).lower()}`",
+        f"- existing_output_first_reused: `{str(rehearsal['existing_output_first_reused']).lower()}`",
+        f"- new_rehearsal_run: `{str(rehearsal['new_rehearsal_run']).lower()}`",
+        f"- new_render_run: `{str(rehearsal['new_render_run']).lower()}`",
+        f"- diagnostic_only: `{str(rehearsal['diagnostic_only']).lower()}`",
+        f"- command_family: `{rehearsal['command_family']}`",
+        f"- rehearsal_run_reason: {rehearsal['rehearsal_run_reason']}",
+        "",
+        "## Required Tracked Inputs Used",
+        "",
+        tracked_rows,
+        "",
+        "## Same-Machine Local Inputs Used",
+        "",
+        "| input | same-machine path |",
+        "|---|---|",
+        local_input_rows,
+        "",
+        "## Ignored Outputs",
+        "",
+        "Generated by this rehearsal:",
+        "",
+        "| output | path |",
+        "|---|---|",
+        generated_rows,
+        "",
+        "Recorded source paths:",
+        "",
+        "| output | path |",
+        "|---|---|",
+        recorded_rows,
+        "",
+        "Output status:",
+        "",
+        "| output | status |",
+        "|---|---|",
+        status_rows,
+        "",
+        "## Command",
+        "",
+        f"- rehearsal_invocation_command: `{rehearsal['rehearsal_invocation_command']}`",
+        f"- render_command_summary: `{rehearsal['render_command_summary']}`",
+        "",
+        "## Output Metadata",
+        "",
+        metadata_rows,
+        "",
+        "## Survival Readback",
+        "",
+        survival_rows,
+        "",
+        "## Rehearsal Matrix",
+        "",
+        "| row | area | status | source artifact | details |",
+        "|---|---|---|---|---|",
+        matrix_rows,
+        "",
+        "## Still Missing Before Production Render Approval",
+        "",
+        missing_render,
+        "",
+        "## Still Missing Before Publishing/Public Use",
+        "",
+        missing_public,
+        "",
+        "## Handoff Routes",
+        "",
+        f"- primary_route_id: `{routes['primary_route_id']}`",
+        f"- alternate_route_id: `{routes['alternate_route_id']}`",
+        f"- production_limitation_lift_stage_1_purpose: {routes['production_limitation_lift_stage_1_purpose']}",
+        f"- stage_4_purpose: {routes['stage_4_purpose']}",
+        f"- neither_route_approves_production_public_use: `{str(routes['neither_route_approves_production_public_use']).lower()}`",
+        "",
+        "## Validation",
+        "",
+        f"- required_rows_present: `{str(validation['required_rows_present']).lower()}`",
+        f"- stage2_source_preserved: `{str(validation['stage2_source_preserved']).lower()}`",
+        f"- active_diagnostic_source_preserved: `{str(validation['active_diagnostic_source_preserved']).lower()}`",
+        f"- rehearsal_run_recorded: `{str(validation['rehearsal_run_recorded']).lower()}`",
+        f"- output_metadata_available: `{str(validation['output_metadata_available']).lower()}`",
+        f"- ass_style_tokens_survived: `{str(validation['ass_style_tokens_survived']).lower()}`",
+        f"- stable_body_text_policy_survived: `{str(validation['stable_body_text_policy_survived']).lower()}`",
+        f"- badge_accent_backplate_route_survived: `{str(validation['badge_accent_backplate_route_survived']).lower()}`",
+        f"- line_break_safe_area_metadata_survived: `{str(validation['line_break_safe_area_metadata_survived']).lower()}`",
         f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`",
         f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
         "",
@@ -4901,6 +5398,338 @@ def _final_render_path_stage2_validation(
             and local_ignored_outputs_referenced
             and fresh_clone_absence_nonfatal
             and diagnostic_only_scope_preserved
+            and production_public_boundary_closed
+            and boundaries["tracked_binary_artifact_created"] is False
+            and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _final_render_path_stage3_rehearsal_matrix(
+    *,
+    stage2: Mapping[str, Any],
+    probe: Mapping[str, Any],
+    lineage: Mapping[str, Any],
+    rehearsal: Mapping[str, Any],
+    survival: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    def row(
+        row_id: str,
+        area: str,
+        status: str,
+        source_artifact_id: str,
+        details: list[str],
+    ) -> dict[str, Any]:
+        return {
+            "row_id": row_id,
+            "rehearsal_area": area,
+            "status": status,
+            "source_artifact_id": source_artifact_id,
+            "details": details,
+        }
+
+    metadata = rehearsal["output_metadata"]
+    return [
+        row(
+            "selected_render_path",
+            "selected render path",
+            "rehearsed_diagnostic_path",
+            stage2["artifact_id"],
+            [
+                rehearsal["selected_render_path"],
+                "Selected by ED-10aj and made replayable by ED-10ak; ED-10al rehearses it diagnostically only.",
+            ],
+        ),
+        row(
+            "tracked_inputs_used",
+            "tracked inputs used",
+            "available",
+            stage2["artifact_id"],
+            list(rehearsal["tracked_inputs"]),
+        ),
+        row(
+            "same_machine_inputs_used",
+            "same-machine local inputs used",
+            "available_on_this_machine",
+            probe["artifact_id"],
+            [
+                f"{name}: {path}"
+                for name, path in rehearsal["same_machine_local_inputs"].items()
+            ],
+        ),
+        row(
+            "ignored_outputs_generated_or_recorded",
+            "ignored outputs generated or recorded",
+            "generated_ass_video_manifest_contact_sheet_recorded",
+            lineage["artifact_id"],
+            [
+                *[
+                    f"generated {name}: {path}"
+                    for name, path in rehearsal["generated_ignored_outputs"].items()
+                ],
+                f"recorded contact_sheet: {rehearsal['recorded_ignored_outputs'].get('contact_sheet', '')}",
+                "contact_sheet was recorded from ED-10ag but not generated by this stage-3 rehearsal function.",
+            ],
+        ),
+        row(
+            "command_and_command_family",
+            "command and command family",
+            "recorded",
+            FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID,
+            [
+                rehearsal["command_family"],
+                str(rehearsal["rehearsal_invocation_command"]),
+                str(rehearsal["render_command_summary"]),
+            ],
+        ),
+        row(
+            "output_metadata_available",
+            "output metadata",
+            "available",
+            FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID,
+            [
+                f"duration_seconds: {metadata.get('duration_seconds')}",
+                f"resolution: {metadata.get('resolution')}",
+                f"video_codec: {metadata.get('video_codec')}",
+                f"audio_codec: {metadata.get('audio_codec')}",
+                f"stream_count: {metadata.get('stream_count')}",
+            ],
+        ),
+        row(
+            "ass_style_tokens_survived",
+            "ASS/subtitle style tokens",
+            "survived",
+            probe["artifact_id"],
+            [
+                f"ass_subtitle_style_tokens_survived: {survival['ass_subtitle_style_tokens_survived']}",
+                "Source probe style axes remain preserved in the generated ASS-backed diagnostic render.",
+            ],
+        ),
+        row(
+            "stable_body_text_policy_survived",
+            "stable body text policy",
+            "survived",
+            probe["artifact_id"],
+            [
+                f"stable_body_text_policy_survived: {survival['stable_body_text_policy_survived']}",
+                "Body text stays on stable_default_body_text; semantic variation remains outside body fill.",
+            ],
+        ),
+        row(
+            "badge_accent_backplate_route_survived",
+            "badge/accent/backplate route",
+            "survived",
+            probe["artifact_id"],
+            [
+                f"badge_accent_backplate_route_survived: {survival['badge_accent_backplate_route_survived']}",
+                "Speaker/emotion color route remains badge/accent/backplate-first.",
+            ],
+        ),
+        row(
+            "line_break_safe_area_metadata_survived",
+            "line-break and safe-area metadata",
+            "survived",
+            probe["artifact_id"],
+            [
+                f"line_break_safe_area_metadata_survived: {survival['line_break_safe_area_metadata_survived']}",
+                "The whisper probe retains explicit ASS line break metadata and bottom safe-area notes.",
+            ],
+        ),
+        row(
+            "production_public_gates_still_closed",
+            "production/public gates",
+            "closed",
+            FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID,
+            [
+                "production_subtitle_design_acceptance=false",
+                "production_render_acceptance=false",
+                "creative_acceptance=false",
+                "rights_status=pending",
+                "publishing_acceptance=false",
+                "public_use_permission=false",
+            ],
+        ),
+    ]
+
+
+def _final_render_path_stage3_boundary_flags() -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_created": True,
+            "new_rehearsal_run": True,
+            "new_replay_run": False,
+            "diagnostic_local_ignored_render_created": True,
+            "diagnostic_local_ignored_render_reused": False,
+            "stage_3_rehearsal_packet_created": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "final_render_path_approved": False,
+        }
+    )
+    return flags
+
+
+def _final_render_path_stage3_validation(
+    *,
+    stage2: Mapping[str, Any],
+    stage1: Mapping[str, Any],
+    readiness: Mapping[str, Any],
+    probe: Mapping[str, Any],
+    lineage: Mapping[str, Any],
+    gate: Mapping[str, Any],
+    dry: Mapping[str, Any],
+    rehearsal: Mapping[str, Any],
+    survival: Mapping[str, Any],
+    matrix: list[Mapping[str, Any]],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    actual_row_ids = [row["row_id"] for row in matrix]
+    expected_row_ids = list(FINAL_RENDER_PATH_STAGE3_REQUIRED_ROW_IDS)
+    by_row = {row["row_id"]: row for row in matrix}
+    required_rows_present = actual_row_ids == expected_row_ids
+    stage2_source_preserved = (
+        stage2["artifact_id"] == FINAL_RENDER_PATH_STAGE2_ARTIFACT_ID
+        and stage2["validation"]["all_checks_passed"] is True
+        and stage2["boundaries"]["final_render_path_approved"] is False
+    )
+    stage1_source_preserved = stage1["artifact_id"] == FINAL_RENDER_PATH_STAGE1_ARTIFACT_ID
+    readiness_source_preserved = (
+        readiness["artifact_id"] == FINAL_RENDER_PATH_READINESS_ARTIFACT_ID
+    )
+    active_diagnostic_source_preserved = (
+        probe["artifact_id"] == RENDER_PATH_PROBE_ARTIFACT_ID
+        and probe["validation"]["all_checks_passed"] is True
+    )
+    lineage_source_preserved = (
+        lineage["artifact_id"] == LINEAGE_OBSERVATION_ARTIFACT_ID
+        and lineage["validation"]["predecessor_lineage_present"] is True
+    )
+    gate_source_preserved = (
+        gate["artifact_id"] == PRODUCTION_LIMITATION_LIFT_ARTIFACT_ID
+        and gate["validation"]["all_checks_passed"] is True
+    )
+    dry_read_predecessor_preserved = (
+        dry["artifact_id"] == RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+        and RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT == "7e96a28"
+    )
+    generated_outputs = rehearsal["generated_ignored_outputs"]
+    recorded_outputs = rehearsal["recorded_ignored_outputs"]
+    ignored_outputs_generated_or_recorded = (
+        all(generated_outputs.get(name) for name in ("ass", "video", "manifest"))
+        and bool(recorded_outputs.get("contact_sheet"))
+    )
+    metadata = rehearsal["output_metadata"]
+    output_metadata_available = all(
+        metadata.get(name)
+        for name in (
+            "duration_seconds",
+            "resolution",
+            "video_codec",
+            "audio_codec",
+            "stream_count",
+        )
+    )
+    command_recorded = (
+        by_row.get("command_and_command_family", {}).get("status") == "recorded"
+        and bool(rehearsal.get("render_command_summary"))
+        and bool(rehearsal.get("rehearsal_invocation_command"))
+    )
+    rehearsal_run_recorded = (
+        rehearsal["new_rehearsal_run"] is True
+        and rehearsal["local_probe_readback"]["status"] == "local_ignored_probe_generated"
+        and boundaries["new_rehearsal_run"] is True
+        and boundaries["new_render_created"] is True
+    )
+    ass_style_tokens_survived = (
+        survival["ass_subtitle_style_tokens_survived"] is True
+        and by_row.get("ass_style_tokens_survived", {}).get("status") == "survived"
+    )
+    stable_body_text_policy_survived = (
+        survival["stable_body_text_policy_survived"] is True
+        and by_row.get("stable_body_text_policy_survived", {}).get("status")
+        == "survived"
+    )
+    badge_accent_backplate_route_survived = (
+        survival["badge_accent_backplate_route_survived"] is True
+        and by_row.get("badge_accent_backplate_route_survived", {}).get("status")
+        == "survived"
+    )
+    line_break_safe_area_metadata_survived = (
+        survival["line_break_safe_area_metadata_survived"] is True
+        and by_row.get("line_break_safe_area_metadata_survived", {}).get("status")
+        == "survived"
+    )
+    production_public_boundary_closed = (
+        by_row.get("production_public_gates_still_closed", {}).get("status")
+        == "closed"
+        and boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["final_render_path_approved"] is False
+    )
+    return {
+        "expected_row_ids": expected_row_ids,
+        "actual_row_ids": actual_row_ids,
+        "required_rows_present": required_rows_present,
+        "stage2_source_preserved": stage2_source_preserved,
+        "stage2_source_artifact_id": stage2["artifact_id"],
+        "stage1_source_preserved": stage1_source_preserved,
+        "stage1_source_artifact_id": stage1["artifact_id"],
+        "readiness_source_preserved": readiness_source_preserved,
+        "readiness_source_artifact_id": readiness["artifact_id"],
+        "active_diagnostic_source_preserved": active_diagnostic_source_preserved,
+        "active_diagnostic_source_artifact_id": probe["artifact_id"],
+        "lineage_source_preserved": lineage_source_preserved,
+        "lineage_support_artifact_id": lineage["artifact_id"],
+        "gate_source_preserved": gate_source_preserved,
+        "gate_source_artifact_id": gate["artifact_id"],
+        "dry_read_predecessor_preserved": dry_read_predecessor_preserved,
+        "dry_read_predecessor_artifact_id": dry["artifact_id"],
+        "dry_read_predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+        "rehearsal_run_recorded": rehearsal_run_recorded,
+        "existing_output_first_applied": rehearsal["existing_output_first_applied"],
+        "existing_output_first_reused": rehearsal["existing_output_first_reused"],
+        "ignored_outputs_generated_or_recorded": ignored_outputs_generated_or_recorded,
+        "command_recorded": command_recorded,
+        "output_metadata_available": output_metadata_available,
+        "ass_style_tokens_survived": ass_style_tokens_survived,
+        "stable_body_text_policy_survived": stable_body_text_policy_survived,
+        "badge_accent_backplate_route_survived": badge_accent_backplate_route_survived,
+        "line_break_safe_area_metadata_survived": line_break_safe_area_metadata_survived,
+        "production_public_boundary_closed": production_public_boundary_closed,
+        "new_render_run": True,
+        "new_rehearsal_run": True,
+        "next_executable_route_defined": True,
+        "all_checks_passed": (
+            required_rows_present
+            and stage2_source_preserved
+            and stage1_source_preserved
+            and readiness_source_preserved
+            and active_diagnostic_source_preserved
+            and lineage_source_preserved
+            and gate_source_preserved
+            and dry_read_predecessor_preserved
+            and rehearsal_run_recorded
+            and ignored_outputs_generated_or_recorded
+            and command_recorded
+            and output_metadata_available
+            and ass_style_tokens_survived
+            and stable_body_text_policy_survived
+            and badge_accent_backplate_route_survived
+            and line_break_safe_area_metadata_survived
             and production_public_boundary_closed
             and boundaries["tracked_binary_artifact_created"] is False
             and boundaries["episodes_tracked"] is False

@@ -1066,6 +1066,165 @@ def test_subtitle_final_render_path_stage2_doc_records_operation_matrix():
     assert "final_render_path_approved: `false`" in text
 
 
+def test_subtitle_final_render_path_stage3_rehearsal_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    dry_read = json.loads(
+        (style_dir / "subtitle-render-contract-consumer-dry-read.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    source_probe = json.loads(
+        (style_dir / "subtitle-render-path-selector-probe.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    lineage_surface = json.loads(
+        (
+            style_dir / "subtitle-render-path-lineage-observation-surface.json"
+        ).read_text(encoding="utf-8")
+    )
+    gate_entry = json.loads(
+        (style_dir / "subtitle-production-limitation-lift-entry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    readiness_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-readiness.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stage1_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stage2_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-2.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-3.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_subtitle_final_render_path_stage3_rehearsal(
+        stage2_packet=stage2_packet,
+        stage1_packet=stage1_packet,
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+        rehearsal_local_probe=tracked["rehearsal"]["local_probe_readback"],
+        rehearsal_invocation_command=tracked["rehearsal"][
+            "rehearsal_invocation_command"
+        ],
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == preset_selector.FINAL_RENDER_PATH_STAGE3_SCHEMA_ID
+    assert tracked["artifact_id"] == preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    assert tracked["feature_id"] == "ED-10al"
+    assert tracked["status"] == "final_render_path_stage_3_diagnostic_rehearsal_ready"
+    assert tracked["source_final_render_path_stage_2_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE2_ARTIFACT_ID
+    )
+    assert tracked["source_final_render_path_stage_1_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["active_diagnostic_proof_source_artifact_id"] == (
+        preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert tracked["rehearsal"]["selected_render_path"] == (
+        "ffmpeg/libass diagnostic subtitle overlay path"
+    )
+    assert tracked["rehearsal"]["new_rehearsal_run"] is True
+    assert tracked["rehearsal"]["new_render_run"] is True
+    assert tracked["rehearsal"]["existing_output_first_applied"] is True
+    assert tracked["rehearsal"]["existing_output_first_reused"] is False
+    assert tracked["rehearsal"]["local_probe_readback"]["status"] == (
+        "local_ignored_probe_generated"
+    )
+    assert tracked["rehearsal"]["output_metadata"]["duration_seconds"] == 4.2
+    assert tracked["rehearsal"]["output_metadata"]["resolution"] == "1920x1080"
+    assert tracked["rehearsal"]["output_status"]["ass"] == "generated"
+    assert tracked["rehearsal"]["output_status"]["video"] == "generated"
+    assert tracked["rehearsal"]["output_status"]["manifest"] == "generated"
+    assert tracked["rehearsal"]["output_status"]["contact_sheet"] == (
+        "recorded_not_generated_by_stage_3_rehearsal"
+    )
+    assert tracked["survival_readback"]["ass_subtitle_style_tokens_survived"] is True
+    assert tracked["survival_readback"]["stable_body_text_policy_survived"] is True
+    assert tracked["survival_readback"]["badge_accent_backplate_route_survived"] is True
+    assert (
+        tracked["survival_readback"]["line_break_safe_area_metadata_survived"] is True
+    )
+    assert tracked["rehearsal_matrix_row_ids"] == list(
+        preset_selector.FINAL_RENDER_PATH_STAGE3_REQUIRED_ROW_IDS
+    )
+    by_row = {row["row_id"]: row for row in tracked["rehearsal_matrix"]}
+    assert by_row["selected_render_path"]["status"] == "rehearsed_diagnostic_path"
+    assert by_row["tracked_inputs_used"]["status"] == "available"
+    assert by_row["same_machine_inputs_used"]["status"] == "available_on_this_machine"
+    assert by_row["ignored_outputs_generated_or_recorded"]["status"] == (
+        "generated_ass_video_manifest_contact_sheet_recorded"
+    )
+    assert by_row["command_and_command_family"]["status"] == "recorded"
+    assert by_row["output_metadata_available"]["status"] == "available"
+    assert by_row["ass_style_tokens_survived"]["status"] == "survived"
+    assert by_row["production_public_gates_still_closed"]["status"] == "closed"
+    assert tracked["handoff_routes"]["primary_route_id"] == (
+        "production-limitation-lift-stage-1"
+    )
+    assert tracked["handoff_routes"]["alternate_route_id"] == (
+        "final-render-path-stage-4"
+    )
+    assert tracked["render_gate"]["new_render_run"] is True
+    assert tracked["render_gate"]["new_rehearsal_run"] is True
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["final_render_path_approved"] is False
+    assert tracked["validation"]["stage2_source_preserved"] is True
+    assert tracked["validation"]["active_diagnostic_source_preserved"] is True
+    assert tracked["validation"]["rehearsal_run_recorded"] is True
+    assert tracked["validation"]["ignored_outputs_generated_or_recorded"] is True
+    assert tracked["validation"]["production_public_boundary_closed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_final_render_path_stage3_doc_records_rehearsal_readback():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-final-render-path-stage-3.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10al Final Render-Path Stage 3 Diagnostic Rehearsal" in text
+    assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in text
+    assert "clip-ed10ak-final-render-path-stage-2-replayability-001" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "ffmpeg/libass diagnostic subtitle overlay path" in text
+    assert "new_rehearsal_run: `true`" in text
+    assert "existing_output_first_applied: `true`" in text
+    assert "existing_output_first_reused: `false`" in text
+    assert "recorded_not_generated_by_stage_3_rehearsal" in text
+    assert "duration_seconds: `4.2`" in text
+    assert "resolution: `1920x1080`" in text
+    assert "ass_style_tokens_survived" in text
+    assert "stable_body_text_policy_survived" in text
+    assert "badge_accent_backplate_route_survived" in text
+    assert "line_break_safe_area_metadata_survived" in text
+    assert "primary_route_id: `production-limitation-lift-stage-1`" in text
+    assert "alternate_route_id: `final-render-path-stage-4`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "final_render_path_approved: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

@@ -7,7 +7,7 @@ health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-26
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -96,6 +96,19 @@ commands, fresh-clone absence behavior, and remaining production/public
 limitations. It runs no new replay or render, keeps ED-10af active, and
 prepares `final-render-path-stage-3` or
 `production-limitation-lift-stage-1`.
+
+ED-10al adds `clip-ed10al-final-render-path-stage-3-rehearsal-001` at
+[`docs/style_intent/subtitle-final-render-path-stage-3.json`](style_intent/subtitle-final-render-path-stage-3.json)
+and
+[`docs/style_intent/subtitle-final-render-path-stage-3.md`](style_intent/subtitle-final-render-path-stage-3.md).
+It consumes ED-10ak and runs one bounded ignored FFmpeg/libass diagnostic
+rehearsal because local source video/audio were present and the ED-10af
+same-machine ASS/MP4/manifest outputs were absent at slice start. It records
+generated ASS/MP4/manifest paths, the recorded-but-not-generated contact-sheet
+path, output metadata, and survival of ASS/style tokens, stable body text,
+badge/accent/backplate routing, and line-break/safe-area metadata. It keeps
+production/public gates closed and prepares `production-limitation-lift-stage-1`
+or `final-render-path-stage-4`.
 
 ## Intent Axes
 

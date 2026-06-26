@@ -638,6 +638,44 @@ Boundary flags remain false or pending:
 - `new_replay_run=false`
 - `final_render_path_approved=false`
 
+## `clip-ed10al-final-render-path-stage-3-rehearsal-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10al Final Render-Path Stage 3 Diagnostic Rehearsal |
+| purpose | Rehearse the selected FFmpeg/libass diagnostic subtitle overlay path from the ED-10ak replayability packet, record same-machine generated ignored outputs and metadata, and keep production/public gates closed. |
+| storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
+| repo_relative_path | `docs/style_intent/subtitle-final-render-path-stage-3.md` |
+| metadata_json | `docs/style_intent/subtitle-final-render-path-stage-3.json` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-stage-3.md` |
+| source_stage_2_packet | `clip-ed10ak-final-render-path-stage-2-replayability-001` |
+| source_stage_1_packet | `clip-ed10aj-final-render-path-stage-1-001` |
+| active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
+| support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
+| source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
+| generated_ignored_outputs | `subtitle_render_path_selector_probe.ass`, `subtitle_render_path_selector_probe.mp4`, `subtitle_render_path_selector_probe.local.json` under `episodes/.../subtitle_render_path_selector_probe/` |
+| recorded_not_generated_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg` |
+| generated_from | ED-10al uses the ED-10ak operation packet plus local source video/audio to run one bounded ignored FFmpeg/libass diagnostic rehearsal. |
+| validation_command | Parse ED-10al stage-3 JSON plus related style intent JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty and generated local outputs are ignored. |
+| latest_local_smoke | Same-machine rehearsal returned `status=local_ignored_probe_generated`, generated ignored ASS/MP4/manifest outputs, output metadata `duration_seconds=4.2`, `resolution=1920x1080`, `video_codec=h264`, `audio_codec=aac`, `stream_count=2`, style-token survival true, stable body text true, badge/accent/backplate route true, line-break/safe-area metadata true, `production_render_acceptance=false`, `public_use_permission=false`, and `episodes_tracked=false`. |
+| review_status | No new Review Card. This is diagnostic rehearsal readback only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance. |
+| next_action | Start `production-limitation-lift-stage-1` or `final-render-path-stage-4` from this rehearsal packet while keeping all production/public decisions explicit. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_rehearsal_run=true`
+- `final_render_path_approved=false`
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

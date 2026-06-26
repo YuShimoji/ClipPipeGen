@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10af`
-- artifact: `clip-ed10af-l2-render-path-selector-probe-001`
-- state: `l2_render_path_selector_probe_ready`
+- feature: `ED-10al`
+- artifact: `clip-ed10al-final-render-path-stage-3-rehearsal-001`
+- state: `final_render_path_stage_3_diagnostic_rehearsal_ready`
 
 ## Feature Table
 
@@ -74,6 +74,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10ai | Final Render-Path Readiness Packet v0 | done | final_render_path_readiness_packet_ready | 100 | clip-ed10ai-final-render-path-readiness-packet-001 | Use the final render-path readiness packet to start final-render-path-stage-1 or production-limitation-lift-stage-1; keep production/public approvals explicit. |
 | ED-10aj | Final Render-Path Stage 1 v0 | done | final_render_path_stage_1_ready | 100 | clip-ed10aj-final-render-path-stage-1-001 | Use the final render-path stage-1 packet to start final-render-path-stage-2 or production-limitation-lift-stage-1; keep production/public approvals explicit. |
 | ED-10ak | Final Render-Path Stage 2 Replayability v0 | done | final_render_path_stage_2_replayability_ready | 100 | clip-ed10ak-final-render-path-stage-2-replayability-001 | Use the final render-path stage-2 replayability packet to start final-render-path-stage-3 or production-limitation-lift-stage-1; keep production/public approvals explicit. |
+| ED-10al | Final Render-Path Stage 3 Diagnostic Rehearsal v0 | done | stable | 100 | clip-ed10al-final-render-path-stage-3-rehearsal-001 | Keep as reference unless a regression or successor lane appears. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

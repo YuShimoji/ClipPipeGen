@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: final_render_path_stage_2_replayability_ready
+health: final_render_path_stage_3_rehearsal_ready
 progress_pct: 100
 last_touched: 2026-06-26
 next_review_due: none_stage_2_packet_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -24,10 +24,30 @@ layout-polish, or stale static prompts after the project has advanced to the
 ED-10ai final render-path readiness packet.
 ED-10aj final render-path stage-1 packet.
 ED-10ak final render-path stage-2 replayability packet.
+ED-10al final render-path stage-3 diagnostic rehearsal packet.
 
 ## Current State
 
 The active artifact is `clip-ed10af-l2-render-path-selector-probe-001`.
+
+ED-10al records `clip-ed10al-final-render-path-stage-3-rehearsal-001` at
+`docs/style_intent/subtitle-final-render-path-stage-3.json` and
+`docs/style_intent/subtitle-final-render-path-stage-3.md`. It consumes ED-10ak
+as the stage-2 source and runs one bounded FFmpeg/libass diagnostic rehearsal
+because local source video/audio were present while the ED-10af same-machine
+ASS/MP4/manifest outputs were absent before the slice. It generated ignored
+ASS, MP4, and manifest outputs under the existing ED-10af selector-probe
+directory; the ED-10ag contact-sheet path remains recorded but was not generated
+by this stage-3 helper.
+
+The rehearsal readback records the exact invocation family, exact FFmpeg command
+summary, output metadata (`4.2s`, `1920x1080`, `h264`, `aac`, two streams), and
+survival checks for ASS/style tokens, stable body text, badge/accent/backplate
+routing, and line-break/safe-area metadata. Production subtitle design,
+production render, creative acceptance, rights, publishing, and public-use gates
+remain false or pending. The next executable route is
+`production-limitation-lift-stage-1` or `final-render-path-stage-4`; neither
+route approves production/public use.
 
 ED-10ak records `clip-ed10ak-final-render-path-stage-2-replayability-001` at
 `docs/style_intent/subtitle-final-render-path-stage-2.json` and
@@ -357,22 +377,23 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Continue from `clip-ed10ak-final-render-path-stage-2-replayability-001` when the
-next terminal needs to continue final render-path preparation. The active
-diagnostic proof source is still `clip-ed10af-l2-render-path-selector-probe-001`; use
-`clip-ed10ag-lineage-and-observation-surface-001` only when the next terminal
-needs dry-read source and no-rerender readback paths. The latest presentation
-review is already consumed and the user accepted the opened surface as good
-enough to move forward, so do not request display/layout polish, another
-Candidate 0-3 comparison, another review of the corrected ED-10u `cut_008`
-multiline/dense-stress surface, or general font-family acceptance from
-`cut_002` / `cut_003`.
+Continue from `clip-ed10al-final-render-path-stage-3-rehearsal-001` when the
+next terminal needs the latest final render-path preparation state. The active
+diagnostic proof source is still `clip-ed10af-l2-render-path-selector-probe-001`;
+ED-10ak is the stage-2 source, and ED-10ag remains lineage/no-rerender readback
+support. ED-10al has already run one ignored diagnostic rehearsal and recorded
+generated ASS/MP4/manifest outputs plus metadata, so do not request
+display/layout polish, another Candidate 0-3 comparison, another review of the
+corrected ED-10u `cut_008` multiline/dense-stress surface, or general
+font-family acceptance from `cut_002` / `cut_003`.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
-| `final-render-path-stage-3` | Uses ED-10ak replayability/operation packet | A later slice can prepare an actual final-path rehearsal without inferring production/public approval |
+| `production-limitation-lift-stage-1` | Uses ED-10al diagnostic rehearsal readback | A later slice can prepare explicit production/render/rights/publishing/public-use decision packets without approving them |
+| `final-render-path-stage-4` | Uses ED-10al generated rehearsal metadata | A later slice can package or inspect another final-path diagnostic route only if a new milestone needs it |
+| `final-render-path-stage-3` | Historical/current predecessor route now materialized by ED-10al | Use only for backtracking to the stage-3 rehearsal source |
 | `final-render-path-stage-2` | Uses ED-10aj selected FFmpeg/libass path plus checklist | Historical/current predecessor route now materialized by ED-10ak |
 | `final-render-path-stage-1` | Uses ED-10ai to carry available diagnostic/contract evidence plus missing approval rows | Historical/current predecessor route now materialized by ED-10aj |
 | `production-limitation-lift-stage-1` | Uses ED-10ah to separate diagnostic proof from production/public decisions | A later slice can prepare a bounded readiness packet without approving production subtitle design, render, rights, publishing, or public use |
@@ -393,6 +414,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10al-final-render-path-stage-3-rehearsal-001` | Tracked ED-10al diagnostic rehearsal packet; records generated ignored ASS/MP4/manifest outputs, output metadata, style survival readback, and closed production/public gates | `see docs\style_intent\subtitle-final-render-path-stage-3.md` |
 | `clip-ed10ak-final-render-path-stage-2-replayability-001` | Tracked ED-10ak replayability packet; records operation inputs/outputs/command family and fresh-clone absence behavior while keeping production/public gates closed | `see docs\style_intent\subtitle-final-render-path-stage-2.md` |
 | `clip-ed10aj-final-render-path-stage-1-001` | Tracked ED-10aj stage-1 packet; selects the FFmpeg/libass diagnostic path as preparation only and keeps production/public gates closed | `see docs\style_intent\subtitle-final-render-path-stage-1.md` |
 | `clip-ed10ai-final-render-path-readiness-packet-001` | Tracked ED-10ai readiness matrix; states what is ready for final render-path preparation and what remains missing | `see docs\style_intent\subtitle-final-render-path-readiness.md` |
@@ -428,6 +450,7 @@ uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-en
 uvx python -m json.tool docs\style_intent\subtitle-final-render-path-readiness.json
 uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-1.json
 uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-2.json
+uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-3.json
 uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
@@ -445,9 +468,10 @@ Expected tracked state:
 - ED-10ai final render-path readiness JSON parses
 - ED-10aj final render-path stage-1 JSON parses
 - ED-10ak final render-path stage-2 replayability JSON parses
+- ED-10al final render-path stage-3 diagnostic rehearsal JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
-- latest pushed checkpoint is the ED-10ak successor commit
+- latest pushed checkpoint is the ED-10al successor commit
 - ED-10z dry-run JSON reads `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`,
   `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
   `ed10w_badge_label_pressure_adjustment`, fallback

@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10af',
-         'artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+        "current_focus": {'feature_id': 'ED-10al',
+         'artifact_id': 'clip-ed10al-final-render-path-stage-3-rehearsal-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'l2_render_path_selector_probe_ready',
+         'state': 'final_render_path_stage_3_diagnostic_rehearsal_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -120,13 +120,14 @@ def build_project_status(
          'final_render_path_readiness_packet_artifact_id': 'clip-ed10ai-final-render-path-readiness-packet-001',
          'final_render_path_stage_1_artifact_id': 'clip-ed10aj-final-render-path-stage-1-001',
          'final_render_path_stage_2_replayability_artifact_id': 'clip-ed10ak-final-render-path-stage-2-replayability-001',
+         'final_render_path_stage_3_rehearsal_artifact_id': 'clip-ed10al-final-render-path-stage-3-rehearsal-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ak_final_render_path_stage_2_replayability_ready_active_ed10af_l2_preserved',
+         'route_status': 'ed10al_final_render_path_stage_3_rehearsal_ready_active_ed10af_l2_preserved',
          'user_action_type': 'NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
@@ -588,6 +589,56 @@ def build_project_status(
                                                               'tracked_binary_artifact_created': False,
                                                               'episodes_tracked': False,
                                                               'final_render_path_approved': False},
+         'subtitle_final_render_path_stage_3_rehearsal': {'status': 'final_render_path_stage_3_diagnostic_rehearsal_ready',
+                                                          'artifact_id': 'clip-ed10al-final-render-path-stage-3-rehearsal-001',
+                                                          'metadata_json': 'docs/style_intent/subtitle-final-render-path-stage-3.json',
+                                                          'doc': 'docs/style_intent/subtitle-final-render-path-stage-3.md',
+                                                          'source_final_render_path_stage_2_artifact_id': 'clip-ed10ak-final-render-path-stage-2-replayability-001',
+                                                          'source_final_render_path_stage_1_artifact_id': 'clip-ed10aj-final-render-path-stage-1-001',
+                                                          'source_final_render_path_readiness_artifact_id': 'clip-ed10ai-final-render-path-readiness-packet-001',
+                                                          'active_diagnostic_proof_source_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                          'support_lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
+                                                          'dry_read_predecessor_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+                                                          'selected_render_adapter_path': 'ffmpeg/libass diagnostic subtitle overlay path',
+                                                          'rehearsal_matrix_row_ids': ['selected_render_path',
+                                                                                       'tracked_inputs_used',
+                                                                                       'same_machine_inputs_used',
+                                                                                       'ignored_outputs_generated_or_recorded',
+                                                                                       'command_and_command_family',
+                                                                                       'output_metadata_available',
+                                                                                       'ass_style_tokens_survived',
+                                                                                       'stable_body_text_policy_survived',
+                                                                                       'badge_accent_backplate_route_survived',
+                                                                                       'line_break_safe_area_metadata_survived',
+                                                                                       'production_public_gates_still_closed'],
+                                                          'existing_output_first_applied': True,
+                                                          'existing_output_first_reused': False,
+                                                          'new_rehearsal_run': True,
+                                                          'new_render_run': True,
+                                                          'rehearsal_status': 'diagnostic_rehearsal_completed',
+                                                          'generated_ignored_outputs': ['ass',
+                                                                                        'video',
+                                                                                        'manifest'],
+                                                          'recorded_not_generated_outputs': ['contact_sheet'],
+                                                          'output_duration_seconds': 4.2,
+                                                          'output_resolution': '1920x1080',
+                                                          'output_video_codec': 'h264',
+                                                          'output_audio_codec': 'aac',
+                                                          'ass_style_tokens_survived': True,
+                                                          'stable_body_text_policy_survived': True,
+                                                          'badge_accent_backplate_route_survived': True,
+                                                          'line_break_safe_area_metadata_survived': True,
+                                                          'production_subtitle_design_acceptance': False,
+                                                          'production_render_acceptance': False,
+                                                          'creative_acceptance': False,
+                                                          'rights_status': 'pending',
+                                                          'publishing_acceptance': False,
+                                                          'public_use_permission': False,
+                                                          'next_executable_route': 'production-limitation-lift-stage-1',
+                                                          'alternate_next_executable_route': 'final-render-path-stage-4',
+                                                          'tracked_binary_artifact_created': False,
+                                                          'episodes_tracked': False,
+                                                          'final_render_path_approved': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -648,17 +699,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_final_render_path_stage_2_replayability',
+                           'current_blocker': 'none_for_final_render_path_stage_3_rehearsal',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10ak-final-render-path-stage-2-replayability-001',
-                         'axis': 'final_render_path_stage_2_replayability',
+                         'artifact_id': 'clip-ed10al-final-render-path-stage-3-rehearsal-001',
+                         'axis': 'final_render_path_stage_3_diagnostic_rehearsal',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10ak consumes the ED-10aj selected FFmpeg/libass path, records replay inputs, same-machine local inputs, ignored outputs, command family, and readback commands, and keeps production/public gates closed.',
+                         'what_changed': 'ED-10al consumes the ED-10ak replayability packet, runs one bounded ignored diagnostic rehearsal because local source media exists, records generated ASS/MP4/manifest plus output metadata, and keeps production/public gates closed.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -666,19 +717,19 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use ED-10ak as the final render-path stage-2 replayability packet; production subtitle design, production render, creative, rights, publishing, and public-use decisions remain separate'},
+                         'completion_signal': 'use ED-10al as the final render-path stage-3 diagnostic rehearsal readback; production subtitle design, production render, creative, rights, publishing, and public-use decisions remain separate'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'final_render_path_stage_2_replayability_no_review_card',
+         'review_surface_direction': 'final_render_path_stage_3_rehearsal_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'production_limitation_lift',
-                          'status': 'final_render_path_stage_2_replayability_ready_stage_3_next',
-                          'next_action': 'start final-render-path-stage-3 or '
-                                         'production-limitation-lift-stage-1 from the '
-                                         'ED-10ak replayability packet without inferring '
+                          'status': 'final_render_path_stage_3_rehearsal_ready_limitation_lift_next',
+                          'next_action': 'start production-limitation-lift-stage-1 or '
+                                         'final-render-path-stage-4 from the '
+                                         'ED-10al rehearsal packet without inferring '
                                          'production/public approval'}],
          'emoji_treatment': 'neutral_ignore_for_evaluation',
          'production_candidate': False,
@@ -1003,6 +1054,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10aj-final-render-path-stage-1-001"
         if feature_id == "ED-10ak":
             active_artifact = "clip-ed10ak-final-render-path-stage-2-replayability-001"
+        if feature_id == "ED-10al":
+            active_artifact = "clip-ed10al-final-render-path-stage-3-rehearsal-001"
         features.append(
             {
                 "id": feature_id,
@@ -1067,7 +1120,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
+        "clip-ed10al-final-render-path-stage-3-rehearsal-001" in artifact_ids
     )
     return {
         "registered_artifact_count": len(artifact_ids),
@@ -1113,6 +1166,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 
 def _next_review_items() -> list[dict[str, str]]:
     return [
+        {
+            "item": "ED-10al final render-path stage 3 diagnostic rehearsal",
+            "artifact": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+            "question": "Does the rehearsal record the selected FFmpeg/libass diagnostic path, tracked inputs, same-machine source inputs, generated ignored ASS/MP4/manifest outputs, output metadata, style-token survival, and closed production/public gates?",
+            "next_route": "Start production-limitation-lift-stage-1 or final-render-path-stage-4 from this rehearsal packet; do not infer production/public approval.",
+        },
         {
             "item": "ED-10ak final render-path stage 2 replayability",
             "artifact": "clip-ed10ak-final-render-path-stage-2-replayability-001",
@@ -1284,6 +1343,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Final Render Path Stage 3 Rehearsal",
+            "command": "see docs\\style_intent\\subtitle-final-render-path-stage-3.md",
+            "target": "docs/style_intent/subtitle-final-render-path-stage-3.md",
+            "when_to_use": (
+                "Use to inspect the ED-10al diagnostic rehearsal, generated "
+                "ignored ASS/MP4/manifest outputs, output metadata, style "
+                "survival readback, and closed production/public gates."
+            ),
         },
         {
             "label": "Final Render Path Stage 2 Replayability",
