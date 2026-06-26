@@ -509,6 +509,27 @@ Boundary flags remain false or pending:
 - `tracked_binary_artifact_created=false`
 - `episodes_tracked=false`
 
+## `clip-ed10ah-render-readiness-separation-readback-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ah Render Readiness Separation Readback |
+| type | Tracked JSON/Markdown bounded readiness readback |
+| status | `render_readiness_separation_readback_ready` |
+| storage class | Tracked JSON/Markdown only; references ignored same-machine diagnostic render evidence but creates no media. |
+| repo_relative_path | `docs/style_intent/subtitle-render-readiness-separation.md` |
+| metadata_json | `docs/style_intent/subtitle-render-readiness-separation.json` |
+| open_command | `see docs\style_intent\subtitle-render-readiness-separation.md` |
+| source_l2_selector_probe | `clip-ed10af-l2-render-path-selector-probe-001` |
+| source_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
+| source_limitation_lift_entry | `clip-ed10ah-production-limitation-lift-entry-001` |
+| render_gate | L1/L2 Existing Output Observation / reused diagnostic readback; new render false. |
+| generated_from | ED-10ah render-readiness cleanup using existing ED-10af/ED-10ag/ED-10ah tracked readbacks only. |
+| validation_command | Parse ED-10ah readiness separation JSON plus related style proof / dry-read / render probe / dashboard files; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | JSON records proven scope, not-proven scope, render gate, later explicit render trigger, closed production boundary, closed rights/public-use boundary, and `episodes_tracked=false`. |
+| review_status | No Review Card and no user-side work. This is not production subtitle design, production render, creative, rights, publishing, public-use, or final subtitle style acceptance. |
+| next_action | Use this readback to start a later explicit `final-render-path-readiness` or `production-limitation-lift-stage-1` milestone without inferring production/public approval. |
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

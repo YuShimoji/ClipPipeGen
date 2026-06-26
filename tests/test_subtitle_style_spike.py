@@ -629,6 +629,54 @@ def test_subtitle_production_limitation_lift_entry_doc_records_gate_matrix():
     assert "episodes_tracked: `false`" in text
 
 
+def test_subtitle_render_readiness_separation_records_ed10ag_boundary():
+    readback = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "style_intent"
+            / "subtitle-render-readiness-separation.json"
+        ).read_text(encoding="utf-8")
+    )
+    doc = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-render-readiness-separation.md"
+    ).read_text(encoding="utf-8")
+
+    assert readback["artifact_id"] == (
+        "clip-ed10ah-render-readiness-separation-readback-001"
+    )
+    assert readback["feature_id"] == "ED-10ah"
+    assert readback["new_render_run"] is False
+    assert readback["existing_output_first_reused"] is True
+    assert readback["source_artifacts"]["dry_read"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+    )
+    assert readback["source_artifacts"]["l2_selector_probe"] == (
+        preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert readback["source_artifacts"]["lineage_observation_surface"] == (
+        preset_selector.LINEAGE_OBSERVATION_ARTIFACT_ID
+    )
+    assert "production render acceptance" in " ".join(
+        readback["ed10ag_does_not_prove"]
+    )
+    assert readback["render_gate"]["next_render_trigger"] == (
+        "later_explicit_milestone_only"
+    )
+    assert readback["boundaries"]["production_render_acceptance"] is False
+    assert readback["boundaries"]["rights_status"] == "pending"
+    assert readback["boundaries"]["public_use_permission"] is False
+    assert readback["boundaries"]["episodes_tracked"] is False
+    assert readback["human_burden_hygiene"]["user_work"] == "none"
+    assert readback["validation"]["all_checks_passed"] is True
+    assert "ED-10ah Render Readiness Separation Readback" in doc
+    assert "`stable_default_body_text`" in doc
+    assert "`later_explicit_milestone_only`" in doc
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

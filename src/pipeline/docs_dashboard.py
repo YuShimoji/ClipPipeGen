@@ -116,6 +116,7 @@ def build_project_status(
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
          'production_limitation_lift_entry_artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
+         'render_readiness_separation_readback_artifact_id': 'clip-ed10ah-render-readiness-separation-readback-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
@@ -441,6 +442,37 @@ def build_project_status(
                                                        'new_render_run': False,
                                                        'tracked_binary_artifact_created': False,
                                                        'episodes_tracked': False},
+         'subtitle_render_readiness_separation_readback': {'status': 'render_readiness_separation_readback_ready',
+                                                           'artifact_id': 'clip-ed10ah-render-readiness-separation-readback-001',
+                                                           'metadata_json': 'docs/style_intent/subtitle-render-readiness-separation.json',
+                                                           'doc': 'docs/style_intent/subtitle-render-readiness-separation.md',
+                                                           'source_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+                                                           'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                           'source_lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
+                                                           'source_production_limitation_lift_entry_artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
+                                                           'render_level': 'L1/L2 Existing Output Observation / reused diagnostic readback',
+                                                           'proves': ['dry_read_connected_to_existing_l2_readback',
+                                                                      'existing_ass_mp4_manifest_contact_sheet_evidence_recorded',
+                                                                      'stable_default_body_text_preserved',
+                                                                      'ed10ag_no_new_render'],
+                                                           'does_not_prove': ['production_subtitle_design_acceptance',
+                                                                              'production_render_acceptance',
+                                                                              'creative_acceptance',
+                                                                              'rights_clearance',
+                                                                              'publishing_acceptance',
+                                                                              'public_use_permission',
+                                                                              'final_subtitle_style_acceptance'],
+                                                           'next_render_trigger': 'later_explicit_milestone_only',
+                                                           'next_trigger_candidates': ['final-render-path-readiness',
+                                                                                       'production-limitation-lift-stage-1'],
+                                                           'subtitle_style_readiness': 'diagnostic_style_route_connected_not_final_style_acceptance',
+                                                           'video_render_readiness': 'existing_l2_diagnostic_readback_available_not_production_render_acceptance',
+                                                           'production_readiness': 'not_accepted',
+                                                           'rights_public_use_readiness': 'not_accepted',
+                                                           'new_render_run': False,
+                                                           'tracked_binary_artifact_created': False,
+                                                           'episodes_tracked': False,
+                                                           'user_work': 'none'},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -961,6 +993,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
+            "item": "ED-10ah render readiness separation readback",
+            "artifact": "clip-ed10ah-render-readiness-separation-readback-001",
+            "question": "Is ED-10ag limited to connecting dry-read coverage with existing L2 diagnostic readback while production, rights, publishing, public-use, and final style acceptance stay closed?",
+            "next_route": "Use this readback before a later explicit final-render-path-readiness or production-limitation-lift-stage-1 milestone; do not render in the current cleanup slice.",
+        },
+        {
             "item": "ED-10ah production limitation-lift entry",
             "artifact": "clip-ed10ah-production-limitation-lift-entry-001",
             "question": "Are diagnostic proof, production subtitle design, production render, creative, rights, publishing, and public-use gates separated before the next route starts?",
@@ -1116,6 +1154,15 @@ def _open_surfaces() -> list[dict[str, str]]:
                 "Use to inspect the ED-10ah gate matrix that separates diagnostic "
                 "render-path proof from production, rights, publishing, and "
                 "public-use decisions."
+            ),
+        },
+        {
+            "label": "Render Readiness Separation",
+            "command": "see docs\\style_intent\\subtitle-render-readiness-separation.md",
+            "target": "docs/style_intent/subtitle-render-readiness-separation.md",
+            "when_to_use": (
+                "Use to inspect what ED-10ag proves, what remains unaccepted, "
+                "and which later explicit milestone may trigger a render."
             ),
         },
         {

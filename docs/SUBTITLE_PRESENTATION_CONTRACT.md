@@ -381,6 +381,17 @@ render, creative use, rights, publishing, or public-use decisions.
 
 ## Current ED-10ah Production Limitation-Lift Entry
 
+ED-10ah additionally records
+`clip-ed10ah-render-readiness-separation-readback-001` as a bounded readback at
+`docs/style_intent/subtitle-render-readiness-separation.json` and
+`docs/style_intent/subtitle-render-readiness-separation.md`. This is the
+separation surface for render readiness: ED-10ag proves that ED-10af dry-read
+coverage can connect to the existing L2 diagnostic ASS/MP4/manifest/contact
+sheet evidence, but it does not prove production subtitle design, production
+render, creative acceptance, rights, publishing, public-use, or final style
+acceptance. New render remains false for this checkpoint; the next render
+trigger must be a later explicit milestone.
+
 ED-10ah records `clip-ed10ah-production-limitation-lift-entry-001` as a tracked
 gate-separation entry after the user confirmed the opened surface is acceptable
 enough and forward progress should take priority over more display/layout

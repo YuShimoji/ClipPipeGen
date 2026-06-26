@@ -1,0 +1,85 @@
+{
+  "schema_id": "clippipegen.subtitle_render_readiness_separation.v1",
+  "artifact_id": "clip-ed10ah-render-readiness-separation-readback-001",
+  "feature_id": "ED-10ah",
+  "status": "render_readiness_separation_readback_ready",
+  "surface_kind": "bounded_readiness_separation_readback",
+  "render_level": "L1/L2 Existing Output Observation / reused diagnostic readback",
+  "new_render_run": false,
+  "existing_output_first_reused": true,
+  "source_artifacts": {
+    "dry_read": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "l2_selector_probe": "clip-ed10af-l2-render-path-selector-probe-001",
+    "lineage_observation_surface": "clip-ed10ag-lineage-and-observation-surface-001",
+    "production_limitation_lift_entry": "clip-ed10ah-production-limitation-lift-entry-001"
+  },
+  "ed10ag_proves": [
+    "ED-10af dry-read coverage remains connected to the active ED-10af L2 selector probe.",
+    "The active L2 probe records same-machine ignored ASS, MP4, manifest, and contact-sheet evidence for neutral, shout, and whisper representative payloads.",
+    "Stable body text color remains stable_default_body_text while semantic variation stays on badge, accent, and backplate surfaces first.",
+    "ED-10ag reused existing output and did not run a new render."
+  ],
+  "ed10ag_does_not_prove": [
+    "production subtitle design acceptance",
+    "production render acceptance",
+    "creative acceptance",
+    "rights clearance",
+    "publishing acceptance",
+    "public-use permission",
+    "final subtitle style acceptance"
+  ],
+  "render_gate": {
+    "current_level": "L1/L2 Existing Output Observation / reused diagnostic readback",
+    "new_render_allowed_in_this_slice": false,
+    "new_render_run": false,
+    "next_render_trigger": "later_explicit_milestone_only",
+    "next_trigger_candidates": [
+      "final-render-path-readiness",
+      "production-limitation-lift-stage-1"
+    ],
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false
+  },
+  "readiness_separation": {
+    "subtitle_style_readiness": "diagnostic_style_route_connected_not_final_style_acceptance",
+    "video_render_readiness": "existing_l2_diagnostic_readback_available_not_production_render_acceptance",
+    "production_readiness": "not_accepted",
+    "rights_public_use_readiness": "not_accepted"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "new_render_created": false
+  },
+  "human_burden_hygiene": {
+    "user_work": "none",
+    "template_required": false,
+    "schema_owner": "Agent",
+    "max_required_points": 0,
+    "screenshot_required": false,
+    "fixed_form_required": false
+  },
+  "validation": {
+    "proven_scope_recorded": true,
+    "not_proven_scope_recorded": true,
+    "render_gate_recorded": true,
+    "next_render_trigger_recorded": true,
+    "production_boundary_preserved": true,
+    "rights_public_use_boundary_preserved": true,
+    "episodes_tracking_boundary_preserved": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-render-readiness-separation.json",
+    "doc": "docs/style_intent/subtitle-render-readiness-separation.md"
+  }
+}

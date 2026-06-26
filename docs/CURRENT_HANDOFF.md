@@ -10,7 +10,7 @@ next_review_due: none_gate_entry_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -26,6 +26,17 @@ ED-10ah production limitation-lift entry route.
 ## Current State
 
 The active artifact is `clip-ed10af-l2-render-path-selector-probe-001`.
+
+ED-10ah now also records
+`clip-ed10ah-render-readiness-separation-readback-001` at
+`docs/style_intent/subtitle-render-readiness-separation.json` and
+`docs/style_intent/subtitle-render-readiness-separation.md`. Use this first
+when the next terminal needs the narrow answer to "what did ED-10ag prove, what
+did it not prove, and when is the next render allowed?" It confirms ED-10ag
+reused existing ED-10af L2 diagnostic output, ran no new render, created no
+tracked proof media, and did not approve production subtitle design,
+production render, creative use, rights, publishing, public use, or final
+subtitle style.
 
 ED-10ah records `clip-ed10ah-production-limitation-lift-entry-001` at
 `docs/style_intent/subtitle-production-limitation-lift-entry.json` and
@@ -330,6 +341,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10ah-render-readiness-separation-readback-001` | Tracked ED-10ah render-readiness separation; states what ED-10ag proves, what remains unaccepted, and the later explicit render trigger | `see docs\style_intent\subtitle-render-readiness-separation.md` |
 | `clip-ed10ah-production-limitation-lift-entry-001` | Tracked ED-10ah gate matrix; keeps ED-10af active, ED-10ag supportive, and production/public gates separate | `see docs\style_intent\subtitle-production-limitation-lift-entry.md` |
 | `clip-ed10ag-lineage-and-observation-surface-001` | Tracked ED-10ag lineage and observation surface; keeps ED-10af L2 active and records no new render | `see docs\style_intent\subtitle-render-path-lineage-observation-surface.md` |
 | `clip-ed10af-render-contract-consumer-dry-read-001` | Restored L0 dry-read source for all six semantic presets | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |

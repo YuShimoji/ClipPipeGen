@@ -10,7 +10,7 @@ next_review_due: none_gate_entry_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,6 +36,20 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+
+ED-10ah render-readiness separation checkpoint, 2026-06-26 JST:
+`clip-ed10ah-render-readiness-separation-readback-001` now lives at
+`docs/style_intent/subtitle-render-readiness-separation.json` and
+`docs/style_intent/subtitle-render-readiness-separation.md`. This is a bounded
+readback only: it states that ED-10ag proves ED-10af dry-read coverage can be
+connected to the existing ED-10af L2 diagnostic ASS/MP4/manifest/contact-sheet
+evidence, and that ED-10ag itself reused existing output and ran no render. It
+also states what remains unaccepted: production subtitle design, production
+render, creative acceptance, rights, publishing, public-use, and final subtitle
+style acceptance. The current render gate remains L1/L2 Existing Output
+Observation / reused diagnostic readback. A new render is false for this
+checkpoint; the next render trigger must be a later explicit milestone such as
+`final-render-path-readiness` or `production-limitation-lift-stage-1`.
 
 ED-10ah checkpoint, 2026-06-26 JST: the active diagnostic artifact remains the
 ED-10af L2 selector probe
