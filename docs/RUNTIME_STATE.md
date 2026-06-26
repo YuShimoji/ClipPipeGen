@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: production_limitation_lift_entry_ready
+health: final_render_path_readiness_packet_ready
 progress_pct: 100
 last_touched: 2026-06-26
-next_review_due: none_gate_entry_only
+next_review_due: none_readiness_packet_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,6 +36,22 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+
+ED-10ai checkpoint, 2026-06-26 JST:
+`clip-ed10ai-final-render-path-readiness-packet-001` now lives at
+`docs/style_intent/subtitle-final-render-path-readiness.json` and
+`docs/style_intent/subtitle-final-render-path-readiness.md`. It consumes the
+ED-10ah gate-separation entry and classifies what is ready before a later final
+render-path route: ED-10af diagnostic proof, selector/semantic style contract,
+ED-10ae render adapter input contract, same-machine ignored ASS/MP4/manifest/
+contact-sheet proof paths, and ED-10ag lineage with the `7e96a28` dry-read
+predecessor are available. Production subtitle design acceptance, production
+render acceptance, creative acceptance, rights, publishing, and public-use
+decisions remain missing or pending.
+
+ED-10ai runs no render, tracks no proof media, and does not approve production
+or public use. The next executable route is `final-render-path-stage-1` or
+`production-limitation-lift-stage-1`, still as readiness/preparation only.
 
 ED-10ah render-readiness separation checkpoint, 2026-06-26 JST:
 `clip-ed10ah-render-readiness-separation-readback-001` now lives at

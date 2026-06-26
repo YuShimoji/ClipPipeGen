@@ -677,6 +677,127 @@ def test_subtitle_render_readiness_separation_records_ed10ag_boundary():
     assert "`later_explicit_milestone_only`" in doc
 
 
+def test_subtitle_final_render_path_readiness_packet_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    dry_read = json.loads(
+        (style_dir / "subtitle-render-contract-consumer-dry-read.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    source_probe = json.loads(
+        (style_dir / "subtitle-render-path-selector-probe.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    lineage_surface = json.loads(
+        (
+            style_dir / "subtitle-render-path-lineage-observation-surface.json"
+        ).read_text(encoding="utf-8")
+    )
+    gate_entry = json.loads(
+        (style_dir / "subtitle-production-limitation-lift-entry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (style_dir / "subtitle-final-render-path-readiness.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_subtitle_final_render_path_readiness_packet(
+        dry_read=dry_read,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.FINAL_RENDER_PATH_READINESS_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_READINESS_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10ai"
+    assert tracked["status"] == "final_render_path_readiness_packet_ready"
+    assert tracked["active_artifact_id"] == preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    assert tracked["source_production_limitation_lift_entry_artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_ARTIFACT_ID
+    )
+    assert tracked["source_lineage_observation_surface_artifact_id"] == (
+        preset_selector.LINEAGE_OBSERVATION_ARTIFACT_ID
+    )
+    assert tracked["source_render_contract_consumer_dry_read_artifact_id"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+    )
+    assert tracked["readiness_matrix_row_ids"] == list(
+        preset_selector.FINAL_RENDER_PATH_READINESS_REQUIRED_ROW_IDS
+    )
+    by_row = {row["row_id"]: row for row in tracked["readiness_matrix"]}
+    assert by_row["diagnostic_proof_evidence"]["status"] == "available"
+    assert by_row["selector_semantic_style_contract_evidence"]["status"] == (
+        "available"
+    )
+    assert by_row["render_adapter_input_contract_evidence"][
+        "source_artifact_id"
+    ] == preset_selector.RENDER_PATH_CONTRACT_ARTIFACT_ID
+    assert by_row["local_ignored_proof_media_evidence"]["status"] == "available"
+    assert "contact_sheet" in by_row["local_ignored_proof_media_evidence"][
+        "local_paths"
+    ]
+    assert by_row["lineage_predecessor_evidence"]["status"] == "available"
+    for row_id in (
+        "missing_production_subtitle_design_acceptance",
+        "missing_production_render_acceptance",
+        "missing_creative_acceptance",
+        "missing_rights_publication_public_use_decisions",
+    ):
+        assert by_row[row_id]["status"] == "missing"
+        assert by_row[row_id]["agent_can_progress_without_user_judgement"] is False
+        assert by_row[row_id][
+            "future_human_rights_publication_decision_required"
+        ] is True
+    assert tracked["next_executable_route"]["route_id"] == (
+        "final-render-path-stage-1"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["boundaries"]["production_subtitle_design_acceptance"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["creative_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["publishing_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["validation"]["active_diagnostic_source_preserved"] is True
+    assert tracked["validation"]["gate_separation_source_preserved"] is True
+    assert tracked["validation"]["lineage_predecessor_preserved"] is True
+    assert tracked["validation"]["missing_production_public_decisions_explicit"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_final_render_path_readiness_packet_doc_records_matrix():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-final-render-path-readiness.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10ai Final Render-Path Readiness Packet" in text
+    assert "clip-ed10ah-production-limitation-lift-entry-001" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "clip-ed10ag-lineage-and-observation-surface-001" in text
+    assert "clip-ed10ae-render-path-selector-contract-probe-001" in text
+    assert "diagnostic_proof_evidence" in text
+    assert "selector_semantic_style_contract_evidence" in text
+    assert "render_adapter_input_contract_evidence" in text
+    assert "missing_rights_publication_public_use_decisions" in text
+    assert "route_id: `final-render-path-stage-1`" in text
+    assert "run a new render in this readiness packet" in text
+    assert "all_checks_passed: `true`" in text
+    assert "episodes_tracked: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

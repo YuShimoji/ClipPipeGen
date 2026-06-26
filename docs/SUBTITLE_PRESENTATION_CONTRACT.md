@@ -409,6 +409,24 @@ false or pending. The next executable route is
 `production-limitation-lift-stage-1` or `final-render-path-readiness`; neither
 route is approval to publish or use the proof publicly.
 
+## Current ED-10ai Final Render-Path Readiness Packet
+
+ED-10ai records `clip-ed10ai-final-render-path-readiness-packet-001` as a
+tracked readiness matrix at
+`docs/style_intent/subtitle-final-render-path-readiness.json` and
+`docs/style_intent/subtitle-final-render-path-readiness.md`. It consumes the
+ED-10ah gate entry, preserves ED-10af as the active diagnostic proof source,
+keeps ED-10ag as lineage/predecessor support, and links the selector/semantic
+style contract plus ED-10ae render adapter input contract.
+
+The ED-10ai packet says diagnostic proof, selector/semantic contract evidence,
+render adapter input contract evidence, local ignored proof media paths, and
+lineage/predecessor evidence are available. Production subtitle design,
+production render, creative acceptance, rights, publishing, and public-use
+decisions are still missing or pending. ED-10ai runs no render and does not
+approve production/public use; it only prepares `final-render-path-stage-1` or
+`production-limitation-lift-stage-1`.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

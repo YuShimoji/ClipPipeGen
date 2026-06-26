@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: production_limitation_lift_entry_ready
+health: final_render_path_readiness_packet_ready
 progress_pct: 100
 last_touched: 2026-06-26
-next_review_due: none_gate_entry_only
+next_review_due: none_readiness_packet_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -21,11 +21,26 @@ This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family, Candidate 0-3 comparison,
 layout-polish, or stale static prompts after the project has advanced to the
-ED-10ah production limitation-lift entry route.
+ED-10ai final render-path readiness packet.
 
 ## Current State
 
 The active artifact is `clip-ed10af-l2-render-path-selector-probe-001`.
+
+ED-10ai records `clip-ed10ai-final-render-path-readiness-packet-001` at
+`docs/style_intent/subtitle-final-render-path-readiness.json` and
+`docs/style_intent/subtitle-final-render-path-readiness.md`. It consumes the
+ED-10ah gate entry and answers what is ready before a later final render-path
+stage: ED-10af diagnostic proof, selector/semantic style contract, ED-10ae
+render adapter input contract, local ignored proof media paths, and ED-10ag
+lineage/predecessor evidence are available. Production subtitle design,
+production render, creative acceptance, rights, publishing, and public-use
+decisions remain missing or pending.
+
+ED-10ai runs no render, tracks no proof media, and requests no display/layout
+review. The next executable route is `final-render-path-stage-1` or
+`production-limitation-lift-stage-1`; both remain preparation routes and do not
+approve production/public use.
 
 ED-10ah now also records
 `clip-ed10ah-render-readiness-separation-readback-001` at
@@ -308,9 +323,9 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Continue from `clip-ed10ah-production-limitation-lift-entry-001` when the next
-terminal needs to start the limitation-lift route. The active diagnostic proof
-source is still `clip-ed10af-l2-render-path-selector-probe-001`; use
+Continue from `clip-ed10ai-final-render-path-readiness-packet-001` when the
+next terminal needs to start final render-path stage preparation. The active
+diagnostic proof source is still `clip-ed10af-l2-render-path-selector-probe-001`; use
 `clip-ed10ag-lineage-and-observation-surface-001` only when the next terminal
 needs dry-read source and no-rerender readback paths. The latest presentation
 review is already consumed and the user accepted the opened surface as good
@@ -323,6 +338,7 @@ Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
+| `final-render-path-stage-1` | Uses ED-10ai to carry available diagnostic/contract evidence plus missing approval rows | A later slice can prepare the actual final render-path stage without inferring production/public approval |
 | `production-limitation-lift-stage-1` | Uses ED-10ah to separate diagnostic proof from production/public decisions | A later slice can prepare a bounded readiness packet without approving production subtitle design, render, rights, publishing, or public use |
 | `final-render-path-readiness` | Reuses ED-10af active proof and ED-10ag lineage support as source evidence | A later slice can state what is still missing before a production render route |
 | `ed10ag_lineage_observation_surface` | Records Existing Output First reuse of the active ED-10af L2 selector probe while preserving the dry-read predecessor | Another terminal can inspect source and local proof paths without rerendering or opening production/public-use gates |
@@ -341,6 +357,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10ai-final-render-path-readiness-packet-001` | Tracked ED-10ai readiness matrix; states what is ready for final render-path preparation and what remains missing | `see docs\style_intent\subtitle-final-render-path-readiness.md` |
 | `clip-ed10ah-render-readiness-separation-readback-001` | Tracked ED-10ah render-readiness separation; states what ED-10ag proves, what remains unaccepted, and the later explicit render trigger | `see docs\style_intent\subtitle-render-readiness-separation.md` |
 | `clip-ed10ah-production-limitation-lift-entry-001` | Tracked ED-10ah gate matrix; keeps ED-10af active, ED-10ag supportive, and production/public gates separate | `see docs\style_intent\subtitle-production-limitation-lift-entry.md` |
 | `clip-ed10ag-lineage-and-observation-surface-001` | Tracked ED-10ag lineage and observation surface; keeps ED-10af L2 active and records no new render | `see docs\style_intent\subtitle-render-path-lineage-observation-surface.md` |
@@ -370,6 +387,7 @@ uvx python -m json.tool docs\style_intent\subtitle-render-contract-consumer-dry-
 uvx python -m json.tool docs\style_intent\subtitle-render-path-selector-probe.json
 uvx python -m json.tool docs\style_intent\subtitle-render-path-lineage-observation-surface.json
 uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-entry.json
+uvx python -m json.tool docs\style_intent\subtitle-final-render-path-readiness.json
 uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
@@ -384,9 +402,10 @@ Expected tracked state:
 - ED-10af L2 tiny render-path probe JSON parses
 - ED-10ag lineage observation JSON parses
 - ED-10ah production limitation-lift entry JSON parses
+- ED-10ai final render-path readiness JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
-- latest pushed checkpoint is the ED-10ah successor commit
+- latest pushed checkpoint is the ED-10ai successor commit
 - ED-10z dry-run JSON reads `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`,
   `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
   `ed10w_badge_label_pressure_adjustment`, fallback

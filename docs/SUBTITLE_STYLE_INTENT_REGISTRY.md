@@ -7,7 +7,7 @@ health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
 last_touched: 2026-06-26
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -63,6 +63,16 @@ and
 [`docs/style_intent/subtitle-render-readiness-separation.md`](style_intent/subtitle-render-readiness-separation.md).
 It is the quick handoff answer for what ED-10ag proves, what ED-10ag does not
 prove, and which later explicit milestone may trigger a new render.
+
+ED-10ai adds `clip-ed10ai-final-render-path-readiness-packet-001` at
+[`docs/style_intent/subtitle-final-render-path-readiness.json`](style_intent/subtitle-final-render-path-readiness.json)
+and
+[`docs/style_intent/subtitle-final-render-path-readiness.md`](style_intent/subtitle-final-render-path-readiness.md).
+It consumes ED-10ah, keeps ED-10af as the active diagnostic proof source, and
+records selector/semantic contract plus render adapter input contract evidence
+before `final-render-path-stage-1`. Production subtitle design, production
+render, creative acceptance, rights, publishing, and public-use remain missing
+or pending.
 
 ## Intent Axes
 

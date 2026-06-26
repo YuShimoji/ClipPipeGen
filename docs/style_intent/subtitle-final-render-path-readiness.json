@@ -1,0 +1,400 @@
+{
+  "schema_id": "clippipegen.subtitle_final_render_path_readiness_packet.v1",
+  "artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+  "feature_id": "ED-10ai",
+  "status": "final_render_path_readiness_packet_ready",
+  "active_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_production_limitation_lift_entry_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+  "source_render_path_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+  "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+  "surface_kind": "final_render_path_readiness_packet",
+  "render_level": "readiness_packet_no_new_render",
+  "source_evidence": {
+    "gate_separation_source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+    "gate_separation_source_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+    "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "active_diagnostic_proof_source_path": "docs/style_intent/subtitle-render-path-selector-probe.json",
+    "support_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+    "support_lineage_observation_surface_path": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+    "dry_read_predecessor_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "dry_read_predecessor_source_commit": "7e96a28",
+    "dry_read_predecessor_path": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+    "selector_semantic_style_contract_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+    "selector_semantic_style_contract_path": "docs/style_intent/subtitle-preset-selector.json",
+    "style_intent_registry_artifact_id": "clip-ed10aa-subtitle-style-intent-registry-001",
+    "style_intent_registry_path": "docs/style_intent/subtitle-style-intent-registry.json",
+    "render_adapter_input_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+    "render_adapter_input_contract_path": "docs/style_intent/subtitle-render-path-selector-contract.json",
+    "local_ignored_outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+      "contact_sheet": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+    },
+    "local_ignored_output_policy": "same_machine_diagnostic_only_may_be_absent_on_other_clone"
+  },
+  "readiness_matrix_row_ids": [
+    "ed10ah_gate_separation_source",
+    "diagnostic_proof_evidence",
+    "selector_semantic_style_contract_evidence",
+    "render_adapter_input_contract_evidence",
+    "local_ignored_proof_media_evidence",
+    "lineage_predecessor_evidence",
+    "missing_production_subtitle_design_acceptance",
+    "missing_production_render_acceptance",
+    "missing_creative_acceptance",
+    "missing_rights_publication_public_use_decisions"
+  ],
+  "readiness_matrix": [
+    {
+      "row_id": "ed10ah_gate_separation_source",
+      "readiness_area": "gate separation source",
+      "status": "available",
+      "source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+      "supporting_artifact_ids": [
+        "clip-ed10af-l2-render-path-selector-probe-001",
+        "clip-ed10ag-lineage-and-observation-surface-001",
+        "clip-ed10af-render-contract-consumer-dry-read-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+      "local_paths": {},
+      "evidence_available": [
+        "ED-10ah separates diagnostic proof from production subtitle design, production render, creative, rights, publishing, and public-use gates.",
+        "ED-10ah consumes the user observation that display/layout polish should not block forward progress."
+      ],
+      "evidence_missing": [],
+      "agent_can_progress_without_user_judgement": true,
+      "future_human_rights_publication_decision_required": false,
+      "next_agent_action": "Use ED-10ah as the source gate map for final render-path stage preparation."
+    },
+    {
+      "row_id": "diagnostic_proof_evidence",
+      "readiness_area": "diagnostic render-path proof",
+      "status": "available",
+      "source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "supporting_artifact_ids": [
+        "clip-ed10ah-production-limitation-lift-entry-001",
+        "clip-ed10ag-lineage-and-observation-surface-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-render-path-selector-probe.json",
+      "local_paths": {
+        "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+        "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+        "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json"
+      },
+      "evidence_available": [
+        "ED-10af L2 selector probe records neutral, shout, and whisper representative payloads through a tiny FFmpeg/libass diagnostic path.",
+        "Stable body text, badge/accent/backplate routing, and safe-area line-break metadata are preserved."
+      ],
+      "evidence_missing": [
+        "Production-sequence final render acceptance."
+      ],
+      "agent_can_progress_without_user_judgement": true,
+      "future_human_rights_publication_decision_required": false,
+      "next_agent_action": "Reuse ED-10af as active diagnostic proof; do not rerender in this packet."
+    },
+    {
+      "row_id": "selector_semantic_style_contract_evidence",
+      "readiness_area": "selector and semantic style contract",
+      "status": "available",
+      "source_artifact_id": "clip-ed10ab-subtitle-preset-selector-001",
+      "supporting_artifact_ids": [
+        "clip-ed10aa-subtitle-style-intent-registry-001",
+        "clip-ed10ad-style-family-palette-axis-proof-001",
+        "clip-ed10ac-visual-selector-proof-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-preset-selector.json",
+      "local_paths": {},
+      "evidence_available": [
+        "The deterministic preset selector maps speaker/emotion/readability semantics to style tokens.",
+        "The style intent registry keeps body text stable by default and routes character/emotion color through badge/accent/backplate surfaces first."
+      ],
+      "evidence_missing": [
+        "Production subtitle style acceptance across a final sequence."
+      ],
+      "agent_can_progress_without_user_judgement": true,
+      "future_human_rights_publication_decision_required": false,
+      "next_agent_action": "Carry selector and registry contracts into stage-1 readiness without asking for old visual comparisons."
+    },
+    {
+      "row_id": "render_adapter_input_contract_evidence",
+      "readiness_area": "render adapter input contract",
+      "status": "available",
+      "source_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
+      "supporting_artifact_ids": [
+        "clip-ed10ad-style-family-palette-axis-proof-001",
+        "clip-ed10ab-subtitle-preset-selector-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-render-path-selector-contract.json",
+      "local_paths": {},
+      "evidence_available": [
+        "ED-10ae records semantic fields, style-axis fields, color surfaces, motion, and safe-area line-break fields that a later render adapter would receive.",
+        "ED-10af proves three selected contract entries can pass into the L2 diagnostic render path."
+      ],
+      "evidence_missing": [
+        "Final production adapter/run acceptance."
+      ],
+      "agent_can_progress_without_user_judgement": true,
+      "future_human_rights_publication_decision_required": false,
+      "next_agent_action": "Use ED-10ae as the adapter input contract for a later explicit render milestone."
+    },
+    {
+      "row_id": "local_ignored_proof_media_evidence",
+      "readiness_area": "local ignored proof media",
+      "status": "available",
+      "source_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+      "supporting_artifact_ids": [
+        "clip-ed10af-l2-render-path-selector-probe-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+      "local_paths": {
+        "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+        "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+        "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+        "contact_sheet": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+      },
+      "evidence_available": [
+        "Same-machine ignored ASS, MP4, manifest, and contact-sheet paths are recorded for local observation.",
+        "The files remain under ignored episodes/ paths and may be absent on another clone without failing the tracked packet."
+      ],
+      "evidence_missing": [
+        "Tracked or portable production media artifact strategy."
+      ],
+      "agent_can_progress_without_user_judgement": true,
+      "future_human_rights_publication_decision_required": false,
+      "next_agent_action": "Reference the local outputs as diagnostic evidence only; do not add them to Git."
+    },
+    {
+      "row_id": "lineage_predecessor_evidence",
+      "readiness_area": "lineage and predecessor evidence",
+      "status": "available",
+      "source_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+      "supporting_artifact_ids": [
+        "clip-ed10af-render-contract-consumer-dry-read-001",
+        "clip-ed10af-l2-render-path-selector-probe-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+      "local_paths": {},
+      "evidence_available": [
+        "ED-10ag records the restored dry-read predecessor from commit 7e96a28.",
+        "The active ED-10af L2 selector probe supersedes the dry-read for diagnostic render-path proof while preserving dry-read coverage as evidence."
+      ],
+      "evidence_missing": [],
+      "agent_can_progress_without_user_judgement": true,
+      "future_human_rights_publication_decision_required": false,
+      "next_agent_action": "Keep ED-10ag as support, not production proof."
+    },
+    {
+      "row_id": "missing_production_subtitle_design_acceptance",
+      "readiness_area": "production subtitle design acceptance",
+      "status": "missing",
+      "source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+      "supporting_artifact_ids": [],
+      "file_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+      "local_paths": {},
+      "evidence_available": [
+        "Diagnostic style/render path evidence is available."
+      ],
+      "evidence_missing": [
+        "Explicit human acceptance that the subtitle design is production-ready."
+      ],
+      "agent_can_progress_without_user_judgement": false,
+      "future_human_rights_publication_decision_required": true,
+      "next_agent_action": "Prepare a bounded human decision packet only when this gate is explicitly opened."
+    },
+    {
+      "row_id": "missing_production_render_acceptance",
+      "readiness_area": "production render acceptance",
+      "status": "missing",
+      "source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+      "supporting_artifact_ids": [
+        "clip-ed10af-l2-render-path-selector-probe-001"
+      ],
+      "file_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+      "local_paths": {},
+      "evidence_available": [
+        "ED-10af diagnostic render-path proof exists."
+      ],
+      "evidence_missing": [
+        "Accepted final production render output and final run manifest."
+      ],
+      "agent_can_progress_without_user_judgement": false,
+      "future_human_rights_publication_decision_required": true,
+      "next_agent_action": "Do not infer production render acceptance from the diagnostic proof."
+    },
+    {
+      "row_id": "missing_creative_acceptance",
+      "readiness_area": "creative acceptance",
+      "status": "missing",
+      "source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+      "supporting_artifact_ids": [],
+      "file_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+      "local_paths": {},
+      "evidence_available": [
+        "Prior review memory keeps Candidate 2 as diagnostic lead and Candidate 0 as fallback/reference."
+      ],
+      "evidence_missing": [
+        "Explicit creative acceptance for production use."
+      ],
+      "agent_can_progress_without_user_judgement": false,
+      "future_human_rights_publication_decision_required": true,
+      "next_agent_action": "Do not reopen old candidate or Keifont review axes unless a new explicit decision is requested."
+    },
+    {
+      "row_id": "missing_rights_publication_public_use_decisions",
+      "readiness_area": "rights, publishing, and public-use decisions",
+      "status": "missing",
+      "source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+      "supporting_artifact_ids": [],
+      "file_path": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+      "local_paths": {},
+      "evidence_available": [
+        "No upload, publication, rights, or public-use action is performed in the diagnostic route."
+      ],
+      "evidence_missing": [
+        "Rights clearance or owner decision.",
+        "Publishing acceptance.",
+        "Explicit public-use permission."
+      ],
+      "agent_can_progress_without_user_judgement": false,
+      "future_human_rights_publication_decision_required": true,
+      "next_agent_action": "Keep rights, publishing, and public-use gates pending until the owner supplies an explicit decision."
+    }
+  ],
+  "next_executable_route": {
+    "route_id": "final-render-path-stage-1",
+    "alternate_route_id": "production-limitation-lift-stage-1",
+    "agent_can_start_without_user_judgement": true,
+    "purpose": "Prepare the later final render-path route from existing diagnostic proof and explicit missing-gate readback without granting production/public approval.",
+    "first_steps": [
+      "Reuse ED-10af as active diagnostic proof.",
+      "Use ED-10ah as the gate-separation source.",
+      "Carry forward missing human, rights, publishing, and public-use decisions as closed gates."
+    ],
+    "must_not_do": [
+      "run a new render in this readiness packet",
+      "approve production subtitle design",
+      "approve production render",
+      "approve creative use",
+      "make rights claims",
+      "upload or publish",
+      "grant public-use permission",
+      "request display/layout polish or old comparison reviews"
+    ],
+    "completion_signal": "Stage-1 can start with existing evidence and a list of still-missing approvals."
+  },
+  "readiness_summary": {
+    "diagnostic_proof": "available",
+    "selector_semantic_contract": "available",
+    "render_adapter_input_contract": "available",
+    "local_ignored_proof_media": "available_same_machine_diagnostic_only",
+    "lineage_predecessor": "available",
+    "production_subtitle_design_acceptance": "missing",
+    "production_render_acceptance": "missing",
+    "creative_acceptance": "missing",
+    "rights_status": "pending",
+    "publishing_acceptance": "missing",
+    "public_use_permission": "missing"
+  },
+  "render_gate": {
+    "level": "readiness_packet_no_new_render",
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "source_probe_new_render_run": true,
+    "source_lineage_new_render_run": false,
+    "source_gate_entry_new_render_run": false,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "expected_row_ids": [
+      "ed10ah_gate_separation_source",
+      "diagnostic_proof_evidence",
+      "selector_semantic_style_contract_evidence",
+      "render_adapter_input_contract_evidence",
+      "local_ignored_proof_media_evidence",
+      "lineage_predecessor_evidence",
+      "missing_production_subtitle_design_acceptance",
+      "missing_production_render_acceptance",
+      "missing_creative_acceptance",
+      "missing_rights_publication_public_use_decisions"
+    ],
+    "actual_row_ids": [
+      "ed10ah_gate_separation_source",
+      "diagnostic_proof_evidence",
+      "selector_semantic_style_contract_evidence",
+      "render_adapter_input_contract_evidence",
+      "local_ignored_proof_media_evidence",
+      "lineage_predecessor_evidence",
+      "missing_production_subtitle_design_acceptance",
+      "missing_production_render_acceptance",
+      "missing_creative_acceptance",
+      "missing_rights_publication_public_use_decisions"
+    ],
+    "required_rows_present": true,
+    "available_rows_have_agent_route": true,
+    "active_diagnostic_source_preserved": true,
+    "active_diagnostic_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "gate_separation_source_preserved": true,
+    "gate_separation_source_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+    "lineage_predecessor_preserved": true,
+    "lineage_support_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+    "dry_read_predecessor_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "dry_read_predecessor_source_commit": "7e96a28",
+    "selector_semantic_contract_present": true,
+    "render_adapter_input_contract_present": true,
+    "local_ignored_proof_media_referenced": true,
+    "missing_production_public_decisions_explicit": true,
+    "production_public_boundary_closed": true,
+    "new_render_run": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "next_executable_route_defined": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-final-render-path-readiness.json",
+    "doc": "docs/style_intent/subtitle-final-render-path-readiness.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none_for_this_packet",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "layout_polish_required_before_next_step": false,
+    "human_review_required_only_for": [
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission"
+    ]
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "source_probe_new_render_created": true,
+    "source_lineage_new_render_created": false,
+    "source_gate_entry_new_render_created": false,
+    "diagnostic_local_ignored_render_reused": true,
+    "gate_separation_source_reused": true,
+    "lineage_surface_support_only": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "final_render_path_approved": false
+  }
+}
