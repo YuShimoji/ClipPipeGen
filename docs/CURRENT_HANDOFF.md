@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: lineage_observation_surface_ready
+health: production_limitation_lift_entry_ready
 progress_pct: 100
-last_touched: 2026-06-25
-next_review_due: none_probe_readback_only
+last_touched: 2026-06-26
+next_review_due: none_gate_entry_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -20,11 +20,29 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family, Candidate 0-3 comparison,
-or stale static prompts after the project has advanced to the ED-10ag lineage and observation route.
+layout-polish, or stale static prompts after the project has advanced to the
+ED-10ah production limitation-lift entry route.
 
 ## Current State
 
 The active artifact is `clip-ed10af-l2-render-path-selector-probe-001`.
+
+ED-10ah records `clip-ed10ah-production-limitation-lift-entry-001` at
+`docs/style_intent/subtitle-production-limitation-lift-entry.json` and
+`docs/style_intent/subtitle-production-limitation-lift-entry.md`. It consumes
+the user observation that the opened review/observation surface is acceptable
+enough and forward progress is preferred over more display/layout polish.
+
+ED-10ah keeps ED-10af as the active diagnostic render-path proof, keeps ED-10ag
+as lineage and same-machine observation support, and preserves the restored
+ED-10af dry-read from commit `7e96a28` as predecessor evidence. It separates the
+next route into seven gates: diagnostic render-path proof, production subtitle
+design acceptance, production render acceptance, creative acceptance, rights
+status, publishing acceptance, and public-use permission. Diagnostic proof is
+available; production/public gates remain false or pending. The next executable
+route is `production-limitation-lift-stage-1` or `final-render-path-readiness`,
+with no new render, no proof media tracked in Git, and no production/public
+approval inferred.
 
 ED-10ag records Existing Output First reuse of the active ED-10af L2 selector
 probe. The earlier ED-10af dry-read
@@ -279,15 +297,14 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Continue from `clip-ed10af-l2-render-path-selector-probe-001` when the next
-terminal needs active L2 render-path readiness. Use
-`clip-ed10ag-lineage-and-observation-surface-001` when the next terminal needs
-dry-read source and no-rerender readback paths. The L2 probe readback reuses
-the ED-10af L2 selector probe's ignored ASS / MP4 / manifest / contact-sheet
-evidence while the restored dry-read keeps all six semantic presets as static source coverage. The
-latest presentation review is already consumed and
-Candidate 2 has now passed through the current diagnostic render path, so do not request another Candidate 0-3
-comparison, another review of the corrected ED-10u `cut_008`
+Continue from `clip-ed10ah-production-limitation-lift-entry-001` when the next
+terminal needs to start the limitation-lift route. The active diagnostic proof
+source is still `clip-ed10af-l2-render-path-selector-probe-001`; use
+`clip-ed10ag-lineage-and-observation-surface-001` only when the next terminal
+needs dry-read source and no-rerender readback paths. The latest presentation
+review is already consumed and the user accepted the opened surface as good
+enough to move forward, so do not request display/layout polish, another
+Candidate 0-3 comparison, another review of the corrected ED-10u `cut_008`
 multiline/dense-stress surface, or general font-family acceptance from
 `cut_002` / `cut_003`.
 
@@ -295,6 +312,8 @@ Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
+| `production-limitation-lift-stage-1` | Uses ED-10ah to separate diagnostic proof from production/public decisions | A later slice can prepare a bounded readiness packet without approving production subtitle design, render, rights, publishing, or public use |
+| `final-render-path-readiness` | Reuses ED-10af active proof and ED-10ag lineage support as source evidence | A later slice can state what is still missing before a production render route |
 | `ed10ag_lineage_observation_surface` | Records Existing Output First reuse of the active ED-10af L2 selector probe while preserving the dry-read predecessor | Another terminal can inspect source and local proof paths without rerendering or opening production/public-use gates |
 | `ed10z_tiny_render_path_nearer_probe` | Records Candidate 2 through the current diagnostic render path while keeping Candidate 0 fallback and Candidate 1/3 held | Another terminal can continue from probe readback without replaying the same comparison review |
 | Audit ED-10y source state | Keeps the carry-forward source and probe artifact separated | A later slice can compare source/readback without treating ED-10z as production acceptance |
@@ -311,6 +330,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10ah-production-limitation-lift-entry-001` | Tracked ED-10ah gate matrix; keeps ED-10af active, ED-10ag supportive, and production/public gates separate | `see docs\style_intent\subtitle-production-limitation-lift-entry.md` |
 | `clip-ed10ag-lineage-and-observation-surface-001` | Tracked ED-10ag lineage and observation surface; keeps ED-10af L2 active and records no new render | `see docs\style_intent\subtitle-render-path-lineage-observation-surface.md` |
 | `clip-ed10af-render-contract-consumer-dry-read-001` | Restored L0 dry-read source for all six semantic presets | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
 | `clip-ed10af-l2-render-path-selector-probe-001` | Source L2 selector probe with local ignored ASS/MP4/manifest evidence | `see docs\style_intent\subtitle-render-path-selector-probe.md` |
@@ -337,6 +357,7 @@ uvx python -m json.tool docs\dashboard\project-status.json
 uvx python -m json.tool docs\style_intent\subtitle-render-contract-consumer-dry-read.json
 uvx python -m json.tool docs\style_intent\subtitle-render-path-selector-probe.json
 uvx python -m json.tool docs\style_intent\subtitle-render-path-lineage-observation-surface.json
+uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-entry.json
 uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
@@ -348,10 +369,12 @@ Expected tracked state:
 - `git ls-files episodes` prints nothing
 - dashboard JSON parses
 - restored dry-read JSON parses
-- ED-10ag L2 tiny render-path probe JSON parses
+- ED-10af L2 tiny render-path probe JSON parses
+- ED-10ag lineage observation JSON parses
+- ED-10ah production limitation-lift entry JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
-- latest pushed checkpoint is `ce24fcc` or a later successor commit
+- latest pushed checkpoint is the ED-10ah successor commit
 - ED-10z dry-run JSON reads `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`,
   `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
   `ed10w_badge_label_pressure_adjustment`, fallback

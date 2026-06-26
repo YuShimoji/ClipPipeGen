@@ -77,6 +77,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["lineage_observation_surface_artifact_id"] == (
         "clip-ed10ag-lineage-and-observation-surface-001"
     )
+    assert status["current_focus"]["production_limitation_lift_entry_artifact_id"] == (
+        "clip-ed10ah-production-limitation-lift-entry-001"
+    )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -91,7 +94,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ag_lineage_observation_surface_ready_active_ed10af_l2_preserved"
+        "ed10ah_production_limitation_lift_entry_ready_active_ed10af_l2_preserved"
     )
     assert status["current_focus"]["user_action_type"] == (
         "NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY"
@@ -103,7 +106,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "lineage_observation_surface_no_review_card"
+        "production_limitation_lift_entry_no_review_card"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -111,6 +114,12 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["multiline_wrap_evidence_status"] == (
         "passed_diagnostic_review"
     )
+    assert status["current_focus"]["user_observation_consumed"]["status"] == (
+        "display_acceptable_move_forward_no_layout_polish"
+    )
+    assert status["current_focus"]["user_observation_consumed"][
+        "layout_polish_deferred"
+    ] is True
     assert status["current_focus"]["multiline_wrap_evidence"]["subtitle_id"] == (
         "sub_096"
     )
@@ -141,7 +150,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "same_candidate_comparison_review_allowed"
     ] is False
     assert status["current_focus"]["review_memory"]["current_blocker"] == (
-        "none_for_tiny_render_path_nearer_probe"
+        "none_for_production_limitation_lift_entry"
     )
     assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
@@ -156,7 +165,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10af-l2-render-path-selector-probe-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "lineage_observation_surface"
+        "production_limitation_lift_entry"
     )
     assert status["current_focus"]["subtitle_preset_selector"]["artifact_id"] == (
         "clip-ed10ab-subtitle-preset-selector-001"
@@ -320,6 +329,41 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     )
     assert lineage_surface["production_render_acceptance"] is False
     assert lineage_surface["public_use_permission"] is False
+    lift_entry = status["current_focus"]["subtitle_production_limitation_lift_entry"]
+    assert lift_entry["artifact_id"] == (
+        "clip-ed10ah-production-limitation-lift-entry-001"
+    )
+    assert lift_entry["active_diagnostic_proof_source_artifact_id"] == (
+        "clip-ed10af-l2-render-path-selector-probe-001"
+    )
+    assert lift_entry["support_lineage_observation_surface_artifact_id"] == (
+        "clip-ed10ag-lineage-and-observation-surface-001"
+    )
+    assert lift_entry["dry_read_predecessor_artifact_id"] == (
+        "clip-ed10af-render-contract-consumer-dry-read-001"
+    )
+    assert lift_entry["dry_read_source_commit"] == "7e96a28"
+    assert lift_entry["gate_names"] == [
+        "diagnostic_render_path_proof",
+        "production_subtitle_design_acceptance",
+        "production_render_acceptance",
+        "creative_acceptance",
+        "rights_status",
+        "publishing_acceptance",
+        "public_use_permission",
+    ]
+    assert lift_entry["diagnostic_render_path_proof"] == "available_diagnostic_only"
+    assert lift_entry["production_subtitle_design_acceptance"] is False
+    assert lift_entry["production_render_acceptance"] is False
+    assert lift_entry["creative_acceptance"] is False
+    assert lift_entry["rights_status"] == "pending"
+    assert lift_entry["publishing_acceptance"] is False
+    assert lift_entry["public_use_permission"] is False
+    assert lift_entry["lineage_support_not_production_proof"] is True
+    assert lift_entry["new_render_run"] is False
+    assert lift_entry["tracked_binary_artifact_created"] is False
+    assert lift_entry["episodes_tracked"] is False
+    assert lift_entry["next_executable_route"] == "production-limitation-lift-stage-1"
     assert status["current_focus"]["subtitle_style_intent_registry"][
         "body_text_color_policy"
     ] == "stable_by_default"
@@ -339,7 +383,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "production_limitation_lift"
     )
     assert status["current_focus"]["review_debt"][0]["status"] == (
-        "not_started_after_tiny_probe"
+        "entry_ready_stage_1_next"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
         "ed10w_current_pass_reference",
@@ -371,6 +415,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        "see docs\\style_intent\\subtitle-production-limitation-lift-entry.md",
         "see docs\\style_intent\\subtitle-render-path-selector-probe.md",
         "see docs\\style_intent\\subtitle-render-path-lineage-observation-surface.md",
         "see docs\\style_intent\\subtitle-render-path-selector-contract.md",
@@ -413,9 +458,12 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10ag-lineage-and-observation-surface-001"
+        "clip-ed10ah-production-limitation-lift-entry-001"
     )
     assert status["next_review_items"][1]["artifact"] == (
+        "clip-ed10ag-lineage-and-observation-surface-001"
+    )
+    assert status["next_review_items"][2]["artifact"] == (
         "clip-ed10af-l2-render-path-selector-probe-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
@@ -430,30 +478,33 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert persisted["open_surfaces"][2]["target"] == (
-        "docs/style_intent/subtitle-render-path-selector-probe.md"
+        "docs/style_intent/subtitle-production-limitation-lift-entry.md"
     )
     assert persisted["open_surfaces"][3]["target"] == (
-        "docs/style_intent/subtitle-render-path-lineage-observation-surface.md"
+        "docs/style_intent/subtitle-render-path-selector-probe.md"
     )
     assert persisted["open_surfaces"][4]["target"] == (
-        "docs/style_intent/subtitle-render-path-selector-contract.md"
+        "docs/style_intent/subtitle-render-path-lineage-observation-surface.md"
     )
     assert persisted["open_surfaces"][5]["target"] == (
-        "docs/style_intent/subtitle-style-family-palette-proof.html"
+        "docs/style_intent/subtitle-render-path-selector-contract.md"
     )
     assert persisted["open_surfaces"][6]["target"] == (
-        "docs/style_intent/subtitle-visual-selector-proof.html"
+        "docs/style_intent/subtitle-style-family-palette-proof.html"
     )
     assert persisted["open_surfaces"][7]["target"] == (
-        "docs/style_intent/subtitle-preset-selector.json"
+        "docs/style_intent/subtitle-visual-selector-proof.html"
     )
     assert persisted["open_surfaces"][8]["target"] == (
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+        "docs/style_intent/subtitle-preset-selector.json"
     )
     assert persisted["open_surfaces"][9]["target"] == (
+        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+    )
+    assert persisted["open_surfaces"][10]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "ED-10z local readback" in persisted["open_surfaces"][9][
+    assert "ED-10z local readback" in persisted["open_surfaces"][10][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -463,6 +514,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
+    assert "clip-ed10ah-production-limitation-lift-entry-001" in html
     assert "clip-ed10r-keifont-dense-stress-proof-001" in html
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in html
     assert "clip-ed10aa-subtitle-style-intent-registry-001" in html
@@ -1280,11 +1332,14 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     assert "Current ED-10y Candidate 2 Carry-Forward" in text
     assert "Current ED-10z Tiny Render-Path-Nearer Probe" in text
     assert "Current ED-10ag Lineage and Observation Surface" in text
+    assert "Current ED-10ah Production Limitation-Lift Entry" in text
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in text
     assert "clip-ed10w-subtitle-presentation-review-pack-001" in text
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
     assert "clip-ed10af-l2-render-path-selector-probe-001" in text
     assert "clip-ed10ag-lineage-and-observation-surface-001" in text
+    assert "clip-ed10ah-production-limitation-lift-entry-001" in text
+    assert "production-limitation-lift-stage-1" in text
     assert "ed10w_badge_label_pressure_adjustment" in text
     assert "ed10w_balanced_combined_low_risk" in text
     assert "diagnostic dense/stress behavior" in text
@@ -1366,7 +1421,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_ed10af_artifact(
     )
 
 
-def test_artifact_registry_records_ed10ag_lineage_observation_sources():
+def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
@@ -1376,6 +1431,7 @@ def test_artifact_registry_records_ed10ag_lineage_observation_sources():
     assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
     assert "clip-ed10ag-lineage-and-observation-surface-001" in artifact_ids
+    assert "clip-ed10ah-production-limitation-lift-entry-001" in artifact_ids
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
     lineage_surface = status["current_focus"][
         "subtitle_render_path_lineage_observation_surface"
@@ -1388,5 +1444,23 @@ def test_artifact_registry_records_ed10ag_lineage_observation_sources():
     ] == "clip-ed10af-l2-render-path-selector-probe-001"
     assert lineage_surface["active_artifact_id"] == "clip-ed10af-l2-render-path-selector-probe-001"
     assert lineage_surface["dry_read_source_commit"] == "7e96a28"
+    lift_entry = status["current_focus"]["subtitle_production_limitation_lift_entry"]
+    assert lift_entry["artifact_id"] == (
+        "clip-ed10ah-production-limitation-lift-entry-001"
+    )
+    assert lift_entry["active_diagnostic_proof_source_artifact_id"] == (
+        "clip-ed10af-l2-render-path-selector-probe-001"
+    )
+    assert lift_entry["support_lineage_observation_surface_artifact_id"] == (
+        "clip-ed10ag-lineage-and-observation-surface-001"
+    )
+    assert lift_entry["dry_read_source_commit"] == "7e96a28"
+    assert lift_entry["production_subtitle_design_acceptance"] is False
+    assert lift_entry["production_render_acceptance"] is False
+    assert lift_entry["creative_acceptance"] is False
+    assert lift_entry["rights_status"] == "pending"
+    assert lift_entry["publishing_acceptance"] is False
+    assert lift_entry["public_use_permission"] is False
+    assert lift_entry["lineage_support_not_production_proof"] is True
     assert status["current_focus"]["production_render_acceptance"] is False
     assert status["current_focus"]["public_use_permission"] is False

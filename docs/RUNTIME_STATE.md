@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: lineage_observation_surface_ready
+health: production_limitation_lift_entry_ready
 progress_pct: 100
-last_touched: 2026-06-25
-next_review_due: none_probe_readback_only
+last_touched: 2026-06-26
+next_review_due: none_gate_entry_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,6 +36,27 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+
+ED-10ah checkpoint, 2026-06-26 JST: the active diagnostic artifact remains the
+ED-10af L2 selector probe
+`clip-ed10af-l2-render-path-selector-probe-001`. ED-10ah adds
+`clip-ed10ah-production-limitation-lift-entry-001` at
+`docs/style_intent/subtitle-production-limitation-lift-entry.json` and
+`docs/style_intent/subtitle-production-limitation-lift-entry.md`. It consumes
+the user observation that the opened surface is acceptable enough, layout polish
+should not block forward progress, and old Candidate 0-3 / Keifont baseline /
+cut_002-cut_003 / cut_008 dense-multiline review loops should not be reopened.
+
+ED-10ah is a gate-separation entry, not production approval. It keeps ED-10af as
+the active diagnostic render-path proof, uses ED-10ag only as lineage and
+same-machine observation support, and preserves the restored dry-read predecessor
+from commit `7e96a28`. Its seven gates are diagnostic render-path proof,
+production subtitle design acceptance, production render acceptance, creative
+acceptance, rights status, publishing acceptance, and public-use permission.
+Only diagnostic proof is available; production/public gates remain false or
+pending. The next executable route is `production-limitation-lift-stage-1` or
+`final-render-path-readiness` without running a new render or adding proof media
+to Git.
 
 ED-10ag checkpoint, 2026-06-25 JST: the active artifact remains the ED-10af
 L2 selector probe `clip-ed10af-l2-render-path-selector-probe-001`. ED-10ag adds

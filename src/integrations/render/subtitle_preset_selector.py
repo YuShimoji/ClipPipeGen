@@ -67,6 +67,22 @@ LINEAGE_OBSERVATION_FEATURE_ID = "ED-10ag"
 LINEAGE_OBSERVATION_CONTACT_SHEET_FILENAME = (
     "subtitle_render_path_selector_probe_contact_sheet.jpg"
 )
+PRODUCTION_LIMITATION_LIFT_SCHEMA_ID = (
+    "clippipegen.subtitle_production_limitation_lift_entry.v1"
+)
+PRODUCTION_LIMITATION_LIFT_ARTIFACT_ID = (
+    "clip-ed10ah-production-limitation-lift-entry-001"
+)
+PRODUCTION_LIMITATION_LIFT_FEATURE_ID = "ED-10ah"
+PRODUCTION_LIMITATION_LIFT_GATE_NAMES = (
+    "diagnostic_render_path_proof",
+    "production_subtitle_design_acceptance",
+    "production_render_acceptance",
+    "creative_acceptance",
+    "rights_status",
+    "publishing_acceptance",
+    "public_use_permission",
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -1132,6 +1148,285 @@ def write_subtitle_render_path_lineage_observation_surface(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_subtitle_production_limitation_lift_entry(
+    *,
+    dry_read: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    dry = (
+        deepcopy(dry_read)
+        if dry_read is not None
+        else build_subtitle_render_contract_consumer_dry_read()
+    )
+    probe = (
+        deepcopy(source_probe)
+        if source_probe is not None
+        else build_subtitle_render_path_selector_probe()
+    )
+    lineage = (
+        deepcopy(lineage_surface)
+        if lineage_surface is not None
+        else build_subtitle_render_path_lineage_observation_surface(
+            dry_read=dry,
+            source_probe=probe,
+        )
+    )
+    local_outputs = dict(lineage["observation_surface"]["local_outputs"])
+    source_evidence = {
+        "active_diagnostic_proof_source_artifact_id": probe["artifact_id"],
+        "active_diagnostic_proof_source_path": "docs/style_intent/subtitle-render-path-selector-probe.json",
+        "support_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+        "support_lineage_observation_surface_path": "docs/style_intent/subtitle-render-path-lineage-observation-surface.json",
+        "dry_read_predecessor_artifact_id": dry["artifact_id"],
+        "dry_read_predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+        "dry_read_predecessor_path": "docs/style_intent/subtitle-render-contract-consumer-dry-read.json",
+        "local_ignored_outputs": local_outputs,
+        "local_ignored_output_policy": "same_machine_observation_only_do_not_add_to_git",
+        "source_probe_selected_example_ids": list(probe["selected_example_ids"]),
+        "source_probe_local_status": probe["local_probe"]["status"],
+        "lineage_render_level": lineage["render_level"],
+    }
+    gate_matrix = [
+        {
+            "gate_name": "diagnostic_render_path_proof",
+            "current_status": "available_diagnostic_only",
+            "evidence_available": [
+                "ED-10af L2 selector probe records local ignored ASS/MP4/manifest render-path proof for neutral, shout, and whisper representative payloads.",
+                "ED-10ag lineage surface records same-machine observation paths and confirms no new render was run for lineage.",
+                "The restored ED-10af dry-read from commit 7e96a28 remains preserved as predecessor evidence.",
+                "Stable body text plus badge/accent/backplate routing and safe-area line-break metadata survive into the active diagnostic proof.",
+            ],
+            "evidence_missing": [
+                "Final render-path readiness packet for a production route.",
+                "Representative production-sequence review outside the bounded diagnostic probe.",
+            ],
+            "agent_can_progress_without_user_judgement": True,
+            "human_judgement_required": False,
+            "rights_or_publication_decision_required": False,
+            "next_agent_action": "Assemble final-render-path-readiness or production-limitation-lift-stage-1 from existing evidence.",
+        },
+        {
+            "gate_name": "production_subtitle_design_acceptance",
+            "current_status": "not_accepted",
+            "evidence_available": [
+                "User observation says the opened surface is acceptable enough and layout polish should not block forward progress.",
+                "ED-10af/ED-10ag show the diagnostic body/badge route can be observed on this machine.",
+            ],
+            "evidence_missing": [
+                "Explicit human acceptance that the subtitle design is production-ready.",
+                "Production-sequence typography and safe-area acceptance beyond the tiny diagnostic probe.",
+            ],
+            "agent_can_progress_without_user_judgement": False,
+            "human_judgement_required": True,
+            "rights_or_publication_decision_required": False,
+            "next_agent_action": "Prepare a bounded decision packet only when design acceptance becomes the next required decision.",
+        },
+        {
+            "gate_name": "production_render_acceptance",
+            "current_status": "not_accepted",
+            "evidence_available": [
+                "Diagnostic render-path proof exists for the selected representative payloads.",
+                "Same-machine ASS/MP4/manifest/contact-sheet paths are recorded for local inspection.",
+            ],
+            "evidence_missing": [
+                "Accepted production render output.",
+                "Final production render command/output manifest and review result.",
+            ],
+            "agent_can_progress_without_user_judgement": False,
+            "human_judgement_required": True,
+            "rights_or_publication_decision_required": False,
+            "next_agent_action": "Do not infer production render acceptance from the diagnostic proof.",
+        },
+        {
+            "gate_name": "creative_acceptance",
+            "current_status": "not_accepted",
+            "evidence_available": [
+                "Candidate 2 remains the diagnostic lead treatment and Candidate 0 remains fallback/reference in the prior review memory.",
+                "No request remains to reopen Candidate 0-3, Keifont baseline, cut_002/cut_003, or cut_008 dense/multiline review.",
+            ],
+            "evidence_missing": [
+                "Explicit creative approval for production use.",
+                "Any final editorial review packet chosen by the user.",
+            ],
+            "agent_can_progress_without_user_judgement": False,
+            "human_judgement_required": True,
+            "rights_or_publication_decision_required": False,
+            "next_agent_action": "Keep prior review axes closed unless a new explicit creative decision is requested.",
+        },
+        {
+            "gate_name": "rights_status",
+            "current_status": "pending",
+            "evidence_available": [
+                "No rights clearance is claimed by ED-10af, ED-10ag, or this ED-10ah entry.",
+                "The local proof paths stay same-machine and ignored.",
+            ],
+            "evidence_missing": [
+                "Human/owner rights clearance for the source material and any distribution context.",
+                "Any publication-specific rights review.",
+            ],
+            "agent_can_progress_without_user_judgement": False,
+            "human_judgement_required": True,
+            "rights_or_publication_decision_required": True,
+            "next_agent_action": "Do not make rights claims or convert local proof into public-use permission.",
+        },
+        {
+            "gate_name": "publishing_acceptance",
+            "current_status": "not_accepted",
+            "evidence_available": [
+                "No upload, platform metadata, visibility, or scheduling action is performed in the diagnostic route.",
+            ],
+            "evidence_missing": [
+                "Human publication decision.",
+                "Platform/upload/account-specific acceptance and final metadata decision.",
+            ],
+            "agent_can_progress_without_user_judgement": False,
+            "human_judgement_required": True,
+            "rights_or_publication_decision_required": True,
+            "next_agent_action": "Do not upload, publish, schedule, or prepare public release actions from this entry.",
+        },
+        {
+            "gate_name": "public_use_permission",
+            "current_status": "not_allowed",
+            "evidence_available": [
+                "Production subtitle design, production render, creative, rights, and publishing gates remain false or pending.",
+            ],
+            "evidence_missing": [
+                "All upstream acceptances required for public use.",
+                "Explicit public-use permission.",
+            ],
+            "agent_can_progress_without_user_judgement": False,
+            "human_judgement_required": True,
+            "rights_or_publication_decision_required": True,
+            "next_agent_action": "Keep public-use permission closed until all upstream decisions are explicit.",
+        },
+    ]
+    boundaries = _production_limitation_lift_boundary_flags(probe, lineage)
+    validation = _production_limitation_lift_validation(
+        dry,
+        probe,
+        lineage,
+        gate_matrix,
+        boundaries,
+    )
+    return {
+        "schema_id": PRODUCTION_LIMITATION_LIFT_SCHEMA_ID,
+        "artifact_id": PRODUCTION_LIMITATION_LIFT_ARTIFACT_ID,
+        "feature_id": PRODUCTION_LIMITATION_LIFT_FEATURE_ID,
+        "status": "production_limitation_lift_entry_ready",
+        "active_artifact_id": probe["artifact_id"],
+        "source_render_path_selector_probe_artifact_id": probe["artifact_id"],
+        "source_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+        "source_render_contract_consumer_dry_read_artifact_id": dry["artifact_id"],
+        "surface_kind": "production_limitation_lift_gate_separation_entry",
+        "render_level": "gate_entry_no_new_render",
+        "source_evidence": source_evidence,
+        "user_observation_consumed": {
+            "observation_id": "ed10ah_user_display_acceptable_move_forward",
+            "display_surface_acceptable_enough": True,
+            "layout_polish_deferred": True,
+            "move_forward_preferred": True,
+            "no_redundant_review_requests": [
+                "Candidate 0-3 comparison",
+                "Keifont baseline review",
+                "cut_002/cut_003 review",
+                "cut_008 dense/multiline review",
+            ],
+        },
+        "gate_names": list(PRODUCTION_LIMITATION_LIFT_GATE_NAMES),
+        "gate_matrix": gate_matrix,
+        "next_executable_route": {
+            "route_id": "production-limitation-lift-stage-1",
+            "alternate_route_id": "final-render-path-readiness",
+            "agent_can_start_without_user_judgement": True,
+            "purpose": "Convert existing diagnostic and lineage evidence into a bounded readiness packet without approving production or public use.",
+            "first_steps": [
+                "Reuse ED-10af as the active diagnostic render-path proof source.",
+                "Use ED-10ag only as lineage and same-machine observation support.",
+                "List the still-closed human/rights/publication gates before any production route.",
+            ],
+            "must_not_do": [
+                "approve production subtitle design",
+                "approve production render",
+                "approve creative use",
+                "make rights claims",
+                "upload or publish",
+                "grant public-use permission",
+                "rerun old comparison/review axes unless explicitly requested",
+            ],
+            "completion_signal": "A bounded stage-1/readiness packet exists and any required human decision is isolated to the relevant gate.",
+        },
+        "readiness_separation": {
+            "diagnostic_render_path_proof": "available_diagnostic_only",
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
+        "render_gate": {
+            "level": "gate_entry_no_new_render",
+            "existing_output_first_reused": True,
+            "new_render_run": False,
+            "source_probe_new_render_run": probe["render_gate"]["new_render_run"],
+            "source_lineage_new_render_run": lineage["render_gate"]["new_render_run"],
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "local_outputs_ignored": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/subtitle-production-limitation-lift-entry.json",
+            "doc": "docs/style_intent/subtitle-production-limitation-lift-entry.md",
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none_for_this_entry",
+            "fixed_form_required": False,
+            "screenshot_required": False,
+            "layout_polish_required_before_next_step": False,
+            "human_review_required_only_for": [
+                "production_subtitle_design_acceptance",
+                "production_render_acceptance",
+                "creative_acceptance",
+                "rights_status",
+                "publishing_acceptance",
+                "public_use_permission",
+            ],
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_subtitle_production_limitation_lift_entry(
+    output_dir: Path,
+    *,
+    dry_read: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+) -> dict[str, Path]:
+    entry = build_subtitle_production_limitation_lift_entry(
+        dry_read=dry_read,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-production-limitation-lift-entry.json"
+    doc_path = output_dir / "subtitle-production-limitation-lift-entry.md"
+    json_path.write_text(
+        json.dumps(entry, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_production_limitation_lift_entry_markdown(entry),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "doc": doc_path}
+
+
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
     output_dir: Path,
@@ -1575,6 +1870,114 @@ def render_subtitle_render_path_lineage_observation_surface_markdown(
         "- public_use_permission: `false`",
         f"- diagnostic_local_ignored_render_reused: `{str(boundaries['diagnostic_local_ignored_render_reused']).lower()}`",
         f"- episodes_tracked: `{str(boundaries['episodes_tracked']).lower()}`",
+    ]
+    return nl.join(lines) + nl
+
+
+def render_subtitle_production_limitation_lift_entry_markdown(
+    entry: Mapping[str, Any],
+) -> str:
+    source = entry["source_evidence"]
+    user = entry["user_observation_consumed"]
+    route = entry["next_executable_route"]
+    validation = entry["validation"]
+    boundaries = entry["boundaries"]
+    nl = chr(10)
+    output_rows = nl.join(
+        f"| {target} | `{path}` |"
+        for target, path in source["local_ignored_outputs"].items()
+    )
+    gate_rows = nl.join(
+        "| {gate} | {status} | {available} | {missing} | {agent} | {human} | {rights} |".format(
+            gate=gate["gate_name"],
+            status=gate["current_status"],
+            available=_markdown_cell_list(gate["evidence_available"]),
+            missing=_markdown_cell_list(gate["evidence_missing"]),
+            agent=str(gate["agent_can_progress_without_user_judgement"]).lower(),
+            human=str(gate["human_judgement_required"]).lower(),
+            rights=str(gate["rights_or_publication_decision_required"]).lower(),
+        )
+        for gate in entry["gate_matrix"]
+    )
+    route_steps = nl.join(
+        f"- {step}"
+        for step in route["first_steps"]
+    )
+    route_boundaries = nl.join(
+        f"- {item}"
+        for item in route["must_not_do"]
+    )
+    closed_boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "new_render_created",
+        )
+    )
+    lines = [
+        "# ED-10ah Production Limitation-Lift Entry",
+        "",
+        "This tracked entry separates diagnostic render-path proof from production subtitle design, production render, creative, rights, publishing, and public-use gates. It is a route entry, not an approval.",
+        "",
+        "## User Observation Consumed",
+        "",
+        f"- observation_id: `{user['observation_id']}`",
+        f"- display_surface_acceptable_enough: `{str(user['display_surface_acceptable_enough']).lower()}`",
+        f"- layout_polish_deferred: `{str(user['layout_polish_deferred']).lower()}`",
+        f"- move_forward_preferred: `{str(user['move_forward_preferred']).lower()}`",
+        f"- no_redundant_review_requests: {_markdown_cell_list(user['no_redundant_review_requests'])}",
+        "",
+        "## Source Evidence",
+        "",
+        f"- active diagnostic proof source: `{source['active_diagnostic_proof_source_artifact_id']}`",
+        f"- lineage observation support: `{source['support_lineage_observation_surface_artifact_id']}`",
+        f"- dry-read predecessor: `{source['dry_read_predecessor_artifact_id']}`",
+        f"- dry-read predecessor source commit: `{source['dry_read_predecessor_source_commit']}`",
+        f"- local ignored output policy: `{source['local_ignored_output_policy']}`",
+        "",
+        "| output | same-machine path |",
+        "|---|---|",
+        output_rows,
+        "",
+        "## Gate Separation",
+        "",
+        "| gate | current status | evidence already available | evidence still missing | agent can progress without user judgement | human judgement required | rights/publication decision required |",
+        "|---|---|---|---|---|---|---|",
+        gate_rows,
+        "",
+        "## Next Executable Route",
+        "",
+        f"- route_id: `{route['route_id']}`",
+        f"- alternate_route_id: `{route['alternate_route_id']}`",
+        f"- agent_can_start_without_user_judgement: `{str(route['agent_can_start_without_user_judgement']).lower()}`",
+        f"- purpose: {route['purpose']}",
+        "",
+        route_steps,
+        "",
+        "This route must not:",
+        "",
+        route_boundaries,
+        "",
+        "## Validation",
+        "",
+        f"- gate_names_present: `{str(validation['gate_names_present']).lower()}`",
+        f"- active_diagnostic_source_preserved: `{str(validation['active_diagnostic_source_preserved']).lower()}`",
+        f"- lineage_support_not_production_proof: `{str(validation['lineage_support_not_production_proof']).lower()}`",
+        f"- dry_read_predecessor_preserved: `{str(validation['dry_read_predecessor_preserved']).lower()}`",
+        f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`",
+        f"- next_executable_route_defined: `{str(validation['next_executable_route_defined']).lower()}`",
+        f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
+        "",
+        "## Boundary",
+        "",
+        closed_boundary_rows,
     ]
     return nl.join(lines) + nl
 
@@ -2360,6 +2763,144 @@ def _lineage_observation_surface_validation(
             and boundaries["tracked_binary_artifact_created"] is False
         ),
     }
+
+
+def _production_limitation_lift_boundary_flags(
+    source_probe: Mapping[str, Any],
+    lineage_surface: Mapping[str, Any],
+) -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_created": False,
+            "source_probe_new_render_created": source_probe["render_gate"]["new_render_run"],
+            "source_lineage_new_render_created": lineage_surface["render_gate"]["new_render_run"],
+            "diagnostic_local_ignored_render_reused": True,
+            "lineage_surface_support_only": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        }
+    )
+    return flags
+
+
+def _production_limitation_lift_validation(
+    dry_read: Mapping[str, Any],
+    source_probe: Mapping[str, Any],
+    lineage_surface: Mapping[str, Any],
+    gate_matrix: list[Mapping[str, Any]],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    actual_gate_names = [gate["gate_name"] for gate in gate_matrix]
+    expected_gate_names = list(PRODUCTION_LIMITATION_LIFT_GATE_NAMES)
+    by_gate = {gate["gate_name"]: gate for gate in gate_matrix}
+    required_closed_gates = (
+        "production_subtitle_design_acceptance",
+        "production_render_acceptance",
+        "creative_acceptance",
+        "rights_status",
+        "publishing_acceptance",
+        "public_use_permission",
+    )
+    all_required_gates_present = all(gate in by_gate for gate in required_closed_gates)
+    production_public_boundary_closed = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["production_usage_allowed"] is False
+    )
+    closed_gate_statuses_preserved = (
+        all_required_gates_present
+        and by_gate["production_subtitle_design_acceptance"]["current_status"] == "not_accepted"
+        and by_gate["production_render_acceptance"]["current_status"] == "not_accepted"
+        and by_gate["creative_acceptance"]["current_status"] == "not_accepted"
+        and by_gate["rights_status"]["current_status"] == "pending"
+        and by_gate["publishing_acceptance"]["current_status"] == "not_accepted"
+        and by_gate["public_use_permission"]["current_status"] == "not_allowed"
+    )
+    agent_progress_limited_to_diagnostic_route = (
+        by_gate["diagnostic_render_path_proof"]["agent_can_progress_without_user_judgement"]
+        is True
+        and all(
+            by_gate[gate]["agent_can_progress_without_user_judgement"] is False
+            for gate in required_closed_gates
+        )
+    )
+    human_or_rights_gates_marked = (
+        all(
+            by_gate[gate]["human_judgement_required"] is True
+            for gate in required_closed_gates
+        )
+        and by_gate["rights_status"]["rights_or_publication_decision_required"] is True
+        and by_gate["publishing_acceptance"]["rights_or_publication_decision_required"]
+        is True
+        and by_gate["public_use_permission"]["rights_or_publication_decision_required"]
+        is True
+    )
+    active_diagnostic_source_preserved = (
+        source_probe["artifact_id"] == RENDER_PATH_PROBE_ARTIFACT_ID
+        and source_probe["validation"]["all_checks_passed"] is True
+    )
+    lineage_support_not_production_proof = (
+        lineage_surface["artifact_id"] == LINEAGE_OBSERVATION_ARTIFACT_ID
+        and lineage_surface["render_gate"]["new_render_run"] is False
+        and lineage_surface["render_gate"]["production_render_acceptance"] is False
+        and lineage_surface["render_gate"]["public_use_permission"] is False
+        and boundaries["lineage_surface_support_only"] is True
+    )
+    dry_read_predecessor_preserved = (
+        dry_read["artifact_id"] == RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+        and RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT == "7e96a28"
+    )
+    return {
+        "expected_gate_names": expected_gate_names,
+        "actual_gate_names": actual_gate_names,
+        "gate_names_present": actual_gate_names == expected_gate_names,
+        "all_required_gates_present": all_required_gates_present,
+        "closed_gate_statuses_preserved": closed_gate_statuses_preserved,
+        "agent_progress_limited_to_diagnostic_route": agent_progress_limited_to_diagnostic_route,
+        "human_or_rights_gates_marked": human_or_rights_gates_marked,
+        "active_diagnostic_source_preserved": active_diagnostic_source_preserved,
+        "active_diagnostic_source_artifact_id": source_probe["artifact_id"],
+        "lineage_support_not_production_proof": lineage_support_not_production_proof,
+        "lineage_support_artifact_id": lineage_surface["artifact_id"],
+        "dry_read_predecessor_preserved": dry_read_predecessor_preserved,
+        "dry_read_predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+        "production_public_boundary_closed": production_public_boundary_closed,
+        "new_render_run": False,
+        "tracked_binary_artifact_created": boundaries["tracked_binary_artifact_created"],
+        "episodes_tracked": boundaries["episodes_tracked"],
+        "next_executable_route_defined": True,
+        "user_observation_consumed": True,
+        "all_checks_passed": (
+            actual_gate_names == expected_gate_names
+            and all_required_gates_present
+            and closed_gate_statuses_preserved
+            and agent_progress_limited_to_diagnostic_route
+            and human_or_rights_gates_marked
+            and active_diagnostic_source_preserved
+            and lineage_support_not_production_proof
+            and dry_read_predecessor_preserved
+            and production_public_boundary_closed
+            and boundaries["tracked_binary_artifact_created"] is False
+            and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _markdown_cell_list(items: list[str]) -> str:
+    return "<br>".join(item.replace("|", "/") for item in items)
 
 
 def _open_command(target: str, display_path: str) -> dict[str, str]:

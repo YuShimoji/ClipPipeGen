@@ -496,6 +496,139 @@ def test_subtitle_render_path_lineage_observation_surface_doc_records_existing_o
     assert "episodes_tracked: `false`" in text
 
 
+def test_subtitle_production_limitation_lift_entry_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    dry_read = json.loads(
+        (style_dir / "subtitle-render-contract-consumer-dry-read.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    source_probe = json.loads(
+        (style_dir / "subtitle-render-path-selector-probe.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    lineage_surface = json.loads(
+        (
+            style_dir / "subtitle-render-path-lineage-observation-surface.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked = json.loads(
+        (style_dir / "subtitle-production-limitation-lift-entry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_subtitle_production_limitation_lift_entry(
+        dry_read=dry_read,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == preset_selector.PRODUCTION_LIMITATION_LIFT_SCHEMA_ID
+    assert tracked["artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10ah"
+    assert tracked["status"] == "production_limitation_lift_entry_ready"
+    assert tracked["active_artifact_id"] == preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    assert tracked["source_lineage_observation_surface_artifact_id"] == (
+        preset_selector.LINEAGE_OBSERVATION_ARTIFACT_ID
+    )
+    assert tracked["source_render_contract_consumer_dry_read_artifact_id"] == (
+        preset_selector.RENDER_CONTRACT_CONSUMER_DRY_READ_ARTIFACT_ID
+    )
+    assert tracked["gate_names"] == list(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_GATE_NAMES
+    )
+    by_gate = {gate["gate_name"]: gate for gate in tracked["gate_matrix"]}
+    assert by_gate["diagnostic_render_path_proof"]["current_status"] == (
+        "available_diagnostic_only"
+    )
+    assert by_gate["diagnostic_render_path_proof"][
+        "agent_can_progress_without_user_judgement"
+    ] is True
+    for gate_name in (
+        "production_subtitle_design_acceptance",
+        "production_render_acceptance",
+        "creative_acceptance",
+        "rights_status",
+        "publishing_acceptance",
+        "public_use_permission",
+    ):
+        assert by_gate[gate_name]["agent_can_progress_without_user_judgement"] is False
+        assert by_gate[gate_name]["human_judgement_required"] is True
+    assert by_gate["rights_status"]["current_status"] == "pending"
+    assert by_gate["public_use_permission"]["current_status"] == "not_allowed"
+    assert tracked["source_evidence"][
+        "active_diagnostic_proof_source_artifact_id"
+    ] == preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    assert tracked["source_evidence"][
+        "support_lineage_observation_surface_artifact_id"
+    ] == preset_selector.LINEAGE_OBSERVATION_ARTIFACT_ID
+    assert tracked["source_evidence"]["dry_read_predecessor_source_commit"] == "7e96a28"
+    assert tracked["user_observation_consumed"][
+        "display_surface_acceptable_enough"
+    ] is True
+    assert tracked["user_observation_consumed"]["layout_polish_deferred"] is True
+    assert tracked["next_executable_route"]["route_id"] == (
+        "production-limitation-lift-stage-1"
+    )
+    assert tracked["next_executable_route"]["alternate_route_id"] == (
+        "final-render-path-readiness"
+    )
+    assert tracked["next_executable_route"][
+        "agent_can_start_without_user_judgement"
+    ] is True
+    assert tracked["readiness_separation"][
+        "production_subtitle_design_acceptance"
+    ] is False
+    assert tracked["readiness_separation"]["production_render_acceptance"] is False
+    assert tracked["readiness_separation"]["creative_acceptance"] is False
+    assert tracked["readiness_separation"]["rights_status"] == "pending"
+    assert tracked["readiness_separation"]["publishing_acceptance"] is False
+    assert tracked["readiness_separation"]["public_use_permission"] is False
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["boundaries"]["production_usage_allowed"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["validation"]["gate_names_present"] is True
+    assert tracked["validation"]["active_diagnostic_source_preserved"] is True
+    assert tracked["validation"]["lineage_support_not_production_proof"] is True
+    assert tracked["validation"]["dry_read_predecessor_preserved"] is True
+    assert tracked["validation"]["production_public_boundary_closed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_production_limitation_lift_entry_doc_records_gate_matrix():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-production-limitation-lift-entry.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10ah Production Limitation-Lift Entry" in text
+    assert "It is a route entry, not an approval." in text
+    assert "display_surface_acceptable_enough: `true`" in text
+    assert "layout_polish_deferred: `true`" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "clip-ed10ag-lineage-and-observation-surface-001" in text
+    assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
+    assert "dry-read predecessor source commit: `7e96a28`" in text
+    assert "diagnostic_render_path_proof" in text
+    assert "production_subtitle_design_acceptance" in text
+    assert "production_render_acceptance" in text
+    assert "creative_acceptance" in text
+    assert "rights_status" in text
+    assert "publishing_acceptance" in text
+    assert "public_use_permission" in text
+    assert "agent_can_start_without_user_judgement: `true`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "episodes_tracked: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

@@ -115,13 +115,14 @@ def build_project_status(
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
+         'production_limitation_lift_entry_artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ag_lineage_observation_surface_ready_active_ed10af_l2_preserved',
+         'route_status': 'ed10ah_production_limitation_lift_entry_ready_active_ed10af_l2_preserved',
          'user_action_type': 'NO_USER_ACTION_EXISTING_OUTPUT_READBACK_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
@@ -136,6 +137,14 @@ def build_project_status(
          'font_visual_evidence_status': 'valid_requested_keifont_visual_evidence_on_current_windows_profile',
          'local_generation_status': 'ed10af_l2_local_ignored_probe_generated',
          'user_review_status': 'consumed_no_user_review_required_now',
+         'user_observation_consumed': {'status': 'display_acceptable_move_forward_no_layout_polish',
+                                       'display_surface_acceptable_enough': True,
+                                       'layout_polish_deferred': True,
+                                       'move_forward_preferred': True,
+                                       'no_redundant_review_requests': ['Candidate 0-3 comparison',
+                                                                        'Keifont baseline review',
+                                                                        'cut_002/cut_003 review',
+                                                                        'cut_008 dense/multiline review']},
          'multiline_wrap_evidence_status': 'passed_diagnostic_review',
          'multiline_wrap_evidence': {'status': 'passed_diagnostic_review',
                                      'target_cut_id': 'cut_008',
@@ -402,6 +411,36 @@ def build_project_status(
                                                               'tracked_binary_artifact_created': False,
                                                               'production_render_acceptance': False,
                                                               'public_use_permission': False},
+         'subtitle_production_limitation_lift_entry': {'status': 'production_limitation_lift_entry_ready',
+                                                       'artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
+                                                       'active_diagnostic_proof_source_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                       'support_lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
+                                                       'dry_read_predecessor_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
+                                                       'dry_read_source_commit': '7e96a28',
+                                                       'metadata_json': 'docs/style_intent/subtitle-production-limitation-lift-entry.json',
+                                                       'doc': 'docs/style_intent/subtitle-production-limitation-lift-entry.md',
+                                                       'render_level': 'gate_entry_no_new_render',
+                                                       'gate_names': ['diagnostic_render_path_proof',
+                                                                      'production_subtitle_design_acceptance',
+                                                                      'production_render_acceptance',
+                                                                      'creative_acceptance',
+                                                                      'rights_status',
+                                                                      'publishing_acceptance',
+                                                                      'public_use_permission'],
+                                                       'diagnostic_render_path_proof': 'available_diagnostic_only',
+                                                       'production_subtitle_design_acceptance': False,
+                                                       'production_render_acceptance': False,
+                                                       'creative_acceptance': False,
+                                                       'rights_status': 'pending',
+                                                       'publishing_acceptance': False,
+                                                       'public_use_permission': False,
+                                                       'agent_can_start_next_route_without_user_judgement': True,
+                                                       'next_executable_route': 'production-limitation-lift-stage-1',
+                                                       'alternate_next_executable_route': 'final-render-path-readiness',
+                                                       'lineage_support_not_production_proof': True,
+                                                       'new_render_run': False,
+                                                       'tracked_binary_artifact_created': False,
+                                                       'episodes_tracked': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -462,17 +501,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_tiny_render_path_nearer_probe',
+                           'current_blocker': 'none_for_production_limitation_lift_entry',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
-                         'axis': 'lineage_observation_surface',
+                         'artifact_id': 'clip-ed10ah-production-limitation-lift-entry-001',
+                         'axis': 'production_limitation_lift_entry',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10ag records the restored ED-10af dry-read as predecessor evidence, preserves the ED-10af L2 selector probe as active, and adds same-machine observation paths without rerendering.',
+                         'what_changed': 'ED-10ah consumes the user observation that the opened surface is acceptable enough, preserves ED-10af as active diagnostic proof, keeps ED-10ag as lineage support, and separates production/public gates without requesting layout polish.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -480,19 +519,20 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use the ED-10af L2 probe as active render-path evidence and the ED-10ag lineage observation surface as readback; production, rights, publishing, and public-use routes remain separate'},
+                         'completion_signal': 'use ED-10ah as the limitation-lift entry; production subtitle design, production render, creative, rights, publishing, and public-use decisions remain separate'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'lineage_observation_surface_no_review_card',
+         'review_surface_direction': 'production_limitation_lift_entry_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'production_limitation_lift',
-                          'status': 'not_started_after_tiny_probe',
-                          'next_action': 'start a separate limitation-lift/final render-path '
-                                         'route only after explicit acceptance scope is '
-                                         'opened'}],
+                          'status': 'entry_ready_stage_1_next',
+                          'next_action': 'start production-limitation-lift-stage-1 or '
+                                         'final-render-path-readiness from the ED-10ah '
+                                         'gate matrix without inferring production/public '
+                                         'approval'}],
          'emoji_treatment': 'neutral_ignore_for_evaluation',
          'production_candidate': False,
          'production_subtitle_design_acceptance': False,
@@ -808,6 +848,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10af-l2-render-path-selector-probe-001"
         if feature_id == "ED-10ag":
             active_artifact = "clip-ed10ag-lineage-and-observation-surface-001"
+        if feature_id == "ED-10ah":
+            active_artifact = "clip-ed10ah-production-limitation-lift-entry-001"
         features.append(
             {
                 "id": feature_id,
@@ -918,6 +960,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 
 def _next_review_items() -> list[dict[str, str]]:
     return [
+        {
+            "item": "ED-10ah production limitation-lift entry",
+            "artifact": "clip-ed10ah-production-limitation-lift-entry-001",
+            "question": "Are diagnostic proof, production subtitle design, production render, creative, rights, publishing, and public-use gates separated before the next route starts?",
+            "next_route": "Start production-limitation-lift-stage-1 or final-render-path-readiness from this gate matrix; do not infer production/public approval.",
+        },
         {
             "item": "ED-10ag lineage and observation surface",
             "artifact": "clip-ed10ag-lineage-and-observation-surface-001",
@@ -1059,6 +1107,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Production Limitation-Lift Entry",
+            "command": "see docs\\style_intent\\subtitle-production-limitation-lift-entry.md",
+            "target": "docs/style_intent/subtitle-production-limitation-lift-entry.md",
+            "when_to_use": (
+                "Use to inspect the ED-10ah gate matrix that separates diagnostic "
+                "render-path proof from production, rights, publishing, and "
+                "public-use decisions."
+            ),
         },
         {
             "label": "Render Path Selector Probe",
@@ -1321,6 +1379,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "l2_render_path_selector_probe_ready"
     if feature_id == "ED-10ag":
         return "lineage_observation_surface_ready"
+    if feature_id == "ED-10ah":
+        return "production_limitation_lift_entry_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1377,6 +1437,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ag":
         return 100
+    if feature_id == "ED-10ah":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1431,6 +1493,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the L2 selector probe readback before opening a separate production limitation-lift, rights, publishing, or public-use route."
     if feature_id == "ED-10ag":
         return "Use the lineage and observation surface to preserve the dry-read predecessor and inspect same-machine proof paths; rerender only under a separate explicit render milestone."
+    if feature_id == "ED-10ah":
+        return "Use the limitation-lift entry to start production-limitation-lift-stage-1 or final-render-path-readiness; keep production, rights, publishing, and public-use approvals explicit."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

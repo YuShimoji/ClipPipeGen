@@ -5,9 +5,9 @@ type: design_readback
 status: diagnostic_intent_registry_ready
 health: semantic_style_control_ready_for_future_mapping
 progress_pct: 100
-last_touched: 2026-06-25
+last_touched: 2026-06-26
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -43,6 +43,17 @@ ED-10af dry-read as six-preset static source coverage and reuses the ED-10af
 three-example L2 FFmpeg/libass selector probe as Existing Output First evidence.
 The ED-10ag surface records `new_render_run=false` while keeping the route
 diagnostic only.
+
+ED-10ah adds `clip-ed10ah-production-limitation-lift-entry-001` as a tracked
+gate-separation entry after the user accepted the opened surface as acceptable
+enough and preferred forward progress over more layout polish. It does not
+change the active artifact: ED-10af remains the active diagnostic render-path
+proof and ED-10ag remains lineage/observation support. ED-10ah records that
+diagnostic render-path proof is available while production subtitle design,
+production render, creative acceptance, rights, publishing, and public-use
+permission remain false or pending. The next executable route is
+`production-limitation-lift-stage-1` or `final-render-path-readiness`, not a
+production/public approval.
 
 ## Intent Axes
 

@@ -471,6 +471,44 @@ Boundary flags remain false or pending:
 - `tracked_binary_artifact_created=false`
 - `episodes_tracked=false`
 
+## `clip-ed10ah-production-limitation-lift-entry-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10ah Production Limitation-Lift Entry |
+| purpose | Separate diagnostic render-path proof from production subtitle design acceptance, production render acceptance, creative acceptance, rights status, publishing acceptance, and public-use permission. |
+| storage class | Tracked JSON/Markdown gate-separation artifact; references ignored same-machine proof media only. |
+| repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-entry.md` |
+| metadata_json | `docs/style_intent/subtitle-production-limitation-lift-entry.json` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-entry.md` |
+| active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
+| support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
+| source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
+| source_dry_read_commit | `7e96a28` |
+| local_ignored_ass | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass` |
+| local_ignored_video | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4` |
+| local_ignored_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json` |
+| local_ignored_contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg` |
+| generated_from | ED-10ah consumes the user observation that the opened surface is acceptable enough and forward progress is preferred; it preserves ED-10af as active diagnostic proof and ED-10ag as lineage support. |
+| validation_command | Parse ED-10ah, ED-10ag, ED-10af probe, restored dry-read JSON, and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty. |
+| latest_local_smoke | ED-10ah JSON reports all seven gate names present, `active_diagnostic_source_preserved=true`, `lineage_support_not_production_proof=true`, `dry_read_predecessor_preserved=true`, `production_public_boundary_closed=true`, `new_render_run=false`, and `episodes_tracked=false`. |
+| review_status | No Review Card. Display/layout polish is deferred by user observation; the artifact is a gate entry, not production/public approval. |
+| next_action | Start `production-limitation-lift-stage-1` or `final-render-path-readiness` from this gate matrix while keeping production subtitle design, production render, creative, rights, publishing, and public-use decisions explicit. |
+
+Boundary flags remain false or pending:
+
+- `diagnostic_render_path_proof=available_diagnostic_only`
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

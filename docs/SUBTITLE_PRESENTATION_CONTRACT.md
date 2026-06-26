@@ -379,6 +379,25 @@ same-machine evidence only. ED-10ag records
 binary media, and does not approve production subtitle design, production
 render, creative use, rights, publishing, or public-use decisions.
 
+## Current ED-10ah Production Limitation-Lift Entry
+
+ED-10ah records `clip-ed10ah-production-limitation-lift-entry-001` as a tracked
+gate-separation entry after the user confirmed the opened surface is acceptable
+enough and forward progress should take priority over more display/layout
+polish. It keeps `clip-ed10af-l2-render-path-selector-probe-001` as the active
+diagnostic render-path proof and keeps
+`clip-ed10ag-lineage-and-observation-surface-001` as lineage/observation
+support, not production proof.
+
+The ED-10ah entry separates seven gates: diagnostic render-path proof,
+production subtitle design acceptance, production render acceptance, creative
+acceptance, rights status, publishing acceptance, and public-use permission.
+Diagnostic render-path proof is available. Production subtitle design,
+production render, creative, rights, publishing, and public-use gates remain
+false or pending. The next executable route is
+`production-limitation-lift-stage-1` or `final-render-path-readiness`; neither
+route is approval to publish or use the proof publicly.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
