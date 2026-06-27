@@ -505,6 +505,26 @@ route is `production-limitation-lift-stage-2-decision-packet`; use
 `final-render-path-stage-4` only if additional diagnostic evidence is genuinely
 needed.
 
+## Current ED-10an Production Limitation-Lift Stage 2 Decision Packet
+
+ED-10an records
+`clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` as a
+tracked decision-preparation packet at
+`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json`
+and
+`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md`.
+It consumes ED-10am as the source gate matrix and does not run a new render or
+create tracked media.
+
+The ED-10an decision map keeps three top-level groups only: subtitle design /
+visual acceptance, production render readiness, and rights / publishing /
+public-use clearance. It preserves ED-10al diagnostic rehearsal metadata and
+survival readback as source evidence, but explicitly keeps production subtitle
+design, production render, creative acceptance, rights, publishing, and
+public-use false or pending. The next executable route is
+`production-limitation-lift-stage-3-owner-review-prep`; use
+`final-render-path-stage-4` only if a concrete diagnostic gap is found.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

@@ -1403,6 +1403,143 @@ def test_subtitle_production_limitation_lift_stage1_doc_records_gate_matrix():
     assert "all_checks_passed: `true`" in text
 
 
+def test_subtitle_production_limitation_lift_stage2_decision_packet_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    stage1_lift = json.loads(
+        (
+            style_dir / "subtitle-production-limitation-lift-stage-1.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked = json.loads(
+        (
+            style_dir
+            / "subtitle-production-limitation-lift-stage-2-decision-packet.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = (
+        preset_selector.build_subtitle_production_limitation_lift_stage2_decision_packet(
+            production_lift_stage1_packet=stage1_lift
+        )
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE2_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE2_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10an"
+    assert tracked["status"] == (
+        "production_limitation_lift_stage_2_decision_packet_ready"
+    )
+    assert tracked["source_production_limitation_lift_stage_1_artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["source_final_render_path_stage_3_rehearsal_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    )
+    assert tracked["decision_group_ids"] == list(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE2_DECISION_GROUP_IDS
+    )
+    assert len(tracked["decision_groups"]) == 3
+    by_group = {
+        group["decision_group_id"]: group for group in tracked["decision_groups"]
+    }
+    assert set(by_group) == set(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE2_DECISION_GROUP_IDS
+    )
+    assert by_group["subtitle_design_visual_acceptance"]["decision_owner"] == "User"
+    assert by_group["production_render_readiness"]["decision_owner"] == "User"
+    assert by_group["rights_publishing_public_use_clearance"]["decision_owner"] == (
+        "Rights / Publication"
+    )
+    for group in tracked["decision_groups"]:
+        assert group["current_status"] == "decision_prepared_not_approved"
+        assert group["agent_can_progress_without_user_judgement"] is True
+        assert group["owner_judgement_required_for_approval"] is True
+        assert group["agent_may_approve"] is False
+        assert group["unsafe_overclaiming_examples"]
+        assert group["next_safe_action"]
+    assert tracked["source_evidence"]["source_stage1_artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["source_evidence"]["source_gate_count"] == 9
+    assert tracked["source_evidence"]["primary_diagnostic_rehearsal_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    )
+    assert tracked["source_evidence"]["diagnostic_output_metadata"][
+        "duration_seconds"
+    ] == 4.2
+    assert tracked["source_evidence"]["diagnostic_output_metadata"]["resolution"] == (
+        "1920x1080"
+    )
+    assert tracked["no_decision_yet"][
+        "production_subtitle_design_acceptance"
+    ] is False
+    assert tracked["no_decision_yet"]["production_render_acceptance"] is False
+    assert tracked["no_decision_yet"]["creative_acceptance"] is False
+    assert tracked["no_decision_yet"]["rights_status"] == "pending"
+    assert tracked["no_decision_yet"]["publishing_acceptance"] is False
+    assert tracked["no_decision_yet"]["public_use_permission"] is False
+    assert tracked["no_decision_yet"]["production_public_decision_approved"] is False
+    assert tracked["no_decision_yet"]["user_decision_requested_now"] is False
+    assert tracked["gate_separation"][
+        "diagnostic_proof_does_not_imply_production_subtitle_design_acceptance"
+    ] is True
+    assert tracked["gate_separation"][
+        "diagnostic_rehearsal_does_not_imply_production_render_acceptance"
+    ] is True
+    assert tracked["gate_separation"][
+        "local_ignored_media_does_not_imply_publishing_public_use_permission"
+    ] is True
+    assert tracked["next_executable_route"]["route_id"] == (
+        "production-limitation-lift-stage-3-owner-review-prep"
+    )
+    assert tracked["next_executable_route"]["alternate_route_id"] == (
+        "final-render-path-stage-4"
+    )
+    assert tracked["next_executable_route"]["concrete_diagnostic_gap_found"] is False
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["source_stage1_new_render_run"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["validation"]["source_gate_matrix_preserved"] is True
+    assert tracked["validation"]["decision_groups_bounded"] is True
+    assert tracked["validation"]["no_decision_boundary_explicit"] is True
+    assert tracked["validation"]["source_evidence_linked"] is True
+    assert tracked["validation"]["production_public_gates_still_closed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_production_limitation_lift_stage2_doc_records_decision_packet():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-production-limitation-lift-stage-2-decision-packet.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10an Production Limitation-Lift Stage 2 Decision Packet" in text
+    assert "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001" in text
+    assert "clip-ed10am-production-limitation-lift-stage-1-001" in text
+    assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in text
+    assert "subtitle_design_visual_acceptance" in text
+    assert "production_render_readiness" in text
+    assert "rights_publishing_public_use_clearance" in text
+    assert "production_subtitle_design_acceptance: `false`" in text
+    assert "production_render_acceptance: `false`" in text
+    assert "rights_status: `pending`" in text
+    assert "public_use_permission: `false`" in text
+    assert "production-limitation-lift-stage-3-owner-review-prep" in text
+    assert "final-render-path-stage-4" in text
+    assert "decision_groups_bounded: `true`" in text
+    assert "all_checks_passed: `true`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

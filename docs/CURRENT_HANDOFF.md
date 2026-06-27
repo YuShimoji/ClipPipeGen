@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: production_limitation_lift_stage_1_ready
+health: production_limitation_lift_stage_2_decision_packet_ready
 progress_pct: 100
-last_touched: 2026-06-26
-next_review_due: none_stage_2_packet_only
-active_artifact: clip-ed10af-l2-render-path-selector-probe-001
+last_touched: 2026-06-27
+next_review_due: none_stage_3_owner_review_prep_only
+active_artifact: clip-ed10an-production-limitation-lift-stage-2-decision-packet-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -26,10 +26,30 @@ ED-10aj final render-path stage-1 packet.
 ED-10ak final render-path stage-2 replayability packet.
 ED-10al final render-path stage-3 diagnostic rehearsal packet.
 ED-10am production limitation-lift stage-1 preparation packet.
+ED-10an production limitation-lift stage-2 decision packet.
 
 ## Current State
 
-The active artifact is `clip-ed10af-l2-render-path-selector-probe-001`.
+The active artifact is
+`clip-ed10an-production-limitation-lift-stage-2-decision-packet-001`.
+
+ED-10an records
+`clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` at
+`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json`
+and
+`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md`.
+It consumes ED-10am as the source gate matrix and groups the remaining decisions
+into three bounded decision-preparation groups: subtitle design / visual
+acceptance, production render readiness, and rights / publishing / public-use
+clearance.
+
+The ED-10an packet requests no immediate user decision, runs no render, tracks
+no media, keeps `episodes/` untracked, and does not approve production subtitle
+design, production render, creative, rights, publishing, or public use. It
+preserves ED-10al diagnostic metadata (`4.2s`, `1920x1080`, `h264`, `aac`, two
+streams) and the survival readback as diagnostic evidence only. The next
+executable route is `production-limitation-lift-stage-3-owner-review-prep`,
+with `final-render-path-stage-4` reserved only for a concrete diagnostic gap.
 
 ED-10am records `clip-ed10am-production-limitation-lift-stage-1-001` at
 `docs/style_intent/subtitle-production-limitation-lift-stage-1.json` and
@@ -396,24 +416,28 @@ adjustment, production limitation-lift, or render-path probe.
 
 ## Next Move
 
-Continue from `clip-ed10am-production-limitation-lift-stage-1-001` when the
-next terminal needs the latest production limitation-lift preparation state.
+Continue from
+`clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` when the
+next terminal needs the latest production limitation-lift decision-preparation
+state.
 The active diagnostic proof source is still
 `clip-ed10af-l2-render-path-selector-probe-001`; ED-10al is the diagnostic
 rehearsal source, ED-10ak is the stage-2 source, and ED-10ag remains lineage
-support. ED-10am has already separated the production subtitle design,
-production render, creative, rights, publishing, public-use, tracked-media, and
-same-machine ignored-evidence gates, so do not request display/layout polish,
+support. ED-10an has already grouped ED-10am's nine gates into subtitle design /
+visual acceptance, production render readiness, and rights / publishing /
+public-use clearance groups. It requests no immediate user decision and keeps
+production/public approvals closed, so do not request display/layout polish,
 another Candidate 0-3 comparison, another review of the corrected ED-10u
-`cut_008` multiline/dense-stress surface, or general font-family acceptance
-from `cut_002` / `cut_003`.
+`cut_008` multiline/dense-stress surface, or general font-family acceptance from
+`cut_002` / `cut_003`.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
-| `production-limitation-lift-stage-2-decision-packet` | Uses ED-10am gate ownership and missing-evidence rows | A later slice can prepare the next explicit owner decision packet without approving it |
-| `final-render-path-stage-4` | Uses ED-10al generated rehearsal metadata | Use only if more diagnostic evidence is genuinely needed before decision packets |
+| `production-limitation-lift-stage-3-owner-review-prep` | Uses ED-10an's three bounded decision groups | A later slice can prepare owner-facing review inputs without approving production/public use |
+| `final-render-path-stage-4` | Uses ED-10al generated rehearsal metadata | Use only if a concrete diagnostic gap is found before owner-review prep |
+| `production-limitation-lift-stage-2-decision-packet` | Historical/current predecessor route now materialized by ED-10an | Use only for backtracking to the stage-2 decision packet source |
 | `production-limitation-lift-stage-1` | Historical/current predecessor route now materialized by ED-10am | Use only for backtracking to the stage-1 limitation-lift source |
 | `final-render-path-stage-3` | Historical/current predecessor route now materialized by ED-10al | Use only for backtracking to the stage-3 rehearsal source |
 | `final-render-path-stage-2` | Uses ED-10aj selected FFmpeg/libass path plus checklist | Historical/current predecessor route now materialized by ED-10ak |
@@ -435,6 +459,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` | Tracked ED-10an production limitation-lift stage-2 decision packet; groups ED-10am gates into three decision-preparation groups without approving production/public use | `see docs\style_intent\subtitle-production-limitation-lift-stage-2-decision-packet.md` |
 | `clip-ed10am-production-limitation-lift-stage-1-001` | Tracked ED-10am production limitation-lift stage-1 packet; separates ED-10al diagnostic evidence from production/render/creative/rights/publishing/public-use decisions and media boundaries | `see docs\style_intent\subtitle-production-limitation-lift-stage-1.md` |
 | `clip-ed10al-final-render-path-stage-3-rehearsal-001` | Tracked ED-10al diagnostic rehearsal packet; records generated ignored ASS/MP4/manifest outputs, output metadata, style survival readback, and closed production/public gates | `see docs\style_intent\subtitle-final-render-path-stage-3.md` |
 | `clip-ed10ak-final-render-path-stage-2-replayability-001` | Tracked ED-10ak replayability packet; records operation inputs/outputs/command family and fresh-clone absence behavior while keeping production/public gates closed | `see docs\style_intent\subtitle-final-render-path-stage-2.md` |
@@ -474,6 +499,7 @@ uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-1.jso
 uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-2.json
 uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-3.json
 uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-stage-1.json
+uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-stage-2-decision-packet.json
 uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
@@ -493,9 +519,10 @@ Expected tracked state:
 - ED-10ak final render-path stage-2 replayability JSON parses
 - ED-10al final render-path stage-3 diagnostic rehearsal JSON parses
 - ED-10am production limitation-lift stage-1 JSON parses
+- ED-10an production limitation-lift stage-2 decision packet JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
-- latest pushed checkpoint is the ED-10am successor commit
+- latest pushed checkpoint is the ED-10an successor commit
 - ED-10z dry-run JSON reads `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`,
   `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
   `ed10w_badge_label_pressure_adjustment`, fallback

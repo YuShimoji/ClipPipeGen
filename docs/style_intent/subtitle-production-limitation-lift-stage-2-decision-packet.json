@@ -1,0 +1,305 @@
+{
+  "schema_id": "clippipegen.subtitle_production_limitation_lift_stage_2_decision_packet.v1",
+  "artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
+  "feature_id": "ED-10an",
+  "status": "production_limitation_lift_stage_2_decision_packet_ready",
+  "surface_kind": "production_limitation_lift_stage_2_decision_preparation_packet",
+  "render_level": "stage_2_decision_packet_no_new_render",
+  "source_production_limitation_lift_stage_1_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
+  "source_final_render_path_stage_3_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+  "source_final_render_path_stage_2_artifact_id": "clip-ed10ak-final-render-path-stage-2-replayability-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_evidence": {
+    "source_stage1_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
+    "source_stage1_path": "docs/style_intent/subtitle-production-limitation-lift-stage-1.json",
+    "source_stage1_doc": "docs/style_intent/subtitle-production-limitation-lift-stage-1.md",
+    "source_gate_count": 9,
+    "source_gate_names": [
+      "diagnostic_render_path_rehearsal_evidence",
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission",
+      "tracked_media_boundary",
+      "same_machine_ignored_evidence_boundary"
+    ],
+    "primary_diagnostic_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+    "stage_2_replayability_artifact_id": "clip-ed10ak-final-render-path-stage-2-replayability-001",
+    "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "diagnostic_rehearsal_status": "diagnostic_rehearsal_completed",
+    "diagnostic_outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json"
+    },
+    "diagnostic_output_metadata": {
+      "duration_seconds": 4.2,
+      "resolution": "1920x1080",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "stream_count": 2
+    },
+    "diagnostic_survival_readback": {
+      "ass_subtitle_style_tokens_survived": true,
+      "stable_body_text_policy_survived": true,
+      "badge_accent_backplate_route_survived": true,
+      "line_break_safe_area_metadata_survived": true,
+      "production_public_gates_still_closed": true
+    },
+    "ed10am_non_approval_readback": {
+      "ed10al_does_not_prove": [
+        "final production subtitle design acceptance",
+        "production render acceptance",
+        "creative acceptance",
+        "rights clearance",
+        "publishing readiness",
+        "public-use permission"
+      ],
+      "production_subtitle_design_acceptance": false,
+      "production_render_acceptance": false,
+      "creative_acceptance": false,
+      "rights_status": "pending",
+      "publishing_acceptance": false,
+      "public_use_permission": false
+    }
+  },
+  "decision_group_ids": [
+    "subtitle_design_visual_acceptance",
+    "production_render_readiness",
+    "rights_publishing_public_use_clearance"
+  ],
+  "decision_groups": [
+    {
+      "decision_group_id": "subtitle_design_visual_acceptance",
+      "current_status": "decision_prepared_not_approved",
+      "source_gate_names": [
+        "diagnostic_render_path_rehearsal_evidence",
+        "production_subtitle_design_acceptance",
+        "creative_acceptance"
+      ],
+      "source_evidence_available": [
+        "ED-10am source gate matrix: clip-ed10am-production-limitation-lift-stage-1-001",
+        "ED-10al diagnostic rehearsal: clip-ed10al-final-render-path-stage-3-rehearsal-001",
+        "style tokens survived: True",
+        "stable body text survived: True",
+        "badge/accent/backplate route survived: True",
+        "line-break/safe-area metadata survived: True",
+        "ED-10al records style-token, stable body text, badge/accent/backplate, and safe-area survival.",
+        "Prior user observation allows forward progress without reopening display/layout polish.",
+        "The diagnostic presentation path is acceptable enough to move forward.",
+        "No old candidate or cut review axis is reopened by ED-10am."
+      ],
+      "missing_evidence": [
+        "Explicit human acceptance that the subtitle design is production-ready.",
+        "Any required representative production-sequence typography review.",
+        "Explicit creative approval for production use.",
+        "Any final editorial or representative-sequence acceptance packet."
+      ],
+      "decision_owner": "User",
+      "agent_can_progress_without_user_judgement": true,
+      "owner_judgement_required_for_approval": true,
+      "agent_may_approve": false,
+      "unsafe_overclaiming_examples": [
+        "Treating diagnostic survival readback as production subtitle design acceptance.",
+        "Treating forward-progress preference as creative approval.",
+        "Reopening old layout polish or Candidate 0-3 review as if ED-10an required it."
+      ],
+      "next_safe_action": "Prepare owner-review input for design/visual acceptance without claiming acceptance."
+    },
+    {
+      "decision_group_id": "production_render_readiness",
+      "current_status": "decision_prepared_not_approved",
+      "source_gate_names": [
+        "diagnostic_render_path_rehearsal_evidence",
+        "production_render_acceptance",
+        "tracked_media_boundary",
+        "same_machine_ignored_evidence_boundary"
+      ],
+      "source_evidence_available": [
+        "ED-10am records ED-10al generated ignored ASS/MP4/manifest outputs.",
+        "metadata: 4.2s / 1920x1080 / h264 / aac / streams=2",
+        "tracked media boundary is closed.",
+        "same-machine ignored evidence boundary is recorded.",
+        "ED-10al generated a 4.2s ignored diagnostic MP4 and local manifest.",
+        "FFmpeg/libass command family and output metadata are recorded.",
+        "ED-10am creates tracked JSON/Markdown only.",
+        "ED-10al recorded `tracked_binary_artifact_created=false` and `episodes_tracked=false`.",
+        "ED-10al generated ignored ASS/MP4/manifest outputs on this machine.",
+        "The contact-sheet path is recorded but not generated by the stage-3 helper."
+      ],
+      "missing_evidence": [
+        "Accepted final production render output.",
+        "Final production render command, manifest, and human review result.",
+        "A production artifact store or portable media package, if later required.",
+        "Fresh-clone local media availability."
+      ],
+      "decision_owner": "User",
+      "agent_can_progress_without_user_judgement": true,
+      "owner_judgement_required_for_approval": true,
+      "agent_may_approve": false,
+      "unsafe_overclaiming_examples": [
+        "Describing the ignored diagnostic MP4 as a production render.",
+        "Using ffprobe metadata alone as production render acceptance.",
+        "Treating local ignored media as portable tracked deliverables."
+      ],
+      "next_safe_action": "Prepare render-readiness owner review inputs while keeping the diagnostic media ignored and untracked."
+    },
+    {
+      "decision_group_id": "rights_publishing_public_use_clearance",
+      "current_status": "decision_prepared_not_approved",
+      "source_gate_names": [
+        "rights_status",
+        "publishing_acceptance",
+        "public_use_permission"
+      ],
+      "source_evidence_available": [
+        "ED-10al and ED-10am make no rights clearance claim.",
+        "Ignored proof outputs stay same-machine diagnostic evidence.",
+        "No upload, visibility, platform metadata, or scheduling action occurs in ED-10al/ED-10am.",
+        "Production design, render, creative, rights, and publishing gates remain false or pending."
+      ],
+      "missing_evidence": [
+        "Rights clearance or owner decision for source material and distribution context.",
+        "Publication-specific material-use clearance.",
+        "Human publication decision.",
+        "Platform/account-specific publishing acceptance and final metadata decision.",
+        "All upstream acceptances required for public use.",
+        "Explicit public-use permission."
+      ],
+      "decision_owner": "Rights / Publication",
+      "agent_can_progress_without_user_judgement": true,
+      "owner_judgement_required_for_approval": true,
+      "agent_may_approve": false,
+      "unsafe_overclaiming_examples": [
+        "Inferring rights clearance from local diagnostic generation.",
+        "Preparing upload or public release actions from diagnostic evidence.",
+        "Granting public-use permission before rights and publishing owners answer."
+      ],
+      "next_safe_action": "Prepare a rights/publication owner review packet; do not clear rights, publishing, or public use."
+    }
+  ],
+  "no_decision_yet": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "production_public_decision_approved": false,
+    "user_decision_requested_now": false
+  },
+  "gate_separation": {
+    "diagnostic_proof_does_not_imply_production_subtitle_design_acceptance": true,
+    "diagnostic_rehearsal_does_not_imply_production_render_acceptance": true,
+    "local_ignored_media_does_not_imply_publishing_public_use_permission": true,
+    "decision_packet_does_not_request_immediate_user_judgement": true,
+    "decision_packet_does_not_grant_approval": true
+  },
+  "next_executable_route": {
+    "route_id": "production-limitation-lift-stage-3-owner-review-prep",
+    "alternate_route_id": "final-render-path-stage-4",
+    "alternate_route_condition": "Use only if a concrete diagnostic gap is found; ED-10an does not identify such a gap.",
+    "concrete_diagnostic_gap_found": false,
+    "agent_can_start_without_user_judgement": true,
+    "purpose": "Prepare owner-facing review inputs for the three decision groups without approving production, rights, publishing, or public use.",
+    "first_steps": [
+      "Keep ED-10am as the source gate matrix.",
+      "Prepare owner-review material for the three bounded decision groups.",
+      "Keep all production/public approvals closed until the relevant owner answers."
+    ],
+    "must_not_do": [
+      "approve production subtitle design",
+      "approve production render",
+      "approve creative use",
+      "claim rights clearance",
+      "claim publishing readiness",
+      "grant public-use permission",
+      "track ignored media under episodes/",
+      "request repeat layout polish or old candidate reviews"
+    ]
+  },
+  "render_gate": {
+    "level": "stage_2_decision_packet_no_new_render",
+    "existing_output_first_applied": true,
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "new_rehearsal_run": false,
+    "source_stage1_new_render_run": false,
+    "source_stage3_new_render_run": true,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "expected_decision_group_ids": [
+      "subtitle_design_visual_acceptance",
+      "production_render_readiness",
+      "rights_publishing_public_use_clearance"
+    ],
+    "actual_decision_group_ids": [
+      "subtitle_design_visual_acceptance",
+      "production_render_readiness",
+      "rights_publishing_public_use_clearance"
+    ],
+    "source_gate_matrix_preserved": true,
+    "decision_groups_present": true,
+    "decision_groups_bounded": true,
+    "no_decision_boundary_explicit": true,
+    "source_evidence_linked": true,
+    "production_public_gates_still_closed": true,
+    "unsafe_overclaiming_present": true,
+    "next_safe_actions_present": true,
+    "agent_progress_scoped": true,
+    "tracked_media_boundary_closed": true,
+    "next_executable_route_defined": true,
+    "new_render_run": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json",
+    "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none_for_this_stage_2_decision_preparation_packet",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "layout_polish_required_before_next_step": false,
+    "owner_judgement_required_later_for": [
+      "subtitle design / visual acceptance",
+      "production render readiness",
+      "rights / publishing / public-use clearance"
+    ]
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "new_rehearsal_run": false,
+    "source_stage1_gate_matrix_reused": true,
+    "source_stage1_new_render_created": false,
+    "source_stage3_new_render_created": true,
+    "diagnostic_stage3_evidence_reused": true,
+    "decision_packet_only": true,
+    "decision_packet_does_not_grant_approval": true,
+    "user_decision_requested_now": false,
+    "decision_group_count": 3,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "final_render_path_approved": false
+  }
+}
