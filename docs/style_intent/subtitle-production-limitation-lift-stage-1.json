@@ -1,0 +1,400 @@
+{
+  "schema_id": "clippipegen.subtitle_production_limitation_lift_stage_1.v1",
+  "artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
+  "feature_id": "ED-10am",
+  "status": "production_limitation_lift_stage_1_packet_ready",
+  "surface_kind": "production_limitation_lift_stage_1_decision_preparation_packet",
+  "render_level": "stage_1_decision_preparation_no_new_render",
+  "source_final_render_path_stage_3_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+  "source_final_render_path_stage_2_artifact_id": "clip-ed10ak-final-render-path-stage-2-replayability-001",
+  "source_final_render_path_stage_1_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+  "source_final_render_path_readiness_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+  "source_production_limitation_lift_entry_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "support_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+  "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+  "diagnostic_evidence": {
+    "primary_diagnostic_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+    "primary_diagnostic_rehearsal_path": "docs/style_intent/subtitle-final-render-path-stage-3.json",
+    "primary_diagnostic_rehearsal_doc": "docs/style_intent/subtitle-final-render-path-stage-3.md",
+    "source_final_render_path_stage_2_artifact_id": "clip-ed10ak-final-render-path-stage-2-replayability-001",
+    "source_final_render_path_stage_1_artifact_id": "clip-ed10aj-final-render-path-stage-1-001",
+    "source_final_render_path_readiness_artifact_id": "clip-ed10ai-final-render-path-readiness-packet-001",
+    "source_production_limitation_lift_entry_artifact_id": "clip-ed10ah-production-limitation-lift-entry-001",
+    "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+    "support_lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
+    "dry_read_predecessor_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
+    "dry_read_predecessor_source_commit": "7e96a28",
+    "selected_render_path": "ffmpeg/libass diagnostic subtitle overlay path",
+    "rehearsal_status": "diagnostic_rehearsal_completed",
+    "command_family": "ffmpeg with libass subtitles filter plus ffprobe readback",
+    "rehearsal_invocation_command": "uvx python -c \"from pathlib import Path; import json; from src.integrations.render.subtitle_preset_selector import write_subtitle_render_path_selector_probe_local_artifacts, RENDER_PATH_PROBE_LOCAL_OUTPUT_RELATIVE_DIR, RENDER_PATH_PROBE_SOURCE_VIDEO_RELATIVE_PATH, RENDER_PATH_PROBE_SOURCE_AUDIO_RELATIVE_PATH; local = write_subtitle_render_path_selector_probe_local_artifacts(output_dir=RENDER_PATH_PROBE_LOCAL_OUTPUT_RELATIVE_DIR, source_video_path=RENDER_PATH_PROBE_SOURCE_VIDEO_RELATIVE_PATH, source_audio_path=RENDER_PATH_PROBE_SOURCE_AUDIO_RELATIVE_PATH, base_dir=Path.cwd()); print(json.dumps({'status': local.get('status'), 'outputs': local.get('outputs'), 'metadata': local.get('metadata'), 'ignored_by_git': local.get('ignored_by_git'), 'production_render_acceptance': local.get('production_render_acceptance'), 'public_use_permission': local.get('public_use_permission')}, ensure_ascii=False, indent=2))\"",
+    "render_command_summary": "ffmpeg -y -ss 0 -t 4.2 -i episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 -ss 0 -t 4.2 -i episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav -map 0:v:0 -map 1:a:0 -vf scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p,subtitles=filename='episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass' -c:v libx264 -c:a aac -shortest episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+    "generated_ignored_outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json"
+    },
+    "recorded_ignored_outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+      "contact_sheet": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe_contact_sheet.jpg"
+    },
+    "output_status": {
+      "ass": "generated",
+      "video": "generated",
+      "manifest": "generated",
+      "contact_sheet": "recorded_not_generated_by_stage_3_rehearsal"
+    },
+    "output_metadata": {
+      "duration_seconds": 4.2,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "container_long_name": "QuickTime / MOV",
+      "video_codec": "h264",
+      "video_codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "audio_codec": "aac",
+      "audio_codec_long_name": "AAC (Advanced Audio Coding)",
+      "width": 1920,
+      "height": 1080,
+      "resolution": "1920x1080",
+      "fps": 30.0,
+      "frame_rate": "30/1",
+      "stream_count": 2,
+      "stream_counts": {
+        "video": 1,
+        "audio": 1,
+        "other": 0
+      }
+    },
+    "survival_readback": {
+      "ass_subtitle_style_tokens_survived": true,
+      "stable_body_text_policy_survived": true,
+      "badge_accent_backplate_route_survived": true,
+      "line_break_safe_area_metadata_survived": true,
+      "production_public_gates_still_closed": true
+    },
+    "same_machine_local_inputs": {
+      "source_video": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+      "source_audio": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav"
+    },
+    "why_diagnostic_only": "The rehearsal uses ignored local source media and writes ignored local diagnostic proof only. It does not approve production subtitle design, production render, creative use, rights, publishing, or public use."
+  },
+  "gate_names": [
+    "diagnostic_render_path_rehearsal_evidence",
+    "production_subtitle_design_acceptance",
+    "production_render_acceptance",
+    "creative_acceptance",
+    "rights_status",
+    "publishing_acceptance",
+    "public_use_permission",
+    "tracked_media_boundary",
+    "same_machine_ignored_evidence_boundary"
+  ],
+  "gate_matrix": [
+    {
+      "gate_name": "diagnostic_render_path_rehearsal_evidence",
+      "current_status": "available_diagnostic_only",
+      "source_evidence": [
+        "ED-10al artifact: clip-ed10al-final-render-path-stage-3-rehearsal-001",
+        "selected path: ffmpeg/libass diagnostic subtitle overlay path",
+        "generated ignored outputs: ass, manifest, video",
+        "metadata: 4.2s / 1920x1080 / h264 / aac",
+        "style tokens survived: True",
+        "stable body text survived: True",
+        "badge/accent/backplate route survived: True",
+        "line-break/safe-area metadata survived: True"
+      ],
+      "missing_evidence": [
+        "Production subtitle design acceptance.",
+        "Production render acceptance.",
+        "Creative, rights, publishing, and public-use decisions."
+      ],
+      "next_decision_owner": "Agent",
+      "agent_can_progress_without_user_judgement": true,
+      "decision_preparation_action": "Carry ED-10al forward as diagnostic evidence only.",
+      "unsafe_overclaiming": [
+        "Treating ED-10al diagnostic output as production render approval.",
+        "Treating style-token survival as final production subtitle design acceptance."
+      ]
+    },
+    {
+      "gate_name": "production_subtitle_design_acceptance",
+      "current_status": "not_accepted",
+      "source_evidence": [
+        "ED-10al records style-token, stable body text, badge/accent/backplate, and safe-area survival.",
+        "Prior user observation allows forward progress without reopening display/layout polish."
+      ],
+      "missing_evidence": [
+        "Explicit human acceptance that the subtitle design is production-ready.",
+        "Any required representative production-sequence typography review."
+      ],
+      "next_decision_owner": "User",
+      "agent_can_progress_without_user_judgement": false,
+      "decision_preparation_action": "Prepare a decision packet only when production design acceptance is the next blocking decision.",
+      "unsafe_overclaiming": [
+        "Claiming production subtitle design acceptance from diagnostic survival readback.",
+        "Reopening old layout polish as if ED-10am required it."
+      ]
+    },
+    {
+      "gate_name": "production_render_acceptance",
+      "current_status": "not_accepted",
+      "source_evidence": [
+        "ED-10al generated a 4.2s ignored diagnostic MP4 and local manifest.",
+        "FFmpeg/libass command family and output metadata are recorded."
+      ],
+      "missing_evidence": [
+        "Accepted final production render output.",
+        "Final production render command, manifest, and human review result."
+      ],
+      "next_decision_owner": "User",
+      "agent_can_progress_without_user_judgement": false,
+      "decision_preparation_action": "Keep production render acceptance closed until a separate output is accepted.",
+      "unsafe_overclaiming": [
+        "Describing the ignored diagnostic MP4 as a production render.",
+        "Using output metadata alone as render acceptance."
+      ]
+    },
+    {
+      "gate_name": "creative_acceptance",
+      "current_status": "not_accepted",
+      "source_evidence": [
+        "The diagnostic presentation path is acceptable enough to move forward.",
+        "No old candidate or cut review axis is reopened by ED-10am."
+      ],
+      "missing_evidence": [
+        "Explicit creative approval for production use.",
+        "Any final editorial or representative-sequence acceptance packet."
+      ],
+      "next_decision_owner": "User",
+      "agent_can_progress_without_user_judgement": false,
+      "decision_preparation_action": "Isolate creative acceptance only when that gate becomes the next decision.",
+      "unsafe_overclaiming": [
+        "Treating forward-progress preference as creative acceptance.",
+        "Treating diagnostic rehearsal completion as editorial approval."
+      ]
+    },
+    {
+      "gate_name": "rights_status",
+      "current_status": "pending",
+      "source_evidence": [
+        "ED-10al and ED-10am make no rights clearance claim.",
+        "Ignored proof outputs stay same-machine diagnostic evidence."
+      ],
+      "missing_evidence": [
+        "Rights clearance or owner decision for source material and distribution context.",
+        "Publication-specific material-use clearance."
+      ],
+      "next_decision_owner": "Rights",
+      "agent_can_progress_without_user_judgement": false,
+      "decision_preparation_action": "Prepare a rights decision packet only when rights is the active gate.",
+      "unsafe_overclaiming": [
+        "Inferring rights clearance from local diagnostic generation.",
+        "Treating ignored proof media as public-use permission."
+      ]
+    },
+    {
+      "gate_name": "publishing_acceptance",
+      "current_status": "not_accepted",
+      "source_evidence": [
+        "No upload, visibility, platform metadata, or scheduling action occurs in ED-10al/ED-10am."
+      ],
+      "missing_evidence": [
+        "Human publication decision.",
+        "Platform/account-specific publishing acceptance and final metadata decision."
+      ],
+      "next_decision_owner": "Publication",
+      "agent_can_progress_without_user_judgement": false,
+      "decision_preparation_action": "Keep publishing acceptance closed until a publication owner answers.",
+      "unsafe_overclaiming": [
+        "Preparing upload/public release actions from diagnostic evidence.",
+        "Claiming publishing readiness before rights and production gates are explicit."
+      ]
+    },
+    {
+      "gate_name": "public_use_permission",
+      "current_status": "not_allowed",
+      "source_evidence": [
+        "Production design, render, creative, rights, and publishing gates remain false or pending."
+      ],
+      "missing_evidence": [
+        "All upstream acceptances required for public use.",
+        "Explicit public-use permission."
+      ],
+      "next_decision_owner": "Publication",
+      "agent_can_progress_without_user_judgement": false,
+      "decision_preparation_action": "Keep public-use permission closed until all upstream gates are explicit.",
+      "unsafe_overclaiming": [
+        "Granting public-use permission from local diagnostic proof.",
+        "Combining partial gate evidence into public-ready status."
+      ]
+    },
+    {
+      "gate_name": "tracked_media_boundary",
+      "current_status": "closed_no_tracked_media",
+      "source_evidence": [
+        "ED-10am creates tracked JSON/Markdown only.",
+        "ED-10al recorded `tracked_binary_artifact_created=false` and `episodes_tracked=false`."
+      ],
+      "missing_evidence": [],
+      "next_decision_owner": "Agent",
+      "agent_can_progress_without_user_judgement": true,
+      "decision_preparation_action": "Keep `episodes/` ignored and verify `git ls-files episodes` remains empty.",
+      "unsafe_overclaiming": [
+        "Adding ignored ASS/MP4/manifest/contact-sheet outputs to Git.",
+        "Moving same-machine media into tracked docs as binary artifacts."
+      ]
+    },
+    {
+      "gate_name": "same_machine_ignored_evidence_boundary",
+      "current_status": "available_same_machine_only",
+      "source_evidence": [
+        "ED-10al generated ignored ASS/MP4/manifest outputs on this machine.",
+        "The contact-sheet path is recorded but not generated by the stage-3 helper."
+      ],
+      "missing_evidence": [
+        "A production artifact store or portable media package, if later required.",
+        "Fresh-clone local media availability."
+      ],
+      "next_decision_owner": "Agent",
+      "agent_can_progress_without_user_judgement": true,
+      "decision_preparation_action": "Record paths and ignore status; do not promote media without an explicit strategy.",
+      "unsafe_overclaiming": [
+        "Claiming same-machine ignored outputs are portable tracked artifacts.",
+        "Treating fresh-clone absence as a failure of this tracked packet."
+      ]
+    }
+  ],
+  "non_approval_readback": {
+    "ed10al_does_not_prove": [
+      "final production subtitle design acceptance",
+      "production render acceptance",
+      "creative acceptance",
+      "rights clearance",
+      "publishing readiness",
+      "public-use permission"
+    ],
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false
+  },
+  "next_executable_route": {
+    "route_id": "production-limitation-lift-stage-2-decision-packet",
+    "alternate_route_id": "final-render-path-stage-4",
+    "alternate_route_condition": "Use only if additional diagnostic evidence is genuinely needed before preparing decision packets.",
+    "agent_can_start_without_user_judgement": true,
+    "purpose": "Turn the separated gates into explicit decision packets for human, rights, publication, and public-use owners without approving those decisions.",
+    "first_steps": [
+      "Carry forward ED-10al as diagnostic evidence only.",
+      "Prepare at most the next explicit decision packet for the blocking gate.",
+      "Keep production/public claims closed until the relevant owner answers."
+    ],
+    "must_not_do": [
+      "approve production subtitle design",
+      "approve production render",
+      "approve creative use",
+      "claim rights clearance",
+      "claim publishing readiness",
+      "grant public-use permission",
+      "track ignored media under episodes/",
+      "reopen old layout or candidate-comparison reviews"
+    ]
+  },
+  "render_gate": {
+    "level": "stage_1_decision_preparation_no_new_render",
+    "existing_output_first_applied": true,
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "new_rehearsal_run": false,
+    "source_stage3_new_render_run": true,
+    "source_stage3_new_rehearsal_run": true,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "local_outputs_ignored": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "expected_gate_names": [
+      "diagnostic_render_path_rehearsal_evidence",
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission",
+      "tracked_media_boundary",
+      "same_machine_ignored_evidence_boundary"
+    ],
+    "actual_gate_names": [
+      "diagnostic_render_path_rehearsal_evidence",
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission",
+      "tracked_media_boundary",
+      "same_machine_ignored_evidence_boundary"
+    ],
+    "gate_names_present": true,
+    "stage3_source_preserved": true,
+    "stage3_source_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+    "diagnostic_evidence_linked": true,
+    "production_public_non_approval_explicit": true,
+    "closed_statuses_preserved": true,
+    "owners_present": true,
+    "unsafe_overclaiming_present": true,
+    "agent_progress_scoped": true,
+    "tracked_media_boundary_closed": true,
+    "same_machine_ignored_boundary_recorded": true,
+    "next_executable_route_defined": true,
+    "new_render_run": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/subtitle-production-limitation-lift-stage-1.json",
+    "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-1.md"
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none_for_this_stage_1_preparation_packet",
+    "fixed_form_required": false,
+    "screenshot_required": false,
+    "layout_polish_required_before_next_step": false,
+    "human_review_required_only_for": [
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission"
+    ]
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "new_rehearsal_run": false,
+    "source_stage3_new_render_created": true,
+    "source_stage3_new_rehearsal_run": true,
+    "diagnostic_stage3_evidence_reused": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "final_render_path_approved": false
+  }
+}

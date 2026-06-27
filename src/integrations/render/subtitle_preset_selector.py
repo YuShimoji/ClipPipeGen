@@ -160,6 +160,24 @@ FINAL_RENDER_PATH_STAGE3_REQUIRED_ROW_IDS = (
     "line_break_safe_area_metadata_survived",
     "production_public_gates_still_closed",
 )
+PRODUCTION_LIMITATION_LIFT_STAGE1_SCHEMA_ID = (
+    "clippipegen.subtitle_production_limitation_lift_stage_1.v1"
+)
+PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID = (
+    "clip-ed10am-production-limitation-lift-stage-1-001"
+)
+PRODUCTION_LIMITATION_LIFT_STAGE1_FEATURE_ID = "ED-10am"
+PRODUCTION_LIMITATION_LIFT_STAGE1_GATE_NAMES = (
+    "diagnostic_render_path_rehearsal_evidence",
+    "production_subtitle_design_acceptance",
+    "production_render_acceptance",
+    "creative_acceptance",
+    "rights_status",
+    "publishing_acceptance",
+    "public_use_permission",
+    "tracked_media_boundary",
+    "same_machine_ignored_evidence_boundary",
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -2450,6 +2468,266 @@ def write_subtitle_final_render_path_stage3_rehearsal(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_subtitle_production_limitation_lift_stage1(
+    *,
+    stage3_packet: Mapping[str, Any] | None = None,
+    stage2_packet: Mapping[str, Any] | None = None,
+    stage1_packet: Mapping[str, Any] | None = None,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    dry = (
+        deepcopy(dry_read)
+        if dry_read is not None
+        else build_subtitle_render_contract_consumer_dry_read()
+    )
+    probe = (
+        deepcopy(source_probe)
+        if source_probe is not None
+        else build_subtitle_render_path_selector_probe()
+    )
+    lineage = (
+        deepcopy(lineage_surface)
+        if lineage_surface is not None
+        else build_subtitle_render_path_lineage_observation_surface(
+            dry_read=dry,
+            source_probe=probe,
+        )
+    )
+    gate = (
+        deepcopy(gate_entry)
+        if gate_entry is not None
+        else build_subtitle_production_limitation_lift_entry(
+            dry_read=dry,
+            source_probe=probe,
+            lineage_surface=lineage,
+        )
+    )
+    readiness = (
+        deepcopy(readiness_packet)
+        if readiness_packet is not None
+        else build_subtitle_final_render_path_readiness_packet(
+            dry_read=dry,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+        )
+    )
+    stage1 = (
+        deepcopy(stage1_packet)
+        if stage1_packet is not None
+        else build_subtitle_final_render_path_stage1(
+            readiness_packet=readiness,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+            dry_read=dry,
+        )
+    )
+    stage2 = (
+        deepcopy(stage2_packet)
+        if stage2_packet is not None
+        else build_subtitle_final_render_path_stage2_replayability(
+            stage1_packet=stage1,
+            readiness_packet=readiness,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+            dry_read=dry,
+        )
+    )
+    stage3 = (
+        deepcopy(stage3_packet)
+        if stage3_packet is not None
+        else build_subtitle_final_render_path_stage3_rehearsal(
+            stage2_packet=stage2,
+            stage1_packet=stage1,
+            readiness_packet=readiness,
+            source_probe=probe,
+            lineage_surface=lineage,
+            gate_entry=gate,
+            dry_read=dry,
+        )
+    )
+    rehearsal = stage3["rehearsal"]
+    diagnostic_evidence = {
+        "primary_diagnostic_rehearsal_artifact_id": stage3["artifact_id"],
+        "primary_diagnostic_rehearsal_path": "docs/style_intent/subtitle-final-render-path-stage-3.json",
+        "primary_diagnostic_rehearsal_doc": "docs/style_intent/subtitle-final-render-path-stage-3.md",
+        "source_final_render_path_stage_2_artifact_id": stage2["artifact_id"],
+        "source_final_render_path_stage_1_artifact_id": stage1["artifact_id"],
+        "source_final_render_path_readiness_artifact_id": readiness["artifact_id"],
+        "source_production_limitation_lift_entry_artifact_id": gate["artifact_id"],
+        "active_diagnostic_proof_source_artifact_id": probe["artifact_id"],
+        "support_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+        "dry_read_predecessor_artifact_id": dry["artifact_id"],
+        "dry_read_predecessor_source_commit": RENDER_CONTRACT_CONSUMER_DRY_READ_COMMIT,
+        "selected_render_path": rehearsal["selected_render_path"],
+        "rehearsal_status": rehearsal["rehearsal_status"],
+        "command_family": rehearsal["command_family"],
+        "rehearsal_invocation_command": rehearsal["rehearsal_invocation_command"],
+        "render_command_summary": rehearsal["render_command_summary"],
+        "generated_ignored_outputs": dict(rehearsal["generated_ignored_outputs"]),
+        "recorded_ignored_outputs": dict(rehearsal["recorded_ignored_outputs"]),
+        "output_status": dict(rehearsal["output_status"]),
+        "output_metadata": dict(rehearsal["output_metadata"]),
+        "survival_readback": dict(stage3["survival_readback"]),
+        "same_machine_local_inputs": dict(rehearsal["same_machine_local_inputs"]),
+        "why_diagnostic_only": rehearsal["why_diagnostic_only"],
+    }
+    gate_matrix = _production_limitation_lift_stage1_gate_matrix(
+        stage3=stage3,
+        diagnostic_evidence=diagnostic_evidence,
+    )
+    boundaries = _production_limitation_lift_stage1_boundary_flags(stage3)
+    validation = _production_limitation_lift_stage1_validation(
+        stage3=stage3,
+        gate_matrix=gate_matrix,
+        boundaries=boundaries,
+        diagnostic_evidence=diagnostic_evidence,
+    )
+    return {
+        "schema_id": PRODUCTION_LIMITATION_LIFT_STAGE1_SCHEMA_ID,
+        "artifact_id": PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID,
+        "feature_id": PRODUCTION_LIMITATION_LIFT_STAGE1_FEATURE_ID,
+        "status": "production_limitation_lift_stage_1_packet_ready",
+        "surface_kind": "production_limitation_lift_stage_1_decision_preparation_packet",
+        "render_level": "stage_1_decision_preparation_no_new_render",
+        "source_final_render_path_stage_3_rehearsal_artifact_id": stage3["artifact_id"],
+        "source_final_render_path_stage_2_artifact_id": stage2["artifact_id"],
+        "source_final_render_path_stage_1_artifact_id": stage1["artifact_id"],
+        "source_final_render_path_readiness_artifact_id": readiness["artifact_id"],
+        "source_production_limitation_lift_entry_artifact_id": gate["artifact_id"],
+        "active_diagnostic_proof_source_artifact_id": probe["artifact_id"],
+        "support_lineage_observation_surface_artifact_id": lineage["artifact_id"],
+        "source_render_contract_consumer_dry_read_artifact_id": dry["artifact_id"],
+        "diagnostic_evidence": diagnostic_evidence,
+        "gate_names": list(PRODUCTION_LIMITATION_LIFT_STAGE1_GATE_NAMES),
+        "gate_matrix": gate_matrix,
+        "non_approval_readback": {
+            "ed10al_does_not_prove": [
+                "final production subtitle design acceptance",
+                "production render acceptance",
+                "creative acceptance",
+                "rights clearance",
+                "publishing readiness",
+                "public-use permission",
+            ],
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+        },
+        "next_executable_route": {
+            "route_id": "production-limitation-lift-stage-2-decision-packet",
+            "alternate_route_id": "final-render-path-stage-4",
+            "alternate_route_condition": (
+                "Use only if additional diagnostic evidence is genuinely needed "
+                "before preparing decision packets."
+            ),
+            "agent_can_start_without_user_judgement": True,
+            "purpose": (
+                "Turn the separated gates into explicit decision packets for "
+                "human, rights, publication, and public-use owners without "
+                "approving those decisions."
+            ),
+            "first_steps": [
+                "Carry forward ED-10al as diagnostic evidence only.",
+                "Prepare at most the next explicit decision packet for the blocking gate.",
+                "Keep production/public claims closed until the relevant owner answers.",
+            ],
+            "must_not_do": [
+                "approve production subtitle design",
+                "approve production render",
+                "approve creative use",
+                "claim rights clearance",
+                "claim publishing readiness",
+                "grant public-use permission",
+                "track ignored media under episodes/",
+                "reopen old layout or candidate-comparison reviews",
+            ],
+        },
+        "render_gate": {
+            "level": "stage_1_decision_preparation_no_new_render",
+            "existing_output_first_applied": True,
+            "existing_output_first_reused": True,
+            "new_render_run": False,
+            "new_rehearsal_run": False,
+            "source_stage3_new_render_run": stage3["render_gate"]["new_render_run"],
+            "source_stage3_new_rehearsal_run": stage3["render_gate"][
+                "new_rehearsal_run"
+            ],
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "local_outputs_ignored": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/subtitle-production-limitation-lift-stage-1.json",
+            "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-1.md",
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none_for_this_stage_1_preparation_packet",
+            "fixed_form_required": False,
+            "screenshot_required": False,
+            "layout_polish_required_before_next_step": False,
+            "human_review_required_only_for": [
+                "production_subtitle_design_acceptance",
+                "production_render_acceptance",
+                "creative_acceptance",
+                "rights_status",
+                "publishing_acceptance",
+                "public_use_permission",
+            ],
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_subtitle_production_limitation_lift_stage1(
+    output_dir: Path,
+    *,
+    stage3_packet: Mapping[str, Any] | None = None,
+    stage2_packet: Mapping[str, Any] | None = None,
+    stage1_packet: Mapping[str, Any] | None = None,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+) -> dict[str, Path]:
+    packet = build_subtitle_production_limitation_lift_stage1(
+        stage3_packet=stage3_packet,
+        stage2_packet=stage2_packet,
+        stage1_packet=stage1_packet,
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-production-limitation-lift-stage-1.json"
+    doc_path = output_dir / "subtitle-production-limitation-lift-stage-1.md"
+    json_path.write_text(
+        json.dumps(packet, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_production_limitation_lift_stage1_markdown(packet),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "doc": doc_path}
+
+
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
     output_dir: Path,
@@ -3539,6 +3817,158 @@ def render_subtitle_final_render_path_stage3_rehearsal_markdown(
         f"- badge_accent_backplate_route_survived: `{str(validation['badge_accent_backplate_route_survived']).lower()}`",
         f"- line_break_safe_area_metadata_survived: `{str(validation['line_break_safe_area_metadata_survived']).lower()}`",
         f"- production_public_boundary_closed: `{str(validation['production_public_boundary_closed']).lower()}`",
+        f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
+        "",
+        "## Boundary",
+        "",
+        closed_boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_subtitle_production_limitation_lift_stage1_markdown(
+    packet: Mapping[str, Any],
+) -> str:
+    evidence = packet["diagnostic_evidence"]
+    route = packet["next_executable_route"]
+    validation = packet["validation"]
+    boundaries = packet["boundaries"]
+    non_approval = packet["non_approval_readback"]
+    nl = chr(10)
+    generated_rows = nl.join(
+        f"| {name} | `{path}` |"
+        for name, path in evidence["generated_ignored_outputs"].items()
+    )
+    recorded_rows = nl.join(
+        f"| {name} | `{path}` |"
+        for name, path in evidence["recorded_ignored_outputs"].items()
+    )
+    metadata_rows = nl.join(
+        f"- {key}: `{value}`"
+        for key, value in evidence["output_metadata"].items()
+        if key
+        in {
+            "duration_seconds",
+            "resolution",
+            "width",
+            "height",
+            "video_codec",
+            "audio_codec",
+            "fps",
+            "frame_rate",
+            "stream_count",
+        }
+    )
+    survival_rows = nl.join(
+        f"- {key}: `{str(value).lower()}`"
+        for key, value in evidence["survival_readback"].items()
+    )
+    gate_rows = nl.join(
+        "| {gate} | {status} | {source} | {missing} | {owner} | {agent} | {unsafe} |".format(
+            gate=gate["gate_name"],
+            status=gate["current_status"],
+            source=_markdown_cell_list(gate["source_evidence"]),
+            missing=_markdown_cell_list(gate["missing_evidence"]) or "none",
+            owner=gate["next_decision_owner"],
+            agent=str(gate["agent_can_progress_without_user_judgement"]).lower(),
+            unsafe=_markdown_cell_list(gate["unsafe_overclaiming"]),
+        )
+        for gate in packet["gate_matrix"]
+    )
+    route_steps = nl.join(f"- {step}" for step in route["first_steps"])
+    route_boundaries = nl.join(f"- {item}" for item in route["must_not_do"])
+    does_not_prove = nl.join(
+        f"- {item}" for item in non_approval["ed10al_does_not_prove"]
+    )
+    closed_boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "new_render_created",
+            "new_rehearsal_run",
+            "final_render_path_approved",
+        )
+    )
+    lines = [
+        "# ED-10am Production Limitation-Lift Stage 1",
+        "",
+        "This tracked packet converts the ED-10al diagnostic final-path rehearsal into production limitation-lift preparation. It is not production subtitle design acceptance, production render acceptance, creative acceptance, rights clearance, publishing acceptance, or public-use permission.",
+        "",
+        f"- artifact_id: `{packet['artifact_id']}`",
+        f"- status: `{packet['status']}`",
+        "",
+        "## Primary Diagnostic Evidence",
+        "",
+        f"- primary_diagnostic_rehearsal_artifact_id: `{evidence['primary_diagnostic_rehearsal_artifact_id']}`",
+        f"- stage_2_source_artifact_id: `{evidence['source_final_render_path_stage_2_artifact_id']}`",
+        f"- active_diagnostic_proof_source_artifact_id: `{evidence['active_diagnostic_proof_source_artifact_id']}`",
+        f"- selected_render_path: `{evidence['selected_render_path']}`",
+        f"- rehearsal_status: `{evidence['rehearsal_status']}`",
+        f"- command_family: `{evidence['command_family']}`",
+        f"- why_diagnostic_only: {evidence['why_diagnostic_only']}",
+        "",
+        "Generated ignored outputs:",
+        "",
+        "| output | same-machine path |",
+        "|---|---|",
+        generated_rows,
+        "",
+        "Recorded ignored outputs:",
+        "",
+        "| output | same-machine path |",
+        "|---|---|",
+        recorded_rows,
+        "",
+        "## Output Metadata",
+        "",
+        metadata_rows,
+        "",
+        "## Survival Readback",
+        "",
+        survival_rows,
+        "",
+        "## Gate Matrix",
+        "",
+        "| gate | current status | source evidence | missing evidence | next decision owner | agent can progress without user judgement | unsafe overclaiming |",
+        "|---|---|---|---|---|---|---|",
+        gate_rows,
+        "",
+        "## ED-10al Does Not Prove",
+        "",
+        does_not_prove,
+        "",
+        "## Next Executable Route",
+        "",
+        f"- route_id: `{route['route_id']}`",
+        f"- alternate_route_id: `{route['alternate_route_id']}`",
+        f"- alternate_route_condition: {route['alternate_route_condition']}",
+        f"- agent_can_start_without_user_judgement: `{str(route['agent_can_start_without_user_judgement']).lower()}`",
+        f"- purpose: {route['purpose']}",
+        "",
+        route_steps,
+        "",
+        "This route must not:",
+        "",
+        route_boundaries,
+        "",
+        "## Validation",
+        "",
+        f"- gate_names_present: `{str(validation['gate_names_present']).lower()}`",
+        f"- stage3_source_preserved: `{str(validation['stage3_source_preserved']).lower()}`",
+        f"- diagnostic_evidence_linked: `{str(validation['diagnostic_evidence_linked']).lower()}`",
+        f"- production_public_non_approval_explicit: `{str(validation['production_public_non_approval_explicit']).lower()}`",
+        f"- owners_present: `{str(validation['owners_present']).lower()}`",
+        f"- unsafe_overclaiming_present: `{str(validation['unsafe_overclaiming_present']).lower()}`",
+        f"- tracked_media_boundary_closed: `{str(validation['tracked_media_boundary_closed']).lower()}`",
+        f"- same_machine_ignored_boundary_recorded: `{str(validation['same_machine_ignored_boundary_recorded']).lower()}`",
+        f"- next_executable_route_defined: `{str(validation['next_executable_route_defined']).lower()}`",
         f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
         "",
         "## Boundary",
@@ -5731,6 +6161,368 @@ def _final_render_path_stage3_validation(
             and badge_accent_backplate_route_survived
             and line_break_safe_area_metadata_survived
             and production_public_boundary_closed
+            and boundaries["tracked_binary_artifact_created"] is False
+            and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _production_limitation_lift_stage1_gate_matrix(
+    *,
+    stage3: Mapping[str, Any],
+    diagnostic_evidence: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    def row(
+        gate_name: str,
+        current_status: str,
+        source_evidence: list[str],
+        missing_evidence: list[str],
+        owner: str,
+        agent_can_progress: bool,
+        unsafe: list[str],
+        action: str,
+    ) -> dict[str, Any]:
+        return {
+            "gate_name": gate_name,
+            "current_status": current_status,
+            "source_evidence": source_evidence,
+            "missing_evidence": missing_evidence,
+            "next_decision_owner": owner,
+            "agent_can_progress_without_user_judgement": agent_can_progress,
+            "decision_preparation_action": action,
+            "unsafe_overclaiming": unsafe,
+        }
+
+    metadata = diagnostic_evidence["output_metadata"]
+    generated_outputs = diagnostic_evidence["generated_ignored_outputs"]
+    survival = diagnostic_evidence["survival_readback"]
+    return [
+        row(
+            "diagnostic_render_path_rehearsal_evidence",
+            "available_diagnostic_only",
+            [
+                f"ED-10al artifact: {stage3['artifact_id']}",
+                f"selected path: {diagnostic_evidence['selected_render_path']}",
+                "generated ignored outputs: "
+                + ", ".join(sorted(generated_outputs.keys())),
+                f"metadata: {metadata.get('duration_seconds')}s / {metadata.get('resolution')} / {metadata.get('video_codec')} / {metadata.get('audio_codec')}",
+                f"style tokens survived: {survival['ass_subtitle_style_tokens_survived']}",
+                f"stable body text survived: {survival['stable_body_text_policy_survived']}",
+                f"badge/accent/backplate route survived: {survival['badge_accent_backplate_route_survived']}",
+                f"line-break/safe-area metadata survived: {survival['line_break_safe_area_metadata_survived']}",
+            ],
+            [
+                "Production subtitle design acceptance.",
+                "Production render acceptance.",
+                "Creative, rights, publishing, and public-use decisions.",
+            ],
+            "Agent",
+            True,
+            [
+                "Treating ED-10al diagnostic output as production render approval.",
+                "Treating style-token survival as final production subtitle design acceptance.",
+            ],
+            "Carry ED-10al forward as diagnostic evidence only.",
+        ),
+        row(
+            "production_subtitle_design_acceptance",
+            "not_accepted",
+            [
+                "ED-10al records style-token, stable body text, badge/accent/backplate, and safe-area survival.",
+                "Prior user observation allows forward progress without reopening display/layout polish.",
+            ],
+            [
+                "Explicit human acceptance that the subtitle design is production-ready.",
+                "Any required representative production-sequence typography review.",
+            ],
+            "User",
+            False,
+            [
+                "Claiming production subtitle design acceptance from diagnostic survival readback.",
+                "Reopening old layout polish as if ED-10am required it.",
+            ],
+            "Prepare a decision packet only when production design acceptance is the next blocking decision.",
+        ),
+        row(
+            "production_render_acceptance",
+            "not_accepted",
+            [
+                "ED-10al generated a 4.2s ignored diagnostic MP4 and local manifest.",
+                "FFmpeg/libass command family and output metadata are recorded.",
+            ],
+            [
+                "Accepted final production render output.",
+                "Final production render command, manifest, and human review result.",
+            ],
+            "User",
+            False,
+            [
+                "Describing the ignored diagnostic MP4 as a production render.",
+                "Using output metadata alone as render acceptance.",
+            ],
+            "Keep production render acceptance closed until a separate output is accepted.",
+        ),
+        row(
+            "creative_acceptance",
+            "not_accepted",
+            [
+                "The diagnostic presentation path is acceptable enough to move forward.",
+                "No old candidate or cut review axis is reopened by ED-10am.",
+            ],
+            [
+                "Explicit creative approval for production use.",
+                "Any final editorial or representative-sequence acceptance packet.",
+            ],
+            "User",
+            False,
+            [
+                "Treating forward-progress preference as creative acceptance.",
+                "Treating diagnostic rehearsal completion as editorial approval.",
+            ],
+            "Isolate creative acceptance only when that gate becomes the next decision.",
+        ),
+        row(
+            "rights_status",
+            "pending",
+            [
+                "ED-10al and ED-10am make no rights clearance claim.",
+                "Ignored proof outputs stay same-machine diagnostic evidence.",
+            ],
+            [
+                "Rights clearance or owner decision for source material and distribution context.",
+                "Publication-specific material-use clearance.",
+            ],
+            "Rights",
+            False,
+            [
+                "Inferring rights clearance from local diagnostic generation.",
+                "Treating ignored proof media as public-use permission.",
+            ],
+            "Prepare a rights decision packet only when rights is the active gate.",
+        ),
+        row(
+            "publishing_acceptance",
+            "not_accepted",
+            [
+                "No upload, visibility, platform metadata, or scheduling action occurs in ED-10al/ED-10am.",
+            ],
+            [
+                "Human publication decision.",
+                "Platform/account-specific publishing acceptance and final metadata decision.",
+            ],
+            "Publication",
+            False,
+            [
+                "Preparing upload/public release actions from diagnostic evidence.",
+                "Claiming publishing readiness before rights and production gates are explicit.",
+            ],
+            "Keep publishing acceptance closed until a publication owner answers.",
+        ),
+        row(
+            "public_use_permission",
+            "not_allowed",
+            [
+                "Production design, render, creative, rights, and publishing gates remain false or pending.",
+            ],
+            [
+                "All upstream acceptances required for public use.",
+                "Explicit public-use permission.",
+            ],
+            "Publication",
+            False,
+            [
+                "Granting public-use permission from local diagnostic proof.",
+                "Combining partial gate evidence into public-ready status.",
+            ],
+            "Keep public-use permission closed until all upstream gates are explicit.",
+        ),
+        row(
+            "tracked_media_boundary",
+            "closed_no_tracked_media",
+            [
+                "ED-10am creates tracked JSON/Markdown only.",
+                "ED-10al recorded `tracked_binary_artifact_created=false` and `episodes_tracked=false`.",
+            ],
+            [],
+            "Agent",
+            True,
+            [
+                "Adding ignored ASS/MP4/manifest/contact-sheet outputs to Git.",
+                "Moving same-machine media into tracked docs as binary artifacts.",
+            ],
+            "Keep `episodes/` ignored and verify `git ls-files episodes` remains empty.",
+        ),
+        row(
+            "same_machine_ignored_evidence_boundary",
+            "available_same_machine_only",
+            [
+                "ED-10al generated ignored ASS/MP4/manifest outputs on this machine.",
+                "The contact-sheet path is recorded but not generated by the stage-3 helper.",
+            ],
+            [
+                "A production artifact store or portable media package, if later required.",
+                "Fresh-clone local media availability.",
+            ],
+            "Agent",
+            True,
+            [
+                "Claiming same-machine ignored outputs are portable tracked artifacts.",
+                "Treating fresh-clone absence as a failure of this tracked packet.",
+            ],
+            "Record paths and ignore status; do not promote media without an explicit strategy.",
+        ),
+    ]
+
+
+def _production_limitation_lift_stage1_boundary_flags(
+    stage3: Mapping[str, Any],
+) -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_created": False,
+            "new_rehearsal_run": False,
+            "source_stage3_new_render_created": stage3["render_gate"]["new_render_run"],
+            "source_stage3_new_rehearsal_run": stage3["render_gate"][
+                "new_rehearsal_run"
+            ],
+            "diagnostic_stage3_evidence_reused": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "final_render_path_approved": False,
+        }
+    )
+    return flags
+
+
+def _production_limitation_lift_stage1_validation(
+    *,
+    stage3: Mapping[str, Any],
+    gate_matrix: list[Mapping[str, Any]],
+    boundaries: Mapping[str, Any],
+    diagnostic_evidence: Mapping[str, Any],
+) -> dict[str, Any]:
+    actual_gate_names = [gate["gate_name"] for gate in gate_matrix]
+    expected_gate_names = list(PRODUCTION_LIMITATION_LIFT_STAGE1_GATE_NAMES)
+    by_gate = {gate["gate_name"]: gate for gate in gate_matrix}
+    closed_gate_names = (
+        "production_subtitle_design_acceptance",
+        "production_render_acceptance",
+        "creative_acceptance",
+        "rights_status",
+        "publishing_acceptance",
+        "public_use_permission",
+    )
+    stage3_source_preserved = (
+        stage3["artifact_id"] == FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+        and stage3["validation"]["all_checks_passed"] is True
+        and stage3["validation"]["production_public_boundary_closed"] is True
+    )
+    generated = diagnostic_evidence["generated_ignored_outputs"]
+    metadata = diagnostic_evidence["output_metadata"]
+    survival = diagnostic_evidence["survival_readback"]
+    diagnostic_evidence_linked = (
+        diagnostic_evidence["primary_diagnostic_rehearsal_artifact_id"]
+        == FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+        and all(generated.get(name) for name in ("ass", "video", "manifest"))
+        and metadata.get("duration_seconds") == 4.2
+        and metadata.get("resolution") == "1920x1080"
+        and survival["ass_subtitle_style_tokens_survived"] is True
+        and survival["stable_body_text_policy_survived"] is True
+        and survival["badge_accent_backplate_route_survived"] is True
+        and survival["line_break_safe_area_metadata_survived"] is True
+    )
+    closed_statuses_preserved = (
+        by_gate["production_subtitle_design_acceptance"]["current_status"]
+        == "not_accepted"
+        and by_gate["production_render_acceptance"]["current_status"]
+        == "not_accepted"
+        and by_gate["creative_acceptance"]["current_status"] == "not_accepted"
+        and by_gate["rights_status"]["current_status"] == "pending"
+        and by_gate["publishing_acceptance"]["current_status"] == "not_accepted"
+        and by_gate["public_use_permission"]["current_status"] == "not_allowed"
+    )
+    production_public_non_approval_explicit = (
+        closed_statuses_preserved
+        and boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["final_render_path_approved"] is False
+    )
+    owners_present = all(gate.get("next_decision_owner") for gate in gate_matrix)
+    unsafe_overclaiming_present = all(
+        bool(gate.get("unsafe_overclaiming")) for gate in gate_matrix
+    )
+    agent_progress_scoped = (
+        by_gate["diagnostic_render_path_rehearsal_evidence"][
+            "agent_can_progress_without_user_judgement"
+        ]
+        is True
+        and by_gate["tracked_media_boundary"][
+            "agent_can_progress_without_user_judgement"
+        ]
+        is True
+        and by_gate["same_machine_ignored_evidence_boundary"][
+            "agent_can_progress_without_user_judgement"
+        ]
+        is True
+        and all(
+            by_gate[gate]["agent_can_progress_without_user_judgement"] is False
+            for gate in closed_gate_names
+        )
+    )
+    tracked_media_boundary_closed = (
+        by_gate["tracked_media_boundary"]["current_status"] == "closed_no_tracked_media"
+        and boundaries["tracked_binary_artifact_created"] is False
+        and boundaries["episodes_tracked"] is False
+    )
+    same_machine_ignored_boundary_recorded = (
+        by_gate["same_machine_ignored_evidence_boundary"]["current_status"]
+        == "available_same_machine_only"
+        and boundaries["diagnostic_stage3_evidence_reused"] is True
+    )
+    next_executable_route_defined = True
+    return {
+        "expected_gate_names": expected_gate_names,
+        "actual_gate_names": actual_gate_names,
+        "gate_names_present": actual_gate_names == expected_gate_names,
+        "stage3_source_preserved": stage3_source_preserved,
+        "stage3_source_artifact_id": stage3["artifact_id"],
+        "diagnostic_evidence_linked": diagnostic_evidence_linked,
+        "production_public_non_approval_explicit": production_public_non_approval_explicit,
+        "closed_statuses_preserved": closed_statuses_preserved,
+        "owners_present": owners_present,
+        "unsafe_overclaiming_present": unsafe_overclaiming_present,
+        "agent_progress_scoped": agent_progress_scoped,
+        "tracked_media_boundary_closed": tracked_media_boundary_closed,
+        "same_machine_ignored_boundary_recorded": same_machine_ignored_boundary_recorded,
+        "next_executable_route_defined": next_executable_route_defined,
+        "new_render_run": False,
+        "tracked_binary_artifact_created": boundaries["tracked_binary_artifact_created"],
+        "episodes_tracked": boundaries["episodes_tracked"],
+        "all_checks_passed": (
+            actual_gate_names == expected_gate_names
+            and stage3_source_preserved
+            and diagnostic_evidence_linked
+            and production_public_non_approval_explicit
+            and owners_present
+            and unsafe_overclaiming_present
+            and agent_progress_scoped
+            and tracked_media_boundary_closed
+            and same_machine_ignored_boundary_recorded
+            and next_executable_route_defined
             and boundaries["tracked_binary_artifact_created"] is False
             and boundaries["episodes_tracked"] is False
         ),

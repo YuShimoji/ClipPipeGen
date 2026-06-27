@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: final_render_path_stage_3_rehearsal_ready
+health: production_limitation_lift_stage_1_ready
 progress_pct: 100
 last_touched: 2026-06-26
 next_review_due: none_stage_2_packet_only
 active_artifact: clip-ed10af-l2-render-path-selector-probe-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,6 +36,28 @@ for restart decisions.
 ## Current Capsule
 
 Active artifact: `clip-ed10af-l2-render-path-selector-probe-001`
+
+ED-10am checkpoint, 2026-06-27 JST:
+`clip-ed10am-production-limitation-lift-stage-1-001` now lives at
+`docs/style_intent/subtitle-production-limitation-lift-stage-1.json` and
+`docs/style_intent/subtitle-production-limitation-lift-stage-1.md`. It consumes
+ED-10al as primary diagnostic rehearsal evidence and turns it into a
+production limitation-lift preparation packet. ED-10am runs no render, creates
+no tracked media, and keeps `episodes/` untracked.
+
+The packet separates nine gates: diagnostic render-path rehearsal evidence,
+production subtitle design acceptance, production render acceptance, creative
+acceptance, rights status, publishing acceptance, public-use permission,
+tracked media boundary, and same-machine ignored evidence boundary. Each gate
+records current status, source evidence, missing evidence, next decision owner,
+whether the agent can progress without user judgement, and unsafe-overclaiming
+examples. ED-10al remains diagnostic evidence only: it does not prove final
+production subtitle design acceptance, production render acceptance, creative
+acceptance, rights clearance, publishing readiness, or public-use permission.
+The next executable route is
+`production-limitation-lift-stage-2-decision-packet`; use
+`final-render-path-stage-4` only if more diagnostic evidence is genuinely
+needed.
 
 ED-10al checkpoint, 2026-06-26 JST:
 `clip-ed10al-final-render-path-stage-3-rehearsal-001` now lives at
@@ -475,33 +497,41 @@ gates.
 
 ## Next
 
-1. Continue from `clip-ed10al-final-render-path-stage-3-rehearsal-001` when the
+1. Continue from `clip-ed10am-production-limitation-lift-stage-1-001` when the
+   next terminal needs the latest production limitation-lift preparation state.
+   It records the ED-10al diagnostic rehearsal source, the nine gate matrix,
+   decision owners, missing evidence, unsafe-overclaiming examples, tracked
+   media boundary, same-machine ignored evidence boundary, and still-closed
+   production/public gates. The next executable route is
+   `production-limitation-lift-stage-2-decision-packet`, or
+   `final-render-path-stage-4` only if more diagnostic evidence is genuinely
+   needed.
+2. Continue from `clip-ed10al-final-render-path-stage-3-rehearsal-001` when the
    next terminal needs the latest final render-path readback. It records the
    ED-10ak source, the generated ignored ASS/MP4/manifest rehearsal outputs,
    FFmpeg/libass command summary, output metadata, and closed production/public
-   gates. The next executable route is `production-limitation-lift-stage-1` or
-   `final-render-path-stage-4`, with no production/public approval inferred.
-2. Continue from `clip-ed10af-l2-render-path-selector-probe-001` as the active
+   gates.
+3. Continue from `clip-ed10af-l2-render-path-selector-probe-001` as the active
    L2 render-path evidence. Use `clip-ed10ag-lineage-and-observation-surface-001`
    when the next terminal needs dry-read source, ignored ASS / MP4 /
    manifest / contact-sheet paths, and no-rerender observation commands.
-3. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
+4. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
    has now passed the current diagnostic render path as a tiny readback probe.
    Do not ask for another Candidate 0-3 comparison review.
-4. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
+5. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
    evidence. Treat ED-10z as diagnostic readback only, not production render
    acceptance. Rerun the ED-10z command after FFmpeg/FFprobe paths are
    available to materialize ignored local proof files.
-5. Do not request another Review Card for the same ED-10u `cut_008`
+6. Do not request another Review Card for the same ED-10u `cut_008`
    multiline/dense-stress evidence; ED-10v already records it as diagnostic
    pass.
-6. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
+7. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
    production limitation-lift, final render-path probe, or policy/readback
    tuning from new evidence.
-7. Keep line-break behavior policy/readback-driven: line length, max lines,
+8. Keep line-break behavior policy/readback-driven: line length, max lines,
    orphan control, suffix-tail control, safe-area pressure, and rapid cue
    replacement are future bounded tuning areas.
-8. Keep ED-10o as accepted review UX direction and reference evidence for why
+9. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont is the provisional normal-dialogue baseline while 851 Chikara
    Yowaku and Yasashisa Gothic remain alternates.
 9. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the

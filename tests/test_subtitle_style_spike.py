@@ -1225,6 +1225,184 @@ def test_subtitle_final_render_path_stage3_doc_records_rehearsal_readback():
     assert "final_render_path_approved: `false`" in text
 
 
+def test_subtitle_production_limitation_lift_stage1_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    dry_read = json.loads(
+        (style_dir / "subtitle-render-contract-consumer-dry-read.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    source_probe = json.loads(
+        (style_dir / "subtitle-render-path-selector-probe.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    lineage_surface = json.loads(
+        (
+            style_dir / "subtitle-render-path-lineage-observation-surface.json"
+        ).read_text(encoding="utf-8")
+    )
+    gate_entry = json.loads(
+        (style_dir / "subtitle-production-limitation-lift-entry.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    readiness_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-readiness.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stage1_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stage2_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-2.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    stage3_packet = json.loads(
+        (style_dir / "subtitle-final-render-path-stage-3.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (
+            style_dir / "subtitle-production-limitation-lift-stage-1.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = preset_selector.build_subtitle_production_limitation_lift_stage1(
+        stage3_packet=stage3_packet,
+        stage2_packet=stage2_packet,
+        stage1_packet=stage1_packet,
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10am"
+    assert tracked["status"] == "production_limitation_lift_stage_1_packet_ready"
+    assert tracked["source_final_render_path_stage_3_rehearsal_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    )
+    assert tracked["source_final_render_path_stage_2_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE2_ARTIFACT_ID
+    )
+    assert tracked["active_diagnostic_proof_source_artifact_id"] == (
+        preset_selector.RENDER_PATH_PROBE_ARTIFACT_ID
+    )
+    assert tracked["gate_names"] == list(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_GATE_NAMES
+    )
+    by_gate = {gate["gate_name"]: gate for gate in tracked["gate_matrix"]}
+    assert by_gate["diagnostic_render_path_rehearsal_evidence"][
+        "current_status"
+    ] == "available_diagnostic_only"
+    assert by_gate["tracked_media_boundary"]["current_status"] == (
+        "closed_no_tracked_media"
+    )
+    assert by_gate["same_machine_ignored_evidence_boundary"]["current_status"] == (
+        "available_same_machine_only"
+    )
+    assert by_gate["diagnostic_render_path_rehearsal_evidence"][
+        "next_decision_owner"
+    ] == "Agent"
+    assert by_gate["rights_status"]["next_decision_owner"] == "Rights"
+    assert by_gate["publishing_acceptance"]["next_decision_owner"] == "Publication"
+    for gate_name in (
+        "production_subtitle_design_acceptance",
+        "production_render_acceptance",
+        "creative_acceptance",
+        "rights_status",
+        "publishing_acceptance",
+        "public_use_permission",
+    ):
+        assert by_gate[gate_name]["agent_can_progress_without_user_judgement"] is False
+        assert by_gate[gate_name]["unsafe_overclaiming"]
+    assert tracked["diagnostic_evidence"][
+        "primary_diagnostic_rehearsal_artifact_id"
+    ] == preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    assert tracked["diagnostic_evidence"]["output_metadata"]["duration_seconds"] == 4.2
+    assert tracked["diagnostic_evidence"]["output_metadata"]["resolution"] == (
+        "1920x1080"
+    )
+    assert set(tracked["diagnostic_evidence"]["generated_ignored_outputs"]) == {
+        "ass",
+        "video",
+        "manifest",
+    }
+    assert tracked["diagnostic_evidence"]["survival_readback"][
+        "ass_subtitle_style_tokens_survived"
+    ] is True
+    assert tracked["non_approval_readback"][
+        "production_subtitle_design_acceptance"
+    ] is False
+    assert tracked["non_approval_readback"]["production_render_acceptance"] is False
+    assert tracked["non_approval_readback"]["creative_acceptance"] is False
+    assert tracked["non_approval_readback"]["rights_status"] == "pending"
+    assert tracked["non_approval_readback"]["publishing_acceptance"] is False
+    assert tracked["non_approval_readback"]["public_use_permission"] is False
+    assert tracked["next_executable_route"]["route_id"] == (
+        "production-limitation-lift-stage-2-decision-packet"
+    )
+    assert tracked["next_executable_route"]["alternate_route_id"] == (
+        "final-render-path-stage-4"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["source_stage3_new_render_run"] is True
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["validation"]["gate_names_present"] is True
+    assert tracked["validation"]["stage3_source_preserved"] is True
+    assert tracked["validation"]["diagnostic_evidence_linked"] is True
+    assert tracked["validation"]["production_public_non_approval_explicit"] is True
+    assert tracked["validation"]["tracked_media_boundary_closed"] is True
+    assert tracked["validation"]["same_machine_ignored_boundary_recorded"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_production_limitation_lift_stage1_doc_records_gate_matrix():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-production-limitation-lift-stage-1.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10am Production Limitation-Lift Stage 1" in text
+    assert "clip-ed10am-production-limitation-lift-stage-1-001" in text
+    assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in text
+    assert "clip-ed10ak-final-render-path-stage-2-replayability-001" in text
+    assert "clip-ed10af-l2-render-path-selector-probe-001" in text
+    assert "diagnostic_render_path_rehearsal_evidence" in text
+    assert "production_subtitle_design_acceptance" in text
+    assert "production_render_acceptance" in text
+    assert "creative_acceptance" in text
+    assert "rights_status" in text
+    assert "publishing_acceptance" in text
+    assert "public_use_permission" in text
+    assert "tracked_media_boundary" in text
+    assert "same_machine_ignored_evidence_boundary" in text
+    assert "production-limitation-lift-stage-2-decision-packet" in text
+    assert "final-render-path-stage-4" in text
+    assert "public-use permission" in text
+    assert "episodes_tracked: `false`" in text
+    assert "all_checks_passed: `true`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

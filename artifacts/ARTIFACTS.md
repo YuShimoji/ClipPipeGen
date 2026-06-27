@@ -676,6 +676,42 @@ Boundary flags remain false or pending:
 - `new_rehearsal_run=true`
 - `final_render_path_approved=false`
 
+## `clip-ed10am-production-limitation-lift-stage-1-001`
+
+| Field | Value |
+|---|---|
+| title | ED-10am Production Limitation-Lift Stage 1 |
+| purpose | Convert ED-10al diagnostic final-path rehearsal evidence into a gate-by-gate production limitation-lift preparation packet without approving production/public use. |
+| storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
+| repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-stage-1.md` |
+| metadata_json | `docs/style_intent/subtitle-production-limitation-lift-stage-1.json` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-stage-1.md` |
+| primary_diagnostic_rehearsal_source | `clip-ed10al-final-render-path-stage-3-rehearsal-001` |
+| stage_2_source | `clip-ed10ak-final-render-path-stage-2-replayability-001` |
+| active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
+| gates | diagnostic rehearsal evidence; production subtitle design acceptance; production render acceptance; creative acceptance; rights status; publishing acceptance; public-use permission; tracked media boundary; same-machine ignored evidence boundary |
+| generated_from | ED-10am uses the ED-10al diagnostic rehearsal packet and records owners, missing evidence, and unsafe-overclaiming examples for each limitation-lift gate. |
+| validation_command | Parse ED-10am JSON plus related style intent JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty and referenced local outputs are ignored. |
+| latest_local_smoke | ED-10al source evidence remains `4.2s`, `1920x1080`, `h264`, `aac`, generated ignored ASS/MP4/manifest, and style-token/body/badge/safe-area survival true. ED-10am itself runs no render. |
+| review_status | No new Review Card. This is decision-preparation readback only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance. |
+| next_action | Start `production-limitation-lift-stage-2-decision-packet`, or use `final-render-path-stage-4` only if more diagnostic evidence is genuinely needed. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=false`
+- `new_rehearsal_run=false`
+- `final_render_path_approved=false`
+
 ## `clip-ed10ae-render-path-selector-contract-probe-001`
 
 | Field | Value |

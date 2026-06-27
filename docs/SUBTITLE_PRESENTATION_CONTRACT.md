@@ -484,6 +484,27 @@ design, production render, creative acceptance, rights, publishing, and
 public-use decisions remain false or pending. The next executable route is
 `production-limitation-lift-stage-1` or `final-render-path-stage-4`.
 
+## Current ED-10am Production Limitation-Lift Stage 1
+
+ED-10am records `clip-ed10am-production-limitation-lift-stage-1-001` as a
+tracked production limitation-lift preparation packet at
+`docs/style_intent/subtitle-production-limitation-lift-stage-1.json` and
+`docs/style_intent/subtitle-production-limitation-lift-stage-1.md`. It consumes
+ED-10al as the primary diagnostic rehearsal source and does not run a new render
+or create tracked media.
+
+The ED-10am gate matrix separates diagnostic rehearsal evidence, production
+subtitle design acceptance, production render acceptance, creative acceptance,
+rights status, publishing acceptance, public-use permission, tracked media
+boundary, and same-machine ignored evidence boundary. Each gate records current
+status, source evidence, missing evidence, next decision owner, whether the
+agent can progress without user judgement, and unsafe-overclaiming examples.
+ED-10am keeps production subtitle design, production render, creative, rights,
+publishing, and public-use decisions false or pending. The next executable
+route is `production-limitation-lift-stage-2-decision-packet`; use
+`final-render-path-stage-4` only if additional diagnostic evidence is genuinely
+needed.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a
