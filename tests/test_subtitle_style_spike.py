@@ -1540,6 +1540,157 @@ def test_subtitle_production_limitation_lift_stage2_doc_records_decision_packet(
     assert "all_checks_passed: `true`" in text
 
 
+def test_subtitle_production_limitation_lift_stage3_owner_review_prep_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    stage2_lift = json.loads(
+        (
+            style_dir
+            / "subtitle-production-limitation-lift-stage-2-decision-packet.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked = json.loads(
+        (
+            style_dir
+            / "subtitle-production-limitation-lift-stage-3-owner-review-prep.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = (
+        preset_selector.build_subtitle_production_limitation_lift_stage3_owner_review_prep(
+            production_lift_stage2_packet=stage2_lift
+        )
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE3_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE3_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10ao"
+    assert tracked["status"] == (
+        "production_limitation_lift_stage_3_owner_review_prep_ready"
+    )
+    assert tracked[
+        "source_production_limitation_lift_stage_2_decision_packet_artifact_id"
+    ] == preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE2_ARTIFACT_ID
+    assert tracked["source_production_limitation_lift_stage_1_artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["source_final_render_path_stage_3_rehearsal_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    )
+    assert tracked["owner_review_group_ids"] == list(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS
+    )
+    assert len(tracked["owner_review_groups"]) == 3
+    by_group = {
+        group["decision_group_id"]: group for group in tracked["owner_review_groups"]
+    }
+    assert by_group["subtitle_design_visual_acceptance"][
+        "decision_owner_category"
+    ] == "User"
+    assert by_group["production_render_readiness"][
+        "decision_owner_category"
+    ] == "User"
+    assert by_group["rights_publishing_public_use_clearance"][
+        "decision_owner_category"
+    ] == "Rights / Publication"
+    for group in tracked["owner_review_groups"]:
+        assert group["available_evidence"]
+        assert group["missing_evidence"]
+        assert group["safe_next_action"]
+        assert group["unsafe_overclaiming_examples"]
+        assert group["can_proceed_without_user_judgement"] is True
+        assert group["must_stop_before_approval"] is True
+        assert group["approval_owner_required_later"] is True
+        assert group["agent_may_approve"] is False
+    assert tracked["source_evidence"][
+        "source_stage2_decision_packet_artifact_id"
+    ] == preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE2_ARTIFACT_ID
+    assert tracked["source_evidence"]["source_stage1_gate_matrix_artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID
+    )
+    assert tracked["source_evidence"]["primary_diagnostic_rehearsal_artifact_id"] == (
+        preset_selector.FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+    )
+    assert tracked["source_evidence"]["source_decision_group_count"] == 3
+    assert tracked["source_evidence"]["diagnostic_output_metadata"][
+        "duration_seconds"
+    ] == 4.2
+    assert tracked["source_evidence"]["diagnostic_output_metadata"]["resolution"] == (
+        "1920x1080"
+    )
+    assert tracked["no_approval_yet"][
+        "production_subtitle_design_acceptance"
+    ] is False
+    assert tracked["no_approval_yet"]["production_render_acceptance"] is False
+    assert tracked["no_approval_yet"]["creative_acceptance"] is False
+    assert tracked["no_approval_yet"]["rights_status"] == "pending"
+    assert tracked["no_approval_yet"]["publishing_acceptance"] is False
+    assert tracked["no_approval_yet"]["public_use_permission"] is False
+    assert tracked["no_approval_yet"]["user_decision_requested_now"] is False
+    future_shape = tracked["future_user_decision_shape"]
+    assert future_shape["asked_now"] is False
+    assert future_shape["fixed_form_required"] is False
+    assert future_shape["freeform_expected"] is True
+    assert future_shape["fixed_choice_rows_allowed"] is False
+    assert len(future_shape["plain_language_topics"]) == 3
+    assert tracked["next_executable_route"]["route_id"] == (
+        "production-limitation-lift-stage-4-user-decision-card"
+    )
+    assert tracked["next_executable_route"]["alternate_route_id"] == (
+        "final-render-path-stage-4"
+    )
+    assert tracked["next_executable_route"]["concrete_diagnostic_gap_found"] is False
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["fixed_user_form_emitted"] is False
+    assert tracked["boundaries"]["fixed_choice_rows_emitted"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["validation"]["source_decision_packet_preserved"] is True
+    assert tracked["validation"]["owner_review_groups_bounded"] is True
+    assert tracked["validation"]["no_approval_boundary_explicit"] is True
+    assert tracked["validation"]["future_user_decision_shape_freeform"] is True
+    assert tracked["validation"]["no_fixed_user_form_emitted"] is True
+    assert tracked["validation"]["source_evidence_linked"] is True
+    assert tracked["validation"]["user_decision_not_requested_now"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_production_limitation_lift_stage3_doc_records_owner_review_prep():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-production-limitation-lift-stage-3-owner-review-prep.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10ao Production Limitation-Lift Stage 3 Owner-Review Prep" in text
+    assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in text
+    assert "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001" in text
+    assert "clip-ed10am-production-limitation-lift-stage-1-001" in text
+    assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in text
+    assert "subtitle_design_visual_acceptance" in text
+    assert "production_render_readiness" in text
+    assert "rights_publishing_public_use_clearance" in text
+    assert "production_subtitle_design_acceptance: `false`" in text
+    assert "production_render_acceptance: `false`" in text
+    assert "rights_status: `pending`" in text
+    assert "public_use_permission: `false`" in text
+    assert "asked_now: `false`" in text
+    assert "fixed_form_required: `false`" in text
+    assert "freeform_expected: `true`" in text
+    assert "fixed_choice_rows_allowed: `false`" in text
+    assert "production-limitation-lift-stage-4-user-decision-card" in text
+    assert "final-render-path-stage-4" in text
+    assert "owner_review_groups_bounded: `true`" in text
+    assert "no_fixed_user_form_emitted: `true`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "fixed_choice_rows_allowed: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

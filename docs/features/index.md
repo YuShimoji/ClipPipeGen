@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10an`
-- artifact: `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001`
-- state: `production_limitation_lift_stage_2_decision_packet_ready`
+- feature: `ED-10ao`
+- artifact: `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001`
+- state: `production_limitation_lift_stage_3_owner_review_prep_ready`
 
 ## Feature Table
 
@@ -77,6 +77,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10al | Final Render-Path Stage 3 Diagnostic Rehearsal v0 | done | final_render_path_stage_3_diagnostic_rehearsal_ready | 100 | clip-ed10al-final-render-path-stage-3-rehearsal-001 | Use the final render-path stage-3 diagnostic rehearsal as source evidence for production-limitation-lift-stage-1 or a later diagnostic-only stage-4. |
 | ED-10am | Production Limitation-Lift Stage 1 v0 | done | production_limitation_lift_stage_1_packet_ready | 100 | clip-ed10am-production-limitation-lift-stage-1-001 | Use the production limitation-lift stage-1 packet to start production-limitation-lift-stage-2-decision-packet; keep production/public approvals explicit. |
 | ED-10an | Production Limitation-Lift Stage 2 Decision Packet v0 | done | production_limitation_lift_stage_2_decision_packet_ready | 100 | clip-ed10an-production-limitation-lift-stage-2-decision-packet-001 | Use the stage-2 decision packet to start production-limitation-lift-stage-3-owner-review-prep; keep all approvals explicit. |
+| ED-10ao | Production Limitation-Lift Stage 3 Owner-Review Prep v0 | done | production_limitation_lift_stage_3_owner_review_prep_ready | 100 | clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001 | Use the stage-3 owner-review prep packet to start production-limitation-lift-stage-4-user-decision-card; keep future user input freeform and approvals explicit. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-06-22"
+DEFAULT_GENERATED_AT = "2026-06-28"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10an',
-         'artifact_id': 'clip-ed10an-production-limitation-lift-stage-2-decision-packet-001',
+        "current_focus": {'feature_id': 'ED-10ao',
+         'artifact_id': 'clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'production_limitation_lift_stage_2_decision_packet_ready',
+         'state': 'production_limitation_lift_stage_3_owner_review_prep_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -123,14 +123,15 @@ def build_project_status(
          'final_render_path_stage_3_rehearsal_artifact_id': 'clip-ed10al-final-render-path-stage-3-rehearsal-001',
          'production_limitation_lift_stage_1_artifact_id': 'clip-ed10am-production-limitation-lift-stage-1-001',
          'production_limitation_lift_stage_2_decision_packet_artifact_id': 'clip-ed10an-production-limitation-lift-stage-2-decision-packet-001',
+         'production_limitation_lift_stage_3_owner_review_prep_artifact_id': 'clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10an_production_limitation_lift_stage_2_decision_packet_ready',
-         'user_action_type': 'NO_USER_ACTION_DECISION_PREPARATION_ONLY',
+         'route_status': 'ed10ao_production_limitation_lift_stage_3_owner_review_prep_ready',
+         'user_action_type': 'NO_USER_ACTION_OWNER_REVIEW_PREP_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
@@ -721,6 +722,44 @@ def build_project_status(
                                                                          'tracked_binary_artifact_created': False,
                                                                          'episodes_tracked': False,
                                                                          'final_render_path_approved': False},
+         'subtitle_production_limitation_lift_stage_3_owner_review_prep': {'status': 'production_limitation_lift_stage_3_owner_review_prep_ready',
+                                                                           'artifact_id': 'clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001',
+                                                                           'metadata_json': 'docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json',
+                                                                           'doc': 'docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md',
+                                                                           'source_production_limitation_lift_stage_2_decision_packet_artifact_id': 'clip-ed10an-production-limitation-lift-stage-2-decision-packet-001',
+                                                                           'source_production_limitation_lift_stage_1_artifact_id': 'clip-ed10am-production-limitation-lift-stage-1-001',
+                                                                           'source_final_render_path_stage_3_rehearsal_artifact_id': 'clip-ed10al-final-render-path-stage-3-rehearsal-001',
+                                                                           'source_final_render_path_stage_2_artifact_id': 'clip-ed10ak-final-render-path-stage-2-replayability-001',
+                                                                           'active_diagnostic_proof_source_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                                           'owner_review_group_ids': ['subtitle_design_visual_acceptance',
+                                                                                                      'production_render_readiness',
+                                                                                                      'rights_publishing_public_use_clearance'],
+                                                                           'owner_review_group_count': 3,
+                                                                           'future_user_decision_shape': {'asked_now': False,
+                                                                                                          'fixed_form_required': False,
+                                                                                                          'freeform_expected': True,
+                                                                                                          'fixed_choice_rows_allowed': False},
+                                                                           'diagnostic_metadata': {'duration_seconds': 4.2,
+                                                                                                   'resolution': '1920x1080',
+                                                                                                   'video_codec': 'h264',
+                                                                                                   'audio_codec': 'aac',
+                                                                                                   'stream_count': 2},
+                                                                           'production_subtitle_design_acceptance': False,
+                                                                           'production_render_acceptance': False,
+                                                                           'creative_acceptance': False,
+                                                                           'rights_status': 'pending',
+                                                                           'publishing_acceptance': False,
+                                                                           'public_use_permission': False,
+                                                                           'production_public_decision_approved': False,
+                                                                           'user_decision_requested_now': False,
+                                                                           'fixed_user_form_emitted': False,
+                                                                           'next_executable_route': 'production-limitation-lift-stage-4-user-decision-card',
+                                                                           'alternate_next_executable_route': 'final-render-path-stage-4',
+                                                                           'concrete_diagnostic_gap_found': False,
+                                                                           'new_render_run': False,
+                                                                           'tracked_binary_artifact_created': False,
+                                                                           'episodes_tracked': False,
+                                                                           'final_render_path_approved': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -781,17 +820,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_production_limitation_lift_stage_2_decision_packet',
+                           'current_blocker': 'none_for_production_limitation_lift_stage_3_owner_review_prep',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10an-production-limitation-lift-stage-2-decision-packet-001',
-                         'axis': 'production_limitation_lift_stage_2_decision_packet',
+                         'artifact_id': 'clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001',
+                         'axis': 'production_limitation_lift_stage_3_owner_review_prep',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10an consumes the ED-10am gate matrix and groups the remaining production/public decisions into subtitle design/visual acceptance, production render readiness, and rights/publishing/public-use clearance without approving any decision.',
+                         'what_changed': 'ED-10ao consumes the ED-10an decision packet and prepares three owner-review entries while keeping future user burden freeform and all production/public approvals closed.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -799,18 +838,18 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use ED-10an as the production limitation-lift stage-2 decision packet; the next route is production-limitation-lift-stage-3-owner-review-prep unless a concrete diagnostic gap requires final-render-path-stage-4'},
+                         'completion_signal': 'use ED-10ao as the owner-review prep packet; the next route is production-limitation-lift-stage-4-user-decision-card unless a concrete diagnostic gap requires final-render-path-stage-4'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'production_limitation_lift_stage_2_decision_packet_no_review_card',
+         'review_surface_direction': 'production_limitation_lift_stage_3_owner_review_prep_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'production_limitation_lift',
-                          'status': 'production_limitation_lift_stage_2_decision_packet_ready_owner_review_prep_next',
-                          'next_action': 'start production-limitation-lift-stage-3-owner-review-prep '
-                                         'from ED-10an, or use final-render-path-stage-4 '
+                          'status': 'production_limitation_lift_stage_3_owner_review_prep_ready_user_decision_card_next',
+                          'next_action': 'start production-limitation-lift-stage-4-user-decision-card '
+                                         'from ED-10ao, or use final-render-path-stage-4 '
                                          'only if a concrete diagnostic gap is found; '
                                          'do not infer production/public approval'}],
          'emoji_treatment': 'neutral_ignore_for_evaluation',
@@ -1142,6 +1181,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10am-production-limitation-lift-stage-1-001"
         if feature_id == "ED-10an":
             active_artifact = "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
+        if feature_id == "ED-10ao":
+            active_artifact = "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
         features.append(
             {
                 "id": feature_id,
@@ -1206,7 +1247,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
+        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
         in artifact_ids
     )
     return {
@@ -1253,6 +1294,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 
 def _next_review_items() -> list[dict[str, str]]:
     return [
+        {
+            "item": "ED-10ao production limitation-lift stage 3 owner-review prep",
+            "artifact": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
+            "question": "Does the packet convert ED-10an's three decision groups into future freeform owner-review topics while keeping all production/public approvals closed?",
+            "next_route": "Start production-limitation-lift-stage-4-user-decision-card, or use final-render-path-stage-4 only if a concrete diagnostic gap is found.",
+        },
         {
             "item": "ED-10an production limitation-lift stage 2 decision packet",
             "artifact": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
@@ -1442,6 +1489,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Production Limitation-Lift Stage 3 Owner-Review Prep",
+            "command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
+            "target": "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
+            "when_to_use": (
+                "Use to inspect the ED-10ao owner-review preparation packet "
+                "that converts ED-10an decision groups into future freeform "
+                "decision topics without requesting approval now."
+            ),
         },
         {
             "label": "Production Limitation-Lift Stage 2 Decision Packet",
@@ -1796,6 +1853,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "production_limitation_lift_stage_1_packet_ready"
     if feature_id == "ED-10an":
         return "production_limitation_lift_stage_2_decision_packet_ready"
+    if feature_id == "ED-10ao":
+        return "production_limitation_lift_stage_3_owner_review_prep_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -1866,6 +1925,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10an":
         return 100
+    if feature_id == "ED-10ao":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -1934,6 +1995,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the production limitation-lift stage-1 packet to start production-limitation-lift-stage-2-decision-packet; keep production/public approvals explicit."
     if feature_id == "ED-10an":
         return "Use the stage-2 decision packet to start production-limitation-lift-stage-3-owner-review-prep; keep all approvals explicit."
+    if feature_id == "ED-10ao":
+        return "Use the stage-3 owner-review prep packet to start production-limitation-lift-stage-4-user-decision-card; keep future user input freeform and approvals explicit."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

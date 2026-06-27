@@ -525,6 +525,28 @@ public-use false or pending. The next executable route is
 `production-limitation-lift-stage-3-owner-review-prep`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
+## Current ED-10ao Production Limitation-Lift Stage 3 Owner-Review Prep
+
+ED-10ao records
+`clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` as a
+tracked owner-review preparation packet at
+`docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json`
+and
+`docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md`.
+It consumes ED-10an as the source decision packet and does not run a new render
+or create tracked media.
+
+The ED-10ao owner-review entries preserve the same three groups: subtitle
+design / visual acceptance, production render readiness, and rights /
+publishing / public-use clearance. Each entry records available evidence,
+missing evidence, safe next action, unsafe-overclaiming examples, owner
+category, and the requirement to stop before approval. ED-10ao requests no
+immediate user decision, emits no fixed form, keeps future input freeform, and
+keeps production subtitle design, production render, creative, rights,
+publishing, and public-use decisions false or pending. The next executable
+route is `production-limitation-lift-stage-4-user-decision-card`; use
+`final-render-path-stage-4` only if a concrete diagnostic gap is found.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

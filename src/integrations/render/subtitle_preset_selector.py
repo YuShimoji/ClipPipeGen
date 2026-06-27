@@ -1,4 +1,4 @@
-"""Deterministic subtitle style intent preset selector.
+﻿"""Deterministic subtitle style intent preset selector.
 
 This selector is a diagnostic readback helper. It maps semantic subtitle
 intent to token names that future renderer work can consume, but it does not
@@ -186,6 +186,18 @@ PRODUCTION_LIMITATION_LIFT_STAGE2_ARTIFACT_ID = (
 )
 PRODUCTION_LIMITATION_LIFT_STAGE2_FEATURE_ID = "ED-10an"
 PRODUCTION_LIMITATION_LIFT_STAGE2_DECISION_GROUP_IDS = (
+    "subtitle_design_visual_acceptance",
+    "production_render_readiness",
+    "rights_publishing_public_use_clearance",
+)
+PRODUCTION_LIMITATION_LIFT_STAGE3_SCHEMA_ID = (
+    "clippipegen.subtitle_production_limitation_lift_stage_3_owner_review_prep.v1"
+)
+PRODUCTION_LIMITATION_LIFT_STAGE3_ARTIFACT_ID = (
+    "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
+)
+PRODUCTION_LIMITATION_LIFT_STAGE3_FEATURE_ID = "ED-10ao"
+PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS = (
     "subtitle_design_visual_acceptance",
     "production_render_readiness",
     "rights_publishing_public_use_clearance",
@@ -2950,6 +2962,220 @@ def write_subtitle_production_limitation_lift_stage2_decision_packet(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_subtitle_production_limitation_lift_stage3_owner_review_prep(
+    *,
+    production_lift_stage2_packet: Mapping[str, Any] | None = None,
+    production_lift_stage1_packet: Mapping[str, Any] | None = None,
+    stage3_packet: Mapping[str, Any] | None = None,
+    stage2_packet: Mapping[str, Any] | None = None,
+    final_stage1_packet: Mapping[str, Any] | None = None,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    stage2_lift = (
+        deepcopy(production_lift_stage2_packet)
+        if production_lift_stage2_packet is not None
+        else build_subtitle_production_limitation_lift_stage2_decision_packet(
+            production_lift_stage1_packet=production_lift_stage1_packet,
+            stage3_packet=stage3_packet,
+            stage2_packet=stage2_packet,
+            final_stage1_packet=final_stage1_packet,
+            readiness_packet=readiness_packet,
+            source_probe=source_probe,
+            lineage_surface=lineage_surface,
+            gate_entry=gate_entry,
+            dry_read=dry_read,
+        )
+    )
+    source = stage2_lift["source_evidence"]
+    source_evidence = {
+        "source_stage2_decision_packet_artifact_id": stage2_lift["artifact_id"],
+        "source_stage2_path": "docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json",
+        "source_stage2_doc": "docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md",
+        "source_stage1_gate_matrix_artifact_id": stage2_lift[
+            "source_production_limitation_lift_stage_1_artifact_id"
+        ],
+        "primary_diagnostic_rehearsal_artifact_id": stage2_lift[
+            "source_final_render_path_stage_3_rehearsal_artifact_id"
+        ],
+        "stage_2_replayability_artifact_id": stage2_lift[
+            "source_final_render_path_stage_2_artifact_id"
+        ],
+        "active_diagnostic_proof_source_artifact_id": stage2_lift[
+            "active_diagnostic_proof_source_artifact_id"
+        ],
+        "source_decision_group_count": len(stage2_lift["decision_groups"]),
+        "source_decision_group_ids": list(stage2_lift["decision_group_ids"]),
+        "diagnostic_output_metadata": deepcopy(source["diagnostic_output_metadata"]),
+        "diagnostic_survival_readback": deepcopy(source["diagnostic_survival_readback"]),
+        "stage2_no_decision_yet": deepcopy(stage2_lift["no_decision_yet"]),
+    }
+    owner_review_groups = _production_limitation_lift_stage3_owner_review_groups(
+        stage2_lift
+    )
+    no_approval_yet = _production_limitation_lift_stage3_no_approval_yet(stage2_lift)
+    future_decision_shape = (
+        _production_limitation_lift_stage3_future_decision_shape(owner_review_groups)
+    )
+    boundaries = _production_limitation_lift_stage3_boundary_flags(stage2_lift)
+    validation = _production_limitation_lift_stage3_validation(
+        stage2_lift=stage2_lift,
+        source_evidence=source_evidence,
+        owner_review_groups=owner_review_groups,
+        no_approval_yet=no_approval_yet,
+        future_decision_shape=future_decision_shape,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": PRODUCTION_LIMITATION_LIFT_STAGE3_SCHEMA_ID,
+        "artifact_id": PRODUCTION_LIMITATION_LIFT_STAGE3_ARTIFACT_ID,
+        "feature_id": PRODUCTION_LIMITATION_LIFT_STAGE3_FEATURE_ID,
+        "status": "production_limitation_lift_stage_3_owner_review_prep_ready",
+        "surface_kind": "production_limitation_lift_stage_3_owner_review_preparation_packet",
+        "render_level": "stage_3_owner_review_prep_no_new_render",
+        "source_production_limitation_lift_stage_2_decision_packet_artifact_id": stage2_lift[
+            "artifact_id"
+        ],
+        "source_production_limitation_lift_stage_1_artifact_id": stage2_lift[
+            "source_production_limitation_lift_stage_1_artifact_id"
+        ],
+        "source_final_render_path_stage_3_rehearsal_artifact_id": stage2_lift[
+            "source_final_render_path_stage_3_rehearsal_artifact_id"
+        ],
+        "source_final_render_path_stage_2_artifact_id": stage2_lift[
+            "source_final_render_path_stage_2_artifact_id"
+        ],
+        "active_diagnostic_proof_source_artifact_id": stage2_lift[
+            "active_diagnostic_proof_source_artifact_id"
+        ],
+        "source_evidence": source_evidence,
+        "owner_review_group_ids": list(
+            PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS
+        ),
+        "owner_review_groups": owner_review_groups,
+        "no_approval_yet": no_approval_yet,
+        "future_user_decision_shape": future_decision_shape,
+        "next_executable_route": {
+            "route_id": "production-limitation-lift-stage-4-user-decision-card",
+            "alternate_route_id": "final-render-path-stage-4",
+            "alternate_route_condition": (
+                "Use only if a concrete diagnostic gap is found; ED-10ao "
+                "does not identify such a gap."
+            ),
+            "concrete_diagnostic_gap_found": False,
+            "agent_can_start_without_user_judgement": True,
+            "purpose": (
+                "Create the later low-burden user decision card from the "
+                "prepared owner-review groups without approving any decision."
+            ),
+            "first_steps": [
+                "Keep ED-10an as the source decision packet.",
+                "Convert owner-review prep entries into a short freeform decision card.",
+                "Keep approval closed until the relevant owner answers in a later slice.",
+            ],
+            "must_not_do": [
+                "ask the user for an immediate decision in ED-10ao",
+                "approve production subtitle design",
+                "approve production render",
+                "approve creative use",
+                "claim rights clearance",
+                "claim publishing readiness",
+                "grant public-use permission",
+                "track ignored media under episodes/",
+                "emit a fixed-choice user form",
+                "request repeat layout polish or old candidate reviews",
+            ],
+        },
+        "render_gate": {
+            "level": "stage_3_owner_review_prep_no_new_render",
+            "existing_output_first_applied": True,
+            "existing_output_first_reused": True,
+            "new_render_run": False,
+            "new_rehearsal_run": False,
+            "source_stage2_new_render_run": stage2_lift["render_gate"][
+                "new_render_run"
+            ],
+            "source_stage1_new_render_run": stage2_lift["render_gate"][
+                "source_stage1_new_render_run"
+            ],
+            "source_stage3_new_render_run": stage2_lift["render_gate"][
+                "source_stage3_new_render_run"
+            ],
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "local_outputs_ignored": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json",
+            "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
+        },
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none_for_this_stage_3_owner_review_preparation_packet",
+            "user_decision_requested_now": False,
+            "fixed_form_required": False,
+            "yes_no_unclear_rows_allowed": False,
+            "freeform_future_decision_shape": True,
+            "screenshot_required": False,
+            "layout_polish_required_before_next_step": False,
+            "owner_judgement_required_later_for": [
+                "subtitle design / visual acceptance",
+                "production render readiness",
+                "rights / publishing / public-use clearance",
+            ],
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_subtitle_production_limitation_lift_stage3_owner_review_prep(
+    output_dir: Path,
+    *,
+    production_lift_stage2_packet: Mapping[str, Any] | None = None,
+    production_lift_stage1_packet: Mapping[str, Any] | None = None,
+    stage3_packet: Mapping[str, Any] | None = None,
+    stage2_packet: Mapping[str, Any] | None = None,
+    final_stage1_packet: Mapping[str, Any] | None = None,
+    readiness_packet: Mapping[str, Any] | None = None,
+    source_probe: Mapping[str, Any] | None = None,
+    lineage_surface: Mapping[str, Any] | None = None,
+    gate_entry: Mapping[str, Any] | None = None,
+    dry_read: Mapping[str, Any] | None = None,
+) -> dict[str, Path]:
+    packet = build_subtitle_production_limitation_lift_stage3_owner_review_prep(
+        production_lift_stage2_packet=production_lift_stage2_packet,
+        production_lift_stage1_packet=production_lift_stage1_packet,
+        stage3_packet=stage3_packet,
+        stage2_packet=stage2_packet,
+        final_stage1_packet=final_stage1_packet,
+        readiness_packet=readiness_packet,
+        source_probe=source_probe,
+        lineage_surface=lineage_surface,
+        gate_entry=gate_entry,
+        dry_read=dry_read,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "subtitle-production-limitation-lift-stage-3-owner-review-prep.json"
+    doc_path = output_dir / "subtitle-production-limitation-lift-stage-3-owner-review-prep.md"
+    json_path.write_text(
+        json.dumps(packet, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    doc_path.write_text(
+        render_subtitle_production_limitation_lift_stage3_owner_review_prep_markdown(
+            packet
+        ),
+        encoding="utf-8",
+    )
+    return {"json": json_path, "doc": doc_path}
+
+
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
     output_dir: Path,
@@ -4322,6 +4548,151 @@ def render_subtitle_production_limitation_lift_stage2_decision_packet_markdown(
         f"- production_public_gates_still_closed: `{str(validation['production_public_gates_still_closed']).lower()}`",
         f"- unsafe_overclaiming_present: `{str(validation['unsafe_overclaiming_present']).lower()}`",
         f"- next_executable_route_defined: `{str(validation['next_executable_route_defined']).lower()}`",
+        f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
+        "",
+        "## Boundary",
+        "",
+        closed_boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_subtitle_production_limitation_lift_stage3_owner_review_prep_markdown(
+    packet: Mapping[str, Any],
+) -> str:
+    source = packet["source_evidence"]
+    route = packet["next_executable_route"]
+    validation = packet["validation"]
+    no_approval = packet["no_approval_yet"]
+    future_shape = packet["future_user_decision_shape"]
+    boundaries = packet["boundaries"]
+    nl = chr(10)
+    group_rows = nl.join(
+        "| {group} | {owner} | {evidence} | {missing} | {safe} | {unsafe} | {proceed} | {stop} |".format(
+            group=group["decision_group_id"],
+            owner=group["decision_owner_category"],
+            evidence=_markdown_cell_list(group["available_evidence"]),
+            missing=_markdown_cell_list(group["missing_evidence"]) or "none",
+            safe=group["safe_next_action"],
+            unsafe=_markdown_cell_list(group["unsafe_overclaiming_examples"]),
+            proceed=str(group["can_proceed_without_user_judgement"]).lower(),
+            stop=str(group["must_stop_before_approval"]).lower(),
+        )
+        for group in packet["owner_review_groups"]
+    )
+    no_approval_rows = nl.join(
+        f"- {key}: `{str(value).lower()}`" for key, value in no_approval.items()
+    )
+    future_rows = nl.join(
+        "| {topic} | {owner} | {shape} |".format(
+            topic=topic["topic_id"],
+            owner=topic["future_owner_category"],
+            shape=topic["plain_language_decision_topic"],
+        )
+        for topic in future_shape["plain_language_topics"]
+    )
+    metadata_rows = nl.join(
+        f"- {key}: `{value}`"
+        for key, value in source["diagnostic_output_metadata"].items()
+    )
+    survival_rows = nl.join(
+        f"- {key}: `{str(value).lower()}`"
+        for key, value in source["diagnostic_survival_readback"].items()
+    )
+    route_steps = nl.join(f"- {step}" for step in route["first_steps"])
+    route_boundaries = nl.join(f"- {item}" for item in route["must_not_do"])
+    closed_boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "new_render_created",
+            "new_rehearsal_run",
+            "user_decision_requested_now",
+            "fixed_user_form_emitted",
+            "final_render_path_approved",
+            "owner_review_prep_does_not_grant_approval",
+        )
+    )
+    lines = [
+        "# ED-10ao Production Limitation-Lift Stage 3 Owner-Review Prep",
+        "",
+        "This tracked packet converts the ED-10an decision packet into owner-review preparation entries. It does not approve production subtitle design, production render, creative use, rights, publishing, or public use, and it does not ask for an immediate user decision.",
+        "",
+        f"- artifact_id: `{packet['artifact_id']}`",
+        f"- status: `{packet['status']}`",
+        f"- source_stage2_decision_packet_artifact_id: `{source['source_stage2_decision_packet_artifact_id']}`",
+        f"- source_stage1_gate_matrix_artifact_id: `{source['source_stage1_gate_matrix_artifact_id']}`",
+        f"- primary_diagnostic_rehearsal_artifact_id: `{source['primary_diagnostic_rehearsal_artifact_id']}`",
+        f"- source_decision_group_count: `{source['source_decision_group_count']}`",
+        "",
+        "## Source Evidence",
+        "",
+        f"- stage_2_replayability_artifact_id: `{source['stage_2_replayability_artifact_id']}`",
+        f"- active_diagnostic_proof_source_artifact_id: `{source['active_diagnostic_proof_source_artifact_id']}`",
+        "",
+        "Diagnostic output metadata:",
+        "",
+        metadata_rows,
+        "",
+        "Diagnostic survival readback:",
+        "",
+        survival_rows,
+        "",
+        "## Owner-Review Preparation Entries",
+        "",
+        "| decision group | decision owner category | available evidence | missing evidence | safe next action | unsafe overclaiming examples | can proceed without user judgement | must stop before approval |",
+        "|---|---|---|---|---|---|---|---|",
+        group_rows,
+        "",
+        "## No Approval Yet",
+        "",
+        no_approval_rows,
+        "",
+        "## Future User Decision Shape",
+        "",
+        "- asked_now: `false`",
+        "- fixed_form_required: `false`",
+        "- freeform_expected: `true`",
+        "- yes_no_unclear_rows_allowed: `false`",
+        "- low_user_burden_goal: Keep the later decision card short and freeform; use the entries below as topics, not as a form to fill now.",
+        "",
+        "| topic | future owner category | plain-language shape |",
+        "|---|---|---|",
+        future_rows,
+        "",
+        "## Next Executable Route",
+        "",
+        f"- route_id: `{route['route_id']}`",
+        f"- alternate_route_id: `{route['alternate_route_id']}`",
+        f"- alternate_route_condition: {route['alternate_route_condition']}",
+        f"- concrete_diagnostic_gap_found: `{str(route['concrete_diagnostic_gap_found']).lower()}`",
+        f"- agent_can_start_without_user_judgement: `{str(route['agent_can_start_without_user_judgement']).lower()}`",
+        f"- purpose: {route['purpose']}",
+        "",
+        route_steps,
+        "",
+        "This route must not:",
+        "",
+        route_boundaries,
+        "",
+        "## Validation",
+        "",
+        f"- source_decision_packet_preserved: `{str(validation['source_decision_packet_preserved']).lower()}`",
+        f"- owner_review_groups_present: `{str(validation['owner_review_groups_present']).lower()}`",
+        f"- owner_review_groups_bounded: `{str(validation['owner_review_groups_bounded']).lower()}`",
+        f"- no_approval_boundary_explicit: `{str(validation['no_approval_boundary_explicit']).lower()}`",
+        f"- future_user_decision_shape_freeform: `{str(validation['future_user_decision_shape_freeform']).lower()}`",
+        f"- no_fixed_user_form_emitted: `{str(validation['no_fixed_user_form_emitted']).lower()}`",
+        f"- source_evidence_linked: `{str(validation['source_evidence_linked']).lower()}`",
+        f"- production_public_gates_still_closed: `{str(validation['production_public_gates_still_closed']).lower()}`",
+        f"- user_decision_not_requested_now: `{str(validation['user_decision_not_requested_now']).lower()}`",
         f"- all_checks_passed: `{str(validation['all_checks_passed']).lower()}`",
         "",
         "## Boundary",
@@ -7186,6 +7557,278 @@ def _production_limitation_lift_stage2_validation(
             and unsafe_overclaiming_present
             and next_safe_actions_present
             and agent_progress_scoped
+            and tracked_media_boundary_closed
+            and next_executable_route_defined
+        ),
+    }
+
+
+def _production_limitation_lift_stage3_owner_review_groups(
+    stage2_lift: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    by_group = {
+        group["decision_group_id"]: group for group in stage2_lift["decision_groups"]
+    }
+    owner_categories = {
+        "subtitle_design_visual_acceptance": "User",
+        "production_render_readiness": "User",
+        "rights_publishing_public_use_clearance": "Rights / Publication",
+    }
+    future_topics = {
+        "subtitle_design_visual_acceptance": (
+            "Future freeform judgement about whether the subtitle design and "
+            "visual feel are acceptable enough for production use."
+        ),
+        "production_render_readiness": (
+            "Future freeform judgement about whether render output evidence is "
+            "sufficient for production render readiness."
+        ),
+        "rights_publishing_public_use_clearance": (
+            "Future rights/publication judgement about whether source material, "
+            "publishing context, and public use are cleared."
+        ),
+    }
+    entries: list[dict[str, Any]] = []
+    for group_id in PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS:
+        source_group = by_group[group_id]
+        entries.append(
+            {
+                "decision_group_id": group_id,
+                "decision_owner_category": owner_categories[group_id],
+                "source_decision_group_current_status": source_group[
+                    "current_status"
+                ],
+                "available_evidence": list(source_group["source_evidence_available"]),
+                "missing_evidence": list(source_group["missing_evidence"]),
+                "safe_next_action": source_group["next_safe_action"],
+                "unsafe_overclaiming_examples": list(
+                    source_group["unsafe_overclaiming_examples"]
+                ),
+                "can_proceed_without_user_judgement": True,
+                "must_stop_before_approval": True,
+                "approval_owner_required_later": True,
+                "agent_may_approve": False,
+                "future_decision_topic_plain_language": future_topics[group_id],
+            }
+        )
+    return entries
+
+
+def _production_limitation_lift_stage3_no_approval_yet(
+    stage2_lift: Mapping[str, Any],
+) -> dict[str, Any]:
+    source = stage2_lift["no_decision_yet"]
+    return {
+        "production_subtitle_design_acceptance": source[
+            "production_subtitle_design_acceptance"
+        ],
+        "production_render_acceptance": source["production_render_acceptance"],
+        "creative_acceptance": source["creative_acceptance"],
+        "rights_status": source["rights_status"],
+        "publishing_acceptance": source["publishing_acceptance"],
+        "public_use_permission": source["public_use_permission"],
+        "production_public_decision_approved": False,
+        "user_decision_requested_now": False,
+        "owner_review_prep_does_not_grant_approval": True,
+    }
+
+
+def _production_limitation_lift_stage3_future_decision_shape(
+    owner_review_groups: list[Mapping[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "asked_now": False,
+        "fixed_form_required": False,
+        "freeform_expected": True,
+        "yes_no_unclear_rows_allowed": False,
+        "plain_language_topics": [
+            {
+                "topic_id": group["decision_group_id"],
+                "future_owner_category": group["decision_owner_category"],
+                "plain_language_decision_topic": group[
+                    "future_decision_topic_plain_language"
+                ],
+            }
+            for group in owner_review_groups
+        ],
+        "future_card_guidance": (
+            "When a later slice creates the user decision card, keep it short "
+            "and freeform. Do not require a table, fixed form, or fixed "
+            "choice rows from the user."
+        ),
+    }
+
+
+def _production_limitation_lift_stage3_boundary_flags(
+    stage2_lift: Mapping[str, Any],
+) -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_created": False,
+            "new_rehearsal_run": False,
+            "source_stage2_decision_packet_reused": True,
+            "source_stage2_new_render_created": stage2_lift["render_gate"][
+                "new_render_run"
+            ],
+            "source_stage1_new_render_created": stage2_lift["render_gate"][
+                "source_stage1_new_render_run"
+            ],
+            "source_stage3_new_render_created": stage2_lift["render_gate"][
+                "source_stage3_new_render_run"
+            ],
+            "diagnostic_stage3_evidence_reused": True,
+            "owner_review_prep_only": True,
+            "owner_review_prep_does_not_grant_approval": True,
+            "future_user_decision_shape_freeform": True,
+            "fixed_user_form_emitted": False,
+            "yes_no_unclear_rows_emitted": False,
+            "user_decision_requested_now": False,
+            "owner_review_group_count": len(
+                PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS
+            ),
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "final_render_path_approved": False,
+        }
+    )
+    return flags
+
+
+def _production_limitation_lift_stage3_validation(
+    *,
+    stage2_lift: Mapping[str, Any],
+    source_evidence: Mapping[str, Any],
+    owner_review_groups: list[Mapping[str, Any]],
+    no_approval_yet: Mapping[str, Any],
+    future_decision_shape: Mapping[str, Any],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    expected_group_ids = list(PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS)
+    actual_group_ids = [group["decision_group_id"] for group in owner_review_groups]
+    source_decision_packet_preserved = (
+        stage2_lift["artifact_id"] == PRODUCTION_LIMITATION_LIFT_STAGE2_ARTIFACT_ID
+        and stage2_lift["validation"]["all_checks_passed"] is True
+        and stage2_lift["decision_group_ids"]
+        == list(PRODUCTION_LIMITATION_LIFT_STAGE2_DECISION_GROUP_IDS)
+        and len(stage2_lift["decision_groups"])
+        == len(PRODUCTION_LIMITATION_LIFT_STAGE2_DECISION_GROUP_IDS)
+    )
+    owner_review_groups_present = actual_group_ids == expected_group_ids
+    owner_review_groups_bounded = (
+        owner_review_groups_present
+        and len(owner_review_groups) == 3
+        and all(group["available_evidence"] for group in owner_review_groups)
+        and all(group["safe_next_action"] for group in owner_review_groups)
+    )
+    no_approval_boundary_explicit = (
+        no_approval_yet["production_subtitle_design_acceptance"] is False
+        and no_approval_yet["production_render_acceptance"] is False
+        and no_approval_yet["creative_acceptance"] is False
+        and no_approval_yet["rights_status"] == "pending"
+        and no_approval_yet["publishing_acceptance"] is False
+        and no_approval_yet["public_use_permission"] is False
+        and no_approval_yet["production_public_decision_approved"] is False
+        and no_approval_yet["user_decision_requested_now"] is False
+        and no_approval_yet["owner_review_prep_does_not_grant_approval"] is True
+    )
+    future_user_decision_shape_freeform = (
+        future_decision_shape["asked_now"] is False
+        and future_decision_shape["fixed_form_required"] is False
+        and future_decision_shape["freeform_expected"] is True
+        and future_decision_shape["yes_no_unclear_rows_allowed"] is False
+        and len(future_decision_shape["plain_language_topics"]) == 3
+    )
+    source_evidence_linked = (
+        source_evidence["source_stage2_decision_packet_artifact_id"]
+        == PRODUCTION_LIMITATION_LIFT_STAGE2_ARTIFACT_ID
+        and source_evidence["source_stage1_gate_matrix_artifact_id"]
+        == PRODUCTION_LIMITATION_LIFT_STAGE1_ARTIFACT_ID
+        and source_evidence["primary_diagnostic_rehearsal_artifact_id"]
+        == FINAL_RENDER_PATH_STAGE3_ARTIFACT_ID
+        and source_evidence["source_decision_group_count"] == 3
+        and source_evidence["diagnostic_output_metadata"]["duration_seconds"] == 4.2
+        and source_evidence["diagnostic_output_metadata"]["resolution"] == "1920x1080"
+        and source_evidence["diagnostic_survival_readback"][
+            "ass_subtitle_style_tokens_survived"
+        ]
+        is True
+    )
+    production_public_gates_still_closed = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["final_render_path_approved"] is False
+        and boundaries["owner_review_prep_does_not_grant_approval"] is True
+    )
+    user_decision_not_requested_now = (
+        boundaries["user_decision_requested_now"] is False
+        and no_approval_yet["user_decision_requested_now"] is False
+        and future_decision_shape["asked_now"] is False
+    )
+    no_fixed_user_form_emitted = (
+        boundaries["fixed_user_form_emitted"] is False
+        and boundaries["yes_no_unclear_rows_emitted"] is False
+        and future_decision_shape["fixed_form_required"] is False
+        and future_decision_shape["yes_no_unclear_rows_allowed"] is False
+    )
+    unsafe_overclaiming_present = all(
+        bool(group["unsafe_overclaiming_examples"]) for group in owner_review_groups
+    )
+    owner_review_entries_scoped = all(
+        group["can_proceed_without_user_judgement"] is True
+        and group["must_stop_before_approval"] is True
+        and group["approval_owner_required_later"] is True
+        and group["agent_may_approve"] is False
+        for group in owner_review_groups
+    )
+    tracked_media_boundary_closed = (
+        boundaries["tracked_binary_artifact_created"] is False
+        and boundaries["episodes_tracked"] is False
+    )
+    next_executable_route_defined = True
+    return {
+        "expected_owner_review_group_ids": expected_group_ids,
+        "actual_owner_review_group_ids": actual_group_ids,
+        "source_decision_packet_preserved": source_decision_packet_preserved,
+        "owner_review_groups_present": owner_review_groups_present,
+        "owner_review_groups_bounded": owner_review_groups_bounded,
+        "no_approval_boundary_explicit": no_approval_boundary_explicit,
+        "future_user_decision_shape_freeform": future_user_decision_shape_freeform,
+        "source_evidence_linked": source_evidence_linked,
+        "production_public_gates_still_closed": production_public_gates_still_closed,
+        "user_decision_not_requested_now": user_decision_not_requested_now,
+        "no_fixed_user_form_emitted": no_fixed_user_form_emitted,
+        "unsafe_overclaiming_present": unsafe_overclaiming_present,
+        "owner_review_entries_scoped": owner_review_entries_scoped,
+        "tracked_media_boundary_closed": tracked_media_boundary_closed,
+        "next_executable_route_defined": next_executable_route_defined,
+        "new_render_run": False,
+        "tracked_binary_artifact_created": boundaries["tracked_binary_artifact_created"],
+        "episodes_tracked": boundaries["episodes_tracked"],
+        "all_checks_passed": (
+            source_decision_packet_preserved
+            and owner_review_groups_bounded
+            and no_approval_boundary_explicit
+            and future_user_decision_shape_freeform
+            and source_evidence_linked
+            and production_public_gates_still_closed
+            and user_decision_not_requested_now
+            and no_fixed_user_form_emitted
+            and unsafe_overclaiming_present
+            and owner_review_entries_scoped
             and tracked_media_boundary_closed
             and next_executable_route_defined
         ),
