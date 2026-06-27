@@ -3120,7 +3120,7 @@ def build_subtitle_production_limitation_lift_stage3_owner_review_prep(
             "user_side_work": "none_for_this_stage_3_owner_review_preparation_packet",
             "user_decision_requested_now": False,
             "fixed_form_required": False,
-            "yes_no_unclear_rows_allowed": False,
+            "fixed_choice_rows_allowed": False,
             "freeform_future_decision_shape": True,
             "screenshot_required": False,
             "layout_polish_required_before_next_step": False,
@@ -4660,7 +4660,7 @@ def render_subtitle_production_limitation_lift_stage3_owner_review_prep_markdown
         "- asked_now: `false`",
         "- fixed_form_required: `false`",
         "- freeform_expected: `true`",
-        "- yes_no_unclear_rows_allowed: `false`",
+        "- fixed_choice_rows_allowed: `false`",
         "- low_user_burden_goal: Keep the later decision card short and freeform; use the entries below as topics, not as a form to fill now.",
         "",
         "| topic | future owner category | plain-language shape |",
@@ -7640,7 +7640,7 @@ def _production_limitation_lift_stage3_future_decision_shape(
         "asked_now": False,
         "fixed_form_required": False,
         "freeform_expected": True,
-        "yes_no_unclear_rows_allowed": False,
+        "fixed_choice_rows_allowed": False,
         "plain_language_topics": [
             {
                 "topic_id": group["decision_group_id"],
@@ -7682,7 +7682,7 @@ def _production_limitation_lift_stage3_boundary_flags(
             "owner_review_prep_does_not_grant_approval": True,
             "future_user_decision_shape_freeform": True,
             "fixed_user_form_emitted": False,
-            "yes_no_unclear_rows_emitted": False,
+            "fixed_choice_rows_emitted": False,
             "user_decision_requested_now": False,
             "owner_review_group_count": len(
                 PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS
@@ -7744,7 +7744,7 @@ def _production_limitation_lift_stage3_validation(
         future_decision_shape["asked_now"] is False
         and future_decision_shape["fixed_form_required"] is False
         and future_decision_shape["freeform_expected"] is True
-        and future_decision_shape["yes_no_unclear_rows_allowed"] is False
+        and future_decision_shape["fixed_choice_rows_allowed"] is False
         and len(future_decision_shape["plain_language_topics"]) == 3
     )
     source_evidence_linked = (
@@ -7780,9 +7780,9 @@ def _production_limitation_lift_stage3_validation(
     )
     no_fixed_user_form_emitted = (
         boundaries["fixed_user_form_emitted"] is False
-        and boundaries["yes_no_unclear_rows_emitted"] is False
+        and boundaries["fixed_choice_rows_emitted"] is False
         and future_decision_shape["fixed_form_required"] is False
-        and future_decision_shape["yes_no_unclear_rows_allowed"] is False
+        and future_decision_shape["fixed_choice_rows_allowed"] is False
     )
     unsafe_overclaiming_present = all(
         bool(group["unsafe_overclaiming_examples"]) for group in owner_review_groups
