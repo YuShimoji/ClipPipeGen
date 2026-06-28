@@ -1,29 +1,32 @@
 {
-  "schema_id": "clippipegen.subtitle_production_limitation_lift_stage_4_user_decision_card.v1",
-  "artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
-  "feature_id": "ED-10ap",
-  "status": "production_limitation_lift_stage_4_user_decision_card_ready",
-  "surface_kind": "production_limitation_lift_stage_4_future_user_decision_card",
-  "render_level": "stage_4_user_decision_card_no_new_render",
+  "schema_id": "clippipegen.subtitle_production_limitation_lift_stage_5_user_decision_ready.v1",
+  "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+  "feature_id": "ED-10aq",
+  "status": "production_limitation_lift_stage_5_user_decision_ready",
+  "surface_kind": "production_limitation_lift_stage_5_user_decision_ready_packet",
+  "render_level": "stage_5_user_decision_ready_no_new_render",
+  "source_stage4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
   "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
   "source_production_limitation_lift_stage_2_decision_packet_artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
   "source_production_limitation_lift_stage_1_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
   "source_final_render_path_stage_3_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
   "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
   "source_evidence": {
+    "source_stage4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
+    "source_stage4_user_decision_card_path": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json",
+    "source_stage4_user_decision_card_doc": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md",
     "source_stage3_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
-    "source_stage3_owner_review_prep_path": "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json",
-    "source_stage3_owner_review_prep_doc": "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
     "source_stage2_decision_packet_artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
     "source_stage1_gate_matrix_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
     "primary_diagnostic_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
     "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
-    "source_owner_review_group_count": 3,
-    "source_owner_review_group_ids": [
+    "source_decision_topic_count": 3,
+    "source_decision_topic_ids": [
       "subtitle_design_visual_acceptance",
       "production_render_readiness",
       "rights_publishing_public_use_clearance"
     ],
+    "source_owner_review_group_count": 3,
     "diagnostic_output_metadata": {
       "duration_seconds": 4.2,
       "resolution": "1920x1080",
@@ -38,7 +41,8 @@
       "line_break_safe_area_metadata_survived": true,
       "production_public_gates_still_closed": true
     },
-    "stage3_no_approval_yet": {
+    "source_not_asked_now": {
+      "user_decision_requested_now": false,
       "production_subtitle_design_acceptance": false,
       "production_render_acceptance": false,
       "creative_acceptance": false,
@@ -46,8 +50,40 @@
       "publishing_acceptance": false,
       "public_use_permission": false,
       "production_public_decision_approved": false,
-      "user_decision_requested_now": false,
-      "owner_review_prep_does_not_grant_approval": true
+      "stage_4_user_decision_card_does_not_grant_approval": true
+    },
+    "source_future_freeform_answer_handling": {
+      "user_may_answer_naturally": true,
+      "one_paragraph_or_few_bullets_allowed": true,
+      "answer_style": "freeform",
+      "template_required": false,
+      "schema_owner": "Agent",
+      "fixed_form_required": false,
+      "fixed_choice_rows_allowed": false,
+      "fixed_choice_rows_emitted": false,
+      "required_labels": [],
+      "max_look_for_points": 3,
+      "screenshot_required": false,
+      "hidden_schema_exposed_to_user": false,
+      "plain_language_user_instructions": [
+        "A later user may answer naturally in one paragraph.",
+        "A later user may use a few bullets if that is easier.",
+        "The user does not need to follow field names or labels.",
+        "The user does not need to provide screenshots for this card."
+      ],
+      "agent_internal_normalization_allowed": [
+        "map a clear answer to the matching topic id",
+        "carry explicit reservations into missing evidence or pending notes",
+        "keep ambiguous or absent approvals pending",
+        "preserve rights and public-use unknowns as unknown"
+      ],
+      "unknowns_remain_unknown_examples": [
+        "rights clearance not mentioned",
+        "publication context not mentioned",
+        "final render acceptance not mentioned",
+        "production subtitle design acceptance not mentioned"
+      ],
+      "decision_topic_count": 3
     }
   },
   "decision_topic_ids": [
@@ -58,10 +94,10 @@
   "decision_topics": [
     {
       "topic_id": "subtitle_design_visual_acceptance",
-      "source_owner_review_group_id": "subtitle_design_visual_acceptance",
-      "future_owner_category": "User",
-      "plain_language_question_shape": "When a later slice asks for judgement, describe whether the subtitle design and visual feel are acceptable enough for production use, and mention any reservations.",
-      "available_evidence": [
+      "source_stage4_decision_topic_id": "subtitle_design_visual_acceptance",
+      "final_user_facing_topic_title": "Subtitle design / visual acceptance",
+      "low_burden_freeform_prompt_shape": "When a later slice asks for judgement, describe whether the subtitle design and visual feel are acceptable enough for production use, and mention any reservations.",
+      "evidence_available": [
         "ED-10am source gate matrix: clip-ed10am-production-limitation-lift-stage-1-001",
         "ED-10al diagnostic rehearsal: clip-ed10al-final-render-path-stage-3-rehearsal-001",
         "style tokens survived: True",
@@ -73,18 +109,13 @@
         "The diagnostic presentation path is acceptable enough to move forward.",
         "No old candidate or cut review axis is reopened by ED-10am."
       ],
-      "missing_evidence": [
+      "evidence_still_missing": [
         "Explicit human acceptance that the subtitle design is production-ready.",
         "Any required representative production-sequence typography review.",
         "Explicit creative approval for production use.",
         "Any final editorial or representative-sequence acceptance packet."
       ],
-      "safe_freeform_answer_could_mention": [
-        "whether the current visual direction is acceptable",
-        "specific reservations or blocked design conditions",
-        "whether approval should stay pending"
-      ],
-      "agent_may_normalize_internally": [
+      "internal_normalization_hints": [
         "visual_acceptance_signal",
         "design_reservation_notes",
         "approval_status_remains_pending_when_unclear"
@@ -107,10 +138,10 @@
     },
     {
       "topic_id": "production_render_readiness",
-      "source_owner_review_group_id": "production_render_readiness",
-      "future_owner_category": "User",
-      "plain_language_question_shape": "When a later slice asks for judgement, describe whether the available render evidence is enough to proceed toward production render readiness, and mention what proof is still needed.",
-      "available_evidence": [
+      "source_stage4_decision_topic_id": "production_render_readiness",
+      "final_user_facing_topic_title": "Production render readiness",
+      "low_burden_freeform_prompt_shape": "When a later slice asks for judgement, describe whether the available render evidence is enough to proceed toward production render readiness, and mention what proof is still needed.",
+      "evidence_available": [
         "ED-10am records ED-10al generated ignored ASS/MP4/manifest outputs.",
         "metadata: 4.2s / 1920x1080 / h264 / aac / streams=2",
         "tracked media boundary is closed.",
@@ -122,18 +153,13 @@
         "ED-10al generated ignored ASS/MP4/manifest outputs on this machine.",
         "The contact-sheet path is recorded but not generated by the stage-3 helper."
       ],
-      "missing_evidence": [
+      "evidence_still_missing": [
         "Accepted final production render output.",
         "Final production render command, manifest, and human review result.",
         "A production artifact store or portable media package, if later required.",
         "Fresh-clone local media availability."
       ],
-      "safe_freeform_answer_could_mention": [
-        "whether current diagnostic render evidence is enough to continue",
-        "which final render evidence is still missing",
-        "whether approval should stay pending"
-      ],
-      "agent_may_normalize_internally": [
+      "internal_normalization_hints": [
         "render_readiness_signal",
         "missing_render_evidence",
         "approval_status_remains_pending_when_unclear"
@@ -156,16 +182,16 @@
     },
     {
       "topic_id": "rights_publishing_public_use_clearance",
-      "source_owner_review_group_id": "rights_publishing_public_use_clearance",
-      "future_owner_category": "Rights / Publication",
-      "plain_language_question_shape": "When a later slice asks for judgement, describe whether rights, publishing context, and public-use clearance are satisfied or still pending.",
-      "available_evidence": [
+      "source_stage4_decision_topic_id": "rights_publishing_public_use_clearance",
+      "final_user_facing_topic_title": "Rights / publishing / public-use clearance",
+      "low_burden_freeform_prompt_shape": "When a later slice asks for judgement, describe whether rights, publishing context, and public-use clearance are satisfied or still pending.",
+      "evidence_available": [
         "ED-10al and ED-10am make no rights clearance claim.",
         "Ignored proof outputs stay same-machine diagnostic evidence.",
         "No upload, visibility, platform metadata, or scheduling action occurs in ED-10al/ED-10am.",
         "Production design, render, creative, rights, and publishing gates remain false or pending."
       ],
-      "missing_evidence": [
+      "evidence_still_missing": [
         "Rights clearance or owner decision for source material and distribution context.",
         "Publication-specific material-use clearance.",
         "Human publication decision.",
@@ -173,12 +199,7 @@
         "All upstream acceptances required for public use.",
         "Explicit public-use permission."
       ],
-      "safe_freeform_answer_could_mention": [
-        "known rights or publication clearance status",
-        "unknown rights or public-use conditions",
-        "whether approval should stay pending"
-      ],
-      "agent_may_normalize_internally": [
+      "internal_normalization_hints": [
         "rights_publication_signal",
         "missing_rights_or_publication_evidence",
         "approval_status_remains_pending_when_unclear"
@@ -200,7 +221,9 @@
       "hidden_schema_exposed_to_user": false
     }
   ],
-  "not_asked_now": {
+  "ready_but_not_asked": {
+    "future_short_freeform_review_request_ready": true,
+    "source_stage4_validation_passed": true,
     "user_decision_requested_now": false,
     "production_subtitle_design_acceptance": false,
     "production_render_acceptance": false,
@@ -208,56 +231,48 @@
     "rights_status": "pending",
     "publishing_acceptance": false,
     "public_use_permission": false,
-    "production_public_decision_approved": false,
-    "stage_4_user_decision_card_does_not_grant_approval": true
-  },
-  "future_freeform_answer_handling": {
-    "user_may_answer_naturally": true,
-    "one_paragraph_or_few_bullets_allowed": true,
     "answer_style": "freeform",
     "template_required": false,
     "schema_owner": "Agent",
+    "max_look_for_points": 3,
     "fixed_form_required": false,
     "fixed_choice_rows_allowed": false,
     "fixed_choice_rows_emitted": false,
-    "required_labels": [],
-    "max_look_for_points": 3,
     "screenshot_required": false,
     "hidden_schema_exposed_to_user": false,
-    "plain_language_user_instructions": [
-      "A later user may answer naturally in one paragraph.",
-      "A later user may use a few bullets if that is easier.",
-      "The user does not need to follow field names or labels.",
-      "The user does not need to provide screenshots for this card."
-    ],
-    "agent_internal_normalization_allowed": [
-      "map a clear answer to the matching topic id",
-      "carry explicit reservations into missing evidence or pending notes",
-      "keep ambiguous or absent approvals pending",
-      "preserve rights and public-use unknowns as unknown"
-    ],
-    "unknowns_remain_unknown_examples": [
-      "rights clearance not mentioned",
-      "publication context not mentioned",
-      "final render acceptance not mentioned",
-      "production subtitle design acceptance not mentioned"
-    ],
-    "decision_topic_count": 3
+    "unknowns_remain_unknown": true
+  },
+  "future_presentation_constraints": {
+    "final_user_prompt_may_be_written_in_natural_language": true,
+    "must_present_at_most_three_topics": true,
+    "decision_topic_count": 3,
+    "must_preserve_freeform_answer_style": true,
+    "must_not_show_internal_schema": true,
+    "must_not_emit_fixed_user_form": true,
+    "must_not_emit_fixed_choice_rows": true,
+    "must_not_request_screenshot": true,
+    "must_keep_unknowns_pending": true,
+    "must_keep_rights_publication_and_public_use_separate": true,
+    "must_keep_render_acceptance_separate_from_rights": true,
+    "must_stop_before_any_production_or_public_approval": true,
+    "agent_may_normalize_answer_internally": true,
+    "agent_may_approve": false
   },
   "next_executable_route": {
-    "route_id": "production-limitation-lift-stage-5-user-decision-ready",
+    "route_id": "production-limitation-lift-stage-6-user-freeform-review-request",
     "alternate_route_id": "final-render-path-stage-4",
-    "alternate_route_condition": "Use only if a concrete diagnostic gap is found; ED-10ap does not identify such a gap.",
+    "alternate_route_condition": "Use only if a concrete diagnostic gap is found; ED-10aq does not identify such a gap.",
     "concrete_diagnostic_gap_found": false,
     "agent_can_start_without_user_judgement": true,
-    "purpose": "Record a short freeform user decision card for a later slice without asking for or granting approval now.",
+    "purpose": "Prepare the later short freeform user review request without asking for or granting any production, public-use, or rights approval in this slice.",
     "first_steps": [
-      "Keep ED-10ao as the source owner-review preparation packet.",
-      "Present at most three freeform topics when a later slice asks for user judgement.",
-      "Normalize future answers internally while preserving unknowns as unknown."
+      "Use ED-10ap as the source stage-4 user decision-card packet.",
+      "Present at most three short freeform topics in the next slice.",
+      "Normalize the later user answer internally while keeping unknowns unknown.",
+      "Keep production render, rights, publishing, and public-use approval closed until explicit user judgement exists."
     ],
     "must_not_do": [
-      "ask the user for a decision in ED-10ap",
+      "ask the user for a decision in ED-10aq",
       "approve production subtitle design",
       "approve production render",
       "approve creative use",
@@ -273,11 +288,12 @@
     ]
   },
   "render_gate": {
-    "level": "stage_4_user_decision_card_no_new_render",
+    "level": "stage_5_user_decision_ready_no_new_render",
     "existing_output_first_applied": true,
     "existing_output_first_reused": true,
     "new_render_run": false,
     "new_rehearsal_run": false,
+    "source_stage4_user_decision_card_new_render_run": false,
     "source_stage3_owner_review_prep_new_render_run": false,
     "source_stage2_decision_packet_new_render_run": false,
     "source_stage1_new_render_run": false,
@@ -299,17 +315,17 @@
       "production_render_readiness",
       "rights_publishing_public_use_clearance"
     ],
-    "source_owner_review_prep_preserved": true,
+    "source_user_decision_card_preserved": true,
+    "source_owner_review_prep_linked": true,
     "decision_topics_present": true,
     "decision_topics_bounded_to_three": true,
-    "not_asked_now_boundary_explicit": true,
-    "future_user_burden_freeform": true,
-    "future_freeform_answer_handling_ready": true,
+    "ready_but_not_asked_explicit": true,
+    "future_presentation_constraints_ready": true,
     "no_fixed_choice_or_form_surface": true,
     "source_evidence_linked": true,
     "production_public_gates_still_closed": true,
     "no_screenshot_requirement": true,
-    "hidden_schema_not_exposed": true,
+    "no_hidden_schema_exposed": true,
     "unsafe_overclaiming_present": true,
     "tracked_media_boundary_closed": true,
     "next_executable_route_defined": true,
@@ -319,12 +335,12 @@
     "all_checks_passed": true
   },
   "outputs": {
-    "json": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json",
-    "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md"
+    "json": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json",
+    "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
   },
   "review_policy": {
     "human_review_required": false,
-    "user_side_work": "none_for_this_production_limitation_lift_stage_4_future_user_decision_card",
+    "user_side_work": "none_for_this_stage_5_user_decision_ready_packet",
     "user_decision_requested_now": false,
     "answer_style": "freeform",
     "template_required": false,
@@ -355,14 +371,17 @@
     "font_binaries_added": false,
     "episodes_tracked": false,
     "new_rehearsal_run": false,
+    "source_stage4_user_decision_card_reused": true,
+    "source_stage4_user_decision_card_new_render_created": false,
     "source_stage3_owner_review_prep_reused": true,
     "source_stage3_owner_review_prep_new_render_created": false,
     "source_stage2_decision_packet_reused": true,
     "source_stage2_new_render_created": false,
     "source_stage1_new_render_created": false,
     "source_final_path_stage3_new_render_created": true,
-    "stage_4_user_decision_card_only": true,
-    "stage_4_user_decision_card_does_not_grant_approval": true,
+    "user_decision_card_ready": true,
+    "stage_5_user_decision_ready_only": true,
+    "stage_5_user_decision_ready_does_not_grant_approval": true,
     "future_user_decision_shape_freeform": true,
     "user_decision_requested_now": false,
     "fixed_user_form_emitted": false,

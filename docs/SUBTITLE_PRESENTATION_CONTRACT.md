@@ -1,9 +1,13 @@
-# Subtitle Presentation Contract
+﻿# Subtitle Presentation Contract
 
 This contract is the tracked reference surface for diagnostic JP clip subtitle
 presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
+
+## Current ED-10aq Production Limitation Lift Stage 5 User-Decision-Ready
+
+ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-6-user-freeform-review-request`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## Contract
 

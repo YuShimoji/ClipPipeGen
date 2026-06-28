@@ -1,16 +1,20 @@
----
+﻿---
 id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: production_limitation_lift_stage_4_user_decision_card_ready
+health: production_limitation_lift_stage_5_user_decision_ready
 progress_pct: 100
 last_touched: 2026-06-28
-active_artifact: clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001
+active_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
 related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
+
+## Current ED-10aq Style Intent Registry Link
+
+ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-6-user-freeform-review-request`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## What This Is
 

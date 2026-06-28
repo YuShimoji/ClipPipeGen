@@ -1,6 +1,6 @@
 # ED-10ap Production Limitation Lift Stage 4 User Decision Card
 
-This tracked packet prepares a future short freeform user decision card from ED-10ao owner-review entries. It does not ask for a decision now and does not approve production subtitle design, production render, creative use, rights, publishing, or public use.
+This tracked packet prepares a future short freeform user decision-card packet from ED-10ao owner-review entries. It does not ask for a decision now and does not approve production subtitle design, production render, creative use, rights, publishing, or public use.
 
 - artifact_id: `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
 - status: `production_limitation_lift_stage_4_user_decision_card_ready`
@@ -28,7 +28,7 @@ This tracked packet prepares a future short freeform user decision card from ED-
 - publishing_acceptance: `false`
 - public_use_permission: `false`
 - production_public_decision_approved: `false`
-- stage_4_card_does_not_grant_approval: `true`
+- stage_4_user_decision_card_does_not_grant_approval: `true`
 
 ## Future Freeform Answer Handling
 
@@ -39,6 +39,7 @@ This tracked packet prepares a future short freeform user decision card from ED-
 - schema_owner: `Agent`
 - max_look_for_points: `3`
 - fixed_form_required: `false`
+- fixed_choice_rows_allowed: `false`
 - fixed_choice_rows_emitted: `false`
 - screenshot_required: `false`
 - hidden_schema_exposed_to_user: `false`
@@ -98,6 +99,7 @@ This route must not:
 - not_asked_now_boundary_explicit: `true`
 - future_user_burden_freeform: `true`
 - future_freeform_answer_handling_ready: `true`
+- hidden_schema_not_exposed: `true`
 - no_fixed_choice_or_form_surface: `true`
 - source_evidence_linked: `true`
 - production_public_gates_still_closed: `true`

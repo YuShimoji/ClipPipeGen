@@ -1,4 +1,4 @@
-"""Docs v1.5 dashboard tests."""
+﻿"""Docs v1.5 dashboard tests."""
 
 from __future__ import annotations
 
@@ -27,9 +27,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10ap"
+    assert status["current_focus"]["feature_id"] == "ED-10aq"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert status["current_focus"][
         "source_render_path_selector_contract_artifact_id"
@@ -64,7 +64,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "production_limitation_lift_stage_4_user_decision_card_ready"
+        "production_limitation_lift_stage_5_user_decision_ready"
     )
     assert status["current_focus"][
         "source_render_contract_consumer_dry_read_artifact_id"
@@ -104,8 +104,8 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"][
         "production_limitation_lift_stage_3_owner_review_prep_artifact_id"
     ] == "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
-    assert status["current_focus"]["production_limitation_lift_stage_4_user_decision_card_artifact_id"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+    assert status["current_focus"]["production_limitation_lift_stage_5_user_decision_ready_artifact_id"] == (
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
@@ -121,10 +121,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ap_production_limitation_lift_stage_4_user_decision_card_ready"
+        "ed10aq_production_limitation_lift_stage_5_user_decision_ready"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_DECISION_CARD_PREP_ONLY"
+        "NO_USER_ACTION_STAGE_5_USER_DECISION_READY_ONLY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         "NO_REVIEW_CARD_REVIEW_CONSUMED"
@@ -133,7 +133,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "stage_4_user_decision_card_no_review_card"
+        "production_limitation_lift_stage_5_user_decision_ready_no_review_card"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -177,7 +177,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "same_candidate_comparison_review_allowed"
     ] is False
     assert status["current_focus"]["review_memory"]["current_blocker"] == (
-        "none_for_stage_4_user_decision_card"
+        "none_for_production_limitation_lift_stage_5_user_decision_ready"
     )
     assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
@@ -192,10 +192,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10af-l2-render-path-selector-probe-001"
     )
     assert status["current_focus"]["review_card"]["artifact_id"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "production_limitation_lift_stage_4_user_decision_card"
+        "production_limitation_lift_stage_5_user_decision_ready"
     )
     assert status["current_focus"]["subtitle_preset_selector"]["artifact_id"] == (
         "clip-ed10ab-subtitle-preset-selector-001"
@@ -739,10 +739,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "episodes/.../subtitle_presentation_review_pack.html"
     )
     assert status["current_focus"]["review_debt"][0]["debt_id"] == (
-        "production_limitation_lift"
+        "production_limitation_lift_stage_5_user_decision_ready"
     )
     assert status["current_focus"]["review_debt"][0]["status"] == (
-        "production_limitation_lift_stage_4_user_decision_card_ready"
+        "production_limitation_lift_stage_5_user_decision_ready"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
         "ed10w_current_pass_reference",
@@ -774,7 +774,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
-        "see docs\\style_intent\\subtitle-production-limitation-lift-stage-4-user-decision-card.md",
+        "see docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
         "see docs\\style_intent\\subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
         "see docs\\style_intent\\subtitle-production-limitation-lift-stage-2-decision-packet.md",
         "see docs\\style_intent\\subtitle-production-limitation-lift-stage-1.md",
@@ -826,7 +826,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert status["next_review_items"][1]["artifact"] == (
         "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
@@ -873,7 +873,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert persisted["open_surfaces"][2]["target"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
     )
     assert persisted["open_surfaces"][3]["target"] == (
         "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md"
@@ -936,7 +936,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
-    assert "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001" in html
+    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in html
     assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in html
     assert "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001" in html
     assert "clip-ed10am-production-limitation-lift-stage-1-001" in html
@@ -1776,7 +1776,7 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
         "Current ED-10ao Production Limitation-Lift Stage 3 Owner-Review Prep"
         in text
     )
-    assert "Current ED-10ap Production Limitation Lift Stage 4 User Decision Card" in text
+    assert "Current ED-10aq Production Limitation Lift Stage 5 User-Decision-Ready" in text
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in text
     assert "clip-ed10w-subtitle-presentation-review-pack-001" in text
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
@@ -1796,7 +1796,7 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
         "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
         in text
     )
-    assert "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001" in text
+    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in text
     assert "final-render-path-stage-1" in text
     assert "final-render-path-stage-2" in text
     assert "final-render-path-stage-3" in text
@@ -1878,7 +1878,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_ed10ao_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
@@ -1891,7 +1891,7 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
@@ -1911,7 +1911,7 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
         "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
         in artifact_ids
     )
-    assert "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001" in artifact_ids
+    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in artifact_ids
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
     lineage_surface = status["current_focus"][
         "subtitle_render_path_lineage_observation_surface"
@@ -2176,59 +2176,33 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     assert stage3_lift["tracked_binary_artifact_created"] is False
     assert stage3_lift["episodes_tracked"] is False
     decision_card_record = status["current_focus"][
-        "subtitle_production_limitation_lift_stage_4_user_decision_card"
+        "subtitle_production_limitation_lift_stage_5_user_decision_ready"
     ]
     assert decision_card_record["artifact_id"] == (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert decision_card_record["metadata_json"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json"
     )
     assert decision_card_record["doc"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
     )
     assert decision_card_record[
-        "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id"
-    ] == "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
+        "source_stage4_user_decision_card_artifact_id"
+    ] == "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
     assert decision_card_record["decision_topic_ids"] == [
         "subtitle_design_visual_acceptance",
         "production_render_readiness",
         "rights_publishing_public_use_clearance",
     ]
     assert decision_card_record["decision_topic_count"] == 3
-    assert decision_card_record["future_freeform_answer_handling"][
-        "user_may_answer_naturally"
-    ] is True
-    assert decision_card_record["future_freeform_answer_handling"][
-        "one_paragraph_or_few_bullets_allowed"
-    ] is True
-    assert decision_card_record["future_freeform_answer_handling"]["answer_style"] == (
-        "freeform"
-    )
-    assert decision_card_record["future_freeform_answer_handling"][
-        "template_required"
-    ] is False
-    assert decision_card_record["future_freeform_answer_handling"]["schema_owner"] == (
-        "Agent"
-    )
-    assert decision_card_record["future_freeform_answer_handling"][
-        "max_look_for_points"
-    ] == 3
-    assert decision_card_record["future_freeform_answer_handling"][
-        "fixed_choice_rows_allowed"
-    ] is False
-    assert decision_card_record["future_freeform_answer_handling"][
-        "fixed_choice_rows_emitted"
-    ] is False
-    assert decision_card_record["future_freeform_answer_handling"][
-        "hidden_schema_exposed_to_user"
-    ] is False
-    assert decision_card_record["not_asked_now"]["user_decision_requested_now"] is False
-    assert decision_card_record["not_asked_now"]["rights_status"] == "pending"
+    assert decision_card_record["user_decision_requested_now"] is False
+    assert decision_card_record["rights_status"] == "pending"
     assert decision_card_record["fixed_choice_rows_allowed"] is False
+    assert decision_card_record["fixed_choice_rows_emitted"] is False
     assert decision_card_record["screenshot_required"] is False
     assert decision_card_record["next_executable_route"] == (
-        "production-limitation-lift-stage-5-user-decision-ready"
+        "production-limitation-lift-stage-6-user-freeform-review-request"
     )
     assert decision_card_record["concrete_diagnostic_gap_found"] is False
     assert decision_card_record["new_render_run"] is False

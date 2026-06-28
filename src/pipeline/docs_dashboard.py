@@ -1,4 +1,4 @@
-"""Docs v1.5 dashboard builder.
+﻿"""Docs v1.5 dashboard builder.
 
 The dashboard is intentionally static and repo-local: it helps operators find
 the current wiki entry points, active artifacts, and docs that need tightening.
@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10ap',
-         'artifact_id': 'clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001',
+        "current_focus": {'feature_id': 'ED-10aq',
+         'artifact_id': 'clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'production_limitation_lift_stage_4_user_decision_card_ready',
+         'state': 'production_limitation_lift_stage_5_user_decision_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -125,14 +125,15 @@ def build_project_status(
          'production_limitation_lift_stage_2_decision_packet_artifact_id': 'clip-ed10an-production-limitation-lift-stage-2-decision-packet-001',
          'production_limitation_lift_stage_3_owner_review_prep_artifact_id': 'clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001',
          'production_limitation_lift_stage_4_user_decision_card_artifact_id': 'clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001',
+         'production_limitation_lift_stage_5_user_decision_ready_artifact_id': 'clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ap_production_limitation_lift_stage_4_user_decision_card_ready',
-         'user_action_type': 'NO_USER_ACTION_DECISION_CARD_PREP_ONLY',
+         'route_status': 'ed10aq_production_limitation_lift_stage_5_user_decision_ready',
+         'user_action_type': 'NO_USER_ACTION_STAGE_5_USER_DECISION_READY_ONLY',
          'next_review_action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
@@ -813,6 +814,34 @@ def build_project_status(
                                                                             'tracked_binary_artifact_created': False,
                                                                             'episodes_tracked': False,
                                                                             'final_render_path_approved': False},
+         'subtitle_production_limitation_lift_stage_5_user_decision_ready': {'status': 'production_limitation_lift_stage_5_user_decision_ready',
+                                                                            'artifact_id': 'clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001',
+                                                                            'metadata_json': 'docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json',
+                                                                            'doc': 'docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md',
+                                                                            'source_stage4_user_decision_card_artifact_id': 'clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001',
+                                                                            'decision_topic_ids': ['subtitle_design_visual_acceptance',
+                                                                                                   'production_render_readiness',
+                                                                                                   'rights_publishing_public_use_clearance'],
+                                                                            'decision_topic_count': 3,
+                                                                            'user_decision_requested_now': False,
+                                                                            'fixed_user_form_emitted': False,
+                                                                            'fixed_choice_rows_allowed': False,
+                                                                            'fixed_choice_rows_emitted': False,
+                                                                            'screenshot_required': False,
+                                                                            'hidden_schema_exposed_to_user': False,
+                                                                            'production_subtitle_design_acceptance': False,
+                                                                            'production_render_acceptance': False,
+                                                                            'creative_acceptance': False,
+                                                                            'rights_status': 'pending',
+                                                                            'publishing_acceptance': False,
+                                                                            'public_use_permission': False,
+                                                                            'next_executable_route': 'production-limitation-lift-stage-6-user-freeform-review-request',
+                                                                            'alternate_next_executable_route': 'final-render-path-stage-4',
+                                                                            'concrete_diagnostic_gap_found': False,
+                                                                            'new_render_run': False,
+                                                                            'tracked_binary_artifact_created': False,
+                                                                            'episodes_tracked': False,
+                                                                            'final_render_path_approved': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -873,17 +902,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_stage_4_user_decision_card',
+                           'current_blocker': 'none_for_production_limitation_lift_stage_5_user_decision_ready',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
          'review_card': {'status': 'withheld_latest_review_already_consumed',
                          'action_type': 'NO_REVIEW_CARD_REVIEW_CONSUMED',
                          'target': 'clip-ed10af-l2-render-path-selector-probe-001',
-                         'artifact_id': 'clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001',
-                         'axis': 'production_limitation_lift_stage_4_user_decision_card',
+                         'artifact_id': 'clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001',
+                         'axis': 'production_limitation_lift_stage_5_user_decision_ready',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10ap consumes the ED-10ao owner-review prep packet and prepares a short future user-facing decision card preparation packet while keeping all production/public approvals closed.',
+                         'what_changed': 'ED-10aq verifies ED-10ap is still a freeform owner decision card without fixed form, fixed choices, fixed-choice rows, screenshots, user decision, render approval, production approval, or rights/public-use approval.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -891,19 +920,17 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use ED-10ap as the future user decision card; no user decision is requested now, and final-render-path-stage-4 is only for a concrete diagnostic gap'},
+                         'completion_signal': 'use ED-10aq as the stage-5 user-decision-ready packet only; no user decision is requested now, and no production/public approval is granted.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'stage_4_user_decision_card_no_review_card',
+         'review_surface_direction': 'production_limitation_lift_stage_5_user_decision_ready_no_review_card',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
-         'review_debt': [{'debt_id': 'production_limitation_lift',
-                          'status': 'production_limitation_lift_stage_4_user_decision_card_ready',
-                          'next_action': 'use ED-10ap as the later freeform user decision card, or use final-render-path-stage-4 '
-                                         'only if a concrete diagnostic gap is found; '
-                                         'do not infer production/public approval'}],
+         'review_debt': [{'debt_id': 'production_limitation_lift_stage_5_user_decision_ready',
+                          'status': 'production_limitation_lift_stage_5_user_decision_ready',
+                          'next_action': 'use ED-10aq as the stage-5 user-decision-ready packet only; do not infer production/public approval'}],
          'emoji_treatment': 'neutral_ignore_for_evaluation',
          'production_candidate': False,
          'production_subtitle_design_acceptance': False,
@@ -1237,6 +1264,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
         if feature_id == "ED-10ap":
             active_artifact = "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+        if feature_id == "ED-10aq":
+            active_artifact = "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
         features.append(
             {
                 "id": feature_id,
@@ -1300,10 +1329,7 @@ def _artifact_coverage(
     mentioned = [
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
-    current_focus_registered = (
-        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
-        in artifact_ids
-    )
+    current_focus_registered = "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in artifact_ids
     return {
         "registered_artifact_count": len(artifact_ids),
         "features_with_artifact_count": len(mentioned),
@@ -1349,10 +1375,10 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
         {
-            "item": "ED-10ap production limitation lift stage 4 user decision card",
-            "artifact": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
-            "question": "Does the packet preserve ED-10ao's three topics as a future short freeform user decision card while keeping all production/public approvals closed?",
-            "next_route": "Use the packet only when a later slice explicitly asks for user judgement, or use final-render-path-stage-4 only if a concrete diagnostic gap is found.",
+            "item": "ED-10aq stage-5 user-decision-ready",
+            "artifact": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+            "question": "Does ED-10ap remain a freeform owner decision card with no fixed form, no immediate user decision, and no production/public approval?",
+            "next_route": "Treat ED-10aq as a gate sanity packet only; use final-render-path-stage-4 only if a concrete diagnostic gap is found.",
         },
         {
             "item": "ED-10ao production limitation-lift stage 3 owner-review prep",
@@ -1551,13 +1577,11 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
-            "label": "Production Limitation Lift Stage 4 User Decision Card",
-            "command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-4-user-decision-card.md",
-            "target": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md",
+            "label": "Production Limitation Lift Stage 5 User Decision Ready",
+            "command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
+            "target": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
             "when_to_use": (
-                "Use to inspect the ED-10ap future short freeform user decision card "
-                "prepared from ED-10ao owner-review topics without asking for "
-                "approval now."
+                "Use to inspect the ED-10aq stage-5 user-decision-ready packet without asking for approval now."
             ),
         },
         {
@@ -1927,6 +1951,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "production_limitation_lift_stage_3_owner_review_prep_ready"
     if feature_id == "ED-10ap":
         return "production_limitation_lift_stage_4_user_decision_card_ready"
+    if feature_id == "ED-10aq":
+        return "production_limitation_lift_stage_5_user_decision_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2001,6 +2027,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ap":
         return 100
+    if feature_id == "ED-10aq":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -2073,6 +2101,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the stage-3 owner-review prep packet to start production-limitation-lift-stage-4-user-decision-card; keep future user input freeform and approvals explicit."
     if feature_id == "ED-10ap":
         return "Use the freeform user decision card only when a later slice explicitly asks for user judgement; keep approvals explicit."
+    if feature_id == "ED-10aq":
+        return "Use the stage-5 user-decision-ready packet only; keep user work none and approvals explicit."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

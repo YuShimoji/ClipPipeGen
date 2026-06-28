@@ -1,4 +1,4 @@
-"""Subtitle renderer typography spike tests."""
+﻿"""Subtitle renderer typography spike tests."""
 
 from __future__ import annotations
 
@@ -1690,7 +1690,7 @@ def test_subtitle_production_limitation_lift_stage3_doc_records_owner_review_pre
     assert "all_checks_passed: `true`" in text
 
 
-def test_subtitle_production_limitation_lift_stage_4_user_decision_card_matches_tracked_json():
+def test_subtitle_production_limitation_lift_stage4_user_decision_card_matches_tracked_json():
     style_dir = REPO_ROOT / "docs" / "style_intent"
     stage3_lift = json.loads(
         (
@@ -1726,6 +1726,7 @@ def test_subtitle_production_limitation_lift_stage_4_user_decision_card_matches_
         preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE4_DECISION_TOPIC_IDS
     )
     assert len(tracked["decision_topics"]) == 3
+    assert "decision_card" not in tracked
 
     for topic in tracked["decision_topics"]:
         assert topic["plain_language_question_shape"]
@@ -1765,6 +1766,12 @@ def test_subtitle_production_limitation_lift_stage_4_user_decision_card_matches_
     assert tracked["not_asked_now"]["rights_status"] == "pending"
     assert tracked["not_asked_now"]["publishing_acceptance"] is False
     assert tracked["not_asked_now"]["public_use_permission"] is False
+    assert (
+        tracked["not_asked_now"][
+            "stage_4_user_decision_card_does_not_grant_approval"
+        ]
+        is True
+    )
     assert tracked["next_executable_route"]["route_id"] == (
         "production-limitation-lift-stage-5-user-decision-ready"
     )
@@ -1784,13 +1791,15 @@ def test_subtitle_production_limitation_lift_stage_4_user_decision_card_matches_
     assert tracked["review_policy"]["screenshot_required"] is False
     assert tracked["validation"]["source_owner_review_prep_preserved"] is True
     assert tracked["validation"]["decision_topics_bounded_to_three"] is True
+    assert tracked["validation"]["future_freeform_answer_handling_ready"] is True
     assert tracked["validation"]["no_fixed_choice_or_form_surface"] is True
     assert tracked["validation"]["production_public_gates_still_closed"] is True
     assert tracked["validation"]["no_screenshot_requirement"] is True
+    assert tracked["validation"]["hidden_schema_not_exposed"] is True
     assert tracked["validation"]["all_checks_passed"] is True
 
 
-def test_subtitle_production_limitation_lift_stage_4_user_decision_card_doc_records_readback():
+def test_subtitle_production_limitation_lift_stage4_doc_records_user_decision_card():
     text = (
         REPO_ROOT
         / "docs"
@@ -1802,6 +1811,8 @@ def test_subtitle_production_limitation_lift_stage_4_user_decision_card_doc_reco
     assert "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001" in text
     assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in text
     assert "Future Decision Topics" in text
+    assert "Future Freeform Answer Handling" in text
+    assert ("Decision Card" + " Readback") not in text
     assert "subtitle_design_visual_acceptance" in text
     assert "production_render_readiness" in text
     assert "rights_publishing_public_use_clearance" in text
@@ -1812,12 +1823,178 @@ def test_subtitle_production_limitation_lift_stage_4_user_decision_card_doc_reco
     assert "schema_owner: `Agent`" in text
     assert "max_look_for_points: `3`" in text
     assert "fixed_form_required: `false`" in text
+    assert "fixed_choice_rows_allowed: `false`" in text
     assert "fixed_choice_rows_emitted: `false`" in text
     assert "screenshot_required: `false`" in text
     assert "user_decision_requested_now: `false`" in text
     assert "production-limitation-lift-stage-5-user-decision-ready" in text
     assert "final-render-path-stage-4" in text
     assert "source_owner_review_prep_preserved: `true`" in text
+    assert "future_freeform_answer_handling_ready: `true`" in text
+    assert "hidden_schema_not_exposed: `true`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "rights_status: `pending`" in text
+    assert "public_use_permission: `false`" in text
+
+
+def test_subtitle_production_limitation_lift_stage5_user_decision_ready_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    stage4_card = json.loads(
+        (
+            style_dir
+            / "subtitle-production-limitation-lift-stage-4-user-decision-card.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked = json.loads(
+        (
+            style_dir
+            / "subtitle-production-limitation-lift-stage-5-user-decision-ready.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = (
+        preset_selector.build_subtitle_production_limitation_lift_stage5_user_decision_ready(
+            production_lift_stage4_user_decision_card=stage4_card
+        )
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE5_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE5_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10aq"
+    assert tracked["status"] == "production_limitation_lift_stage_5_user_decision_ready"
+    assert tracked["source_stage4_user_decision_card_artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE4_ARTIFACT_ID
+    )
+    assert tracked[
+        "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id"
+    ] == preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE3_ARTIFACT_ID
+    assert tracked["decision_topic_ids"] == list(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE5_DECISION_TOPIC_IDS
+    )
+    assert len(tracked["decision_topics"]) == 3
+    assert "decision_card" not in tracked
+
+    for topic in tracked["decision_topics"]:
+        assert topic["final_user_facing_topic_title"]
+        assert topic["low_burden_freeform_prompt_shape"]
+        assert topic["evidence_available"]
+        assert topic["evidence_still_missing"]
+        assert topic["internal_normalization_hints"]
+        assert topic["unsafe_overclaiming_examples"]
+        assert topic["must_stop_before_approval"] is True
+        assert topic["agent_may_approve"] is False
+        assert topic["user_decision_requested_now"] is False
+        assert topic["fixed_form_required"] is False
+        assert topic["fixed_choice_rows_allowed"] is False
+        assert topic["fixed_choice_rows_emitted"] is False
+        assert topic["screenshot_required"] is False
+        assert topic["hidden_schema_exposed_to_user"] is False
+
+    ready = tracked["ready_but_not_asked"]
+    assert ready["future_short_freeform_review_request_ready"] is True
+    assert ready["source_stage4_validation_passed"] is True
+    assert ready["user_decision_requested_now"] is False
+    assert ready["production_subtitle_design_acceptance"] is False
+    assert ready["production_render_acceptance"] is False
+    assert ready["creative_acceptance"] is False
+    assert ready["rights_status"] == "pending"
+    assert ready["publishing_acceptance"] is False
+    assert ready["public_use_permission"] is False
+    assert ready["answer_style"] == "freeform"
+    assert ready["template_required"] is False
+    assert ready["schema_owner"] == "Agent"
+    assert ready["max_look_for_points"] == 3
+    assert ready["fixed_form_required"] is False
+    assert ready["fixed_choice_rows_allowed"] is False
+    assert ready["fixed_choice_rows_emitted"] is False
+    assert ready["screenshot_required"] is False
+    assert ready["hidden_schema_exposed_to_user"] is False
+    assert ready["unknowns_remain_unknown"] is True
+
+    constraints = tracked["future_presentation_constraints"]
+    assert constraints["must_present_at_most_three_topics"] is True
+    assert constraints["decision_topic_count"] == 3
+    assert constraints["must_preserve_freeform_answer_style"] is True
+    assert constraints["must_not_show_internal_schema"] is True
+    assert constraints["must_not_emit_fixed_user_form"] is True
+    assert constraints["must_not_emit_fixed_choice_rows"] is True
+    assert constraints["must_not_request_screenshot"] is True
+    assert constraints["must_keep_unknowns_pending"] is True
+    assert constraints["must_stop_before_any_production_or_public_approval"] is True
+    assert constraints["agent_may_approve"] is False
+
+    assert tracked["next_executable_route"]["route_id"] == (
+        "production-limitation-lift-stage-6-user-freeform-review-request"
+    )
+    assert tracked["next_executable_route"]["alternate_route_id"] == (
+        "final-render-path-stage-4"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_rehearsal_run"] is False
+    assert tracked["validation"]["source_user_decision_card_preserved"] is True
+    assert tracked["validation"]["source_owner_review_prep_linked"] is True
+    assert tracked["validation"]["decision_topics_bounded_to_three"] is True
+    assert tracked["validation"]["ready_but_not_asked_explicit"] is True
+    assert tracked["validation"]["future_presentation_constraints_ready"] is True
+    assert tracked["validation"]["no_fixed_choice_or_form_surface"] is True
+    assert tracked["validation"]["production_public_gates_still_closed"] is True
+    assert tracked["validation"]["no_screenshot_requirement"] is True
+    assert tracked["validation"]["no_hidden_schema_exposed"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+    assert tracked["boundaries"]["user_decision_card_ready"] is True
+    assert tracked["boundaries"]["stage_5_user_decision_ready_only"] is True
+    assert tracked["boundaries"]["stage_5_user_decision_ready_does_not_grant_approval"] is True
+    assert tracked["boundaries"]["fixed_choice_rows_emitted"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+
+
+def test_subtitle_production_limitation_lift_stage5_doc_records_ready_packet():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10aq Production Limitation Lift Stage 5 User-Decision-Ready" in text
+    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in text
+    assert "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001" in text
+    assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in text
+    assert "Decision Topics" in text
+    assert "Ready But Not Asked" in text
+    assert "Future Presentation Constraints" in text
+    assert "subtitle_design_visual_acceptance" in text
+    assert "production_render_readiness" in text
+    assert "rights_publishing_public_use_clearance" in text
+    assert "future_short_freeform_review_request_ready: `true`" in text
+    assert "user_decision_requested_now: `false`" in text
+    assert "answer_style: `freeform`" in text
+    assert "template_required: `false`" in text
+    assert "schema_owner: `Agent`" in text
+    assert "max_look_for_points: `3`" in text
+    assert "fixed_form_required: `false`" in text
+    assert "fixed_choice_rows_emitted: `false`" in text
+    assert "screenshot_required: `false`" in text
+    assert "hidden_schema_exposed_to_user: `false`" in text
+    assert "must_present_at_most_three_topics: `true`" in text
+    assert "must_not_emit_fixed_user_form: `true`" in text
+    assert "must_not_emit_fixed_choice_rows: `true`" in text
+    assert "must_not_request_screenshot: `true`" in text
+    assert "production-limitation-lift-stage-6-user-freeform-review-request" in text
+    assert "final-render-path-stage-4" in text
+    assert "source_user_decision_card_preserved: `true`" in text
+    assert "source_owner_review_prep_linked: `true`" in text
+    assert "ready_but_not_asked_explicit: `true`" in text
+    assert "future_presentation_constraints_ready: `true`" in text
+    assert "no_hidden_schema_exposed: `true`" in text
     assert "all_checks_passed: `true`" in text
     assert "rights_status: `pending`" in text
     assert "public_use_permission: `false`" in text
