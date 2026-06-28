@@ -203,10 +203,10 @@ PRODUCTION_LIMITATION_LIFT_STAGE3_OWNER_REVIEW_GROUP_IDS = (
     "rights_publishing_public_use_clearance",
 )
 PRODUCTION_LIMITATION_LIFT_STAGE4_SCHEMA_ID = (
-    "clippipegen.subtitle_owner_review_decision_card_freeform.v1"
+    "clippipegen.subtitle_production_limitation_lift_stage_4_user_decision_card.v1"
 )
 PRODUCTION_LIMITATION_LIFT_STAGE4_ARTIFACT_ID = (
-    "clip-ed10ap-owner-review-decision-card-freeform-001"
+    "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
 )
 PRODUCTION_LIMITATION_LIFT_STAGE4_FEATURE_ID = "ED-10ap"
 PRODUCTION_LIMITATION_LIFT_STAGE4_DECISION_TOPIC_IDS = (
@@ -3224,7 +3224,6 @@ def build_subtitle_production_limitation_lift_stage4_user_decision_card(
     freeform_answer_handling = (
         _production_limitation_lift_stage4_freeform_answer_handling(decision_topics)
     )
-    decision_card = _production_limitation_lift_stage4_decision_card(decision_topics)
     boundaries = _production_limitation_lift_stage4_boundary_flags(stage3_lift)
     validation = _production_limitation_lift_stage4_validation(
         stage3_lift=stage3_lift,
@@ -3232,16 +3231,15 @@ def build_subtitle_production_limitation_lift_stage4_user_decision_card(
         decision_topics=decision_topics,
         not_asked_now=not_asked_now,
         freeform_answer_handling=freeform_answer_handling,
-        decision_card=decision_card,
         boundaries=boundaries,
     )
     return {
         "schema_id": PRODUCTION_LIMITATION_LIFT_STAGE4_SCHEMA_ID,
         "artifact_id": PRODUCTION_LIMITATION_LIFT_STAGE4_ARTIFACT_ID,
         "feature_id": PRODUCTION_LIMITATION_LIFT_STAGE4_FEATURE_ID,
-        "status": "owner_review_decision_card_freeform_ready",
-        "surface_kind": "owner_review_decision_card_freeform_readback",
-        "render_level": "owner_review_decision_card_freeform_no_new_render",
+        "status": "production_limitation_lift_stage_4_user_decision_card_ready",
+        "surface_kind": "production_limitation_lift_stage_4_future_user_decision_card",
+        "render_level": "stage_4_user_decision_card_no_new_render",
         "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id": stage3_lift[
             "artifact_id"
         ],
@@ -3262,9 +3260,8 @@ def build_subtitle_production_limitation_lift_stage4_user_decision_card(
         "decision_topics": decision_topics,
         "not_asked_now": not_asked_now,
         "future_freeform_answer_handling": freeform_answer_handling,
-        "decision_card": decision_card,
         "next_executable_route": {
-            "route_id": "owner-review-decision-card-freeform-ready",
+            "route_id": "production-limitation-lift-stage-5-user-decision-ready",
             "alternate_route_id": "final-render-path-stage-4",
             "alternate_route_condition": (
                 "Use only if a concrete diagnostic gap is found; ED-10ap "
@@ -3278,7 +3275,7 @@ def build_subtitle_production_limitation_lift_stage4_user_decision_card(
             ),
             "first_steps": [
                 "Keep ED-10ao as the source owner-review preparation packet.",
-                "Present at most three freeform topics when a later slice asks for owner judgement.",
+                "Present at most three freeform topics when a later slice asks for user judgement.",
                 "Normalize future answers internally while preserving unknowns as unknown.",
             ],
             "must_not_do": [
@@ -3298,7 +3295,7 @@ def build_subtitle_production_limitation_lift_stage4_user_decision_card(
             ],
         },
         "render_gate": {
-            "level": "owner_review_decision_card_freeform_no_new_render",
+            "level": "stage_4_user_decision_card_no_new_render",
             "existing_output_first_applied": True,
             "existing_output_first_reused": True,
             "new_render_run": False,
@@ -3323,12 +3320,12 @@ def build_subtitle_production_limitation_lift_stage4_user_decision_card(
         },
         "validation": validation,
         "outputs": {
-            "json": "docs/style_intent/subtitle-owner-review-decision-card-freeform.json",
-            "doc": "docs/style_intent/subtitle-owner-review-decision-card-freeform.md",
+            "json": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json",
+            "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md",
         },
         "review_policy": {
             "human_review_required": False,
-            "user_side_work": "none_for_this_owner_review_decision_card_freeform_readback",
+            "user_side_work": "none_for_this_stage_4_user_decision_card_preparation_packet",
             "user_decision_requested_now": False,
             "answer_style": "freeform",
             "template_required": False,
@@ -3381,10 +3378,10 @@ def write_subtitle_production_limitation_lift_stage4_user_decision_card(
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     json_path = (
-        output_dir / "subtitle-owner-review-decision-card-freeform.json"
+        output_dir / "subtitle-production-limitation-lift-stage-4-user-decision-card.json"
     )
     doc_path = (
-        output_dir / "subtitle-owner-review-decision-card-freeform.md"
+        output_dir / "subtitle-production-limitation-lift-stage-4-user-decision-card.md"
     )
     json_path.write_text(
         json.dumps(packet, ensure_ascii=False, indent=2) + "\n",
@@ -4933,7 +4930,6 @@ def render_subtitle_production_limitation_lift_stage4_user_decision_card_markdow
     validation = packet["validation"]
     not_asked_now = packet["not_asked_now"]
     answer_handling = packet["future_freeform_answer_handling"]
-    decision_card = packet["decision_card"]
     boundaries = packet["boundaries"]
     nl = chr(10)
     topic_rows = nl.join(
@@ -4982,9 +4978,9 @@ def render_subtitle_production_limitation_lift_stage4_user_decision_card_markdow
     route_steps = nl.join(f"- {step}" for step in route["first_steps"])
     route_boundaries = nl.join(f"- {item}" for item in route["must_not_do"])
     lines = [
-        "# ED-10ap Owner Review Decision Card Freeform",
+        "# ED-10ap Production Limitation Lift Stage 4 User Decision Card",
         "",
-        "This tracked packet prepares a future short freeform owner decision-card readback from ED-10ao owner-review entries. It does not ask for a decision now and does not approve production subtitle design, production render, creative use, rights, publishing, or public use.",
+        "This tracked packet prepares a future short freeform user decision card from ED-10ao owner-review entries. It does not ask for a decision now and does not approve production subtitle design, production render, creative use, rights, publishing, or public use.",
         "",
         f"- artifact_id: `{packet['artifact_id']}`",
         f"- status: `{packet['status']}`",
@@ -5027,16 +5023,6 @@ def render_subtitle_production_limitation_lift_stage4_user_decision_card_markdow
         "",
         unknown_rows,
         "",
-        "## Decision Card Readback",
-        "",
-        f"- answer_style: `{decision_card['answer_style']}`",
-        f"- template_required: `{str(decision_card['template_required']).lower()}`",
-        f"- schema_owner: `{decision_card['schema_owner']}`",
-        f"- max_look_for_points: `{decision_card['max_look_for_points']}`",
-        f"- fixed_choice_rows_allowed: `{str(decision_card['fixed_choice_rows_allowed']).lower()}`",
-        f"- screenshot_required: `{str(decision_card['screenshot_required']).lower()}`",
-        f"- user_side_work_now: `{decision_card['user_side_work_now']}`",
-        "",
         "## Next Executable Route",
         "",
         f"- route_id: `{route['route_id']}`",
@@ -5058,7 +5044,7 @@ def render_subtitle_production_limitation_lift_stage4_user_decision_card_markdow
         f"- decision_topics_bounded_to_three: `{str(validation['decision_topics_bounded_to_three']).lower()}`",
         f"- not_asked_now_boundary_explicit: `{str(validation['not_asked_now_boundary_explicit']).lower()}`",
         f"- future_user_burden_freeform: `{str(validation['future_user_burden_freeform']).lower()}`",
-        f"- decision_card_freeform_readback: `{str(validation['decision_card_freeform_readback']).lower()}`",
+        f"- future_freeform_answer_handling_ready: `{str(validation['future_freeform_answer_handling_ready']).lower()}`",
         f"- no_fixed_choice_or_form_surface: `{str(validation['no_fixed_choice_or_form_surface']).lower()}`",
         f"- source_evidence_linked: `{str(validation['source_evidence_linked']).lower()}`",
         f"- production_public_gates_still_closed: `{str(validation['production_public_gates_still_closed']).lower()}`",
@@ -8325,31 +8311,6 @@ def _production_limitation_lift_stage4_decision_topics(
     return topics
 
 
-def _production_limitation_lift_stage4_decision_card(
-    decision_topics: list[Mapping[str, Any]],
-) -> dict[str, Any]:
-    topic_ids = [str(topic["topic_id"]) for topic in decision_topics]
-    return {
-        "decision_target": (
-            "Later owner judgement on whether the three ED-10ao pending areas "
-            "can move toward production/public acceptance or must remain pending."
-        ),
-        "answer_style": "freeform",
-        "template_required": False,
-        "schema_owner": "Agent",
-        "max_look_for_points": 3,
-        "look_for_count": len(topic_ids),
-        "topic_ids": topic_ids,
-        "fixed_form_required": False,
-        "fixed_choice_rows_allowed": False,
-        "fixed_choice_rows_emitted": False,
-        "screenshot_required": False,
-        "hidden_schema_exposed_to_user": False,
-        "user_decision_requested_now": False,
-        "user_side_work_now": "none",
-    }
-
-
 def _production_limitation_lift_stage4_not_asked_now(
     stage3_lift: Mapping[str, Any],
 ) -> dict[str, Any]:
@@ -8365,7 +8326,7 @@ def _production_limitation_lift_stage4_not_asked_now(
         "publishing_acceptance": source["publishing_acceptance"],
         "public_use_permission": source["public_use_permission"],
         "production_public_decision_approved": False,
-        "owner_review_decision_card_freeform_does_not_grant_approval": True,
+        "stage_4_card_does_not_grant_approval": True,
     }
 
 
@@ -8429,8 +8390,8 @@ def _production_limitation_lift_stage4_boundary_flags(
             "source_final_path_stage3_new_render_created": stage3_lift["render_gate"][
                 "source_stage3_new_render_run"
             ],
-            "owner_review_decision_card_freeform_only": True,
-            "owner_review_decision_card_freeform_does_not_grant_approval": True,
+            "stage_4_user_decision_card_only": True,
+            "stage_4_card_does_not_grant_approval": True,
             "future_user_decision_shape_freeform": True,
             "user_decision_requested_now": False,
             "fixed_user_form_emitted": False,
@@ -8462,7 +8423,6 @@ def _production_limitation_lift_stage4_validation(
     decision_topics: list[Mapping[str, Any]],
     not_asked_now: Mapping[str, Any],
     freeform_answer_handling: Mapping[str, Any],
-    decision_card: Mapping[str, Any],
     boundaries: Mapping[str, Any],
 ) -> dict[str, Any]:
     expected_topic_ids = list(PRODUCTION_LIMITATION_LIFT_STAGE4_DECISION_TOPIC_IDS)
@@ -8491,7 +8451,7 @@ def _production_limitation_lift_stage4_validation(
         and not_asked_now["publishing_acceptance"] is False
         and not_asked_now["public_use_permission"] is False
         and not_asked_now["production_public_decision_approved"] is False
-        and not_asked_now["owner_review_decision_card_freeform_does_not_grant_approval"] is True
+        and not_asked_now["stage_4_card_does_not_grant_approval"] is True
     )
     future_user_burden_freeform = (
         freeform_answer_handling["user_may_answer_naturally"] is True
@@ -8504,21 +8464,6 @@ def _production_limitation_lift_stage4_validation(
         and freeform_answer_handling["schema_owner"] == "Agent"
         and freeform_answer_handling["max_look_for_points"] == 3
         and freeform_answer_handling["decision_topic_count"] == 3
-    )
-    decision_card_freeform_readback = (
-        decision_card["answer_style"] == "freeform"
-        and decision_card["template_required"] is False
-        and decision_card["schema_owner"] == "Agent"
-        and decision_card["max_look_for_points"] == 3
-        and decision_card["look_for_count"] == 3
-        and decision_card["topic_ids"] == expected_topic_ids
-        and decision_card["fixed_form_required"] is False
-        and decision_card["fixed_choice_rows_allowed"] is False
-        and decision_card["fixed_choice_rows_emitted"] is False
-        and decision_card["screenshot_required"] is False
-        and decision_card["hidden_schema_exposed_to_user"] is False
-        and decision_card["user_decision_requested_now"] is False
-        and decision_card["user_side_work_now"] == "none"
     )
     no_fixed_choice_or_form_surface = (
         boundaries["fixed_user_form_emitted"] is False
@@ -8547,7 +8492,7 @@ def _production_limitation_lift_stage4_validation(
         and boundaries["public_use_permission"] is False
         and boundaries["production_usage_allowed"] is False
         and boundaries["final_render_path_approved"] is False
-        and boundaries["owner_review_decision_card_freeform_does_not_grant_approval"] is True
+        and boundaries["stage_4_card_does_not_grant_approval"] is True
     )
     no_screenshot_requirement = (
         boundaries["screenshot_required"] is False
@@ -8570,7 +8515,7 @@ def _production_limitation_lift_stage4_validation(
         "decision_topics_bounded_to_three": decision_topics_bounded_to_three,
         "not_asked_now_boundary_explicit": not_asked_now_boundary_explicit,
         "future_user_burden_freeform": future_user_burden_freeform,
-        "decision_card_freeform_readback": decision_card_freeform_readback,
+        "future_freeform_answer_handling_ready": future_user_burden_freeform,
         "no_fixed_choice_or_form_surface": no_fixed_choice_or_form_surface,
         "source_evidence_linked": source_evidence_linked,
         "production_public_gates_still_closed": production_public_gates_still_closed,
@@ -8587,7 +8532,6 @@ def _production_limitation_lift_stage4_validation(
             and decision_topics_bounded_to_three
             and not_asked_now_boundary_explicit
             and future_user_burden_freeform
-            and decision_card_freeform_readback
             and no_fixed_choice_or_form_surface
             and source_evidence_linked
             and production_public_gates_still_closed

@@ -547,14 +547,14 @@ publishing, and public-use decisions false or pending. The next executable
 route is `production-limitation-lift-stage-4-user-decision-card`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
-## Current ED-10ap Owner Review Decision Card Freeform
+## Current ED-10ap Production Limitation Lift Stage 4 User Decision Card
 
 ED-10ap records
-`clip-ed10ap-owner-review-decision-card-freeform-001` as a tracked future
+`clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` as a tracked future
 user decision card preparation packet at
-`docs/style_intent/subtitle-owner-review-decision-card-freeform.json`
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json`
 and
-`docs/style_intent/subtitle-owner-review-decision-card-freeform.md`.
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md`.
 It consumes ED-10ao and keeps the same three topics: subtitle design / visual
 acceptance, production render readiness, and rights / publishing / public-use
 clearance.
@@ -567,7 +567,7 @@ path, exposes no hidden schema as user input, runs no render, and creates no
 tracked media. It keeps future user input freeform and explicitly keeps
 production subtitle design, production render, creative acceptance, rights,
 publishing, and public-use false or pending. The next executable route is
-`owner-review-decision-card-freeform-ready`; use
+`production-limitation-lift-stage-5-user-decision-ready`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
 ## Future Shared Line-Break Policy Note

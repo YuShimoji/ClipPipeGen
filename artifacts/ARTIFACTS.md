@@ -676,16 +676,16 @@ Boundary flags remain false or pending:
 - `new_rehearsal_run=true`
 - `final_render_path_approved=false`
 
-## `clip-ed10ap-owner-review-decision-card-freeform-001`
+## `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
 
 | Field | Value |
 |---|---|
-| title | ED-10ap Owner Review Decision Card Freeform |
-| purpose | Convert the ED-10ao owner-review preparation entries into a future short freeform owner decision-card readback without approving production/public use or asking for a user decision now. |
+| title | ED-10ap Production Limitation Lift Stage 4 User Decision Card |
+| purpose | Convert the ED-10ao owner-review preparation entries into a future short freeform user decision card without approving production/public use or asking for a user decision now. |
 | storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
-| repo_relative_path | `docs/style_intent/subtitle-owner-review-decision-card-freeform.md` |
-| metadata_json | `docs/style_intent/subtitle-owner-review-decision-card-freeform.json` |
-| open_command | `see docs\style_intent\subtitle-owner-review-decision-card-freeform.md` |
+| repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md` |
+| metadata_json | `docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-stage-4-user-decision-card.md` |
 | source_owner_review_prep | `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` |
 | source_decision_packet | `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` |
 | source_gate_matrix | `clip-ed10am-production-limitation-lift-stage-1-001` |
@@ -694,8 +694,8 @@ Boundary flags remain false or pending:
 | generated_from | ED-10ap uses ED-10ao owner-review groups and records plain-language future question shape, available and missing evidence, safe freeform answer hints, internal normalization hints, stop boundary, and unsafe overclaiming examples for each topic. |
 | validation_command | Parse ED-10ap JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty and referenced local outputs are ignored. |
 | latest_local_smoke | ED-10ap has exactly three future decision topics, preserves ED-10ao and ED-10an source links, keeps future user answers freeform, emits no fixed user form or fixed-choice rows, requires no screenshot path, exposes no hidden schema as user input, and keeps all production/public flags false or pending. |
-| review_status | No new Review Card. This is future owner decision-card readback only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance. |
-| next_action | Start `owner-review-decision-card-freeform-ready`, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
+| review_status | No new Review Card. This is future user decision card only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance. |
+| next_action | Start `production-limitation-lift-stage-5-user-decision-ready`, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
 
 Boundary flags remain false or pending:
 

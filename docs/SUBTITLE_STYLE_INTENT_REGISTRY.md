@@ -3,11 +3,11 @@ id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: owner_review_decision_card_freeform_ready
+health: production_limitation_lift_stage_4_user_decision_card_ready
 progress_pct: 100
 last_touched: 2026-06-28
-active_artifact: clip-ed10ap-owner-review-decision-card-freeform-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-owner-review-decision-card-freeform.json, docs/style_intent/subtitle-owner-review-decision-card-freeform.md, artifacts/ARTIFACTS.md
+active_artifact: clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
@@ -148,17 +148,17 @@ flags false or pending, and prepares
 `final-render-path-stage-4` is needed for a concrete diagnostic gap.
 
 ED-10ap adds
-`clip-ed10ap-owner-review-decision-card-freeform-001` at
-[`docs/style_intent/subtitle-owner-review-decision-card-freeform.json`](style_intent/subtitle-owner-review-decision-card-freeform.json)
+`clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` at
+[`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json`](style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json)
 and
-[`docs/style_intent/subtitle-owner-review-decision-card-freeform.md`](style_intent/subtitle-owner-review-decision-card-freeform.md).
-It consumes ED-10ao and prepares a future short freeform owner decision-card readback for
+[`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md`](style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md).
+It consumes ED-10ao and prepares a future short freeform user decision card for
 subtitle design / visual acceptance, production render readiness, and rights /
 publishing / public-use clearance. It requests no immediate user decision,
 emits no fixed user form or fixed-choice rows, requires no screenshot path,
 exposes no hidden schema as user input, runs no render, tracks no media, keeps
 production/public flags false or pending, and prepares
-`owner-review-decision-card-freeform-ready` unless
+`production-limitation-lift-stage-5-user-decision-ready` unless
 `final-render-path-stage-4` is needed for a concrete diagnostic gap.
 
 ## Intent Axes

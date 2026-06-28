@@ -1690,7 +1690,7 @@ def test_subtitle_production_limitation_lift_stage3_doc_records_owner_review_pre
     assert "all_checks_passed: `true`" in text
 
 
-def test_subtitle_owner_review_decision_card_freeform_matches_tracked_json():
+def test_subtitle_production_limitation_lift_stage_4_user_decision_card_matches_tracked_json():
     style_dir = REPO_ROOT / "docs" / "style_intent"
     stage3_lift = json.loads(
         (
@@ -1701,7 +1701,7 @@ def test_subtitle_owner_review_decision_card_freeform_matches_tracked_json():
     tracked = json.loads(
         (
             style_dir
-            / "subtitle-owner-review-decision-card-freeform.json"
+            / "subtitle-production-limitation-lift-stage-4-user-decision-card.json"
         ).read_text(encoding="utf-8")
     )
     generated = (
@@ -1718,7 +1718,7 @@ def test_subtitle_owner_review_decision_card_freeform_matches_tracked_json():
         preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE4_ARTIFACT_ID
     )
     assert tracked["feature_id"] == "ED-10ap"
-    assert tracked["status"] == "owner_review_decision_card_freeform_ready"
+    assert tracked["status"] == "production_limitation_lift_stage_4_user_decision_card_ready"
     assert tracked[
         "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id"
     ] == preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE3_ARTIFACT_ID
@@ -1766,11 +1766,11 @@ def test_subtitle_owner_review_decision_card_freeform_matches_tracked_json():
     assert tracked["not_asked_now"]["publishing_acceptance"] is False
     assert tracked["not_asked_now"]["public_use_permission"] is False
     assert tracked["next_executable_route"]["route_id"] == (
-        "owner-review-decision-card-freeform-ready"
+        "production-limitation-lift-stage-5-user-decision-ready"
     )
     assert tracked["render_gate"]["new_render_run"] is False
     assert tracked["render_gate"]["new_rehearsal_run"] is False
-    assert tracked["boundaries"]["owner_review_decision_card_freeform_only"] is True
+    assert tracked["boundaries"]["stage_4_user_decision_card_only"] is True
     assert tracked["boundaries"]["fixed_choice_rows_emitted"] is False
     assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
     assert tracked["boundaries"]["episodes_tracked"] is False
@@ -1790,16 +1790,16 @@ def test_subtitle_owner_review_decision_card_freeform_matches_tracked_json():
     assert tracked["validation"]["all_checks_passed"] is True
 
 
-def test_subtitle_owner_review_decision_card_freeform_doc_records_readback():
+def test_subtitle_production_limitation_lift_stage_4_user_decision_card_doc_records_readback():
     text = (
         REPO_ROOT
         / "docs"
         / "style_intent"
-        / "subtitle-owner-review-decision-card-freeform.md"
+        / "subtitle-production-limitation-lift-stage-4-user-decision-card.md"
     ).read_text(encoding="utf-8")
 
-    assert "ED-10ap Owner Review Decision Card Freeform" in text
-    assert "clip-ed10ap-owner-review-decision-card-freeform-001" in text
+    assert "ED-10ap Production Limitation Lift Stage 4 User Decision Card" in text
+    assert "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001" in text
     assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in text
     assert "Future Decision Topics" in text
     assert "subtitle_design_visual_acceptance" in text
@@ -1815,7 +1815,7 @@ def test_subtitle_owner_review_decision_card_freeform_doc_records_readback():
     assert "fixed_choice_rows_emitted: `false`" in text
     assert "screenshot_required: `false`" in text
     assert "user_decision_requested_now: `false`" in text
-    assert "owner-review-decision-card-freeform-ready" in text
+    assert "production-limitation-lift-stage-5-user-decision-ready" in text
     assert "final-render-path-stage-4" in text
     assert "source_owner_review_prep_preserved: `true`" in text
     assert "all_checks_passed: `true`" in text

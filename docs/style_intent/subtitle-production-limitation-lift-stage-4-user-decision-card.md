@@ -1,9 +1,9 @@
-# ED-10ap Owner Review Decision Card Freeform
+# ED-10ap Production Limitation Lift Stage 4 User Decision Card
 
-This tracked packet prepares a future short freeform owner decision-card readback from ED-10ao owner-review entries. It does not ask for a decision now and does not approve production subtitle design, production render, creative use, rights, publishing, or public use.
+This tracked packet prepares a future short freeform user decision card from ED-10ao owner-review entries. It does not ask for a decision now and does not approve production subtitle design, production render, creative use, rights, publishing, or public use.
 
-- artifact_id: `clip-ed10ap-owner-review-decision-card-freeform-001`
-- status: `owner_review_decision_card_freeform_ready`
+- artifact_id: `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
+- status: `production_limitation_lift_stage_4_user_decision_card_ready`
 - source_stage3_owner_review_prep_artifact_id: `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001`
 - source_stage2_decision_packet_artifact_id: `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001`
 - source_stage1_gate_matrix_artifact_id: `clip-ed10am-production-limitation-lift-stage-1-001`
@@ -28,7 +28,7 @@ This tracked packet prepares a future short freeform owner decision-card readbac
 - publishing_acceptance: `false`
 - public_use_permission: `false`
 - production_public_decision_approved: `false`
-- owner_review_decision_card_freeform_does_not_grant_approval: `true`
+- stage_4_card_does_not_grant_approval: `true`
 
 ## Future Freeform Answer Handling
 
@@ -62,26 +62,16 @@ Unknowns remain unknown:
 - final render acceptance not mentioned
 - production subtitle design acceptance not mentioned
 
-## Decision Card Readback
-
-- answer_style: `freeform`
-- template_required: `false`
-- schema_owner: `Agent`
-- max_look_for_points: `3`
-- fixed_choice_rows_allowed: `false`
-- screenshot_required: `false`
-- user_side_work_now: `none`
-
 ## Next Executable Route
 
-- route_id: `owner-review-decision-card-freeform-ready`
+- route_id: `production-limitation-lift-stage-5-user-decision-ready`
 - alternate_route_id: `final-render-path-stage-4`
 - alternate_route_condition: Use only if a concrete diagnostic gap is found; ED-10ap does not identify such a gap.
 - concrete_diagnostic_gap_found: `false`
 - purpose: Record a short freeform user decision card for a later slice without asking for or granting approval now.
 
 - Keep ED-10ao as the source owner-review preparation packet.
-- Present at most three freeform topics when a later slice asks for owner judgement.
+- Present at most three freeform topics when a later slice asks for user judgement.
 - Normalize future answers internally while preserving unknowns as unknown.
 
 This route must not:
@@ -107,7 +97,7 @@ This route must not:
 - decision_topics_bounded_to_three: `true`
 - not_asked_now_boundary_explicit: `true`
 - future_user_burden_freeform: `true`
-- decision_card_freeform_readback: `true`
+- future_freeform_answer_handling_ready: `true`
 - no_fixed_choice_or_form_surface: `true`
 - source_evidence_linked: `true`
 - production_public_gates_still_closed: `true`

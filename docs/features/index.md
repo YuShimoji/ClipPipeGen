@@ -5,8 +5,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 ## Current Focus
 
 - feature: `ED-10ap`
-- artifact: `clip-ed10ap-owner-review-decision-card-freeform-001`
-- state: `owner_review_decision_card_freeform_ready`
+- artifact: `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
+- state: `production_limitation_lift_stage_4_user_decision_card_ready`
 
 ## Feature Table
 
@@ -78,7 +78,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10am | Production Limitation-Lift Stage 1 v0 | done | production_limitation_lift_stage_1_packet_ready | 100 | clip-ed10am-production-limitation-lift-stage-1-001 | Use the production limitation-lift stage-1 packet to start production-limitation-lift-stage-2-decision-packet; keep production/public approvals explicit. |
 | ED-10an | Production Limitation-Lift Stage 2 Decision Packet v0 | done | production_limitation_lift_stage_2_decision_packet_ready | 100 | clip-ed10an-production-limitation-lift-stage-2-decision-packet-001 | Use the stage-2 decision packet to start production-limitation-lift-stage-3-owner-review-prep; keep all approvals explicit. |
 | ED-10ao | Production Limitation-Lift Stage 3 Owner-Review Prep v0 | done | production_limitation_lift_stage_3_owner_review_prep_ready | 100 | clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001 | Use the stage-3 owner-review prep packet to start production-limitation-lift-stage-4-user-decision-card; keep future user input freeform and approvals explicit. |
-| ED-10ap | Owner Review Decision Card Freeform v0 | done | owner_review_decision_card_freeform_ready | 100 | clip-ed10ap-owner-review-decision-card-freeform-001 | Use the freeform owner decision-card readback only when a later slice explicitly asks for owner judgement; keep approvals explicit. |
+| ED-10ap | Production Limitation Lift Stage 4 User Decision Card v0 | done | production_limitation_lift_stage_4_user_decision_card_ready | 100 | clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001 | Use the freeform user decision card only when a later slice explicitly asks for user judgement; keep approvals explicit. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

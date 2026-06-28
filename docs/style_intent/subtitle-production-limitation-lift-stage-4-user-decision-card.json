@@ -1,10 +1,10 @@
 {
-  "schema_id": "clippipegen.subtitle_owner_review_decision_card_freeform.v1",
-  "artifact_id": "clip-ed10ap-owner-review-decision-card-freeform-001",
+  "schema_id": "clippipegen.subtitle_production_limitation_lift_stage_4_user_decision_card.v1",
+  "artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
   "feature_id": "ED-10ap",
-  "status": "owner_review_decision_card_freeform_ready",
-  "surface_kind": "owner_review_decision_card_freeform_readback",
-  "render_level": "owner_review_decision_card_freeform_no_new_render",
+  "status": "production_limitation_lift_stage_4_user_decision_card_ready",
+  "surface_kind": "production_limitation_lift_stage_4_future_user_decision_card",
+  "render_level": "stage_4_user_decision_card_no_new_render",
   "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
   "source_production_limitation_lift_stage_2_decision_packet_artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
   "source_production_limitation_lift_stage_1_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
@@ -209,7 +209,7 @@
     "publishing_acceptance": false,
     "public_use_permission": false,
     "production_public_decision_approved": false,
-    "owner_review_decision_card_freeform_does_not_grant_approval": true
+    "stage_4_card_does_not_grant_approval": true
   },
   "future_freeform_answer_handling": {
     "user_may_answer_naturally": true,
@@ -244,28 +244,8 @@
     ],
     "decision_topic_count": 3
   },
-  "decision_card": {
-    "decision_target": "Later owner judgement on whether the three ED-10ao pending areas can move toward production/public acceptance or must remain pending.",
-    "answer_style": "freeform",
-    "template_required": false,
-    "schema_owner": "Agent",
-    "max_look_for_points": 3,
-    "look_for_count": 3,
-    "topic_ids": [
-      "subtitle_design_visual_acceptance",
-      "production_render_readiness",
-      "rights_publishing_public_use_clearance"
-    ],
-    "fixed_form_required": false,
-    "fixed_choice_rows_allowed": false,
-    "fixed_choice_rows_emitted": false,
-    "screenshot_required": false,
-    "hidden_schema_exposed_to_user": false,
-    "user_decision_requested_now": false,
-    "user_side_work_now": "none"
-  },
   "next_executable_route": {
-    "route_id": "owner-review-decision-card-freeform-ready",
+    "route_id": "production-limitation-lift-stage-5-user-decision-ready",
     "alternate_route_id": "final-render-path-stage-4",
     "alternate_route_condition": "Use only if a concrete diagnostic gap is found; ED-10ap does not identify such a gap.",
     "concrete_diagnostic_gap_found": false,
@@ -273,7 +253,7 @@
     "purpose": "Record a short freeform user decision card for a later slice without asking for or granting approval now.",
     "first_steps": [
       "Keep ED-10ao as the source owner-review preparation packet.",
-      "Present at most three freeform topics when a later slice asks for owner judgement.",
+      "Present at most three freeform topics when a later slice asks for user judgement.",
       "Normalize future answers internally while preserving unknowns as unknown."
     ],
     "must_not_do": [
@@ -293,7 +273,7 @@
     ]
   },
   "render_gate": {
-    "level": "owner_review_decision_card_freeform_no_new_render",
+    "level": "stage_4_user_decision_card_no_new_render",
     "existing_output_first_applied": true,
     "existing_output_first_reused": true,
     "new_render_run": false,
@@ -324,7 +304,7 @@
     "decision_topics_bounded_to_three": true,
     "not_asked_now_boundary_explicit": true,
     "future_user_burden_freeform": true,
-    "decision_card_freeform_readback": true,
+    "future_freeform_answer_handling_ready": true,
     "no_fixed_choice_or_form_surface": true,
     "source_evidence_linked": true,
     "production_public_gates_still_closed": true,
@@ -339,12 +319,12 @@
     "all_checks_passed": true
   },
   "outputs": {
-    "json": "docs/style_intent/subtitle-owner-review-decision-card-freeform.json",
-    "doc": "docs/style_intent/subtitle-owner-review-decision-card-freeform.md"
+    "json": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json",
+    "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md"
   },
   "review_policy": {
     "human_review_required": false,
-    "user_side_work": "none_for_this_owner_review_decision_card_freeform_readback",
+    "user_side_work": "none_for_this_stage_4_user_decision_card_preparation_packet",
     "user_decision_requested_now": false,
     "answer_style": "freeform",
     "template_required": false,
@@ -381,8 +361,8 @@
     "source_stage2_new_render_created": false,
     "source_stage1_new_render_created": false,
     "source_final_path_stage3_new_render_created": true,
-    "owner_review_decision_card_freeform_only": true,
-    "owner_review_decision_card_freeform_does_not_grant_approval": true,
+    "stage_4_user_decision_card_only": true,
+    "stage_4_card_does_not_grant_approval": true,
     "future_user_decision_shape_freeform": true,
     "user_decision_requested_now": false,
     "fixed_user_form_emitted": false,
