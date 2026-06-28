@@ -5,9 +5,9 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
-## Current ED-10aq Production Limitation Lift Stage 5 User-Decision-Ready
+## Current ED-10ar Production Limitation Lift Stage 6 User Freeform Review Request
 
-ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-6-user-freeform-review-request`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001` is the latest tracked request surface, while ED-10aq remains the active stage-5 source packet (`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`) for dashboard continuity. ED-10ar prepares a later low-burden freeform review request for exactly three topics: subtitle design / visual acceptance, production render readiness, and rights / publishing / public-use clearance. It is not presented to the user in this agent turn, asks for no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-7-freeform-response-normalizer`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## Contract
 

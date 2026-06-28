@@ -51,6 +51,7 @@
     "production_limitation_lift_stage_3_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
     "production_limitation_lift_stage_4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
     "production_limitation_lift_stage_5_user_decision_ready_artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+    "production_limitation_lift_stage_6_user_freeform_review_request_artifact_id": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -60,8 +61,8 @@
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
     "route_status": "ed10aq_production_limitation_lift_stage_5_user_decision_ready",
-    "user_action_type": "NO_USER_ACTION_STAGE_5_USER_DECISION_READY_ONLY",
-    "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
+    "user_action_type": "NO_USER_ACTION_STAGE_6_REQUEST_SURFACE_ONLY",
+    "next_review_action_type": "NO_REVIEW_CARD_STAGE_6_REQUEST_SURFACE_NOT_PRESENTED",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
     "main_issue": "artifact_lineage_gap_repaired_observation_surface_added",
@@ -888,6 +889,47 @@
       "episodes_tracked": false,
       "final_render_path_approved": false
     },
+    "subtitle_production_limitation_lift_stage_6_user_freeform_review_request": {
+      "status": "production_limitation_lift_stage_6_user_freeform_review_request_ready",
+      "artifact_id": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
+      "metadata_json": "docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json",
+      "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md",
+      "source_stage5_user_decision_ready_artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+      "source_stage4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
+      "source_final_render_path_stage_3_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+      "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "review_request_topic_ids": [
+        "subtitle_design_visual_acceptance",
+        "production_render_readiness",
+        "rights_publishing_public_use_clearance"
+      ],
+      "review_request_topic_count": 3,
+      "answer_style": "freeform",
+      "user_may_answer_in_one_paragraph_or_few_bullets": true,
+      "user_decision_requested_now": false,
+      "presented_to_user_this_turn": false,
+      "fixed_form_required": false,
+      "fixed_choice_rows_allowed": false,
+      "fixed_choice_rows_emitted": false,
+      "binary_choice_rows_emitted": false,
+      "required_labels": [],
+      "screenshot_required": false,
+      "hidden_schema_exposed_to_user": false,
+      "unknowns_remain_unknown": true,
+      "production_subtitle_design_acceptance": false,
+      "production_render_acceptance": false,
+      "creative_acceptance": false,
+      "rights_status": "pending",
+      "publishing_acceptance": false,
+      "public_use_permission": false,
+      "final_render_path_approved": false,
+      "next_executable_route": "production-limitation-lift-stage-7-freeform-response-normalizer",
+      "alternate_next_executable_route": "final-render-path-stage-4",
+      "concrete_diagnostic_gap_found": false,
+      "new_render_run": false,
+      "tracked_binary_artifact_created": false,
+      "episodes_tracked": false
+    },
     "review_surface_layout_debt": {
       "status": "recorded_minimal_primary_layout_improvement_applied",
       "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -949,18 +991,18 @@
       "review_reset_trigger_active": [
         "new_axis_or_changed_evidence_only"
       ],
-      "current_blocker": "none_for_production_limitation_lift_stage_5_user_decision_ready",
+      "current_blocker": "none_for_production_limitation_lift_stage_6_user_freeform_review_request",
       "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "review_card": {
-      "status": "withheld_latest_review_already_consumed",
-      "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
-      "target": "clip-ed10af-l2-render-path-selector-probe-001",
-      "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
-      "axis": "production_limitation_lift_stage_5_user_decision_ready",
+      "status": "withheld_stage_6_request_surface_not_presented",
+      "action_type": "NO_REVIEW_CARD_STAGE_6_REQUEST_SURFACE_NOT_PRESENTED",
+      "target": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
+      "artifact_id": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
+      "axis": "production_limitation_lift_stage_6_user_freeform_review_request",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "ED-10aq verifies ED-10ap is still a freeform owner decision card without fixed form, fixed choices, fixed-choice rows, screenshots, user decision, render approval, production approval, or rights/public-use approval.",
+      "what_changed": "ED-10ar prepares a bounded freeform user review request surface for exactly three topics without presenting it in this agent turn.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -970,7 +1012,7 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "use ED-10aq as the stage-5 user-decision-ready packet only; no user decision is requested now, and no production/public approval is granted."
+      "completion_signal": "use ED-10ar as the stage-6 freeform request surface only; no user decision is requested now, and no production/public approval is granted."
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -981,13 +1023,13 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "production_limitation_lift_stage_5_user_decision_ready_no_review_card",
+    "review_surface_direction": "production_limitation_lift_stage_6_user_freeform_review_request_not_presented",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
-        "debt_id": "production_limitation_lift_stage_5_user_decision_ready",
-        "status": "production_limitation_lift_stage_5_user_decision_ready",
-        "next_action": "use ED-10aq as the stage-5 user-decision-ready packet only; do not infer production/public approval"
+        "debt_id": "production_limitation_lift_stage_6_user_freeform_review_request",
+        "status": "production_limitation_lift_stage_6_user_freeform_review_request_ready",
+        "next_action": "use ED-10ar as the later freeform request surface only; normalize a later answer in stage 7 while keeping approvals pending when unclear"
       }
     ],
     "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -1013,10 +1055,16 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
+      "label": "Production Limitation Lift Stage 6 User Freeform Review Request",
+      "command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md",
+      "target": "docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md",
+      "when_to_use": "Use to inspect the ED-10ar low-burden freeform request surface without treating it as user approval."
+    },
+    {
       "label": "Production Limitation Lift Stage 5 User Decision Ready",
       "command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
       "target": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
-      "when_to_use": "Use to inspect the ED-10aq stage-5 user-decision-ready packet without asking for approval now."
+      "when_to_use": "Use to inspect the ED-10aq stage-5 user-decision-ready source packet without asking for approval now."
     },
     {
       "label": "Production Limitation-Lift Stage 3 Owner-Review Prep",
@@ -1933,6 +1981,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10ar",
+      "title": "Production Limitation Lift Stage 6 User Freeform Review Request v0",
+      "status": "done",
+      "health": "production_limitation_lift_stage_6_user_freeform_review_request_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
+      "next_action": "Use the stage-6 freeform request surface only; normalize a later answer in stage 7 and keep production/public approvals explicit.",
+      "summary_excerpt": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001 adds tracked JSON/Markdown at docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json / .md. It con...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -2407,9 +2466,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 111,
+    "feature_count": 112,
     "status_counts": {
-      "done": 95,
+      "done": 96,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -2617,6 +2676,16 @@
       "next_action": "Start production-limitation-lift-stage-1 or final-render-path-stage-4 from this rehearsal packet while keeping all production/public decisions explicit."
     },
     {
+      "artifact_id": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
+      "title": "ED-10ar Production Limitation Lift Stage 6 User Freeform Review Request",
+      "purpose": "Prepare a tracked low-burden freeform user review request surface from ED-10aq without presenting it now or granting production/public/rights/render approval.",
+      "storage_class": "",
+      "repo_relative_path": "docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json; docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md",
+      "open_command": "notepad docs\\\\style_intent\\\\subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md",
+      "review_status": "stage-6 freeform request surface only; not presented to the user in this agent turn",
+      "next_action": "Use production-limitation-lift-stage-7-freeform-response-normalizer after a later freeform response, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
+    },
+    {
       "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
       "title": "ED-10aq Production Limitation Lift Stage 5 User Decision Ready",
       "purpose": "Verify that ED-10ap remains a freeform user decision surface only without asking for a decision now or granting production/public/rights/render approval.",
@@ -2809,6 +2878,7 @@
       "clip-ed10aj-final-render-path-stage-1-001",
       "clip-ed10ak-final-render-path-stage-2-replayability-001",
       "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+      "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
       "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
       "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
       "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
@@ -2827,15 +2897,21 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 37
+    "artifact_count": 38
   },
   "artifact_coverage": {
-    "registered_artifact_count": 37,
-    "features_with_artifact_count": 38,
+    "registered_artifact_count": 38,
+    "features_with_artifact_count": 39,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
+    {
+      "item": "ED-10ar stage-6 freeform review request",
+      "artifact": "clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001",
+      "question": "Does the request surface keep exactly three freeform topics, no fixed form, no screenshot request, and no production/public/rights approval?",
+      "next_route": "Use production-limitation-lift-stage-7-freeform-response-normalizer only after a later freeform response; use final-render-path-stage-4 only for a concrete diagnostic gap."
+    },
     {
       "item": "ED-10aq stage-5 user-decision-ready",
       "artifact": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
@@ -3031,7 +3107,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 951,
+      "line_count": 972,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3039,13 +3115,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 288,
+      "boundary_term_count": 295,
       "status": "reference"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 179,
+      "line_count": 180,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3053,7 +3129,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 291,
+      "boundary_term_count": 302,
       "status": "in_progress"
     },
     {
@@ -3114,26 +3190,16 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 311,
-      "metadata": {
-        "id": "subtitle-style-intent-registry",
-        "title": "Subtitle Style Intent Registry",
-        "type": "design_readback",
-        "status": "diagnostic_intent_registry_ready",
-        "health": "production_limitation_lift_stage_5_user_decision_ready",
-        "progress_pct": "100",
-        "last_touched": "2026-06-28",
-        "active_artifact": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, artifacts/ARTIFACTS.md"
-      },
+      "line_count": 312,
+      "metadata": {},
       "front_sections": {
         "what_it_is": true,
         "current_state": true,
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 100,
-      "status": "diagnostic_intent_registry_ready"
+      "boundary_term_count": 97,
+      "status": "reference"
     },
     {
       "path": "docs/REPRESENTATIVE_SUBTITLE_DESIGN_REVIEW.md",
@@ -3152,7 +3218,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1227,
+      "line_count": 1241,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3160,7 +3226,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 614,
+      "boundary_term_count": 628,
       "status": "reference"
     },
     {
@@ -3222,7 +3288,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 611,
+      "line_count": 634,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3230,7 +3296,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 246,
+      "boundary_term_count": 261,
       "status": "reference"
     },
     {
@@ -3494,7 +3560,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 216,
+      "boundary_term_count": 221,
       "status": "reference"
     },
     {
@@ -3575,7 +3641,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (951 lines) is likely carrying history.",
+        "detail": "Long active doc (972 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3587,7 +3653,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 291 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 302 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3605,13 +3671,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1227 lines) is likely carrying history.",
+        "detail": "Long active doc (1241 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 614 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 628 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3635,7 +3701,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (611 lines) is likely carrying history.",
+        "detail": "Long active doc (634 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3707,7 +3773,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 216 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 221 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
