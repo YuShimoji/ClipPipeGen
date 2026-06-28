@@ -1,0 +1,86 @@
+{
+  "schema_id": "clippipegen.internal_review_video_candidate_access_sheet.v1",
+  "artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+  "feature_id": "ED-10as",
+  "status": "ready_for_optional_user_review",
+  "action_type": "USER_OPEN_ONLY_LATER",
+  "created_at_jst": "2026-06-28",
+  "source_internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "repo_relative_path": "docs/style_intent/internal-review-video-candidate-access-sheet.json; docs/style_intent/internal-review-video-candidate-access-sheet.md",
+  "folder_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe",
+  "folder_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe",
+  "media": {
+    "mp4": {
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "file_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.mp4",
+      "status": "present_current_host",
+      "size_bytes": 1129370
+    },
+    "ass": {
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "file_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.ass",
+      "status": "present_current_host",
+      "size_bytes": 1023
+    },
+    "manifest": {
+      "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+      "file_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.local.json",
+      "status": "present_current_host",
+      "size_bytes": 5325
+    }
+  },
+  "launcher_or_open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1",
+  "alternate_open_commands": {
+    "open_folder": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1 -OpenFolder",
+    "open_manifest": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1 -OpenManifest",
+    "open_ass": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1 -OpenAss"
+  },
+  "why": "Provide exact current-host access to the ED-10ar internal review candidate without asking the user to guess local ignored paths.",
+  "estimate_user": "30-90 seconds later, optional",
+  "steps": [
+    "Run the launcher command from the repo root when a later supervisor asks for observation.",
+    "Confirm the MP4 opens; use -OpenFolder only if the default player does not launch.",
+    "Answer freely in one sentence or a few bullets."
+  ],
+  "gui_fallback": "Open the folder_full_path_current_host in Windows Explorer, then double-click subtitle_render_path_selector_probe.mp4.",
+  "look_for": [
+    "Does the MP4 open and show a coherent 4.2s internal review candidate?",
+    "Are subtitles, audio, and layout present enough to understand what is being tested?",
+    "Is the next problem mainly script/offer clarity, timing/audio, visual layout, or render path?"
+  ],
+  "answer_style": "freeform",
+  "answer_hint": "One sentence is enough.",
+  "not_needed": [
+    "production judgment",
+    "rights/public-use decision",
+    "fixed form",
+    "screenshot",
+    "commit",
+    "rerender"
+  ],
+  "post_observation_relay": {
+    "relay_label": "Post-Observation Relay",
+    "use_when": "A later user/supervisor gives a freeform observation after opening the MP4.",
+    "agent_should_extract": [
+      "openability",
+      "subtitle_audio_layout_observation",
+      "next_problem_category"
+    ],
+    "agent_should_not_infer": [
+      "production approval",
+      "rights/public-use approval",
+      "publishing or monetization readiness"
+    ]
+  },
+  "boundaries": {
+    "new_render": false,
+    "new_replay": false,
+    "media_modified": false,
+    "episodes_tracked": false,
+    "production_acceptance": false,
+    "rights_public_use_approval": false,
+    "publishing_acceptance": false,
+    "monetization_acceptance": false,
+    "youtube_publish_package_created": false
+  }
+}

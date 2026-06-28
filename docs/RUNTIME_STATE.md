@@ -3,15 +3,15 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: internal_review_video_candidate_package_ready
+health: internal_review_access_sheet_fullpath_ready
 progress_pct: 100
 last_touched: 2026-06-28
-next_review_due: none_internal_review_video_candidate_package_only
-active_artifact: clip-ed10ar-internal-review-video-candidate-package-001
-source_stage5_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
+next_review_due: none_access_sheet_ready_only
+active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
+source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -23,9 +23,9 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current ED-10ar Internal Review Video Candidate Package
+## Current ED-10as Internal Review Access Sheet Fullpath
 
-ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-internal-review-video-candidate-package-001` is the active tracked package. It consumes ED-10aq as the stage-5 source and uses Existing Output First: the same-machine ignored diagnostic MP4, ASS, and local manifest already exist, so `new_render_run=false`. This package is internal-review-only and diagnostic-only. It asks for no user decision now, uses no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending. Next route is `optional-internal-review-video-observation`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the active tracked access sheet. It consumes ED-10ar and records exact current-host full paths for the ignored MP4, ASS, and local manifest, plus `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, tracks no `episodes/` files, asks for no user decision now, and keeps production/public/rights/publishing/monetization gates false or pending. Later observation, if requested, stays freeform with at most three look-for points.
 
 ## What This Is
 
@@ -40,9 +40,25 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10ar-internal-review-video-candidate-package-001`
+Active artifact: `clip-ed10as-internal-review-access-sheet-fullpath-001`
 
-Source stage-5 artifact: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
+Source internal review package: `clip-ed10ar-internal-review-video-candidate-package-001`
+
+ED-10as checkpoint, 2026-06-28 JST:
+`clip-ed10as-internal-review-access-sheet-fullpath-001`
+now lives at
+`docs/style_intent/internal-review-video-candidate-access-sheet.json`
+and
+`docs/style_intent/internal-review-video-candidate-access-sheet.md`.
+It records current-host full paths for:
+`subtitle_render_path_selector_probe.mp4`,
+`subtitle_render_path_selector_probe.ass`, and
+`subtitle_render_path_selector_probe.local.json`.
+It also adds the launcher
+`scripts/operator/open_internal_review_video_candidate.ps1`. This is an access
+sheet only: `new_render=false`, `new_replay=false`, `media_modified=false`,
+`episodes_tracked=false`, and no production, rights/public-use, publishing, or
+monetization acceptance is granted.
 
 ED-10ar checkpoint, 2026-06-28 JST:
 `clip-ed10ar-internal-review-video-candidate-package-001`

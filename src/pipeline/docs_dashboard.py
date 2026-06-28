@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10ar',
-         'artifact_id': 'clip-ed10ar-internal-review-video-candidate-package-001',
+        "current_focus": {'feature_id': 'ED-10as',
+         'artifact_id': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'internal_review_video_candidate_package_ready',
+         'state': 'internal_review_access_sheet_fullpath_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -127,15 +127,16 @@ def build_project_status(
          'production_limitation_lift_stage_4_user_decision_card_artifact_id': 'clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001',
          'production_limitation_lift_stage_5_user_decision_ready_artifact_id': 'clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001',
          'internal_review_video_candidate_package_artifact_id': 'clip-ed10ar-internal-review-video-candidate-package-001',
+         'internal_review_video_candidate_access_sheet_artifact_id': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ar_internal_review_video_candidate_package_ready',
-         'user_action_type': 'NO_USER_ACTION_INTERNAL_PACKAGE_READY_ONLY',
-         'next_review_action_type': 'NO_REVIEW_CARD_INTERNAL_PACKAGE_READY_ONLY',
+         'route_status': 'ed10as_internal_review_access_sheet_fullpath_ready',
+         'user_action_type': 'NO_USER_ACTION_ACCESS_SHEET_READY_ONLY',
+         'next_review_action_type': 'NO_REVIEW_CARD_ACCESS_SHEET_READY_ONLY',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
          'main_issue': 'artifact_lineage_gap_repaired_observation_surface_added',
@@ -912,6 +913,38 @@ def build_project_status(
                                                                             'alternate_next_executable_route': 'final-render-path-stage-4',
                                                                             'tracked_binary_artifact_created': False,
                                                                             'episodes_tracked': False},
+         'subtitle_internal_review_video_candidate_access_sheet': {'status': 'ready_for_optional_user_review',
+                                                                            'action_type': 'USER_OPEN_ONLY_LATER',
+                                                                            'artifact_id': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
+                                                                            'metadata_json': 'docs/style_intent/internal-review-video-candidate-access-sheet.json',
+                                                                            'doc': 'docs/style_intent/internal-review-video-candidate-access-sheet.md',
+                                                                            'source_internal_review_video_candidate_package_artifact_id': 'clip-ed10ar-internal-review-video-candidate-package-001',
+                                                                            'repo_relative_path': 'docs/style_intent/internal-review-video-candidate-access-sheet.json; docs/style_intent/internal-review-video-candidate-access-sheet.md',
+                                                                            'folder_repo_relative_path': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe',
+                                                                            'folder_full_path_current_host': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe',
+                                                                            'mp4_repo_relative_path': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4',
+                                                                            'mp4_full_path_current_host': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.mp4',
+                                                                            'ass_full_path_current_host': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.ass',
+                                                                            'manifest_full_path_current_host': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.local.json',
+                                                                            'launcher_or_open_command': 'powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1',
+                                                                            'steps': ['Run the launcher command from the repo root when a later supervisor asks for observation.',
+                                                                                      'Confirm the MP4 opens; use -OpenFolder only if the default player does not launch.',
+                                                                                      'Answer freely in one sentence or a few bullets.'],
+                                                                            'look_for': ['Does the MP4 open and show a coherent 4.2s internal review candidate?',
+                                                                                         'Are subtitles, audio, and layout present enough to understand what is being tested?',
+                                                                                         'Is the next problem mainly script/offer clarity, timing/audio, visual layout, or render path?'],
+                                                                            'answer_style': 'freeform',
+                                                                            'answer_hint': 'One sentence is enough.',
+                                                                            'post_observation_relay': True,
+                                                                            'new_render': False,
+                                                                            'new_replay': False,
+                                                                            'media_modified': False,
+                                                                            'production_acceptance': False,
+                                                                            'rights_public_use_approval': False,
+                                                                            'publishing_acceptance': False,
+                                                                            'monetization_acceptance': False,
+                                                                            'youtube_publish_package_created': False,
+                                                                            'episodes_tracked': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -972,17 +1005,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_internal_review_video_candidate_package',
+                           'current_blocker': 'none_for_internal_review_access_sheet_fullpath',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
-         'review_card': {'status': 'withheld_internal_package_ready_only',
-                         'action_type': 'NO_REVIEW_CARD_INTERNAL_PACKAGE_READY_ONLY',
-                         'target': 'clip-ed10ar-internal-review-video-candidate-package-001',
-                         'artifact_id': 'clip-ed10ar-internal-review-video-candidate-package-001',
-                         'axis': 'internal_review_video_candidate_package',
+         'review_card': {'status': 'withheld_access_sheet_ready_only',
+                         'action_type': 'NO_REVIEW_CARD_ACCESS_SHEET_READY_ONLY',
+                         'target': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
+                         'artifact_id': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
+                         'axis': 'internal_review_access_sheet_fullpath',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10ar assembles a tracked internal-review video candidate package from existing ignored diagnostic MP4/ASS/manifest output.',
+                         'what_changed': 'ED-10as adds exact current-host full paths and a repo-local launcher for the ED-10ar internal review video candidate.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -990,17 +1023,17 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use ED-10ar as an internal-review video candidate package only; no user decision is requested now, and no production/public approval is granted.'},
+                         'completion_signal': 'use ED-10as as an access sheet only; no user decision is requested now, and no production/public approval is granted.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'internal_review_video_candidate_package_no_user_review_now',
+         'review_surface_direction': 'internal_review_access_sheet_fullpath_no_user_review_now',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
-         'review_debt': [{'debt_id': 'internal_review_video_candidate_package',
-                          'status': 'internal_review_video_candidate_package_ready',
-                          'next_action': 'use ED-10ar as an internal-review candidate package only; optional later observation stays freeform and non-approving'}],
+         'review_debt': [{'debt_id': 'internal_review_access_sheet_fullpath',
+                          'status': 'ready_for_optional_user_review',
+                          'next_action': 'use ED-10as only as a later open/access instruction sheet; optional observation stays freeform and non-approving'}],
          'emoji_treatment': 'neutral_ignore_for_evaluation',
          'production_candidate': False,
          'production_subtitle_design_acceptance': False,
@@ -1338,6 +1371,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
         if feature_id == "ED-10ar":
             active_artifact = "clip-ed10ar-internal-review-video-candidate-package-001"
+        if feature_id == "ED-10as":
+            active_artifact = "clip-ed10as-internal-review-access-sheet-fullpath-001"
         features.append(
             {
                 "id": feature_id,
@@ -1401,7 +1436,7 @@ def _artifact_coverage(
     mentioned = [
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
-    current_focus_registered = "clip-ed10ar-internal-review-video-candidate-package-001" in artifact_ids
+    current_focus_registered = "clip-ed10as-internal-review-access-sheet-fullpath-001" in artifact_ids
     return {
         "registered_artifact_count": len(artifact_ids),
         "features_with_artifact_count": len(mentioned),
@@ -1447,6 +1482,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
 
+        {
+            "item": "ED-10as internal review access sheet fullpath",
+            "artifact": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+            "question": "Does the sheet provide exact current-host paths and a launcher without creating render, replay, or production/public approval?",
+            "next_route": "Use the launcher only for a later optional freeform observation; keep production/public/rights approvals pending.",
+        },
         {
             "item": "ED-10ar internal review video candidate package",
             "artifact": "clip-ed10ar-internal-review-video-candidate-package-001",
@@ -1654,6 +1695,22 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Internal Review Video Candidate Access Sheet",
+            "command": "see docs\\style_intent\\internal-review-video-candidate-access-sheet.md",
+            "target": "docs/style_intent/internal-review-video-candidate-access-sheet.md",
+            "when_to_use": (
+                "Use to find current-host full paths and the launcher for the ED-10ar internal review video candidate."
+            ),
+        },
+        {
+            "label": "Open Internal Review Video Candidate",
+            "command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1",
+            "target": "scripts/operator/open_internal_review_video_candidate.ps1",
+            "when_to_use": (
+                "Use later only when a supervisor asks to open the internal review candidate MP4."
+            ),
         },
         {
             "label": "Internal Review Video Candidate Package",
@@ -2042,6 +2099,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "production_limitation_lift_stage_5_user_decision_ready"
     if feature_id == "ED-10ar":
         return "internal_review_video_candidate_package_ready"
+    if feature_id == "ED-10as":
+        return "internal_review_access_sheet_fullpath_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2120,6 +2179,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ar":
         return 100
+    if feature_id == "ED-10as":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -2196,6 +2257,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the stage-5 user-decision-ready packet only; keep user work none and approvals explicit."
     if feature_id == "ED-10ar":
         return "Use the internal review video candidate package only; optional later observation stays freeform and non-approving."
+    if feature_id == "ED-10as":
+        return "Use the access sheet and launcher only for later optional open/readback; keep observation freeform and non-approving."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

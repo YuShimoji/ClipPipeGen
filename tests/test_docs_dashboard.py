@@ -27,9 +27,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10ar"
+    assert status["current_focus"]["feature_id"] == "ED-10as"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
     )
     assert status["current_focus"][
         "source_render_path_selector_contract_artifact_id"
@@ -64,7 +64,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "internal_review_video_candidate_package_ready"
+        "internal_review_access_sheet_fullpath_ready"
     )
     assert status["current_focus"][
         "source_render_contract_consumer_dry_read_artifact_id"
@@ -110,6 +110,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["internal_review_video_candidate_package_artifact_id"] == (
         "clip-ed10ar-internal-review-video-candidate-package-001"
     )
+    assert status["current_focus"]["internal_review_video_candidate_access_sheet_artifact_id"] == (
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
+    )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -124,19 +127,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ar_internal_review_video_candidate_package_ready"
+        "ed10as_internal_review_access_sheet_fullpath_ready"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_INTERNAL_PACKAGE_READY_ONLY"
+        "NO_USER_ACTION_ACCESS_SHEET_READY_ONLY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "NO_REVIEW_CARD_INTERNAL_PACKAGE_READY_ONLY"
+        "NO_REVIEW_CARD_ACCESS_SHEET_READY_ONLY"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "internal_review_video_candidate_package_no_user_review_now"
+        "internal_review_access_sheet_fullpath_no_user_review_now"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -180,26 +183,52 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "same_candidate_comparison_review_allowed"
     ] is False
     assert status["current_focus"]["review_memory"]["current_blocker"] == (
-        "none_for_internal_review_video_candidate_package"
+        "none_for_internal_review_access_sheet_fullpath"
     )
     assert status["current_focus"]["review_memory"]["font_evidence_gate"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "NO_REVIEW_CARD_INTERNAL_PACKAGE_READY_ONLY"
+        "NO_REVIEW_CARD_ACCESS_SHEET_READY_ONLY"
     )
     assert status["current_focus"]["review_card"]["status"] == (
-        "withheld_internal_package_ready_only"
+        "withheld_access_sheet_ready_only"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
     )
     assert status["current_focus"]["review_card"]["artifact_id"] == (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "internal_review_video_candidate_package"
+        "internal_review_access_sheet_fullpath"
     )
+    access_sheet = status["current_focus"][
+        "subtitle_internal_review_video_candidate_access_sheet"
+    ]
+    assert access_sheet["artifact_id"] == (
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
+    )
+    assert access_sheet["source_internal_review_video_candidate_package_artifact_id"] == (
+        "clip-ed10ar-internal-review-video-candidate-package-001"
+    )
+    assert access_sheet["action_type"] == "USER_OPEN_ONLY_LATER"
+    assert access_sheet["answer_style"] == "freeform"
+    assert len(access_sheet["steps"]) == 3
+    assert len(access_sheet["look_for"]) == 3
+    assert access_sheet["launcher_or_open_command"] == (
+        "powershell -ExecutionPolicy Bypass -File "
+        "scripts\\operator\\open_internal_review_video_candidate.ps1"
+    )
+    assert access_sheet["mp4_full_path_current_host"].endswith(
+        "subtitle_render_path_selector_probe.mp4"
+    )
+    assert access_sheet["new_render"] is False
+    assert access_sheet["new_replay"] is False
+    assert access_sheet["media_modified"] is False
+    assert access_sheet["episodes_tracked"] is False
+    assert access_sheet["production_acceptance"] is False
+    assert access_sheet["rights_public_use_approval"] is False
     internal_package = status["current_focus"][
         "subtitle_internal_review_video_candidate_package"
     ]
@@ -770,10 +799,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "episodes/.../subtitle_presentation_review_pack.html"
     )
     assert status["current_focus"]["review_debt"][0]["debt_id"] == (
-        "internal_review_video_candidate_package"
+        "internal_review_access_sheet_fullpath"
     )
     assert status["current_focus"]["review_debt"][0]["status"] == (
-        "internal_review_video_candidate_package_ready"
+        "ready_for_optional_user_review"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
         "ed10w_current_pass_reference",
@@ -805,6 +834,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        "see docs\\style_intent\\internal-review-video-candidate-access-sheet.md",
+        (
+            "powershell -ExecutionPolicy Bypass -File "
+            "scripts\\operator\\open_internal_review_video_candidate.ps1"
+        ),
         "see docs\\style_intent\\internal-review-video-candidate-package.md",
         "see docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
         "see docs\\style_intent\\subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
@@ -858,42 +892,45 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
     )
     assert status["next_review_items"][1]["artifact"] == (
-        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
+        "clip-ed10ar-internal-review-video-candidate-package-001"
     )
     assert status["next_review_items"][2]["artifact"] == (
-        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
     )
     assert status["next_review_items"][3]["artifact"] == (
-        "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
+        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
     )
     assert status["next_review_items"][4]["artifact"] == (
-        "clip-ed10am-production-limitation-lift-stage-1-001"
+        "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
     )
     assert status["next_review_items"][5]["artifact"] == (
-        "clip-ed10al-final-render-path-stage-3-rehearsal-001"
+        "clip-ed10am-production-limitation-lift-stage-1-001"
     )
     assert status["next_review_items"][6]["artifact"] == (
-        "clip-ed10ak-final-render-path-stage-2-replayability-001"
+        "clip-ed10al-final-render-path-stage-3-rehearsal-001"
     )
     assert status["next_review_items"][7]["artifact"] == (
-        "clip-ed10aj-final-render-path-stage-1-001"
+        "clip-ed10ak-final-render-path-stage-2-replayability-001"
     )
     assert status["next_review_items"][8]["artifact"] == (
-        "clip-ed10ai-final-render-path-readiness-packet-001"
+        "clip-ed10aj-final-render-path-stage-1-001"
     )
     assert status["next_review_items"][9]["artifact"] == (
-        "clip-ed10ah-render-readiness-separation-readback-001"
+        "clip-ed10ai-final-render-path-readiness-packet-001"
     )
     assert status["next_review_items"][10]["artifact"] == (
-        "clip-ed10ah-production-limitation-lift-entry-001"
+        "clip-ed10ah-render-readiness-separation-readback-001"
     )
     assert status["next_review_items"][11]["artifact"] == (
-        "clip-ed10ag-lineage-and-observation-surface-001"
+        "clip-ed10ah-production-limitation-lift-entry-001"
     )
     assert status["next_review_items"][12]["artifact"] == (
+        "clip-ed10ag-lineage-and-observation-surface-001"
+    )
+    assert status["next_review_items"][13]["artifact"] == (
         "clip-ed10af-l2-render-path-selector-probe-001"
     )
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
@@ -908,63 +945,69 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert persisted["open_surfaces"][0]["target"] == "docs/dashboard/index.html"
     assert persisted["open_surfaces"][2]["target"] == (
-        "docs/style_intent/internal-review-video-candidate-package.md"
+        "docs/style_intent/internal-review-video-candidate-access-sheet.md"
     )
     assert persisted["open_surfaces"][3]["target"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
+        "scripts/operator/open_internal_review_video_candidate.ps1"
     )
     assert persisted["open_surfaces"][4]["target"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md"
+        "docs/style_intent/internal-review-video-candidate-package.md"
     )
     assert persisted["open_surfaces"][5]["target"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
     )
     assert persisted["open_surfaces"][6]["target"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-stage-1.md"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md"
     )
     assert persisted["open_surfaces"][7]["target"] == (
-        "docs/style_intent/subtitle-final-render-path-stage-3.md"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md"
     )
     assert persisted["open_surfaces"][8]["target"] == (
-        "docs/style_intent/subtitle-final-render-path-stage-2.md"
+        "docs/style_intent/subtitle-production-limitation-lift-stage-1.md"
     )
     assert persisted["open_surfaces"][9]["target"] == (
-        "docs/style_intent/subtitle-final-render-path-stage-1.md"
+        "docs/style_intent/subtitle-final-render-path-stage-3.md"
     )
     assert persisted["open_surfaces"][10]["target"] == (
-        "docs/style_intent/subtitle-final-render-path-readiness.md"
+        "docs/style_intent/subtitle-final-render-path-stage-2.md"
     )
     assert persisted["open_surfaces"][11]["target"] == (
-        "docs/style_intent/subtitle-production-limitation-lift-entry.md"
+        "docs/style_intent/subtitle-final-render-path-stage-1.md"
     )
     assert persisted["open_surfaces"][12]["target"] == (
-        "docs/style_intent/subtitle-render-readiness-separation.md"
+        "docs/style_intent/subtitle-final-render-path-readiness.md"
     )
     assert persisted["open_surfaces"][13]["target"] == (
-        "docs/style_intent/subtitle-render-path-selector-probe.md"
+        "docs/style_intent/subtitle-production-limitation-lift-entry.md"
     )
     assert persisted["open_surfaces"][14]["target"] == (
-        "docs/style_intent/subtitle-render-path-lineage-observation-surface.md"
+        "docs/style_intent/subtitle-render-readiness-separation.md"
     )
     assert persisted["open_surfaces"][15]["target"] == (
-        "docs/style_intent/subtitle-render-path-selector-contract.md"
+        "docs/style_intent/subtitle-render-path-selector-probe.md"
     )
     assert persisted["open_surfaces"][16]["target"] == (
-        "docs/style_intent/subtitle-style-family-palette-proof.html"
+        "docs/style_intent/subtitle-render-path-lineage-observation-surface.md"
     )
     assert persisted["open_surfaces"][17]["target"] == (
-        "docs/style_intent/subtitle-visual-selector-proof.html"
+        "docs/style_intent/subtitle-render-path-selector-contract.md"
     )
     assert persisted["open_surfaces"][18]["target"] == (
-        "docs/style_intent/subtitle-preset-selector.json"
+        "docs/style_intent/subtitle-style-family-palette-proof.html"
     )
     assert persisted["open_surfaces"][19]["target"] == (
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+        "docs/style_intent/subtitle-visual-selector-proof.html"
     )
     assert persisted["open_surfaces"][20]["target"] == (
+        "docs/style_intent/subtitle-preset-selector.json"
+    )
+    assert persisted["open_surfaces"][21]["target"] == (
+        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md"
+    )
+    assert persisted["open_surfaces"][22]["target"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert "ED-10z local readback" in persisted["open_surfaces"][20][
+    assert "ED-10z local readback" in persisted["open_surfaces"][22][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -974,6 +1017,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
+    assert "clip-ed10as-internal-review-access-sheet-fullpath-001" in html
     assert "clip-ed10ar-internal-review-video-candidate-package-001" in html
     assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in html
     assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in html
@@ -1015,13 +1059,11 @@ def test_artifact_registry_open_commands_are_not_polluted_by_ed10aq_notepad():
     assert f"| open_command | {stage5_open} |Fallback" not in text
 
 
-def test_ed10ar_resume_surfaces_are_current_and_stage5_is_source():
-    active_artifact = "clip-ed10ar-internal-review-video-candidate-package-001"
-    active_json = "docs/style_intent/internal-review-video-candidate-package.json"
-    active_md = "docs/style_intent/internal-review-video-candidate-package.md"
-    source_artifact = (
-        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
-    )
+def test_ed10as_resume_surfaces_are_current_and_ed10ar_is_source():
+    active_artifact = "clip-ed10as-internal-review-access-sheet-fullpath-001"
+    active_json = "docs/style_intent/internal-review-video-candidate-access-sheet.json"
+    active_md = "docs/style_intent/internal-review-video-candidate-access-sheet.md"
+    source_artifact = "clip-ed10ar-internal-review-video-candidate-package-001"
 
     for path in [
         REPO_ROOT / "docs" / "CURRENT_HANDOFF.md",
@@ -1037,8 +1079,7 @@ def test_ed10ar_resume_surfaces_are_current_and_stage5_is_source():
         assert active_json in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
         assert active_md in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
         assert source_artifact in text
-        assert "optional-internal-review-video-observation" in text
-        assert "final-render-path-stage-4" in text
+        assert "open_internal_review_video_candidate.ps1" in text
         assert "stage-6-user-freeform-review-request" not in text
         assert f"Active artifact: `{source_artifact}`" not in text
         assert f"The active artifact is\n`{source_artifact}`." not in text
@@ -1858,7 +1899,7 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
         in text
     )
     assert (
-        "Current ED-10ar Internal Review Video Candidate Package"
+        "Current ED-10as Internal Review Access Sheet Fullpath"
         in text
     )
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in text
@@ -1881,9 +1922,10 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
         in text
     )
     assert (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
         in text
     )
+    assert "clip-ed10ar-internal-review-video-candidate-package-001" in text
     assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in text
     assert "final-render-path-stage-1" in text
     assert "final-render-path-stage-2" in text
@@ -1966,7 +2008,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_ed10ao_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
@@ -1979,7 +2021,7 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
     )
     assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
@@ -2000,9 +2042,10 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
         in artifact_ids
     )
     assert (
-        "clip-ed10ar-internal-review-video-candidate-package-001"
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
         in artifact_ids
     )
+    assert "clip-ed10ar-internal-review-video-candidate-package-001" in artifact_ids
     assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in artifact_ids
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
     lineage_surface = status["current_focus"][
@@ -2394,3 +2437,54 @@ def test_ed10ar_internal_review_video_candidate_package_is_bounded_and_non_appro
     assert ("yes_no" + "_unclear") not in serialized
     assert ('"decision' + '_card":') not in serialized
     assert "stage-6-user-freeform-review-request" not in serialized
+
+
+def test_ed10as_internal_review_access_sheet_records_full_paths_and_boundaries():
+    path = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "internal-review-video-candidate-access-sheet.json"
+    )
+    payload = json.loads(path.read_text(encoding="utf-8"))
+
+    assert payload["artifact_id"] == (
+        "clip-ed10as-internal-review-access-sheet-fullpath-001"
+    )
+    assert payload["feature_id"] == "ED-10as"
+    assert payload["status"] == "ready_for_optional_user_review"
+    assert payload["action_type"] == "USER_OPEN_ONLY_LATER"
+    assert payload["source_internal_review_video_candidate_package_artifact_id"] == (
+        "clip-ed10ar-internal-review-video-candidate-package-001"
+    )
+    assert payload["folder_full_path_current_host"].endswith(
+        "subtitle_render_path_selector_probe"
+    )
+    assert payload["media"]["mp4"]["file_full_path_current_host"].endswith(
+        "subtitle_render_path_selector_probe.mp4"
+    )
+    assert payload["media"]["mp4"]["status"] == "present_current_host"
+    assert payload["media"]["ass"]["status"] == "present_current_host"
+    assert payload["media"]["manifest"]["status"] == "present_current_host"
+    assert payload["launcher_or_open_command"] == (
+        "powershell -ExecutionPolicy Bypass -File "
+        "scripts\\operator\\open_internal_review_video_candidate.ps1"
+    )
+    assert len(payload["steps"]) == 3
+    assert len(payload["look_for"]) == 3
+    assert payload["answer_style"] == "freeform"
+    assert payload["answer_hint"] == "One sentence is enough."
+    assert "Post-Observation Relay" == payload["post_observation_relay"]["relay_label"]
+    assert payload["boundaries"]["new_render"] is False
+    assert payload["boundaries"]["new_replay"] is False
+    assert payload["boundaries"]["media_modified"] is False
+    assert payload["boundaries"]["episodes_tracked"] is False
+    assert payload["boundaries"]["production_acceptance"] is False
+    assert payload["boundaries"]["rights_public_use_approval"] is False
+    assert payload["boundaries"]["publishing_acceptance"] is False
+    assert payload["boundaries"]["monetization_acceptance"] is False
+
+    script = REPO_ROOT / "scripts" / "operator" / "open_internal_review_video_candidate.ps1"
+    script_text = script.read_text(encoding="utf-8")
+    assert "Invoke-Item -LiteralPath $video" in script_text
+    assert "OpenFolder" in script_text

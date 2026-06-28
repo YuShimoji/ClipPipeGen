@@ -3,19 +3,19 @@ id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: internal_review_video_candidate_package_ready
+health: internal_review_access_sheet_fullpath_ready
 progress_pct: 100
 last_touched: 2026-06-28
-active_artifact: clip-ed10ar-internal-review-video-candidate-package-001
-source_stage5_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, artifacts/ARTIFACTS.md
+active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
+source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
 
-## Current ED-10ar Style Intent Registry Link
+## Current ED-10as Internal Review Access Sheet Link
 
-ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-internal-review-video-candidate-package-001` is the latest tracked package. It consumes ED-10aq as the active stage-5 source and uses Existing Output First: the same-machine ignored diagnostic MP4, ASS, and local manifest already exist, so `new_render_run=false`. It is internal-review-only, asks for no user decision now, asks for no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending. Next route is `optional-internal-review-video-observation`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the latest tracked access sheet. It consumes ED-10ar, records exact current-host full paths for the ignored MP4, ASS, and manifest, and adds `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, asks for no user decision now, asks for no fixed form, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending.
 
 ## What This Is
 

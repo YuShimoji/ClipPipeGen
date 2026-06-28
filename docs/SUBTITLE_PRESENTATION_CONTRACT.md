@@ -5,9 +5,9 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
-## Current ED-10ar Internal Review Video Candidate Package
+## Current ED-10as Internal Review Access Sheet Fullpath
 
-ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-internal-review-video-candidate-package-001` is the latest tracked package, while ED-10aq remains the stage-5 source packet (`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`). ED-10ar uses Existing Output First: the same-machine ignored diagnostic MP4, ASS, and local manifest already exist, so `new_render_run=false`. It is internal-review-only, asks for no user decision now, asks for no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending. Next route is `optional-internal-review-video-observation`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the latest tracked access sheet, while ED-10ar remains the internal review video candidate package (`clip-ed10ar-internal-review-video-candidate-package-001`) sourced from the ED-10aq stage-5 packet (`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`). ED-10as records exact current-host full paths for the ignored MP4, ASS, and manifest and adds `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, asks for no user decision now, requires no fixed form or screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending.
 
 ## Contract
 

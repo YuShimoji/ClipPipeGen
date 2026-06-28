@@ -3,22 +3,22 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: internal_review_video_candidate_package_ready
+health: internal_review_access_sheet_fullpath_ready
 progress_pct: 100
 last_touched: 2026-06-28
-next_review_due: none_internal_review_video_candidate_package_only
-active_artifact: clip-ed10ar-internal-review-video-candidate-package-001
-source_stage5_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
+next_review_due: none_access_sheet_ready_only
+active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
+source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
 
-## Current ED-10ar Internal Review Video Candidate Package
+## Current ED-10as Internal Review Access Sheet Fullpath
 
-ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-internal-review-video-candidate-package-001` is the active tracked package. It consumes ED-10aq as the stage-5 source and uses Existing Output First: the same-machine ignored diagnostic MP4, ASS, and local manifest already exist, so `new_render_run=false`. This package is internal-review-only and diagnostic-only. It asks for no user decision now, uses no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending. Next route is `optional-internal-review-video-observation`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the active tracked access sheet. It consumes ED-10ar and records exact current-host full paths for the ignored MP4, ASS, and local manifest, plus `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, tracks no `episodes/` files, asks for no user decision now, and keeps production/public/rights/publishing/monetization gates false or pending. Later observation, if requested, stays freeform with at most three look-for points.
 
 ## What This Is
 
@@ -36,14 +36,27 @@ ED-10ao production limitation-lift stage-3 owner-review prep packet.
 ED-10ap production limitation lift stage-4 user decision-card readback.
 ED-10aq production limitation lift stage-5 user-decision-ready readback.
 ED-10ar internal review video candidate package.
+ED-10as internal review access sheet with current-host full paths.
 
 ## Current State
 
 The active artifact is
+`clip-ed10as-internal-review-access-sheet-fullpath-001`.
+
+The source internal review package is
 `clip-ed10ar-internal-review-video-candidate-package-001`.
 
-The source stage-5 artifact is
-`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`.
+ED-10as records
+`clip-ed10as-internal-review-access-sheet-fullpath-001`
+at
+`docs/style_intent/internal-review-video-candidate-access-sheet.json`
+and
+`docs/style_intent/internal-review-video-candidate-access-sheet.md`.
+It gives exact current-host full paths for the MP4, ASS, and manifest under
+ignored `episodes/` local evidence and adds
+`scripts/operator/open_internal_review_video_candidate.ps1`. It creates no
+new render/replay/media, tracks no `episodes/` files, and does not approve
+production, rights/public-use, publishing, or monetization.
 
 ED-10ar records
 `clip-ed10ar-internal-review-video-candidate-package-001`
@@ -544,6 +557,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10as-internal-review-access-sheet-fullpath-001` | Tracked ED-10as access sheet; records current-host full paths and a launcher for the ED-10ar internal review video candidate | `see docs\style_intent\internal-review-video-candidate-access-sheet.md` |
 | `clip-ed10ar-internal-review-video-candidate-package-001` | Tracked ED-10ar internal review video candidate package; reuses existing ignored MP4/ASS/local manifest output without approving production/public use | `see docs\style_intent\internal-review-video-candidate-package.md` |
 | `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` | Tracked ED-10aq user-decision-ready packet; consumes ED-10ap and prepares the later short freeform review request without asking for or approving production/public use | `see docs\style_intent\subtitle-production-limitation-lift-stage-5-user-decision-ready.md` |
 | `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` | Tracked ED-10ap stage-4 user decision-card source; converts ED-10ao entries into future freeform decision topics without asking for or approving production/public use | `see docs\style_intent\subtitle-production-limitation-lift-stage-4-user-decision-card.md` |

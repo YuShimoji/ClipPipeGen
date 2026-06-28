@@ -676,6 +676,21 @@ Boundary flags remain false or pending:
 - `new_rehearsal_run=true`
 - `final_render_path_approved=false`
 
+## `clip-ed10as-internal-review-access-sheet-fullpath-001`
+
+| field | value |
+|---|---|
+| title | ED-10as Internal Review Access Sheet Fullpath |
+| purpose | Provide exact current-host full paths and a launcher for the ED-10ar internal review video candidate without creating render/replay/media or granting production/public/rights approval. |
+| storage_class | tracked JSON/Markdown plus launcher script |
+| repo_relative_path | docs/style_intent/internal-review-video-candidate-access-sheet.json; docs/style_intent/internal-review-video-candidate-access-sheet.md; scripts/operator/open_internal_review_video_candidate.ps1 |
+| open_command | powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1 |
+| generated_from | ED-10as consumes ED-10ar and resolves the current-host full paths for the existing ignored MP4, ASS, and local manifest. |
+| validation_command | Parse ED-10as and ED-10ar JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; verify git ls-files episodes remains empty. |
+| latest_local_smoke | MP4/ASS/manifest full paths resolved on current host; launcher command recorded; no render/replay/media modification; `episodes_tracked=false`; production/rights/public-use/publishing/monetization approvals remain false or pending. |
+| review_status | access sheet only; no user review or decision requested now |
+| next_action | Use the launcher only when a later supervisor asks for optional freeform observation. |
+
 ## `clip-ed10ar-internal-review-video-candidate-package-001`
 
 | field | value |
