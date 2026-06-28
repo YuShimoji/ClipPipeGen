@@ -676,20 +676,20 @@ Boundary flags remain false or pending:
 - `new_rehearsal_run=true`
 - `final_render_path_approved=false`
 
-## `clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001`
+## `clip-ed10ar-internal-review-video-candidate-package-001`
 
 | field | value |
 |---|---|
-| title | ED-10ar Production Limitation Lift Stage 6 User Freeform Review Request |
-| purpose | Prepare a tracked low-burden freeform user review request surface from ED-10aq without presenting it now or granting production/public/rights/render approval. |
+| title | ED-10ar Internal Review Video Candidate Package |
+| purpose | Assemble a tracked readback for an internal-review video candidate package from existing ignored diagnostic MP4/ASS/manifest output without running a new render or granting production/public/rights/render approval. |
 | storage_class | tracked JSON/Markdown |
-| repo_relative_path | docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json; docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md |
-| generated_from | ED-10ar consumes ED-10aq stage-5 user-decision-ready and records a later freeform request for subtitle design / visual acceptance, production render readiness, and rights / publishing / public-use clearance. |
+| repo_relative_path | docs/style_intent/internal-review-video-candidate-package.json; docs/style_intent/internal-review-video-candidate-package.md |
+| open_command | notepad docs\\style_intent\\internal-review-video-candidate-package.md |
+| generated_from | ED-10ar consumes ED-10aq stage-5 user-decision-ready and reuses the existing same-machine ignored ED-10af/ED-10al diagnostic MP4, ASS, and local manifest as the internal review video candidate package. |
 | validation_command | Parse ED-10ar JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; verify git ls-files episodes remains empty. |
-| latest_local_smoke | ED-10ar records exactly three topics, answer_style=freeform, fixed_form_required=false, fixed_choice_rows_allowed=false, binary_choice_rows_emitted=false, required_labels=[], screenshot_required=false, no render/replay/media, and production/rights/public-use/render approvals closed and separate. |
-| review_status | stage-6 freeform request surface only; not presented to the user in this agent turn |
-| next_action | Use `production-limitation-lift-stage-7-freeform-response-normalizer` after a later freeform response, or use final-render-path-stage-4 only if a concrete diagnostic gap is found. |
+| latest_local_smoke | Existing Output First: video/ASS/manifest are present under ignored `episodes/` paths, `duration_seconds=4.2`, `resolution=1920x1080`, `video_codec=h264`, `audio_codec=aac`, `stream_count=2`, `new_render_run=false`, `tracked_binary_artifact_created=false`, `episodes_tracked=false`, and production/rights/public-use/render approvals closed and separate. |
+| review_status | internal-review video candidate package only; no user review or decision requested now |
+| next_action | Use `optional-internal-review-video-observation` only for a later freeform observation, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
 ## `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
 
 | field | value |

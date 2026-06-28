@@ -5,9 +5,9 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
-## Current ED-10ar Production Limitation Lift Stage 6 User Freeform Review Request
+## Current ED-10ar Internal Review Video Candidate Package
 
-ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001` is the latest tracked request surface, while ED-10aq remains the active stage-5 source packet (`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`) for dashboard continuity. ED-10ar prepares a later low-burden freeform review request for exactly three topics: subtitle design / visual acceptance, production render readiness, and rights / publishing / public-use clearance. It is not presented to the user in this agent turn, asks for no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-7-freeform-response-normalizer`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-internal-review-video-candidate-package-001` is the latest tracked package, while ED-10aq remains the stage-5 source packet (`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`). ED-10ar uses Existing Output First: the same-machine ignored diagnostic MP4, ASS, and local manifest already exist, so `new_render_run=false`. It is internal-review-only, asks for no user decision now, asks for no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending. Next route is `optional-internal-review-video-observation`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## Contract
 

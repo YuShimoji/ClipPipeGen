@@ -3,15 +3,15 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: production_limitation_lift_stage_5_user_decision_ready
+health: internal_review_video_candidate_package_ready
 progress_pct: 100
 last_touched: 2026-06-28
-next_review_due: none_stage_6_request_surface_only
-active_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
-latest_request_surface: clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001
+next_review_due: none_internal_review_video_candidate_package_only
+active_artifact: clip-ed10ar-internal-review-video-candidate-package-001
+source_stage5_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json, docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -23,9 +23,9 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current ED-10ar Production Limitation Lift Stage 6 User Freeform Review Request
+## Current ED-10ar Internal Review Video Candidate Package
 
-ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001` is the latest tracked request surface. The dashboard convention still keeps ED-10aq as the active stage-5 source packet, so ED-10ar is recorded as the latest request surface and ED-10aq remains the source. ED-10ar prepares a later low-burden freeform review request for exactly three topics: subtitle design / visual acceptance, production render readiness, and rights / publishing / public-use clearance. It is not presented to the user in this agent turn, asks for no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-7-freeform-response-normalizer`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10ar checkpoint, 2026-06-28 JST: `clip-ed10ar-internal-review-video-candidate-package-001` is the active tracked package. It consumes ED-10aq as the stage-5 source and uses Existing Output First: the same-machine ignored diagnostic MP4, ASS, and local manifest already exist, so `new_render_run=false`. This package is internal-review-only and diagnostic-only. It asks for no user decision now, uses no fixed form, emits no fixed-choice or binary-choice rows, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending. Next route is `optional-internal-review-video-observation`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## What This Is
 
@@ -40,27 +40,26 @@ for restart decisions.
 
 ## Current Capsule
 
-Active source artifact: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
+Active artifact: `clip-ed10ar-internal-review-video-candidate-package-001`
 
-Latest request surface:
-`clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001`
+Source stage-5 artifact: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
 
 ED-10ar checkpoint, 2026-06-28 JST:
-`clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001`
+`clip-ed10ar-internal-review-video-candidate-package-001`
 now lives at
-`docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json`
+`docs/style_intent/internal-review-video-candidate-package.json`
 and
-`docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md`.
-It consumes ED-10aq as the stage-5 user-decision-ready source and prepares the
-later low-burden freeform review request for exactly three topics: subtitle
-design / visual acceptance, production render readiness, and rights /
-publishing / public-use clearance. It is not presented to the user in this
-agent turn. It records answer_style=freeform, no fixed form, no fixed-choice
-rows, no binary-choice rows, no required labels, no screenshot requirement, no
-hidden schema exposure, no render/replay/media, no tracked media, and closed
+`docs/style_intent/internal-review-video-candidate-package.md`.
+It consumes ED-10aq as the stage-5 user-decision-ready source and records the
+existing ignored diagnostic video candidate package: MP4, ASS, and local
+manifest are present on this machine, with duration 4.2 seconds, H.264/AAC,
+1920x1080, 30fps, and two streams. No new render was run. It records
+answer_style=freeform, template_required=false, max_required_points=3, no fixed
+form, no fixed-choice rows, no binary-choice rows, no required labels, no
+screenshot requirement, no tracked media, and closed or pending
 production/rights/public-use approval gates. The next executable route is
-`production-limitation-lift-stage-7-freeform-response-normalizer`; use
-`final-render-path-stage-4` only if a concrete diagnostic gap is found.
+`optional-internal-review-video-observation`; use `final-render-path-stage-4`
+only if a concrete diagnostic gap is found.
 
 ED-10aq checkpoint, 2026-06-28 JST:
 `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` now
@@ -73,9 +72,9 @@ later short freeform user review request ready without asking for that decision
 now. It records answer_style=freeform, max_look_for_points<=3, no fixed form,
 no fixed-choice rows, no screenshot requirement, no hidden schema exposure, no
 render/replay/media, no tracked media, and closed production/rights/public-use
-approval gates. ED-10ar now consumes it as the source for a later freeform
-request surface; use `final-render-path-stage-4` only if a concrete diagnostic
-gap is found.
+approval gates. ED-10ar now consumes it as the source for the internal review
+video candidate package; use `final-render-path-stage-4` only if a concrete
+diagnostic gap is found.
 
 ED-10ap checkpoint, 2026-06-28 JST:
 `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` now
@@ -609,7 +608,7 @@ gates.
    immediate decision, and keeps all production/public gates false or pending.
    ED-10ap remains the predecessor/source packet, not the active resume
    artifact. ED-10ar now uses it as source for
-   `production-limitation-lift-stage-7-freeform-response-normalizer`, or
+   `optional-internal-review-video-observation`, or
    `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 2. Continue from
    `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`

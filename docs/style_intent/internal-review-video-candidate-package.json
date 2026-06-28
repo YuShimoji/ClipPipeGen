@@ -1,0 +1,97 @@
+{
+  "schema_id": "clippipegen.internal_review_video_candidate_package.v1",
+  "artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "feature_id": "ED-10ar",
+  "status": "internal_review_video_candidate_package_ready",
+  "created_at_jst": "2026-06-28",
+  "package_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "source_stage5_user_decision_ready_artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+  "source_stage4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
+  "source_final_render_path_stage_3_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "existing_output_first": {
+    "sufficient": true,
+    "reason": "The existing same-machine ignored diagnostic MP4, ASS, and local manifest are sufficient to assemble an internal review video candidate package without running a new render.",
+    "new_render_run": false,
+    "render_skipped_reason": "Existing ignored diagnostic output already records a reviewable local video path, subtitle burn-in source, and ffprobe metadata."
+  },
+  "package_contents": {
+    "video": {
+      "status": "present_same_machine_ignored_local",
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+      "size_bytes": 1129370,
+      "duration_seconds": 4.2,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "width": 1920,
+      "height": 1080,
+      "resolution": "1920x1080",
+      "fps": 30.0,
+      "frame_rate": "30/1",
+      "stream_count": 2
+    },
+    "subtitle_ass": {
+      "status": "present_same_machine_ignored_local",
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass",
+      "size_bytes": 1023
+    },
+    "local_manifest": {
+      "status": "present_same_machine_ignored_local",
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json",
+      "size_bytes": 5325,
+      "source_status": "local_ignored_probe_generated",
+      "ffmpeg_path_source": "PATH",
+      "ffprobe_path_source": "PATH",
+      "selected_profile_id": "mp4_h264_aac",
+      "selected_attempt_status": "succeeded",
+      "selected_attempt_exit_code": 0,
+      "ignored_by_git": true
+    }
+  },
+  "review_purpose": "Let a supervisor later inspect whether ClipPipeGen can point to a reviewable internal diagnostic video path.",
+  "what_it_proves": [
+    "A same-machine ignored diagnostic MP4 path exists.",
+    "The subtitle ASS source and local manifest exist beside the MP4.",
+    "The local manifest records duration, container, codec, resolution, fps, and stream count metadata."
+  ],
+  "what_it_does_not_prove": [
+    "Production subtitle design acceptance.",
+    "Production render acceptance.",
+    "Creative acceptance.",
+    "Rights, publishing, public-use, or monetization permission.",
+    "YouTube publish package readiness."
+  ],
+  "human_burden_hygiene": {
+    "answer_style": "freeform",
+    "template_required": false,
+    "schema_owner": "Agent",
+    "max_required_points": 3,
+    "fixed_form_required": false,
+    "fixed_choice_rows_allowed": false,
+    "fixed_choice_rows_emitted": false,
+    "binary_choice_rows_emitted": false,
+    "yes_no_rows_emitted": false,
+    "required_labels": [],
+    "screenshot_required": false,
+    "user_decision_requested_now": false,
+    "user_side_work_now": "none"
+  },
+  "boundaries": {
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "monetization_acceptance": false,
+    "youtube_publish_package_created": false,
+    "final_render_path_approved": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false
+  },
+  "next_executable_route": "optional-internal-review-video-observation",
+  "alternate_next_executable_route": "final-render-path-stage-4"
+}

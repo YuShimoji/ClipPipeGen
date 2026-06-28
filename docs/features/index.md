@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10aq`
-- artifact: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
-- state: `production_limitation_lift_stage_5_user_decision_ready`
+- feature: `ED-10ar`
+- artifact: `clip-ed10ar-internal-review-video-candidate-package-001`
+- state: `internal_review_video_candidate_package_ready`
 
 ## Feature Table
 
@@ -80,7 +80,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10ao | Production Limitation-Lift Stage 3 Owner-Review Prep v0 | done | production_limitation_lift_stage_3_owner_review_prep_ready | 100 | clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001 | Use the stage-3 owner-review prep packet to start production-limitation-lift-stage-4-user-decision-card; keep future user input freeform and approvals explicit. |
 | ED-10ap | Production Limitation Lift Stage 4 User Decision Card v0 | done | production_limitation_lift_stage_4_user_decision_card_ready | 100 | clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001 | Use the freeform user decision card only when a later slice explicitly asks for user judgement; keep approvals explicit. |
 | ED-10aq | Production Limitation Lift Stage 5 User Decision Ready v0 | done | production_limitation_lift_stage_5_user_decision_ready | 100 | clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001 | Use the stage-5 user-decision-ready packet only; keep user work none and approvals explicit. |
-| ED-10ar | Production Limitation Lift Stage 6 User Freeform Review Request v0 | done | production_limitation_lift_stage_6_user_freeform_review_request_ready | 100 | clip-ed10ar-production-limitation-lift-stage-6-user-freeform-review-request-001 | Use the stage-6 freeform request surface only; normalize a later answer in stage 7 and keep production/public approvals explicit. |
+| ED-10ar | Internal Review Video Candidate Package v0 | done | internal_review_video_candidate_package_ready | 100 | clip-ed10ar-internal-review-video-candidate-package-001 | Use the internal review video candidate package only; optional later observation stays freeform and non-approving. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
