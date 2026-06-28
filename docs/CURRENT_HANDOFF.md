@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: production_limitation_lift_stage_3_owner_review_prep_ready
+health: owner_review_decision_card_freeform_ready
 progress_pct: 100
 last_touched: 2026-06-28
-next_review_due: none_stage_4_user_decision_card_only
-active_artifact: clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001
+next_review_due: none_stage_5_user_decision_ready_only
+active_artifact: clip-ed10ap-owner-review-decision-card-freeform-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-owner-review-decision-card-freeform.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -28,11 +28,33 @@ ED-10al final render-path stage-3 diagnostic rehearsal packet.
 ED-10am production limitation-lift stage-1 preparation packet.
 ED-10an production limitation-lift stage-2 decision packet.
 ED-10ao production limitation-lift stage-3 owner-review prep packet.
+ED-10ap owner review decision card freeform readback.
 
 ## Current State
 
 The active artifact is
-`clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001`.
+`clip-ed10ap-owner-review-decision-card-freeform-001`.
+
+ED-10ap records
+`clip-ed10ap-owner-review-decision-card-freeform-001` at
+`docs/style_intent/subtitle-owner-review-decision-card-freeform.json`
+and
+`docs/style_intent/subtitle-owner-review-decision-card-freeform.md`.
+It consumes ED-10ao as the owner-review prep source and converts the three
+owner-review entries into a future short freeform owner decision-card readback for
+subtitle design / visual acceptance, production render readiness, and rights /
+publishing / public-use clearance.
+
+The ED-10ap packet records each topic's plain-language future question shape,
+available and missing evidence, safe freeform answer hints, internal
+normalization hints, stop boundary, and unsafe-overclaiming examples. It
+requests no immediate user decision, emits no fixed user form or fixed-choice
+rows, requires no screenshot path, exposes no hidden schema as user input, runs
+no render, tracks no media, keeps `episodes/` untracked, and does not approve
+production subtitle design, production render, creative, rights, publishing, or
+public use. The next executable route is
+`owner-review-decision-card-freeform-ready`, with
+`final-render-path-stage-4` reserved only for a concrete diagnostic gap.
 
 ED-10ao records
 `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` at
@@ -435,25 +457,27 @@ adjustment, production limitation-lift, or render-path probe.
 ## Next Move
 
 Continue from
-`clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` when the
-next terminal needs the latest production limitation-lift owner-review
-preparation state.
+`clip-ed10ap-owner-review-decision-card-freeform-001` when
+the next terminal needs the latest owner review decision-card freeform readback.
 The active diagnostic proof source is still
 `clip-ed10af-l2-render-path-selector-probe-001`; ED-10al is the diagnostic
 rehearsal source, ED-10ak is the stage-2 source, and ED-10ag remains lineage
-support. ED-10ao has converted ED-10an's three groups into future freeform
-owner-review topics, requests no immediate user decision, emits no fixed form,
-and keeps production/public approvals closed. Do not request display/layout
-polish, another Candidate 0-3 comparison, another review of the corrected
-ED-10u `cut_008` multiline/dense-stress surface, or general font-family
-acceptance from `cut_002` / `cut_003`.
+support. ED-10ap has converted ED-10ao's three owner-review entries into a
+future short freeform owner decision-card readback,
+requests no immediate user decision, emits no fixed form or fixed-choice rows,
+requires no screenshot path, and keeps production/public approvals closed. Do
+not request display/layout polish,
+another Candidate 0-3 comparison, another review of the corrected ED-10u
+`cut_008` multiline/dense-stress surface, or general font-family acceptance
+from `cut_002` / `cut_003`.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
-| `production-limitation-lift-stage-4-user-decision-card` | Uses ED-10ao's owner-review prep entries | A later slice can prepare a short freeform user decision card without pre-approving production/public use |
+| `owner-review-decision-card-freeform-ready` | Uses ED-10ap's prepared future decision-card readback | A later slice can decide whether to request freeform owner judgement without pre-approving production/public use |
 | `final-render-path-stage-4` | Uses ED-10al generated rehearsal metadata | Use only if a concrete diagnostic gap is found before the user decision-card route |
+| `production-limitation-lift-stage-4-user-decision-card` | Historical predecessor route now materialized by ED-10ap | Use only for backtracking to the owner review decision-card freeform source |
 | `production-limitation-lift-stage-3-owner-review-prep` | Historical/current predecessor route now materialized by ED-10ao | Use only for backtracking to the owner-review prep source |
 | `production-limitation-lift-stage-2-decision-packet` | Historical/current predecessor route now materialized by ED-10an | Use only for backtracking to the stage-2 decision packet source |
 | `production-limitation-lift-stage-1` | Historical/current predecessor route now materialized by ED-10am | Use only for backtracking to the stage-1 limitation-lift source |
@@ -477,6 +501,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10ap-owner-review-decision-card-freeform-001` | Tracked ED-10ap owner review decision-card freeform readback; converts ED-10ao entries into future freeform decision topics without asking for or approving production/public use | `see docs\style_intent\subtitle-owner-review-decision-card-freeform.md` |
 | `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` | Tracked ED-10ao production limitation-lift stage-3 owner-review prep packet; converts ED-10an groups into future freeform review topics without approving production/public use | `see docs\style_intent\subtitle-production-limitation-lift-stage-3-owner-review-prep.md` |
 | `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` | Tracked ED-10an production limitation-lift stage-2 decision packet; groups ED-10am gates into three decision-preparation groups without approving production/public use | `see docs\style_intent\subtitle-production-limitation-lift-stage-2-decision-packet.md` |
 | `clip-ed10am-production-limitation-lift-stage-1-001` | Tracked ED-10am production limitation-lift stage-1 packet; separates ED-10al diagnostic evidence from production/render/creative/rights/publishing/public-use decisions and media boundaries | `see docs\style_intent\subtitle-production-limitation-lift-stage-1.md` |
@@ -520,6 +545,7 @@ uvx python -m json.tool docs\style_intent\subtitle-final-render-path-stage-3.jso
 uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-stage-1.json
 uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-stage-2-decision-packet.json
 uvx python -m json.tool docs\style_intent\subtitle-production-limitation-lift-stage-3-owner-review-prep.json
+uvx python -m json.tool docs\style_intent\subtitle-owner-review-decision-card-freeform.json
 uvx python -m json.tool docs\font_candidates\subtitle-font-candidates.json
 uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py
 ```
@@ -541,9 +567,10 @@ Expected tracked state:
 - ED-10am production limitation-lift stage-1 JSON parses
 - ED-10an production limitation-lift stage-2 decision packet JSON parses
 - ED-10ao production limitation-lift stage-3 owner-review prep JSON parses
+- ED-10ap owner review decision card freeform JSON parses
 - font candidate JSON parses
 - targeted tests pass, with optional skips depending on local media and Pillow
-- latest pushed checkpoint is the ED-10ao successor commit
+- latest pushed checkpoint is the ED-10ap successor commit
 - ED-10z dry-run JSON reads `artifact_id=clip-ed10z-tiny-render-path-nearer-probe-001`,
   `review_card.action_type=NO_REVIEW_CARD_REVIEW_CONSUMED`, lead
   `ed10w_badge_label_pressure_adjustment`, fallback

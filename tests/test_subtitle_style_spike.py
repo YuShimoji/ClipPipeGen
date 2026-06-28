@@ -1681,14 +1681,146 @@ def test_subtitle_production_limitation_lift_stage3_doc_records_owner_review_pre
     assert "public_use_permission: `false`" in text
     assert "asked_now: `false`" in text
     assert "fixed_form_required: `false`" in text
-    assert "freeform_expected: `true`" in text
     assert "fixed_choice_rows_allowed: `false`" in text
+    assert "freeform_expected: `true`" in text
     assert "production-limitation-lift-stage-4-user-decision-card" in text
     assert "final-render-path-stage-4" in text
     assert "owner_review_groups_bounded: `true`" in text
     assert "no_fixed_user_form_emitted: `true`" in text
     assert "all_checks_passed: `true`" in text
-    assert "fixed_choice_rows_allowed: `false`" in text
+
+
+def test_subtitle_owner_review_decision_card_freeform_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    stage3_lift = json.loads(
+        (
+            style_dir
+            / "subtitle-production-limitation-lift-stage-3-owner-review-prep.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked = json.loads(
+        (
+            style_dir
+            / "subtitle-owner-review-decision-card-freeform.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = (
+        preset_selector.build_subtitle_production_limitation_lift_stage4_user_decision_card(
+            production_lift_stage3_owner_review_prep=stage3_lift
+        )
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE4_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE4_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10ap"
+    assert tracked["status"] == "owner_review_decision_card_freeform_ready"
+    assert tracked[
+        "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id"
+    ] == preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE3_ARTIFACT_ID
+    assert tracked["decision_topic_ids"] == list(
+        preset_selector.PRODUCTION_LIMITATION_LIFT_STAGE4_DECISION_TOPIC_IDS
+    )
+    assert len(tracked["decision_topics"]) == 3
+
+    for topic in tracked["decision_topics"]:
+        assert topic["plain_language_question_shape"]
+        assert topic["available_evidence"]
+        assert topic["missing_evidence"]
+        assert topic["safe_freeform_answer_could_mention"]
+        assert topic["agent_may_normalize_internally"]
+        assert topic["unsafe_overclaiming_examples"]
+        assert topic["must_stop_before_approval"] is True
+        assert topic["agent_may_approve"] is False
+        assert topic["user_decision_requested_now"] is False
+        assert topic["fixed_form_required"] is False
+        assert topic["fixed_choice_rows_allowed"] is False
+        assert topic["fixed_choice_rows_emitted"] is False
+        assert topic["screenshot_required"] is False
+        assert topic["hidden_schema_exposed_to_user"] is False
+
+    answer_handling = tracked["future_freeform_answer_handling"]
+    assert answer_handling["user_may_answer_naturally"] is True
+    assert answer_handling["one_paragraph_or_few_bullets_allowed"] is True
+    assert answer_handling["fixed_form_required"] is False
+    assert answer_handling["fixed_choice_rows_allowed"] is False
+    assert answer_handling["fixed_choice_rows_emitted"] is False
+    assert answer_handling["required_labels"] == []
+    assert answer_handling["screenshot_required"] is False
+    assert answer_handling["hidden_schema_exposed_to_user"] is False
+    assert answer_handling["decision_topic_count"] == 3
+    assert answer_handling["answer_style"] == "freeform"
+    assert answer_handling["template_required"] is False
+    assert answer_handling["schema_owner"] == "Agent"
+    assert answer_handling["max_look_for_points"] == 3
+
+    assert tracked["not_asked_now"]["user_decision_requested_now"] is False
+    assert tracked["not_asked_now"]["production_subtitle_design_acceptance"] is False
+    assert tracked["not_asked_now"]["production_render_acceptance"] is False
+    assert tracked["not_asked_now"]["creative_acceptance"] is False
+    assert tracked["not_asked_now"]["rights_status"] == "pending"
+    assert tracked["not_asked_now"]["publishing_acceptance"] is False
+    assert tracked["not_asked_now"]["public_use_permission"] is False
+    assert tracked["next_executable_route"]["route_id"] == (
+        "owner-review-decision-card-freeform-ready"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_rehearsal_run"] is False
+    assert tracked["boundaries"]["owner_review_decision_card_freeform_only"] is True
+    assert tracked["boundaries"]["fixed_choice_rows_emitted"] is False
+    assert tracked["boundaries"]["tracked_binary_artifact_created"] is False
+    assert tracked["boundaries"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["review_policy"]["user_decision_requested_now"] is False
+    assert tracked["review_policy"]["fixed_form_required"] is False
+    assert tracked["review_policy"]["fixed_choice_rows_allowed"] is False
+    assert tracked["review_policy"]["fixed_choice_rows_emitted"] is False
+    assert tracked["review_policy"]["screenshot_required"] is False
+    assert tracked["validation"]["source_owner_review_prep_preserved"] is True
+    assert tracked["validation"]["decision_topics_bounded_to_three"] is True
+    assert tracked["validation"]["no_fixed_choice_or_form_surface"] is True
+    assert tracked["validation"]["production_public_gates_still_closed"] is True
+    assert tracked["validation"]["no_screenshot_requirement"] is True
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_subtitle_owner_review_decision_card_freeform_doc_records_readback():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "subtitle-owner-review-decision-card-freeform.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10ap Owner Review Decision Card Freeform" in text
+    assert "clip-ed10ap-owner-review-decision-card-freeform-001" in text
+    assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in text
+    assert "Future Decision Topics" in text
+    assert "subtitle_design_visual_acceptance" in text
+    assert "production_render_readiness" in text
+    assert "rights_publishing_public_use_clearance" in text
+    assert "user_may_answer_naturally: `true`" in text
+    assert "one_paragraph_or_few_bullets_allowed: `true`" in text
+    assert "answer_style: `freeform`" in text
+    assert "template_required: `false`" in text
+    assert "schema_owner: `Agent`" in text
+    assert "max_look_for_points: `3`" in text
+    assert "fixed_form_required: `false`" in text
+    assert "fixed_choice_rows_emitted: `false`" in text
+    assert "screenshot_required: `false`" in text
+    assert "user_decision_requested_now: `false`" in text
+    assert "owner-review-decision-card-freeform-ready" in text
+    assert "final-render-path-stage-4" in text
+    assert "source_owner_review_prep_preserved: `true`" in text
+    assert "all_checks_passed: `true`" in text
+    assert "rights_status: `pending`" in text
+    assert "public_use_permission: `false`" in text
 
 
 @pytest.mark.skipif(
