@@ -1,16 +1,16 @@
----
+﻿---
 id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: owner_decision_card_gate_sanity_ready
+health: production_limitation_lift_stage_5_user_decision_ready
 progress_pct: 100
 last_touched: 2026-06-28
-next_review_due: none_owner_decision_card_gate_sanity_only
-active_artifact: clip-ed10aq-owner-decision-card-gate-sanity-001
+next_review_due: none_stage_5_user_decision_ready_only
+active_artifact: clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-owner-review-decision-card-freeform.json, docs/style_intent/subtitle-owner-review-decision-card-freeform.md, docs/style_intent/subtitle-owner-decision-card-gate-sanity.json, docs/style_intent/subtitle-owner-decision-card-gate-sanity.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -22,9 +22,9 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current ED-10aq Owner Decision Card Gate Sanity
+## Current ED-10aq Production Limitation Lift Stage 5 User-Decision-Ready
 
-ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-owner-decision-card-gate-sanity-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `owner-decision-card-gate-sanity-complete`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-6-user-freeform-review-request`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## What This Is
 
@@ -39,29 +39,29 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10aq-owner-decision-card-gate-sanity-001`
+Active artifact: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
 
 ED-10aq checkpoint, 2026-06-28 JST:
-`clip-ed10aq-owner-decision-card-gate-sanity-001` now
+`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` now
 lives at
-`docs/style_intent/subtitle-owner-decision-card-gate-sanity.json`
+`docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json`
 and
-`docs/style_intent/subtitle-owner-decision-card-gate-sanity.md`.
-It consumes ED-10ap as the owner-review decision-card freeform source and makes the
+`docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md`.
+It consumes ED-10ap as the stage-4 user decision-card source and makes the
 later short freeform user review request ready without asking for that decision
 now. It records answer_style=freeform, max_look_for_points<=3, no fixed form,
 no fixed-choice rows, no screenshot requirement, no hidden schema exposure, no
 render/replay/media, no tracked media, and closed production/rights/public-use
 approval gates. The next executable route is
-`owner-decision-card-gate-sanity-complete`; use
+`production-limitation-lift-stage-6-user-freeform-review-request`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
 ED-10ap checkpoint, 2026-06-28 JST:
-`clip-ed10ap-owner-review-decision-card-freeform-001` now
+`clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` now
 lives at
-`docs/style_intent/subtitle-owner-review-decision-card-freeform.json`
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json`
 and
-`docs/style_intent/subtitle-owner-review-decision-card-freeform.md`.
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md`.
 It consumes ED-10ao as the owner-review prep source and converts the three
 owner-review entries into a future short freeform user decision card for
 subtitle design / visual acceptance, production render readiness, and rights /
@@ -75,7 +75,7 @@ path, exposes no hidden schema as user input, runs no render, creates no
 tracked media, and keeps `episodes/` untracked. Production subtitle design,
 production render, creative acceptance, rights, publishing, and public-use
 remain false or pending. The next executable route is
-`owner-decision-card-gate-sanity`; use
+`production-limitation-lift-stage-5-user-decision-ready`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
 ED-10ao checkpoint, 2026-06-28 JST:
@@ -96,7 +96,7 @@ evidence, safe next action, unsafe-overclaiming examples, whether the agent can
 proceed without user judgement, and whether the route must stop before
 approval. Production subtitle design, production render, creative acceptance,
 rights, publishing, and public-use remain false or pending. The next executable
-route is `owner-review-decision-card-freeform`; use
+route is `production-limitation-lift-stage-4-user-decision-card`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
 ED-10an checkpoint, 2026-06-27 JST:
@@ -581,18 +581,18 @@ gates.
 ## Next
 
 1. Continue from
-   `clip-ed10aq-owner-decision-card-gate-sanity-001`
+   `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
    when the next terminal needs the latest user-decision-ready packet. It
    consumes ED-10ap, preserves the three bounded topics, emits no fixed user
    form or fixed-choice rows, requires no screenshot path, requests no
    immediate decision, and keeps all production/public gates false or pending.
    ED-10ap remains the predecessor/source packet, not the active resume
    artifact. The later route is
-   `owner-decision-card-gate-sanity-complete`, or
+   `production-limitation-lift-stage-6-user-freeform-review-request`, or
    `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 2. Continue from
-   `clip-ed10ap-owner-review-decision-card-freeform-001`
-   when the next terminal needs the source owner-review decision-card freeform packet
+   `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
+   when the next terminal needs the source stage-4 user decision-card packet
    that ED-10aq consumes. It consumes ED-10ao, preserves the three bounded
    topics, emits no fixed user form or fixed-choice rows, requires no
    screenshot path, requests no immediate decision, and keeps all
@@ -603,7 +603,7 @@ gates.
    preparation state. It consumes ED-10an, preserves the three bounded owner
    groups, emits no fixed user form, requests no immediate decision, and keeps
    all production/public gates false or pending. The next executable route is
-   `owner-review-decision-card-freeform`, or
+   `production-limitation-lift-stage-4-user-decision-card`, or
    `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 4. Continue from
    `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` when

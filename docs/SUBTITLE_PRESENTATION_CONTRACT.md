@@ -1,13 +1,13 @@
-# Subtitle Presentation Contract
+﻿# Subtitle Presentation Contract
 
 This contract is the tracked reference surface for diagnostic JP clip subtitle
 presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
-## Current ED-10aq Owner Decision Card Gate Sanity
+## Current ED-10aq Production Limitation Lift Stage 5 User-Decision-Ready
 
-ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-owner-decision-card-gate-sanity-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `owner-decision-card-gate-sanity-complete`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
+ED-10aq checkpoint, 2026-06-28 JST: `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` is now the active tracked packet. It consumes ED-10ap stage-4, makes the later short freeform user review request ready, asks for no user decision now, runs no render, tracks no media, keeps `episodes/` untracked, and keeps production/public/rights gates false or pending. Next route is `production-limitation-lift-stage-6-user-freeform-review-request`; use `final-render-path-stage-4` only for a concrete diagnostic gap.
 
 ## Contract
 
@@ -548,17 +548,17 @@ category, and the requirement to stop before approval. ED-10ao requests no
 immediate user decision, emits no fixed form, keeps future input freeform, and
 keeps production subtitle design, production render, creative, rights,
 publishing, and public-use decisions false or pending. The next executable
-route is `owner-review-decision-card-freeform`; use
+route is `production-limitation-lift-stage-4-user-decision-card`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
-## Current ED-10ap Owner Review Decision Card Freeform
+## Current ED-10ap Production Limitation Lift Stage 4 User Decision Card
 
 ED-10ap records
-`clip-ed10ap-owner-review-decision-card-freeform-001` as a tracked future
+`clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` as a tracked future
 user decision card preparation packet at
-`docs/style_intent/subtitle-owner-review-decision-card-freeform.json`
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json`
 and
-`docs/style_intent/subtitle-owner-review-decision-card-freeform.md`.
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md`.
 It consumes ED-10ao and keeps the same three topics: subtitle design / visual
 acceptance, production render readiness, and rights / publishing / public-use
 clearance.
@@ -571,7 +571,7 @@ path, exposes no hidden schema as user input, runs no render, and creates no
 tracked media. It keeps future user input freeform and explicitly keeps
 production subtitle design, production render, creative acceptance, rights,
 publishing, and public-use false or pending. The next executable route is
-`owner-decision-card-gate-sanity`; use
+`production-limitation-lift-stage-5-user-decision-ready`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
 ## Future Shared Line-Break Policy Note

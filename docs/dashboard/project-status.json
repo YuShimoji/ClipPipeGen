@@ -25,7 +25,7 @@
   },
   "current_focus": {
     "feature_id": "ED-10aq",
-    "artifact_id": "clip-ed10aq-owner-decision-card-gate-sanity-001",
+    "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
     "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
     "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
     "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
@@ -36,7 +36,7 @@
     "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "owner_decision_card_gate_sanity_ready",
+    "state": "production_limitation_lift_stage_5_user_decision_ready",
     "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
     "source_l2_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
     "lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
@@ -49,8 +49,8 @@
     "production_limitation_lift_stage_1_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
     "production_limitation_lift_stage_2_decision_packet_artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
     "production_limitation_lift_stage_3_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
-    "owner_review_decision_card_freeform_artifact_id": "clip-ed10ap-owner-review-decision-card-freeform-001",
-    "owner_decision_card_gate_sanity_artifact_id": "clip-ed10aq-owner-decision-card-gate-sanity-001",
+    "production_limitation_lift_stage_4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
+    "production_limitation_lift_stage_5_user_decision_ready_artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -59,8 +59,8 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "ed10aq_owner_decision_card_gate_sanity_ready",
-    "user_action_type": "NO_USER_ACTION_OWNER_DECISION_CARD_GATE_SANITY_ONLY",
+    "route_status": "ed10aq_production_limitation_lift_stage_5_user_decision_ready",
+    "user_action_type": "NO_USER_ACTION_STAGE_5_USER_DECISION_READY_ONLY",
     "next_review_action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
@@ -788,7 +788,7 @@
       "production_public_decision_approved": false,
       "user_decision_requested_now": false,
       "fixed_user_form_emitted": false,
-      "next_executable_route": "owner-review-decision-card-freeform",
+      "next_executable_route": "production-limitation-lift-stage-4-user-decision-card",
       "alternate_next_executable_route": "final-render-path-stage-4",
       "concrete_diagnostic_gap_found": false,
       "new_render_run": false,
@@ -796,11 +796,11 @@
       "episodes_tracked": false,
       "final_render_path_approved": false
     },
-    "subtitle_owner_review_decision_card_freeform": {
-      "status": "owner_review_decision_card_freeform_ready",
-      "artifact_id": "clip-ed10ap-owner-review-decision-card-freeform-001",
-      "metadata_json": "docs/style_intent/subtitle-owner-review-decision-card-freeform.json",
-      "doc": "docs/style_intent/subtitle-owner-review-decision-card-freeform.md",
+    "subtitle_production_limitation_lift_stage_4_user_decision_card": {
+      "status": "production_limitation_lift_stage_4_user_decision_card_ready",
+      "artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
+      "metadata_json": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json",
+      "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md",
       "source_production_limitation_lift_stage_3_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
       "source_production_limitation_lift_stage_2_decision_packet_artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
       "source_production_limitation_lift_stage_1_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
@@ -848,7 +848,7 @@
       "fixed_choice_rows_emitted": false,
       "screenshot_required": false,
       "hidden_schema_exposed_to_user": false,
-      "next_executable_route": "owner-decision-card-gate-sanity",
+      "next_executable_route": "production-limitation-lift-stage-5-user-decision-ready",
       "alternate_next_executable_route": "final-render-path-stage-4",
       "concrete_diagnostic_gap_found": false,
       "new_render_run": false,
@@ -856,12 +856,12 @@
       "episodes_tracked": false,
       "final_render_path_approved": false
     },
-    "subtitle_owner_decision_card_gate_sanity": {
-      "status": "owner_decision_card_gate_sanity_ready",
-      "artifact_id": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-      "metadata_json": "docs/style_intent/subtitle-owner-decision-card-gate-sanity.json",
-      "doc": "docs/style_intent/subtitle-owner-decision-card-gate-sanity.md",
-      "source_owner_review_decision_card_freeform_artifact_id": "clip-ed10ap-owner-review-decision-card-freeform-001",
+    "subtitle_production_limitation_lift_stage_5_user_decision_ready": {
+      "status": "production_limitation_lift_stage_5_user_decision_ready",
+      "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+      "metadata_json": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json",
+      "doc": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
+      "source_stage4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
       "decision_topic_ids": [
         "subtitle_design_visual_acceptance",
         "production_render_readiness",
@@ -880,7 +880,7 @@
       "rights_status": "pending",
       "publishing_acceptance": false,
       "public_use_permission": false,
-      "next_executable_route": "owner-decision-card-gate-sanity-complete",
+      "next_executable_route": "production-limitation-lift-stage-6-user-freeform-review-request",
       "alternate_next_executable_route": "final-render-path-stage-4",
       "concrete_diagnostic_gap_found": false,
       "new_render_run": false,
@@ -949,15 +949,15 @@
       "review_reset_trigger_active": [
         "new_axis_or_changed_evidence_only"
       ],
-      "current_blocker": "none_for_owner_decision_card_gate_sanity",
+      "current_blocker": "none_for_production_limitation_lift_stage_5_user_decision_ready",
       "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "review_card": {
       "status": "withheld_latest_review_already_consumed",
       "action_type": "NO_REVIEW_CARD_REVIEW_CONSUMED",
       "target": "clip-ed10af-l2-render-path-selector-probe-001",
-      "artifact_id": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-      "axis": "owner_decision_card_gate_sanity",
+      "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+      "axis": "production_limitation_lift_stage_5_user_decision_ready",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
       "what_changed": "ED-10aq verifies ED-10ap is still a freeform owner decision card without fixed form, fixed choices, fixed-choice rows, screenshots, user decision, render approval, production approval, or rights/public-use approval.",
@@ -970,7 +970,7 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "use ED-10aq as the owner decision-card gate-sanity packet only; no user decision is requested now, and no production/public approval is granted."
+      "completion_signal": "use ED-10aq as the stage-5 user-decision-ready packet only; no user decision is requested now, and no production/public approval is granted."
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -981,13 +981,13 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "owner_decision_card_gate_sanity_no_review_card",
+    "review_surface_direction": "production_limitation_lift_stage_5_user_decision_ready_no_review_card",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
-        "debt_id": "owner_decision_card_gate_sanity",
-        "status": "owner_decision_card_gate_sanity_ready",
-        "next_action": "use ED-10aq as the owner decision-card gate-sanity packet only; do not infer production/public approval"
+        "debt_id": "production_limitation_lift_stage_5_user_decision_ready",
+        "status": "production_limitation_lift_stage_5_user_decision_ready",
+        "next_action": "use ED-10aq as the stage-5 user-decision-ready packet only; do not infer production/public approval"
       }
     ],
     "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -1013,10 +1013,10 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
-      "label": "Owner Decision Card Gate Sanity",
-      "command": "see docs\\style_intent\\subtitle-owner-decision-card-gate-sanity.md",
-      "target": "docs/style_intent/subtitle-owner-decision-card-gate-sanity.md",
-      "when_to_use": "Use to inspect the ED-10aq owner decision-card gate-sanity packet without asking for approval now."
+      "label": "Production Limitation Lift Stage 5 User Decision Ready",
+      "command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
+      "target": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
+      "when_to_use": "Use to inspect the ED-10aq stage-5 user-decision-ready packet without asking for approval now."
     },
     {
       "label": "Production Limitation-Lift Stage 3 Owner-Review Prep",
@@ -1906,30 +1906,30 @@
       "health": "production_limitation_lift_stage_3_owner_review_prep_ready",
       "progress_pct": 100,
       "active_artifact": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
-      "next_action": "Use the stage-3 owner-review prep packet to start owner-review-decision-card-freeform; keep future user input freeform and approvals explicit.",
+      "next_action": "Use the stage-3 owner-review prep packet to start production-limitation-lift-stage-4-user-decision-card; keep future user input freeform and approvals explicit.",
       "summary_excerpt": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001 adds tracked JSON/Markdown at docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json / .md. It consumes ED-10an as the s...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-10ap",
-      "title": "Owner Review Decision Card Freeform v0",
+      "title": "Production Limitation Lift Stage 4 User Decision Card v0",
       "status": "done",
-      "health": "owner_review_decision_card_freeform_ready",
+      "health": "production_limitation_lift_stage_4_user_decision_card_ready",
       "progress_pct": 100,
-      "active_artifact": "clip-ed10ap-owner-review-decision-card-freeform-001",
+      "active_artifact": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
       "next_action": "Use the freeform user decision card only when a later slice explicitly asks for user judgement; keep approvals explicit.",
-      "summary_excerpt": "clip-ed10ap-owner-review-decision-card-freeform-001 adds tracked JSON/Markdown at docs/style_intent/subtitle-owner-review-decision-card-freeform.json / .md. It consumes ED-10ao as the owner-review prep source and conver...",
+      "summary_excerpt": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001 adds tracked JSON/Markdown at docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json / .md. It consumes ED-10ao as the...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
       "id": "ED-10aq",
-      "title": "Owner Decision Card Gate Sanity v0",
+      "title": "Production Limitation Lift Stage 5 User Decision Ready v0",
       "status": "done",
-      "health": "owner_decision_card_gate_sanity_ready",
+      "health": "production_limitation_lift_stage_5_user_decision_ready",
       "progress_pct": 100,
-      "active_artifact": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-      "next_action": "Use the owner decision-card gate-sanity packet only; keep user work none and approvals explicit.",
-      "summary_excerpt": "clip-ed10aq-owner-decision-card-gate-sanity-001 adds tracked JSON/Markdown at docs/style_intent/subtitle-owner-decision-card-gate-sanity.json / .md. It consumes ED-10ap freeform card and verifies answer_style=freeform,...",
+      "active_artifact": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+      "next_action": "Use the stage-5 user-decision-ready packet only; keep user work none and approvals explicit.",
+      "summary_excerpt": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001 adds tracked JSON/Markdown at docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json / .md. It consumes ED-10ap free...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -2617,24 +2617,24 @@
       "next_action": "Start production-limitation-lift-stage-1 or final-render-path-stage-4 from this rehearsal packet while keeping all production/public decisions explicit."
     },
     {
-      "artifact_id": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-      "title": "ED-10aq Owner Decision Card Gate Sanity",
+      "artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+      "title": "ED-10aq Production Limitation Lift Stage 5 User Decision Ready",
       "purpose": "Verify that ED-10ap remains a freeform user decision surface only without asking for a decision now or granting production/public/rights/render approval.",
       "storage_class": "",
-      "repo_relative_path": "docs/style_intent/subtitle-owner-decision-card-gate-sanity.json; docs/style_intent/subtitle-owner-decision-card-gate-sanity.md",
-      "open_command": "notepad docs\\\\style_intent\\\\subtitle-owner-decision-card-gate-sanity.md",
-      "review_status": "owner decision-card gate-sanity packet only; no user decision requested now",
-      "next_action": "Treat as complete owner decision-card gate-sanity packet; use final-render-path-stage-4 only if a concrete diagnostic gap is found."
+      "repo_relative_path": "docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json; docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
+      "open_command": "notepad docs\\\\style_intent\\\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md",
+      "review_status": "stage-5 user-decision-ready packet only; no user decision requested now",
+      "next_action": "Treat as complete stage-5 user-decision-ready packet; use final-render-path-stage-4 only if a concrete diagnostic gap is found."
     },
     {
-      "artifact_id": "clip-ed10ap-owner-review-decision-card-freeform-001",
-      "title": "ED-10ap Owner Review Decision Card Freeform",
-      "purpose": "Convert the ED-10ao owner-review preparation entries into a future short owner-review decision-card freeform without approving production/public use or asking for a user decision now.",
+      "artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
+      "title": "ED-10ap Production Limitation Lift Stage 4 User Decision Card",
+      "purpose": "Convert the ED-10ao owner-review preparation entries into a future short stage-4 user decision card without approving production/public use or asking for a user decision now.",
       "storage_class": "Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media.",
-      "repo_relative_path": "docs/style_intent/subtitle-owner-review-decision-card-freeform.md",
-      "open_command": "notepad docs\\\\style_intent\\\\subtitle-owner-review-decision-card-freeform.md",
+      "repo_relative_path": "docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md",
+      "open_command": "notepad docs\\\\style_intent\\\\subtitle-production-limitation-lift-stage-4-user-decision-card.md",
       "review_status": "No new Review Card. This is future user decision card only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance.",
-      "next_action": "Use owner-decision-card-gate-sanity, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
+      "next_action": "Use production-limitation-lift-stage-5-user-decision-ready, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
     },
     {
       "artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
@@ -2644,7 +2644,7 @@
       "repo_relative_path": "docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
       "open_command": "see docs\\style_intent\\subtitle-production-limitation-lift-stage-3-owner-review-prep.md",
       "review_status": "No new Review Card. This is owner-review preparation only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance.",
-      "next_action": "Start owner-review-decision-card-freeform, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
+      "next_action": "Start production-limitation-lift-stage-4-user-decision-card, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
     },
     {
       "artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
@@ -2809,8 +2809,8 @@
       "clip-ed10aj-final-render-path-stage-1-001",
       "clip-ed10ak-final-render-path-stage-2-replayability-001",
       "clip-ed10al-final-render-path-stage-3-rehearsal-001",
-      "clip-ed10aq-owner-decision-card-gate-sanity-001",
-      "clip-ed10ap-owner-review-decision-card-freeform-001",
+      "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+      "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
       "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
       "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
       "clip-ed10am-production-limitation-lift-stage-1-001",
@@ -2837,8 +2837,8 @@
   },
   "next_review_items": [
     {
-      "item": "ED-10aq owner decision-card gate sanity",
-      "artifact": "clip-ed10aq-owner-decision-card-gate-sanity-001",
+      "item": "ED-10aq stage-5 user-decision-ready",
+      "artifact": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
       "question": "Does ED-10ap remain a freeform owner decision card with no fixed form, no immediate user decision, and no production/public approval?",
       "next_route": "Treat ED-10aq as a gate sanity packet only; use final-render-path-stage-4 only if a concrete diagnostic gap is found."
     },
@@ -2846,7 +2846,7 @@
       "item": "ED-10ao production limitation-lift stage 3 owner-review prep",
       "artifact": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
       "question": "Does the packet convert ED-10an's three decision groups into future freeform user-decision topics while keeping all production/public approvals closed?",
-      "next_route": "Start owner-review-decision-card-freeform, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
+      "next_route": "Start production-limitation-lift-stage-4-user-decision-card, or use final-render-path-stage-4 only if a concrete diagnostic gap is found."
     },
     {
       "item": "ED-10an production limitation-lift stage 2 decision packet",
@@ -3032,32 +3032,19 @@
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
       "line_count": 951,
-      "metadata": {
-        "id": "runtime-state",
-        "title": "Runtime State - ClipPipeGen",
-        "type": "resume_surface",
-        "status": "current_capsule",
-        "health": "owner_decision_card_gate_sanity_ready",
-        "progress_pct": "100",
-        "last_touched": "2026-06-28",
-        "next_review_due": "none_owner_decision_card_gate_sanity_only",
-        "active_artifact": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-        "source_of_truth": "true",
-        "owner_lane": "shared_infra",
-        "related": "docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-owner-review-decision-card-freeform.json, docs/style_intent/subtitle-owner-review-decision-card-freeform.md, docs/style_intent/subtitle-owner-decision-card-gate-sanity.json, docs/style_intent/subtitle-owner-decision-card-gate-sanity.md"
-      },
+      "metadata": {},
       "front_sections": {
         "what_it_is": true,
         "current_state": true,
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 265,
-      "status": "current_capsule"
+      "boundary_term_count": 288,
+      "status": "reference"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
-      "title": "Feature Registry",
+      "title": "FEATURE_REGISTRY",
       "line_count": 179,
       "metadata": {},
       "front_sections": {
@@ -3066,7 +3053,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 283,
+      "boundary_term_count": 291,
       "status": "in_progress"
     },
     {
@@ -3133,11 +3120,11 @@
         "title": "Subtitle Style Intent Registry",
         "type": "design_readback",
         "status": "diagnostic_intent_registry_ready",
-        "health": "owner_decision_card_gate_sanity_ready",
+        "health": "production_limitation_lift_stage_5_user_decision_ready",
         "progress_pct": "100",
         "last_touched": "2026-06-28",
-        "active_artifact": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-owner-review-decision-card-freeform.json, docs/style_intent/subtitle-owner-review-decision-card-freeform.md, docs/style_intent/subtitle-owner-decision-card-gate-sanity.json, docs/style_intent/subtitle-owner-decision-card-gate-sanity.md, artifacts/ARTIFACTS.md"
+        "active_artifact": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-contract-consumer-dry-read.json, docs/style_intent/subtitle-render-contract-consumer-dry-read.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.json, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.json, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.json, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.json, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.json, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.json, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.json, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.json, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json, docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json, docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -3145,7 +3132,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 85,
+      "boundary_term_count": 100,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -3164,7 +3151,7 @@
     },
     {
       "path": "artifacts/ARTIFACTS.md",
-      "title": "Artifact Registry",
+      "title": "ARTIFACTS",
       "line_count": 1227,
       "metadata": {},
       "front_sections": {
@@ -3173,7 +3160,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 602,
+      "boundary_term_count": 614,
       "status": "reference"
     },
     {
@@ -3236,28 +3223,15 @@
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
       "line_count": 611,
-      "metadata": {
-        "id": "current-handoff",
-        "title": "Current Handoff - ClipPipeGen",
-        "type": "handoff",
-        "status": "active",
-        "health": "owner_decision_card_gate_sanity_ready",
-        "progress_pct": "100",
-        "last_touched": "2026-06-28",
-        "next_review_due": "none_owner_decision_card_gate_sanity_only",
-        "active_artifact": "clip-ed10aq-owner-decision-card-gate-sanity-001",
-        "source_of_truth": "false",
-        "owner_lane": "shared_infra",
-        "related": "docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/subtitle-render-path-lineage-observation-surface.md, docs/style_intent/subtitle-production-limitation-lift-entry.md, docs/style_intent/subtitle-render-readiness-separation.md, docs/style_intent/subtitle-final-render-path-readiness.md, docs/style_intent/subtitle-final-render-path-stage-1.md, docs/style_intent/subtitle-final-render-path-stage-2.md, docs/style_intent/subtitle-final-render-path-stage-3.md, docs/style_intent/subtitle-production-limitation-lift-stage-1.md, docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md, docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md, docs/style_intent/subtitle-owner-review-decision-card-freeform.json, docs/style_intent/subtitle-owner-review-decision-card-freeform.md, docs/style_intent/subtitle-owner-decision-card-gate-sanity.json, docs/style_intent/subtitle-owner-decision-card-gate-sanity.md, artifacts/ARTIFACTS.md"
-      },
+      "metadata": {},
       "front_sections": {
         "what_it_is": true,
         "current_state": true,
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 218,
-      "status": "active"
+      "boundary_term_count": 246,
+      "status": "reference"
     },
     {
       "path": "docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md",
@@ -3511,7 +3485,7 @@
     },
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-      "title": "Subtitle Presentation Contract",
+      "title": "SUBTITLE_PRESENTATION_CONTRACT",
       "line_count": 628,
       "metadata": {},
       "front_sections": {
@@ -3520,7 +3494,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 207,
+      "boundary_term_count": 216,
       "status": "reference"
     },
     {
@@ -3613,7 +3587,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 283 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 291 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3637,7 +3611,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 602 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 614 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3733,7 +3707,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 207 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 216 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

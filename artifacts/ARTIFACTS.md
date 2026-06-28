@@ -1,4 +1,4 @@
-# Artifact Registry
+﻿# Artifact Registry
 
 This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones.
@@ -676,31 +676,31 @@ Boundary flags remain false or pending:
 - `new_rehearsal_run=true`
 - `final_render_path_approved=false`
 
-## `clip-ed10aq-owner-decision-card-gate-sanity-001`
+## `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
 
 | field | value |
 |---|---|
-| title | ED-10aq Owner Decision Card Gate Sanity |
+| title | ED-10aq Production Limitation Lift Stage 5 User Decision Ready |
 | purpose | Verify that ED-10ap remains a freeform user decision surface only without asking for a decision now or granting production/public/rights/render approval. |
 | storage_class | tracked JSON/Markdown |
-| repo_relative_path | docs/style_intent/subtitle-owner-decision-card-gate-sanity.json; docs/style_intent/subtitle-owner-decision-card-gate-sanity.md |
-| open_command | notepad docs\\style_intent\\subtitle-owner-decision-card-gate-sanity.md |
-| generated_from | ED-10aq consumes ED-10ap owner-review decision-card freeform and records gate checks, separation, and no-relapse guards. |
+| repo_relative_path | docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.json; docs/style_intent/subtitle-production-limitation-lift-stage-5-user-decision-ready.md |
+| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |
+| generated_from | ED-10aq consumes ED-10ap stage-4 user decision card and records gate checks, separation, and no-relapse guards. |
 | validation_command | Parse ED-10aq JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; verify git ls-files episodes remains empty. |
 | latest_local_smoke | ED-10aq records answer_style=freeform, fixed_form_required=false, fixed_choice_rows_allowed=false, yes_no_rows_emitted=false, required_labels=[], screenshot_required=false, user_decision_requested_now=false, no render/replay/media, and production/rights/public-use/render approvals closed and separate. |
-| review_status | owner decision-card gate-sanity packet only; no user decision requested now |
-| next_action | Treat as complete owner decision-card gate-sanity packet; use final-render-path-stage-4 only if a concrete diagnostic gap is found. |
+| review_status | stage-5 user-decision-ready packet only; no user decision requested now |
+| next_action | Treat as complete stage-5 user-decision-ready packet; use final-render-path-stage-4 only if a concrete diagnostic gap is found. |
 
-## `clip-ed10ap-owner-review-decision-card-freeform-001`
+## `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
 
 | Field | Value |
 |---|---|
-| title | ED-10ap Owner Review Decision Card Freeform |
-| purpose | Convert the ED-10ao owner-review preparation entries into a future short owner-review decision-card freeform without approving production/public use or asking for a user decision now. |
+| title | ED-10ap Production Limitation Lift Stage 4 User Decision Card |
+| purpose | Convert the ED-10ao owner-review preparation entries into a future short stage-4 user decision card without approving production/public use or asking for a user decision now. |
 | storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
-| repo_relative_path | `docs/style_intent/subtitle-owner-review-decision-card-freeform.md` |
-| metadata_json | `docs/style_intent/subtitle-owner-review-decision-card-freeform.json` |
-| open_command | notepad docs\\style_intent\\subtitle-owner-review-decision-card-freeform.md |
+| repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md` |
+| metadata_json | `docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json` |
+| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-4-user-decision-card.md |
 | source_owner_review_prep | `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` |
 | source_decision_packet | `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` |
 | source_gate_matrix | `clip-ed10am-production-limitation-lift-stage-1-001` |
@@ -710,7 +710,7 @@ Boundary flags remain false or pending:
 | validation_command | Parse ED-10ap JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty and referenced local outputs are ignored. |
 | latest_local_smoke | ED-10ap has exactly three future decision topics, preserves ED-10ao and ED-10an source links, keeps future user answers freeform, emits no fixed user form or fixed-choice rows, requires no screenshot path, exposes no hidden schema as user input, and keeps all production/public flags false or pending. |
 | review_status | No new Review Card. This is future user decision card only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance. |
-| next_action | Use `owner-decision-card-gate-sanity`, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
+| next_action | Use `production-limitation-lift-stage-5-user-decision-ready`, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
 
 Boundary flags remain false or pending:
 
@@ -751,7 +751,7 @@ Boundary flags remain false or pending:
 | validation_command | Parse ED-10ao JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; `git diff --check`; verify `git ls-files episodes` remains empty and referenced local outputs are ignored. |
 | latest_local_smoke | ED-10ao groups exactly three owner-review entries, preserves ED-10an as the source decision packet, preserves ED-10am and ED-10al source links, emits no fixed user form, and keeps all production/public flags false or pending. |
 | review_status | No new Review Card. This is owner-review preparation only, not production subtitle design, production render, creative, rights, publishing, or public-use acceptance. |
-| next_action | Start `owner-review-decision-card-freeform`, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
+| next_action | Start `production-limitation-lift-stage-4-user-decision-card`, or use `final-render-path-stage-4` only if a concrete diagnostic gap is found. |
 
 Boundary flags remain false or pending:
 
