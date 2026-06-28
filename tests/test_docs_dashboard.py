@@ -963,6 +963,52 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
 
 
+def test_artifact_registry_open_commands_are_not_polluted_by_ed10aq_notepad():
+    text = (REPO_ROOT / "artifacts" / "ARTIFACTS.md").read_text(encoding="utf-8")
+    stage5_open = (
+        "notepad docs\\\\style_intent\\\\"
+        "subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
+    )
+
+    assert text.count(stage5_open) == 1
+    assert f"| open_command | {stage5_open} |```" not in text
+    assert f"| open_command | {stage5_open} |Historical" not in text
+    assert f"| open_command | {stage5_open} |Fallback" not in text
+
+
+def test_ed10aq_resume_surfaces_are_current_and_stage4_is_predecessor():
+    active_artifact = (
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
+    )
+    active_json = (
+        "docs/style_intent/"
+        "subtitle-production-limitation-lift-stage-5-user-decision-ready.json"
+    )
+    active_md = (
+        "docs/style_intent/"
+        "subtitle-production-limitation-lift-stage-5-user-decision-ready.md"
+    )
+    predecessor_artifact = (
+        "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+    )
+
+    for path in [
+        REPO_ROOT / "docs" / "CURRENT_HANDOFF.md",
+        REPO_ROOT / "docs" / "RUNTIME_STATE.md",
+    ]:
+        text = path.read_text(encoding="utf-8")
+
+        assert f"active_artifact: {active_artifact}" in text
+        assert active_artifact in text
+        assert active_json in text
+        assert active_md in text
+        assert predecessor_artifact in text
+        assert "production-limitation-lift-stage-6-user-freeform-review-request" in text
+        assert "final-render-path-stage-4" in text
+        assert f"Active artifact: `{predecessor_artifact}`" not in text
+        assert f"The active artifact is\n`{predecessor_artifact}`." not in text
+
+
 def test_build_docs_dashboard_cli_writes_outputs(tmp_path: Path):
     _write_fixture_docs(tmp_path)
     output_dir = tmp_path / "docs" / "dashboard"

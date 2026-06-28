@@ -39,7 +39,7 @@ opened by the root launcher.
 | purpose | Single local entry point for diagnostic / representative review of the current `cut_002` / `cut_003` subtitle overlay evidence. |
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/index.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\human_preview_session\open_preview.ps1` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\human_preview_session\open_preview.ps1` |
 | fallback_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\human_preview_session\serve_preview.ps1 -Port 8000` |
 | generated_from | `build-human-preview-session` / `build-episode-review-bundle` reading existing ignored episode and review artifacts. |
 | validation_command | `uvx pytest -q tests/test_episode_review_bundle.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_status.py` |
@@ -73,7 +73,7 @@ machine. `git ls-files episodes` should remain empty.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/subtitle_typography_decoration_comparison_report.html` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_typography_decoration_comparison/subtitle_typography_decoration_contact_sheet.png` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_typography_decoration_comparison\open_comparison.ps1` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_typography_decoration_comparison\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text, plus tracked ED-10g response readback for `small_adjustment`. |
 | validation_command | `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py` plus normal project validation. |
 | latest_validation_result | `7 passed` for the Pillow-enabled style-spike path; normal no-Pillow path can skip PNG generation tests. |
@@ -105,7 +105,7 @@ readback on the retaining machine. `git ls-files episodes` should remain empty.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_comparison_report.html` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_gothic_balance_comparison/subtitle_kirinuki_gothic_balance_contact_sheet.png` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison\open_comparison.ps1` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10i human review readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10i_kirinuki_gothic_balance --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10i generation returned `artifact_id=clip-ed10i-kirinuki-gothic-balance-001`, `candidate_count=4`, `sample_count=16`, `font_size.value=124`, `recommended_default_candidate_id=ed10i_biz_udgothic_bold_balanced_outline`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank local visual evidence. |
@@ -137,7 +137,7 @@ should remain empty.
 | purpose | Apply the human-selected bottom ED-10i candidate, `ed10i_meiryo_bold_fill_outline_balance`, to the `cut_002` / `cut_003` diagnostic subtitle overlay proof. |
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
+| open_command | Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
 | generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id ed10i_meiryo_bold_fill_outline_balance` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10i_meiryo_bold_fill_outline_balance --format json` plus targeted tests. |
 | latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10i_meiryo_bold_fill_outline_balance`, `typography_decoration_candidate_id=ed10i_meiryo_bold_fill_outline_balance`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
@@ -171,7 +171,7 @@ tracked Git failure.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit/subtitle_kirinuki_font_audit_report.html` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_kirinuki_font_audit/subtitle_kirinuki_font_audit_contact_sheet.png` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10j_kirinuki_font_audit` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10j freeform review readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10j_kirinuki_font_audit --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_font_audit --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10j regeneration returned `artifact_id=clip-ed10j-kirinuki-font-audit-001`, `candidate_count=4`, `sample_count=16`, `font_size.value=124`, `selected_candidate_for_next_proof_base=ed10j_biz_udgothic_bold_telop_candidate`, `blue_badge_candidate_id=ed10j_noto_sans_jp_local_telop_candidate`, `blue_badge_is_meiryo_reference=false`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully and the contact sheet was inspected as nonblank local visual evidence. |
@@ -203,7 +203,7 @@ should remain empty.
 | purpose | Apply the ED-10j selected default `ed10j_biz_udgothic_bold_telop_candidate` to the `cut_002` / `cut_003` diagnostic subtitle overlay proof after Meiryo was removed from normal subtitle candidates. |
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
+| open_command | Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
 | generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id ed10j_biz_udgothic_bold_telop_candidate` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10j_biz_udgothic_bold_telop_candidate --format json` plus targeted tests. |
 | latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`, `typography_decoration_candidate_id=ed10j_biz_udgothic_bold_telop_candidate`, `subtitle_overlay_available_count=2`, `all_target_cuts_have_overlay=true`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
@@ -236,7 +236,7 @@ Git failure.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_known_kirinuki_font_pack_comparison/subtitle_known_kirinuki_font_pack_report.html` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_known_kirinuki_font_pack_comparison/subtitle_known_kirinuki_font_pack_contact_sheet.png` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_pack` reading existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10l route-correction readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10l_known_kirinuki_font_pack --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --output-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10n regeneration returned `artifact_id=clip-ed10l-known-kirinuki-font-pack-001`, `comparison_profile=ed10l_known_kirinuki_font_pack`, `sample_count=16`, `candidate_count=4`, `font_size.value=124`, `selected_candidate_for_next_proof_base=ed10l_keifont_pop_dialogue_candidate`, `comparison_response_readback.selected_response=per_user_font_readback_valid_route_to_keifont_overlay_proof`, `font_visual_comparison_validity=valid_requested_font_visual_evidence`, `all_candidates_valid_real_font=true`, `production_candidate=false`, and `rights_status=pending`; JSON parsed successfully. |
@@ -268,7 +268,7 @@ should remain empty.
 | purpose | Apply the per-user resolved `ed10l_keifont_pop_dialogue_candidate` to the `cut_002` / `cut_003` diagnostic subtitle overlay proof after ED-10l real-font readback became valid. |
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
+| open_command | Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
 | generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --format json` plus targeted tests. |
 | latest_validation_result | Same-machine generation returned `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `typography_decoration_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `subtitle_overlay_available_count=2`, `production_candidate=false`, `rights_status=pending`, and `production_usage_allowed=false`; JSON parsed successfully. |
@@ -301,7 +301,7 @@ tracked Git failure. `git ls-files episodes` should remain empty.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_multifont_focused_review/subtitle_multifont_focused_review_report.html` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_multifont_focused_review/subtitle_multifont_focused_review_matrix.png` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` |
 | generated_from | `build-subtitle-typography-decoration-comparison --comparison-profile ed10o_multifont_focused_review` reading the existing ignored episode `edit_pack.json` for `cut_002` / `cut_003` review text and tracked ED-10n review readback. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-typography-decoration-comparison --comparison-profile ed10o_multifont_focused_review --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10o generation returned `artifact_id=clip-ed10o-multifont-focused-review-001`, `comparison_profile=ed10o_multifont_focused_review`, `sample_count=12`, `candidate_count=3`, `focused_review_surface.status=focused_review_surface_generated`, `focused_review_surface.primary_visual=subtitle_area_crop_matrix`, `selected_candidate_for_next_proof_base=ed10l_keifont_pop_dialogue_candidate`, `font_visual_comparison_validity=valid_requested_font_visual_evidence`, `all_candidates_valid_real_font=true`, `excluded_candidates[0].candidate_id=ed10l_m_plus_fonts_dialogue_candidate`, `production_candidate=false`, and `rights_status=pending`; JSON and HTML parsed successfully and the focused matrix PNG was inspected as a nonblank local visual artifact. |
@@ -337,7 +337,7 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/current_proof_focused_review.html` |
 | detailed_overlay_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
 | representative_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`.\open-current-proof.ps1` |
+| open_command | `.\open-current-proof.ps1` |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10p_keifont_lead_representative_proof --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_002 --target-cut cut_003` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10p_keifont_lead_representative_proof --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10q regeneration returned `artifact_id=clip-ed10p-keifont-lead-representative-proof-001`, `proof_profile=ed10p_keifont_lead_representative_proof`, `source_review_artifact_id=clip-ed10o-multifont-focused-review-001`, `visual_proof_status=available_requires_human_review`, `style_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `typography_decoration_candidate_id=ed10l_keifont_pop_dialogue_candidate`, `subtitle_overlay_available_count=2`, `focused_review_html=episodes/.../current_proof_focused_review.html`, `focused_proof_review.status=representative_keifont_lead_proof_ready`, `review_debt[0].debt_id=cut_008_dense_stress_proof`, `production_candidate=false`, and `rights_status=pending`; focused HTML readback confirmed Review Focus before subtitle-area evidence and Detailed Reports, ED-10o reference link present, cut_002/cut_003 evidence present, cut_008 debt present, and old debug cut table absent from the focused page. |
@@ -370,7 +370,7 @@ as a tracked Git failure. `git ls-files episodes` should remain empty.
 | storage class | Tracked JSON/Markdown predecessor readback; no local media output. |
 | repo_relative_path | `docs/style_intent/subtitle-render-contract-consumer-dry-read.md` |
 | metadata_json | `docs/style_intent/subtitle-render-contract-consumer-dry-read.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
+| open_command | `see docs\style_intent\subtitle-render-contract-consumer-dry-read.md` |
 | predecessor_commit | `7e96a28 Add ED-10af render contract consumer dry read` |
 | successor_artifact | `clip-ed10af-l2-render-path-selector-probe-001` |
 | source_render_path_selector_contract_artifact | `clip-ed10ae-render-path-selector-contract-probe-001` |
@@ -403,7 +403,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown readback plus ignored same-machine ASS/MP4/manifest evidence. |
 | repo_relative_path | `docs/style_intent/subtitle-render-path-selector-probe.md` |
 | metadata_json | `docs/style_intent/subtitle-render-path-selector-probe.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-render-path-selector-probe.md` |
+| open_command | `see docs\style_intent\subtitle-render-path-selector-probe.md` |
 | local_ignored_ass | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.ass` |
 | local_ignored_video | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4` |
 | local_ignored_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.local.json` |
@@ -443,7 +443,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown lineage and observation surface; references ignored same-machine ASS/MP4/manifest/contact-sheet evidence only. |
 | repo_relative_path | `docs/style_intent/subtitle-render-path-lineage-observation-surface.md` |
 | metadata_json | `docs/style_intent/subtitle-render-path-lineage-observation-surface.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-render-path-lineage-observation-surface.md` |
+| open_command | `see docs\style_intent\subtitle-render-path-lineage-observation-surface.md` |
 | source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
 | source_dry_read_commit | `7e96a28` |
 | source_l2_selector_probe_artifact | `clip-ed10af-l2-render-path-selector-probe-001` |
@@ -480,7 +480,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown gate-separation artifact; references ignored same-machine proof media only. |
 | repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-entry.md` |
 | metadata_json | `docs/style_intent/subtitle-production-limitation-lift-entry.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-production-limitation-lift-entry.md` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-entry.md` |
 | active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
 | support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
 | source_dry_read_artifact | `clip-ed10af-render-contract-consumer-dry-read-001` |
@@ -519,7 +519,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown only; references ignored same-machine diagnostic render evidence but creates no media. |
 | repo_relative_path | `docs/style_intent/subtitle-render-readiness-separation.md` |
 | metadata_json | `docs/style_intent/subtitle-render-readiness-separation.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-render-readiness-separation.md` |
+| open_command | `see docs\style_intent\subtitle-render-readiness-separation.md` |
 | source_l2_selector_probe | `clip-ed10af-l2-render-path-selector-probe-001` |
 | source_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
 | source_limitation_lift_entry | `clip-ed10ah-production-limitation-lift-entry-001` |
@@ -539,7 +539,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown readiness packet; references ignored same-machine diagnostic media only. |
 | repo_relative_path | `docs/style_intent/subtitle-final-render-path-readiness.md` |
 | metadata_json | `docs/style_intent/subtitle-final-render-path-readiness.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-final-render-path-readiness.md` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-readiness.md` |
 | source_gate_entry | `clip-ed10ah-production-limitation-lift-entry-001` |
 | active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
 | support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
@@ -574,7 +574,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown stage-1 packet; references ignored same-machine diagnostic media only. |
 | repo_relative_path | `docs/style_intent/subtitle-final-render-path-stage-1.md` |
 | metadata_json | `docs/style_intent/subtitle-final-render-path-stage-1.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-final-render-path-stage-1.md` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-stage-1.md` |
 | source_readiness_packet | `clip-ed10ai-final-render-path-readiness-packet-001` |
 | active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
 | support_lineage_observation_surface | `clip-ed10ag-lineage-and-observation-surface-001` |
@@ -610,7 +610,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked JSON/Markdown operation packet; references ignored same-machine diagnostic media only. |
 | repo_relative_path | `docs/style_intent/subtitle-final-render-path-stage-2.md` |
 | metadata_json | `docs/style_intent/subtitle-final-render-path-stage-2.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-final-render-path-stage-2.md` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-stage-2.md` |
 | source_stage_1_packet | `clip-ed10aj-final-render-path-stage-1-001` |
 | source_readiness_packet | `clip-ed10ai-final-render-path-readiness-packet-001` |
 | active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
@@ -647,7 +647,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
 | repo_relative_path | `docs/style_intent/subtitle-final-render-path-stage-3.md` |
 | metadata_json | `docs/style_intent/subtitle-final-render-path-stage-3.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-final-render-path-stage-3.md` |
+| open_command | `see docs\style_intent\subtitle-final-render-path-stage-3.md` |
 | source_stage_2_packet | `clip-ed10ak-final-render-path-stage-2-replayability-001` |
 | source_stage_1_packet | `clip-ed10aj-final-render-path-stage-1-001` |
 | active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
@@ -742,7 +742,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
 | repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md` |
 | metadata_json | `docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-production-limitation-lift-stage-3-owner-review-prep.md` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-stage-3-owner-review-prep.md` |
 | source_decision_packet | `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` |
 | source_gate_matrix | `clip-ed10am-production-limitation-lift-stage-1-001` |
 | primary_diagnostic_rehearsal_source | `clip-ed10al-final-render-path-stage-3-rehearsal-001` |
@@ -781,7 +781,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
 | repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md` |
 | metadata_json | `docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-production-limitation-lift-stage-2-decision-packet.md` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-stage-2-decision-packet.md` |
 | source_gate_matrix | `clip-ed10am-production-limitation-lift-stage-1-001` |
 | primary_diagnostic_rehearsal_source | `clip-ed10al-final-render-path-stage-3-rehearsal-001` |
 | decision_groups | subtitle design / visual acceptance; production render readiness; rights / publishing / public-use clearance |
@@ -817,7 +817,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/data artifact; references ignored same-machine diagnostic outputs but does not track media. |
 | repo_relative_path | `docs/style_intent/subtitle-production-limitation-lift-stage-1.md` |
 | metadata_json | `docs/style_intent/subtitle-production-limitation-lift-stage-1.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-production-limitation-lift-stage-1.md` |
+| open_command | `see docs\style_intent\subtitle-production-limitation-lift-stage-1.md` |
 | primary_diagnostic_rehearsal_source | `clip-ed10al-final-render-path-stage-3-rehearsal-001` |
 | stage_2_source | `clip-ed10ak-final-render-path-stage-2-replayability-001` |
 | active_diagnostic_proof_source | `clip-ed10af-l2-render-path-selector-probe-001` |
@@ -853,7 +853,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/readback artifact. |
 | repo_relative_path | `docs/style_intent/subtitle-render-path-selector-contract.md` |
 | metadata_json | `docs/style_intent/subtitle-render-path-selector-contract.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-render-path-selector-contract.md` |
+| open_command | `see docs\style_intent\subtitle-render-path-selector-contract.md` |
 | source_style_family_palette_artifact | `clip-ed10ad-style-family-palette-axis-proof-001` |
 | source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
 | source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
@@ -886,7 +886,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/readback artifact. |
 | repo_relative_path | `docs/style_intent/subtitle-style-family-palette-proof.html` |
 | metadata_json | `docs/style_intent/subtitle-style-family-palette-proof.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-style-family-palette-proof.html` |
+| open_command | `see docs\style_intent\subtitle-style-family-palette-proof.html` |
 | source_visual_selector_artifact | `clip-ed10ac-visual-selector-proof-001` |
 | source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
 | source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
@@ -918,7 +918,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/readback artifact. |
 | repo_relative_path | `docs/style_intent/subtitle-visual-selector-proof.html` |
 | metadata_json | `docs/style_intent/subtitle-visual-selector-proof.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-visual-selector-proof.html` |
+| open_command | `see docs\style_intent\subtitle-visual-selector-proof.html` |
 | source_selector_artifact | `clip-ed10ab-subtitle-preset-selector-001` |
 | source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
 | source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
@@ -949,7 +949,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/readback artifact. |
 | repo_relative_path | `docs/style_intent/subtitle-preset-selector.json` |
 | metadata_json | `docs/style_intent/subtitle-preset-selector.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\style_intent\subtitle-preset-selector.json` |
+| open_command | `see docs\style_intent\subtitle-preset-selector.json` |
 | source_registry_artifact | `clip-ed10aa-subtitle-style-intent-registry-001` |
 | source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
 | implementation | `src/integrations/render/subtitle_preset_selector.py` |
@@ -979,7 +979,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked docs/readback artifact. |
 | repo_relative_path | `docs/SUBTITLE_STYLE_INTENT_REGISTRY.md` |
 | metadata_json | `docs/style_intent/subtitle-style-intent-registry.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`see docs\SUBTITLE_STYLE_INTENT_REGISTRY.md` |
+| open_command | `see docs\SUBTITLE_STYLE_INTENT_REGISTRY.md` |
 | source_render_path_artifact | `clip-ed10z-tiny-render-path-nearer-probe-001` |
 | source_previous_artifact | `clip-ed10y-candidate2-carry-forward-001` |
 | source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
@@ -1009,7 +1009,7 @@ Boundary flags remain false or pending:
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html` |
 | metadata_json | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`.\open-current-proof.ps1` |
+| open_command | `.\open-current-proof.ps1` |
 | source_previous_artifact | `clip-ed10y-candidate2-carry-forward-001` |
 | source_review_artifact | `clip-ed10y-candidate2-carry-forward-001` |
 | source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
@@ -1045,7 +1045,7 @@ empty.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html` |
 | metadata_json | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`.\open-current-proof.ps1` |
+| open_command | `.\open-current-proof.ps1` |
 | source_review_artifact | `clip-ed10w-subtitle-presentation-review-pack-001` |
 | source_proof_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10y_candidate2_carry_forward --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
@@ -1080,7 +1080,7 @@ empty.
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.html` |
 | metadata_json | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_presentation_review_pack.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`.\open-current-proof.ps1` |
+| open_command | `.\open-current-proof.ps1` |
 | source_review_artifact | `clip-ed10r-keifont-dense-stress-proof-001` |
 | source_comparison_artifact | `clip-ed10o-multifont-focused-review-001` |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10w_subtitle_presentation_review_pack --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
@@ -1119,7 +1119,7 @@ empty.
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/current_proof_focused_review.html` |
 | detailed_overlay_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
 | representative_report | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_visual_proof_report.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |Fallback from `.\open-current-proof.ps1`; root launcher now opens the ED-10w review pack first. |
+| open_command | Fallback from `.\open-current-proof.ps1`; root launcher now opens the ED-10w review pack first. |
 | generated_from | `build-subtitle-overlay-visual-proof --proof-profile ed10r_keifont_dense_stress_proof --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --target-cut cut_008` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_008 --typography-decoration-candidate-id ed10l_keifont_pop_dialogue_candidate --proof-profile ed10r_keifont_dense_stress_proof --format json` plus targeted tests. |
 | latest_validation_result | Same-machine ED-10u regeneration returned `artifact_id=clip-ed10r-keifont-dense-stress-proof-001`, `proof_profile=ed10r_keifont_dense_stress_proof`, `target_cuts=[cut_008]`, `visual_proof_status=available_requires_human_review`, `review_card_status=review_card_allowed_after_scope_checks`, `subtitle_overlay_available_count=1`, `focused_proof_review.status=dense_stress_keifont_proof_ready`, `font_visual_evidence.status=valid_requested_keifont_visual_evidence`, `requested_font_family=Keifont`, `resolved_font_family=Keifont`, `resolved_font_file=C:/Users/PLANNER007/AppData/Local/Microsoft/Windows/Fonts/keifont.ttf`, `multiline_wrap_evidence.status=multiline_wrap_evidence_surfaced`, `multiline_wrap_evidence.subtitle_id=sub_096`, `wrapped_line_count=2`, `screenshot_count=1`, `screenshot_role=multiline_wrap_1`, `screenshot_path=episodes/.../subtitle_overlay_reference/subtitle_overlay_visual_proof_cut_008.sample_multiline_wrap_1.png`, `focused_html_multiline_image_max_width=220px`, `production_candidate=false`, and `rights_status=pending`. ED-10v then consumed the user review as `diagnostic_dense_stress_passed` for subtitle display / all-pass, without changing production/public gates. |
@@ -1152,7 +1152,7 @@ failure. `git ls-files episodes` should remain empty.
 | purpose | Apply the selected `noto_sans_jp_clean_outline` typography / decoration base to the `cut_002` / `cut_003` diagnostic subtitle overlay proof. |
 | storage class | Local retained artifact; same-machine evidence only. |
 | repo_relative_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_overlay_visual_proof_report.html` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
+| open_command | Historical local proof path only; root `.\open-current-proof.ps1` now opens the ED-10r dense/stress proof. |
 | generated_from | `build-subtitle-overlay-visual-proof --typography-decoration-candidate-id noto_sans_jp_clean_outline` reading existing ignored episode source media, `edit_pack.json`, `material_ledger.json`, and R3 review artifacts. |
 | validation_command | `uvx --with pillow python -m src.cli.main build-subtitle-overlay-visual-proof --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --review-dir episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review --target-cut cut_002 --target-cut cut_003 --typography-decoration-candidate-id noto_sans_jp_clean_outline --format json` plus targeted tests. |
 | latest_validation_result | `git diff --check` clean; `uvx pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` -> `18 passed, 8 skipped`; Pillow-enabled supplement `uvx --with pillow pytest -q tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py` -> `13 passed`. |
@@ -1192,7 +1192,7 @@ failure.
 | repo_relative_path | `docs/dashboard/index.html` |
 | metadata_json | `docs/dashboard/project-status.json` |
 | features_index | `docs/features/index.md` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`.\open-dashboard.ps1` |
+| open_command | `.\open-dashboard.ps1` |
 | generated_from | `build-docs-dashboard` reading tracked Markdown registries and docs. |
 | validation_command | `uvx python -m src.cli.main build-docs-dashboard --format json` plus `uvx pytest -q tests/test_docs_dashboard.py`. |
 | latest_validation_result | 2026-06-16 v1.5 slice: dashboard regenerated; `project-status.json` parsed; Chrome headless screenshot inspected as readable/nonblank; `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` -> `21 passed, 8 skipped`. |
@@ -1208,7 +1208,7 @@ failure.
 | storage class | Tracked docs/data artifact; no third-party font binaries vendored. |
 | repo_relative_path | `docs/SUBTITLE_FONT_CANDIDATE_SWEEP.md` |
 | metadata_json | `docs/font_candidates/subtitle-font-candidates.json` |
-| open_command | notepad docs\\style_intent\\subtitle-production-limitation-lift-stage-5-user-decision-ready.md |`.\open-font-candidates.ps1` |
+| open_command | `.\open-font-candidates.ps1` |
 | generated_from | Manual v1.5 registry definition plus same-machine Windows font directory readback for local availability. |
 | validation_command | `python -m json.tool docs/font_candidates/subtitle-font-candidates.json` plus dashboard/tests. |
 | latest_validation_result | 2026-06-16 v1.5 slice: `python -m json.tool docs/font_candidates/subtitle-font-candidates.json` ok; targeted docs/subtitle/review tests -> `21 passed, 8 skipped`. |
