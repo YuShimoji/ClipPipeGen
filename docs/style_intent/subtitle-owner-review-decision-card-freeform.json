@@ -6,7 +6,6 @@
   "surface_kind": "owner_review_decision_card_freeform",
   "render_level": "L0_no_render",
   "source_owner_review_prep_artifact_id": "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001",
-  "source_stage4_user_decision_card_artifact_id": "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
   "source_decision_packet_artifact_id": "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001",
   "source_gate_matrix_artifact_id": "clip-ed10am-production-limitation-lift-stage-1-001",
   "source_final_render_path_stage_3_rehearsal_artifact_id": "clip-ed10al-final-render-path-stage-3-rehearsal-001",
