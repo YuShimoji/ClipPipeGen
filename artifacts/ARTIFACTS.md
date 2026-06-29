@@ -722,7 +722,6 @@ Boundary flags remain false or pending:
 - `new_render_run=false`
 - `new_media_created=false`
 - `stage_7_freeform_normalizer_used=false`
-- `user_observation_converted_to_approval=false`
 
 ## `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
 
@@ -789,6 +788,44 @@ Boundary flags remain false or pending:
 - `new_media_created=false`
 - `stage_7_freeform_normalizer_used=false`
 - `user_review_requested_now=false`
+
+## `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
+
+| field | value |
+|---|---|
+| title | ED-10aw Grill-me Adoption Readback and Review-Frame Clarification Plan |
+| purpose | Classify the local Grill-me skill as a bounded helper and prepare the next review-frame clarification direction without turning ED-10av observation into approval. |
+| storage_class | tracked JSON/Markdown readback; no render, replay, screenshot, media artifact, or skill-file staging |
+| repo_relative_path | docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json; docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md |
+| open_command | see docs\\style_intent\\grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md |
+| generated_from | ED-10aw consumes `clip-ed10av-micro-scene-observation-frame-readback-001`, records `.agents/skills/grill-me/SKILL.md` and `skills-lock.json` as untracked local helper files, and fixes the allowed Grill-me output contract before ED-10aw review-frame clarification work. |
+| validation_command | Parse ED-10aw and source ED-10av JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | No local render or media smoke is run in ED-10aw. The repo state was read as main aligned with origin/main, with only the untracked Grill-me helper and lock retained outside staging. |
+| review_status | adoption boundary and review-frame direction ready; no additional user review requested now; not approval |
+| next_action | Use review-frame-clarification first; capture subtitle/player-UI evidence, build a v2 specimen, or use final-render-path-stage-4 only if that specific condition is verified. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `user_observation_converted_to_approval=false`
+- `next_agent_prompt_allowed=false`
+- `agent_report_nested_prompt_allowed=false`
+- `grill_me_project_resource_authority=false`
+- `grill_me_skill_files_staged=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=false`
+- `new_media_created=false`
+- `stage_7_freeform_normalizer_used=false`
 
 ## `clip-ed10ar-internal-review-video-candidate-package-001`
 

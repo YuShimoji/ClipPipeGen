@@ -2304,6 +2304,122 @@ def test_micro_scene_observation_frame_readback_doc_records_risk_and_boundaries(
     assert "user_observation_converted_to_approval: `false`" in text
 
 
+def test_grill_me_adoption_review_frame_plan_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    source_readback = json.loads(
+        (style_dir / "micro-scene-observation-frame-readback.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (
+            style_dir
+            / "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = (
+        preset_selector.build_grill_me_adoption_review_frame_clarification_plan(
+            source_readback=source_readback,
+        )
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.GRILL_ME_ADOPTION_REVIEW_FRAME_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.GRILL_ME_ADOPTION_REVIEW_FRAME_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10aw"
+    assert tracked["source_micro_scene_observation_frame_readback_artifact_id"] == (
+        preset_selector.MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID
+    )
+    source = tracked["grill_me_source"]
+    assert source["status"] == "present_untracked_local_helper"
+    assert source["classification"] == "useful_precommit_adversarial_review"
+    assert source["skill_git_state"] == "untracked_do_not_stage"
+    assert source["skills_lock_git_state"] == "untracked_do_not_stage"
+    assert source["project_resource_authority"] is False
+    assert source["repo_policy_authority"] is False
+    assert source["commit_allowed_without_explicit_instruction"] is False
+    adoption = tracked["adoption_boundary"]
+    assert [gate["gate_id"] for gate in adoption["call_gates"]] == [
+        "plan_grill",
+        "diff_grill",
+        "report_grill",
+        "observation_grill",
+    ]
+    assert "next_agent_prompt" in adoption["allowed_outputs"]["forbidden_outputs"]
+    assert (
+        "nested_prompt_inside_agent_report"
+        in adoption["allowed_outputs"]["forbidden_outputs"]
+    )
+    assert (
+        "production_public_rights_or_publishing_approval"
+        in adoption["allowed_outputs"]["forbidden_outputs"]
+    )
+    assert adoption["prompt_pollution_prevention"][
+        "next_agent_prompt_allowed"
+    ] is False
+    assert adoption["prompt_pollution_prevention"]["nested_prompt_allowed"] is False
+    direction = tracked["ed10aw_review_frame_clarification_direction"]
+    assert direction["route_id"] == "review-frame-clarification"
+    assert direction["future_review_frame_shape"]["user_review_requested_now"] is False
+    assert direction["future_review_frame_shape"]["fixed_form_required"] is False
+    assert direction["route_separation"]["subtitle_layout_screenshot_capture"] == (
+        "only_if_lower_subtitle_player_ui_overlap_is_being_classified"
+    )
+    assert direction["route_separation"]["representative_micro_scene_v2"] == (
+        "only_if_source_scene_or_visual_framing_is_materially_wrong"
+    )
+    assert direction["route_separation"]["final_render_path_stage_4"] == (
+        "only_for_concrete_render_path_gap"
+    )
+    assert tracked["review_policy"]["next_agent_prompt_emitted"] is False
+    assert tracked["review_policy"]["agent_report_nested_prompt_allowed"] is False
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_media_created"] is False
+    assert tracked["render_gate"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["grill_me_project_resource_authority"] is False
+    assert tracked["boundaries"]["grill_me_skill_files_staged"] is False
+    assert tracked["boundaries"]["NLMYTGen_read_or_edit"] is False
+    assert tracked["boundaries"]["stage_7_freeform_normalizer_used"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_grill_me_adoption_review_frame_plan_doc_records_boundaries():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10aw Grill-me Adoption Readback" in text
+    assert (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+        in text
+    )
+    assert "clip-ed10av-micro-scene-observation-frame-readback-001" in text
+    assert "useful_precommit_adversarial_review" in text
+    assert "untracked_do_not_stage" in text
+    assert "next_agent_prompt" in text
+    assert "nested_prompt_inside_agent_report" in text
+    assert "review-frame-clarification" in text
+    assert "only_if_lower_subtitle_player_ui_overlap_is_being_classified" in text
+    assert "only_if_source_scene_or_visual_framing_is_materially_wrong" in text
+    assert "only_for_concrete_render_path_gap" in text
+    assert "user_review_requested_now: `false`" in text
+    assert "new_render_run: `false`" in text
+    assert "new_media_created: `false`" in text
+    assert "episodes_tracked: `false`" in text
+    assert "stage_7_freeform_normalizer_used: `false`" in text
+    assert "grill_me_project_resource_authority: `false`" in text
+    assert "agent_report_nested_prompt_allowed: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

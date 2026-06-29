@@ -1,0 +1,262 @@
+{
+  "schema_id": "clippipegen.grill_me_adoption_readback_and_ed10aw_review_frame_clarification_plan.v1",
+  "artifact_id": "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
+  "feature_id": "ED-10aw",
+  "status": "grill_me_adoption_readback_and_review_frame_clarification_plan_ready",
+  "surface_kind": "tracked_tooling_adoption_and_review_frame_plan",
+  "render_level": "no_render_no_media_design_readback",
+  "source_micro_scene_observation_frame_readback_artifact_id": "clip-ed10av-micro-scene-observation-frame-readback-001",
+  "source_representative_micro_scene_internal_review_specimen_artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+  "source_internal_review_observation_readback_artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+  "source_internal_review_video_candidate_access_sheet_artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+  "source_internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "supervisor_artifact_next_label": "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan",
+  "repo_state_readback": {
+    "workspace_scope": "ClipPipeGen_only",
+    "branch_status_readback": "main...origin/main",
+    "ahead_behind_readback": "0 0",
+    "untracked_local_helper_files": [
+      ".agents/skills/grill-me/SKILL.md",
+      "skills-lock.json"
+    ],
+    "untracked_helper_files_retained": true,
+    "untracked_helper_files_staged": false,
+    "episodes_tracked_expected_empty": true
+  },
+  "grill_me_source": {
+    "status": "present_untracked_local_helper",
+    "classification": "useful_precommit_adversarial_review",
+    "skill_name": "grill-me",
+    "skill_path": ".agents/skills/grill-me/SKILL.md",
+    "skill_git_state": "untracked_do_not_stage",
+    "skill_description": "A relentless interview to sharpen a plan or design.",
+    "skill_instruction_summary": "Run a /grilling session.",
+    "disable_model_invocation": true,
+    "project_resource_authority": false,
+    "repo_policy_authority": false,
+    "commit_allowed_without_explicit_instruction": false,
+    "skills_lock_path": "skills-lock.json",
+    "skills_lock_git_state": "untracked_do_not_stage",
+    "skills_lock_source": "mattpocock/skills",
+    "skills_lock_source_type": "github",
+    "skills_lock_skill_path": "skills/productivity/grill-me/SKILL.md",
+    "skills_lock_computed_hash": "f321507f77702a54af1db66549ec1685fc625390d06c57d7949cdcda8eb1b5c7",
+    "classification_reason": "Useful only as a bounded adversarial checklist before plan, diff, report, or observation readback decisions; unsafe as policy source, approval source, or prompt generator."
+  },
+  "adoption_boundary": {
+    "use_policy": "local_helper_not_authority",
+    "call_gates": [
+      {
+        "gate_id": "plan_grill",
+        "when": "before implementation when a slice could drift",
+        "allowed_question": "Does this slice reduce the user's current friction, or does it only add packet volume?"
+      },
+      {
+        "gate_id": "diff_grill",
+        "when": "after diff and before commit",
+        "allowed_question": "Does the diff create the promised artifact and preserve access, media, and approval boundaries?"
+      },
+      {
+        "gate_id": "report_grill",
+        "when": "before final report",
+        "allowed_question": "Are evidence, access state, commit/push state, and next action honest and compact?"
+      },
+      {
+        "gate_id": "observation_grill",
+        "when": "after a freeform user observation",
+        "allowed_question": "Was the observation converted into approval or erased instead of preserved as evidence?"
+      }
+    ],
+    "allowed_inputs": [
+      "current_artifact_summary",
+      "planned_slice_scope",
+      "bounded_diff_summary",
+      "command_and_test_evidence",
+      "access_state_readback",
+      "production_public_rights_boundary_flags",
+      "freeform_user_observation_when_present"
+    ],
+    "forbidden_inputs": [
+      "credentials_or_tokens",
+      "hidden_reasoning",
+      "NLMYTGen_source_files",
+      "ignored_episode_media_payloads_without_need",
+      "private_user_data_beyond_supplied_observation"
+    ],
+    "allowed_outputs": {
+      "verdict_enum": [
+        "PASS",
+        "FIX_BEFORE_COMMIT",
+        "STOP_FOR_SUPERVISOR",
+        "ACCESS_RECOVERY",
+        "SCOPE_REGRESSION"
+      ],
+      "blockers_max": 3,
+      "warnings_max": 3,
+      "required_fix_max": 3,
+      "allowed_fields": [
+        "verdict",
+        "blockers",
+        "warnings",
+        "required_fix",
+        "evidence_gaps"
+      ],
+      "forbidden_outputs": [
+        "next_agent_prompt",
+        "nested_prompt_inside_agent_report",
+        "production_public_rights_or_publishing_approval",
+        "access_claim_without_command_or_file_evidence",
+        "user_work_required_without_verified_access_need",
+        "long_governance_packet"
+      ]
+    },
+    "prompt_pollution_prevention": {
+      "next_agent_prompt_allowed": false,
+      "agent_report_prompt_block_allowed": false,
+      "nested_prompt_allowed": false,
+      "max_blockers": 3,
+      "max_warnings": 3,
+      "max_required_fix": 3,
+      "fallback_if_unavailable": "ordinary_project_gates"
+    }
+  },
+  "adoption_result": {
+    "verdict": "PASS",
+    "classification": "useful_precommit_adversarial_review",
+    "blockers": [],
+    "warnings": [
+      "skill_file_and_lock_are_untracked_local_helpers",
+      "skill_body_is_minimal_and_cannot_override_project_docs",
+      "grill_me_output_must_not_emit_next_agent_prompts"
+    ],
+    "required_fix": [
+      "do_not_stage_grill_me_skill_or_skills_lock",
+      "cap_outputs_to_verdict_blockers_warnings_required_fix",
+      "fall_back_to_ordinary_project_gates_if_skill_is_unavailable"
+    ],
+    "user_work": "none"
+  },
+  "ed10aw_review_frame_clarification_direction": {
+    "route_id": "review-frame-clarification",
+    "feature_id": "ED-10aw",
+    "status": "review_frame_clarification_plan_ready",
+    "source_observation_frame_readback_artifact_id": "clip-ed10av-micro-scene-observation-frame-readback-001",
+    "purpose": "Clarify what the ED-10au/ED-10av micro-scene specimen is asking a reviewer to judge before any rerender, screenshot capture, or v2 specimen work.",
+    "primary_user_friction": "The specimen opened and looked like real scene content, but the reviewer could not tell what evaluation was expected.",
+    "review_frame_needs_to_answer": [
+      "what_this_surface_is",
+      "what_the_reviewer_should_judge",
+      "what_the_reviewer_should_not_judge",
+      "which_next_axis_the_observation_can_unlock"
+    ],
+    "future_review_frame_shape": {
+      "input_mode": "freeform_if_later_requested",
+      "max_look_for_points": 3,
+      "fixed_form_required": false,
+      "yes_no_required": false,
+      "user_review_requested_now": false
+    },
+    "recommended_future_look_for_points": [
+      "Is the review target understandable as a micro-scene review surface?",
+      "Is the confusing part the review prompt, subtitle layout, source scene, or render path?",
+      "What one next axis would reduce review friction most?"
+    ],
+    "route_separation": {
+      "review_frame_clarification": "first_default",
+      "subtitle_layout_screenshot_capture": "only_if_lower_subtitle_player_ui_overlap_is_being_classified",
+      "representative_micro_scene_v2": "only_if_source_scene_or_visual_framing_is_materially_wrong",
+      "final_render_path_stage_4": "only_for_concrete_render_path_gap"
+    },
+    "no_new_render": true,
+    "no_new_media": true,
+    "no_screenshot_capture_now": true,
+    "no_stage_7_normalizer": true,
+    "no_production_public_rights_approval": true
+  },
+  "review_policy": {
+    "user_review_requested_now": false,
+    "fixed_form_required": false,
+    "yes_no_required": false,
+    "screenshot_required_now": false,
+    "stage_7_freeform_normalizer_used": false,
+    "next_agent_prompt_emitted": false,
+    "agent_report_nested_prompt_allowed": false
+  },
+  "render_gate": {
+    "level": "no_render_no_media_design_readback",
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "source_ed10av_read": true,
+    "repo_state_verified": true,
+    "grill_me_file_classified": true,
+    "skills_lock_classified": true,
+    "classification_set": true,
+    "adoption_boundary_defined": true,
+    "forbidden_outputs_defined": true,
+    "no_nested_prompt_allowed": true,
+    "no_user_work": true,
+    "ed10aw_direction_defined": true,
+    "subtitle_layout_capture_conditional": true,
+    "representative_v2_conditional": true,
+    "final_render_path_stage_4_limited": true,
+    "no_new_render": true,
+    "no_new_replay": true,
+    "no_new_media": true,
+    "no_episodes_tracking": true,
+    "no_stage_7_normalizer": true,
+    "no_approval_inferred": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json",
+    "doc": "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "monetization_acceptance": false,
+    "micro_scene_accepted": false,
+    "user_observation_converted_to_approval": false,
+    "layout_broken_claimed": false,
+    "player_ui_overlap_confirmed": false,
+    "stage_7_freeform_normalizer_used": false,
+    "stage_7_continuation_allowed_now": false,
+    "grill_me_project_resource_authority": false,
+    "grill_me_repo_policy_authority": false,
+    "grill_me_skill_files_staged": false,
+    "grill_me_skill_files_committed": false,
+    "next_agent_prompt_allowed": false,
+    "agent_report_nested_prompt_allowed": false,
+    "user_work_required": false,
+    "NLMYTGen_read_or_edit": false,
+    "review_frame_clarification_design_only": true,
+    "subtitle_layout_screenshot_capture_required_now": false,
+    "representative_micro_scene_v2_required_now": false,
+    "final_render_path_stage_4_required_now": false
+  }
+}

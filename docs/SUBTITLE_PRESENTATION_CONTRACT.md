@@ -5,6 +5,29 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
+## Current ED-10aw Grill-me Adoption and Review-Frame Plan
+
+ED-10aw records
+`clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
+as the current tracked review-frame planning readback at
+`docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json`
+and
+`docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md`.
+It consumes ED-10av and says Grill-me may be used only as a bounded local
+adversarial helper around plan, diff, report, or freeform-observation
+readback. Grill-me output is capped to verdict, blockers, warnings, and
+required fixes; next-Agent prompts, nested AGENT_REPORT prompts, access claims
+without evidence, and approval claims are forbidden.
+
+For subtitle presentation work, ED-10aw does not change the style contract. It
+only prepares the next review-frame clarification: explain what the ED-10au/
+ED-10av specimen is asking the reviewer to judge before any rerender, layout
+screenshot capture, v2 specimen, or final-render-path stage-4 route. ED-10aw
+creates no render, media, screenshot, `episodes/` tracking, stage-7 normalizer,
+user review request, production subtitle design acceptance, production render
+acceptance, creative acceptance, rights clearance, publishing acceptance, or
+public-use permission.
+
 ## Current ED-10av Micro-Scene Observation Frame Readback
 
 ED-10av records

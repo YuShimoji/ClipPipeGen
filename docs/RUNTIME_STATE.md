@@ -3,18 +3,19 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: micro_scene_observation_frame_readback_ready
+health: grill_me_adoption_review_frame_plan_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_observation_frame_readback_only
-active_artifact: clip-ed10av-micro-scene-observation-frame-readback-001
+next_review_due: none_review_frame_plan_only
+active_artifact: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
+source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
 source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
 source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -26,11 +27,36 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
+## Current ED-10aw Grill-me Adoption Readback and Review-Frame Clarification Plan
+
+ED-10aw checkpoint, 2026-06-29 JST:
+`clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
+is the active tracked readback. It consumes ED-10av and classifies the local
+untracked Grill-me skill as `useful_precommit_adversarial_review` only when it
+is capped to a short verdict/checklist gate. The skill file and
+`skills-lock.json` remain untracked local helper files and must not be staged
+unless a later explicit instruction changes that.
+
+The allowed Grill-me outputs are a verdict plus at most three blockers,
+warnings, and required fixes. It must not emit a next-Agent prompt, inject a
+nested prompt into an AGENT_REPORT, override project docs, claim access without
+evidence, or convert observations into production/public/rights/publishing
+approval.
+
+ED-10aw also prepares the next `review-frame-clarification` route. The problem
+to solve is not a new render: ED-10av already says the specimen opened and
+looked like real scene content, but the reviewer could not tell what evaluation
+was expected. Use layout screenshot capture only to classify the lower
+subtitle/player-UI risk, build a v2 specimen only for confirmed source/scene
+mismatch, and open `final-render-path-stage-4` only for a concrete render-path
+gap. ED-10aw creates no render, media, screenshot, `episodes/` tracking,
+stage-7 normalizer, user review request, or approval.
+
 ## Current ED-10av Micro-Scene Observation Frame Readback
 
 ED-10av checkpoint, 2026-06-29 JST:
-`clip-ed10av-micro-scene-observation-frame-readback-001` is the active tracked
-readback. It consumes the user's freeform observation after opening the
+`clip-ed10av-micro-scene-observation-frame-readback-001` is the source tracked
+observation-frame readback for ED-10aw. It consumes the user's freeform observation after opening the
 ED-10au representative micro-scene specimen. The specimen opened and its actual
 micro-scene content passes as visible, but the user also reported expectation
 mismatch, unclear evaluation purpose, real-scene/source-framing uncertainty,
@@ -77,7 +103,7 @@ publishing, monetization, and public use stay false or pending.
 ## Current ED-10at Internal Review Observation Readback
 
 ED-10at checkpoint, 2026-06-29 JST:
-`clip-ed10at-internal-review-observation-readback-001` is the active tracked
+`clip-ed10at-internal-review-observation-readback-001` is a source tracked
 observation readback. It consumes the user's freeform observation after opening
 the ED-10as / ED-10ar internal review MP4. The MP4 opened, it was short as
 expected, and the only visible subtitles were `NORMAL DIALOGUE CUE`,
@@ -119,7 +145,7 @@ for that repair explicitly. Do not proceed to stage-7 from this checkpoint.
 
 ## Current ED-10as Internal Review Access Sheet Fullpath
 
-ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the active tracked access sheet. It consumes ED-10ar and records exact current-host full paths for the ignored MP4, ASS, and local manifest, plus `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, tracks no `episodes/` files, asks for no user decision now, and keeps production/public/rights/publishing/monetization gates false or pending. Later observation, if requested, stays freeform with at most three look-for points.
+ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is a source tracked access sheet. It consumes ED-10ar and records exact current-host full paths for the ignored MP4, ASS, and local manifest, plus `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, tracks no `episodes/` files, asks for no user decision now, and keeps production/public/rights/publishing/monetization gates false or pending. Later observation, if requested, stays freeform with at most three look-for points.
 
 ## What This Is
 
@@ -134,7 +160,9 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10av-micro-scene-observation-frame-readback-001`
+Active artifact: `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
+
+Source micro-scene observation frame readback: `clip-ed10av-micro-scene-observation-frame-readback-001`
 
 Source representative micro-scene specimen: `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
 

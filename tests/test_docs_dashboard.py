@@ -27,9 +27,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10av"
+    assert status["current_focus"]["feature_id"] == "ED-10aw"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
     assert status["current_focus"][
         "source_render_path_selector_contract_artifact_id"
@@ -64,7 +64,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "micro_scene_observation_frame_readback_ready"
+        "grill_me_adoption_readback_and_review_frame_clarification_plan_ready"
     )
     assert status["current_focus"][
         "source_render_contract_consumer_dry_read_artifact_id"
@@ -122,6 +122,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"][
         "micro_scene_observation_frame_readback_artifact_id"
     ] == "clip-ed10av-micro-scene-observation-frame-readback-001"
+    assert status["current_focus"][
+        "grill_me_adoption_review_frame_clarification_plan_artifact_id"
+    ] == (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+    )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -136,19 +141,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10av_micro_scene_observation_frame_readback_ready"
+        "ed10aw_grill_me_adoption_and_review_frame_plan_ready"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_OBSERVATION_READBACK_ONLY"
+        "NO_USER_ACTION_REVIEW_FRAME_PLAN_ONLY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "REVIEW_FRAME_CLARIFICATION_OR_SUBTITLE_LAYOUT_CAPTURE"
+        "REVIEW_FRAME_CLARIFICATION_DESIGN_READY"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "micro_scene_observation_frame_readback_no_review_request_now"
+        "grill_me_adoption_and_review_frame_clarification_plan_no_review_request_now"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -198,19 +203,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "NO_REVIEW_CARD_OBSERVATION_READBACK_ONLY"
+        "NO_REVIEW_CARD_REVIEW_FRAME_PLAN_ONLY"
     )
     assert status["current_focus"]["review_card"]["status"] == (
-        "withheld_observation_readback_only"
+        "withheld_review_frame_plan_only"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
     assert status["current_focus"]["review_card"]["artifact_id"] == (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "micro_scene_observation_frame_readback"
+        "grill_me_adoption_and_review_frame_clarification_plan"
     )
     access_sheet = status["current_focus"][
         "subtitle_internal_review_video_candidate_access_sheet"
@@ -340,6 +345,56 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert frame_readback["production_render_acceptance"] is False
     assert frame_readback["public_use_permission"] is False
     assert frame_readback["user_observation_converted_to_approval"] is False
+    grill_me_plan = status["current_focus"][
+        "grill_me_adoption_review_frame_clarification_plan"
+    ]
+    assert grill_me_plan["artifact_id"] == (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+    )
+    assert grill_me_plan[
+        "source_micro_scene_observation_frame_readback_artifact_id"
+    ] == "clip-ed10av-micro-scene-observation-frame-readback-001"
+    assert grill_me_plan["grill_me_status"] == "present_untracked_local_helper"
+    assert grill_me_plan["grill_me_classification"] == (
+        "useful_precommit_adversarial_review"
+    )
+    assert grill_me_plan["grill_me_skill_git_state"] == "untracked_do_not_stage"
+    assert grill_me_plan["skills_lock_git_state"] == "untracked_do_not_stage"
+    assert grill_me_plan["project_resource_authority"] is False
+    assert grill_me_plan["repo_policy_authority"] is False
+    assert grill_me_plan["adoption_verdict"] == "PASS"
+    assert grill_me_plan["call_gates"] == [
+        "plan_grill",
+        "diff_grill",
+        "report_grill",
+        "observation_grill",
+    ]
+    assert "next_agent_prompt" in grill_me_plan["forbidden_outputs"]
+    assert (
+        "nested_prompt_inside_agent_report" in grill_me_plan["forbidden_outputs"]
+    )
+    assert grill_me_plan["ed10aw_route_id"] == "review-frame-clarification"
+    assert grill_me_plan["future_input_mode"] == "freeform_if_later_requested"
+    assert grill_me_plan["future_max_look_for_points"] == 3
+    assert grill_me_plan["user_review_requested_now"] is False
+    assert grill_me_plan["fixed_form_required"] is False
+    assert grill_me_plan["route_separation"][
+        "subtitle_layout_screenshot_capture"
+    ] == "only_if_lower_subtitle_player_ui_overlap_is_being_classified"
+    assert grill_me_plan["route_separation"]["representative_micro_scene_v2"] == (
+        "only_if_source_scene_or_visual_framing_is_materially_wrong"
+    )
+    assert grill_me_plan["route_separation"]["final_render_path_stage_4"] == (
+        "only_for_concrete_render_path_gap"
+    )
+    assert grill_me_plan["next_agent_prompt_allowed"] is False
+    assert grill_me_plan["agent_report_nested_prompt_allowed"] is False
+    assert grill_me_plan["new_render_run"] is False
+    assert grill_me_plan["new_media_created"] is False
+    assert grill_me_plan["episodes_tracked"] is False
+    assert grill_me_plan["stage_7_freeform_normalizer_used"] is False
+    assert grill_me_plan["production_render_acceptance"] is False
+    assert grill_me_plan["public_use_permission"] is False
     observation = status["current_focus"][
         "subtitle_internal_review_video_observation_readback"
     ]
@@ -956,6 +1011,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        (
+            "see docs\\style_intent\\grill-me-adoption-readback-and-ed10aw-review-frame-"
+            "clarification-plan.md"
+        ),
         "see docs\\style_intent\\micro-scene-observation-frame-readback.md",
         "see docs\\style_intent\\representative-micro-scene-internal-review-specimen.md",
         (
@@ -1021,6 +1080,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert [item["artifact"] for item in status["next_review_items"][:16]] == [
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
         "clip-ed10av-micro-scene-observation-frame-readback-001",
         "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
         "clip-ed10at-internal-review-observation-readback-001",
@@ -1036,7 +1096,6 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10ai-final-render-path-readiness-packet-001",
         "clip-ed10ah-render-readiness-separation-readback-001",
         "clip-ed10ah-production-limitation-lift-entry-001",
-        "clip-ed10ag-lineage-and-observation-surface-001",
     ]
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -1048,9 +1107,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     html = result["html_path"].read_text(encoding="utf-8")
     features_index = result["features_path"].read_text(encoding="utf-8")
     assert persisted["generated_at"] == "test-run"
-    assert [item["target"] for item in persisted["open_surfaces"][:27]] == [
+    assert [item["target"] for item in persisted["open_surfaces"][:28]] == [
         "docs/dashboard/index.html",
         "artifacts/ARTIFACTS.md",
+        (
+            "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-"
+            "clarification-plan.md"
+        ),
         "docs/style_intent/micro-scene-observation-frame-readback.md",
         "docs/style_intent/representative-micro-scene-internal-review-specimen.md",
         "scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1",
@@ -1077,7 +1140,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
         "episodes/.../subtitle_presentation_review_pack.html",
     ]
-    assert "ED-10z local readback" in persisted["open_surfaces"][26][
+    assert "ED-10z local readback" in persisted["open_surfaces"][27][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -1087,6 +1150,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "Feature Progress" in html
     assert "Active Artifacts" in html
     assert "Next Review Items" in html
+    assert (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+        in html
+    )
     assert "clip-ed10au-representative-micro-scene-internal-review-specimen-001" in html
     assert "clip-ed10at-internal-review-observation-readback-001" in html
     assert "clip-ed10as-internal-review-access-sheet-fullpath-001" in html
@@ -1131,15 +1198,18 @@ def test_artifact_registry_open_commands_are_not_polluted_by_ed10aq_notepad():
     assert f"| open_command | {stage5_open} |Fallback" not in text
 
 
-def test_ed10av_resume_surfaces_are_current_and_ed10au_ed10at_ed10as_ed10ar_are_sources():
+def test_ed10aw_resume_surfaces_are_current_and_ed10av_ed10au_ed10at_ed10as_ed10ar_are_sources():
     active_artifact = (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
     active_json = (
-        "docs/style_intent/micro-scene-observation-frame-readback.json"
+        "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json"
     )
     active_md = (
-        "docs/style_intent/micro-scene-observation-frame-readback.md"
+        "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md"
+    )
+    source_frame_readback = (
+        "clip-ed10av-micro-scene-observation-frame-readback-001"
     )
     source_specimen = (
         "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
@@ -1159,12 +1229,17 @@ def test_ed10av_resume_surfaces_are_current_and_ed10au_ed10at_ed10as_ed10ar_are_
         if path.name != "SUBTITLE_PRESENTATION_CONTRACT.md":
             assert f"active_artifact: {active_artifact}" in text
             assert (
+                f"source_micro_scene_observation_frame_readback: {source_frame_readback}"
+                in text
+            )
+            assert (
                 f"source_internal_review_observation_readback: {observation_artifact}"
                 in text
             )
         assert active_artifact in text
         assert active_json in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
         assert active_md in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
+        assert source_frame_readback in text
         assert source_specimen in text
         assert observation_artifact in text
         assert access_artifact in text
@@ -1178,6 +1253,8 @@ def test_ed10av_resume_surfaces_are_current_and_ed10au_ed10at_ed10as_ed10ar_are_
         assert f"The active artifact is\n`{access_artifact}`." not in text
         assert f"Active artifact: `{source_artifact}`" not in text
         assert f"The active artifact is\n`{source_artifact}`." not in text
+        assert f"Active artifact: `{source_frame_readback}`" not in text
+        assert f"The active artifact is\n`{source_frame_readback}`." not in text
 
 
 def test_build_docs_dashboard_cli_writes_outputs(tmp_path: Path):
@@ -2036,8 +2113,14 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
         in text
     )
     assert "clip-ed10av-micro-scene-observation-frame-readback-001" in text
+    assert (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+        in text
+    )
     assert "internal-review-video-observation-readback.json" in text
     assert "internal-review-video-observation-readback.md" in text
+    assert "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json" in text
+    assert "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md" in text
     assert "micro-scene-observation-frame-readback.json" in text
     assert "micro-scene-observation-frame-readback.md" in text
     assert "representative-micro-scene-internal-review-specimen.json" in text
@@ -2112,7 +2195,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_active_ed10av_artifact(
+def test_docs_dashboard_current_focus_registration_uses_active_ed10aw_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -2125,7 +2208,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_ed10av_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
@@ -2138,7 +2221,7 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
     assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
@@ -2169,6 +2252,10 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     )
     assert (
         "clip-ed10av-micro-scene-observation-frame-readback-001"
+        in artifact_ids
+    )
+    assert (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
         in artifact_ids
     )
     assert "clip-ed10at-internal-review-observation-readback-001" in artifact_ids
