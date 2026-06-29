@@ -1,0 +1,150 @@
+{
+  "schema_id": "clippipegen.thank_ed10au_local_access_recovery_readback.v1",
+  "artifact_id": "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
+  "feature_id": "ED-10ay",
+  "status": "thank_ed10au_local_access_recovered",
+  "surface_kind": "tracked_current_host_access_recovery_readback",
+  "host_scope": "Thank terminal",
+  "repo_root_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen",
+  "source_review_frame_clarification_surface_artifact_id": "clip-ed10ax-review-frame-clarification-surface-001",
+  "source_representative_micro_scene_internal_review_specimen_artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+  "initial_access_state": {
+    "classification": "current_host_ignored_media_absent",
+    "ed10ax_json_present": true,
+    "ed10ax_markdown_present": true,
+    "ed10au_json_present": true,
+    "ed10au_markdown_present": true,
+    "ed10au_launcher_present": true,
+    "mp4_present": false,
+    "ass_present": false,
+    "manifest_present": false,
+    "git_tracked_file_failure": false
+  },
+  "source_inputs": {
+    "source_video": {
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+      "present": true,
+      "size_bytes": 35281366,
+      "duration_seconds": 164.768798,
+      "codec": "av1",
+      "width": 1920,
+      "height": 1080,
+      "frame_rate": "30/1"
+    },
+    "source_audio": {
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav",
+      "present": true,
+      "size_bytes": 5270822,
+      "duration_seconds": 164.71075,
+      "codec": "pcm_s16le",
+      "sample_rate": "16000",
+      "channels": 1
+    },
+    "transcript": {
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/transcript.json",
+      "present": true,
+      "schema_version": "v1",
+      "segment_count": 105,
+      "stt_engine": "subtitle_track",
+      "source_window_segment_ids": [
+        "seg_000024",
+        "seg_000025",
+        "seg_000026",
+        "seg_000027",
+        "seg_000028",
+        "seg_000029"
+      ]
+    },
+    "edit_pack": {
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/edit_pack.json",
+      "present": true,
+      "schema_version": "v1",
+      "cut_count": 9,
+      "subtitle_count": 105,
+      "source_window_subtitle_ids": [
+        "sub_024",
+        "sub_025",
+        "sub_026",
+        "sub_027",
+        "sub_028",
+        "sub_029"
+      ]
+    },
+    "source_text_note": "The ED-10au builder renders the tracked representative micro-scene script events. The current transcript/edit_pack also contain the same 39-49s source window by content and timing; their current imported subtitle ids are sub_024 through sub_029, not the ED-10au local event labels sub_004 through sub_006."
+  },
+  "regeneration": {
+    "policy": "bounded_same_ed10au_internal_review_specimen_path_only",
+    "used": true,
+    "builder_entrypoint": "src.integrations.render.subtitle_preset_selector.write_representative_micro_scene_internal_review_local_artifacts",
+    "command_summary": "uvx python -c \"from pathlib import Path; from src.integrations.render import subtitle_preset_selector as s; s.write_representative_micro_scene_internal_review_local_artifacts(base_dir=Path.cwd(), ffmpeg_path='ffmpeg', ffprobe_path='ffprobe')\"",
+    "ffmpeg_available": true,
+    "ffprobe_available": true,
+    "created_representative_v2": false,
+    "created_screenshot_capture": false,
+    "created_stage_7_normalizer": false,
+    "created_production_or_public_artifact": false
+  },
+  "final_access_state": {
+    "access_state": "verified_present",
+    "target_exists": true,
+    "access_evidence_level": "file_exists_and_ffprobe_metadata",
+    "mp4_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4",
+    "mp4_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.mp4",
+    "mp4_size_bytes": 3443682,
+    "ass_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.ass",
+    "ass_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.ass",
+    "ass_size_bytes": 989,
+    "manifest_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.local.json",
+    "manifest_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.local.json",
+    "manifest_size_bytes": 10867,
+    "duration_seconds": 9.18,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "width": 1920,
+    "height": 1080,
+    "frame_rate": "30/1",
+    "audio_sample_rate": "16000",
+    "audio_channels": 1,
+    "launcher_or_open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1"
+  },
+  "validation": {
+    "repo_root_verified": true,
+    "origin_main_parity_before_regeneration": "0 0",
+    "ed10ax_present": true,
+    "ed10au_initial_mp4_absent_classified": true,
+    "source_inputs_checked": true,
+    "regeneration_completed": true,
+    "final_access_verified_present": true,
+    "ffprobe_metadata_captured": true,
+    "git_ls_files_episodes_empty": true,
+    "user_not_asked_to_search_again": true,
+    "all_checks_passed": true
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "monetization_acceptance": false,
+    "micro_scene_accepted": false,
+    "user_observation_converted_to_approval": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "new_render_run": true,
+    "new_media_created": true,
+    "ignored_local_media_only": true,
+    "representative_micro_scene_v2_created": false,
+    "screenshot_capture_created": false,
+    "stage_7_freeform_normalizer_used": false,
+    "fixed_form_required": false,
+    "user_review_requested_now": false,
+    "NLMYTGen_read_or_edit": false
+  },
+  "outputs": {
+    "json": "docs/style_intent/thank-ed10au-local-access-recovery-readback.json",
+    "doc": "docs/style_intent/thank-ed10au-local-access-recovery-readback.md"
+  }
+}

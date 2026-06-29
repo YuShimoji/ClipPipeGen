@@ -827,6 +827,40 @@ Boundary flags remain false or pending:
 - `new_media_created=false`
 - `stage_7_freeform_normalizer_used=false`
 
+## `clip-ed10ay-thank-ed10au-local-access-recovery-readback-001`
+
+| field | value |
+|---|---|
+| title | ED-10ay Thank ED-10au Local Access Recovery Readback |
+| purpose | Record current-host recovery of the ignored ED-10au representative micro-scene MP4/ASS/local manifest on the Thank terminal after tracked ED-10ax and the launcher were present but the local media were absent. |
+| storage_class | tracked JSON/Markdown readback; regenerated MP4/ASS/local manifest remain ignored same-machine evidence under `episodes/` |
+| repo_relative_path | docs/style_intent/thank-ed10au-local-access-recovery-readback.json; docs/style_intent/thank-ed10au-local-access-recovery-readback.md |
+| open_command | powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 |
+| generated_from | ED-10ay consumes ED-10ax and ED-10au tracked readbacks plus Thank-host source video/audio/transcript/edit_pack availability, then runs the existing bounded ED-10au local artifact writer for the same ignored output path. |
+| validation_command | Parse ED-10ay JSON and dashboard JSON; ffprobe the generated MP4; run targeted subtitle/dashboard/review tests if tracked files changed; git diff --check; verify git ls-files episodes remains empty. |
+| latest_local_smoke | Initial MP4/ASS/manifest state was absent on the Thank host; source video/audio/transcript/edit_pack were present; bounded regeneration succeeded; final MP4 exists at `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4`, size `3443682`, duration `9.18s`, H.264/AAC, 1920x1080, 30fps; ASS and local manifest are present. |
+| review_status | access recovery only; no user review requested now; not approval |
+| next_action | Use the existing ED-10au launcher on this host when a later supervisor asks to open the specimen. Keep ED-10ax as the review-frame surface and use screenshot/v2/final-render routes only under their recorded conditions. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `ignored_local_media_only=true`
+- `representative_micro_scene_v2_created=false`
+- `screenshot_capture_created=false`
+- `stage_7_freeform_normalizer_used=false`
+
 ## `clip-ed10ax-review-frame-clarification-surface-001`
 
 | field | value |

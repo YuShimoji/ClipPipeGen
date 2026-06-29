@@ -5,9 +5,10 @@ type: resume_surface
 status: current_capsule
 health: review_frame_clarification_surface_ready
 progress_pct: 100
-last_touched: 2026-06-29
+last_touched: 2026-06-30
 next_review_due: none_review_frame_surface_only
 active_artifact: clip-ed10ax-review-frame-clarification-surface-001
+latest_access_recovery_artifact: clip-ed10ay-thank-ed10au-local-access-recovery-readback-001
 source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
 source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
 source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
@@ -16,7 +17,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -27,6 +28,31 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## Current ED-10ay Thank ED-10au Local Access Recovery
+
+ED-10ay checkpoint, 2026-06-30 JST:
+`clip-ed10ay-thank-ed10au-local-access-recovery-readback-001` records the
+Thank-host recovery of the ignored ED-10au MP4/ASS/local manifest. The tracked
+ED-10ax surface, ED-10au JSON/Markdown, and ED-10au launcher were present, but
+the ignored local specimen media were initially absent on this host. This was
+classified as `current_host_ignored_media_absent`, not as a Git tracked-file
+failure.
+
+The required source video, source audio, transcript, and edit pack were present
+on the Thank terminal. A bounded local regeneration used the existing
+`write_representative_micro_scene_internal_review_local_artifacts` builder and
+wrote only the same ignored ED-10au specimen paths under `episodes/`. Final
+access is `verified_present`: the MP4 exists at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4`,
+size `3443682` bytes, duration `9.18s`, H.264/AAC, 1920x1080, 30fps. The ASS
+and local manifest are also present, and `git ls-files episodes` remains
+empty.
+
+ED-10ay does not replace ED-10ax as the review-frame surface and does not
+change ED-10au into a v2 specimen. It creates no screenshot capture, no
+stage-7 normalizer, no tracked media, and no production/public/rights/
+publishing/monetization approval.
 
 ## Current ED-10ax Review-Frame Clarification Surface
 

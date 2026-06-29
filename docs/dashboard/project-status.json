@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-06-29",
+  "generated_at": "2026-06-30",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -2490,6 +2490,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10ay",
+      "title": "Thank ED-10au Local Access Recovery Readback v0",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001 adds tracked JSON/Markdown at docs/style_intent/thank-ed10au-local-access-recovery-readback.json / .md. It records the Thank-host recovery of the ignored ED-10...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -2964,9 +2975,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 118,
+    "feature_count": 119,
     "status_counts": {
-      "done": 102,
+      "done": 103,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -3224,6 +3235,16 @@
       "next_action": "Use review-frame-clarification first; capture subtitle/player-UI evidence, build a v2 specimen, or use final-render-path-stage-4 only if that specific condition is verified."
     },
     {
+      "artifact_id": "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
+      "title": "ED-10ay Thank ED-10au Local Access Recovery Readback",
+      "purpose": "Record current-host recovery of the ignored ED-10au representative micro-scene MP4/ASS/local manifest on the Thank terminal after tracked ED-10ax and the launcher were present but the local media were absent.",
+      "storage_class": "",
+      "repo_relative_path": "docs/style_intent/thank-ed10au-local-access-recovery-readback.json; docs/style_intent/thank-ed10au-local-access-recovery-readback.md",
+      "open_command": "powershell -ExecutionPolicy Bypass -File scripts\\\\operator\\\\open_representative_micro_scene_internal_review_specimen.ps1",
+      "review_status": "access recovery only; no user review requested now; not approval",
+      "next_action": "Use the existing ED-10au launcher on this host when a later supervisor asks to open the specimen. Keep ED-10ax as the review-frame surface and use screenshot/v2/final-render routes only under their recorded conditions."
+    },
+    {
       "artifact_id": "clip-ed10ax-review-frame-clarification-surface-001",
       "title": "ED-10ax Review-Frame Clarification Surface",
       "purpose": "Turn the ED-10aw plan into a concrete review-frame surface for the ED-10au specimen so a later reviewer knows what to judge, what not to judge, how to interpret ED-10av, and which next route to use.",
@@ -3441,6 +3462,7 @@
       "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
       "clip-ed10av-micro-scene-observation-frame-readback-001",
       "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
+      "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
       "clip-ed10ax-review-frame-clarification-surface-001",
       "clip-ed10ar-internal-review-video-candidate-package-001",
       "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
@@ -3461,11 +3483,11 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 44
+    "artifact_count": 45
   },
   "artifact_coverage": {
-    "registered_artifact_count": 44,
-    "features_with_artifact_count": 45,
+    "registered_artifact_count": 45,
+    "features_with_artifact_count": 46,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
@@ -3707,7 +3729,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1186,
+      "line_count": 1212,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3715,13 +3737,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 301,
+      "boundary_term_count": 304,
       "status": "reference"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 186,
+      "line_count": 187,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3729,7 +3751,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 317,
+      "boundary_term_count": 320,
       "status": "in_progress"
     },
     {
@@ -3834,7 +3856,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1434,
+      "line_count": 1468,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3842,7 +3864,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 683,
+      "boundary_term_count": 694,
       "status": "reference"
     },
     {
@@ -3904,7 +3926,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 854,
+      "line_count": 876,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3912,7 +3934,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 263,
+      "boundary_term_count": 266,
       "status": "reference"
     },
     {
@@ -4257,7 +4279,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1186 lines) is likely carrying history.",
+        "detail": "Long active doc (1212 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4269,7 +4291,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 317 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 320 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4287,13 +4309,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1434 lines) is likely carrying history.",
+        "detail": "Long active doc (1468 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 683 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 694 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4317,7 +4339,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (854 lines) is likely carrying history.",
+        "detail": "Long active doc (876 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
