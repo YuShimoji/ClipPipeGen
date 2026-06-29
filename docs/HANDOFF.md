@@ -1,10 +1,84 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-22 JST
+Last updated: 2026-06-29 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
+## Immediate Resume Capsule - 2026-06-29 ED-10ar Access Recovery Sync
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git checkout main
+git pull --ff-only origin main
+git status --short --branch
+git rev-list --left-right --count "HEAD...origin/main"
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected tracked state after pulling this handoff:
+
+- Branch: `main`
+- Upstream: `origin/main`
+- `HEAD...origin/main`: `0 0`
+- `git ls-files episodes`: empty
+- Active artifact: `clip-ed10as-internal-review-access-sheet-fullpath-001`
+- Source package: `clip-ed10ar-internal-review-video-candidate-package-001`
+- Current classification for the older expected stage-6 freeform request
+  paths: `stale_path`
+- Current route: access/readback only; no stage-7 normalizer, no production
+  subtitle design acceptance, no production render acceptance, no rights or
+  public-use approval
+
+The access mismatch that prompted this handoff is resolved as a stale path
+reference, not as a branch/worktree mismatch. The old expected files are absent
+from current `main`:
+
+- `docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.md`
+- `docs/style_intent/subtitle-production-limitation-lift-stage-6-user-freeform-review-request.json`
+
+Git history explains the absence: `62a1581` added those files, and `32b1d33`
+removed them when ED-10ar was replaced by the tracked internal review video
+candidate package. The replacement artifacts are:
+
+- `docs/style_intent/internal-review-video-candidate-package.json`
+- `docs/style_intent/internal-review-video-candidate-package.md`
+- `docs/style_intent/internal-review-video-candidate-access-sheet.json`
+- `docs/style_intent/internal-review-video-candidate-access-sheet.md`
+- `scripts/operator/open_internal_review_video_candidate.ps1`
+
+The ED-10as access sheet records these current-host ignored evidence paths on
+this machine:
+
+- `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_render_path_selector_probe\subtitle_render_path_selector_probe.mp4`
+- `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_render_path_selector_probe\subtitle_render_path_selector_probe.ass`
+- `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_render_path_selector_probe\subtitle_render_path_selector_probe.local.json`
+
+Use the launcher only when a later supervisor explicitly asks for optional
+freeform observation:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\operator\open_internal_review_video_candidate.ps1
+```
+
+Next agent rule: do not ask the user to search again for the old stage-6 files.
+Update stale 監修側/project-resource references to the ED-10as access sheet and
+ED-10ar internal review package. Restore the old stage-6 files from `62a1581`
+only if a future prompt explicitly asks for that repair.
+
+Validation at this checkpoint:
+
+- ED-10ar package JSON parsed with explicit UTF-8.
+- ED-10as access sheet JSON parsed with explicit UTF-8.
+- `docs/dashboard/project-status.json` parsed with explicit UTF-8.
+- `git diff --check` passed.
+- `git ls-files episodes` printed nothing.
+- `uvx pytest -q tests/test_docs_dashboard.py tests/test_episode_review_bundle.py tests/test_episode_status.py`
+  -> `30 passed`.
 
 ## Immediate Resume Capsule - 2026-06-22 ED-10q Current Proof Handoff
 

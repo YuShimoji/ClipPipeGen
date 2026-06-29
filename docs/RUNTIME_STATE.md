@@ -3,9 +3,9 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: internal_review_access_sheet_fullpath_ready
+health: internal_review_access_sheet_fullpath_ready_access_mismatch_classified
 progress_pct: 100
-last_touched: 2026-06-28
+last_touched: 2026-06-29
 next_review_due: none_access_sheet_ready_only
 active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
@@ -22,6 +22,27 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## Current ED-10ar Access Recovery Readback
+
+2026-06-29 JST access recovery checkpoint:
+the older expected ED-10ar stage-6 freeform request Markdown/JSON pair is
+intentionally absent from current `main`. It was added by `62a1581` and deleted
+by `32b1d33`, where ED-10ar was replaced by the tracked internal review video
+candidate package. Current `main` and `origin/main` matched at
+`cffc5b33ea0f993d9fddef65a6facf8bdbdf3ec5` when the mismatch was classified,
+with `HEAD...origin/main = 0 0` and a clean worktree. The exact retired paths
+are kept in [HANDOFF.md](HANDOFF.md), not in this active resume surface.
+
+Access classification: `stale_path`, not branch/worktree mismatch,
+not not-generated, and not ignored-local-only. Do not ask the user to search
+for the old stage-6 files again. The active tracked route is ED-10as access
+sheet plus ED-10ar internal review package. A later agent should update stale
+監修側/project-resource references to
+`clip-ed10as-internal-review-access-sheet-fullpath-001` and
+`clip-ed10ar-internal-review-video-candidate-package-001`. Restore the older
+stage-6 freeform-request files from `62a1581` only if a future instruction asks
+for that repair explicitly. Do not proceed to stage-7 from this checkpoint.
 
 ## Current ED-10as Internal Review Access Sheet Fullpath
 

@@ -3,9 +3,9 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: internal_review_access_sheet_fullpath_ready
+health: internal_review_access_sheet_fullpath_ready_access_mismatch_classified
 progress_pct: 100
-last_touched: 2026-06-28
+last_touched: 2026-06-29
 next_review_due: none_access_sheet_ready_only
 active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
@@ -16,16 +16,31 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 # Current Handoff - ClipPipeGen
 
-## Current ED-10as Internal Review Access Sheet Fullpath
+## Current ED-10as Internal Review Access Sheet Fullpath / Access Recovery
 
 ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the active tracked access sheet. It consumes ED-10ar and records exact current-host full paths for the ignored MP4, ASS, and local manifest, plus `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, tracks no `episodes/` files, asks for no user decision now, and keeps production/public/rights/publishing/monetization gates false or pending. Later observation, if requested, stays freeform with at most three look-for points.
+
+2026-06-29 JST access recovery: the older ED-10ar stage-6 freeform request
+paths are absent on current `main` and should be treated as stale external
+prompt/resource references. They were added in `62a1581` and removed in
+`32b1d33` when ED-10ar became
+`clip-ed10ar-internal-review-video-candidate-package-001`. Current `main` and
+`origin/main` matched at `cffc5b33ea0f993d9fddef65a6facf8bdbdf3ec5` during the
+readback. Classification is `stale_path`; it is not a branch/worktree mismatch
+and not missing ignored local media. Do not ask the user to search for those
+old files again. Update stale 監修側/project-resource references to the current
+ED-10as/ED-10ar artifacts, or restore the old stage-6 files only under an
+explicit future repair instruction. The exact retired paths are recorded in
+[HANDOFF.md](HANDOFF.md), while this current handoff keeps only the active
+ED-10as/ED-10ar names. Do not create a stage-7 normalizer from this handoff.
 
 ## What This Is
 
 This page is a short transfer surface for a different terminal or agent. The
 authoritative resume surface remains [RUNTIME_STATE.md](RUNTIME_STATE.md).
 Use this page to avoid replaying stale font-family, Candidate 0-3 comparison,
-layout-polish, or stale static prompts after the project has advanced to the
+layout-polish, stale stage-6 freeform-request paths, or stale static prompts
+after the project has advanced to the
 ED-10ai final render-path readiness packet.
 ED-10aj final render-path stage-1 packet.
 ED-10ak final render-path stage-2 replayability packet.
