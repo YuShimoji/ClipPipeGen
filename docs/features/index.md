@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10au`
-- artifact: `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
-- state: `representative_micro_scene_internal_review_specimen_ready`
+- feature: `ED-10av`
+- artifact: `clip-ed10av-micro-scene-observation-frame-readback-001`
+- state: `micro_scene_observation_frame_readback_ready`
 
 ## Feature Table
 
@@ -84,6 +84,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10as | Internal Review Access Sheet Fullpath v0 | done | internal_review_access_sheet_fullpath_ready | 100 | clip-ed10as-internal-review-access-sheet-fullpath-001 | Use the access sheet and launcher only for later optional open/readback; keep observation freeform and non-approving. |
 | ED-10at | Internal Review Observation Readback v0 | done | internal_review_observation_readback_ready | 100 | clip-ed10at-internal-review-observation-readback-001 | Use the ED-10at observation readback to choose a representative micro-scene specimen for real internal review, or final-render-path-stage-4 only for a concrete diagnostic render gap; do not infer approval. |
 | ED-10au | Representative Micro-Scene Internal Review Specimen v0 | done | representative_micro_scene_internal_review_specimen_ready | 100 | clip-ed10au-representative-micro-scene-internal-review-specimen-001 | Use the access-verified representative micro-scene specimen only for optional later freeform observation; classify any next fix as script, timing/audio, visual layout, or render path without inferring approval. |
+| ED-10av | Micro-Scene Observation Frame Readback v0 | done | micro_scene_observation_frame_readback_ready | 100 | clip-ed10av-micro-scene-observation-frame-readback-001 | Use the observation frame readback to clarify the review frame first, capture subtitle/player-UI evidence if needed, and only rerender or open stage-4 for a concrete source/layout/render gap. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

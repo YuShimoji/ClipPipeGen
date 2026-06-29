@@ -5,11 +5,33 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
-## Current ED-10au Representative Micro-Scene Internal Review Specimen
+## Current ED-10av Micro-Scene Observation Frame Readback
+
+ED-10av records
+`clip-ed10av-micro-scene-observation-frame-readback-001` as the current tracked
+observation-frame readback at
+`docs/style_intent/micro-scene-observation-frame-readback.json`
+and
+`docs/style_intent/micro-scene-observation-frame-readback.md`. It consumes the
+user's freeform observation after opening the ED-10au specimen: the development
+target looked different, the evaluation frame was unclear, it looked like a
+real scene rather than the earlier diagnostic cue/memo, and the subtitle area
+appeared large/low or possibly overlapped by media-player UI.
+
+This is readback only, not approval. ED-10av records openability and actual
+micro-scene content as pass, expectation mismatch and visual/source framing as
+warning, review-purpose clarity as partial/fail, and subtitle lower-area/
+player-UI overlap as `needs_classification_not_verified`. It creates no render,
+replay, media, or screenshot, asks for no additional user review now, uses no
+stage-7 freeform normalizer, and keeps production subtitle design, production
+render, creative use, rights, publishing, monetization, public use, and
+micro-scene acceptance false or pending.
+
+## Source ED-10au Representative Micro-Scene Internal Review Specimen
 
 ED-10au records
 `clip-ed10au-representative-micro-scene-internal-review-specimen-001` as the
-current tracked specimen readback at
+source tracked specimen readback at
 `docs/style_intent/representative-micro-scene-internal-review-specimen.json`
 and
 `docs/style_intent/representative-micro-scene-internal-review-specimen.md`.

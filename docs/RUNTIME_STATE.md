@@ -3,17 +3,18 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: representative_micro_scene_internal_review_specimen_ready
+health: micro_scene_observation_frame_readback_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_specimen_access_verified_only
-active_artifact: clip-ed10au-representative-micro-scene-internal-review-specimen-001
+next_review_due: none_observation_frame_readback_only
+active_artifact: clip-ed10av-micro-scene-observation-frame-readback-001
+source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
 source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -25,11 +26,37 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current ED-10au Representative Micro-Scene Internal Review Specimen
+## Current ED-10av Micro-Scene Observation Frame Readback
+
+ED-10av checkpoint, 2026-06-29 JST:
+`clip-ed10av-micro-scene-observation-frame-readback-001` is the active tracked
+readback. It consumes the user's freeform observation after opening the
+ED-10au representative micro-scene specimen. The specimen opened and its actual
+micro-scene content passes as visible, but the user also reported expectation
+mismatch, unclear evaluation purpose, real-scene/source-framing uncertainty,
+and a lower subtitle area that may be large, low, or affected by media-player
+UI.
+
+This is not approval. ED-10av records openability and actual micro-scene
+content as pass, expectation mismatch and visual/source framing as warnings,
+review-purpose clarity as partial/fail, and subtitle lower-area/player-UI
+overlap as `needs_classification_not_verified`. It runs no render, replay, or
+media generation, creates no screenshot, tracks no `episodes/` files, does not
+use stage-7, and keeps production subtitle design, production render, creative
+use, rights, publishing, monetization, public use, and micro-scene acceptance
+false or pending.
+
+The next practical route is `review-frame-clarification`. Use
+`subtitle-layout-screenshot-capture` only if the lower subtitle/player-UI risk
+needs evidence, `representative-micro-scene-v2` only if the source/scene is
+materially wrong, and `final-render-path-stage-4` only for a concrete render
+path gap.
+
+## Source ED-10au Representative Micro-Scene Internal Review Specimen
 
 ED-10au checkpoint, 2026-06-29 JST:
 `clip-ed10au-representative-micro-scene-internal-review-specimen-001` is the
-active tracked readback. It consumes ED-10at's warning that the previous
+source specimen readback for ED-10av. It consumes ED-10at's warning that the previous
 internal review MP4 felt chopped, memo-like, and hard to evaluate, then builds
 a bounded 9.18 second specimen from actual transcript subtitles `sub_004` to
 `sub_006`: `団長、ちなみに、他の番長知ってますか？ 長？ 長って言った？`,
@@ -107,7 +134,9 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
+Active artifact: `clip-ed10av-micro-scene-observation-frame-readback-001`
+
+Source representative micro-scene specimen: `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
 
 Source internal review observation readback: `clip-ed10at-internal-review-observation-readback-001`
 
@@ -115,7 +144,20 @@ Source internal review access sheet: `clip-ed10as-internal-review-access-sheet-f
 
 Source internal review package: `clip-ed10ar-internal-review-video-candidate-package-001`
 
-ED-10au checkpoint, 2026-06-29 JST:
+ED-10av checkpoint, 2026-06-29 JST:
+`clip-ed10av-micro-scene-observation-frame-readback-001`
+now lives at
+`docs/style_intent/micro-scene-observation-frame-readback.json`
+and
+`docs/style_intent/micro-scene-observation-frame-readback.md`.
+It consumes the user's freeform observation of the ED-10au specimen as readback
+only: openability and actual micro-scene content pass, expectation mismatch
+and visual/source framing are warnings, review-purpose clarity is partial/fail,
+and subtitle lower-area/player-UI overlap still needs classification. It
+creates no render/media/screenshot, requests no additional user review, uses no
+stage-7 normalizer, and grants no production/public/rights approval.
+
+ED-10au source checkpoint, 2026-06-29 JST:
 `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
 now lives at
 `docs/style_intent/representative-micro-scene-internal-review-specimen.json`
@@ -124,10 +166,8 @@ and
 It creates the next bounded specimen after ED-10at by using actual Japanese
 subtitle/script content instead of cue labels, while recording the ignored
 local render path, launcher, target existence, MP4 size, and ffprobe metadata.
-The only next user-facing route is optional later freeform observation with at
-most three look-for points; if friction appears, classify it as script,
-timing/audio, visual layout, or render path. No production/public approval is
-granted.
+ED-10av has now consumed the later freeform observation; do not treat either
+the specimen or that observation as production/public approval.
 
 ED-10at checkpoint, 2026-06-29 JST:
 `clip-ed10at-internal-review-observation-readback-001`

@@ -753,6 +753,41 @@ Boundary flags remain false or pending:
 - `tracked_binary_artifact_created=false`
 - `episodes_tracked=false`
 - `stage_7_freeform_normalizer_used=false`
+
+## `clip-ed10av-micro-scene-observation-frame-readback-001`
+
+| field | value |
+|---|---|
+| title | ED-10av Micro-Scene Observation Frame Readback |
+| purpose | Preserve the user's freeform observation after opening the ED-10au specimen and classify the next practical axis without treating the observation as approval. |
+| storage_class | tracked JSON/Markdown readback; no render, replay, screenshot, or media artifact |
+| repo_relative_path | docs/style_intent/micro-scene-observation-frame-readback.json; docs/style_intent/micro-scene-observation-frame-readback.md |
+| open_command | see docs\\style_intent\\micro-scene-observation-frame-readback.md |
+| generated_from | ED-10av consumes `clip-ed10au-representative-micro-scene-internal-review-specimen-001`, preserving the user's observation that the development target looked different, evaluation was unclear, the artifact looked like a real scene rather than the earlier cue/memo probe, and the lower subtitle area may be affected by player UI. |
+| validation_command | Parse ED-10av and source ED-10au JSON plus dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | No local render or media smoke is run in ED-10av. Source ED-10au remains the access-verified specimen; ED-10av records observation and classification only. |
+| review_status | observation consumed as readback; not approval; no additional user review requested now |
+| next_action | Clarify the review frame first; capture subtitle/player-UI evidence only if needed; build a v2 specimen only for confirmed source/scene mismatch; use final-render-path-stage-4 only for a concrete render-path gap. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `layout_broken_claimed=false`
+- `player_ui_overlap_confirmed=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=false`
+- `new_media_created=false`
+- `stage_7_freeform_normalizer_used=false`
 - `user_review_requested_now=false`
 
 ## `clip-ed10ar-internal-review-video-candidate-package-001`

@@ -246,6 +246,13 @@ REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID = (
     "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
 )
 REPRESENTATIVE_MICRO_SCENE_FEATURE_ID = "ED-10au"
+MICRO_SCENE_OBSERVATION_FRAME_READBACK_SCHEMA_ID = (
+    "clippipegen.micro_scene_observation_frame_readback.v1"
+)
+MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID = (
+    "clip-ed10av-micro-scene-observation-frame-readback-001"
+)
+MICRO_SCENE_OBSERVATION_FRAME_READBACK_FEATURE_ID = "ED-10av"
 REPRESENTATIVE_MICRO_SCENE_LOCAL_OUTPUT_RELATIVE_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/review/"
     "jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen"
@@ -4183,6 +4190,239 @@ def write_representative_micro_scene_internal_review_specimen(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_micro_scene_observation_frame_readback(
+    *,
+    source_specimen: Mapping[str, Any],
+) -> dict[str, Any]:
+    source = deepcopy(source_specimen)
+    source_access = source.get("access_sheet") or {}
+    source_scene = source.get("micro_scene") or {}
+    source_render_gate = source.get("render_gate") or {}
+    source_boundaries = source.get("boundaries") or {}
+    observation = {
+        "observation_id": "ed10av_user_micro_scene_observation",
+        "source": "user_freeform_observation",
+        "opened_ed10au_specimen": True,
+        "development_target_looks_different": True,
+        "evaluation_frame_unclear": True,
+        "looks_like_real_scene_not_earlier_diagnostic_cue_memo": True,
+        "subtitle_area_appears_large_low_or_possibly_player_ui_overlapped": True,
+        "possible_player_ui_overlap_reported": True,
+        "overlap_verified_by_agent": False,
+        "screenshot_available_to_agent": False,
+        "raw_observation_points": [
+            "development target looks different",
+            "unclear how to evaluate",
+            "looks like a real scene, not earlier diagnostic cue/memo",
+            "subtitle area appears large / low / possibly overlapped by player UI",
+        ],
+    }
+    classifications = [
+        {
+            "axis": "openability",
+            "classification": "pass",
+            "basis": "The user opened the ED-10au representative micro-scene specimen.",
+            "approval_implication": "access and observation only",
+        },
+        {
+            "axis": "actual_micro_scene_content",
+            "classification": "pass",
+            "basis": "The user observed a real scene rather than the earlier cue/memo diagnostic probe.",
+            "approval_implication": "actual micro-scene content is visible, not accepted",
+        },
+        {
+            "axis": "user_expectation_mismatch",
+            "classification": "warning",
+            "basis": "The user said the development target looks different.",
+            "approval_implication": "expectation mismatch requires review-frame clarification",
+        },
+        {
+            "axis": "review_purpose_clarity",
+            "classification": "partial_or_fail",
+            "basis": "The user said it is unclear how to evaluate the artifact.",
+            "approval_implication": "review frame is not clear enough for acceptance",
+        },
+        {
+            "axis": "visual_source_framing",
+            "classification": "warning",
+            "basis": "The specimen looks like a real 3D scene, which may differ from the expected development target.",
+            "approval_implication": "source or visual framing may need clarification before v2",
+        },
+        {
+            "axis": "subtitle_lower_area_player_ui_overlap",
+            "classification": "needs_classification_not_verified",
+            "basis": "The user reported the subtitle area appears large or low and may overlap with player UI, but no screenshot evidence is available in this slice.",
+            "approval_implication": "do not claim subtitle layout is broken until a screenshot/capture separates rendered layout from media-player chrome",
+        },
+        {
+            "axis": "artifact_semantics",
+            "classification": "observation_frame_readback_not_approval",
+            "basis": "This slice records a freeform observation and routes next axes; it does not request or infer approval.",
+            "approval_implication": "not production, public, rights, publishing, monetization, or micro-scene acceptance",
+        },
+    ]
+    next_axis = {
+        "recommended_route_id": "review-frame-clarification",
+        "recommended_route_condition": (
+            "Use when the specimen is openable and has real scene content, but "
+            "the user cannot tell what judgement the artifact is asking for."
+        ),
+        "alternate_route_id": "subtitle-layout-screenshot-capture",
+        "alternate_route_condition": (
+            "Use when the lower subtitle/player UI risk needs evidence; capture "
+            "or inspect a frame before calling the rendered layout wrong."
+        ),
+        "conditional_route_id": "representative-micro-scene-v2",
+        "conditional_route_condition": (
+            "Use only if the source scene or visual framing is materially wrong "
+            "after the review frame is clarified."
+        ),
+        "render_gap_route_id": "final-render-path-stage-4",
+        "render_gap_route_condition": (
+            "Use only if a concrete render-path gap is found, not for general "
+            "expectation mismatch."
+        ),
+        "stage_7_continuation_allowed_now": False,
+        "new_render_allowed_in_this_slice": False,
+    }
+    subtitle_player_ui_risk = {
+        "risk_status": "needs_classification_not_verified",
+        "reported_symptom": (
+            "subtitle area appears large or low and may be overlapped by media "
+            "player UI"
+        ),
+        "reported_by_user": True,
+        "overlap_verified_by_agent": False,
+        "screenshot_available_to_agent": False,
+        "separation_required": (
+            "Separate rendered subtitle safe-area/layout from media-player "
+            "control overlay before making a layout failure claim."
+        ),
+        "layout_broken_claimed": False,
+        "player_ui_overlap_confirmed": False,
+        "next_route_id": "subtitle-layout-screenshot-capture",
+    }
+    review_frame = {
+        "status": "partial_or_fail",
+        "problem": "user could open the specimen but did not know how to evaluate it",
+        "expectation_mismatch": "warning",
+        "specimen_acceptable_but_confusing_route": "review-frame-clarification",
+        "approval_inferred": False,
+    }
+    boundaries = _micro_scene_observation_frame_boundary_flags(
+        source_boundaries=source_boundaries
+    )
+    validation = _micro_scene_observation_frame_validation(
+        source_specimen=source,
+        observation=observation,
+        classifications=classifications,
+        next_axis=next_axis,
+        subtitle_player_ui_risk=subtitle_player_ui_risk,
+        review_frame=review_frame,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": MICRO_SCENE_OBSERVATION_FRAME_READBACK_SCHEMA_ID,
+        "artifact_id": MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID,
+        "feature_id": MICRO_SCENE_OBSERVATION_FRAME_READBACK_FEATURE_ID,
+        "status": "micro_scene_observation_frame_readback_ready",
+        "surface_kind": "tracked_user_observation_frame_readback",
+        "render_level": "observation_frame_readback_no_new_render",
+        "source_representative_micro_scene_internal_review_specimen_artifact_id": source[
+            "artifact_id"
+        ],
+        "source_internal_review_observation_readback_artifact_id": source[
+            "source_internal_review_observation_readback_artifact_id"
+        ],
+        "source_internal_review_video_candidate_access_sheet_artifact_id": source[
+            "source_internal_review_video_candidate_access_sheet_artifact_id"
+        ],
+        "source_internal_review_video_candidate_package_artifact_id": source[
+            "source_internal_review_video_candidate_package_artifact_id"
+        ],
+        "active_diagnostic_proof_source_artifact_id": source[
+            "active_diagnostic_proof_source_artifact_id"
+        ],
+        "source_context": {
+            "source_specimen_path": "docs/style_intent/representative-micro-scene-internal-review-specimen.json",
+            "source_specimen_status": source.get("status"),
+            "source_scene_id": source_scene.get("scene_id"),
+            "source_text": source.get("source_context", {}).get("source_text"),
+            "source_subtitle_ids": (
+                source.get("source_context", {})
+                .get("source_episode_segment", {})
+                .get("source_subtitle_ids", [])
+            ),
+            "source_actual_script_content_present": source_scene.get(
+                "actual_script_content_present"
+            ),
+            "source_cue_labels_used_as_main_content": source_scene.get(
+                "cue_labels_used_as_main_content"
+            ),
+            "source_access_state": source_access.get("access_state"),
+            "source_target_exists": source_access.get("target_exists"),
+            "source_access_evidence_level": source_access.get(
+                "access_evidence_level"
+            ),
+            "source_launcher_or_open_command": source_access.get(
+                "launcher_or_open_command"
+            ),
+        },
+        "user_observation": observation,
+        "observation_classifications": classifications,
+        "subtitle_player_ui_risk": subtitle_player_ui_risk,
+        "review_frame_readback": review_frame,
+        "next_practical_axis": next_axis,
+        "review_policy": {
+            "human_review_required": False,
+            "user_review_requested_now": False,
+            "fixed_form_required": False,
+            "yes_no_required": False,
+            "screenshot_required": False,
+            "review_card_emitted": False,
+            "stage_7_freeform_normalizer_used": False,
+            "do_not_ask_user_for_another_review_now": True,
+        },
+        "render_gate": {
+            "level": "observation_frame_readback_no_new_render",
+            "source_new_render_run": source_render_gate.get("new_render_run") is True,
+            "new_render_run": False,
+            "new_replay_run": False,
+            "new_media_created": False,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/micro-scene-observation-frame-readback.json",
+            "doc": "docs/style_intent/micro-scene-observation-frame-readback.md",
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_micro_scene_observation_frame_readback(
+    output_dir: Path,
+    *,
+    source_specimen: Mapping[str, Any],
+) -> dict[str, Path]:
+    readback = build_micro_scene_observation_frame_readback(
+        source_specimen=source_specimen,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "micro-scene-observation-frame-readback.json"
+    doc_path = output_dir / "micro-scene-observation-frame-readback.md"
+    with json_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(readback, ensure_ascii=False, indent=2) + "\n")
+    with doc_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(render_micro_scene_observation_frame_readback_markdown(readback))
+    return {"json": json_path, "doc": doc_path}
+
+
 
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
@@ -6224,6 +6464,170 @@ def render_representative_micro_scene_internal_review_specimen_markdown(
         f"- resolution: `{(local.get('metadata') or {}).get('resolution')}`",
         f"- video_codec: `{(local.get('metadata') or {}).get('video_codec')}`",
         f"- audio_codec: `{(local.get('metadata') or {}).get('audio_codec')}`",
+        "",
+        "## Validation",
+        "",
+        validation_rows,
+        "",
+        "## Boundary",
+        "",
+        boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_micro_scene_observation_frame_readback_markdown(
+    readback: Mapping[str, Any],
+) -> str:
+    observation = readback["user_observation"]
+    classifications = readback["observation_classifications"]
+    source = readback["source_context"]
+    risk = readback["subtitle_player_ui_risk"]
+    review_frame = readback["review_frame_readback"]
+    next_axis = readback["next_practical_axis"]
+    review = readback["review_policy"]
+    render_gate = readback["render_gate"]
+    validation = readback["validation"]
+    boundaries = readback["boundaries"]
+    nl = chr(10)
+    observation_rows = nl.join(
+        f"- {item}" for item in observation["raw_observation_points"]
+    )
+    classification_rows = nl.join(
+        "| {axis} | {classification} | {basis} | {implication} |".format(
+            axis=item["axis"],
+            classification=item["classification"],
+            basis=str(item["basis"]).replace("|", "/"),
+            implication=str(item["approval_implication"]).replace("|", "/"),
+        )
+        for item in classifications
+    )
+    validation_rows = nl.join(
+        f"- {key}: `{str(validation[key]).lower()}`"
+        for key in (
+            "source_specimen_read",
+            "source_openability_passed",
+            "actual_micro_scene_content_classified_pass",
+            "user_observation_preserved",
+            "expectation_mismatch_classified_warning",
+            "review_purpose_clarity_partial_or_fail",
+            "visual_source_framing_warning_recorded",
+            "subtitle_player_ui_overlap_needs_classification",
+            "subtitle_player_ui_overlap_not_verified",
+            "no_layout_broken_claim",
+            "no_approval_inferred",
+            "no_new_render",
+            "no_new_media",
+            "no_stage_7_normalizer",
+            "episodes_tracking_boundary_preserved",
+            "all_checks_passed",
+        )
+    )
+    boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "monetization_acceptance",
+            "production_candidate",
+            "production_usage_allowed",
+            "micro_scene_accepted",
+            "user_observation_converted_to_approval",
+            "layout_broken_claimed",
+            "player_ui_overlap_confirmed",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "stage_7_freeform_normalizer_used",
+        )
+    )
+    lines = [
+        "# ED-10av Micro-Scene Observation Frame Readback",
+        "",
+        "This tracked readback consumes the user's freeform observation after opening the ED-10au specimen. It records that the file opens and reads as a real scene, separates expectation/review-frame warnings from approval, and keeps subtitle/player-UI overlap as an unverified classification issue.",
+        "",
+        "## Source Chain",
+        "",
+        f"- artifact_id: `{readback['artifact_id']}`",
+        f"- feature_id: `{readback['feature_id']}`",
+        f"- status: `{readback['status']}`",
+        f"- source_representative_micro_scene_internal_review_specimen_artifact_id: `{readback['source_representative_micro_scene_internal_review_specimen_artifact_id']}`",
+        f"- source_internal_review_observation_readback_artifact_id: `{readback['source_internal_review_observation_readback_artifact_id']}`",
+        f"- source_internal_review_video_candidate_access_sheet_artifact_id: `{readback['source_internal_review_video_candidate_access_sheet_artifact_id']}`",
+        f"- source_internal_review_video_candidate_package_artifact_id: `{readback['source_internal_review_video_candidate_package_artifact_id']}`",
+        f"- active_diagnostic_proof_source_artifact_id: `{readback['active_diagnostic_proof_source_artifact_id']}`",
+        f"- source_specimen_status: `{source['source_specimen_status']}`",
+        f"- source_scene_id: `{source['source_scene_id']}`",
+        f"- source_text: `{source['source_text']}`",
+        f"- source_access_state: `{source['source_access_state']}`",
+        f"- source_access_evidence_level: `{source['source_access_evidence_level']}`",
+        "",
+        "## User Observation Readback",
+        "",
+        f"- opened_ed10au_specimen: `{str(observation['opened_ed10au_specimen']).lower()}`",
+        f"- development_target_looks_different: `{str(observation['development_target_looks_different']).lower()}`",
+        f"- evaluation_frame_unclear: `{str(observation['evaluation_frame_unclear']).lower()}`",
+        f"- looks_like_real_scene_not_earlier_diagnostic_cue_memo: `{str(observation['looks_like_real_scene_not_earlier_diagnostic_cue_memo']).lower()}`",
+        f"- subtitle_area_appears_large_low_or_possibly_player_ui_overlapped: `{str(observation['subtitle_area_appears_large_low_or_possibly_player_ui_overlapped']).lower()}`",
+        f"- overlap_verified_by_agent: `{str(observation['overlap_verified_by_agent']).lower()}`",
+        f"- screenshot_available_to_agent: `{str(observation['screenshot_available_to_agent']).lower()}`",
+        "",
+        "Preserved raw observation points:",
+        "",
+        observation_rows,
+        "",
+        "## Classification",
+        "",
+        "| axis | classification | basis | approval implication |",
+        "|---|---|---|---|",
+        classification_rows,
+        "",
+        "## Subtitle / Player UI Risk",
+        "",
+        f"- risk_status: `{risk['risk_status']}`",
+        f"- reported_by_user: `{str(risk['reported_by_user']).lower()}`",
+        f"- overlap_verified_by_agent: `{str(risk['overlap_verified_by_agent']).lower()}`",
+        f"- screenshot_available_to_agent: `{str(risk['screenshot_available_to_agent']).lower()}`",
+        f"- layout_broken_claimed: `{str(risk['layout_broken_claimed']).lower()}`",
+        f"- player_ui_overlap_confirmed: `{str(risk['player_ui_overlap_confirmed']).lower()}`",
+        f"- next_route_id: `{risk['next_route_id']}`",
+        f"- separation_required: {risk['separation_required']}",
+        "",
+        "## Review Frame",
+        "",
+        f"- status: `{review_frame['status']}`",
+        f"- problem: {review_frame['problem']}",
+        f"- expectation_mismatch: `{review_frame['expectation_mismatch']}`",
+        f"- specimen_acceptable_but_confusing_route: `{review_frame['specimen_acceptable_but_confusing_route']}`",
+        f"- approval_inferred: `{str(review_frame['approval_inferred']).lower()}`",
+        "",
+        "## Next Practical Axis",
+        "",
+        f"- recommended_route_id: `{next_axis['recommended_route_id']}`",
+        f"- recommended_route_condition: {next_axis['recommended_route_condition']}",
+        f"- alternate_route_id: `{next_axis['alternate_route_id']}`",
+        f"- alternate_route_condition: {next_axis['alternate_route_condition']}",
+        f"- conditional_route_id: `{next_axis['conditional_route_id']}`",
+        f"- conditional_route_condition: {next_axis['conditional_route_condition']}",
+        f"- render_gap_route_id: `{next_axis['render_gap_route_id']}`",
+        f"- render_gap_route_condition: {next_axis['render_gap_route_condition']}",
+        f"- stage_7_continuation_allowed_now: `{str(next_axis['stage_7_continuation_allowed_now']).lower()}`",
+        f"- new_render_allowed_in_this_slice: `{str(next_axis['new_render_allowed_in_this_slice']).lower()}`",
+        "",
+        "## Review Policy / Render Gate",
+        "",
+        f"- user_review_requested_now: `{str(review['user_review_requested_now']).lower()}`",
+        f"- fixed_form_required: `{str(review['fixed_form_required']).lower()}`",
+        f"- screenshot_required: `{str(review['screenshot_required']).lower()}`",
+        f"- stage_7_freeform_normalizer_used: `{str(review['stage_7_freeform_normalizer_used']).lower()}`",
+        f"- do_not_ask_user_for_another_review_now: `{str(review['do_not_ask_user_for_another_review_now']).lower()}`",
+        f"- source_new_render_run: `{str(render_gate['source_new_render_run']).lower()}`",
+        f"- new_render_run: `{str(render_gate['new_render_run']).lower()}`",
+        f"- new_media_created: `{str(render_gate['new_media_created']).lower()}`",
+        f"- episodes_tracked: `{str(render_gate['episodes_tracked']).lower()}`",
         "",
         "## Validation",
         "",
@@ -10605,6 +11009,169 @@ def _representative_micro_scene_validation(
             and no_approval_inferred
             and boundaries["stage_7_freeform_normalizer_used"] is False
             and boundaries["tracked_binary_artifact_created"] is False
+            and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _micro_scene_observation_frame_boundary_flags(
+    *,
+    source_boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "source_bounded_internal_review_specimen_render": source_boundaries.get(
+                "bounded_internal_review_specimen_render"
+            )
+            is True,
+            "new_render_run": False,
+            "new_render_created": False,
+            "new_replay_run": False,
+            "new_media_created": False,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "monetization_acceptance": False,
+            "stage_7_freeform_normalizer_used": False,
+            "stage_7_continuation_allowed_now": False,
+            "user_observation_converted_to_approval": False,
+            "micro_scene_accepted": False,
+            "layout_broken_claimed": False,
+            "player_ui_overlap_confirmed": False,
+            "representative_micro_scene_v2_required_now": False,
+            "final_render_path_stage_4_required_now": False,
+        }
+    )
+    return flags
+
+
+def _micro_scene_observation_frame_validation(
+    *,
+    source_specimen: Mapping[str, Any],
+    observation: Mapping[str, Any],
+    classifications: list[Mapping[str, Any]],
+    next_axis: Mapping[str, Any],
+    subtitle_player_ui_risk: Mapping[str, Any],
+    review_frame: Mapping[str, Any],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    by_axis = {item["axis"]: item for item in classifications}
+    preserved = observation.get("raw_observation_points") == [
+        "development target looks different",
+        "unclear how to evaluate",
+        "looks like a real scene, not earlier diagnostic cue/memo",
+        "subtitle area appears large / low / possibly overlapped by player UI",
+    ]
+    no_approval_inferred = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["monetization_acceptance"] is False
+        and boundaries["production_candidate"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["micro_scene_accepted"] is False
+        and boundaries["user_observation_converted_to_approval"] is False
+    )
+    no_new_render = (
+        boundaries["new_render_run"] is False
+        and boundaries["new_render_created"] is False
+        and next_axis["new_render_allowed_in_this_slice"] is False
+    )
+    no_new_media = (
+        boundaries["new_media_created"] is False
+        and boundaries["tracked_binary_artifact_created"] is False
+    )
+    return {
+        "source_specimen_read": source_specimen["artifact_id"]
+        == REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID,
+        "source_openability_passed": (
+            (source_specimen.get("access_sheet") or {}).get("access_state")
+            == "verified_present"
+        ),
+        "actual_micro_scene_content_classified_pass": by_axis.get(
+            "actual_micro_scene_content", {}
+        ).get("classification")
+        == "pass",
+        "user_observation_preserved": preserved,
+        "expectation_mismatch_classified_warning": by_axis.get(
+            "user_expectation_mismatch", {}
+        ).get("classification")
+        == "warning",
+        "review_purpose_clarity_partial_or_fail": (
+            by_axis.get("review_purpose_clarity", {}).get("classification")
+            == "partial_or_fail"
+            and review_frame["status"] == "partial_or_fail"
+        ),
+        "visual_source_framing_warning_recorded": by_axis.get(
+            "visual_source_framing", {}
+        ).get("classification")
+        == "warning",
+        "subtitle_player_ui_overlap_needs_classification": by_axis.get(
+            "subtitle_lower_area_player_ui_overlap", {}
+        ).get("classification")
+        == "needs_classification_not_verified"
+        and subtitle_player_ui_risk["risk_status"] == "needs_classification_not_verified",
+        "subtitle_player_ui_overlap_not_verified": subtitle_player_ui_risk[
+            "overlap_verified_by_agent"
+        ]
+        is False
+        and subtitle_player_ui_risk["player_ui_overlap_confirmed"] is False,
+        "no_layout_broken_claim": subtitle_player_ui_risk["layout_broken_claimed"]
+        is False
+        and boundaries["layout_broken_claimed"] is False,
+        "no_approval_inferred": no_approval_inferred,
+        "no_new_render": no_new_render,
+        "no_new_replay": boundaries["new_replay_run"] is False,
+        "no_new_media": no_new_media,
+        "no_stage_7_normalizer": boundaries["stage_7_freeform_normalizer_used"]
+        is False
+        and next_axis["stage_7_continuation_allowed_now"] is False,
+        "review_frame_clarification_axis_defined": next_axis["recommended_route_id"]
+        == "review-frame-clarification",
+        "subtitle_layout_screenshot_axis_defined": next_axis["alternate_route_id"]
+        == "subtitle-layout-screenshot-capture",
+        "representative_v2_route_conditional": next_axis["conditional_route_id"]
+        == "representative-micro-scene-v2",
+        "final_render_path_stage_4_limited": next_axis["render_gap_route_id"]
+        == "final-render-path-stage-4",
+        "episodes_tracking_boundary_preserved": boundaries["episodes_tracked"] is False,
+        "all_checks_passed": (
+            source_specimen["artifact_id"] == REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID
+            and (source_specimen.get("access_sheet") or {}).get("access_state")
+            == "verified_present"
+            and by_axis.get("openability", {}).get("classification") == "pass"
+            and by_axis.get("actual_micro_scene_content", {}).get("classification")
+            == "pass"
+            and preserved
+            and by_axis.get("user_expectation_mismatch", {}).get("classification")
+            == "warning"
+            and by_axis.get("review_purpose_clarity", {}).get("classification")
+            == "partial_or_fail"
+            and by_axis.get("visual_source_framing", {}).get("classification")
+            == "warning"
+            and by_axis.get(
+                "subtitle_lower_area_player_ui_overlap", {}
+            ).get("classification")
+            == "needs_classification_not_verified"
+            and subtitle_player_ui_risk["overlap_verified_by_agent"] is False
+            and subtitle_player_ui_risk["layout_broken_claimed"] is False
+            and no_approval_inferred
+            and no_new_render
+            and no_new_media
+            and boundaries["stage_7_freeform_normalizer_used"] is False
             and boundaries["episodes_tracked"] is False
         ),
     }

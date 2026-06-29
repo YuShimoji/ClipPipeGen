@@ -2196,6 +2196,114 @@ def test_representative_micro_scene_internal_review_doc_records_access_and_bound
     assert "public_use_permission: `false`" in text
 
 
+def test_micro_scene_observation_frame_readback_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    source_specimen = json.loads(
+        (
+            style_dir
+            / "representative-micro-scene-internal-review-specimen.json"
+        ).read_text(encoding="utf-8")
+    )
+    tracked = json.loads(
+        (style_dir / "micro-scene-observation-frame-readback.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_micro_scene_observation_frame_readback(
+        source_specimen=source_specimen,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.MICRO_SCENE_OBSERVATION_FRAME_READBACK_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10av"
+    assert tracked[
+        "source_representative_micro_scene_internal_review_specimen_artifact_id"
+    ] == preset_selector.REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID
+    observation = tracked["user_observation"]
+    assert observation["raw_observation_points"] == [
+        "development target looks different",
+        "unclear how to evaluate",
+        "looks like a real scene, not earlier diagnostic cue/memo",
+        "subtitle area appears large / low / possibly overlapped by player UI",
+    ]
+    by_axis = {item["axis"]: item for item in tracked["observation_classifications"]}
+    assert by_axis["openability"]["classification"] == "pass"
+    assert by_axis["actual_micro_scene_content"]["classification"] == "pass"
+    assert by_axis["user_expectation_mismatch"]["classification"] == "warning"
+    assert by_axis["review_purpose_clarity"]["classification"] == "partial_or_fail"
+    assert by_axis["visual_source_framing"]["classification"] == "warning"
+    assert by_axis["subtitle_lower_area_player_ui_overlap"]["classification"] == (
+        "needs_classification_not_verified"
+    )
+    assert tracked["subtitle_player_ui_risk"]["risk_status"] == (
+        "needs_classification_not_verified"
+    )
+    assert tracked["subtitle_player_ui_risk"]["overlap_verified_by_agent"] is False
+    assert tracked["subtitle_player_ui_risk"]["layout_broken_claimed"] is False
+    assert tracked["subtitle_player_ui_risk"]["player_ui_overlap_confirmed"] is False
+    assert tracked["next_practical_axis"]["recommended_route_id"] == (
+        "review-frame-clarification"
+    )
+    assert tracked["next_practical_axis"]["alternate_route_id"] == (
+        "subtitle-layout-screenshot-capture"
+    )
+    assert tracked["next_practical_axis"]["conditional_route_id"] == (
+        "representative-micro-scene-v2"
+    )
+    assert tracked["next_practical_axis"]["render_gap_route_id"] == (
+        "final-render-path-stage-4"
+    )
+    assert tracked["review_policy"]["user_review_requested_now"] is False
+    assert tracked["review_policy"]["fixed_form_required"] is False
+    assert tracked["review_policy"]["screenshot_required"] is False
+    assert tracked["render_gate"]["source_new_render_run"] is True
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_media_created"] is False
+    assert tracked["render_gate"]["tracked_binary_artifact_created"] is False
+    assert tracked["render_gate"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["micro_scene_accepted"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["user_observation_converted_to_approval"] is False
+    assert tracked["boundaries"]["stage_7_freeform_normalizer_used"] is False
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_micro_scene_observation_frame_readback_doc_records_risk_and_boundaries():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "micro-scene-observation-frame-readback.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10av Micro-Scene Observation Frame Readback" in text
+    assert "clip-ed10av-micro-scene-observation-frame-readback-001" in text
+    assert "clip-ed10au-representative-micro-scene-internal-review-specimen-001" in text
+    assert "development target looks different" in text
+    assert "unclear how to evaluate" in text
+    assert "looks like a real scene, not earlier diagnostic cue/memo" in text
+    assert "subtitle area appears large / low / possibly overlapped by player UI" in text
+    assert "needs_classification_not_verified" in text
+    assert "review-frame-clarification" in text
+    assert "subtitle-layout-screenshot-capture" in text
+    assert "representative-micro-scene-v2" in text
+    assert "final-render-path-stage-4" in text
+    assert "source_new_render_run: `true`" in text
+    assert "new_render_run: `false`" in text
+    assert "new_media_created: `false`" in text
+    assert "micro_scene_accepted: `false`" in text
+    assert "layout_broken_claimed: `false`" in text
+    assert "player_ui_overlap_confirmed: `false`" in text
+    assert "stage_7_freeform_normalizer_used: `false`" in text
+    assert "user_observation_converted_to_approval: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

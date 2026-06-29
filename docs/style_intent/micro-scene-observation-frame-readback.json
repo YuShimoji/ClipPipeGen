@@ -1,0 +1,202 @@
+{
+  "schema_id": "clippipegen.micro_scene_observation_frame_readback.v1",
+  "artifact_id": "clip-ed10av-micro-scene-observation-frame-readback-001",
+  "feature_id": "ED-10av",
+  "status": "micro_scene_observation_frame_readback_ready",
+  "surface_kind": "tracked_user_observation_frame_readback",
+  "render_level": "observation_frame_readback_no_new_render",
+  "source_representative_micro_scene_internal_review_specimen_artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+  "source_internal_review_observation_readback_artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+  "source_internal_review_video_candidate_access_sheet_artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+  "source_internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_context": {
+    "source_specimen_path": "docs/style_intent/representative-micro-scene-internal-review-specimen.json",
+    "source_specimen_status": "representative_micro_scene_internal_review_specimen_ready",
+    "source_scene_id": "ed10au_real_transcript_micro_scene_sub_004_to_sub_006",
+    "source_text": "real_transcript_sub_004_to_sub_006",
+    "source_subtitle_ids": [
+      "sub_004",
+      "sub_005",
+      "sub_006"
+    ],
+    "source_actual_script_content_present": true,
+    "source_cue_labels_used_as_main_content": false,
+    "source_access_state": "verified_present",
+    "source_target_exists": true,
+    "source_access_evidence_level": "file_exists_and_ffprobe_metadata",
+    "source_launcher_or_open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1"
+  },
+  "user_observation": {
+    "observation_id": "ed10av_user_micro_scene_observation",
+    "source": "user_freeform_observation",
+    "opened_ed10au_specimen": true,
+    "development_target_looks_different": true,
+    "evaluation_frame_unclear": true,
+    "looks_like_real_scene_not_earlier_diagnostic_cue_memo": true,
+    "subtitle_area_appears_large_low_or_possibly_player_ui_overlapped": true,
+    "possible_player_ui_overlap_reported": true,
+    "overlap_verified_by_agent": false,
+    "screenshot_available_to_agent": false,
+    "raw_observation_points": [
+      "development target looks different",
+      "unclear how to evaluate",
+      "looks like a real scene, not earlier diagnostic cue/memo",
+      "subtitle area appears large / low / possibly overlapped by player UI"
+    ]
+  },
+  "observation_classifications": [
+    {
+      "axis": "openability",
+      "classification": "pass",
+      "basis": "The user opened the ED-10au representative micro-scene specimen.",
+      "approval_implication": "access and observation only"
+    },
+    {
+      "axis": "actual_micro_scene_content",
+      "classification": "pass",
+      "basis": "The user observed a real scene rather than the earlier cue/memo diagnostic probe.",
+      "approval_implication": "actual micro-scene content is visible, not accepted"
+    },
+    {
+      "axis": "user_expectation_mismatch",
+      "classification": "warning",
+      "basis": "The user said the development target looks different.",
+      "approval_implication": "expectation mismatch requires review-frame clarification"
+    },
+    {
+      "axis": "review_purpose_clarity",
+      "classification": "partial_or_fail",
+      "basis": "The user said it is unclear how to evaluate the artifact.",
+      "approval_implication": "review frame is not clear enough for acceptance"
+    },
+    {
+      "axis": "visual_source_framing",
+      "classification": "warning",
+      "basis": "The specimen looks like a real 3D scene, which may differ from the expected development target.",
+      "approval_implication": "source or visual framing may need clarification before v2"
+    },
+    {
+      "axis": "subtitle_lower_area_player_ui_overlap",
+      "classification": "needs_classification_not_verified",
+      "basis": "The user reported the subtitle area appears large or low and may overlap with player UI, but no screenshot evidence is available in this slice.",
+      "approval_implication": "do not claim subtitle layout is broken until a screenshot/capture separates rendered layout from media-player chrome"
+    },
+    {
+      "axis": "artifact_semantics",
+      "classification": "observation_frame_readback_not_approval",
+      "basis": "This slice records a freeform observation and routes next axes; it does not request or infer approval.",
+      "approval_implication": "not production, public, rights, publishing, monetization, or micro-scene acceptance"
+    }
+  ],
+  "subtitle_player_ui_risk": {
+    "risk_status": "needs_classification_not_verified",
+    "reported_symptom": "subtitle area appears large or low and may be overlapped by media player UI",
+    "reported_by_user": true,
+    "overlap_verified_by_agent": false,
+    "screenshot_available_to_agent": false,
+    "separation_required": "Separate rendered subtitle safe-area/layout from media-player control overlay before making a layout failure claim.",
+    "layout_broken_claimed": false,
+    "player_ui_overlap_confirmed": false,
+    "next_route_id": "subtitle-layout-screenshot-capture"
+  },
+  "review_frame_readback": {
+    "status": "partial_or_fail",
+    "problem": "user could open the specimen but did not know how to evaluate it",
+    "expectation_mismatch": "warning",
+    "specimen_acceptable_but_confusing_route": "review-frame-clarification",
+    "approval_inferred": false
+  },
+  "next_practical_axis": {
+    "recommended_route_id": "review-frame-clarification",
+    "recommended_route_condition": "Use when the specimen is openable and has real scene content, but the user cannot tell what judgement the artifact is asking for.",
+    "alternate_route_id": "subtitle-layout-screenshot-capture",
+    "alternate_route_condition": "Use when the lower subtitle/player UI risk needs evidence; capture or inspect a frame before calling the rendered layout wrong.",
+    "conditional_route_id": "representative-micro-scene-v2",
+    "conditional_route_condition": "Use only if the source scene or visual framing is materially wrong after the review frame is clarified.",
+    "render_gap_route_id": "final-render-path-stage-4",
+    "render_gap_route_condition": "Use only if a concrete render-path gap is found, not for general expectation mismatch.",
+    "stage_7_continuation_allowed_now": false,
+    "new_render_allowed_in_this_slice": false
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_review_requested_now": false,
+    "fixed_form_required": false,
+    "yes_no_required": false,
+    "screenshot_required": false,
+    "review_card_emitted": false,
+    "stage_7_freeform_normalizer_used": false,
+    "do_not_ask_user_for_another_review_now": true
+  },
+  "render_gate": {
+    "level": "observation_frame_readback_no_new_render",
+    "source_new_render_run": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "source_specimen_read": true,
+    "source_openability_passed": true,
+    "actual_micro_scene_content_classified_pass": true,
+    "user_observation_preserved": true,
+    "expectation_mismatch_classified_warning": true,
+    "review_purpose_clarity_partial_or_fail": true,
+    "visual_source_framing_warning_recorded": true,
+    "subtitle_player_ui_overlap_needs_classification": true,
+    "subtitle_player_ui_overlap_not_verified": true,
+    "no_layout_broken_claim": true,
+    "no_approval_inferred": true,
+    "no_new_render": true,
+    "no_new_replay": true,
+    "no_new_media": true,
+    "no_stage_7_normalizer": true,
+    "review_frame_clarification_axis_defined": true,
+    "subtitle_layout_screenshot_axis_defined": true,
+    "representative_v2_route_conditional": true,
+    "final_render_path_stage_4_limited": true,
+    "episodes_tracking_boundary_preserved": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/micro-scene-observation-frame-readback.json",
+    "doc": "docs/style_intent/micro-scene-observation-frame-readback.md"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "source_bounded_internal_review_specimen_render": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "monetization_acceptance": false,
+    "stage_7_freeform_normalizer_used": false,
+    "stage_7_continuation_allowed_now": false,
+    "user_observation_converted_to_approval": false,
+    "micro_scene_accepted": false,
+    "layout_broken_claimed": false,
+    "player_ui_overlap_confirmed": false,
+    "representative_micro_scene_v2_required_now": false,
+    "final_render_path_stage_4_required_now": false
+  }
+}
