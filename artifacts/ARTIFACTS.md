@@ -861,6 +861,48 @@ Boundary flags remain false or pending:
 - `screenshot_capture_created=false`
 - `stage_7_freeform_normalizer_used=false`
 
+## `clip-ed10az-observation-readback-and-v2-route-decision-001`
+
+| field | value |
+|---|---|
+| title | ED-10az Observation Readback and V2 Route Decision |
+| purpose | Consume the user's ED-10ax-guided observation after opening the recovered ED-10au MP4 and decide the next route without treating the observation as approval. |
+| storage_class | tracked JSON/Markdown readback; no render, replay, screenshot, media artifact, v2 specimen, or tracked `episodes/` output |
+| repo_relative_path | docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json; docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md |
+| open_command | see docs\\style_intent\\ed10az-observation-readback-and-v2-route-decision.md |
+| generated_from | ED-10az consumes `clip-ed10ax-review-frame-clarification-surface-001`, `clip-ed10ay-thank-ed10au-local-access-recovery-readback-001`, `clip-ed10au-representative-micro-scene-internal-review-specimen-001`, and the user's freeform observation after opening the recovered MP4. |
+| validation_command | Parse ED-10az JSON and dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | No local render, screenshot, media, or v2 specimen is created in ED-10az. The source MP4 was opened by the user after ED-10ay recovery; ED-10az records observation and route decision only. |
+| review_status | observation consumed as readback; not approval; no additional user review requested now |
+| next_action | Design `representative-micro-scene-v2-cut-window-and-review-purpose-alignment`; keep subtitle-layout screenshot capture, final-render-path stage-4, timing/audio, and another pure review-frame packet conditional only. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `user_observation_converted_to_approval=false`
+- `subtitle_layout_failure_claimed=false`
+- `player_ui_overlap_confirmed=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=false`
+- `new_media_created=false`
+- `representative_micro_scene_v2_created=false`
+- `representative_micro_scene_v2_enabled=true`
+- `screenshot_capture_created=false`
+- `subtitle_layout_screenshot_capture_required_now=false`
+- `final_render_path_stage_4_required_now=false`
+- `timing_audio_first_route=false`
+- `stage_7_freeform_normalizer_used=false`
+
 ## `clip-ed10ax-review-frame-clarification-surface-001`
 
 | field | value |

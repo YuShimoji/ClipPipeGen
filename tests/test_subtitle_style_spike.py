@@ -2540,6 +2540,147 @@ def test_review_frame_clarification_surface_doc_records_boundaries():
     assert "grill_me_project_resource_authority: `false`" in text
 
 
+def test_ed10az_observation_readback_and_v2_route_decision_is_bounded():
+    payload = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "style_intent"
+            / "ed10az-observation-readback-and-v2-route-decision.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert payload["schema_id"] == (
+        "clippipegen.ed10az_observation_readback_and_v2_route_decision.v1"
+    )
+    assert payload["artifact_id"] == (
+        "clip-ed10az-observation-readback-and-v2-route-decision-001"
+    )
+    assert payload["feature_id"] == "ED-10az"
+    assert payload["source_review_frame_clarification_surface_artifact_id"] == (
+        "clip-ed10ax-review-frame-clarification-surface-001"
+    )
+    assert payload["source_thank_access_recovery_artifact_id"] == (
+        "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001"
+    )
+    assert payload[
+        "source_representative_micro_scene_internal_review_specimen_artifact_id"
+    ] == "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
+
+    observation = payload["user_observation"]
+    assert observation["opened_mp4_directly_through_command"] is True
+    assert observation["opened_successfully"] is True
+    assert observation["could_not_tell_what_to_judge"] is True
+    assert observation["if_target_is_cut_quality_both_ends_feel_too_tight"] is True
+    assert observation["subtitle_timing_or_render_broken"] is False
+    assert observation["subtitle_strategy_mismatch_for_clipping_review"] is True
+    assert observation["audio_axis_meaningful_failure"] is False
+    assert observation["subtitle_looks_like_ordinary_youtube_subtitles"] is True
+    assert observation["screenshot_proves_layout_failure"] is False
+    assert any(
+        "ordinary YouTube subtitles" in point
+        for point in observation["raw_observation_points"]
+    )
+
+    by_axis = {item["axis"]: item for item in payload["observation_classifications"]}
+    assert by_axis["access_openability"]["classification"] == "pass"
+    assert by_axis["ed10ay_access_recovery"]["classification"] == "pass"
+    assert by_axis["basic_subtitle_render"]["classification"] == (
+        "pass_or_nonblocking"
+    )
+    assert by_axis["audio_path"]["classification"] == (
+        "non_informative_pass_by_source_reuse"
+    )
+    assert by_axis["review_frame_clarity"]["classification"] == "fail_or_partial"
+    assert by_axis["cut_window_source_scene_framing"]["classification"] == (
+        "warning_or_v2_candidate"
+    )
+    assert by_axis["subtitle_strategy"]["classification"] == (
+        "mismatch_for_clipping_review"
+    )
+    assert by_axis["subtitle_layout_screenshot_route"]["classification"] == (
+        "conditional_only_not_primary"
+    )
+    assert by_axis["render_path_stage_4_route"]["classification"] == (
+        "conditional_only_not_primary"
+    )
+    assert by_axis["micro_scene_acceptance"]["classification"] == "false"
+
+    route = payload["route_decision"]
+    assert route["first_recommended_route_id"] == (
+        "representative-micro-scene-v2-cut-window-and-review-purpose-alignment"
+    )
+    assert route["representative_micro_scene_v2_enabled"] is True
+    route_by_id = {item["route_id"]: item for item in route["route_order"]}
+    assert route_by_id[
+        "representative-micro-scene-v2-cut-window-and-review-purpose-alignment"
+    ]["order"] == "first"
+    assert route_by_id["subtitle-layout-screenshot-capture"]["order"] == (
+        "conditional"
+    )
+    assert route_by_id["final-render-path-stage-4"]["order"] == "conditional"
+    assert route_by_id["timing-audio-check"]["order"] == "not_first"
+    assert route_by_id["review-frame-clarification-packet"]["order"] == (
+        "not_first_unless_v2_cannot_be_designed"
+    )
+
+    v2 = payload["v2_design_constraints"]
+    assert v2["render_performed_this_slice"] is False
+    assert v2["evaluate_cut_window_and_clipping_review_usefulness"] is True
+    assert v2[
+        "avoid_exact_subtitle_boundaries_when_they_make_edges_feel_tight"
+    ] is True
+    assert v2[
+        "allow_modest_pre_roll_post_roll_handles_if_source_timing_allows"
+    ] is True
+    assert v2["next_v2_implementation_route"]["objective"].startswith("Build")
+
+    assert payload["render_gate"]["new_render_run"] is False
+    assert payload["render_gate"]["new_media_created"] is False
+    assert payload["render_gate"]["episodes_tracked"] is False
+    assert payload["boundaries"]["user_observation_converted_to_approval"] is False
+    assert payload["boundaries"]["representative_micro_scene_v2_enabled"] is True
+    assert payload["boundaries"]["representative_micro_scene_v2_created"] is False
+    assert payload["boundaries"]["subtitle_layout_screenshot_capture_required_now"] is False
+    assert payload["boundaries"]["final_render_path_stage_4_required_now"] is False
+    assert payload["boundaries"]["timing_audio_first_route"] is False
+    assert payload["boundaries"]["production_render_acceptance"] is False
+    assert payload["boundaries"]["public_use_permission"] is False
+    assert payload["boundaries"]["micro_scene_accepted"] is False
+    assert payload["validation"]["all_checks_passed"] is True
+
+
+def test_ed10az_observation_readback_doc_records_route_and_boundaries():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "ed10az-observation-readback-and-v2-route-decision.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10az Observation Readback and V2 Route Decision" in text
+    assert "clip-ed10az-observation-readback-and-v2-route-decision-001" in text
+    assert "clip-ed10ax-review-frame-clarification-surface-001" in text
+    assert "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001" in text
+    assert "could not tell what should be judged" in text
+    assert "both ends appear cut too tightly" in text
+    assert "ordinary YouTube subtitles" in text
+    assert (
+        "representative-micro-scene-v2-cut-window-and-review-purpose-alignment"
+        in text
+    )
+    assert "subtitle-layout-screenshot-capture" in text
+    assert "final-render-path-stage-4" in text
+    assert "new_render_run: false" in text
+    assert "new_media_created: false" in text
+    assert "episodes_tracked: false" in text
+    assert "representative_micro_scene_v2_enabled: true" in text
+    assert "representative_micro_scene_v2_created: false" in text
+    assert "timing_audio_first_route: false" in text
+    assert "micro_scene_accepted: false" in text
+    assert "user_observation_converted_to_approval: false" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

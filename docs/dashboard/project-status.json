@@ -2501,6 +2501,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10az",
+      "title": "Observation Readback and V2 Route Decision v0",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10az-observation-readback-and-v2-route-decision-001",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "clip-ed10az-observation-readback-and-v2-route-decision-001 adds tracked JSON/Markdown at docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json / .md. It consumes the user's ED-10ax-guided observation...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -2975,9 +2986,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 119,
+    "feature_count": 120,
     "status_counts": {
-      "done": 103,
+      "done": 104,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -3245,6 +3256,16 @@
       "next_action": "Use the existing ED-10au launcher on this host when a later supervisor asks to open the specimen. Keep ED-10ax as the review-frame surface and use screenshot/v2/final-render routes only under their recorded conditions."
     },
     {
+      "artifact_id": "clip-ed10az-observation-readback-and-v2-route-decision-001",
+      "title": "ED-10az Observation Readback and V2 Route Decision",
+      "purpose": "Consume the user's ED-10ax-guided observation after opening the recovered ED-10au MP4 and decide the next route without treating the observation as approval.",
+      "storage_class": "",
+      "repo_relative_path": "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json; docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md",
+      "open_command": "see docs\\\\style_intent\\\\ed10az-observation-readback-and-v2-route-decision.md",
+      "review_status": "observation consumed as readback; not approval; no additional user review requested now",
+      "next_action": "Design representative-micro-scene-v2-cut-window-and-review-purpose-alignment; keep subtitle-layout screenshot capture, final-render-path stage-4, timing/audio, and another pure review-frame packet conditional only."
+    },
+    {
       "artifact_id": "clip-ed10ax-review-frame-clarification-surface-001",
       "title": "ED-10ax Review-Frame Clarification Surface",
       "purpose": "Turn the ED-10aw plan into a concrete review-frame surface for the ED-10au specimen so a later reviewer knows what to judge, what not to judge, how to interpret ED-10av, and which next route to use.",
@@ -3463,6 +3484,7 @@
       "clip-ed10av-micro-scene-observation-frame-readback-001",
       "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
       "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
+      "clip-ed10az-observation-readback-and-v2-route-decision-001",
       "clip-ed10ax-review-frame-clarification-surface-001",
       "clip-ed10ar-internal-review-video-candidate-package-001",
       "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
@@ -3483,11 +3505,11 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 45
+    "artifact_count": 46
   },
   "artifact_coverage": {
-    "registered_artifact_count": 45,
-    "features_with_artifact_count": 46,
+    "registered_artifact_count": 46,
+    "features_with_artifact_count": 47,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
@@ -3729,7 +3751,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1212,
+      "line_count": 1237,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3737,13 +3759,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 304,
+      "boundary_term_count": 307,
       "status": "reference"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 187,
+      "line_count": 188,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3751,7 +3773,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 320,
+      "boundary_term_count": 323,
       "status": "in_progress"
     },
     {
@@ -3812,7 +3834,7 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 370,
+      "line_count": 384,
       "metadata": {
         "id": "subtitle-style-intent-registry",
         "title": "Subtitle Style Intent Registry",
@@ -3820,15 +3842,16 @@
         "status": "diagnostic_intent_registry_ready",
         "health": "grill_me_adoption_review_frame_plan_ready",
         "progress_pct": "100",
-        "last_touched": "2026-06-29",
+        "last_touched": "2026-06-30",
         "active_artifact": "clip-ed10ax-review-frame-clarification-surface-001",
+        "latest_observation_route_decision_artifact": "clip-ed10az-observation-readback-and-v2-route-decision-001",
         "source_review_frame_plan": "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
         "source_micro_scene_observation_frame_readback": "clip-ed10av-micro-scene-observation-frame-readback-001",
         "source_representative_micro_scene_specimen": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
         "source_internal_review_observation_readback": "clip-ed10at-internal-review-observation-readback-001",
         "source_internal_review_access_sheet": "clip-ed10as-internal-review-access-sheet-fullpath-001",
         "source_internal_review_package": "clip-ed10ar-internal-review-video-candidate-package-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -3836,7 +3859,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 101,
+      "boundary_term_count": 105,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -3856,7 +3879,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1468,
+      "line_count": 1510,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3864,7 +3887,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 694,
+      "boundary_term_count": 705,
       "status": "reference"
     },
     {
@@ -3926,7 +3949,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 876,
+      "line_count": 898,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3934,7 +3957,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 266,
+      "boundary_term_count": 269,
       "status": "reference"
     },
     {
@@ -4279,7 +4302,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1212 lines) is likely carrying history.",
+        "detail": "Long active doc (1237 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4291,7 +4314,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 320 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 323 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4309,13 +4332,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1468 lines) is likely carrying history.",
+        "detail": "Long active doc (1510 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 694 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 705 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4339,7 +4362,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (876 lines) is likely carrying history.",
+        "detail": "Long active doc (898 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

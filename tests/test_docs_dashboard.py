@@ -1225,6 +1225,25 @@ def test_artifact_registry_open_commands_are_not_polluted_by_ed10aq_notepad():
     assert f"| open_command | {stage5_open} |Fallback" not in text
 
 
+def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
+    status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
+
+    feature_by_id = {item["id"]: item for item in status["features"]}
+    assert feature_by_id["ED-10az"]["active_artifact"] == (
+        "clip-ed10az-observation-readback-and-v2-route-decision-001"
+    )
+
+    artifact_ids = set(status["artifact_summary"]["artifact_ids"])
+    assert "clip-ed10az-observation-readback-and-v2-route-decision-001" in artifact_ids
+    artifact_by_id = {item["artifact_id"]: item for item in status["active_artifacts"]}
+    assert artifact_by_id[
+        "clip-ed10az-observation-readback-and-v2-route-decision-001"
+    ]["repo_relative_path"] == (
+        "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json; "
+        "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md"
+    )
+
+
 def test_ed10ax_resume_surfaces_are_current_and_ed10aw_ed10av_ed10au_ed10at_ed10as_ed10ar_are_sources():
     active_artifact = "clip-ed10ax-review-frame-clarification-surface-001"
     active_json = "docs/style_intent/review-frame-clarification-surface.json"

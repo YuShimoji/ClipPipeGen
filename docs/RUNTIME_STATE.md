@@ -9,6 +9,7 @@ last_touched: 2026-06-30
 next_review_due: none_review_frame_surface_only
 active_artifact: clip-ed10ax-review-frame-clarification-surface-001
 latest_access_recovery_artifact: clip-ed10ay-thank-ed10au-local-access-recovery-readback-001
+latest_observation_route_decision_artifact: clip-ed10az-observation-readback-and-v2-route-decision-001
 source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
 source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
 source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
@@ -17,7 +18,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -28,6 +29,30 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## Current ED-10az Observation Readback and V2 Route Decision
+
+ED-10az checkpoint, 2026-06-30 JST:
+`clip-ed10az-observation-readback-and-v2-route-decision-001` consumes the
+user's ED-10ax-guided observation after opening the recovered ED-10au MP4 on
+the Thank terminal. Openability and ED-10ay local access recovery pass. Basic
+subtitle render is pass/nonblocking, and audio is not the first failure axis
+because it is reused original source audio and was not observed broken.
+
+The main failure is review-target clarity. The user could not tell what should
+be judged from the video; if judging cut quality, both ends feel too tight even
+though the specimen aligns with subtitle timing. The subtitle strategy also
+does not match what would help evaluate a clipping/cutout video, and it looks
+close to ordinary YouTube subtitle presentation. VLC screenshot context alone
+does not prove subtitle layout failure.
+
+The next route is now
+`representative-micro-scene-v2-cut-window-and-review-purpose-alignment`.
+`subtitle-layout-screenshot-capture`, `final-render-path-stage-4`, and
+`timing-audio-check` remain conditional only. ED-10az creates no render,
+replay, media, screenshot, tracked `episodes/` artifact, v2 specimen, or
+stage-7 normalizer, and grants no production/public/rights/publishing/
+monetization or micro-scene approval.
 
 ## Current ED-10ay Thank ED-10au Local Access Recovery
 

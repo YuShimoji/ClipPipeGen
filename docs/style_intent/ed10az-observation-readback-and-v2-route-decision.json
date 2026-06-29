@@ -1,0 +1,260 @@
+{
+  "schema_id": "clippipegen.ed10az_observation_readback_and_v2_route_decision.v1",
+  "artifact_id": "clip-ed10az-observation-readback-and-v2-route-decision-001",
+  "feature_id": "ED-10az",
+  "status": "observation_readback_v2_route_decision_ready",
+  "surface_kind": "tracked_user_observation_readback_and_route_decision",
+  "render_level": "observation_readback_no_new_render",
+  "source_review_frame_clarification_surface_artifact_id": "clip-ed10ax-review-frame-clarification-surface-001",
+  "source_thank_access_recovery_artifact_id": "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
+  "source_representative_micro_scene_internal_review_specimen_artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+  "host_scope": "Thank terminal",
+  "user_observation": {
+    "observation_id": "ed10az_user_opened_recovered_ed10au_mp4_observation",
+    "source": "user_freeform_observation_after_opening_recovered_mp4",
+    "opened_mp4_directly_through_command": true,
+    "opened_successfully": true,
+    "could_not_tell_what_to_judge": true,
+    "if_target_is_cut_quality_both_ends_feel_too_tight": true,
+    "subtitle_timing_or_render_broken": false,
+    "subtitle_strategy_mismatch_for_clipping_review": true,
+    "audio_is_original_source_audio": true,
+    "audio_axis_meaningful_failure": false,
+    "subtitle_looks_like_ordinary_youtube_subtitles": true,
+    "screenshot_context_described": true,
+    "screenshot_proves_layout_failure": false,
+    "raw_observation_points": [
+      "The video opened successfully.",
+      "The main issue is unclear review target: the user could not tell what should be judged from this video.",
+      "If the target is cut quality, the video appears cut too tightly at both ends, even if it aligns with subtitle timing.",
+      "The subtitle direction differs from what would be useful for a clipping/cutout video, so the user does not know how to evaluate it.",
+      "Audio is original source audio, so it is unlikely to be broken and is not a meaningful evaluation axis here.",
+      "The subtitle is not broken, but it looks almost the same as ordinary YouTube subtitles.",
+      "VLC screenshot context shows the ED-10au micro-scene with a large black-box Japanese subtitle near the bottom; screenshot context alone does not prove layout failure."
+    ]
+  },
+  "observation_classifications": [
+    {
+      "axis": "access_openability",
+      "classification": "pass",
+      "basis": "The user opened the recovered ED-10au MP4 directly through the command.",
+      "approval_implication": "openability only"
+    },
+    {
+      "axis": "ed10ay_access_recovery",
+      "classification": "pass",
+      "basis": "The recovered local MP4 was available and opened on the Thank terminal.",
+      "approval_implication": "access recovery only"
+    },
+    {
+      "axis": "basic_subtitle_render",
+      "classification": "pass_or_nonblocking",
+      "basis": "The user did not report broken subtitle timing or broken subtitle rendering.",
+      "approval_implication": "not production subtitle design acceptance"
+    },
+    {
+      "axis": "audio_path",
+      "classification": "non_informative_pass_by_source_reuse",
+      "basis": "Audio is reused original source audio and was not observed as broken.",
+      "approval_implication": "not an acceptance axis"
+    },
+    {
+      "axis": "review_frame_clarity",
+      "classification": "fail_or_partial",
+      "basis": "The user could not tell what should be judged from the video.",
+      "approval_implication": "review target is not clear enough for acceptance"
+    },
+    {
+      "axis": "cut_window_source_scene_framing",
+      "classification": "warning_or_v2_candidate",
+      "basis": "If judging cut quality, both ends appear too tight even though the clip aligns with subtitle timing.",
+      "approval_implication": "v2 route is justified, not approval"
+    },
+    {
+      "axis": "subtitle_strategy",
+      "classification": "mismatch_for_clipping_review",
+      "basis": "The subtitle direction looks close to ordinary YouTube subtitles and does not help the user evaluate clipping/cutout usefulness.",
+      "approval_implication": "not production subtitle design acceptance"
+    },
+    {
+      "axis": "subtitle_layout_screenshot_route",
+      "classification": "conditional_only_not_primary",
+      "basis": "Screenshot context shows a large black-box subtitle near the bottom, but screenshot context alone does not prove rendered layout failure.",
+      "approval_implication": "layout failure not claimed"
+    },
+    {
+      "axis": "render_path_stage_4_route",
+      "classification": "conditional_only_not_primary",
+      "basis": "The observation describes review target, cut-window, and subtitle-strategy mismatch rather than a concrete render-path gap.",
+      "approval_implication": "render-path route not opened"
+    },
+    {
+      "axis": "production_public_rights_publishing_monetization",
+      "classification": "false_or_pending",
+      "basis": "The observation is a review readback only.",
+      "approval_implication": "no approval inferred"
+    },
+    {
+      "axis": "micro_scene_acceptance",
+      "classification": "false",
+      "basis": "The user identified review-target and v2-route issues.",
+      "approval_implication": "micro-scene not accepted"
+    }
+  ],
+  "route_decision": {
+    "first_recommended_route_id": "representative-micro-scene-v2-cut-window-and-review-purpose-alignment",
+    "representative_micro_scene_v2_enabled": true,
+    "enabled_reason": "The user has now confirmed source/cut-window/review-target mismatch: the current specimen is openable, but both ends feel too tight if judged as cut quality, and the subtitle strategy does not help clipping/cutout review.",
+    "do_not_repeat_as_pure_review_frame_packet_first": true,
+    "route_order": [
+      {
+        "route_id": "representative-micro-scene-v2-cut-window-and-review-purpose-alignment",
+        "order": "first",
+        "use_when": "Design a v2 specimen that lets the reviewer judge cut-window and clipping-review usefulness rather than only subtitle burn-in.",
+        "enabled_now": true
+      },
+      {
+        "route_id": "subtitle-layout-screenshot-capture",
+        "order": "conditional",
+        "use_when": "Use only if the later v2/design pass needs to separate rendered subtitle placement from VLC/player UI or black-box subtitle presentation.",
+        "enabled_now": false
+      },
+      {
+        "route_id": "final-render-path-stage-4",
+        "order": "conditional",
+        "use_when": "Use only if a concrete render-path gap appears; the current observation does not identify one.",
+        "enabled_now": false
+      },
+      {
+        "route_id": "timing-audio-check",
+        "order": "not_first",
+        "use_when": "Use only if audio is later observed broken; the current audio is source reuse and not a meaningful failure axis.",
+        "enabled_now": false
+      },
+      {
+        "route_id": "review-frame-clarification-packet",
+        "order": "not_first_unless_v2_cannot_be_designed",
+        "use_when": "Use only if v2 cannot be designed from the current source and observation.",
+        "enabled_now": false
+      }
+    ],
+    "primary_rejected_routes": {
+      "subtitle_layout_screenshot_capture": "not primary because screenshot context alone does not prove layout failure",
+      "final_render_path_stage_4": "not primary because no concrete render-path gap was observed",
+      "timing_audio_check": "not primary because original source audio was reused and not observed broken",
+      "another_pure_review_frame_packet": "not primary because ED-10ax already clarified the frame and the user now supplied enough mismatch evidence for v2 design"
+    }
+  },
+  "v2_design_constraints": {
+    "route_id": "representative-micro-scene-v2-cut-window-and-review-purpose-alignment",
+    "render_performed_this_slice": false,
+    "purpose": "Make the next specimen evaluate cut-window and clipping-review usefulness, not only subtitle burn-in.",
+    "evaluate_cut_window_and_clipping_review_usefulness": true,
+    "avoid_exact_subtitle_boundaries_when_they_make_edges_feel_tight": true,
+    "allow_modest_pre_roll_post_roll_handles_if_source_timing_allows": true,
+    "subtitle_treatment": "diagnostic_internal_review_only_not_final_production_subtitle_design",
+    "audio_policy": "reuse original source audio; do not make audio the first failure axis unless later observed broken",
+    "media_tracking_policy": "if v2 is rendered later, keep MP4/ASS/manifest under ignored episodes paths and track no media",
+    "approval_policy": "v2 must not claim production, public, rights, publishing, or monetization approval",
+    "next_v2_implementation_route": {
+      "objective": "Build a bounded ED-10ba or successor v2 internal-review specimen using a slightly less tight source window and a review-purpose-aligned subtitle treatment.",
+      "inputs": [
+        "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json",
+        "docs/style_intent/review-frame-clarification-surface.json",
+        "docs/style_intent/thank-ed10au-local-access-recovery-readback.json",
+        "docs/style_intent/representative-micro-scene-internal-review-specimen.json",
+        "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+        "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav",
+        "episodes/jp_pilot01_hololive_bancho_20260525/transcript.json",
+        "episodes/jp_pilot01_hololive_bancho_20260525/edit_pack.json"
+      ],
+      "execution_constraints": [
+        "start from the same scene intent unless transcript/source review shows a better nearby exchange",
+        "add modest pre-roll and post-roll handles when source timing allows",
+        "make the review purpose explicit as cut-window and clipping-review usefulness",
+        "keep subtitles diagnostic/internal-review only",
+        "do not create tracked media",
+        "do not claim production/public/rights/publishing/monetization approval"
+      ]
+    }
+  },
+  "review_policy": {
+    "human_review_required_now": false,
+    "user_review_requested_now": false,
+    "fixed_form_required": false,
+    "yes_no_required": false,
+    "screenshot_required_now": false,
+    "review_card_emitted": false,
+    "stage_7_freeform_normalizer_used": false,
+    "next_agent_prompt_emitted": false,
+    "agent_report_nested_prompt_allowed": false
+  },
+  "render_gate": {
+    "level": "observation_readback_no_new_render",
+    "source_new_render_run": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "user_observation_consumed": true,
+    "ed10ax_source_read": true,
+    "ed10ay_access_recovery_read": true,
+    "source_ed10au_read": true,
+    "openability_classified_pass": true,
+    "ed10ay_recovery_classified_pass": true,
+    "basic_subtitle_render_pass_or_nonblocking": true,
+    "audio_axis_deprioritized": true,
+    "review_frame_failure_classified": true,
+    "cut_window_source_scene_warning_classified": true,
+    "subtitle_strategy_mismatch_classified": true,
+    "subtitle_layout_screenshot_conditional_only": true,
+    "render_path_stage4_conditional_only": true,
+    "v2_route_enabled": true,
+    "no_approval_inferred": true,
+    "no_new_render": true,
+    "no_new_media": true,
+    "no_stage_7_normalizer": true,
+    "episodes_tracking_boundary_preserved": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json",
+    "doc": "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "monetization_acceptance": false,
+    "micro_scene_accepted": false,
+    "user_observation_converted_to_approval": false,
+    "subtitle_layout_failure_claimed": false,
+    "player_ui_overlap_confirmed": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "ignored_local_media_only": true,
+    "representative_micro_scene_v2_created": false,
+    "representative_micro_scene_v2_enabled": true,
+    "screenshot_capture_created": false,
+    "subtitle_layout_screenshot_capture_required_now": false,
+    "final_render_path_stage_4_required_now": false,
+    "timing_audio_first_route": false,
+    "stage_7_freeform_normalizer_used": false,
+    "fixed_form_required": false,
+    "user_review_requested_now": false,
+    "NLMYTGen_read_or_edit": false
+  }
+}
