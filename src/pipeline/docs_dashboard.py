@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10aw',
-         'artifact_id': 'clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001',
+        "current_focus": {'feature_id': 'ED-10ax',
+         'artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'grill_me_adoption_readback_and_review_frame_clarification_plan_ready',
+         'state': 'review_frame_clarification_surface_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -132,18 +132,19 @@ def build_project_status(
          'representative_micro_scene_internal_review_specimen_artifact_id': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
          'micro_scene_observation_frame_readback_artifact_id': 'clip-ed10av-micro-scene-observation-frame-readback-001',
          'grill_me_adoption_review_frame_clarification_plan_artifact_id': 'clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001',
+         'review_frame_clarification_surface_artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10aw_grill_me_adoption_and_review_frame_plan_ready',
-         'user_action_type': 'NO_USER_ACTION_REVIEW_FRAME_PLAN_ONLY',
-         'next_review_action_type': 'REVIEW_FRAME_CLARIFICATION_DESIGN_READY',
+         'route_status': 'ed10ax_review_frame_clarification_surface_ready',
+         'user_action_type': 'NO_USER_ACTION_REVIEW_FRAME_SURFACE_ONLY',
+         'next_review_action_type': 'FUTURE_FREEFORM_REVIEW_FRAME_READY',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'ed10aw_clarifies_grill_me_adoption_and_review_frame_direction',
+         'main_issue': 'ed10ax_clarifies_how_to_evaluate_micro_scene_specimen',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -152,7 +153,7 @@ def build_project_status(
          'lead_status': 'provisional_bounded_decoration_lead',
          'font_visual_evidence_status': 'valid_requested_keifont_visual_evidence_on_current_windows_profile',
          'local_generation_status': 'ed10af_l2_local_ignored_probe_generated',
-         'user_review_status': 'no_new_user_review_requested_review_frame_plan_only',
+         'user_review_status': 'no_new_user_review_requested_review_frame_surface_only',
          'user_observation_consumed': {'status': 'display_acceptable_move_forward_no_layout_polish',
                                        'display_surface_acceptable_enough': True,
                                        'layout_polish_deferred': True,
@@ -1146,6 +1147,58 @@ def build_project_status(
                                                                'monetization_acceptance': False,
                                                                'micro_scene_accepted': False,
                                                                'user_observation_converted_to_approval': False},
+         'review_frame_clarification_surface': {'status': 'review_frame_clarification_surface_ready',
+                                                'artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
+                                                'metadata_json': 'docs/style_intent/review-frame-clarification-surface.json',
+                                                'doc': 'docs/style_intent/review-frame-clarification-surface.md',
+                                                'source_grill_me_adoption_review_frame_clarification_plan_artifact_id': 'clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001',
+                                                'source_micro_scene_observation_frame_readback_artifact_id': 'clip-ed10av-micro-scene-observation-frame-readback-001',
+                                                'source_representative_micro_scene_internal_review_specimen_artifact_id': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
+                                                'primary_user_friction': 'The specimen opened and looked like real scene content, but the reviewer could not tell what evaluation was expected.',
+                                                'what_to_judge': ['Whether the ED-10au specimen is understandable as a bounded micro-scene review surface.',
+                                                                  'Which axis best explains the current friction: review framing, subtitle layout, source scene, timing/audio, or render path.',
+                                                                  'Which one next axis should be used before any rerender, screenshot capture, v2 specimen, or render-path stage-4 work.'],
+                                                'not_asking': ['production/public/rights/publishing/monetization approval',
+                                                               'production subtitle design acceptance',
+                                                               'micro-scene acceptance',
+                                                               'fixed form or yes/no table completion',
+                                                               'new render or replay',
+                                                               'new media or tracked episodes artifact',
+                                                               'screenshot capture unless lower subtitle/player-UI risk is being classified',
+                                                               'representative micro-scene v2 unless source/scene mismatch is confirmed',
+                                                               'stage-7 freeform normalizer'],
+                                                'future_input_mode': 'freeform_if_later_requested',
+                                                'future_max_look_for_points': 3,
+                                                'future_look_for_points': ["Does the specimen's purpose make sense as a micro-scene review?",
+                                                                           'Is the main issue review framing, subtitle layout, source scene, timing/audio, or render path?',
+                                                                           'What one next axis would reduce review friction most?'],
+                                                'user_review_requested_now': False,
+                                                'fixed_form_required': False,
+                                                'yes_no_required': False,
+                                                'review_frame_clarification_first': True,
+                                                'subtitle_layout_screenshot_capture_condition': 'only_if_classifying_lower_subtitle_player_ui_risk',
+                                                'representative_micro_scene_v2_condition': 'only_if_source_scene_or_visual_framing_is_materially_wrong',
+                                                'final_render_path_stage_4_condition': 'only_for_concrete_render_path_gap',
+                                                'grill_me_bounded_use': 'local_helper_not_repo_policy',
+                                                'plan_grill_verdict': 'PASS',
+                                                'next_agent_prompt_allowed': False,
+                                                'agent_report_nested_prompt_allowed': False,
+                                                'new_render_run': False,
+                                                'new_media_created': False,
+                                                'tracked_binary_artifact_created': False,
+                                                'episodes_tracked': False,
+                                                'stage_7_freeform_normalizer_used': False,
+                                                'production_subtitle_design_acceptance': False,
+                                                'production_render_acceptance': False,
+                                                'creative_acceptance': False,
+                                                'rights_status': 'pending',
+                                                'publishing_acceptance': False,
+                                                'public_use_permission': False,
+                                                'monetization_acceptance': False,
+                                                'micro_scene_accepted': False,
+                                                'user_observation_converted_to_approval': False,
+                                                'layout_broken_claimed': False,
+                                                'player_ui_overlap_confirmed': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -1208,15 +1261,15 @@ def build_project_status(
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
                            'current_blocker': 'review_frame_unclear_after_micro_scene_observation',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
-         'review_card': {'status': 'withheld_review_frame_plan_only',
-                         'action_type': 'NO_REVIEW_CARD_REVIEW_FRAME_PLAN_ONLY',
-                         'target': 'clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001',
-                         'artifact_id': 'clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001',
-                         'axis': 'grill_me_adoption_and_review_frame_clarification_plan',
+         'review_card': {'status': 'withheld_review_frame_surface_only',
+                         'action_type': 'NO_REVIEW_CARD_REVIEW_FRAME_SURFACE_ONLY',
+                         'target': 'clip-ed10ax-review-frame-clarification-surface-001',
+                         'artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
+                         'axis': 'review_frame_clarification_surface',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10aw classifies Grill-me as a bounded local adversarial helper and prepares review-frame clarification from ED-10av without asking for new review.',
+                         'what_changed': 'ED-10ax turns the ED-10aw plan into a concrete review-frame clarification surface without asking for a new review.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -1224,19 +1277,21 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'another user review request',
                                         'next-agent prompt',
-                                        'production subtitle design acceptance'],
+                                        'production subtitle design acceptance',
+                                        'fixed form or yes/no table',
+                                        'new render or screenshot by default'],
                          'input_mode': 'none',
-                         'completion_signal': 'ED-10aw fixes the adoption boundary and leaves the next movement as review-frame clarification, with layout capture/v2/render-path routes conditional only.'},
+                         'completion_signal': 'ED-10ax makes review-frame clarification ready for later freeform use while keeping layout capture, v2, render-path stage-4, and stage-7 conditional only.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'grill_me_adoption_and_review_frame_clarification_plan_no_review_request_now',
+         'review_surface_direction': 'review_frame_clarification_surface_no_review_request_now',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'review_frame_clarification',
-                          'status': 'needed_if_specimen_is_acceptable_but_confusing',
-                          'next_action': 'clarify what the ED-10au micro-scene is asking the reviewer to judge before rerendering'},
+                          'status': 'surface_ready_for_later_freeform_use',
+                          'next_action': 'use ED-10ax if a later review needs the three-point frame before rerendering'},
                          {'debt_id': 'subtitle_layout_screenshot_capture',
                           'status': 'needed_if_lower_subtitle_or_player_ui_overlap_must_be_verified',
                           'next_action': 'capture or inspect a frame to separate rendered subtitle layout from player controls before claiming a layout failure'},
@@ -1706,6 +1761,12 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
+            "item": "ED-10ax review-frame clarification surface",
+            "artifact": "clip-ed10ax-review-frame-clarification-surface-001",
+            "question": "Does the surface make clear what the ED-10au specimen asks a later reviewer to judge, without turning the observation into approval or asking for a fixed form?",
+            "next_route": "Use this surface for later freeform review; capture layout evidence, build v2, or open final-render-path-stage-4 only when the specific condition is met.",
+        },
+        {
             "item": "ED-10aw Grill-me adoption and review-frame clarification plan",
             "artifact": "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
             "question": "Does the plan keep Grill-me as a bounded local helper, forbid nested prompts, and make review-frame clarification the first default without creating media or approval?",
@@ -1942,6 +2003,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Review-Frame Clarification Surface",
+            "command": "see docs\\style_intent\\review-frame-clarification-surface.md",
+            "target": "docs/style_intent/review-frame-clarification-surface.md",
+            "when_to_use": (
+                "Use to inspect the ED-10ax surface: what the ED-10au specimen "
+                "asks a later reviewer to judge, what it is not asking, and "
+                "which next axis should be used without a default rerender."
+            ),
         },
         {
             "label": "Grill-me Adoption and Review-Frame Plan",
@@ -2404,6 +2475,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "micro_scene_observation_frame_readback_ready"
     if feature_id == "ED-10aw":
         return "grill_me_adoption_review_frame_plan_ready"
+    if feature_id == "ED-10ax":
+        return "review_frame_clarification_surface_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2492,6 +2565,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10aw":
         return 100
+    if feature_id == "ED-10ax":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -2578,6 +2653,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the observation frame readback to clarify the review frame first, capture subtitle/player-UI evidence if needed, and only rerender or open stage-4 for a concrete source/layout/render gap."
     if feature_id == "ED-10aw":
         return "Use the Grill-me adoption readback as a bounded precommit/report check, then implement review-frame clarification before any layout capture, v2 specimen, or render-path stage-4 work."
+    if feature_id == "ED-10ax":
+        return "Use the review-frame clarification surface for later freeform review; keep screenshot capture, v2 specimen, and final-render-path stage-4 conditional."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

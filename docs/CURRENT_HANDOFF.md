@@ -3,11 +3,12 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: grill_me_adoption_review_frame_plan_ready
+health: review_frame_clarification_surface_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_review_frame_plan_only
-active_artifact: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
+next_review_due: none_review_frame_surface_only
+active_artifact: clip-ed10ax-review-frame-clarification-surface-001
+source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
 source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
 source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
 source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
@@ -15,16 +16,37 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
+
+## Current ED-10ax Review-Frame Clarification Surface
+
+ED-10ax checkpoint, 2026-06-29 JST:
+`clip-ed10ax-review-frame-clarification-surface-001` is the active tracked
+handoff artifact. It consumes ED-10aw and ED-10av, then makes the ED-10au
+micro-scene specimen reviewable by stating what a later reviewer should judge,
+what the surface is not asking, how to interpret the user's observation, and
+which route to use next.
+
+Do not ask the user now. The later review frame is freeform, not a fixed form
+or yes/no table, and has exactly three look-for points: whether the specimen
+purpose makes sense, which axis is the main issue, and what one next axis would
+reduce review friction most.
+
+ED-10ax creates no render, media, screenshot, representative v2 specimen,
+stage-7 normalizer, or tracked `episodes/` artifact. It grants no production,
+public, rights, publishing, monetization, micro-scene, or subtitle design
+approval. Use layout screenshot capture, representative v2, or final
+render-path stage-4 only under the explicit conditions recorded in the
+artifact.
 
 ## Current ED-10aw Grill-me Adoption Readback and Review-Frame Clarification Plan
 
 ED-10aw checkpoint, 2026-06-29 JST:
 `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
-is the active tracked handoff artifact. It consumes ED-10av, classifies the
+is the source tracked handoff artifact for ED-10ax. It consumes ED-10av, classifies the
 local untracked Grill-me files as a bounded helper only, and records that
 `.agents/skills/grill-me/SKILL.md` plus `skills-lock.json` are not staged
 project resources.
@@ -147,6 +169,9 @@ ED-10av micro-scene observation frame readback.
 ## Current State
 
 The active artifact is
+`clip-ed10ax-review-frame-clarification-surface-001`.
+
+The source review-frame plan is
 `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`.
 
 The source micro-scene observation frame readback is
@@ -676,19 +701,21 @@ adjustment, production limitation-lift, or render-path probe.
 ## Next Move
 
 Continue from
-`clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
-when the next terminal needs the latest active handoff. ED-10av remains the
-source observation-frame readback, ED-10au remains the source specimen, ED-10at
-remains the source observation readback, ED-10as remains the access sheet
-source, and ED-10ar remains the internal review video package source.
+`clip-ed10ax-review-frame-clarification-surface-001` when the next terminal
+needs the latest active handoff. ED-10aw remains the source review-frame plan,
+ED-10av remains the source observation-frame readback, ED-10au remains the
+source specimen, ED-10at remains the source observation readback, ED-10as
+remains the access sheet source, and ED-10ar remains the internal review video
+package source.
 
-Treat the ED-10aw artifact as tooling-adoption and review-frame planning only:
-Grill-me is a local bounded helper, not repo policy; ED-10av observation is
-classification only; no production, public, rights, publishing, monetization,
-micro-scene, or subtitle design approval is inferred. Do not request another
-user review, fixed form, yes/no response, screenshot, display polish, another
-Candidate 0-3 comparison, another corrected ED-10u `cut_008` review, or
-general `cut_002` / `cut_003` font-family acceptance from this handoff.
+Treat the ED-10ax artifact as a review-frame clarification surface only:
+Grill-me is still a local bounded helper, not repo policy; ED-10av observation
+is classification only; no production, public, rights, publishing,
+monetization, micro-scene, or subtitle design approval is inferred. Do not
+request another user review now, fixed form, yes/no response, screenshot,
+display polish, another Candidate 0-3 comparison, another corrected ED-10u
+`cut_008` review, or general `cut_002` / `cut_003` font-family acceptance from
+this handoff.
 
 Use `review-frame-clarification` first if the specimen is acceptable but
 confusing. Use `subtitle-layout-screenshot-capture` only to classify the lower
@@ -731,7 +758,8 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
-| `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001` | Active tracked ED-10aw tooling-adoption and review-frame clarification plan; keeps Grill-me bounded, forbids nested prompts, and sets review-frame clarification as first default without new media or approval | `see docs\style_intent\grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md` |
+| `clip-ed10ax-review-frame-clarification-surface-001` | Active tracked ED-10ax review-frame clarification surface; states what ED-10au asks a later reviewer to judge, what it is not asking, and which route to use next without new media or approval | `see docs\style_intent\review-frame-clarification-surface.md` |
+| `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001` | Source tracked ED-10aw tooling-adoption and review-frame clarification plan; keeps Grill-me bounded, forbids nested prompts, and sets review-frame clarification as first default without new media or approval | `see docs\style_intent\grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md` |
 | `clip-ed10av-micro-scene-observation-frame-readback-001` | Source ED-10av observation-frame readback; records expectation mismatch, review-frame clarity failure, visual/source warning, and unverified lower subtitle/player-UI risk without approval | `see docs\style_intent\micro-scene-observation-frame-readback.md` |
 | `clip-ed10au-representative-micro-scene-internal-review-specimen-001` | Source ED-10au specimen readback; records actual transcript subtitle content, verified ignored MP4/ASS/manifest access, launcher, and closed production/public gates | `powershell -ExecutionPolicy Bypass -File scripts\operator\open_representative_micro_scene_internal_review_specimen.ps1` |
 | `clip-ed10at-internal-review-observation-readback-001` | Tracked ED-10at observation readback; records openability/duration/cue visibility as diagnostic passes and chopped/memo-like continuity plus user uncertainty as non-production warnings | `see docs\style_intent\internal-review-video-observation-readback.md` |

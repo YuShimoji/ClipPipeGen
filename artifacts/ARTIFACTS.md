@@ -827,6 +827,48 @@ Boundary flags remain false or pending:
 - `new_media_created=false`
 - `stage_7_freeform_normalizer_used=false`
 
+## `clip-ed10ax-review-frame-clarification-surface-001`
+
+| field | value |
+|---|---|
+| title | ED-10ax Review-Frame Clarification Surface |
+| purpose | Turn the ED-10aw plan into a concrete review-frame surface for the ED-10au specimen so a later reviewer knows what to judge, what not to judge, how to interpret ED-10av, and which next route to use. |
+| storage_class | tracked JSON/Markdown readback; no render, replay, screenshot, media artifact, v2 specimen, stage-7 normalizer, or skill-file staging |
+| repo_relative_path | docs/style_intent/review-frame-clarification-surface.json; docs/style_intent/review-frame-clarification-surface.md |
+| open_command | see docs\\style_intent\\review-frame-clarification-surface.md |
+| generated_from | ED-10ax consumes `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001` and `clip-ed10av-micro-scene-observation-frame-readback-001`, preserving the ED-10av observation as classification evidence rather than approval. |
+| validation_command | Parse ED-10ax, ED-10aw, ED-10av, and dashboard JSON; run targeted subtitle/dashboard/review tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | No local render, screenshot, media, or v2 specimen is created in ED-10ax. The artifact records a later freeform review frame with exactly three look-for points and keeps Grill-me a local helper, not repo policy. |
+| review_status | review-frame clarification surface ready for later use; no user review requested now; not approval |
+| next_action | Use the ED-10ax surface for later freeform review. Use subtitle-layout-screenshot-capture only for lower subtitle/player-UI classification, representative-micro-scene-v2 only for confirmed source/scene mismatch, and final-render-path-stage-4 only for a concrete render-path gap. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `user_observation_converted_to_approval=false`
+- `layout_broken_claimed=false`
+- `player_ui_overlap_confirmed=false`
+- `fixed_form_required=false`
+- `yes_no_required=false`
+- `next_agent_prompt_allowed=false`
+- `agent_report_nested_prompt_allowed=false`
+- `grill_me_project_resource_authority=false`
+- `grill_me_skill_files_staged=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=false`
+- `new_media_created=false`
+- `stage_7_freeform_normalizer_used=false`
+
 ## `clip-ed10ar-internal-review-video-candidate-package-001`
 
 | field | value |

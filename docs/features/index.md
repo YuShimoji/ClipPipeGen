@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10aw`
-- artifact: `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
-- state: `grill_me_adoption_readback_and_review_frame_clarification_plan_ready`
+- feature: `ED-10ax`
+- artifact: `clip-ed10ax-review-frame-clarification-surface-001`
+- state: `review_frame_clarification_surface_ready`
 
 ## Feature Table
 
@@ -86,6 +86,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10au | Representative Micro-Scene Internal Review Specimen v0 | done | representative_micro_scene_internal_review_specimen_ready | 100 | clip-ed10au-representative-micro-scene-internal-review-specimen-001 | Use the access-verified representative micro-scene specimen only for optional later freeform observation; classify any next fix as script, timing/audio, visual layout, or render path without inferring approval. |
 | ED-10av | Micro-Scene Observation Frame Readback v0 | done | micro_scene_observation_frame_readback_ready | 100 | clip-ed10av-micro-scene-observation-frame-readback-001 | Use the observation frame readback to clarify the review frame first, capture subtitle/player-UI evidence if needed, and only rerender or open stage-4 for a concrete source/layout/render gap. |
 | ED-10aw | Grill-me Adoption Readback and Review-Frame Clarification Plan v0 | done | grill_me_adoption_review_frame_plan_ready | 100 | clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001 | Use the Grill-me adoption readback as a bounded precommit/report check, then implement review-frame clarification before any layout capture, v2 specimen, or render-path stage-4 work. |
+| ED-10ax | Review-Frame Clarification Surface v0 | done | review_frame_clarification_surface_ready | 100 | clip-ed10ax-review-frame-clarification-surface-001 | Use the review-frame clarification surface for later freeform review; keep screenshot capture, v2 specimen, and final-render-path stage-4 conditional. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

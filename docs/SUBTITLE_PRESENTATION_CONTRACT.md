@@ -5,6 +5,26 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
+## Current ED-10ax Review-Frame Clarification Surface
+
+ED-10ax records `clip-ed10ax-review-frame-clarification-surface-001` as the
+current tracked review-frame surface at
+`docs/style_intent/review-frame-clarification-surface.json` and
+`docs/style_intent/review-frame-clarification-surface.md`. It consumes ED-10aw
+and ED-10av to state what the ED-10au specimen is asking a later reviewer to
+judge, what it is not asking, how the ED-10av observation should be
+interpreted, and when to use each next route.
+
+For subtitle presentation work, ED-10ax still does not change the style
+contract. It keeps the later user-facing review frame freeform with at most
+three look-for points and does not ask for user review now. Screenshot capture
+is conditional on classifying the lower subtitle/player-UI risk; representative
+micro-scene v2 is conditional on confirmed source/scene mismatch; final render
+path stage-4 is conditional on a concrete render-path gap. It creates no
+render, media, screenshot, `episodes/` tracking, stage-7 normalizer, production
+subtitle design acceptance, production render acceptance, creative acceptance,
+rights clearance, publishing acceptance, or public-use permission.
+
 ## Current ED-10aw Grill-me Adoption and Review-Frame Plan
 
 ED-10aw records

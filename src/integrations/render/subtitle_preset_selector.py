@@ -262,6 +262,13 @@ GRILL_ME_ADOPTION_REVIEW_FRAME_ARTIFACT_ID = (
     "clarification-plan-001"
 )
 GRILL_ME_ADOPTION_REVIEW_FRAME_FEATURE_ID = "ED-10aw"
+REVIEW_FRAME_CLARIFICATION_SURFACE_SCHEMA_ID = (
+    "clippipegen.review_frame_clarification_surface.v1"
+)
+REVIEW_FRAME_CLARIFICATION_SURFACE_ARTIFACT_ID = (
+    "clip-ed10ax-review-frame-clarification-surface-001"
+)
+REVIEW_FRAME_CLARIFICATION_SURFACE_FEATURE_ID = "ED-10ax"
 REPRESENTATIVE_MICRO_SCENE_LOCAL_OUTPUT_RELATIVE_DIR = Path(
     "episodes/jp_pilot01_hololive_bancho_20260525/review/"
     "jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen"
@@ -4734,6 +4741,251 @@ def write_grill_me_adoption_review_frame_clarification_plan(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_review_frame_clarification_surface(
+    *,
+    source_plan: Mapping[str, Any],
+    source_observation: Mapping[str, Any],
+) -> dict[str, Any]:
+    plan = deepcopy(source_plan)
+    observation = deepcopy(source_observation)
+    direction = plan["ed10aw_review_frame_clarification_direction"]
+    user_observation = observation["user_observation"]
+    preserved_observations = list(user_observation["raw_observation_points"])
+    future_look_for = [
+        "Does the specimen's purpose make sense as a micro-scene review?",
+        "Is the main issue review framing, subtitle layout, source scene, timing/audio, or render path?",
+        "What one next axis would reduce review friction most?",
+    ]
+    what_to_judge = [
+        "Whether the ED-10au specimen is understandable as a bounded micro-scene review surface.",
+        "Which axis best explains the current friction: review framing, subtitle layout, source scene, timing/audio, or render path.",
+        "Which one next axis should be used before any rerender, screenshot capture, v2 specimen, or render-path stage-4 work.",
+    ]
+    not_asking = [
+        "production/public/rights/publishing/monetization approval",
+        "production subtitle design acceptance",
+        "micro-scene acceptance",
+        "fixed form or yes/no table completion",
+        "new render or replay",
+        "new media or tracked episodes artifact",
+        "screenshot capture unless lower subtitle/player-UI risk is being classified",
+        "representative micro-scene v2 unless source/scene mismatch is confirmed",
+        "stage-7 freeform normalizer",
+    ]
+    route_rules = {
+        "review-frame-clarification": {
+            "default_order": "first",
+            "use_when": (
+                "The specimen opens and contains real scene content, but the "
+                "reviewer cannot tell what judgement the surface is asking for."
+            ),
+            "enabled_now": True,
+        },
+        "subtitle-layout-screenshot-capture": {
+            "default_order": "conditional",
+            "use_when": (
+                "Use only to classify whether the reported lower subtitle area "
+                "is a rendered layout problem or media-player UI overlap."
+            ),
+            "enabled_now": False,
+        },
+        "representative-micro-scene-v2": {
+            "default_order": "conditional",
+            "use_when": (
+                "Use only after the source scene or visual framing is confirmed "
+                "materially wrong."
+            ),
+            "enabled_now": False,
+        },
+        "final-render-path-stage-4": {
+            "default_order": "conditional",
+            "use_when": (
+                "Use only when a concrete render-path gap is found; do not use "
+                "it for general expectation mismatch."
+            ),
+            "enabled_now": False,
+        },
+    }
+    observation_interpretation = [
+        {
+            "observation": "user opened ED-10au",
+            "classification": "access_observed",
+            "meaning": "The specimen can be opened for review framing.",
+            "approval_implication": "not approval",
+        },
+        {
+            "observation": "looks like a real scene, not earlier diagnostic cue/memo",
+            "classification": "actual_micro_scene_content_visible",
+            "meaning": (
+                "The specimen is no longer the cue-label memo probe; it has real "
+                "scene content to frame."
+            ),
+            "approval_implication": "visible content is not acceptance",
+        },
+        {
+            "observation": "development target looks different",
+            "classification": "expectation_or_source_framing_warning",
+            "meaning": (
+                "Clarify the review target before deciding whether a v2 specimen "
+                "is justified."
+            ),
+            "approval_implication": "not source/scene failure by itself",
+        },
+        {
+            "observation": "unclear how to evaluate",
+            "classification": "review_frame_clarity_failure",
+            "meaning": "ED-10ax is the first default route.",
+            "approval_implication": "not a pass/fail judgement on the specimen",
+        },
+        {
+            "observation": "subtitle area appears large / low / possibly overlapped by player UI",
+            "classification": "reported_unverified_layout_risk",
+            "meaning": (
+                "Only screenshot/capture work can separate rendered subtitle "
+                "placement from media-player chrome."
+            ),
+            "approval_implication": "do not claim layout broken",
+        },
+    ]
+    later_user_facing_review_frame = {
+        "status": "ready_for_later_use_not_asked_now",
+        "input_mode": "freeform_if_later_requested",
+        "max_look_for_points": 3,
+        "fixed_form_required": False,
+        "yes_no_required": False,
+        "user_review_requested_now": False,
+        "review_prompt": (
+            "Please describe what feels unclear or useful in this micro-scene "
+            "review surface. A short freeform note is enough."
+        ),
+        "look_for_points": future_look_for,
+        "allowed_next_axis_values": [
+            "review-frame-clarification",
+            "subtitle-layout-screenshot-capture",
+            "representative-micro-scene-v2",
+            "final-render-path-stage-4",
+            "timing-audio-check",
+        ],
+    }
+    grill_me_gate = {
+        "bounded_use": "local_helper_not_repo_policy",
+        "nested_prompt_allowed": False,
+        "next_agent_prompt_allowed": False,
+        "plan_grill": {
+            "verdict": "PASS",
+            "blockers": [],
+            "warnings": [
+                "artifact_must_reduce_review_confusion_not_add_packet_volume",
+                "render_v2_screenshot_and_stage_7_must_stay_conditional",
+            ],
+            "required_fix": [
+                "make_review_frame_plain_and_user_facing",
+                "keep_future_look_for_points_at_or_below_three",
+            ],
+        },
+        "diff_grill_required_before_commit": True,
+        "report_grill_required_before_final_report": True,
+    }
+    review_policy = {
+        "human_review_required_now": False,
+        "user_review_requested_now": False,
+        "fixed_form_required": False,
+        "yes_no_required": False,
+        "fixed_choice_rows_allowed": False,
+        "fixed_choice_rows_emitted": False,
+        "screenshot_required_now": False,
+        "review_card_emitted": False,
+        "stage_7_freeform_normalizer_used": False,
+        "do_not_ask_user_for_another_review_now": True,
+    }
+    render_gate = {
+        "level": "no_render_no_media_review_frame_surface",
+        "new_render_run": False,
+        "new_replay_run": False,
+        "new_media_created": False,
+        "tracked_binary_artifact_created": False,
+        "episodes_tracked": False,
+        "diagnostic_only": True,
+        "internal_review_only": True,
+        "production_render_acceptance": False,
+        "public_use_permission": False,
+    }
+    boundaries = _review_frame_clarification_surface_boundary_flags()
+    validation = _review_frame_clarification_surface_validation(
+        source_plan=plan,
+        source_observation=observation,
+        later_user_facing_review_frame=later_user_facing_review_frame,
+        route_rules=route_rules,
+        review_policy=review_policy,
+        render_gate=render_gate,
+        grill_me_gate=grill_me_gate,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": REVIEW_FRAME_CLARIFICATION_SURFACE_SCHEMA_ID,
+        "artifact_id": REVIEW_FRAME_CLARIFICATION_SURFACE_ARTIFACT_ID,
+        "feature_id": REVIEW_FRAME_CLARIFICATION_SURFACE_FEATURE_ID,
+        "status": "review_frame_clarification_surface_ready",
+        "surface_kind": "tracked_review_frame_clarification_surface",
+        "render_level": "no_render_no_media_review_frame_surface",
+        "source_grill_me_adoption_review_frame_clarification_plan_artifact_id": plan[
+            "artifact_id"
+        ],
+        "source_micro_scene_observation_frame_readback_artifact_id": observation[
+            "artifact_id"
+        ],
+        "source_representative_micro_scene_internal_review_specimen_artifact_id": observation[
+            "source_representative_micro_scene_internal_review_specimen_artifact_id"
+        ],
+        "source_internal_review_observation_readback_artifact_id": observation[
+            "source_internal_review_observation_readback_artifact_id"
+        ],
+        "source_internal_review_video_candidate_access_sheet_artifact_id": observation[
+            "source_internal_review_video_candidate_access_sheet_artifact_id"
+        ],
+        "source_internal_review_video_candidate_package_artifact_id": observation[
+            "source_internal_review_video_candidate_package_artifact_id"
+        ],
+        "supervisor_artifact_next_label": "review-frame-clarification-surface",
+        "primary_user_friction": direction["primary_user_friction"],
+        "what_ed10au_is_asking_reviewer_to_judge": what_to_judge,
+        "what_ed10au_is_not_asking": not_asking,
+        "ed10av_observation_interpretation": observation_interpretation,
+        "preserved_ed10av_observation_points": preserved_observations,
+        "later_user_facing_review_frame": later_user_facing_review_frame,
+        "route_decision_rules": route_rules,
+        "grill_me_gate": grill_me_gate,
+        "review_policy": review_policy,
+        "render_gate": render_gate,
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/review-frame-clarification-surface.json",
+            "doc": "docs/style_intent/review-frame-clarification-surface.md",
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_review_frame_clarification_surface(
+    output_dir: Path,
+    *,
+    source_plan: Mapping[str, Any],
+    source_observation: Mapping[str, Any],
+) -> dict[str, Path]:
+    surface = build_review_frame_clarification_surface(
+        source_plan=source_plan,
+        source_observation=source_observation,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "review-frame-clarification-surface.json"
+    doc_path = output_dir / "review-frame-clarification-surface.md"
+    with json_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(surface, ensure_ascii=False, indent=2) + "\n")
+    with doc_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(render_review_frame_clarification_surface_markdown(surface))
+    return {"json": json_path, "doc": doc_path}
+
+
 
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
@@ -7122,6 +7374,182 @@ def render_grill_me_adoption_review_frame_clarification_plan_markdown(
         f"- screenshot_required_now: `{str(review['screenshot_required_now']).lower()}`",
         f"- next_agent_prompt_emitted: `{str(review['next_agent_prompt_emitted']).lower()}`",
         f"- agent_report_nested_prompt_allowed: `{str(review['agent_report_nested_prompt_allowed']).lower()}`",
+        f"- new_render_run: `{str(render_gate['new_render_run']).lower()}`",
+        f"- new_media_created: `{str(render_gate['new_media_created']).lower()}`",
+        f"- episodes_tracked: `{str(render_gate['episodes_tracked']).lower()}`",
+        "",
+        "## Validation",
+        "",
+        validation_rows,
+        "",
+        "## Boundary",
+        "",
+        boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_review_frame_clarification_surface_markdown(
+    surface: Mapping[str, Any],
+) -> str:
+    look_frame = surface["later_user_facing_review_frame"]
+    routes = surface["route_decision_rules"]
+    review = surface["review_policy"]
+    render_gate = surface["render_gate"]
+    validation = surface["validation"]
+    boundaries = surface["boundaries"]
+    grill = surface["grill_me_gate"]
+    nl = chr(10)
+    judge_rows = nl.join(
+        f"- {item}" for item in surface["what_ed10au_is_asking_reviewer_to_judge"]
+    )
+    not_asking_rows = nl.join(
+        f"- {item}" for item in surface["what_ed10au_is_not_asking"]
+    )
+    observation_rows = nl.join(
+        "| {observation} | {classification} | {meaning} | {implication} |".format(
+            observation=str(item["observation"]).replace("|", "/"),
+            classification=item["classification"],
+            meaning=str(item["meaning"]).replace("|", "/"),
+            implication=str(item["approval_implication"]).replace("|", "/"),
+        )
+        for item in surface["ed10av_observation_interpretation"]
+    )
+    preserved_rows = nl.join(
+        f"- {item}" for item in surface["preserved_ed10av_observation_points"]
+    )
+    look_for_rows = nl.join(f"- {item}" for item in look_frame["look_for_points"])
+    route_rows = nl.join(
+        "| {route} | {order} | {enabled} | {condition} |".format(
+            route=route_id,
+            order=route["default_order"],
+            enabled=str(route["enabled_now"]).lower(),
+            condition=str(route["use_when"]).replace("|", "/"),
+        )
+        for route_id, route in routes.items()
+    )
+    validation_rows = nl.join(
+        f"- {key}: `{str(validation[key]).lower()}`"
+        for key in (
+            "source_ed10aw_read",
+            "source_ed10av_read",
+            "review_frame_clarification_added",
+            "future_look_for_points_max_3",
+            "no_fixed_form",
+            "no_approval_inferred",
+            "no_new_render",
+            "no_new_media",
+            "no_tracked_episodes",
+            "grill_me_local_helper_not_policy",
+            "route_default_review_frame_first",
+            "screenshot_capture_conditional",
+            "representative_v2_conditional",
+            "final_render_path_stage4_conditional",
+            "stage_7_not_used",
+            "all_checks_passed",
+        )
+    )
+    boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "monetization_acceptance",
+            "production_candidate",
+            "production_usage_allowed",
+            "micro_scene_accepted",
+            "user_observation_converted_to_approval",
+            "layout_broken_claimed",
+            "player_ui_overlap_confirmed",
+            "new_render_run",
+            "new_media_created",
+            "episodes_tracked",
+            "stage_7_freeform_normalizer_used",
+            "fixed_form_required",
+            "yes_no_required",
+            "grill_me_project_resource_authority",
+            "grill_me_skill_files_staged",
+            "next_agent_prompt_allowed",
+            "agent_report_nested_prompt_allowed",
+        )
+    )
+    lines = [
+        "# ED-10ax Review-Frame Clarification Surface",
+        "",
+        "This tracked surface turns ED-10aw's plan into a concrete readback frame for the ED-10au/ED-10av micro-scene specimen. It clarifies what a later reviewer should judge, what the surface is not asking, and which next axis to use without creating new media or asking the user now.",
+        "",
+        "## Source Chain",
+        "",
+        f"- artifact_id: `{surface['artifact_id']}`",
+        f"- feature_id: `{surface['feature_id']}`",
+        f"- status: `{surface['status']}`",
+        f"- source_grill_me_adoption_review_frame_clarification_plan_artifact_id: `{surface['source_grill_me_adoption_review_frame_clarification_plan_artifact_id']}`",
+        f"- source_micro_scene_observation_frame_readback_artifact_id: `{surface['source_micro_scene_observation_frame_readback_artifact_id']}`",
+        f"- source_representative_micro_scene_internal_review_specimen_artifact_id: `{surface['source_representative_micro_scene_internal_review_specimen_artifact_id']}`",
+        f"- source_internal_review_observation_readback_artifact_id: `{surface['source_internal_review_observation_readback_artifact_id']}`",
+        f"- source_internal_review_video_candidate_access_sheet_artifact_id: `{surface['source_internal_review_video_candidate_access_sheet_artifact_id']}`",
+        f"- source_internal_review_video_candidate_package_artifact_id: `{surface['source_internal_review_video_candidate_package_artifact_id']}`",
+        "",
+        "## What To Judge",
+        "",
+        f"Primary friction: {surface['primary_user_friction']}",
+        "",
+        judge_rows,
+        "",
+        "## What This Is Not Asking",
+        "",
+        not_asking_rows,
+        "",
+        "## ED-10av Observation Interpretation",
+        "",
+        "| observation | classification | meaning | approval implication |",
+        "|---|---|---|---|",
+        observation_rows,
+        "",
+        "Preserved ED-10av observation points:",
+        "",
+        preserved_rows,
+        "",
+        "## Later User-Facing Review Frame",
+        "",
+        f"- status: `{look_frame['status']}`",
+        f"- input_mode: `{look_frame['input_mode']}`",
+        f"- max_look_for_points: `{look_frame['max_look_for_points']}`",
+        f"- user_review_requested_now: `{str(look_frame['user_review_requested_now']).lower()}`",
+        f"- fixed_form_required: `{str(look_frame['fixed_form_required']).lower()}`",
+        f"- yes_no_required: `{str(look_frame['yes_no_required']).lower()}`",
+        f"- review_prompt: {look_frame['review_prompt']}",
+        "",
+        "Future look-for points:",
+        "",
+        look_for_rows,
+        "",
+        "## Route Decision Rules",
+        "",
+        "| route | default order | enabled now | condition |",
+        "|---|---|---:|---|",
+        route_rows,
+        "",
+        "## Grill-me Check",
+        "",
+        f"- bounded_use: `{grill['bounded_use']}`",
+        f"- plan_grill_verdict: `{grill['plan_grill']['verdict']}`",
+        f"- next_agent_prompt_allowed: `{str(grill['next_agent_prompt_allowed']).lower()}`",
+        f"- nested_prompt_allowed: `{str(grill['nested_prompt_allowed']).lower()}`",
+        f"- diff_grill_required_before_commit: `{str(grill['diff_grill_required_before_commit']).lower()}`",
+        f"- report_grill_required_before_final_report: `{str(grill['report_grill_required_before_final_report']).lower()}`",
+        "",
+        "## Review Policy / Render Gate",
+        "",
+        f"- user_review_requested_now: `{str(review['user_review_requested_now']).lower()}`",
+        f"- fixed_form_required: `{str(review['fixed_form_required']).lower()}`",
+        f"- yes_no_required: `{str(review['yes_no_required']).lower()}`",
+        f"- screenshot_required_now: `{str(review['screenshot_required_now']).lower()}`",
+        f"- stage_7_freeform_normalizer_used: `{str(review['stage_7_freeform_normalizer_used']).lower()}`",
         f"- new_render_run: `{str(render_gate['new_render_run']).lower()}`",
         f"- new_media_created: `{str(render_gate['new_media_created']).lower()}`",
         f"- episodes_tracked: `{str(render_gate['episodes_tracked']).lower()}`",
@@ -11853,6 +12281,179 @@ def _grill_me_adoption_review_frame_validation(
             and boundaries["episodes_tracked"] is False
             and boundaries["stage_7_freeform_normalizer_used"] is False
             and no_approval_inferred
+        ),
+    }
+
+
+def _review_frame_clarification_surface_boundary_flags() -> dict[str, Any]:
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_run": False,
+            "new_render_created": False,
+            "new_replay_run": False,
+            "new_media_created": False,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "monetization_acceptance": False,
+            "micro_scene_accepted": False,
+            "user_observation_converted_to_approval": False,
+            "layout_broken_claimed": False,
+            "player_ui_overlap_confirmed": False,
+            "stage_7_freeform_normalizer_used": False,
+            "stage_7_continuation_allowed_now": False,
+            "fixed_form_required": False,
+            "yes_no_required": False,
+            "review_card_emitted": False,
+            "user_review_requested_now": False,
+            "subtitle_layout_screenshot_capture_required_now": False,
+            "representative_micro_scene_v2_required_now": False,
+            "final_render_path_stage_4_required_now": False,
+            "grill_me_project_resource_authority": False,
+            "grill_me_repo_policy_authority": False,
+            "grill_me_skill_files_staged": False,
+            "grill_me_skill_files_committed": False,
+            "next_agent_prompt_allowed": False,
+            "agent_report_nested_prompt_allowed": False,
+            "user_work_required": False,
+            "NLMYTGen_read_or_edit": False,
+            "review_frame_clarification_surface_only": True,
+        }
+    )
+    return flags
+
+
+def _review_frame_clarification_surface_validation(
+    *,
+    source_plan: Mapping[str, Any],
+    source_observation: Mapping[str, Any],
+    later_user_facing_review_frame: Mapping[str, Any],
+    route_rules: Mapping[str, Mapping[str, Any]],
+    review_policy: Mapping[str, Any],
+    render_gate: Mapping[str, Any],
+    grill_me_gate: Mapping[str, Any],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    no_approval_inferred = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["monetization_acceptance"] is False
+        and boundaries["production_candidate"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["micro_scene_accepted"] is False
+        and boundaries["user_observation_converted_to_approval"] is False
+    )
+    no_new_render = (
+        render_gate["new_render_run"] is False
+        and render_gate["new_replay_run"] is False
+        and boundaries["new_render_run"] is False
+        and boundaries["new_render_created"] is False
+    )
+    no_new_media = (
+        render_gate["new_media_created"] is False
+        and render_gate["tracked_binary_artifact_created"] is False
+        and boundaries["new_media_created"] is False
+        and boundaries["tracked_binary_artifact_created"] is False
+    )
+    look_for_count = len(later_user_facing_review_frame["look_for_points"])
+    no_fixed_form = (
+        later_user_facing_review_frame["fixed_form_required"] is False
+        and later_user_facing_review_frame["yes_no_required"] is False
+        and review_policy["fixed_form_required"] is False
+        and review_policy["yes_no_required"] is False
+        and review_policy["fixed_choice_rows_emitted"] is False
+    )
+    grill_me_local = (
+        grill_me_gate["bounded_use"] == "local_helper_not_repo_policy"
+        and grill_me_gate["plan_grill"]["verdict"] == "PASS"
+        and grill_me_gate["next_agent_prompt_allowed"] is False
+        and grill_me_gate["nested_prompt_allowed"] is False
+        and boundaries["grill_me_project_resource_authority"] is False
+        and boundaries["grill_me_skill_files_staged"] is False
+    )
+    route_default_review_frame_first = (
+        route_rules["review-frame-clarification"]["default_order"] == "first"
+        and route_rules["review-frame-clarification"]["enabled_now"] is True
+    )
+    screenshot_conditional = (
+        route_rules["subtitle-layout-screenshot-capture"]["default_order"]
+        == "conditional"
+        and route_rules["subtitle-layout-screenshot-capture"]["enabled_now"] is False
+        and boundaries["subtitle_layout_screenshot_capture_required_now"] is False
+    )
+    v2_conditional = (
+        route_rules["representative-micro-scene-v2"]["default_order"]
+        == "conditional"
+        and route_rules["representative-micro-scene-v2"]["enabled_now"] is False
+        and boundaries["representative_micro_scene_v2_required_now"] is False
+    )
+    stage4_conditional = (
+        route_rules["final-render-path-stage-4"]["default_order"] == "conditional"
+        and route_rules["final-render-path-stage-4"]["enabled_now"] is False
+        and boundaries["final_render_path_stage_4_required_now"] is False
+    )
+    return {
+        "source_ed10aw_read": source_plan["artifact_id"]
+        == GRILL_ME_ADOPTION_REVIEW_FRAME_ARTIFACT_ID,
+        "source_ed10av_read": source_observation["artifact_id"]
+        == MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID,
+        "review_frame_clarification_added": (
+            later_user_facing_review_frame["status"]
+            == "ready_for_later_use_not_asked_now"
+            and later_user_facing_review_frame["input_mode"]
+            == "freeform_if_later_requested"
+        ),
+        "future_look_for_points_max_3": look_for_count <= 3,
+        "no_fixed_form": no_fixed_form,
+        "no_approval_inferred": no_approval_inferred,
+        "no_new_render": no_new_render,
+        "no_new_media": no_new_media,
+        "no_tracked_episodes": (
+            render_gate["episodes_tracked"] is False
+            and boundaries["episodes_tracked"] is False
+        ),
+        "grill_me_local_helper_not_policy": grill_me_local,
+        "route_default_review_frame_first": route_default_review_frame_first,
+        "screenshot_capture_conditional": screenshot_conditional,
+        "representative_v2_conditional": v2_conditional,
+        "final_render_path_stage4_conditional": stage4_conditional,
+        "stage_7_not_used": (
+            review_policy["stage_7_freeform_normalizer_used"] is False
+            and boundaries["stage_7_freeform_normalizer_used"] is False
+        ),
+        "all_checks_passed": (
+            source_plan["artifact_id"] == GRILL_ME_ADOPTION_REVIEW_FRAME_ARTIFACT_ID
+            and source_observation["artifact_id"]
+            == MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID
+            and look_for_count <= 3
+            and no_fixed_form
+            and no_approval_inferred
+            and no_new_render
+            and no_new_media
+            and render_gate["episodes_tracked"] is False
+            and boundaries["episodes_tracked"] is False
+            and grill_me_local
+            and route_default_review_frame_first
+            and screenshot_conditional
+            and v2_conditional
+            and stage4_conditional
+            and review_policy["user_review_requested_now"] is False
+            and review_policy["screenshot_required_now"] is False
+            and review_policy["stage_7_freeform_normalizer_used"] is False
         ),
     }
 

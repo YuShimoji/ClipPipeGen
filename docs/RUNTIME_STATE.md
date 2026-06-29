@@ -3,11 +3,12 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: grill_me_adoption_review_frame_plan_ready
+health: review_frame_clarification_surface_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_review_frame_plan_only
-active_artifact: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
+next_review_due: none_review_frame_surface_only
+active_artifact: clip-ed10ax-review-frame-clarification-surface-001
+source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
 source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
 source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
 source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
@@ -15,7 +16,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -27,11 +28,33 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
+## Current ED-10ax Review-Frame Clarification Surface
+
+ED-10ax checkpoint, 2026-06-29 JST:
+`clip-ed10ax-review-frame-clarification-surface-001` is the active tracked
+surface. It consumes ED-10aw and ED-10av and turns the previous plan into a
+plain review frame for the ED-10au specimen: what a later reviewer should
+judge, what the surface is not asking, how the ED-10av observation should be
+interpreted, and which next axis is appropriate.
+
+The later review frame stays freeform and capped at three look-for points:
+whether the specimen's purpose makes sense as a micro-scene review, which axis
+is the main issue, and what one next axis would reduce friction most. It is not
+a request for user work now and is not a fixed form or yes/no table.
+
+ED-10ax creates no render, replay, media, screenshot, tracked `episodes/`
+artifact, representative v2 specimen, or stage-7 normalizer. It grants no
+production/public/rights/publishing/monetization approval. Use
+`subtitle-layout-screenshot-capture` only to classify the lower subtitle /
+player-UI risk, `representative-micro-scene-v2` only after confirmed
+source/scene mismatch, and `final-render-path-stage-4` only for a concrete
+render-path gap.
+
 ## Current ED-10aw Grill-me Adoption Readback and Review-Frame Clarification Plan
 
 ED-10aw checkpoint, 2026-06-29 JST:
 `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
-is the active tracked readback. It consumes ED-10av and classifies the local
+is the source tracked readback for ED-10ax. It consumes ED-10av and classifies the local
 untracked Grill-me skill as `useful_precommit_adversarial_review` only when it
 is capped to a short verdict/checklist gate. The skill file and
 `skills-lock.json` remain untracked local helper files and must not be staged
@@ -160,7 +183,9 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
+Active artifact: `clip-ed10ax-review-frame-clarification-surface-001`
+
+Source review-frame plan: `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
 
 Source micro-scene observation frame readback: `clip-ed10av-micro-scene-observation-frame-readback-001`
 

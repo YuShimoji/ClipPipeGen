@@ -2420,6 +2420,126 @@ def test_grill_me_adoption_review_frame_plan_doc_records_boundaries():
     assert "agent_report_nested_prompt_allowed: `false`" in text
 
 
+def test_review_frame_clarification_surface_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    source_plan = json.loads(
+        (
+            style_dir
+            / "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json"
+        ).read_text(encoding="utf-8")
+    )
+    source_observation = json.loads(
+        (style_dir / "micro-scene-observation-frame-readback.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (style_dir / "review-frame-clarification-surface.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_review_frame_clarification_surface(
+        source_plan=source_plan,
+        source_observation=source_observation,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.REVIEW_FRAME_CLARIFICATION_SURFACE_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.REVIEW_FRAME_CLARIFICATION_SURFACE_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10ax"
+    assert tracked[
+        "source_grill_me_adoption_review_frame_clarification_plan_artifact_id"
+    ] == preset_selector.GRILL_ME_ADOPTION_REVIEW_FRAME_ARTIFACT_ID
+    assert tracked["source_micro_scene_observation_frame_readback_artifact_id"] == (
+        preset_selector.MICRO_SCENE_OBSERVATION_FRAME_READBACK_ARTIFACT_ID
+    )
+    assert len(tracked["later_user_facing_review_frame"]["look_for_points"]) == 3
+    assert tracked["later_user_facing_review_frame"]["max_look_for_points"] == 3
+    assert tracked["later_user_facing_review_frame"]["fixed_form_required"] is False
+    assert tracked["later_user_facing_review_frame"]["yes_no_required"] is False
+    assert (
+        tracked["route_decision_rules"]["review-frame-clarification"][
+            "default_order"
+        ]
+        == "first"
+    )
+    assert (
+        tracked["route_decision_rules"]["subtitle-layout-screenshot-capture"][
+            "enabled_now"
+        ]
+        is False
+    )
+    assert (
+        tracked["route_decision_rules"]["representative-micro-scene-v2"][
+            "enabled_now"
+        ]
+        is False
+    )
+    assert (
+        tracked["route_decision_rules"]["final-render-path-stage-4"]["enabled_now"]
+        is False
+    )
+    assert tracked["grill_me_gate"]["bounded_use"] == "local_helper_not_repo_policy"
+    assert tracked["grill_me_gate"]["plan_grill"]["verdict"] == "PASS"
+    assert tracked["grill_me_gate"]["next_agent_prompt_allowed"] is False
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_media_created"] is False
+    assert tracked["render_gate"]["episodes_tracked"] is False
+    assert tracked["review_policy"]["user_review_requested_now"] is False
+    assert tracked["review_policy"]["fixed_form_required"] is False
+    assert tracked["review_policy"]["stage_7_freeform_normalizer_used"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["micro_scene_accepted"] is False
+    assert tracked["boundaries"]["user_observation_converted_to_approval"] is False
+    assert tracked["boundaries"]["layout_broken_claimed"] is False
+    assert tracked["boundaries"]["grill_me_project_resource_authority"] is False
+    assert tracked["boundaries"]["grill_me_skill_files_staged"] is False
+    assert tracked["boundaries"]["NLMYTGen_read_or_edit"] is False
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_review_frame_clarification_surface_doc_records_boundaries():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "review-frame-clarification-surface.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10ax Review-Frame Clarification Surface" in text
+    assert "clip-ed10ax-review-frame-clarification-surface-001" in text
+    assert "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001" in text
+    assert "clip-ed10av-micro-scene-observation-frame-readback-001" in text
+    assert "What To Judge" in text
+    assert "What This Is Not Asking" in text
+    assert "fixed form or yes/no table completion" in text
+    assert "new render or replay" in text
+    assert "stage-7 freeform normalizer" in text
+    assert "Does the specimen's purpose make sense as a micro-scene review?" in text
+    assert "max_look_for_points: `3`" in text
+    assert "review-frame-clarification" in text
+    assert "subtitle-layout-screenshot-capture" in text
+    assert "representative-micro-scene-v2" in text
+    assert "final-render-path-stage-4" in text
+    assert "plan_grill_verdict: `PASS`" in text
+    assert "user_review_requested_now: `false`" in text
+    assert "fixed_form_required: `false`" in text
+    assert "yes_no_required: `false`" in text
+    assert "new_render_run: `false`" in text
+    assert "new_media_created: `false`" in text
+    assert "episodes_tracked: `false`" in text
+    assert "micro_scene_accepted: `false`" in text
+    assert "layout_broken_claimed: `false`" in text
+    assert "player_ui_overlap_confirmed: `false`" in text
+    assert "stage_7_freeform_normalizer_used: `false`" in text
+    assert "grill_me_project_resource_authority: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

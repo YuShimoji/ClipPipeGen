@@ -6,16 +6,29 @@ status: diagnostic_intent_registry_ready
 health: grill_me_adoption_review_frame_plan_ready
 progress_pct: 100
 last_touched: 2026-06-29
-active_artifact: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
+active_artifact: clip-ed10ax-review-frame-clarification-surface-001
+source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
 source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
 source_representative_micro_scene_specimen: clip-ed10au-representative-micro-scene-internal-review-specimen-001
 source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
+
+## Current ED-10ax Review-Frame Clarification Surface Link
+
+ED-10ax checkpoint, 2026-06-29 JST:
+`clip-ed10ax-review-frame-clarification-surface-001` is the latest tracked
+review-frame surface. It consumes ED-10aw and ED-10av and clarifies what the
+ED-10au specimen asks a later reviewer to judge, what it is not asking, how to
+interpret the user's observation, and which next route is appropriate.
+
+This does not change subtitle style acceptance. It creates no render, media,
+screenshot, v2 specimen, stage-7 normalizer, or user review request now, and
+does not approve production/public/rights/publishing/monetization use.
 
 ## Current ED-10aw Grill-me Adoption and Review-Frame Plan Link
 
