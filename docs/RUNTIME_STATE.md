@@ -3,16 +3,17 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: internal_review_observation_readback_ready
+health: representative_micro_scene_internal_review_specimen_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_observation_readback_only
-active_artifact: clip-ed10at-internal-review-observation-readback-001
+next_review_due: none_specimen_access_verified_only
+active_artifact: clip-ed10au-representative-micro-scene-internal-review-specimen-001
+source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -23,6 +24,28 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## Current ED-10au Representative Micro-Scene Internal Review Specimen
+
+ED-10au checkpoint, 2026-06-29 JST:
+`clip-ed10au-representative-micro-scene-internal-review-specimen-001` is the
+active tracked readback. It consumes ED-10at's warning that the previous
+internal review MP4 felt chopped, memo-like, and hard to evaluate, then builds
+a bounded 9.18 second specimen from actual transcript subtitles `sub_004` to
+`sub_006`: `団長、ちなみに、他の番長知ってますか？ 長？ 長って言った？`,
+`倒して回ってるんです！`, and
+`長…長… 船長のことかな？ マリンならあっちにいたよ`.
+
+The local ignored MP4, ASS, and manifest are verified on this machine under
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/`.
+The tracked access sheet records `access_state=verified_present`,
+`target_exists=true`, `access_evidence_level=file_exists_and_ffprobe_metadata`,
+MP4 size `3538973` bytes, and the launcher
+`scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1`.
+This specimen is access-verified only: no user review is requested now, no
+tracked media enters Git, `episodes/` remains untracked, stage-7 is not used,
+and production subtitle design, production render, creative use, rights,
+publishing, monetization, and public use stay false or pending.
 
 ## Current ED-10at Internal Review Observation Readback
 
@@ -84,11 +107,27 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10at-internal-review-observation-readback-001`
+Active artifact: `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
+
+Source internal review observation readback: `clip-ed10at-internal-review-observation-readback-001`
 
 Source internal review access sheet: `clip-ed10as-internal-review-access-sheet-fullpath-001`
 
 Source internal review package: `clip-ed10ar-internal-review-video-candidate-package-001`
+
+ED-10au checkpoint, 2026-06-29 JST:
+`clip-ed10au-representative-micro-scene-internal-review-specimen-001`
+now lives at
+`docs/style_intent/representative-micro-scene-internal-review-specimen.json`
+and
+`docs/style_intent/representative-micro-scene-internal-review-specimen.md`.
+It creates the next bounded specimen after ED-10at by using actual Japanese
+subtitle/script content instead of cue labels, while recording the ignored
+local render path, launcher, target existence, MP4 size, and ffprobe metadata.
+The only next user-facing route is optional later freeform observation with at
+most three look-for points; if friction appears, classify it as script,
+timing/audio, visual layout, or render path. No production/public approval is
+granted.
 
 ED-10at checkpoint, 2026-06-29 JST:
 `clip-ed10at-internal-review-observation-readback-001`
@@ -675,12 +714,14 @@ gates.
 ## Next
 
 1. Continue from
-   `clip-ed10at-internal-review-observation-readback-001` when the next
-   terminal needs the consumed human observation. Treat it as a diagnostic
-   cue-probe readback, not representative episode/video review. If continuing
-   toward real internal review, build a representative micro-scene specimen
-   with actual subtitle/script content. Use `final-render-path-stage-4` only
-   for a concrete render diagnostic gap, and do not use stage-7 now.
+   `clip-ed10au-representative-micro-scene-internal-review-specimen-001` when
+   the next terminal needs the access-verified internal review specimen. It
+   uses actual transcript subtitles rather than cue labels and records the
+   ignored MP4/ASS/manifest plus launcher. Ask for no user review unless a
+   later supervisor explicitly requests freeform observation; if friction is
+   found, classify it as script, timing/audio, visual layout, or render path.
+   Use `final-render-path-stage-4` only for a concrete render diagnostic gap,
+   and do not use stage-7 now.
 2. Continue from
    `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
    when the next terminal needs the latest user-decision-ready packet. It

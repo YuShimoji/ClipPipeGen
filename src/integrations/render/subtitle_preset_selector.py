@@ -239,6 +239,32 @@ INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID = (
     "clip-ed10at-internal-review-observation-readback-001"
 )
 INTERNAL_REVIEW_OBSERVATION_FEATURE_ID = "ED-10at"
+REPRESENTATIVE_MICRO_SCENE_SCHEMA_ID = (
+    "clippipegen.representative_micro_scene_internal_review_specimen.v1"
+)
+REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID = (
+    "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
+)
+REPRESENTATIVE_MICRO_SCENE_FEATURE_ID = "ED-10au"
+REPRESENTATIVE_MICRO_SCENE_LOCAL_OUTPUT_RELATIVE_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+    "jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen"
+)
+REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME = (
+    "representative_micro_scene_internal_review_specimen"
+)
+REPRESENTATIVE_MICRO_SCENE_SOURCE_VIDEO_RELATIVE_PATH = (
+    RENDER_PATH_PROBE_SOURCE_VIDEO_RELATIVE_PATH
+)
+REPRESENTATIVE_MICRO_SCENE_SOURCE_AUDIO_RELATIVE_PATH = (
+    RENDER_PATH_PROBE_SOURCE_AUDIO_RELATIVE_PATH
+)
+REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS = 39.57
+REPRESENTATIVE_MICRO_SCENE_SOURCE_END_SECONDS = 48.75
+REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS = (
+    REPRESENTATIVE_MICRO_SCENE_SOURCE_END_SECONDS
+    - REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS
+)
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -3854,6 +3880,309 @@ def write_internal_review_video_observation_readback(
     return {"json": json_path, "doc": doc_path}
 
 
+def representative_micro_scene_script_events() -> list[dict[str, Any]]:
+    return [
+        {
+            "event_id": "ed10au_sub_004",
+            "source_subtitle_id": "sub_004",
+            "source_type": "real_transcript",
+            "source_start_seconds": 39.57,
+            "source_end_seconds": 43.142472,
+            "start_seconds": 0.0,
+            "end_seconds": 3.572472,
+            "text": "団長、ちなみに、他の番長知ってますか？ 長？ 長って言った？",
+            "line_break_text": "団長、ちなみに、他の番長知ってますか？\n長？ 長って言った？",
+        },
+        {
+            "event_id": "ed10au_sub_005",
+            "source_subtitle_id": "sub_005",
+            "source_type": "real_transcript",
+            "source_start_seconds": 43.71,
+            "source_end_seconds": 45.315439,
+            "start_seconds": 4.14,
+            "end_seconds": 5.745439,
+            "text": "倒して回ってるんです！",
+            "line_break_text": "倒して回ってるんです！",
+        },
+        {
+            "event_id": "ed10au_sub_006",
+            "source_subtitle_id": "sub_006",
+            "source_type": "real_transcript",
+            "source_start_seconds": 46.499557,
+            "source_end_seconds": 48.75,
+            "start_seconds": 6.929557,
+            "end_seconds": REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS,
+            "text": "長…長… 船長のことかな？ マリンならあっちにいたよ",
+            "line_break_text": "長…長… 船長のことかな？\nマリンならあっちにいたよ",
+        },
+    ]
+
+
+def render_representative_micro_scene_internal_review_ass(
+    events: list[Mapping[str, Any]] | None = None,
+) -> str:
+    scene_events = events or representative_micro_scene_script_events()
+    dialogue_rows = "\n".join(
+        (
+            f"Dialogue: 0,{_probe_ass_time(float(event['start_seconds']))},"
+            f"{_probe_ass_time(float(event['end_seconds']))},MicroSceneDialogue,"
+            f"{event['source_subtitle_id']},0,0,0,,"
+            f"{{\\an2}}{_micro_scene_ass_text(str(event['line_break_text']))}"
+        )
+        for event in scene_events
+    )
+    return (
+        "[Script Info]\n"
+        "ScriptType: v4.00+\n"
+        "PlayResX: 1920\n"
+        "PlayResY: 1080\n"
+        "WrapStyle: 0\n"
+        "ScaledBorderAndShadow: yes\n\n"
+        "[V4+ Styles]\n"
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, "
+        "OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, "
+        "ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, "
+        "MarginL, MarginR, MarginV, Encoding\n"
+        "Style: MicroSceneDialogue,Yu Gothic,88,&H00FFFFFF,&H00FFFFFF,"
+        "&H00000000,&H80000000,1,0,0,0,100,100,0,0,3,7,2,2,120,120,86,1\n\n"
+        "[Events]\n"
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, "
+        "Effect, Text\n"
+        f"{dialogue_rows}\n"
+    )
+
+
+def write_representative_micro_scene_internal_review_local_artifacts(
+    *,
+    output_dir: Path | None = None,
+    source_video_path: Path | None = None,
+    source_audio_path: Path | None = None,
+    base_dir: Path | None = None,
+    ffmpeg_path: str | Path | None = None,
+    ffprobe_path: str | Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    local_output_dir = output_dir or base / REPRESENTATIVE_MICRO_SCENE_LOCAL_OUTPUT_RELATIVE_DIR
+    local_output_dir.mkdir(parents=True, exist_ok=True)
+    ass_path = local_output_dir / f"{REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME}.ass"
+    video_path = local_output_dir / f"{REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME}.mp4"
+    manifest_path = local_output_dir / f"{REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME}.local.json"
+    source_video = source_video_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_VIDEO_RELATIVE_PATH
+    source_audio = source_audio_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_AUDIO_RELATIVE_PATH
+
+    with ass_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(render_representative_micro_scene_internal_review_ass())
+
+    if not source_video.exists() or not source_audio.exists():
+        local = _default_representative_micro_scene_local_manifest(
+            status="local_source_media_missing",
+            ass_path=ass_path,
+            video_path=video_path,
+            manifest_path=manifest_path,
+            base_dir=base,
+            source_video_path=source_video,
+            source_audio_path=source_audio,
+        )
+        local["missing_inputs"] = [
+            _probe_display_path(path, base)
+            for path in (source_video, source_audio)
+            if not path.exists()
+        ]
+    else:
+        try:
+            result = ffmpeg_tiny.render_tiny_proof(
+                source_video_path=source_video,
+                source_audio_path=source_audio,
+                output_path=video_path,
+                start_seconds=REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS,
+                duration_seconds=REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS,
+                subtitle_file_path=ass_path,
+                ffmpeg_path=ffmpeg_path,
+                ffprobe_path=ffprobe_path,
+            )
+            local = _representative_micro_scene_local_manifest_from_render_result(
+                render_result=result,
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base,
+                source_video_path=source_video,
+                source_audio_path=source_audio,
+            )
+        except ffmpeg_tiny.TinyRenderError as exc:
+            local = _default_representative_micro_scene_local_manifest(
+                status="representative_micro_scene_render_failed",
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base,
+                source_video_path=source_video,
+                source_audio_path=source_audio,
+            )
+            local["failure_reason"] = exc.failure_reason
+            local["preflight"] = exc.preflight
+            local["attempts"] = [attempt.to_dict() for attempt in exc.attempts]
+
+    for _ in range(3):
+        with manifest_path.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(local, ensure_ascii=False, indent=2) + "\n")
+        manifest_size = manifest_path.stat().st_size
+        if local.get("access", {}).get("manifest_size_bytes") == manifest_size:
+            break
+        local["access"] = _representative_micro_scene_access(
+            output_dir=local_output_dir,
+            ass_path=ass_path,
+            video_path=video_path,
+            manifest_path=manifest_path,
+            base_dir=base,
+            evidence_source=local["access"]["evidence_source"],
+        )
+    return local
+
+
+def build_representative_micro_scene_internal_review_specimen(
+    *,
+    source_observation: Mapping[str, Any] | None = None,
+    local_artifact: Mapping[str, Any] | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    source = (
+        deepcopy(source_observation)
+        if source_observation is not None
+        else _default_internal_review_observation_source()
+    )
+    local = (
+        deepcopy(local_artifact)
+        if local_artifact is not None
+        else _default_representative_micro_scene_local_manifest(base_dir=base_dir)
+    )
+    script_events = list(local.get("script_events") or representative_micro_scene_script_events())
+    review_guidance = {
+        "answer_style": "freeform",
+        "template_required": False,
+        "max_look_for_points": 3,
+        "look_for": [
+            "Does it read as an actual tiny scene rather than a cue memo?",
+            "Are subtitle/script/audio/layout coherent enough for internal review?",
+            "Is the next fix mainly script, timing/audio, visual layout, or render path?",
+        ],
+        "fixed_form_required": False,
+        "fixed_choice_rows_allowed": False,
+        "fixed_choice_rows_emitted": False,
+        "yes_no_required": False,
+        "screenshot_required": False,
+        "user_review_requested_now": False,
+        "operator_instruction_sheet_ready": True,
+        "open_only_after_access_verified": True,
+    }
+    boundaries = _representative_micro_scene_boundary_flags(local)
+    validation = _representative_micro_scene_validation(
+        source_observation=source,
+        local_artifact=local,
+        script_events=script_events,
+        review_guidance=review_guidance,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": REPRESENTATIVE_MICRO_SCENE_SCHEMA_ID,
+        "artifact_id": REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID,
+        "feature_id": REPRESENTATIVE_MICRO_SCENE_FEATURE_ID,
+        "status": "representative_micro_scene_internal_review_specimen_ready",
+        "surface_kind": "tracked_internal_review_specimen_readback",
+        "source_internal_review_observation_readback_artifact_id": source[
+            "artifact_id"
+        ],
+        "source_internal_review_video_candidate_access_sheet_artifact_id": source[
+            "source_internal_review_video_candidate_access_sheet_artifact_id"
+        ],
+        "source_internal_review_video_candidate_package_artifact_id": source[
+            "source_internal_review_video_candidate_package_artifact_id"
+        ],
+        "active_diagnostic_proof_source_artifact_id": source[
+            "active_diagnostic_proof_source_artifact_id"
+        ],
+        "source_context": {
+            "source_observation_path": "docs/style_intent/internal-review-video-observation-readback.json",
+            "ed10at_next_practical_axis_consumed": "representative-micro-scene-internal-review-specimen",
+            "ed10at_warning_consumed": [
+                "cue labels only",
+                "chopped or memo-like appearance",
+                "unclear evaluation guidance",
+            ],
+            "source_episode_segment": deepcopy(local["source_episode_segment"]),
+            "source_video_path": local["source_inputs"]["video"],
+            "source_audio_path": local["source_inputs"]["audio"],
+            "source_text": "real_transcript_sub_004_to_sub_006",
+        },
+        "micro_scene": {
+            "scene_id": "ed10au_real_transcript_micro_scene_sub_004_to_sub_006",
+            "purpose": "Replace the ED-10at cue-label memo probe with a short internal review specimen that has actual Japanese subtitle/script content and minimal scene continuity.",
+            "duration_seconds": REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS,
+            "script_event_count": len(script_events),
+            "script_events": script_events,
+            "actual_script_content_present": True,
+            "cue_labels_used_as_main_content": False,
+            "forbidden_cue_labels": [
+                "NORMAL DIALOGUE CUE",
+                "SHOUT HIGH INTENSITY",
+                "LOW PRESSURE WHISPER CUE",
+            ],
+            "scene_continuity_note": "The three real transcript subtitles form a tiny exchange about other bancho, defeating them, and being pointed toward Marine.",
+            "audio_video_source_policy": "existing_local_source_video_and_source_audio_cut_to_same_window",
+        },
+        "local_artifact": local,
+        "access_sheet": deepcopy(local["access"]),
+        "review_guidance": review_guidance,
+        "render_gate": {
+            "level": "bounded_internal_review_specimen_render",
+            "bounded_internal_review_specimen_render": boundaries[
+                "bounded_internal_review_specimen_render"
+            ],
+            "new_render_run": boundaries["new_render_run"],
+            "new_media_created": boundaries["new_media_created"],
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/representative-micro-scene-internal-review-specimen.json",
+            "doc": "docs/style_intent/representative-micro-scene-internal-review-specimen.md",
+            "launcher": "scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1",
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_representative_micro_scene_internal_review_specimen(
+    output_dir: Path,
+    *,
+    source_observation: Mapping[str, Any] | None = None,
+    local_artifact: Mapping[str, Any] | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Path]:
+    specimen = build_representative_micro_scene_internal_review_specimen(
+        source_observation=source_observation,
+        local_artifact=local_artifact,
+        base_dir=base_dir,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "representative-micro-scene-internal-review-specimen.json"
+    doc_path = output_dir / "representative-micro-scene-internal-review-specimen.md"
+    with json_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(specimen, ensure_ascii=False, indent=2) + "\n")
+    with doc_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(
+            render_representative_micro_scene_internal_review_specimen_markdown(
+                specimen
+            )
+        )
+    return {"json": json_path, "doc": doc_path}
+
+
 
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
@@ -5779,6 +6108,130 @@ def render_internal_review_video_observation_readback_markdown(
         "## Boundary",
         "",
         closed_boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_representative_micro_scene_internal_review_specimen_markdown(
+    specimen: Mapping[str, Any],
+) -> str:
+    scene = specimen["micro_scene"]
+    access = specimen["access_sheet"]
+    guidance = specimen["review_guidance"]
+    validation = specimen["validation"]
+    boundaries = specimen["boundaries"]
+    local = specimen["local_artifact"]
+    nl = chr(10)
+    script_rows = nl.join(
+        "| {event_id} | {start:.2f}-{end:.2f}s | {text} |".format(
+            event_id=event["event_id"],
+            start=float(event["start_seconds"]),
+            end=float(event["end_seconds"]),
+            text=str(event["text"]).replace("|", "/"),
+        )
+        for event in scene["script_events"]
+    )
+    look_for_rows = nl.join(f"- {item}" for item in guidance["look_for"])
+    validation_rows = nl.join(
+        f"- {key}: `{str(validation[key]).lower()}`"
+        for key in (
+            "ed10at_source_read",
+            "representative_micro_scene_created",
+            "actual_script_content_exists",
+            "cue_labels_not_main_content",
+            "review_guidance_at_most_three_points",
+            "access_state_verified_or_classified",
+            "no_approval_inferred",
+            "no_stage_7_normalizer",
+            "tracked_media_boundary_closed",
+            "all_checks_passed",
+        )
+    )
+    boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "monetization_acceptance",
+            "production_candidate",
+            "production_usage_allowed",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "stage_7_freeform_normalizer_used",
+            "user_observation_converted_to_approval",
+        )
+    )
+    lines = [
+        "# ED-10au Representative Micro-Scene Internal Review Specimen",
+        "",
+        "This tracked readback creates the next bounded internal-review specimen after ED-10at. It uses actual Japanese transcript subtitle content instead of cue labels, renders a short ignored local MP4 for access verification, and keeps all production, rights, publishing, monetization, and public-use gates closed.",
+        "",
+        "## Source Chain",
+        "",
+        f"- artifact_id: `{specimen['artifact_id']}`",
+        f"- feature_id: `{specimen['feature_id']}`",
+        f"- status: `{specimen['status']}`",
+        f"- source_internal_review_observation_readback_artifact_id: `{specimen['source_internal_review_observation_readback_artifact_id']}`",
+        f"- source_internal_review_video_candidate_access_sheet_artifact_id: `{specimen['source_internal_review_video_candidate_access_sheet_artifact_id']}`",
+        f"- source_internal_review_video_candidate_package_artifact_id: `{specimen['source_internal_review_video_candidate_package_artifact_id']}`",
+        f"- active_diagnostic_proof_source_artifact_id: `{specimen['active_diagnostic_proof_source_artifact_id']}`",
+        f"- source_text: `{specimen['source_context']['source_text']}`",
+        "",
+        "## Micro-Scene",
+        "",
+        f"- scene_id: `{scene['scene_id']}`",
+        f"- duration_seconds: `{scene['duration_seconds']:.2f}`",
+        f"- actual_script_content_present: `{str(scene['actual_script_content_present']).lower()}`",
+        f"- cue_labels_used_as_main_content: `{str(scene['cue_labels_used_as_main_content']).lower()}`",
+        f"- scene_continuity_note: {scene['scene_continuity_note']}",
+        "",
+        "| event | local time | subtitle text |",
+        "|---|---:|---|",
+        script_rows,
+        "",
+        "## Access Sheet",
+        "",
+        f"- access_state: `{access['access_state']}`",
+        f"- target_exists: `{str(access['target_exists']).lower()}`",
+        f"- access_evidence_level: `{access['access_evidence_level']}`",
+        f"- evidence_source: `{access['evidence_source']}`",
+        f"- launcher_or_open_command: `{access['launcher_or_open_command']}`",
+        f"- folder_repo_relative_path: `{access['folder_repo_relative_path']}`",
+        f"- folder_full_path_current_host: `{access['folder_full_path_current_host']}`",
+        f"- mp4_repo_relative_path: `{access['mp4_repo_relative_path']}`",
+        f"- mp4_full_path_current_host: `{access['mp4_full_path_current_host']}`",
+        f"- mp4_size_bytes: `{access['mp4_size_bytes']}`",
+        f"- ass_repo_relative_path: `{access['ass_repo_relative_path']}`",
+        f"- manifest_repo_relative_path: `{access['manifest_repo_relative_path']}`",
+        "",
+        "## Review Guidance",
+        "",
+        f"- answer_style: `{guidance['answer_style']}`",
+        f"- max_look_for_points: `{guidance['max_look_for_points']}`",
+        f"- user_review_requested_now: `{str(guidance['user_review_requested_now']).lower()}`",
+        "",
+        look_for_rows,
+        "",
+        "## Local Render Readback",
+        "",
+        f"- local_status: `{local['status']}`",
+        f"- render_command_summary: `{local.get('render_command_summary')}`",
+        f"- duration_seconds: `{(local.get('metadata') or {}).get('duration_seconds')}`",
+        f"- resolution: `{(local.get('metadata') or {}).get('resolution')}`",
+        f"- video_codec: `{(local.get('metadata') or {}).get('video_codec')}`",
+        f"- audio_codec: `{(local.get('metadata') or {}).get('audio_codec')}`",
+        "",
+        "## Validation",
+        "",
+        validation_rows,
+        "",
+        "## Boundary",
+        "",
+        boundary_rows,
     ]
     return nl.join(lines) + nl
 
@@ -9849,6 +10302,316 @@ def _internal_review_observation_validation(
             and boundaries["episodes_tracked"] is False
         ),
     }
+
+
+def _default_internal_review_observation_source() -> dict[str, Any]:
+    return {
+        "artifact_id": INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID,
+        "source_internal_review_video_candidate_access_sheet_artifact_id": (
+            INTERNAL_REVIEW_VIDEO_CANDIDATE_ACCESS_SHEET_ARTIFACT_ID
+        ),
+        "source_internal_review_video_candidate_package_artifact_id": (
+            INTERNAL_REVIEW_VIDEO_CANDIDATE_PACKAGE_ARTIFACT_ID
+        ),
+        "active_diagnostic_proof_source_artifact_id": RENDER_PATH_PROBE_ARTIFACT_ID,
+        "next_practical_axis": {
+            "recommended_route_id": "representative-micro-scene-internal-review-specimen",
+            "alternate_route_id": "final-render-path-stage-4",
+            "stage_7_continuation_allowed_now": False,
+        },
+        "validation": {
+            "all_checks_passed": True,
+            "no_stage_7_continuation": True,
+            "no_approval_inferred": True,
+        },
+    }
+
+
+def _default_representative_micro_scene_local_manifest(
+    *,
+    status: str = "local_specimen_not_attempted",
+    ass_path: Path | None = None,
+    video_path: Path | None = None,
+    manifest_path: Path | None = None,
+    base_dir: Path | None = None,
+    source_video_path: Path | None = None,
+    source_audio_path: Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    output_dir = base / REPRESENTATIVE_MICRO_SCENE_LOCAL_OUTPUT_RELATIVE_DIR
+    ass = ass_path or output_dir / f"{REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME}.ass"
+    video = video_path or output_dir / f"{REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME}.mp4"
+    manifest = (
+        manifest_path
+        or output_dir / f"{REPRESENTATIVE_MICRO_SCENE_LOCAL_BASENAME}.local.json"
+    )
+    source_video = source_video_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_VIDEO_RELATIVE_PATH
+    source_audio = source_audio_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_AUDIO_RELATIVE_PATH
+    return {
+        "status": status,
+        "artifact_id": REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID,
+        "source_policy": "bounded_internal_review_representative_micro_scene_render",
+        "source_inputs": {
+            "video": _probe_display_path(source_video, base),
+            "audio": _probe_display_path(source_audio, base),
+        },
+        "source_episode_segment": {
+            "start_seconds": REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS,
+            "end_seconds": REPRESENTATIVE_MICRO_SCENE_SOURCE_END_SECONDS,
+            "duration_seconds": REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS,
+            "source_subtitle_ids": ["sub_004", "sub_005", "sub_006"],
+        },
+        "outputs": {
+            "ass": _probe_display_path(ass, base),
+            "video": _probe_display_path(video, base),
+            "manifest": _probe_display_path(manifest, base),
+        },
+        "script_events": representative_micro_scene_script_events(),
+        "metadata": {},
+        "render_command_summary": None,
+        "ffmpeg_path_source": None,
+        "ffprobe_path_source": None,
+        "ffmpeg_version": None,
+        "ffprobe_version": None,
+        "fallback_used": False,
+        "attempts": [],
+        "warnings": [],
+        "ignored_by_git": True,
+        "access": _representative_micro_scene_access(
+            output_dir=output_dir,
+            ass_path=ass,
+            video_path=video,
+            manifest_path=manifest,
+            base_dir=base,
+            evidence_source="local_specimen_not_attempted",
+        ),
+        "actual_script_content_present": True,
+        "cue_labels_used_as_main_content": False,
+        "tracked_binary_artifact_created": False,
+        "episodes_tracked": False,
+        "production_render_acceptance": False,
+        "public_use_permission": False,
+    }
+
+
+def _representative_micro_scene_local_manifest_from_render_result(
+    *,
+    render_result: ffmpeg_tiny.RenderResult,
+    ass_path: Path,
+    video_path: Path,
+    manifest_path: Path,
+    base_dir: Path,
+    source_video_path: Path,
+    source_audio_path: Path,
+) -> dict[str, Any]:
+    local = _local_probe_readback_from_render_result(
+        render_result=render_result,
+        ass_path=ass_path,
+        video_path=video_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+    )
+    local.update(
+        {
+            "status": "representative_micro_scene_generated",
+            "artifact_id": REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID,
+            "source_policy": "bounded_internal_review_representative_micro_scene_render",
+            "source_inputs": {
+                "video": _probe_display_path(source_video_path, base_dir),
+                "audio": _probe_display_path(source_audio_path, base_dir),
+            },
+            "source_episode_segment": {
+                "start_seconds": REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS,
+                "end_seconds": REPRESENTATIVE_MICRO_SCENE_SOURCE_END_SECONDS,
+                "duration_seconds": REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS,
+                "source_subtitle_ids": ["sub_004", "sub_005", "sub_006"],
+            },
+            "script_events": representative_micro_scene_script_events(),
+            "access": _representative_micro_scene_access(
+                output_dir=video_path.parent,
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base_dir,
+                evidence_source="local_render_result_probe",
+            ),
+            "actual_script_content_present": True,
+            "cue_labels_used_as_main_content": False,
+            "bounded_internal_review_specimen_render": True,
+            "new_render_run": True,
+            "new_media_created": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        }
+    )
+    return local
+
+
+def _representative_micro_scene_access(
+    *,
+    output_dir: Path,
+    ass_path: Path,
+    video_path: Path,
+    manifest_path: Path,
+    base_dir: Path,
+    evidence_source: str,
+) -> dict[str, Any]:
+    target_exists = video_path.exists()
+    manifest_exists = manifest_path.exists()
+    return {
+        "artifact_id": REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID,
+        "repo_relative_path": (
+            "docs/style_intent/representative-micro-scene-internal-review-specimen.json; "
+            "docs/style_intent/representative-micro-scene-internal-review-specimen.md"
+        ),
+        "folder_repo_relative_path": _probe_display_path(output_dir, base_dir),
+        "folder_full_path_current_host": str(output_dir.resolve()),
+        "mp4_repo_relative_path": _probe_display_path(video_path, base_dir),
+        "mp4_full_path_current_host": str(video_path.resolve()),
+        "mp4_size_bytes": video_path.stat().st_size if target_exists else None,
+        "ass_repo_relative_path": _probe_display_path(ass_path, base_dir),
+        "ass_full_path_current_host": str(ass_path.resolve()),
+        "ass_size_bytes": ass_path.stat().st_size if ass_path.exists() else None,
+        "manifest_repo_relative_path": _probe_display_path(manifest_path, base_dir),
+        "manifest_full_path_current_host": str(manifest_path.resolve()),
+        "manifest_size_bytes": manifest_path.stat().st_size if manifest_exists else None,
+        "launcher_or_open_command": (
+            "powershell -ExecutionPolicy Bypass -File "
+            "scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1"
+        ),
+        "alternate_open_commands": {
+            "open_folder": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenFolder"
+            ),
+            "open_manifest": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenManifest"
+            ),
+            "open_ass": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenAss"
+            ),
+        },
+        "target_exists": target_exists,
+        "access_state": "verified_present" if target_exists else "not_verified_missing",
+        "access_evidence_level": (
+            "file_exists_and_ffprobe_metadata"
+            if target_exists
+            else "file_absence_or_render_not_attempted"
+        ),
+        "evidence_source": evidence_source,
+    }
+
+
+def _representative_micro_scene_boundary_flags(
+    local_artifact: Mapping[str, Any],
+) -> dict[str, Any]:
+    generated = local_artifact.get("status") == "representative_micro_scene_generated"
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_run": generated,
+            "new_media_created": generated,
+            "bounded_internal_review_specimen_render": generated,
+            "internal_review_only": True,
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "monetization_acceptance": False,
+            "stage_7_freeform_normalizer_used": False,
+            "stage_7_continuation_allowed_now": False,
+            "user_observation_converted_to_approval": False,
+            "representative_episode_video_review": False,
+            "production_video_review": False,
+        }
+    )
+    return flags
+
+
+def _representative_micro_scene_validation(
+    *,
+    source_observation: Mapping[str, Any],
+    local_artifact: Mapping[str, Any],
+    script_events: list[Mapping[str, Any]],
+    review_guidance: Mapping[str, Any],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    forbidden = {
+        "NORMAL DIALOGUE CUE",
+        "SHOUT HIGH INTENSITY",
+        "LOW PRESSURE WHISPER CUE",
+    }
+    serialized_script = "\n".join(str(event.get("text", "")) for event in script_events)
+    access = local_artifact.get("access") or {}
+    no_approval_inferred = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["monetization_acceptance"] is False
+        and boundaries["production_candidate"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["user_observation_converted_to_approval"] is False
+    )
+    actual_script_content_exists = (
+        len(script_events) == 3
+        and all(event.get("source_type") == "real_transcript" for event in script_events)
+        and all(str(event.get("text", "")).strip() for event in script_events)
+    )
+    access_state_verified_or_classified = (
+        access.get("access_state") in {"verified_present", "verified_opened"}
+        and access.get("target_exists") is True
+    ) or access.get("access_state") == "not_verified_missing"
+    return {
+        "ed10at_source_read": source_observation["artifact_id"]
+        == INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID,
+        "representative_micro_scene_created": local_artifact.get("status")
+        == "representative_micro_scene_generated",
+        "actual_script_content_exists": actual_script_content_exists,
+        "cue_labels_not_main_content": not any(label in serialized_script for label in forbidden),
+        "review_guidance_at_most_three_points": len(review_guidance["look_for"]) <= 3,
+        "review_guidance_freeform": review_guidance["answer_style"] == "freeform"
+        and review_guidance["fixed_form_required"] is False,
+        "access_state_verified_or_classified": access_state_verified_or_classified,
+        "access_verified_present": access.get("access_state") == "verified_present"
+        and access.get("target_exists") is True,
+        "no_approval_inferred": no_approval_inferred,
+        "no_stage_7_normalizer": boundaries["stage_7_freeform_normalizer_used"]
+        is False,
+        "tracked_media_boundary_closed": boundaries["tracked_binary_artifact_created"]
+        is False
+        and boundaries["episodes_tracked"] is False,
+        "all_checks_passed": (
+            source_observation["artifact_id"] == INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID
+            and local_artifact.get("status") == "representative_micro_scene_generated"
+            and actual_script_content_exists
+            and not any(label in serialized_script for label in forbidden)
+            and len(review_guidance["look_for"]) <= 3
+            and access.get("access_state") == "verified_present"
+            and access.get("target_exists") is True
+            and no_approval_inferred
+            and boundaries["stage_7_freeform_normalizer_used"] is False
+            and boundaries["tracked_binary_artifact_created"] is False
+            and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _micro_scene_ass_text(text: str) -> str:
+    return text.replace("\n", "\\N").replace("{", "\\{").replace("}", "\\}")
 
 
 def _markdown_cell_list(items: list[str]) -> str:

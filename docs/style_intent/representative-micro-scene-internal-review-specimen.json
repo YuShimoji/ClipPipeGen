@@ -1,0 +1,337 @@
+{
+  "schema_id": "clippipegen.representative_micro_scene_internal_review_specimen.v1",
+  "artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+  "feature_id": "ED-10au",
+  "status": "representative_micro_scene_internal_review_specimen_ready",
+  "surface_kind": "tracked_internal_review_specimen_readback",
+  "source_internal_review_observation_readback_artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+  "source_internal_review_video_candidate_access_sheet_artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+  "source_internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_context": {
+    "source_observation_path": "docs/style_intent/internal-review-video-observation-readback.json",
+    "ed10at_next_practical_axis_consumed": "representative-micro-scene-internal-review-specimen",
+    "ed10at_warning_consumed": [
+      "cue labels only",
+      "chopped or memo-like appearance",
+      "unclear evaluation guidance"
+    ],
+    "source_episode_segment": {
+      "start_seconds": 39.57,
+      "end_seconds": 48.75,
+      "duration_seconds": 9.18,
+      "source_subtitle_ids": [
+        "sub_004",
+        "sub_005",
+        "sub_006"
+      ]
+    },
+    "source_video_path": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+    "source_audio_path": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav",
+    "source_text": "real_transcript_sub_004_to_sub_006"
+  },
+  "micro_scene": {
+    "scene_id": "ed10au_real_transcript_micro_scene_sub_004_to_sub_006",
+    "purpose": "Replace the ED-10at cue-label memo probe with a short internal review specimen that has actual Japanese subtitle/script content and minimal scene continuity.",
+    "duration_seconds": 9.18,
+    "script_event_count": 3,
+    "script_events": [
+      {
+        "event_id": "ed10au_sub_004",
+        "source_subtitle_id": "sub_004",
+        "source_type": "real_transcript",
+        "source_start_seconds": 39.57,
+        "source_end_seconds": 43.142472,
+        "start_seconds": 0.0,
+        "end_seconds": 3.572472,
+        "text": "団長、ちなみに、他の番長知ってますか？ 長？ 長って言った？",
+        "line_break_text": "団長、ちなみに、他の番長知ってますか？\n長？ 長って言った？"
+      },
+      {
+        "event_id": "ed10au_sub_005",
+        "source_subtitle_id": "sub_005",
+        "source_type": "real_transcript",
+        "source_start_seconds": 43.71,
+        "source_end_seconds": 45.315439,
+        "start_seconds": 4.14,
+        "end_seconds": 5.745439,
+        "text": "倒して回ってるんです！",
+        "line_break_text": "倒して回ってるんです！"
+      },
+      {
+        "event_id": "ed10au_sub_006",
+        "source_subtitle_id": "sub_006",
+        "source_type": "real_transcript",
+        "source_start_seconds": 46.499557,
+        "source_end_seconds": 48.75,
+        "start_seconds": 6.929557,
+        "end_seconds": 9.18,
+        "text": "長…長… 船長のことかな？ マリンならあっちにいたよ",
+        "line_break_text": "長…長… 船長のことかな？\nマリンならあっちにいたよ"
+      }
+    ],
+    "actual_script_content_present": true,
+    "cue_labels_used_as_main_content": false,
+    "forbidden_cue_labels": [
+      "NORMAL DIALOGUE CUE",
+      "SHOUT HIGH INTENSITY",
+      "LOW PRESSURE WHISPER CUE"
+    ],
+    "scene_continuity_note": "The three real transcript subtitles form a tiny exchange about other bancho, defeating them, and being pointed toward Marine.",
+    "audio_video_source_policy": "existing_local_source_video_and_source_audio_cut_to_same_window"
+  },
+  "local_artifact": {
+    "status": "representative_micro_scene_generated",
+    "source_policy": "bounded_internal_review_representative_micro_scene_render",
+    "outputs": {
+      "ass": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.ass",
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4",
+      "manifest": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.local.json"
+    },
+    "metadata": {
+      "duration_seconds": 9.18,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "container_long_name": "QuickTime / MOV",
+      "video_codec": "h264",
+      "video_codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "audio_codec": "aac",
+      "audio_codec_long_name": "AAC (Advanced Audio Coding)",
+      "width": 1920,
+      "height": 1080,
+      "resolution": "1920x1080",
+      "fps": 30.0,
+      "frame_rate": "30/1",
+      "stream_count": 2,
+      "stream_counts": {
+        "video": 1,
+        "audio": 1,
+        "other": 0
+      }
+    },
+    "render_command_summary": "ffmpeg -y -ss 39.57 -t 9.18 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 -ss 39.57 -t 9.18 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav -map 0:v:0 -map 1:a:0 -vf scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p,subtitles=filename='./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.ass' -c:v libx264 -c:a aac -shortest ./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4",
+    "ffmpeg_path_source": "PATH",
+    "ffprobe_path_source": "PATH",
+    "ffmpeg_version": "ffmpeg version 8.1.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe_version": "ffprobe version 8.1.1-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+    "fallback_used": false,
+    "selected_profile": {
+      "profile_id": "mp4_h264_aac",
+      "container": "mp4",
+      "video_codec": "libx264",
+      "audio_codec": "aac",
+      "output_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4"
+    },
+    "attempts": [
+      {
+        "profile": {
+          "profile_id": "mp4_h264_aac",
+          "container": "mp4",
+          "video_codec": "libx264",
+          "audio_codec": "aac",
+          "output_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4"
+        },
+        "summary": "ffmpeg -y -ss 39.57 -t 9.18 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 -ss 39.57 -t 9.18 -i ./episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav -map 0:v:0 -map 1:a:0 -vf scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p,subtitles=filename='./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.ass' -c:v libx264 -c:a aac -shortest ./episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4",
+        "status": "succeeded",
+        "exit_code": 0,
+        "stderr_digest": {
+          "algorithm": "sha256",
+          "sha256": "631a771c7357fa8bbc8f9a073900d7047fa4f511864c6105c90ff94a727209f5",
+          "tail": " 2.5%  7.9%  4.1%  P16..4: 17.6%  5.9%  2.4%  0.0%  0.0%    skip:59.5%\n[libx264 @ 0000024695c200c0] mb B  I16..4:  0.3%  1.0%  0.6%  B16..8: 18.0%  3.2%  0.5%  direct: 0.4%  skip:75.9%  L0:45.5% L1:50.3% BI: 4.1%\n[libx264 @ 0000024695c200c0] 8x8 transform intra:54.0% inter:61.9%\n[libx264 @ 0000024695c200c0] coded y,uvDC,uvAC intra: 51.2% 42.5% 10.1% inter: 3.6% 2.5% 0.1%\n[libx264 @ 0000024695c200c0] i16 v,h,dc,p: 33% 38%  8% 21%\n[libx264 @ 0000024695c200c0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 30% 20% 18%  4%  5%  7%  5%  5%  5%\n[libx264 @ 0000024695c200c0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 34% 16% 14%  5%  8% 10%  5%  6%  3%\n[libx264 @ 0000024695c200c0] i8c dc,h,v,p: 56% 20% 19%  5%\n[libx264 @ 0000024695c200c0] Weighted P-Frames: Y:0.0% UV:0.0%\n[libx264 @ 0000024695c200c0] ref P L0: 65.8% 13.7% 14.2%  6.3%\n[libx264 @ 0000024695c200c0] ref B L0: 85.2% 12.0%  2.9%\n[libx264 @ 0000024695c200c0] ref B L1: 97.5%  2.5%\n[libx264 @ 0000024695c200c0] kb/s:3015.63\n[aac @ 00000246958b6c80] Qavg: 1677.956\n",
+          "tail_chars": 1000,
+          "truncated": true
+        },
+        "failure_reason": null,
+        "selected": true
+      }
+    ],
+    "warnings": [
+      "OUT-01 tiny render proof is diagnostic and not production/creative/publish acceptance",
+      "diagnostic subtitle burn-in enabled; typography/safe-area/font polish is not claimed"
+    ],
+    "ignored_by_git": true,
+    "tracked_binary_artifact_created": false,
+    "production_render_acceptance": false,
+    "public_use_permission": false,
+    "artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+    "source_inputs": {
+      "video": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+      "audio": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav"
+    },
+    "source_episode_segment": {
+      "start_seconds": 39.57,
+      "end_seconds": 48.75,
+      "duration_seconds": 9.18,
+      "source_subtitle_ids": [
+        "sub_004",
+        "sub_005",
+        "sub_006"
+      ]
+    },
+    "script_events": [
+      {
+        "event_id": "ed10au_sub_004",
+        "source_subtitle_id": "sub_004",
+        "source_type": "real_transcript",
+        "source_start_seconds": 39.57,
+        "source_end_seconds": 43.142472,
+        "start_seconds": 0.0,
+        "end_seconds": 3.572472,
+        "text": "団長、ちなみに、他の番長知ってますか？ 長？ 長って言った？",
+        "line_break_text": "団長、ちなみに、他の番長知ってますか？\n長？ 長って言った？"
+      },
+      {
+        "event_id": "ed10au_sub_005",
+        "source_subtitle_id": "sub_005",
+        "source_type": "real_transcript",
+        "source_start_seconds": 43.71,
+        "source_end_seconds": 45.315439,
+        "start_seconds": 4.14,
+        "end_seconds": 5.745439,
+        "text": "倒して回ってるんです！",
+        "line_break_text": "倒して回ってるんです！"
+      },
+      {
+        "event_id": "ed10au_sub_006",
+        "source_subtitle_id": "sub_006",
+        "source_type": "real_transcript",
+        "source_start_seconds": 46.499557,
+        "source_end_seconds": 48.75,
+        "start_seconds": 6.929557,
+        "end_seconds": 9.18,
+        "text": "長…長… 船長のことかな？ マリンならあっちにいたよ",
+        "line_break_text": "長…長… 船長のことかな？\nマリンならあっちにいたよ"
+      }
+    ],
+    "access": {
+      "artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+      "repo_relative_path": "docs/style_intent/representative-micro-scene-internal-review-specimen.json; docs/style_intent/representative-micro-scene-internal-review-specimen.md",
+      "folder_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen",
+      "folder_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen",
+      "mp4_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4",
+      "mp4_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.mp4",
+      "mp4_size_bytes": 3538973,
+      "ass_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.ass",
+      "ass_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.ass",
+      "ass_size_bytes": 989,
+      "manifest_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.local.json",
+      "manifest_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.local.json",
+      "manifest_size_bytes": 10743,
+      "launcher_or_open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1",
+      "alternate_open_commands": {
+        "open_folder": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenFolder",
+        "open_manifest": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenManifest",
+        "open_ass": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenAss"
+      },
+      "target_exists": true,
+      "access_state": "verified_present",
+      "access_evidence_level": "file_exists_and_ffprobe_metadata",
+      "evidence_source": "local_render_result_probe"
+    },
+    "actual_script_content_present": true,
+    "cue_labels_used_as_main_content": false,
+    "bounded_internal_review_specimen_render": true,
+    "new_render_run": true,
+    "new_media_created": true,
+    "episodes_tracked": false
+  },
+  "access_sheet": {
+    "artifact_id": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+    "repo_relative_path": "docs/style_intent/representative-micro-scene-internal-review-specimen.json; docs/style_intent/representative-micro-scene-internal-review-specimen.md",
+    "folder_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen",
+    "folder_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen",
+    "mp4_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4",
+    "mp4_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.mp4",
+    "mp4_size_bytes": 3538973,
+    "ass_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.ass",
+    "ass_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.ass",
+    "ass_size_bytes": 989,
+    "manifest_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.local.json",
+    "manifest_full_path_current_host": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_internal_review_specimen\\representative_micro_scene_internal_review_specimen.local.json",
+    "manifest_size_bytes": 10743,
+    "launcher_or_open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1",
+    "alternate_open_commands": {
+      "open_folder": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenFolder",
+      "open_manifest": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenManifest",
+      "open_ass": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 -OpenAss"
+    },
+    "target_exists": true,
+    "access_state": "verified_present",
+    "access_evidence_level": "file_exists_and_ffprobe_metadata",
+    "evidence_source": "local_render_result_probe"
+  },
+  "review_guidance": {
+    "answer_style": "freeform",
+    "template_required": false,
+    "max_look_for_points": 3,
+    "look_for": [
+      "Does it read as an actual tiny scene rather than a cue memo?",
+      "Are subtitle/script/audio/layout coherent enough for internal review?",
+      "Is the next fix mainly script, timing/audio, visual layout, or render path?"
+    ],
+    "fixed_form_required": false,
+    "fixed_choice_rows_allowed": false,
+    "fixed_choice_rows_emitted": false,
+    "yes_no_required": false,
+    "screenshot_required": false,
+    "user_review_requested_now": false,
+    "operator_instruction_sheet_ready": true,
+    "open_only_after_access_verified": true
+  },
+  "render_gate": {
+    "level": "bounded_internal_review_specimen_render",
+    "bounded_internal_review_specimen_render": true,
+    "new_render_run": true,
+    "new_media_created": true,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "diagnostic_only": true,
+    "internal_review_only": true,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "ed10at_source_read": true,
+    "representative_micro_scene_created": true,
+    "actual_script_content_exists": true,
+    "cue_labels_not_main_content": true,
+    "review_guidance_at_most_three_points": true,
+    "review_guidance_freeform": true,
+    "access_state_verified_or_classified": true,
+    "access_verified_present": true,
+    "no_approval_inferred": true,
+    "no_stage_7_normalizer": true,
+    "tracked_media_boundary_closed": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/representative-micro-scene-internal-review-specimen.json",
+    "doc": "docs/style_intent/representative-micro-scene-internal-review-specimen.md",
+    "launcher": "scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "new_render_run": true,
+    "new_media_created": true,
+    "bounded_internal_review_specimen_render": true,
+    "internal_review_only": true,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "monetization_acceptance": false,
+    "stage_7_freeform_normalizer_used": false,
+    "stage_7_continuation_allowed_now": false,
+    "user_observation_converted_to_approval": false,
+    "representative_episode_video_review": false,
+    "production_video_review": false
+  }
+}

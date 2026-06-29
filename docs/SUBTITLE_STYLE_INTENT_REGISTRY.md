@@ -3,16 +3,31 @@ id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: internal_review_observation_readback_ready
+health: representative_micro_scene_internal_review_specimen_ready
 progress_pct: 100
 last_touched: 2026-06-29
-active_artifact: clip-ed10at-internal-review-observation-readback-001
+active_artifact: clip-ed10au-representative-micro-scene-internal-review-specimen-001
+source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
+
+## Current ED-10au Representative Micro-Scene Specimen Link
+
+ED-10au checkpoint, 2026-06-29 JST:
+`clip-ed10au-representative-micro-scene-internal-review-specimen-001` is the
+latest tracked internal-review specimen. It consumes ED-10at and replaces the
+cue-label memo probe with a 9.18 second real transcript micro-scene using
+`sub_004` to `sub_006` Japanese subtitle/script content. The ignored local MP4
+is verified present with ffprobe metadata, and the tracked readback records the
+launcher
+`scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1`.
+It asks for no user review now, tracks no `episodes/` media, uses no stage-7
+normalizer, and keeps production/public/rights/publishing/monetization gates
+false or pending.
 
 ## Current ED-10at Internal Review Observation Readback Link
 

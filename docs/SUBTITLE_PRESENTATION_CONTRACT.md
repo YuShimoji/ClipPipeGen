@@ -5,6 +5,29 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
+## Current ED-10au Representative Micro-Scene Internal Review Specimen
+
+ED-10au records
+`clip-ed10au-representative-micro-scene-internal-review-specimen-001` as the
+current tracked specimen readback at
+`docs/style_intent/representative-micro-scene-internal-review-specimen.json`
+and
+`docs/style_intent/representative-micro-scene-internal-review-specimen.md`.
+It consumes ED-10at and replaces the previous cue-label memo probe with a
+9.18 second bounded internal-review MP4 using actual transcript subtitles
+`sub_004` to `sub_006`: `団長、ちなみに、他の番長知ってますか？ 長？ 長って言った？`,
+`倒して回ってるんです！`, and
+`長…長… 船長のことかな？ マリンならあっちにいたよ`.
+
+The ignored MP4/ASS/manifest are verified on the current host under
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/`,
+with launcher
+`scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1`.
+This is bounded internal-review evidence only. It asks for no user review now,
+uses no stage-7 freeform normalizer, tracks no `episodes/` media, and keeps
+production subtitle design, production render, creative use, rights,
+publishing, monetization, and public use false or pending.
+
 ## Current ED-10at Internal Review Observation Readback
 
 ED-10at records `clip-ed10at-internal-review-observation-readback-001` as a

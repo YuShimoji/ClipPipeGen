@@ -2097,6 +2097,105 @@ def test_internal_review_video_observation_readback_doc_records_boundary():
     assert "user_observation_converted_to_approval: `false`" in text
 
 
+def test_representative_micro_scene_internal_review_specimen_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    source_observation = json.loads(
+        (style_dir / "internal-review-video-observation-readback.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (
+            style_dir
+            / "representative-micro-scene-internal-review-specimen.json"
+        ).read_text(encoding="utf-8")
+    )
+    generated = preset_selector.build_representative_micro_scene_internal_review_specimen(
+        source_observation=source_observation,
+        local_artifact=tracked["local_artifact"],
+        base_dir=REPO_ROOT,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.REPRESENTATIVE_MICRO_SCENE_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.REPRESENTATIVE_MICRO_SCENE_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10au"
+    assert tracked["source_internal_review_observation_readback_artifact_id"] == (
+        preset_selector.INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID
+    )
+    assert tracked[
+        "source_internal_review_video_candidate_access_sheet_artifact_id"
+    ] == preset_selector.INTERNAL_REVIEW_VIDEO_CANDIDATE_ACCESS_SHEET_ARTIFACT_ID
+    assert tracked[
+        "source_internal_review_video_candidate_package_artifact_id"
+    ] == preset_selector.INTERNAL_REVIEW_VIDEO_CANDIDATE_PACKAGE_ARTIFACT_ID
+    scene = tracked["micro_scene"]
+    assert scene["actual_script_content_present"] is True
+    assert scene["cue_labels_used_as_main_content"] is False
+    assert scene["script_event_count"] == 3
+    assert scene["duration_seconds"] == 9.18
+    assert [event["source_subtitle_id"] for event in scene["script_events"]] == [
+        "sub_004",
+        "sub_005",
+        "sub_006",
+    ]
+    script_text = "\n".join(event["text"] for event in scene["script_events"])
+    assert "団長" in script_text
+    assert "倒して回ってるんです" in script_text
+    assert "マリンならあっちにいたよ" in script_text
+    for cue_label in scene["forbidden_cue_labels"]:
+        assert cue_label not in script_text
+    assert tracked["access_sheet"]["access_state"] == "verified_present"
+    assert tracked["access_sheet"]["target_exists"] is True
+    assert tracked["access_sheet"]["access_evidence_level"] == (
+        "file_exists_and_ffprobe_metadata"
+    )
+    assert tracked["access_sheet"]["mp4_size_bytes"] > 0
+    assert tracked["access_sheet"]["manifest_size_bytes"] > 0
+    assert tracked["review_guidance"]["answer_style"] == "freeform"
+    assert len(tracked["review_guidance"]["look_for"]) <= 3
+    assert tracked["review_guidance"]["user_review_requested_now"] is False
+    assert tracked["render_gate"]["new_render_run"] is True
+    assert tracked["render_gate"]["new_media_created"] is True
+    assert tracked["render_gate"]["tracked_binary_artifact_created"] is False
+    assert tracked["render_gate"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["stage_7_freeform_normalizer_used"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["rights_status"] == "pending"
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_representative_micro_scene_internal_review_doc_records_access_and_boundaries():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "representative-micro-scene-internal-review-specimen.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10au Representative Micro-Scene Internal Review Specimen" in text
+    assert "clip-ed10au-representative-micro-scene-internal-review-specimen-001" in text
+    assert "clip-ed10at-internal-review-observation-readback-001" in text
+    assert "団長" in text
+    assert "倒して回ってるんです" in text
+    assert "マリンならあっちにいたよ" in text
+    assert "actual_script_content_present: `true`" in text
+    assert "cue_labels_used_as_main_content: `false`" in text
+    assert "access_state: `verified_present`" in text
+    assert "target_exists: `true`" in text
+    assert "file_exists_and_ffprobe_metadata" in text
+    assert "open_representative_micro_scene_internal_review_specimen.ps1" in text
+    assert "stage_7_freeform_normalizer_used: `false`" in text
+    assert "tracked_binary_artifact_created: `false`" in text
+    assert "episodes_tracked: `false`" in text
+    assert "public_use_permission: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

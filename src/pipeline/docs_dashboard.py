@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10at',
-         'artifact_id': 'clip-ed10at-internal-review-observation-readback-001',
+        "current_focus": {'feature_id': 'ED-10au',
+         'artifact_id': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'internal_review_observation_readback_ready',
+         'state': 'representative_micro_scene_internal_review_specimen_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -129,18 +129,19 @@ def build_project_status(
          'internal_review_video_candidate_package_artifact_id': 'clip-ed10ar-internal-review-video-candidate-package-001',
          'internal_review_video_candidate_access_sheet_artifact_id': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
          'internal_review_video_observation_readback_artifact_id': 'clip-ed10at-internal-review-observation-readback-001',
+         'representative_micro_scene_internal_review_specimen_artifact_id': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['cut_008'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
          'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10at_internal_review_observation_readback_ready',
-         'user_action_type': 'NO_USER_ACTION_OBSERVATION_READBACK_ONLY',
-         'next_review_action_type': 'NO_REVIEW_CARD_OBSERVATION_READBACK_ONLY',
+         'route_status': 'ed10au_representative_micro_scene_internal_review_specimen_ready',
+         'user_action_type': 'NO_USER_ACTION_SPECIMEN_ACCESS_VERIFIED_ONLY',
+         'next_review_action_type': 'OPTIONAL_FREEFORM_REVIEW_ACCESS_VERIFIED_LATER',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'artifact_lineage_gap_repaired_observation_surface_added',
+         'main_issue': 'ed10at_memo_like_probe_replaced_by_representative_micro_scene_specimen',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -980,6 +981,50 @@ def build_project_status(
                                                                             'public_use_permission': False,
                                                                             'monetization_acceptance': False,
                                                                             'user_observation_converted_to_approval': False},
+         'subtitle_representative_micro_scene_internal_review_specimen': {'status': 'representative_micro_scene_internal_review_specimen_ready',
+                                                                            'artifact_id': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
+                                                                            'metadata_json': 'docs/style_intent/representative-micro-scene-internal-review-specimen.json',
+                                                                            'doc': 'docs/style_intent/representative-micro-scene-internal-review-specimen.md',
+                                                                            'launcher': 'scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1',
+                                                                            'source_internal_review_observation_readback_artifact_id': 'clip-ed10at-internal-review-observation-readback-001',
+                                                                            'source_internal_review_video_candidate_access_sheet_artifact_id': 'clip-ed10as-internal-review-access-sheet-fullpath-001',
+                                                                            'source_internal_review_video_candidate_package_artifact_id': 'clip-ed10ar-internal-review-video-candidate-package-001',
+                                                                            'active_diagnostic_proof_source_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
+                                                                            'scene_id': 'ed10au_real_transcript_micro_scene_sub_004_to_sub_006',
+                                                                            'source_text': 'real_transcript_sub_004_to_sub_006',
+                                                                            'source_subtitle_ids': ['sub_004',
+                                                                                                    'sub_005',
+                                                                                                    'sub_006'],
+                                                                            'actual_script_content_present': True,
+                                                                            'cue_labels_used_as_main_content': False,
+                                                                            'forbidden_cue_labels': ['NORMAL DIALOGUE CUE',
+                                                                                                     'SHOUT HIGH INTENSITY',
+                                                                                                     'LOW PRESSURE WHISPER CUE'],
+                                                                            'script_event_count': 3,
+                                                                            'duration_seconds': 9.18,
+                                                                            'access_state': 'verified_present',
+                                                                            'target_exists': True,
+                                                                            'access_evidence_level': 'file_exists_and_ffprobe_metadata',
+                                                                            'evidence_source': 'local_render_result_probe',
+                                                                            'mp4_repo_relative_path': 'episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4',
+                                                                            'mp4_size_bytes': 3538973,
+                                                                            'launcher_or_open_command': 'powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1',
+                                                                            'new_render_run': True,
+                                                                            'new_media_created': True,
+                                                                            'bounded_internal_review_specimen_render': True,
+                                                                            'tracked_binary_artifact_created': False,
+                                                                            'episodes_tracked': False,
+                                                                            'review_look_for_count': 3,
+                                                                            'answer_style': 'freeform',
+                                                                            'user_review_requested_now': False,
+                                                                            'stage_7_freeform_normalizer_used': False,
+                                                                            'production_subtitle_design_acceptance': False,
+                                                                            'production_render_acceptance': False,
+                                                                            'creative_acceptance': False,
+                                                                            'rights_status': 'pending',
+                                                                            'publishing_acceptance': False,
+                                                                            'public_use_permission': False,
+                                                                            'monetization_acceptance': False},
          'review_surface_layout_debt': {'status': 'recorded_minimal_primary_layout_improvement_applied',
                                         'issue': 'primary Candidate Visual Evidence samples '
                                                  'remained too small/compressed',
@@ -1040,17 +1085,17 @@ def build_project_status(
                            'repeated_cut_008_review_allowed': False,
                            'same_candidate_comparison_review_allowed': False,
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
-                           'current_blocker': 'none_for_internal_review_observation_readback',
+                           'current_blocker': 'none_for_representative_micro_scene_specimen',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
-         'review_card': {'status': 'withheld_observation_readback_only',
-                         'action_type': 'NO_REVIEW_CARD_OBSERVATION_READBACK_ONLY',
-                         'target': 'clip-ed10at-internal-review-observation-readback-001',
-                         'artifact_id': 'clip-ed10at-internal-review-observation-readback-001',
-                         'axis': 'internal_review_observation_readback',
+         'review_card': {'status': 'withheld_access_verified_specimen_only',
+                         'action_type': 'NO_REVIEW_CARD_SPECIMEN_READY_ONLY',
+                         'target': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
+                         'artifact_id': 'clip-ed10au-representative-micro-scene-internal-review-specimen-001',
+                         'axis': 'representative_micro_scene_internal_review_specimen',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10at consumes the user observation from the ED-10as/ED-10ar internal review MP4 without turning it into approval.',
+                         'what_changed': 'ED-10au turns the ED-10at memo-like cue-probe warning into an access-verified tiny scene with actual Japanese subtitle/script content.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -1058,17 +1103,20 @@ def build_project_status(
                                         'same cut_008 dense/multiline pass',
                                         'production subtitle design acceptance'],
                          'input_mode': 'none',
-                         'completion_signal': 'use ED-10at as an observation readback only; no user-side work is requested now, and no production/public approval is granted.'},
+                         'completion_signal': 'ED-10au access is verified and no user-side review is requested now; any later observation stays freeform and non-approving.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'internal_review_observation_readback_no_review_card',
+         'review_surface_direction': 'representative_micro_scene_access_verified_no_review_request_now',
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
-         'review_debt': [{'debt_id': 'representative_internal_review_specimen',
-                          'status': 'needed_if_continuing_toward_real_internal_review',
-                          'next_action': 'build a representative micro-scene review specimen with actual subtitle/script content instead of cue labels'},
+         'review_debt': [{'debt_id': 'optional_freeform_internal_review_observation',
+                          'status': 'available_after_access_verification_when_supervisor_requests',
+                          'next_action': 'open the ED-10au launcher only when a later supervisor asks for freeform observation'},
+                         {'debt_id': 'script_timing_audio_layout_fix_axis',
+                          'status': 'classify_after_optional_observation',
+                          'next_action': 'if review finds friction, choose whether the fix belongs to script, timing/audio, visual layout, or render path'},
                          {'debt_id': 'render_path_stage_4_gap',
                           'status': 'only_if_concrete_render_diagnostic_gap_exists',
                           'next_action': 'open final-render-path-stage-4 only for a concrete diagnostic gap; do not use stage-7 freeform normalizer now'}],
@@ -1413,6 +1461,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10as-internal-review-access-sheet-fullpath-001"
         if feature_id == "ED-10at":
             active_artifact = "clip-ed10at-internal-review-observation-readback-001"
+        if feature_id == "ED-10au":
+            active_artifact = "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
         features.append(
             {
                 "id": feature_id,
@@ -1476,7 +1526,7 @@ def _artifact_coverage(
     mentioned = [
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
-    current_focus_registered = "clip-ed10at-internal-review-observation-readback-001" in artifact_ids
+    current_focus_registered = "clip-ed10au-representative-micro-scene-internal-review-specimen-001" in artifact_ids
     return {
         "registered_artifact_count": len(artifact_ids),
         "features_with_artifact_count": len(mentioned),
@@ -1522,6 +1572,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
 
+        {
+            "item": "ED-10au representative micro-scene internal review specimen",
+            "artifact": "clip-ed10au-representative-micro-scene-internal-review-specimen-001",
+            "question": "Does the specimen read as an actual tiny scene with Japanese subtitle/script content rather than the ED-10at cue-label memo probe?",
+            "next_route": "Use optional freeform internal review only when requested; classify any fix as script, timing/audio, visual layout, or render path without inferring approval.",
+        },
         {
             "item": "ED-10at internal review observation readback",
             "artifact": "clip-ed10at-internal-review-observation-readback-001",
@@ -1741,6 +1797,23 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Representative Micro-Scene Specimen Readback",
+            "command": "see docs\\style_intent\\representative-micro-scene-internal-review-specimen.md",
+            "target": "docs/style_intent/representative-micro-scene-internal-review-specimen.md",
+            "when_to_use": (
+                "Use to inspect the ED-10au readback: actual Japanese transcript content, "
+                "verified same-machine MP4 access, and closed production/public gates."
+            ),
+        },
+        {
+            "label": "Open Representative Micro-Scene Specimen",
+            "command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1",
+            "target": "scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1",
+            "when_to_use": (
+                "Use later only when a supervisor asks to open the ED-10au internal review specimen MP4."
+            ),
         },
         {
             "label": "Internal Review Observation Readback",
@@ -2159,6 +2232,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "internal_review_access_sheet_fullpath_ready"
     if feature_id == "ED-10at":
         return "internal_review_observation_readback_ready"
+    if feature_id == "ED-10au":
+        return "representative_micro_scene_internal_review_specimen_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2241,6 +2316,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10at":
         return 100
+    if feature_id == "ED-10au":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -2321,6 +2398,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the access sheet and launcher only for later optional open/readback; keep observation freeform and non-approving."
     if feature_id == "ED-10at":
         return "Use the ED-10at observation readback to choose a representative micro-scene specimen for real internal review, or final-render-path-stage-4 only for a concrete diagnostic render gap; do not infer approval."
+    if feature_id == "ED-10au":
+        return "Use the access-verified representative micro-scene specimen only for optional later freeform observation; classify any next fix as script, timing/audio, visual layout, or render path without inferring approval."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

@@ -724,6 +724,37 @@ Boundary flags remain false or pending:
 - `stage_7_freeform_normalizer_used=false`
 - `user_observation_converted_to_approval=false`
 
+## `clip-ed10au-representative-micro-scene-internal-review-specimen-001`
+
+| field | value |
+|---|---|
+| title | ED-10au Representative Micro-Scene Internal Review Specimen |
+| purpose | Replace the ED-10at cue-label memo probe with a bounded internal-review specimen that contains actual Japanese subtitle/script content and enough scene continuity for later freeform review. |
+| storage_class | tracked JSON/Markdown readback plus launcher; ignored same-machine MP4/ASS/local manifest under `episodes/` |
+| repo_relative_path | docs/style_intent/representative-micro-scene-internal-review-specimen.json; docs/style_intent/representative-micro-scene-internal-review-specimen.md; scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1 |
+| open_command | powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_internal_review_specimen.ps1 |
+| generated_from | ED-10au consumes ED-10at observation readback, ED-10as access sheet, ED-10ar candidate package, source video/audio from the local JP pilot episode, and real transcript subtitles `sub_004`-`sub_006`. |
+| validation_command | Parse ED-10au, ED-10at, ED-10as, ED-10ar, and dashboard JSON; run targeted subtitle/dashboard/review tests; ffprobe the ignored MP4; git diff --check; git diff --cached --check; verify git ls-files episodes remains empty. |
+| latest_local_smoke | MP4 exists on current host at `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_internal_review_specimen/representative_micro_scene_internal_review_specimen.mp4`, size `3538973` bytes, duration `9.18s`, resolution `1920x1080`, codecs `h264/aac`, access_state `verified_present`, and manifest_size_bytes `10743`. |
+| review_status | access verified; no user review requested now; later observation must stay freeform with at most three look-for points |
+| next_action | If a later supervisor asks for review, open the launcher and classify the next fix as script, timing/audio, visual layout, or render path; do not infer production/public approval. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `stage_7_freeform_normalizer_used=false`
+- `user_review_requested_now=false`
+
 ## `clip-ed10ar-internal-review-video-candidate-package-001`
 
 | field | value |
