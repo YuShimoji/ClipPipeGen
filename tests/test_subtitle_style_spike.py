@@ -2000,6 +2000,103 @@ def test_subtitle_production_limitation_lift_stage5_doc_records_ready_packet():
     assert "public_use_permission: `false`" in text
 
 
+def test_internal_review_video_observation_readback_matches_tracked_json():
+    style_dir = REPO_ROOT / "docs" / "style_intent"
+    access_sheet = json.loads(
+        (style_dir / "internal-review-video-candidate-access-sheet.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    candidate_package = json.loads(
+        (style_dir / "internal-review-video-candidate-package.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    tracked = json.loads(
+        (style_dir / "internal-review-video-observation-readback.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    generated = preset_selector.build_internal_review_video_observation_readback(
+        access_sheet=access_sheet,
+        candidate_package=candidate_package,
+    )
+
+    assert tracked == generated
+    assert tracked["schema_id"] == (
+        preset_selector.INTERNAL_REVIEW_OBSERVATION_SCHEMA_ID
+    )
+    assert tracked["artifact_id"] == (
+        preset_selector.INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID
+    )
+    assert tracked["feature_id"] == "ED-10at"
+    assert tracked["source_internal_review_video_candidate_access_sheet_artifact_id"] == (
+        preset_selector.INTERNAL_REVIEW_VIDEO_CANDIDATE_ACCESS_SHEET_ARTIFACT_ID
+    )
+    assert tracked["source_internal_review_video_candidate_package_artifact_id"] == (
+        preset_selector.INTERNAL_REVIEW_VIDEO_CANDIDATE_PACKAGE_ARTIFACT_ID
+    )
+    assert tracked["source_context"]["requested_access_sheet_files_present"] is True
+    assert tracked["source_context"]["requested_candidate_package_files_present"] is True
+    assert tracked["source_context"]["stale_checkout_anchor_repaired"] is True
+    assert tracked["user_observation"]["reported_subtitles_all_present"] == [
+        "NORMAL DIALOGUE CUE",
+        "SHOUT HIGH INTENSITY",
+        "LOW PRESSURE WHISPER CUE",
+    ]
+    by_axis = {item["axis"]: item for item in tracked["observation_classifications"]}
+    assert by_axis["openability"]["classification"] == "pass"
+    assert by_axis["duration"]["classification"] == "expected_pass"
+    assert by_axis["subtitle_cue_coverage"]["classification"] == (
+        "pass_for_diagnostic_cue_probe"
+    )
+    assert by_axis["narrative_video_continuity"]["classification"] == (
+        "warning_not_representative_review"
+    )
+    assert by_axis["review_guidance_clarity"]["classification"] == "partial_or_fail"
+    assert by_axis["artifact_semantics"]["classification"] == (
+        "diagnostic_subtitle_render_path_cue_probe"
+    )
+    assert tracked["next_practical_axis"]["do_not_use_route_id"] == (
+        "stage-7-freeform-normalizer"
+    )
+    assert tracked["render_gate"]["new_render_run"] is False
+    assert tracked["render_gate"]["new_media_created"] is False
+    assert tracked["render_gate"]["episodes_tracked"] is False
+    assert tracked["boundaries"]["production_render_acceptance"] is False
+    assert tracked["boundaries"]["public_use_permission"] is False
+    assert tracked["boundaries"]["monetization_acceptance"] is False
+    assert tracked["boundaries"]["user_observation_converted_to_approval"] is False
+    assert tracked["validation"]["all_checks_passed"] is True
+
+
+def test_internal_review_video_observation_readback_doc_records_boundary():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "internal-review-video-observation-readback.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10at Internal Review Observation Readback" in text
+    assert "clip-ed10as-internal-review-access-sheet-fullpath-001" in text
+    assert "clip-ed10ar-internal-review-video-candidate-package-001" in text
+    assert "NORMAL DIALOGUE CUE" in text
+    assert "SHOUT HIGH INTENSITY" in text
+    assert "LOW PRESSURE WHISPER CUE" in text
+    assert "warning_not_representative_review" in text
+    assert "representative-micro-scene-internal-review-specimen" in text
+    assert "final-render-path-stage-4" in text
+    assert "stage-7-freeform-normalizer" in text
+    assert "fixed_form_required: `false`" in text
+    assert "yes_no_required: `false`" in text
+    assert "screenshot_required: `false`" in text
+    assert "stage_7_freeform_normalizer_used: `false`" in text
+    assert "new_render_run: `false`" in text
+    assert "new_media_created: `false`" in text
+    assert "user_observation_converted_to_approval: `false`" in text
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",

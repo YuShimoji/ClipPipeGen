@@ -3,17 +3,22 @@ id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: internal_review_access_sheet_fullpath_ready
+health: internal_review_observation_readback_ready
 progress_pct: 100
-last_touched: 2026-06-28
-active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
+last_touched: 2026-06-29
+active_artifact: clip-ed10at-internal-review-observation-readback-001
+source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
 
-## Current ED-10as Internal Review Access Sheet Link
+## Current ED-10at Internal Review Observation Readback Link
+
+ED-10at checkpoint, 2026-06-29 JST: `clip-ed10at-internal-review-observation-readback-001` is the latest tracked observation readback. It consumes the ED-10as access sheet and ED-10ar candidate package after stale checkout drift was repaired, records the user observation that the MP4 opened, stayed short, showed only the NORMAL/SHOUT/LOW diagnostic cue labels, and looked chopped or memo-like, and keeps the result as a diagnostic subtitle render path cue probe only. It creates no render, replay, or media, tracks no `episodes/` files, uses no stage-7 freeform normalizer, asks for no fixed review card, and keeps production/public/rights/publishing/monetization gates false or pending.
+
+## Source ED-10as Internal Review Access Sheet Link
 
 ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the latest tracked access sheet. It consumes ED-10ar, records exact current-host full paths for the ignored MP4, ASS, and manifest, and adds `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, asks for no user decision now, asks for no fixed form, requires no screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending.
 

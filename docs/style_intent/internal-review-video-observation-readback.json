@@ -1,0 +1,198 @@
+{
+  "schema_id": "clippipegen.internal_review_video_observation_readback.v1",
+  "artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+  "feature_id": "ED-10at",
+  "status": "internal_review_observation_readback_ready",
+  "surface_kind": "tracked_user_observation_readback",
+  "render_level": "observation_readback_no_new_render",
+  "source_internal_review_video_candidate_access_sheet_artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+  "source_internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+  "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+  "source_context": {
+    "access_sheet_path": "docs/style_intent/internal-review-video-candidate-access-sheet.json",
+    "candidate_package_path": "docs/style_intent/internal-review-video-candidate-package.json",
+    "requested_access_sheet_files_present": true,
+    "requested_candidate_package_files_present": true,
+    "stale_checkout_anchor_repaired": true,
+    "anchor_resolution": "ED-10at anchors to the current ED-10as access sheet and ED-10ar internal review video candidate package. The earlier ED-10ak/ED-10af-only anchor was a stale-checkout fallback and is not the committed authority chain.",
+    "launcher_or_open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_internal_review_video_candidate.ps1",
+    "video_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/subtitle_render_path_selector_probe.mp4",
+    "video_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\subtitle_render_path_selector_probe\\subtitle_render_path_selector_probe.mp4",
+    "candidate_duration_seconds": 4.2,
+    "candidate_resolution": "1920x1080"
+  },
+  "user_observation": {
+    "observation_id": "ed10at_user_internal_review_mp4_observation",
+    "source": "user_freeform_observation",
+    "opened_mp4": true,
+    "reported_duration_matches_short_expectation": true,
+    "reported_subtitles_all_present": [
+      "NORMAL DIALOGUE CUE",
+      "SHOUT HIGH INTENSITY",
+      "LOW PRESSURE WHISPER CUE"
+    ],
+    "reported_scenes_look_abrupt_or_chopped_together": true,
+    "reported_video_differs_considerably_from_prior_artifacts": true,
+    "reported_user_does_not_know_how_to_evaluate_it": true,
+    "reported_memo_like_appearance": true
+  },
+  "observation_classifications": [
+    {
+      "axis": "openability",
+      "classification": "pass",
+      "basis": "The user successfully opened the MP4 from the ED-10as access route.",
+      "approval_implication": "access route only"
+    },
+    {
+      "axis": "duration",
+      "classification": "expected_pass",
+      "basis": "The user reported the MP4 was short as expected; ED-10ar records 4.2 seconds for the candidate package.",
+      "approval_implication": "diagnostic duration expectation only"
+    },
+    {
+      "axis": "subtitle_cue_coverage",
+      "classification": "pass_for_diagnostic_cue_probe",
+      "basis": "The visible subtitles were exactly the three cue labels reported by the user.",
+      "observed_cues": [
+        "NORMAL DIALOGUE CUE",
+        "SHOUT HIGH INTENSITY",
+        "LOW PRESSURE WHISPER CUE"
+      ],
+      "actual_script_content_present": false,
+      "approval_implication": "cue overlay visibility only"
+    },
+    {
+      "axis": "narrative_video_continuity",
+      "classification": "warning_not_representative_review",
+      "basis": "The user reported abrupt, chopped-together scenes and a large difference from prior artifacts.",
+      "approval_implication": "not representative episode or production video review"
+    },
+    {
+      "axis": "memo_like_appearance",
+      "classification": "warning_observed",
+      "basis": "The user said the video looks like a memo.",
+      "approval_implication": "diagnostic artifact semantics, not production polish"
+    },
+    {
+      "axis": "review_guidance_clarity",
+      "classification": "partial_or_fail",
+      "basis": "The user did not know how to evaluate the artifact.",
+      "approval_implication": "future review surfaces need clearer evaluation frame"
+    },
+    {
+      "axis": "artifact_semantics",
+      "classification": "diagnostic_subtitle_render_path_cue_probe",
+      "basis": "Cue labels, short duration, and memo-like assembly match a diagnostic subtitle render-path cue probe.",
+      "approval_implication": "not representative episode, production video, rights, publishing, monetization, or public-use review"
+    }
+  ],
+  "diagnostic_boundary": {
+    "artifact_semantics": "diagnostic_subtitle_render_path_cue_probe",
+    "representative_episode_video_review": false,
+    "production_video_review": false,
+    "production_public_rights_publishing_monetization_acceptance": false,
+    "user_observation_converted_to_approval": false
+  },
+  "next_practical_axis": {
+    "recommended_route_id": "representative-micro-scene-internal-review-specimen",
+    "recommended_route_condition": "Use when continuing toward real internal review; build a small representative scene with actual subtitle/script content instead of cue labels.",
+    "alternate_route_id": "final-render-path-stage-4",
+    "alternate_route_condition": "Use only if there is a concrete render-path diagnostic gap that ED-10ar/ED-10as plus this observation cannot answer.",
+    "do_not_use_route_id": "stage-7-freeform-normalizer",
+    "do_not_use_condition": "Do not use unless a later request explicitly asks for a production/public freeform decision to be normalized.",
+    "stage_7_continuation_allowed_now": false,
+    "new_render_allowed_in_this_slice": false
+  },
+  "review_policy": {
+    "human_review_required": false,
+    "user_side_work": "none_for_this_observation_readback",
+    "fixed_form_required": false,
+    "yes_no_required": false,
+    "screenshot_required": false,
+    "review_card_emitted": false,
+    "stage_7_freeform_normalizer_used": false,
+    "human_review_required_only_for": [
+      "representative_micro_scene_internal_review",
+      "production_subtitle_design_acceptance",
+      "production_render_acceptance",
+      "creative_acceptance",
+      "rights_status",
+      "publishing_acceptance",
+      "public_use_permission"
+    ]
+  },
+  "render_gate": {
+    "level": "observation_readback_no_new_render",
+    "existing_output_first_reused": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "source_access_sheet_new_render": false,
+    "source_candidate_package_new_render": false,
+    "diagnostic_only": true,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "production_render_acceptance": false,
+    "public_use_permission": false
+  },
+  "validation": {
+    "access_sheet_source_present": true,
+    "candidate_package_source_present": true,
+    "observation_captured": true,
+    "openability_classified": true,
+    "duration_classified": true,
+    "subtitle_cue_coverage_classified": true,
+    "discontinuity_warning_recorded": true,
+    "memo_like_semantics_recorded": true,
+    "user_uncertainty_preserved": true,
+    "diagnostic_only_boundary_recorded": true,
+    "no_approval_inferred": true,
+    "no_new_render": true,
+    "no_new_replay": true,
+    "no_new_media": true,
+    "no_stage_7_continuation": true,
+    "next_axis_defined": true,
+    "render_gap_route_limited": true,
+    "no_fixed_form_required": true,
+    "no_yes_no_required": true,
+    "no_screenshot_required": true,
+    "episodes_tracking_boundary_preserved": true,
+    "all_checks_passed": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/internal-review-video-observation-readback.json",
+    "doc": "docs/style_intent/internal-review-video-observation-readback.md"
+  },
+  "boundaries": {
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "broad_renderer_style_system_built": false,
+    "new_render_created": false,
+    "font_binaries_added": false,
+    "episodes_tracked": false,
+    "access_sheet_source_present": true,
+    "candidate_package_source_present": true,
+    "new_render_run": false,
+    "new_replay_run": false,
+    "new_media_created": false,
+    "source_access_sheet_reused": true,
+    "source_candidate_package_reused": true,
+    "source_candidate_package_new_render_run": false,
+    "diagnostic_local_ignored_render_observed": true,
+    "tracked_binary_artifact_created": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "monetization_acceptance": false,
+    "stage_7_freeform_normalizer_used": false,
+    "stage_7_continuation_allowed_now": false,
+    "user_observation_converted_to_approval": false,
+    "representative_episode_video_review": false,
+    "production_video_review": false,
+    "diagnostic_only": true,
+    "internal_review_only": true
+  }
+}

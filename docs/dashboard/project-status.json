@@ -24,8 +24,8 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10as",
-    "artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+    "feature_id": "ED-10at",
+    "artifact_id": "clip-ed10at-internal-review-observation-readback-001",
     "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
     "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
     "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
@@ -36,7 +36,7 @@
     "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "internal_review_access_sheet_fullpath_ready",
+    "state": "internal_review_observation_readback_ready",
     "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
     "source_l2_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
     "lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
@@ -53,6 +53,7 @@
     "production_limitation_lift_stage_5_user_decision_ready_artifact_id": "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
     "internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
     "internal_review_video_candidate_access_sheet_artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+    "internal_review_video_observation_readback_artifact_id": "clip-ed10at-internal-review-observation-readback-001",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -61,9 +62,9 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10l_keifont_pop_dialogue_candidate",
     "selected_source_license_install_route": "ed10l_keifont_pop_dialogue_candidate",
-    "route_status": "ed10as_internal_review_access_sheet_fullpath_ready",
-    "user_action_type": "NO_USER_ACTION_ACCESS_SHEET_READY_ONLY",
-    "next_review_action_type": "NO_REVIEW_CARD_ACCESS_SHEET_READY_ONLY",
+    "route_status": "ed10at_internal_review_observation_readback_ready",
+    "user_action_type": "NO_USER_ACTION_OBSERVATION_READBACK_ONLY",
+    "next_review_action_type": "NO_REVIEW_CARD_OBSERVATION_READBACK_ONLY",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
     "main_issue": "artifact_lineage_gap_repaired_observation_surface_added",
@@ -1003,6 +1004,44 @@
       "youtube_publish_package_created": false,
       "episodes_tracked": false
     },
+    "subtitle_internal_review_video_observation_readback": {
+      "status": "internal_review_observation_readback_ready",
+      "artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+      "metadata_json": "docs/style_intent/internal-review-video-observation-readback.json",
+      "doc": "docs/style_intent/internal-review-video-observation-readback.md",
+      "source_internal_review_video_candidate_access_sheet_artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+      "source_internal_review_video_candidate_package_artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
+      "active_diagnostic_proof_source_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
+      "openability": "pass",
+      "duration": "expected_pass",
+      "subtitle_cue_coverage": "pass_for_diagnostic_cue_probe",
+      "subtitle_cues": [
+        "NORMAL DIALOGUE CUE",
+        "SHOUT HIGH INTENSITY",
+        "LOW PRESSURE WHISPER CUE"
+      ],
+      "narrative_video_continuity": "warning_not_representative_review",
+      "memo_like_appearance": "warning_observed",
+      "review_guidance_clarity": "partial_or_fail",
+      "artifact_semantics": "diagnostic_subtitle_render_path_cue_probe_not_representative_episode_review",
+      "stale_checkout_anchor_repaired": true,
+      "recommended_next_axis": "representative-micro-scene-internal-review-specimen",
+      "alternate_next_axis": "final-render-path-stage-4_only_for_concrete_render_diagnostic_gap",
+      "stage_7_freeform_normalizer_used": false,
+      "stage_7_continuation_allowed_now": false,
+      "new_render_run": false,
+      "new_media_created": false,
+      "tracked_binary_artifact_created": false,
+      "episodes_tracked": false,
+      "production_subtitle_design_acceptance": false,
+      "production_render_acceptance": false,
+      "creative_acceptance": false,
+      "rights_status": "pending",
+      "publishing_acceptance": false,
+      "public_use_permission": false,
+      "monetization_acceptance": false,
+      "user_observation_converted_to_approval": false
+    },
     "review_surface_layout_debt": {
       "status": "recorded_minimal_primary_layout_improvement_applied",
       "issue": "primary Candidate Visual Evidence samples remained too small/compressed",
@@ -1064,18 +1103,18 @@
       "review_reset_trigger_active": [
         "new_axis_or_changed_evidence_only"
       ],
-      "current_blocker": "none_for_internal_review_access_sheet_fullpath",
+      "current_blocker": "none_for_internal_review_observation_readback",
       "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "review_card": {
-      "status": "withheld_access_sheet_ready_only",
-      "action_type": "NO_REVIEW_CARD_ACCESS_SHEET_READY_ONLY",
-      "target": "clip-ed10as-internal-review-access-sheet-fullpath-001",
-      "artifact_id": "clip-ed10as-internal-review-access-sheet-fullpath-001",
-      "axis": "internal_review_access_sheet_fullpath",
+      "status": "withheld_observation_readback_only",
+      "action_type": "NO_REVIEW_CARD_OBSERVATION_READBACK_ONLY",
+      "target": "clip-ed10at-internal-review-observation-readback-001",
+      "artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+      "axis": "internal_review_observation_readback",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "ED-10as adds exact current-host full paths and a repo-local launcher for the ED-10ar internal review video candidate.",
+      "what_changed": "ED-10at consumes the user observation from the ED-10as/ED-10ar internal review MP4 without turning it into approval.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -1085,7 +1124,7 @@
         "production subtitle design acceptance"
       ],
       "input_mode": "none",
-      "completion_signal": "use ED-10as as an access sheet only; no user decision is requested now, and no production/public approval is granted."
+      "completion_signal": "use ED-10at as an observation readback only; no user-side work is requested now, and no production/public approval is granted."
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -1096,13 +1135,18 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "internal_review_access_sheet_fullpath_no_user_review_now",
+    "review_surface_direction": "internal_review_observation_readback_no_review_card",
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
-        "debt_id": "internal_review_access_sheet_fullpath",
-        "status": "ready_for_optional_user_review",
-        "next_action": "use ED-10as only as a later open/access instruction sheet; optional observation stays freeform and non-approving"
+        "debt_id": "representative_internal_review_specimen",
+        "status": "needed_if_continuing_toward_real_internal_review",
+        "next_action": "build a representative micro-scene review specimen with actual subtitle/script content instead of cue labels"
+      },
+      {
+        "debt_id": "render_path_stage_4_gap",
+        "status": "only_if_concrete_render_diagnostic_gap_exists",
+        "next_action": "open final-render-path-stage-4 only for a concrete diagnostic gap; do not use stage-7 freeform normalizer now"
       }
     ],
     "emoji_treatment": "neutral_ignore_for_evaluation",
@@ -1126,6 +1170,12 @@
       "command": ".\\open-artifacts.ps1",
       "target": "artifacts/ARTIFACTS.md",
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
+    },
+    {
+      "label": "Internal Review Observation Readback",
+      "command": "see docs\\style_intent\\internal-review-video-observation-readback.md",
+      "target": "docs/style_intent/internal-review-video-observation-readback.md",
+      "when_to_use": "Use to inspect the ED-10at user observation readback: openability and cue visibility pass diagnostically, chopped/memo-like continuity is not production review, and no approval is inferred."
     },
     {
       "label": "Internal Review Video Candidate Access Sheet",
@@ -2088,6 +2138,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10at",
+      "title": "Internal Review Observation Readback v0",
+      "status": "done",
+      "health": "internal_review_observation_readback_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10at-internal-review-observation-readback-001",
+      "next_action": "Use the ED-10at observation readback to choose a representative micro-scene specimen for real internal review, or final-render-path-stage-4 only for a concrete diagnostic render gap; do not infer approval.",
+      "summary_excerpt": "clip-ed10at-internal-review-observation-readback-001 adds tracked JSON/Markdown at docs/style_intent/internal-review-video-observation-readback.json / .md. It consumes the user's freeform observation after opening the E...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -2562,9 +2623,9 @@
     }
   ],
   "feature_summary": {
-    "feature_count": 113,
+    "feature_count": 114,
     "status_counts": {
-      "done": 97,
+      "done": 98,
       "proposed": 14,
       "approved": 1,
       "rejected": 1
@@ -2782,6 +2843,16 @@
       "next_action": "Use the launcher only when a later supervisor asks for optional freeform observation."
     },
     {
+      "artifact_id": "clip-ed10at-internal-review-observation-readback-001",
+      "title": "ED-10at Internal Review Observation Readback",
+      "purpose": "Consume the user's freeform observation after opening the ED-10as / ED-10ar internal review MP4 without turning it into production, public-use, rights, publishing, monetization, or approval state.",
+      "storage_class": "",
+      "repo_relative_path": "docs/style_intent/internal-review-video-observation-readback.json; docs/style_intent/internal-review-video-observation-readback.md",
+      "open_command": "see docs\\\\style_intent\\\\internal-review-video-observation-readback.md",
+      "review_status": "observation readback only; no Review Card, no user-side work, no representative episode/video review, and no production/public approval",
+      "next_action": "Build a representative micro-scene specimen with actual subtitle/script content only if continuing toward real internal review. Use final-render-path-stage-4 only for a concrete render diagnostic gap; do not use stage-7 freeform normalization now."
+    },
+    {
       "artifact_id": "clip-ed10ar-internal-review-video-candidate-package-001",
       "title": "ED-10ar Internal Review Video Candidate Package",
       "purpose": "Assemble a tracked readback for an internal-review video candidate package from existing ignored diagnostic MP4/ASS/manifest output without running a new render or granting production/public/rights/render approval.",
@@ -2985,6 +3056,7 @@
       "clip-ed10ak-final-render-path-stage-2-replayability-001",
       "clip-ed10al-final-render-path-stage-3-rehearsal-001",
       "clip-ed10as-internal-review-access-sheet-fullpath-001",
+      "clip-ed10at-internal-review-observation-readback-001",
       "clip-ed10ar-internal-review-video-candidate-package-001",
       "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001",
       "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001",
@@ -3004,15 +3076,21 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 39
+    "artifact_count": 40
   },
   "artifact_coverage": {
-    "registered_artifact_count": 39,
-    "features_with_artifact_count": 40,
+    "registered_artifact_count": 40,
+    "features_with_artifact_count": 41,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
+    {
+      "item": "ED-10at internal review observation readback",
+      "artifact": "clip-ed10at-internal-review-observation-readback-001",
+      "question": "Does the readback preserve the user's observation that the MP4 opened, cue labels were visible, duration matched, but the video felt chopped together, memo-like, and hard to evaluate?",
+      "next_route": "If real internal review continues, build a representative micro-scene specimen with actual subtitle/script content; use final-render-path-stage-4 only for a concrete render diagnostic gap."
+    },
     {
       "item": "ED-10as internal review access sheet fullpath",
       "artifact": "clip-ed10as-internal-review-access-sheet-fullpath-001",
@@ -3220,7 +3298,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 987,
+      "line_count": 1052,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3228,13 +3306,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 275,
+      "boundary_term_count": 281,
       "status": "reference"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 181,
+      "line_count": 182,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3242,7 +3320,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 298,
+      "boundary_term_count": 302,
       "status": "in_progress"
     },
     {
@@ -3303,18 +3381,19 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 312,
+      "line_count": 317,
       "metadata": {
         "id": "subtitle-style-intent-registry",
         "title": "Subtitle Style Intent Registry",
         "type": "design_readback",
         "status": "diagnostic_intent_registry_ready",
-        "health": "internal_review_access_sheet_fullpath_ready",
+        "health": "internal_review_observation_readback_ready",
         "progress_pct": "100",
-        "last_touched": "2026-06-28",
-        "active_artifact": "clip-ed10as-internal-review-access-sheet-fullpath-001",
+        "last_touched": "2026-06-29",
+        "active_artifact": "clip-ed10at-internal-review-observation-readback-001",
+        "source_internal_review_access_sheet": "clip-ed10as-internal-review-access-sheet-fullpath-001",
         "source_internal_review_package": "clip-ed10ar-internal-review-video-candidate-package-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -3322,7 +3401,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 84,
+      "boundary_term_count": 87,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -3342,7 +3421,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1256,
+      "line_count": 1289,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3350,7 +3429,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 623,
+      "boundary_term_count": 638,
       "status": "reference"
     },
     {
@@ -3412,7 +3491,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 648,
+      "line_count": 697,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3420,7 +3499,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 241,
+      "boundary_term_count": 246,
       "status": "reference"
     },
     {
@@ -3482,7 +3561,7 @@
     {
       "path": "docs/HANDOFF.md",
       "title": "ClipPipeGen Handoff",
-      "line_count": 1330,
+      "line_count": 1404,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3490,7 +3569,7 @@
         "next": true,
         "constraints_risks": false
       },
-      "boundary_term_count": 330,
+      "boundary_term_count": 337,
       "status": "contains_done_history"
     },
     {
@@ -3676,7 +3755,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "SUBTITLE_PRESENTATION_CONTRACT",
-      "line_count": 628,
+      "line_count": 648,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3684,7 +3763,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 214,
+      "boundary_term_count": 219,
       "status": "reference"
     },
     {
@@ -3765,7 +3844,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (987 lines) is likely carrying history.",
+        "detail": "Long active doc (1052 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3777,7 +3856,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 298 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 302 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3795,13 +3874,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1256 lines) is likely carrying history.",
+        "detail": "Long active doc (1289 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 623 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 638 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3825,7 +3904,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (648 lines) is likely carrying history.",
+        "detail": "Long active doc (697 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3843,13 +3922,13 @@
       {
         "type": "stale",
         "path": "docs/HANDOFF.md",
-        "detail": "Long active doc (1330 lines) is likely carrying history.",
+        "detail": "Long active doc (1404 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/HANDOFF.md",
-        "detail": "Boundary terms appear 330 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 337 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3891,13 +3970,13 @@
       {
         "type": "stale",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Long active doc (628 lines) is likely carrying history.",
+        "detail": "Long active doc (648 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 214 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 219 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

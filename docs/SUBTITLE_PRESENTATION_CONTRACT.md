@@ -5,6 +5,26 @@ presentation. It guides the `build-subtitle-overlay-visual-proof` diagnostic
 candidate only. It does not approve production subtitle design, production
 render, creative use, rights, publishing, or public use.
 
+## Current ED-10at Internal Review Observation Readback
+
+ED-10at records `clip-ed10at-internal-review-observation-readback-001` as a
+tracked JSON/Markdown observation readback at
+`docs/style_intent/internal-review-video-observation-readback.json` and
+`docs/style_intent/internal-review-video-observation-readback.md`. It consumes
+the user's freeform observation after opening the ED-10as / ED-10ar internal
+review MP4: openability and short duration pass diagnostically, the visible
+subtitle cue labels are `NORMAL DIALOGUE CUE`, `SHOUT HIGH INTENSITY`, and
+`LOW PRESSURE WHISPER CUE`, the scenes feel abrupt or chopped together, the
+artifact looks memo-like, and the user did not know how to evaluate it.
+
+This is diagnostic subtitle render-path cue-probe readback, not representative
+episode/video review. ED-10at runs no render or replay, creates no media, does
+not use stage-7 freeform normalization, and does not approve production
+subtitle design, production render, creative use, rights, publishing,
+monetization, or public use. The next real review axis should be a
+representative micro-scene specimen with actual subtitle/script content;
+`final-render-path-stage-4` is only for a concrete render diagnostic gap.
+
 ## Current ED-10as Internal Review Access Sheet Fullpath
 
 ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is the latest tracked access sheet, while ED-10ar remains the internal review video candidate package (`clip-ed10ar-internal-review-video-candidate-package-001`) sourced from the ED-10aq stage-5 packet (`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`). ED-10as records exact current-host full paths for the ignored MP4, ASS, and manifest and adds `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, asks for no user decision now, requires no fixed form or screenshot, tracks no `episodes/` media, and keeps production/public/rights gates false or pending.

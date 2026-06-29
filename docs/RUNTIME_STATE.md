@@ -3,15 +3,16 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: internal_review_access_sheet_fullpath_ready_access_mismatch_classified
+health: internal_review_observation_readback_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_access_sheet_ready_only
-active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
+next_review_due: none_observation_readback_only
+active_artifact: clip-ed10at-internal-review-observation-readback-001
+source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -22,6 +23,28 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## Current ED-10at Internal Review Observation Readback
+
+ED-10at checkpoint, 2026-06-29 JST:
+`clip-ed10at-internal-review-observation-readback-001` is the active tracked
+observation readback. It consumes the user's freeform observation after opening
+the ED-10as / ED-10ar internal review MP4. The MP4 opened, it was short as
+expected, and the only visible subtitles were `NORMAL DIALOGUE CUE`,
+`SHOUT HIGH INTENSITY`, and `LOW PRESSURE WHISPER CUE`.
+
+The same observation is not approval: the scenes looked chopped or abrupt, the
+video looked memo-like, it differed considerably from prior artifacts, and the
+user did not know how to evaluate it. ED-10at classifies this as a diagnostic
+subtitle render-path cue probe, not representative episode/video review. It
+runs no render/replay, creates no media, tracks no `episodes/` files, does not
+continue to stage-7, and does not approve production subtitle design,
+production render, creative use, rights, publishing, monetization, or public
+use.
+
+The previous ED-10ak/ED-10af-only anchor was stale checkout drift: after
+fetching current `origin/main`, ED-10as and ED-10ar are present and are the
+authority source chain for ED-10at.
 
 ## Current ED-10ar Access Recovery Readback
 
@@ -61,9 +84,23 @@ for restart decisions.
 
 ## Current Capsule
 
-Active artifact: `clip-ed10as-internal-review-access-sheet-fullpath-001`
+Active artifact: `clip-ed10at-internal-review-observation-readback-001`
+
+Source internal review access sheet: `clip-ed10as-internal-review-access-sheet-fullpath-001`
 
 Source internal review package: `clip-ed10ar-internal-review-video-candidate-package-001`
+
+ED-10at checkpoint, 2026-06-29 JST:
+`clip-ed10at-internal-review-observation-readback-001`
+now lives at
+`docs/style_intent/internal-review-video-observation-readback.json`
+and
+`docs/style_intent/internal-review-video-observation-readback.md`.
+It records the opened MP4 observation as diagnostic only: openability and cue
+visibility pass, short duration is expected, chopped/memo-like continuity is a
+warning, and unclear evaluation guidance remains a future review-surface debt.
+No new render, replay, media, tracked `episodes/` file, stage-7 normalizer, or
+production/public/rights approval is created.
 
 ED-10as checkpoint, 2026-06-28 JST:
 `clip-ed10as-internal-review-access-sheet-fullpath-001`
@@ -638,6 +675,13 @@ gates.
 ## Next
 
 1. Continue from
+   `clip-ed10at-internal-review-observation-readback-001` when the next
+   terminal needs the consumed human observation. Treat it as a diagnostic
+   cue-probe readback, not representative episode/video review. If continuing
+   toward real internal review, build a representative micro-scene specimen
+   with actual subtitle/script content. Use `final-render-path-stage-4` only
+   for a concrete render diagnostic gap, and do not use stage-7 now.
+2. Continue from
    `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001`
    when the next terminal needs the latest user-decision-ready packet. It
    consumes ED-10ap, preserves the three bounded topics, emits no fixed user
@@ -647,14 +691,14 @@ gates.
    artifact. ED-10ar now uses it as source for
    `optional-internal-review-video-observation`, or
    `final-render-path-stage-4` only if a concrete diagnostic gap is found.
-2. Continue from
+3. Continue from
    `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001`
    when the next terminal needs the source stage-4 user decision-card packet
    that ED-10aq consumes. It consumes ED-10ao, preserves the three bounded
    topics, emits no fixed user form or fixed-choice rows, requires no
    screenshot path, requests no immediate decision, and keeps all
    production/public gates false or pending.
-3. Continue from
+4. Continue from
    `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` when
    the next terminal needs the latest production limitation-lift user-decision
    preparation state. It consumes ED-10an, preserves the three bounded owner
@@ -662,49 +706,49 @@ gates.
    all production/public gates false or pending. The next executable route is
    `production-limitation-lift-stage-4-user-decision-card`, or
    `final-render-path-stage-4` only if a concrete diagnostic gap is found.
-4. Continue from
+5. Continue from
    `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` when
    the next terminal needs the source three-group decision packet that ED-10ao
    consumes.
-5. Continue from `clip-ed10am-production-limitation-lift-stage-1-001` when the
+6. Continue from `clip-ed10am-production-limitation-lift-stage-1-001` when the
    next terminal needs the source nine-gate matrix and missing-evidence rows
    that ED-10an consumes.
-6. Continue from `clip-ed10al-final-render-path-stage-3-rehearsal-001` when the
+7. Continue from `clip-ed10al-final-render-path-stage-3-rehearsal-001` when the
    next terminal needs the latest final render-path readback. It records the
    ED-10ak source, the generated ignored ASS/MP4/manifest rehearsal outputs,
    FFmpeg/libass command summary, output metadata, and closed production/public
    gates.
-7. Continue from `clip-ed10af-l2-render-path-selector-probe-001` as the active
+8. Continue from `clip-ed10af-l2-render-path-selector-probe-001` as the active
    L2 render-path evidence. Use `clip-ed10ag-lineage-and-observation-surface-001`
    when the next terminal needs dry-read source, ignored ASS / MP4 /
    manifest / contact-sheet paths, and no-rerender observation commands.
-8. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
+9. Continue from `clip-ed10z-tiny-render-path-nearer-probe-001`: Candidate 2
    has now passed the current diagnostic render path as a tiny readback probe.
    Do not ask for another Candidate 0-3 comparison review.
-9. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
+10. Preserve `clip-ed10y-candidate2-carry-forward-001` as source/previous
    evidence. Treat ED-10z as diagnostic readback only, not production render
    acceptance. Rerun the ED-10z command after FFmpeg/FFprobe paths are
    available to materialize ignored local proof files.
-10. Do not request another Review Card for the same ED-10u `cut_008`
+11. Do not request another Review Card for the same ED-10u `cut_008`
    multiline/dense-stress evidence; ED-10v already records it as diagnostic
    pass.
-11. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
+12. If subtitle work continues beyond ED-10z, keep it on a genuinely new axis:
    production limitation-lift, final render-path probe, or policy/readback
    tuning from new evidence.
-12. Keep line-break behavior policy/readback-driven: line length, max lines,
+13. Keep line-break behavior policy/readback-driven: line length, max lines,
    orphan control, suffix-tail control, safe-area pressure, and rapid cue
    replacement are future bounded tuning areas.
-13. Keep ED-10o as accepted review UX direction and reference evidence for why
+14. Keep ED-10o as accepted review UX direction and reference evidence for why
    Keifont is the provisional normal-dialogue baseline while 851 Chikara
    Yowaku and Yasashisa Gothic remain alternates.
-14. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
+15. Keep BIZ/Noto/Meiryo visible only as reviewed rejected references unless the
    user explicitly reopens the system-safe route.
-15. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
+16. Keep 851 Chikara Dzuyoku and mincho/serif candidates in their separate
    emphasis/mood slots; do not collapse them into normal dialogue baseline
    acceptance.
-16. Do not request another general `cut_002` / `cut_003` Keifont acceptance
+17. Do not request another general `cut_002` / `cut_003` Keifont acceptance
    review unless the user explicitly reopens font-family selection.
-17. If moving toward production/public use, run a separate limitation-lift route
+18. If moving toward production/public use, run a separate limitation-lift route
    for production render, rights, publishing, and public-use decisions.
 
 ## Constraints / Risks

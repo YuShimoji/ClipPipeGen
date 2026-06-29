@@ -226,6 +226,19 @@ PRODUCTION_LIMITATION_LIFT_STAGE5_DECISION_TOPIC_IDS = (
     "production_render_readiness",
     "rights_publishing_public_use_clearance",
 )
+INTERNAL_REVIEW_VIDEO_CANDIDATE_PACKAGE_ARTIFACT_ID = (
+    "clip-ed10ar-internal-review-video-candidate-package-001"
+)
+INTERNAL_REVIEW_VIDEO_CANDIDATE_ACCESS_SHEET_ARTIFACT_ID = (
+    "clip-ed10as-internal-review-access-sheet-fullpath-001"
+)
+INTERNAL_REVIEW_OBSERVATION_SCHEMA_ID = (
+    "clippipegen.internal_review_video_observation_readback.v1"
+)
+INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID = (
+    "clip-ed10at-internal-review-observation-readback-001"
+)
+INTERNAL_REVIEW_OBSERVATION_FEATURE_ID = "ED-10at"
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -3622,6 +3635,225 @@ def write_subtitle_production_limitation_lift_stage5_user_decision_ready(
     return {"json": json_path, "doc": doc_path}
 
 
+def build_internal_review_video_observation_readback(
+    *,
+    access_sheet: Mapping[str, Any] | None = None,
+    candidate_package: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    sheet = (
+        deepcopy(access_sheet)
+        if access_sheet is not None
+        else _default_internal_review_access_sheet_source()
+    )
+    package = (
+        deepcopy(candidate_package)
+        if candidate_package is not None
+        else _default_internal_review_candidate_package_source()
+    )
+    observation = {
+        "observation_id": "ed10at_user_internal_review_mp4_observation",
+        "source": "user_freeform_observation",
+        "opened_mp4": True,
+        "reported_duration_matches_short_expectation": True,
+        "reported_subtitles_all_present": [
+            "NORMAL DIALOGUE CUE",
+            "SHOUT HIGH INTENSITY",
+            "LOW PRESSURE WHISPER CUE",
+        ],
+        "reported_scenes_look_abrupt_or_chopped_together": True,
+        "reported_video_differs_considerably_from_prior_artifacts": True,
+        "reported_user_does_not_know_how_to_evaluate_it": True,
+        "reported_memo_like_appearance": True,
+    }
+    classifications = [
+        {
+            "axis": "openability",
+            "classification": "pass",
+            "basis": "The user successfully opened the MP4 from the ED-10as access route.",
+            "approval_implication": "access route only",
+        },
+        {
+            "axis": "duration",
+            "classification": "expected_pass",
+            "basis": "The user reported the MP4 was short as expected; ED-10ar records 4.2 seconds for the candidate package.",
+            "approval_implication": "diagnostic duration expectation only",
+        },
+        {
+            "axis": "subtitle_cue_coverage",
+            "classification": "pass_for_diagnostic_cue_probe",
+            "basis": "The visible subtitles were exactly the three cue labels reported by the user.",
+            "observed_cues": list(observation["reported_subtitles_all_present"]),
+            "actual_script_content_present": False,
+            "approval_implication": "cue overlay visibility only",
+        },
+        {
+            "axis": "narrative_video_continuity",
+            "classification": "warning_not_representative_review",
+            "basis": "The user reported abrupt, chopped-together scenes and a large difference from prior artifacts.",
+            "approval_implication": "not representative episode or production video review",
+        },
+        {
+            "axis": "memo_like_appearance",
+            "classification": "warning_observed",
+            "basis": "The user said the video looks like a memo.",
+            "approval_implication": "diagnostic artifact semantics, not production polish",
+        },
+        {
+            "axis": "review_guidance_clarity",
+            "classification": "partial_or_fail",
+            "basis": "The user did not know how to evaluate the artifact.",
+            "approval_implication": "future review surfaces need clearer evaluation frame",
+        },
+        {
+            "axis": "artifact_semantics",
+            "classification": "diagnostic_subtitle_render_path_cue_probe",
+            "basis": "Cue labels, short duration, and memo-like assembly match a diagnostic subtitle render-path cue probe.",
+            "approval_implication": "not representative episode, production video, rights, publishing, monetization, or public-use review",
+        },
+    ]
+    next_axis = {
+        "recommended_route_id": "representative-micro-scene-internal-review-specimen",
+        "recommended_route_condition": (
+            "Use when continuing toward real internal review; build a small "
+            "representative scene with actual subtitle/script content instead "
+            "of cue labels."
+        ),
+        "alternate_route_id": "final-render-path-stage-4",
+        "alternate_route_condition": (
+            "Use only if there is a concrete render-path diagnostic gap that "
+            "ED-10ar/ED-10as plus this observation cannot answer."
+        ),
+        "do_not_use_route_id": "stage-7-freeform-normalizer",
+        "do_not_use_condition": (
+            "Do not use unless a later request explicitly asks for a "
+            "production/public freeform decision to be normalized."
+        ),
+        "stage_7_continuation_allowed_now": False,
+        "new_render_allowed_in_this_slice": False,
+    }
+    boundaries = _internal_review_observation_boundary_flags(
+        access_sheet=sheet,
+        candidate_package=package,
+    )
+    validation = _internal_review_observation_validation(
+        observation=observation,
+        classifications=classifications,
+        next_axis=next_axis,
+        boundaries=boundaries,
+    )
+    video = (package.get("package_contents") or {}).get("video") or {}
+    sheet_media = sheet.get("media") or {}
+    sheet_mp4 = sheet_media.get("mp4") or {}
+    return {
+        "schema_id": INTERNAL_REVIEW_OBSERVATION_SCHEMA_ID,
+        "artifact_id": INTERNAL_REVIEW_OBSERVATION_ARTIFACT_ID,
+        "feature_id": INTERNAL_REVIEW_OBSERVATION_FEATURE_ID,
+        "status": "internal_review_observation_readback_ready",
+        "surface_kind": "tracked_user_observation_readback",
+        "render_level": "observation_readback_no_new_render",
+        "source_internal_review_video_candidate_access_sheet_artifact_id": sheet[
+            "artifact_id"
+        ],
+        "source_internal_review_video_candidate_package_artifact_id": package[
+            "artifact_id"
+        ],
+        "active_diagnostic_proof_source_artifact_id": package.get(
+            "active_diagnostic_proof_source_artifact_id",
+            RENDER_PATH_PROBE_ARTIFACT_ID,
+        ),
+        "source_context": {
+            "access_sheet_path": "docs/style_intent/internal-review-video-candidate-access-sheet.json",
+            "candidate_package_path": "docs/style_intent/internal-review-video-candidate-package.json",
+            "requested_access_sheet_files_present": True,
+            "requested_candidate_package_files_present": True,
+            "stale_checkout_anchor_repaired": True,
+            "anchor_resolution": (
+                "ED-10at anchors to the current ED-10as access sheet and "
+                "ED-10ar internal review video candidate package. The earlier "
+                "ED-10ak/ED-10af-only anchor was a stale-checkout fallback and "
+                "is not the committed authority chain."
+            ),
+            "launcher_or_open_command": sheet.get("launcher_or_open_command"),
+            "video_repo_relative_path": video.get("path")
+            or sheet_mp4.get("repo_relative_path"),
+            "video_full_path_current_host": sheet_mp4.get("file_full_path_current_host"),
+            "candidate_duration_seconds": video.get("duration_seconds"),
+            "candidate_resolution": video.get("resolution"),
+        },
+        "user_observation": observation,
+        "observation_classifications": classifications,
+        "diagnostic_boundary": {
+            "artifact_semantics": "diagnostic_subtitle_render_path_cue_probe",
+            "representative_episode_video_review": False,
+            "production_video_review": False,
+            "production_public_rights_publishing_monetization_acceptance": False,
+            "user_observation_converted_to_approval": False,
+        },
+        "next_practical_axis": next_axis,
+        "review_policy": {
+            "human_review_required": False,
+            "user_side_work": "none_for_this_observation_readback",
+            "fixed_form_required": False,
+            "yes_no_required": False,
+            "screenshot_required": False,
+            "review_card_emitted": False,
+            "stage_7_freeform_normalizer_used": False,
+            "human_review_required_only_for": [
+                "representative_micro_scene_internal_review",
+                "production_subtitle_design_acceptance",
+                "production_render_acceptance",
+                "creative_acceptance",
+                "rights_status",
+                "publishing_acceptance",
+                "public_use_permission",
+            ],
+        },
+        "render_gate": {
+            "level": "observation_readback_no_new_render",
+            "existing_output_first_reused": True,
+            "new_render_run": False,
+            "new_replay_run": False,
+            "new_media_created": False,
+            "source_access_sheet_new_render": False,
+            "source_candidate_package_new_render": (
+                package.get("existing_output_first", {}).get("new_render_run")
+                is True
+            ),
+            "diagnostic_only": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": "docs/style_intent/internal-review-video-observation-readback.json",
+            "doc": "docs/style_intent/internal-review-video-observation-readback.md",
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_internal_review_video_observation_readback(
+    output_dir: Path,
+    *,
+    access_sheet: Mapping[str, Any] | None = None,
+    candidate_package: Mapping[str, Any] | None = None,
+) -> dict[str, Path]:
+    readback = build_internal_review_video_observation_readback(
+        access_sheet=access_sheet,
+        candidate_package=candidate_package,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = output_dir / "internal-review-video-observation-readback.json"
+    doc_path = output_dir / "internal-review-video-observation-readback.md"
+    with json_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(readback, ensure_ascii=False, indent=2) + "\n")
+    with doc_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(render_internal_review_video_observation_readback_markdown(readback))
+    return {"json": json_path, "doc": doc_path}
+
+
 
 def write_subtitle_render_path_selector_probe_local_artifacts(
     *,
@@ -5401,6 +5633,152 @@ def render_subtitle_production_limitation_lift_stage5_user_decision_ready_markdo
         "## Boundary",
         "",
         boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_internal_review_video_observation_readback_markdown(
+    readback: Mapping[str, Any],
+) -> str:
+    observation = readback["user_observation"]
+    classifications = readback["observation_classifications"]
+    next_axis = readback["next_practical_axis"]
+    validation = readback["validation"]
+    boundaries = readback["boundaries"]
+    review = readback["review_policy"]
+    render_gate = readback["render_gate"]
+    source = readback["source_context"]
+    nl = chr(10)
+    cue_rows = nl.join(
+        f"- `{cue}`" for cue in observation["reported_subtitles_all_present"]
+    )
+    classification_rows = nl.join(
+        "| {axis} | {classification} | {basis} | {implication} |".format(
+            axis=item["axis"],
+            classification=item["classification"],
+            basis=str(item["basis"]).replace("|", "/"),
+            implication=str(item["approval_implication"]).replace("|", "/"),
+        )
+        for item in classifications
+    )
+    closed_boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "monetization_acceptance",
+            "production_candidate",
+            "production_usage_allowed",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "new_render_created",
+            "new_media_created",
+            "stage_7_freeform_normalizer_used",
+            "user_observation_converted_to_approval",
+        )
+    )
+    validation_rows = nl.join(
+        f"- {key}: `{str(validation[key]).lower()}`"
+        for key in (
+            "access_sheet_source_present",
+            "candidate_package_source_present",
+            "observation_captured",
+            "openability_classified",
+            "duration_classified",
+            "subtitle_cue_coverage_classified",
+            "discontinuity_warning_recorded",
+            "memo_like_semantics_recorded",
+            "user_uncertainty_preserved",
+            "diagnostic_only_boundary_recorded",
+            "no_approval_inferred",
+            "no_new_render",
+            "no_new_media",
+            "no_stage_7_continuation",
+            "no_fixed_form_required",
+            "no_yes_no_required",
+            "no_screenshot_required",
+            "episodes_tracking_boundary_preserved",
+            "all_checks_passed",
+        )
+    )
+    lines = [
+        "# ED-10at Internal Review Observation Readback",
+        "",
+        "This tracked readback consumes the user's freeform observation after opening the ED-10as/ED-10ar internal review MP4. It records access and cue visibility as diagnostic passes, records the chopped/memo-like feel as a warning, and keeps production, rights, publishing, monetization, and public-use approval closed.",
+        "",
+        "## Source Context",
+        "",
+        f"- source_internal_review_video_candidate_access_sheet_artifact_id: `{readback['source_internal_review_video_candidate_access_sheet_artifact_id']}`",
+        f"- source_internal_review_video_candidate_package_artifact_id: `{readback['source_internal_review_video_candidate_package_artifact_id']}`",
+        f"- active_diagnostic_proof_source_artifact_id: `{readback['active_diagnostic_proof_source_artifact_id']}`",
+        f"- requested_access_sheet_files_present: `{str(source['requested_access_sheet_files_present']).lower()}`",
+        f"- requested_candidate_package_files_present: `{str(source['requested_candidate_package_files_present']).lower()}`",
+        f"- stale_checkout_anchor_repaired: `{str(source['stale_checkout_anchor_repaired']).lower()}`",
+        f"- launcher_or_open_command: `{source['launcher_or_open_command']}`",
+        f"- video_repo_relative_path: `{source['video_repo_relative_path']}`",
+        f"- candidate_duration_seconds: `{source['candidate_duration_seconds']}`",
+        f"- candidate_resolution: `{source['candidate_resolution']}`",
+        f"- anchor_resolution: {source['anchor_resolution']}",
+        "",
+        "## User Observation",
+        "",
+        f"- opened_mp4: `{str(observation['opened_mp4']).lower()}`",
+        f"- reported_duration_matches_short_expectation: `{str(observation['reported_duration_matches_short_expectation']).lower()}`",
+        f"- reported_scenes_look_abrupt_or_chopped_together: `{str(observation['reported_scenes_look_abrupt_or_chopped_together']).lower()}`",
+        f"- reported_video_differs_considerably_from_prior_artifacts: `{str(observation['reported_video_differs_considerably_from_prior_artifacts']).lower()}`",
+        f"- reported_user_does_not_know_how_to_evaluate_it: `{str(observation['reported_user_does_not_know_how_to_evaluate_it']).lower()}`",
+        f"- reported_memo_like_appearance: `{str(observation['reported_memo_like_appearance']).lower()}`",
+        "",
+        "Reported subtitle cue labels:",
+        "",
+        cue_rows,
+        "",
+        "## Observation Classification",
+        "",
+        "| axis | classification | basis | approval implication |",
+        "|---|---|---|---|",
+        classification_rows,
+        "",
+        "## Next Practical Axis",
+        "",
+        f"- recommended_route_id: `{next_axis['recommended_route_id']}`",
+        f"- recommended_route_condition: {next_axis['recommended_route_condition']}",
+        f"- alternate_route_id: `{next_axis['alternate_route_id']}`",
+        f"- alternate_route_condition: {next_axis['alternate_route_condition']}",
+        f"- do_not_use_route_id: `{next_axis['do_not_use_route_id']}`",
+        f"- do_not_use_condition: {next_axis['do_not_use_condition']}",
+        f"- stage_7_continuation_allowed_now: `{str(next_axis['stage_7_continuation_allowed_now']).lower()}`",
+        f"- new_render_allowed_in_this_slice: `{str(next_axis['new_render_allowed_in_this_slice']).lower()}`",
+        "",
+        "## Review Policy",
+        "",
+        f"- human_review_required: `{str(review['human_review_required']).lower()}`",
+        f"- user_side_work: `{review['user_side_work']}`",
+        f"- fixed_form_required: `{str(review['fixed_form_required']).lower()}`",
+        f"- yes_no_required: `{str(review['yes_no_required']).lower()}`",
+        f"- screenshot_required: `{str(review['screenshot_required']).lower()}`",
+        f"- review_card_emitted: `{str(review['review_card_emitted']).lower()}`",
+        f"- stage_7_freeform_normalizer_used: `{str(review['stage_7_freeform_normalizer_used']).lower()}`",
+        "",
+        "## Render Gate",
+        "",
+        f"- level: `{render_gate['level']}`",
+        f"- new_render_run: `{str(render_gate['new_render_run']).lower()}`",
+        f"- new_replay_run: `{str(render_gate['new_replay_run']).lower()}`",
+        f"- new_media_created: `{str(render_gate['new_media_created']).lower()}`",
+        f"- episodes_tracked: `{str(render_gate['episodes_tracked']).lower()}`",
+        "",
+        "## Validation",
+        "",
+        validation_rows,
+        "",
+        "## Boundary",
+        "",
+        closed_boundary_rows,
     ]
     return nl.join(lines) + nl
 
@@ -9257,6 +9635,218 @@ def _production_limitation_lift_stage5_validation(
             and unsafe_overclaiming_present
             and tracked_media_boundary_closed
             and next_executable_route_defined
+        ),
+    }
+
+
+def _default_internal_review_access_sheet_source() -> dict[str, Any]:
+    return {
+        "artifact_id": INTERNAL_REVIEW_VIDEO_CANDIDATE_ACCESS_SHEET_ARTIFACT_ID,
+        "launcher_or_open_command": (
+            "powershell -ExecutionPolicy Bypass -File "
+            "scripts\\operator\\open_internal_review_video_candidate.ps1"
+        ),
+        "media": {
+            "mp4": {
+                "repo_relative_path": (
+                    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+                    "jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/"
+                    "subtitle_render_path_selector_probe.mp4"
+                ),
+                "file_full_path_current_host": (
+                    "C:\\Users\\thank\\Storage\\Media Contents Projects\\"
+                    "ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\"
+                    "review\\jp_pilot01r3_cut_review\\"
+                    "subtitle_render_path_selector_probe\\"
+                    "subtitle_render_path_selector_probe.mp4"
+                ),
+                "status": "present_current_host",
+            }
+        },
+    }
+
+
+def _default_internal_review_candidate_package_source() -> dict[str, Any]:
+    return {
+        "artifact_id": INTERNAL_REVIEW_VIDEO_CANDIDATE_PACKAGE_ARTIFACT_ID,
+        "active_diagnostic_proof_source_artifact_id": RENDER_PATH_PROBE_ARTIFACT_ID,
+        "existing_output_first": {
+            "sufficient": True,
+            "new_render_run": False,
+        },
+        "package_contents": {
+            "video": {
+                "status": "present_same_machine_ignored_local",
+                "path": (
+                    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+                    "jp_pilot01r3_cut_review/subtitle_render_path_selector_probe/"
+                    "subtitle_render_path_selector_probe.mp4"
+                ),
+                "duration_seconds": 4.2,
+                "resolution": "1920x1080",
+            }
+        },
+        "boundaries": {
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "monetization_acceptance": False,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+        },
+    }
+
+
+def _internal_review_observation_boundary_flags(
+    *,
+    access_sheet: Mapping[str, Any],
+    candidate_package: Mapping[str, Any],
+) -> dict[str, Any]:
+    package_boundaries = candidate_package.get("boundaries") or {}
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "access_sheet_source_present": access_sheet["artifact_id"]
+            == INTERNAL_REVIEW_VIDEO_CANDIDATE_ACCESS_SHEET_ARTIFACT_ID,
+            "candidate_package_source_present": candidate_package["artifact_id"]
+            == INTERNAL_REVIEW_VIDEO_CANDIDATE_PACKAGE_ARTIFACT_ID,
+            "new_render_created": False,
+            "new_render_run": False,
+            "new_replay_run": False,
+            "new_media_created": False,
+            "source_access_sheet_reused": True,
+            "source_candidate_package_reused": True,
+            "source_candidate_package_new_render_run": (
+                candidate_package.get("existing_output_first", {}).get("new_render_run")
+                is True
+            ),
+            "diagnostic_local_ignored_render_observed": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": package_boundaries.get(
+                "production_subtitle_design_acceptance",
+                False,
+            ),
+            "production_render_acceptance": package_boundaries.get(
+                "production_render_acceptance",
+                False,
+            ),
+            "creative_acceptance": package_boundaries.get("creative_acceptance", False),
+            "rights_status": package_boundaries.get("rights_status", "pending"),
+            "publishing_acceptance": package_boundaries.get(
+                "publishing_acceptance",
+                False,
+            ),
+            "public_use_permission": package_boundaries.get(
+                "public_use_permission",
+                False,
+            ),
+            "monetization_acceptance": package_boundaries.get(
+                "monetization_acceptance",
+                False,
+            ),
+            "stage_7_freeform_normalizer_used": False,
+            "stage_7_continuation_allowed_now": False,
+            "user_observation_converted_to_approval": False,
+            "representative_episode_video_review": False,
+            "production_video_review": False,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+        }
+    )
+    return flags
+
+
+def _internal_review_observation_validation(
+    *,
+    observation: Mapping[str, Any],
+    classifications: list[Mapping[str, Any]],
+    next_axis: Mapping[str, Any],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    by_axis = {item["axis"]: item for item in classifications}
+    cue_coverage = by_axis.get("subtitle_cue_coverage", {})
+    narrative = by_axis.get("narrative_video_continuity", {})
+    artifact_semantics = by_axis.get("artifact_semantics", {})
+    no_approval_inferred = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["monetization_acceptance"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["user_observation_converted_to_approval"] is False
+    )
+    return {
+        "access_sheet_source_present": boundaries["access_sheet_source_present"]
+        is True,
+        "candidate_package_source_present": boundaries[
+            "candidate_package_source_present"
+        ]
+        is True,
+        "observation_captured": observation["opened_mp4"] is True,
+        "openability_classified": by_axis.get("openability", {}).get("classification")
+        == "pass",
+        "duration_classified": by_axis.get("duration", {}).get("classification")
+        == "expected_pass",
+        "subtitle_cue_coverage_classified": cue_coverage.get("classification")
+        == "pass_for_diagnostic_cue_probe"
+        and cue_coverage.get("actual_script_content_present") is False,
+        "discontinuity_warning_recorded": narrative.get("classification")
+        == "warning_not_representative_review",
+        "memo_like_semantics_recorded": by_axis.get("memo_like_appearance", {}).get(
+            "classification"
+        )
+        == "warning_observed",
+        "user_uncertainty_preserved": by_axis.get("review_guidance_clarity", {}).get(
+            "classification"
+        )
+        == "partial_or_fail",
+        "diagnostic_only_boundary_recorded": artifact_semantics.get("classification")
+        == "diagnostic_subtitle_render_path_cue_probe"
+        and boundaries["diagnostic_only"] is True,
+        "no_approval_inferred": no_approval_inferred,
+        "no_new_render": boundaries["new_render_run"] is False
+        and boundaries["new_render_created"] is False,
+        "no_new_replay": boundaries["new_replay_run"] is False,
+        "no_new_media": boundaries["new_media_created"] is False
+        and boundaries["tracked_binary_artifact_created"] is False,
+        "no_stage_7_continuation": next_axis["stage_7_continuation_allowed_now"]
+        is False
+        and boundaries["stage_7_freeform_normalizer_used"] is False,
+        "next_axis_defined": next_axis["recommended_route_id"]
+        == "representative-micro-scene-internal-review-specimen",
+        "render_gap_route_limited": next_axis["alternate_route_id"]
+        == "final-render-path-stage-4",
+        "no_fixed_form_required": True,
+        "no_yes_no_required": True,
+        "no_screenshot_required": True,
+        "episodes_tracking_boundary_preserved": boundaries["episodes_tracked"] is False,
+        "all_checks_passed": (
+            boundaries["access_sheet_source_present"] is True
+            and boundaries["candidate_package_source_present"] is True
+            and observation["opened_mp4"] is True
+            and by_axis.get("openability", {}).get("classification") == "pass"
+            and by_axis.get("duration", {}).get("classification") == "expected_pass"
+            and cue_coverage.get("classification")
+            == "pass_for_diagnostic_cue_probe"
+            and narrative.get("classification") == "warning_not_representative_review"
+            and artifact_semantics.get("classification")
+            == "diagnostic_subtitle_render_path_cue_probe"
+            and no_approval_inferred
+            and boundaries["new_render_run"] is False
+            and boundaries["new_media_created"] is False
+            and next_axis["stage_7_continuation_allowed_now"] is False
+            and boundaries["episodes_tracked"] is False
         ),
     }
 

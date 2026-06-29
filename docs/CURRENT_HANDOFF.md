@@ -3,18 +3,36 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: internal_review_access_sheet_fullpath_ready_access_mismatch_classified
+health: internal_review_observation_readback_ready
 progress_pct: 100
 last_touched: 2026-06-29
-next_review_due: none_access_sheet_ready_only
-active_artifact: clip-ed10as-internal-review-access-sheet-fullpath-001
+next_review_due: none_observation_readback_only
+active_artifact: clip-ed10at-internal-review-observation-readback-001
+source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
+
+## Current ED-10at Internal Review Observation Readback
+
+ED-10at checkpoint, 2026-06-29 JST:
+`clip-ed10at-internal-review-observation-readback-001` is the active tracked
+readback. It consumes the user's freeform observation after opening the
+ED-10as / ED-10ar internal review MP4: the MP4 opened, duration was short as
+expected, and the visible subtitles were exactly `NORMAL DIALOGUE CUE`,
+`SHOUT HIGH INTENSITY`, and `LOW PRESSURE WHISPER CUE`.
+
+The warning side is preserved too: the scenes looked chopped or abrupt, the
+artifact looked memo-like, it differed considerably from prior artifacts, and
+the user did not know how to evaluate it. This is diagnostic cue-probe
+readback, not representative episode/video review and not production/public
+approval. It creates no render, replay, media, tracked `episodes/` file, or
+stage-7 normalizer. The earlier ED-10ak/ED-10af-only anchor was stale checkout
+drift; current authority source is ED-10as access sheet plus ED-10ar package.
 
 ## Current ED-10as Internal Review Access Sheet Fullpath / Access Recovery
 
@@ -52,14 +70,30 @@ ED-10ap production limitation lift stage-4 user decision-card readback.
 ED-10aq production limitation lift stage-5 user-decision-ready readback.
 ED-10ar internal review video candidate package.
 ED-10as internal review access sheet with current-host full paths.
+ED-10at internal review observation readback.
 
 ## Current State
 
 The active artifact is
+`clip-ed10at-internal-review-observation-readback-001`.
+
+The source access sheet is
 `clip-ed10as-internal-review-access-sheet-fullpath-001`.
 
 The source internal review package is
 `clip-ed10ar-internal-review-video-candidate-package-001`.
+
+ED-10at records
+`clip-ed10at-internal-review-observation-readback-001`
+at
+`docs/style_intent/internal-review-video-observation-readback.json`
+and
+`docs/style_intent/internal-review-video-observation-readback.md`.
+It classifies the observation as openability/duration/cue visibility pass for
+diagnostic purposes, chopped/memo-like continuity warning, and partial/fail
+review guidance clarity. It does not infer production subtitle design,
+production render, creative, rights, publishing, monetization, or public-use
+approval.
 
 ED-10as records
 `clip-ed10as-internal-review-access-sheet-fullpath-001`
@@ -526,27 +560,26 @@ adjustment, production limitation-lift, or render-path probe.
 ## Next Move
 
 Continue from
-`clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` when
-the next terminal needs the latest user-decision-ready packet. ED-10ap remains
-the stage-4 predecessor/source packet, not the active resume artifact.
-The active diagnostic proof source is still
-`clip-ed10af-l2-render-path-selector-probe-001`; ED-10al is the diagnostic
-rehearsal source, ED-10ak is the stage-2 source, and ED-10ag remains lineage
-support. ED-10aq consumes ED-10ap's three future decision topics and records
-the later short freeform user review request as ready, while requesting no
-immediate user decision, emitting no fixed form or fixed-choice rows, requiring
-no screenshot path, and keeping production/public approvals closed. Do not
-request display/layout polish,
-another Candidate 0-3 comparison, another review of the corrected ED-10u
-`cut_008` multiline/dense-stress surface, or general font-family acceptance
-from `cut_002` / `cut_003`.
+`clip-ed10at-internal-review-observation-readback-001` when the next terminal
+needs the latest consumed user observation. ED-10as remains the access-sheet
+source and ED-10ar remains the internal review video package source. Treat the
+opened MP4 as a diagnostic cue-probe readback, not representative episode/video
+review. Do not request a fixed form, yes/no response, screenshot, display
+polish, another Candidate 0-3 comparison, another corrected ED-10u `cut_008`
+review, or general `cut_002` / `cut_003` font-family acceptance.
+
+If continuing toward real internal review, build a representative micro-scene
+specimen with actual subtitle/script content. Use `final-render-path-stage-4`
+only for a concrete render diagnostic gap. Do not create a stage-7 normalizer
+from this handoff.
 
 Good immediate routes:
 
 | Route | Why it helps | What it should enable |
 |---|---|---|
+| `representative-micro-scene-internal-review-specimen` | Turns ED-10at's memo-like cue-probe observation into a real reviewable sample | A later slice can ask about actual subtitle/script content and continuity without treating cue labels as production review |
+| `final-render-path-stage-4` | Only for a concrete render diagnostic gap after ED-10ar/ED-10as/ED-10at readback | A later slice can isolate a render-path issue without using stage-7 or implying approval |
 | `optional-internal-review-video-observation` | Uses the completed ED-10ar internal review video candidate package | A later slice can record a freeform human observation without pre-approving production/public use |
-| `final-render-path-stage-4` | Uses ED-10al generated rehearsal metadata | Use only if a concrete diagnostic gap is found before the user decision-card route |
 | `production-limitation-lift-stage-5-user-decision-ready` | Current route already materialized by ED-10aq | Use only for backtracking or integrity repair of the current stage-5 packet |
 | `production-limitation-lift-stage-4-user-decision-card` | Historical predecessor route now materialized by ED-10ap | Use only for backtracking to the stage-4 user decision-card source |
 | `production-limitation-lift-stage-3-owner-review-prep` | Historical/current predecessor route now materialized by ED-10ao | Use only for backtracking to the owner-review prep source |
@@ -572,6 +605,7 @@ fresh clone. Their absence is not a Git failure.
 
 | Artifact | Role | Open command |
 |---|---|---|
+| `clip-ed10at-internal-review-observation-readback-001` | Tracked ED-10at observation readback; records openability/duration/cue visibility as diagnostic passes and chopped/memo-like continuity plus user uncertainty as non-production warnings | `see docs\style_intent\internal-review-video-observation-readback.md` |
 | `clip-ed10as-internal-review-access-sheet-fullpath-001` | Tracked ED-10as access sheet; records current-host full paths and a launcher for the ED-10ar internal review video candidate | `see docs\style_intent\internal-review-video-candidate-access-sheet.md` |
 | `clip-ed10ar-internal-review-video-candidate-package-001` | Tracked ED-10ar internal review video candidate package; reuses existing ignored MP4/ASS/local manifest output without approving production/public use | `see docs\style_intent\internal-review-video-candidate-package.md` |
 | `clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001` | Tracked ED-10aq user-decision-ready packet; consumes ED-10ap and prepares the later short freeform review request without asking for or approving production/public use | `see docs\style_intent\subtitle-production-limitation-lift-stage-5-user-decision-ready.md` |

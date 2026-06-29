@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10as`
-- artifact: `clip-ed10as-internal-review-access-sheet-fullpath-001`
-- state: `internal_review_access_sheet_fullpath_ready`
+- feature: `ED-10at`
+- artifact: `clip-ed10at-internal-review-observation-readback-001`
+- state: `internal_review_observation_readback_ready`
 
 ## Feature Table
 
@@ -82,6 +82,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10aq | Production Limitation Lift Stage 5 User Decision Ready v0 | done | production_limitation_lift_stage_5_user_decision_ready | 100 | clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001 | Use the stage-5 user-decision-ready packet only; keep user work none and approvals explicit. |
 | ED-10ar | Internal Review Video Candidate Package v0 | done | internal_review_video_candidate_package_ready | 100 | clip-ed10ar-internal-review-video-candidate-package-001 | Use the internal review video candidate package only; optional later observation stays freeform and non-approving. |
 | ED-10as | Internal Review Access Sheet Fullpath v0 | done | internal_review_access_sheet_fullpath_ready | 100 | clip-ed10as-internal-review-access-sheet-fullpath-001 | Use the access sheet and launcher only for later optional open/readback; keep observation freeform and non-approving. |
+| ED-10at | Internal Review Observation Readback v0 | done | internal_review_observation_readback_ready | 100 | clip-ed10at-internal-review-observation-readback-001 | Use the ED-10at observation readback to choose a representative micro-scene specimen for real internal review, or final-render-path-stage-4 only for a concrete diagnostic render gap; do not infer approval. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
