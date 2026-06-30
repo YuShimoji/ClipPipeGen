@@ -23,6 +23,24 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 # Current Handoff - ClipPipeGen
 
+## Cross-Terminal Re-Entry Packet
+
+Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
+and `docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json`.
+That is enough to resume without the previous chat.
+
+The durable state to carry forward is: ED-10az consumed the user's observation
+after the recovered ED-10au MP4 opened; access and basic render pass, but the
+review target remains unclear, both cut edges feel too tight for cut-quality
+review, and the subtitle strategy is mismatched for clipping/cutout review.
+The next slice should design
+`representative-micro-scene-v2-cut-window-and-review-purpose-alignment`.
+
+Do not make `subtitle-layout-screenshot-capture`, `final-render-path-stage-4`,
+or `timing-audio-check` the first route unless new evidence makes that primary.
+Do not track `episodes/` media. Do not infer production/public/rights/
+publishing/monetization approval or micro-scene acceptance.
+
 ## Current ED-10az Observation Readback and V2 Route Decision
 
 ED-10az checkpoint, 2026-06-30 JST:

@@ -30,6 +30,23 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
+## Cross-Terminal Resume Checkpoint
+
+Checkpoint date: 2026-06-30 JST. A new terminal should pull `origin/main`, then
+read this file first, followed by `docs/CURRENT_HANDOFF.md` and
+`docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json`.
+
+The latest completed decision is ED-10az. The next executable direction is not
+another review-frame packet and not screenshot/render-path work by default; it
+is a successor v2 route:
+`representative-micro-scene-v2-cut-window-and-review-purpose-alignment`.
+
+Keep `episodes/` ignored and keep `git ls-files episodes` empty. Any future
+v2 media, if generated, must remain ignored same-machine evidence until an
+explicit artifact-store/tracked-media strategy is approved. Production/public/
+rights/publishing/monetization and micro-scene acceptance remain false or
+pending.
+
 ## Current ED-10az Observation Readback and V2 Route Decision
 
 ED-10az checkpoint, 2026-06-30 JST:
