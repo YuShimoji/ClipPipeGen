@@ -903,6 +903,48 @@ Boundary flags remain false or pending:
 - `timing_audio_first_route=false`
 - `stage_7_freeform_normalizer_used=false`
 
+## `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
+
+| field | value |
+|---|---|
+| title | ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment |
+| purpose | Produce a bounded v2 internal-review specimen that answers ED-10az: the recovered ED-10au MP4 opened, but the user could not tell what to judge, both cut edges felt too tight for cut-quality review, and the subtitle strategy did not clarify clipping/cutout usefulness. |
+| storage_class | tracked JSON/Markdown readback plus launcher; generated MP4/ASS/local manifest remain ignored same-machine evidence under `episodes/` |
+| repo_relative_path | docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json; docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md |
+| open_command | powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 |
+| generated_from | ED-10ba consumes `clip-ed10az-observation-readback-and-v2-route-decision-001`, verifies the source video/audio/transcript/edit_pack on the current host, generates the ignored local v2 specimen with `write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts`, then records tracked access and review-purpose readback. |
+| validation_command | Parse ED-10ba JSON and dashboard JSON; ffprobe the generated MP4; run targeted subtitle/dashboard tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | Bounded regeneration succeeded. Final MP4 exists at `episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_v2_cut_window_review_purpose_alignment/representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4`, size `4723658`, duration `11.9s`, H.264/AAC, 1920x1080, 30fps. The ASS and local manifest are present in the same ignored folder. |
+| review_status | v2 specimen ready for later freeform cut-window/review-purpose judgement; no immediate user review requested; not approval |
+| next_action | Use the ED-10ba launcher only when a later supervisor asks to open the v2 specimen. Judge whether the wider `38.50s`-`50.40s` window and visible internal-review purpose label reduce review friction before considering subtitle strategy, screenshot capture, timing/audio, or render-path stage-4. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `user_observation_converted_to_approval=false`
+- `subtitle_layout_failure_claimed=false`
+- `player_ui_overlap_confirmed=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=true`
+- `new_media_created=true`
+- `representative_micro_scene_v2_created=true`
+- `diagnostic_internal_review_subtitles_only=true`
+- `screenshot_capture_created=false`
+- `subtitle_layout_screenshot_capture_required_now=false`
+- `final_render_path_stage_4_required_now=false`
+- `timing_audio_first_route=false`
+- `stage_7_freeform_normalizer_used=false`
+
 ## `clip-ed10ax-review-frame-clarification-surface-001`
 
 | field | value |

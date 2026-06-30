@@ -288,6 +288,24 @@ REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS = (
     REPRESENTATIVE_MICRO_SCENE_SOURCE_END_SECONDS
     - REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS
 )
+REPRESENTATIVE_MICRO_SCENE_V2_SCHEMA_ID = (
+    "clippipegen.representative_micro_scene_v2_cut_window_review_purpose_alignment.v1"
+)
+REPRESENTATIVE_MICRO_SCENE_V2_ARTIFACT_ID = (
+    "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+)
+REPRESENTATIVE_MICRO_SCENE_V2_FEATURE_ID = "ED-10ba"
+REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_OUTPUT_RELATIVE_DIR = Path(
+    "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+    "jp_pilot01r3_cut_review/"
+    "representative_micro_scene_v2_cut_window_review_purpose_alignment"
+)
+REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME = (
+    "representative_micro_scene_v2_cut_window_review_purpose_alignment"
+)
+REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS = 38.50
+REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_END_SECONDS = 50.40
+REPRESENTATIVE_MICRO_SCENE_V2_DURATION_SECONDS = 11.90
 SOURCE_REGISTRY_ARTIFACT_ID = "clip-ed10aa-subtitle-style-intent-registry-001"
 SOURCE_RENDER_PATH_ARTIFACT_ID = "clip-ed10z-tiny-render-path-nearer-probe-001"
 
@@ -3975,6 +3993,219 @@ def render_representative_micro_scene_internal_review_ass(
     )
 
 
+def representative_micro_scene_v2_cut_window_script_events() -> list[dict[str, Any]]:
+    source_start = REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS
+    events = [
+        {
+            "event_id": "ed10ba_sub_024",
+            "source_subtitle_id": "sub_024",
+            "source_segment_id": "seg_000024",
+            "source_type": "imported_subtitle_track",
+            "source_start_seconds": 39.156,
+            "source_end_seconds": 41.725,
+            "text": "団長、ちなみに、他の番長知ってますか？",
+            "line_break_text": "団長、ちなみに、他の番長知ってますか？",
+        },
+        {
+            "event_id": "ed10ba_sub_025",
+            "source_subtitle_id": "sub_025",
+            "source_segment_id": "seg_000025",
+            "source_type": "imported_subtitle_track",
+            "source_start_seconds": 41.725,
+            "source_end_seconds": 43.36,
+            "text": "長(ちょう)？ 長って言った？",
+            "line_break_text": "長(ちょう)？ 長って言った？",
+        },
+        {
+            "event_id": "ed10ba_sub_026",
+            "source_subtitle_id": "sub_026",
+            "source_segment_id": "seg_000026",
+            "source_type": "imported_subtitle_track",
+            "source_start_seconds": 43.36,
+            "source_end_seconds": 44.762,
+            "text": "倒して回ってるんです！",
+            "line_break_text": "倒して回ってるんです！",
+        },
+        {
+            "event_id": "ed10ba_sub_027",
+            "source_subtitle_id": "sub_027",
+            "source_segment_id": "seg_000027",
+            "source_type": "imported_subtitle_track",
+            "source_start_seconds": 44.762,
+            "source_end_seconds": 47.498,
+            "text": "長…長… 船長のことかな？",
+            "line_break_text": "長…長… 船長のことかな？",
+        },
+        {
+            "event_id": "ed10ba_sub_028",
+            "source_subtitle_id": "sub_028",
+            "source_segment_id": "seg_000028",
+            "source_type": "imported_subtitle_track",
+            "source_start_seconds": 47.498,
+            "source_end_seconds": 48.999,
+            "text": "マリンならあっちにいたよ",
+            "line_break_text": "マリンならあっちにいたよ",
+        },
+        {
+            "event_id": "ed10ba_sub_029",
+            "source_subtitle_id": "sub_029",
+            "source_segment_id": "seg_000029",
+            "source_type": "imported_subtitle_track",
+            "source_start_seconds": 48.999,
+            "source_end_seconds": 49.566,
+            "text": "ありがとうございますー！",
+            "line_break_text": "ありがとうございますー！",
+        },
+    ]
+    for event in events:
+        event["start_seconds"] = round(
+            float(event["source_start_seconds"]) - source_start,
+            6,
+        )
+        event["end_seconds"] = round(
+            float(event["source_end_seconds"]) - source_start,
+            6,
+        )
+    return events
+
+
+def render_representative_micro_scene_v2_cut_window_review_purpose_alignment_ass(
+    events: list[Mapping[str, Any]] | None = None,
+) -> str:
+    scene_events = events or representative_micro_scene_v2_cut_window_script_events()
+    dialogue_rows = "\n".join(
+        (
+            f"Dialogue: 0,{_probe_ass_time(float(event['start_seconds']))},"
+            f"{_probe_ass_time(float(event['end_seconds']))},V2DiagnosticSubtitle,"
+            f"{event['source_subtitle_id']},0,0,0,,"
+            f"{{\\an2}}{_micro_scene_ass_text(str(event['line_break_text']))}"
+        )
+        for event in scene_events
+    )
+    label = (
+        "Dialogue: 1,0:00:00.00,"
+        f"{_probe_ass_time(REPRESENTATIVE_MICRO_SCENE_V2_DURATION_SECONDS)},"
+        "V2PurposeLabel,ed10ba,0,0,0,,"
+        "{\\an7}INTERNAL CUT-WINDOW REVIEW V2\\N"
+        "diagnostic subtitles, not production design"
+    )
+    return (
+        "[Script Info]\n"
+        "ScriptType: v4.00+\n"
+        "PlayResX: 1920\n"
+        "PlayResY: 1080\n"
+        "WrapStyle: 0\n"
+        "ScaledBorderAndShadow: yes\n\n"
+        "[V4+ Styles]\n"
+        "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, "
+        "OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, "
+        "ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, "
+        "MarginL, MarginR, MarginV, Encoding\n"
+        "Style: V2DiagnosticSubtitle,Yu Gothic,78,&H00FFFFFF,&H00FFFFFF,"
+        "&H00000000,&H60000000,1,0,0,0,100,100,0,0,3,6,2,2,110,110,82,1\n"
+        "Style: V2PurposeLabel,Arial,36,&H00F1F5F9,&H00FFFFFF,"
+        "&H00242A31,&H99000000,1,0,0,0,100,100,0,0,3,3,1,7,54,54,42,1\n\n"
+        "[Events]\n"
+        "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, "
+        "Effect, Text\n"
+        f"{label}\n{dialogue_rows}\n"
+    )
+
+
+def write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts(
+    *,
+    output_dir: Path | None = None,
+    source_video_path: Path | None = None,
+    source_audio_path: Path | None = None,
+    base_dir: Path | None = None,
+    ffmpeg_path: str | Path | None = None,
+    ffprobe_path: str | Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    local_output_dir = (
+        output_dir or base / REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_OUTPUT_RELATIVE_DIR
+    )
+    local_output_dir.mkdir(parents=True, exist_ok=True)
+    ass_path = local_output_dir / f"{REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME}.ass"
+    video_path = local_output_dir / f"{REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME}.mp4"
+    manifest_path = (
+        local_output_dir / f"{REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME}.local.json"
+    )
+    source_video = source_video_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_VIDEO_RELATIVE_PATH
+    source_audio = source_audio_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_AUDIO_RELATIVE_PATH
+
+    with ass_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(
+            render_representative_micro_scene_v2_cut_window_review_purpose_alignment_ass()
+        )
+
+    if not source_video.exists() or not source_audio.exists():
+        local = _default_representative_micro_scene_v2_local_manifest(
+            status="local_source_media_missing",
+            ass_path=ass_path,
+            video_path=video_path,
+            manifest_path=manifest_path,
+            base_dir=base,
+            source_video_path=source_video,
+            source_audio_path=source_audio,
+        )
+        local["missing_inputs"] = [
+            _probe_display_path(path, base)
+            for path in (source_video, source_audio)
+            if not path.exists()
+        ]
+    else:
+        try:
+            result = ffmpeg_tiny.render_tiny_proof(
+                source_video_path=source_video,
+                source_audio_path=source_audio,
+                output_path=video_path,
+                start_seconds=REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS,
+                duration_seconds=REPRESENTATIVE_MICRO_SCENE_V2_DURATION_SECONDS,
+                subtitle_file_path=ass_path,
+                ffmpeg_path=ffmpeg_path,
+                ffprobe_path=ffprobe_path,
+            )
+            local = _representative_micro_scene_v2_local_manifest_from_render_result(
+                render_result=result,
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base,
+                source_video_path=source_video,
+                source_audio_path=source_audio,
+            )
+        except ffmpeg_tiny.TinyRenderError as exc:
+            local = _default_representative_micro_scene_v2_local_manifest(
+                status="representative_micro_scene_v2_render_failed",
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base,
+                source_video_path=source_video,
+                source_audio_path=source_audio,
+            )
+            local["failure_reason"] = exc.failure_reason
+            local["preflight"] = exc.preflight
+            local["attempts"] = [attempt.to_dict() for attempt in exc.attempts]
+
+    for _ in range(3):
+        with manifest_path.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(json.dumps(local, ensure_ascii=False, indent=2) + "\n")
+        manifest_size = manifest_path.stat().st_size
+        if local.get("access", {}).get("manifest_size_bytes") == manifest_size:
+            break
+        local["access"] = _representative_micro_scene_v2_access(
+            output_dir=local_output_dir,
+            ass_path=ass_path,
+            video_path=video_path,
+            manifest_path=manifest_path,
+            base_dir=base,
+            evidence_source=local["access"]["evidence_source"],
+        )
+    return local
+
+
 def write_representative_micro_scene_internal_review_local_artifacts(
     *,
     output_dir: Path | None = None,
@@ -4201,6 +4432,215 @@ def write_representative_micro_scene_internal_review_specimen(
         handle.write(
             render_representative_micro_scene_internal_review_specimen_markdown(
                 specimen
+            )
+        )
+    return {"json": json_path, "doc": doc_path}
+
+
+def build_representative_micro_scene_v2_cut_window_review_purpose_alignment(
+    *,
+    source_route_decision: Mapping[str, Any] | None = None,
+    local_artifact: Mapping[str, Any] | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    source = (
+        deepcopy(source_route_decision)
+        if source_route_decision is not None
+        else json.loads(
+            (
+                base
+                / "docs"
+                / "style_intent"
+                / "ed10az-observation-readback-and-v2-route-decision.json"
+            ).read_text(encoding="utf-8")
+        )
+    )
+    local = (
+        deepcopy(local_artifact)
+        if local_artifact is not None
+        else _default_representative_micro_scene_v2_local_manifest(base_dir=base)
+    )
+    script_events = list(
+        local.get("script_events")
+        or representative_micro_scene_v2_cut_window_script_events()
+    )
+    cut_window_logic = deepcopy(local["cut_window_logic"])
+    later_freeform_review_frame = {
+        "status": "ready_for_later_freeform_v2_review",
+        "input_mode": "freeform_if_later_requested",
+        "max_look_for_points": 3,
+        "fixed_form_required": False,
+        "yes_no_required": False,
+        "user_review_requested_now": False,
+        "look_for_points": [
+            "Does the v2 window feel less tightly cut at both ends than ED-10au?",
+            "Does the specimen make clipping/cutout review usefulness clearer than ED-10au?",
+            "Is the next fix mainly cut-window, subtitle strategy, source-scene selection, or render/layout?",
+        ],
+    }
+    boundaries = _representative_micro_scene_v2_boundary_flags(local)
+    validation = _representative_micro_scene_v2_validation(
+        source_route_decision=source,
+        local_artifact=local,
+        script_events=script_events,
+        later_freeform_review_frame=later_freeform_review_frame,
+        cut_window_logic=cut_window_logic,
+        boundaries=boundaries,
+    )
+    return {
+        "schema_id": REPRESENTATIVE_MICRO_SCENE_V2_SCHEMA_ID,
+        "artifact_id": REPRESENTATIVE_MICRO_SCENE_V2_ARTIFACT_ID,
+        "feature_id": REPRESENTATIVE_MICRO_SCENE_V2_FEATURE_ID,
+        "status": "representative_micro_scene_v2_cut_window_review_purpose_alignment_ready",
+        "surface_kind": "tracked_v2_cut_window_review_purpose_readback",
+        "render_level": "bounded_internal_review_specimen_render",
+        "source_observation_readback_and_v2_route_decision_artifact_id": source[
+            "artifact_id"
+        ],
+        "source_review_frame_clarification_surface_artifact_id": source[
+            "source_review_frame_clarification_surface_artifact_id"
+        ],
+        "source_thank_access_recovery_artifact_id": source[
+            "source_thank_access_recovery_artifact_id"
+        ],
+        "source_representative_micro_scene_internal_review_specimen_artifact_id": source[
+            "source_representative_micro_scene_internal_review_specimen_artifact_id"
+        ],
+        "v2_purpose": {
+            "route_id": "representative-micro-scene-v2-cut-window-and-review-purpose-alignment",
+            "primary_question": "cut-window and clipping/cutout review usefulness",
+            "responds_to_ed10az_observation": True,
+            "not_a_production_candidate": True,
+            "not_an_approval_surface": True,
+        },
+        "source_observation_preserved": {
+            "opened_successfully": source["user_observation"]["opened_successfully"],
+            "could_not_tell_what_to_judge": source["user_observation"][
+                "could_not_tell_what_to_judge"
+            ],
+            "if_target_is_cut_quality_both_ends_feel_too_tight": source[
+                "user_observation"
+            ]["if_target_is_cut_quality_both_ends_feel_too_tight"],
+            "subtitle_strategy_mismatch_for_clipping_review": source[
+                "user_observation"
+            ]["subtitle_strategy_mismatch_for_clipping_review"],
+            "audio_axis_meaningful_failure": source["user_observation"][
+                "audio_axis_meaningful_failure"
+            ],
+            "raw_observation_points": source["user_observation"][
+                "raw_observation_points"
+            ],
+        },
+        "original_ed10au_issue": {
+            "review_frame_clarity": "fail_or_partial",
+            "cut_window_source_scene_framing": "warning_or_v2_candidate",
+            "subtitle_strategy": "mismatch_for_clipping_review",
+            "plain_language": (
+                "The recovered ED-10au MP4 opens and subtitles are not broken, "
+                "but the user could not tell what to judge; if the target is "
+                "cut quality, both ends feel too tight, and the subtitle "
+                "treatment reads like ordinary YouTube subtitles."
+            ),
+        },
+        "v2_cut_window_logic": cut_window_logic,
+        "source_timing_window": {
+            "start_seconds": REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS,
+            "end_seconds": REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_END_SECONDS,
+            "duration_seconds": REPRESENTATIVE_MICRO_SCENE_V2_DURATION_SECONDS,
+            "source_subtitle_ids": local["source_episode_segment"][
+                "source_subtitle_ids"
+            ],
+            "source_segment_ids": local["source_episode_segment"][
+                "source_segment_ids"
+            ],
+        },
+        "script_events": script_events,
+        "subtitle_treatment": {
+            "diagnostic_internal_review_only": True,
+            "visible_purpose_label_included": local.get(
+                "visible_purpose_label_included"
+            )
+            is True,
+            "production_subtitle_design_acceptance": False,
+            "ordinary_youtube_subtitle_mismatch_not_marked_solved": True,
+            "purpose_label_text": (
+                "INTERNAL CUT-WINDOW REVIEW V2 / diagnostic subtitles, "
+                "not production design"
+            ),
+        },
+        "audio_treatment": {
+            "source_audio_reused": local.get("audio_source_reuse") is True,
+            "audio_first_failure_axis": False,
+            "audio_axis_meaningful_failure_from_ed10az": source[
+                "user_observation"
+            ]["audio_axis_meaningful_failure"],
+        },
+        "local_artifact": local,
+        "access_sheet": deepcopy(local["access"]),
+        "later_freeform_review_frame": later_freeform_review_frame,
+        "render_gate": {
+            "level": "bounded_internal_review_specimen_render",
+            "bounded_internal_review_specimen_render": boundaries[
+                "bounded_internal_review_specimen_render"
+            ],
+            "new_render_run": boundaries["new_render_run"],
+            "new_media_created": boundaries["new_media_created"],
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "screenshot_capture_created": False,
+            "final_render_path_stage_4_required_now": False,
+            "production_render_acceptance": False,
+            "public_use_permission": False,
+        },
+        "validation": validation,
+        "outputs": {
+            "json": (
+                "docs/style_intent/"
+                "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+            ),
+            "doc": (
+                "docs/style_intent/"
+                "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
+            ),
+            "launcher": (
+                "scripts/operator/"
+                "open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
+            ),
+        },
+        "boundaries": boundaries,
+    }
+
+
+def write_representative_micro_scene_v2_cut_window_review_purpose_alignment(
+    output_dir: Path,
+    *,
+    source_route_decision: Mapping[str, Any] | None = None,
+    local_artifact: Mapping[str, Any] | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Path]:
+    readback = build_representative_micro_scene_v2_cut_window_review_purpose_alignment(
+        source_route_decision=source_route_decision,
+        local_artifact=local_artifact,
+        base_dir=base_dir,
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    json_path = (
+        output_dir
+        / "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+    )
+    doc_path = (
+        output_dir
+        / "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
+    )
+    with json_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(readback, ensure_ascii=False, indent=2) + "\n")
+    with doc_path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(
+            render_representative_micro_scene_v2_cut_window_review_purpose_alignment_markdown(
+                readback
             )
         )
     return {"json": json_path, "doc": doc_path}
@@ -7027,6 +7467,165 @@ def render_representative_micro_scene_internal_review_specimen_markdown(
         f"- resolution: `{(local.get('metadata') or {}).get('resolution')}`",
         f"- video_codec: `{(local.get('metadata') or {}).get('video_codec')}`",
         f"- audio_codec: `{(local.get('metadata') or {}).get('audio_codec')}`",
+        "",
+        "## Validation",
+        "",
+        validation_rows,
+        "",
+        "## Boundary",
+        "",
+        boundary_rows,
+    ]
+    return nl.join(lines) + nl
+
+
+def render_representative_micro_scene_v2_cut_window_review_purpose_alignment_markdown(
+    readback: Mapping[str, Any],
+) -> str:
+    access = readback["access_sheet"]
+    cut = readback["v2_cut_window_logic"]
+    local = readback["local_artifact"]
+    review = readback["later_freeform_review_frame"]
+    validation = readback["validation"]
+    boundaries = readback["boundaries"]
+    nl = chr(10)
+    script_rows = nl.join(
+        "| {event_id} | {source_id} | {source_start:.3f}-{source_end:.3f}s | {local_start:.3f}-{local_end:.3f}s | {text} |".format(
+            event_id=event["event_id"],
+            source_id=event["source_subtitle_id"],
+            source_start=float(event["source_start_seconds"]),
+            source_end=float(event["source_end_seconds"]),
+            local_start=float(event["start_seconds"]),
+            local_end=float(event["end_seconds"]),
+            text=str(event["text"]).replace("|", "/"),
+        )
+        for event in readback["script_events"]
+    )
+    look_for_rows = nl.join(f"- {item}" for item in review["look_for_points"])
+    validation_rows = nl.join(
+        f"- {key}: `{str(validation[key]).lower()}`"
+        for key in (
+            "source_ed10az_read",
+            "ed10az_v2_route_consumed",
+            "v2_window_has_pre_roll",
+            "v2_window_has_post_roll",
+            "start_end_not_exact_subtitle_boundaries",
+            "script_events_match_expected_source_ids",
+            "diagnostic_subtitles_only",
+            "visible_purpose_label_present",
+            "audio_not_first_failure_axis",
+            "local_specimen_produced_or_honestly_blocked",
+            "access_state_verified_or_blocked",
+            "review_frame_at_most_three_points",
+            "no_screenshot_capture",
+            "no_final_render_path_stage_4",
+            "no_approval_inferred",
+            "no_stage_7_normalizer",
+            "tracked_media_boundary_closed",
+            "all_checks_passed",
+        )
+    )
+    boundary_rows = nl.join(
+        f"- {key}: `{str(boundaries[key]).lower()}`"
+        for key in (
+            "production_subtitle_design_acceptance",
+            "production_render_acceptance",
+            "creative_acceptance",
+            "rights_status",
+            "publishing_acceptance",
+            "public_use_permission",
+            "monetization_acceptance",
+            "production_candidate",
+            "production_usage_allowed",
+            "micro_scene_accepted",
+            "tracked_binary_artifact_created",
+            "episodes_tracked",
+            "screenshot_capture_created",
+            "subtitle_layout_screenshot_capture_required_now",
+            "final_render_path_stage_4_required_now",
+            "timing_audio_first_route",
+            "stage_7_freeform_normalizer_used",
+        )
+    )
+    lines = [
+        "# ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment",
+        "",
+        "This tracked readback answers ED-10az by producing a bounded local v2 specimen that is easier to judge for cut-window and clipping/cutout review usefulness. The local MP4/ASS/manifest remain ignored same-machine evidence under `episodes/`; this document records what was produced, why the window changed, and which gates remain closed.",
+        "",
+        "## Source Chain",
+        "",
+        f"- artifact_id: `{readback['artifact_id']}`",
+        f"- feature_id: `{readback['feature_id']}`",
+        f"- status: `{readback['status']}`",
+        f"- source_observation_readback_and_v2_route_decision_artifact_id: `{readback['source_observation_readback_and_v2_route_decision_artifact_id']}`",
+        f"- source_review_frame_clarification_surface_artifact_id: `{readback['source_review_frame_clarification_surface_artifact_id']}`",
+        f"- source_thank_access_recovery_artifact_id: `{readback['source_thank_access_recovery_artifact_id']}`",
+        f"- source_representative_micro_scene_internal_review_specimen_artifact_id: `{readback['source_representative_micro_scene_internal_review_specimen_artifact_id']}`",
+        "",
+        "## Why This V2 Exists",
+        "",
+        "ED-10az preserved that the recovered ED-10au MP4 opened and subtitles were not broken, but the user could not tell what to judge. If the target is cut quality, both ends felt too tightly cut; if the target is clipping/cutout usefulness, the ordinary YouTube-like subtitle strategy did not make the review purpose obvious.",
+        "",
+        f"- primary_question: `{readback['v2_purpose']['primary_question']}`",
+        f"- not_a_production_candidate: `{str(readback['v2_purpose']['not_a_production_candidate']).lower()}`",
+        f"- not_an_approval_surface: `{str(readback['v2_purpose']['not_an_approval_surface']).lower()}`",
+        "",
+        "## V2 Cut Window",
+        "",
+        f"- original_ED10au_window: `{cut['source_ed10au_window']['start_seconds']:.2f}-{cut['source_ed10au_window']['end_seconds']:.2f}s`",
+        f"- v2_window: `{cut['v2_window']['start_seconds']:.2f}-{cut['v2_window']['end_seconds']:.2f}s`",
+        f"- duration_seconds: `{cut['v2_window']['duration_seconds']:.2f}`",
+        f"- pre_roll_seconds_before_first_v2_subtitle: `{cut['pre_roll_seconds_before_first_v2_subtitle']}`",
+        f"- post_roll_seconds_after_last_v2_subtitle: `{cut['post_roll_seconds_after_last_v2_subtitle']}`",
+        f"- start_not_exact_subtitle_boundary: `{str(cut['start_not_exact_subtitle_boundary']).lower()}`",
+        f"- end_not_exact_subtitle_boundary: `{str(cut['end_not_exact_subtitle_boundary']).lower()}`",
+        f"- reason: {cut['reason']}",
+        "",
+        "| event | source subtitle | source time | local time | text |",
+        "|---|---|---:|---:|---|",
+        script_rows,
+        "",
+        "## Subtitle And Audio Treatment",
+        "",
+        f"- diagnostic/internal-review subtitles only: `{str(readback['subtitle_treatment']['diagnostic_internal_review_only']).lower()}`",
+        f"- visible_purpose_label_included: `{str(readback['subtitle_treatment']['visible_purpose_label_included']).lower()}`",
+        f"- purpose_label_text: `{readback['subtitle_treatment']['purpose_label_text']}`",
+        f"- ordinary_youtube_subtitle_mismatch_not_marked_solved: `{str(readback['subtitle_treatment']['ordinary_youtube_subtitle_mismatch_not_marked_solved']).lower()}`",
+        f"- source_audio_reused: `{str(readback['audio_treatment']['source_audio_reused']).lower()}`",
+        f"- audio_first_failure_axis: `{str(readback['audio_treatment']['audio_first_failure_axis']).lower()}`",
+        "",
+        "## Access Sheet",
+        "",
+        f"- access_state: `{access['access_state']}`",
+        f"- target_exists: `{str(access['target_exists']).lower()}`",
+        f"- access_evidence_level: `{access['access_evidence_level']}`",
+        f"- evidence_source: `{access['evidence_source']}`",
+        f"- launcher_or_open_command: `{access['launcher_or_open_command']}`",
+        f"- folder_repo_relative_path: `{access['folder_repo_relative_path']}`",
+        f"- folder_full_path_current_host: `{access['folder_full_path_current_host']}`",
+        f"- mp4_repo_relative_path: `{access['mp4_repo_relative_path']}`",
+        f"- mp4_full_path_current_host: `{access['mp4_full_path_current_host']}`",
+        f"- mp4_size_bytes: `{access['mp4_size_bytes']}`",
+        f"- ass_repo_relative_path: `{access['ass_repo_relative_path']}`",
+        f"- manifest_repo_relative_path: `{access['manifest_repo_relative_path']}`",
+        "",
+        "## Local Render Readback",
+        "",
+        f"- local_status: `{local['status']}`",
+        f"- render_command_summary: `{local.get('render_command_summary')}`",
+        f"- duration_seconds: `{(local.get('metadata') or {}).get('duration_seconds')}`",
+        f"- resolution: `{(local.get('metadata') or {}).get('resolution')}`",
+        f"- video_codec: `{(local.get('metadata') or {}).get('video_codec')}`",
+        f"- audio_codec: `{(local.get('metadata') or {}).get('audio_codec')}`",
+        f"- episodes_tracked: `{str(local.get('episodes_tracked')).lower()}`",
+        "",
+        "## Later Freeform Review Frame",
+        "",
+        f"- input_mode: `{review['input_mode']}`",
+        f"- max_look_for_points: `{review['max_look_for_points']}`",
+        f"- user_review_requested_now: `{str(review['user_review_requested_now']).lower()}`",
+        "",
+        look_for_rows,
         "",
         "## Validation",
         "",
@@ -11723,6 +12322,253 @@ def _default_representative_micro_scene_local_manifest(
     }
 
 
+def _default_representative_micro_scene_v2_local_manifest(
+    *,
+    status: str = "local_v2_specimen_not_attempted",
+    ass_path: Path | None = None,
+    video_path: Path | None = None,
+    manifest_path: Path | None = None,
+    base_dir: Path | None = None,
+    source_video_path: Path | None = None,
+    source_audio_path: Path | None = None,
+) -> dict[str, Any]:
+    base = base_dir or Path.cwd()
+    output_dir = base / REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_OUTPUT_RELATIVE_DIR
+    ass = ass_path or output_dir / f"{REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME}.ass"
+    video = video_path or output_dir / f"{REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME}.mp4"
+    manifest = (
+        manifest_path
+        or output_dir / f"{REPRESENTATIVE_MICRO_SCENE_V2_LOCAL_BASENAME}.local.json"
+    )
+    source_video = source_video_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_VIDEO_RELATIVE_PATH
+    source_audio = source_audio_path or base / REPRESENTATIVE_MICRO_SCENE_SOURCE_AUDIO_RELATIVE_PATH
+    return {
+        "status": status,
+        "artifact_id": REPRESENTATIVE_MICRO_SCENE_V2_ARTIFACT_ID,
+        "source_policy": (
+            "bounded_internal_review_representative_micro_scene_v2_cut_window_"
+            "review_purpose_alignment"
+        ),
+        "source_inputs": {
+            "video": _probe_display_path(source_video, base),
+            "audio": _probe_display_path(source_audio, base),
+        },
+        "source_episode_segment": {
+            "start_seconds": REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS,
+            "end_seconds": REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_END_SECONDS,
+            "duration_seconds": REPRESENTATIVE_MICRO_SCENE_V2_DURATION_SECONDS,
+            "source_subtitle_ids": [
+                "sub_024",
+                "sub_025",
+                "sub_026",
+                "sub_027",
+                "sub_028",
+                "sub_029",
+            ],
+            "source_segment_ids": [
+                "seg_000024",
+                "seg_000025",
+                "seg_000026",
+                "seg_000027",
+                "seg_000028",
+                "seg_000029",
+            ],
+        },
+        "cut_window_logic": {
+            "source_ed10au_window": {
+                "start_seconds": REPRESENTATIVE_MICRO_SCENE_SOURCE_START_SECONDS,
+                "end_seconds": REPRESENTATIVE_MICRO_SCENE_SOURCE_END_SECONDS,
+                "duration_seconds": REPRESENTATIVE_MICRO_SCENE_DURATION_SECONDS,
+            },
+            "v2_window": {
+                "start_seconds": REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS,
+                "end_seconds": REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_END_SECONDS,
+                "duration_seconds": REPRESENTATIVE_MICRO_SCENE_V2_DURATION_SECONDS,
+            },
+            "pre_roll_seconds_before_first_v2_subtitle": round(
+                39.156 - REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS,
+                3,
+            ),
+            "post_roll_seconds_after_last_v2_subtitle": round(
+                REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_END_SECONDS - 49.566,
+                3,
+            ),
+            "start_not_exact_subtitle_boundary": True,
+            "end_not_exact_subtitle_boundary": True,
+            "keeps_sample_short_and_bounded": True,
+            "reason": (
+                "The v2 window keeps the same exchange but adds modest handles "
+                "so cut-quality review does not start or end exactly on the "
+                "primary subtitle boundaries."
+            ),
+        },
+        "outputs": {
+            "ass": _probe_display_path(ass, base),
+            "video": _probe_display_path(video, base),
+            "manifest": _probe_display_path(manifest, base),
+        },
+        "script_events": representative_micro_scene_v2_cut_window_script_events(),
+        "metadata": {},
+        "render_command_summary": None,
+        "ffmpeg_path_source": None,
+        "ffprobe_path_source": None,
+        "ffmpeg_version": None,
+        "ffprobe_version": None,
+        "fallback_used": False,
+        "attempts": [],
+        "warnings": [],
+        "ignored_by_git": True,
+        "access": _representative_micro_scene_v2_access(
+            output_dir=output_dir,
+            ass_path=ass,
+            video_path=video,
+            manifest_path=manifest,
+            base_dir=base,
+            evidence_source=status,
+        ),
+        "actual_script_content_present": True,
+        "diagnostic_internal_review_subtitles_only": True,
+        "visible_purpose_label_included": True,
+        "audio_source_reuse": True,
+        "audio_first_failure_axis": False,
+        "tracked_binary_artifact_created": False,
+        "episodes_tracked": False,
+        "production_render_acceptance": False,
+        "public_use_permission": False,
+    }
+
+
+def _representative_micro_scene_v2_local_manifest_from_render_result(
+    *,
+    render_result: ffmpeg_tiny.RenderResult,
+    ass_path: Path,
+    video_path: Path,
+    manifest_path: Path,
+    base_dir: Path,
+    source_video_path: Path,
+    source_audio_path: Path,
+) -> dict[str, Any]:
+    local = _local_probe_readback_from_render_result(
+        render_result=render_result,
+        ass_path=ass_path,
+        video_path=video_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+    )
+    defaults = _default_representative_micro_scene_v2_local_manifest(
+        status="representative_micro_scene_v2_generated",
+        ass_path=ass_path,
+        video_path=video_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+        source_video_path=source_video_path,
+        source_audio_path=source_audio_path,
+    )
+    local.update(defaults)
+    local.update(
+        {
+            "status": "representative_micro_scene_v2_generated",
+            "metadata": render_result.metadata,
+            "render_command_summary": _probe_command_summary(
+                render_result.command_summary,
+                base_dir,
+            ),
+            "ffmpeg_path_source": render_result.ffmpeg_path_source,
+            "ffprobe_path_source": render_result.ffprobe_path_source,
+            "ffmpeg_version": render_result.ffmpeg_version,
+            "ffprobe_version": render_result.ffprobe_version,
+            "fallback_used": render_result.fallback_used,
+            "selected_profile": {
+                **render_result.selected_profile.to_dict(),
+                "output_path": _probe_display_path(video_path, base_dir),
+            },
+            "attempts": [
+                {
+                    **attempt.to_dict(),
+                    "summary": _probe_command_summary(
+                        attempt.command_summary,
+                        base_dir,
+                    ),
+                }
+                for attempt in render_result.attempts
+            ],
+            "warnings": render_result.warnings,
+            "access": _representative_micro_scene_v2_access(
+                output_dir=video_path.parent,
+                ass_path=ass_path,
+                video_path=video_path,
+                manifest_path=manifest_path,
+                base_dir=base_dir,
+                evidence_source="local_render_result_probe",
+            ),
+            "bounded_internal_review_specimen_render": True,
+            "new_render_run": True,
+            "new_media_created": True,
+        }
+    )
+    return local
+
+
+def _representative_micro_scene_v2_access(
+    *,
+    output_dir: Path,
+    ass_path: Path,
+    video_path: Path,
+    manifest_path: Path,
+    base_dir: Path,
+    evidence_source: str,
+) -> dict[str, Any]:
+    target_exists = video_path.exists()
+    manifest_exists = manifest_path.exists()
+    access_state = "verified_present" if target_exists else "blocked_with_missing_inputs"
+    return {
+        "artifact_id": REPRESENTATIVE_MICRO_SCENE_V2_ARTIFACT_ID,
+        "repo_relative_path": (
+            "docs/style_intent/"
+            "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json; "
+            "docs/style_intent/"
+            "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
+        ),
+        "folder_repo_relative_path": _probe_display_path(output_dir, base_dir),
+        "folder_full_path_current_host": str(output_dir.resolve()),
+        "mp4_repo_relative_path": _probe_display_path(video_path, base_dir),
+        "mp4_full_path_current_host": str(video_path.resolve()),
+        "mp4_size_bytes": video_path.stat().st_size if target_exists else None,
+        "ass_repo_relative_path": _probe_display_path(ass_path, base_dir),
+        "ass_full_path_current_host": str(ass_path.resolve()),
+        "ass_size_bytes": ass_path.stat().st_size if ass_path.exists() else None,
+        "manifest_repo_relative_path": _probe_display_path(manifest_path, base_dir),
+        "manifest_full_path_current_host": str(manifest_path.resolve()),
+        "manifest_size_bytes": manifest_path.stat().st_size if manifest_exists else None,
+        "launcher_or_open_command": (
+            "powershell -ExecutionPolicy Bypass -File "
+            "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
+        ),
+        "alternate_open_commands": {
+            "open_folder": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenFolder"
+            ),
+            "open_manifest": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenManifest"
+            ),
+            "open_ass": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenAss"
+            ),
+        },
+        "target_exists": target_exists,
+        "access_state": access_state,
+        "access_evidence_level": (
+            "file_exists_and_ffprobe_metadata"
+            if target_exists
+            else "missing_local_inputs_or_render_not_available"
+        ),
+        "evidence_source": evidence_source,
+    }
+
+
 def _representative_micro_scene_local_manifest_from_render_result(
     *,
     render_result: ffmpeg_tiny.RenderResult,
@@ -11935,6 +12781,195 @@ def _representative_micro_scene_validation(
             and boundaries["stage_7_freeform_normalizer_used"] is False
             and boundaries["tracked_binary_artifact_created"] is False
             and boundaries["episodes_tracked"] is False
+        ),
+    }
+
+
+def _representative_micro_scene_v2_boundary_flags(
+    local_artifact: Mapping[str, Any],
+) -> dict[str, Any]:
+    generated = (
+        local_artifact.get("status") == "representative_micro_scene_v2_generated"
+    )
+    flags = _boundary_flags()
+    flags.update(
+        {
+            "new_render_run": generated,
+            "new_render_created": generated,
+            "new_replay_run": False,
+            "new_media_created": generated,
+            "bounded_internal_review_specimen_render": generated,
+            "diagnostic_only": True,
+            "internal_review_only": True,
+            "tracked_binary_artifact_created": False,
+            "episodes_tracked": False,
+            "production_candidate": False,
+            "production_usage_allowed": False,
+            "production_subtitle_design_acceptance": False,
+            "production_render_acceptance": False,
+            "creative_acceptance": False,
+            "rights_status": "pending",
+            "publishing_acceptance": False,
+            "public_use_permission": False,
+            "monetization_acceptance": False,
+            "micro_scene_accepted": False,
+            "user_observation_converted_to_approval": False,
+            "layout_broken_claimed": False,
+            "player_ui_overlap_confirmed": False,
+            "screenshot_capture_created": False,
+            "subtitle_layout_screenshot_capture_required_now": False,
+            "final_render_path_stage_4_required_now": False,
+            "timing_audio_first_route": False,
+            "audio_first_failure_axis": False,
+            "stage_7_freeform_normalizer_used": False,
+            "stage_7_continuation_allowed_now": False,
+            "representative_micro_scene_v2_created": generated,
+            "representative_micro_scene_v2_enabled": True,
+        }
+    )
+    return flags
+
+
+def _representative_micro_scene_v2_validation(
+    *,
+    source_route_decision: Mapping[str, Any],
+    local_artifact: Mapping[str, Any],
+    script_events: list[Mapping[str, Any]],
+    later_freeform_review_frame: Mapping[str, Any],
+    cut_window_logic: Mapping[str, Any],
+    boundaries: Mapping[str, Any],
+) -> dict[str, Any]:
+    expected_source_subtitle_ids = [
+        "sub_024",
+        "sub_025",
+        "sub_026",
+        "sub_027",
+        "sub_028",
+        "sub_029",
+    ]
+    access = local_artifact.get("access") or {}
+    v2_window = cut_window_logic["v2_window"]
+    source_observation = source_route_decision.get("user_observation") or {}
+    route_decision = source_route_decision.get("route_decision") or {}
+    route_id = (
+        "representative-micro-scene-v2-cut-window-and-review-purpose-alignment"
+    )
+    script_ids_match = [
+        event.get("source_subtitle_id") for event in script_events
+    ] == expected_source_subtitle_ids
+    diagnostic_subtitles_only = (
+        local_artifact.get("diagnostic_internal_review_subtitles_only") is True
+        and boundaries["production_subtitle_design_acceptance"] is False
+    )
+    no_approval_inferred = (
+        boundaries["production_subtitle_design_acceptance"] is False
+        and boundaries["production_render_acceptance"] is False
+        and boundaries["creative_acceptance"] is False
+        and boundaries["rights_status"] == "pending"
+        and boundaries["publishing_acceptance"] is False
+        and boundaries["public_use_permission"] is False
+        and boundaries["monetization_acceptance"] is False
+        and boundaries["production_candidate"] is False
+        and boundaries["production_usage_allowed"] is False
+        and boundaries["micro_scene_accepted"] is False
+        and boundaries["user_observation_converted_to_approval"] is False
+    )
+    local_specimen_produced_or_honestly_blocked = local_artifact.get("status") in {
+        "representative_micro_scene_v2_generated",
+        "local_source_media_missing",
+        "representative_micro_scene_v2_render_failed",
+    }
+    access_state_verified_or_blocked = access.get("access_state") in {
+        "verified_present",
+        "blocked_with_missing_inputs",
+    }
+    return {
+        "source_ed10az_read": source_route_decision["artifact_id"]
+        == "clip-ed10az-observation-readback-and-v2-route-decision-001",
+        "ed10az_v2_route_consumed": (
+            route_decision.get("first_recommended_route_id") == route_id
+            and route_decision.get("representative_micro_scene_v2_enabled") is True
+        ),
+        "ed10az_openability_and_subtitles_preserved": (
+            source_observation.get("opened_successfully") is True
+            and source_observation.get("subtitle_timing_or_render_broken") is False
+        ),
+        "v2_window_has_pre_roll": (
+            cut_window_logic["pre_roll_seconds_before_first_v2_subtitle"] > 0
+            and float(v2_window["start_seconds"])
+            == REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_START_SECONDS
+        ),
+        "v2_window_has_post_roll": (
+            cut_window_logic["post_roll_seconds_after_last_v2_subtitle"] > 0
+            and float(v2_window["end_seconds"])
+            == REPRESENTATIVE_MICRO_SCENE_V2_SOURCE_END_SECONDS
+        ),
+        "start_end_not_exact_subtitle_boundaries": (
+            cut_window_logic["start_not_exact_subtitle_boundary"] is True
+            and cut_window_logic["end_not_exact_subtitle_boundary"] is True
+        ),
+        "script_events_match_expected_source_ids": script_ids_match,
+        "diagnostic_subtitles_only": diagnostic_subtitles_only,
+        "visible_purpose_label_present": local_artifact.get(
+            "visible_purpose_label_included"
+        )
+        is True,
+        "audio_not_first_failure_axis": (
+            local_artifact.get("audio_source_reuse") is True
+            and boundaries["timing_audio_first_route"] is False
+            and boundaries["audio_first_failure_axis"] is False
+            and source_observation.get("audio_axis_meaningful_failure") is False
+        ),
+        "local_specimen_produced_or_honestly_blocked": (
+            local_specimen_produced_or_honestly_blocked
+        ),
+        "access_state_verified_or_blocked": access_state_verified_or_blocked,
+        "access_verified_present_when_generated": (
+            local_artifact.get("status") != "representative_micro_scene_v2_generated"
+            or (
+                access.get("access_state") == "verified_present"
+                and access.get("target_exists") is True
+            )
+        ),
+        "review_frame_at_most_three_points": (
+            len(later_freeform_review_frame["look_for_points"]) <= 3
+            and later_freeform_review_frame["fixed_form_required"] is False
+            and later_freeform_review_frame["yes_no_required"] is False
+        ),
+        "no_screenshot_capture": boundaries["screenshot_capture_created"] is False
+        and boundaries["subtitle_layout_screenshot_capture_required_now"] is False,
+        "no_final_render_path_stage_4": boundaries[
+            "final_render_path_stage_4_required_now"
+        ]
+        is False,
+        "no_approval_inferred": no_approval_inferred,
+        "no_stage_7_normalizer": boundaries["stage_7_freeform_normalizer_used"]
+        is False,
+        "tracked_media_boundary_closed": boundaries[
+            "tracked_binary_artifact_created"
+        ]
+        is False
+        and boundaries["episodes_tracked"] is False,
+        "all_checks_passed": (
+            source_route_decision["artifact_id"]
+            == "clip-ed10az-observation-readback-and-v2-route-decision-001"
+            and route_decision.get("first_recommended_route_id") == route_id
+            and script_ids_match
+            and diagnostic_subtitles_only
+            and local_specimen_produced_or_honestly_blocked
+            and access_state_verified_or_blocked
+            and cut_window_logic["start_not_exact_subtitle_boundary"] is True
+            and cut_window_logic["end_not_exact_subtitle_boundary"] is True
+            and cut_window_logic["pre_roll_seconds_before_first_v2_subtitle"] > 0
+            and cut_window_logic["post_roll_seconds_after_last_v2_subtitle"] > 0
+            and local_artifact.get("visible_purpose_label_included") is True
+            and local_artifact.get("audio_source_reuse") is True
+            and boundaries["screenshot_capture_created"] is False
+            and boundaries["final_render_path_stage_4_required_now"] is False
+            and boundaries["stage_7_freeform_normalizer_used"] is False
+            and boundaries["tracked_binary_artifact_created"] is False
+            and boundaries["episodes_tracked"] is False
+            and no_approval_inferred
         ),
     }
 

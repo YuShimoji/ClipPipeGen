@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10ax`
-- artifact: `clip-ed10ax-review-frame-clarification-surface-001`
-- state: `review_frame_clarification_surface_ready`
+- feature: `ED-10ba`
+- artifact: `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
+- state: `representative_micro_scene_v2_cut_window_review_purpose_alignment_ready`
 
 ## Feature Table
 
@@ -87,8 +87,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10av | Micro-Scene Observation Frame Readback v0 | done | micro_scene_observation_frame_readback_ready | 100 | clip-ed10av-micro-scene-observation-frame-readback-001 | Use the observation frame readback to clarify the review frame first, capture subtitle/player-UI evidence if needed, and only rerender or open stage-4 for a concrete source/layout/render gap. |
 | ED-10aw | Grill-me Adoption Readback and Review-Frame Clarification Plan v0 | done | grill_me_adoption_review_frame_plan_ready | 100 | clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001 | Use the Grill-me adoption readback as a bounded precommit/report check, then implement review-frame clarification before any layout capture, v2 specimen, or render-path stage-4 work. |
 | ED-10ax | Review-Frame Clarification Surface v0 | done | review_frame_clarification_surface_ready | 100 | clip-ed10ax-review-frame-clarification-surface-001 | Use the review-frame clarification surface for later freeform review; keep screenshot capture, v2 specimen, and final-render-path stage-4 conditional. |
-| ED-10ay | Thank ED-10au Local Access Recovery Readback v0 | done | stable | 100 | clip-ed10ay-thank-ed10au-local-access-recovery-readback-001 | Keep as reference unless a regression or successor lane appears. |
-| ED-10az | Observation Readback and V2 Route Decision v0 | done | stable | 100 | clip-ed10az-observation-readback-and-v2-route-decision-001 | Keep as reference unless a regression or successor lane appears. |
+| ED-10ay | Thank ED-10au Local Access Recovery Readback v0 | done | thank_ed10au_local_access_recovery_ready | 100 | clip-ed10ay-thank-ed10au-local-access-recovery-readback-001 | Keep as current-host ED-10au local access recovery evidence; use ED-10ba for the successor v2 specimen. |
+| ED-10az | Observation Readback and V2 Route Decision v0 | done | observation_readback_and_v2_route_decision_ready | 100 | clip-ed10az-observation-readback-and-v2-route-decision-001 | Keep as the consumed route decision that enabled ED-10ba; do not restart screenshot, timing/audio, or pure review-frame work without new evidence. |
+| ED-10ba | Representative Micro-Scene V2 Cut Window / Review Purpose Alignment v0 | done | representative_micro_scene_v2_cut_window_review_purpose_alignment_ready | 100 | clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001 | Use the access-verified v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
@@ -131,4 +132,3 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | OUT-03 | visibility 譖ｴ譁ｰ・・ublic 蛹門性繧・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | OUT-04 | 螳悟・閾ｪ蜍輔し繝繝榊粋謌・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | OUT-05 | .ymmp 繧ｼ繝ｭ逕滓・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-06 | NLMYTGen 蛛ｴ繝輔ぃ繧､繝ｫ邱ｨ髮・ | rejected | retired | 0 |  | cross-project 謖・､ｺ縺ｪ縺励↓縺ｯ邱ｨ髮・＠縺ｪ縺・ょ・蛻ｩ逕ｨ縺ｯ CLI subprocess 邨檎罰 |

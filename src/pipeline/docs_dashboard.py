@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-06-28"
+DEFAULT_GENERATED_AT = "2026-06-30"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10ax',
-         'artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
+        "current_focus": {'feature_id': 'ED-10ba',
+         'artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'review_frame_clarification_surface_ready',
+         'state': 'representative_micro_scene_v2_cut_window_review_purpose_alignment_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -133,18 +133,21 @@ def build_project_status(
          'micro_scene_observation_frame_readback_artifact_id': 'clip-ed10av-micro-scene-observation-frame-readback-001',
          'grill_me_adoption_review_frame_clarification_plan_artifact_id': 'clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001',
          'review_frame_clarification_surface_artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
+         'thank_ed10au_local_access_recovery_artifact_id': 'clip-ed10ay-thank-ed10au-local-access-recovery-readback-001',
+         'observation_readback_and_v2_route_decision_artifact_id': 'clip-ed10az-observation-readback-and-v2-route-decision-001',
+         'representative_micro_scene_v2_cut_window_review_purpose_alignment_artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
-         'target_cuts': ['cut_008'],
+         'target_cuts': ['source_38.50_to_50.40s', 'sub_024_to_sub_029'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
-         'selected_typography_base': 'ed10l_keifont_pop_dialogue_candidate',
-         'selected_source_license_install_route': 'ed10l_keifont_pop_dialogue_candidate',
-         'route_status': 'ed10ax_review_frame_clarification_surface_ready',
-         'user_action_type': 'NO_USER_ACTION_REVIEW_FRAME_SURFACE_ONLY',
-         'next_review_action_type': 'FUTURE_FREEFORM_REVIEW_FRAME_READY',
+         'selected_typography_base': 'ed10ba_diagnostic_internal_review_subtitles',
+         'selected_source_license_install_route': 'existing_source_video_audio_reuse',
+         'route_status': 'ed10ba_v2_cut_window_review_purpose_alignment_ready',
+         'user_action_type': 'NO_USER_ACTION_V2_SPECIMEN_READY',
+         'next_review_action_type': 'FUTURE_FREEFORM_V2_CUT_WINDOW_REVIEW_READY',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'ed10ax_clarifies_how_to_evaluate_micro_scene_specimen',
+         'main_issue': 'ed10ba_aligns_cut_window_and_review_purpose',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -152,8 +155,8 @@ def build_project_status(
                                           'ed10w_balanced_combined_low_risk'],
          'lead_status': 'provisional_bounded_decoration_lead',
          'font_visual_evidence_status': 'valid_requested_keifont_visual_evidence_on_current_windows_profile',
-         'local_generation_status': 'ed10af_l2_local_ignored_probe_generated',
-         'user_review_status': 'no_new_user_review_requested_review_frame_surface_only',
+         'local_generation_status': 'ed10ba_local_ignored_v2_specimen_generated',
+         'user_review_status': 'no_new_user_review_requested_v2_specimen_ready',
          'user_observation_consumed': {'status': 'display_acceptable_move_forward_no_layout_polish',
                                        'display_surface_acceptable_enough': True,
                                        'layout_polish_deferred': True,
@@ -1261,15 +1264,15 @@ def build_project_status(
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
                            'current_blocker': 'review_frame_unclear_after_micro_scene_observation',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
-         'review_card': {'status': 'withheld_review_frame_surface_only',
-                         'action_type': 'NO_REVIEW_CARD_REVIEW_FRAME_SURFACE_ONLY',
-                         'target': 'clip-ed10ax-review-frame-clarification-surface-001',
-                         'artifact_id': 'clip-ed10ax-review-frame-clarification-surface-001',
-                         'axis': 'review_frame_clarification_surface',
+         'review_card': {'status': 'v2_specimen_ready_no_immediate_review_request',
+                         'action_type': 'NO_REVIEW_CARD_V2_SPECIMEN_READY',
+                         'target': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
+                         'artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
+                         'axis': 'v2_cut_window_review_purpose_alignment',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10ax turns the ED-10aw plan into a concrete review-frame clarification surface without asking for a new review.',
+                         'what_changed': 'ED-10ba turns the ED-10az route decision into an access-verified v2 specimen with a less boundary-tight cut window and a visible internal-review purpose label.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -1279,15 +1282,40 @@ def build_project_status(
                                         'next-agent prompt',
                                         'production subtitle design acceptance',
                                         'fixed form or yes/no table',
-                                        'new render or screenshot by default'],
+                                        'screenshot capture',
+                                        'final-render-path stage-4',
+                                        'timing/audio first route'],
                          'input_mode': 'none',
-                         'completion_signal': 'ED-10ax makes review-frame clarification ready for later freeform use while keeping layout capture, v2, render-path stage-4, and stage-7 conditional only.'},
+                         'completion_signal': 'ED-10ba makes the v2 cut-window/review-purpose specimen ready for later freeform use while keeping screenshot capture, render-path stage-4, timing/audio, and stage-7 out of scope.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'review_frame_clarification_surface_no_review_request_now',
+         'review_surface_direction': 'v2_cut_window_review_purpose_alignment_ready_no_review_request_now',
+         'representative_micro_scene_v2_cut_window_review_purpose_alignment': {
+             'status': 'ready',
+             'artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
+             'metadata_json': 'docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json',
+             'doc': 'docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md',
+             'launcher': 'scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1',
+             'source_observation_artifact_id': 'clip-ed10az-observation-readback-and-v2-route-decision-001',
+             'source_subtitle_ids': ['sub_024', 'sub_025', 'sub_026', 'sub_027', 'sub_028', 'sub_029'],
+             'cut_window': {'start_seconds': 38.5,
+                            'end_seconds': 50.4,
+                            'duration_seconds': 11.9,
+                            'pre_roll_seconds': 0.656,
+                            'post_roll_seconds': 0.834,
+                            'start_end_not_exact_subtitle_boundaries': True},
+             'purpose': 'cut-window and clipping/cutout review usefulness',
+             'access_state': 'verified_present',
+             'new_render_run': True,
+             'episodes_tracked': False,
+             'screenshot_capture_created': False,
+             'final_render_path_stage_4_required_now': False,
+             'production_candidate': False,
+             'public_use_permission': False,
+         },
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
          'review_debt': [{'debt_id': 'review_frame_clarification',
                           'status': 'surface_ready_for_later_freeform_use',
@@ -1296,8 +1324,8 @@ def build_project_status(
                           'status': 'needed_if_lower_subtitle_or_player_ui_overlap_must_be_verified',
                           'next_action': 'capture or inspect a frame to separate rendered subtitle layout from player controls before claiming a layout failure'},
                          {'debt_id': 'representative_micro_scene_v2',
-                          'status': 'conditional_only_if_source_scene_or_visual_framing_is_materially_wrong',
-                          'next_action': 'build a v2 specimen only after the source/scene mismatch is confirmed'},
+                          'status': 'implemented_v2_cut_window_review_purpose_alignment',
+                          'next_action': 'use ED-10ba for later freeform v2 review; do not rebuild unless the new window or purpose label is inadequate'},
                          {'debt_id': 'render_path_stage_4_gap',
                           'status': 'only_if_concrete_render_diagnostic_gap_exists',
                           'next_action': 'open final-render-path-stage-4 only for a concrete diagnostic gap; do not use stage-7 freeform normalizer now'}],
@@ -1648,6 +1676,14 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10av-micro-scene-observation-frame-readback-001"
         if feature_id == "ED-10aw":
             active_artifact = "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+        if feature_id == "ED-10ax":
+            active_artifact = "clip-ed10ax-review-frame-clarification-surface-001"
+        if feature_id == "ED-10ay":
+            active_artifact = "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001"
+        if feature_id == "ED-10az":
+            active_artifact = "clip-ed10az-observation-readback-and-v2-route-decision-001"
+        if feature_id == "ED-10ba":
+            active_artifact = "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
         features.append(
             {
                 "id": feature_id,
@@ -1712,7 +1748,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
         in artifact_ids
     )
     return {
@@ -1761,10 +1797,16 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
+            "item": "ED-10ba representative micro-scene v2 cut-window review",
+            "artifact": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
+            "question": "Does the v2 specimen make the cut window and clipping/cutout review purpose easier to judge than ED-10au, without treating it as approval?",
+            "next_route": "Use later freeform v2 review only if needed; keep screenshot capture, timing/audio, and final-render-path stage-4 conditional.",
+        },
+        {
             "item": "ED-10ax review-frame clarification surface",
             "artifact": "clip-ed10ax-review-frame-clarification-surface-001",
             "question": "Does the surface make clear what the ED-10au specimen asks a later reviewer to judge, without turning the observation into approval or asking for a fixed form?",
-            "next_route": "Use this surface for later freeform review; capture layout evidence, build v2, or open final-render-path-stage-4 only when the specific condition is met.",
+            "next_route": "Keep as consumed review-frame source for ED-10ba; capture layout evidence or open final-render-path-stage-4 only when the specific condition is met.",
         },
         {
             "item": "ED-10aw Grill-me adoption and review-frame clarification plan",
@@ -2003,6 +2045,25 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": ".\\open-artifacts.ps1",
             "target": "artifacts/ARTIFACTS.md",
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
+        },
+        {
+            "label": "Representative Micro-Scene V2 Readback",
+            "command": "see docs\\style_intent\\representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md",
+            "target": "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md",
+            "when_to_use": (
+                "Use to inspect the ED-10ba v2 specimen: why the source window "
+                "changed to 38.50-50.40s, how the purpose label is diagnostic, "
+                "and which approval/render gates remain closed."
+            ),
+        },
+        {
+            "label": "Open Representative Micro-Scene V2",
+            "command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+            "target": "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+            "when_to_use": (
+                "Use later only when a supervisor asks to open the ED-10ba "
+                "internal review v2 MP4."
+            ),
         },
         {
             "label": "Review-Frame Clarification Surface",
@@ -2477,6 +2538,12 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "grill_me_adoption_review_frame_plan_ready"
     if feature_id == "ED-10ax":
         return "review_frame_clarification_surface_ready"
+    if feature_id == "ED-10ay":
+        return "thank_ed10au_local_access_recovery_ready"
+    if feature_id == "ED-10az":
+        return "observation_readback_and_v2_route_decision_ready"
+    if feature_id == "ED-10ba":
+        return "representative_micro_scene_v2_cut_window_review_purpose_alignment_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2567,6 +2634,12 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10ax":
         return 100
+    if feature_id == "ED-10ay":
+        return 100
+    if feature_id == "ED-10az":
+        return 100
+    if feature_id == "ED-10ba":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -2655,6 +2728,12 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the Grill-me adoption readback as a bounded precommit/report check, then implement review-frame clarification before any layout capture, v2 specimen, or render-path stage-4 work."
     if feature_id == "ED-10ax":
         return "Use the review-frame clarification surface for later freeform review; keep screenshot capture, v2 specimen, and final-render-path stage-4 conditional."
+    if feature_id == "ED-10ay":
+        return "Keep as current-host ED-10au local access recovery evidence; use ED-10ba for the successor v2 specimen."
+    if feature_id == "ED-10az":
+        return "Keep as the consumed route decision that enabled ED-10ba; do not restart screenshot, timing/audio, or pure review-frame work without new evidence."
+    if feature_id == "ED-10ba":
+        return "Use the access-verified v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

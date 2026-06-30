@@ -27,9 +27,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10ax"
+    assert status["current_focus"]["feature_id"] == "ED-10ba"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ax-review-frame-clarification-surface-001"
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
     )
     assert status["current_focus"][
         "source_render_path_selector_contract_artifact_id"
@@ -63,7 +63,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["source_proof_artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
-    assert status["current_focus"]["state"] == "review_frame_clarification_surface_ready"
+    assert status["current_focus"]["state"] == (
+        "representative_micro_scene_v2_cut_window_review_purpose_alignment_ready"
+    )
     assert status["current_focus"][
         "source_render_contract_consumer_dry_read_artifact_id"
     ] == (
@@ -128,33 +130,41 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"][
         "review_frame_clarification_surface_artifact_id"
     ] == "clip-ed10ax-review-frame-clarification-surface-001"
+    assert status["current_focus"][
+        "representative_micro_scene_v2_cut_window_review_purpose_alignment_artifact_id"
+    ] == (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+    )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
     assert status["current_focus"]["latest_review_consumed"] == (
         "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin"
     )
-    assert status["current_focus"]["target_cuts"] == ["cut_008"]
+    assert status["current_focus"]["target_cuts"] == [
+        "source_38.50_to_50.40s",
+        "sub_024_to_sub_029",
+    ]
     assert status["current_focus"]["selected_typography_base"] == (
-        "ed10l_keifont_pop_dialogue_candidate"
+        "ed10ba_diagnostic_internal_review_subtitles"
     )
     assert status["current_focus"]["selected_source_license_install_route"] == (
-        "ed10l_keifont_pop_dialogue_candidate"
+        "existing_source_video_audio_reuse"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ax_review_frame_clarification_surface_ready"
+        "ed10ba_v2_cut_window_review_purpose_alignment_ready"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_REVIEW_FRAME_SURFACE_ONLY"
+        "NO_USER_ACTION_V2_SPECIMEN_READY"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "FUTURE_FREEFORM_REVIEW_FRAME_READY"
+        "FUTURE_FREEFORM_V2_CUT_WINDOW_REVIEW_READY"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "review_frame_clarification_surface_no_review_request_now"
+        "v2_cut_window_review_purpose_alignment_ready_no_review_request_now"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -204,20 +214,29 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "NO_REVIEW_CARD_REVIEW_FRAME_SURFACE_ONLY"
+        "NO_REVIEW_CARD_V2_SPECIMEN_READY"
     )
     assert status["current_focus"]["review_card"]["status"] == (
-        "withheld_review_frame_surface_only"
+        "v2_specimen_ready_no_immediate_review_request"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10ax-review-frame-clarification-surface-001"
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
     )
     assert status["current_focus"]["review_card"]["artifact_id"] == (
-        "clip-ed10ax-review-frame-clarification-surface-001"
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "review_frame_clarification_surface"
+        "v2_cut_window_review_purpose_alignment"
     )
+    v2 = status["current_focus"][
+        "representative_micro_scene_v2_cut_window_review_purpose_alignment"
+    ]
+    assert v2["status"] == "ready"
+    assert v2["access_state"] == "verified_present"
+    assert v2["cut_window"]["start_seconds"] == 38.5
+    assert v2["cut_window"]["end_seconds"] == 50.4
+    assert v2["cut_window"]["start_end_not_exact_subtitle_boundaries"] is True
+    assert v2["episodes_tracked"] is False
     access_sheet = status["current_focus"][
         "subtitle_internal_review_video_candidate_access_sheet"
     ]
@@ -989,7 +1008,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["review_surface_layout_debt"][
         "same_candidate_review_reopened"
     ] is False
-    assert "cut_002 / cut_003 review" in status["current_focus"]["review_card"][
+    assert "final-render-path stage-4" in status["current_focus"]["review_card"][
         "not_asking"
     ]
     assert status["current_focus"]["focused_review_html"] == (
@@ -1006,6 +1025,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     )
     assert status["current_focus"]["review_debt"][1]["status"] == (
         "needed_if_lower_subtitle_or_player_ui_overlap_must_be_verified"
+    )
+    assert status["current_focus"]["review_debt"][2]["status"] == (
+        "implemented_v2_cut_window_review_purpose_alignment"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
         "ed10w_current_pass_reference",
@@ -1037,6 +1059,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        (
+            "see docs\\style_intent\\representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
+        ),
+        (
+            "powershell -ExecutionPolicy Bypass -File "
+            "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
+        ),
         "see docs\\style_intent\\review-frame-clarification-surface.md",
         (
             "see docs\\style_intent\\grill-me-adoption-readback-and-ed10aw-review-frame-"
@@ -1107,6 +1136,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert [item["artifact"] for item in status["next_review_items"][:16]] == [
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
         "clip-ed10ax-review-frame-clarification-surface-001",
         "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
         "clip-ed10av-micro-scene-observation-frame-readback-001",
@@ -1122,7 +1152,6 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10ak-final-render-path-stage-2-replayability-001",
         "clip-ed10aj-final-render-path-stage-1-001",
         "clip-ed10ai-final-render-path-readiness-packet-001",
-        "clip-ed10ah-render-readiness-separation-readback-001",
     ]
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -1134,9 +1163,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     html = result["html_path"].read_text(encoding="utf-8")
     features_index = result["features_path"].read_text(encoding="utf-8")
     assert persisted["generated_at"] == "test-run"
-    assert [item["target"] for item in persisted["open_surfaces"][:28]] == [
+    assert [item["target"] for item in persisted["open_surfaces"][:30]] == [
         "docs/dashboard/index.html",
         "artifacts/ARTIFACTS.md",
+        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md",
+        "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
         "docs/style_intent/review-frame-clarification-surface.md",
         (
             "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-"
@@ -1167,7 +1198,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "docs/style_intent/subtitle-preset-selector.json",
         "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
     ]
-    assert "ED-10z local readback" in persisted["open_surfaces"][28][
+    assert "ED-10z local readback" in persisted["open_surfaces"][30][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -1244,10 +1275,24 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
     )
 
 
-def test_ed10ax_resume_surfaces_are_current_and_ed10aw_ed10av_ed10au_ed10at_ed10as_ed10ar_are_sources():
-    active_artifact = "clip-ed10ax-review-frame-clarification-surface-001"
-    active_json = "docs/style_intent/review-frame-clarification-surface.json"
-    active_md = "docs/style_intent/review-frame-clarification-surface.md"
+def test_ed10ba_resume_surfaces_are_current_and_ed10az_ed10ax_sources_remain_linked():
+    active_artifact = (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+    )
+    active_json = (
+        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+    )
+    active_md = (
+        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
+    )
+    active_launcher = (
+        "open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
+    )
+    route_decision = "clip-ed10az-observation-readback-and-v2-route-decision-001"
+    route_decision_json = (
+        "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json"
+    )
+    review_frame_surface = "clip-ed10ax-review-frame-clarification-surface-001"
     source_review_frame_plan = (
         "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
@@ -1277,6 +1322,10 @@ def test_ed10ax_resume_surfaces_are_current_and_ed10aw_ed10av_ed10au_ed10at_ed10
 
         if path.name != "SUBTITLE_PRESENTATION_CONTRACT.md":
             assert f"active_artifact: {active_artifact}" in text
+            assert (
+                f"latest_v2_cut_window_review_purpose_artifact: {active_artifact}"
+                in text
+            )
             assert f"source_review_frame_plan: {source_review_frame_plan}" in text
             assert (
                 f"source_micro_scene_observation_frame_readback: {source_frame_readback}"
@@ -1286,9 +1335,13 @@ def test_ed10ax_resume_surfaces_are_current_and_ed10aw_ed10av_ed10au_ed10at_ed10
                 f"source_internal_review_observation_readback: {observation_artifact}"
                 in text
             )
-        assert active_artifact in text
-        assert active_json in text
-        assert active_md in text
+            assert active_artifact in text
+            assert active_json in text
+            assert active_md in text
+            assert active_launcher in text
+            assert route_decision in text
+            assert route_decision_json in text
+            assert review_frame_surface in text
         assert source_review_frame_plan in text
         assert source_plan_json in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
         assert source_plan_md in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
@@ -2250,7 +2303,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_active_ed10ax_artifact(
+def test_docs_dashboard_current_focus_registration_uses_active_ed10ba_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -2263,7 +2316,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_ed10ax_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ax-review-frame-clarification-surface-001"
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
@@ -2276,7 +2329,7 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ax-review-frame-clarification-surface-001"
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
     )
     assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
@@ -2314,6 +2367,10 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
         in artifact_ids
     )
     assert "clip-ed10ax-review-frame-clarification-surface-001" in artifact_ids
+    assert (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        in artifact_ids
+    )
     assert "clip-ed10at-internal-review-observation-readback-001" in artifact_ids
     assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in artifact_ids
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True

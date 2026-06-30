@@ -3,11 +3,12 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: review_frame_clarification_surface_ready
+health: representative_micro_scene_v2_cut_window_review_purpose_alignment_ready
 progress_pct: 100
 last_touched: 2026-06-30
-next_review_due: none_review_frame_surface_only
-active_artifact: clip-ed10ax-review-frame-clarification-surface-001
+next_review_due: none_v2_specimen_ready
+active_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
+latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
 latest_access_recovery_artifact: clip-ed10ay-thank-ed10au-local-access-recovery-readback-001
 latest_observation_route_decision_artifact: clip-ed10az-observation-readback-and-v2-route-decision-001
 source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
@@ -18,7 +19,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
@@ -26,20 +27,47 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 ## Cross-Terminal Re-Entry Packet
 
 Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
-and `docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json`.
+and `docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json`.
 That is enough to resume without the previous chat.
 
-The durable state to carry forward is: ED-10az consumed the user's observation
-after the recovered ED-10au MP4 opened; access and basic render pass, but the
-review target remains unclear, both cut edges feel too tight for cut-quality
-review, and the subtitle strategy is mismatched for clipping/cutout review.
-The next slice should design
-`representative-micro-scene-v2-cut-window-and-review-purpose-alignment`.
+The durable state to carry forward is: ED-10ba consumed ED-10az and produced a
+bounded local v2 internal-review specimen. The v2 source window is
+`38.50s`-`50.40s`, covering `sub_024`-`sub_029` with modest pre/post handles
+instead of cutting exactly at the subtitle boundaries. The local MP4/ASS/local
+manifest are verified present under ignored `episodes/`, and the tracked
+readback records the access sheet, window rationale, and later freeform review
+frame.
 
-Do not make `subtitle-layout-screenshot-capture`, `final-render-path-stage-4`,
-or `timing-audio-check` the first route unless new evidence makes that primary.
-Do not track `episodes/` media. Do not infer production/public/rights/
-publishing/monetization approval or micro-scene acceptance.
+Do not treat ED-10ba as production/public/rights/publishing/monetization
+approval or micro-scene acceptance. Do not track `episodes/` media. Screenshot
+capture, final-render-path stage-4, timing/audio-first work, and stage-7 remain
+out of scope unless new evidence makes one of them the primary route.
+
+## Current ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment
+
+ED-10ba checkpoint, 2026-06-30 JST:
+`clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
+is the active tracked handoff artifact. It responds to ED-10az by making a
+slightly wider, purpose-labeled v2 specimen for cut-window and clipping/cutout
+review usefulness. The local v2 MP4 is verified present at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_v2_cut_window_review_purpose_alignment/representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4`
+with ffprobe readback `11.9s`, H.264/AAC, 1920x1080, 30fps. The ASS and local
+manifest are present in the same ignored folder.
+
+The v2 specimen keeps the same exchange but changes the review shape: it starts
+at `38.50s`, ends at `50.40s`, includes `sub_024`-`sub_029`, adds `0.656s`
+before the first v2 subtitle and `0.834s` after the last, and carries a visible
+diagnostic label that says it is an internal cut-window review rather than
+production subtitle design. This resolves the “what am I judging?” routing
+problem enough to support a later freeform v2 review, without claiming that the
+subtitle strategy itself is production-ready.
+
+Use
+`scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1`
+only when a later supervisor asks to open the specimen. The review frame remains
+freeform and capped at three look-for points: whether the window feels less
+tight than ED-10au, whether the clipping/cutout review purpose is clearer, and
+which next fix axis should be used. No immediate user review is requested.
 
 ## Current ED-10az Observation Readback and V2 Route Decision
 

@@ -3,10 +3,11 @@ id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: grill_me_adoption_review_frame_plan_ready
+health: representative_micro_scene_v2_cut_window_review_purpose_alignment_ready
 progress_pct: 100
 last_touched: 2026-06-30
-active_artifact: clip-ed10ax-review-frame-clarification-surface-001
+active_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
+latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
 latest_observation_route_decision_artifact: clip-ed10az-observation-readback-and-v2-route-decision-001
 source_review_frame_plan: clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001
 source_micro_scene_observation_frame_readback: clip-ed10av-micro-scene-observation-frame-readback-001
@@ -14,10 +15,21 @@ source_representative_micro_scene_specimen: clip-ed10au-representative-micro-sce
 source_internal_review_observation_readback: clip-ed10at-internal-review-observation-readback-001
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
-related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
+related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md
 ---
 
 # Subtitle Style Intent Registry
+
+## Current ED-10ba Representative Micro-Scene V2 Cut Window Link
+
+ED-10ba checkpoint, 2026-06-30 JST:
+`clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
+is the current tracked v2 readback. It uses a bounded local specimen at
+`38.50s`-`50.40s` with `sub_024`-`sub_029`, adds modest handles before and
+after the main subtitle boundaries, and includes a visible internal-review
+purpose label. This is diagnostic/internal-review subtitle treatment only; it
+does not approve production subtitle design, public use, rights, publishing, or
+monetization.
 
 ## Current ED-10az Observation Readback and V2 Route Decision Link
 

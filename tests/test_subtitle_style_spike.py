@@ -2681,6 +2681,158 @@ def test_ed10az_observation_readback_doc_records_route_and_boundaries():
     assert "user_observation_converted_to_approval: false" in text
 
 
+def test_ed10ba_representative_micro_scene_v2_readback_is_bounded():
+    payload = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "style_intent"
+            / "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert payload["schema_id"] == (
+        "clippipegen.representative_micro_scene_v2_cut_window_review_purpose_alignment.v1"
+    )
+    assert payload["artifact_id"] == (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+    )
+    assert payload["feature_id"] == "ED-10ba"
+    assert payload["source_observation_readback_and_v2_route_decision_artifact_id"] == (
+        "clip-ed10az-observation-readback-and-v2-route-decision-001"
+    )
+    assert payload["source_review_frame_clarification_surface_artifact_id"] == (
+        "clip-ed10ax-review-frame-clarification-surface-001"
+    )
+    assert payload["source_thank_access_recovery_artifact_id"] == (
+        "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001"
+    )
+
+    assert payload["v2_purpose"]["primary_question"] == (
+        "cut-window and clipping/cutout review usefulness"
+    )
+    assert payload["source_observation_preserved"]["opened_successfully"] is True
+    assert (
+        payload["source_observation_preserved"]["could_not_tell_what_to_judge"]
+        is True
+    )
+    assert (
+        payload["source_observation_preserved"][
+            "if_target_is_cut_quality_both_ends_feel_too_tight"
+        ]
+        is True
+    )
+    assert payload["original_ed10au_issue"]["cut_window_source_scene_framing"] == (
+        "warning_or_v2_candidate"
+    )
+
+    logic = payload["v2_cut_window_logic"]
+    assert logic["source_ed10au_window"]["start_seconds"] == 39.57
+    assert logic["source_ed10au_window"]["end_seconds"] == 48.75
+    assert logic["v2_window"]["start_seconds"] == 38.5
+    assert logic["v2_window"]["end_seconds"] == 50.4
+    assert logic["v2_window"]["duration_seconds"] == 11.9
+    assert logic["pre_roll_seconds_before_first_v2_subtitle"] == 0.656
+    assert logic["post_roll_seconds_after_last_v2_subtitle"] == 0.834
+    assert logic["start_not_exact_subtitle_boundary"] is True
+    assert logic["end_not_exact_subtitle_boundary"] is True
+
+    assert payload["source_timing_window"]["source_subtitle_ids"] == [
+        "sub_024",
+        "sub_025",
+        "sub_026",
+        "sub_027",
+        "sub_028",
+        "sub_029",
+    ]
+    assert [event["source_subtitle_id"] for event in payload["script_events"]] == [
+        "sub_024",
+        "sub_025",
+        "sub_026",
+        "sub_027",
+        "sub_028",
+        "sub_029",
+    ]
+    assert payload["script_events"][0]["text"] == (
+        "団長、ちなみに、他の番長知ってますか？"
+    )
+    assert payload["script_events"][-1]["text"] == "ありがとうございますー！"
+
+    assert payload["subtitle_treatment"]["diagnostic_internal_review_only"] is True
+    assert payload["subtitle_treatment"]["visible_purpose_label_included"] is True
+    assert (
+        payload["subtitle_treatment"][
+            "ordinary_youtube_subtitle_mismatch_not_marked_solved"
+        ]
+        is True
+    )
+    assert payload["audio_treatment"]["source_audio_reused"] is True
+    assert payload["audio_treatment"]["audio_first_failure_axis"] is False
+
+    local = payload["local_artifact"]
+    assert local["status"] == "representative_micro_scene_v2_generated"
+    assert local["metadata"]["duration_seconds"] == 11.9
+    assert local["metadata"]["resolution"] == "1920x1080"
+    assert local["metadata"]["video_codec"] == "h264"
+    assert local["metadata"]["audio_codec"] == "aac"
+    assert payload["access_sheet"]["access_state"] == "verified_present"
+    assert payload["access_sheet"]["target_exists"] is True
+    assert "open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1" in (
+        payload["access_sheet"]["launcher_or_open_command"]
+    )
+
+    assert payload["render_gate"]["screenshot_capture_created"] is False
+    assert payload["render_gate"]["final_render_path_stage_4_required_now"] is False
+    assert payload["render_gate"]["tracked_binary_artifact_created"] is False
+    assert payload["render_gate"]["episodes_tracked"] is False
+    assert payload["boundaries"]["production_render_acceptance"] is False
+    assert payload["boundaries"]["public_use_permission"] is False
+    assert payload["boundaries"]["micro_scene_accepted"] is False
+    assert payload["boundaries"]["stage_7_freeform_normalizer_used"] is False
+    assert all(payload["validation"].values())
+
+
+def test_ed10ba_representative_micro_scene_v2_doc_and_launcher_are_present():
+    doc = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
+    )
+    text = doc.read_text(encoding="utf-8")
+
+    assert (
+        "ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment"
+        in text
+    )
+    assert (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        in text
+    )
+    assert "38.50-50.40s" in text
+    assert "cut-window and clipping/cutout review usefulness" in text
+    assert "diagnostic/internal-review subtitles only" in text
+    assert "open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1" in text
+    assert "final_render_path_stage_4_required_now: `false`" in text
+    assert "episodes_tracked: `false`" in text
+    assert "audio_first_failure_axis: `false`" in text
+    assert "all_checks_passed: `true`" in text
+
+    launcher = (
+        REPO_ROOT
+        / "scripts"
+        / "operator"
+        / "open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
+    )
+    script = launcher.read_text(encoding="utf-8")
+    assert "representative_micro_scene_v2_cut_window_review_purpose_alignment" in script
+    assert "representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4" in script
+    assert "Invoke-Item -LiteralPath $video" in script
+    assert "$OpenFolder" in script
+    assert "$OpenManifest" in script
+    assert "$OpenAss" in script
+
+
 @pytest.mark.skipif(
     spike.Image is None,
     reason="Pillow optional local review tool is not installed",
