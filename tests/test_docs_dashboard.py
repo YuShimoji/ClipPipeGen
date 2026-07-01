@@ -27,9 +27,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     findings = status["doc_health"]["findings"]
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
-    assert status["current_focus"]["feature_id"] == "ED-10ba"
+    assert status["current_focus"]["feature_id"] == "ED-10bb"
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     assert status["current_focus"][
         "source_render_path_selector_contract_artifact_id"
@@ -64,7 +64,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "representative_micro_scene_v2_cut_window_review_purpose_alignment_ready"
+        "thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank"
     )
     assert status["current_focus"][
         "source_render_contract_consumer_dry_read_artifact_id"
@@ -135,6 +135,11 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     ] == (
         "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
     )
+    assert status["current_focus"][
+        "thank_ed10ba_v2_local_access_recovery_readback_artifact_id"
+    ] == (
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+    )
     assert status["current_focus"]["human_visual_judgement"] == (
         "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed"
     )
@@ -152,19 +157,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "existing_source_video_audio_reuse"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10ba_v2_cut_window_review_purpose_alignment_ready"
+        "ed10bb_thank_access_recovery_blocked_current_session_not_on_thank"
     )
     assert status["current_focus"]["user_action_type"] == (
-        "NO_USER_ACTION_V2_SPECIMEN_READY"
+        "NO_USER_ACTION_ACCESS_REALITY_RECORDED"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "FUTURE_FREEFORM_V2_CUT_WINDOW_REVIEW_READY"
+        "RUN_FROM_THANK_TERMINAL_IF_RECOVERY_REQUIRED"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "v2_cut_window_review_purpose_alignment_ready_no_review_request_now"
+        "thank_access_recovery_handoff_ready_no_review_request_now"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -214,20 +219,30 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "NO_REVIEW_CARD_V2_SPECIMEN_READY"
+        "NO_REVIEW_CARD_ACCESS_REALITY_RECORDED"
     )
     assert status["current_focus"]["review_card"]["status"] == (
-        "v2_specimen_ready_no_immediate_review_request"
+        "access_reality_handoff_ready_no_immediate_review_request"
     )
     assert status["current_focus"]["review_card"]["target"] == (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     assert status["current_focus"]["review_card"]["artifact_id"] == (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     assert status["current_focus"]["review_card"]["axis"] == (
-        "v2_cut_window_review_purpose_alignment"
+        "thank_ed10ba_v2_local_access_recovery"
     )
+    thank_recovery = status["current_focus"]["thank_ed10ba_v2_local_access_recovery"]
+    assert thank_recovery["artifact_id"] == (
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+    )
+    assert thank_recovery["classification"] == (
+        "thank_repo_root_not_visible_from_current_session"
+    )
+    assert thank_recovery["expected_thank_repo_root_exists_from_current_session"] is False
+    assert thank_recovery["regeneration_attempted"] is False
+    assert thank_recovery["wrong_host_regeneration_avoided"] is True
     v2 = status["current_focus"][
         "representative_micro_scene_v2_cut_window_review_purpose_alignment"
     ]
@@ -1014,19 +1029,20 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["current_focus"]["focused_review_html"] == (
         "episodes/.../subtitle_presentation_review_pack.html"
     )
-    assert [item["debt_id"] for item in status["current_focus"]["review_debt"][:4]] == [
+    assert [item["debt_id"] for item in status["current_focus"]["review_debt"][:5]] == [
+        "thank_ed10ba_v2_local_access_recovery",
         "review_frame_clarification",
         "subtitle_layout_screenshot_capture",
         "representative_micro_scene_v2",
         "render_path_stage_4_gap",
     ]
-    assert status["current_focus"]["review_debt"][0]["status"] == (
+    assert status["current_focus"]["review_debt"][1]["status"] == (
         "surface_ready_for_later_freeform_use"
     )
-    assert status["current_focus"]["review_debt"][1]["status"] == (
+    assert status["current_focus"]["review_debt"][2]["status"] == (
         "needed_if_lower_subtitle_or_player_ui_overlap_must_be_verified"
     )
-    assert status["current_focus"]["review_debt"][2]["status"] == (
+    assert status["current_focus"]["review_debt"][3]["status"] == (
         "implemented_v2_cut_window_review_purpose_alignment"
     )
     assert status["current_focus"]["bounded_decoration_candidates"] == [
@@ -1059,6 +1075,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["command"] for item in status["open_surfaces"]] == [
         ".\\open-dashboard.ps1",
         ".\\open-artifacts.ps1",
+        "see docs\\style_intent\\thank-ed10ba-v2-local-access-recovery-readback.md",
         (
             "see docs\\style_intent\\representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
         ),
@@ -1136,6 +1153,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
     assert [item["artifact"] for item in status["next_review_items"][:16]] == [
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
         "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
         "clip-ed10ax-review-frame-clarification-surface-001",
         "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
@@ -1151,7 +1169,6 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10al-final-render-path-stage-3-rehearsal-001",
         "clip-ed10ak-final-render-path-stage-2-replayability-001",
         "clip-ed10aj-final-render-path-stage-1-001",
-        "clip-ed10ai-final-render-path-readiness-packet-001",
     ]
     assert "clip-test-artifact" in status["artifact_summary"]["artifact_ids"]
     assert {finding["type"] for finding in findings} >= {"unclear", "over_guarded"}
@@ -1166,6 +1183,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert [item["target"] for item in persisted["open_surfaces"][:30]] == [
         "docs/dashboard/index.html",
         "artifacts/ARTIFACTS.md",
+        "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md",
         "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md",
         "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
         "docs/style_intent/review-frame-clarification-surface.md",
@@ -1196,9 +1214,8 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "docs/style_intent/subtitle-style-family-palette-proof.html",
         "docs/style_intent/subtitle-visual-selector-proof.html",
         "docs/style_intent/subtitle-preset-selector.json",
-        "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
     ]
-    assert "ED-10z local readback" in persisted["open_surfaces"][30][
+    assert "ED-10z local readback" in persisted["open_surfaces"][31][
         "when_to_use"
     ]
     assert "Open Surfaces" in html
@@ -1275,14 +1292,23 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
     )
 
 
-def test_ed10ba_resume_surfaces_are_current_and_ed10az_ed10ax_sources_remain_linked():
+def test_ed10bb_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
     active_artifact = (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     active_json = (
-        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+        "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json"
     )
     active_md = (
+        "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md"
+    )
+    source_v2_artifact = (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+    )
+    source_v2_json = (
+        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+    )
+    source_v2_md = (
         "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
     )
     active_launcher = (
@@ -1323,7 +1349,11 @@ def test_ed10ba_resume_surfaces_are_current_and_ed10az_ed10ax_sources_remain_lin
         if path.name != "SUBTITLE_PRESENTATION_CONTRACT.md":
             assert f"active_artifact: {active_artifact}" in text
             assert (
-                f"latest_v2_cut_window_review_purpose_artifact: {active_artifact}"
+                f"latest_thank_ed10ba_v2_access_recovery_artifact: {active_artifact}"
+                in text
+            )
+            assert (
+                f"latest_v2_cut_window_review_purpose_artifact: {source_v2_artifact}"
                 in text
             )
             assert f"source_review_frame_plan: {source_review_frame_plan}" in text
@@ -1338,6 +1368,9 @@ def test_ed10ba_resume_surfaces_are_current_and_ed10az_ed10ax_sources_remain_lin
             assert active_artifact in text
             assert active_json in text
             assert active_md in text
+            assert source_v2_artifact in text
+            assert source_v2_json in text
+            assert source_v2_md in text
             assert active_launcher in text
             assert route_decision in text
             assert route_decision_json in text
@@ -2303,7 +2336,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_active_ed10ba_artifact(
+def test_docs_dashboard_current_focus_registration_uses_active_ed10bb_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -2316,7 +2349,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_ed10ba_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
@@ -2329,7 +2362,7 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     assert "clip-ed10af-l2-render-path-selector-probe-001" in artifact_ids
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in artifact_ids
@@ -2369,6 +2402,10 @@ def test_artifact_registry_records_ed10ah_limitation_lift_sources():
     assert "clip-ed10ax-review-frame-clarification-surface-001" in artifact_ids
     assert (
         "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        in artifact_ids
+    )
+    assert (
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
         in artifact_ids
     )
     assert "clip-ed10at-internal-review-observation-readback-001" in artifact_ids

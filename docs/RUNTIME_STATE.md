@@ -3,11 +3,12 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: representative_micro_scene_v2_cut_window_review_purpose_alignment_ready
+health: thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank
 progress_pct: 100
 last_touched: 2026-06-30
-next_review_due: none_v2_specimen_ready
-active_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
+next_review_due: run_from_thank_terminal_if_recovery_required
+active_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
+latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
 latest_access_recovery_artifact: clip-ed10ay-thank-ed10au-local-access-recovery-readback-001
 latest_observation_route_decision_artifact: clip-ed10az-observation-readback-and-v2-route-decision-001
@@ -19,7 +20,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -35,19 +36,48 @@ instructions.
 
 Checkpoint date: 2026-06-30 JST. A new terminal should pull `origin/main`, then
 read this file first, followed by `docs/CURRENT_HANDOFF.md` and
-`docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json`.
+`docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`.
 
-The latest completed slice is ED-10ba. ED-10az enabled the successor v2 route,
-and ED-10ba executed it by producing a bounded local v2 specimen for
-cut-window and clipping/cutout review usefulness. The specimen is verified
-present locally, while the media remains ignored same-machine evidence under
-`episodes/`.
+The latest tracked slice is ED-10bb. It preserves the Thank-terminal access
+recovery reality for ED-10ba: this session ran from
+`C:\Users\PLANNER007\ClipPipeGen`, while the requested Thank repo root
+`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen` was not visible.
+Therefore no regeneration was attempted here; doing so would only affect
+PLANNER007 ignored media, not the requested Thank host. ED-10ba remains the
+source v2 specimen and is verified present on PLANNER007 as reference-only
+evidence.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. Production/
 public/rights/publishing/monetization and micro-scene acceptance remain false
 or pending. Screenshot capture, final-render-path stage-4, timing/audio-first
 work, and stage-7 remain conditional only unless new evidence makes one of
 them primary.
+
+## Current ED-10bb Thank ED-10ba V2 Local Access Recovery Readback
+
+ED-10bb checkpoint, 2026-06-30 JST:
+`clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001` is the active
+tracked access-reality readback. It consumes ED-10ba and records that the
+expected Thank repository root was not visible from this PLANNER007 session.
+The correct classification is `thank_repo_root_not_visible_from_current_session`,
+not `current_host_ignored_media_absent`, because the target repo root itself
+could not be reached.
+
+The ED-10ba tracked JSON/Markdown, launcher, dashboard JSON, current handoff,
+and runtime state are present after pull. The expected Thank MP4/ASS/local
+manifest and source video/audio/transcript/edit_pack paths could not be
+verified from this host. No user search was requested, no wrong-host rerender
+was performed, and no media was tracked.
+
+The next terminal should run from
+`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, pull `origin/main`,
+read `docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`,
+and then check the ED-10ba ignored outputs. If the outputs are absent but the
+required source inputs are present on Thank, use the existing bounded writer
+`write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts`
+from `src/integrations/render/subtitle_preset_selector.py`. Keep all
+production/public/rights/publishing/monetization, screenshot capture,
+final-render-path stage-4, and stage-7 gates closed.
 
 ## Current ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment
 

@@ -903,6 +903,42 @@ Boundary flags remain false or pending:
 - `timing_audio_first_route=false`
 - `stage_7_freeform_normalizer_used=false`
 
+## `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001`
+
+| field | value |
+|---|---|
+| title | ED-10bb Thank ED-10ba V2 Local Access Recovery Readback |
+| purpose | Preserve the requested Thank-terminal access recovery result for ED-10ba without pretending this PLANNER007 session could verify or regenerate ignored media on the Thank host. |
+| storage_class | tracked JSON/Markdown readback only; no media, screenshot, or regeneration output created |
+| repo_relative_path | docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json; docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md |
+| open_command | see docs\\style_intent\\thank-ed10ba-v2-local-access-recovery-readback.md |
+| generated_from | ED-10bb consumes `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001` and records that the requested Thank repo root `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen` was not visible from `C:\Users\PLANNER007\ClipPipeGen`; therefore no wrong-host rerender was attempted. |
+| validation_command | Parse ED-10bb JSON and dashboard JSON; verify ED-10ba tracked files are present; verify builder symbol exists; run targeted subtitle/dashboard tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | No Thank-host smoke could be performed from this session. PLANNER007 reference-only ED-10ba MP4 exists with size `4723658`, duration `11.9s`, H.264/AAC, 1920x1080, 30fps; this is not Thank recovery evidence. |
+| review_status | access-reality handoff ready; next terminal must run from the Thank repo root if recovery is still required; no immediate user review requested |
+| next_action | On the Thank terminal, pull `origin/main`, read `docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`, verify the ED-10ba ignored outputs and required source inputs, then run the bounded ED-10ba v2 writer only if outputs are absent and source inputs are present. |
+
+Boundary flags remain false or pending:
+
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `new_render_run=false`
+- `new_media_created=false`
+- `wrong_host_regeneration=false`
+- `screenshot_capture_created=false`
+- `final_render_path_stage_4=false`
+- `stage_7_freeform_normalizer_used=false`
+
 ## `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
 
 | field | value |
