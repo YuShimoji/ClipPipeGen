@@ -2,34 +2,30 @@
   "schema_id": "clippipegen.thank_ed10ba_v2_local_access_recovery_readback.v1",
   "artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
   "feature_id": "ED-10bb",
-  "status": "thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank",
+  "status": "thank_ed10ba_v2_local_access_recovery_verified_present",
   "surface_kind": "tracked_access_reality_readback",
   "source_representative_micro_scene_v2_artifact_id": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
   "source_observation_readback_and_v2_route_decision_artifact_id": "clip-ed10az-observation-readback-and-v2-route-decision-001",
   "access_reality": {
     "intended_terminal": "Thank terminal",
-    "executed_from_repo_root": "C:\\Users\\PLANNER007\\ClipPipeGen",
-    "executed_from_repo_root_git_toplevel": "C:/Users/PLANNER007/ClipPipeGen",
+    "executed_from_repo_root": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen",
+    "executed_from_repo_root_git_toplevel": "C:/Users/thank/Storage/Media Contents Projects/ClipPipeGen",
     "expected_thank_repo_root": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen",
-    "expected_thank_repo_root_exists_from_current_session": false,
-    "classification": "thank_repo_root_not_visible_from_current_session",
-    "not_classified_as": "current_host_ignored_media_absent",
-    "why_not_current_host_ignored_media_absent": "The expected Thank repository root itself is not visible from this PLANNER007 session, so Thank-host ignored media and source inputs cannot be classified from here.",
+    "expected_thank_repo_root_exists_from_current_session": true,
+    "classification": "current_host_ignored_media_absent_then_regenerated",
+    "initial_local_media_state": "current_host_ignored_media_absent",
     "user_asked_to_search_again": false,
-    "regeneration_attempted": false,
-    "regeneration_skipped_reason": "Wrong host regeneration was skipped because this session would only affect PLANNER007 ignored media, not the requested Thank terminal.",
-    "deliverable_status": "blocked_with_access_reality_recorded"
+    "regeneration_attempted": true,
+    "regeneration_command_used": "uvx python -c \"from pathlib import Path; from src.integrations.render import subtitle_preset_selector as s; s.write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts(base_dir=Path.cwd(), ffmpeg_path='ffmpeg', ffprobe_path='ffprobe')\"",
+    "wrong_host_regeneration": false,
+    "deliverable_status": "verified_present"
   },
   "repo_state_verified": {
     "remote_origin": "https://github.com/YuShimoji/ClipPipeGen.git",
     "branch": "main",
-    "ahead_behind_head_origin_main": "0 0",
-    "latest_commit_before_this_readback": "e2a9780 Add ED-10ba v2 micro-scene review specimen",
-    "tracked_file_failure": false,
-    "untracked_local_helpers_present_but_not_staged": [
-      ".agents/skills/grill-me/SKILL.md",
-      "skills-lock.json"
-    ]
+    "ahead_behind_head_origin_main_before_local_update": "0 0",
+    "latest_remote_commit_before_this_readback_update": "3a68fd1 Add ED-10bb Thank access recovery handoff",
+    "tracked_file_failure": false
   },
   "tracked_ed10ba_files_checked": [
     {
@@ -57,7 +53,7 @@
       "present": true
     }
   ],
-  "expected_thank_local_outputs_checked_from_current_session": {
+  "initial_expected_thank_local_outputs": {
     "mp4": {
       "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4",
       "exists": false
@@ -71,48 +67,26 @@
       "exists": false
     }
   },
-  "expected_thank_source_inputs_checked_from_current_session": {
+  "expected_thank_source_inputs": {
     "source_video": {
       "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\materials\\src_video_jp_pilot01\\source_video.mp4",
-      "exists": false
+      "exists": true,
+      "size_bytes": 35281366
     },
     "source_audio": {
       "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\materials\\src_audio_jp_pilot01\\source.wav",
-      "exists": false
+      "exists": true,
+      "size_bytes": 5270822
     },
     "transcript": {
       "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\transcript.json",
-      "exists": false
+      "exists": true,
+      "size_bytes": 43369
     },
     "edit_pack": {
       "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\edit_pack.json",
-      "exists": false
-    }
-  },
-  "planner007_reference_only": {
-    "scope_note": "These files prove the ED-10ba specimen exists on PLANNER007 only; they do not prove Thank-host recovery.",
-    "mp4": {
-      "full_path": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4",
       "exists": true,
-      "size_bytes": 4723658,
-      "duration_seconds": 11.9,
-      "width": 1920,
-      "height": 1080,
-      "video_codec": "h264",
-      "audio_codec": "aac",
-      "frame_rate": "30/1",
-      "audio_sample_rate": "16000",
-      "audio_channels": 1
-    },
-    "ass": {
-      "full_path": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.ass",
-      "exists": true,
-      "size_bytes": 1529
-    },
-    "local_manifest": {
-      "full_path": "C:\\Users\\PLANNER007\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.local.json",
-      "exists": true,
-      "size_bytes": 13681
+      "size_bytes": 65687
     }
   },
   "builder_entrypoint": {
@@ -120,35 +94,56 @@
     "symbol": "write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts",
     "present": true,
     "line_hint": 4115,
-    "bounded_regeneration_command_for_thank_terminal": "uvx python -c \"from pathlib import Path; from src.integrations.render import subtitle_preset_selector as s; s.write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts(base_dir=Path.cwd(), ffmpeg_path='ffmpeg', ffprobe_path='ffprobe')\""
+    "bounded_regeneration_command_used": "uvx python -c \"from pathlib import Path; from src.integrations.render import subtitle_preset_selector as s; s.write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts(base_dir=Path.cwd(), ffmpeg_path='ffmpeg', ffprobe_path='ffprobe')\""
   },
-  "next_terminal_handoff": {
-    "start_in": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen",
-    "first_commands": [
-      "git fetch --prune origin",
-      "git checkout main",
-      "git pull --ff-only"
-    ],
-    "then_verify": [
-      "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json",
-      "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json",
-      "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4",
-      "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.ass",
-      "episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.local.json"
-    ],
-    "if_outputs_absent_and_source_inputs_present": "Run the bounded_regeneration_command_for_thank_terminal from the Thank repo root.",
-    "if_outputs_absent_and_source_inputs_absent": "Keep classification as current_host_ignored_media_absent or source_input_absent with exact missing paths; do not ask the user to manually search."
+  "final_expected_thank_local_outputs": {
+    "access_state": "verified_present",
+    "access_evidence_level": "file_exists_and_ffprobe_metadata",
+    "mp4": {
+      "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4",
+      "exists": true,
+      "size_bytes": 4627079
+    },
+    "ass": {
+      "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.ass",
+      "exists": true,
+      "size_bytes": 1529
+    },
+    "local_manifest": {
+      "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.local.json",
+      "exists": true,
+      "size_bytes": 13824
+    },
+    "ffprobe": {
+      "duration_seconds": 11.9,
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "container_long_name": "QuickTime / MOV",
+      "video_codec": "h264",
+      "video_codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "audio_codec": "aac",
+      "audio_codec_long_name": "AAC (Advanced Audio Coding)",
+      "width": 1920,
+      "height": 1080,
+      "resolution": "1920x1080",
+      "frame_rate": "30/1",
+      "audio_sample_rate": "16000",
+      "audio_channels": 1
+    }
   },
+  "open_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
   "validation": {
     "repo_root_verified_current_session": true,
-    "origin_main_parity_before_readback": "0 0",
+    "origin_main_parity_before_local_update": "0 0",
     "tracked_ed10ba_files_present": true,
-    "expected_thank_repo_root_visible": false,
-    "thank_outputs_access_verified": false,
-    "thank_source_inputs_verified": false,
+    "expected_thank_repo_root_visible": true,
+    "initial_thank_outputs_present": false,
+    "thank_source_inputs_verified": true,
     "builder_entrypoint_present": true,
-    "regeneration_attempted": false,
-    "wrong_host_regeneration_avoided": true,
+    "regeneration_attempted": true,
+    "regeneration_completed": true,
+    "final_access_state": "verified_present",
+    "ffprobe_completed": true,
+    "wrong_host_regeneration": false,
     "user_not_asked_to_search_again": true,
     "episodes_tracked": false,
     "access_reality_recorded": true,
@@ -165,8 +160,8 @@
     "micro_scene_accepted": false,
     "tracked_binary_artifact_created": false,
     "episodes_tracked": false,
-    "new_render_run": false,
-    "new_media_created": false,
+    "new_render_run": true,
+    "new_media_created": true,
     "wrong_host_regeneration": false,
     "ignored_local_media_only": true,
     "screenshot_capture_created": false,

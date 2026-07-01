@@ -3,9 +3,9 @@ id: subtitle-style-intent-registry
 title: Subtitle Style Intent Registry
 type: design_readback
 status: diagnostic_intent_registry_ready
-health: thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank
+health: thank_ed10ba_v2_local_access_recovery_verified_present
 progress_pct: 100
-last_touched: 2026-06-30
+last_touched: 2026-07-01
 active_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
@@ -23,13 +23,15 @@ related: docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-ed10ba-
 
 ## Current ED-10bb Thank ED-10ba V2 Access Recovery Link
 
-ED-10bb checkpoint, 2026-06-30 JST:
+ED-10bb checkpoint, 2026-07-01 JST:
 `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001` is the latest
 tracked access-reality readback connected to the ED-10ba v2 specimen. It does
 not change subtitle style acceptance. It records that the requested Thank repo
-root was not visible from the PLANNER007 session, so no wrong-host regeneration
-was attempted. Use the readback only to resume the Thank-host verification or
-bounded local regeneration path.
+root was visible, the v2 MP4/ASS/local manifest were initially absent under
+ignored `episodes/`, source inputs were present, the bounded writer
+regenerated the specimen, and final access is `verified_present`. Use the
+readback only to open the v2 specimen for a later freeform observation or to
+regenerate the same ignored outputs if they disappear again.
 
 ## Current ED-10ba Representative Micro-Scene V2 Cut Window Link
 

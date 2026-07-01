@@ -2856,32 +2856,37 @@ def test_ed10bb_thank_ed10ba_v2_access_recovery_readback_is_bounded():
 
     access = payload["access_reality"]
     assert access["intended_terminal"] == "Thank terminal"
-    assert access["expected_thank_repo_root_exists_from_current_session"] is False
-    assert access["classification"] == "thank_repo_root_not_visible_from_current_session"
-    assert access["not_classified_as"] == "current_host_ignored_media_absent"
-    assert access["regeneration_attempted"] is False
-    assert "wrong host" in access["regeneration_skipped_reason"].lower()
+    assert access["expected_thank_repo_root_exists_from_current_session"] is True
+    assert access["classification"] == "current_host_ignored_media_absent_then_regenerated"
+    assert access["initial_local_media_state"] == "current_host_ignored_media_absent"
+    assert access["regeneration_attempted"] is True
+    assert access["wrong_host_regeneration"] is False
+    assert access["deliverable_status"] == "verified_present"
 
     assert all(item["present"] for item in payload["tracked_ed10ba_files_checked"])
     assert all(
-        item["exists"] is False
-        for item in payload[
-            "expected_thank_source_inputs_checked_from_current_session"
-        ].values()
+        item["exists"] is True
+        for item in payload["expected_thank_source_inputs"].values()
     )
-    assert payload["planner007_reference_only"]["mp4"]["exists"] is True
-    assert payload["planner007_reference_only"]["mp4"]["duration_seconds"] == 11.9
     assert payload["builder_entrypoint"]["present"] is True
     assert (
         "write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts"
-        in payload["builder_entrypoint"]["bounded_regeneration_command_for_thank_terminal"]
+        in payload["builder_entrypoint"]["bounded_regeneration_command_used"]
     )
+    final_outputs = payload["final_expected_thank_local_outputs"]
+    assert final_outputs["access_state"] == "verified_present"
+    assert final_outputs["mp4"]["exists"] is True
+    assert final_outputs["mp4"]["size_bytes"] > 0
+    assert final_outputs["ffprobe"]["duration_seconds"] == 11.9
 
-    assert payload["validation"]["wrong_host_regeneration_avoided"] is True
+    assert payload["validation"]["regeneration_completed"] is True
+    assert payload["validation"]["final_access_state"] == "verified_present"
+    assert payload["validation"]["wrong_host_regeneration"] is False
     assert payload["validation"]["user_not_asked_to_search_again"] is True
     assert payload["validation"]["all_checks_passed_for_current_session_readback"] is True
-    assert payload["boundaries"]["new_render_run"] is False
-    assert payload["boundaries"]["new_media_created"] is False
+    assert payload["boundaries"]["new_render_run"] is True
+    assert payload["boundaries"]["new_media_created"] is True
+    assert payload["boundaries"]["wrong_host_regeneration"] is False
     assert payload["boundaries"]["episodes_tracked"] is False
     assert payload["boundaries"]["final_render_path_stage_4"] is False
     assert payload["boundaries"]["stage_7_freeform_normalizer_used"] is False
@@ -2898,11 +2903,12 @@ def test_ed10bb_thank_ed10ba_v2_access_recovery_doc_is_present():
 
     assert "ED-10bb Thank ED-10ba V2 Local Access Recovery Readback" in text
     assert "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001" in text
-    assert "thank_repo_root_not_visible_from_current_session" in text
+    assert "current_host_ignored_media_absent_then_regenerated" in text
     assert "current_host_ignored_media_absent" in text
     assert "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen" in text
+    assert "final access_state: `verified_present`" in text
     assert "wrong_host_regeneration: `false`" in text
-    assert "new_render_run: `false`" in text
+    assert "new_render_run: `true`" in text
     assert "episodes_tracked: `false`" in text
     assert "all_checks_passed_for_current_session_readback: `true`" in text
 

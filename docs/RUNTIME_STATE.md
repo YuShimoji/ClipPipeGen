@@ -3,10 +3,10 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank
+health: thank_ed10ba_v2_local_access_recovery_verified_present
 progress_pct: 100
-last_touched: 2026-06-30
-next_review_due: run_from_thank_terminal_if_recovery_required
+last_touched: 2026-07-01
+next_review_due: open_v2_specimen_if_later_review_requested
 active_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
@@ -34,18 +34,17 @@ instructions.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-06-30 JST. A new terminal should pull `origin/main`, then
+Checkpoint date: 2026-07-01 JST. A new terminal should pull `origin/main`, then
 read this file first, followed by `docs/CURRENT_HANDOFF.md` and
 `docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`.
 
-The latest tracked slice is ED-10bb. It preserves the Thank-terminal access
-recovery reality for ED-10ba: this session ran from
-`C:\Users\PLANNER007\ClipPipeGen`, while the requested Thank repo root
-`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen` was not visible.
-Therefore no regeneration was attempted here; doing so would only affect
-PLANNER007 ignored media, not the requested Thank host. ED-10ba remains the
-source v2 specimen and is verified present on PLANNER007 as reference-only
-evidence.
+The latest tracked slice is ED-10bb. It now records actual Thank-terminal
+access recovery for ED-10ba: this run executed from
+`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, found the v2
+MP4/ASS/local manifest absent under ignored `episodes/`, verified source
+video/audio/transcript/edit_pack availability, regenerated through the bounded
+ED-10ba v2 writer, and verified the final MP4 with ffprobe. ED-10ba remains the
+source v2 specimen.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. Production/
 public/rights/publishing/monetization and micro-scene acceptance remain false
@@ -55,27 +54,29 @@ them primary.
 
 ## Current ED-10bb Thank ED-10ba V2 Local Access Recovery Readback
 
-ED-10bb checkpoint, 2026-06-30 JST:
+ED-10bb checkpoint, 2026-07-01 JST:
 `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001` is the active
-tracked access-reality readback. It consumes ED-10ba and records that the
-expected Thank repository root was not visible from this PLANNER007 session.
-The correct classification is `thank_repo_root_not_visible_from_current_session`,
-not `current_host_ignored_media_absent`, because the target repo root itself
-could not be reached.
+tracked access-reality readback. It consumes ED-10ba and records the actual
+Thank-host recovery. The correct classification is
+`current_host_ignored_media_absent_then_regenerated`: the requested repo root
+was visible, the ignored local outputs were absent at slice start, the source
+inputs were present, and the bounded writer regenerated the missing outputs.
 
 The ED-10ba tracked JSON/Markdown, launcher, dashboard JSON, current handoff,
-and runtime state are present after pull. The expected Thank MP4/ASS/local
-manifest and source video/audio/transcript/edit_pack paths could not be
-verified from this host. No user search was requested, no wrong-host rerender
-was performed, and no media was tracked.
+and runtime state are present after pull. Final access is `verified_present`:
+the Thank-host MP4 exists at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_v2_cut_window_review_purpose_alignment/representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4`,
+size `4627079` bytes, duration `11.9s`, H.264/AAC, 1920x1080, 30fps. The ASS
+and local manifest are present in the same ignored folder. No user search was
+requested, no wrong-host rerender was performed, and no media was tracked.
 
-The next terminal should run from
-`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, pull `origin/main`,
-read `docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`,
-and then check the ED-10ba ignored outputs. If the outputs are absent but the
-required source inputs are present on Thank, use the existing bounded writer
-`write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts`
-from `src/integrations/render/subtitle_preset_selector.py`. Keep all
+The next terminal should pull `origin/main`, read
+`docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`, and
+use
+`scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1`
+only if a later supervisor asks for freeform v2 observation. Regenerate only if
+the ignored outputs disappear again and the source inputs are still present.
+Keep all
 production/public/rights/publishing/monetization, screenshot capture,
 final-render-path stage-4, and stage-7 gates closed.
 

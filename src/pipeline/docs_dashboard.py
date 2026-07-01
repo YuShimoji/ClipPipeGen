@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-06-30"
+DEFAULT_GENERATED_AT = "2026-07-01"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank',
+         'state': 'thank_ed10ba_v2_local_access_recovery_verified_present',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -143,12 +143,12 @@ def build_project_status(
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10ba_diagnostic_internal_review_subtitles',
          'selected_source_license_install_route': 'existing_source_video_audio_reuse',
-         'route_status': 'ed10bb_thank_access_recovery_blocked_current_session_not_on_thank',
+         'route_status': 'ed10bb_thank_access_recovery_verified_present_after_bounded_regeneration',
          'user_action_type': 'NO_USER_ACTION_ACCESS_REALITY_RECORDED',
-         'next_review_action_type': 'RUN_FROM_THANK_TERMINAL_IF_RECOVERY_REQUIRED',
+         'next_review_action_type': 'OPEN_V2_SPECIMEN_IF_LATER_REVIEW_REQUESTED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'ed10bb_current_session_not_on_requested_thank_terminal',
+         'main_issue': 'ed10bb_thank_v2_outputs_were_absent_then_regenerated',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -156,7 +156,7 @@ def build_project_status(
                                           'ed10w_balanced_combined_low_risk'],
          'lead_status': 'provisional_bounded_decoration_lead',
          'font_visual_evidence_status': 'valid_requested_keifont_visual_evidence_on_current_windows_profile',
-         'local_generation_status': 'no_regeneration_on_wrong_host_planner007_reference_only',
+         'local_generation_status': 'regenerated_on_thank_terminal_ignored_media_verified_present',
          'user_review_status': 'no_new_user_review_requested_access_reality_recorded',
          'user_observation_consumed': {'status': 'display_acceptable_move_forward_no_layout_polish',
                                        'display_surface_acceptable_enough': True,
@@ -1265,15 +1265,15 @@ def build_project_status(
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
                            'current_blocker': 'review_frame_unclear_after_micro_scene_observation',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
-         'review_card': {'status': 'access_reality_handoff_ready_no_immediate_review_request',
-                         'action_type': 'NO_REVIEW_CARD_ACCESS_REALITY_RECORDED',
+          'review_card': {'status': 'access_verified_no_immediate_review_request',
+                          'action_type': 'NO_REVIEW_CARD_ACCESS_VERIFIED',
                          'target': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
                          'artifact_id': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
                          'axis': 'thank_ed10ba_v2_local_access_recovery',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                         'what_changed': 'ED-10bb records that the requested Thank repo root was not visible from the PLANNER007 session, so no wrong-host regeneration was attempted.',
+                          'what_changed': 'ED-10bb ran from the Thank repo root, found ED-10ba v2 MP4/ASS/local manifest absent, verified the source inputs, regenerated through the bounded writer, and verified the outputs.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -1287,13 +1287,13 @@ def build_project_status(
                                         'final-render-path stage-4',
                                         'timing/audio first route'],
                          'input_mode': 'none',
-                         'completion_signal': 'ED-10bb makes the cross-terminal access reality durable so the next terminal can resume from Thank without manual searching or wrong-host rerendering.'},
+                          'completion_signal': 'ED-10bb now has access_state=verified_present on the Thank terminal; later work can open the v2 specimen without manual searching or wrong-host evidence.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-         'review_surface_direction': 'thank_access_recovery_handoff_ready_no_review_request_now',
+          'review_surface_direction': 'thank_access_recovery_verified_no_review_request_now',
          'representative_micro_scene_v2_cut_window_review_purpose_alignment': {
              'status': 'ready',
              'artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
@@ -1317,27 +1317,35 @@ def build_project_status(
              'production_candidate': False,
              'public_use_permission': False,
          },
-         'thank_ed10ba_v2_local_access_recovery': {
-             'status': 'blocked_current_session_not_on_thank',
+          'thank_ed10ba_v2_local_access_recovery': {
+              'status': 'verified_present_after_bounded_regeneration',
              'artifact_id': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
              'metadata_json': 'docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json',
              'doc': 'docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md',
              'source_representative_micro_scene_v2_artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
              'expected_thank_repo_root': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen',
-             'expected_thank_repo_root_exists_from_current_session': False,
-             'current_session_repo_root': 'C:\\Users\\PLANNER007\\ClipPipeGen',
-             'classification': 'thank_repo_root_not_visible_from_current_session',
-             'regeneration_attempted': False,
-             'wrong_host_regeneration_avoided': True,
-             'planner007_reference_mp4_present': True,
+              'expected_thank_repo_root_exists_from_current_session': True,
+              'current_session_repo_root': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen',
+              'classification': 'current_host_ignored_media_absent_then_regenerated',
+              'initial_local_media_state': 'current_host_ignored_media_absent',
+              'source_inputs_present': True,
+              'regeneration_attempted': True,
+              'wrong_host_regeneration': False,
+              'access_state': 'verified_present',
+              'mp4_full_path_current_host': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4',
+              'mp4_size_bytes': 4627079,
+              'duration_seconds': 11.9,
+              'resolution': '1920x1080',
+              'video_codec': 'h264',
+              'audio_codec': 'aac',
              'episodes_tracked': False,
              'production_candidate': False,
              'public_use_permission': False,
          },
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
-         'review_debt': [{'debt_id': 'thank_ed10ba_v2_local_access_recovery',
-                          'status': 'run_from_thank_terminal_if_recovery_required',
-                          'next_action': 'pull origin/main on the Thank terminal, verify ED-10ba ignored outputs and source inputs, then run the bounded ED-10ba v2 writer only if needed'},
+          'review_debt': [{'debt_id': 'thank_ed10ba_v2_local_access_recovery',
+                           'status': 'verified_present_no_recovery_debt',
+                           'next_action': 'use the ED-10ba v2 opener only if a later supervisor asks for freeform cut-window/review-purpose observation'},
                          {'debt_id': 'review_frame_clarification',
                           'status': 'surface_ready_for_later_freeform_use',
                           'next_action': 'use ED-10ax if a later review needs the three-point frame before rerendering'},
@@ -1822,8 +1830,8 @@ def _next_review_items() -> list[dict[str, str]]:
         {
             "item": "ED-10bb Thank ED-10ba v2 access recovery",
             "artifact": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
-            "question": "Can the next run verify the ED-10ba ignored outputs from the actual Thank repo root without relying on PLANNER007 reference media?",
-            "next_route": "Run from the Thank terminal, pull origin/main, verify outputs and source inputs, then regenerate only through the bounded ED-10ba v2 writer if needed.",
+            "question": "If a later review is requested, does the regenerated Thank-host ED-10ba v2 specimen make cut-window and clipping/cutout review easier without implying approval?",
+            "next_route": "Open the verified Thank-host v2 specimen only under a later freeform review request; do not regenerate unless the ignored outputs disappear again.",
         },
         {
             "item": "ED-10ba representative micro-scene v2 cut-window review",
@@ -2080,8 +2088,8 @@ def _open_surfaces() -> list[dict[str, str]]:
             "command": "see docs\\style_intent\\thank-ed10ba-v2-local-access-recovery-readback.md",
             "target": "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md",
             "when_to_use": (
-                "Use to resume ED-10ba v2 access recovery from the actual Thank "
-                "terminal without relying on PLANNER007 ignored media."
+                "Use after ED-10bb when a later supervisor asks to open the "
+                "verified Thank-host v2 specimen."
             ),
         },
         {
@@ -2583,7 +2591,7 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10ba":
         return "representative_micro_scene_v2_cut_window_review_purpose_alignment_ready"
     if feature_id == "ED-10bb":
-        return "thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank"
+        return "thank_ed10ba_v2_local_access_recovery_verified_present"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2777,7 +2785,7 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
     if feature_id == "ED-10ba":
         return "Use the access-verified v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed."
     if feature_id == "ED-10bb":
-        return "Run from the Thank terminal if recovery is still required; verify ignored ED-10ba outputs and source inputs, then use the bounded v2 writer only if needed."
+        return "Use the verified Thank-host v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

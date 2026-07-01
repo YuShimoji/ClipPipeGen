@@ -908,15 +908,15 @@ Boundary flags remain false or pending:
 | field | value |
 |---|---|
 | title | ED-10bb Thank ED-10ba V2 Local Access Recovery Readback |
-| purpose | Preserve the requested Thank-terminal access recovery result for ED-10ba without pretending this PLANNER007 session could verify or regenerate ignored media on the Thank host. |
-| storage_class | tracked JSON/Markdown readback only; no media, screenshot, or regeneration output created |
+| purpose | Record actual Thank-terminal access recovery for ED-10ba without tracking ignored local media or treating access evidence as approval. |
+| storage_class | tracked JSON/Markdown readback only; MP4/ASS/local manifest remain ignored same-machine evidence |
 | repo_relative_path | docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json; docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md |
-| open_command | see docs\\style_intent\\thank-ed10ba-v2-local-access-recovery-readback.md |
-| generated_from | ED-10bb consumes `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001` and records that the requested Thank repo root `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen` was not visible from `C:\Users\PLANNER007\ClipPipeGen`; therefore no wrong-host rerender was attempted. |
-| validation_command | Parse ED-10bb JSON and dashboard JSON; verify ED-10ba tracked files are present; verify builder symbol exists; run targeted subtitle/dashboard tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
-| latest_local_smoke | No Thank-host smoke could be performed from this session. PLANNER007 reference-only ED-10ba MP4 exists with size `4723658`, duration `11.9s`, H.264/AAC, 1920x1080, 30fps; this is not Thank recovery evidence. |
-| review_status | access-reality handoff ready; next terminal must run from the Thank repo root if recovery is still required; no immediate user review requested |
-| next_action | On the Thank terminal, pull `origin/main`, read `docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`, verify the ED-10ba ignored outputs and required source inputs, then run the bounded ED-10ba v2 writer only if outputs are absent and source inputs are present. |
+| open_command | powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 |
+| generated_from | ED-10bb consumes `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001` and records actual Thank-terminal recovery from `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`: initial ignored v2 MP4/ASS/local manifest absent, source video/audio/transcript/edit_pack present, bounded writer run, final `access_state=verified_present`. |
+| validation_command | Parse ED-10bb JSON and dashboard JSON; verify ED-10ba tracked files are present; verify builder symbol exists; ffprobe the regenerated MP4; run targeted subtitle/dashboard tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | Thank-host regeneration completed on 2026-07-01 JST. Final MP4 exists with size `4627079`, duration `11.9s`, H.264/AAC, 1920x1080, 30fps; ASS size `1529`; local manifest size `13824`; `git ls-files episodes` remains empty. |
+| review_status | access recovery complete with `verified_present`; no immediate user review requested; no production/public/rights/publishing/monetization or micro-scene approval |
+| next_action | Use the opener only if a later supervisor asks for freeform v2 cut-window/review-purpose observation. Regenerate again only if the ignored outputs disappear and source inputs are still present. |
 
 Boundary flags remain false or pending:
 

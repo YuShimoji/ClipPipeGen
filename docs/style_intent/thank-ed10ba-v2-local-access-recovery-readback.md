@@ -1,64 +1,80 @@
 # ED-10bb Thank ED-10ba V2 Local Access Recovery Readback
 
-This tracked readback preserves the access reality for the requested Thank-terminal recovery of ED-10ba. The request targeted `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, but this run executed from `C:\Users\PLANNER007\ClipPipeGen`. The expected Thank repository root was not visible from this session, so the Thank-host MP4/ASS/local manifest and source inputs could not be verified or regenerated here.
+This tracked readback records actual Thank-terminal access recovery for the
+ED-10ba v2 specimen. The run executed from the requested repo root
+`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, found the ignored
+v2 MP4/ASS/local manifest absent at first, verified all required source inputs,
+regenerated only through the bounded ED-10ba v2 writer, and verified the final
+MP4 with ffprobe.
 
 ## Identity
 
 - artifact_id: `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001`
 - feature_id: `ED-10bb`
-- status: `thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank`
+- status: `thank_ed10ba_v2_local_access_recovery_verified_present`
 - source artifact: `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
-- classification: `thank_repo_root_not_visible_from_current_session`
+- classification: `current_host_ignored_media_absent_then_regenerated`
+- final access_state: `verified_present`
 
 ## Access Reality
 
 | Checked surface | Result | Meaning |
 |---|---|---|
-| Current repo root | `C:\Users\PLANNER007\ClipPipeGen` | This was not the requested Thank root. |
-| Expected Thank root | not visible | The check cannot honestly classify Thank ignored media as present or absent. |
-| ED-10ba tracked files | present | Git state for the v2 readback and launcher is available after pull. |
-| Thank MP4/ASS/local manifest | not accessible from this session | No rerender was attempted because it would affect the wrong host. |
-| PLANNER007 MP4/ASS/local manifest | present | Reference only; not Thank-host recovery evidence. |
+| Thank repo root | present | The run happened from the requested root, not PLANNER007. |
+| ED-10ba tracked files | present | The v2 readback, Markdown, launcher, dashboard JSON, current handoff, and runtime state exist after pull. |
+| Initial Thank MP4/ASS/local manifest | absent | This was current-host ignored media absence, not a Git tracked-file failure. |
+| Source video/audio/transcript/edit_pack | present | Bounded regeneration was allowed without asking the user to search manually. |
+| Final Thank MP4/ASS/local manifest | present | Access recovery is complete for this host. |
+| Git media boundary | clean | `git ls-files episodes` remains empty. |
 
-This is deliberately not classified as `current_host_ignored_media_absent`: the expected Thank repo root itself is not visible from the current PLANNER007 session.
-
-## Thank Paths To Check Next
+## Current Thank Paths
 
 - MP4: `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\representative_micro_scene_v2_cut_window_review_purpose_alignment\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4`
 - ASS: `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\representative_micro_scene_v2_cut_window_review_purpose_alignment\representative_micro_scene_v2_cut_window_review_purpose_alignment.ass`
 - local manifest: `C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\representative_micro_scene_v2_cut_window_review_purpose_alignment\representative_micro_scene_v2_cut_window_review_purpose_alignment.local.json`
 
-Required source inputs on Thank, if regeneration is needed:
+Final readback:
+
+- MP4 size: `4627079` bytes
+- ASS size: `1529` bytes
+- local manifest size: `13824` bytes
+- duration: `11.9s`
+- video: H.264, `1920x1080`, `30/1` fps
+- audio: AAC, `16000` Hz, mono
+
+## Regeneration
+
+The initial media state was `current_host_ignored_media_absent`. The following
+source inputs were present:
 
 - `episodes\jp_pilot01_hololive_bancho_20260525\materials\src_video_jp_pilot01\source_video.mp4`
 - `episodes\jp_pilot01_hololive_bancho_20260525\materials\src_audio_jp_pilot01\source.wav`
 - `episodes\jp_pilot01_hololive_bancho_20260525\transcript.json`
 - `episodes\jp_pilot01_hololive_bancho_20260525\edit_pack.json`
 
-## PLANNER007 Reference Only
-
-The ED-10ba v2 specimen is present on PLANNER007 at:
-
-`C:\Users\PLANNER007\ClipPipeGen\episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\representative_micro_scene_v2_cut_window_review_purpose_alignment\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4`
-
-Reference metadata: size `4723658` bytes, duration `11.9s`, H.264/AAC, 1920x1080, 30fps. The ASS is `1529` bytes and the local manifest is `13681` bytes. This proves the ED-10ba path is reproducible and present on PLANNER007 only; it is not evidence that the Thank terminal already has the ignored media.
-
-## Builder Entrypoint
-
-The bounded writer exists in `src/integrations/render/subtitle_preset_selector.py`:
+The bounded writer exists in
+`src/integrations/render/subtitle_preset_selector.py`:
 
 `write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts`
 
-If and only if the next terminal is actually the Thank repo root and all required source inputs are present, run:
+Command used:
 
 ```powershell
 uvx python -c "from pathlib import Path; from src.integrations.render import subtitle_preset_selector as s; s.write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts(base_dir=Path.cwd(), ffmpeg_path='ffmpeg', ffprobe_path='ffprobe')"
 ```
 
+## Open Command
+
+Use this only when a later supervisor asks for freeform v2 observation:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\operator\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1
+```
+
 ## Boundary Readback
 
-- new_render_run: `false`
-- new_media_created: `false`
+- new_render_run: `true`
+- new_media_created: `true`
 - wrong_host_regeneration: `false`
 - episodes_tracked: `false`
 - screenshot_capture_created: `false`
@@ -73,11 +89,13 @@ uvx python -c "from pathlib import Path; from src.integrations.render import sub
 ## Validation
 
 - repo_root_verified_current_session: `true`
-- origin_main_parity_before_readback: `0 0`
 - tracked_ed10ba_files_present: `true`
-- expected_thank_repo_root_visible: `false`
+- initial_thank_outputs_present: `false`
+- thank_source_inputs_verified: `true`
 - builder_entrypoint_present: `true`
-- regeneration_attempted: `false`
-- wrong_host_regeneration_avoided: `true`
+- regeneration_attempted: `true`
+- regeneration_completed: `true`
+- final_access_state: `verified_present`
+- ffprobe_completed: `true`
 - user_not_asked_to_search_again: `true`
 - all_checks_passed_for_current_session_readback: `true`

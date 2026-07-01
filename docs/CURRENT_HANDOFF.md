@@ -3,10 +3,10 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank
+health: thank_ed10ba_v2_local_access_recovery_verified_present
 progress_pct: 100
-last_touched: 2026-06-30
-next_review_due: run_from_thank_terminal_if_recovery_required
+last_touched: 2026-07-01
+next_review_due: open_v2_specimen_if_later_review_requested
 active_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
@@ -31,36 +31,38 @@ Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 and `docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`.
 That is enough to resume without the previous chat.
 
-The durable state to carry forward is: ED-10bb recorded a cross-terminal access
-recovery boundary for ED-10ba. The requested terminal/root was Thank at
-`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, but this run was
-from `C:\Users\PLANNER007\ClipPipeGen`; the expected Thank root was not
-visible, so no regeneration was attempted. ED-10ba remains the source v2
-specimen, and the PLANNER007 MP4/ASS/local manifest are reference-only evidence.
+The durable state to carry forward is: ED-10bb verified actual Thank-terminal
+access recovery for ED-10ba. The run executed from
+`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`; the v2
+MP4/ASS/local manifest were initially absent under ignored `episodes/`, the
+source video/audio/transcript/edit_pack were present, and the bounded ED-10ba
+v2 writer regenerated the same local specimen. ED-10ba remains the source v2
+specimen.
 
 Do not treat ED-10bb or ED-10ba as production/public/rights/publishing/
 monetization approval or micro-scene acceptance. Do not track `episodes/`
-media. Do not rerender from the wrong host. Screenshot capture,
+media. Do not rerender unless the ignored outputs disappear again. Screenshot capture,
 final-render-path stage-4, timing/audio-first work, and stage-7 remain out of
 scope unless new evidence makes one of them the primary route.
 
 ## Current ED-10bb Thank ED-10ba V2 Local Access Recovery Readback
 
-ED-10bb checkpoint, 2026-06-30 JST:
+ED-10bb checkpoint, 2026-07-01 JST:
 `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001` is the active
-tracked handoff artifact. It records that the requested Thank repo root
-`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen` was not visible
-from this PLANNER007 session, so the expected Thank MP4/ASS/local manifest and
-source inputs could not be verified here.
+tracked handoff artifact. It records that the requested Thank repo root was
+visible, the expected MP4/ASS/local manifest were initially absent, source
+inputs were present, and bounded regeneration completed. Final access is
+`verified_present`: the MP4 is present at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/representative_micro_scene_v2_cut_window_review_purpose_alignment/representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4`
+with size `4627079` bytes and ffprobe readback `11.9s`, H.264/AAC,
+1920x1080, 30fps. The ASS and local manifest are present too.
 
-The next terminal should run on Thank, pull `origin/main`, and check the exact
-paths recorded in
-`docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`. If the
-ED-10ba ignored outputs are absent there and the source video/audio,
-transcript, and edit pack are present, regenerate only through
-`write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts`.
-If either the repo root or source inputs are absent, record that exact access
-state instead of asking the user to search manually.
+The next terminal should pull `origin/main`, read
+`docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`, and
+open the specimen only if a later supervisor asks for freeform v2 observation.
+If the ignored outputs disappear again, regenerate only through
+`write_representative_micro_scene_v2_cut_window_review_purpose_alignment_local_artifacts`
+after confirming the source inputs are present.
 
 ## Current ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment
 

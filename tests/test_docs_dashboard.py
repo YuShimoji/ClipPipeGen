@@ -64,7 +64,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10r-keifont-dense-stress-proof-001"
     )
     assert status["current_focus"]["state"] == (
-        "thank_ed10ba_v2_local_access_recovery_blocked_current_session_not_on_thank"
+        "thank_ed10ba_v2_local_access_recovery_verified_present"
     )
     assert status["current_focus"][
         "source_render_contract_consumer_dry_read_artifact_id"
@@ -157,19 +157,19 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "existing_source_video_audio_reuse"
     )
     assert status["current_focus"]["route_status"] == (
-        "ed10bb_thank_access_recovery_blocked_current_session_not_on_thank"
+        "ed10bb_thank_access_recovery_verified_present_after_bounded_regeneration"
     )
     assert status["current_focus"]["user_action_type"] == (
         "NO_USER_ACTION_ACCESS_REALITY_RECORDED"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "RUN_FROM_THANK_TERMINAL_IF_RECOVERY_REQUIRED"
+        "OPEN_V2_SPECIMEN_IF_LATER_REVIEW_REQUESTED"
     )
     assert status["current_focus"]["current_visual_comparison_validity"] == (
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_surface_direction"] == (
-        "thank_access_recovery_handoff_ready_no_review_request_now"
+        "thank_access_recovery_verified_no_review_request_now"
     )
     assert status["current_focus"]["font_visual_evidence_status"] == (
         "valid_requested_keifont_visual_evidence_on_current_windows_profile"
@@ -219,10 +219,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "valid_requested_keifont_visual_evidence"
     )
     assert status["current_focus"]["review_card"]["action_type"] == (
-        "NO_REVIEW_CARD_ACCESS_REALITY_RECORDED"
+        "NO_REVIEW_CARD_ACCESS_VERIFIED"
     )
     assert status["current_focus"]["review_card"]["status"] == (
-        "access_reality_handoff_ready_no_immediate_review_request"
+        "access_verified_no_immediate_review_request"
     )
     assert status["current_focus"]["review_card"]["target"] == (
         "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
@@ -238,11 +238,14 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
     assert thank_recovery["classification"] == (
-        "thank_repo_root_not_visible_from_current_session"
+        "current_host_ignored_media_absent_then_regenerated"
     )
-    assert thank_recovery["expected_thank_repo_root_exists_from_current_session"] is False
-    assert thank_recovery["regeneration_attempted"] is False
-    assert thank_recovery["wrong_host_regeneration_avoided"] is True
+    assert thank_recovery["expected_thank_repo_root_exists_from_current_session"] is True
+    assert thank_recovery["source_inputs_present"] is True
+    assert thank_recovery["regeneration_attempted"] is True
+    assert thank_recovery["wrong_host_regeneration"] is False
+    assert thank_recovery["access_state"] == "verified_present"
+    assert thank_recovery["mp4_size_bytes"] > 0
     v2 = status["current_focus"][
         "representative_micro_scene_v2_cut_window_review_purpose_alignment"
     ]
