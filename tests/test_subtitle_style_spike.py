@@ -2827,7 +2827,11 @@ def test_ed10ba_representative_micro_scene_v2_doc_and_launcher_are_present():
     script = launcher.read_text(encoding="utf-8")
     assert "representative_micro_scene_v2_cut_window_review_purpose_alignment" in script
     assert "representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4" in script
-    assert "Invoke-Item -LiteralPath $video" in script
+    assert "Start-Process -FilePath $video -PassThru" in script
+    assert "$SelectVideo" in script
+    assert "$PrintPath" in script
+    assert "$NoInvoke" in script
+    assert "file_verified_but_user_visible_open_not_confirmed" in script
     assert "$OpenFolder" in script
     assert "$OpenManifest" in script
     assert "$OpenAss" in script
@@ -2911,6 +2915,84 @@ def test_ed10bb_thank_ed10ba_v2_access_recovery_doc_is_present():
     assert "new_render_run: `true`" in text
     assert "episodes_tracked: `false`" in text
     assert "all_checks_passed_for_current_session_readback: `true`" in text
+
+
+def test_ed10bc_thank_v2_open_command_repair_readback_is_bounded():
+    payload = json.loads(
+        (
+            REPO_ROOT
+            / "docs"
+            / "style_intent"
+            / "thank-v2-open-command-repair-readback.json"
+        ).read_text(encoding="utf-8")
+    )
+
+    assert payload["schema_id"] == (
+        "clippipegen.thank_v2_open_command_repair_readback.v1"
+    )
+    assert payload["artifact_id"] == (
+        "clip-ed10bc-thank-v2-open-command-repair-readback-001"
+    )
+    assert payload["feature_id"] == "ED-10bc"
+    assert payload["source_thank_ed10ba_v2_local_access_recovery_artifact_id"] == (
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+    )
+    assert payload["user_visible_failure"]["classification"] == (
+        "file_verified_but_user_visible_open_failed"
+    )
+    assert payload["user_visible_failure"]["render_or_media_failure"] is False
+    assert payload["local_media_state"]["access_state"] == "verified_present"
+    assert payload["local_media_state"]["mp4"]["exists"] is True
+    assert payload["local_media_state"]["mp4"]["size_bytes"] > 0
+    assert payload["ffprobe"]["duration_seconds"] == 11.9
+
+    before = payload["launcher_before_repair"]
+    assert before["attempted_method"] == "Invoke-Item -LiteralPath $video"
+    assert before["exit_code"] == 0
+    assert before["stderr"] == ""
+    assert before["diagnosis"] == (
+        "exit_zero_but_user_visible_open_not_observable_or_guaranteed"
+    )
+
+    after = payload["launcher_after_repair"]
+    assert after["default_attempt_method"] == "Start-Process -FilePath <mp4> -PassThru"
+    assert after["default_smoke"]["exit_code"] == 0
+    assert after["default_smoke"]["open_attempt_status"] == (
+        "start_process_attempted_not_observed"
+    )
+    assert after["default_smoke"]["classification"] == (
+        "file_verified_but_user_visible_open_not_confirmed"
+    )
+    assert "select_video" in after["fallback_commands"]
+    assert "no_invoke" in after["fallback_commands"]
+    assert after["diagnostic_no_invoke_smoke"]["classification"] == "path_print_only"
+
+    assert payload["repair_effect"]["launcher_no_longer_claims_visible_open"] is True
+    assert payload["repair_effect"]["launcher_prints_fallbacks"] is True
+    assert payload["boundaries"]["new_v3_created"] is False
+    assert payload["boundaries"]["new_render_run"] is False
+    assert payload["boundaries"]["new_media_created"] is False
+    assert payload["boundaries"]["episodes_tracked"] is False
+    assert payload["boundaries"]["final_render_path_stage_4"] is False
+    assert payload["boundaries"]["stage_7_freeform_normalizer_used"] is False
+    assert payload["boundaries"]["public_use_permission"] is False
+    assert payload["validation"]["all_checks_passed_for_current_session_readback"] is True
+
+
+def test_ed10bc_thank_v2_open_command_repair_doc_is_present():
+    text = (
+        REPO_ROOT
+        / "docs"
+        / "style_intent"
+        / "thank-v2-open-command-repair-readback.md"
+    ).read_text(encoding="utf-8")
+
+    assert "ED-10bc Thank V2 Open Command Repair Readback" in text
+    assert "clip-ed10bc-thank-v2-open-command-repair-readback-001" in text
+    assert "file_verified_but_user_visible_open_failed" in text
+    assert "Start-Process -FilePath <mp4> -PassThru" in text
+    assert "-SelectVideo" in text
+    assert "episodes_tracked: `false`" in text
 
 
 @pytest.mark.skipif(

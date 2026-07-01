@@ -12545,6 +12545,10 @@ def _representative_micro_scene_v2_access(
             "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
         ),
         "alternate_open_commands": {
+            "select_video": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -SelectVideo"
+            ),
             "open_folder": (
                 "powershell -ExecutionPolicy Bypass -File "
                 "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenFolder"
@@ -12556,6 +12560,14 @@ def _representative_micro_scene_v2_access(
             "open_ass": (
                 "powershell -ExecutionPolicy Bypass -File "
                 "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenAss"
+            ),
+            "print_path": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -PrintPath"
+            ),
+            "no_invoke_diagnostic": (
+                "powershell -ExecutionPolicy Bypass -File "
+                "scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -NoInvoke"
             ),
         },
         "target_exists": target_exists,

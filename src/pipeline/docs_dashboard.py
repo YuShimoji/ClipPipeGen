@@ -99,8 +99,8 @@ def build_project_status(
                 "instead of being repeated as the opening sentence of every doc."
             ),
         },
-        "current_focus": {'feature_id': 'ED-10bb',
-         'artifact_id': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
+        "current_focus": {'feature_id': 'ED-10bc',
+         'artifact_id': 'clip-ed10bc-thank-v2-open-command-repair-readback-001',
          'source_render_path_selector_contract_artifact_id': 'clip-ed10ae-render-path-selector-contract-probe-001',
          'source_style_family_palette_artifact_id': 'clip-ed10ad-style-family-palette-axis-proof-001',
          'source_visual_selector_artifact_id': 'clip-ed10ac-visual-selector-proof-001',
@@ -111,7 +111,7 @@ def build_project_status(
          'source_previous_artifact_id': 'clip-ed10y-candidate2-carry-forward-001',
          'source_comparison_artifact_id': 'clip-ed10o-multifont-focused-review-001',
          'source_proof_artifact_id': 'clip-ed10r-keifont-dense-stress-proof-001',
-         'state': 'thank_ed10ba_v2_local_access_recovery_verified_present',
+         'state': 'thank_v2_open_command_repair_ready',
          'source_render_contract_consumer_dry_read_artifact_id': 'clip-ed10af-render-contract-consumer-dry-read-001',
          'source_l2_selector_probe_artifact_id': 'clip-ed10af-l2-render-path-selector-probe-001',
          'lineage_observation_surface_artifact_id': 'clip-ed10ag-lineage-and-observation-surface-001',
@@ -137,18 +137,19 @@ def build_project_status(
          'observation_readback_and_v2_route_decision_artifact_id': 'clip-ed10az-observation-readback-and-v2-route-decision-001',
          'representative_micro_scene_v2_cut_window_review_purpose_alignment_artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
          'thank_ed10ba_v2_local_access_recovery_readback_artifact_id': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
+         'thank_v2_open_command_repair_readback_artifact_id': 'clip-ed10bc-thank-v2-open-command-repair-readback-001',
          'human_visual_judgement': 'ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed',
          'latest_review_consumed': 'ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin',
          'target_cuts': ['source_38.50_to_50.40s', 'sub_024_to_sub_029'],
          'accepted_size_rule': 'round(frame_height * 0.115)',
          'selected_typography_base': 'ed10ba_diagnostic_internal_review_subtitles',
          'selected_source_license_install_route': 'existing_source_video_audio_reuse',
-         'route_status': 'ed10bb_thank_access_recovery_verified_present_after_bounded_regeneration',
-         'user_action_type': 'NO_USER_ACTION_ACCESS_REALITY_RECORDED',
-         'next_review_action_type': 'OPEN_V2_SPECIMEN_IF_LATER_REVIEW_REQUESTED',
+         'route_status': 'ed10bc_open_command_repaired_with_fallbacks_after_user_visible_open_failed',
+         'user_action_type': 'NO_USER_ACTION_OPEN_COMMAND_REPAIR_RECORDED',
+         'next_review_action_type': 'RUN_REPAIRED_OPENER_IF_LATER_REVIEW_REQUESTED',
          'selected_typography_source': 'ed10y_candidate2_carry_forward_source_state',
          'preferred_direction': 'candidate2_badge_pressure_adjustment_with_candidate0_fallback',
-         'main_issue': 'ed10bb_thank_v2_outputs_were_absent_then_regenerated',
+         'main_issue': 'ed10bc_user_visible_open_failed_after_verified_files',
          'current_visual_comparison_validity': 'valid_requested_keifont_visual_evidence',
          'current_lead_candidate_id': 'ed10w_badge_label_pressure_adjustment',
          'fallback_reference_candidate_id': 'ed10w_current_pass_reference',
@@ -1265,15 +1266,15 @@ def build_project_status(
                            'review_reset_trigger_active': ['new_axis_or_changed_evidence_only'],
                            'current_blocker': 'review_frame_unclear_after_micro_scene_observation',
                            'font_evidence_gate': 'valid_requested_keifont_visual_evidence'},
-          'review_card': {'status': 'access_verified_no_immediate_review_request',
-                          'action_type': 'NO_REVIEW_CARD_ACCESS_VERIFIED',
-                         'target': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
-                         'artifact_id': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
-                         'axis': 'thank_ed10ba_v2_local_access_recovery',
+          'review_card': {'status': 'open_command_repaired_no_immediate_review_request',
+                          'action_type': 'NO_REVIEW_CARD_OPEN_COMMAND_REPAIR_RECORDED',
+                         'target': 'clip-ed10bc-thank-v2-open-command-repair-readback-001',
+                         'artifact_id': 'clip-ed10bc-thank-v2-open-command-repair-readback-001',
+                         'axis': 'thank_v2_open_command_repair',
                          'prior_review_count': '3+',
                          'prior_signal_summary': 'Keifont normal dialogue and dense/multiline '
                                                  'route passed diagnostically.',
-                          'what_changed': 'ED-10bb ran from the Thank repo root, found ED-10ba v2 MP4/ASS/local manifest absent, verified the source inputs, regenerated through the bounded writer, and verified the outputs.',
+                          'what_changed': 'ED-10bc recorded that the ED-10ba v2 MP4/ASS/local manifest are present, the pre-repair Invoke-Item launcher returned exit 0 without proving visible playback, and the repaired launcher now prints path/readback/fallbacks while using Start-Process.',
                          'what_this_review_decides': [],
                          'not_asking': ['Candidate 0-3 comparison review',
                                         'general Keifont acceptance',
@@ -1287,13 +1288,13 @@ def build_project_status(
                                         'final-render-path stage-4',
                                         'timing/audio first route'],
                          'input_mode': 'none',
-                          'completion_signal': 'ED-10bb now has access_state=verified_present on the Thank terminal; later work can open the v2 specimen without manual searching or wrong-host evidence.'},
+                          'completion_signal': 'ED-10bc now classifies the visible-open failure as launcher/OS association visibility, not media loss; use the repaired opener or -SelectVideo fallback only under a later freeform v2 review request.'},
          'lead_fallback_readback': {'status': 'candidate2_promoted_to_tiny_render_path_nearer_probe_lead',
                                     'lead_candidate': 'ed10w_badge_label_pressure_adjustment',
                                     'fallback_reference': 'ed10w_current_pass_reference',
                                     'held_references': ['ed10w_lighter_outline_shadow_pressure',
                                                         'ed10w_balanced_combined_low_risk']},
-          'review_surface_direction': 'thank_access_recovery_verified_no_review_request_now',
+          'review_surface_direction': 'thank_v2_open_command_repaired_no_review_request_now',
          'representative_micro_scene_v2_cut_window_review_purpose_alignment': {
              'status': 'ready',
              'artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
@@ -1337,15 +1338,52 @@ def build_project_status(
               'duration_seconds': 11.9,
               'resolution': '1920x1080',
               'video_codec': 'h264',
-              'audio_codec': 'aac',
+             'audio_codec': 'aac',
              'episodes_tracked': False,
              'production_candidate': False,
              'public_use_permission': False,
          },
+         'thank_v2_open_command_repair': {
+             'status': 'thank_v2_open_command_repair_ready',
+             'artifact_id': 'clip-ed10bc-thank-v2-open-command-repair-readback-001',
+             'metadata_json': 'docs/style_intent/thank-v2-open-command-repair-readback.json',
+             'doc': 'docs/style_intent/thank-v2-open-command-repair-readback.md',
+             'source_thank_ed10ba_v2_local_access_recovery_artifact_id': 'clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001',
+             'source_representative_micro_scene_v2_artifact_id': 'clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001',
+             'classification': 'file_verified_but_user_visible_open_failed',
+             'interpreted_axis': 'launcher_or_os_file_association_visibility',
+             'render_or_media_failure': False,
+             'pre_repair_launcher_exit_code': 0,
+             'pre_repair_attempt_method': 'Invoke-Item -LiteralPath $video',
+             'pre_repair_stderr_empty': True,
+             'post_repair_default_attempt_method': 'Start-Process -FilePath <mp4> -PassThru',
+             'post_repair_default_exit_code': 0,
+             'post_repair_process_name_returned': 'vlc',
+             'post_repair_open_attempt_status': 'start_process_attempted_not_observed',
+             'post_repair_classification': 'file_verified_but_user_visible_open_not_confirmed',
+             'no_invoke_smoke_status': 'path_print_only',
+             'fallbacks_added': ['-SelectVideo',
+                                 '-OpenFolder',
+                                 '-OpenManifest',
+                                 '-OpenAss',
+                                 '-PrintPath',
+                                 '-NoInvoke'],
+             'mp4_full_path_current_host': 'C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4',
+             'mp4_size_bytes': 4627079,
+             'duration_seconds': 11.9,
+             'episodes_tracked': False,
+             'new_render_run': False,
+             'new_media_created': False,
+             'screenshot_capture_created': False,
+             'final_render_path_stage_4_required_now': False,
+             'stage_7_freeform_normalizer_used': False,
+             'production_candidate': False,
+             'public_use_permission': False,
+         },
          'focused_review_html': 'episodes/.../subtitle_presentation_review_pack.html',
-          'review_debt': [{'debt_id': 'thank_ed10ba_v2_local_access_recovery',
-                           'status': 'verified_present_no_recovery_debt',
-                           'next_action': 'use the ED-10ba v2 opener only if a later supervisor asks for freeform cut-window/review-purpose observation'},
+          'review_debt': [{'debt_id': 'thank_v2_open_command_repair',
+                           'status': 'repaired_visible_open_failure_no_media_debt',
+                           'next_action': 'use the repaired ED-10ba v2 opener or -SelectVideo fallback only if a later supervisor asks for freeform cut-window/review-purpose observation'},
                          {'debt_id': 'review_frame_clarification',
                           'status': 'surface_ready_for_later_freeform_use',
                           'next_action': 'use ED-10ax if a later review needs the three-point frame before rerendering'},
@@ -1715,6 +1753,8 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
             active_artifact = "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
         if feature_id == "ED-10bb":
             active_artifact = "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+        if feature_id == "ED-10bc":
+            active_artifact = "clip-ed10bc-thank-v2-open-command-repair-readback-001"
         features.append(
             {
                 "id": feature_id,
@@ -1779,7 +1819,7 @@ def _artifact_coverage(
         feature for feature in features if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = (
-        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+        "clip-ed10bc-thank-v2-open-command-repair-readback-001"
         in artifact_ids
     )
     return {
@@ -1827,6 +1867,12 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
 def _next_review_items() -> list[dict[str, str]]:
     return [
 
+        {
+            "item": "ED-10bc Thank v2 opener repair",
+            "artifact": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+            "question": "If a later review is requested, does the repaired opener or -SelectVideo fallback make the already verified ED-10ba v2 specimen visible without implying approval?",
+            "next_route": "Run the repaired opener only under a later freeform review request; classify any remaining failure as player/file-association visibility before considering media regeneration.",
+        },
         {
             "item": "ED-10bb Thank ED-10ba v2 access recovery",
             "artifact": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
@@ -2084,6 +2130,16 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command.",
         },
         {
+            "label": "Thank V2 Open Command Repair Readback",
+            "command": "see docs\\style_intent\\thank-v2-open-command-repair-readback.md",
+            "target": "docs/style_intent/thank-v2-open-command-repair-readback.md",
+            "when_to_use": (
+                "Use after ED-10bc when the ED-10ba v2 MP4 exists but the "
+                "default opener did not appear visibly; includes -SelectVideo "
+                "and path-only diagnostics."
+            ),
+        },
+        {
             "label": "Thank ED-10ba V2 Access Recovery Readback",
             "command": "see docs\\style_intent\\thank-ed10ba-v2-local-access-recovery-readback.md",
             "target": "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md",
@@ -2108,7 +2164,8 @@ def _open_surfaces() -> list[dict[str, str]]:
             "target": "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
             "when_to_use": (
                 "Use later only when a supervisor asks to open the ED-10ba "
-                "internal review v2 MP4."
+                "internal review v2 MP4; run -SelectVideo or -PrintPath if "
+                "the default player does not appear visibly."
             ),
         },
         {
@@ -2592,6 +2649,8 @@ def _feature_health(feature_id: str, status: str, summary: str) -> str:
         return "representative_micro_scene_v2_cut_window_review_purpose_alignment_ready"
     if feature_id == "ED-10bb":
         return "thank_ed10ba_v2_local_access_recovery_verified_present"
+    if feature_id == "ED-10bc":
+        return "thank_v2_open_command_repair_ready"
     if "blocked" in summary or status == "hold":
         return "blocked"
     return STATUS_HEALTH.get(status, "unknown")
@@ -2690,6 +2749,8 @@ def _feature_progress(feature_id: str, status: str) -> int:
         return 100
     if feature_id == "ED-10bb":
         return 100
+    if feature_id == "ED-10bc":
+        return 100
     return STATUS_PROGRESS.get(status, 0)
 
 
@@ -2786,6 +2847,8 @@ def _feature_next_action(feature_id: str, status: str, summary: str) -> str:
         return "Use the access-verified v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed."
     if feature_id == "ED-10bb":
         return "Use the verified Thank-host v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed."
+    if feature_id == "ED-10bc":
+        return "Use the repaired opener or -SelectVideo fallback only under a later freeform v2 review request; treat further visibility failures as player/file-association issues before regenerating media."
     if status == "done":
         return "Keep as reference unless a regression or successor lane appears."
     if status == "proposed":

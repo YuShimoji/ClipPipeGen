@@ -1,0 +1,158 @@
+{
+  "schema_id": "clippipegen.thank_v2_open_command_repair_readback.v1",
+  "artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+  "feature_id": "ED-10bc",
+  "status": "thank_v2_open_command_repair_ready",
+  "surface_kind": "tracked_launcher_repair_readback",
+  "source_thank_ed10ba_v2_local_access_recovery_artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
+  "source_representative_micro_scene_v2_artifact_id": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
+  "user_visible_failure": {
+    "reported_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+    "reported_result": "video_did_not_open_visibly_for_user",
+    "classification": "file_verified_but_user_visible_open_failed",
+    "interpreted_axis": "launcher_or_os_file_association_visibility",
+    "render_or_media_failure": false
+  },
+  "repo_state_verified": {
+    "remote_origin": "https://github.com/YuShimoji/ClipPipeGen.git",
+    "branch": "main",
+    "ahead_behind_head_origin_main_before_local_update": "0 0",
+    "latest_remote_commit_before_this_readback_update": "b6b8097 Update ED-10bb Thank access recovery readback",
+    "expected_thank_repo_root": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen",
+    "current_session_repo_root": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen",
+    "current_session_git_toplevel": "C:/Users/thank/Storage/Media Contents Projects/ClipPipeGen"
+  },
+  "tracked_files_checked": [
+    {
+      "path": "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json",
+      "present": true
+    },
+    {
+      "path": "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json",
+      "present": true
+    },
+    {
+      "path": "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+      "present": true
+    }
+  ],
+  "local_media_state": {
+    "access_state": "verified_present",
+    "mp4": {
+      "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4",
+      "exists": true,
+      "size_bytes": 4627079
+    },
+    "ass": {
+      "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.ass",
+      "exists": true,
+      "size_bytes": 1529
+    },
+    "local_manifest": {
+      "full_path": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.local.json",
+      "exists": true,
+      "size_bytes": 13824
+    },
+    "episodes_tracked": false
+  },
+  "ffprobe": {
+    "duration_seconds": 11.9,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "video_codec": "h264",
+    "video_codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+    "width": 1920,
+    "height": 1080,
+    "frame_rate": "30/1",
+    "video_frame_count": 357,
+    "audio_codec": "aac",
+    "audio_sample_rate": "16000",
+    "audio_channels": 1,
+    "audio_channel_layout": "mono"
+  },
+  "launcher_before_repair": {
+    "path": "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+    "attempted_method": "Invoke-Item -LiteralPath $video",
+    "exit_code": 0,
+    "stdout": "Opening ED-10ba representative micro-scene v2 MP4:\n  C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4\n",
+    "stderr": "",
+    "diagnosis": "exit_zero_but_user_visible_open_not_observable_or_guaranteed"
+  },
+  "launcher_after_repair": {
+    "path": "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+    "default_command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+    "default_attempt_method": "Start-Process -FilePath <mp4> -PassThru",
+    "output_policy": "prints_resolved_path_size_attempt_method_status_classification_and_fallbacks_without_claiming_visible_playback",
+    "fallback_commands": {
+      "select_video": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -SelectVideo",
+      "open_folder": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenFolder",
+      "open_manifest": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenManifest",
+      "open_ass": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -OpenAss",
+      "print_path": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -PrintPath",
+      "no_invoke": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 -NoInvoke"
+    },
+    "diagnostic_no_invoke_smoke": {
+      "exit_code": 0,
+      "open_attempt_status": "not_attempted",
+      "classification": "path_print_only",
+      "video_exists": true,
+      "video_size_bytes": 4627079
+    },
+    "default_smoke": {
+      "exit_code": 0,
+      "process_name_returned": "vlc",
+      "open_attempt_status": "start_process_attempted_not_observed",
+      "classification": "file_verified_but_user_visible_open_not_confirmed",
+      "stderr": ""
+    }
+  },
+  "repair_effect": {
+    "user_visible_open_failure_recorded": true,
+    "mp4_and_ass_and_manifest_verified_present": true,
+    "launcher_no_longer_claims_visible_open": true,
+    "launcher_prints_fallbacks": true,
+    "select_video_fallback_added": true,
+    "path_only_diagnostic_added": true,
+    "default_player_or_file_association_still_user_visible_external_state": true
+  },
+  "boundaries": {
+    "new_v3_created": false,
+    "new_render_run": false,
+    "new_media_created": false,
+    "screenshot_capture_created": false,
+    "final_render_path_stage_4": false,
+    "timing_audio_first_route": false,
+    "stage_7_freeform_normalizer_used": false,
+    "tracked_binary_artifact_created": false,
+    "episodes_tracked": false,
+    "production_subtitle_design_acceptance": false,
+    "production_render_acceptance": false,
+    "creative_acceptance": false,
+    "rights_status": "pending",
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "monetization_acceptance": false,
+    "micro_scene_accepted": false,
+    "user_review_requested_now": false
+  },
+  "validation": {
+    "repo_root_verified_current_session": true,
+    "origin_main_parity_before_local_update": "0 0",
+    "tracked_source_files_present": true,
+    "local_media_verified_present": true,
+    "ffprobe_completed": true,
+    "pre_repair_launcher_run_captured": true,
+    "post_repair_no_invoke_smoke_completed": true,
+    "post_repair_default_smoke_completed": true,
+    "json_parse_completed": true,
+    "dashboard_json_parse_completed": true,
+    "targeted_tests_completed": true,
+    "git_diff_check_completed": true,
+    "episodes_tracked": false,
+    "all_checks_passed_for_current_session_readback": true
+  },
+  "outputs": {
+    "json": "docs/style_intent/thank-v2-open-command-repair-readback.json",
+    "doc": "docs/style_intent/thank-v2-open-command-repair-readback.md"
+  }
+}

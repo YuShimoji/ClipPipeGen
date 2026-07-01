@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-01",
+  "generated_at": "2026-07-01T00:00:00+09:00",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -24,8 +24,8 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "ED-10bb",
-    "artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
+    "feature_id": "ED-10bc",
+    "artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
     "source_render_path_selector_contract_artifact_id": "clip-ed10ae-render-path-selector-contract-probe-001",
     "source_style_family_palette_artifact_id": "clip-ed10ad-style-family-palette-axis-proof-001",
     "source_visual_selector_artifact_id": "clip-ed10ac-visual-selector-proof-001",
@@ -36,7 +36,7 @@
     "source_previous_artifact_id": "clip-ed10y-candidate2-carry-forward-001",
     "source_comparison_artifact_id": "clip-ed10o-multifont-focused-review-001",
     "source_proof_artifact_id": "clip-ed10r-keifont-dense-stress-proof-001",
-    "state": "thank_ed10ba_v2_local_access_recovery_verified_present",
+    "state": "thank_v2_open_command_repair_ready",
     "source_render_contract_consumer_dry_read_artifact_id": "clip-ed10af-render-contract-consumer-dry-read-001",
     "source_l2_selector_probe_artifact_id": "clip-ed10af-l2-render-path-selector-probe-001",
     "lineage_observation_surface_artifact_id": "clip-ed10ag-lineage-and-observation-surface-001",
@@ -62,6 +62,7 @@
     "observation_readback_and_v2_route_decision_artifact_id": "clip-ed10az-observation-readback-and-v2-route-decision-001",
     "representative_micro_scene_v2_cut_window_review_purpose_alignment_artifact_id": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
     "thank_ed10ba_v2_local_access_recovery_readback_artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
+    "thank_v2_open_command_repair_readback_artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
     "human_visual_judgement": "ed10w_candidate2_lead_freeform_review_consumed_then_ed10z_probe_completed",
     "latest_review_consumed": "ed10w_user_review_candidate0_and_2_good_candidate1_and_3_too_thin",
     "target_cuts": [
@@ -71,12 +72,12 @@
     "accepted_size_rule": "round(frame_height * 0.115)",
     "selected_typography_base": "ed10ba_diagnostic_internal_review_subtitles",
     "selected_source_license_install_route": "existing_source_video_audio_reuse",
-    "route_status": "ed10bb_thank_access_recovery_verified_present_after_bounded_regeneration",
-    "user_action_type": "NO_USER_ACTION_ACCESS_REALITY_RECORDED",
-    "next_review_action_type": "OPEN_V2_SPECIMEN_IF_LATER_REVIEW_REQUESTED",
+    "route_status": "ed10bc_open_command_repaired_with_fallbacks_after_user_visible_open_failed",
+    "user_action_type": "NO_USER_ACTION_OPEN_COMMAND_REPAIR_RECORDED",
+    "next_review_action_type": "RUN_REPAIRED_OPENER_IF_LATER_REVIEW_REQUESTED",
     "selected_typography_source": "ed10y_candidate2_carry_forward_source_state",
     "preferred_direction": "candidate2_badge_pressure_adjustment_with_candidate0_fallback",
-    "main_issue": "ed10bb_thank_v2_outputs_were_absent_then_regenerated",
+    "main_issue": "ed10bc_user_visible_open_failed_after_verified_files",
     "current_visual_comparison_validity": "valid_requested_keifont_visual_evidence",
     "current_lead_candidate_id": "ed10w_badge_label_pressure_adjustment",
     "fallback_reference_candidate_id": "ed10w_current_pass_reference",
@@ -1365,14 +1366,14 @@
       "font_evidence_gate": "valid_requested_keifont_visual_evidence"
     },
     "review_card": {
-      "status": "access_verified_no_immediate_review_request",
-      "action_type": "NO_REVIEW_CARD_ACCESS_VERIFIED",
-      "target": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
-      "artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
-      "axis": "thank_ed10ba_v2_local_access_recovery",
+      "status": "open_command_repaired_no_immediate_review_request",
+      "action_type": "NO_REVIEW_CARD_OPEN_COMMAND_REPAIR_RECORDED",
+      "target": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+      "artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+      "axis": "thank_v2_open_command_repair",
       "prior_review_count": "3+",
       "prior_signal_summary": "Keifont normal dialogue and dense/multiline route passed diagnostically.",
-      "what_changed": "ED-10bb ran from the Thank repo root, found ED-10ba v2 MP4/ASS/local manifest absent, verified the source inputs, regenerated through the bounded writer, and verified the outputs.",
+      "what_changed": "ED-10bc recorded that the ED-10ba v2 MP4/ASS/local manifest are present, the pre-repair Invoke-Item launcher returned exit 0 without proving visible playback, and the repaired launcher now prints path/readback/fallbacks while using Start-Process.",
       "what_this_review_decides": [],
       "not_asking": [
         "Candidate 0-3 comparison review",
@@ -1388,7 +1389,7 @@
         "timing/audio first route"
       ],
       "input_mode": "none",
-      "completion_signal": "ED-10bb now has access_state=verified_present on the Thank terminal; later work can open the v2 specimen without manual searching or wrong-host evidence."
+      "completion_signal": "ED-10bc now classifies the visible-open failure as launcher/OS association visibility, not media loss; use the repaired opener or -SelectVideo fallback only under a later freeform v2 review request."
     },
     "lead_fallback_readback": {
       "status": "candidate2_promoted_to_tiny_render_path_nearer_probe_lead",
@@ -1399,7 +1400,7 @@
         "ed10w_balanced_combined_low_risk"
       ]
     },
-    "review_surface_direction": "thank_access_recovery_verified_no_review_request_now",
+    "review_surface_direction": "thank_v2_open_command_repaired_no_review_request_now",
     "representative_micro_scene_v2_cut_window_review_purpose_alignment": {
       "status": "ready",
       "artifact_id": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
@@ -1457,12 +1458,51 @@
       "production_candidate": false,
       "public_use_permission": false
     },
+    "thank_v2_open_command_repair": {
+      "status": "thank_v2_open_command_repair_ready",
+      "artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+      "metadata_json": "docs/style_intent/thank-v2-open-command-repair-readback.json",
+      "doc": "docs/style_intent/thank-v2-open-command-repair-readback.md",
+      "source_thank_ed10ba_v2_local_access_recovery_artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
+      "source_representative_micro_scene_v2_artifact_id": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
+      "classification": "file_verified_but_user_visible_open_failed",
+      "interpreted_axis": "launcher_or_os_file_association_visibility",
+      "render_or_media_failure": false,
+      "pre_repair_launcher_exit_code": 0,
+      "pre_repair_attempt_method": "Invoke-Item -LiteralPath $video",
+      "pre_repair_stderr_empty": true,
+      "post_repair_default_attempt_method": "Start-Process -FilePath <mp4> -PassThru",
+      "post_repair_default_exit_code": 0,
+      "post_repair_process_name_returned": "vlc",
+      "post_repair_open_attempt_status": "start_process_attempted_not_observed",
+      "post_repair_classification": "file_verified_but_user_visible_open_not_confirmed",
+      "no_invoke_smoke_status": "path_print_only",
+      "fallbacks_added": [
+        "-SelectVideo",
+        "-OpenFolder",
+        "-OpenManifest",
+        "-OpenAss",
+        "-PrintPath",
+        "-NoInvoke"
+      ],
+      "mp4_full_path_current_host": "C:\\Users\\thank\\Storage\\Media Contents Projects\\ClipPipeGen\\episodes\\jp_pilot01_hololive_bancho_20260525\\review\\jp_pilot01r3_cut_review\\representative_micro_scene_v2_cut_window_review_purpose_alignment\\representative_micro_scene_v2_cut_window_review_purpose_alignment.mp4",
+      "mp4_size_bytes": 4627079,
+      "duration_seconds": 11.9,
+      "episodes_tracked": false,
+      "new_render_run": false,
+      "new_media_created": false,
+      "screenshot_capture_created": false,
+      "final_render_path_stage_4_required_now": false,
+      "stage_7_freeform_normalizer_used": false,
+      "production_candidate": false,
+      "public_use_permission": false
+    },
     "focused_review_html": "episodes/.../subtitle_presentation_review_pack.html",
     "review_debt": [
       {
-        "debt_id": "thank_ed10ba_v2_local_access_recovery",
-        "status": "verified_present_no_recovery_debt",
-        "next_action": "use the ED-10ba v2 opener only if a later supervisor asks for freeform cut-window/review-purpose observation"
+        "debt_id": "thank_v2_open_command_repair",
+        "status": "repaired_visible_open_failure_no_media_debt",
+        "next_action": "use the repaired ED-10ba v2 opener or -SelectVideo fallback only if a later supervisor asks for freeform cut-window/review-purpose observation"
       },
       {
         "debt_id": "review_frame_clarification",
@@ -1508,6 +1548,12 @@
       "when_to_use": "Use after the dashboard when an artifact needs its registry entry or open command."
     },
     {
+      "label": "Thank V2 Open Command Repair Readback",
+      "command": "see docs\\style_intent\\thank-v2-open-command-repair-readback.md",
+      "target": "docs/style_intent/thank-v2-open-command-repair-readback.md",
+      "when_to_use": "Use after ED-10bc when the ED-10ba v2 MP4 exists but the default opener did not appear visibly; includes -SelectVideo and path-only diagnostics."
+    },
+    {
       "label": "Thank ED-10ba V2 Access Recovery Readback",
       "command": "see docs\\style_intent\\thank-ed10ba-v2-local-access-recovery-readback.md",
       "target": "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md",
@@ -1523,7 +1569,7 @@
       "label": "Open Representative Micro-Scene V2",
       "command": "powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
       "target": "scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
-      "when_to_use": "Use later only when a supervisor asks to open the ED-10ba internal review v2 MP4."
+      "when_to_use": "Use later only when a supervisor asks to open the ED-10ba internal review v2 MP4; run -SelectVideo or -PrintPath if the default player does not appear visibly."
     },
     {
       "label": "Review-Frame Clarification Surface",
@@ -2621,6 +2667,17 @@
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
+      "id": "ED-10bc",
+      "title": "Thank V2 Open Command Repair Readback v0",
+      "status": "done",
+      "health": "thank_v2_open_command_repair_ready",
+      "progress_pct": 100,
+      "active_artifact": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+      "next_action": "Use the repaired opener or -SelectVideo fallback only under a later freeform v2 review request; treat further visibility failures as player/file-association issues before regenerating media.",
+      "summary_excerpt": "clip-ed10bc-thank-v2-open-command-repair-readback-001 adds tracked JSON/Markdown at docs/style_intent/thank-v2-open-command-repair-readback.json / .md and repairs scripts/operator/open_representative_micro_scene_v2_cut_...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
       "id": "PB-01",
       "title": "publish_draft schema v1",
       "status": "proposed",
@@ -3059,24 +3116,13 @@
       "next_action": "Promote to approved only after an explicit slice decision.",
       "summary_excerpt": "譛ｪ螳溯｣・・ouTube integration 縺ｮ荳驛ｨ縺ｨ縺励※險ｭ險・",
       "source_path": "docs/FEATURE_REGISTRY.md"
-    },
-    {
-      "id": "OUT-04",
-      "title": "螳悟・閾ｪ蜍輔し繝繝榊粋謌・",
-      "status": "proposed",
-      "health": "backlog",
-      "progress_pct": 0,
-      "active_artifact": "",
-      "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "譛ｪ螳溯｣・ょｿ・ｦ√↓縺ｪ縺｣縺溘ｉ thumbnail renderer 縺ｨ縺励※險ｭ險・",
-      "source_path": "docs/FEATURE_REGISTRY.md"
     }
   ],
   "feature_summary": {
     "feature_count": 120,
     "status_counts": {
-      "done": 106,
-      "proposed": 13,
+      "done": 107,
+      "proposed": 12,
       "approved": 1
     }
   },
@@ -3352,6 +3398,16 @@
       "next_action": "Design representative-micro-scene-v2-cut-window-and-review-purpose-alignment; keep subtitle-layout screenshot capture, final-render-path stage-4, timing/audio, and another pure review-frame packet conditional only."
     },
     {
+      "artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+      "title": "ED-10bc Thank V2 Open Command Repair Readback",
+      "purpose": "Record and repair the Thank-terminal launcher path where the ED-10ba v2 MP4 was verified present but did not open visibly for the user.",
+      "storage_class": "",
+      "repo_relative_path": "docs/style_intent/thank-v2-open-command-repair-readback.json; docs/style_intent/thank-v2-open-command-repair-readback.md",
+      "open_command": "powershell -ExecutionPolicy Bypass -File scripts\\\\operator\\\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1",
+      "review_status": "opener repaired with fallbacks; no immediate user review requested; no production/public/rights/publishing/monetization or micro-scene approval",
+      "next_action": "If a later supervisor asks to view the v2 specimen, use the repaired opener first; if no player appears, use -SelectVideo or -OpenFolder before considering any media regeneration."
+    },
+    {
       "artifact_id": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
       "title": "ED-10bb Thank ED-10ba V2 Local Access Recovery Readback",
       "purpose": "Record actual Thank-terminal access recovery for ED-10ba without tracking ignored local media or treating access evidence as approval.",
@@ -3591,6 +3647,7 @@
       "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001",
       "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001",
       "clip-ed10az-observation-readback-and-v2-route-decision-001",
+      "clip-ed10bc-thank-v2-open-command-repair-readback-001",
       "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
       "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
       "clip-ed10ax-review-frame-clarification-surface-001",
@@ -3613,15 +3670,21 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 48
+    "artifact_count": 49
   },
   "artifact_coverage": {
-    "registered_artifact_count": 48,
-    "features_with_artifact_count": 49,
+    "registered_artifact_count": 49,
+    "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
+    {
+      "item": "ED-10bc Thank v2 opener repair",
+      "artifact": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+      "question": "If a later review is requested, does the repaired opener or -SelectVideo fallback make the already verified ED-10ba v2 specimen visible without implying approval?",
+      "next_route": "Run the repaired opener only under a later freeform review request; classify any remaining failure as player/file-association visibility before considering media regeneration."
+    },
     {
       "item": "ED-10bb Thank ED-10ba v2 access recovery",
       "artifact": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
@@ -3871,7 +3934,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1311,
+      "line_count": 1341,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3879,13 +3942,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 315,
+      "boundary_term_count": 318,
       "status": "reference"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 190,
+      "line_count": 191,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3893,7 +3956,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 329,
+      "boundary_term_count": 332,
       "status": "in_progress"
     },
     {
@@ -3954,16 +4017,17 @@
     {
       "path": "docs/SUBTITLE_STYLE_INTENT_REGISTRY.md",
       "title": "Subtitle Style Intent Registry",
-      "line_count": 409,
+      "line_count": 423,
       "metadata": {
         "id": "subtitle-style-intent-registry",
         "title": "Subtitle Style Intent Registry",
         "type": "design_readback",
         "status": "diagnostic_intent_registry_ready",
-        "health": "thank_ed10ba_v2_local_access_recovery_verified_present",
+        "health": "thank_v2_open_command_repair_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-01",
-        "active_artifact": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
+        "active_artifact": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
+        "latest_thank_v2_open_command_repair_artifact": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
         "latest_thank_ed10ba_v2_access_recovery_artifact": "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001",
         "latest_v2_cut_window_review_purpose_artifact": "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001",
         "latest_observation_route_decision_artifact": "clip-ed10az-observation-readback-and-v2-route-decision-001",
@@ -3973,7 +4037,7 @@
         "source_internal_review_observation_readback": "clip-ed10at-internal-review-observation-readback-001",
         "source_internal_review_access_sheet": "clip-ed10as-internal-review-access-sheet-fullpath-001",
         "source_internal_review_package": "clip-ed10ar-internal-review-video-candidate-package-001",
-        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
+        "related": "docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, docs/style_intent/subtitle-style-intent-registry.json, docs/style_intent/subtitle-preset-selector.json, docs/style_intent/subtitle-visual-selector-proof.json, docs/style_intent/subtitle-style-family-palette-proof.json, docs/style_intent/subtitle-render-path-selector-contract.json, docs/style_intent/subtitle-render-path-selector-contract.md, docs/style_intent/subtitle-render-path-selector-probe.json, docs/style_intent/subtitle-render-path-selector-probe.md, artifacts/ARTIFACTS.md"
       },
       "front_sections": {
         "what_it_is": true,
@@ -3981,7 +4045,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 110,
+      "boundary_term_count": 114,
       "status": "diagnostic_intent_registry_ready"
     },
     {
@@ -4001,7 +4065,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1588,
+      "line_count": 1623,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -4009,7 +4073,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 730,
+      "boundary_term_count": 742,
       "status": "reference"
     },
     {
@@ -4071,7 +4135,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 965,
+      "line_count": 990,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -4424,7 +4488,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1311 lines) is likely carrying history.",
+        "detail": "Long active doc (1341 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4436,7 +4500,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 329 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 332 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4454,13 +4518,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1588 lines) is likely carrying history.",
+        "detail": "Long active doc (1623 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 730 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 742 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4484,7 +4548,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (965 lines) is likely carrying history.",
+        "detail": "Long active doc (990 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

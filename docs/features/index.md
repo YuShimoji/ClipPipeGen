@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10bb`
-- artifact: `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001`
-- state: `thank_ed10ba_v2_local_access_recovery_verified_present`
+- feature: `ED-10bc`
+- artifact: `clip-ed10bc-thank-v2-open-command-repair-readback-001`
+- state: `thank_v2_open_command_repair_ready`
 
 ## Feature Table
 
@@ -91,6 +91,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-10az | Observation Readback and V2 Route Decision v0 | done | observation_readback_and_v2_route_decision_ready | 100 | clip-ed10az-observation-readback-and-v2-route-decision-001 | Keep as the consumed route decision that enabled ED-10ba; do not restart screenshot, timing/audio, or pure review-frame work without new evidence. |
 | ED-10ba | Representative Micro-Scene V2 Cut Window / Review Purpose Alignment v0 | done | representative_micro_scene_v2_cut_window_review_purpose_alignment_ready | 100 | clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001 | Use the access-verified v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed. |
 | ED-10bb | Thank ED-10ba V2 Local Access Recovery Readback v1 | done | thank_ed10ba_v2_local_access_recovery_verified_present | 100 | clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001 | Use the verified Thank-host v2 specimen for later freeform cut-window/review-purpose judgement; keep episodes media ignored and approvals closed. |
+| ED-10bc | Thank V2 Open Command Repair Readback v0 | done | thank_v2_open_command_repair_ready | 100 | clip-ed10bc-thank-v2-open-command-repair-readback-001 | Use the repaired opener or -SelectVideo fallback only under a later freeform v2 review request; treat further visibility failures as player/file-association issues before regenerating media. |
 | PB-01 | publish_draft schema v1 | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-02 | private/unlisted upload integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | PB-03 | thumbnail 險ｭ螳・integration | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
@@ -131,4 +132,3 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-09 | Docs Wiki Dashboard v1.5 | done | stable | 100 | clip-docs-dashboard-001 | Keep as reference unless a regression or successor lane appears. |
 | OUT-02 | 髻ｳ螢ｰ蜷域・・・TS・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
 | OUT-03 | visibility 譖ｴ譁ｰ・・ublic 蛹門性繧・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-04 | 螳悟・閾ｪ蜍輔し繝繝榊粋謌・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

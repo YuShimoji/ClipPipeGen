@@ -3,11 +3,12 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: thank_ed10ba_v2_local_access_recovery_verified_present
+health: thank_v2_open_command_repair_ready
 progress_pct: 100
 last_touched: 2026-07-01
-next_review_due: open_v2_specimen_if_later_review_requested
-active_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
+next_review_due: run_repaired_v2_opener_if_later_review_requested
+active_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
+latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
 latest_access_recovery_artifact: clip-ed10ay-thank-ed10au-local-access-recovery-readback-001
@@ -20,7 +21,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -36,21 +37,50 @@ instructions.
 
 Checkpoint date: 2026-07-01 JST. A new terminal should pull `origin/main`, then
 read this file first, followed by `docs/CURRENT_HANDOFF.md` and
-`docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json`.
+`docs/style_intent/thank-v2-open-command-repair-readback.json`.
 
-The latest tracked slice is ED-10bb. It now records actual Thank-terminal
-access recovery for ED-10ba: this run executed from
-`C:\Users\thank\Storage\Media Contents Projects\ClipPipeGen`, found the v2
-MP4/ASS/local manifest absent under ignored `episodes/`, verified source
-video/audio/transcript/edit_pack availability, regenerated through the bounded
-ED-10ba v2 writer, and verified the final MP4 with ffprobe. ED-10ba remains the
-source v2 specimen.
+The latest tracked slice is ED-10bc. It records the Thank-terminal opener
+failure after ED-10bb had already verified local access: the ED-10ba v2
+MP4/ASS/local manifest are present under ignored `episodes/`, ffprobe reads
+the MP4, but the user-visible open did not appear after the previous launcher
+ran. ED-10bc repairs the launcher so it prints resolved path/size/attempt
+status/classification/fallbacks, uses `Start-Process -FilePath <mp4> -PassThru`
+for the default attempt, and adds `-SelectVideo`, `-PrintPath`, and
+`-NoInvoke` fallback/diagnostic routes. ED-10bb remains the access-recovery
+source, and ED-10ba remains the v2 specimen source.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. Production/
 public/rights/publishing/monetization and micro-scene acceptance remain false
 or pending. Screenshot capture, final-render-path stage-4, timing/audio-first
 work, and stage-7 remain conditional only unless new evidence makes one of
 them primary.
+
+## Current ED-10bc Thank V2 Open Command Repair Readback
+
+ED-10bc checkpoint, 2026-07-01 JST:
+`clip-ed10bc-thank-v2-open-command-repair-readback-001` is the active tracked
+launcher-repair readback. The correct classification is
+`file_verified_but_user_visible_open_failed`: the MP4/ASS/local manifest exist
+on the Thank terminal, ffprobe reads the MP4 as `11.9s`, H.264/AAC,
+1920x1080, 30fps, and the pre-repair launcher returned exit `0` with empty
+stderr while using `Invoke-Item -LiteralPath $video`. That did not prove
+visible playback.
+
+The repaired launcher at
+`scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1`
+prints the resolved repo root, MP4 path, existence, size, attempt method,
+attempt status, classification, and fallback commands. The default repaired
+smoke returned exit `0`, process name `vlc`,
+`open_attempt_status=start_process_attempted_not_observed`, and
+`classification=file_verified_but_user_visible_open_not_confirmed`. A
+`-NoInvoke` smoke returns path-only diagnostics without opening anything.
+
+The next terminal should use the repaired opener only if a later supervisor
+asks to view the v2 specimen. If the player still does not appear, use
+`-SelectVideo` or `-OpenFolder` before considering any regeneration. Do not
+create v3, screenshot capture, final-render-path stage-4, timing/audio-first
+work, stage-7, tracked `episodes/` media, or production/public/rights/
+publishing/monetization or micro-scene approval from this readback.
 
 ## Current ED-10bb Thank ED-10ba V2 Local Access Recovery Readback
 

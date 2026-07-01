@@ -903,6 +903,41 @@ Boundary flags remain false or pending:
 - `timing_audio_first_route=false`
 - `stage_7_freeform_normalizer_used=false`
 
+## `clip-ed10bc-thank-v2-open-command-repair-readback-001`
+
+| field | value |
+|---|---|
+| title | ED-10bc Thank V2 Open Command Repair Readback |
+| purpose | Record and repair the Thank-terminal launcher path where the ED-10ba v2 MP4 was verified present but did not open visibly for the user. |
+| storage_class | tracked JSON/Markdown readback plus launcher script repair; MP4/ASS/local manifest remain ignored same-machine evidence |
+| repo_relative_path | docs/style_intent/thank-v2-open-command-repair-readback.json; docs/style_intent/thank-v2-open-command-repair-readback.md |
+| open_command | powershell -ExecutionPolicy Bypass -File scripts\\operator\\open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1 |
+| generated_from | ED-10bc consumes `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001` and `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`; it classifies the user-visible failure as `file_verified_but_user_visible_open_failed`, not media/render loss, after verifying MP4/ASS/local manifest presence and ffprobe readability. |
+| validation_command | Capture pre-repair launcher stdout/stderr/exit code; verify MP4/ASS/local manifest and ffprobe; run repaired launcher `-NoInvoke` and default smoke; parse ED-10bc JSON and dashboard JSON; run targeted subtitle/dashboard tests; git diff --check; git diff --cached --check if staged; verify git ls-files episodes remains empty. |
+| latest_local_smoke | Repaired default launcher returned exit `0`, process name `vlc`, `open_attempt_status=start_process_attempted_not_observed`, and `classification=file_verified_but_user_visible_open_not_confirmed`; `-NoInvoke` prints path/size/fallback diagnostics without opening. |
+| review_status | opener repaired with fallbacks; no immediate user review requested; no production/public/rights/publishing/monetization or micro-scene approval |
+| next_action | If a later supervisor asks to view the v2 specimen, use the repaired opener first; if no player appears, use `-SelectVideo` or `-OpenFolder` before considering any media regeneration. |
+
+Boundary flags remain false or pending:
+
+- `new_v3_created=false`
+- `new_render_run=false`
+- `new_media_created=false`
+- `screenshot_capture_created=false`
+- `final_render_path_stage_4=false`
+- `timing_audio_first_route=false`
+- `stage_7_freeform_normalizer_used=false`
+- `tracked_binary_artifact_created=false`
+- `episodes_tracked=false`
+- `production_subtitle_design_acceptance=false`
+- `production_render_acceptance=false`
+- `creative_acceptance=false`
+- `rights_status=pending`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `monetization_acceptance=false`
+- `micro_scene_accepted=false`
+
 ## `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001`
 
 | field | value |
