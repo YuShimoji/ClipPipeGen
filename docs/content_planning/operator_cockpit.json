@@ -1,15 +1,17 @@
 {
   "schema_id": "clippipegen.operator_cockpit.v0",
   "schema_version": "v0",
-  "artifact_id": "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
+  "artifact_id": "clip-cpd08-operator-home-funnel-meters-v0-001",
   "generated_at": "2026-07-06",
   "title": "ClipPipeGen Operator Cockpit / Content Planning Review",
   "ux": {
-    "version": "v2_dark_mode_v0",
-    "layout": "vertical_primary_review_card",
+    "version": "v3_home_funnel_meters_v0",
+    "layout": "operator_home_funnel_meters",
     "default_theme": "dark",
     "theme_toggle": true,
-    "developer_appendix_default": "collapsed"
+    "developer_appendix_default": "collapsed",
+    "home_area": "visible",
+    "action_queue": "visible"
   },
   "source": {
     "network_required": false,
@@ -46,6 +48,191 @@
     "internal_artifact_count": 13,
     "health": "ready_for_single_source_identity_review"
   },
+  "home_metrics": [
+    {
+      "metric_id": "total_candidates",
+      "label": "企画候補",
+      "value": 5,
+      "total": 5,
+      "href": "#candidate-state-board",
+      "why": "手元にある候補全体です。",
+      "state": "planning_inventory",
+      "kind": "measured_count"
+    },
+    {
+      "metric_id": "source_backed",
+      "label": "source特定済み",
+      "value": 1,
+      "total": 5,
+      "href": "#primary-review",
+      "why": "人間が確認できるURL付きの候補数です。",
+      "state": "one_primary_review_target",
+      "kind": "measured_count"
+    },
+    {
+      "metric_id": "source_missing_ideas",
+      "label": "source未特定",
+      "value": 3,
+      "total": 5,
+      "href": "#source-missing",
+      "why": "URLがないため、まだ動画候補として扱いません。",
+      "state": "not_video_backed",
+      "kind": "measured_count"
+    },
+    {
+      "metric_id": "blocked_or_hold",
+      "label": "保留",
+      "value": 1,
+      "total": 5,
+      "href": "#blocked-hold",
+      "why": "権利・音楽リスクが分離された候補です。",
+      "state": "hold",
+      "kind": "measured_count"
+    },
+    {
+      "metric_id": "inspectable_packets",
+      "label": "人間確認待ち",
+      "value": 1,
+      "total": 5,
+      "href": "#primary-review",
+      "why": "今開ける確認packetは1件だけです。",
+      "state": "human_review_waiting",
+      "kind": "measured_count"
+    },
+    {
+      "metric_id": "fetch_authorized",
+      "label": "取得許可",
+      "value": 0,
+      "total": 5,
+      "href": "#safety-boundary",
+      "why": "0のままなので、ここはまだsource review画面です。",
+      "state": "locked",
+      "kind": "measured_count"
+    },
+    {
+      "metric_id": "media_downloaded",
+      "label": "media取得",
+      "value": 0,
+      "total": 1,
+      "href": "#safety-boundary",
+      "why": "動画・音声取得に進んでいないことを示します。",
+      "state": "locked",
+      "kind": "gate_count"
+    },
+    {
+      "metric_id": "episode_dirs_created",
+      "label": "episode dirs",
+      "value": 0,
+      "total": 1,
+      "href": "#safety-boundary",
+      "why": "real episode initは未開始で、CPDではdry-runのみです。",
+      "state": "locked",
+      "kind": "gate_count"
+    }
+  ],
+  "funnel_stages": [
+    {
+      "stage_id": "idea_candidates",
+      "label": "企画候補",
+      "count": 5,
+      "total": 5,
+      "href": "#candidate-state-board",
+      "status": "measured",
+      "note": "全候補の入口。"
+    },
+    {
+      "stage_id": "source_backed",
+      "label": "source特定済み",
+      "count": 1,
+      "total": 5,
+      "href": "#primary-review",
+      "status": "one_ready",
+      "note": "URL付きは1件。"
+    },
+    {
+      "stage_id": "human_review_waiting",
+      "label": "人間確認待ち",
+      "count": 1,
+      "total": 5,
+      "href": "#primary-review",
+      "status": "waiting",
+      "note": "判断待ちのpacket。"
+    },
+    {
+      "stage_id": "private_local_review_waiting",
+      "label": "private/local検証待ち",
+      "count": 0,
+      "total": 5,
+      "href": "#safety-boundary",
+      "status": "locked",
+      "note": "fetch authorizationは0。"
+    },
+    {
+      "stage_id": "edit_render_not_started",
+      "label": "編集・render未開始",
+      "count": 0,
+      "total": 5,
+      "href": "#safety-boundary",
+      "status": "locked",
+      "note": "render / transcript / public gateは未開始。"
+    }
+  ],
+  "action_queue": [
+    {
+      "queue_id": "primary_source_identity",
+      "priority": "primary",
+      "label": "番長/船長のURLが候補意図と同じ動画か確認",
+      "href": "#primary-review",
+      "count": 1,
+      "state": "actionable_now",
+      "why": "source URL付きで今判断できる候補は1件だけです。"
+    },
+    {
+      "queue_id": "secondary_missing_sources",
+      "priority": "secondary",
+      "label": "source未特定の企画メモにURLを足す",
+      "href": "#source-missing",
+      "count": 3,
+      "state": "backlog",
+      "why": "source URLがないため、今は動画候補ではありません。"
+    },
+    {
+      "queue_id": "hold_music_rights",
+      "priority": "hold",
+      "label": "歌・音楽権利リスク候補は保留",
+      "href": "#blocked-hold",
+      "count": 1,
+      "state": "hold",
+      "why": "別のrights/publication routeがないままでは進めません。"
+    }
+  ],
+  "section_links": [
+    {
+      "section_id": "primary-review",
+      "label": "次に判断する1件",
+      "href": "#primary-review"
+    },
+    {
+      "section_id": "source-missing",
+      "label": "source未特定の企画メモ",
+      "href": "#source-missing"
+    },
+    {
+      "section_id": "blocked-hold",
+      "label": "保留",
+      "href": "#blocked-hold"
+    },
+    {
+      "section_id": "safety-boundary",
+      "label": "閉じたゲート",
+      "href": "#safety-boundary"
+    },
+    {
+      "section_id": "developer-appendix",
+      "label": "開発用詳細",
+      "href": "#developer-appendix"
+    }
+  ],
   "recommended_next_action": {
     "action_id": "inspect_single_source_backed_item",
     "label": "今回確認する1件を見る",
@@ -378,6 +565,6 @@
     "skipped_source_record_count": 4,
     "blocked_source_record_count": 4,
     "decision_template_entry_count": 1,
-    "note": "CPD-07 is a UX/readability layer over CPD-01 through CPD-05. It does not change source, fetch, rights, production, or public gates."
+    "note": "CPD-08 is an operator-home information architecture layer over CPD-01 through CPD-05. It does not change source, fetch, rights, production, or public gates."
   }
 }

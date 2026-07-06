@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `CPD-07`
-- artifact: `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`
-- state: `content_planning_operator_cockpit_ready`
+- feature: `CPD-08`
+- artifact: `clip-cpd08-operator-home-funnel-meters-v0-001`
+- state: `content_planning_operator_home_ready`
 
 ## Feature Table
 

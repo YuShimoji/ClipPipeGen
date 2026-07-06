@@ -3,12 +3,12 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: content_planning_operator_cockpit_ready
+health: content_planning_operator_home_ready
 progress_pct: 100
 last_touched: 2026-07-06
-next_review_due: inspect_single_source_backed_item_or_fill_source_urls
-active_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
-latest_content_planning_operator_cockpit_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
+next_review_due: open_cpd08_operator_home_then_inspect_single_source_backed_item_or_fill_source_urls
+active_artifact: clip-cpd08-operator-home-funnel-meters-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd08-operator-home-funnel-meters-v0-001
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -41,29 +41,30 @@ Checkpoint date: 2026-07-06 JST. A new terminal should pull `origin/main`, then
 read this file first, followed by `docs/CURRENT_HANDOFF.md`,
 `docs/content_planning/README.md`, and
 `artifacts/ARTIFACTS.md` entry
-`clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`.
+`clip-cpd08-operator-home-funnel-meters-v0-001`.
 
-The latest tracked slice is CPD-07. It responds to the review friction where
-the CPD HTML files felt like intermediate reports instead of a human-facing
-decision surface. The normal entry point is now
-`docs/content_planning/operator_cockpit.html`: a dark-mode vertical Primary
-Review Card that asks for only one human source-identity check. The only
-source-backed URL is
-`cpd01_bancho_marine_misunderstanding`
-(`https://www.youtube.com/watch?v=7J5aS_pcBj4`). The other four ideas are not
-video candidates yet; they remain missing-source or hold records until a real
-source URL and metadata are supplied.
+The latest tracked slice is CPD-08. It consumes the human feedback that CPD-07
+looked polished but still felt like folded storage rather than an organized
+control surface. The normal entry point remains
+`docs/content_planning/operator_cockpit.html`, now as an Operator Home with
+visible funnel meters, one Action Queue, section links, and the existing dark
+Primary Review Card for the single source-backed item. The only source-backed
+URL is `cpd01_bancho_marine_misunderstanding`
+(`https://www.youtube.com/watch?v=7J5aS_pcBj4`). The three source-missing ideas
+are explicitly not video-backed, and the song/music-rights-sensitive idea is
+kept in hold.
 
-CPD-07 is a planning UX consolidation only. It reads tracked local CPD-01
-through CPD-05 artifacts, writes `operator_cockpit.json/html`, and does not
-open source URLs, search the web, use external APIs, download media, create
-`episodes/` folders, authorize fetch, approve rights, generate transcripts or
-renders, or mark anything production/public ready.
+CPD-08 is a planning information-architecture layer only. It reads tracked
+local CPD-01 through CPD-05 artifacts, writes `operator_cockpit.json/html`, and
+does not open source URLs, search the web, use external APIs, download media,
+create `episodes/` folders, authorize fetch, approve rights, generate
+transcripts or renders, or mark anything production/public ready.
 
 The next useful move is either to open
-`docs/content_planning/operator_cockpit.html` for the single source identity
-check, or to fill real source metadata for unresolved ideas in a local
-`source_metadata_registry.json` before rerunning CPD-03 through CPD-07.
+`docs/content_planning/operator_cockpit.html` and use the Operator Home to
+review the single source identity card, or to fill real source metadata for
+unresolved ideas in a local `source_metadata_registry.json` before rerunning
+CPD-03 through CPD-08.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. The ED-10bc
 opener-repair state below remains valid historical/current evidence for the

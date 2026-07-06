@@ -1,4 +1,4 @@
-"""CPD-07 operator cockpit UX builder.
+"""CPD-08 operator cockpit home / funnel UX builder.
 
 This module consolidates the CPD-01 through CPD-05 planning artifacts into one
 operator-facing entry point. It only reads local JSON artifacts and writes
@@ -16,12 +16,12 @@ from typing import Any
 from .content_planning import display_path, write_json, write_text
 
 SCHEMA_ID = "clippipegen.operator_cockpit.v0"
-DEFAULT_ARTIFACT_ID = "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+DEFAULT_ARTIFACT_ID = "clip-cpd08-operator-home-funnel-meters-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-06"
 DEFAULT_OUTPUT_FILENAME = "operator_cockpit.json"
 DEFAULT_DASHBOARD_FILENAME = "operator_cockpit.html"
 HTML_TITLE = "ClipPipeGen Operator Cockpit / Content Planning Review"
-UX_VERSION = "v2_dark_mode_v0"
+UX_VERSION = "v3_home_funnel_meters_v0"
 
 NOT_YET_FLAGS = [
     "fetch",
@@ -218,6 +218,10 @@ def build_operator_cockpit(
         init_plan_payload=init_plan_payload,
         source_backed=source_backed,
     )
+    section_links = build_section_links()
+    home_metrics = build_home_metrics(summary=summary, gates=gates)
+    funnel_stages = build_funnel_stages(summary=summary)
+    action_queue = build_action_queue(summary=summary)
     generated_from = generated_from_records(
         candidates_path=candidates_path,
         seed_path=seed_path,
@@ -242,10 +246,12 @@ def build_operator_cockpit(
         "title": HTML_TITLE,
         "ux": {
             "version": UX_VERSION,
-            "layout": "vertical_primary_review_card",
+            "layout": "operator_home_funnel_meters",
             "default_theme": "dark",
             "theme_toggle": True,
             "developer_appendix_default": "collapsed",
+            "home_area": "visible",
+            "action_queue": "visible",
         },
         "source": {
             "network_required": False,
@@ -266,6 +272,10 @@ def build_operator_cockpit(
             "user_work": recommended_next_action["user_work"],
         },
         "summary": summary,
+        "home_metrics": home_metrics,
+        "funnel_stages": funnel_stages,
+        "action_queue": action_queue,
+        "section_links": section_links,
         "recommended_next_action": recommended_next_action,
         "gate_readback": gates,
         "buckets": {
@@ -281,7 +291,7 @@ def build_operator_cockpit(
             "blocked_source_record_count": len(blocked_inspection_records),
             "decision_template_entry_count": len(decision_entries),
             "note": (
-                "CPD-07 is a UX/readability layer over CPD-01 through CPD-05. "
+                "CPD-08 is an operator-home information architecture layer over CPD-01 through CPD-05. "
                 "It does not change source, fetch, rights, production, or public gates."
             ),
         },
@@ -613,6 +623,184 @@ def build_gate_readback(
     }
 
 
+def build_section_links() -> list[dict[str, str]]:
+    return [
+        {"section_id": "primary-review", "label": "\u6b21\u306b\u5224\u65ad\u3059\u308b1\u4ef6", "href": "#primary-review"},
+        {"section_id": "source-missing", "label": "source\u672a\u7279\u5b9a\u306e\u4f01\u753b\u30e1\u30e2", "href": "#source-missing"},
+        {"section_id": "blocked-hold", "label": "\u4fdd\u7559", "href": "#blocked-hold"},
+        {"section_id": "safety-boundary", "label": "\u9589\u3058\u305f\u30b2\u30fc\u30c8", "href": "#safety-boundary"},
+        {"section_id": "developer-appendix", "label": "\u958b\u767a\u7528\u8a73\u7d30", "href": "#developer-appendix"},
+    ]
+
+
+def build_home_metrics(*, summary: dict[str, Any], gates: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {
+            "metric_id": "total_candidates",
+            "label": "\u4f01\u753b\u5019\u88dc",
+            "value": summary["total_candidates"],
+            "total": summary["total_candidates"],
+            "href": "#candidate-state-board",
+            "why": "\u624b\u5143\u306b\u3042\u308b\u5019\u88dc\u5168\u4f53\u3067\u3059\u3002",
+            "state": "planning_inventory",
+            "kind": "measured_count",
+        },
+        {
+            "metric_id": "source_backed",
+            "label": "source\u7279\u5b9a\u6e08\u307f",
+            "value": summary["source_backed_count"],
+            "total": summary["total_candidates"],
+            "href": "#primary-review",
+            "why": "\u4eba\u9593\u304c\u78ba\u8a8d\u3067\u304d\u308bURL\u4ed8\u304d\u306e\u5019\u88dc\u6570\u3067\u3059\u3002",
+            "state": "one_primary_review_target",
+            "kind": "measured_count",
+        },
+        {
+            "metric_id": "source_missing_ideas",
+            "label": "source\u672a\u7279\u5b9a",
+            "value": summary["source_missing_idea_backlog_count"],
+            "total": summary["total_candidates"],
+            "href": "#source-missing",
+            "why": "URL\u304c\u306a\u3044\u305f\u3081\u3001\u307e\u3060\u52d5\u753b\u5019\u88dc\u3068\u3057\u3066\u6271\u3044\u307e\u305b\u3093\u3002",
+            "state": "not_video_backed",
+            "kind": "measured_count",
+        },
+        {
+            "metric_id": "blocked_or_hold",
+            "label": "\u4fdd\u7559",
+            "value": summary["blocked_or_hold_count"],
+            "total": summary["total_candidates"],
+            "href": "#blocked-hold",
+            "why": "\u6a29\u5229\u30fb\u97f3\u697d\u30ea\u30b9\u30af\u304c\u5206\u96e2\u3055\u308c\u305f\u5019\u88dc\u3067\u3059\u3002",
+            "state": "hold",
+            "kind": "measured_count",
+        },
+        {
+            "metric_id": "inspectable_packets",
+            "label": "\u4eba\u9593\u78ba\u8a8d\u5f85\u3061",
+            "value": summary["inspectable_packet_count"],
+            "total": summary["total_candidates"],
+            "href": "#primary-review",
+            "why": "\u4eca\u958b\u3051\u308b\u78ba\u8a8dpacket\u306f1\u4ef6\u3060\u3051\u3067\u3059\u3002",
+            "state": "human_review_waiting",
+            "kind": "measured_count",
+        },
+        {
+            "metric_id": "fetch_authorized",
+            "label": "\u53d6\u5f97\u8a31\u53ef",
+            "value": summary["fetch_authorized_count"],
+            "total": summary["total_candidates"],
+            "href": "#safety-boundary",
+            "why": "0\u306e\u307e\u307e\u306a\u306e\u3067\u3001\u3053\u3053\u306f\u307e\u3060source review\u753b\u9762\u3067\u3059\u3002",
+            "state": "locked",
+            "kind": "measured_count",
+        },
+        {
+            "metric_id": "media_downloaded",
+            "label": "media\u53d6\u5f97",
+            "value": int(bool(gates["media_downloaded"])),
+            "total": 1,
+            "href": "#safety-boundary",
+            "why": "\u52d5\u753b\u30fb\u97f3\u58f0\u53d6\u5f97\u306b\u9032\u3093\u3067\u3044\u306a\u3044\u3053\u3068\u3092\u793a\u3057\u307e\u3059\u3002",
+            "state": "locked",
+            "kind": "gate_count",
+        },
+        {
+            "metric_id": "episode_dirs_created",
+            "label": "episode dirs",
+            "value": int(bool(gates["episode_dirs_created"])),
+            "total": 1,
+            "href": "#safety-boundary",
+            "why": "real episode init\u306f\u672a\u958b\u59cb\u3067\u3001CPD\u3067\u306fdry-run\u306e\u307f\u3067\u3059\u3002",
+            "state": "locked",
+            "kind": "gate_count",
+        },
+    ]
+
+
+def build_funnel_stages(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+    total = summary["total_candidates"]
+    return [
+        {
+            "stage_id": "idea_candidates",
+            "label": "\u4f01\u753b\u5019\u88dc",
+            "count": total,
+            "total": total,
+            "href": "#candidate-state-board",
+            "status": "measured",
+            "note": "\u5168\u5019\u88dc\u306e\u5165\u53e3\u3002",
+        },
+        {
+            "stage_id": "source_backed",
+            "label": "source\u7279\u5b9a\u6e08\u307f",
+            "count": summary["source_backed_count"],
+            "total": total,
+            "href": "#primary-review",
+            "status": "one_ready",
+            "note": "URL\u4ed8\u304d\u306f1\u4ef6\u3002",
+        },
+        {
+            "stage_id": "human_review_waiting",
+            "label": "\u4eba\u9593\u78ba\u8a8d\u5f85\u3061",
+            "count": summary["inspectable_packet_count"],
+            "total": total,
+            "href": "#primary-review",
+            "status": "waiting",
+            "note": "\u5224\u65ad\u5f85\u3061\u306epacket\u3002",
+        },
+        {
+            "stage_id": "private_local_review_waiting",
+            "label": "private/local\u691c\u8a3c\u5f85\u3061",
+            "count": summary["fetch_authorized_count"],
+            "total": total,
+            "href": "#safety-boundary",
+            "status": "locked",
+            "note": "fetch authorization\u306f0\u3002",
+        },
+        {
+            "stage_id": "edit_render_not_started",
+            "label": "\u7de8\u96c6\u30fbrender\u672a\u958b\u59cb",
+            "count": 0,
+            "total": total,
+            "href": "#safety-boundary",
+            "status": "locked",
+            "note": "render / transcript / public gate\u306f\u672a\u958b\u59cb\u3002",
+        },
+    ]
+
+
+def build_action_queue(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {
+            "queue_id": "primary_source_identity",
+            "priority": "primary",
+            "label": "\u756a\u9577/\u8239\u9577\u306eURL\u304c\u5019\u88dc\u610f\u56f3\u3068\u540c\u3058\u52d5\u753b\u304b\u78ba\u8a8d",
+            "href": "#primary-review",
+            "count": summary["source_backed_count"],
+            "state": "actionable_now",
+            "why": "source URL\u4ed8\u304d\u3067\u4eca\u5224\u65ad\u3067\u304d\u308b\u5019\u88dc\u306f1\u4ef6\u3060\u3051\u3067\u3059\u3002",
+        },
+        {
+            "queue_id": "secondary_missing_sources",
+            "priority": "secondary",
+            "label": "source\u672a\u7279\u5b9a\u306e\u4f01\u753b\u30e1\u30e2\u306bURL\u3092\u8db3\u3059",
+            "href": "#source-missing",
+            "count": summary["source_missing_idea_backlog_count"],
+            "state": "backlog",
+            "why": "source URL\u304c\u306a\u3044\u305f\u3081\u3001\u4eca\u306f\u52d5\u753b\u5019\u88dc\u3067\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
+        },
+        {
+            "queue_id": "hold_music_rights",
+            "priority": "hold",
+            "label": "\u6b4c\u30fb\u97f3\u697d\u6a29\u5229\u30ea\u30b9\u30af\u5019\u88dc\u306f\u4fdd\u7559",
+            "href": "#blocked-hold",
+            "count": summary["blocked_or_hold_count"],
+            "state": "hold",
+            "why": "\u5225\u306erights/publication route\u304c\u306a\u3044\u307e\u307e\u3067\u306f\u9032\u3081\u307e\u305b\u3093\u3002",
+        },
+    ]
+
+
 def generated_from_records(
     *,
     candidates_path: Path,
@@ -673,9 +861,10 @@ def render_operator_cockpit_html(
             '<a class="skip-link" href="#primary-review-card">確認カードへ移動</a>',
             _hero_html(payload),
             '<main class="page-shell">',
-            _verdict_html(payload),
+            _operator_home_html(payload),
+            _action_queue_html(payload),
             _primary_review_card_html(payload),
-            _source_missing_ideas_html(payload),
+            _candidate_state_board_html(payload),
             _safety_boundary_html(payload),
             _developer_appendix_html(payload, output_path, dashboard_path, base_dir),
             "</main>",
@@ -771,6 +960,32 @@ section{margin:0 0 18px}
 .surface{padding:18px}
 .verdict-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 .verdict-line{font-size:20px;font-weight:700}
+.home-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:14px;align-items:start}
+.home-answer{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.home-answer h2{margin-bottom:8px}
+.home-answer p{color:var(--muted);margin-top:6px}
+.meter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:14px}
+.meter-card{display:block;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:11px;text-decoration:none;color:var(--text)}
+.meter-card:hover{border-color:var(--accent)}
+.meter-card span{display:block;color:var(--muted);font-size:12px}
+.meter-card strong{display:block;font-size:26px;line-height:1.1;margin:3px 0}
+.meter-card em{display:block;color:var(--muted);font-size:12px;font-style:normal}
+.meter-bar{height:7px;border-radius:999px;background:var(--surface-3);overflow:hidden;margin-top:8px}
+.meter-fill{height:100%;border-radius:999px;background:var(--accent)}
+.funnel{display:grid;gap:8px;margin-top:12px}
+.funnel-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:10px;text-decoration:none;color:var(--text)}
+.funnel-step .index{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;background:var(--surface-3);font-weight:700}
+.funnel-step .note{color:var(--muted);font-size:12px}
+.funnel-step .count{font-weight:700;color:var(--accent)}
+.queue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.queue-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.queue-card.primary{border-color:var(--accent);background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.queue-card.hold{border-color:rgba(251,191,36,.6)}
+.queue-card a{display:inline-block;margin-top:10px;font-weight:700}
+.state-board{display:grid;gap:12px}
+.state-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.state-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.anchor-alias{position:relative;top:-16px}
 .metric-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
 .metric{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:10px}
 .metric span{display:block;color:var(--muted);font-size:12px}
@@ -811,6 +1026,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 @media (max-width:720px){
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
+  .home-grid{grid-template-columns:1fr}
   .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
   .source-link{display:flex;justify-content:center}
 }
@@ -842,7 +1058,7 @@ def theme_script() -> str:
 </script>"""
 
 
-def _hero_html(payload: dict[str, Any]) -> str:
+def _legacy_hero_html_cpd07(payload: dict[str, Any]) -> str:
     return "\n".join(
         [
             '<header class="hero">',
@@ -858,6 +1074,36 @@ def _hero_html(payload: dict[str, Any]) -> str:
             '<a href="#primary-review-card">今回確認する1件</a>',
             '<a href="#source-missing-ideas">未特定の企画メモ</a>',
             '<a href="#safety-boundary">安全境界</a>',
+            '<a href="#developer-appendix">開発用詳細</a>',
+            "</nav>",
+            "</div>",
+            "</header>",
+        ]
+    )
+
+
+def _hero_html(payload: dict[str, Any]) -> str:
+    return "\n".join(
+        [
+            '<header class="hero">',
+            '<div class="hero-inner">',
+            '<div class="topbar">',
+            "<div>",
+            f"<h1>{escape(payload['title'])}</h1>",
+            (
+                '<p class="subtitle">Operator Home / Funnel Meters v0。'
+                "いま見るもの、見なくてよいもの、詰まっているメーターを最初の画面にまとめます。</p>"
+            ),
+            "</div>",
+            '<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>',
+            "</div>",
+            '<nav class="mini-nav" aria-label="ページ内ナビゲーション">',
+            '<a href="#operator-home">Operator Home</a>',
+            '<a href="#action-queue">Action Queue</a>',
+            '<a href="#primary-review">次に判断する1件</a>',
+            '<a href="#source-missing">source未特定</a>',
+            '<a href="#blocked-hold">保留</a>',
+            '<a href="#safety-boundary">閉じたゲート</a>',
             '<a href="#developer-appendix">開発用詳細</a>',
             "</nav>",
             "</div>",
@@ -896,11 +1142,174 @@ def _verdict_html(payload: dict[str, Any]) -> str:
     )
 
 
+def _operator_home_html(payload: dict[str, Any]) -> str:
+    summary = payload["summary"]
+    metrics = payload["home_metrics"]
+    funnel = payload["funnel_stages"]
+    meter_cards = [_meter_card_html(metric) for metric in metrics]
+    funnel_steps = [_funnel_step_html(index, stage) for index, stage in enumerate(funnel, start=1)]
+    return "\n".join(
+        [
+            '<section id="operator-home" class="surface">',
+            '<div class="home-grid">',
+            '<div class="home-answer">',
+            '<p class="kicker">Operator Home</p>',
+            "<h2>いま見るもの</h2>",
+            (
+                f'<p class="verdict-line">source付きで人間確認待ちの候補は '
+                f'{summary["source_backed_count"]} 件です。</p>'
+            ),
+            (
+                '<p>次は1件だけ確認します。source未特定の企画メモと保留候補は、'
+                "動画候補として扱わず別の棚に分けています。</p>"
+            ),
+            '<div class="meter-grid">',
+            *meter_cards,
+            "</div>",
+            "</div>",
+            '<div class="home-answer">',
+            '<p class="kicker">Candidate Funnel</p>',
+            "<h2>どのメーターが詰まっているか</h2>",
+            '<p>countsは既存CPD JSONから測定した値です。0のゲートはproduction進捗ではなく、まだ閉じている境界を示します。</p>',
+            '<div class="funnel">',
+            *funnel_steps,
+            "</div>",
+            "</div>",
+            "</div>",
+            "</section>",
+        ]
+    )
+
+
+def _action_queue_html(payload: dict[str, Any]) -> str:
+    queue = payload["action_queue"]
+    cards = [_queue_card_html(item) for item in queue]
+    return "\n".join(
+        [
+            '<section id="action-queue" class="surface">',
+            '<div class="section-heading">',
+            '<div><p class="kicker">Action Queue</p><h2>次に動く順番</h2><p>primaryは1件だけです。secondaryとholdは、いま開く対象ではなく backlog / 保留として分けています。</p></div>',
+            "</div>",
+            '<div class="queue-grid">',
+            *cards,
+            "</div>",
+            "</section>",
+        ]
+    )
+
+
+def _candidate_state_board_html(payload: dict[str, Any]) -> str:
+    source_backed = payload["buckets"]["source_backed_ready_for_human_inspection"]
+    backlog = payload["buckets"]["source_missing_idea_backlog"]
+    blocked = payload["buckets"]["blocked_or_hold"]
+    backed_item = source_backed[0] if source_backed else None
+    backlog_cards = [_idea_card_html(item) for item in backlog]
+    blocked_cards = [_blocked_card_html(item) for item in blocked]
+    return "\n".join(
+        [
+            '<section id="candidate-state-board" class="surface">',
+            '<div class="section-heading">',
+            '<div><p class="kicker">Candidate State Board</p><h2>候補の状態</h2><p>ホームのメーターと同じ状態を、詳細セクションとしてたどれるようにしています。</p></div>',
+            "</div>",
+            '<div class="state-board">',
+            '<section id="source-backed" class="state-card">',
+            '<h3>source付き候補</h3>',
+            (
+                _source_backed_state_html(backed_item)
+                if backed_item
+                else '<p class="muted">source付き候補はありません。</p>'
+            ),
+            "</section>",
+            '<section id="source-missing" class="state-card">',
+            '<h3>source未特定 / not video-backed</h3>',
+            '<p class="muted">JP/EN phrase gapを含む企画メモは、source URLが入るまで動画候補として扱いません。</p>',
+            '<div class="idea-list">',
+            *(backlog_cards or ['<p class="muted">source未特定の企画メモはありません。</p>']),
+            "</div>",
+            "</section>",
+            '<section id="blocked-hold" class="state-card">',
+            "<h3>保留</h3>",
+            '<p class="muted">歌・音楽権利リスクなど、別routeが必要な候補です。</p>',
+            '<div class="idea-list">',
+            *(blocked_cards or ['<p class="muted">保留候補はありません。</p>']),
+            "</div>",
+            "</section>",
+            "</div>",
+            "</section>",
+        ]
+    )
+
+
+def _meter_card_html(metric: dict[str, Any]) -> str:
+    total = max(int(metric.get("total") or 0), 1)
+    value = int(metric.get("value") or 0)
+    width = max(0, min(100, round(value / total * 100)))
+    return "\n".join(
+        [
+            f'<a class="meter-card" href="{escape(metric["href"])}">',
+            f'<span>{escape(metric["label"])}</span>',
+            f"<strong>{value}</strong>",
+            f'<em>{escape(metric["why"])}</em>',
+            '<div class="meter-bar" aria-hidden="true">',
+            f'<div class="meter-fill" style="width:{width}%"></div>',
+            "</div>",
+            "</a>",
+        ]
+    )
+
+
+def _funnel_step_html(index: int, stage: dict[str, Any]) -> str:
+    return "\n".join(
+        [
+            f'<a class="funnel-step" href="{escape(stage["href"])}">',
+            f'<span class="index">{index}</span>',
+            "<span>",
+            f'<strong>{escape(stage["label"])}</strong>',
+            f'<span class="note">{escape(stage["note"])}</span>',
+            "</span>",
+            f'<span class="count">{int(stage["count"])}/{int(stage["total"])}</span>',
+            "</a>",
+        ]
+    )
+
+
+def _queue_card_html(item: dict[str, Any]) -> str:
+    priority = clean_string(item.get("priority"))
+    class_name = "queue-card"
+    if priority == "primary":
+        class_name += " primary"
+    elif priority == "hold":
+        class_name += " hold"
+    return "\n".join(
+        [
+            f'<article class="{class_name}">',
+            f'<p class="kicker">{escape(priority)}</p>',
+            f'<h3>{escape(item["label"])}</h3>',
+            f'<p class="muted">{escape(item["why"])}</p>',
+            f'<span class="pill">{escape(item["state"])} / {int(item["count"])}件</span>',
+            f'<br><a href="{escape(item["href"])}">対応するセクションへ</a>',
+            "</article>",
+        ]
+    )
+
+
+def _source_backed_state_html(item: dict[str, Any]) -> str:
+    return "\n".join(
+        [
+            f'<p><strong>{escape(item["working_title"])}</strong></p>',
+            f'<p class="muted">video_id: <code>{escape(item["video_id"])}</code> / decision: <code>{escape(item["decision_state"])}</code></p>',
+            '<p class="muted">source URLは存在しますが、workerは開いておらず、identityは未確認です。</p>',
+            '<a href="#primary-review">Primary Review Cardへ</a>',
+        ]
+    )
+
+
 def _primary_review_card_html(payload: dict[str, Any]) -> str:
     source_backed = payload["buckets"]["source_backed_ready_for_human_inspection"]
     if not source_backed:
         return """
-<section id="primary-review-card" class="primary-card">
+<section id="primary-review" class="primary-card">
+  <span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>
   <div class="card-header">
     <p class="kicker">今回確認する1件</p>
     <h2>確認できる動画候補はありません</h2>
@@ -919,7 +1328,8 @@ def _primary_review_card_html(payload: dict[str, Any]) -> str:
     ]
     return "\n".join(
         [
-            '<section id="primary-review-card" class="primary-card">',
+            '<section id="primary-review" class="primary-card">',
+            '<span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>',
             '<div class="card-header">',
             '<p class="kicker">今回確認する1件</p>',
             f'<h2>{escape(item["working_title"])}</h2>',

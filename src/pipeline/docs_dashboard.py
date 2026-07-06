@@ -66,25 +66,29 @@ STATUS_HEALTH = {
 
 
 CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID = (
-    "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+    "clip-cpd08-operator-home-funnel-meters-v0-001"
 )
 
 
 def _current_focus() -> dict[str, Any]:
     return {
-        "feature_id": "CPD-07",
+        "feature_id": "CPD-08",
         "artifact_id": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-        "state": "content_planning_operator_cockpit_ready",
-        "title": "ClipPipeGen Operator Cockpit / Content Planning Review UX v2",
+        "state": "content_planning_operator_home_ready",
+        "title": "ClipPipeGen Operator Cockpit / Operator Home Funnel Meters v0",
         "human_entrypoint": "docs/content_planning/operator_cockpit.html",
         "machine_readback": "docs/content_planning/operator_cockpit.json",
         "handoff": "docs/CURRENT_HANDOFF.md",
         "notes": "docs/content_planning/README.md",
-        "review_shape": "single_source_identity_check",
+        "review_shape": "operator_home_then_single_source_identity_check",
         "source_backed_count": 1,
         "source_missing_count": 4,
+        "source_missing_idea_backlog_count": 3,
         "blocked_or_hold_count": 1,
         "fetch_authorized_count": 0,
+        "home_metric_count": 8,
+        "funnel_stage_count": 5,
+        "action_queue_count": 3,
         "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
         "source_backed_title": "番長、船長を完全に勘違いする",
         "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
@@ -101,9 +105,10 @@ def _current_focus() -> dict[str, Any]:
         },
         "next_review_action_type": "INSPECT_SINGLE_SOURCE_BACKED_ITEM_OR_FILL_SOURCE_URLS",
         "next_action": (
-            "Open docs/content_planning/operator_cockpit.html for the one source "
-            "identity check, or add real source metadata before rerunning CPD-03 "
-            "through CPD-07."
+            "Open docs/content_planning/operator_cockpit.html, read the Operator "
+            "Home funnel meters and Action Queue, then inspect the one source "
+            "identity card or add real source metadata before rerunning CPD-03 "
+            "through CPD-08."
         ),
         "legacy_context": {
             "previous_focus_feature_id": "ED-10bc",
@@ -636,9 +641,9 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
-            "item": "CPD-07 operator cockpit source identity review",
+            "item": "CPD-08 operator home / source identity review",
             "artifact": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-            "question": "Does the single known YouTube source match the Bancho/Marine misunderstanding candidate?",
+            "question": "Does the Operator Home clearly show the single source-backed item, and does that source match the Bancho/Marine misunderstanding candidate?",
             "next_route": "Open docs/content_planning/operator_cockpit.html first; unresolved CPD ideas need real source URL/metadata intake before fetch/init/transcript/edit/render work.",
         },
         {

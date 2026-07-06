@@ -34,7 +34,12 @@ CPD-07 revises that same operator cockpit into a vertical Primary Review Card
 with native dark mode. It is a UX layer only, not a new fetch/init/source review
 pipeline stage.
 
-If you are reviewing as a human, open the CPD-07 operator cockpit first. The
+CPD-08 turns the polished CPD-07 surface into an Operator Home. It keeps dark
+mode and the Primary Review Card, then adds visible funnel meters, an Action
+Queue, and links from the top-level state to the detailed candidate sections.
+It is information architecture only, not a source review result.
+
+If you are reviewing as a human, open the CPD-08 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
 
@@ -53,6 +58,7 @@ production/public usable.
 | CPD-05 artifact_id | `clip-cpd05-source-inspection-packet-v0-001` |
 | CPD-06 artifact_id | `clip-cpd06-operator-cockpit-consolidation-v0-001` |
 | CPD-07 artifact_id | `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001` |
+| CPD-08 artifact_id | `clip-cpd08-operator-home-funnel-meters-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
@@ -208,8 +214,9 @@ uvx python -m src.cli.main build-operator-cockpit `
 - The operator cockpit is the normal human entry point. The individual CPD
   HTML/JSON files remain linked as internal artifacts only; they should not be
   treated as separate human report requests.
-- CPD-07 cockpit HTML defaults to native dark mode and includes a local
-  Light/Dark toggle. Older CPD-01 through CPD-05 dashboards remain developer
+- CPD-08 cockpit HTML defaults to native dark mode, includes a local
+  Light/Dark toggle, and starts with Operator Home funnel meters plus one
+  Action Queue. Older CPD-01 through CPD-05 dashboards remain developer
   readback surfaces.
 - The JP/EN phrase-gap idea is currently `source_missing_idea_backlog`, not a
   source-backed video candidate. It needs a real `source_url` and source
@@ -217,10 +224,12 @@ uvx python -m src.cli.main build-operator-cockpit `
 
 ## Next Useful Moves
 
-1. Open `docs/content_planning/operator_cockpit.html` first. It shows the only
-   source-backed item as a vertical Primary Review Card with native dark mode.
+1. Open `docs/content_planning/operator_cockpit.html` first. It shows the
+   Operator Home, funnel meters, Action Queue, and the single source-backed
+   Primary Review Card with native dark mode.
 2. Review the single ready source URL as a human/operator source identity
-   check. This is the previously known hololive official anime Bancho URL.
+   check only after confirming the Operator Home state. This is the previously
+   known hololive official anime Bancho URL.
 3. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
 4. Fill real source URLs for unresolved seed records in a local

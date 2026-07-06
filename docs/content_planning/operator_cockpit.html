@@ -89,6 +89,32 @@ section{margin:0 0 18px}
 .surface{padding:18px}
 .verdict-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
 .verdict-line{font-size:20px;font-weight:700}
+.home-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:14px;align-items:start}
+.home-answer{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.home-answer h2{margin-bottom:8px}
+.home-answer p{color:var(--muted);margin-top:6px}
+.meter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:14px}
+.meter-card{display:block;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:11px;text-decoration:none;color:var(--text)}
+.meter-card:hover{border-color:var(--accent)}
+.meter-card span{display:block;color:var(--muted);font-size:12px}
+.meter-card strong{display:block;font-size:26px;line-height:1.1;margin:3px 0}
+.meter-card em{display:block;color:var(--muted);font-size:12px;font-style:normal}
+.meter-bar{height:7px;border-radius:999px;background:var(--surface-3);overflow:hidden;margin-top:8px}
+.meter-fill{height:100%;border-radius:999px;background:var(--accent)}
+.funnel{display:grid;gap:8px;margin-top:12px}
+.funnel-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:10px;text-decoration:none;color:var(--text)}
+.funnel-step .index{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;background:var(--surface-3);font-weight:700}
+.funnel-step .note{color:var(--muted);font-size:12px}
+.funnel-step .count{font-weight:700;color:var(--accent)}
+.queue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.queue-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.queue-card.primary{border-color:var(--accent);background:linear-gradient(180deg,var(--surface-2),var(--surface))}
+.queue-card.hold{border-color:rgba(251,191,36,.6)}
+.queue-card a{display:inline-block;margin-top:10px;font-weight:700}
+.state-board{display:grid;gap:12px}
+.state-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.state-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.anchor-alias{position:relative;top:-16px}
 .metric-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
 .metric{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:10px}
 .metric span{display:block;color:var(--muted);font-size:12px}
@@ -129,6 +155,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 @media (max-width:720px){
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
+  .home-grid{grid-template-columns:1fr}
   .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
   .source-link{display:flex;justify-content:center}
 }
@@ -163,41 +190,176 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <div class="hero-inner">
 <div class="topbar">
 <div>
-<h1>コンテンツ候補レビュー</h1>
-<p class="subtitle">最初に見るものを 1 件に絞った確認画面です。開発用の中間 artifact は下部の折りたたみへ移しました。</p>
+<h1>ClipPipeGen Operator Cockpit / Content Planning Review</h1>
+<p class="subtitle">Operator Home / Funnel Meters v0。いま見るもの、見なくてよいもの、詰まっているメーターを最初の画面にまとめます。</p>
 </div>
 <button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>
 </div>
 <nav class="mini-nav" aria-label="ページ内ナビゲーション">
-<a href="#primary-review-card">今回確認する1件</a>
-<a href="#source-missing-ideas">未特定の企画メモ</a>
-<a href="#safety-boundary">安全境界</a>
+<a href="#operator-home">Operator Home</a>
+<a href="#action-queue">Action Queue</a>
+<a href="#primary-review">次に判断する1件</a>
+<a href="#source-missing">source未特定</a>
+<a href="#blocked-hold">保留</a>
+<a href="#safety-boundary">閉じたゲート</a>
 <a href="#developer-appendix">開発用詳細</a>
 </nav>
 </div>
 </header>
 <main class="page-shell">
-<section id="verdict" class="surface">
-<div class="verdict-grid">
-<div>
-<p class="kicker">今の結論</p>
-<p class="verdict-line">今、人間が確認する動画は 1 件だけです。</p>
-<p class="subtitle">残り 4 件は元動画未特定の企画メモであり、動画候補として扱いません。</p>
+<section id="operator-home" class="surface">
+<div class="home-grid">
+<div class="home-answer">
+<p class="kicker">Operator Home</p>
+<h2>いま見るもの</h2>
+<p class="verdict-line">source付きで人間確認待ちの候補は 1 件です。</p>
+<p>次は1件だけ確認します。source未特定の企画メモと保留候補は、動画候補として扱わず別の棚に分けています。</p>
+<div class="meter-grid">
+<a class="meter-card" href="#candidate-state-board">
+<span>企画候補</span>
+<strong>5</strong>
+<em>手元にある候補全体です。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:100%"></div>
 </div>
-<div>
-<p class="kicker">次の動き</p>
-<p class="verdict-line">今回確認する1件を見る</p>
-<p class="subtitle">URL が分かっている候補は 1 件だけです。ほかは元動画未特定の企画メモまたは保留です。</p>
+</a>
+<a class="meter-card" href="#primary-review">
+<span>source特定済み</span>
+<strong>1</strong>
+<em>人間が確認できるURL付きの候補数です。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:20%"></div>
+</div>
+</a>
+<a class="meter-card" href="#source-missing">
+<span>source未特定</span>
+<strong>3</strong>
+<em>URLがないため、まだ動画候補として扱いません。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:60%"></div>
+</div>
+</a>
+<a class="meter-card" href="#blocked-hold">
+<span>保留</span>
+<strong>1</strong>
+<em>権利・音楽リスクが分離された候補です。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:20%"></div>
+</div>
+</a>
+<a class="meter-card" href="#primary-review">
+<span>人間確認待ち</span>
+<strong>1</strong>
+<em>今開ける確認packetは1件だけです。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:20%"></div>
+</div>
+</a>
+<a class="meter-card" href="#safety-boundary">
+<span>取得許可</span>
+<strong>0</strong>
+<em>0のままなので、ここはまだsource review画面です。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:0%"></div>
+</div>
+</a>
+<a class="meter-card" href="#safety-boundary">
+<span>media取得</span>
+<strong>0</strong>
+<em>動画・音声取得に進んでいないことを示します。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:0%"></div>
+</div>
+</a>
+<a class="meter-card" href="#safety-boundary">
+<span>episode dirs</span>
+<strong>0</strong>
+<em>real episode initは未開始で、CPDではdry-runのみです。</em>
+<div class="meter-bar" aria-hidden="true">
+<div class="meter-fill" style="width:0%"></div>
+</div>
+</a>
 </div>
 </div>
-<div class="metric-row" aria-label="状態サマリー">
-<div class="metric"><span>確認する動画</span><strong>1</strong></div>
-<div class="metric"><span>元動画未特定</span><strong>4</strong></div>
-<div class="metric"><span>保留</span><strong>1</strong></div>
-<div class="metric"><span>取得許可</span><strong>0</strong></div>
+<div class="home-answer">
+<p class="kicker">Candidate Funnel</p>
+<h2>どのメーターが詰まっているか</h2>
+<p>countsは既存CPD JSONから測定した値です。0のゲートはproduction進捗ではなく、まだ閉じている境界を示します。</p>
+<div class="funnel">
+<a class="funnel-step" href="#candidate-state-board">
+<span class="index">1</span>
+<span>
+<strong>企画候補</strong>
+<span class="note">全候補の入口。</span>
+</span>
+<span class="count">5/5</span>
+</a>
+<a class="funnel-step" href="#primary-review">
+<span class="index">2</span>
+<span>
+<strong>source特定済み</strong>
+<span class="note">URL付きは1件。</span>
+</span>
+<span class="count">1/5</span>
+</a>
+<a class="funnel-step" href="#primary-review">
+<span class="index">3</span>
+<span>
+<strong>人間確認待ち</strong>
+<span class="note">判断待ちのpacket。</span>
+</span>
+<span class="count">1/5</span>
+</a>
+<a class="funnel-step" href="#safety-boundary">
+<span class="index">4</span>
+<span>
+<strong>private/local検証待ち</strong>
+<span class="note">fetch authorizationは0。</span>
+</span>
+<span class="count">0/5</span>
+</a>
+<a class="funnel-step" href="#safety-boundary">
+<span class="index">5</span>
+<span>
+<strong>編集・render未開始</strong>
+<span class="note">render / transcript / public gateは未開始。</span>
+</span>
+<span class="count">0/5</span>
+</a>
+</div>
+</div>
 </div>
 </section>
-<section id="primary-review-card" class="primary-card">
+<section id="action-queue" class="surface">
+<div class="section-heading">
+<div><p class="kicker">Action Queue</p><h2>次に動く順番</h2><p>primaryは1件だけです。secondaryとholdは、いま開く対象ではなく backlog / 保留として分けています。</p></div>
+</div>
+<div class="queue-grid">
+<article class="queue-card primary">
+<p class="kicker">primary</p>
+<h3>番長/船長のURLが候補意図と同じ動画か確認</h3>
+<p class="muted">source URL付きで今判断できる候補は1件だけです。</p>
+<span class="pill">actionable_now / 1件</span>
+<br><a href="#primary-review">対応するセクションへ</a>
+</article>
+<article class="queue-card">
+<p class="kicker">secondary</p>
+<h3>source未特定の企画メモにURLを足す</h3>
+<p class="muted">source URLがないため、今は動画候補ではありません。</p>
+<span class="pill">backlog / 3件</span>
+<br><a href="#source-missing">対応するセクションへ</a>
+</article>
+<article class="queue-card hold">
+<p class="kicker">hold</p>
+<h3>歌・音楽権利リスク候補は保留</h3>
+<p class="muted">別のrights/publication routeがないままでは進めません。</p>
+<span class="pill">hold / 1件</span>
+<br><a href="#blocked-hold">対応するセクションへ</a>
+</article>
+</div>
+</section>
+<section id="primary-review" class="primary-card">
+<span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>
 <div class="card-header">
 <p class="kicker">今回確認する1件</p>
 <h2>番長、船長を完全に勘違いする</h2>
@@ -238,14 +400,21 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </div>
 </div>
 </section>
-<section id="source-missing-ideas" class="surface">
+<section id="candidate-state-board" class="surface">
 <div class="section-heading">
-<div><h2>未特定の企画メモ</h2><p>ここは次に見る動画ではありません。source URL が入るまで元動画候補として扱いません。</p></div>
-<span class="pill">3 件 + 保留 1 件</span>
+<div><p class="kicker">Candidate State Board</p><h2>候補の状態</h2><p>ホームのメーターと同じ状態を、詳細セクションとしてたどれるようにしています。</p></div>
 </div>
-<details>
-<summary>未特定の企画メモを見る</summary>
-<div class="details-body">
+<div class="state-board">
+<section id="source-backed" class="state-card">
+<h3>source付き候補</h3>
+<p><strong>番長、船長を完全に勘違いする</strong></p>
+<p class="muted">video_id: <code>7J5aS_pcBj4</code> / decision: <code>pending</code></p>
+<p class="muted">source URLは存在しますが、workerは開いておらず、identityは未確認です。</p>
+<a href="#primary-review">Primary Review Cardへ</a>
+</section>
+<section id="source-missing" class="state-card">
+<h3>source未特定 / not video-backed</h3>
+<p class="muted">JP/EN phrase gapを含む企画メモは、source URLが入るまで動画候補として扱いません。</p>
 <div class="idea-list">
 <article class="idea-card">
 <h3>日本語の一言で EN 組が固まる</h3>
@@ -265,14 +434,20 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <p class="meta"><code>cpd01_game_fail_micro_arc</code> / <code>seed_cpd01_game_fail_micro_arc</code></p>
 <p class="meta">必要: source_url, source_title, channel_name, published_at, duration_seconds_or_timestamp_hint, rights_readback_note</p>
 </article>
+</div>
+</section>
+<section id="blocked-hold" class="state-card">
+<h3>保留</h3>
+<p class="muted">歌・音楽権利リスクなど、別routeが必要な候補です。</p>
+<div class="idea-list">
 <article class="idea-card">
 <h3>歌の合間に急に本音が出る</h3>
 <p class="danger">歌・音楽権利リスクがあるため保留</p>
 <p class="meta"><code>cpd01_song_moment_hold</code> / <code>seed_cpd01_song_moment_hold</code></p>
 </article>
 </div>
+</section>
 </div>
-</details>
 </section>
 <section id="safety-boundary" class="surface">
 <div class="section-heading">
@@ -293,7 +468,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <summary>artifact_id / machine JSON / 内部 artifact を見る</summary>
 <div class="details-body">
 <p class="muted">
-artifact_id: <code>clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001</code><br>
+artifact_id: <code>clip-cpd08-operator-home-funnel-meters-v0-001</code><br>
 generated_at: <code>2026-07-06</code><br>
 operator JSON: <code>docs/content_planning/operator_cockpit.json</code><br>
 operator HTML: <code>docs/content_planning/operator_cockpit.html</code>
