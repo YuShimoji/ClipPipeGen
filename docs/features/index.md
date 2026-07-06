@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `CPD-09`
-- artifact: `clip-cpd09-operator-briefing-board-v0-001`
-- state: `content_planning_operator_briefing_board_ready`
+- feature: `CPD-10`
+- artifact: `clip-cpd10-candidate-ledger-readability-v0-001`
+- state: `content_planning_candidate_ledger_readability_ready`
 
 ## Feature Table
 

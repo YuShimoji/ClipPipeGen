@@ -21,10 +21,11 @@ def run(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="build-operator-cockpit",
         description=(
-            "Build the CPD-09 operator briefing board cockpit from CPD-01 "
-            "through CPD-05 planning artifacts. This writes a human-facing "
-            "dark-mode review surface only; it does not open URLs, fetch media, "
-            "create episode folders, approve rights, or mark anything production/public ready."
+            "Build the CPD-10 operator briefing board cockpit with a readable "
+            "candidate ledger from CPD-01 through CPD-05 planning artifacts. "
+            "This writes a human-facing dark-mode review surface only; it does "
+            "not open URLs, fetch media, create episode folders, approve rights, "
+            "or mark anything production/public ready."
         ),
     )
     parser.add_argument(
@@ -104,6 +105,9 @@ def run(argv: list[str]) -> int:
         "inspectable_packet_count": summary["inspectable_packet_count"],
         "fetch_authorized_count": summary["fetch_authorized_count"],
         "briefing_present": bool(payload["briefing"]),
+        "ux_version": payload["ux"]["version"],
+        "ledger_layout": payload["ux"]["ledger_layout"],
+        "title_wrapping_guard": payload["ux"]["title_wrapping_guard"],
         "annotated_flow_stage_count": len(payload["annotated_flow"]),
         "usage_frequency_section_count": len(payload["usage_frequency_sections"]),
         "candidate_ledger_row_count": len(payload["candidate_ledger"]),
@@ -135,6 +139,9 @@ def run(argv: list[str]) -> int:
         print(f"inspectable_packet_count: {cli_payload['inspectable_packet_count']}")
         print(f"fetch_authorized_count: {cli_payload['fetch_authorized_count']}")
         print(f"briefing_present: {str(cli_payload['briefing_present']).lower()}")
+        print(f"ux_version: {cli_payload['ux_version']}")
+        print(f"ledger_layout: {cli_payload['ledger_layout']}")
+        print(f"title_wrapping_guard: {str(cli_payload['title_wrapping_guard']).lower()}")
         print(f"annotated_flow_stage_count: {cli_payload['annotated_flow_stage_count']}")
         print(f"usage_frequency_section_count: {cli_payload['usage_frequency_section_count']}")
         print(f"candidate_ledger_row_count: {cli_payload['candidate_ledger_row_count']}")

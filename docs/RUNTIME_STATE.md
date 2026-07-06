@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: content_planning_operator_briefing_board_ready
+health: content_planning_candidate_ledger_readability_ready
 progress_pct: 100
 last_touched: 2026-07-06
-next_review_due: open_cpd09_briefing_board_then_inspect_single_source_identity_or_fill_source_urls
-active_artifact: clip-cpd09-operator-briefing-board-v0-001
-latest_content_planning_operator_cockpit_artifact: clip-cpd09-operator-briefing-board-v0-001
-latest_content_planning_operator_cockpit_branch: codex/cpd-09-operator-briefing-board-v0
-latest_content_planning_operator_cockpit_commit: 7d381cd
+next_review_due: open_cpd10_readable_ledger_then_inspect_single_source_identity_or_fill_source_urls
+active_artifact: clip-cpd10-candidate-ledger-readability-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd10-candidate-ledger-readability-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-10-ledger-readability-v0
+latest_content_planning_operator_cockpit_commit: branch_HEAD
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -44,37 +44,40 @@ check out the active CPD branch before reading project context:
 
 ```powershell
 git fetch origin
-git switch codex/cpd-09-operator-briefing-board-v0
+git switch codex/cpd-10-ledger-readability-v0
 git pull --ff-only
 ```
 
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-cpd09-operator-briefing-board-v0-001`. The CPD-09 implementation commit
-is `7d381cd`; later handoff-only commits on the same branch may update this
-resume packet without changing the artifact semantics.
+`clip-cpd10-candidate-ledger-readability-v0-001`. The CPD-10 implementation
+commit is the HEAD of `codex/cpd-10-ledger-readability-v0`; later handoff-only
+commits on the same branch may update this resume packet without changing the
+artifact semantics.
 
-The latest tracked slice is CPD-09. It consumes the human feedback that CPD-08
-still made the operator compare too many equally weighted cards. The normal
-entry point remains `docs/content_planning/operator_cockpit.html`, now as a
-Briefing Board with an annotated flow, usage-frequency navigation, one Primary
-Review Script, and a compact Candidate Ledger below the fold. The only
+The latest tracked slice is CPD-10. It consumes the human visual feedback that
+the accepted CPD-09 Briefing Board still had a lower Candidate Ledger where
+Japanese titles could collapse into one-character wrapping. The normal entry
+point remains `docs/content_planning/operator_cockpit.html`, now as a Briefing
+Board with an annotated flow, usage-frequency navigation, one Primary Review
+Script, and a stacked readable Candidate Ledger below the fold. The only
 source-backed URL is `cpd01_bancho_marine_misunderstanding`
 (`https://www.youtube.com/watch?v=7J5aS_pcBj4`). The three source-missing ideas
 are explicitly not video-backed, and the song/music-rights-sensitive idea is
 kept in hold.
 
-CPD-09 is a planning information-architecture layer only. It reads tracked
-local CPD-01 through CPD-05 artifacts, writes `operator_cockpit.json/html`, and
-does not open source URLs, search the web, use external APIs, download media,
-create `episodes/` folders, authorize fetch, approve rights, generate
-transcripts or renders, or mark anything production/public ready.
+CPD-10 is a planning information-architecture / responsive-layout repair only.
+It reads tracked local CPD-01 through CPD-05 artifacts, writes
+`operator_cockpit.json/html`, and does not open source URLs, search the web, use
+external APIs, download media, create `episodes/` folders, authorize fetch,
+approve rights, generate transcripts or renders, or mark anything
+production/public ready.
 
 The next useful move is either to open
-`docs/content_planning/operator_cockpit.html` and use the Briefing Board to
-review the single source identity script, or to fill real source metadata for
-unresolved ideas in a local `source_metadata_registry.json` before rerunning
-CPD-03 through CPD-09.
+`docs/content_planning/operator_cockpit.html`, confirm the repaired Candidate
+Ledger is readable, and then use the Briefing Board to review the single source
+identity script, or to fill real source metadata for unresolved ideas in a
+local `source_metadata_registry.json` before rerunning CPD-03 through CPD-10.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. The ED-10bc
 opener-repair state below remains valid historical/current evidence for the

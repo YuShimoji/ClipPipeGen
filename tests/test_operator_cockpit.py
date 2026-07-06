@@ -37,14 +37,17 @@ def test_operator_cockpit_builds_briefing_board_and_preserves_boundaries(tmp_pat
 
     assert payload["schema_id"] == "clippipegen.operator_cockpit.v0"
     assert payload["title"] == "ClipPipeGen Operator Cockpit / Content Planning Review"
-    assert payload["artifact_id"] == "clip-cpd09-operator-briefing-board-v0-001"
-    assert payload["ux"]["version"] == "v4_briefing_board_usage_frequency_v0"
-    assert payload["ux"]["layout"] == "operator_briefing_board_usage_frequency"
+    assert payload["artifact_id"] == "clip-cpd10-candidate-ledger-readability-v0-001"
+    assert payload["ux"]["version"] == "v5_ledger_readability_v0"
+    assert payload["ux"]["layout"] == "operator_briefing_board_ledger_readability"
     assert payload["ux"]["default_theme"] == "dark"
     assert payload["ux"]["theme_toggle"] is True
     assert payload["ux"]["briefing_board"] == "visible"
     assert payload["ux"]["annotated_flow"] == "visible"
-    assert payload["ux"]["candidate_ledger"] == "compact"
+    assert payload["ux"]["candidate_ledger"] == "responsive_stacked"
+    assert payload["ux"]["ledger_layout"] == "responsive_ledger_stacked"
+    assert payload["ux"]["title_wrapping_guard"] is True
+    assert payload["ux"]["id_wrapping_scope"] == "code_strip_only"
     assert payload["ux"]["usage_frequency_ia"] is True
     assert payload["ux"]["developer_appendix_default"] == "collapsed"
 
@@ -66,7 +69,7 @@ def test_operator_cockpit_builds_briefing_board_and_preserves_boundaries(tmp_pat
     assert payload["recommended_next_action"]["user_work"] == "open_only"
 
     briefing = payload["briefing"]
-    assert briefing["briefing_id"] == "cpd09_operator_briefing"
+    assert briefing["briefing_id"] == "cpd10_operator_briefing"
     assert briefing["primary_action"]["href"] == "#primary-review"
     assert briefing["primary_action"]["state"] == "human_review_waiting"
     assert briefing["flow_stage_count"] == 5
@@ -95,10 +98,15 @@ def test_operator_cockpit_builds_briefing_board_and_preserves_boundaries(tmp_pat
     assert len(ledger_by_id) == 5
     assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["video_backed"] is True
     assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["href"] == "#primary-review"
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["source_state_label"] == "URLあり・同一性未確認"
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["review_state_label"] == "人間確認待ち"
     assert ledger_by_id["cpd01_jp_en_phrase_gap"]["ledger_group"] == "source_missing"
     assert ledger_by_id["cpd01_jp_en_phrase_gap"]["video_backed"] is False
     assert ledger_by_id["cpd01_jp_en_phrase_gap"]["review_state"] == "not_reviewable_as_video"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["review_state_label"] == "動画候補として未確認"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["operator_use_label"] == "URL入力待ち"
     assert ledger_by_id["cpd01_song_moment_hold"]["ledger_group"] == "blocked_hold"
+    assert ledger_by_id["cpd01_song_moment_hold"]["operator_use_label"] == "権利routeなしでは進めない"
 
     assert payload["action_script"]["script_id"] == "single_source_identity_check"
     assert payload["action_script"]["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
@@ -191,6 +199,14 @@ def test_operator_cockpit_builds_briefing_board_and_preserves_boundaries(tmp_pat
     assert 'id="developer-appendix"' in html
     assert "not video-backed" in html
     assert "cpd01_jp_en_phrase_gap" in html
+    assert "番長、船長を完全に勘違いする" in html
+    assert "日本語の一言で EN 組が固まる" in html
+    assert "表情が一瞬で変わるホロメン" in html
+    assert "失敗したのに立て直しが早すぎる" in html
+    assert "歌の合間に急に本音が出る" in html
+    assert "URLあり・同一性未確認" in html
+    assert "動画候補として未確認" in html
+    assert "権利routeなしでは進めない" in html
     assert "do_not_treat_as_video-backed_candidate" not in html
     assert "checkmark" not in html
     assert "✓" not in html
@@ -203,6 +219,21 @@ def test_operator_cockpit_builds_briefing_board_and_preserves_boundaries(tmp_pat
     assert "content_dashboard.html" in html
     assert "source_inspection_packet_dashboard.html" in html
     assert "artifact_id:" not in html[: html.index('id="developer-appendix"')]
+
+    ledger_area = html[html.index('id="candidate-ledger"') : html.index('id="safety-boundary"')]
+    assert '<table class="ledger-table">' not in ledger_area
+    assert "<table>" not in ledger_area
+    assert 'class="ledger-list"' in ledger_area
+    assert ledger_area.count('class="ledger-item') == 5
+    assert 'class="ledger-title"' in ledger_area
+    assert 'class="code-strip"' in ledger_area
+    assert "source_url_present_identity_unchecked" not in ledger_area
+    assert "human_review_pending" not in ledger_area
+    assert "source_url_intake_backlog" not in ledger_area
+    assert "word-break:break-all" in html
+    assert ".code-strip code" in html
+    assert ".ledger-title" in html
+    assert ".ledger-title{font-size:18px;line-height:1.48;letter-spacing:0;word-break:normal;overflow-wrap:normal" in html
 
     briefing_area = html[html.index('id="briefing-board"') : html.index('id="primary-review"')]
     assert "<table>" not in briefing_area
@@ -259,13 +290,16 @@ def test_build_operator_cockpit_cli_writes_outputs(tmp_path: Path):
 
     assert completed.returncode == 0, completed.stderr
     payload = json.loads(completed.stdout)
-    assert payload["artifact_id"] == "clip-cpd09-operator-briefing-board-v0-001"
+    assert payload["artifact_id"] == "clip-cpd10-candidate-ledger-readability-v0-001"
     assert payload["total_candidates"] == 5
     assert payload["source_backed_count"] == 1
     assert payload["source_missing_count"] == 4
     assert payload["source_missing_idea_backlog_count"] == 3
     assert payload["blocked_or_hold_count"] == 1
     assert payload["briefing_present"] is True
+    assert payload["ux_version"] == "v5_ledger_readability_v0"
+    assert payload["ledger_layout"] == "responsive_ledger_stacked"
+    assert payload["title_wrapping_guard"] is True
     assert payload["annotated_flow_stage_count"] == 5
     assert payload["usage_frequency_section_count"] == 4
     assert payload["candidate_ledger_row_count"] == 5

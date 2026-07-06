@@ -29,7 +29,7 @@ Start here:
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
 | Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
 | Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
-| Content planning Briefing Board / source identity cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
+| Content planning Briefing Board / readable Candidate Ledger cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
 | Content planning dashboard | [content_planning/content_dashboard.html](content_planning/content_dashboard.html) |
 | Episode seed drafts | [content_planning/episode_seed_dashboard.html](content_planning/episode_seed_dashboard.html) |
 | Source resolution dashboard | [content_planning/source_resolution_dashboard.html](content_planning/source_resolution_dashboard.html) |

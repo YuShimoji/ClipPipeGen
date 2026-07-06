@@ -16,6 +16,33 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-cpd10-candidate-ledger-readability-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0 |
+| purpose | Preserve the accepted CPD-09 Briefing Board while making the lower Candidate Ledger readable for Japanese text-heavy candidate states. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-09 ledger table in the same output path. |
+| repo_relative_path | `docs/content_planning/operator_cockpit.html` |
+| machine_output | `docs/content_planning/operator_cockpit.json` |
+| source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
+| open_command | `start docs\content_planning\operator_cockpit.html` |
+| generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
+| validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| review_status | Ready as the normal human entry point for CPD planning review after the ledger readability repair. The visible Candidate Ledger is stacked/responsive, keeps Japanese titles as full phrase lines, and de-emphasizes machine IDs in a code strip. Source-missing ideas remain not video-backed. |
+| next_action | Open the cockpit first, confirm the Candidate Ledger titles read normally, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 through CPD-10. |
+
+Boundary flags remain false or pending:
+
+- `source_url_opened_by_worker=false`
+- `source_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
 ## `clip-cpd09-operator-briefing-board-v0-001`
 
 | Field | Value |

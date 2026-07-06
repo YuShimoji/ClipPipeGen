@@ -1,4 +1,4 @@
-"""CPD-09 operator cockpit briefing-board UX builder.
+"""CPD-10 operator cockpit briefing-board and readable-ledger UX builder.
 
 This module consolidates the CPD-01 through CPD-05 planning artifacts into one
 operator-facing entry point. It only reads local JSON artifacts and writes
@@ -16,12 +16,12 @@ from typing import Any
 from .content_planning import display_path, write_json, write_text
 
 SCHEMA_ID = "clippipegen.operator_cockpit.v0"
-DEFAULT_ARTIFACT_ID = "clip-cpd09-operator-briefing-board-v0-001"
+DEFAULT_ARTIFACT_ID = "clip-cpd10-candidate-ledger-readability-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-06"
 DEFAULT_OUTPUT_FILENAME = "operator_cockpit.json"
 DEFAULT_DASHBOARD_FILENAME = "operator_cockpit.html"
 HTML_TITLE = "ClipPipeGen Operator Cockpit / Content Planning Review"
-UX_VERSION = "v4_briefing_board_usage_frequency_v0"
+UX_VERSION = "v5_ledger_readability_v0"
 
 NOT_YET_FLAGS = [
     "fetch",
@@ -30,6 +30,30 @@ NOT_YET_FLAGS = [
     "public",
     "rights",
 ]
+
+LEDGER_GROUP_LABELS = {
+    "source_backed": "source付き",
+    "source_missing": "source未特定",
+    "blocked_hold": "保留",
+}
+
+SOURCE_STATE_LABELS = {
+    "source_url_present_identity_unchecked": "URLあり・同一性未確認",
+    "source_missing": "URL未入力",
+    "hold": "保留",
+}
+
+REVIEW_STATE_LABELS = {
+    "human_review_pending": "人間確認待ち",
+    "not_reviewable_as_video": "動画候補として未確認",
+    "song_or_music_rights_sensitive": "音楽権利route確認待ち",
+}
+
+OPERATOR_USE_LABELS = {
+    "primary_action": "今回の確認対象",
+    "source_url_intake_backlog": "URL入力待ち",
+    "do_not_progress_without_rights_route": "権利routeなしでは進めない",
+}
 
 INTERNAL_ARTIFACTS = [
     {
@@ -256,13 +280,16 @@ def build_operator_cockpit(
         "title": HTML_TITLE,
         "ux": {
             "version": UX_VERSION,
-            "layout": "operator_briefing_board_usage_frequency",
+            "layout": "operator_briefing_board_ledger_readability",
             "default_theme": "dark",
             "theme_toggle": True,
             "developer_appendix_default": "collapsed",
             "briefing_board": "visible",
             "annotated_flow": "visible",
-            "candidate_ledger": "compact",
+            "candidate_ledger": "responsive_stacked",
+            "ledger_layout": "responsive_ledger_stacked",
+            "title_wrapping_guard": True,
+            "id_wrapping_scope": "code_strip_only",
             "usage_frequency_ia": True,
         },
         "source": {
@@ -308,9 +335,12 @@ def build_operator_cockpit(
             "blocked_source_record_count": len(blocked_inspection_records),
             "decision_template_entry_count": len(decision_entries),
             "note": (
-                "CPD-09 is a briefing-board information architecture layer over CPD-01 through CPD-05. "
-                "It does not change source, fetch, rights, production, or public gates."
+                "CPD-10 is a readable ledger layout repair over the accepted CPD-09 "
+                "briefing board. It does not change source, fetch, rights, production, "
+                "or public gates."
             ),
+            "ledger_layout": "responsive_ledger_stacked",
+            "title_wrapping_guard": True,
         },
     }
 
@@ -659,7 +689,7 @@ def build_briefing(
     annotated_flow: list[dict[str, Any]],
 ) -> dict[str, Any]:
     return {
-        "briefing_id": "cpd09_operator_briefing",
+        "briefing_id": "cpd10_operator_briefing",
         "title": "今日のBriefing",
         "status_line": (
             f"source付き候補は {summary['source_backed_count']} 件、"
@@ -778,48 +808,72 @@ def build_candidate_ledger(
 ) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for item in source_backed:
+        source_state = "source_url_present_identity_unchecked"
+        review_state = "human_review_pending"
+        operator_use = "primary_action"
         rows.append(
             {
                 "ledger_group": "source_backed",
+                "ledger_group_label": LEDGER_GROUP_LABELS["source_backed"],
                 "candidate_id": item["candidate_id"],
                 "seed_id": item["seed_id"],
                 "working_title": item["working_title"],
-                "source_state": "source_url_present_identity_unchecked",
-                "review_state": "human_review_pending",
+                "source_state": source_state,
+                "source_state_label": SOURCE_STATE_LABELS[source_state],
+                "review_state": review_state,
+                "review_state_label": REVIEW_STATE_LABELS[review_state],
                 "video_backed": True,
-                "operator_use": "primary_action",
+                "video_backed_label": "video-backed",
+                "operator_use": operator_use,
+                "operator_use_label": OPERATOR_USE_LABELS[operator_use],
                 "href": "#primary-review",
                 "source_url": item["source_url"],
                 "video_id": item["video_id"],
             }
         )
     for item in source_missing_ideas:
+        source_state = "source_missing"
+        review_state = "not_reviewable_as_video"
+        operator_use = "source_url_intake_backlog"
         rows.append(
             {
                 "ledger_group": "source_missing",
+                "ledger_group_label": LEDGER_GROUP_LABELS["source_missing"],
                 "candidate_id": item["candidate_id"],
                 "seed_id": item["seed_id"],
                 "working_title": item["working_title"],
-                "source_state": "source_missing",
-                "review_state": "not_reviewable_as_video",
+                "source_state": source_state,
+                "source_state_label": SOURCE_STATE_LABELS[source_state],
+                "review_state": review_state,
+                "review_state_label": REVIEW_STATE_LABELS[review_state],
                 "video_backed": False,
-                "operator_use": "source_url_intake_backlog",
+                "video_backed_label": "not video-backed",
+                "operator_use": operator_use,
+                "operator_use_label": OPERATOR_USE_LABELS[operator_use],
                 "href": "#source-missing",
                 "source_url": "",
                 "video_id": "",
             }
         )
     for item in blocked_or_hold:
+        source_state = "hold"
+        review_state = item["reason"]
+        operator_use = "do_not_progress_without_rights_route"
         rows.append(
             {
                 "ledger_group": "blocked_hold",
+                "ledger_group_label": LEDGER_GROUP_LABELS["blocked_hold"],
                 "candidate_id": item["candidate_id"],
                 "seed_id": item["seed_id"],
                 "working_title": item["working_title"],
-                "source_state": "hold",
-                "review_state": item["reason"],
+                "source_state": source_state,
+                "source_state_label": SOURCE_STATE_LABELS[source_state],
+                "review_state": review_state,
+                "review_state_label": REVIEW_STATE_LABELS.get(review_state, review_state),
                 "video_backed": False,
-                "operator_use": "do_not_progress_without_rights_route",
+                "video_backed_label": "not video-backed",
+                "operator_use": operator_use,
+                "operator_use_label": OPERATOR_USE_LABELS[operator_use],
                 "href": "#blocked-hold",
                 "source_url": "",
                 "video_id": "",
@@ -1054,6 +1108,22 @@ section{margin:0 0 18px}
 .section-heading p{color:var(--muted);margin-top:4px}
 .ledger-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .ledger-summary .pill{background:var(--surface-2)}
+.ledger-list{display:grid;gap:10px}
+.ledger-item{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px;display:grid;gap:10px}
+.ledger-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.state-badge{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);color:var(--text);font-size:13px;font-weight:700;text-decoration:none}
+.state-badge.source-backed{border-color:rgba(34,197,94,.55)}
+.state-badge.source-missing{border-color:rgba(245,158,11,.6)}
+.state-badge.blocked-hold{border-color:rgba(239,68,68,.55)}
+.ledger-title{font-size:18px;line-height:1.48;letter-spacing:0;word-break:normal;overflow-wrap:normal;line-break:strict}
+.ledger-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px 12px;margin:0}
+.ledger-meta div{border-top:1px solid var(--border);padding-top:8px}
+.ledger-meta dt{color:var(--muted);font-size:12px}
+.ledger-meta dd{margin:2px 0 0;font-weight:700}
+.code-strip-details{background:transparent}
+.code-strip-details summary{padding:8px 0;color:var(--muted);font-size:12px}
+.code-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.code-strip code{white-space:nowrap;word-break:break-all;overflow-wrap:anywhere}
 details{border:1px solid var(--border);border-radius:8px;background:var(--surface-2)}
 summary{cursor:pointer;padding:12px 14px;font-weight:700}
 .details-body{border-top:1px solid var(--border);padding:14px}
@@ -1061,7 +1131,6 @@ summary{cursor:pointer;padding:12px 14px;font-weight:700}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
 th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;vertical-align:top}
 th{background:var(--surface-3)}
-.ledger-table td:first-child{font-weight:700}
 .video-backed{color:var(--success);font-weight:700}
 .not-video-backed{color:var(--warning);font-weight:700}
 code{background:var(--surface-3);border:1px solid var(--border);border-radius:5px;padding:1px 4px;color:var(--text)}
@@ -1333,11 +1402,8 @@ def _candidate_ledger_html(payload: dict[str, Any]) -> str:
             f'<span class="pill">source-missing {summary["source_missing_idea_backlog_count"]}</span>',
             f'<span class="pill">hold {summary["blocked_or_hold_count"]}</span>',
             "</div>",
-            '<div class="table-scroll">',
-            '<table class="ledger-table">',
-            "<tr><th>group</th><th>candidate</th><th>title</th><th>source state</th><th>review state</th><th>video-backed</th><th>operator use</th></tr>",
+            '<div class="ledger-list" role="list">',
             *rows,
-            "</table>",
             "</div>",
             '<span id="source-missing" class="anchor-alias" aria-hidden="true"></span>',
             '<details>',
@@ -1356,18 +1422,28 @@ def _candidate_ledger_html(payload: dict[str, Any]) -> str:
 
 def _candidate_ledger_row_html(row: dict[str, Any]) -> str:
     video_class = "video-backed" if row["video_backed"] else "not-video-backed"
-    video_label = "video-backed" if row["video_backed"] else "not video-backed"
+    group_class = row["ledger_group"].replace("_", "-")
     return "\n".join(
         [
-            "<tr>",
-            f'<td><a href="{escape(row["href"])}">{escape(row["ledger_group"])}</a></td>',
-            f'<td><code>{escape(row["candidate_id"])}</code><br><code>{escape(row["seed_id"])}</code></td>',
-            f'<td>{escape(row["working_title"])}</td>',
-            f'<td>{escape(row["source_state"])}</td>',
-            f'<td>{escape(row["review_state"])}</td>',
-            f'<td class="{video_class}">{video_label}</td>',
-            f'<td>{escape(row["operator_use"])}</td>',
-            "</tr>",
+            f'<article class="ledger-item {escape(group_class)}" role="listitem">',
+            '<div class="ledger-row-top">',
+            f'<a class="state-badge {escape(group_class)}" href="{escape(row["href"])}">{escape(row["ledger_group_label"])}</a>',
+            f'<span class="{video_class}">{escape(row["video_backed_label"])}</span>',
+            "</div>",
+            f'<h3 class="ledger-title">{escape(row["working_title"])}</h3>',
+            '<dl class="ledger-meta">',
+            f'<div><dt>source</dt><dd>{escape(row["source_state_label"])}</dd></div>',
+            f'<div><dt>review</dt><dd>{escape(row["review_state_label"])}</dd></div>',
+            f'<div><dt>operator</dt><dd>{escape(row["operator_use_label"])}</dd></div>',
+            "</dl>",
+            '<details class="code-strip-details">',
+            "<summary>machine ids</summary>",
+            '<div class="code-strip">',
+            f'<code>{escape(row["candidate_id"])}</code>',
+            f'<code>{escape(row["seed_id"])}</code>',
+            "</div>",
+            "</details>",
+            "</article>",
         ]
     )
 

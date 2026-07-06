@@ -66,21 +66,21 @@ STATUS_HEALTH = {
 
 
 CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID = (
-    "clip-cpd09-operator-briefing-board-v0-001"
+    "clip-cpd10-candidate-ledger-readability-v0-001"
 )
 
 
 def _current_focus() -> dict[str, Any]:
     return {
-        "feature_id": "CPD-09",
+        "feature_id": "CPD-10",
         "artifact_id": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-        "state": "content_planning_operator_briefing_board_ready",
-        "title": "ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0",
+        "state": "content_planning_candidate_ledger_readability_ready",
+        "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
         "human_entrypoint": "docs/content_planning/operator_cockpit.html",
         "machine_readback": "docs/content_planning/operator_cockpit.json",
         "handoff": "docs/CURRENT_HANDOFF.md",
         "notes": "docs/content_planning/README.md",
-        "review_shape": "briefing_board_then_single_source_identity_check",
+        "review_shape": "briefing_board_then_readable_ledger_then_single_source_identity_check",
         "source_backed_count": 1,
         "source_missing_count": 4,
         "source_missing_idea_backlog_count": 3,
@@ -90,6 +90,8 @@ def _current_focus() -> dict[str, Any]:
         "annotated_flow_stage_count": 5,
         "usage_frequency_section_count": 4,
         "candidate_ledger_row_count": 5,
+        "ledger_layout": "responsive_ledger_stacked",
+        "title_wrapping_guard": True,
         "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
         "source_backed_title": "番長、船長を完全に勘違いする",
         "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
@@ -104,11 +106,11 @@ def _current_focus() -> dict[str, Any]:
             "production_ready": False,
             "public_ready": False,
         },
-        "next_review_action_type": "OPEN_BRIEFING_BOARD_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
+        "next_review_action_type": "OPEN_REPAIRED_LEDGER_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
         "next_action": (
             "Open docs/content_planning/operator_cockpit.html, read the Briefing "
-            "Board annotated flow, then inspect the one source identity script "
-            "or add real source metadata before rerunning CPD-03 through CPD-09."
+            "Board and repaired Candidate Ledger, then inspect the one source identity "
+            "script or add real source metadata before rerunning CPD-03 through CPD-10."
         ),
         "legacy_context": {
             "previous_focus_feature_id": "ED-10bc",
@@ -641,10 +643,10 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
-            "item": "CPD-09 operator briefing board / source identity review",
+            "item": "CPD-10 candidate ledger readability / source identity review",
             "artifact": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-            "question": "Does the Briefing Board guide the operator to the one source-backed Bancho/Marine URL without making source-missing ideas look video-backed?",
-            "next_route": "Open docs/content_planning/operator_cockpit.html first; use the Primary Review Script for OK/NG/HOLD, or add real source URL/metadata before fetch/init/transcript/edit/render work.",
+            "question": "Does the repaired Candidate Ledger keep Japanese titles readable while preserving the accepted Briefing Board and closed gates?",
+            "next_route": "Open docs/content_planning/operator_cockpit.html first; confirm the readable ledger, then use the Primary Review Script for OK/NG/HOLD or add real source URL/metadata before fetch/init/transcript/edit/render work.",
         },
         {
             "item": "ED-10bc Thank v2 opener repair",

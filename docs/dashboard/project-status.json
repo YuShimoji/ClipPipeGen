@@ -24,15 +24,15 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "CPD-09",
-    "artifact_id": "clip-cpd09-operator-briefing-board-v0-001",
-    "state": "content_planning_operator_briefing_board_ready",
-    "title": "ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0",
+    "feature_id": "CPD-10",
+    "artifact_id": "clip-cpd10-candidate-ledger-readability-v0-001",
+    "state": "content_planning_candidate_ledger_readability_ready",
+    "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
     "human_entrypoint": "docs/content_planning/operator_cockpit.html",
     "machine_readback": "docs/content_planning/operator_cockpit.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "notes": "docs/content_planning/README.md",
-    "review_shape": "briefing_board_then_single_source_identity_check",
+    "review_shape": "briefing_board_then_readable_ledger_then_single_source_identity_check",
     "source_backed_count": 1,
     "source_missing_count": 4,
     "source_missing_idea_backlog_count": 3,
@@ -42,6 +42,8 @@
     "annotated_flow_stage_count": 5,
     "usage_frequency_section_count": 4,
     "candidate_ledger_row_count": 5,
+    "ledger_layout": "responsive_ledger_stacked",
+    "title_wrapping_guard": true,
     "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
     "source_backed_title": "番長、船長を完全に勘違いする",
     "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
@@ -56,8 +58,8 @@
       "production_ready": false,
       "public_ready": false
     },
-    "next_review_action_type": "OPEN_BRIEFING_BOARD_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
-    "next_action": "Open docs/content_planning/operator_cockpit.html, read the Briefing Board annotated flow, then inspect the one source identity script or add real source metadata before rerunning CPD-03 through CPD-09.",
+    "next_review_action_type": "OPEN_REPAIRED_LEDGER_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
+    "next_action": "Open docs/content_planning/operator_cockpit.html, read the Briefing Board and repaired Candidate Ledger, then inspect the one source identity script or add real source metadata before rerunning CPD-03 through CPD-10.",
     "legacy_context": {
       "previous_focus_feature_id": "ED-10bc",
       "previous_focus_artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
@@ -1664,6 +1666,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-cpd10-candidate-ledger-readability-v0-001",
+      "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
+      "purpose": "Preserve the accepted CPD-09 Briefing Board while making the lower Candidate Ledger readable for Japanese text-heavy candidate states.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-09 ledger table in the same output path.",
+      "repo_relative_path": "docs/content_planning/operator_cockpit.html",
+      "open_command": "start docs\\content_planning\\operator_cockpit.html",
+      "review_status": "Ready as the normal human entry point for CPD planning review after the ledger readability repair. The visible Candidate Ledger is stacked/responsive, keeps Japanese titles as full phrase lines, and de-emphasizes machine IDs in a code strip. Source-missing ideas remain not video-backed.",
+      "next_action": "Open the cockpit first, confirm the Candidate Ledger titles read normally, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 through CPD-10."
+    },
+    {
       "artifact_id": "clip-cpd09-operator-briefing-board-v0-001",
       "title": "ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0",
       "purpose": "Give humans one dark-mode content-planning briefing board with an annotated flow, one primary source-identity action, and a compact candidate ledger that does not make source-missing ideas look video-backed.",
@@ -2216,6 +2228,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-cpd10-candidate-ledger-readability-v0-001",
       "clip-cpd09-operator-briefing-board-v0-001",
       "clip-cpd01-content-candidate-dashboard-v0-001",
       "clip-cpd02-candidate-to-episode-seed-bridge-v0-001",
@@ -2272,20 +2285,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 55
+    "artifact_count": 56
   },
   "artifact_coverage": {
-    "registered_artifact_count": 55,
+    "registered_artifact_count": 56,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "CPD-09 operator briefing board / source identity review",
-      "artifact": "clip-cpd09-operator-briefing-board-v0-001",
-      "question": "Does the Briefing Board guide the operator to the one source-backed Bancho/Marine URL without making source-missing ideas look video-backed?",
-      "next_route": "Open docs/content_planning/operator_cockpit.html first; use the Primary Review Script for OK/NG/HOLD, or add real source URL/metadata before fetch/init/transcript/edit/render work."
+      "item": "CPD-10 candidate ledger readability / source identity review",
+      "artifact": "clip-cpd10-candidate-ledger-readability-v0-001",
+      "question": "Does the repaired Candidate Ledger keep Japanese titles readable while preserving the accepted Briefing Board and closed gates?",
+      "next_route": "Open docs/content_planning/operator_cockpit.html first; confirm the readable ledger, then use the Primary Review Script for OK/NG/HOLD or add real source URL/metadata before fetch/init/transcript/edit/render work."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2542,7 +2555,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1368,
+      "line_count": 1371,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2673,7 +2686,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1809,
+      "line_count": 1836,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2681,7 +2694,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 787,
+      "boundary_term_count": 789,
       "status": "reference"
     },
     {
@@ -2743,7 +2756,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1042,
+      "line_count": 1046,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3096,7 +3109,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1368 lines) is likely carrying history.",
+        "detail": "Long active doc (1371 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3126,13 +3139,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1809 lines) is likely carrying history.",
+        "detail": "Long active doc (1836 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 787 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 789 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3156,7 +3169,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1042 lines) is likely carrying history.",
+        "detail": "Long active doc (1046 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

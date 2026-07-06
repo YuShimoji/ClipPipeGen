@@ -3,14 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: content_planning_operator_briefing_board_ready
+health: content_planning_candidate_ledger_readability_ready
 progress_pct: 100
 last_touched: 2026-07-06
-next_review_due: open_cpd09_briefing_board_then_inspect_single_source_identity_or_fill_source_urls
-active_artifact: clip-cpd09-operator-briefing-board-v0-001
-latest_content_planning_operator_cockpit_artifact: clip-cpd09-operator-briefing-board-v0-001
-latest_content_planning_operator_cockpit_branch: codex/cpd-09-operator-briefing-board-v0
-latest_content_planning_operator_cockpit_commit: 7d381cd
+next_review_due: open_cpd10_readable_ledger_then_inspect_single_source_identity_or_fill_source_urls
+active_artifact: clip-cpd10-candidate-ledger-readability-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd10-candidate-ledger-readability-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-10-ledger-readability-v0
+latest_content_planning_operator_cockpit_commit: branch_HEAD
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -36,24 +36,25 @@ Fetch the remote CPD branch, then read the project context:
 
 ```powershell
 git fetch origin
-git switch codex/cpd-09-operator-briefing-board-v0
+git switch codex/cpd-10-ledger-readability-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-cpd09-operator-briefing-board-v0-001`. The CPD-09 implementation commit
-is `7d381cd`; later handoff-only commits on the same branch may update this
-packet without changing the artifact semantics. That is enough to resume
-without the previous chat.
+`clip-cpd10-candidate-ledger-readability-v0-001`. The CPD-10 implementation
+commit is the HEAD of `codex/cpd-10-ledger-readability-v0`; later handoff-only
+commits on the same branch may update this packet without changing the artifact
+semantics. That is enough to resume without the previous chat.
 
-The durable state to carry forward is: CPD-09 keeps the dark operator cockpit
-but replaces the CPD-08 card-heavy Operator Home with a Briefing Board. The
+The durable state to carry forward is: CPD-10 keeps the accepted dark CPD-09
+Briefing Board and repairs the lower Candidate Ledger readability problem. The
 normal page to open is `docs/content_planning/operator_cockpit.html`, backed by
 `docs/content_planning/operator_cockpit.json`. It defaults to dark mode, shows
 an annotated flow and one Primary Review Script at the top, puts candidate
-state comparison into a compact Candidate Ledger, and keeps the older CPD-01
-through CPD-05 dashboards in a subordinate developer appendix.
+state comparison into stacked readable ledger rows with Japanese labels, and
+keeps the older CPD-01 through CPD-05 dashboards in a subordinate developer
+appendix.
 
 Only one source-backed item is ready for human source identity review:
 `cpd01_bancho_marine_misunderstanding`, title
@@ -62,22 +63,23 @@ Only one source-backed item is ready for human source identity review:
 not current video candidates; they are missing-source or hold records until a
 real source URL and source metadata are added.
 
-Do not treat CPD-09 as source approval, fetch approval, production/public/
+Do not treat CPD-10 as source approval, fetch approval, production/public/
 rights/publishing/monetization approval, transcript/render creation, or episode
 initialization. The worker did not open the source URL and did not use network,
 external APIs, OAuth, or media download paths. Do not track `episodes/` media.
 The older ED-10bc/ED-10bb/ED-10ba sections below remain valid for the Thank v2
 review path, but they are not the active CPD review entry point.
 
-## Current CPD-09 Briefing Board / Usage-Frequency IA v0
+## Current CPD-10 Candidate Ledger Readability / Responsive Layout Repair
 
-CPD-09 checkpoint, 2026-07-06 JST:
-`clip-cpd09-operator-briefing-board-v0-001` is the active tracked
+CPD-10 checkpoint, 2026-07-06 JST:
+`clip-cpd10-candidate-ledger-readability-v0-001` is the active tracked
 content-planning handoff artifact. It consolidates CPD-01 candidate planning,
 CPD-02 seed drafts, CPD-03 source resolution, CPD-04 dry-run episode init
 plans, and CPD-05 source inspection packet records into one normal human entry
 point with a Briefing Board, annotated flow, one Primary Review Script, and a
-compact Candidate Ledger.
+responsive Candidate Ledger that keeps Japanese titles readable as phrase-level
+text.
 
 Open command:
 
@@ -89,17 +91,19 @@ The expected readback is `source_backed_count=1`, `source_missing_count=4`,
 `source_missing_idea_backlog_count=3`, `blocked_or_hold_count=1`,
 `annotated_flow_stage_count=5`, `usage_frequency_section_count=4`,
 `candidate_ledger_row_count=5`,
+`ledger_layout=responsive_ledger_stacked`, `title_wrapping_guard=true`,
 `fetch_authorized_count=0`, and all execution gates false for source opening,
 network, external API, media download, episode folder creation, rights
 approval, production readiness, and public readiness.
 
 The next terminal can continue in either direction:
 
-- If the user wants to inspect the one known source, open the cockpit and check
-  whether the YouTube page matches the Bancho/Marine misunderstanding idea.
+- If the user wants to inspect the one known source, first confirm the repaired
+  Candidate Ledger reads normally, then check whether the YouTube page matches
+  the Bancho/Marine misunderstanding idea.
 - If the user wants more candidates, add real human-confirmed source metadata
   in a local `docs/content_planning/source_metadata_registry.json`, then rerun
-  CPD-03, CPD-04, CPD-05, and CPD-09.
+  CPD-03, CPD-04, CPD-05, and CPD-10.
 
 ## Current ED-10bc Thank V2 Open Command Repair Readback
 

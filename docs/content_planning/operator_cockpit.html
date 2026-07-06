@@ -130,6 +130,22 @@ section{margin:0 0 18px}
 .section-heading p{color:var(--muted);margin-top:4px}
 .ledger-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .ledger-summary .pill{background:var(--surface-2)}
+.ledger-list{display:grid;gap:10px}
+.ledger-item{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px;display:grid;gap:10px}
+.ledger-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.state-badge{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);color:var(--text);font-size:13px;font-weight:700;text-decoration:none}
+.state-badge.source-backed{border-color:rgba(34,197,94,.55)}
+.state-badge.source-missing{border-color:rgba(245,158,11,.6)}
+.state-badge.blocked-hold{border-color:rgba(239,68,68,.55)}
+.ledger-title{font-size:18px;line-height:1.48;letter-spacing:0;word-break:normal;overflow-wrap:normal;line-break:strict}
+.ledger-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px 12px;margin:0}
+.ledger-meta div{border-top:1px solid var(--border);padding-top:8px}
+.ledger-meta dt{color:var(--muted);font-size:12px}
+.ledger-meta dd{margin:2px 0 0;font-weight:700}
+.code-strip-details{background:transparent}
+.code-strip-details summary{padding:8px 0;color:var(--muted);font-size:12px}
+.code-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.code-strip code{white-space:nowrap;word-break:break-all;overflow-wrap:anywhere}
 details{border:1px solid var(--border);border-radius:8px;background:var(--surface-2)}
 summary{cursor:pointer;padding:12px 14px;font-weight:700}
 .details-body{border-top:1px solid var(--border);padding:14px}
@@ -137,7 +153,6 @@ summary{cursor:pointer;padding:12px 14px;font-weight:700}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
 th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;vertical-align:top}
 th{background:var(--surface-3)}
-.ledger-table td:first-child{font-weight:700}
 .video-backed{color:var(--success);font-weight:700}
 .not-video-backed{color:var(--warning);font-weight:700}
 code{background:var(--surface-3);border:1px solid var(--border);border-radius:5px;padding:1px 4px;color:var(--text)}
@@ -322,55 +337,102 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <span class="pill">source-missing 3</span>
 <span class="pill">hold 1</span>
 </div>
-<div class="table-scroll">
-<table class="ledger-table">
-<tr><th>group</th><th>candidate</th><th>title</th><th>source state</th><th>review state</th><th>video-backed</th><th>operator use</th></tr>
-<tr>
-<td><a href="#primary-review">source_backed</a></td>
-<td><code>cpd01_bancho_marine_misunderstanding</code><br><code>seed_cpd01_bancho_marine_misunderstanding</code></td>
-<td>番長、船長を完全に勘違いする</td>
-<td>source_url_present_identity_unchecked</td>
-<td>human_review_pending</td>
-<td class="video-backed">video-backed</td>
-<td>primary_action</td>
-</tr>
-<tr>
-<td><a href="#source-missing">source_missing</a></td>
-<td><code>cpd01_jp_en_phrase_gap</code><br><code>seed_cpd01_jp_en_phrase_gap</code></td>
-<td>日本語の一言で EN 組が固まる</td>
-<td>source_missing</td>
-<td>not_reviewable_as_video</td>
-<td class="not-video-backed">not video-backed</td>
-<td>source_url_intake_backlog</td>
-</tr>
-<tr>
-<td><a href="#source-missing">source_missing</a></td>
-<td><code>cpd01_reaction_face_chain</code><br><code>seed_cpd01_reaction_face_chain</code></td>
-<td>表情が一瞬で変わるホロメン</td>
-<td>source_missing</td>
-<td>not_reviewable_as_video</td>
-<td class="not-video-backed">not video-backed</td>
-<td>source_url_intake_backlog</td>
-</tr>
-<tr>
-<td><a href="#source-missing">source_missing</a></td>
-<td><code>cpd01_game_fail_micro_arc</code><br><code>seed_cpd01_game_fail_micro_arc</code></td>
-<td>失敗したのに立て直しが早すぎる</td>
-<td>source_missing</td>
-<td>not_reviewable_as_video</td>
-<td class="not-video-backed">not video-backed</td>
-<td>source_url_intake_backlog</td>
-</tr>
-<tr>
-<td><a href="#blocked-hold">blocked_hold</a></td>
-<td><code>cpd01_song_moment_hold</code><br><code>seed_cpd01_song_moment_hold</code></td>
-<td>歌の合間に急に本音が出る</td>
-<td>hold</td>
-<td>song_or_music_rights_sensitive</td>
-<td class="not-video-backed">not video-backed</td>
-<td>do_not_progress_without_rights_route</td>
-</tr>
-</table>
+<div class="ledger-list" role="list">
+<article class="ledger-item source-backed" role="listitem">
+<div class="ledger-row-top">
+<a class="state-badge source-backed" href="#primary-review">source付き</a>
+<span class="video-backed">video-backed</span>
+</div>
+<h3 class="ledger-title">番長、船長を完全に勘違いする</h3>
+<dl class="ledger-meta">
+<div><dt>source</dt><dd>URLあり・同一性未確認</dd></div>
+<div><dt>review</dt><dd>人間確認待ち</dd></div>
+<div><dt>operator</dt><dd>今回の確認対象</dd></div>
+</dl>
+<details class="code-strip-details">
+<summary>machine ids</summary>
+<div class="code-strip">
+<code>cpd01_bancho_marine_misunderstanding</code>
+<code>seed_cpd01_bancho_marine_misunderstanding</code>
+</div>
+</details>
+</article>
+<article class="ledger-item source-missing" role="listitem">
+<div class="ledger-row-top">
+<a class="state-badge source-missing" href="#source-missing">source未特定</a>
+<span class="not-video-backed">not video-backed</span>
+</div>
+<h3 class="ledger-title">日本語の一言で EN 組が固まる</h3>
+<dl class="ledger-meta">
+<div><dt>source</dt><dd>URL未入力</dd></div>
+<div><dt>review</dt><dd>動画候補として未確認</dd></div>
+<div><dt>operator</dt><dd>URL入力待ち</dd></div>
+</dl>
+<details class="code-strip-details">
+<summary>machine ids</summary>
+<div class="code-strip">
+<code>cpd01_jp_en_phrase_gap</code>
+<code>seed_cpd01_jp_en_phrase_gap</code>
+</div>
+</details>
+</article>
+<article class="ledger-item source-missing" role="listitem">
+<div class="ledger-row-top">
+<a class="state-badge source-missing" href="#source-missing">source未特定</a>
+<span class="not-video-backed">not video-backed</span>
+</div>
+<h3 class="ledger-title">表情が一瞬で変わるホロメン</h3>
+<dl class="ledger-meta">
+<div><dt>source</dt><dd>URL未入力</dd></div>
+<div><dt>review</dt><dd>動画候補として未確認</dd></div>
+<div><dt>operator</dt><dd>URL入力待ち</dd></div>
+</dl>
+<details class="code-strip-details">
+<summary>machine ids</summary>
+<div class="code-strip">
+<code>cpd01_reaction_face_chain</code>
+<code>seed_cpd01_reaction_face_chain</code>
+</div>
+</details>
+</article>
+<article class="ledger-item source-missing" role="listitem">
+<div class="ledger-row-top">
+<a class="state-badge source-missing" href="#source-missing">source未特定</a>
+<span class="not-video-backed">not video-backed</span>
+</div>
+<h3 class="ledger-title">失敗したのに立て直しが早すぎる</h3>
+<dl class="ledger-meta">
+<div><dt>source</dt><dd>URL未入力</dd></div>
+<div><dt>review</dt><dd>動画候補として未確認</dd></div>
+<div><dt>operator</dt><dd>URL入力待ち</dd></div>
+</dl>
+<details class="code-strip-details">
+<summary>machine ids</summary>
+<div class="code-strip">
+<code>cpd01_game_fail_micro_arc</code>
+<code>seed_cpd01_game_fail_micro_arc</code>
+</div>
+</details>
+</article>
+<article class="ledger-item blocked-hold" role="listitem">
+<div class="ledger-row-top">
+<a class="state-badge blocked-hold" href="#blocked-hold">保留</a>
+<span class="not-video-backed">not video-backed</span>
+</div>
+<h3 class="ledger-title">歌の合間に急に本音が出る</h3>
+<dl class="ledger-meta">
+<div><dt>source</dt><dd>保留</dd></div>
+<div><dt>review</dt><dd>音楽権利route確認待ち</dd></div>
+<div><dt>operator</dt><dd>権利routeなしでは進めない</dd></div>
+</dl>
+<details class="code-strip-details">
+<summary>machine ids</summary>
+<div class="code-strip">
+<code>cpd01_song_moment_hold</code>
+<code>seed_cpd01_song_moment_hold</code>
+</div>
+</details>
+</article>
 </div>
 <span id="source-missing" class="anchor-alias" aria-hidden="true"></span>
 <details>
@@ -402,7 +464,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <summary>artifact_id / machine JSON / 内部 artifact を見る</summary>
 <div class="details-body">
 <p class="muted">
-artifact_id: <code>clip-cpd09-operator-briefing-board-v0-001</code><br>
+artifact_id: <code>clip-cpd10-candidate-ledger-readability-v0-001</code><br>
 generated_at: <code>2026-07-06</code><br>
 operator JSON: <code>docs/content_planning/operator_cockpit.json</code><br>
 operator HTML: <code>docs/content_planning/operator_cockpit.html</code>
