@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `CPD-11`
-- artifact: `clip-cpd11-operator-view-shell-v0-001`
-- state: `content_planning_operator_view_shell_ready`
+- feature: `CPD-12`
+- artifact: `clip-cpd12-minimal-review-console-v0-001`
+- state: `content_planning_minimal_review_console_ready`
 
 ## Feature Table
 

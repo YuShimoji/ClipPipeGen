@@ -24,24 +24,26 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "CPD-11",
-    "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
-    "state": "content_planning_operator_view_shell_ready",
-    "title": "ClipPipeGen Review Workbench / Operator View Shell v0",
+    "feature_id": "CPD-12",
+    "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
+    "state": "content_planning_minimal_review_console_ready",
+    "title": "ClipPipeGen Review Console / Minimal Review Console v0",
     "human_entrypoint": "docs/content_planning/operator_cockpit.html",
     "machine_readback": "docs/content_planning/operator_cockpit.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "notes": "docs/content_planning/README.md",
-    "review_shape": "view_shell_review_backlog_system_modes",
+    "review_shape": "minimal_review_console_true_modes_provenance",
     "source_backed_count": 1,
     "source_missing_count": 4,
     "source_missing_idea_backlog_count": 3,
     "blocked_or_hold_count": 1,
     "fetch_authorized_count": 0,
     "view_shell_present": true,
+    "shell_present": true,
     "default_visible_mode": "review",
     "work_mode_count": 3,
-    "queue_chip_count": 5,
+    "queue_chip_count": 4,
+    "status_rail_chip_count": 4,
     "locked_gate_count": 5,
     "candidate_ledger_row_count": 5,
     "ledger_layout": "responsive_ledger_stacked",
@@ -60,12 +62,12 @@
       "production_ready": false,
       "public_ready": false
     },
-    "next_review_action_type": "OPEN_VIEW_SHELL_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
-    "next_action": "Open docs/content_planning/operator_cockpit.html, use Review mode for the current source item, then use Backlog mode for missing URLs or System mode for closed gate readback before any CPD rerun.",
+    "next_review_action_type": "OPEN_REVIEW_CONSOLE_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
+    "next_action": "Open docs/content_planning/operator_cockpit.html, use Review mode for the planning-label source item, then use Backlog mode for URL-waiting ideas or System mode for closed gate readback before any CPD rerun.",
     "legacy_context": {
-      "previous_focus_feature_id": "ED-10bc",
-      "previous_focus_artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
-      "previous_focus_state": "thank_v2_open_command_repair_ready"
+      "previous_focus_feature_id": "CPD-11",
+      "previous_focus_artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+      "previous_focus_state": "content_planning_operator_view_shell_ready"
     }
   },
   "open_surfaces": [
@@ -79,7 +81,7 @@
       "label": "CPD Operator Cockpit",
       "command": "start docs\\content_planning\\operator_cockpit.html",
       "target": "docs/content_planning/operator_cockpit.html",
-      "when_to_use": "Use first for current CPD review; it shows the one source-backed item and keeps missing-source ideas out of the video-candidate path."
+      "when_to_use": "Use first for current CPD review; it shows the CPD-12 Review Console with true Review/Backlog/System modes and planning-label provenance."
     },
     {
       "label": "Artifacts",
@@ -1668,6 +1670,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
+      "title": "ClipPipeGen Review Console / Minimal Review Console v0",
+      "purpose": "Convert the CPD operator cockpit from a weak view shell into a compact reusable review console with explicit fixed shell regions, dynamic data slots, true Review / Backlog / System modes, and planning-label provenance.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-11 view-shell surface in the same output path.",
+      "repo_relative_path": "docs/content_planning/operator_cockpit.html",
+      "open_command": "start docs\\content_planning\\operator_cockpit.html",
+      "review_status": "Ready as the normal human entry point for CPD planning review. The first viewport shows CPD-12 and the artifact id, a fixed shell label, status rail, true mode controls, and a Current Review data slot. The current item is labeled as a planning label with planning_label, source_url_present, identity_unverified, and not_fetched provenance badges. Backlog and System details stay behind their modes, and the Candidate Ledger remains readable and collapsed.",
+      "next_action": "Open the cockpit first, use Review mode for OK / NG / HOLD on the one planning-label source item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback."
+    },
+    {
       "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
       "title": "ClipPipeGen Review Workbench / Operator View Shell v0",
       "purpose": "Convert the CPD operator cockpit from a case-specific briefing page into a reusable view shell with Review, Backlog, and System modes driven by a content model.",
@@ -2240,6 +2252,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-cpd12-minimal-review-console-v0-001",
       "clip-cpd11-operator-view-shell-v0-001",
       "clip-cpd10-candidate-ledger-readability-v0-001",
       "clip-cpd09-operator-briefing-board-v0-001",
@@ -2298,19 +2311,19 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 57
+    "artifact_count": 58
   },
   "artifact_coverage": {
-    "registered_artifact_count": 57,
+    "registered_artifact_count": 58,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "CPD-11 operator view shell / current source review",
-      "artifact": "clip-cpd11-operator-view-shell-v0-001",
-      "question": "Does the Review Workbench feel reusable while keeping the current source item, backlog, system readback, and closed gates separated?",
+      "item": "CPD-12 minimal review console / current planning-label review",
+      "artifact": "clip-cpd12-minimal-review-console-v0-001",
+      "question": "Does the Review Console make the CPD-12 version, fixed shell, dynamic slots, true modes, and planning-label provenance obvious enough for repeated use?",
       "next_route": "Open docs/content_planning/operator_cockpit.html first; use Review mode for OK/NG/HOLD, Backlog mode for missing URLs, and System mode only for gate/internal readback."
     },
     {
@@ -2554,7 +2567,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 102,
+      "line_count": 99,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2562,13 +2575,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 12,
+      "boundary_term_count": 14,
       "status": "reference"
     },
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1372,
+      "line_count": 1376,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2699,7 +2712,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1863,
+      "line_count": 1890,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2707,7 +2720,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 791,
+      "boundary_term_count": 793,
       "status": "reference"
     },
     {
@@ -2769,7 +2782,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1078,
+      "line_count": 1080,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3122,7 +3135,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1372 lines) is likely carrying history.",
+        "detail": "Long active doc (1376 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3152,13 +3165,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1863 lines) is likely carrying history.",
+        "detail": "Long active doc (1890 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 791 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 793 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3182,7 +3195,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1078 lines) is likely carrying history.",
+        "detail": "Long active doc (1080 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

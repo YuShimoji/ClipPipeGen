@@ -21,8 +21,8 @@ def run(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="build-operator-cockpit",
         description=(
-            "Build the CPD-11 operator view shell cockpit with a reusable "
-            "content model from CPD-01 through CPD-05 planning artifacts. "
+            "Build the CPD-12 minimal review console with true local modes "
+            "from CPD-01 through CPD-05 planning artifacts. "
             "This writes a human-facing dark-mode review surface only; it does "
             "not open URLs, fetch media, create episode folders, approve rights, "
             "or mark anything production/public ready."
@@ -104,16 +104,22 @@ def run(argv: list[str]) -> int:
         "blocked_or_hold_count": summary["blocked_or_hold_count"],
         "inspectable_packet_count": summary["inspectable_packet_count"],
         "fetch_authorized_count": summary["fetch_authorized_count"],
+        "shell_present": bool(payload["shell"]),
         "view_shell_present": bool(payload["view_shell"]),
         "ux_version": payload["ux"]["version"],
+        "console_layout": payload["ux"]["layout"],
         "view_shell_layout": payload["ux"]["layout"],
-        "default_visible_mode": payload["view_shell"]["default_mode"],
-        "work_mode_count": len(payload["work_modes"]),
+        "default_visible_mode": payload["shell"]["default_mode"],
+        "work_mode_count": len(payload["modes"]),
+        "mode_count": len(payload["modes"]),
+        "status_rail_chip_count": len(payload["status_rail"]["chips"]),
         "queue_chip_count": len(payload["queue_summary"]["chips"]),
         "locked_gate_count": payload["gate_summary"]["locked_gate_count"],
         "ledger_layout": payload["ux"]["ledger_layout"],
         "title_wrapping_guard": payload["ux"]["title_wrapping_guard"],
         "candidate_ledger_row_count": len(payload["candidate_ledger"]),
+        "provenance_badge_count": len(payload["provenance_badges"]),
+        "link_target_count": len(payload["link_targets"]),
         "action_script_id": payload["action_script"]["script_id"],
         "current_work_item_id": payload["current_work_item"]["work_item_id"],
         "recommended_next_action": payload["recommended_next_action"]["action_id"],
@@ -142,16 +148,20 @@ def run(argv: list[str]) -> int:
         print(f"blocked_or_hold_count: {cli_payload['blocked_or_hold_count']}")
         print(f"inspectable_packet_count: {cli_payload['inspectable_packet_count']}")
         print(f"fetch_authorized_count: {cli_payload['fetch_authorized_count']}")
+        print(f"shell_present: {str(cli_payload['shell_present']).lower()}")
         print(f"view_shell_present: {str(cli_payload['view_shell_present']).lower()}")
         print(f"ux_version: {cli_payload['ux_version']}")
-        print(f"view_shell_layout: {cli_payload['view_shell_layout']}")
+        print(f"console_layout: {cli_payload['console_layout']}")
         print(f"default_visible_mode: {cli_payload['default_visible_mode']}")
         print(f"work_mode_count: {cli_payload['work_mode_count']}")
+        print(f"status_rail_chip_count: {cli_payload['status_rail_chip_count']}")
         print(f"queue_chip_count: {cli_payload['queue_chip_count']}")
         print(f"locked_gate_count: {cli_payload['locked_gate_count']}")
         print(f"ledger_layout: {cli_payload['ledger_layout']}")
         print(f"title_wrapping_guard: {str(cli_payload['title_wrapping_guard']).lower()}")
         print(f"candidate_ledger_row_count: {cli_payload['candidate_ledger_row_count']}")
+        print(f"provenance_badge_count: {cli_payload['provenance_badge_count']}")
+        print(f"link_target_count: {cli_payload['link_target_count']}")
         print(f"action_script_id: {cli_payload['action_script_id']}")
         print(f"current_work_item_id: {cli_payload['current_work_item_id']}")
         print(f"recommended_next_action: {cli_payload['recommended_next_action']}")

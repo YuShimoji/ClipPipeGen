@@ -1,16 +1,17 @@
 {
   "schema_id": "clippipegen.operator_cockpit.v0",
   "schema_version": "v0",
-  "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+  "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
   "generated_at": "2026-07-07",
-  "title": "ClipPipeGen Review Workbench",
+  "title": "ClipPipeGen Review Console",
   "ux": {
-    "version": "v6_view_shell_content_model_v0",
-    "layout": "operator_view_shell_content_model",
+    "version": "v7_minimal_review_console_v0",
+    "layout": "minimal_review_console_true_modes",
     "default_theme": "dark",
     "theme_toggle": true,
     "developer_appendix_default": "collapsed",
-    "view_shell": "visible",
+    "view_shell": "superseded_by_shell",
+    "fixed_shell": "visible",
     "default_visible_mode": "review",
     "mode_separation": "review_backlog_system",
     "briefing_board": "superseded_by_view_shell",
@@ -59,11 +60,34 @@
     "internal_artifact_count": 13,
     "health": "ready_for_single_source_identity_review"
   },
-  "view_shell": {
-    "shell_id": "operator_workbench_view_shell",
-    "title": "Review Workbench",
-    "subtitle": "Current review stays first; backlog and system readback stay behind mode links.",
-    "content_model_version": "v6_view_shell_content_model_v0",
+  "shell": {
+    "shell_id": "minimal_review_console",
+    "title": "Review Console",
+    "console_title": "ClipPipeGen Review Console",
+    "shell_label": "fixed shell: Review Console",
+    "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
+    "version_label": "CPD-12",
+    "branch_label": "codex/cpd-12-minimal-review-console-v0",
+    "subtitle": "Review, Backlog, and System are separate local modes over the same generated data.",
+    "content_model_version": "v7_minimal_review_console_v0",
+    "fixed_regions": [
+      "console_header",
+      "artifact_version_chip",
+      "mode_switcher",
+      "status_rail",
+      "system_lock_indicator"
+    ],
+    "dynamic_slots": [
+      "current_work_item",
+      "source_url",
+      "planning_label",
+      "provenance_badges",
+      "candidate_counts",
+      "backlog_groups",
+      "candidate_ledger",
+      "gate_summary",
+      "internal_artifacts"
+    ],
     "default_mode": "review",
     "mode_ids": [
       "review",
@@ -71,10 +95,66 @@
       "system"
     ],
     "anchors": [
-      "#review-workbench",
+      "#review-console",
+      "#mode-review",
       "#current-review",
+      "#mode-backlog",
       "#backlog",
       "#candidate-ledger",
+      "#mode-system",
+      "#system",
+      "#safety-boundary",
+      "#developer-appendix"
+    ],
+    "first_viewport_explanatory_paragraph_limit": 1,
+    "default_visible_counts": {
+      "source_backed": 1,
+      "source_missing_backlog": 3,
+      "hold": 1
+    }
+  },
+  "view_shell": {
+    "shell_id": "minimal_review_console",
+    "title": "Review Console",
+    "console_title": "ClipPipeGen Review Console",
+    "shell_label": "fixed shell: Review Console",
+    "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
+    "version_label": "CPD-12",
+    "branch_label": "codex/cpd-12-minimal-review-console-v0",
+    "subtitle": "Review, Backlog, and System are separate local modes over the same generated data.",
+    "content_model_version": "v7_minimal_review_console_v0",
+    "fixed_regions": [
+      "console_header",
+      "artifact_version_chip",
+      "mode_switcher",
+      "status_rail",
+      "system_lock_indicator"
+    ],
+    "dynamic_slots": [
+      "current_work_item",
+      "source_url",
+      "planning_label",
+      "provenance_badges",
+      "candidate_counts",
+      "backlog_groups",
+      "candidate_ledger",
+      "gate_summary",
+      "internal_artifacts"
+    ],
+    "default_mode": "review",
+    "mode_ids": [
+      "review",
+      "backlog",
+      "system"
+    ],
+    "anchors": [
+      "#review-console",
+      "#mode-review",
+      "#current-review",
+      "#mode-backlog",
+      "#backlog",
+      "#candidate-ledger",
+      "#mode-system",
       "#system",
       "#safety-boundary",
       "#developer-appendix"
@@ -88,13 +168,21 @@
   },
   "current_work_item": {
     "work_item_id": "source_identity_review",
-    "label": "Current source review",
+    "label": "Current Review",
     "title": "番長、船長を完全に勘違いする",
+    "planning_label": "番長、船長を完全に勘違いする",
+    "candidate_label": "番長、船長を完全に勘違いする",
+    "label_provenance": "planning_label_unverified",
+    "verified_video_title": "",
     "target_candidate_id": "cpd01_bancho_marine_misunderstanding",
     "target_seed_id": "seed_cpd01_bancho_marine_misunderstanding",
     "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
-    "source_button_label": "Open source URL",
-    "question": "このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
+    "source_url_state": "present",
+    "identity_state": "unverified",
+    "fetch_authorized": false,
+    "source_opened_by_worker": false,
+    "source_button_label": "Source URL",
+    "question": "このSource URLは Planning label「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
     "unverified_markers": [
       {
         "marker": "[ ]",
@@ -128,70 +216,242 @@
       }
     ],
     "locked_line": "locked: fetch / transcript / render / upload / rights",
-    "user_work": "open_only"
+    "compact_locked_line": "locked: fetch/render/upload/rights",
+    "user_work": "open_only",
+    "provenance_badges": [
+      {
+        "id": "planning_label",
+        "label": "planning_label",
+        "meaning": "generated planning label; not a verified video title"
+      },
+      {
+        "id": "source_url_present",
+        "label": "source_url_present",
+        "meaning": "source URL is available in local data"
+      },
+      {
+        "id": "identity_unverified",
+        "label": "identity_unverified",
+        "meaning": "human source identity review is still pending"
+      },
+      {
+        "id": "not_fetched",
+        "label": "not_fetched",
+        "meaning": "worker did not open, fetch, download, or initialize media"
+      }
+    ]
   },
-  "work_modes": [
+  "modes": [
     {
       "mode_id": "review",
-      "label": "Review mode",
+      "label": "Review",
       "jp_label": "常用",
-      "href": "#current-review",
+      "href": "#mode-review",
+      "panel_id": "mode-review",
+      "button_id": "mode-control-review",
+      "target_slot": "current_work_item",
+      "default_active": true,
       "default_visible": true,
       "purpose": "current work item and OK / NG / HOLD labels"
     },
     {
       "mode_id": "backlog",
-      "label": "Backlog mode",
+      "label": "Backlog",
       "jp_label": "要確認",
-      "href": "#backlog",
+      "href": "#mode-backlog",
+      "panel_id": "mode-backlog",
+      "button_id": "mode-control-backlog",
+      "target_slot": "backlog_groups",
+      "default_active": false,
       "default_visible": false,
       "purpose": "source missing 3 and hold 1"
     },
     {
       "mode_id": "system",
-      "label": "System mode",
+      "label": "System",
       "jp_label": "開発用",
-      "href": "#system",
+      "href": "#mode-system",
+      "panel_id": "mode-system",
+      "button_id": "mode-control-system",
+      "target_slot": "gate_summary",
+      "default_active": false,
       "default_visible": false,
       "purpose": "closed gates and internal artifacts"
     }
   ],
+  "work_modes": [
+    {
+      "mode_id": "review",
+      "label": "Review",
+      "jp_label": "常用",
+      "href": "#mode-review",
+      "panel_id": "mode-review",
+      "button_id": "mode-control-review",
+      "target_slot": "current_work_item",
+      "default_active": true,
+      "default_visible": true,
+      "purpose": "current work item and OK / NG / HOLD labels"
+    },
+    {
+      "mode_id": "backlog",
+      "label": "Backlog",
+      "jp_label": "要確認",
+      "href": "#mode-backlog",
+      "panel_id": "mode-backlog",
+      "button_id": "mode-control-backlog",
+      "target_slot": "backlog_groups",
+      "default_active": false,
+      "default_visible": false,
+      "purpose": "source missing 3 and hold 1"
+    },
+    {
+      "mode_id": "system",
+      "label": "System",
+      "jp_label": "開発用",
+      "href": "#mode-system",
+      "panel_id": "mode-system",
+      "button_id": "mode-control-system",
+      "target_slot": "gate_summary",
+      "default_active": false,
+      "default_visible": false,
+      "purpose": "closed gates and internal artifacts"
+    }
+  ],
+  "status_rail": {
+    "status_rail_id": "minimal_review_console_status_rail",
+    "chips": [
+      {
+        "id": "source_url_present",
+        "label": "URLあり",
+        "value": 1,
+        "href": "#mode-review"
+      },
+      {
+        "id": "source_url_waiting",
+        "label": "URL待ち",
+        "value": 3,
+        "href": "#mode-backlog"
+      },
+      {
+        "id": "hold",
+        "label": "保留",
+        "value": 1,
+        "href": "#mode-backlog"
+      },
+      {
+        "id": "locked",
+        "label": "locked",
+        "value": "fetch/render/upload/rights",
+        "href": "#mode-system"
+      }
+    ],
+    "lock_line": "locked: fetch/render/upload/rights",
+    "source": "local_cpd_json"
+  },
   "queue_summary": {
     "summary_id": "operator_queue_summary",
     "chips": [
       {
-        "id": "candidates",
-        "label": "candidates",
-        "value": 5,
-        "href": "#candidate-ledger"
-      },
-      {
-        "id": "source_ready",
-        "label": "source ready",
+        "id": "source_url_present",
+        "label": "URLあり",
         "value": 1,
-        "href": "#current-review"
+        "href": "#mode-review"
       },
       {
-        "id": "missing",
-        "label": "missing",
+        "id": "source_url_waiting",
+        "label": "URL待ち",
         "value": 3,
-        "href": "#backlog"
+        "href": "#mode-backlog"
       },
       {
         "id": "hold",
-        "label": "hold",
+        "label": "保留",
         "value": 1,
-        "href": "#backlog"
+        "href": "#mode-backlog"
       },
       {
-        "id": "locked_gates",
-        "label": "locked gates",
-        "value": 5,
-        "href": "#system"
+        "id": "locked",
+        "label": "locked",
+        "value": "fetch/render/upload/rights",
+        "href": "#mode-system"
       }
     ],
     "source": "local_cpd_json"
   },
+  "provenance_badges": [
+    {
+      "id": "planning_label",
+      "label": "planning_label",
+      "meaning": "generated planning label; not a verified video title"
+    },
+    {
+      "id": "source_url_present",
+      "label": "source_url_present",
+      "meaning": "source URL is available in local data"
+    },
+    {
+      "id": "identity_unverified",
+      "label": "identity_unverified",
+      "meaning": "human source identity review is still pending"
+    },
+    {
+      "id": "not_fetched",
+      "label": "not_fetched",
+      "meaning": "worker did not open, fetch, download, or initialize media"
+    }
+  ],
+  "link_targets": [
+    {
+      "id": "review-console",
+      "kind": "shell",
+      "href": "#review-console"
+    },
+    {
+      "id": "mode-review",
+      "kind": "mode_panel",
+      "href": "#mode-review"
+    },
+    {
+      "id": "mode-backlog",
+      "kind": "mode_panel",
+      "href": "#mode-backlog"
+    },
+    {
+      "id": "mode-system",
+      "kind": "mode_panel",
+      "href": "#mode-system"
+    },
+    {
+      "id": "current-review",
+      "kind": "slot",
+      "href": "#current-review"
+    },
+    {
+      "id": "backlog",
+      "kind": "slot",
+      "href": "#backlog"
+    },
+    {
+      "id": "candidate-ledger",
+      "kind": "slot",
+      "href": "#candidate-ledger"
+    },
+    {
+      "id": "system",
+      "kind": "slot",
+      "href": "#system"
+    },
+    {
+      "id": "safety-boundary",
+      "kind": "slot",
+      "href": "#safety-boundary"
+    },
+    {
+      "id": "developer-appendix",
+      "kind": "slot",
+      "href": "#developer-appendix"
+    }
+  ],
   "candidate_groups": [
     {
       "group_id": "source_backed",
@@ -310,6 +570,7 @@
   ],
   "gate_summary": {
     "line": "locked: fetch / transcript / render / upload / rights",
+    "compact_line": "locked: fetch/render/upload/rights",
     "locked_gates": [
       "fetch",
       "transcript",
@@ -334,12 +595,12 @@
     "unverified_marker": "[ ]"
   },
   "briefing": {
-    "briefing_id": "cpd11_view_shell_readback",
-    "title": "Review Workbench",
-    "status_line": "source ready 1 / missing 3 / hold 1",
-    "decision_line": "Current source review is the only default action.",
-    "bottleneck_line": "Backlog and hold items are separated from the review workbench.",
-    "locked_line": "locked: fetch / transcript / render / upload / rights",
+    "briefing_id": "cpd12_minimal_review_console_readback",
+    "title": "Review Console",
+    "status_line": "URLあり 1 / URL待ち 3 / hold 1",
+    "decision_line": "Current Review is the only default action.",
+    "bottleneck_line": "Backlog and hold items stay behind true mode switching.",
+    "locked_line": "locked: fetch/render/upload/rights",
     "primary_action": {
       "action_id": "inspect_single_source_backed_item",
       "label": "Current source review",
@@ -531,7 +792,7 @@
     "target_seed_id": "seed_cpd01_bancho_marine_misunderstanding",
     "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
     "video_id": "7J5aS_pcBj4",
-    "question": "このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
+    "question": "このSource URLは Planning label「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
     "open_label": "Source URLを開く",
     "unverified_markers": [
       {
@@ -576,14 +837,24 @@
   },
   "section_links": [
     {
-      "section_id": "review-workbench",
-      "label": "Review Workbench",
-      "href": "#review-workbench"
+      "section_id": "review-console",
+      "label": "Review Console",
+      "href": "#review-console"
+    },
+    {
+      "section_id": "mode-review",
+      "label": "Review",
+      "href": "#mode-review"
     },
     {
       "section_id": "current-review",
       "label": "Current Review",
       "href": "#current-review"
+    },
+    {
+      "section_id": "mode-backlog",
+      "label": "Backlog",
+      "href": "#mode-backlog"
     },
     {
       "section_id": "backlog",
@@ -594,6 +865,11 @@
       "section_id": "candidate-ledger",
       "label": "Candidate Ledger",
       "href": "#candidate-ledger"
+    },
+    {
+      "section_id": "mode-system",
+      "label": "System",
+      "href": "#mode-system"
     },
     {
       "section_id": "system",
@@ -943,13 +1219,16 @@
     "skipped_source_record_count": 4,
     "blocked_source_record_count": 4,
     "decision_template_entry_count": 1,
-    "note": "CPD-11 converts the CPD operator cockpit into a reusable view shell and content model. It does not change source, fetch, rights, production, or public gates.",
-    "view_shell": "operator_workbench_content_model",
+    "note": "CPD-12 converts the CPD operator cockpit into a minimal review console with fixed shell regions, true local modes, and explicit planning-label provenance. It does not change source, fetch, rights, production, or public gates.",
+    "shell": "minimal_review_console",
+    "view_shell": "minimal_review_console",
     "default_visible_mode": "review",
     "work_mode_count": 3,
-    "queue_chip_count": 5,
+    "queue_chip_count": 4,
     "locked_gate_count": 5,
     "ledger_layout": "responsive_ledger_stacked",
-    "title_wrapping_guard": true
+    "title_wrapping_guard": true,
+    "provenance_badge_count": 4,
+    "link_target_count": 10
   }
 }

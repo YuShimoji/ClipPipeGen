@@ -54,7 +54,13 @@ keeps the current source action and readable Candidate Ledger, but moves
 source-waiting items into Backlog mode, closed gates into System mode, and
 reduces case-specific explanatory copy in the default view.
 
-If you are reviewing as a human, open the CPD-11 operator cockpit first. The
+CPD-12 turns the same cockpit into a minimal Review Console. It shows CPD-12 and
+the artifact id near the top, makes the fixed shell and generated data slots
+visible, switches Review / Backlog / System as true local modes, and labels the
+current title as a planning label with provenance badges instead of presenting
+it as a verified video title.
+
+If you are reviewing as a human, open the CPD-12 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
 
@@ -77,6 +83,7 @@ production/public usable.
 | CPD-09 artifact_id | `clip-cpd09-operator-briefing-board-v0-001` |
 | CPD-10 artifact_id | `clip-cpd10-candidate-ledger-readability-v0-001` |
 | CPD-11 artifact_id | `clip-cpd11-operator-view-shell-v0-001` |
+| CPD-12 artifact_id | `clip-cpd12-minimal-review-console-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
@@ -232,11 +239,15 @@ uvx python -m src.cli.main build-operator-cockpit `
 - The operator cockpit is the normal human entry point. The individual CPD
   HTML/JSON files remain linked as internal artifacts only; they should not be
   treated as separate human report requests.
-- CPD-11 cockpit HTML defaults to native dark mode, includes a local
-  Light/Dark toggle, and starts with a reusable Review Workbench. Review,
-  Backlog, and System modes separate the current source action from unresolved
-  ideas and closed-gate/internal readback. Older CPD-01 through CPD-05
-  dashboards remain developer readback surfaces.
+- CPD-12 cockpit HTML defaults to native dark mode, includes a local
+  Light/Dark toggle, and starts with a reusable Review Console. Review,
+  Backlog, and System are true local modes; without JavaScript, the same
+  sections remain reachable as anchor content.
+- The current item uses `Planning label` / `planning_label_unverified`
+  provenance. The source URL is present in local data, but identity remains
+  unverified, fetch is unauthorized, and the worker did not open or fetch the
+  URL.
+- Older CPD-01 through CPD-05 dashboards remain developer readback surfaces.
 - The JP/EN phrase-gap idea is currently `source_missing_idea_backlog`, not a
   source-backed video candidate. It needs a real `source_url` and source
   metadata before any fetch/init lane can continue.
@@ -244,8 +255,9 @@ uvx python -m src.cli.main build-operator-cockpit `
 ## Next Useful Moves
 
 1. Open `docs/content_planning/operator_cockpit.html` first. It shows the
-   Review Workbench, state rail, Review / Backlog / System mode links, and the
-   collapsed responsive Candidate Ledger with native dark mode.
+   CPD-12 Review Console, artifact/version chip, status rail, true Review /
+   Backlog / System mode controls, provenance badges, and the collapsed
+   responsive Candidate Ledger with native dark mode.
 2. Review the single ready source URL as a human/operator source identity
    check from Review mode only. This is still just OK / NG / HOLD source
    identity judgement, not fetch or approval.

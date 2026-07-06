@@ -1,4 +1,4 @@
-"""CPD-11 operator cockpit view-shell and content-model UX builder.
+"""CPD-12 operator cockpit minimal review console builder.
 
 This module consolidates the CPD-01 through CPD-05 planning artifacts into one
 operator-facing entry point. It only reads local JSON artifacts and writes
@@ -16,12 +16,13 @@ from typing import Any
 from .content_planning import display_path, write_json, write_text
 
 SCHEMA_ID = "clippipegen.operator_cockpit.v0"
-DEFAULT_ARTIFACT_ID = "clip-cpd11-operator-view-shell-v0-001"
+DEFAULT_ARTIFACT_ID = "clip-cpd12-minimal-review-console-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-07"
 DEFAULT_OUTPUT_FILENAME = "operator_cockpit.json"
 DEFAULT_DASHBOARD_FILENAME = "operator_cockpit.html"
-HTML_TITLE = "ClipPipeGen Review Workbench"
-UX_VERSION = "v6_view_shell_content_model_v0"
+HTML_TITLE = "ClipPipeGen Review Console"
+UX_VERSION = "v7_minimal_review_console_v0"
+DEFAULT_BRANCH_LABEL = "codex/cpd-12-minimal-review-console-v0"
 
 NOT_YET_FLAGS = [
     "fetch",
@@ -252,11 +253,15 @@ def build_operator_cockpit(
     )
     action_script = build_action_script(source_backed=source_backed, summary=summary)
     gate_summary = build_gate_summary(gates)
-    queue_summary = build_queue_summary(summary=summary, gate_summary=gate_summary)
+    status_rail = build_status_rail(summary=summary, gate_summary=gate_summary)
+    queue_summary = build_queue_summary(status_rail=status_rail)
     candidate_groups = build_candidate_groups(candidate_ledger)
     current_work_item = build_current_work_item(action_script=action_script, gate_summary=gate_summary)
-    work_modes = build_work_modes(summary=summary)
-    view_shell = build_view_shell(summary=summary, work_modes=work_modes)
+    provenance_badges = build_provenance_badges(current_work_item=current_work_item)
+    current_work_item["provenance_badges"] = provenance_badges
+    modes = build_modes(summary=summary)
+    shell = build_shell(summary=summary, modes=modes, artifact_id=artifact_id)
+    link_targets = build_link_targets(modes=modes)
     microcopy_policy = build_microcopy_policy()
     briefing = build_briefing(
         summary=summary,
@@ -287,11 +292,12 @@ def build_operator_cockpit(
         "title": HTML_TITLE,
         "ux": {
             "version": UX_VERSION,
-            "layout": "operator_view_shell_content_model",
+            "layout": "minimal_review_console_true_modes",
             "default_theme": "dark",
             "theme_toggle": True,
             "developer_appendix_default": "collapsed",
-            "view_shell": "visible",
+            "view_shell": "superseded_by_shell",
+            "fixed_shell": "visible",
             "default_visible_mode": "review",
             "mode_separation": "review_backlog_system",
             "briefing_board": "superseded_by_view_shell",
@@ -326,10 +332,15 @@ def build_operator_cockpit(
             "user_work": recommended_next_action["user_work"],
         },
         "summary": summary,
-        "view_shell": view_shell,
+        "shell": shell,
+        "view_shell": shell,
         "current_work_item": current_work_item,
-        "work_modes": work_modes,
+        "modes": modes,
+        "work_modes": modes,
+        "status_rail": status_rail,
         "queue_summary": queue_summary,
+        "provenance_badges": provenance_badges,
+        "link_targets": link_targets,
         "candidate_groups": candidate_groups,
         "gate_summary": gate_summary,
         "microcopy_policy": microcopy_policy,
@@ -354,17 +365,21 @@ def build_operator_cockpit(
             "blocked_source_record_count": len(blocked_inspection_records),
             "decision_template_entry_count": len(decision_entries),
             "note": (
-                "CPD-11 converts the CPD operator cockpit into a reusable view shell "
-                "and content model. It does not change source, fetch, rights, "
-                "production, or public gates."
+                "CPD-12 converts the CPD operator cockpit into a minimal review "
+                "console with fixed shell regions, true local modes, and explicit "
+                "planning-label provenance. It does not change source, fetch, "
+                "rights, production, or public gates."
             ),
-            "view_shell": "operator_workbench_content_model",
+            "shell": "minimal_review_console",
+            "view_shell": "minimal_review_console",
             "default_visible_mode": "review",
-            "work_mode_count": len(work_modes),
-            "queue_chip_count": len(queue_summary["chips"]),
+            "work_mode_count": len(modes),
+            "queue_chip_count": len(status_rail["chips"]),
             "locked_gate_count": gate_summary["locked_gate_count"],
             "ledger_layout": "responsive_ledger_stacked",
             "title_wrapping_guard": True,
+            "provenance_badge_count": len(provenance_badges),
+            "link_target_count": len(link_targets),
         },
     }
 
@@ -696,10 +711,13 @@ def build_gate_readback(
 
 def build_section_links() -> list[dict[str, str]]:
     return [
-        {"section_id": "review-workbench", "label": "Review Workbench", "href": "#review-workbench"},
+        {"section_id": "review-console", "label": "Review Console", "href": "#review-console"},
+        {"section_id": "mode-review", "label": "Review", "href": "#mode-review"},
         {"section_id": "current-review", "label": "Current Review", "href": "#current-review"},
+        {"section_id": "mode-backlog", "label": "Backlog", "href": "#mode-backlog"},
         {"section_id": "backlog", "label": "Backlog", "href": "#backlog"},
         {"section_id": "candidate-ledger", "label": "Candidate Ledger", "href": "#candidate-ledger"},
+        {"section_id": "mode-system", "label": "System", "href": "#mode-system"},
         {"section_id": "system", "label": "System", "href": "#system"},
         {"section_id": "safety-boundary", "label": "Safety Boundary", "href": "#safety-boundary"},
         {"section_id": "developer-appendix", "label": "Developer Appendix", "href": "#developer-appendix"},
@@ -710,6 +728,7 @@ def build_gate_summary(gates: dict[str, Any]) -> dict[str, Any]:
     locked_gates = list(NOT_YET_FLAGS)
     return {
         "line": f"locked: {' / '.join(locked_gates)}",
+        "compact_line": "locked: fetch/render/upload/rights",
         "locked_gates": locked_gates,
         "locked_gate_count": len(locked_gates),
         "gate_defaults": {
@@ -721,18 +740,26 @@ def build_gate_summary(gates: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def build_queue_summary(*, summary: dict[str, Any], gate_summary: dict[str, Any]) -> dict[str, Any]:
+def build_status_rail(*, summary: dict[str, Any], gate_summary: dict[str, Any]) -> dict[str, Any]:
     chips = [
-        {"id": "candidates", "label": "candidates", "value": summary["total_candidates"], "href": "#candidate-ledger"},
-        {"id": "source_ready", "label": "source ready", "value": summary["source_backed_count"], "href": "#current-review"},
-        {"id": "missing", "label": "missing", "value": summary["source_missing_idea_backlog_count"], "href": "#backlog"},
-        {"id": "hold", "label": "hold", "value": summary["blocked_or_hold_count"], "href": "#backlog"},
-        {"id": "locked_gates", "label": "locked gates", "value": gate_summary["locked_gate_count"], "href": "#system"},
+        {"id": "source_url_present", "label": "URLあり", "value": summary["source_backed_count"], "href": "#mode-review"},
+        {"id": "source_url_waiting", "label": "URL待ち", "value": summary["source_missing_idea_backlog_count"], "href": "#mode-backlog"},
+        {"id": "hold", "label": "保留", "value": summary["blocked_or_hold_count"], "href": "#mode-backlog"},
+        {"id": "locked", "label": "locked", "value": gate_summary["compact_line"].replace("locked: ", ""), "href": "#mode-system"},
     ]
     return {
-        "summary_id": "operator_queue_summary",
+        "status_rail_id": "minimal_review_console_status_rail",
         "chips": chips,
+        "lock_line": gate_summary["compact_line"],
         "source": "local_cpd_json",
+    }
+
+
+def build_queue_summary(*, status_rail: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "summary_id": "operator_queue_summary",
+        "chips": status_rail["chips"],
+        "source": status_rail["source"],
     }
 
 
@@ -758,59 +785,135 @@ def build_candidate_groups(candidate_ledger: list[dict[str, Any]]) -> list[dict[
 
 
 def build_current_work_item(*, action_script: dict[str, Any], gate_summary: dict[str, Any]) -> dict[str, Any]:
+    planning_label = action_script["target_title"]
+    source_url = action_script["source_url"]
     return {
         "work_item_id": "source_identity_review",
-        "label": "Current source review",
-        "title": action_script["target_title"],
+        "label": "Current Review",
+        "title": planning_label,
+        "planning_label": planning_label,
+        "candidate_label": planning_label,
+        "label_provenance": "planning_label_unverified",
+        "verified_video_title": "",
         "target_candidate_id": action_script["target_candidate_id"],
         "target_seed_id": action_script["target_seed_id"],
-        "source_url": action_script["source_url"],
-        "source_button_label": "Open source URL",
+        "source_url": source_url,
+        "source_url_state": "present" if source_url else "missing",
+        "identity_state": "unverified",
+        "fetch_authorized": False,
+        "source_opened_by_worker": False,
+        "source_button_label": "Source URL",
         "question": action_script["question"],
         "unverified_markers": action_script["unverified_markers"],
         "decision_labels": action_script["visual_choices"],
         "locked_line": gate_summary["line"],
-        "user_work": "open_only" if action_script["source_url"] else "source_url_intake",
+        "compact_locked_line": gate_summary["compact_line"],
+        "user_work": "open_only" if source_url else "source_url_intake",
     }
 
 
-def build_work_modes(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+def build_provenance_badges(*, current_work_item: dict[str, Any]) -> list[dict[str, str]]:
+    source_badge = "source_url_present" if current_work_item["source_url_state"] == "present" else "source_url_missing"
+    return [
+        {
+            "id": "planning_label",
+            "label": "planning_label",
+            "meaning": "generated planning label; not a verified video title",
+        },
+        {
+            "id": source_badge,
+            "label": source_badge,
+            "meaning": "source URL is available in local data",
+        },
+        {
+            "id": "identity_unverified",
+            "label": "identity_unverified",
+            "meaning": "human source identity review is still pending",
+        },
+        {
+            "id": "not_fetched",
+            "label": "not_fetched",
+            "meaning": "worker did not open, fetch, download, or initialize media",
+        },
+    ]
+
+
+def build_modes(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
     return [
         {
             "mode_id": "review",
-            "label": "Review mode",
+            "label": "Review",
             "jp_label": "常用",
-            "href": "#current-review",
+            "href": "#mode-review",
+            "panel_id": "mode-review",
+            "button_id": "mode-control-review",
+            "target_slot": "current_work_item",
+            "default_active": True,
             "default_visible": True,
             "purpose": "current work item and OK / NG / HOLD labels",
         },
         {
             "mode_id": "backlog",
-            "label": "Backlog mode",
+            "label": "Backlog",
             "jp_label": "要確認",
-            "href": "#backlog",
+            "href": "#mode-backlog",
+            "panel_id": "mode-backlog",
+            "button_id": "mode-control-backlog",
+            "target_slot": "backlog_groups",
+            "default_active": False,
             "default_visible": False,
             "purpose": f"source missing {summary['source_missing_idea_backlog_count']} and hold {summary['blocked_or_hold_count']}",
         },
         {
             "mode_id": "system",
-            "label": "System mode",
+            "label": "System",
             "jp_label": "開発用",
-            "href": "#system",
+            "href": "#mode-system",
+            "panel_id": "mode-system",
+            "button_id": "mode-control-system",
+            "target_slot": "gate_summary",
+            "default_active": False,
             "default_visible": False,
             "purpose": "closed gates and internal artifacts",
         },
     ]
 
 
-def build_view_shell(*, summary: dict[str, Any], work_modes: list[dict[str, Any]]) -> dict[str, Any]:
+def build_work_modes(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+    return build_modes(summary=summary)
+
+
+def build_shell(*, summary: dict[str, Any], modes: list[dict[str, Any]], artifact_id: str) -> dict[str, Any]:
     return {
-        "shell_id": "operator_workbench_view_shell",
-        "title": "Review Workbench",
-        "subtitle": "Current review stays first; backlog and system readback stay behind mode links.",
+        "shell_id": "minimal_review_console",
+        "title": "Review Console",
+        "console_title": HTML_TITLE,
+        "shell_label": "fixed shell: Review Console",
+        "artifact_id": artifact_id,
+        "version_label": "CPD-12",
+        "branch_label": DEFAULT_BRANCH_LABEL,
+        "subtitle": "Review, Backlog, and System are separate local modes over the same generated data.",
         "content_model_version": UX_VERSION,
+        "fixed_regions": [
+            "console_header",
+            "artifact_version_chip",
+            "mode_switcher",
+            "status_rail",
+            "system_lock_indicator",
+        ],
+        "dynamic_slots": [
+            "current_work_item",
+            "source_url",
+            "planning_label",
+            "provenance_badges",
+            "candidate_counts",
+            "backlog_groups",
+            "candidate_ledger",
+            "gate_summary",
+            "internal_artifacts",
+        ],
         "default_mode": "review",
-        "mode_ids": [mode["mode_id"] for mode in work_modes],
+        "mode_ids": [mode["mode_id"] for mode in modes],
         "anchors": [item["href"] for item in build_section_links()],
         "first_viewport_explanatory_paragraph_limit": 1,
         "default_visible_counts": {
@@ -819,6 +922,31 @@ def build_view_shell(*, summary: dict[str, Any], work_modes: list[dict[str, Any]
             "hold": summary["blocked_or_hold_count"],
         },
     }
+
+
+def build_view_shell(*, summary: dict[str, Any], work_modes: list[dict[str, Any]]) -> dict[str, Any]:
+    return build_shell(
+        summary=summary,
+        modes=work_modes,
+        artifact_id=DEFAULT_ARTIFACT_ID,
+    )
+
+
+def build_link_targets(*, modes: list[dict[str, Any]]) -> list[dict[str, str]]:
+    targets = [
+        {"id": "review-console", "kind": "shell", "href": "#review-console"},
+        {"id": "current-review", "kind": "slot", "href": "#current-review"},
+        {"id": "backlog", "kind": "slot", "href": "#backlog"},
+        {"id": "candidate-ledger", "kind": "slot", "href": "#candidate-ledger"},
+        {"id": "system", "kind": "slot", "href": "#system"},
+        {"id": "safety-boundary", "kind": "slot", "href": "#safety-boundary"},
+        {"id": "developer-appendix", "kind": "slot", "href": "#developer-appendix"},
+    ]
+    mode_targets = [
+        {"id": mode["panel_id"], "kind": "mode_panel", "href": mode["href"]}
+        for mode in modes
+    ]
+    return [targets[0], *mode_targets, *targets[1:]]
 
 
 def build_microcopy_policy() -> dict[str, Any]:
@@ -839,16 +967,16 @@ def build_briefing(
     annotated_flow: list[dict[str, Any]],
 ) -> dict[str, Any]:
     return {
-        "briefing_id": "cpd11_view_shell_readback",
-        "title": "Review Workbench",
+        "briefing_id": "cpd12_minimal_review_console_readback",
+        "title": "Review Console",
         "status_line": (
-            f"source ready {summary['source_backed_count']} / "
-            f"missing {summary['source_missing_idea_backlog_count']} / "
+            f"URLあり {summary['source_backed_count']} / "
+            f"URL待ち {summary['source_missing_idea_backlog_count']} / "
             f"hold {summary['blocked_or_hold_count']}"
         ),
-        "decision_line": "Current source review is the only default action.",
-        "bottleneck_line": "Backlog and hold items are separated from the review workbench.",
-        "locked_line": "locked: fetch / transcript / render / upload / rights",
+        "decision_line": "Current Review is the only default action.",
+        "bottleneck_line": "Backlog and hold items stay behind true mode switching.",
+        "locked_line": "locked: fetch/render/upload/rights",
         "primary_action": {
             "action_id": recommended_next_action["action_id"],
             "label": recommended_next_action["label"],
@@ -1042,7 +1170,7 @@ def build_action_script(*, source_backed: list[dict[str, Any]], summary: dict[st
         "target_seed_id": clean_string(item.get("seed_id")),
         "source_url": clean_string(item.get("source_url")),
         "video_id": clean_string(item.get("video_id")),
-        "question": f"このURLは「{title}」の候補意図と同じ動画に見えるか。",
+        "question": f"このSource URLは Planning label「{title}」の候補意図と同じ動画に見えるか。",
         "open_label": "Source URLを開く",
         "unverified_markers": [
             {"marker": "[ ]", "label": "動画ページが開ける"},
@@ -1106,7 +1234,7 @@ def render_operator_cockpit_html(
     return "\n".join(
         [
             "<!doctype html>",
-            '<html lang="ja" data-theme="dark">',
+            '<html lang="ja" data-theme="dark" data-view="review">',
             "<head>",
             '<meta charset="utf-8">',
             '<meta name="viewport" content="width=device-width, initial-scale=1">',
@@ -1117,14 +1245,12 @@ def render_operator_cockpit_html(
             theme_script(),
             "</head>",
             "<body>",
-            '<a class="skip-link" href="#review-workbench">Review Workbenchへ移動</a>',
+            '<a class="skip-link" href="#mode-review">Reviewへ移動</a>',
             _hero_html(payload),
-            '<main class="page-shell">',
-            _review_workbench_html(payload),
+            '<main id="review-console" class="console-frame">',
+            _review_mode_html(payload),
             _backlog_mode_html(payload),
-            _candidate_ledger_html(payload),
-            _system_mode_html(payload),
-            _developer_appendix_html(payload, output_path, dashboard_path, base_dir),
+            _system_mode_html(payload, output_path, dashboard_path, base_dir),
             "</main>",
             "</body>",
             "</html>",
@@ -1183,21 +1309,21 @@ a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:3px}
 button{font:inherit}
 .skip-link{position:absolute;left:-999px;top:8px;background:var(--surface);color:var(--text);padding:8px;border:1px solid var(--border);border-radius:6px}
 .skip-link:focus{left:8px;z-index:20}
-.hero{
+.console-header{
   border-bottom:1px solid var(--border);
   background:var(--surface);
 }
-.page-shell,.hero-inner{
-  width:min(1040px,calc(100% - 32px));
+.console-header-inner,.console-frame{
+  width:min(1080px,calc(100% - 32px));
   margin:0 auto;
 }
-.hero-inner{padding:22px 0 18px}
-.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.console-header-inner{padding:18px 0 16px}
+.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:start}
 h1,h2,h3,p{margin:0}
-h1{font-size:clamp(24px,4vw,36px);line-height:1.18}
-h2{font-size:22px;line-height:1.28}
-h3{font-size:17px;line-height:1.35}
-.subtitle{margin-top:8px;color:var(--muted);max-width:760px}
+h1{font-size:32px;line-height:1.15;letter-spacing:0}
+h2{font-size:22px;line-height:1.28;letter-spacing:0}
+h3{font-size:17px;line-height:1.35;letter-spacing:0}
+.subtitle{margin-top:6px;color:var(--muted);max-width:760px;font-size:14px}
 .theme-toggle{
   min-width:112px;
   border:1px solid var(--border);
@@ -1207,76 +1333,76 @@ h3{font-size:17px;line-height:1.35}
   padding:8px 10px;
   cursor:pointer;
 }
-.mini-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.mini-nav a{border:1px solid var(--border);border-radius:999px;padding:5px 10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-size:13px}
+.artifact-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.artifact-chip,.mode-control,.state-chip,.provenance-badge,.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:4px 9px;
+  background:var(--surface-2);
+  color:var(--text);
+  text-decoration:none;
+  font-size:13px;
+}
+.artifact-chip strong,.state-chip strong{color:var(--accent-2)}
+.shell-label,.slot-label,.kicker{color:var(--accent);font-weight:700;font-size:12px;text-transform:none;margin-bottom:5px}
+.mode-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.mode-control{border-radius:7px;font-weight:700;padding:7px 10px}
+.mode-control.is-active{border-color:var(--accent);background:rgba(245,158,11,.16)}
+.state-rail{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.lock-line{color:var(--muted);font-size:13px;margin-top:8px}
 main{padding:22px 0 40px}
-section{margin:0 0 18px}
-.surface,.primary-card{
+.console-frame{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:8px;
   box-shadow:var(--shadow);
+  padding:0 20px 20px;
 }
-.surface{padding:18px}
-.workbench-panel{display:grid;gap:16px}
-.workbench-head{display:grid;gap:6px;max-width:850px}
-.state-rail{display:flex;gap:8px;flex-wrap:wrap}
-.state-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:999px;padding:5px 10px;background:var(--surface-2);text-decoration:none;color:var(--text);font-size:13px}
-.state-chip strong{color:var(--accent-2);font-size:15px}
-.mode-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.mode-tab{border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-weight:700}
-.mode-tab.active{border-color:var(--accent);background:rgba(245,158,11,.16)}
-.current-review-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.45fr);gap:14px;align-items:start}
-.current-review-main,.current-review-side,.group-panel{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
-.candidate-title{font-size:24px;line-height:1.34;word-break:normal;overflow-wrap:normal;line-break:strict}
+.mode-panel{padding:20px 0;border-top:1px solid var(--border)}
+.mode-panel:first-child{border-top:0}
+.js-enabled .mode-panel{display:none}
+.js-enabled .mode-panel.is-active{display:block}
+.mode-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.mode-head p{color:var(--muted);font-size:14px;margin-top:4px}
 .compact-line{color:var(--muted);font-size:13px}
-.decision-labels{display:grid;gap:8px;margin-top:10px}
-.decision-label{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:9px}
-.decision-label strong{display:block}
-.backlog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-.group-list{display:grid;gap:7px;margin-top:10px}
-.group-list a{display:block;border-top:1px solid var(--border);padding-top:7px;text-decoration:none;color:var(--text)}
-.system-grid{display:grid;gap:10px}
-.status-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
-.primary-action-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;border:1px solid var(--accent);border-radius:8px;background:var(--surface-2);padding:14px}
-.primary-action-line strong{display:block;font-size:18px}
-.primary-action-line a{display:inline-block;border:1px solid var(--accent);border-radius:6px;padding:7px 10px;text-decoration:none;color:var(--text);background:rgba(245,158,11,.16);font-weight:700}
-.usage-frequency{display:flex;gap:8px;flex-wrap:wrap}
-.usage-frequency a{border:1px solid var(--border);border-radius:999px;padding:5px 9px;text-decoration:none;color:var(--text);background:var(--surface-2);font-size:13px}
-.usage-frequency span{color:var(--accent);font-weight:700}
-.flow-rail{display:grid;gap:8px}
-.flow-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;border-left:4px solid var(--border);background:var(--surface-2);padding:10px 12px;text-decoration:none;color:var(--text);border-radius:0 8px 8px 0}
-.flow-step.current{border-left-color:var(--accent);background:linear-gradient(90deg,rgba(245,158,11,.16),var(--surface-2))}
-.flow-step.locked{border-left-color:var(--muted);opacity:.86}
-.flow-step .index{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:var(--surface-3);font-weight:700}
-.flow-step .annotation{display:block;color:var(--muted);font-size:13px}
-.flow-step .count{font-weight:700;color:var(--accent-2);white-space:nowrap}
-.anchor-alias{position:relative;top:-16px}
-.primary-card{padding:0;overflow:hidden}
-.card-header{padding:18px;border-bottom:1px solid var(--border);background:var(--surface-2)}
-.kicker{color:var(--accent);font-weight:700;font-size:13px;margin-bottom:6px}
-.id-line{margin-top:8px;color:var(--muted);font-size:12px;display:flex;gap:8px;flex-wrap:wrap}
-.card-body{display:grid;gap:16px;padding:18px}
-.review-block{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
-.review-block h3{margin-bottom:8px}
-.source-link{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-3);text-decoration:none;color:var(--text);font-weight:700}
-.url-text{display:block;margin-top:8px;color:var(--muted);font-size:13px;overflow-wrap:break-word;word-break:normal}
-.question{font-size:18px;font-weight:700}
-.checklist{display:grid;gap:8px;margin-top:10px;padding:0;list-style:none}
+.surface{margin-top:18px}
+.current-item-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.38fr);gap:18px;align-items:start;background:var(--surface-2);border-left:4px solid var(--accent);border-radius:8px;padding:16px}
+.candidate-title{font-size:25px;line-height:1.36;word-break:normal;overflow-wrap:normal;line-break:strict;margin-top:2px}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:14px 0 0}
+.meta-grid div{border-top:1px solid var(--border);padding-top:8px}
+.meta-grid dt{color:var(--muted);font-size:12px}
+.meta-grid dd{margin:2px 0 0;font-weight:700}
+.badge-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.provenance-badge{background:var(--surface-3);font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.side-stack{display:grid;gap:13px}
+.source-link{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--accent);border-radius:7px;padding:8px 10px;background:rgba(245,158,11,.16);text-decoration:none;color:var(--text);font-weight:700}
+.url-text{display:block;margin-top:7px;color:var(--muted);font-size:12px;overflow-wrap:break-word;word-break:normal}
+.question{font-size:18px;font-weight:700;margin-top:14px}
+.checklist{display:grid;gap:7px;margin:12px 0 0;padding:0;list-style:none}
 .checklist li{display:flex;gap:8px;align-items:flex-start}
 .review-marker{color:var(--accent);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700}
-.decision-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
-.decision-chip{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:10px}
-.decision-chip strong{display:block;margin-bottom:4px}
-.ok{color:var(--success)}.warn{color:var(--warning)}.danger{color:var(--danger)}
+.decision-labels{display:flex;gap:8px;flex-wrap:wrap}
+.decision-label{border:1px solid var(--border);border-radius:999px;background:var(--surface-3);padding:5px 9px}
+.decision-label strong{margin-right:5px}
+.backlog-list{display:grid;gap:6px}
+.backlog-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;border-top:1px solid var(--border);padding:10px 0;color:var(--text);text-decoration:none}
+.backlog-row strong{line-height:1.45;word-break:normal;overflow-wrap:normal;line-break:strict}
+.backlog-row span{color:var(--muted);font-size:13px}
+.group-panel{padding:10px 0}
+.group-panel + .group-panel{border-top:1px solid var(--border)}
+.system-grid{display:grid;gap:10px}
+.status-line{font-size:19px;font-weight:700;color:var(--ink-soft)}
 .locked-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.pill{border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);font-size:13px;color:var(--text)}
+.ok{color:var(--success)}.warn{color:var(--warning)}.danger{color:var(--danger)}
 .section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
 .section-heading p{color:var(--muted);margin-top:4px}
 .ledger-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .ledger-summary .pill{background:var(--surface-2)}
 .ledger-list{display:grid;gap:10px}
-.ledger-item{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px;display:grid;gap:10px}
+.ledger-item{border-top:1px solid var(--border);padding:12px 0;display:grid;gap:10px}
 .ledger-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .state-badge{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);color:var(--text);font-size:13px;font-weight:700;text-decoration:none}
 .state-badge.source-backed{border-color:rgba(34,197,94,.55)}
@@ -1305,12 +1431,10 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 @media (max-width:720px){
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
-  .primary-action-line{grid-template-columns:1fr}
-  .current-review-grid{grid-template-columns:1fr}
-  .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
+  .current-item-panel{grid-template-columns:1fr}
+  .console-frame,.console-header-inner{width:min(100% - 20px,1080px)}
   .source-link{display:flex;justify-content:center}
-  .flow-step{grid-template-columns:30px minmax(0,1fr)}
-  .flow-step .count{grid-column:2}
+  .backlog-row{grid-template-columns:1fr}
 }
 """
 
@@ -1321,8 +1445,21 @@ def theme_script() -> str:
 (function(){
   const key = "clippipegen.operatorCockpit.theme";
   const root = document.documentElement;
+  root.classList.add("js-enabled");
   const saved = localStorage.getItem(key);
   root.dataset.theme = saved === "light" || saved === "dark" ? saved : "dark";
+  const modeByHash = {
+    "review-console": "review",
+    "mode-review": "review",
+    "current-review": "review",
+    "mode-backlog": "backlog",
+    "backlog": "backlog",
+    "candidate-ledger": "backlog",
+    "mode-system": "system",
+    "system": "system",
+    "safety-boundary": "system",
+    "developer-appendix": "system"
+  };
   function syncButton(){
     const button = document.getElementById("theme-toggle");
     if (!button) return;
@@ -1335,32 +1472,72 @@ def theme_script() -> str:
     localStorage.setItem(key, root.dataset.theme);
     syncButton();
   };
-  document.addEventListener("DOMContentLoaded", syncButton);
+  function modeFromHash(){
+    const id = window.location.hash ? window.location.hash.slice(1) : "";
+    return modeByHash[id] || "review";
+  }
+  function activateMode(mode, focusPanel){
+    const selected = mode === "backlog" || mode === "system" ? mode : "review";
+    root.dataset.view = selected;
+    document.querySelectorAll("[data-mode-panel]").forEach(function(panel){
+      const active = panel.getAttribute("data-mode-panel") === selected;
+      panel.classList.toggle("is-active", active);
+      panel.setAttribute("aria-hidden", active ? "false" : "true");
+    });
+    document.querySelectorAll("[data-mode-target]").forEach(function(control){
+      const active = control.getAttribute("data-mode-target") === selected;
+      control.classList.toggle("is-active", active);
+      control.setAttribute("aria-current", active ? "page" : "false");
+    });
+    const panel = document.getElementById("mode-" + selected);
+    if (focusPanel && panel) {
+      panel.focus({preventScroll:true});
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    syncButton();
+    activateMode(modeFromHash(), false);
+    document.querySelectorAll("[data-mode-target]").forEach(function(control){
+      control.addEventListener("click", function(event){
+        const mode = control.getAttribute("data-mode-target");
+        activateMode(mode, true);
+      });
+    });
+  });
+  window.addEventListener("hashchange", function(){
+    activateMode(modeFromHash(), false);
+  });
 })();
 </script>"""
 
 
 def _hero_html(payload: dict[str, Any]) -> str:
-    shell = payload["view_shell"]
+    shell = payload["shell"]
+    chips = [_state_chip_html(chip) for chip in payload["status_rail"]["chips"]]
+    tabs = [_mode_tab_html(mode) for mode in payload["modes"]]
     return "\n".join(
         [
-            '<header class="hero">',
-            '<div class="hero-inner">',
+            '<header class="console-header">',
+            '<div class="console-header-inner">',
             '<div class="topbar">',
             "<div>",
-            f"<h1>{escape(shell['title'])}</h1>",
+            f'<p class="shell-label">{escape(shell["shell_label"])}</p>',
+            f"<h1>{escape(payload['title'])}</h1>",
             f'<p class="subtitle">{escape(shell["subtitle"])}</p>',
+            '<div class="artifact-strip" aria-label="artifact version">',
+            f'<span class="artifact-chip"><strong>{escape(shell["version_label"])}</strong></span>',
+            f'<span class="artifact-chip">artifact <code>{escape(shell["artifact_id"])}</code></span>',
+            f'<span class="artifact-chip">branch <code>{escape(shell["branch_label"])}</code></span>',
+            "</div>",
             "</div>",
             '<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>',
             "</div>",
-            '<nav class="mini-nav" aria-label="ページ内ナビゲーション">',
-            '<a href="#review-workbench">Workbench</a>',
-            '<a href="#current-review">Current Review</a>',
-            '<a href="#backlog">Backlog</a>',
-            '<a href="#candidate-ledger">Candidate Ledger</a>',
-            '<a href="#system">System</a>',
-            '<a href="#safety-boundary">閉じたゲート</a>',
-            '<a href="#developer-appendix">Developer Appendix</a>',
+            '<div class="state-rail" aria-label="status rail">',
+            *chips,
+            "</div>",
+            f'<p class="lock-line">{escape(payload["status_rail"]["lock_line"])}</p>',
+            '<nav class="mode-tabs" aria-label="Review Console modes">',
+            *tabs,
             "</nav>",
             "</div>",
             "</header>",
@@ -1368,11 +1545,12 @@ def _hero_html(payload: dict[str, Any]) -> str:
     )
 
 
-def _review_workbench_html(payload: dict[str, Any]) -> str:
-    shell = payload["view_shell"]
+def _review_mode_html(payload: dict[str, Any]) -> str:
     item = payload["current_work_item"]
-    chips = [_state_chip_html(chip) for chip in payload["queue_summary"]["chips"]]
-    tabs = [_mode_tab_html(mode) for mode in payload["work_modes"]]
+    badges = [
+        f'<span class="provenance-badge">{escape(badge["label"])}</span>'
+        for badge in item["provenance_badges"]
+    ]
     markers = [
         f'<li><span class="review-marker">{escape(marker["marker"])}</span><span>{escape(marker["label"])}</span></li>'
         for marker in item["unverified_markers"]
@@ -1394,38 +1572,37 @@ def _review_workbench_html(payload: dict[str, Any]) -> str:
     )
     return "\n".join(
         [
-            '<section id="review-workbench" class="surface workbench-panel">',
-            '<div class="workbench-head">',
-            '<p class="kicker">Operator Workbench</p>',
-            f'<h2>{escape(payload["title"])}</h2>',
-            f'<p>{escape(shell["subtitle"])}</p>',
+            '<section id="mode-review" class="mode-panel is-active" data-mode-panel="review" tabindex="-1">',
+            '<div class="mode-head">',
+            '<div><p class="kicker">Review mode / 常用</p><h2>Current Review</h2></div>',
             "</div>",
-            '<div class="state-rail" aria-label="state rail">',
-            *chips,
+            '<div id="current-review" class="current-item-panel">',
+            "<div>",
+            '<p class="slot-label">data slot: current_work_item</p>',
+            '<dl class="meta-grid">',
+            f'<div><dt>Planning label</dt><dd class="candidate-title">{escape(item["planning_label"])}</dd></div>',
+            f'<div><dt>label provenance</dt><dd>{escape(item["label_provenance"])}</dd></div>',
+            f'<div><dt>source URL state</dt><dd>{escape(item["source_url_state"])}</dd></div>',
+            f'<div><dt>identity state</dt><dd>{escape(item["identity_state"])}</dd></div>',
+            "</dl>",
+            '<div class="badge-row" aria-label="provenance badges">',
+            *badges,
             "</div>",
-            '<nav class="mode-tabs" aria-label="work modes">',
-            *tabs,
-            "</nav>",
-            '<div id="current-review" class="current-review-grid">',
-            '<div class="current-review-main">',
-            f'<p class="kicker">{escape(item["label"])}</p>',
-            f'<h3 class="candidate-title">{escape(item["title"])}</h3>',
             f'<p class="question">{escape(item["question"])}</p>',
             '<ul class="checklist">',
             *markers,
             "</ul>",
-            '<p class="compact-line">Markers show unchecked review points, not completed work.</p>',
             "</div>",
-            '<aside class="current-review-side">',
+            '<aside class="side-stack">',
             "<h3>Decision labels</h3>",
             '<div class="decision-labels">',
             *decisions,
             "</div>",
-            '<div style="margin-top:12px">',
+            "<div>",
             source_link,
             f'<span class="url-text">{escape(item["source_url"])}</span>',
             "</div>",
-            f'<p class="compact-line" style="margin-top:12px">{escape(item["locked_line"])}</p>',
+            f'<p class="lock-line">{escape(item["compact_locked_line"])}</p>',
             "</aside>",
             "</div>",
             "</section>",
@@ -1436,14 +1613,15 @@ def _review_workbench_html(payload: dict[str, Any]) -> str:
 def _state_chip_html(chip: dict[str, Any]) -> str:
     return (
         f'<a class="state-chip" href="{escape(chip["href"])}">'
-        f'<span>{escape(chip["label"])}</span><strong>{int(chip["value"])}</strong></a>'
+        f'<span>{escape(chip["label"])}</span><strong>{escape(str(chip["value"]))}</strong></a>'
     )
 
 
 def _mode_tab_html(mode: dict[str, Any]) -> str:
-    class_name = "mode-tab active" if mode["default_visible"] else "mode-tab"
+    class_name = "mode-control is-active" if mode["default_active"] else "mode-control"
     return (
-        f'<a class="{class_name}" href="{escape(mode["href"])}">'
+        f'<a id="{escape(mode["button_id"])}" class="{class_name}" href="{escape(mode["href"])}" '
+        f'data-mode-target="{escape(mode["mode_id"])}">'
         f'{escape(mode["label"])} / {escape(mode["jp_label"])}</a>'
     )
 
@@ -1455,13 +1633,14 @@ def _backlog_mode_html(payload: dict[str, Any]) -> str:
     group_panels = [_candidate_group_panel_html(group) for group in groups]
     return "\n".join(
         [
-            '<section id="backlog" class="surface">',
-            '<div class="section-heading">',
-            '<div><p class="kicker">Backlog mode / 要確認</p><h2>Source backlog</h2><p>URL待ちと保留を現在レビューから分けて置きます。</p></div>',
+            '<section id="mode-backlog" class="mode-panel" data-mode-panel="backlog" tabindex="-1">',
+            '<div id="backlog" class="mode-head">',
+            '<div><p class="kicker">Backlog mode / 要確認</p><h2>Source backlog</h2><p>URL待ちと保留は Current Review と同格にしません。</p></div>',
             "</div>",
-            '<div class="backlog-grid">',
+            '<div class="backlog-list">',
             *group_panels,
             "</div>",
+            _candidate_ledger_html(payload),
             "</section>",
         ]
     )
@@ -1470,10 +1649,13 @@ def _backlog_mode_html(payload: dict[str, Any]) -> str:
 def _candidate_group_panel_html(group: dict[str, Any]) -> str:
     rows = [
         (
-            f'<a href="{escape(item["href"])}">'
+            '<a class="backlog-row" href="#candidate-ledger">'
+            "<span>"
             f'<strong>{escape(item["working_title"])}</strong>'
-            f'<span class="compact-line"> {escape(item["source_state_label"])} / '
-            f'{escape(item["review_state_label"])} / not source-ready</span></a>'
+            f'<span>{escape(item["source_state_label"])} / '
+            f'{escape(item["review_state_label"])} / not source-ready</span>'
+            "</span>"
+            f'<span class="pill">{escape(item["operator_use_label"])}</span></a>'
         )
         for item in group["items"]
     ]
@@ -1481,8 +1663,7 @@ def _candidate_group_panel_html(group: dict[str, Any]) -> str:
         [
             '<article class="group-panel">',
             f'<h3>{escape(group["label"])} <span class="pill">{int(group["count"])}</span></h3>',
-            f'<p class="compact-line">{escape(group["note"])}</p>',
-            '<div class="group-list">',
+            '<div class="backlog-list">',
             *(rows or ['<p class="compact-line">none</p>']),
             "</div>",
             "</article>",
@@ -1490,7 +1671,12 @@ def _candidate_group_panel_html(group: dict[str, Any]) -> str:
     )
 
 
-def _system_mode_html(payload: dict[str, Any]) -> str:
+def _system_mode_html(
+    payload: dict[str, Any],
+    output_path: Path,
+    dashboard_path: Path,
+    base_dir: Path,
+) -> str:
     gate_summary = payload["gate_summary"]
     gates = payload["gate_readback"]
     visible = [
@@ -1507,9 +1693,9 @@ def _system_mode_html(payload: dict[str, Any]) -> str:
     ]
     return "\n".join(
         [
-            '<section id="system" class="surface">',
-            '<div class="section-heading">',
-            '<div><p class="kicker">System mode / 開発用</p><h2>System readback</h2><p class="compact-line">Internal state is subordinate to the current review.</p></div>',
+            '<section id="mode-system" class="mode-panel" data-mode-panel="system" tabindex="-1">',
+            '<div id="system" class="mode-head">',
+            '<div><p class="kicker">System mode / 開発用</p><h2>System readback</h2><p>Internal state is subordinate to the current review.</p></div>',
             "</div>",
             '<div id="safety-boundary" class="system-grid">',
             f'<p class="status-line">{escape(gate_summary["line"])}</p>',
@@ -1520,6 +1706,7 @@ def _system_mode_html(payload: dict[str, Any]) -> str:
             "</div>",
             "</details>",
             "</div>",
+            _developer_appendix_html(payload, output_path, dashboard_path, base_dir),
             "</section>",
         ]
     )

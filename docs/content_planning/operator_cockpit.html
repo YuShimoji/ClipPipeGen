@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ja" data-theme="dark">
+<html lang="ja" data-theme="dark" data-view="review">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ClipPipeGen Review Workbench</title>
+<title>ClipPipeGen Review Console</title>
 <style>
 
 :root{
@@ -54,21 +54,21 @@ a{color:var(--link);text-decoration-thickness:1px;text-underline-offset:3px}
 button{font:inherit}
 .skip-link{position:absolute;left:-999px;top:8px;background:var(--surface);color:var(--text);padding:8px;border:1px solid var(--border);border-radius:6px}
 .skip-link:focus{left:8px;z-index:20}
-.hero{
+.console-header{
   border-bottom:1px solid var(--border);
   background:var(--surface);
 }
-.page-shell,.hero-inner{
-  width:min(1040px,calc(100% - 32px));
+.console-header-inner,.console-frame{
+  width:min(1080px,calc(100% - 32px));
   margin:0 auto;
 }
-.hero-inner{padding:22px 0 18px}
-.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.console-header-inner{padding:18px 0 16px}
+.topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:start}
 h1,h2,h3,p{margin:0}
-h1{font-size:clamp(24px,4vw,36px);line-height:1.18}
-h2{font-size:22px;line-height:1.28}
-h3{font-size:17px;line-height:1.35}
-.subtitle{margin-top:8px;color:var(--muted);max-width:760px}
+h1{font-size:32px;line-height:1.15;letter-spacing:0}
+h2{font-size:22px;line-height:1.28;letter-spacing:0}
+h3{font-size:17px;line-height:1.35;letter-spacing:0}
+.subtitle{margin-top:6px;color:var(--muted);max-width:760px;font-size:14px}
 .theme-toggle{
   min-width:112px;
   border:1px solid var(--border);
@@ -78,76 +78,76 @@ h3{font-size:17px;line-height:1.35}
   padding:8px 10px;
   cursor:pointer;
 }
-.mini-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
-.mini-nav a{border:1px solid var(--border);border-radius:999px;padding:5px 10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-size:13px}
+.artifact-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
+.artifact-chip,.mode-control,.state-chip,.provenance-badge,.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:4px 9px;
+  background:var(--surface-2);
+  color:var(--text);
+  text-decoration:none;
+  font-size:13px;
+}
+.artifact-chip strong,.state-chip strong{color:var(--accent-2)}
+.shell-label,.slot-label,.kicker{color:var(--accent);font-weight:700;font-size:12px;text-transform:none;margin-bottom:5px}
+.mode-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.mode-control{border-radius:7px;font-weight:700;padding:7px 10px}
+.mode-control.is-active{border-color:var(--accent);background:rgba(245,158,11,.16)}
+.state-rail{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.lock-line{color:var(--muted);font-size:13px;margin-top:8px}
 main{padding:22px 0 40px}
-section{margin:0 0 18px}
-.surface,.primary-card{
+.console-frame{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:8px;
   box-shadow:var(--shadow);
+  padding:0 20px 20px;
 }
-.surface{padding:18px}
-.workbench-panel{display:grid;gap:16px}
-.workbench-head{display:grid;gap:6px;max-width:850px}
-.state-rail{display:flex;gap:8px;flex-wrap:wrap}
-.state-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:999px;padding:5px 10px;background:var(--surface-2);text-decoration:none;color:var(--text);font-size:13px}
-.state-chip strong{color:var(--accent-2);font-size:15px}
-.mode-tabs{display:flex;gap:8px;flex-wrap:wrap}
-.mode-tab{border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-weight:700}
-.mode-tab.active{border-color:var(--accent);background:rgba(245,158,11,.16)}
-.current-review-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.45fr);gap:14px;align-items:start}
-.current-review-main,.current-review-side,.group-panel{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
-.candidate-title{font-size:24px;line-height:1.34;word-break:normal;overflow-wrap:normal;line-break:strict}
+.mode-panel{padding:20px 0;border-top:1px solid var(--border)}
+.mode-panel:first-child{border-top:0}
+.js-enabled .mode-panel{display:none}
+.js-enabled .mode-panel.is-active{display:block}
+.mode-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.mode-head p{color:var(--muted);font-size:14px;margin-top:4px}
 .compact-line{color:var(--muted);font-size:13px}
-.decision-labels{display:grid;gap:8px;margin-top:10px}
-.decision-label{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:9px}
-.decision-label strong{display:block}
-.backlog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
-.group-list{display:grid;gap:7px;margin-top:10px}
-.group-list a{display:block;border-top:1px solid var(--border);padding-top:7px;text-decoration:none;color:var(--text)}
-.system-grid{display:grid;gap:10px}
-.status-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
-.primary-action-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;border:1px solid var(--accent);border-radius:8px;background:var(--surface-2);padding:14px}
-.primary-action-line strong{display:block;font-size:18px}
-.primary-action-line a{display:inline-block;border:1px solid var(--accent);border-radius:6px;padding:7px 10px;text-decoration:none;color:var(--text);background:rgba(245,158,11,.16);font-weight:700}
-.usage-frequency{display:flex;gap:8px;flex-wrap:wrap}
-.usage-frequency a{border:1px solid var(--border);border-radius:999px;padding:5px 9px;text-decoration:none;color:var(--text);background:var(--surface-2);font-size:13px}
-.usage-frequency span{color:var(--accent);font-weight:700}
-.flow-rail{display:grid;gap:8px}
-.flow-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;border-left:4px solid var(--border);background:var(--surface-2);padding:10px 12px;text-decoration:none;color:var(--text);border-radius:0 8px 8px 0}
-.flow-step.current{border-left-color:var(--accent);background:linear-gradient(90deg,rgba(245,158,11,.16),var(--surface-2))}
-.flow-step.locked{border-left-color:var(--muted);opacity:.86}
-.flow-step .index{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:var(--surface-3);font-weight:700}
-.flow-step .annotation{display:block;color:var(--muted);font-size:13px}
-.flow-step .count{font-weight:700;color:var(--accent-2);white-space:nowrap}
-.anchor-alias{position:relative;top:-16px}
-.primary-card{padding:0;overflow:hidden}
-.card-header{padding:18px;border-bottom:1px solid var(--border);background:var(--surface-2)}
-.kicker{color:var(--accent);font-weight:700;font-size:13px;margin-bottom:6px}
-.id-line{margin-top:8px;color:var(--muted);font-size:12px;display:flex;gap:8px;flex-wrap:wrap}
-.card-body{display:grid;gap:16px;padding:18px}
-.review-block{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
-.review-block h3{margin-bottom:8px}
-.source-link{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-3);text-decoration:none;color:var(--text);font-weight:700}
-.url-text{display:block;margin-top:8px;color:var(--muted);font-size:13px;overflow-wrap:break-word;word-break:normal}
-.question{font-size:18px;font-weight:700}
-.checklist{display:grid;gap:8px;margin-top:10px;padding:0;list-style:none}
+.surface{margin-top:18px}
+.current-item-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.38fr);gap:18px;align-items:start;background:var(--surface-2);border-left:4px solid var(--accent);border-radius:8px;padding:16px}
+.candidate-title{font-size:25px;line-height:1.36;word-break:normal;overflow-wrap:normal;line-break:strict;margin-top:2px}
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:14px 0 0}
+.meta-grid div{border-top:1px solid var(--border);padding-top:8px}
+.meta-grid dt{color:var(--muted);font-size:12px}
+.meta-grid dd{margin:2px 0 0;font-weight:700}
+.badge-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.provenance-badge{background:var(--surface-3);font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.side-stack{display:grid;gap:13px}
+.source-link{display:inline-flex;justify-content:center;align-items:center;border:1px solid var(--accent);border-radius:7px;padding:8px 10px;background:rgba(245,158,11,.16);text-decoration:none;color:var(--text);font-weight:700}
+.url-text{display:block;margin-top:7px;color:var(--muted);font-size:12px;overflow-wrap:break-word;word-break:normal}
+.question{font-size:18px;font-weight:700;margin-top:14px}
+.checklist{display:grid;gap:7px;margin:12px 0 0;padding:0;list-style:none}
 .checklist li{display:flex;gap:8px;align-items:flex-start}
 .review-marker{color:var(--accent);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700}
-.decision-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
-.decision-chip{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:10px}
-.decision-chip strong{display:block;margin-bottom:4px}
-.ok{color:var(--success)}.warn{color:var(--warning)}.danger{color:var(--danger)}
+.decision-labels{display:flex;gap:8px;flex-wrap:wrap}
+.decision-label{border:1px solid var(--border);border-radius:999px;background:var(--surface-3);padding:5px 9px}
+.decision-label strong{margin-right:5px}
+.backlog-list{display:grid;gap:6px}
+.backlog-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;border-top:1px solid var(--border);padding:10px 0;color:var(--text);text-decoration:none}
+.backlog-row strong{line-height:1.45;word-break:normal;overflow-wrap:normal;line-break:strict}
+.backlog-row span{color:var(--muted);font-size:13px}
+.group-panel{padding:10px 0}
+.group-panel + .group-panel{border-top:1px solid var(--border)}
+.system-grid{display:grid;gap:10px}
+.status-line{font-size:19px;font-weight:700;color:var(--ink-soft)}
 .locked-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.pill{border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);font-size:13px;color:var(--text)}
+.ok{color:var(--success)}.warn{color:var(--warning)}.danger{color:var(--danger)}
 .section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
 .section-heading p{color:var(--muted);margin-top:4px}
 .ledger-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .ledger-summary .pill{background:var(--surface-2)}
 .ledger-list{display:grid;gap:10px}
-.ledger-item{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px;display:grid;gap:10px}
+.ledger-item{border-top:1px solid var(--border);padding:12px 0;display:grid;gap:10px}
 .ledger-row-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .state-badge{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);color:var(--text);font-size:13px;font-weight:700;text-decoration:none}
 .state-badge.source-backed{border-color:rgba(34,197,94,.55)}
@@ -176,12 +176,10 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 @media (max-width:720px){
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
-  .primary-action-line{grid-template-columns:1fr}
-  .current-review-grid{grid-template-columns:1fr}
-  .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
+  .current-item-panel{grid-template-columns:1fr}
+  .console-frame,.console-header-inner{width:min(100% - 20px,1080px)}
   .source-link{display:flex;justify-content:center}
-  .flow-step{grid-template-columns:30px minmax(0,1fr)}
-  .flow-step .count{grid-column:2}
+  .backlog-row{grid-template-columns:1fr}
 }
 
 </style>
@@ -190,8 +188,21 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 (function(){
   const key = "clippipegen.operatorCockpit.theme";
   const root = document.documentElement;
+  root.classList.add("js-enabled");
   const saved = localStorage.getItem(key);
   root.dataset.theme = saved === "light" || saved === "dark" ? saved : "dark";
+  const modeByHash = {
+    "review-console": "review",
+    "mode-review": "review",
+    "current-review": "review",
+    "mode-backlog": "backlog",
+    "backlog": "backlog",
+    "candidate-ledger": "backlog",
+    "mode-system": "system",
+    "system": "system",
+    "safety-boundary": "system",
+    "developer-appendix": "system"
+  };
   function syncButton(){
     const button = document.getElementById("theme-toggle");
     if (!button) return;
@@ -204,102 +215,138 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
     localStorage.setItem(key, root.dataset.theme);
     syncButton();
   };
-  document.addEventListener("DOMContentLoaded", syncButton);
+  function modeFromHash(){
+    const id = window.location.hash ? window.location.hash.slice(1) : "";
+    return modeByHash[id] || "review";
+  }
+  function activateMode(mode, focusPanel){
+    const selected = mode === "backlog" || mode === "system" ? mode : "review";
+    root.dataset.view = selected;
+    document.querySelectorAll("[data-mode-panel]").forEach(function(panel){
+      const active = panel.getAttribute("data-mode-panel") === selected;
+      panel.classList.toggle("is-active", active);
+      panel.setAttribute("aria-hidden", active ? "false" : "true");
+    });
+    document.querySelectorAll("[data-mode-target]").forEach(function(control){
+      const active = control.getAttribute("data-mode-target") === selected;
+      control.classList.toggle("is-active", active);
+      control.setAttribute("aria-current", active ? "page" : "false");
+    });
+    const panel = document.getElementById("mode-" + selected);
+    if (focusPanel && panel) {
+      panel.focus({preventScroll:true});
+    }
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    syncButton();
+    activateMode(modeFromHash(), false);
+    document.querySelectorAll("[data-mode-target]").forEach(function(control){
+      control.addEventListener("click", function(event){
+        const mode = control.getAttribute("data-mode-target");
+        activateMode(mode, true);
+      });
+    });
+  });
+  window.addEventListener("hashchange", function(){
+    activateMode(modeFromHash(), false);
+  });
 })();
 </script>
 </head>
 <body>
-<a class="skip-link" href="#review-workbench">Review Workbenchへ移動</a>
-<header class="hero">
-<div class="hero-inner">
+<a class="skip-link" href="#mode-review">Reviewへ移動</a>
+<header class="console-header">
+<div class="console-header-inner">
 <div class="topbar">
 <div>
-<h1>Review Workbench</h1>
-<p class="subtitle">Current review stays first; backlog and system readback stay behind mode links.</p>
+<p class="shell-label">fixed shell: Review Console</p>
+<h1>ClipPipeGen Review Console</h1>
+<p class="subtitle">Review, Backlog, and System are separate local modes over the same generated data.</p>
+<div class="artifact-strip" aria-label="artifact version">
+<span class="artifact-chip"><strong>CPD-12</strong></span>
+<span class="artifact-chip">artifact <code>clip-cpd12-minimal-review-console-v0-001</code></span>
+<span class="artifact-chip">branch <code>codex/cpd-12-minimal-review-console-v0</code></span>
+</div>
 </div>
 <button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>
 </div>
-<nav class="mini-nav" aria-label="ページ内ナビゲーション">
-<a href="#review-workbench">Workbench</a>
-<a href="#current-review">Current Review</a>
-<a href="#backlog">Backlog</a>
-<a href="#candidate-ledger">Candidate Ledger</a>
-<a href="#system">System</a>
-<a href="#safety-boundary">閉じたゲート</a>
-<a href="#developer-appendix">Developer Appendix</a>
+<div class="state-rail" aria-label="status rail">
+<a class="state-chip" href="#mode-review"><span>URLあり</span><strong>1</strong></a>
+<a class="state-chip" href="#mode-backlog"><span>URL待ち</span><strong>3</strong></a>
+<a class="state-chip" href="#mode-backlog"><span>保留</span><strong>1</strong></a>
+<a class="state-chip" href="#mode-system"><span>locked</span><strong>fetch/render/upload/rights</strong></a>
+</div>
+<p class="lock-line">locked: fetch/render/upload/rights</p>
+<nav class="mode-tabs" aria-label="Review Console modes">
+<a id="mode-control-review" class="mode-control is-active" href="#mode-review" data-mode-target="review">Review / 常用</a>
+<a id="mode-control-backlog" class="mode-control" href="#mode-backlog" data-mode-target="backlog">Backlog / 要確認</a>
+<a id="mode-control-system" class="mode-control" href="#mode-system" data-mode-target="system">System / 開発用</a>
 </nav>
 </div>
 </header>
-<main class="page-shell">
-<section id="review-workbench" class="surface workbench-panel">
-<div class="workbench-head">
-<p class="kicker">Operator Workbench</p>
-<h2>ClipPipeGen Review Workbench</h2>
-<p>Current review stays first; backlog and system readback stay behind mode links.</p>
+<main id="review-console" class="console-frame">
+<section id="mode-review" class="mode-panel is-active" data-mode-panel="review" tabindex="-1">
+<div class="mode-head">
+<div><p class="kicker">Review mode / 常用</p><h2>Current Review</h2></div>
 </div>
-<div class="state-rail" aria-label="state rail">
-<a class="state-chip" href="#candidate-ledger"><span>candidates</span><strong>5</strong></a>
-<a class="state-chip" href="#current-review"><span>source ready</span><strong>1</strong></a>
-<a class="state-chip" href="#backlog"><span>missing</span><strong>3</strong></a>
-<a class="state-chip" href="#backlog"><span>hold</span><strong>1</strong></a>
-<a class="state-chip" href="#system"><span>locked gates</span><strong>5</strong></a>
+<div id="current-review" class="current-item-panel">
+<div>
+<p class="slot-label">data slot: current_work_item</p>
+<dl class="meta-grid">
+<div><dt>Planning label</dt><dd class="candidate-title">番長、船長を完全に勘違いする</dd></div>
+<div><dt>label provenance</dt><dd>planning_label_unverified</dd></div>
+<div><dt>source URL state</dt><dd>present</dd></div>
+<div><dt>identity state</dt><dd>unverified</dd></div>
+</dl>
+<div class="badge-row" aria-label="provenance badges">
+<span class="provenance-badge">planning_label</span>
+<span class="provenance-badge">source_url_present</span>
+<span class="provenance-badge">identity_unverified</span>
+<span class="provenance-badge">not_fetched</span>
 </div>
-<nav class="mode-tabs" aria-label="work modes">
-<a class="mode-tab active" href="#current-review">Review mode / 常用</a>
-<a class="mode-tab" href="#backlog">Backlog mode / 要確認</a>
-<a class="mode-tab" href="#system">System mode / 開発用</a>
-</nav>
-<div id="current-review" class="current-review-grid">
-<div class="current-review-main">
-<p class="kicker">Current source review</p>
-<h3 class="candidate-title">番長、船長を完全に勘違いする</h3>
-<p class="question">このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。</p>
+<p class="question">このSource URLは Planning label「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。</p>
 <ul class="checklist">
 <li><span class="review-marker">[ ]</span><span>動画ページが開ける</span></li>
 <li><span class="review-marker">[ ]</span><span>タイトル / チャンネルが候補の意図と矛盾しない</span></li>
 <li><span class="review-marker">[ ]</span><span>内容が切り抜き軸に関係していそう</span></li>
 <li><span class="review-marker">[ ]</span><span>次にprivate/local検証へ進める価値がある</span></li>
 </ul>
-<p class="compact-line">Markers show unchecked review points, not completed work.</p>
 </div>
-<aside class="current-review-side">
+<aside class="side-stack">
 <h3>Decision labels</h3>
 <div class="decision-labels">
 <div class="decision-label"><strong>OK</strong><span>候補意図と同じ動画に見える</span></div>
 <div class="decision-label"><strong>NG</strong><span>候補意図と違う、またはsourceが違う</span></div>
 <div class="decision-label"><strong>HOLD</strong><span>画面だけではまだ判断しない</span></div>
 </div>
-<div style="margin-top:12px">
-<a class="source-link" href="https://www.youtube.com/watch?v=7J5aS_pcBj4" target="_blank" rel="noreferrer">Open source URL</a>
+<div>
+<a class="source-link" href="https://www.youtube.com/watch?v=7J5aS_pcBj4" target="_blank" rel="noreferrer">Source URL</a>
 <span class="url-text">https://www.youtube.com/watch?v=7J5aS_pcBj4</span>
 </div>
-<p class="compact-line" style="margin-top:12px">locked: fetch / transcript / render / upload / rights</p>
+<p class="lock-line">locked: fetch/render/upload/rights</p>
 </aside>
 </div>
 </section>
-<section id="backlog" class="surface">
-<div class="section-heading">
-<div><p class="kicker">Backlog mode / 要確認</p><h2>Source backlog</h2><p>URL待ちと保留を現在レビューから分けて置きます。</p></div>
+<section id="mode-backlog" class="mode-panel" data-mode-panel="backlog" tabindex="-1">
+<div id="backlog" class="mode-head">
+<div><p class="kicker">Backlog mode / 要確認</p><h2>Source backlog</h2><p>URL待ちと保留は Current Review と同格にしません。</p></div>
 </div>
-<div class="backlog-grid">
+<div class="backlog-list">
 <article class="group-panel">
 <h3>Source backlog <span class="pill">3</span></h3>
-<p class="compact-line">URL待ち。動画未確認の企画メモとして扱います。</p>
-<div class="group-list">
-<a href="#backlog"><strong>日本語の一言で EN 組が固まる</strong><span class="compact-line"> URL待ち / 動画未確認 / not source-ready</span></a>
-<a href="#backlog"><strong>表情が一瞬で変わるホロメン</strong><span class="compact-line"> URL待ち / 動画未確認 / not source-ready</span></a>
-<a href="#backlog"><strong>失敗したのに立て直しが早すぎる</strong><span class="compact-line"> URL待ち / 動画未確認 / not source-ready</span></a>
+<div class="backlog-list">
+<a class="backlog-row" href="#candidate-ledger"><span><strong>日本語の一言で EN 組が固まる</strong><span>URL待ち / 動画未確認 / not source-ready</span></span><span class="pill">URL待ち</span></a>
+<a class="backlog-row" href="#candidate-ledger"><span><strong>表情が一瞬で変わるホロメン</strong><span>URL待ち / 動画未確認 / not source-ready</span></span><span class="pill">URL待ち</span></a>
+<a class="backlog-row" href="#candidate-ledger"><span><strong>失敗したのに立て直しが早すぎる</strong><span>URL待ち / 動画未確認 / not source-ready</span></span><span class="pill">URL待ち</span></a>
 </div>
 </article>
 <article class="group-panel">
 <h3>Hold <span class="pill">1</span></h3>
-<p class="compact-line">権利route待ち。ここから先へ進めません。</p>
-<div class="group-list">
-<a href="#backlog"><strong>歌の合間に急に本音が出る</strong><span class="compact-line"> 保留 / 音楽権利route確認待ち / not source-ready</span></a>
+<div class="backlog-list">
+<a class="backlog-row" href="#candidate-ledger"><span><strong>歌の合間に急に本音が出る</strong><span>保留 / 音楽権利route確認待ち / not source-ready</span></span><span class="pill">権利route待ち</span></a>
 </div>
 </article>
 </div>
-</section>
 <section id="candidate-ledger" class="surface">
 <div class="section-heading">
 <div><p class="kicker">Candidate Ledger</p><h2>Candidate state list</h2><p>比較が必要な時だけ候補5件を開きます。</p></div>
@@ -412,9 +459,10 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </div>
 </details>
 </section>
-<section id="system" class="surface">
-<div class="section-heading">
-<div><p class="kicker">System mode / 開発用</p><h2>System readback</h2><p class="compact-line">Internal state is subordinate to the current review.</p></div>
+</section>
+<section id="mode-system" class="mode-panel" data-mode-panel="system" tabindex="-1">
+<div id="system" class="mode-head">
+<div><p class="kicker">System mode / 開発用</p><h2>System readback</h2><p>Internal state is subordinate to the current review.</p></div>
 </div>
 <div id="safety-boundary" class="system-grid">
 <p class="status-line">locked: fetch / transcript / render / upload / rights</p>
@@ -425,7 +473,6 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </div>
 </details>
 </div>
-</section>
 <section id="developer-appendix" class="surface">
 <div class="section-heading">
 <div><h2>開発用詳細</h2><p>個別 CPD HTML/JSON と machine readback は通常確認では開かない情報です。</p></div>
@@ -434,7 +481,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <summary>artifact_id / machine JSON / 内部 artifact を見る</summary>
 <div class="details-body">
 <p class="muted">
-artifact_id: <code>clip-cpd11-operator-view-shell-v0-001</code><br>
+artifact_id: <code>clip-cpd12-minimal-review-console-v0-001</code><br>
 generated_at: <code>2026-07-07</code><br>
 operator JSON: <code>docs/content_planning/operator_cockpit.json</code><br>
 operator HTML: <code>docs/content_planning/operator_cockpit.html</code>
@@ -550,6 +597,7 @@ operator HTML: <code>docs/content_planning/operator_cockpit.html</code>
 </div>
 </div>
 </details>
+</section>
 </section>
 </main>
 </body>

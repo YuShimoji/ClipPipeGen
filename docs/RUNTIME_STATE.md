@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: content_planning_operator_view_shell_ready
+health: content_planning_minimal_review_console_ready
 progress_pct: 100
 last_touched: 2026-07-07
-next_review_due: open_cpd11_review_workbench_then_review_current_source_or_fill_source_urls
-active_artifact: clip-cpd11-operator-view-shell-v0-001
-latest_content_planning_operator_cockpit_artifact: clip-cpd11-operator-view-shell-v0-001
-latest_content_planning_operator_cockpit_branch: codex/cpd-11-operator-view-shell-v0
+next_review_due: open_cpd12_review_console_then_review_current_source_or_fill_source_urls
+active_artifact: clip-cpd12-minimal-review-console-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd12-minimal-review-console-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-12-minimal-review-console-v0
 latest_content_planning_operator_cockpit_commit: branch_HEAD
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
@@ -44,30 +44,33 @@ check out the active CPD branch before reading project context:
 
 ```powershell
 git fetch origin
-git switch codex/cpd-11-operator-view-shell-v0
+git switch codex/cpd-12-minimal-review-console-v0
 git pull --ff-only
 ```
 
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-cpd11-operator-view-shell-v0-001`. The CPD-11 implementation
-commit is the HEAD of `codex/cpd-11-operator-view-shell-v0`; later handoff-only
+`clip-cpd12-minimal-review-console-v0-001`. The CPD-12 implementation
+commit is the HEAD of `codex/cpd-12-minimal-review-console-v0`; later handoff-only
 commits on the same branch may update this resume packet without changing the
 artifact semantics.
 
-The latest tracked slice is CPD-11. It consumes the human product feedback that
-the CPD-10 ledger repair was readable but still felt text-heavy, vertically
-expansive, and too case-specific for a repeated operator-facing product UI. The
-normal entry point remains `docs/content_planning/operator_cockpit.html`, now as
-a reusable Review Workbench view shell with a compact state rail, Review /
-Backlog / System mode separation, one current source review item, a collapsed
-responsive Candidate Ledger, and subordinate System/developer readback. The only
-source-backed URL is still `cpd01_bancho_marine_misunderstanding`
-(`https://www.youtube.com/watch?v=7J5aS_pcBj4`). The three source-missing ideas
-are explicitly not video-backed, and the song/music-rights-sensitive idea is
-kept in hold.
+The latest tracked slice is CPD-12. It consumes the human product feedback that
+CPD-11 was useful progress but still felt awkward, weakly versioned, link-like
+rather than truly modal, too card/panel-heavy, and unclear about fixed shell
+versus generated data. The normal entry point remains
+`docs/content_planning/operator_cockpit.html`, now as a minimal Review Console
+with a visible CPD-12 artifact chip, fixed shell label, status rail, true local
+Review / Backlog / System modes, one current planning-label review item,
+provenance badges, a collapsed responsive Candidate Ledger, and subordinate
+System/developer readback. The only source-backed URL is still
+`cpd01_bancho_marine_misunderstanding`
+(`https://www.youtube.com/watch?v=7J5aS_pcBj4`). It is labeled as a planning
+label, not a verified video title. The three source-missing ideas are
+explicitly not video-backed, and the song/music-rights-sensitive idea is kept
+in hold.
 
-CPD-11 is a planning information-architecture / view-shell repair only.
+CPD-12 is a planning information-architecture / review-console repair only.
 It reads tracked local CPD-01 through CPD-05 artifacts, writes
 `operator_cockpit.json/html`, and does not open source URLs, search the web, use
 external APIs, download media, create `episodes/` folders, authorize fetch,
@@ -76,9 +79,10 @@ production/public ready.
 
 The next useful move is either to open
 `docs/content_planning/operator_cockpit.html`, use Review mode to review the
-single source identity item with OK / NG / HOLD, or use Backlog mode to fill real
-source metadata for unresolved ideas in a local `source_metadata_registry.json`
-before rerunning CPD-03 and downstream CPD planning steps.
+single planning-label source item with OK / NG / HOLD, or use Backlog mode to
+fill real source metadata for unresolved ideas in a local
+`source_metadata_registry.json` before rerunning CPD-03 and downstream CPD
+planning steps.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. The ED-10bc
 opener-repair state below remains valid historical/current evidence for the

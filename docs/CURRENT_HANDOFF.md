@@ -3,13 +3,13 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: content_planning_operator_view_shell_ready
+health: content_planning_minimal_review_console_ready
 progress_pct: 100
 last_touched: 2026-07-07
-next_review_due: open_cpd11_review_workbench_then_review_current_source_or_fill_source_urls
-active_artifact: clip-cpd11-operator-view-shell-v0-001
-latest_content_planning_operator_cockpit_artifact: clip-cpd11-operator-view-shell-v0-001
-latest_content_planning_operator_cockpit_branch: codex/cpd-11-operator-view-shell-v0
+next_review_due: open_cpd12_review_console_then_review_current_source_or_fill_source_urls
+active_artifact: clip-cpd12-minimal-review-console-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd12-minimal-review-console-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-12-minimal-review-console-v0
 latest_content_planning_operator_cockpit_commit: branch_HEAD
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
@@ -36,25 +36,26 @@ Fetch the remote CPD branch, then read the project context:
 
 ```powershell
 git fetch origin
-git switch codex/cpd-11-operator-view-shell-v0
+git switch codex/cpd-12-minimal-review-console-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-cpd11-operator-view-shell-v0-001`. The CPD-11 implementation
-commit is the HEAD of `codex/cpd-11-operator-view-shell-v0`; later handoff-only
+`clip-cpd12-minimal-review-console-v0-001`. The CPD-12 implementation
+commit is the HEAD of `codex/cpd-12-minimal-review-console-v0`; later handoff-only
 commits on the same branch may update this packet without changing the artifact
 semantics. That is enough to resume without the previous chat.
 
-The durable state to carry forward is: CPD-11 productizes the CPD-10 readable
-ledger into a reusable operator view shell. The normal page to open is
+The durable state to carry forward is: CPD-12 productizes the CPD-11 view shell
+into a minimal reusable Review Console. The normal page to open is
 `docs/content_planning/operator_cockpit.html`, backed by
-`docs/content_planning/operator_cockpit.json`. It defaults to dark mode, opens
-on Review mode with a compact state rail and one current source review item,
-keeps source-waiting and hold records in Backlog mode, keeps closed gates in
-System mode, and leaves the readable Candidate Ledger collapsed below the
-default workbench.
+`docs/content_planning/operator_cockpit.json`. It defaults to dark mode, shows
+the CPD-12 artifact id near the top, labels the fixed shell and current data
+slot, switches Review / Backlog / System as true local modes, and labels the
+current title as a planning label with provenance badges instead of a verified
+video title. The readable Candidate Ledger stays collapsed under Backlog, and
+closed gates/internal artifacts stay in System.
 
 Only one source-backed item is ready for human source identity review:
 `cpd01_bancho_marine_misunderstanding`, title
@@ -63,23 +64,24 @@ Only one source-backed item is ready for human source identity review:
 not current video candidates; they are missing-source or hold records until a
 real source URL and source metadata are added.
 
-Do not treat CPD-11 as source approval, fetch approval, production/public/
+Do not treat CPD-12 as source approval, fetch approval, production/public/
 rights/publishing/monetization approval, transcript/render creation, or episode
 initialization. The worker did not open the source URL and did not use network,
 external APIs, OAuth, or media download paths. Do not track `episodes/` media.
 The older ED-10bc/ED-10bb/ED-10ba sections below remain valid for the Thank v2
 review path, but they are not the active CPD review entry point.
 
-## Current CPD-11 Operator Cockpit View Shell / Content Model v0
+## Current CPD-12 Minimal Review Console / Provenance Contract v0
 
-CPD-11 checkpoint, 2026-07-07 JST:
-`clip-cpd11-operator-view-shell-v0-001` is the active tracked content-planning
-handoff artifact. It consolidates CPD-01 candidate planning, CPD-02 seed drafts,
-CPD-03 source resolution, CPD-04 dry-run episode init plans, and CPD-05 source
-inspection packet records into one reusable Review Workbench. The JSON exposes
-`view_shell`, `current_work_item`, `work_modes`, `queue_summary`,
-`candidate_groups`, `gate_summary`, and `microcopy_policy` so the page is no
-longer a one-off briefing memo.
+CPD-12 checkpoint, 2026-07-07 JST:
+`clip-cpd12-minimal-review-console-v0-001` is the active tracked
+content-planning handoff artifact. It consolidates CPD-01 candidate planning,
+CPD-02 seed drafts, CPD-03 source resolution, CPD-04 dry-run episode init
+plans, and CPD-05 source inspection packet records into one minimal Review
+Console. The JSON exposes `shell`, `modes`, `current_work_item`,
+`provenance_badges`, `status_rail`, `gate_summary`, `link_targets`, and
+`candidate_groups` so the page can distinguish fixed UI shell from dynamic
+candidate data.
 
 Open command:
 
@@ -87,18 +89,18 @@ Open command:
 start docs\content_planning\operator_cockpit.html
 ```
 
-Expected readback: `ux.version=v6_view_shell_content_model_v0`,
-`view_shell.default_mode=review`, `work_mode_count=3`, `queue_chip_count=5`,
-`locked_gate_count=5`, `candidate_ledger_row_count=5`,
-`ledger_layout=responsive_ledger_stacked`, `title_wrapping_guard=true`,
-`fetch_authorized_count=0`, and all execution gates false for source opening,
-network, external API, media download, episode folder creation, rights approval,
-production readiness, and public readiness.
+Expected readback: `ux.version=v7_minimal_review_console_v0`,
+`shell.default_mode=review`, `mode_count=3`, `status_rail_chip_count=4`,
+`provenance_badge_count=4`, `link_target_count>=10`,
+`candidate_ledger_row_count=5`, `ledger_layout=responsive_ledger_stacked`,
+`title_wrapping_guard=true`, `fetch_authorized_count=0`, and all execution
+gates false for source opening, network, external API, media download, episode
+folder creation, rights approval, production readiness, and public readiness.
 
 The next terminal can continue in either direction:
 
-1. Open the cockpit and use Review mode for the one current source identity
-   check.
+1. Open the cockpit and use Review mode for the one current planning-label
+   source identity check.
 2. Use Backlog mode to fill real source metadata for URL-waiting records before
    rerunning CPD-03 and downstream CPD planning steps.
 

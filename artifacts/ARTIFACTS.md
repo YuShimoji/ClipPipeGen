@@ -16,6 +16,33 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-cpd12-minimal-review-console-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Review Console / Minimal Review Console v0 |
+| purpose | Convert the CPD operator cockpit from a weak view shell into a compact reusable review console with explicit fixed shell regions, dynamic data slots, true Review / Backlog / System modes, and planning-label provenance. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-11 view-shell surface in the same output path. |
+| repo_relative_path | `docs/content_planning/operator_cockpit.html` |
+| machine_output | `docs/content_planning/operator_cockpit.json` |
+| source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
+| open_command | `start docs\content_planning\operator_cockpit.html` |
+| generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
+| validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| review_status | Ready as the normal human entry point for CPD planning review. The first viewport shows CPD-12 and the artifact id, a fixed shell label, status rail, true mode controls, and a Current Review data slot. The current item is labeled as a planning label with `planning_label`, `source_url_present`, `identity_unverified`, and `not_fetched` provenance badges. Backlog and System details stay behind their modes, and the Candidate Ledger remains readable and collapsed. |
+| next_action | Open the cockpit first, use Review mode for OK / NG / HOLD on the one planning-label source item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback. |
+
+Boundary flags remain false or pending:
+
+- `source_url_opened_by_worker=false`
+- `source_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
 ## `clip-cpd11-operator-view-shell-v0-001`
 
 | Field | Value |
