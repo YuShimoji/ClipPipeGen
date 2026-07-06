@@ -1,17 +1,19 @@
 {
   "schema_id": "clippipegen.operator_cockpit.v0",
   "schema_version": "v0",
-  "artifact_id": "clip-cpd08-operator-home-funnel-meters-v0-001",
+  "artifact_id": "clip-cpd09-operator-briefing-board-v0-001",
   "generated_at": "2026-07-06",
   "title": "ClipPipeGen Operator Cockpit / Content Planning Review",
   "ux": {
-    "version": "v3_home_funnel_meters_v0",
-    "layout": "operator_home_funnel_meters",
+    "version": "v4_briefing_board_usage_frequency_v0",
+    "layout": "operator_briefing_board_usage_frequency",
     "default_theme": "dark",
     "theme_toggle": true,
     "developer_appendix_default": "collapsed",
-    "home_area": "visible",
-    "action_queue": "visible"
+    "briefing_board": "visible",
+    "annotated_flow": "visible",
+    "candidate_ledger": "compact",
+    "usage_frequency_ia": true
   },
   "source": {
     "network_required": false,
@@ -26,8 +28,8 @@
     }
   },
   "human_review": {
-    "primary_message": "今、人間が確認する動画は 1 件だけです。",
-    "secondary_message": "残り 4 件は元動画未特定の企画メモであり、動画候補として扱いません。",
+    "primary_message": "Human review has one source-backed candidate.",
+    "secondary_message": "The remaining unresolved ideas are source-missing or hold items; they are not video-backed candidates.",
     "operator_open_first": "docs/content_planning/operator_cockpit.html",
     "user_work": "open_only"
   },
@@ -48,106 +50,44 @@
     "internal_artifact_count": 13,
     "health": "ready_for_single_source_identity_review"
   },
-  "home_metrics": [
-    {
-      "metric_id": "total_candidates",
-      "label": "企画候補",
-      "value": 5,
-      "total": 5,
-      "href": "#candidate-state-board",
-      "why": "手元にある候補全体です。",
-      "state": "planning_inventory",
-      "kind": "measured_count"
-    },
-    {
-      "metric_id": "source_backed",
-      "label": "source特定済み",
-      "value": 1,
-      "total": 5,
+  "briefing": {
+    "briefing_id": "cpd09_operator_briefing",
+    "title": "今日のBriefing",
+    "status_line": "source付き候補は 1 件、source未特定は 3 件、保留は 1 件です。",
+    "decision_line": "次に見るのは、番長/船長のURLが候補意図と同じ動画に見えるかだけです。",
+    "bottleneck_line": "判断待ちは人間確認の1件で、source未特定と保留は下段ledgerに退避しています。",
+    "locked_line": "fetch / download / transcript / render / upload / rights approval は未実行です。",
+    "primary_action": {
+      "action_id": "inspect_single_source_backed_item",
+      "label": "今回確認する1件を見る",
       "href": "#primary-review",
-      "why": "人間が確認できるURL付きの候補数です。",
-      "state": "one_primary_review_target",
-      "kind": "measured_count"
-    },
-    {
-      "metric_id": "source_missing_ideas",
-      "label": "source未特定",
-      "value": 3,
-      "total": 5,
-      "href": "#source-missing",
-      "why": "URLがないため、まだ動画候補として扱いません。",
-      "state": "not_video_backed",
-      "kind": "measured_count"
-    },
-    {
-      "metric_id": "blocked_or_hold",
-      "label": "保留",
-      "value": 1,
-      "total": 5,
-      "href": "#blocked-hold",
-      "why": "権利・音楽リスクが分離された候補です。",
-      "state": "hold",
-      "kind": "measured_count"
-    },
-    {
-      "metric_id": "inspectable_packets",
-      "label": "人間確認待ち",
-      "value": 1,
-      "total": 5,
-      "href": "#primary-review",
-      "why": "今開ける確認packetは1件だけです。",
       "state": "human_review_waiting",
-      "kind": "measured_count"
+      "user_work": "open_only"
     },
+    "flow_stage_count": 5
+  },
+  "annotated_flow": [
     {
-      "metric_id": "fetch_authorized",
-      "label": "取得許可",
-      "value": 0,
-      "total": 5,
-      "href": "#safety-boundary",
-      "why": "0のままなので、ここはまだsource review画面です。",
-      "state": "locked",
-      "kind": "measured_count"
-    },
-    {
-      "metric_id": "media_downloaded",
-      "label": "media取得",
-      "value": 0,
-      "total": 1,
-      "href": "#safety-boundary",
-      "why": "動画・音声取得に進んでいないことを示します。",
-      "state": "locked",
-      "kind": "gate_count"
-    },
-    {
-      "metric_id": "episode_dirs_created",
-      "label": "episode dirs",
-      "value": 0,
-      "total": 1,
-      "href": "#safety-boundary",
-      "why": "real episode initは未開始で、CPDではdry-runのみです。",
-      "state": "locked",
-      "kind": "gate_count"
-    }
-  ],
-  "funnel_stages": [
-    {
-      "stage_id": "idea_candidates",
+      "stage_id": "ideas",
       "label": "企画候補",
       "count": 5,
       "total": 5,
-      "href": "#candidate-state-board",
-      "status": "measured",
-      "note": "全候補の入口。"
+      "href": "#candidate-ledger",
+      "status": "inventory",
+      "annotation": "入口。ここは採用判断ではなく候補棚卸しです。",
+      "usage_frequency": "必要時",
+      "is_bottleneck": false
     },
     {
       "stage_id": "source_backed",
-      "label": "source特定済み",
+      "label": "source付き",
       "count": 1,
       "total": 5,
       "href": "#primary-review",
-      "status": "one_ready",
-      "note": "URL付きは1件。"
+      "status": "reviewable",
+      "annotation": "今すぐ人間がURL同一性を見られる候補です。",
+      "usage_frequency": "常用",
+      "is_bottleneck": false
     },
     {
       "stage_id": "human_review_waiting",
@@ -155,66 +95,195 @@
       "count": 1,
       "total": 5,
       "href": "#primary-review",
-      "status": "waiting",
-      "note": "判断待ちのpacket。"
+      "status": "current_bottleneck",
+      "annotation": "ここが今回の詰まりです。OK / NG / HOLD の自由文判断だけを受けます。",
+      "usage_frequency": "常用",
+      "is_bottleneck": true
     },
     {
-      "stage_id": "private_local_review_waiting",
-      "label": "private/local検証待ち",
+      "stage_id": "private_local_review",
+      "label": "private/local検証",
       "count": 0,
       "total": 5,
       "href": "#safety-boundary",
       "status": "locked",
-      "note": "fetch authorizationは0。"
+      "annotation": "0は失敗ではなく、fetch許可前なので閉じている状態です。",
+      "usage_frequency": "後工程",
+      "is_bottleneck": false
     },
     {
-      "stage_id": "edit_render_not_started",
-      "label": "編集・render未開始",
+      "stage_id": "edit_render_public",
+      "label": "edit/render/public",
       "count": 0,
       "total": 5,
       "href": "#safety-boundary",
       "status": "locked",
-      "note": "render / transcript / public gateは未開始。"
+      "annotation": "transcript / render / upload / public gate はまだ開始しません。",
+      "usage_frequency": "後工程",
+      "is_bottleneck": false
     }
   ],
-  "action_queue": [
+  "usage_frequency_sections": [
     {
-      "queue_id": "primary_source_identity",
-      "priority": "primary",
-      "label": "番長/船長のURLが候補意図と同じ動画か確認",
+      "frequency": "常用",
+      "section_id": "briefing-board",
+      "href": "#briefing-board",
+      "role": "最初に読む判断路線図"
+    },
+    {
+      "frequency": "常用",
+      "section_id": "primary-review",
       "href": "#primary-review",
-      "count": 1,
-      "state": "actionable_now",
-      "why": "source URL付きで今判断できる候補は1件だけです。"
+      "role": "今回の1件を確認する操作単位"
     },
     {
-      "queue_id": "secondary_missing_sources",
-      "priority": "secondary",
-      "label": "source未特定の企画メモにURLを足す",
-      "href": "#source-missing",
-      "count": 3,
-      "state": "backlog",
-      "why": "source URLがないため、今は動画候補ではありません。"
+      "frequency": "必要時",
+      "section_id": "candidate-ledger",
+      "href": "#candidate-ledger",
+      "role": "候補状態の比較とsource未特定の確認"
     },
     {
-      "queue_id": "hold_music_rights",
-      "priority": "hold",
-      "label": "歌・音楽権利リスク候補は保留",
-      "href": "#blocked-hold",
-      "count": 1,
-      "state": "hold",
-      "why": "別のrights/publication routeがないままでは進めません。"
+      "frequency": "開発用",
+      "section_id": "developer-appendix",
+      "href": "#developer-appendix",
+      "role": "内部artifactとmachine readbackの退避先"
     }
   ],
+  "candidate_ledger": [
+    {
+      "ledger_group": "source_backed",
+      "candidate_id": "cpd01_bancho_marine_misunderstanding",
+      "seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+      "working_title": "番長、船長を完全に勘違いする",
+      "source_state": "source_url_present_identity_unchecked",
+      "review_state": "human_review_pending",
+      "video_backed": true,
+      "operator_use": "primary_action",
+      "href": "#primary-review",
+      "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "video_id": "7J5aS_pcBj4"
+    },
+    {
+      "ledger_group": "source_missing",
+      "candidate_id": "cpd01_jp_en_phrase_gap",
+      "seed_id": "seed_cpd01_jp_en_phrase_gap",
+      "working_title": "日本語の一言で EN 組が固まる",
+      "source_state": "source_missing",
+      "review_state": "not_reviewable_as_video",
+      "video_backed": false,
+      "operator_use": "source_url_intake_backlog",
+      "href": "#source-missing",
+      "source_url": "",
+      "video_id": ""
+    },
+    {
+      "ledger_group": "source_missing",
+      "candidate_id": "cpd01_reaction_face_chain",
+      "seed_id": "seed_cpd01_reaction_face_chain",
+      "working_title": "表情が一瞬で変わるホロメン",
+      "source_state": "source_missing",
+      "review_state": "not_reviewable_as_video",
+      "video_backed": false,
+      "operator_use": "source_url_intake_backlog",
+      "href": "#source-missing",
+      "source_url": "",
+      "video_id": ""
+    },
+    {
+      "ledger_group": "source_missing",
+      "candidate_id": "cpd01_game_fail_micro_arc",
+      "seed_id": "seed_cpd01_game_fail_micro_arc",
+      "working_title": "失敗したのに立て直しが早すぎる",
+      "source_state": "source_missing",
+      "review_state": "not_reviewable_as_video",
+      "video_backed": false,
+      "operator_use": "source_url_intake_backlog",
+      "href": "#source-missing",
+      "source_url": "",
+      "video_id": ""
+    },
+    {
+      "ledger_group": "blocked_hold",
+      "candidate_id": "cpd01_song_moment_hold",
+      "seed_id": "seed_cpd01_song_moment_hold",
+      "working_title": "歌の合間に急に本音が出る",
+      "source_state": "hold",
+      "review_state": "song_or_music_rights_sensitive",
+      "video_backed": false,
+      "operator_use": "do_not_progress_without_rights_route",
+      "href": "#blocked-hold",
+      "source_url": "",
+      "video_id": ""
+    }
+  ],
+  "action_script": {
+    "script_id": "single_source_identity_check",
+    "target_candidate_id": "cpd01_bancho_marine_misunderstanding",
+    "target_seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+    "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+    "video_id": "7J5aS_pcBj4",
+    "question": "このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
+    "open_label": "YouTube source URLを開いて人間が同一性だけを見る",
+    "unverified_markers": [
+      {
+        "marker": "[ ]",
+        "label": "動画ページが開ける"
+      },
+      {
+        "marker": "[ ]",
+        "label": "タイトル / チャンネルが候補の意図と矛盾しない"
+      },
+      {
+        "marker": "[ ]",
+        "label": "内容が切り抜き軸に関係していそう"
+      },
+      {
+        "marker": "[ ]",
+        "label": "次にprivate/local検証へ進める価値がある"
+      }
+    ],
+    "visual_choices": [
+      {
+        "label": "OK",
+        "meaning": "候補意図と同じ動画に見える"
+      },
+      {
+        "label": "NG",
+        "meaning": "候補意図と違う、またはsourceが違う"
+      },
+      {
+        "label": "HOLD",
+        "meaning": "画面だけではまだ判断しない"
+      }
+    ],
+    "not_yet": [
+      "fetch",
+      "transcript",
+      "render",
+      "public",
+      "rights"
+    ],
+    "source_backed_count": 1
+  },
   "section_links": [
+    {
+      "section_id": "briefing-board",
+      "label": "Briefing Board",
+      "href": "#briefing-board"
+    },
     {
       "section_id": "primary-review",
       "label": "次に判断する1件",
       "href": "#primary-review"
     },
     {
+      "section_id": "candidate-ledger",
+      "label": "Candidate Ledger",
+      "href": "#candidate-ledger"
+    },
+    {
       "section_id": "source-missing",
-      "label": "source未特定の企画メモ",
+      "label": "source未特定",
       "href": "#source-missing"
     },
     {
@@ -565,6 +634,6 @@
     "skipped_source_record_count": 4,
     "blocked_source_record_count": 4,
     "decision_template_entry_count": 1,
-    "note": "CPD-08 is an operator-home information architecture layer over CPD-01 through CPD-05. It does not change source, fetch, rights, production, or public gates."
+    "note": "CPD-09 is a briefing-board information architecture layer over CPD-01 through CPD-05. It does not change source, fetch, rights, production, or public gates."
   }
 }

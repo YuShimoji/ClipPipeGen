@@ -29,7 +29,7 @@ def build_cockpit(tmp_path: Path):
     )
 
 
-def test_operator_cockpit_builds_home_funnel_and_preserves_boundaries(tmp_path: Path):
+def test_operator_cockpit_builds_briefing_board_and_preserves_boundaries(tmp_path: Path):
     result = build_cockpit(tmp_path)
 
     payload = json.loads(result["output_path"].read_text(encoding="utf-8"))
@@ -37,13 +37,15 @@ def test_operator_cockpit_builds_home_funnel_and_preserves_boundaries(tmp_path: 
 
     assert payload["schema_id"] == "clippipegen.operator_cockpit.v0"
     assert payload["title"] == "ClipPipeGen Operator Cockpit / Content Planning Review"
-    assert payload["artifact_id"] == "clip-cpd08-operator-home-funnel-meters-v0-001"
-    assert payload["ux"]["version"] == "v3_home_funnel_meters_v0"
-    assert payload["ux"]["layout"] == "operator_home_funnel_meters"
+    assert payload["artifact_id"] == "clip-cpd09-operator-briefing-board-v0-001"
+    assert payload["ux"]["version"] == "v4_briefing_board_usage_frequency_v0"
+    assert payload["ux"]["layout"] == "operator_briefing_board_usage_frequency"
     assert payload["ux"]["default_theme"] == "dark"
     assert payload["ux"]["theme_toggle"] is True
-    assert payload["ux"]["home_area"] == "visible"
-    assert payload["ux"]["action_queue"] == "visible"
+    assert payload["ux"]["briefing_board"] == "visible"
+    assert payload["ux"]["annotated_flow"] == "visible"
+    assert payload["ux"]["candidate_ledger"] == "compact"
+    assert payload["ux"]["usage_frequency_ia"] is True
     assert payload["ux"]["developer_appendix_default"] == "collapsed"
 
     summary = payload["summary"]
@@ -63,49 +65,49 @@ def test_operator_cockpit_builds_home_funnel_and_preserves_boundaries(tmp_path: 
     assert payload["recommended_next_action"]["action_id"] == "inspect_single_source_backed_item"
     assert payload["recommended_next_action"]["user_work"] == "open_only"
 
-    metric_by_id = {item["metric_id"]: item for item in payload["home_metrics"]}
-    assert set(metric_by_id) == {
-        "total_candidates",
-        "source_backed",
-        "source_missing_ideas",
-        "blocked_or_hold",
-        "inspectable_packets",
-        "fetch_authorized",
-        "media_downloaded",
-        "episode_dirs_created",
-    }
-    assert metric_by_id["source_backed"]["value"] == 1
-    assert metric_by_id["source_backed"]["href"] == "#primary-review"
-    assert metric_by_id["source_missing_ideas"]["value"] == 3
-    assert metric_by_id["source_missing_ideas"]["href"] == "#source-missing"
-    assert metric_by_id["blocked_or_hold"]["value"] == 1
-    assert metric_by_id["blocked_or_hold"]["href"] == "#blocked-hold"
-    assert metric_by_id["fetch_authorized"]["value"] == 0
-    assert metric_by_id["media_downloaded"]["value"] == 0
-    assert metric_by_id["episode_dirs_created"]["value"] == 0
+    briefing = payload["briefing"]
+    assert briefing["briefing_id"] == "cpd09_operator_briefing"
+    assert briefing["primary_action"]["href"] == "#primary-review"
+    assert briefing["primary_action"]["state"] == "human_review_waiting"
+    assert briefing["flow_stage_count"] == 5
+    assert "fetch / download / transcript / render / upload / rights approval" in briefing["locked_line"]
 
-    assert [stage["stage_id"] for stage in payload["funnel_stages"]] == [
-        "idea_candidates",
+    assert [stage["stage_id"] for stage in payload["annotated_flow"]] == [
+        "ideas",
         "source_backed",
         "human_review_waiting",
-        "private_local_review_waiting",
-        "edit_render_not_started",
+        "private_local_review",
+        "edit_render_public",
     ]
-    assert [stage["count"] for stage in payload["funnel_stages"]] == [5, 1, 1, 0, 0]
-    assert payload["funnel_stages"][1]["href"] == "#primary-review"
-    assert payload["funnel_stages"][3]["status"] == "locked"
+    assert [stage["count"] for stage in payload["annotated_flow"]] == [5, 1, 1, 0, 0]
+    assert payload["annotated_flow"][1]["href"] == "#primary-review"
+    assert payload["annotated_flow"][2]["is_bottleneck"] is True
+    assert payload["annotated_flow"][3]["status"] == "locked"
 
-    assert [item["priority"] for item in payload["action_queue"]] == [
-        "primary",
-        "secondary",
-        "hold",
+    assert [item["frequency"] for item in payload["usage_frequency_sections"]] == [
+        "常用",
+        "常用",
+        "必要時",
+        "開発用",
     ]
-    assert payload["action_queue"][0]["href"] == "#primary-review"
-    assert payload["action_queue"][0]["count"] == 1
-    assert payload["action_queue"][1]["href"] == "#source-missing"
-    assert payload["action_queue"][2]["href"] == "#blocked-hold"
+    assert payload["usage_frequency_sections"][2]["section_id"] == "candidate-ledger"
+    ledger_by_id = {item["candidate_id"]: item for item in payload["candidate_ledger"]}
+    assert len(ledger_by_id) == 5
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["video_backed"] is True
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["href"] == "#primary-review"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["ledger_group"] == "source_missing"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["video_backed"] is False
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["review_state"] == "not_reviewable_as_video"
+    assert ledger_by_id["cpd01_song_moment_hold"]["ledger_group"] == "blocked_hold"
+
+    assert payload["action_script"]["script_id"] == "single_source_identity_check"
+    assert payload["action_script"]["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
+    assert payload["action_script"]["visual_choices"][0]["label"] == "OK"
+    assert all(marker["marker"] == "[ ]" for marker in payload["action_script"]["unverified_markers"])
     assert {item["section_id"] for item in payload["section_links"]} >= {
+        "briefing-board",
         "primary-review",
+        "candidate-ledger",
         "source-missing",
         "blocked-hold",
         "safety-boundary",
@@ -171,17 +173,18 @@ def test_operator_cockpit_builds_home_funnel_and_preserves_boundaries(tmp_path: 
     assert "toggleOperatorTheme" in html
     assert "localStorage" in html
     assert 'id="theme-toggle"' in html
-    assert "Operator Home / Funnel Meters v0" in html
-    assert 'id="operator-home"' in html
-    assert "Candidate Funnel" in html
-    assert 'id="action-queue"' in html
-    assert "Action Queue" in html
+    assert "Briefing Board / Usage-Frequency IA v0" in html
+    assert 'id="briefing-board"' in html
+    assert "常用 / Briefing Board" in html
+    assert "annotated flow" in html
+    assert "Primary Review Script" in html
+    assert 'id="candidate-ledger"' in html
+    assert "Candidate Ledger" in html
     assert 'href="#primary-review"' in html
     assert 'href="#source-missing"' in html
     assert 'href="#blocked-hold"' in html
     assert 'id="primary-review"' in html
     assert 'id="primary-review-card"' in html
-    assert 'id="candidate-state-board"' in html
     assert 'id="source-missing"' in html
     assert 'id="blocked-hold"' in html
     assert 'id="safety-boundary"' in html
@@ -189,18 +192,23 @@ def test_operator_cockpit_builds_home_funnel_and_preserves_boundaries(tmp_path: 
     assert "not video-backed" in html
     assert "cpd01_jp_en_phrase_gap" in html
     assert "do_not_treat_as_video-backed_candidate" not in html
+    assert "checkmark" not in html
+    assert "✓" not in html
+    assert "Operator Home / Funnel Meters v0" not in html
+    assert 'id="operator-home"' not in html
+    assert "Action Queue" not in html
+    assert 'id="action-queue"' not in html
+    assert "meter-grid" not in html
+    assert "queue-grid" not in html
     assert "content_dashboard.html" in html
     assert "source_inspection_packet_dashboard.html" in html
     assert "artifact_id:" not in html[: html.index('id="developer-appendix"')]
 
-    home_area = html[html.index('id="operator-home"') : html.index('id="action-queue"')]
-    action_area = html[html.index('id="action-queue"') : html.index('id="primary-review"')]
-    assert "<table>" not in home_area
-    assert "<table>" not in action_area
-    assert html.index('id="operator-home"') < html.index('id="action-queue"')
-    assert html.index('id="action-queue"') < html.index('id="primary-review"')
-    assert html.index('id="primary-review"') < html.index('id="candidate-state-board"')
-    assert html.index('id="candidate-state-board"') < html.index('id="safety-boundary"')
+    briefing_area = html[html.index('id="briefing-board"') : html.index('id="primary-review"')]
+    assert "<table>" not in briefing_area
+    assert html.index('id="briefing-board"') < html.index('id="primary-review"')
+    assert html.index('id="primary-review"') < html.index('id="candidate-ledger"')
+    assert html.index('id="candidate-ledger"') < html.index('id="safety-boundary"')
     assert html.index('id="safety-boundary"') < html.index('id="developer-appendix"')
     assert "<details open" not in html
     assert not (tmp_path / "episodes").exists()
@@ -251,15 +259,17 @@ def test_build_operator_cockpit_cli_writes_outputs(tmp_path: Path):
 
     assert completed.returncode == 0, completed.stderr
     payload = json.loads(completed.stdout)
-    assert payload["artifact_id"] == "clip-cpd08-operator-home-funnel-meters-v0-001"
+    assert payload["artifact_id"] == "clip-cpd09-operator-briefing-board-v0-001"
     assert payload["total_candidates"] == 5
     assert payload["source_backed_count"] == 1
     assert payload["source_missing_count"] == 4
     assert payload["source_missing_idea_backlog_count"] == 3
     assert payload["blocked_or_hold_count"] == 1
-    assert payload["home_metric_count"] == 8
-    assert payload["funnel_stage_count"] == 5
-    assert payload["action_queue_count"] == 3
+    assert payload["briefing_present"] is True
+    assert payload["annotated_flow_stage_count"] == 5
+    assert payload["usage_frequency_section_count"] == 4
+    assert payload["candidate_ledger_row_count"] == 5
+    assert payload["action_script_id"] == "single_source_identity_check"
     assert payload["recommended_next_action"] == "inspect_single_source_backed_item"
     assert payload["source_opened_by_worker"] is False
     assert payload["network_required"] is False

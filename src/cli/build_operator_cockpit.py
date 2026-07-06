@@ -21,7 +21,7 @@ def run(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="build-operator-cockpit",
         description=(
-            "Build the CPD-08 operator home / funnel meters cockpit from CPD-01 "
+            "Build the CPD-09 operator briefing board cockpit from CPD-01 "
             "through CPD-05 planning artifacts. This writes a human-facing "
             "dark-mode review surface only; it does not open URLs, fetch media, "
             "create episode folders, approve rights, or mark anything production/public ready."
@@ -103,9 +103,11 @@ def run(argv: list[str]) -> int:
         "blocked_or_hold_count": summary["blocked_or_hold_count"],
         "inspectable_packet_count": summary["inspectable_packet_count"],
         "fetch_authorized_count": summary["fetch_authorized_count"],
-        "home_metric_count": len(payload["home_metrics"]),
-        "funnel_stage_count": len(payload["funnel_stages"]),
-        "action_queue_count": len(payload["action_queue"]),
+        "briefing_present": bool(payload["briefing"]),
+        "annotated_flow_stage_count": len(payload["annotated_flow"]),
+        "usage_frequency_section_count": len(payload["usage_frequency_sections"]),
+        "candidate_ledger_row_count": len(payload["candidate_ledger"]),
+        "action_script_id": payload["action_script"]["script_id"],
         "recommended_next_action": payload["recommended_next_action"]["action_id"],
         "operator_cockpit_json": str(result["output_path"]).replace("\\", "/"),
         "operator_cockpit_html": str(result["dashboard_path"]).replace("\\", "/"),
@@ -132,9 +134,11 @@ def run(argv: list[str]) -> int:
         print(f"blocked_or_hold_count: {cli_payload['blocked_or_hold_count']}")
         print(f"inspectable_packet_count: {cli_payload['inspectable_packet_count']}")
         print(f"fetch_authorized_count: {cli_payload['fetch_authorized_count']}")
-        print(f"home_metric_count: {cli_payload['home_metric_count']}")
-        print(f"funnel_stage_count: {cli_payload['funnel_stage_count']}")
-        print(f"action_queue_count: {cli_payload['action_queue_count']}")
+        print(f"briefing_present: {str(cli_payload['briefing_present']).lower()}")
+        print(f"annotated_flow_stage_count: {cli_payload['annotated_flow_stage_count']}")
+        print(f"usage_frequency_section_count: {cli_payload['usage_frequency_section_count']}")
+        print(f"candidate_ledger_row_count: {cli_payload['candidate_ledger_row_count']}")
+        print(f"action_script_id: {cli_payload['action_script_id']}")
         print(f"recommended_next_action: {cli_payload['recommended_next_action']}")
         print(f"operator_cockpit_json: {cli_payload['operator_cockpit_json']}")
         print(f"operator_cockpit_html: {cli_payload['operator_cockpit_html']}")

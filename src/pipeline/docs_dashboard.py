@@ -66,29 +66,30 @@ STATUS_HEALTH = {
 
 
 CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID = (
-    "clip-cpd08-operator-home-funnel-meters-v0-001"
+    "clip-cpd09-operator-briefing-board-v0-001"
 )
 
 
 def _current_focus() -> dict[str, Any]:
     return {
-        "feature_id": "CPD-08",
+        "feature_id": "CPD-09",
         "artifact_id": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-        "state": "content_planning_operator_home_ready",
-        "title": "ClipPipeGen Operator Cockpit / Operator Home Funnel Meters v0",
+        "state": "content_planning_operator_briefing_board_ready",
+        "title": "ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0",
         "human_entrypoint": "docs/content_planning/operator_cockpit.html",
         "machine_readback": "docs/content_planning/operator_cockpit.json",
         "handoff": "docs/CURRENT_HANDOFF.md",
         "notes": "docs/content_planning/README.md",
-        "review_shape": "operator_home_then_single_source_identity_check",
+        "review_shape": "briefing_board_then_single_source_identity_check",
         "source_backed_count": 1,
         "source_missing_count": 4,
         "source_missing_idea_backlog_count": 3,
         "blocked_or_hold_count": 1,
         "fetch_authorized_count": 0,
-        "home_metric_count": 8,
-        "funnel_stage_count": 5,
-        "action_queue_count": 3,
+        "briefing_present": True,
+        "annotated_flow_stage_count": 5,
+        "usage_frequency_section_count": 4,
+        "candidate_ledger_row_count": 5,
         "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
         "source_backed_title": "番長、船長を完全に勘違いする",
         "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
@@ -103,12 +104,11 @@ def _current_focus() -> dict[str, Any]:
             "production_ready": False,
             "public_ready": False,
         },
-        "next_review_action_type": "INSPECT_SINGLE_SOURCE_BACKED_ITEM_OR_FILL_SOURCE_URLS",
+        "next_review_action_type": "OPEN_BRIEFING_BOARD_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
         "next_action": (
-            "Open docs/content_planning/operator_cockpit.html, read the Operator "
-            "Home funnel meters and Action Queue, then inspect the one source "
-            "identity card or add real source metadata before rerunning CPD-03 "
-            "through CPD-08."
+            "Open docs/content_planning/operator_cockpit.html, read the Briefing "
+            "Board annotated flow, then inspect the one source identity script "
+            "or add real source metadata before rerunning CPD-03 through CPD-09."
         ),
         "legacy_context": {
             "previous_focus_feature_id": "ED-10bc",
@@ -641,10 +641,10 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
-            "item": "CPD-08 operator home / source identity review",
+            "item": "CPD-09 operator briefing board / source identity review",
             "artifact": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-            "question": "Does the Operator Home clearly show the single source-backed item, and does that source match the Bancho/Marine misunderstanding candidate?",
-            "next_route": "Open docs/content_planning/operator_cockpit.html first; unresolved CPD ideas need real source URL/metadata intake before fetch/init/transcript/edit/render work.",
+            "question": "Does the Briefing Board guide the operator to the one source-backed Bancho/Marine URL without making source-missing ideas look video-backed?",
+            "next_route": "Open docs/content_planning/operator_cockpit.html first; use the Primary Review Script for OK/NG/HOLD, or add real source URL/metadata before fetch/init/transcript/edit/render work.",
         },
         {
             "item": "ED-10bc Thank v2 opener repair",

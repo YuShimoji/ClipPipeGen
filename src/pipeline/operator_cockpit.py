@@ -1,4 +1,4 @@
-"""CPD-08 operator cockpit home / funnel UX builder.
+"""CPD-09 operator cockpit briefing-board UX builder.
 
 This module consolidates the CPD-01 through CPD-05 planning artifacts into one
 operator-facing entry point. It only reads local JSON artifacts and writes
@@ -16,12 +16,12 @@ from typing import Any
 from .content_planning import display_path, write_json, write_text
 
 SCHEMA_ID = "clippipegen.operator_cockpit.v0"
-DEFAULT_ARTIFACT_ID = "clip-cpd08-operator-home-funnel-meters-v0-001"
+DEFAULT_ARTIFACT_ID = "clip-cpd09-operator-briefing-board-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-06"
 DEFAULT_OUTPUT_FILENAME = "operator_cockpit.json"
 DEFAULT_DASHBOARD_FILENAME = "operator_cockpit.html"
 HTML_TITLE = "ClipPipeGen Operator Cockpit / Content Planning Review"
-UX_VERSION = "v3_home_funnel_meters_v0"
+UX_VERSION = "v4_briefing_board_usage_frequency_v0"
 
 NOT_YET_FLAGS = [
     "fetch",
@@ -219,9 +219,19 @@ def build_operator_cockpit(
         source_backed=source_backed,
     )
     section_links = build_section_links()
-    home_metrics = build_home_metrics(summary=summary, gates=gates)
-    funnel_stages = build_funnel_stages(summary=summary)
-    action_queue = build_action_queue(summary=summary)
+    annotated_flow = build_annotated_flow(summary=summary)
+    usage_frequency_sections = build_usage_frequency_sections()
+    candidate_ledger = build_candidate_ledger(
+        source_backed=source_backed,
+        source_missing_ideas=source_missing_ideas,
+        blocked_or_hold=blocked_or_hold,
+    )
+    action_script = build_action_script(source_backed=source_backed, summary=summary)
+    briefing = build_briefing(
+        summary=summary,
+        recommended_next_action=recommended_next_action,
+        annotated_flow=annotated_flow,
+    )
     generated_from = generated_from_records(
         candidates_path=candidates_path,
         seed_path=seed_path,
@@ -246,12 +256,14 @@ def build_operator_cockpit(
         "title": HTML_TITLE,
         "ux": {
             "version": UX_VERSION,
-            "layout": "operator_home_funnel_meters",
+            "layout": "operator_briefing_board_usage_frequency",
             "default_theme": "dark",
             "theme_toggle": True,
             "developer_appendix_default": "collapsed",
-            "home_area": "visible",
-            "action_queue": "visible",
+            "briefing_board": "visible",
+            "annotated_flow": "visible",
+            "candidate_ledger": "compact",
+            "usage_frequency_ia": True,
         },
         "source": {
             "network_required": False,
@@ -266,15 +278,20 @@ def build_operator_cockpit(
             },
         },
         "human_review": {
-            "primary_message": "今、人間が確認する動画は 1 件だけです。",
-            "secondary_message": "残り 4 件は元動画未特定の企画メモであり、動画候補として扱いません。",
+            "primary_message": "Human review has one source-backed candidate.",
+            "secondary_message": (
+                "The remaining unresolved ideas are source-missing or hold items; "
+                "they are not video-backed candidates."
+            ),
             "operator_open_first": display_path(dashboard_path, base_dir),
             "user_work": recommended_next_action["user_work"],
         },
         "summary": summary,
-        "home_metrics": home_metrics,
-        "funnel_stages": funnel_stages,
-        "action_queue": action_queue,
+        "briefing": briefing,
+        "annotated_flow": annotated_flow,
+        "usage_frequency_sections": usage_frequency_sections,
+        "candidate_ledger": candidate_ledger,
+        "action_script": action_script,
         "section_links": section_links,
         "recommended_next_action": recommended_next_action,
         "gate_readback": gates,
@@ -291,7 +308,7 @@ def build_operator_cockpit(
             "blocked_source_record_count": len(blocked_inspection_records),
             "decision_template_entry_count": len(decision_entries),
             "note": (
-                "CPD-08 is an operator-home information architecture layer over CPD-01 through CPD-05. "
+                "CPD-09 is a briefing-board information architecture layer over CPD-01 through CPD-05. "
                 "It does not change source, fetch, rights, production, or public gates."
             ),
         },
@@ -625,180 +642,217 @@ def build_gate_readback(
 
 def build_section_links() -> list[dict[str, str]]:
     return [
-        {"section_id": "primary-review", "label": "\u6b21\u306b\u5224\u65ad\u3059\u308b1\u4ef6", "href": "#primary-review"},
-        {"section_id": "source-missing", "label": "source\u672a\u7279\u5b9a\u306e\u4f01\u753b\u30e1\u30e2", "href": "#source-missing"},
-        {"section_id": "blocked-hold", "label": "\u4fdd\u7559", "href": "#blocked-hold"},
-        {"section_id": "safety-boundary", "label": "\u9589\u3058\u305f\u30b2\u30fc\u30c8", "href": "#safety-boundary"},
-        {"section_id": "developer-appendix", "label": "\u958b\u767a\u7528\u8a73\u7d30", "href": "#developer-appendix"},
+        {"section_id": "briefing-board", "label": "Briefing Board", "href": "#briefing-board"},
+        {"section_id": "primary-review", "label": "次に判断する1件", "href": "#primary-review"},
+        {"section_id": "candidate-ledger", "label": "Candidate Ledger", "href": "#candidate-ledger"},
+        {"section_id": "source-missing", "label": "source未特定", "href": "#source-missing"},
+        {"section_id": "blocked-hold", "label": "保留", "href": "#blocked-hold"},
+        {"section_id": "safety-boundary", "label": "閉じたゲート", "href": "#safety-boundary"},
+        {"section_id": "developer-appendix", "label": "開発用詳細", "href": "#developer-appendix"},
     ]
 
 
-def build_home_metrics(*, summary: dict[str, Any], gates: dict[str, Any]) -> list[dict[str, Any]]:
-    return [
-        {
-            "metric_id": "total_candidates",
-            "label": "\u4f01\u753b\u5019\u88dc",
-            "value": summary["total_candidates"],
-            "total": summary["total_candidates"],
-            "href": "#candidate-state-board",
-            "why": "\u624b\u5143\u306b\u3042\u308b\u5019\u88dc\u5168\u4f53\u3067\u3059\u3002",
-            "state": "planning_inventory",
-            "kind": "measured_count",
-        },
-        {
-            "metric_id": "source_backed",
-            "label": "source\u7279\u5b9a\u6e08\u307f",
-            "value": summary["source_backed_count"],
-            "total": summary["total_candidates"],
+def build_briefing(
+    *,
+    summary: dict[str, Any],
+    recommended_next_action: dict[str, Any],
+    annotated_flow: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "briefing_id": "cpd09_operator_briefing",
+        "title": "今日のBriefing",
+        "status_line": (
+            f"source付き候補は {summary['source_backed_count']} 件、"
+            f"source未特定は {summary['source_missing_idea_backlog_count']} 件、"
+            f"保留は {summary['blocked_or_hold_count']} 件です。"
+        ),
+        "decision_line": "次に見るのは、番長/船長のURLが候補意図と同じ動画に見えるかだけです。",
+        "bottleneck_line": "判断待ちは人間確認の1件で、source未特定と保留は下段ledgerに退避しています。",
+        "locked_line": "fetch / download / transcript / render / upload / rights approval は未実行です。",
+        "primary_action": {
+            "action_id": recommended_next_action["action_id"],
+            "label": recommended_next_action["label"],
             "href": "#primary-review",
-            "why": "\u4eba\u9593\u304c\u78ba\u8a8d\u3067\u304d\u308bURL\u4ed8\u304d\u306e\u5019\u88dc\u6570\u3067\u3059\u3002",
-            "state": "one_primary_review_target",
-            "kind": "measured_count",
-        },
-        {
-            "metric_id": "source_missing_ideas",
-            "label": "source\u672a\u7279\u5b9a",
-            "value": summary["source_missing_idea_backlog_count"],
-            "total": summary["total_candidates"],
-            "href": "#source-missing",
-            "why": "URL\u304c\u306a\u3044\u305f\u3081\u3001\u307e\u3060\u52d5\u753b\u5019\u88dc\u3068\u3057\u3066\u6271\u3044\u307e\u305b\u3093\u3002",
-            "state": "not_video_backed",
-            "kind": "measured_count",
-        },
-        {
-            "metric_id": "blocked_or_hold",
-            "label": "\u4fdd\u7559",
-            "value": summary["blocked_or_hold_count"],
-            "total": summary["total_candidates"],
-            "href": "#blocked-hold",
-            "why": "\u6a29\u5229\u30fb\u97f3\u697d\u30ea\u30b9\u30af\u304c\u5206\u96e2\u3055\u308c\u305f\u5019\u88dc\u3067\u3059\u3002",
-            "state": "hold",
-            "kind": "measured_count",
-        },
-        {
-            "metric_id": "inspectable_packets",
-            "label": "\u4eba\u9593\u78ba\u8a8d\u5f85\u3061",
-            "value": summary["inspectable_packet_count"],
-            "total": summary["total_candidates"],
-            "href": "#primary-review",
-            "why": "\u4eca\u958b\u3051\u308b\u78ba\u8a8dpacket\u306f1\u4ef6\u3060\u3051\u3067\u3059\u3002",
             "state": "human_review_waiting",
-            "kind": "measured_count",
+            "user_work": recommended_next_action["user_work"],
         },
-        {
-            "metric_id": "fetch_authorized",
-            "label": "\u53d6\u5f97\u8a31\u53ef",
-            "value": summary["fetch_authorized_count"],
-            "total": summary["total_candidates"],
-            "href": "#safety-boundary",
-            "why": "0\u306e\u307e\u307e\u306a\u306e\u3067\u3001\u3053\u3053\u306f\u307e\u3060source review\u753b\u9762\u3067\u3059\u3002",
-            "state": "locked",
-            "kind": "measured_count",
-        },
-        {
-            "metric_id": "media_downloaded",
-            "label": "media\u53d6\u5f97",
-            "value": int(bool(gates["media_downloaded"])),
-            "total": 1,
-            "href": "#safety-boundary",
-            "why": "\u52d5\u753b\u30fb\u97f3\u58f0\u53d6\u5f97\u306b\u9032\u3093\u3067\u3044\u306a\u3044\u3053\u3068\u3092\u793a\u3057\u307e\u3059\u3002",
-            "state": "locked",
-            "kind": "gate_count",
-        },
-        {
-            "metric_id": "episode_dirs_created",
-            "label": "episode dirs",
-            "value": int(bool(gates["episode_dirs_created"])),
-            "total": 1,
-            "href": "#safety-boundary",
-            "why": "real episode init\u306f\u672a\u958b\u59cb\u3067\u3001CPD\u3067\u306fdry-run\u306e\u307f\u3067\u3059\u3002",
-            "state": "locked",
-            "kind": "gate_count",
-        },
-    ]
+        "flow_stage_count": len(annotated_flow),
+    }
 
 
-def build_funnel_stages(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+def build_annotated_flow(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
     total = summary["total_candidates"]
     return [
         {
-            "stage_id": "idea_candidates",
-            "label": "\u4f01\u753b\u5019\u88dc",
+            "stage_id": "ideas",
+            "label": "企画候補",
             "count": total,
             "total": total,
-            "href": "#candidate-state-board",
-            "status": "measured",
-            "note": "\u5168\u5019\u88dc\u306e\u5165\u53e3\u3002",
+            "href": "#candidate-ledger",
+            "status": "inventory",
+            "annotation": "入口。ここは採用判断ではなく候補棚卸しです。",
+            "usage_frequency": "必要時",
+            "is_bottleneck": False,
         },
         {
             "stage_id": "source_backed",
-            "label": "source\u7279\u5b9a\u6e08\u307f",
+            "label": "source付き",
             "count": summary["source_backed_count"],
             "total": total,
             "href": "#primary-review",
-            "status": "one_ready",
-            "note": "URL\u4ed8\u304d\u306f1\u4ef6\u3002",
+            "status": "reviewable",
+            "annotation": "今すぐ人間がURL同一性を見られる候補です。",
+            "usage_frequency": "常用",
+            "is_bottleneck": False,
         },
         {
             "stage_id": "human_review_waiting",
-            "label": "\u4eba\u9593\u78ba\u8a8d\u5f85\u3061",
+            "label": "人間確認待ち",
             "count": summary["inspectable_packet_count"],
             "total": total,
             "href": "#primary-review",
-            "status": "waiting",
-            "note": "\u5224\u65ad\u5f85\u3061\u306epacket\u3002",
+            "status": "current_bottleneck",
+            "annotation": "ここが今回の詰まりです。OK / NG / HOLD の自由文判断だけを受けます。",
+            "usage_frequency": "常用",
+            "is_bottleneck": True,
         },
         {
-            "stage_id": "private_local_review_waiting",
-            "label": "private/local\u691c\u8a3c\u5f85\u3061",
+            "stage_id": "private_local_review",
+            "label": "private/local検証",
             "count": summary["fetch_authorized_count"],
             "total": total,
             "href": "#safety-boundary",
             "status": "locked",
-            "note": "fetch authorization\u306f0\u3002",
+            "annotation": "0は失敗ではなく、fetch許可前なので閉じている状態です。",
+            "usage_frequency": "後工程",
+            "is_bottleneck": False,
         },
         {
-            "stage_id": "edit_render_not_started",
-            "label": "\u7de8\u96c6\u30fbrender\u672a\u958b\u59cb",
+            "stage_id": "edit_render_public",
+            "label": "edit/render/public",
             "count": 0,
             "total": total,
             "href": "#safety-boundary",
             "status": "locked",
-            "note": "render / transcript / public gate\u306f\u672a\u958b\u59cb\u3002",
+            "annotation": "transcript / render / upload / public gate はまだ開始しません。",
+            "usage_frequency": "後工程",
+            "is_bottleneck": False,
         },
     ]
 
 
-def build_action_queue(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+def build_usage_frequency_sections() -> list[dict[str, str]]:
     return [
         {
-            "queue_id": "primary_source_identity",
-            "priority": "primary",
-            "label": "\u756a\u9577/\u8239\u9577\u306eURL\u304c\u5019\u88dc\u610f\u56f3\u3068\u540c\u3058\u52d5\u753b\u304b\u78ba\u8a8d",
+            "frequency": "常用",
+            "section_id": "briefing-board",
+            "href": "#briefing-board",
+            "role": "最初に読む判断路線図",
+        },
+        {
+            "frequency": "常用",
+            "section_id": "primary-review",
             "href": "#primary-review",
-            "count": summary["source_backed_count"],
-            "state": "actionable_now",
-            "why": "source URL\u4ed8\u304d\u3067\u4eca\u5224\u65ad\u3067\u304d\u308b\u5019\u88dc\u306f1\u4ef6\u3060\u3051\u3067\u3059\u3002",
+            "role": "今回の1件を確認する操作単位",
         },
         {
-            "queue_id": "secondary_missing_sources",
-            "priority": "secondary",
-            "label": "source\u672a\u7279\u5b9a\u306e\u4f01\u753b\u30e1\u30e2\u306bURL\u3092\u8db3\u3059",
-            "href": "#source-missing",
-            "count": summary["source_missing_idea_backlog_count"],
-            "state": "backlog",
-            "why": "source URL\u304c\u306a\u3044\u305f\u3081\u3001\u4eca\u306f\u52d5\u753b\u5019\u88dc\u3067\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
+            "frequency": "必要時",
+            "section_id": "candidate-ledger",
+            "href": "#candidate-ledger",
+            "role": "候補状態の比較とsource未特定の確認",
         },
         {
-            "queue_id": "hold_music_rights",
-            "priority": "hold",
-            "label": "\u6b4c\u30fb\u97f3\u697d\u6a29\u5229\u30ea\u30b9\u30af\u5019\u88dc\u306f\u4fdd\u7559",
-            "href": "#blocked-hold",
-            "count": summary["blocked_or_hold_count"],
-            "state": "hold",
-            "why": "\u5225\u306erights/publication route\u304c\u306a\u3044\u307e\u307e\u3067\u306f\u9032\u3081\u307e\u305b\u3093\u3002",
+            "frequency": "開発用",
+            "section_id": "developer-appendix",
+            "href": "#developer-appendix",
+            "role": "内部artifactとmachine readbackの退避先",
         },
     ]
+
+
+def build_candidate_ledger(
+    *,
+    source_backed: list[dict[str, Any]],
+    source_missing_ideas: list[dict[str, Any]],
+    blocked_or_hold: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for item in source_backed:
+        rows.append(
+            {
+                "ledger_group": "source_backed",
+                "candidate_id": item["candidate_id"],
+                "seed_id": item["seed_id"],
+                "working_title": item["working_title"],
+                "source_state": "source_url_present_identity_unchecked",
+                "review_state": "human_review_pending",
+                "video_backed": True,
+                "operator_use": "primary_action",
+                "href": "#primary-review",
+                "source_url": item["source_url"],
+                "video_id": item["video_id"],
+            }
+        )
+    for item in source_missing_ideas:
+        rows.append(
+            {
+                "ledger_group": "source_missing",
+                "candidate_id": item["candidate_id"],
+                "seed_id": item["seed_id"],
+                "working_title": item["working_title"],
+                "source_state": "source_missing",
+                "review_state": "not_reviewable_as_video",
+                "video_backed": False,
+                "operator_use": "source_url_intake_backlog",
+                "href": "#source-missing",
+                "source_url": "",
+                "video_id": "",
+            }
+        )
+    for item in blocked_or_hold:
+        rows.append(
+            {
+                "ledger_group": "blocked_hold",
+                "candidate_id": item["candidate_id"],
+                "seed_id": item["seed_id"],
+                "working_title": item["working_title"],
+                "source_state": "hold",
+                "review_state": item["reason"],
+                "video_backed": False,
+                "operator_use": "do_not_progress_without_rights_route",
+                "href": "#blocked-hold",
+                "source_url": "",
+                "video_id": "",
+            }
+        )
+    return rows
+
+
+def build_action_script(*, source_backed: list[dict[str, Any]], summary: dict[str, Any]) -> dict[str, Any]:
+    item = source_backed[0] if source_backed else {}
+    title = clean_string(item.get("working_title")) or "source付き候補"
+    return {
+        "script_id": "single_source_identity_check",
+        "target_candidate_id": clean_string(item.get("candidate_id")),
+        "target_seed_id": clean_string(item.get("seed_id")),
+        "source_url": clean_string(item.get("source_url")),
+        "video_id": clean_string(item.get("video_id")),
+        "question": f"このURLは「{title}」の候補意図と同じ動画に見えるか。",
+        "open_label": "YouTube source URLを開いて人間が同一性だけを見る",
+        "unverified_markers": [
+            {"marker": "[ ]", "label": "動画ページが開ける"},
+            {"marker": "[ ]", "label": "タイトル / チャンネルが候補の意図と矛盾しない"},
+            {"marker": "[ ]", "label": "内容が切り抜き軸に関係していそう"},
+            {"marker": "[ ]", "label": "次にprivate/local検証へ進める価値がある"},
+        ],
+        "visual_choices": [
+            {"label": "OK", "meaning": "候補意図と同じ動画に見える"},
+            {"label": "NG", "meaning": "候補意図と違う、またはsourceが違う"},
+            {"label": "HOLD", "meaning": "画面だけではまだ判断しない"},
+        ],
+        "not_yet": list(NOT_YET_FLAGS),
+        "source_backed_count": summary["source_backed_count"],
+    }
 
 
 def generated_from_records(
@@ -858,13 +912,12 @@ def render_operator_cockpit_html(
             theme_script(),
             "</head>",
             "<body>",
-            '<a class="skip-link" href="#primary-review-card">確認カードへ移動</a>',
+            '<a class="skip-link" href="#briefing-board">Briefing Boardへ移動</a>',
             _hero_html(payload),
             '<main class="page-shell">',
-            _operator_home_html(payload),
-            _action_queue_html(payload),
-            _primary_review_card_html(payload),
-            _candidate_state_board_html(payload),
+            _briefing_board_html(payload),
+            _primary_review_script_html(payload),
+            _candidate_ledger_html(payload),
             _safety_boundary_html(payload),
             _developer_appendix_html(payload, output_path, dashboard_path, base_dir),
             "</main>",
@@ -879,36 +932,38 @@ def operator_cockpit_css() -> str:
     return """
 :root{
   color-scheme:dark;
-  --bg:#0f1218;
-  --surface:#171c25;
-  --surface-2:#202633;
-  --surface-3:#273142;
+  --bg:#111315;
+  --surface:#1b2024;
+  --surface-2:#242b31;
+  --surface-3:#303941;
   --text:#f1f5f9;
-  --muted:#a8b3c4;
-  --border:#344155;
-  --accent:#7dd3fc;
-  --accent-2:#38bdf8;
+  --muted:#aeb8c2;
+  --border:#3f4a54;
+  --accent:#f59e0b;
+  --accent-2:#22d3ee;
   --success:#86efac;
   --warning:#fbbf24;
   --danger:#fca5a5;
   --link:#93c5fd;
+  --ink-soft:#d8e0e8;
   --shadow:0 18px 40px rgba(0,0,0,.28);
 }
 :root[data-theme="light"]{
   color-scheme:light;
-  --bg:#f6f7fb;
+  --bg:#f7f8fa;
   --surface:#ffffff;
-  --surface-2:#f0f4f8;
-  --surface-3:#e7edf5;
-  --text:#172033;
-  --muted:#5b6678;
-  --border:#d3dbe7;
-  --accent:#0369a1;
-  --accent-2:#0284c7;
+  --surface-2:#f1f4f7;
+  --surface-3:#e5ebf0;
+  --text:#17202a;
+  --muted:#5d6872;
+  --border:#d4dce3;
+  --accent:#b45309;
+  --accent-2:#0f766e;
   --success:#13723f;
   --warning:#9a5a00;
   --danger:#a32626;
   --link:#075985;
+  --ink-soft:#2f3b46;
   --shadow:0 16px 32px rgba(30,41,59,.12);
 }
 *{box-sizing:border-box}
@@ -958,38 +1013,24 @@ section{margin:0 0 18px}
   box-shadow:var(--shadow);
 }
 .surface{padding:18px}
-.verdict-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
-.verdict-line{font-size:20px;font-weight:700}
-.home-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:14px;align-items:start}
-.home-answer{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
-.home-answer h2{margin-bottom:8px}
-.home-answer p{color:var(--muted);margin-top:6px}
-.meter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:14px}
-.meter-card{display:block;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:11px;text-decoration:none;color:var(--text)}
-.meter-card:hover{border-color:var(--accent)}
-.meter-card span{display:block;color:var(--muted);font-size:12px}
-.meter-card strong{display:block;font-size:26px;line-height:1.1;margin:3px 0}
-.meter-card em{display:block;color:var(--muted);font-size:12px;font-style:normal}
-.meter-bar{height:7px;border-radius:999px;background:var(--surface-3);overflow:hidden;margin-top:8px}
-.meter-fill{height:100%;border-radius:999px;background:var(--accent)}
-.funnel{display:grid;gap:8px;margin-top:12px}
-.funnel-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:10px;text-decoration:none;color:var(--text)}
-.funnel-step .index{width:28px;height:28px;border-radius:999px;display:grid;place-items:center;background:var(--surface-3);font-weight:700}
-.funnel-step .note{color:var(--muted);font-size:12px}
-.funnel-step .count{font-weight:700;color:var(--accent)}
-.queue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.queue-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
-.queue-card.primary{border-color:var(--accent);background:linear-gradient(180deg,var(--surface-2),var(--surface))}
-.queue-card.hold{border-color:rgba(251,191,36,.6)}
-.queue-card a{display:inline-block;margin-top:10px;font-weight:700}
-.state-board{display:grid;gap:12px}
-.state-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.state-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.briefing-board{display:grid;gap:16px}
+.briefing-copy{display:grid;gap:8px;max-width:880px}
+.briefing-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
+.briefing-note{color:var(--muted)}
+.primary-action-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;border:1px solid var(--accent);border-radius:8px;background:var(--surface-2);padding:14px}
+.primary-action-line strong{display:block;font-size:18px}
+.primary-action-line a{display:inline-block;border:1px solid var(--accent);border-radius:6px;padding:7px 10px;text-decoration:none;color:var(--text);background:rgba(245,158,11,.16);font-weight:700}
+.usage-frequency{display:flex;gap:8px;flex-wrap:wrap}
+.usage-frequency a{border:1px solid var(--border);border-radius:999px;padding:5px 9px;text-decoration:none;color:var(--text);background:var(--surface-2);font-size:13px}
+.usage-frequency span{color:var(--accent);font-weight:700}
+.flow-rail{display:grid;gap:8px}
+.flow-step{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:start;border-left:4px solid var(--border);background:var(--surface-2);padding:10px 12px;text-decoration:none;color:var(--text);border-radius:0 8px 8px 0}
+.flow-step.current{border-left-color:var(--accent);background:linear-gradient(90deg,rgba(245,158,11,.16),var(--surface-2))}
+.flow-step.locked{border-left-color:var(--muted);opacity:.86}
+.flow-step .index{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;background:var(--surface-3);font-weight:700}
+.flow-step .annotation{display:block;color:var(--muted);font-size:13px}
+.flow-step .count{font-weight:700;color:var(--accent-2);white-space:nowrap}
 .anchor-alias{position:relative;top:-16px}
-.metric-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
-.metric{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:10px}
-.metric span{display:block;color:var(--muted);font-size:12px}
-.metric strong{display:block;font-size:24px;line-height:1.15}
 .primary-card{padding:0;overflow:hidden}
 .card-header{padding:18px;border-bottom:1px solid var(--border);background:var(--surface-2)}
 .kicker{color:var(--accent);font-weight:700;font-size:13px;margin-bottom:6px}
@@ -1002,7 +1043,7 @@ section{margin:0 0 18px}
 .question{font-size:18px;font-weight:700}
 .checklist{display:grid;gap:8px;margin-top:10px;padding:0;list-style:none}
 .checklist li{display:flex;gap:8px;align-items:flex-start}
-.checkmark{color:var(--success);font-weight:700}
+.review-marker{color:var(--accent);font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700}
 .decision-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
 .decision-chip{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:10px}
 .decision-chip strong{display:block;margin-bottom:4px}
@@ -1011,9 +1052,8 @@ section{margin:0 0 18px}
 .pill{border:1px solid var(--border);border-radius:999px;padding:4px 9px;background:var(--surface-3);font-size:13px;color:var(--text)}
 .section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
 .section-heading p{color:var(--muted);margin-top:4px}
-.idea-list{display:grid;gap:10px;margin-top:12px}
-.idea-card{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:12px}
-.idea-card .meta{color:var(--muted);font-size:12px;margin-top:4px}
+.ledger-summary{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.ledger-summary .pill{background:var(--surface-2)}
 details{border:1px solid var(--border);border-radius:8px;background:var(--surface-2)}
 summary{cursor:pointer;padding:12px 14px;font-weight:700}
 .details-body{border-top:1px solid var(--border);padding:14px}
@@ -1021,14 +1061,19 @@ summary{cursor:pointer;padding:12px 14px;font-weight:700}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:720px}
 th,td{border-bottom:1px solid var(--border);padding:8px;text-align:left;vertical-align:top}
 th{background:var(--surface-3)}
+.ledger-table td:first-child{font-weight:700}
+.video-backed{color:var(--success);font-weight:700}
+.not-video-backed{color:var(--warning);font-weight:700}
 code{background:var(--surface-3);border:1px solid var(--border);border-radius:5px;padding:1px 4px;color:var(--text)}
 .muted{color:var(--muted)}
 @media (max-width:720px){
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
-  .home-grid{grid-template-columns:1fr}
+  .primary-action-line{grid-template-columns:1fr}
   .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
   .source-link{display:flex;justify-content:center}
+  .flow-step{grid-template-columns:30px minmax(0,1fr)}
+  .flow-step .count{grid-column:2}
 }
 """
 
@@ -1091,16 +1136,16 @@ def _hero_html(payload: dict[str, Any]) -> str:
             "<div>",
             f"<h1>{escape(payload['title'])}</h1>",
             (
-                '<p class="subtitle">Operator Home / Funnel Meters v0。'
-                "いま見るもの、見なくてよいもの、詰まっているメーターを最初の画面にまとめます。</p>"
+                '<p class="subtitle">Briefing Board / Usage-Frequency IA v0。'
+                "最初に読む説明付きフロー、今回の1アクション、必要時だけ見るledgerを分けます。</p>"
             ),
             "</div>",
             '<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>',
             "</div>",
             '<nav class="mini-nav" aria-label="ページ内ナビゲーション">',
-            '<a href="#operator-home">Operator Home</a>',
-            '<a href="#action-queue">Action Queue</a>',
+            '<a href="#briefing-board">Briefing Board</a>',
             '<a href="#primary-review">次に判断する1件</a>',
+            '<a href="#candidate-ledger">Candidate Ledger</a>',
             '<a href="#source-missing">source未特定</a>',
             '<a href="#blocked-hold">保留</a>',
             '<a href="#safety-boundary">閉じたゲート</a>',
@@ -1142,130 +1187,58 @@ def _verdict_html(payload: dict[str, Any]) -> str:
     )
 
 
-def _operator_home_html(payload: dict[str, Any]) -> str:
-    summary = payload["summary"]
-    metrics = payload["home_metrics"]
-    funnel = payload["funnel_stages"]
-    meter_cards = [_meter_card_html(metric) for metric in metrics]
-    funnel_steps = [_funnel_step_html(index, stage) for index, stage in enumerate(funnel, start=1)]
+def _briefing_board_html(payload: dict[str, Any]) -> str:
+    briefing = payload["briefing"]
+    flow_steps = [
+        _annotated_flow_step_html(index, stage)
+        for index, stage in enumerate(payload["annotated_flow"], start=1)
+    ]
+    usage_links = [_usage_frequency_link_html(item) for item in payload["usage_frequency_sections"]]
+    primary = briefing["primary_action"]
     return "\n".join(
         [
-            '<section id="operator-home" class="surface">',
-            '<div class="home-grid">',
-            '<div class="home-answer">',
-            '<p class="kicker">Operator Home</p>',
-            "<h2>いま見るもの</h2>",
-            (
-                f'<p class="verdict-line">source付きで人間確認待ちの候補は '
-                f'{summary["source_backed_count"]} 件です。</p>'
-            ),
-            (
-                '<p>次は1件だけ確認します。source未特定の企画メモと保留候補は、'
-                "動画候補として扱わず別の棚に分けています。</p>"
-            ),
-            '<div class="meter-grid">',
-            *meter_cards,
+            '<section id="briefing-board" class="surface briefing-board">',
+            '<div class="briefing-copy">',
+            '<p class="kicker">常用 / Briefing Board</p>',
+            f'<h2>{escape(briefing["title"])}</h2>',
+            f'<p class="briefing-line">{escape(briefing["status_line"])}</p>',
+            f'<p>{escape(briefing["decision_line"])}</p>',
+            f'<p class="briefing-note">{escape(briefing["bottleneck_line"])}</p>',
+            f'<p class="briefing-note">{escape(briefing["locked_line"])}</p>',
             "</div>",
+            '<div class="primary-action-line">',
+            "<div>",
+            '<span class="kicker">Primary action</span>',
+            f'<strong>{escape(primary["label"])}</strong>',
+            f'<span class="muted">state: <code>{escape(primary["state"])}</code> / user_work: <code>{escape(primary["user_work"])}</code></span>',
             "</div>",
-            '<div class="home-answer">',
-            '<p class="kicker">Candidate Funnel</p>',
-            "<h2>どのメーターが詰まっているか</h2>",
-            '<p>countsは既存CPD JSONから測定した値です。0のゲートはproduction進捗ではなく、まだ閉じている境界を示します。</p>',
-            '<div class="funnel">',
-            *funnel_steps,
+            f'<a href="{escape(primary["href"])}">Review Scriptへ</a>',
             "</div>",
+            '<div class="usage-frequency" aria-label="usage frequency">',
+            *usage_links,
             "</div>",
+            '<div class="flow-rail" aria-label="annotated flow">',
+            *flow_steps,
             "</div>",
             "</section>",
         ]
     )
 
 
-def _action_queue_html(payload: dict[str, Any]) -> str:
-    queue = payload["action_queue"]
-    cards = [_queue_card_html(item) for item in queue]
+def _annotated_flow_step_html(index: int, stage: dict[str, Any]) -> str:
+    class_name = "flow-step"
+    if stage["is_bottleneck"]:
+        class_name += " current"
+    if stage["status"] == "locked":
+        class_name += " locked"
     return "\n".join(
         [
-            '<section id="action-queue" class="surface">',
-            '<div class="section-heading">',
-            '<div><p class="kicker">Action Queue</p><h2>次に動く順番</h2><p>primaryは1件だけです。secondaryとholdは、いま開く対象ではなく backlog / 保留として分けています。</p></div>',
-            "</div>",
-            '<div class="queue-grid">',
-            *cards,
-            "</div>",
-            "</section>",
-        ]
-    )
-
-
-def _candidate_state_board_html(payload: dict[str, Any]) -> str:
-    source_backed = payload["buckets"]["source_backed_ready_for_human_inspection"]
-    backlog = payload["buckets"]["source_missing_idea_backlog"]
-    blocked = payload["buckets"]["blocked_or_hold"]
-    backed_item = source_backed[0] if source_backed else None
-    backlog_cards = [_idea_card_html(item) for item in backlog]
-    blocked_cards = [_blocked_card_html(item) for item in blocked]
-    return "\n".join(
-        [
-            '<section id="candidate-state-board" class="surface">',
-            '<div class="section-heading">',
-            '<div><p class="kicker">Candidate State Board</p><h2>候補の状態</h2><p>ホームのメーターと同じ状態を、詳細セクションとしてたどれるようにしています。</p></div>',
-            "</div>",
-            '<div class="state-board">',
-            '<section id="source-backed" class="state-card">',
-            '<h3>source付き候補</h3>',
-            (
-                _source_backed_state_html(backed_item)
-                if backed_item
-                else '<p class="muted">source付き候補はありません。</p>'
-            ),
-            "</section>",
-            '<section id="source-missing" class="state-card">',
-            '<h3>source未特定 / not video-backed</h3>',
-            '<p class="muted">JP/EN phrase gapを含む企画メモは、source URLが入るまで動画候補として扱いません。</p>',
-            '<div class="idea-list">',
-            *(backlog_cards or ['<p class="muted">source未特定の企画メモはありません。</p>']),
-            "</div>",
-            "</section>",
-            '<section id="blocked-hold" class="state-card">',
-            "<h3>保留</h3>",
-            '<p class="muted">歌・音楽権利リスクなど、別routeが必要な候補です。</p>',
-            '<div class="idea-list">',
-            *(blocked_cards or ['<p class="muted">保留候補はありません。</p>']),
-            "</div>",
-            "</section>",
-            "</div>",
-            "</section>",
-        ]
-    )
-
-
-def _meter_card_html(metric: dict[str, Any]) -> str:
-    total = max(int(metric.get("total") or 0), 1)
-    value = int(metric.get("value") or 0)
-    width = max(0, min(100, round(value / total * 100)))
-    return "\n".join(
-        [
-            f'<a class="meter-card" href="{escape(metric["href"])}">',
-            f'<span>{escape(metric["label"])}</span>',
-            f"<strong>{value}</strong>",
-            f'<em>{escape(metric["why"])}</em>',
-            '<div class="meter-bar" aria-hidden="true">',
-            f'<div class="meter-fill" style="width:{width}%"></div>',
-            "</div>",
-            "</a>",
-        ]
-    )
-
-
-def _funnel_step_html(index: int, stage: dict[str, Any]) -> str:
-    return "\n".join(
-        [
-            f'<a class="funnel-step" href="{escape(stage["href"])}">',
+            f'<a class="{class_name}" href="{escape(stage["href"])}">',
             f'<span class="index">{index}</span>',
             "<span>",
             f'<strong>{escape(stage["label"])}</strong>',
-            f'<span class="note">{escape(stage["note"])}</span>',
+            f'<span class="annotation">{escape(stage["annotation"])}</span>',
+            f'<span class="annotation">usage: {escape(stage["usage_frequency"])} / status: <code>{escape(stage["status"])}</code></span>',
             "</span>",
             f'<span class="count">{int(stage["count"])}/{int(stage["total"])}</span>',
             "</a>",
@@ -1273,105 +1246,134 @@ def _funnel_step_html(index: int, stage: dict[str, Any]) -> str:
     )
 
 
-def _queue_card_html(item: dict[str, Any]) -> str:
-    priority = clean_string(item.get("priority"))
-    class_name = "queue-card"
-    if priority == "primary":
-        class_name += " primary"
-    elif priority == "hold":
-        class_name += " hold"
-    return "\n".join(
-        [
-            f'<article class="{class_name}">',
-            f'<p class="kicker">{escape(priority)}</p>',
-            f'<h3>{escape(item["label"])}</h3>',
-            f'<p class="muted">{escape(item["why"])}</p>',
-            f'<span class="pill">{escape(item["state"])} / {int(item["count"])}件</span>',
-            f'<br><a href="{escape(item["href"])}">対応するセクションへ</a>',
-            "</article>",
-        ]
+def _usage_frequency_link_html(item: dict[str, str]) -> str:
+    return (
+        f'<a href="{escape(item["href"])}"><span>{escape(item["frequency"])}</span> '
+        f'{escape(item["section_id"])}: {escape(item["role"])}</a>'
     )
 
 
-def _source_backed_state_html(item: dict[str, Any]) -> str:
-    return "\n".join(
-        [
-            f'<p><strong>{escape(item["working_title"])}</strong></p>',
-            f'<p class="muted">video_id: <code>{escape(item["video_id"])}</code> / decision: <code>{escape(item["decision_state"])}</code></p>',
-            '<p class="muted">source URLは存在しますが、workerは開いておらず、identityは未確認です。</p>',
-            '<a href="#primary-review">Primary Review Cardへ</a>',
-        ]
-    )
-
-
-def _primary_review_card_html(payload: dict[str, Any]) -> str:
-    source_backed = payload["buckets"]["source_backed_ready_for_human_inspection"]
-    if not source_backed:
+def _primary_review_script_html(payload: dict[str, Any]) -> str:
+    script = payload["action_script"]
+    if not script["source_url"]:
         return """
 <section id="primary-review" class="primary-card">
   <span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>
   <div class="card-header">
-    <p class="kicker">今回確認する1件</p>
-    <h2>確認できる動画候補はありません</h2>
+    <p class="kicker">常用 / Primary Review Script</p>
+    <h2>確認できるsource付き候補はありません</h2>
   </div>
   <div class="card-body">
-    <p class="warn">source URL がある候補がないため、先に未特定の企画メモへ source URL を入れる必要があります。</p>
+    <p class="warn">まずsource未特定の候補に実URLを追加してください。</p>
   </div>
 </section>"""
-    item = source_backed[0]
-    question = f"このURLは、「{item['working_title']}」の元動画として妥当か？"
-    checklist = [
-        "動画ページが開ける",
-        "タイトル / チャンネルが候補の意図と矛盾しない",
-        "内容が切り抜き軸に関係していそう",
-        "次に private/local 検証へ進める価値がある",
+    markers = [
+        f'<li><span class="review-marker">{escape(item["marker"])}</span><span>{escape(item["label"])}</span></li>'
+        for item in script["unverified_markers"]
+    ]
+    choices = [
+        f'<div class="decision-chip"><strong>{escape(item["label"])}</strong><span>{escape(item["meaning"])}</span></div>'
+        for item in script["visual_choices"]
     ]
     return "\n".join(
         [
             '<section id="primary-review" class="primary-card">',
             '<span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>',
             '<div class="card-header">',
-            '<p class="kicker">今回確認する1件</p>',
-            f'<h2>{escape(item["working_title"])}</h2>',
+            '<p class="kicker">常用 / Primary Review Script</p>',
+            "<h2>番長/船長URLのsource identityだけを見る</h2>",
             '<p class="id-line">',
-            f'<span>candidate: <code>{escape(item["candidate_id"])}</code></span>',
-            f'<span>seed: <code>{escape(item["seed_id"])}</code></span>',
-            f'<span>video_id: <code>{escape(item["video_id"])}</code></span>',
+            f'<span>candidate: <code>{escape(script["target_candidate_id"])}</code></span>',
+            f'<span>seed: <code>{escape(script["target_seed_id"])}</code></span>',
+            f'<span>video_id: <code>{escape(script["video_id"])}</code></span>',
             "</p>",
             "</div>",
             '<div class="card-body">',
             '<div class="review-block">',
-            "<h3>URL</h3>",
-            f'<a class="source-link" href="{escape(item["source_url"])}" target="_blank" rel="noreferrer">YouTube source URL を開く</a>',
-            f'<span class="url-text">{escape(item["source_url"])}</span>',
+            "<h3>開くURL</h3>",
+            f'<a class="source-link" href="{escape(script["source_url"])}" target="_blank" rel="noreferrer">{escape(script["open_label"])}</a>',
+            f'<span class="url-text">{escape(script["source_url"])}</span>',
             "</div>",
             '<div class="review-block">',
             "<h3>判断すること</h3>",
-            f'<p class="question">{escape(question)}</p>',
+            f'<p class="question">{escape(script["question"])}</p>',
             '<ul class="checklist">',
-            *[
-                f'<li><span class="checkmark">✓</span><span>{escape(label)}</span></li>'
-                for label in checklist
-            ],
+            *markers,
             "</ul>",
+            '<p class="muted">上の印は未検証の観点です。完了を示すチェックマークではありません。</p>',
             "</div>",
             '<div class="review-block">',
-            "<h3>判断ラベル（表示のみ）</h3>",
+            "<h3>返す判断ラベル（表示のみ）</h3>",
             '<div class="decision-row">',
-            '<div class="decision-chip"><strong class="ok">OK</strong><span>次に private/local 検証へ進めたい</span></div>',
-            '<div class="decision-chip"><strong class="danger">NG</strong><span>source が違う</span></div>',
-            '<div class="decision-chip"><strong class="warn">HOLD</strong><span>まだ判断しない</span></div>',
+            *choices,
             "</div>",
-            '<p class="muted" style="margin-top:10px">これは視覚的な判断メモです。この画面だけでは承認・取得許可・権利承認は発生しません。</p>',
+            '<p class="muted" style="margin-top:10px">この画面だけではfetch許可、取得、文字起こし、render、upload、rights approvalは発生しません。</p>',
             "</div>",
             '<div class="review-block">',
             "<h3>まだやらないこと</h3>",
-            f'<div class="locked-list">{locked_pills_html(item["not_yet"])}</div>',
+            f'<div class="locked-list">{locked_pills_html(script["not_yet"])}</div>',
             "</div>",
             "</div>",
             "</section>",
         ]
     )
+
+
+def _candidate_ledger_html(payload: dict[str, Any]) -> str:
+    rows = [_candidate_ledger_row_html(row) for row in payload["candidate_ledger"]]
+    summary = payload["summary"]
+    return "\n".join(
+        [
+            '<section id="candidate-ledger" class="surface">',
+            '<div class="section-heading">',
+            '<div><p class="kicker">必要時 / Candidate Ledger</p><h2>候補状態を下段で比較する</h2><p>上段の判断を邪魔しないよう、source付き / source未特定 / 保留をledgerに集約します。</p></div>',
+            "</div>",
+            '<div class="ledger-summary">',
+            f'<span class="pill">source-backed {summary["source_backed_count"]}</span>',
+            f'<span class="pill">source-missing {summary["source_missing_idea_backlog_count"]}</span>',
+            f'<span class="pill">hold {summary["blocked_or_hold_count"]}</span>',
+            "</div>",
+            '<div class="table-scroll">',
+            '<table class="ledger-table">',
+            "<tr><th>group</th><th>candidate</th><th>title</th><th>source state</th><th>review state</th><th>video-backed</th><th>operator use</th></tr>",
+            *rows,
+            "</table>",
+            "</div>",
+            '<span id="source-missing" class="anchor-alias" aria-hidden="true"></span>',
+            '<details>',
+            '<summary>source未特定の扱いを確認する</summary>',
+            '<div class="details-body"><p>source-missing行は、URLが入るまで動画候補ではありません。JP/EN phrase gap も企画メモであり、video-backed candidate として扱いません。</p></div>',
+            "</details>",
+            '<span id="blocked-hold" class="anchor-alias" aria-hidden="true"></span>',
+            '<details>',
+            '<summary>保留の扱いを確認する</summary>',
+            '<div class="details-body"><p>song / music rights sensitive の候補は、別のrights routeがない限りこの画面から進めません。</p></div>',
+            "</details>",
+            "</section>",
+        ]
+    )
+
+
+def _candidate_ledger_row_html(row: dict[str, Any]) -> str:
+    video_class = "video-backed" if row["video_backed"] else "not-video-backed"
+    video_label = "video-backed" if row["video_backed"] else "not video-backed"
+    return "\n".join(
+        [
+            "<tr>",
+            f'<td><a href="{escape(row["href"])}">{escape(row["ledger_group"])}</a></td>',
+            f'<td><code>{escape(row["candidate_id"])}</code><br><code>{escape(row["seed_id"])}</code></td>',
+            f'<td>{escape(row["working_title"])}</td>',
+            f'<td>{escape(row["source_state"])}</td>',
+            f'<td>{escape(row["review_state"])}</td>',
+            f'<td class="{video_class}">{video_label}</td>',
+            f'<td>{escape(row["operator_use"])}</td>',
+            "</tr>",
+        ]
+    )
+
+
+def _primary_review_card_html(payload: dict[str, Any]) -> str:
+    return _primary_review_script_html(payload)
 
 
 def _source_missing_ideas_html(payload: dict[str, Any]) -> str:

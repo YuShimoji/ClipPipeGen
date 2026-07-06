@@ -16,21 +16,21 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
-## `clip-cpd08-operator-home-funnel-meters-v0-001`
+## `clip-cpd09-operator-briefing-board-v0-001`
 
 | Field | Value |
 |---|---|
-| title | ClipPipeGen Operator Cockpit / Operator Home Funnel Meters v0 |
-| purpose | Give humans one dark-mode content-planning home screen with measured funnel meters, one Action Queue, section-linked candidate states, and a Primary Review Card for the single known source URL. |
-| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-07 folded Primary Review Card layout in the same output path. |
+| title | ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0 |
+| purpose | Give humans one dark-mode content-planning briefing board with an annotated flow, one primary source-identity action, and a compact candidate ledger that does not make source-missing ideas look video-backed. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-08 Operator Home / Action Queue layout in the same output path. |
 | repo_relative_path | `docs/content_planning/operator_cockpit.html` |
 | machine_output | `docs/content_planning/operator_cockpit.json` |
 | source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
 | open_command | `start docs\content_planning\operator_cockpit.html` |
 | generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
 | validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
-| review_status | Ready as the normal human entry point for CPD planning review. Top screen is an Operator Home, not a wide status table or folded archive. Only `cpd01_bancho_marine_misunderstanding` has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates. |
-| next_action | Open the cockpit first, read the funnel meters and Action Queue, then inspect the single source-backed item as a human source identity check or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04. |
+| review_status | Ready as the normal human entry point for CPD planning review. Top screen is a Briefing Board with usage-frequency IA, not a card grid, wide status table, or folded archive. Only `cpd01_bancho_marine_misunderstanding` has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates. |
+| next_action | Open the cockpit first, read the Briefing Board annotated flow, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04. |
 
 Boundary flags remain false or pending:
 

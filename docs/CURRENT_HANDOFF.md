@@ -3,12 +3,12 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: content_planning_operator_home_ready
+health: content_planning_operator_briefing_board_ready
 progress_pct: 100
 last_touched: 2026-07-06
-next_review_due: open_cpd08_operator_home_then_inspect_single_source_backed_item_or_fill_source_urls
-active_artifact: clip-cpd08-operator-home-funnel-meters-v0-001
-latest_content_planning_operator_cockpit_artifact: clip-cpd08-operator-home-funnel-meters-v0-001
+next_review_due: open_cpd09_briefing_board_then_inspect_single_source_identity_or_fill_source_urls
+active_artifact: clip-cpd09-operator-briefing-board-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd09-operator-briefing-board-v0-001
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -32,17 +32,16 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-cpd08-operator-home-funnel-meters-v0-001`.
+`clip-cpd09-operator-briefing-board-v0-001`.
 That is enough to resume without the previous chat.
 
-The durable state to carry forward is: CPD-08 keeps the CPD-07 visual polish
-and turns the CPD review entry into an Operator Home after the user reported
-that the folded sections still felt like packed-away storage. The normal page
-to open is `docs/content_planning/operator_cockpit.html`, backed by
+The durable state to carry forward is: CPD-09 keeps the dark operator cockpit
+but replaces the CPD-08 card-heavy Operator Home with a Briefing Board. The
+normal page to open is `docs/content_planning/operator_cockpit.html`, backed by
 `docs/content_planning/operator_cockpit.json`. It defaults to dark mode, shows
-funnel meters and one Action Queue at the top, links each meter to the matching
-section, and keeps the older CPD-01 through CPD-05 dashboards in a subordinate
-developer appendix.
+an annotated flow and one Primary Review Script at the top, puts candidate
+state comparison into a compact Candidate Ledger, and keeps the older CPD-01
+through CPD-05 dashboards in a subordinate developer appendix.
 
 Only one source-backed item is ready for human source identity review:
 `cpd01_bancho_marine_misunderstanding`, title
@@ -51,21 +50,22 @@ Only one source-backed item is ready for human source identity review:
 not current video candidates; they are missing-source or hold records until a
 real source URL and source metadata are added.
 
-Do not treat CPD-08 as source approval, fetch approval, production/public/
+Do not treat CPD-09 as source approval, fetch approval, production/public/
 rights/publishing/monetization approval, transcript/render creation, or episode
 initialization. The worker did not open the source URL and did not use network,
 external APIs, OAuth, or media download paths. Do not track `episodes/` media.
 The older ED-10bc/ED-10bb/ED-10ba sections below remain valid for the Thank v2
 review path, but they are not the active CPD review entry point.
 
-## Current CPD-08 Operator Home / Funnel Meters v0
+## Current CPD-09 Briefing Board / Usage-Frequency IA v0
 
-CPD-08 checkpoint, 2026-07-06 JST:
-`clip-cpd08-operator-home-funnel-meters-v0-001` is the active tracked
+CPD-09 checkpoint, 2026-07-06 JST:
+`clip-cpd09-operator-briefing-board-v0-001` is the active tracked
 content-planning handoff artifact. It consolidates CPD-01 candidate planning,
 CPD-02 seed drafts, CPD-03 source resolution, CPD-04 dry-run episode init
 plans, and CPD-05 source inspection packet records into one normal human entry
-point with visible home metrics, a candidate funnel, and an action queue.
+point with a Briefing Board, annotated flow, one Primary Review Script, and a
+compact Candidate Ledger.
 
 Open command:
 
@@ -75,7 +75,8 @@ start docs\content_planning\operator_cockpit.html
 
 The expected readback is `source_backed_count=1`, `source_missing_count=4`,
 `source_missing_idea_backlog_count=3`, `blocked_or_hold_count=1`,
-`home_metric_count=8`, `funnel_stage_count=5`, `action_queue_count=3`,
+`annotated_flow_stage_count=5`, `usage_frequency_section_count=4`,
+`candidate_ledger_row_count=5`,
 `fetch_authorized_count=0`, and all execution gates false for source opening,
 network, external API, media download, episode folder creation, rights
 approval, production readiness, and public readiness.
@@ -86,7 +87,7 @@ The next terminal can continue in either direction:
   whether the YouTube page matches the Bancho/Marine misunderstanding idea.
 - If the user wants more candidates, add real human-confirmed source metadata
   in a local `docs/content_planning/source_metadata_registry.json`, then rerun
-  CPD-03, CPD-04, CPD-05, and CPD-08.
+  CPD-03, CPD-04, CPD-05, and CPD-09.
 
 ## Current ED-10bc Thank V2 Open Command Repair Readback
 

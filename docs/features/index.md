@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `CPD-08`
-- artifact: `clip-cpd08-operator-home-funnel-meters-v0-001`
-- state: `content_planning_operator_home_ready`
+- feature: `CPD-09`
+- artifact: `clip-cpd09-operator-briefing-board-v0-001`
+- state: `content_planning_operator_briefing_board_ready`
 
 ## Feature Table
 
