@@ -1,22 +1,28 @@
 {
   "schema_id": "clippipegen.operator_cockpit.v0",
   "schema_version": "v0",
-  "artifact_id": "clip-cpd10-candidate-ledger-readability-v0-001",
-  "generated_at": "2026-07-06",
-  "title": "ClipPipeGen Operator Cockpit / Content Planning Review",
+  "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+  "generated_at": "2026-07-07",
+  "title": "ClipPipeGen Review Workbench",
   "ux": {
-    "version": "v5_ledger_readability_v0",
-    "layout": "operator_briefing_board_ledger_readability",
+    "version": "v6_view_shell_content_model_v0",
+    "layout": "operator_view_shell_content_model",
     "default_theme": "dark",
     "theme_toggle": true,
     "developer_appendix_default": "collapsed",
-    "briefing_board": "visible",
-    "annotated_flow": "visible",
+    "view_shell": "visible",
+    "default_visible_mode": "review",
+    "mode_separation": "review_backlog_system",
+    "briefing_board": "superseded_by_view_shell",
+    "annotated_flow": "model_readback_only",
     "candidate_ledger": "responsive_stacked",
     "ledger_layout": "responsive_ledger_stacked",
     "title_wrapping_guard": true,
     "id_wrapping_scope": "code_strip_only",
-    "usage_frequency_ia": true
+    "candidate_ledger_default": "collapsed",
+    "system_mode_default": "collapsed",
+    "microcopy_budget": true,
+    "usage_frequency_ia": false
   },
   "source": {
     "network_required": false,
@@ -31,8 +37,8 @@
     }
   },
   "human_review": {
-    "primary_message": "Human review has one source-backed candidate.",
-    "secondary_message": "The remaining unresolved ideas are source-missing or hold items; they are not video-backed candidates.",
+    "primary_message": "One source-ready item is available.",
+    "secondary_message": "Backlog and hold items are not source-ready video candidates.",
     "operator_open_first": "docs/content_planning/operator_cockpit.html",
     "user_work": "open_only"
   },
@@ -53,17 +59,291 @@
     "internal_artifact_count": 13,
     "health": "ready_for_single_source_identity_review"
   },
+  "view_shell": {
+    "shell_id": "operator_workbench_view_shell",
+    "title": "Review Workbench",
+    "subtitle": "Current review stays first; backlog and system readback stay behind mode links.",
+    "content_model_version": "v6_view_shell_content_model_v0",
+    "default_mode": "review",
+    "mode_ids": [
+      "review",
+      "backlog",
+      "system"
+    ],
+    "anchors": [
+      "#review-workbench",
+      "#current-review",
+      "#backlog",
+      "#candidate-ledger",
+      "#system",
+      "#safety-boundary",
+      "#developer-appendix"
+    ],
+    "first_viewport_explanatory_paragraph_limit": 1,
+    "default_visible_counts": {
+      "source_backed": 1,
+      "source_missing_backlog": 3,
+      "hold": 1
+    }
+  },
+  "current_work_item": {
+    "work_item_id": "source_identity_review",
+    "label": "Current source review",
+    "title": "番長、船長を完全に勘違いする",
+    "target_candidate_id": "cpd01_bancho_marine_misunderstanding",
+    "target_seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+    "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+    "source_button_label": "Open source URL",
+    "question": "このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
+    "unverified_markers": [
+      {
+        "marker": "[ ]",
+        "label": "動画ページが開ける"
+      },
+      {
+        "marker": "[ ]",
+        "label": "タイトル / チャンネルが候補の意図と矛盾しない"
+      },
+      {
+        "marker": "[ ]",
+        "label": "内容が切り抜き軸に関係していそう"
+      },
+      {
+        "marker": "[ ]",
+        "label": "次にprivate/local検証へ進める価値がある"
+      }
+    ],
+    "decision_labels": [
+      {
+        "label": "OK",
+        "meaning": "候補意図と同じ動画に見える"
+      },
+      {
+        "label": "NG",
+        "meaning": "候補意図と違う、またはsourceが違う"
+      },
+      {
+        "label": "HOLD",
+        "meaning": "画面だけではまだ判断しない"
+      }
+    ],
+    "locked_line": "locked: fetch / transcript / render / upload / rights",
+    "user_work": "open_only"
+  },
+  "work_modes": [
+    {
+      "mode_id": "review",
+      "label": "Review mode",
+      "jp_label": "常用",
+      "href": "#current-review",
+      "default_visible": true,
+      "purpose": "current work item and OK / NG / HOLD labels"
+    },
+    {
+      "mode_id": "backlog",
+      "label": "Backlog mode",
+      "jp_label": "要確認",
+      "href": "#backlog",
+      "default_visible": false,
+      "purpose": "source missing 3 and hold 1"
+    },
+    {
+      "mode_id": "system",
+      "label": "System mode",
+      "jp_label": "開発用",
+      "href": "#system",
+      "default_visible": false,
+      "purpose": "closed gates and internal artifacts"
+    }
+  ],
+  "queue_summary": {
+    "summary_id": "operator_queue_summary",
+    "chips": [
+      {
+        "id": "candidates",
+        "label": "candidates",
+        "value": 5,
+        "href": "#candidate-ledger"
+      },
+      {
+        "id": "source_ready",
+        "label": "source ready",
+        "value": 1,
+        "href": "#current-review"
+      },
+      {
+        "id": "missing",
+        "label": "missing",
+        "value": 3,
+        "href": "#backlog"
+      },
+      {
+        "id": "hold",
+        "label": "hold",
+        "value": 1,
+        "href": "#backlog"
+      },
+      {
+        "id": "locked_gates",
+        "label": "locked gates",
+        "value": 5,
+        "href": "#system"
+      }
+    ],
+    "source": "local_cpd_json"
+  },
+  "candidate_groups": [
+    {
+      "group_id": "source_backed",
+      "label": "Source ready",
+      "count": 1,
+      "note": "URLあり。人間のsource identity確認だけが次の作業です。",
+      "items": [
+        {
+          "ledger_group": "source_backed",
+          "ledger_group_label": "source付き",
+          "candidate_id": "cpd01_bancho_marine_misunderstanding",
+          "seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+          "working_title": "番長、船長を完全に勘違いする",
+          "source_state": "source_url_present_identity_unchecked",
+          "source_state_label": "URLあり",
+          "review_state": "human_review_pending",
+          "review_state_label": "確認待ち",
+          "video_backed": true,
+          "video_backed_label": "video-backed",
+          "operator_use": "primary_action",
+          "operator_use_label": "現在の確認",
+          "href": "#current-review",
+          "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+          "video_id": "7J5aS_pcBj4"
+        }
+      ]
+    },
+    {
+      "group_id": "source_missing",
+      "label": "Source backlog",
+      "count": 3,
+      "note": "URL待ち。動画未確認の企画メモとして扱います。",
+      "items": [
+        {
+          "ledger_group": "source_missing",
+          "ledger_group_label": "source未特定",
+          "candidate_id": "cpd01_jp_en_phrase_gap",
+          "seed_id": "seed_cpd01_jp_en_phrase_gap",
+          "working_title": "日本語の一言で EN 組が固まる",
+          "source_state": "source_missing",
+          "source_state_label": "URL待ち",
+          "review_state": "not_reviewable_as_video",
+          "review_state_label": "動画未確認",
+          "video_backed": false,
+          "video_backed_label": "not video-backed",
+          "operator_use": "source_url_intake_backlog",
+          "operator_use_label": "URL待ち",
+          "href": "#backlog",
+          "source_url": "",
+          "video_id": ""
+        },
+        {
+          "ledger_group": "source_missing",
+          "ledger_group_label": "source未特定",
+          "candidate_id": "cpd01_reaction_face_chain",
+          "seed_id": "seed_cpd01_reaction_face_chain",
+          "working_title": "表情が一瞬で変わるホロメン",
+          "source_state": "source_missing",
+          "source_state_label": "URL待ち",
+          "review_state": "not_reviewable_as_video",
+          "review_state_label": "動画未確認",
+          "video_backed": false,
+          "video_backed_label": "not video-backed",
+          "operator_use": "source_url_intake_backlog",
+          "operator_use_label": "URL待ち",
+          "href": "#backlog",
+          "source_url": "",
+          "video_id": ""
+        },
+        {
+          "ledger_group": "source_missing",
+          "ledger_group_label": "source未特定",
+          "candidate_id": "cpd01_game_fail_micro_arc",
+          "seed_id": "seed_cpd01_game_fail_micro_arc",
+          "working_title": "失敗したのに立て直しが早すぎる",
+          "source_state": "source_missing",
+          "source_state_label": "URL待ち",
+          "review_state": "not_reviewable_as_video",
+          "review_state_label": "動画未確認",
+          "video_backed": false,
+          "video_backed_label": "not video-backed",
+          "operator_use": "source_url_intake_backlog",
+          "operator_use_label": "URL待ち",
+          "href": "#backlog",
+          "source_url": "",
+          "video_id": ""
+        }
+      ]
+    },
+    {
+      "group_id": "blocked_hold",
+      "label": "Hold",
+      "count": 1,
+      "note": "権利route待ち。ここから先へ進めません。",
+      "items": [
+        {
+          "ledger_group": "blocked_hold",
+          "ledger_group_label": "保留",
+          "candidate_id": "cpd01_song_moment_hold",
+          "seed_id": "seed_cpd01_song_moment_hold",
+          "working_title": "歌の合間に急に本音が出る",
+          "source_state": "hold",
+          "source_state_label": "保留",
+          "review_state": "song_or_music_rights_sensitive",
+          "review_state_label": "音楽権利route確認待ち",
+          "video_backed": false,
+          "video_backed_label": "not video-backed",
+          "operator_use": "do_not_progress_without_rights_route",
+          "operator_use_label": "権利route待ち",
+          "href": "#backlog",
+          "source_url": "",
+          "video_id": ""
+        }
+      ]
+    }
+  ],
+  "gate_summary": {
+    "line": "locked: fetch / transcript / render / upload / rights",
+    "locked_gates": [
+      "fetch",
+      "transcript",
+      "render",
+      "upload",
+      "rights"
+    ],
+    "locked_gate_count": 5,
+    "gate_defaults": {
+      "fetch_authorized": false,
+      "rights_approved": false,
+      "production_ready": false,
+      "public_ready": false
+    }
+  },
+  "microcopy_policy": {
+    "policy_id": "stable_operator_microcopy_v0",
+    "main_copy": "stable_short_labels",
+    "first_viewport_explanatory_paragraph_limit": 1,
+    "gate_copy": "one_line_plus_collapsed_detail",
+    "machine_state_visibility": "system_mode_or_code_strip_only",
+    "unverified_marker": "[ ]"
+  },
   "briefing": {
-    "briefing_id": "cpd10_operator_briefing",
-    "title": "今日のBriefing",
-    "status_line": "source付き候補は 1 件、source未特定は 3 件、保留は 1 件です。",
-    "decision_line": "次に見るのは、番長/船長のURLが候補意図と同じ動画に見えるかだけです。",
-    "bottleneck_line": "判断待ちは人間確認の1件で、source未特定と保留は下段ledgerに退避しています。",
-    "locked_line": "fetch / download / transcript / render / upload / rights approval は未実行です。",
+    "briefing_id": "cpd11_view_shell_readback",
+    "title": "Review Workbench",
+    "status_line": "source ready 1 / missing 3 / hold 1",
+    "decision_line": "Current source review is the only default action.",
+    "bottleneck_line": "Backlog and hold items are separated from the review workbench.",
+    "locked_line": "locked: fetch / transcript / render / upload / rights",
     "primary_action": {
       "action_id": "inspect_single_source_backed_item",
-      "label": "今回確認する1件を見る",
-      "href": "#primary-review",
+      "label": "Current source review",
+      "href": "#current-review",
       "state": "human_review_waiting",
       "user_work": "open_only"
     },
@@ -77,7 +357,7 @@
       "total": 5,
       "href": "#candidate-ledger",
       "status": "inventory",
-      "annotation": "入口。ここは採用判断ではなく候補棚卸しです。",
+      "annotation": "Candidate inventory for comparison mode.",
       "usage_frequency": "必要時",
       "is_bottleneck": false
     },
@@ -86,9 +366,9 @@
       "label": "source付き",
       "count": 1,
       "total": 5,
-      "href": "#primary-review",
+      "href": "#current-review",
       "status": "reviewable",
-      "annotation": "今すぐ人間がURL同一性を見られる候補です。",
+      "annotation": "Source URL is present; identity review is still human-owned.",
       "usage_frequency": "常用",
       "is_bottleneck": false
     },
@@ -97,9 +377,9 @@
       "label": "人間確認待ち",
       "count": 1,
       "total": 5,
-      "href": "#primary-review",
+      "href": "#current-review",
       "status": "current_bottleneck",
-      "annotation": "ここが今回の詰まりです。OK / NG / HOLD の自由文判断だけを受けます。",
+      "annotation": "Current review accepts only OK / NG / HOLD labels and notes.",
       "usage_frequency": "常用",
       "is_bottleneck": true
     },
@@ -108,9 +388,9 @@
       "label": "private/local検証",
       "count": 0,
       "total": 5,
-      "href": "#safety-boundary",
+      "href": "#system",
       "status": "locked",
-      "annotation": "0は失敗ではなく、fetch許可前なので閉じている状態です。",
+      "annotation": "Zero is a closed pre-fetch state, not a failure.",
       "usage_frequency": "後工程",
       "is_bottleneck": false
     },
@@ -119,9 +399,9 @@
       "label": "edit/render/public",
       "count": 0,
       "total": 5,
-      "href": "#safety-boundary",
+      "href": "#system",
       "status": "locked",
-      "annotation": "transcript / render / upload / public gate はまだ開始しません。",
+      "annotation": "Transcript / render / upload / public gates remain closed.",
       "usage_frequency": "後工程",
       "is_bottleneck": false
     }
@@ -129,27 +409,27 @@
   "usage_frequency_sections": [
     {
       "frequency": "常用",
-      "section_id": "briefing-board",
-      "href": "#briefing-board",
-      "role": "最初に読む判断路線図"
+      "section_id": "current-review",
+      "href": "#current-review",
+      "role": "current source review work item"
     },
     {
-      "frequency": "常用",
-      "section_id": "primary-review",
-      "href": "#primary-review",
-      "role": "今回の1件を確認する操作単位"
+      "frequency": "要確認",
+      "section_id": "backlog",
+      "href": "#backlog",
+      "role": "source missing and hold queue"
     },
     {
       "frequency": "必要時",
       "section_id": "candidate-ledger",
       "href": "#candidate-ledger",
-      "role": "候補状態の比較とsource未特定の確認"
+      "role": "responsive candidate comparison list"
     },
     {
       "frequency": "開発用",
-      "section_id": "developer-appendix",
-      "href": "#developer-appendix",
-      "role": "内部artifactとmachine readbackの退避先"
+      "section_id": "system",
+      "href": "#system",
+      "role": "closed gates and internal readback"
     }
   ],
   "candidate_ledger": [
@@ -160,14 +440,14 @@
       "seed_id": "seed_cpd01_bancho_marine_misunderstanding",
       "working_title": "番長、船長を完全に勘違いする",
       "source_state": "source_url_present_identity_unchecked",
-      "source_state_label": "URLあり・同一性未確認",
+      "source_state_label": "URLあり",
       "review_state": "human_review_pending",
-      "review_state_label": "人間確認待ち",
+      "review_state_label": "確認待ち",
       "video_backed": true,
       "video_backed_label": "video-backed",
       "operator_use": "primary_action",
-      "operator_use_label": "今回の確認対象",
-      "href": "#primary-review",
+      "operator_use_label": "現在の確認",
+      "href": "#current-review",
       "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
       "video_id": "7J5aS_pcBj4"
     },
@@ -178,14 +458,14 @@
       "seed_id": "seed_cpd01_jp_en_phrase_gap",
       "working_title": "日本語の一言で EN 組が固まる",
       "source_state": "source_missing",
-      "source_state_label": "URL未入力",
+      "source_state_label": "URL待ち",
       "review_state": "not_reviewable_as_video",
-      "review_state_label": "動画候補として未確認",
+      "review_state_label": "動画未確認",
       "video_backed": false,
       "video_backed_label": "not video-backed",
       "operator_use": "source_url_intake_backlog",
-      "operator_use_label": "URL入力待ち",
-      "href": "#source-missing",
+      "operator_use_label": "URL待ち",
+      "href": "#backlog",
       "source_url": "",
       "video_id": ""
     },
@@ -196,14 +476,14 @@
       "seed_id": "seed_cpd01_reaction_face_chain",
       "working_title": "表情が一瞬で変わるホロメン",
       "source_state": "source_missing",
-      "source_state_label": "URL未入力",
+      "source_state_label": "URL待ち",
       "review_state": "not_reviewable_as_video",
-      "review_state_label": "動画候補として未確認",
+      "review_state_label": "動画未確認",
       "video_backed": false,
       "video_backed_label": "not video-backed",
       "operator_use": "source_url_intake_backlog",
-      "operator_use_label": "URL入力待ち",
-      "href": "#source-missing",
+      "operator_use_label": "URL待ち",
+      "href": "#backlog",
       "source_url": "",
       "video_id": ""
     },
@@ -214,14 +494,14 @@
       "seed_id": "seed_cpd01_game_fail_micro_arc",
       "working_title": "失敗したのに立て直しが早すぎる",
       "source_state": "source_missing",
-      "source_state_label": "URL未入力",
+      "source_state_label": "URL待ち",
       "review_state": "not_reviewable_as_video",
-      "review_state_label": "動画候補として未確認",
+      "review_state_label": "動画未確認",
       "video_backed": false,
       "video_backed_label": "not video-backed",
       "operator_use": "source_url_intake_backlog",
-      "operator_use_label": "URL入力待ち",
-      "href": "#source-missing",
+      "operator_use_label": "URL待ち",
+      "href": "#backlog",
       "source_url": "",
       "video_id": ""
     },
@@ -238,20 +518,21 @@
       "video_backed": false,
       "video_backed_label": "not video-backed",
       "operator_use": "do_not_progress_without_rights_route",
-      "operator_use_label": "権利routeなしでは進めない",
-      "href": "#blocked-hold",
+      "operator_use_label": "権利route待ち",
+      "href": "#backlog",
       "source_url": "",
       "video_id": ""
     }
   ],
   "action_script": {
     "script_id": "single_source_identity_check",
+    "target_title": "番長、船長を完全に勘違いする",
     "target_candidate_id": "cpd01_bancho_marine_misunderstanding",
     "target_seed_id": "seed_cpd01_bancho_marine_misunderstanding",
     "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
     "video_id": "7J5aS_pcBj4",
     "question": "このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。",
-    "open_label": "YouTube source URLを開いて人間が同一性だけを見る",
+    "open_label": "Source URLを開く",
     "unverified_markers": [
       {
         "marker": "[ ]",
@@ -288,21 +569,26 @@
       "fetch",
       "transcript",
       "render",
-      "public",
+      "upload",
       "rights"
     ],
     "source_backed_count": 1
   },
   "section_links": [
     {
-      "section_id": "briefing-board",
-      "label": "Briefing Board",
-      "href": "#briefing-board"
+      "section_id": "review-workbench",
+      "label": "Review Workbench",
+      "href": "#review-workbench"
     },
     {
-      "section_id": "primary-review",
-      "label": "次に判断する1件",
-      "href": "#primary-review"
+      "section_id": "current-review",
+      "label": "Current Review",
+      "href": "#current-review"
+    },
+    {
+      "section_id": "backlog",
+      "label": "Backlog",
+      "href": "#backlog"
     },
     {
       "section_id": "candidate-ledger",
@@ -310,30 +596,25 @@
       "href": "#candidate-ledger"
     },
     {
-      "section_id": "source-missing",
-      "label": "source未特定",
-      "href": "#source-missing"
-    },
-    {
-      "section_id": "blocked-hold",
-      "label": "保留",
-      "href": "#blocked-hold"
+      "section_id": "system",
+      "label": "System",
+      "href": "#system"
     },
     {
       "section_id": "safety-boundary",
-      "label": "閉じたゲート",
+      "label": "Safety Boundary",
       "href": "#safety-boundary"
     },
     {
       "section_id": "developer-appendix",
-      "label": "開発用詳細",
+      "label": "Developer Appendix",
       "href": "#developer-appendix"
     }
   ],
   "recommended_next_action": {
     "action_id": "inspect_single_source_backed_item",
-    "label": "今回確認する1件を見る",
-    "reason": "URL が分かっている候補は 1 件だけです。ほかは元動画未特定の企画メモまたは保留です。",
+    "label": "Current source review",
+    "reason": "One source-ready item is available; backlog and hold items stay outside the default review.",
     "user_work": "open_only"
   },
   "gate_readback": {
@@ -382,7 +663,7 @@
           "fetch",
           "transcript",
           "render",
-          "public",
+          "upload",
           "rights"
         ],
         "fetch_authorized": false,
@@ -662,7 +943,12 @@
     "skipped_source_record_count": 4,
     "blocked_source_record_count": 4,
     "decision_template_entry_count": 1,
-    "note": "CPD-10 is a readable ledger layout repair over the accepted CPD-09 briefing board. It does not change source, fetch, rights, production, or public gates.",
+    "note": "CPD-11 converts the CPD operator cockpit into a reusable view shell and content model. It does not change source, fetch, rights, production, or public gates.",
+    "view_shell": "operator_workbench_content_model",
+    "default_visible_mode": "review",
+    "work_mode_count": 3,
+    "queue_chip_count": 5,
+    "locked_gate_count": 5,
     "ledger_layout": "responsive_ledger_stacked",
     "title_wrapping_guard": true
   }

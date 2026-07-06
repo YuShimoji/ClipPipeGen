@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-01",
+  "generated_at": "2026-07-07",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -24,23 +24,25 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "CPD-10",
-    "artifact_id": "clip-cpd10-candidate-ledger-readability-v0-001",
-    "state": "content_planning_candidate_ledger_readability_ready",
-    "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
+    "feature_id": "CPD-11",
+    "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+    "state": "content_planning_operator_view_shell_ready",
+    "title": "ClipPipeGen Review Workbench / Operator View Shell v0",
     "human_entrypoint": "docs/content_planning/operator_cockpit.html",
     "machine_readback": "docs/content_planning/operator_cockpit.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "notes": "docs/content_planning/README.md",
-    "review_shape": "briefing_board_then_readable_ledger_then_single_source_identity_check",
+    "review_shape": "view_shell_review_backlog_system_modes",
     "source_backed_count": 1,
     "source_missing_count": 4,
     "source_missing_idea_backlog_count": 3,
     "blocked_or_hold_count": 1,
     "fetch_authorized_count": 0,
-    "briefing_present": true,
-    "annotated_flow_stage_count": 5,
-    "usage_frequency_section_count": 4,
+    "view_shell_present": true,
+    "default_visible_mode": "review",
+    "work_mode_count": 3,
+    "queue_chip_count": 5,
+    "locked_gate_count": 5,
     "candidate_ledger_row_count": 5,
     "ledger_layout": "responsive_ledger_stacked",
     "title_wrapping_guard": true,
@@ -58,8 +60,8 @@
       "production_ready": false,
       "public_ready": false
     },
-    "next_review_action_type": "OPEN_REPAIRED_LEDGER_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
-    "next_action": "Open docs/content_planning/operator_cockpit.html, read the Briefing Board and repaired Candidate Ledger, then inspect the one source identity script or add real source metadata before rerunning CPD-03 through CPD-10.",
+    "next_review_action_type": "OPEN_VIEW_SHELL_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
+    "next_action": "Open docs/content_planning/operator_cockpit.html, use Review mode for the current source item, then use Backlog mode for missing URLs or System mode for closed gate readback before any CPD rerun.",
     "legacy_context": {
       "previous_focus_feature_id": "ED-10bc",
       "previous_focus_artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
@@ -1666,6 +1668,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+      "title": "ClipPipeGen Review Workbench / Operator View Shell v0",
+      "purpose": "Convert the CPD operator cockpit from a case-specific briefing page into a reusable view shell with Review, Backlog, and System modes driven by a content model.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-10 one-page briefing/ledger surface in the same output path.",
+      "repo_relative_path": "docs/content_planning/operator_cockpit.html",
+      "open_command": "start docs\\content_planning\\operator_cockpit.html",
+      "review_status": "Ready as the normal human entry point for CPD planning review. The first viewport is a reusable Review Workbench with state chips, a current source review item, OK / NG / HOLD labels, and a compact locked-gate line. Backlog and System details are separated from the default review mode, and the responsive Candidate Ledger remains available collapsed below.",
+      "next_action": "Open the cockpit first, use Review mode for the one source-ready item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback."
+    },
+    {
       "artifact_id": "clip-cpd10-candidate-ledger-readability-v0-001",
       "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
       "purpose": "Preserve the accepted CPD-09 Briefing Board while making the lower Candidate Ledger readable for Japanese text-heavy candidate states.",
@@ -2228,6 +2240,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-cpd11-operator-view-shell-v0-001",
       "clip-cpd10-candidate-ledger-readability-v0-001",
       "clip-cpd09-operator-briefing-board-v0-001",
       "clip-cpd01-content-candidate-dashboard-v0-001",
@@ -2285,20 +2298,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 56
+    "artifact_count": 57
   },
   "artifact_coverage": {
-    "registered_artifact_count": 56,
+    "registered_artifact_count": 57,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "CPD-10 candidate ledger readability / source identity review",
-      "artifact": "clip-cpd10-candidate-ledger-readability-v0-001",
-      "question": "Does the repaired Candidate Ledger keep Japanese titles readable while preserving the accepted Briefing Board and closed gates?",
-      "next_route": "Open docs/content_planning/operator_cockpit.html first; confirm the readable ledger, then use the Primary Review Script for OK/NG/HOLD or add real source URL/metadata before fetch/init/transcript/edit/render work."
+      "item": "CPD-11 operator view shell / current source review",
+      "artifact": "clip-cpd11-operator-view-shell-v0-001",
+      "question": "Does the Review Workbench feel reusable while keeping the current source item, backlog, system readback, and closed gates separated?",
+      "next_route": "Open docs/content_planning/operator_cockpit.html first; use Review mode for OK/NG/HOLD, Backlog mode for missing URLs, and System mode only for gate/internal readback."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2555,7 +2568,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1371,
+      "line_count": 1372,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2686,7 +2699,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1836,
+      "line_count": 1863,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2694,7 +2707,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 789,
+      "boundary_term_count": 791,
       "status": "reference"
     },
     {
@@ -2756,7 +2769,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1046,
+      "line_count": 1078,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2764,7 +2777,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 276,
+      "boundary_term_count": 278,
       "status": "reference"
     },
     {
@@ -3109,7 +3122,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1371 lines) is likely carrying history.",
+        "detail": "Long active doc (1372 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3139,13 +3152,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1836 lines) is likely carrying history.",
+        "detail": "Long active doc (1863 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 789 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 791 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3169,7 +3182,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1046 lines) is likely carrying history.",
+        "detail": "Long active doc (1078 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

@@ -49,7 +49,12 @@ Ledger so Japanese titles stay readable as phrases. It replaces the previous
 wide ledger table with stacked, responsive rows, Japanese operator-facing state
 labels, and de-emphasized machine IDs.
 
-If you are reviewing as a human, open the CPD-10 operator cockpit first. The
+CPD-11 turns that same cockpit into a reusable Review Workbench view shell. It
+keeps the current source action and readable Candidate Ledger, but moves
+source-waiting items into Backlog mode, closed gates into System mode, and
+reduces case-specific explanatory copy in the default view.
+
+If you are reviewing as a human, open the CPD-11 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
 
@@ -71,6 +76,7 @@ production/public usable.
 | CPD-08 artifact_id | `clip-cpd08-operator-home-funnel-meters-v0-001` |
 | CPD-09 artifact_id | `clip-cpd09-operator-briefing-board-v0-001` |
 | CPD-10 artifact_id | `clip-cpd10-candidate-ledger-readability-v0-001` |
+| CPD-11 artifact_id | `clip-cpd11-operator-view-shell-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
@@ -226,10 +232,11 @@ uvx python -m src.cli.main build-operator-cockpit `
 - The operator cockpit is the normal human entry point. The individual CPD
   HTML/JSON files remain linked as internal artifacts only; they should not be
   treated as separate human report requests.
-- CPD-10 cockpit HTML defaults to native dark mode, includes a local
-  Light/Dark toggle, and starts with the accepted Briefing Board, annotated
-  flow, one Primary Review Script, and a stacked readable Candidate Ledger.
-  Older CPD-01 through CPD-05 dashboards remain developer readback surfaces.
+- CPD-11 cockpit HTML defaults to native dark mode, includes a local
+  Light/Dark toggle, and starts with a reusable Review Workbench. Review,
+  Backlog, and System modes separate the current source action from unresolved
+  ideas and closed-gate/internal readback. Older CPD-01 through CPD-05
+  dashboards remain developer readback surfaces.
 - The JP/EN phrase-gap idea is currently `source_missing_idea_backlog`, not a
   source-backed video candidate. It needs a real `source_url` and source
   metadata before any fetch/init lane can continue.
@@ -237,12 +244,11 @@ uvx python -m src.cli.main build-operator-cockpit `
 ## Next Useful Moves
 
 1. Open `docs/content_planning/operator_cockpit.html` first. It shows the
-   Briefing Board, annotated flow, usage-frequency navigation, readable
-   Candidate Ledger, and the single source-backed Primary Review Script with
-   native dark mode.
+   Review Workbench, state rail, Review / Backlog / System mode links, and the
+   collapsed responsive Candidate Ledger with native dark mode.
 2. Review the single ready source URL as a human/operator source identity
-   check only after confirming the Briefing Board state. This is the previously
-   known hololive official anime Bancho URL.
+   check from Review mode only. This is still just OK / NG / HOLD source
+   identity judgement, not fetch or approval.
 3. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
 4. Fill real source URLs for unresolved seed records in a local

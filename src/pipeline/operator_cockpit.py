@@ -1,4 +1,4 @@
-"""CPD-10 operator cockpit briefing-board and readable-ledger UX builder.
+"""CPD-11 operator cockpit view-shell and content-model UX builder.
 
 This module consolidates the CPD-01 through CPD-05 planning artifacts into one
 operator-facing entry point. It only reads local JSON artifacts and writes
@@ -16,18 +16,18 @@ from typing import Any
 from .content_planning import display_path, write_json, write_text
 
 SCHEMA_ID = "clippipegen.operator_cockpit.v0"
-DEFAULT_ARTIFACT_ID = "clip-cpd10-candidate-ledger-readability-v0-001"
-DEFAULT_GENERATED_AT = "2026-07-06"
+DEFAULT_ARTIFACT_ID = "clip-cpd11-operator-view-shell-v0-001"
+DEFAULT_GENERATED_AT = "2026-07-07"
 DEFAULT_OUTPUT_FILENAME = "operator_cockpit.json"
 DEFAULT_DASHBOARD_FILENAME = "operator_cockpit.html"
-HTML_TITLE = "ClipPipeGen Operator Cockpit / Content Planning Review"
-UX_VERSION = "v5_ledger_readability_v0"
+HTML_TITLE = "ClipPipeGen Review Workbench"
+UX_VERSION = "v6_view_shell_content_model_v0"
 
 NOT_YET_FLAGS = [
     "fetch",
     "transcript",
     "render",
-    "public",
+    "upload",
     "rights",
 ]
 
@@ -38,21 +38,21 @@ LEDGER_GROUP_LABELS = {
 }
 
 SOURCE_STATE_LABELS = {
-    "source_url_present_identity_unchecked": "URLあり・同一性未確認",
-    "source_missing": "URL未入力",
+    "source_url_present_identity_unchecked": "URLあり",
+    "source_missing": "URL待ち",
     "hold": "保留",
 }
 
 REVIEW_STATE_LABELS = {
-    "human_review_pending": "人間確認待ち",
-    "not_reviewable_as_video": "動画候補として未確認",
+    "human_review_pending": "確認待ち",
+    "not_reviewable_as_video": "動画未確認",
     "song_or_music_rights_sensitive": "音楽権利route確認待ち",
 }
 
 OPERATOR_USE_LABELS = {
-    "primary_action": "今回の確認対象",
-    "source_url_intake_backlog": "URL入力待ち",
-    "do_not_progress_without_rights_route": "権利routeなしでは進めない",
+    "primary_action": "現在の確認",
+    "source_url_intake_backlog": "URL待ち",
+    "do_not_progress_without_rights_route": "権利route待ち",
 }
 
 INTERNAL_ARTIFACTS = [
@@ -251,6 +251,13 @@ def build_operator_cockpit(
         blocked_or_hold=blocked_or_hold,
     )
     action_script = build_action_script(source_backed=source_backed, summary=summary)
+    gate_summary = build_gate_summary(gates)
+    queue_summary = build_queue_summary(summary=summary, gate_summary=gate_summary)
+    candidate_groups = build_candidate_groups(candidate_ledger)
+    current_work_item = build_current_work_item(action_script=action_script, gate_summary=gate_summary)
+    work_modes = build_work_modes(summary=summary)
+    view_shell = build_view_shell(summary=summary, work_modes=work_modes)
+    microcopy_policy = build_microcopy_policy()
     briefing = build_briefing(
         summary=summary,
         recommended_next_action=recommended_next_action,
@@ -280,17 +287,23 @@ def build_operator_cockpit(
         "title": HTML_TITLE,
         "ux": {
             "version": UX_VERSION,
-            "layout": "operator_briefing_board_ledger_readability",
+            "layout": "operator_view_shell_content_model",
             "default_theme": "dark",
             "theme_toggle": True,
             "developer_appendix_default": "collapsed",
-            "briefing_board": "visible",
-            "annotated_flow": "visible",
+            "view_shell": "visible",
+            "default_visible_mode": "review",
+            "mode_separation": "review_backlog_system",
+            "briefing_board": "superseded_by_view_shell",
+            "annotated_flow": "model_readback_only",
             "candidate_ledger": "responsive_stacked",
             "ledger_layout": "responsive_ledger_stacked",
             "title_wrapping_guard": True,
             "id_wrapping_scope": "code_strip_only",
-            "usage_frequency_ia": True,
+            "candidate_ledger_default": "collapsed",
+            "system_mode_default": "collapsed",
+            "microcopy_budget": True,
+            "usage_frequency_ia": False,
         },
         "source": {
             "network_required": False,
@@ -305,15 +318,21 @@ def build_operator_cockpit(
             },
         },
         "human_review": {
-            "primary_message": "Human review has one source-backed candidate.",
+            "primary_message": "One source-ready item is available.",
             "secondary_message": (
-                "The remaining unresolved ideas are source-missing or hold items; "
-                "they are not video-backed candidates."
+                "Backlog and hold items are not source-ready video candidates."
             ),
             "operator_open_first": display_path(dashboard_path, base_dir),
             "user_work": recommended_next_action["user_work"],
         },
         "summary": summary,
+        "view_shell": view_shell,
+        "current_work_item": current_work_item,
+        "work_modes": work_modes,
+        "queue_summary": queue_summary,
+        "candidate_groups": candidate_groups,
+        "gate_summary": gate_summary,
+        "microcopy_policy": microcopy_policy,
         "briefing": briefing,
         "annotated_flow": annotated_flow,
         "usage_frequency_sections": usage_frequency_sections,
@@ -335,10 +354,15 @@ def build_operator_cockpit(
             "blocked_source_record_count": len(blocked_inspection_records),
             "decision_template_entry_count": len(decision_entries),
             "note": (
-                "CPD-10 is a readable ledger layout repair over the accepted CPD-09 "
-                "briefing board. It does not change source, fetch, rights, production, "
-                "or public gates."
+                "CPD-11 converts the CPD operator cockpit into a reusable view shell "
+                "and content model. It does not change source, fetch, rights, "
+                "production, or public gates."
             ),
+            "view_shell": "operator_workbench_content_model",
+            "default_visible_mode": "review",
+            "work_mode_count": len(work_modes),
+            "queue_chip_count": len(queue_summary["chips"]),
+            "locked_gate_count": gate_summary["locked_gate_count"],
             "ledger_layout": "responsive_ledger_stacked",
             "title_wrapping_guard": True,
         },
@@ -607,8 +631,8 @@ def build_recommended_next_action(summary: dict[str, Any]) -> dict[str, str]:
     if summary["source_backed_count"] > 0:
         return {
             "action_id": "inspect_single_source_backed_item",
-            "label": "今回確認する1件を見る",
-            "reason": "URL が分かっている候補は 1 件だけです。ほかは元動画未特定の企画メモまたは保留です。",
+            "label": "Current source review",
+            "reason": "One source-ready item is available; backlog and hold items stay outside the default review.",
             "user_work": "open_only",
         }
     if summary["source_missing_count"] > 0:
@@ -672,14 +696,140 @@ def build_gate_readback(
 
 def build_section_links() -> list[dict[str, str]]:
     return [
-        {"section_id": "briefing-board", "label": "Briefing Board", "href": "#briefing-board"},
-        {"section_id": "primary-review", "label": "次に判断する1件", "href": "#primary-review"},
+        {"section_id": "review-workbench", "label": "Review Workbench", "href": "#review-workbench"},
+        {"section_id": "current-review", "label": "Current Review", "href": "#current-review"},
+        {"section_id": "backlog", "label": "Backlog", "href": "#backlog"},
         {"section_id": "candidate-ledger", "label": "Candidate Ledger", "href": "#candidate-ledger"},
-        {"section_id": "source-missing", "label": "source未特定", "href": "#source-missing"},
-        {"section_id": "blocked-hold", "label": "保留", "href": "#blocked-hold"},
-        {"section_id": "safety-boundary", "label": "閉じたゲート", "href": "#safety-boundary"},
-        {"section_id": "developer-appendix", "label": "開発用詳細", "href": "#developer-appendix"},
+        {"section_id": "system", "label": "System", "href": "#system"},
+        {"section_id": "safety-boundary", "label": "Safety Boundary", "href": "#safety-boundary"},
+        {"section_id": "developer-appendix", "label": "Developer Appendix", "href": "#developer-appendix"},
     ]
+
+
+def build_gate_summary(gates: dict[str, Any]) -> dict[str, Any]:
+    locked_gates = list(NOT_YET_FLAGS)
+    return {
+        "line": f"locked: {' / '.join(locked_gates)}",
+        "locked_gates": locked_gates,
+        "locked_gate_count": len(locked_gates),
+        "gate_defaults": {
+            "fetch_authorized": bool(gates["fetch_authorized"]),
+            "rights_approved": bool(gates["rights_approved"]),
+            "production_ready": bool(gates["production_ready"]),
+            "public_ready": bool(gates["public_ready"]),
+        },
+    }
+
+
+def build_queue_summary(*, summary: dict[str, Any], gate_summary: dict[str, Any]) -> dict[str, Any]:
+    chips = [
+        {"id": "candidates", "label": "candidates", "value": summary["total_candidates"], "href": "#candidate-ledger"},
+        {"id": "source_ready", "label": "source ready", "value": summary["source_backed_count"], "href": "#current-review"},
+        {"id": "missing", "label": "missing", "value": summary["source_missing_idea_backlog_count"], "href": "#backlog"},
+        {"id": "hold", "label": "hold", "value": summary["blocked_or_hold_count"], "href": "#backlog"},
+        {"id": "locked_gates", "label": "locked gates", "value": gate_summary["locked_gate_count"], "href": "#system"},
+    ]
+    return {
+        "summary_id": "operator_queue_summary",
+        "chips": chips,
+        "source": "local_cpd_json",
+    }
+
+
+def build_candidate_groups(candidate_ledger: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    group_specs = [
+        ("source_backed", "Source ready", "URLあり。人間のsource identity確認だけが次の作業です。"),
+        ("source_missing", "Source backlog", "URL待ち。動画未確認の企画メモとして扱います。"),
+        ("blocked_hold", "Hold", "権利route待ち。ここから先へ進めません。"),
+    ]
+    groups = []
+    for group_id, label, note in group_specs:
+        items = [row for row in candidate_ledger if row["ledger_group"] == group_id]
+        groups.append(
+            {
+                "group_id": group_id,
+                "label": label,
+                "count": len(items),
+                "note": note,
+                "items": items,
+            }
+        )
+    return groups
+
+
+def build_current_work_item(*, action_script: dict[str, Any], gate_summary: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "work_item_id": "source_identity_review",
+        "label": "Current source review",
+        "title": action_script["target_title"],
+        "target_candidate_id": action_script["target_candidate_id"],
+        "target_seed_id": action_script["target_seed_id"],
+        "source_url": action_script["source_url"],
+        "source_button_label": "Open source URL",
+        "question": action_script["question"],
+        "unverified_markers": action_script["unverified_markers"],
+        "decision_labels": action_script["visual_choices"],
+        "locked_line": gate_summary["line"],
+        "user_work": "open_only" if action_script["source_url"] else "source_url_intake",
+    }
+
+
+def build_work_modes(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {
+            "mode_id": "review",
+            "label": "Review mode",
+            "jp_label": "常用",
+            "href": "#current-review",
+            "default_visible": True,
+            "purpose": "current work item and OK / NG / HOLD labels",
+        },
+        {
+            "mode_id": "backlog",
+            "label": "Backlog mode",
+            "jp_label": "要確認",
+            "href": "#backlog",
+            "default_visible": False,
+            "purpose": f"source missing {summary['source_missing_idea_backlog_count']} and hold {summary['blocked_or_hold_count']}",
+        },
+        {
+            "mode_id": "system",
+            "label": "System mode",
+            "jp_label": "開発用",
+            "href": "#system",
+            "default_visible": False,
+            "purpose": "closed gates and internal artifacts",
+        },
+    ]
+
+
+def build_view_shell(*, summary: dict[str, Any], work_modes: list[dict[str, Any]]) -> dict[str, Any]:
+    return {
+        "shell_id": "operator_workbench_view_shell",
+        "title": "Review Workbench",
+        "subtitle": "Current review stays first; backlog and system readback stay behind mode links.",
+        "content_model_version": UX_VERSION,
+        "default_mode": "review",
+        "mode_ids": [mode["mode_id"] for mode in work_modes],
+        "anchors": [item["href"] for item in build_section_links()],
+        "first_viewport_explanatory_paragraph_limit": 1,
+        "default_visible_counts": {
+            "source_backed": summary["source_backed_count"],
+            "source_missing_backlog": summary["source_missing_idea_backlog_count"],
+            "hold": summary["blocked_or_hold_count"],
+        },
+    }
+
+
+def build_microcopy_policy() -> dict[str, Any]:
+    return {
+        "policy_id": "stable_operator_microcopy_v0",
+        "main_copy": "stable_short_labels",
+        "first_viewport_explanatory_paragraph_limit": 1,
+        "gate_copy": "one_line_plus_collapsed_detail",
+        "machine_state_visibility": "system_mode_or_code_strip_only",
+        "unverified_marker": "[ ]",
+    }
 
 
 def build_briefing(
@@ -689,20 +839,20 @@ def build_briefing(
     annotated_flow: list[dict[str, Any]],
 ) -> dict[str, Any]:
     return {
-        "briefing_id": "cpd10_operator_briefing",
-        "title": "今日のBriefing",
+        "briefing_id": "cpd11_view_shell_readback",
+        "title": "Review Workbench",
         "status_line": (
-            f"source付き候補は {summary['source_backed_count']} 件、"
-            f"source未特定は {summary['source_missing_idea_backlog_count']} 件、"
-            f"保留は {summary['blocked_or_hold_count']} 件です。"
+            f"source ready {summary['source_backed_count']} / "
+            f"missing {summary['source_missing_idea_backlog_count']} / "
+            f"hold {summary['blocked_or_hold_count']}"
         ),
-        "decision_line": "次に見るのは、番長/船長のURLが候補意図と同じ動画に見えるかだけです。",
-        "bottleneck_line": "判断待ちは人間確認の1件で、source未特定と保留は下段ledgerに退避しています。",
-        "locked_line": "fetch / download / transcript / render / upload / rights approval は未実行です。",
+        "decision_line": "Current source review is the only default action.",
+        "bottleneck_line": "Backlog and hold items are separated from the review workbench.",
+        "locked_line": "locked: fetch / transcript / render / upload / rights",
         "primary_action": {
             "action_id": recommended_next_action["action_id"],
             "label": recommended_next_action["label"],
-            "href": "#primary-review",
+            "href": "#current-review",
             "state": "human_review_waiting",
             "user_work": recommended_next_action["user_work"],
         },
@@ -720,7 +870,7 @@ def build_annotated_flow(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
             "total": total,
             "href": "#candidate-ledger",
             "status": "inventory",
-            "annotation": "入口。ここは採用判断ではなく候補棚卸しです。",
+            "annotation": "Candidate inventory for comparison mode.",
             "usage_frequency": "必要時",
             "is_bottleneck": False,
         },
@@ -729,9 +879,9 @@ def build_annotated_flow(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
             "label": "source付き",
             "count": summary["source_backed_count"],
             "total": total,
-            "href": "#primary-review",
+            "href": "#current-review",
             "status": "reviewable",
-            "annotation": "今すぐ人間がURL同一性を見られる候補です。",
+            "annotation": "Source URL is present; identity review is still human-owned.",
             "usage_frequency": "常用",
             "is_bottleneck": False,
         },
@@ -740,9 +890,9 @@ def build_annotated_flow(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
             "label": "人間確認待ち",
             "count": summary["inspectable_packet_count"],
             "total": total,
-            "href": "#primary-review",
+            "href": "#current-review",
             "status": "current_bottleneck",
-            "annotation": "ここが今回の詰まりです。OK / NG / HOLD の自由文判断だけを受けます。",
+            "annotation": "Current review accepts only OK / NG / HOLD labels and notes.",
             "usage_frequency": "常用",
             "is_bottleneck": True,
         },
@@ -751,9 +901,9 @@ def build_annotated_flow(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
             "label": "private/local検証",
             "count": summary["fetch_authorized_count"],
             "total": total,
-            "href": "#safety-boundary",
+            "href": "#system",
             "status": "locked",
-            "annotation": "0は失敗ではなく、fetch許可前なので閉じている状態です。",
+            "annotation": "Zero is a closed pre-fetch state, not a failure.",
             "usage_frequency": "後工程",
             "is_bottleneck": False,
         },
@@ -762,9 +912,9 @@ def build_annotated_flow(*, summary: dict[str, Any]) -> list[dict[str, Any]]:
             "label": "edit/render/public",
             "count": 0,
             "total": total,
-            "href": "#safety-boundary",
+            "href": "#system",
             "status": "locked",
-            "annotation": "transcript / render / upload / public gate はまだ開始しません。",
+            "annotation": "Transcript / render / upload / public gates remain closed.",
             "usage_frequency": "後工程",
             "is_bottleneck": False,
         },
@@ -775,27 +925,27 @@ def build_usage_frequency_sections() -> list[dict[str, str]]:
     return [
         {
             "frequency": "常用",
-            "section_id": "briefing-board",
-            "href": "#briefing-board",
-            "role": "最初に読む判断路線図",
+            "section_id": "current-review",
+            "href": "#current-review",
+            "role": "current source review work item",
         },
         {
-            "frequency": "常用",
-            "section_id": "primary-review",
-            "href": "#primary-review",
-            "role": "今回の1件を確認する操作単位",
+            "frequency": "要確認",
+            "section_id": "backlog",
+            "href": "#backlog",
+            "role": "source missing and hold queue",
         },
         {
             "frequency": "必要時",
             "section_id": "candidate-ledger",
             "href": "#candidate-ledger",
-            "role": "候補状態の比較とsource未特定の確認",
+            "role": "responsive candidate comparison list",
         },
         {
             "frequency": "開発用",
-            "section_id": "developer-appendix",
-            "href": "#developer-appendix",
-            "role": "内部artifactとmachine readbackの退避先",
+            "section_id": "system",
+            "href": "#system",
+            "role": "closed gates and internal readback",
         },
     ]
 
@@ -826,7 +976,7 @@ def build_candidate_ledger(
                 "video_backed_label": "video-backed",
                 "operator_use": operator_use,
                 "operator_use_label": OPERATOR_USE_LABELS[operator_use],
-                "href": "#primary-review",
+                "href": "#current-review",
                 "source_url": item["source_url"],
                 "video_id": item["video_id"],
             }
@@ -850,7 +1000,7 @@ def build_candidate_ledger(
                 "video_backed_label": "not video-backed",
                 "operator_use": operator_use,
                 "operator_use_label": OPERATOR_USE_LABELS[operator_use],
-                "href": "#source-missing",
+                "href": "#backlog",
                 "source_url": "",
                 "video_id": "",
             }
@@ -874,7 +1024,7 @@ def build_candidate_ledger(
                 "video_backed_label": "not video-backed",
                 "operator_use": operator_use,
                 "operator_use_label": OPERATOR_USE_LABELS[operator_use],
-                "href": "#blocked-hold",
+                "href": "#backlog",
                 "source_url": "",
                 "video_id": "",
             }
@@ -887,12 +1037,13 @@ def build_action_script(*, source_backed: list[dict[str, Any]], summary: dict[st
     title = clean_string(item.get("working_title")) or "source付き候補"
     return {
         "script_id": "single_source_identity_check",
+        "target_title": title,
         "target_candidate_id": clean_string(item.get("candidate_id")),
         "target_seed_id": clean_string(item.get("seed_id")),
         "source_url": clean_string(item.get("source_url")),
         "video_id": clean_string(item.get("video_id")),
         "question": f"このURLは「{title}」の候補意図と同じ動画に見えるか。",
-        "open_label": "YouTube source URLを開いて人間が同一性だけを見る",
+        "open_label": "Source URLを開く",
         "unverified_markers": [
             {"marker": "[ ]", "label": "動画ページが開ける"},
             {"marker": "[ ]", "label": "タイトル / チャンネルが候補の意図と矛盾しない"},
@@ -966,13 +1117,13 @@ def render_operator_cockpit_html(
             theme_script(),
             "</head>",
             "<body>",
-            '<a class="skip-link" href="#briefing-board">Briefing Boardへ移動</a>',
+            '<a class="skip-link" href="#review-workbench">Review Workbenchへ移動</a>',
             _hero_html(payload),
             '<main class="page-shell">',
-            _briefing_board_html(payload),
-            _primary_review_script_html(payload),
+            _review_workbench_html(payload),
+            _backlog_mode_html(payload),
             _candidate_ledger_html(payload),
-            _safety_boundary_html(payload),
+            _system_mode_html(payload),
             _developer_appendix_html(payload, output_path, dashboard_path, base_dir),
             "</main>",
             "</body>",
@@ -1067,10 +1218,26 @@ section{margin:0 0 18px}
   box-shadow:var(--shadow);
 }
 .surface{padding:18px}
-.briefing-board{display:grid;gap:16px}
-.briefing-copy{display:grid;gap:8px;max-width:880px}
-.briefing-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
-.briefing-note{color:var(--muted)}
+.workbench-panel{display:grid;gap:16px}
+.workbench-head{display:grid;gap:6px;max-width:850px}
+.state-rail{display:flex;gap:8px;flex-wrap:wrap}
+.state-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:999px;padding:5px 10px;background:var(--surface-2);text-decoration:none;color:var(--text);font-size:13px}
+.state-chip strong{color:var(--accent-2);font-size:15px}
+.mode-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.mode-tab{border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-weight:700}
+.mode-tab.active{border-color:var(--accent);background:rgba(245,158,11,.16)}
+.current-review-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.45fr);gap:14px;align-items:start}
+.current-review-main,.current-review-side,.group-panel{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.candidate-title{font-size:24px;line-height:1.34;word-break:normal;overflow-wrap:normal;line-break:strict}
+.compact-line{color:var(--muted);font-size:13px}
+.decision-labels{display:grid;gap:8px;margin-top:10px}
+.decision-label{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:9px}
+.decision-label strong{display:block}
+.backlog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.group-list{display:grid;gap:7px;margin-top:10px}
+.group-list a{display:block;border-top:1px solid var(--border);padding-top:7px;text-decoration:none;color:var(--text)}
+.system-grid{display:grid;gap:10px}
+.status-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
 .primary-action-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;border:1px solid var(--accent);border-radius:8px;background:var(--surface-2);padding:14px}
 .primary-action-line strong{display:block;font-size:18px}
 .primary-action-line a{display:inline-block;border:1px solid var(--accent);border-radius:6px;padding:7px 10px;text-decoration:none;color:var(--text);background:rgba(245,158,11,.16);font-weight:700}
@@ -1139,6 +1306,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
   .primary-action-line{grid-template-columns:1fr}
+  .current-review-grid{grid-template-columns:1fr}
   .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
   .source-link{display:flex;justify-content:center}
   .flow-step{grid-template-columns:30px minmax(0,1fr)}
@@ -1172,53 +1340,27 @@ def theme_script() -> str:
 </script>"""
 
 
-def _legacy_hero_html_cpd07(payload: dict[str, Any]) -> str:
-    return "\n".join(
-        [
-            '<header class="hero">',
-            '<div class="hero-inner">',
-            '<div class="topbar">',
-            "<div>",
-            "<h1>コンテンツ候補レビュー</h1>",
-            '<p class="subtitle">最初に見るものを 1 件に絞った確認画面です。開発用の中間 artifact は下部の折りたたみへ移しました。</p>',
-            "</div>",
-            '<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>',
-            "</div>",
-            '<nav class="mini-nav" aria-label="ページ内ナビゲーション">',
-            '<a href="#primary-review-card">今回確認する1件</a>',
-            '<a href="#source-missing-ideas">未特定の企画メモ</a>',
-            '<a href="#safety-boundary">安全境界</a>',
-            '<a href="#developer-appendix">開発用詳細</a>',
-            "</nav>",
-            "</div>",
-            "</header>",
-        ]
-    )
-
-
 def _hero_html(payload: dict[str, Any]) -> str:
+    shell = payload["view_shell"]
     return "\n".join(
         [
             '<header class="hero">',
             '<div class="hero-inner">',
             '<div class="topbar">',
             "<div>",
-            f"<h1>{escape(payload['title'])}</h1>",
-            (
-                '<p class="subtitle">Briefing Board / Usage-Frequency IA v0。'
-                "最初に読む説明付きフロー、今回の1アクション、必要時だけ見るledgerを分けます。</p>"
-            ),
+            f"<h1>{escape(shell['title'])}</h1>",
+            f'<p class="subtitle">{escape(shell["subtitle"])}</p>',
             "</div>",
             '<button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>',
             "</div>",
             '<nav class="mini-nav" aria-label="ページ内ナビゲーション">',
-            '<a href="#briefing-board">Briefing Board</a>',
-            '<a href="#primary-review">次に判断する1件</a>',
+            '<a href="#review-workbench">Workbench</a>',
+            '<a href="#current-review">Current Review</a>',
+            '<a href="#backlog">Backlog</a>',
             '<a href="#candidate-ledger">Candidate Ledger</a>',
-            '<a href="#source-missing">source未特定</a>',
-            '<a href="#blocked-hold">保留</a>',
+            '<a href="#system">System</a>',
             '<a href="#safety-boundary">閉じたゲート</a>',
-            '<a href="#developer-appendix">開発用詳細</a>',
+            '<a href="#developer-appendix">Developer Appendix</a>',
             "</nav>",
             "</div>",
             "</header>",
@@ -1226,162 +1368,157 @@ def _hero_html(payload: dict[str, Any]) -> str:
     )
 
 
-def _verdict_html(payload: dict[str, Any]) -> str:
-    human = payload["human_review"]
-    summary = payload["summary"]
-    action = payload["recommended_next_action"]
-    return "\n".join(
-        [
-            '<section id="verdict" class="surface">',
-            '<div class="verdict-grid">',
-            '<div>',
-            '<p class="kicker">今の結論</p>',
-            f'<p class="verdict-line">{escape(human["primary_message"])}</p>',
-            f'<p class="subtitle">{escape(human["secondary_message"])}</p>',
-            "</div>",
-            '<div>',
-            '<p class="kicker">次の動き</p>',
-            f'<p class="verdict-line">{escape(action["label"])}</p>',
-            f'<p class="subtitle">{escape(action["reason"])}</p>',
-            "</div>",
-            "</div>",
-            '<div class="metric-row" aria-label="状態サマリー">',
-            f'<div class="metric"><span>確認する動画</span><strong>{summary["source_backed_count"]}</strong></div>',
-            f'<div class="metric"><span>元動画未特定</span><strong>{summary["source_missing_count"]}</strong></div>',
-            f'<div class="metric"><span>保留</span><strong>{summary["blocked_or_hold_count"]}</strong></div>',
-            f'<div class="metric"><span>取得許可</span><strong>{summary["fetch_authorized_count"]}</strong></div>',
-            "</div>",
-            "</section>",
-        ]
-    )
-
-
-def _briefing_board_html(payload: dict[str, Any]) -> str:
-    briefing = payload["briefing"]
-    flow_steps = [
-        _annotated_flow_step_html(index, stage)
-        for index, stage in enumerate(payload["annotated_flow"], start=1)
-    ]
-    usage_links = [_usage_frequency_link_html(item) for item in payload["usage_frequency_sections"]]
-    primary = briefing["primary_action"]
-    return "\n".join(
-        [
-            '<section id="briefing-board" class="surface briefing-board">',
-            '<div class="briefing-copy">',
-            '<p class="kicker">常用 / Briefing Board</p>',
-            f'<h2>{escape(briefing["title"])}</h2>',
-            f'<p class="briefing-line">{escape(briefing["status_line"])}</p>',
-            f'<p>{escape(briefing["decision_line"])}</p>',
-            f'<p class="briefing-note">{escape(briefing["bottleneck_line"])}</p>',
-            f'<p class="briefing-note">{escape(briefing["locked_line"])}</p>',
-            "</div>",
-            '<div class="primary-action-line">',
-            "<div>",
-            '<span class="kicker">Primary action</span>',
-            f'<strong>{escape(primary["label"])}</strong>',
-            f'<span class="muted">state: <code>{escape(primary["state"])}</code> / user_work: <code>{escape(primary["user_work"])}</code></span>',
-            "</div>",
-            f'<a href="{escape(primary["href"])}">Review Scriptへ</a>',
-            "</div>",
-            '<div class="usage-frequency" aria-label="usage frequency">',
-            *usage_links,
-            "</div>",
-            '<div class="flow-rail" aria-label="annotated flow">',
-            *flow_steps,
-            "</div>",
-            "</section>",
-        ]
-    )
-
-
-def _annotated_flow_step_html(index: int, stage: dict[str, Any]) -> str:
-    class_name = "flow-step"
-    if stage["is_bottleneck"]:
-        class_name += " current"
-    if stage["status"] == "locked":
-        class_name += " locked"
-    return "\n".join(
-        [
-            f'<a class="{class_name}" href="{escape(stage["href"])}">',
-            f'<span class="index">{index}</span>',
-            "<span>",
-            f'<strong>{escape(stage["label"])}</strong>',
-            f'<span class="annotation">{escape(stage["annotation"])}</span>',
-            f'<span class="annotation">usage: {escape(stage["usage_frequency"])} / status: <code>{escape(stage["status"])}</code></span>',
-            "</span>",
-            f'<span class="count">{int(stage["count"])}/{int(stage["total"])}</span>',
-            "</a>",
-        ]
-    )
-
-
-def _usage_frequency_link_html(item: dict[str, str]) -> str:
-    return (
-        f'<a href="{escape(item["href"])}"><span>{escape(item["frequency"])}</span> '
-        f'{escape(item["section_id"])}: {escape(item["role"])}</a>'
-    )
-
-
-def _primary_review_script_html(payload: dict[str, Any]) -> str:
-    script = payload["action_script"]
-    if not script["source_url"]:
-        return """
-<section id="primary-review" class="primary-card">
-  <span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>
-  <div class="card-header">
-    <p class="kicker">常用 / Primary Review Script</p>
-    <h2>確認できるsource付き候補はありません</h2>
-  </div>
-  <div class="card-body">
-    <p class="warn">まずsource未特定の候補に実URLを追加してください。</p>
-  </div>
-</section>"""
+def _review_workbench_html(payload: dict[str, Any]) -> str:
+    shell = payload["view_shell"]
+    item = payload["current_work_item"]
+    chips = [_state_chip_html(chip) for chip in payload["queue_summary"]["chips"]]
+    tabs = [_mode_tab_html(mode) for mode in payload["work_modes"]]
     markers = [
-        f'<li><span class="review-marker">{escape(item["marker"])}</span><span>{escape(item["label"])}</span></li>'
-        for item in script["unverified_markers"]
+        f'<li><span class="review-marker">{escape(marker["marker"])}</span><span>{escape(marker["label"])}</span></li>'
+        for marker in item["unverified_markers"]
     ]
-    choices = [
-        f'<div class="decision-chip"><strong>{escape(item["label"])}</strong><span>{escape(item["meaning"])}</span></div>'
-        for item in script["visual_choices"]
+    decisions = [
+        (
+            '<div class="decision-label">'
+            f'<strong>{escape(decision["label"])}</strong>'
+            f'<span>{escape(decision["meaning"])}</span>'
+            "</div>"
+        )
+        for decision in item["decision_labels"]
     ]
+    source_link = (
+        f'<a class="source-link" href="{escape(item["source_url"])}" target="_blank" rel="noreferrer">'
+        f'{escape(item["source_button_label"])}</a>'
+        if item["source_url"]
+        else '<span class="pill">source URL required</span>'
+    )
     return "\n".join(
         [
-            '<section id="primary-review" class="primary-card">',
-            '<span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>',
-            '<div class="card-header">',
-            '<p class="kicker">常用 / Primary Review Script</p>',
-            "<h2>番長/船長URLのsource identityだけを見る</h2>",
-            '<p class="id-line">',
-            f'<span>candidate: <code>{escape(script["target_candidate_id"])}</code></span>',
-            f'<span>seed: <code>{escape(script["target_seed_id"])}</code></span>',
-            f'<span>video_id: <code>{escape(script["video_id"])}</code></span>',
-            "</p>",
+            '<section id="review-workbench" class="surface workbench-panel">',
+            '<div class="workbench-head">',
+            '<p class="kicker">Operator Workbench</p>',
+            f'<h2>{escape(payload["title"])}</h2>',
+            f'<p>{escape(shell["subtitle"])}</p>',
             "</div>",
-            '<div class="card-body">',
-            '<div class="review-block">',
-            "<h3>開くURL</h3>",
-            f'<a class="source-link" href="{escape(script["source_url"])}" target="_blank" rel="noreferrer">{escape(script["open_label"])}</a>',
-            f'<span class="url-text">{escape(script["source_url"])}</span>',
+            '<div class="state-rail" aria-label="state rail">',
+            *chips,
             "</div>",
-            '<div class="review-block">',
-            "<h3>判断すること</h3>",
-            f'<p class="question">{escape(script["question"])}</p>',
+            '<nav class="mode-tabs" aria-label="work modes">',
+            *tabs,
+            "</nav>",
+            '<div id="current-review" class="current-review-grid">',
+            '<div class="current-review-main">',
+            f'<p class="kicker">{escape(item["label"])}</p>',
+            f'<h3 class="candidate-title">{escape(item["title"])}</h3>',
+            f'<p class="question">{escape(item["question"])}</p>',
             '<ul class="checklist">',
             *markers,
             "</ul>",
-            '<p class="muted">上の印は未検証の観点です。完了を示すチェックマークではありません。</p>',
+            '<p class="compact-line">Markers show unchecked review points, not completed work.</p>',
             "</div>",
-            '<div class="review-block">',
-            "<h3>返す判断ラベル（表示のみ）</h3>",
-            '<div class="decision-row">',
-            *choices,
+            '<aside class="current-review-side">',
+            "<h3>Decision labels</h3>",
+            '<div class="decision-labels">',
+            *decisions,
             "</div>",
-            '<p class="muted" style="margin-top:10px">この画面だけではfetch許可、取得、文字起こし、render、upload、rights approvalは発生しません。</p>',
+            '<div style="margin-top:12px">',
+            source_link,
+            f'<span class="url-text">{escape(item["source_url"])}</span>',
             "</div>",
-            '<div class="review-block">',
-            "<h3>まだやらないこと</h3>",
-            f'<div class="locked-list">{locked_pills_html(script["not_yet"])}</div>',
+            f'<p class="compact-line" style="margin-top:12px">{escape(item["locked_line"])}</p>',
+            "</aside>",
             "</div>",
+            "</section>",
+        ]
+    )
+
+
+def _state_chip_html(chip: dict[str, Any]) -> str:
+    return (
+        f'<a class="state-chip" href="{escape(chip["href"])}">'
+        f'<span>{escape(chip["label"])}</span><strong>{int(chip["value"])}</strong></a>'
+    )
+
+
+def _mode_tab_html(mode: dict[str, Any]) -> str:
+    class_name = "mode-tab active" if mode["default_visible"] else "mode-tab"
+    return (
+        f'<a class="{class_name}" href="{escape(mode["href"])}">'
+        f'{escape(mode["label"])} / {escape(mode["jp_label"])}</a>'
+    )
+
+
+def _backlog_mode_html(payload: dict[str, Any]) -> str:
+    groups = [
+        group for group in payload["candidate_groups"] if group["group_id"] in {"source_missing", "blocked_hold"}
+    ]
+    group_panels = [_candidate_group_panel_html(group) for group in groups]
+    return "\n".join(
+        [
+            '<section id="backlog" class="surface">',
+            '<div class="section-heading">',
+            '<div><p class="kicker">Backlog mode / 要確認</p><h2>Source backlog</h2><p>URL待ちと保留を現在レビューから分けて置きます。</p></div>',
+            "</div>",
+            '<div class="backlog-grid">',
+            *group_panels,
+            "</div>",
+            "</section>",
+        ]
+    )
+
+
+def _candidate_group_panel_html(group: dict[str, Any]) -> str:
+    rows = [
+        (
+            f'<a href="{escape(item["href"])}">'
+            f'<strong>{escape(item["working_title"])}</strong>'
+            f'<span class="compact-line"> {escape(item["source_state_label"])} / '
+            f'{escape(item["review_state_label"])} / not source-ready</span></a>'
+        )
+        for item in group["items"]
+    ]
+    return "\n".join(
+        [
+            '<article class="group-panel">',
+            f'<h3>{escape(group["label"])} <span class="pill">{int(group["count"])}</span></h3>',
+            f'<p class="compact-line">{escape(group["note"])}</p>',
+            '<div class="group-list">',
+            *(rows or ['<p class="compact-line">none</p>']),
+            "</div>",
+            "</article>",
+        ]
+    )
+
+
+def _system_mode_html(payload: dict[str, Any]) -> str:
+    gate_summary = payload["gate_summary"]
+    gates = payload["gate_readback"]
+    visible = [
+        "fetch_authorized",
+        "media_downloaded",
+        "episode_dirs_created",
+        "rights_approved",
+        "production_ready",
+        "public_ready",
+    ]
+    pills = [
+        f'<span class="pill">{escape(key)}={str(gates[key]).lower()}</span>'
+        for key in visible
+    ]
+    return "\n".join(
+        [
+            '<section id="system" class="surface">',
+            '<div class="section-heading">',
+            '<div><p class="kicker">System mode / 開発用</p><h2>System readback</h2><p class="compact-line">Internal state is subordinate to the current review.</p></div>',
+            "</div>",
+            '<div id="safety-boundary" class="system-grid">',
+            f'<p class="status-line">{escape(gate_summary["line"])}</p>',
+            "<details>",
+            "<summary>gate detail</summary>",
+            '<div class="details-body">',
+            f'<div class="locked-list">{"".join(pills)}</div>',
+            "</div>",
+            "</details>",
             "</div>",
             "</section>",
         ]
@@ -1395,25 +1532,20 @@ def _candidate_ledger_html(payload: dict[str, Any]) -> str:
         [
             '<section id="candidate-ledger" class="surface">',
             '<div class="section-heading">',
-            '<div><p class="kicker">必要時 / Candidate Ledger</p><h2>候補状態を下段で比較する</h2><p>上段の判断を邪魔しないよう、source付き / source未特定 / 保留をledgerに集約します。</p></div>',
+            '<div><p class="kicker">Candidate Ledger</p><h2>Candidate state list</h2><p>比較が必要な時だけ候補5件を開きます。</p></div>',
             "</div>",
             '<div class="ledger-summary">',
             f'<span class="pill">source-backed {summary["source_backed_count"]}</span>',
             f'<span class="pill">source-missing {summary["source_missing_idea_backlog_count"]}</span>',
             f'<span class="pill">hold {summary["blocked_or_hold_count"]}</span>',
             "</div>",
+            "<details>",
+            "<summary>open responsive Candidate Ledger</summary>",
+            '<div class="details-body">',
             '<div class="ledger-list" role="list">',
             *rows,
             "</div>",
-            '<span id="source-missing" class="anchor-alias" aria-hidden="true"></span>',
-            '<details>',
-            '<summary>source未特定の扱いを確認する</summary>',
-            '<div class="details-body"><p>source-missing行は、URLが入るまで動画候補ではありません。JP/EN phrase gap も企画メモであり、video-backed candidate として扱いません。</p></div>',
-            "</details>",
-            '<span id="blocked-hold" class="anchor-alias" aria-hidden="true"></span>',
-            '<details>',
-            '<summary>保留の扱いを確認する</summary>',
-            '<div class="details-body"><p>song / music rights sensitive の候補は、別のrights routeがない限りこの画面から進めません。</p></div>',
+            "</div>",
             "</details>",
             "</section>",
         ]
@@ -1444,67 +1576,6 @@ def _candidate_ledger_row_html(row: dict[str, Any]) -> str:
             "</div>",
             "</details>",
             "</article>",
-        ]
-    )
-
-
-def _primary_review_card_html(payload: dict[str, Any]) -> str:
-    return _primary_review_script_html(payload)
-
-
-def _source_missing_ideas_html(payload: dict[str, Any]) -> str:
-    backlog = payload["buckets"]["source_missing_idea_backlog"]
-    blocked = payload["buckets"]["blocked_or_hold"]
-    backlog_cards = [_idea_card_html(item) for item in backlog]
-    blocked_cards = [_blocked_card_html(item) for item in blocked]
-    return "\n".join(
-        [
-            '<section id="source-missing-ideas" class="surface">',
-            '<div class="section-heading">',
-            '<div><h2>未特定の企画メモ</h2><p>ここは次に見る動画ではありません。source URL が入るまで元動画候補として扱いません。</p></div>',
-            f'<span class="pill">{len(backlog)} 件 + 保留 {len(blocked)} 件</span>',
-            "</div>",
-            '<details>',
-            '<summary>未特定の企画メモを見る</summary>',
-            '<div class="details-body">',
-            '<div class="idea-list">',
-            *(backlog_cards or ['<p class="muted">未特定の企画メモはありません。</p>']),
-            *(blocked_cards or []),
-            "</div>",
-            "</div>",
-            "</details>",
-            "</section>",
-        ]
-    )
-
-
-def _safety_boundary_html(payload: dict[str, Any]) -> str:
-    gates = payload["gate_readback"]
-    visible = [
-        "fetch_authorized",
-        "media_downloaded",
-        "episode_dirs_created",
-        "rights_approved",
-        "production_ready",
-        "public_ready",
-    ]
-    pills = [
-        f'<span class="pill">{escape(key)}={str(gates[key]).lower()}</span>'
-        for key in visible
-    ]
-    return "\n".join(
-        [
-            '<section id="safety-boundary" class="surface">',
-            '<div class="section-heading">',
-            '<div><h2>安全境界</h2><p>この画面は確認用です。取得・生成・承認はまだ閉じています。</p></div>',
-            "</div>",
-            "<details>",
-            "<summary>閉じたままのゲートを見る</summary>",
-            '<div class="details-body">',
-            f'<div class="locked-list">{"".join(pills)}</div>',
-            "</div>",
-            "</details>",
-            "</section>",
         ]
     )
 
@@ -1556,41 +1627,12 @@ def _developer_appendix_html(
     )
 
 
-def _idea_card_html(item: dict[str, Any]) -> str:
-    return "\n".join(
-        [
-            '<article class="idea-card">',
-            f'<h3>{escape(item["working_title"])}</h3>',
-            '<p class="warn">元動画未確認。動画候補として扱わない。</p>',
-            f'<p class="meta"><code>{escape(item["candidate_id"])}</code> / <code>{escape(item["seed_id"])}</code></p>',
-            f'<p class="meta">必要: {escape(", ".join(item["required_before_progress"]))}</p>',
-            "</article>",
-        ]
-    )
-
-
-def _blocked_card_html(item: dict[str, Any]) -> str:
-    return "\n".join(
-        [
-            '<article class="idea-card">',
-            f'<h3>{escape(item["working_title"])}</h3>',
-            f'<p class="danger">{escape(blocked_reason_label(item["reason"]))}</p>',
-            f'<p class="meta"><code>{escape(item["candidate_id"])}</code> / <code>{escape(item["seed_id"])}</code></p>',
-            "</article>",
-        ]
-    )
-
-
-def locked_pills_html(values: list[str]) -> str:
-    return "".join(f'<span class="pill">{escape(locked_label(value))}</span>' for value in values)
-
-
 def locked_label(value: str) -> str:
     labels = {
         "fetch": "今は取得しない",
         "transcript": "文字起こししない",
         "render": "レンダーしない",
-        "public": "公開しない",
+        "upload": "アップロードしない",
         "rights": "権利承認しない",
     }
     return labels.get(value, value)
@@ -1615,7 +1657,7 @@ def not_yet_label(values: list[str]) -> str:
         "fetch": "fetch 未許可",
         "transcript": "transcript 未作成",
         "render": "render 未作成",
-        "public": "public 化未許可",
+        "upload": "upload 未許可",
         "rights": "rights 未承認",
     }
     return " / ".join(labels.get(value, value) for value in values)

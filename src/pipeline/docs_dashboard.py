@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-07-01"
+DEFAULT_GENERATED_AT = "2026-07-07"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -66,29 +66,31 @@ STATUS_HEALTH = {
 
 
 CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID = (
-    "clip-cpd10-candidate-ledger-readability-v0-001"
+    "clip-cpd11-operator-view-shell-v0-001"
 )
 
 
 def _current_focus() -> dict[str, Any]:
     return {
-        "feature_id": "CPD-10",
+        "feature_id": "CPD-11",
         "artifact_id": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-        "state": "content_planning_candidate_ledger_readability_ready",
-        "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
+        "state": "content_planning_operator_view_shell_ready",
+        "title": "ClipPipeGen Review Workbench / Operator View Shell v0",
         "human_entrypoint": "docs/content_planning/operator_cockpit.html",
         "machine_readback": "docs/content_planning/operator_cockpit.json",
         "handoff": "docs/CURRENT_HANDOFF.md",
         "notes": "docs/content_planning/README.md",
-        "review_shape": "briefing_board_then_readable_ledger_then_single_source_identity_check",
+        "review_shape": "view_shell_review_backlog_system_modes",
         "source_backed_count": 1,
         "source_missing_count": 4,
         "source_missing_idea_backlog_count": 3,
         "blocked_or_hold_count": 1,
         "fetch_authorized_count": 0,
-        "briefing_present": True,
-        "annotated_flow_stage_count": 5,
-        "usage_frequency_section_count": 4,
+        "view_shell_present": True,
+        "default_visible_mode": "review",
+        "work_mode_count": 3,
+        "queue_chip_count": 5,
+        "locked_gate_count": 5,
         "candidate_ledger_row_count": 5,
         "ledger_layout": "responsive_ledger_stacked",
         "title_wrapping_guard": True,
@@ -106,11 +108,11 @@ def _current_focus() -> dict[str, Any]:
             "production_ready": False,
             "public_ready": False,
         },
-        "next_review_action_type": "OPEN_REPAIRED_LEDGER_THEN_INSPECT_SINGLE_SOURCE_IDENTITY_OR_FILL_SOURCE_URLS",
+        "next_review_action_type": "OPEN_VIEW_SHELL_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
         "next_action": (
-            "Open docs/content_planning/operator_cockpit.html, read the Briefing "
-            "Board and repaired Candidate Ledger, then inspect the one source identity "
-            "script or add real source metadata before rerunning CPD-03 through CPD-10."
+            "Open docs/content_planning/operator_cockpit.html, use Review mode for "
+            "the current source item, then use Backlog mode for missing URLs or System "
+            "mode for closed gate readback before any CPD rerun."
         ),
         "legacy_context": {
             "previous_focus_feature_id": "ED-10bc",
@@ -643,10 +645,10 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
-            "item": "CPD-10 candidate ledger readability / source identity review",
+            "item": "CPD-11 operator view shell / current source review",
             "artifact": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-            "question": "Does the repaired Candidate Ledger keep Japanese titles readable while preserving the accepted Briefing Board and closed gates?",
-            "next_route": "Open docs/content_planning/operator_cockpit.html first; confirm the readable ledger, then use the Primary Review Script for OK/NG/HOLD or add real source URL/metadata before fetch/init/transcript/edit/render work.",
+            "question": "Does the Review Workbench feel reusable while keeping the current source item, backlog, system readback, and closed gates separated?",
+            "next_route": "Open docs/content_planning/operator_cockpit.html first; use Review mode for OK/NG/HOLD, Backlog mode for missing URLs, and System mode only for gate/internal readback.",
         },
         {
             "item": "ED-10bc Thank v2 opener repair",

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ClipPipeGen Operator Cockpit / Content Planning Review</title>
+<title>ClipPipeGen Review Workbench</title>
 <style>
 
 :root{
@@ -89,10 +89,26 @@ section{margin:0 0 18px}
   box-shadow:var(--shadow);
 }
 .surface{padding:18px}
-.briefing-board{display:grid;gap:16px}
-.briefing-copy{display:grid;gap:8px;max-width:880px}
-.briefing-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
-.briefing-note{color:var(--muted)}
+.workbench-panel{display:grid;gap:16px}
+.workbench-head{display:grid;gap:6px;max-width:850px}
+.state-rail{display:flex;gap:8px;flex-wrap:wrap}
+.state-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);border-radius:999px;padding:5px 10px;background:var(--surface-2);text-decoration:none;color:var(--text);font-size:13px}
+.state-chip strong{color:var(--accent-2);font-size:15px}
+.mode-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.mode-tab{border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface-2);color:var(--text);text-decoration:none;font-weight:700}
+.mode-tab.active{border-color:var(--accent);background:rgba(245,158,11,.16)}
+.current-review-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.45fr);gap:14px;align-items:start}
+.current-review-main,.current-review-side,.group-panel{border:1px solid var(--border);border-radius:8px;background:var(--surface-2);padding:14px}
+.candidate-title{font-size:24px;line-height:1.34;word-break:normal;overflow-wrap:normal;line-break:strict}
+.compact-line{color:var(--muted);font-size:13px}
+.decision-labels{display:grid;gap:8px;margin-top:10px}
+.decision-label{border:1px solid var(--border);border-radius:8px;background:var(--surface-3);padding:9px}
+.decision-label strong{display:block}
+.backlog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.group-list{display:grid;gap:7px;margin-top:10px}
+.group-list a{display:block;border-top:1px solid var(--border);padding-top:7px;text-decoration:none;color:var(--text)}
+.system-grid{display:grid;gap:10px}
+.status-line{font-size:20px;font-weight:700;color:var(--ink-soft)}
 .primary-action-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;border:1px solid var(--accent);border-radius:8px;background:var(--surface-2);padding:14px}
 .primary-action-line strong{display:block;font-size:18px}
 .primary-action-line a{display:inline-block;border:1px solid var(--accent);border-radius:6px;padding:7px 10px;text-decoration:none;color:var(--text);background:rgba(245,158,11,.16);font-weight:700}
@@ -161,6 +177,7 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
   .topbar{display:block}
   .theme-toggle{margin-top:14px}
   .primary-action-line{grid-template-columns:1fr}
+  .current-review-grid{grid-template-columns:1fr}
   .page-shell,.hero-inner{width:min(100% - 20px,1040px)}
   .source-link{display:flex;justify-content:center}
   .flow-step{grid-template-columns:30px minmax(0,1fr)}
@@ -192,118 +209,50 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </script>
 </head>
 <body>
-<a class="skip-link" href="#briefing-board">Briefing Boardへ移動</a>
+<a class="skip-link" href="#review-workbench">Review Workbenchへ移動</a>
 <header class="hero">
 <div class="hero-inner">
 <div class="topbar">
 <div>
-<h1>ClipPipeGen Operator Cockpit / Content Planning Review</h1>
-<p class="subtitle">Briefing Board / Usage-Frequency IA v0。最初に読む説明付きフロー、今回の1アクション、必要時だけ見るledgerを分けます。</p>
+<h1>Review Workbench</h1>
+<p class="subtitle">Current review stays first; backlog and system readback stay behind mode links.</p>
 </div>
 <button id="theme-toggle" class="theme-toggle" type="button" onclick="toggleOperatorTheme()" aria-pressed="true">Light mode</button>
 </div>
 <nav class="mini-nav" aria-label="ページ内ナビゲーション">
-<a href="#briefing-board">Briefing Board</a>
-<a href="#primary-review">次に判断する1件</a>
+<a href="#review-workbench">Workbench</a>
+<a href="#current-review">Current Review</a>
+<a href="#backlog">Backlog</a>
 <a href="#candidate-ledger">Candidate Ledger</a>
-<a href="#source-missing">source未特定</a>
-<a href="#blocked-hold">保留</a>
+<a href="#system">System</a>
 <a href="#safety-boundary">閉じたゲート</a>
-<a href="#developer-appendix">開発用詳細</a>
+<a href="#developer-appendix">Developer Appendix</a>
 </nav>
 </div>
 </header>
 <main class="page-shell">
-<section id="briefing-board" class="surface briefing-board">
-<div class="briefing-copy">
-<p class="kicker">常用 / Briefing Board</p>
-<h2>今日のBriefing</h2>
-<p class="briefing-line">source付き候補は 1 件、source未特定は 3 件、保留は 1 件です。</p>
-<p>次に見るのは、番長/船長のURLが候補意図と同じ動画に見えるかだけです。</p>
-<p class="briefing-note">判断待ちは人間確認の1件で、source未特定と保留は下段ledgerに退避しています。</p>
-<p class="briefing-note">fetch / download / transcript / render / upload / rights approval は未実行です。</p>
+<section id="review-workbench" class="surface workbench-panel">
+<div class="workbench-head">
+<p class="kicker">Operator Workbench</p>
+<h2>ClipPipeGen Review Workbench</h2>
+<p>Current review stays first; backlog and system readback stay behind mode links.</p>
 </div>
-<div class="primary-action-line">
-<div>
-<span class="kicker">Primary action</span>
-<strong>今回確認する1件を見る</strong>
-<span class="muted">state: <code>human_review_waiting</code> / user_work: <code>open_only</code></span>
+<div class="state-rail" aria-label="state rail">
+<a class="state-chip" href="#candidate-ledger"><span>candidates</span><strong>5</strong></a>
+<a class="state-chip" href="#current-review"><span>source ready</span><strong>1</strong></a>
+<a class="state-chip" href="#backlog"><span>missing</span><strong>3</strong></a>
+<a class="state-chip" href="#backlog"><span>hold</span><strong>1</strong></a>
+<a class="state-chip" href="#system"><span>locked gates</span><strong>5</strong></a>
 </div>
-<a href="#primary-review">Review Scriptへ</a>
-</div>
-<div class="usage-frequency" aria-label="usage frequency">
-<a href="#briefing-board"><span>常用</span> briefing-board: 最初に読む判断路線図</a>
-<a href="#primary-review"><span>常用</span> primary-review: 今回の1件を確認する操作単位</a>
-<a href="#candidate-ledger"><span>必要時</span> candidate-ledger: 候補状態の比較とsource未特定の確認</a>
-<a href="#developer-appendix"><span>開発用</span> developer-appendix: 内部artifactとmachine readbackの退避先</a>
-</div>
-<div class="flow-rail" aria-label="annotated flow">
-<a class="flow-step" href="#candidate-ledger">
-<span class="index">1</span>
-<span>
-<strong>企画候補</strong>
-<span class="annotation">入口。ここは採用判断ではなく候補棚卸しです。</span>
-<span class="annotation">usage: 必要時 / status: <code>inventory</code></span>
-</span>
-<span class="count">5/5</span>
-</a>
-<a class="flow-step" href="#primary-review">
-<span class="index">2</span>
-<span>
-<strong>source付き</strong>
-<span class="annotation">今すぐ人間がURL同一性を見られる候補です。</span>
-<span class="annotation">usage: 常用 / status: <code>reviewable</code></span>
-</span>
-<span class="count">1/5</span>
-</a>
-<a class="flow-step current" href="#primary-review">
-<span class="index">3</span>
-<span>
-<strong>人間確認待ち</strong>
-<span class="annotation">ここが今回の詰まりです。OK / NG / HOLD の自由文判断だけを受けます。</span>
-<span class="annotation">usage: 常用 / status: <code>current_bottleneck</code></span>
-</span>
-<span class="count">1/5</span>
-</a>
-<a class="flow-step locked" href="#safety-boundary">
-<span class="index">4</span>
-<span>
-<strong>private/local検証</strong>
-<span class="annotation">0は失敗ではなく、fetch許可前なので閉じている状態です。</span>
-<span class="annotation">usage: 後工程 / status: <code>locked</code></span>
-</span>
-<span class="count">0/5</span>
-</a>
-<a class="flow-step locked" href="#safety-boundary">
-<span class="index">5</span>
-<span>
-<strong>edit/render/public</strong>
-<span class="annotation">transcript / render / upload / public gate はまだ開始しません。</span>
-<span class="annotation">usage: 後工程 / status: <code>locked</code></span>
-</span>
-<span class="count">0/5</span>
-</a>
-</div>
-</section>
-<section id="primary-review" class="primary-card">
-<span id="primary-review-card" class="anchor-alias" aria-hidden="true"></span>
-<div class="card-header">
-<p class="kicker">常用 / Primary Review Script</p>
-<h2>番長/船長URLのsource identityだけを見る</h2>
-<p class="id-line">
-<span>candidate: <code>cpd01_bancho_marine_misunderstanding</code></span>
-<span>seed: <code>seed_cpd01_bancho_marine_misunderstanding</code></span>
-<span>video_id: <code>7J5aS_pcBj4</code></span>
-</p>
-</div>
-<div class="card-body">
-<div class="review-block">
-<h3>開くURL</h3>
-<a class="source-link" href="https://www.youtube.com/watch?v=7J5aS_pcBj4" target="_blank" rel="noreferrer">YouTube source URLを開いて人間が同一性だけを見る</a>
-<span class="url-text">https://www.youtube.com/watch?v=7J5aS_pcBj4</span>
-</div>
-<div class="review-block">
-<h3>判断すること</h3>
+<nav class="mode-tabs" aria-label="work modes">
+<a class="mode-tab active" href="#current-review">Review mode / 常用</a>
+<a class="mode-tab" href="#backlog">Backlog mode / 要確認</a>
+<a class="mode-tab" href="#system">System mode / 開発用</a>
+</nav>
+<div id="current-review" class="current-review-grid">
+<div class="current-review-main">
+<p class="kicker">Current source review</p>
+<h3 class="candidate-title">番長、船長を完全に勘違いする</h3>
 <p class="question">このURLは「番長、船長を完全に勘違いする」の候補意図と同じ動画に見えるか。</p>
 <ul class="checklist">
 <li><span class="review-marker">[ ]</span><span>動画ページが開ける</span></li>
@@ -311,43 +260,69 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <li><span class="review-marker">[ ]</span><span>内容が切り抜き軸に関係していそう</span></li>
 <li><span class="review-marker">[ ]</span><span>次にprivate/local検証へ進める価値がある</span></li>
 </ul>
-<p class="muted">上の印は未検証の観点です。完了を示すチェックマークではありません。</p>
+<p class="compact-line">Markers show unchecked review points, not completed work.</p>
 </div>
-<div class="review-block">
-<h3>返す判断ラベル（表示のみ）</h3>
-<div class="decision-row">
-<div class="decision-chip"><strong>OK</strong><span>候補意図と同じ動画に見える</span></div>
-<div class="decision-chip"><strong>NG</strong><span>候補意図と違う、またはsourceが違う</span></div>
-<div class="decision-chip"><strong>HOLD</strong><span>画面だけではまだ判断しない</span></div>
+<aside class="current-review-side">
+<h3>Decision labels</h3>
+<div class="decision-labels">
+<div class="decision-label"><strong>OK</strong><span>候補意図と同じ動画に見える</span></div>
+<div class="decision-label"><strong>NG</strong><span>候補意図と違う、またはsourceが違う</span></div>
+<div class="decision-label"><strong>HOLD</strong><span>画面だけではまだ判断しない</span></div>
 </div>
-<p class="muted" style="margin-top:10px">この画面だけではfetch許可、取得、文字起こし、render、upload、rights approvalは発生しません。</p>
+<div style="margin-top:12px">
+<a class="source-link" href="https://www.youtube.com/watch?v=7J5aS_pcBj4" target="_blank" rel="noreferrer">Open source URL</a>
+<span class="url-text">https://www.youtube.com/watch?v=7J5aS_pcBj4</span>
 </div>
-<div class="review-block">
-<h3>まだやらないこと</h3>
-<div class="locked-list"><span class="pill">今は取得しない</span><span class="pill">文字起こししない</span><span class="pill">レンダーしない</span><span class="pill">公開しない</span><span class="pill">権利承認しない</span></div>
+<p class="compact-line" style="margin-top:12px">locked: fetch / transcript / render / upload / rights</p>
+</aside>
 </div>
+</section>
+<section id="backlog" class="surface">
+<div class="section-heading">
+<div><p class="kicker">Backlog mode / 要確認</p><h2>Source backlog</h2><p>URL待ちと保留を現在レビューから分けて置きます。</p></div>
+</div>
+<div class="backlog-grid">
+<article class="group-panel">
+<h3>Source backlog <span class="pill">3</span></h3>
+<p class="compact-line">URL待ち。動画未確認の企画メモとして扱います。</p>
+<div class="group-list">
+<a href="#backlog"><strong>日本語の一言で EN 組が固まる</strong><span class="compact-line"> URL待ち / 動画未確認 / not source-ready</span></a>
+<a href="#backlog"><strong>表情が一瞬で変わるホロメン</strong><span class="compact-line"> URL待ち / 動画未確認 / not source-ready</span></a>
+<a href="#backlog"><strong>失敗したのに立て直しが早すぎる</strong><span class="compact-line"> URL待ち / 動画未確認 / not source-ready</span></a>
+</div>
+</article>
+<article class="group-panel">
+<h3>Hold <span class="pill">1</span></h3>
+<p class="compact-line">権利route待ち。ここから先へ進めません。</p>
+<div class="group-list">
+<a href="#backlog"><strong>歌の合間に急に本音が出る</strong><span class="compact-line"> 保留 / 音楽権利route確認待ち / not source-ready</span></a>
+</div>
+</article>
 </div>
 </section>
 <section id="candidate-ledger" class="surface">
 <div class="section-heading">
-<div><p class="kicker">必要時 / Candidate Ledger</p><h2>候補状態を下段で比較する</h2><p>上段の判断を邪魔しないよう、source付き / source未特定 / 保留をledgerに集約します。</p></div>
+<div><p class="kicker">Candidate Ledger</p><h2>Candidate state list</h2><p>比較が必要な時だけ候補5件を開きます。</p></div>
 </div>
 <div class="ledger-summary">
 <span class="pill">source-backed 1</span>
 <span class="pill">source-missing 3</span>
 <span class="pill">hold 1</span>
 </div>
+<details>
+<summary>open responsive Candidate Ledger</summary>
+<div class="details-body">
 <div class="ledger-list" role="list">
 <article class="ledger-item source-backed" role="listitem">
 <div class="ledger-row-top">
-<a class="state-badge source-backed" href="#primary-review">source付き</a>
+<a class="state-badge source-backed" href="#current-review">source付き</a>
 <span class="video-backed">video-backed</span>
 </div>
 <h3 class="ledger-title">番長、船長を完全に勘違いする</h3>
 <dl class="ledger-meta">
-<div><dt>source</dt><dd>URLあり・同一性未確認</dd></div>
-<div><dt>review</dt><dd>人間確認待ち</dd></div>
-<div><dt>operator</dt><dd>今回の確認対象</dd></div>
+<div><dt>source</dt><dd>URLあり</dd></div>
+<div><dt>review</dt><dd>確認待ち</dd></div>
+<div><dt>operator</dt><dd>現在の確認</dd></div>
 </dl>
 <details class="code-strip-details">
 <summary>machine ids</summary>
@@ -359,14 +334,14 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </article>
 <article class="ledger-item source-missing" role="listitem">
 <div class="ledger-row-top">
-<a class="state-badge source-missing" href="#source-missing">source未特定</a>
+<a class="state-badge source-missing" href="#backlog">source未特定</a>
 <span class="not-video-backed">not video-backed</span>
 </div>
 <h3 class="ledger-title">日本語の一言で EN 組が固まる</h3>
 <dl class="ledger-meta">
-<div><dt>source</dt><dd>URL未入力</dd></div>
-<div><dt>review</dt><dd>動画候補として未確認</dd></div>
-<div><dt>operator</dt><dd>URL入力待ち</dd></div>
+<div><dt>source</dt><dd>URL待ち</dd></div>
+<div><dt>review</dt><dd>動画未確認</dd></div>
+<div><dt>operator</dt><dd>URL待ち</dd></div>
 </dl>
 <details class="code-strip-details">
 <summary>machine ids</summary>
@@ -378,14 +353,14 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </article>
 <article class="ledger-item source-missing" role="listitem">
 <div class="ledger-row-top">
-<a class="state-badge source-missing" href="#source-missing">source未特定</a>
+<a class="state-badge source-missing" href="#backlog">source未特定</a>
 <span class="not-video-backed">not video-backed</span>
 </div>
 <h3 class="ledger-title">表情が一瞬で変わるホロメン</h3>
 <dl class="ledger-meta">
-<div><dt>source</dt><dd>URL未入力</dd></div>
-<div><dt>review</dt><dd>動画候補として未確認</dd></div>
-<div><dt>operator</dt><dd>URL入力待ち</dd></div>
+<div><dt>source</dt><dd>URL待ち</dd></div>
+<div><dt>review</dt><dd>動画未確認</dd></div>
+<div><dt>operator</dt><dd>URL待ち</dd></div>
 </dl>
 <details class="code-strip-details">
 <summary>machine ids</summary>
@@ -397,14 +372,14 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </article>
 <article class="ledger-item source-missing" role="listitem">
 <div class="ledger-row-top">
-<a class="state-badge source-missing" href="#source-missing">source未特定</a>
+<a class="state-badge source-missing" href="#backlog">source未特定</a>
 <span class="not-video-backed">not video-backed</span>
 </div>
 <h3 class="ledger-title">失敗したのに立て直しが早すぎる</h3>
 <dl class="ledger-meta">
-<div><dt>source</dt><dd>URL未入力</dd></div>
-<div><dt>review</dt><dd>動画候補として未確認</dd></div>
-<div><dt>operator</dt><dd>URL入力待ち</dd></div>
+<div><dt>source</dt><dd>URL待ち</dd></div>
+<div><dt>review</dt><dd>動画未確認</dd></div>
+<div><dt>operator</dt><dd>URL待ち</dd></div>
 </dl>
 <details class="code-strip-details">
 <summary>machine ids</summary>
@@ -416,14 +391,14 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </article>
 <article class="ledger-item blocked-hold" role="listitem">
 <div class="ledger-row-top">
-<a class="state-badge blocked-hold" href="#blocked-hold">保留</a>
+<a class="state-badge blocked-hold" href="#backlog">保留</a>
 <span class="not-video-backed">not video-backed</span>
 </div>
 <h3 class="ledger-title">歌の合間に急に本音が出る</h3>
 <dl class="ledger-meta">
 <div><dt>source</dt><dd>保留</dd></div>
 <div><dt>review</dt><dd>音楽権利route確認待ち</dd></div>
-<div><dt>operator</dt><dd>権利routeなしでは進めない</dd></div>
+<div><dt>operator</dt><dd>権利route待ち</dd></div>
 </dl>
 <details class="code-strip-details">
 <summary>machine ids</summary>
@@ -434,27 +409,22 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 </details>
 </article>
 </div>
-<span id="source-missing" class="anchor-alias" aria-hidden="true"></span>
-<details>
-<summary>source未特定の扱いを確認する</summary>
-<div class="details-body"><p>source-missing行は、URLが入るまで動画候補ではありません。JP/EN phrase gap も企画メモであり、video-backed candidate として扱いません。</p></div>
-</details>
-<span id="blocked-hold" class="anchor-alias" aria-hidden="true"></span>
-<details>
-<summary>保留の扱いを確認する</summary>
-<div class="details-body"><p>song / music rights sensitive の候補は、別のrights routeがない限りこの画面から進めません。</p></div>
+</div>
 </details>
 </section>
-<section id="safety-boundary" class="surface">
+<section id="system" class="surface">
 <div class="section-heading">
-<div><h2>安全境界</h2><p>この画面は確認用です。取得・生成・承認はまだ閉じています。</p></div>
+<div><p class="kicker">System mode / 開発用</p><h2>System readback</h2><p class="compact-line">Internal state is subordinate to the current review.</p></div>
 </div>
+<div id="safety-boundary" class="system-grid">
+<p class="status-line">locked: fetch / transcript / render / upload / rights</p>
 <details>
-<summary>閉じたままのゲートを見る</summary>
+<summary>gate detail</summary>
 <div class="details-body">
 <div class="locked-list"><span class="pill">fetch_authorized=false</span><span class="pill">media_downloaded=false</span><span class="pill">episode_dirs_created=false</span><span class="pill">rights_approved=false</span><span class="pill">production_ready=false</span><span class="pill">public_ready=false</span></div>
 </div>
 </details>
+</div>
 </section>
 <section id="developer-appendix" class="surface">
 <div class="section-heading">
@@ -464,8 +434,8 @@ code{background:var(--surface-3);border:1px solid var(--border);border-radius:5p
 <summary>artifact_id / machine JSON / 内部 artifact を見る</summary>
 <div class="details-body">
 <p class="muted">
-artifact_id: <code>clip-cpd10-candidate-ledger-readability-v0-001</code><br>
-generated_at: <code>2026-07-06</code><br>
+artifact_id: <code>clip-cpd11-operator-view-shell-v0-001</code><br>
+generated_at: <code>2026-07-07</code><br>
 operator JSON: <code>docs/content_planning/operator_cockpit.json</code><br>
 operator HTML: <code>docs/content_planning/operator_cockpit.html</code>
 </p>
