@@ -9,6 +9,8 @@ last_touched: 2026-07-06
 next_review_due: open_cpd09_briefing_board_then_inspect_single_source_identity_or_fill_source_urls
 active_artifact: clip-cpd09-operator-briefing-board-v0-001
 latest_content_planning_operator_cockpit_artifact: clip-cpd09-operator-briefing-board-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-09-operator-briefing-board-v0
+latest_content_planning_operator_cockpit_commit: 7d381cd
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -37,11 +39,20 @@ instructions.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-06 JST. A new terminal should pull `origin/main`, then
-read this file first, followed by `docs/CURRENT_HANDOFF.md`,
-`docs/content_planning/README.md`, and
-`artifacts/ARTIFACTS.md` entry
-`clip-cpd09-operator-briefing-board-v0-001`.
+Checkpoint date: 2026-07-06 JST. A new terminal should fetch the remote and
+check out the active CPD branch before reading project context:
+
+```powershell
+git fetch origin
+git switch codex/cpd-09-operator-briefing-board-v0
+git pull --ff-only
+```
+
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
+`docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
+`clip-cpd09-operator-briefing-board-v0-001`. The CPD-09 implementation commit
+is `7d381cd`; later handoff-only commits on the same branch may update this
+resume packet without changing the artifact semantics.
 
 The latest tracked slice is CPD-09. It consumes the human feedback that CPD-08
 still made the operator compare too many equally weighted cards. The normal

@@ -9,6 +9,8 @@ last_touched: 2026-07-06
 next_review_due: open_cpd09_briefing_board_then_inspect_single_source_identity_or_fill_source_urls
 active_artifact: clip-cpd09-operator-briefing-board-v0-001
 latest_content_planning_operator_cockpit_artifact: clip-cpd09-operator-briefing-board-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-09-operator-briefing-board-v0
+latest_content_planning_operator_cockpit_commit: 7d381cd
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -30,10 +32,20 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 
 ## Cross-Terminal Re-Entry Packet
 
-Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
+Fetch the remote CPD branch, then read the project context:
+
+```powershell
+git fetch origin
+git switch codex/cpd-09-operator-briefing-board-v0
+git pull --ff-only
+```
+
+Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-cpd09-operator-briefing-board-v0-001`.
-That is enough to resume without the previous chat.
+`clip-cpd09-operator-briefing-board-v0-001`. The CPD-09 implementation commit
+is `7d381cd`; later handoff-only commits on the same branch may update this
+packet without changing the artifact semantics. That is enough to resume
+without the previous chat.
 
 The durable state to carry forward is: CPD-09 keeps the dark operator cockpit
 but replaces the CPD-08 card-heavy Operator Home with a Briefing Board. The
