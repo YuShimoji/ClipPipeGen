@@ -1,0 +1,45 @@
+{
+  "schema_id": "clippipegen.source_inspection_decisions.template.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-cpd05-source-inspection-packet-v0-001-decision-template",
+  "generated_at": "2026-07-06",
+  "source_packet_artifact": "docs/content_planning/source_inspection_packet.json",
+  "instructions": [
+    "Fill only after a human/operator source inspection.",
+    "Leave decision as pending until the source URL has actually been reviewed.",
+    "Do not paste credentials, cookies, private account data, or downloaded media paths.",
+    "approve_future_private_fetch is only an input to a later gated slice; it is not rights approval or public readiness."
+  ],
+  "allowed_decisions": [
+    "approve_for_future_private_fetch",
+    "reject_source",
+    "needs_different_source",
+    "needs_manual_review",
+    "defer"
+  ],
+  "entry_count": 1,
+  "entries": [
+    {
+      "inspection_packet_id": "source_inspection_packet_ep_seed_cpd01_bancho_marine_misunderstanding",
+      "episode_plan_id": "episode_init_plan_ep_seed_cpd01_bancho_marine_misunderstanding",
+      "seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+      "candidate_id": "cpd01_bancho_marine_misunderstanding",
+      "source_url_reviewed": false,
+      "source_available": null,
+      "title_channel_match": null,
+      "clip_relevance": null,
+      "risk_notes": [],
+      "decision": "pending",
+      "approve_future_private_fetch": false,
+      "reviewer_notes": [],
+      "reviewed_at": "",
+      "boundary_flags_confirmed": {
+        "fetch_authorized": false,
+        "rights_approved": false,
+        "production_ready": false,
+        "public_ready": false
+      },
+      "do_not_fill_without_human_review": true
+    }
+  ]
+}

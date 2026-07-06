@@ -16,6 +16,192 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Operator Cockpit / Content Planning Review UX v2 |
+| purpose | Give humans one dark-mode, vertical content-planning entry point with a Primary Review Card for the single known source URL and secondary folded sections for missing-source ideas and developer details. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-06 table-heavy layout in the same output path. |
+| repo_relative_path | `docs/content_planning/operator_cockpit.html` |
+| machine_output | `docs/content_planning/operator_cockpit.json` |
+| source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
+| open_command | `start docs\content_planning\operator_cockpit.html` |
+| generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
+| validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| review_status | Ready as the normal human entry point for CPD planning review. Top screen is a Primary Review Card, not a wide status table. Only `cpd01_bancho_marine_misunderstanding` has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates. |
+| next_action | Open the cockpit first, inspect the single source-backed item as a human source identity check, or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04. |
+
+Boundary flags remain false or pending:
+
+- `source_url_opened_by_worker=false`
+- `source_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
+## `clip-cpd01-content-candidate-dashboard-v0-001`
+
+| Field | Value |
+|---|---|
+| title | CPD-01 Content Candidate / Channel Strategy Dashboard v0 |
+| purpose | Make "what should we clip next?" reviewable before source fetch, editing, thumbnail, or publishing lanes. |
+| storage class | Tracked local planning artifact; portable fixture-generated JSON/HTML. |
+| repo_relative_path | `docs/content_planning/content_dashboard.html` |
+| machine_outputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/channel_strategy.json` |
+| source_fixture | `samples/content_planning/content_candidates_fixture.json` |
+| open_command | `start docs\content_planning\content_dashboard.html` |
+| generated_from | `build-content-candidate-dashboard` reading offline fixture/manual seed metadata. |
+| validation_command | `uvx python -m src.cli.main build-content-candidate-dashboard --format json` plus `uvx pytest -q tests/test_content_planning.py`. |
+| review_status | Ready for operator review as planning readback only. It is not source fetch, production render, creative acceptance, rights approval, publishing acceptance, public use, or monetization approval. |
+| next_action | Review the top candidate, then decide whether to create an episode seed or add a public metadata adapter behind an explicit offline-safe flag. |
+
+Boundary flags remain false or pending:
+
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `media_downloaded=false`
+- `oauth_or_credentials_used=false`
+
+## `clip-cpd02-candidate-to-episode-seed-bridge-v0-001`
+
+| Field | Value |
+|---|---|
+| title | CPD-02 Candidate-to-Episode Seed Bridge v0 |
+| purpose | Convert CPD-01 candidate records into deterministic draft episode seed records before any source fetch, transcript, edit, thumbnail, render, or publishing lane runs. |
+| storage class | Tracked local planning artifact; portable candidate-derived JSON/HTML. |
+| repo_relative_path | `docs/content_planning/episode_seed_dashboard.html` |
+| machine_output | `docs/content_planning/episode_seed_drafts.json` |
+| source_candidate_json | `docs/content_planning/content_candidates.json` |
+| open_command | `start docs\content_planning\episode_seed_dashboard.html` |
+| generated_from | `build-episode-seed-drafts` reading CPD-01 candidate JSON. |
+| validation_command | `uvx python -m src.cli.main build-episode-seed-drafts --format json` plus `uvx pytest -q tests/test_episode_seed_bridge.py`. |
+| review_status | Ready for operator review as draft planning readback only. No episode folders, media, transcripts, edit packs, renders, thumbnails, uploads, rights approval, production acceptance, or public-use permission are created. |
+| next_action | Inspect the top seed and decide whether a later slice should resolve source metadata, initialize a real episode skeleton, or hold/reject the seed. |
+
+Boundary flags remain false or pending:
+
+- `status=draft`
+- `source_media_state=not_fetched`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `oauth_or_credentials_used=false`
+
+## `clip-cpd03-source-metadata-resolver-v0-001`
+
+| Field | Value |
+|---|---|
+| title | CPD-03 Source Metadata Resolver / Manual Source Intake v0 |
+| purpose | Resolve CPD-02 draft seed source URL state before any source fetch, transcript, episode initialization, thumbnail, render, or publishing lane runs. |
+| storage class | Tracked local planning artifact; portable seed-derived JSON/HTML plus blank manual registry template. |
+| repo_relative_path | `docs/content_planning/source_resolution_dashboard.html` |
+| machine_output | `docs/content_planning/episode_seed_source_resolution.json` |
+| manual_registry_template | `docs/content_planning/source_metadata_registry.template.json` |
+| source_seed_json | `docs/content_planning/episode_seed_drafts.json` |
+| open_command | `start docs\content_planning\source_resolution_dashboard.html` |
+| generated_from | `resolve-episode-seed-sources` reading CPD-02 episode seed draft JSON and an optional local manual registry. |
+| validation_command | `uvx python -m src.cli.main resolve-episode-seed-sources --format json` plus `uvx pytest -q tests/test_source_metadata_resolver.py`. |
+| review_status | Ready for operator review as source-resolution readback only. No media fetch, public API/OAuth lookup, episode folder, transcript, edit pack, render, thumbnail, rights approval, production acceptance, or public-use permission is created. |
+| next_action | Fill real source URLs for unresolved seed records in a local manual registry, rerun CPD-03, then decide whether a later dry-run should initialize an episode skeleton for a resolved seed. |
+
+Boundary flags remain false or pending:
+
+- `source_media_state=not_fetched`
+- `network_required=false`
+- `external_api_used=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `oauth_or_credentials_used=false`
+- `rights_approved=false`
+- `production_candidate=false`
+- `production_usage_allowed=false`
+- `publishing_acceptance=false`
+- `public_use_permission=false`
+
+## `clip-cpd04-init-episode-dry-run-plan-v0-001`
+
+| Field | Value |
+|---|---|
+| title | CPD-04 Init Episode Dry-Run Plan v0 |
+| purpose | Convert CPD-03 source-resolved records into reviewable episode initialization plans without creating real episode folders or downstream production artifacts. |
+| storage class | Tracked local planning artifact; portable source-resolution-derived JSON/HTML. |
+| repo_relative_path | `docs/content_planning/episode_init_plan_dashboard.html` |
+| machine_output | `docs/content_planning/episode_init_plan.json` |
+| source_resolution_json | `docs/content_planning/episode_seed_source_resolution.json` |
+| seed_enrichment_json | `docs/content_planning/episode_seed_drafts.json` |
+| open_command | `start docs\content_planning\episode_init_plan_dashboard.html` |
+| generated_from | `build-episode-init-plan` reading CPD-03 source resolution JSON and optional CPD-02 seed draft enrichment. |
+| validation_command | `uvx python -m src.cli.main build-episode-init-plan --format json` plus `uvx pytest -q tests/test_episode_init_plan.py`. |
+| review_status | Ready for operator review as dry-run initialization readback only. No episode folder, rights manifest, material ledger, fetch receipt, source media, transcript, edit pack, thumbnail, render, upload, rights approval, production acceptance, or public-use permission is created. |
+| next_action | Review the single ready dry-run plan and decide whether a later slice should run real source inspection / `init-episode`, while unresolved records stay behind manual source intake. |
+
+Boundary flags remain false or pending:
+
+- `dry_run=true`
+- `source_media_state=not_fetched`
+- `transcript_state=not_generated`
+- `material_ledger_state=planned_only`
+- `edit_pack_state=planned_only`
+- `thumbnail_state=planned_only`
+- `network_required=false`
+- `external_api_used=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_manifest_created=false`
+- `material_ledger_created=false`
+- `fetch_receipt_created=false`
+- `oauth_or_credentials_used=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `publishing_acceptance=false`
+- `public_ready=false`
+
+## `clip-cpd05-source-inspection-packet-v0-001`
+
+| Field | Value |
+|---|---|
+| title | CPD-05 Source Inspection Packet / Decision Registry v0 |
+| purpose | Convert ready CPD-04 dry-run episode init plans into operator source inspection packets and a blank decision registry template before any future gated source action. |
+| storage class | Tracked local planning artifact; portable episode-init-plan-derived JSON/HTML/template. |
+| repo_relative_path | `docs/content_planning/source_inspection_packet_dashboard.html` |
+| machine_output | `docs/content_planning/source_inspection_packet.json` |
+| decision_template | `docs/content_planning/source_inspection_decisions.template.json` |
+| source_episode_init_plan | `docs/content_planning/episode_init_plan.json` |
+| open_command | `start docs\content_planning\source_inspection_packet_dashboard.html` |
+| generated_from | `build-source-inspection-packet` reading CPD-04 episode init plan JSON. |
+| validation_command | `uvx python -m src.cli.main build-source-inspection-packet --format json` plus `uvx pytest -q tests/test_source_inspection_packet.py`. |
+| review_status | Ready for operator source identity review as an inspection packet only. The worker did not open the source URL, authorize future private/local fetch, create episode folders, generate episode artifacts, approve rights, or mark anything production/public ready. |
+| next_action | Open the dashboard, inspect the single ready source URL manually, then fill `source_inspection_decisions.template.json` only if a later gated slice should proceed. |
+
+Boundary flags remain false or pending:
+
+- `dry_run=true`
+- `source_opened_by_worker=false`
+- `source_media_state=not_fetched`
+- `fetch_authorized=false`
+- `network_required=false`
+- `external_api_used=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_manifest_created=false`
+- `material_ledger_created=false`
+- `fetch_receipt_created=false`
+- `transcript_generated=false`
+- `edit_pack_created=false`
+- `oauth_or_credentials_used=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
 ## `clip-review-acceptance-gate-001`
 
 | Field | Value |

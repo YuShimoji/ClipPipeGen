@@ -1,0 +1,286 @@
+{
+  "schema_id": "clippipegen.episode_init_plan.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-cpd04-init-episode-dry-run-plan-v0-001",
+  "generated_at": "2026-07-06",
+  "source": {
+    "input_artifact": "docs/content_planning/episode_seed_source_resolution.json",
+    "input_schema_id": "clippipegen.source_metadata_resolver.v0",
+    "input_artifact_id": "clip-cpd03-source-metadata-resolver-v0-001",
+    "seed_enrichment": {
+      "path": "docs/content_planning/episode_seed_drafts.json",
+      "exists": true,
+      "seed_count": 5,
+      "readback_note": "seed enrichment read locally; no network/API/OAuth lookup was performed"
+    },
+    "network_required": false
+  },
+  "summary": {
+    "source_resolution_record_count": 5,
+    "ready_dry_run_plan_count": 1,
+    "skipped_unresolved_count": 4,
+    "source_url_present_count": 1,
+    "source_url_missing_count": 4,
+    "source_url_invalid_count": 0,
+    "media_downloaded": false,
+    "episode_dirs_created": false,
+    "health": "ready",
+    "planned_episode_roots": [
+      "episodes/ep_seed_cpd01_bancho_marine_misunderstanding"
+    ]
+  },
+  "gate_readback": {
+    "dry_run": true,
+    "offline_first": true,
+    "network_required": false,
+    "external_api_used": false,
+    "media_downloaded": false,
+    "source_video_downloaded": false,
+    "source_audio_downloaded": false,
+    "episode_dirs_created": false,
+    "rights_manifest_created": false,
+    "material_ledger_created": false,
+    "fetch_receipt_created": false,
+    "transcript_generated": false,
+    "edit_pack_created": false,
+    "render_generated": false,
+    "thumbnail_generated": false,
+    "oauth_or_credentials_used": false,
+    "rights_approved": false,
+    "production_candidate": false,
+    "production_ready": false,
+    "publishing_acceptance": false,
+    "public_ready": false,
+    "public_use_permission": false,
+    "ready_plan_count": 1,
+    "skipped_unresolved_count": 4,
+    "readback_note": "CPD-04 is a dry-run plan only. Planned episode paths are strings; real init-episode, source fetch, transcript, edit, thumbnail, render, publishing, and rights approval remain separate later gates."
+  },
+  "episode_init_plans": [
+    {
+      "episode_plan_id": "episode_init_plan_ep_seed_cpd01_bancho_marine_misunderstanding",
+      "source_resolution_id": "source_resolution_seed_cpd01_bancho_marine_misunderstanding",
+      "seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+      "candidate_id": "cpd01_bancho_marine_misunderstanding",
+      "generated_at": "2026-07-06",
+      "working_title": "番長、船長を完全に勘違いする",
+      "planned_episode_slug": "ep_seed_cpd01_bancho_marine_misunderstanding",
+      "talent": [
+        "轟はじめ",
+        "宝鐘マリン"
+      ],
+      "channel_name": "hololive ホロライブ",
+      "group": "hololive / DEV_IS",
+      "language": "ja",
+      "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "video_id": "7J5aS_pcBj4",
+      "source_url_state": "present",
+      "source_metadata_state": "resolved_from_seed_url",
+      "source_media_state": "not_fetched",
+      "transcript_state": "not_generated",
+      "material_ledger_state": "planned_only",
+      "edit_pack_state": "planned_only",
+      "thumbnail_state": "planned_only",
+      "dry_run": true,
+      "ready_for_real_init": true,
+      "blocked_reason": "",
+      "approved": false,
+      "public_ready": false,
+      "production_ready": false,
+      "planned_episode_root": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding",
+      "planned_artifacts": {
+        "rights_manifest_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/rights_manifest.json",
+        "source_receipt_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/fetch_receipt.json",
+        "source_video_receipt_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/fetch_receipt.json",
+        "source_audio_receipt_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_audio/fetch_receipt.json",
+        "source_video_material_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/source_video.mp4",
+        "source_audio_material_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_audio/source.wav",
+        "material_ledger_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/material_ledger.json",
+        "transcript_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/transcript.json",
+        "edit_pack_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/edit_pack.json",
+        "subtitle_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/subtitles.json",
+        "thumbnail_brief_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/thumbnail_brief.json",
+        "preview_pack_path": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/review/preview_pack/preview_manifest.json"
+      },
+      "source_inspection_plan": {
+        "what_to_inspect_later": [
+          "confirm the source URL still points to the intended public source",
+          "identify a bounded timestamp window before any fetch or transcript work",
+          "record source title/channel/duration readback from a human-approved route",
+          "preserve rights/material-use readback before any production or public use"
+        ],
+        "future_lane_needed": "source_inspection_then_asset_fetch",
+        "manual_decisions_needed_before_fetch": [
+          "operator confirms the source identity matches the candidate",
+          "operator confirms rights status remains pending/unverified and not approved",
+          "operator chooses whether to run a later real init-episode step"
+        ],
+        "future_commands_data_only": [
+          "DO_NOT_RUN_NOW: python -m src.cli.main init-episode --episode-id ep_seed_cpd01_bancho_marine_misunderstanding",
+          "DO_NOT_RUN_NOW: python -m src.cli.main fetch-source-video --episode-id ep_seed_cpd01_bancho_marine_misunderstanding --material-id src_video --mode <future_source_video_fetch_mode> --source-url <confirmed_source_url>",
+          "DO_NOT_RUN_NOW: python -m src.cli.main fetch-source-audio --episode-id ep_seed_cpd01_bancho_marine_misunderstanding --material-id src_audio --mode <future_source_audio_fetch_mode> --source-url <confirmed_source_url>"
+        ],
+        "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "video_id": "7J5aS_pcBj4"
+      },
+      "proposed_clip_scope": {
+        "available": true,
+        "clip_angle": "番長が船長を聞き間違える短尺コントとして、前振りから返しまでを 20 秒前後で見せる。",
+        "title_hooks": [
+          "番長、船長を完全に勘違いする",
+          "マリン船長の名前で話がズレ続ける瞬間",
+          "この聞き間違い、切り抜き向きすぎる"
+        ],
+        "duration_hint": {
+          "target_seconds": 20,
+          "min_seconds": 12,
+          "max_seconds": 30
+        },
+        "edit_plan_outline": [
+          "inspect source context and identify exact start/end later",
+          "preserve one setup beat before the payoff",
+          "draft subtitles from real transcript or official subtitle source later",
+          "run context check before selecting a final cut candidate"
+        ]
+      },
+      "risk_flags": [
+        {
+          "code": "rights_pending",
+          "severity": "medium",
+          "note": "Local planning only. Public use requires separate rights/publication acceptance."
+        }
+      ],
+      "rights_readback": {
+        "status": "pending",
+        "source": "existing_local_docs_fixture",
+        "notes": [
+          "diagnostic planning only",
+          "no production/public approval"
+        ],
+        "approved": false,
+        "hard_gate": false
+      },
+      "gates": {
+        "fetch_required_later": true,
+        "manual_source_review_required": true,
+        "rights_review_required_later": true,
+        "public_upload_forbidden_now": true
+      },
+      "next_action": "ready_for_operator_source_inspection"
+    }
+  ],
+  "skipped_source_records": [
+    {
+      "source_resolution_id": "source_resolution_seed_cpd01_jp_en_phrase_gap",
+      "seed_id": "seed_cpd01_jp_en_phrase_gap",
+      "candidate_id": "cpd01_jp_en_phrase_gap",
+      "generated_at": "2026-07-06",
+      "working_title": "日本語の一言で EN 組が固まる",
+      "source_url": "",
+      "video_id": "",
+      "source_url_state": "missing",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "source_media_state": "not_fetched",
+      "ready_for_real_init": false,
+      "dry_run": true,
+      "approved": false,
+      "public_ready": false,
+      "production_ready": false,
+      "blocked_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "next_action": "add_source_url"
+    },
+    {
+      "source_resolution_id": "source_resolution_seed_cpd01_reaction_face_chain",
+      "seed_id": "seed_cpd01_reaction_face_chain",
+      "candidate_id": "cpd01_reaction_face_chain",
+      "generated_at": "2026-07-06",
+      "working_title": "表情が一瞬で変わるホロメン",
+      "source_url": "",
+      "video_id": "",
+      "source_url_state": "missing",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "source_media_state": "not_fetched",
+      "ready_for_real_init": false,
+      "dry_run": true,
+      "approved": false,
+      "public_ready": false,
+      "production_ready": false,
+      "blocked_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "next_action": "add_source_url"
+    },
+    {
+      "source_resolution_id": "source_resolution_seed_cpd01_game_fail_micro_arc",
+      "seed_id": "seed_cpd01_game_fail_micro_arc",
+      "candidate_id": "cpd01_game_fail_micro_arc",
+      "generated_at": "2026-07-06",
+      "working_title": "失敗したのに立て直しが早すぎる",
+      "source_url": "",
+      "video_id": "",
+      "source_url_state": "missing",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "source_media_state": "not_fetched",
+      "ready_for_real_init": false,
+      "dry_run": true,
+      "approved": false,
+      "public_ready": false,
+      "production_ready": false,
+      "blocked_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "next_action": "add_source_url"
+    },
+    {
+      "source_resolution_id": "source_resolution_seed_cpd01_song_moment_hold",
+      "seed_id": "seed_cpd01_song_moment_hold",
+      "candidate_id": "cpd01_song_moment_hold",
+      "generated_at": "2026-07-06",
+      "working_title": "歌の合間に急に本音が出る",
+      "source_url": "",
+      "video_id": "",
+      "source_url_state": "missing",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "source_media_state": "not_fetched",
+      "ready_for_real_init": false,
+      "dry_run": true,
+      "approved": false,
+      "public_ready": false,
+      "production_ready": false,
+      "blocked_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "next_action": "add_source_url"
+    }
+  ]
+}

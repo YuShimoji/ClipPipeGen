@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-10bc`
-- artifact: `clip-ed10bc-thank-v2-open-command-repair-readback-001`
-- state: `thank_v2_open_command_repair_ready`
+- feature: `CPD-07`
+- artifact: `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`
+- state: `content_planning_operator_cockpit_ready`
 
 ## Feature Table
 

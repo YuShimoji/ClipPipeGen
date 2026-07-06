@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CPD-05 Source Inspection Packet</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,'Yu Gothic','Meiryo',sans-serif;margin:24px;line-height:1.5;color:#1f2933;background:#f7f8fa}
+main{max-width:1240px;margin:0 auto}
+section{margin:18px 0;padding:16px;background:#fff;border:1px solid #d8dde5;border-radius:8px}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0 0 8px}
+table{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{background:#eef3f8}.muted{color:#5f6b7a}.gate{border-color:#e3b341;background:#fffaf0}
+.ok{color:#12633d;font-weight:700}.warn{color:#8a4b00;font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.card{border:1px solid #d8dde5;border-radius:8px;padding:12px;background:#fbfcfe}code{background:#eef1f5;padding:2px 4px;border-radius:4px}
+ul{margin:6px 0 0 18px;padding:0}
+</style>
+</head>
+<body>
+<main>
+<h1>CPD-05 Source Inspection Packet v0</h1>
+<p class="muted">Local inspection packet only. The worker did not open source URLs, authorize future fetch, clear rights, create episode artifacts, or mark anything production/public ready.</p>
+
+  <section>
+    <h2>Generation Summary</h2>
+    <table>
+      <tr><th>artifact_id</th><td>clip-cpd05-source-inspection-packet-v0-001</td></tr>
+      <tr><th>episode init plans read</th><td>1</td></tr>
+      <tr><th>inspectable source packets</th><td>1</td></tr>
+      <tr><th>blocked/skipped records</th><td>4</td></tr>
+      <tr><th>fetch authorized</th><td>false</td></tr>
+      <tr><th>media downloaded</th><td>false</td></tr>
+      <tr><th>episode dirs created</th><td>false</td></tr>
+      <tr><th>machine JSON</th><td><code>docs/content_planning/source_inspection_packet.json</code></td></tr>
+      <tr><th>decision template</th><td><code>docs/content_planning/source_inspection_decisions.template.json</code></td></tr>
+      <tr><th>HTML</th><td><code>docs/content_planning/source_inspection_packet_dashboard.html</code></td></tr>
+      <tr><th>input</th><td>docs/content_planning/episode_init_plan.json</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>Inspectable Packets</h2>
+    <div class="grid">
+
+      <div class="card">
+        <h3>source_inspection_packet_ep_seed_cpd01_bancho_marine_misunderstanding</h3>
+        <table>
+          <tr><th>Inspection Packet ID</th><td>source_inspection_packet_ep_seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>Episode plan ID</th><td>episode_init_plan_ep_seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>seed ID</th><td>seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>Candidate ID</th><td>cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>Source URL</th><td>https://www.youtube.com/watch?v=7J5aS_pcBj4</td></tr>
+          <tr><th>video_id</th><td>7J5aS_pcBj4</td></tr>
+          <tr><th>planned episode slug</th><td>ep_seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>inspection checklist</th><td><ul><li>source page exists / availability: unchecked</li><li>title/channel appears consistent: unchecked</li><li>content appears relevant to clip_angle: unchecked</li><li>obvious risk flags: unchecked</li><li>whether future private/local fetch should be authorized: unchecked</li></ul></td></tr>
+          <tr><th>decision state</th><td>pending</td></tr>
+          <tr><th>fetch authorization</th><td>false</td></tr>
+          <tr><th>rights readback</th><td>pending / approved=false</td></tr>
+          <tr><th>next action</th><td class="ok">operator_open_source_url</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section>
+    <h2>Blocked / Skipped Source Records</h2>
+    <table>
+      <tr><th>seed / candidate</th><th>working title</th><th>source kind</th><th>URL state</th><th>blocked reason</th><th>next action</th></tr>
+
+      <tr>
+        <td><code>seed_cpd01_jp_en_phrase_gap</code><br>cpd01_jp_en_phrase_gap</td>
+        <td>日本語の一言で EN 組が固まる</td>
+        <td>skipped_source_record</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_reaction_face_chain</code><br>cpd01_reaction_face_chain</td>
+        <td>表情が一瞬で変わるホロメン</td>
+        <td>skipped_source_record</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_game_fail_micro_arc</code><br>cpd01_game_fail_micro_arc</td>
+        <td>失敗したのに立て直しが早すぎる</td>
+        <td>skipped_source_record</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_song_moment_hold</code><br>cpd01_song_moment_hold</td>
+        <td>歌の合間に急に本音が出る</td>
+        <td>skipped_source_record</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="gate">
+    <h2>Gate Readback</h2>
+    <table>
+      <tr><th>dry_run</th><td>true</td></tr>
+      <tr><th>source_opened_by_worker</th><td>false</td></tr>
+      <tr><th>network_required</th><td>false</td></tr>
+      <tr><th>external_api_used</th><td>false</td></tr>
+      <tr><th>media_downloaded</th><td>false</td></tr>
+      <tr><th>episode_dirs_created</th><td>false</td></tr>
+      <tr><th>created artifacts</th><td>rights_manifest=false; material_ledger=false; fetch_receipt=false; transcript=false; edit_pack=false; render=false; thumbnail=false</td></tr>
+      <tr><th>production/public</th><td>fetch_authorized=false; rights_approved=false; production_ready=false; public_ready=false</td></tr>
+      <tr><th>note</th><td>CPD-05 writes source inspection packets and a blank decision template only. Opening source pages, authorizing a future private fetch, real episode init, rights approval, production readiness, and public readiness remain separate steps.</td></tr>
+    </table>
+  </section>
+</main>
+</body>
+</html>

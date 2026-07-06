@@ -26,6 +26,12 @@ Subcommands:
     build-operator-proxy-decision-handoff R3: cut-scoped proxy decision handoff.
     build-subtitle-overlay-visual-proof R3: cut-scoped diagnostic subtitle-overlay proof.
     build-subtitle-typography-decoration-comparison ED-10g: review-only font/decor comparison.
+    build-content-candidate-dashboard CPD-01: fixture -> content candidate/channel strategy dashboard.
+    build-episode-seed-drafts CPD-02: content candidates -> non-fetching episode seed drafts.
+    resolve-episode-seed-sources CPD-03: episode seed drafts -> source resolution/manual intake.
+    build-episode-init-plan CPD-04: source resolution -> dry-run episode init plans.
+    build-source-inspection-packet CPD-05: dry-run plans -> source inspection packets.
+    build-operator-cockpit CPD-07: dark-mode vertical operator cockpit UX.
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-docs-dashboard    Docs v1.5: wiki/dashboard status and doc-health findings.
@@ -52,9 +58,14 @@ from . import (
     audit_material_ledger,
     audit_thumbnail,
     build_chapter_revision_board,
+    build_content_candidate_dashboard,
     build_cut_decision_packet,
     build_cut_review_packet,
     build_episode_review_bundle,
+    build_episode_init_plan,
+    build_operator_cockpit,
+    build_source_inspection_packet,
+    build_episode_seed_drafts,
     build_docs_dashboard,
     build_local_preview_pack,
     build_non_repo_handoff,
@@ -74,6 +85,7 @@ from . import (
     patch_thumbnail,
     register_material,
     render_tiny_proof,
+    resolve_episode_seed_sources,
     review_transcript,
     set_compliance,
     status_episode,
@@ -106,6 +118,12 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-operator-proxy-decision-handoff": build_operator_proxy_decision_handoff.run,
     "build-subtitle-overlay-visual-proof": build_subtitle_overlay_visual_proof.run,
     "build-subtitle-typography-decoration-comparison": build_subtitle_typography_decoration_comparison.run,
+    "build-content-candidate-dashboard": build_content_candidate_dashboard.run,
+    "build-episode-seed-drafts": build_episode_seed_drafts.run,
+    "resolve-episode-seed-sources": resolve_episode_seed_sources.run,
+    "build-episode-init-plan": build_episode_init_plan.run,
+    "build-source-inspection-packet": build_source_inspection_packet.run,
+    "build-operator-cockpit": build_operator_cockpit.run,
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
     "build-docs-dashboard": build_docs_dashboard.run,

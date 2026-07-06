@@ -1,0 +1,364 @@
+{
+  "schema_id": "clippipegen.content_planning_dashboard.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-cpd01-content-candidate-dashboard-v0-001",
+  "generated_at": "2026-07-06",
+  "source": {
+    "mode": "fixture",
+    "fixture_path": "samples/content_planning/content_candidates_fixture.json",
+    "network_required": false,
+    "fixture_readback": "Offline sample seeds for CPD-01. Public metadata fields are fixture readback only and are not refreshed live."
+  },
+  "summary": {
+    "candidate_count": 5,
+    "top_candidate_id": "cpd01_bancho_marine_misunderstanding",
+    "score_min": 36,
+    "score_max": 79,
+    "needs_human_review_count": 1
+  },
+  "gate_readback": {
+    "offline_first": true,
+    "network_required": false,
+    "media_downloaded": false,
+    "oauth_or_credentials_used": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "rights_status_counts": {
+      "pending": 1,
+      "unknown": 2,
+      "unverified": 2
+    },
+    "readback_note": "Candidate planning is allowed with pending/unverified rights, but public use, publishing, monetization, and production claims stay gated."
+  },
+  "candidates": [
+    {
+      "candidate_id": "cpd01_bancho_marine_misunderstanding",
+      "source_mode": "fixture",
+      "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "source_ref": "JP-Pilot-01R3 public hololive short anime fixture",
+      "channel_name": "hololive ホロライブ",
+      "talent": [
+        "轟はじめ",
+        "宝鐘マリン"
+      ],
+      "group": "hololive / DEV_IS",
+      "language": "ja",
+      "title": "【アニメ】押忍！！ば～んちょ だじぇ！",
+      "published_at": "fixture_public_metadata",
+      "duration_seconds": 67,
+      "topic_tags": [
+        "short_anime",
+        "misunderstanding",
+        "bancho",
+        "marine",
+        "fast_payoff"
+      ],
+      "clip_angle": "番長が船長を聞き間違える短尺コントとして、前振りから返しまでを 20 秒前後で見せる。",
+      "proposed_clip_titles": [
+        "番長、船長を完全に勘違いする",
+        "マリン船長の名前で話がズレ続ける瞬間",
+        "この聞き間違い、切り抜き向きすぎる"
+      ],
+      "title_hooks": [
+        "番長、船長を完全に勘違いする",
+        "マリン船長の名前で話がズレ続ける瞬間",
+        "この聞き間違い、切り抜き向きすぎる"
+      ],
+      "expected_edit_value": "短い前振りと明確な payoff があり、字幕・ズーム・SE でテンポを作りやすい。",
+      "thumbnailability": "2 人名と聞き間違いの驚きで 1 枚絵の訴求を作れる。",
+      "editability": "既存 R3 transcript / cut review lineage があり、検証済み素材から候補化しやすい。",
+      "audience_fit": "既存 JP-Pilot の文脈に近く、hololive JP 切り抜き視聴者に伝わりやすい。",
+      "novelty_or_trend_signal": "既存検証素材の再利用で低摩擦だが、鮮度は fixture readback に留まる。",
+      "risk_flags": [
+        {
+          "code": "rights_pending",
+          "severity": "medium",
+          "note": "Local planning only. Public use requires separate rights/publication acceptance."
+        }
+      ],
+      "rights_readback": {
+        "status": "pending",
+        "source": "existing_local_docs_fixture",
+        "notes": [
+          "diagnostic planning only",
+          "no production/public approval"
+        ],
+        "hard_gate": false
+      },
+      "next_action": "inspect VOD and decide whether to create episode seed",
+      "score_total": 79,
+      "score_components": {
+        "expected_edit_value": 19,
+        "thumbnailability": 18,
+        "editability": 19,
+        "audience_fit": 17,
+        "novelty_or_trend_signal": 11,
+        "risk_penalty": -5
+      },
+      "score_explanation": "expected_edit_value=19; thumbnailability=18; editability=19; audience_fit=17; novelty_or_trend_signal=11; risk_penalty=-5"
+    },
+    {
+      "candidate_id": "cpd01_jp_en_phrase_gap",
+      "source_mode": "manual_seed",
+      "source_url": "",
+      "source_ref": "manual_topic_seed: JP/EN phrase gap",
+      "channel_name": "unknown fixture channel",
+      "talent": [
+        "JP talent TBD",
+        "EN talent TBD"
+      ],
+      "group": "hololive JP/EN",
+      "language": "ja/en",
+      "title": "日本語と英語の意味ズレで会話が噛み合わない候補",
+      "published_at": "unknown",
+      "duration_seconds": 1200,
+      "topic_tags": [
+        "language_gap",
+        "collab",
+        "subtitle_value",
+        "context_needed"
+      ],
+      "clip_angle": "字幕で意味ズレを補足しながら、コラボの噛み合わなさを分かりやすく見せる。",
+      "proposed_clip_titles": [
+        "日本語の一言で EN 組が固まる",
+        "翻訳すると余計に面白い会話",
+        "意味ズレがそのままオチになる瞬間"
+      ],
+      "title_hooks": [
+        "日本語の一言で EN 組が固まる",
+        "翻訳すると余計に面白い会話",
+        "意味ズレがそのままオチになる瞬間"
+      ],
+      "expected_edit_value": "字幕価値は高いが、文脈説明が必要で尺が伸びやすい。",
+      "thumbnailability": "2 人の対比と短い日本語フレーズを使える。",
+      "editability": "字幕・翻訳確認が必要で中程度。",
+      "audience_fit": "JP/EN 双方に展開しやすい。",
+      "novelty_or_trend_signal": "コラボ回なら trend signal が出やすいが未確認。",
+      "risk_flags": [
+        {
+          "code": "translation_review_needed",
+          "severity": "medium",
+          "note": "Do not publish until bilingual meaning is checked."
+        }
+      ],
+      "rights_readback": {
+        "status": "unverified",
+        "source": "manual_seed",
+        "notes": [
+          "needs source URL and rights readback"
+        ],
+        "hard_gate": false
+      },
+      "next_action": "find source VOD and inspect transcript quality",
+      "score_total": 72,
+      "score_components": {
+        "expected_edit_value": 17,
+        "thumbnailability": 16,
+        "editability": 12,
+        "audience_fit": 18,
+        "novelty_or_trend_signal": 14,
+        "risk_penalty": -5
+      },
+      "score_explanation": "expected_edit_value=17; thumbnailability=16; editability=12; audience_fit=18; novelty_or_trend_signal=14; risk_penalty=-5"
+    },
+    {
+      "candidate_id": "cpd01_reaction_face_chain",
+      "source_mode": "manual_seed",
+      "source_url": "",
+      "source_ref": "manual_topic_seed: reaction face chain",
+      "channel_name": "unknown fixture channel",
+      "talent": [
+        "hololive talent TBD"
+      ],
+      "group": "hololive",
+      "language": "ja",
+      "title": "リアクション顔が 3 段階で変わる雑談 / 企画候補",
+      "published_at": "unknown",
+      "duration_seconds": 900,
+      "topic_tags": [
+        "reaction",
+        "thumbnail_first",
+        "chatting",
+        "emotion_shift"
+      ],
+      "clip_angle": "表情の変化を軸に、サムネから先に候補化して本編確認へ進む。",
+      "proposed_clip_titles": [
+        "表情が一瞬で変わるホロメン",
+        "このリアクション、サムネが強い",
+        "困惑から爆笑までの 15 秒"
+      ],
+      "title_hooks": [
+        "表情が一瞬で変わるホロメン",
+        "このリアクション、サムネが強い",
+        "困惑から爆笑までの 15 秒"
+      ],
+      "expected_edit_value": "表情差分が明確なら短尺化しやすいが、実 VOD 確認前。",
+      "thumbnailability": "強い。顔の変化を視覚フックにできる。",
+      "editability": "source timestamp がないため、候補探索の手戻りがある。",
+      "audience_fit": "リアクション切り抜きは既存視聴者に届きやすい。",
+      "novelty_or_trend_signal": "manual seed のため鮮度は未検証。",
+      "risk_flags": [
+        {
+          "code": "source_timestamp_missing",
+          "severity": "medium",
+          "note": "Needs public metadata or manual timestamp before fetch/edit lanes."
+        },
+        {
+          "code": "rights_unknown",
+          "severity": "medium",
+          "note": "Planning seed only."
+        }
+      ],
+      "rights_readback": {
+        "status": "unknown",
+        "source": "manual_seed",
+        "notes": [
+          "not usable for production until source and rights are checked"
+        ],
+        "hard_gate": false
+      },
+      "next_action": "needs human review before episode seed",
+      "score_total": 63,
+      "score_components": {
+        "expected_edit_value": 15,
+        "thumbnailability": 20,
+        "editability": 11,
+        "audience_fit": 17,
+        "novelty_or_trend_signal": 10,
+        "risk_penalty": -10
+      },
+      "score_explanation": "expected_edit_value=15; thumbnailability=20; editability=11; audience_fit=17; novelty_or_trend_signal=10; risk_penalty=-10"
+    },
+    {
+      "candidate_id": "cpd01_game_fail_micro_arc",
+      "source_mode": "manual_seed",
+      "source_url": "",
+      "source_ref": "manual_topic_seed: game fail micro arc",
+      "channel_name": "unknown fixture channel",
+      "talent": [
+        "hololive gaming talent TBD"
+      ],
+      "group": "hololive",
+      "language": "ja",
+      "title": "ゲーム失敗から即リカバリーまでの 30 秒候補",
+      "published_at": "unknown",
+      "duration_seconds": 7200,
+      "topic_tags": [
+        "gameplay",
+        "fail",
+        "recovery",
+        "sound_reaction"
+      ],
+      "clip_angle": "失敗、悲鳴、即リカバリーを 1 本の小さい起承転結として切る。",
+      "proposed_clip_titles": [
+        "失敗したのに立て直しが早すぎる",
+        "悲鳴から復帰までが完璧な 30 秒",
+        "ゲーム中の反射神経が出た瞬間"
+      ],
+      "title_hooks": [
+        "失敗したのに立て直しが早すぎる",
+        "悲鳴から復帰までが完璧な 30 秒",
+        "ゲーム中の反射神経が出た瞬間"
+      ],
+      "expected_edit_value": "起承転結が作りやすく、SE/ズームでテンポを足せる。",
+      "thumbnailability": "ゲーム画面だけでは弱い場合があるため表情素材が必要。",
+      "editability": "長尺 VOD から timestamp 探索が必要。",
+      "audience_fit": "ゲーム切り抜き視聴者には届きやすい。",
+      "novelty_or_trend_signal": "ゲームタイトル依存。fixture では未測定。",
+      "risk_flags": [
+        {
+          "code": "game_ip_review_needed",
+          "severity": "medium",
+          "note": "Third-party game footage needs later policy/readback review."
+        }
+      ],
+      "rights_readback": {
+        "status": "unverified",
+        "source": "manual_seed",
+        "notes": [
+          "third-party game policy not checked"
+        ],
+        "hard_gate": false
+      },
+      "next_action": "needs source and game-policy readback before fetch",
+      "score_total": 61,
+      "score_components": {
+        "expected_edit_value": 16,
+        "thumbnailability": 13,
+        "editability": 10,
+        "audience_fit": 15,
+        "novelty_or_trend_signal": 12,
+        "risk_penalty": -5
+      },
+      "score_explanation": "expected_edit_value=16; thumbnailability=13; editability=10; audience_fit=15; novelty_or_trend_signal=12; risk_penalty=-5"
+    },
+    {
+      "candidate_id": "cpd01_song_moment_hold",
+      "source_mode": "manual_seed",
+      "source_url": "",
+      "source_ref": "manual_topic_seed: song moment",
+      "channel_name": "unknown fixture channel",
+      "talent": [
+        "hololive talent TBD"
+      ],
+      "group": "hololive",
+      "language": "ja",
+      "title": "歌枠の一言コメントが面白い候補",
+      "published_at": "unknown",
+      "duration_seconds": 3600,
+      "topic_tags": [
+        "song_stream",
+        "commentary",
+        "rights_sensitive",
+        "hold"
+      ],
+      "clip_angle": "歌唱部分ではなく合間のコメントだけを候補化できるか確認する。",
+      "proposed_clip_titles": [
+        "歌の合間に急に本音が出る",
+        "この一言だけ切り抜けるか要確認"
+      ],
+      "title_hooks": [
+        "歌の合間に急に本音が出る",
+        "この一言だけ切り抜けるか要確認"
+      ],
+      "expected_edit_value": "一言は強い可能性があるが、歌枠リスクが大きい。",
+      "thumbnailability": "タイトルは作れるが権利回りの見通しが悪い。",
+      "editability": "歌唱部分を避ける精密な timestamp が必要。",
+      "audience_fit": "ファン向けには強いが安全な運用には追加判断が必要。",
+      "novelty_or_trend_signal": "未測定。",
+      "risk_flags": [
+        {
+          "code": "song_or_music_rights_sensitive",
+          "severity": "high",
+          "note": "Hold until a separate rights/publication route says this is usable."
+        },
+        {
+          "code": "source_timestamp_missing",
+          "severity": "medium",
+          "note": "No safe non-song timestamp is identified."
+        }
+      ],
+      "rights_readback": {
+        "status": "unknown",
+        "source": "manual_seed",
+        "notes": [
+          "hold; separate rights route required"
+        ],
+        "hard_gate": false
+      },
+      "next_action": "reject or hold until rights route is explicit",
+      "score_total": 36,
+      "score_components": {
+        "expected_edit_value": 12,
+        "thumbnailability": 12,
+        "editability": 6,
+        "audience_fit": 13,
+        "novelty_or_trend_signal": 8,
+        "risk_penalty": -15
+      },
+      "score_explanation": "expected_edit_value=12; thumbnailability=12; editability=6; audience_fit=13; novelty_or_trend_signal=8; risk_penalty=-15"
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CPD-03 Source Metadata Resolution</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,'Yu Gothic','Meiryo',sans-serif;margin:24px;line-height:1.5;color:#1f2933;background:#f7f8fa}
+main{max-width:1240px;margin:0 auto}
+section{margin:18px 0;padding:16px;background:#fff;border:1px solid #d8dde5;border-radius:8px}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:19px;margin:0 0 12px}
+table{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{background:#eef3f8}.muted{color:#5f6b7a}.gate{border-color:#e3b341;background:#fffaf0}
+.ok{color:#12633d;font-weight:700}.warn{color:#8a4b00;font-weight:700}.bad{color:#8a1f11;font-weight:700}
+code{background:#eef1f5;padding:2px 4px;border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>CPD-03 Source Metadata Resolver v0</h1>
+<p class="muted">episode seed の source URL 状態を読み取り、未解決 seed の手入力 intake を作るレビュー専用画面です。動画・音声取得、API/OAuth、episode 初期化、権利承認、公開承認は行っていません。</p>
+
+  <section>
+    <h2>生成サマリー</h2>
+    <table>
+      <tr><th>artifact_id</th><td>clip-cpd03-source-metadata-resolver-v0-001</td></tr>
+      <tr><th>source records</th><td>5</td></tr>
+      <tr><th>URL 解決済み</th><td>1</td></tr>
+      <tr><th>URL 未入力</th><td>4</td></tr>
+      <tr><th>手入力が必要</th><td>4</td></tr>
+      <tr><th>machine JSON</th><td><code>docs/content_planning/episode_seed_source_resolution.json</code></td></tr>
+      <tr><th>HTML</th><td><code>docs/content_planning/source_resolution_dashboard.html</code></td></tr>
+      <tr><th>manual registry template</th><td><code>docs/content_planning/source_metadata_registry.template.json</code></td></tr>
+      <tr><th>入力</th><td>docs/content_planning/episode_seed_drafts.json</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>Source Resolution Records</h2>
+    <table>
+      <tr><th>seed / candidate</th><th>予定タイトル</th><th>元動画URL状態</th><th>source_url</th><th>video_id</th><th>検索query</th><th>手入力</th><th>信頼度</th><th>次アクション</th><th>権利・取得状態</th></tr>
+
+      <tr>
+        <td><code>seed_cpd01_bancho_marine_misunderstanding</code><br>cpd01_bancho_marine_misunderstanding</td>
+        <td>番長、船長を完全に勘違いする</td>
+        <td class="ok">present<br><span class="muted">episode_seed_drafts</span></td>
+        <td>https://www.youtube.com/watch?v=7J5aS_pcBj4</td>
+        <td>7J5aS_pcBj4</td>
+        <td>番長、船長を完全に勘違いする 【アニメ】押忍！！ば～んちょ だじぇ！ 轟はじめ 宝鐘マリン hololive ホロライブ hololive / DEV_IS JP-Pilot-01R3 public hololive short anime fixture short_anime misunderstanding bancho marine</td>
+        <td>false<br><span class="muted"></span></td>
+        <td>seed_url_exact</td>
+        <td>ready_for_source_inspection_without_fetch</td>
+        <td>source_media_state=not_fetched<br>rights_approved=false<br>public_ready=false</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_jp_en_phrase_gap</code><br>cpd01_jp_en_phrase_gap</td>
+        <td>日本語の一言で EN 組が固まる</td>
+        <td class="warn">missing<br><span class="muted">missing</span></td>
+        <td>(missing)</td>
+        <td>-</td>
+        <td>日本語の一言で EN 組が固まる 日本語と英語の意味ズレで会話が噛み合わない候補 JP talent TBD EN talent TBD hololive JP/EN manual_topic_seed: JP/EN phrase gap language_gap collab subtitle_value context_needed</td>
+        <td>true<br><span class="muted">source_url, source_title, channel_name, published_at, duration_seconds_or_timestamp_hint, rights_readback_note</span></td>
+        <td>query_only</td>
+        <td>manual_source_intake_required</td>
+        <td>source_media_state=not_fetched<br>rights_approved=false<br>public_ready=false</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_reaction_face_chain</code><br>cpd01_reaction_face_chain</td>
+        <td>表情が一瞬で変わるホロメン</td>
+        <td class="warn">missing<br><span class="muted">missing</span></td>
+        <td>(missing)</td>
+        <td>-</td>
+        <td>表情が一瞬で変わるホロメン リアクション顔が 3 段階で変わる雑談 / 企画候補 hololive talent TBD hololive manual_topic_seed: reaction face chain reaction thumbnail_first chatting emotion_shift</td>
+        <td>true<br><span class="muted">source_url, source_title, channel_name, published_at, duration_seconds_or_timestamp_hint, rights_readback_note</span></td>
+        <td>query_only</td>
+        <td>manual_source_intake_required</td>
+        <td>source_media_state=not_fetched<br>rights_approved=false<br>public_ready=false</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_game_fail_micro_arc</code><br>cpd01_game_fail_micro_arc</td>
+        <td>失敗したのに立て直しが早すぎる</td>
+        <td class="warn">missing<br><span class="muted">missing</span></td>
+        <td>(missing)</td>
+        <td>-</td>
+        <td>失敗したのに立て直しが早すぎる ゲーム失敗から即リカバリーまでの 30 秒候補 hololive gaming talent TBD hololive manual_topic_seed: game fail micro arc gameplay fail recovery sound_reaction</td>
+        <td>true<br><span class="muted">source_url, source_title, channel_name, published_at, duration_seconds_or_timestamp_hint, rights_readback_note</span></td>
+        <td>query_only</td>
+        <td>manual_source_intake_required</td>
+        <td>source_media_state=not_fetched<br>rights_approved=false<br>public_ready=false</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_song_moment_hold</code><br>cpd01_song_moment_hold</td>
+        <td>歌の合間に急に本音が出る</td>
+        <td class="warn">missing<br><span class="muted">missing</span></td>
+        <td>(missing)</td>
+        <td>-</td>
+        <td>歌の合間に急に本音が出る 歌枠の一言コメントが面白い候補 hololive talent TBD hololive manual_topic_seed: song moment song_stream commentary rights_sensitive hold</td>
+        <td>true<br><span class="muted">source_url, source_title, channel_name, published_at, duration_seconds_or_timestamp_hint, rights_readback_note</span></td>
+        <td>query_only</td>
+        <td>reject_until_source_route_reopened</td>
+        <td>source_media_state=not_fetched<br>rights_approved=false<br>public_ready=false</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="gate">
+    <h2>ゲート readback</h2>
+    <table>
+      <tr><th>network_required</th><td>false</td></tr>
+      <tr><th>external_api_used</th><td>false</td></tr>
+      <tr><th>media_downloaded</th><td>false</td></tr>
+      <tr><th>episode_dirs_created</th><td>false</td></tr>
+      <tr><th>OAuth / credentials</th><td>false</td></tr>
+      <tr><th>generated outputs</th><td>transcript=false; render=false; thumbnail=false</td></tr>
+      <tr><th>production/public</th><td>rights_approved=false; production_candidate=false; publishing_acceptance=false; public_use_permission=false</td></tr>
+      <tr><th>note</th><td>CPD-03 records source URL resolution only. Manual metadata can make a later local dry-run easier, but it is not material fetch, rights approval, production approval, or public-use acceptance.</td></tr>
+    </table>
+  </section>
+</main>
+</body>
+</html>

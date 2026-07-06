@@ -1,0 +1,122 @@
+{
+  "schema_id": "clippipegen.content_planning_dashboard.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-cpd01-content-candidate-dashboard-v0-001",
+  "generated_at": "2026-07-06",
+  "source": {
+    "mode": "fixture",
+    "fixture_path": "samples/content_planning/content_candidates_fixture.json",
+    "network_required": false,
+    "fixture_readback": "Offline sample seeds for CPD-01. Public metadata fields are fixture readback only and are not refreshed live."
+  },
+  "summary": {
+    "strategy_count": 3,
+    "strategy_ids": [
+      "strategy_policy_sensitive_hold",
+      "strategy_short_comedy_payoff",
+      "strategy_subtitle_value_collab"
+    ]
+  },
+  "gate_readback": {
+    "offline_first": true,
+    "network_required": false,
+    "media_downloaded": false,
+    "oauth_or_credentials_used": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "rights_status_counts": {
+      "pending": 1,
+      "unknown": 2,
+      "unverified": 2
+    },
+    "readback_note": "Candidate planning is allowed with pending/unverified rights, but public use, publishing, monetization, and production claims stay gated."
+  },
+  "strategies": [
+    {
+      "strategy_id": "strategy_policy_sensitive_hold",
+      "target_audience": "将来の候補管理用。今すぐ制作せず、権利や第三者素材の注意が必要な候補を見える化する。",
+      "content_pillars": [
+        "rights_sensitive",
+        "game_ip",
+        "hold"
+      ],
+      "recommended_series_formats": [
+        "保留候補台帳",
+        "policy readback queue"
+      ],
+      "cadence_hint": "制作 cadence には入れず、月次で候補棚卸しだけ行う。",
+      "thumbnail_direction_hint": "サムネ制作に入らない。候補の問題点だけ読む。",
+      "editing_style_hint": "編集しない。source と risk の確認だけ。",
+      "candidate_ids": [
+        "cpd01_game_fail_micro_arc",
+        "cpd01_song_moment_hold"
+      ],
+      "risk_readback_notes": [
+        "rights_status_counts=unknown:1, unverified:1",
+        "risk_flags_present=cpd01_game_fail_micro_arc, cpd01_song_moment_hold",
+        "production/public/publishing acceptance remains false"
+      ],
+      "score_average": 48,
+      "next_action": "rights/material-use clearance が明示されるまで制作レーンへ渡さない"
+    },
+    {
+      "strategy_id": "strategy_short_comedy_payoff",
+      "target_audience": "日本語 hololive 切り抜き視聴者。短時間で状況とオチが分かる動画を探す層。",
+      "content_pillars": [
+        "短尺コント",
+        "聞き間違い",
+        "リアクション",
+        "関係性"
+      ],
+      "recommended_series_formats": [
+        "20 秒前後の小ネタ",
+        "名前・呼び間違い集",
+        "表情変化ショート"
+      ],
+      "cadence_hint": "週 2 本まで。まずは上位 fixture 候補を 1 本だけ episode seed 化する。",
+      "thumbnail_direction_hint": "人物名を大きく置き、勘違いワードを 1 つだけ強調する。",
+      "editing_style_hint": "導入 2 秒、誤解の本体 8-12 秒、返し 5 秒を基本にする。",
+      "candidate_ids": [
+        "cpd01_bancho_marine_misunderstanding",
+        "cpd01_reaction_face_chain"
+      ],
+      "risk_readback_notes": [
+        "rights_status_counts=pending:1, unknown:1",
+        "risk_flags_present=cpd01_bancho_marine_misunderstanding, cpd01_reaction_face_chain",
+        "production/public/publishing acceptance remains false"
+      ],
+      "score_average": 71,
+      "next_action": "top candidate を開いて source/cut window を確認する"
+    },
+    {
+      "strategy_id": "strategy_subtitle_value_collab",
+      "target_audience": "JP/EN の意味ズレや翻訳補助で面白さが増えるコラボ視聴者。",
+      "content_pillars": [
+        "言語ギャップ",
+        "コラボ",
+        "字幕価値",
+        "文脈説明"
+      ],
+      "recommended_series_formats": [
+        "翻訳で面白くなる 30 秒",
+        "意味ズレの瞬間",
+        "JP/EN 掛け合い"
+      ],
+      "cadence_hint": "隔週 1 本。翻訳チェックが重いので量産前に検証する。",
+      "thumbnail_direction_hint": "JP フレーズと EN 側の反応を左右対比で見せる。",
+      "editing_style_hint": "字幕を説明過多にせず、1 つの意味ズレだけに絞る。",
+      "candidate_ids": [
+        "cpd01_jp_en_phrase_gap"
+      ],
+      "risk_readback_notes": [
+        "rights_status_counts=unverified:1",
+        "risk_flags_present=cpd01_jp_en_phrase_gap",
+        "production/public/publishing acceptance remains false"
+      ],
+      "score_average": 72,
+      "next_action": "source VOD と字幕品質を確認して候補継続可否を決める"
+    }
+  ]
+}

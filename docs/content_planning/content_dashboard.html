@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CPD-01 Content Candidate Dashboard</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,'Yu Gothic','Meiryo',sans-serif;margin:24px;line-height:1.5;color:#1f2933;background:#f7f8fa}
+main{max-width:1180px;margin:0 auto}
+section{margin:18px 0;padding:16px;background:#fff;border:1px solid #d8dde5;border-radius:8px}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0 0 8px}
+table{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{background:#eef3f8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.card{border:1px solid #d8dde5;border-radius:8px;padding:12px;background:#fbfcfe}
+.score{font-size:26px;font-weight:700}.badge{display:inline-block;border:1px solid #b8c7d9;background:#eef3fa;border-radius:999px;padding:2px 8px;margin:2px;font-size:12px}
+.gate{border-color:#e3b341;background:#fffaf0}.muted{color:#5f6b7a}.risk{color:#8a4b00}code{background:#eef1f5;padding:2px 4px;border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>CPD-01 Content Candidate / Channel Strategy Dashboard v0</h1>
+<p class="muted">ローカル fixture だけで生成した、次に何を切り抜くかを決めるための読み取り専用ダッシュボードです。</p>
+
+  <section>
+    <h2>生成サマリー</h2>
+    <table>
+      <tr><th>artifact_id</th><td>clip-cpd01-content-candidate-dashboard-v0-001</td></tr>
+      <tr><th>候補数</th><td>5</td></tr>
+      <tr><th>最高スコア候補</th><td>cpd01_bancho_marine_misunderstanding / 79</td></tr>
+      <tr><th>machine JSON</th><td><code>docs/content_planning/content_candidates.json</code><br><code>docs/content_planning/channel_strategy.json</code></td></tr>
+      <tr><th>入力</th><td>samples/content_planning/content_candidates_fixture.json / network_required=false</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>候補カード</h2>
+    <div class="grid">
+
+      <div class="card">
+        <h3>cpd01_bancho_marine_misunderstanding</h3>
+        <div class="score">79</div>
+        <p><strong>【アニメ】押忍！！ば～んちょ だじぇ！</strong></p>
+        <p>番長が船長を聞き間違える短尺コントとして、前振りから返しまでを 20 秒前後で見せる。</p>
+        <p><span class="badge">short_anime</span><span class="badge">misunderstanding</span><span class="badge">bancho</span><span class="badge">marine</span><span class="badge">fast_payoff</span></p>
+        <table>
+          <tr><th>talent</th><td>轟はじめ, 宝鐘マリン</td></tr>
+          <tr><th>hooks</th><td>番長、船長を完全に勘違いする<br>マリン船長の名前で話がズレ続ける瞬間<br>この聞き間違い、切り抜き向きすぎる</td></tr>
+          <tr><th>score</th><td>expected_edit_value=19; thumbnailability=18; editability=19; audience_fit=17; novelty_or_trend_signal=11; risk_penalty=-5</td></tr>
+          <tr><th>risk</th><td class="risk">rights_pending (medium): Local planning only. Public use requires separate rights/publication acceptance.</td></tr>
+          <tr><th>next</th><td>inspect VOD and decide whether to create episode seed</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>cpd01_jp_en_phrase_gap</h3>
+        <div class="score">72</div>
+        <p><strong>日本語と英語の意味ズレで会話が噛み合わない候補</strong></p>
+        <p>字幕で意味ズレを補足しながら、コラボの噛み合わなさを分かりやすく見せる。</p>
+        <p><span class="badge">language_gap</span><span class="badge">collab</span><span class="badge">subtitle_value</span><span class="badge">context_needed</span></p>
+        <table>
+          <tr><th>talent</th><td>JP talent TBD, EN talent TBD</td></tr>
+          <tr><th>hooks</th><td>日本語の一言で EN 組が固まる<br>翻訳すると余計に面白い会話<br>意味ズレがそのままオチになる瞬間</td></tr>
+          <tr><th>score</th><td>expected_edit_value=17; thumbnailability=16; editability=12; audience_fit=18; novelty_or_trend_signal=14; risk_penalty=-5</td></tr>
+          <tr><th>risk</th><td class="risk">translation_review_needed (medium): Do not publish until bilingual meaning is checked.</td></tr>
+          <tr><th>next</th><td>find source VOD and inspect transcript quality</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>cpd01_reaction_face_chain</h3>
+        <div class="score">63</div>
+        <p><strong>リアクション顔が 3 段階で変わる雑談 / 企画候補</strong></p>
+        <p>表情の変化を軸に、サムネから先に候補化して本編確認へ進む。</p>
+        <p><span class="badge">reaction</span><span class="badge">thumbnail_first</span><span class="badge">chatting</span><span class="badge">emotion_shift</span></p>
+        <table>
+          <tr><th>talent</th><td>hololive talent TBD</td></tr>
+          <tr><th>hooks</th><td>表情が一瞬で変わるホロメン<br>このリアクション、サムネが強い<br>困惑から爆笑までの 15 秒</td></tr>
+          <tr><th>score</th><td>expected_edit_value=15; thumbnailability=20; editability=11; audience_fit=17; novelty_or_trend_signal=10; risk_penalty=-10</td></tr>
+          <tr><th>risk</th><td class="risk">source_timestamp_missing (medium): Needs public metadata or manual timestamp before fetch/edit lanes.<br>rights_unknown (medium): Planning seed only.</td></tr>
+          <tr><th>next</th><td>needs human review before episode seed</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>cpd01_game_fail_micro_arc</h3>
+        <div class="score">61</div>
+        <p><strong>ゲーム失敗から即リカバリーまでの 30 秒候補</strong></p>
+        <p>失敗、悲鳴、即リカバリーを 1 本の小さい起承転結として切る。</p>
+        <p><span class="badge">gameplay</span><span class="badge">fail</span><span class="badge">recovery</span><span class="badge">sound_reaction</span></p>
+        <table>
+          <tr><th>talent</th><td>hololive gaming talent TBD</td></tr>
+          <tr><th>hooks</th><td>失敗したのに立て直しが早すぎる<br>悲鳴から復帰までが完璧な 30 秒<br>ゲーム中の反射神経が出た瞬間</td></tr>
+          <tr><th>score</th><td>expected_edit_value=16; thumbnailability=13; editability=10; audience_fit=15; novelty_or_trend_signal=12; risk_penalty=-5</td></tr>
+          <tr><th>risk</th><td class="risk">game_ip_review_needed (medium): Third-party game footage needs later policy/readback review.</td></tr>
+          <tr><th>next</th><td>needs source and game-policy readback before fetch</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>cpd01_song_moment_hold</h3>
+        <div class="score">36</div>
+        <p><strong>歌枠の一言コメントが面白い候補</strong></p>
+        <p>歌唱部分ではなく合間のコメントだけを候補化できるか確認する。</p>
+        <p><span class="badge">song_stream</span><span class="badge">commentary</span><span class="badge">rights_sensitive</span><span class="badge">hold</span></p>
+        <table>
+          <tr><th>talent</th><td>hololive talent TBD</td></tr>
+          <tr><th>hooks</th><td>歌の合間に急に本音が出る<br>この一言だけ切り抜けるか要確認</td></tr>
+          <tr><th>score</th><td>expected_edit_value=12; thumbnailability=12; editability=6; audience_fit=13; novelty_or_trend_signal=8; risk_penalty=-15</td></tr>
+          <tr><th>risk</th><td class="risk">song_or_music_rights_sensitive (high): Hold until a separate rights/publication route says this is usable.<br>source_timestamp_missing (medium): No safe non-song timestamp is identified.</td></tr>
+          <tr><th>next</th><td>reject or hold until rights route is explicit</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section>
+    <h2>チャンネル戦略カード</h2>
+    <div class="grid">
+
+      <div class="card">
+        <h3>strategy_policy_sensitive_hold</h3>
+        <p><strong>対象:</strong> 将来の候補管理用。今すぐ制作せず、権利や第三者素材の注意が必要な候補を見える化する。</p>
+        <p><strong>柱:</strong> rights_sensitive, game_ip, hold</p>
+        <p><strong>シリーズ:</strong> 保留候補台帳, policy readback queue</p>
+        <p><strong>候補:</strong> cpd01_game_fail_micro_arc, cpd01_song_moment_hold</p>
+        <p><strong>平均スコア:</strong> 48</p>
+        <p><strong>サムネ:</strong> サムネ制作に入らない。候補の問題点だけ読む。</p>
+        <p><strong>編集:</strong> 編集しない。source と risk の確認だけ。</p>
+        <p><strong>次:</strong> rights/material-use clearance が明示されるまで制作レーンへ渡さない</p>
+        <p class="muted">rights_status_counts=unknown:1, unverified:1 / risk_flags_present=cpd01_game_fail_micro_arc, cpd01_song_moment_hold / production/public/publishing acceptance remains false</p>
+      </div>
+
+      <div class="card">
+        <h3>strategy_short_comedy_payoff</h3>
+        <p><strong>対象:</strong> 日本語 hololive 切り抜き視聴者。短時間で状況とオチが分かる動画を探す層。</p>
+        <p><strong>柱:</strong> 短尺コント, 聞き間違い, リアクション, 関係性</p>
+        <p><strong>シリーズ:</strong> 20 秒前後の小ネタ, 名前・呼び間違い集, 表情変化ショート</p>
+        <p><strong>候補:</strong> cpd01_bancho_marine_misunderstanding, cpd01_reaction_face_chain</p>
+        <p><strong>平均スコア:</strong> 71</p>
+        <p><strong>サムネ:</strong> 人物名を大きく置き、勘違いワードを 1 つだけ強調する。</p>
+        <p><strong>編集:</strong> 導入 2 秒、誤解の本体 8-12 秒、返し 5 秒を基本にする。</p>
+        <p><strong>次:</strong> top candidate を開いて source/cut window を確認する</p>
+        <p class="muted">rights_status_counts=pending:1, unknown:1 / risk_flags_present=cpd01_bancho_marine_misunderstanding, cpd01_reaction_face_chain / production/public/publishing acceptance remains false</p>
+      </div>
+
+      <div class="card">
+        <h3>strategy_subtitle_value_collab</h3>
+        <p><strong>対象:</strong> JP/EN の意味ズレや翻訳補助で面白さが増えるコラボ視聴者。</p>
+        <p><strong>柱:</strong> 言語ギャップ, コラボ, 字幕価値, 文脈説明</p>
+        <p><strong>シリーズ:</strong> 翻訳で面白くなる 30 秒, 意味ズレの瞬間, JP/EN 掛け合い</p>
+        <p><strong>候補:</strong> cpd01_jp_en_phrase_gap</p>
+        <p><strong>平均スコア:</strong> 72</p>
+        <p><strong>サムネ:</strong> JP フレーズと EN 側の反応を左右対比で見せる。</p>
+        <p><strong>編集:</strong> 字幕を説明過多にせず、1 つの意味ズレだけに絞る。</p>
+        <p><strong>次:</strong> source VOD と字幕品質を確認して候補継続可否を決める</p>
+        <p class="muted">rights_status_counts=unverified:1 / risk_flags_present=cpd01_jp_en_phrase_gap / production/public/publishing acceptance remains false</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="gate">
+    <h2>権利・ゲート readback</h2>
+    <table>
+      <tr><th>offline_first</th><td>true</td></tr>
+      <tr><th>network_required</th><td>false</td></tr>
+      <tr><th>media_downloaded</th><td>false</td></tr>
+      <tr><th>OAuth / credentials</th><td>false</td></tr>
+      <tr><th>rights_status_counts</th><td>pending:1, unknown:2, unverified:2</td></tr>
+      <tr><th>production/public</th><td>production_candidate=false; production_usage_allowed=false; publishing_acceptance=false; public_use_permission=false</td></tr>
+      <tr><th>note</th><td>Candidate planning is allowed with pending/unverified rights, but public use, publishing, monetization, and production claims stay gated.</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>次のアクション</h2>
+    <ul>
+<li><strong>cpd01_bancho_marine_misunderstanding</strong>: inspect VOD and decide whether to create episode seed</li>
+<li><strong>cpd01_jp_en_phrase_gap</strong>: find source VOD and inspect transcript quality</li>
+<li><strong>cpd01_reaction_face_chain</strong>: needs human review before episode seed</li>
+<li><strong>cpd01_game_fail_micro_arc</strong>: needs source and game-policy readback before fetch</li>
+<li><strong>cpd01_song_moment_hold</strong>: reject or hold until rights route is explicit</li>
+    </ul>
+    <p class="muted">Open: <code>docs/content_planning/content_dashboard.html</code></p>
+  </section>
+</main>
+</body>
+</html>

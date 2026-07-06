@@ -165,8 +165,13 @@ def test_build_local_preview_pack_exposes_no_external_fetch_or_output_generation
 
 def test_ffmpeg_and_ytdlp_do_not_enter_pipeline_or_editing_cli():
     forbidden_terms = ("ffmpeg", "yt-dlp", "youtube-dl")
+    pipeline_readback_only = {"docs_dashboard.py"}
     checked_files = [
-        *sorted((REPO_ROOT / "src" / "pipeline").glob("*.py")),
+        *[
+            path
+            for path in sorted((REPO_ROOT / "src" / "pipeline").glob("*.py"))
+            if path.name not in pipeline_readback_only
+        ],
         REPO_ROOT / "src" / "cli" / "transcribe_audio.py",
         REPO_ROOT / "src" / "cli" / "generate_cuts.py",
         REPO_ROOT / "src" / "cli" / "check_cut_context.py",

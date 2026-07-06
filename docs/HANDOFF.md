@@ -1,10 +1,67 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-06-29 JST
+Last updated: 2026-07-06 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
+## Immediate Resume Capsule - 2026-07-06 CPD-07 Operator Cockpit Sync
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git checkout main
+git pull --ff-only origin main
+git status --short --branch
+git rev-list --left-right --count "HEAD...origin/main"
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected tracked state after pulling this handoff:
+
+- Branch: `main`
+- Upstream: `origin/main`
+- `HEAD...origin/main`: `0 0`
+- `git ls-files episodes`: empty
+- Active artifact: `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`
+- Human entry point: `docs/content_planning/operator_cockpit.html`
+- Machine readback: `docs/content_planning/operator_cockpit.json`
+- Current route: content-planning review only; no source URL was opened by the
+  worker, no network/external API/OAuth was used, no media was downloaded, no
+  episode folder was created, and rights/production/public gates remain closed
+
+Open the current CPD review surface with:
+
+```powershell
+start docs\content_planning\operator_cockpit.html
+```
+
+The current review surface intentionally narrows the human work to one
+source-identity check. Only `cpd01_bancho_marine_misunderstanding` has a known
+source URL (`https://www.youtube.com/watch?v=7J5aS_pcBj4`). The other four CPD
+ideas are not current video candidates; they require real source URL/metadata
+intake before any fetch/init/transcript/edit/render lane can proceed.
+
+Regenerate the CPD cockpit if its inputs change:
+
+```powershell
+uvx python -m src.cli.main build-operator-cockpit --format json
+uvx python -m src.cli.main build-docs-dashboard --format json
+```
+
+Validation at this checkpoint:
+
+- `uvx python -m src.cli.main build-operator-cockpit --format json` returns
+  `source_backed_count=1`, `source_missing_count=4`,
+  `blocked_or_hold_count=1`, and all execution gates false.
+- `uvx pytest -q tests/test_operator_cockpit.py tests/test_docs_dashboard.py`
+  passes.
+- Full `uvx pytest -q` passes.
+- `git diff --check` passes.
+- `git ls-files episodes` prints nothing.
 
 ## Immediate Resume Capsule - 2026-06-29 ED-10ar Access Recovery Sync
 

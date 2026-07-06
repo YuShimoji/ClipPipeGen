@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CPD-04 Episode Init Dry-Run Plan</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,'Yu Gothic','Meiryo',sans-serif;margin:24px;line-height:1.5;color:#1f2933;background:#f7f8fa}
+main{max-width:1240px;margin:0 auto}
+section{margin:18px 0;padding:16px;background:#fff;border:1px solid #d8dde5;border-radius:8px}
+h1{font-size:28px;margin:0 0 6px}h2{font-size:19px;margin:0 0 12px}h3{font-size:16px;margin:0 0 8px}
+table{width:100%;border-collapse:collapse;font-size:14px;table-layout:fixed}
+th,td{border-bottom:1px solid #e5e8ee;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+th{background:#eef3f8}.muted{color:#5f6b7a}.gate{border-color:#e3b341;background:#fffaf0}
+.ok{color:#12633d;font-weight:700}.warn{color:#8a4b00;font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px}
+.card{border:1px solid #d8dde5;border-radius:8px;padding:12px;background:#fbfcfe}code{background:#eef1f5;padding:2px 4px;border-radius:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>CPD-04 Init Episode Dry-Run Plan v0</h1>
+<p class="muted">source 解決済み seed だけを episode 初期化の dry-run 計画にしています。実 episode フォルダ、素材、台帳、receipt、transcript、edit_pack、thumbnail、render、upload、権利承認は作成していません。</p>
+
+  <section>
+    <h2>生成サマリー</h2>
+    <table>
+      <tr><th>artifact_id</th><td>clip-cpd04-init-episode-dry-run-plan-v0-001</td></tr>
+      <tr><th>source resolution records read</th><td>5</td></tr>
+      <tr><th>ready dry-run plans</th><td>1</td></tr>
+      <tr><th>skipped / unresolved</th><td>4</td></tr>
+      <tr><th>media downloaded</th><td>false</td></tr>
+      <tr><th>episode dirs created</th><td>false</td></tr>
+      <tr><th>machine JSON</th><td><code>docs/content_planning/episode_init_plan.json</code></td></tr>
+      <tr><th>HTML</th><td><code>docs/content_planning/episode_init_plan_dashboard.html</code></td></tr>
+      <tr><th>入力</th><td>docs/content_planning/episode_seed_source_resolution.json</td></tr>
+    </table>
+  </section>
+  <section>
+    <h2>Ready Dry-Run Plans</h2>
+    <div class="grid">
+
+      <div class="card">
+        <h3>episode_init_plan_ep_seed_cpd01_bancho_marine_misunderstanding</h3>
+        <table>
+          <tr><th>Episode計画ID</th><td>episode_init_plan_ep_seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>seed ID</th><td>seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>候補ID</th><td>cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>予定タイトル</th><td>番長、船長を完全に勘違いする</td></tr>
+          <tr><th>元動画URL</th><td>https://www.youtube.com/watch?v=7J5aS_pcBj4</td></tr>
+          <tr><th>video_id</th><td>7J5aS_pcBj4</td></tr>
+          <tr><th>予定episode slug</th><td>ep_seed_cpd01_bancho_marine_misunderstanding</td></tr>
+          <tr><th>予定成果物</th><td>rights_manifest_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/rights_manifest.json</code><br>source_receipt_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/fetch_receipt.json</code><br>source_video_receipt_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/fetch_receipt.json</code><br>source_audio_receipt_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_audio/fetch_receipt.json</code><br>source_video_material_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/source_video.mp4</code><br>source_audio_material_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_audio/source.wav</code><br>material_ledger_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/material_ledger.json</code><br>transcript_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/transcript.json</code><br>edit_pack_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/edit_pack.json</code><br>subtitle_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/subtitles.json</code><br>thumbnail_brief_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/thumbnail_brief.json</code><br>preview_pack_path: <code>episodes/ep_seed_cpd01_bancho_marine_misunderstanding/review/preview_pack/preview_manifest.json</code></td></tr>
+          <tr><th>取得状態</th><td>source_media_state=not_fetched<br>material_ledger_state=planned_only<br>transcript_state=not_generated</td></tr>
+          <tr><th>権利readback</th><td>pending / approved=false</td></tr>
+          <tr><th>次アクション</th><td class="ok">ready_for_operator_source_inspection</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section>
+    <h2>Skipped / Unresolved Source Records</h2>
+    <table>
+      <tr><th>seed / candidate</th><th>予定タイトル</th><th>元動画URL状態</th><th>blocked reason</th><th>次アクション</th></tr>
+
+      <tr>
+        <td><code>seed_cpd01_jp_en_phrase_gap</code><br>cpd01_jp_en_phrase_gap</td>
+        <td>日本語の一言で EN 組が固まる</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_reaction_face_chain</code><br>cpd01_reaction_face_chain</td>
+        <td>表情が一瞬で変わるホロメン</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_game_fail_micro_arc</code><br>cpd01_game_fail_micro_arc</td>
+        <td>失敗したのに立て直しが早すぎる</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+
+      <tr>
+        <td><code>seed_cpd01_song_moment_hold</code><br>cpd01_song_moment_hold</td>
+        <td>歌の合間に急に本音が出る</td>
+        <td class="warn">missing</td>
+        <td>source_url is missing; manual source intake is required before fetch/init lanes</td>
+        <td>add_source_url</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="gate">
+    <h2>ゲート readback</h2>
+    <table>
+      <tr><th>dry_run</th><td>true</td></tr>
+      <tr><th>network_required</th><td>false</td></tr>
+      <tr><th>external_api_used</th><td>false</td></tr>
+      <tr><th>media_downloaded</th><td>false</td></tr>
+      <tr><th>episode_dirs_created</th><td>false</td></tr>
+      <tr><th>created artifacts</th><td>rights_manifest=false; material_ledger=false; fetch_receipt=false; transcript=false; edit_pack=false; render=false; thumbnail=false</td></tr>
+      <tr><th>production/public</th><td>rights_approved=false; production_ready=false; publishing_acceptance=false; public_ready=false</td></tr>
+      <tr><th>note</th><td>CPD-04 is a dry-run plan only. Planned episode paths are strings; real init-episode, source fetch, transcript, edit, thumbnail, render, publishing, and rights approval remain separate later gates.</td></tr>
+    </table>
+  </section>
+</main>
+</body>
+</html>

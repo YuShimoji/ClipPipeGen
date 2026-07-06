@@ -3,11 +3,13 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: thank_v2_open_command_repair_ready
+health: content_planning_operator_cockpit_ready
 progress_pct: 100
-last_touched: 2026-07-01
-next_review_due: run_repaired_v2_opener_if_later_review_requested
-active_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
+last_touched: 2026-07-06
+next_review_due: inspect_single_source_backed_item_or_fill_source_urls
+active_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
+latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
 latest_v2_cut_window_review_purpose_artifact: clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001
@@ -29,25 +31,59 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 ## Cross-Terminal Re-Entry Packet
 
 Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
-and `docs/style_intent/thank-v2-open-command-repair-readback.json`.
+`docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
+`clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`.
 That is enough to resume without the previous chat.
 
-The durable state to carry forward is: ED-10bc repaired the ED-10ba v2 opener
-after the user reported that the verified MP4 did not open visibly. ED-10bb
-had already proved Thank-terminal local access; ED-10bc adds the missing
-launcher/readback layer. The MP4/ASS/local manifest are present under ignored
-`episodes/`, ffprobe reads the MP4, the pre-repair `Invoke-Item` launcher
-returned exit `0` without proving visible playback, and the repaired launcher
-now prints path/size/attempt status/classification/fallbacks while using
-`Start-Process -FilePath <mp4> -PassThru`. ED-10ba remains the source v2
-specimen.
+The durable state to carry forward is: CPD-07 replaced the CPD review entry
+with a single human-facing operator cockpit after the user reported that the
+available HTML files still read like intermediate reports. The normal page to
+open is `docs/content_planning/operator_cockpit.html`, backed by
+`docs/content_planning/operator_cockpit.json`. It defaults to dark mode, uses a
+vertical Primary Review Card, and folds the older CPD-01 through CPD-05
+dashboards into internal/developer sections.
 
-Do not treat ED-10bc, ED-10bb, or ED-10ba as production/public/rights/publishing/
-monetization approval or micro-scene acceptance. Do not track `episodes/`
-media. Do not rerender unless the ignored outputs disappear again and player/
-file-association visibility has been ruled out. Screenshot capture,
-final-render-path stage-4, timing/audio-first work, and stage-7 remain out of
-scope unless new evidence makes one of them the primary route.
+Only one source-backed item is ready for human source identity review:
+`cpd01_bancho_marine_misunderstanding`, title
+`番長、船長を完全に勘違いする`, with source URL
+`https://www.youtube.com/watch?v=7J5aS_pcBj4`. The remaining four ideas are
+not current video candidates; they are missing-source or hold records until a
+real source URL and source metadata are added.
+
+Do not treat CPD-07 as source approval, fetch approval, production/public/
+rights/publishing/monetization approval, transcript/render creation, or episode
+initialization. The worker did not open the source URL and did not use network,
+external APIs, OAuth, or media download paths. Do not track `episodes/` media.
+The older ED-10bc/ED-10bb/ED-10ba sections below remain valid for the Thank v2
+review path, but they are not the active CPD review entry point.
+
+## Current CPD-07 Operator Cockpit UX v2
+
+CPD-07 checkpoint, 2026-07-06 JST:
+`clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001` is the active tracked
+content-planning handoff artifact. It consolidates CPD-01 candidate planning,
+CPD-02 seed drafts, CPD-03 source resolution, CPD-04 dry-run episode init
+plans, and CPD-05 source inspection packet records into one normal human entry
+point.
+
+Open command:
+
+```powershell
+start docs\content_planning\operator_cockpit.html
+```
+
+The expected readback is `source_backed_count=1`, `source_missing_count=4`,
+`blocked_or_hold_count=1`, `fetch_authorized_count=0`, and all execution gates
+false for source opening, network, external API, media download, episode
+folder creation, rights approval, production readiness, and public readiness.
+
+The next terminal can continue in either direction:
+
+- If the user wants to inspect the one known source, open the cockpit and check
+  whether the YouTube page matches the Bancho/Marine misunderstanding idea.
+- If the user wants more candidates, add real human-confirmed source metadata
+  in a local `docs/content_planning/source_metadata_registry.json`, then rerun
+  CPD-03, CPD-04, CPD-05, and CPD-07.
 
 ## Current ED-10bc Thank V2 Open Command Repair Readback
 

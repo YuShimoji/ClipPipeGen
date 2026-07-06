@@ -1,0 +1,514 @@
+{
+  "schema_id": "clippipegen.source_metadata_resolver.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-cpd03-source-metadata-resolver-v0-001",
+  "generated_at": "2026-07-06",
+  "source": {
+    "input_artifact": "docs/content_planning/episode_seed_drafts.json",
+    "input_schema_id": "clippipegen.episode_seed_bridge.v0",
+    "input_artifact_id": "clip-cpd02-candidate-to-episode-seed-bridge-v0-001",
+    "network_required": false
+  },
+  "manual_registry": {
+    "path": "docs/content_planning/source_metadata_registry.json",
+    "exists": false,
+    "entry_count": 0,
+    "readback_note": "manual registry file is absent; template output shows required fields"
+  },
+  "summary": {
+    "record_count": 5,
+    "resolved_source_url_count": 1,
+    "source_url_present_count": 1,
+    "source_url_missing_count": 4,
+    "source_url_invalid_count": 0,
+    "manual_intake_required_count": 4,
+    "registry_entry_used_count": 0,
+    "confidence_counts": {
+      "query_only": 4,
+      "seed_url_exact": 1
+    },
+    "source_metadata_state_counts": {
+      "resolved_from_seed_url": 1,
+      "unresolved_missing_source_url": 4
+    }
+  },
+  "gate_readback": {
+    "offline_first": true,
+    "network_required": false,
+    "external_api_used": false,
+    "media_downloaded": false,
+    "source_video_downloaded": false,
+    "source_audio_downloaded": false,
+    "episode_dirs_created": false,
+    "transcript_generated": false,
+    "render_generated": false,
+    "thumbnail_generated": false,
+    "oauth_or_credentials_used": false,
+    "rights_approved": false,
+    "production_candidate": false,
+    "production_usage_allowed": false,
+    "publishing_acceptance": false,
+    "public_use_permission": false,
+    "all_source_media_states": [
+      "not_fetched"
+    ],
+    "readback_note": "CPD-03 records source URL resolution only. Manual metadata can make a later local dry-run easier, but it is not material fetch, rights approval, production approval, or public-use acceptance."
+  },
+  "source_resolution_records": [
+    {
+      "resolution_id": "source_resolution_seed_cpd01_bancho_marine_misunderstanding",
+      "seed_id": "seed_cpd01_bancho_marine_misunderstanding",
+      "candidate_id": "cpd01_bancho_marine_misunderstanding",
+      "generated_at": "2026-07-06",
+      "working_title": "番長、船長を完全に勘違いする",
+      "candidate_title": "【アニメ】押忍！！ば～んちょ だじぇ！",
+      "talent": [
+        "轟はじめ",
+        "宝鐘マリン"
+      ],
+      "candidate_channel_name": "hololive ホロライブ",
+      "group": "hololive / DEV_IS",
+      "language": "ja",
+      "topic_tags": [
+        "short_anime",
+        "misunderstanding",
+        "bancho",
+        "marine",
+        "fast_payoff"
+      ],
+      "source_ref": "JP-Pilot-01R3 public hololive short anime fixture",
+      "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "source_url_origin": "episode_seed_drafts",
+      "source_url_state": "present",
+      "source_platform": "youtube",
+      "video_id": "7J5aS_pcBj4",
+      "url_parse_note": "youtube video_id parsed from URL",
+      "source_media_state": "not_fetched",
+      "source_metadata_state": "resolved_from_seed_url",
+      "registry_entry_used": false,
+      "manual_intake_required": false,
+      "manual_intake_fields_needed": [],
+      "lookup_query": "番長、船長を完全に勘違いする 【アニメ】押忍！！ば～んちょ だじぇ！ 轟はじめ 宝鐘マリン hololive ホロライブ hololive / DEV_IS JP-Pilot-01R3 public hololive short anime fixture short_anime misunderstanding bancho marine",
+      "lookup_terms": [
+        "番長、船長を完全に勘違いする",
+        "【アニメ】押忍！！ば～んちょ だじぇ！",
+        "轟はじめ",
+        "宝鐘マリン",
+        "hololive ホロライブ",
+        "hololive / DEV_IS",
+        "JP-Pilot-01R3 public hololive short anime fixture",
+        "short_anime",
+        "misunderstanding",
+        "bancho",
+        "marine"
+      ],
+      "confidence": "seed_url_exact",
+      "rights_readback": {
+        "status": "pending",
+        "source": "existing_local_docs_fixture",
+        "notes": [
+          "diagnostic planning only",
+          "no production/public approval"
+        ],
+        "approved": false,
+        "hard_gate": false
+      },
+      "approval_state": {
+        "source_resolved_for_planning": true,
+        "source_fetched": false,
+        "rights_cleared": false,
+        "production_ready": false,
+        "public_ready": false,
+        "publishing_accepted": false
+      },
+      "blocking_reason": "",
+      "next_action": "ready_for_source_inspection_without_fetch",
+      "risk_flags": [
+        {
+          "code": "rights_pending",
+          "severity": "medium",
+          "note": "Local planning only. Public use requires separate rights/publication acceptance."
+        }
+      ],
+      "later_artifact_paths": {
+        "episode_dir": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding",
+        "rights_manifest": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/rights_manifest.json",
+        "material_ledger": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/material_ledger.json",
+        "source_video_material": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_video/source_video.mp4",
+        "source_audio_material": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/src_audio/source.wav",
+        "transcript": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/transcript.json",
+        "edit_pack": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/edit_pack.json",
+        "preview_or_review_dir": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/review/"
+      },
+      "planned_later_artifacts_only": true
+    },
+    {
+      "resolution_id": "source_resolution_seed_cpd01_jp_en_phrase_gap",
+      "seed_id": "seed_cpd01_jp_en_phrase_gap",
+      "candidate_id": "cpd01_jp_en_phrase_gap",
+      "generated_at": "2026-07-06",
+      "working_title": "日本語の一言で EN 組が固まる",
+      "candidate_title": "日本語と英語の意味ズレで会話が噛み合わない候補",
+      "talent": [
+        "JP talent TBD",
+        "EN talent TBD"
+      ],
+      "candidate_channel_name": "unknown fixture channel",
+      "group": "hololive JP/EN",
+      "language": "ja/en",
+      "topic_tags": [
+        "language_gap",
+        "collab",
+        "subtitle_value",
+        "context_needed"
+      ],
+      "source_ref": "manual_topic_seed: JP/EN phrase gap",
+      "source_url": "",
+      "source_url_origin": "missing",
+      "source_url_state": "missing",
+      "source_platform": "unknown",
+      "video_id": "",
+      "url_parse_note": "source_url is empty",
+      "source_media_state": "not_fetched",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "registry_entry_used": false,
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "lookup_query": "日本語の一言で EN 組が固まる 日本語と英語の意味ズレで会話が噛み合わない候補 JP talent TBD EN talent TBD hololive JP/EN manual_topic_seed: JP/EN phrase gap language_gap collab subtitle_value context_needed",
+      "lookup_terms": [
+        "日本語の一言で EN 組が固まる",
+        "日本語と英語の意味ズレで会話が噛み合わない候補",
+        "JP talent TBD",
+        "EN talent TBD",
+        "hololive JP/EN",
+        "manual_topic_seed: JP/EN phrase gap",
+        "language_gap",
+        "collab",
+        "subtitle_value",
+        "context_needed"
+      ],
+      "confidence": "query_only",
+      "rights_readback": {
+        "status": "unverified",
+        "source": "manual_seed",
+        "notes": [
+          "needs source URL and rights readback"
+        ],
+        "approved": false,
+        "hard_gate": false
+      },
+      "approval_state": {
+        "source_resolved_for_planning": false,
+        "source_fetched": false,
+        "rights_cleared": false,
+        "production_ready": false,
+        "public_ready": false,
+        "publishing_accepted": false
+      },
+      "blocking_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "next_action": "manual_source_intake_required",
+      "risk_flags": [
+        {
+          "code": "translation_review_needed",
+          "severity": "medium",
+          "note": "Do not publish until bilingual meaning is checked."
+        }
+      ],
+      "later_artifact_paths": {
+        "episode_dir": "episodes/ep_seed_cpd01_jp_en_phrase_gap",
+        "rights_manifest": "episodes/ep_seed_cpd01_jp_en_phrase_gap/rights_manifest.json",
+        "material_ledger": "episodes/ep_seed_cpd01_jp_en_phrase_gap/material_ledger.json",
+        "source_video_material": "episodes/ep_seed_cpd01_jp_en_phrase_gap/materials/src_video/source_video.mp4",
+        "source_audio_material": "episodes/ep_seed_cpd01_jp_en_phrase_gap/materials/src_audio/source.wav",
+        "transcript": "episodes/ep_seed_cpd01_jp_en_phrase_gap/transcript.json",
+        "edit_pack": "episodes/ep_seed_cpd01_jp_en_phrase_gap/edit_pack.json",
+        "preview_or_review_dir": "episodes/ep_seed_cpd01_jp_en_phrase_gap/review/"
+      },
+      "planned_later_artifacts_only": true
+    },
+    {
+      "resolution_id": "source_resolution_seed_cpd01_reaction_face_chain",
+      "seed_id": "seed_cpd01_reaction_face_chain",
+      "candidate_id": "cpd01_reaction_face_chain",
+      "generated_at": "2026-07-06",
+      "working_title": "表情が一瞬で変わるホロメン",
+      "candidate_title": "リアクション顔が 3 段階で変わる雑談 / 企画候補",
+      "talent": [
+        "hololive talent TBD"
+      ],
+      "candidate_channel_name": "unknown fixture channel",
+      "group": "hololive",
+      "language": "ja",
+      "topic_tags": [
+        "reaction",
+        "thumbnail_first",
+        "chatting",
+        "emotion_shift"
+      ],
+      "source_ref": "manual_topic_seed: reaction face chain",
+      "source_url": "",
+      "source_url_origin": "missing",
+      "source_url_state": "missing",
+      "source_platform": "unknown",
+      "video_id": "",
+      "url_parse_note": "source_url is empty",
+      "source_media_state": "not_fetched",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "registry_entry_used": false,
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "lookup_query": "表情が一瞬で変わるホロメン リアクション顔が 3 段階で変わる雑談 / 企画候補 hololive talent TBD hololive manual_topic_seed: reaction face chain reaction thumbnail_first chatting emotion_shift",
+      "lookup_terms": [
+        "表情が一瞬で変わるホロメン",
+        "リアクション顔が 3 段階で変わる雑談 / 企画候補",
+        "hololive talent TBD",
+        "hololive",
+        "manual_topic_seed: reaction face chain",
+        "reaction",
+        "thumbnail_first",
+        "chatting",
+        "emotion_shift"
+      ],
+      "confidence": "query_only",
+      "rights_readback": {
+        "status": "unknown",
+        "source": "manual_seed",
+        "notes": [
+          "not usable for production until source and rights are checked"
+        ],
+        "approved": false,
+        "hard_gate": false
+      },
+      "approval_state": {
+        "source_resolved_for_planning": false,
+        "source_fetched": false,
+        "rights_cleared": false,
+        "production_ready": false,
+        "public_ready": false,
+        "publishing_accepted": false
+      },
+      "blocking_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "next_action": "manual_source_intake_required",
+      "risk_flags": [
+        {
+          "code": "source_timestamp_missing",
+          "severity": "medium",
+          "note": "Needs public metadata or manual timestamp before fetch/edit lanes."
+        },
+        {
+          "code": "rights_unknown",
+          "severity": "medium",
+          "note": "Planning seed only."
+        }
+      ],
+      "later_artifact_paths": {
+        "episode_dir": "episodes/ep_seed_cpd01_reaction_face_chain",
+        "rights_manifest": "episodes/ep_seed_cpd01_reaction_face_chain/rights_manifest.json",
+        "material_ledger": "episodes/ep_seed_cpd01_reaction_face_chain/material_ledger.json",
+        "source_video_material": "episodes/ep_seed_cpd01_reaction_face_chain/materials/src_video/source_video.mp4",
+        "source_audio_material": "episodes/ep_seed_cpd01_reaction_face_chain/materials/src_audio/source.wav",
+        "transcript": "episodes/ep_seed_cpd01_reaction_face_chain/transcript.json",
+        "edit_pack": "episodes/ep_seed_cpd01_reaction_face_chain/edit_pack.json",
+        "preview_or_review_dir": "episodes/ep_seed_cpd01_reaction_face_chain/review/"
+      },
+      "planned_later_artifacts_only": true
+    },
+    {
+      "resolution_id": "source_resolution_seed_cpd01_game_fail_micro_arc",
+      "seed_id": "seed_cpd01_game_fail_micro_arc",
+      "candidate_id": "cpd01_game_fail_micro_arc",
+      "generated_at": "2026-07-06",
+      "working_title": "失敗したのに立て直しが早すぎる",
+      "candidate_title": "ゲーム失敗から即リカバリーまでの 30 秒候補",
+      "talent": [
+        "hololive gaming talent TBD"
+      ],
+      "candidate_channel_name": "unknown fixture channel",
+      "group": "hololive",
+      "language": "ja",
+      "topic_tags": [
+        "gameplay",
+        "fail",
+        "recovery",
+        "sound_reaction"
+      ],
+      "source_ref": "manual_topic_seed: game fail micro arc",
+      "source_url": "",
+      "source_url_origin": "missing",
+      "source_url_state": "missing",
+      "source_platform": "unknown",
+      "video_id": "",
+      "url_parse_note": "source_url is empty",
+      "source_media_state": "not_fetched",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "registry_entry_used": false,
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "lookup_query": "失敗したのに立て直しが早すぎる ゲーム失敗から即リカバリーまでの 30 秒候補 hololive gaming talent TBD hololive manual_topic_seed: game fail micro arc gameplay fail recovery sound_reaction",
+      "lookup_terms": [
+        "失敗したのに立て直しが早すぎる",
+        "ゲーム失敗から即リカバリーまでの 30 秒候補",
+        "hololive gaming talent TBD",
+        "hololive",
+        "manual_topic_seed: game fail micro arc",
+        "gameplay",
+        "fail",
+        "recovery",
+        "sound_reaction"
+      ],
+      "confidence": "query_only",
+      "rights_readback": {
+        "status": "unverified",
+        "source": "manual_seed",
+        "notes": [
+          "third-party game policy not checked"
+        ],
+        "approved": false,
+        "hard_gate": false
+      },
+      "approval_state": {
+        "source_resolved_for_planning": false,
+        "source_fetched": false,
+        "rights_cleared": false,
+        "production_ready": false,
+        "public_ready": false,
+        "publishing_accepted": false
+      },
+      "blocking_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "next_action": "manual_source_intake_required",
+      "risk_flags": [
+        {
+          "code": "game_ip_review_needed",
+          "severity": "medium",
+          "note": "Third-party game footage needs later policy/readback review."
+        }
+      ],
+      "later_artifact_paths": {
+        "episode_dir": "episodes/ep_seed_cpd01_game_fail_micro_arc",
+        "rights_manifest": "episodes/ep_seed_cpd01_game_fail_micro_arc/rights_manifest.json",
+        "material_ledger": "episodes/ep_seed_cpd01_game_fail_micro_arc/material_ledger.json",
+        "source_video_material": "episodes/ep_seed_cpd01_game_fail_micro_arc/materials/src_video/source_video.mp4",
+        "source_audio_material": "episodes/ep_seed_cpd01_game_fail_micro_arc/materials/src_audio/source.wav",
+        "transcript": "episodes/ep_seed_cpd01_game_fail_micro_arc/transcript.json",
+        "edit_pack": "episodes/ep_seed_cpd01_game_fail_micro_arc/edit_pack.json",
+        "preview_or_review_dir": "episodes/ep_seed_cpd01_game_fail_micro_arc/review/"
+      },
+      "planned_later_artifacts_only": true
+    },
+    {
+      "resolution_id": "source_resolution_seed_cpd01_song_moment_hold",
+      "seed_id": "seed_cpd01_song_moment_hold",
+      "candidate_id": "cpd01_song_moment_hold",
+      "generated_at": "2026-07-06",
+      "working_title": "歌の合間に急に本音が出る",
+      "candidate_title": "歌枠の一言コメントが面白い候補",
+      "talent": [
+        "hololive talent TBD"
+      ],
+      "candidate_channel_name": "unknown fixture channel",
+      "group": "hololive",
+      "language": "ja",
+      "topic_tags": [
+        "song_stream",
+        "commentary",
+        "rights_sensitive",
+        "hold"
+      ],
+      "source_ref": "manual_topic_seed: song moment",
+      "source_url": "",
+      "source_url_origin": "missing",
+      "source_url_state": "missing",
+      "source_platform": "unknown",
+      "video_id": "",
+      "url_parse_note": "source_url is empty",
+      "source_media_state": "not_fetched",
+      "source_metadata_state": "unresolved_missing_source_url",
+      "registry_entry_used": false,
+      "manual_intake_required": true,
+      "manual_intake_fields_needed": [
+        "source_url",
+        "source_title",
+        "channel_name",
+        "published_at",
+        "duration_seconds_or_timestamp_hint",
+        "rights_readback_note"
+      ],
+      "lookup_query": "歌の合間に急に本音が出る 歌枠の一言コメントが面白い候補 hololive talent TBD hololive manual_topic_seed: song moment song_stream commentary rights_sensitive hold",
+      "lookup_terms": [
+        "歌の合間に急に本音が出る",
+        "歌枠の一言コメントが面白い候補",
+        "hololive talent TBD",
+        "hololive",
+        "manual_topic_seed: song moment",
+        "song_stream",
+        "commentary",
+        "rights_sensitive",
+        "hold"
+      ],
+      "confidence": "query_only",
+      "rights_readback": {
+        "status": "unknown",
+        "source": "manual_seed",
+        "notes": [
+          "hold; separate rights route required"
+        ],
+        "approved": false,
+        "hard_gate": false
+      },
+      "approval_state": {
+        "source_resolved_for_planning": false,
+        "source_fetched": false,
+        "rights_cleared": false,
+        "production_ready": false,
+        "public_ready": false,
+        "publishing_accepted": false
+      },
+      "blocking_reason": "source_url is missing; manual source intake is required before fetch/init lanes",
+      "next_action": "reject_until_source_route_reopened",
+      "risk_flags": [
+        {
+          "code": "song_or_music_rights_sensitive",
+          "severity": "high",
+          "note": "Hold until a separate rights/publication route says this is usable."
+        },
+        {
+          "code": "source_timestamp_missing",
+          "severity": "medium",
+          "note": "No safe non-song timestamp is identified."
+        }
+      ],
+      "later_artifact_paths": {
+        "episode_dir": "episodes/ep_seed_cpd01_song_moment_hold",
+        "rights_manifest": "episodes/ep_seed_cpd01_song_moment_hold/rights_manifest.json",
+        "material_ledger": "episodes/ep_seed_cpd01_song_moment_hold/material_ledger.json",
+        "source_video_material": "episodes/ep_seed_cpd01_song_moment_hold/materials/src_video/source_video.mp4",
+        "source_audio_material": "episodes/ep_seed_cpd01_song_moment_hold/materials/src_audio/source.wav",
+        "transcript": "episodes/ep_seed_cpd01_song_moment_hold/transcript.json",
+        "edit_pack": "episodes/ep_seed_cpd01_song_moment_hold/edit_pack.json",
+        "preview_or_review_dir": "episodes/ep_seed_cpd01_song_moment_hold/review/"
+      },
+      "planned_later_artifacts_only": true
+    }
+  ]
+}
