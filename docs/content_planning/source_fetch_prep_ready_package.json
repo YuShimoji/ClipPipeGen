@@ -1,0 +1,104 @@
+{
+  "schema_id": "clippipegen.source_fetch_prep_ready_package.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
+  "generated_at": "2026-07-08",
+  "source_candidate_id": "cpd01_bancho_marine_misunderstanding",
+  "episode_id": "ep_seed_cpd01_bancho_marine_misunderstanding",
+  "planning_label": "番長、船長を完全に勘違いする",
+  "label_provenance": "planning_label_unverified",
+  "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+  "human_decision": {
+    "decision_source": "human_operator_report",
+    "identity_decision": "ok",
+    "reviewer": "operator",
+    "reviewed_at": "2026-07-08",
+    "notes": "Human operator reported that the URL opens, the candidate intent is consistent, and the content matches the explanation.",
+    "allows_fetch_prep": true,
+    "fetch_authorized": false,
+    "rights_approved": false,
+    "public_ready": false
+  },
+  "decision_record_summary": {
+    "source_cli_artifact_id": "clip-ews03-source-identity-decision-intake-v0-001",
+    "input_decision_path": "docs/content_planning/source_identity_human_ok_decision.json",
+    "workspace_record_filename": "source_identity.decision.json",
+    "decision_source": "human_input_file",
+    "input_decision_source": "human_operator_report",
+    "identity_decision": "ok",
+    "allows_fetch_prep": true,
+    "fetch_authorized": false,
+    "rights_approved": false,
+    "public_ready": false
+  },
+  "fetch_prep_plan_summary": {
+    "source_cli_artifact_id": "clip-ews04-source-fetch-prep-planner-v0-001",
+    "workspace_plan_path": "docs/content_planning/episode_workspace_plan.json",
+    "automation_contract_path": "docs/content_planning/automation_contract.json",
+    "workspace_output_filename": "source_fetch_prep_plan.json",
+    "prep_state": "ready_for_future_private_fetch_plan",
+    "blocked_reason": null,
+    "ready_for_future_private_fetch_plan": true,
+    "future_fetch_inputs": {
+      "workspace_manifest_path": "episode_manifest.json",
+      "source_identity_decision_path": "source_identity.decision.json",
+      "automation_contract_path": "docs/content_planning/automation_contract.json",
+      "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "planning_label": "番長、船長を完全に勘違いする",
+      "fetch_authorized": false
+    },
+    "future_receipt_paths": {
+      "source_receipt": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/source/source_receipt.pending.json",
+      "source_fetch_preflight_receipt": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/source/source_fetch_preflight.pending.json",
+      "source_fetch_receipt": "episodes/ep_seed_cpd01_bancho_marine_misunderstanding/materials/source/source_fetch_receipt.json"
+    }
+  },
+  "prep_state": "ready_for_future_private_fetch_plan",
+  "ready_for_future_private_fetch_plan": true,
+  "fetch_authorized": false,
+  "media_downloaded": false,
+  "rights_approved": false,
+  "public_ready": false,
+  "next_gate": "explicit_private_fetch_smoke_approval_required",
+  "validation_smoke": {
+    "workspace_kind": "tempdir",
+    "last_run_status": "passed",
+    "last_run_at": "2026-07-08",
+    "last_record_identity_decision": "ok",
+    "last_record_input_decision_source": "human_operator_report",
+    "last_plan_prep_state": "ready_for_future_private_fetch_plan",
+    "commands": [
+      "python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json",
+      "python -m src.cli.main record-source-identity-decision --workspace <tempdir>/ep_seed_cpd01_bancho_marine_misunderstanding --decision docs/content_planning/source_identity_human_ok_decision.json --format json",
+      "python -m src.cli.main plan-source-fetch-prep --workspace <tempdir>/ep_seed_cpd01_bancho_marine_misunderstanding --format json"
+    ],
+    "expected_record": {
+      "identity_decision": "ok",
+      "allows_fetch_prep": true,
+      "fetch_authorized": false,
+      "rights_approved": false,
+      "public_ready": false
+    },
+    "expected_plan": {
+      "prep_state": "ready_for_future_private_fetch_plan",
+      "blocked_reason": null,
+      "fetch_authorized": false,
+      "media_downloaded": false,
+      "rights_approved": false,
+      "public_ready": false
+    }
+  },
+  "boundary_readback": {
+    "human_report_source_url_opened": true,
+    "worker_source_url_opened": false,
+    "source_fetch_downloaded": false,
+    "transcript_generated": false,
+    "render_generated": false,
+    "thumbnail_generated": false,
+    "upload_created": false,
+    "oauth_or_credentials_used": false,
+    "rights_or_legal_approval_claimed": false,
+    "production_or_public_ready_claimed": false,
+    "tracked_episodes_files_created": false
+  }
+}

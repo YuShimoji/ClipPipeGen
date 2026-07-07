@@ -3,11 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: source_fetch_prep_planner_ready
+health: source_fetch_prep_ready_package_ready
 progress_pct: 100
 last_touched: 2026-07-08
-next_review_due: use_fetch_prep_plan_to_choose_future_private_fetch_smoke_after_human_identity_ok
-active_artifact: clip-ews04-source-fetch-prep-planner-v0-001
+next_review_due: explicit_private_fetch_smoke_approval_required
+active_artifact: clip-ews05-human-ok-fetch-prep-ready-package-v0-001
+latest_human_ok_fetch_prep_ready_artifact: clip-ews05-human-ok-fetch-prep-ready-package-v0-001
+latest_human_ok_fetch_prep_ready_branch: codex/ews-05-human-ok-fetch-prep-ready-v0
+latest_human_ok_fetch_prep_ready_commit: branch_head
 latest_source_fetch_prep_planner_artifact: clip-ews04-source-fetch-prep-planner-v0-001
 latest_source_fetch_prep_planner_branch: codex/ews-04-source-fetch-prep-planner-v0
 latest_source_fetch_prep_planner_commit: branch_head
@@ -38,31 +41,32 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch the remote EWS source fetch-prep branch, then read the project context:
+Fetch the remote EWS human OK fetch-prep package branch, then read the project
+context:
 
 ```powershell
 git fetch origin
-git switch codex/ews-04-source-fetch-prep-planner-v0
+git switch codex/ews-05-human-ok-fetch-prep-ready-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-ews04-source-fetch-prep-planner-v0-001`.
+`clip-ews05-human-ok-fetch-prep-ready-package-v0-001`.
 
-The durable state to carry forward is: EWS-04 turns an inspected EWS-01
-workspace skeleton plus the EWS-03 source identity decision record into a local
-source fetch-prep plan. It blocks missing, `pending`, `ng`, and `hold`
-decisions with machine-readable reasons. Only `ok` with
-`allows_fetch_prep=true` becomes ready for a future private/local fetch plan,
-while fetch, rights, media, and public readiness remain false.
+The durable state to carry forward is: EWS-05 records the human operator's
+source identity OK report for the current CPD-12 source-backed candidate and
+packages the EWS-03/EWS-04 readback proving a tempdir plan can reach
+`prep_state=ready_for_future_private_fetch_plan`. The human report says the URL
+opens, the candidate intent is consistent, and the content matches the
+explanation. The worker did not open the URL.
 
 The repeatable commands are:
 
@@ -70,8 +74,7 @@ The repeatable commands are:
 python -m src.cli.main build-episode-workspace-plan --format json
 python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json
 python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
-python -m src.cli.main prepare-source-identity-decision --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
-python -m src.cli.main record-source-identity-decision --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --decision <decision.json> --format json
+python -m src.cli.main record-source-identity-decision --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --decision docs/content_planning/source_identity_human_ok_decision.json --format json
 python -m src.cli.main plan-source-fetch-prep --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
 ```
 
@@ -83,12 +86,35 @@ processing are deferred local actions. Public upload/publication, OAuth/API
 keys/credentials, payment, rights/legal approval claims, destructive git,
 cross-repo edits, and irreversible source overwrite remain true external gates.
 
-Do not treat EWS-04 as source approval, fetch approval, production/public/
-rights/publishing/monetization approval, transcript/render creation, or media
+Do not treat EWS-05 as fetch approval, production/public/rights/publishing/
+monetization approval, transcript/render creation, thumbnail creation, or media
 initialization. The CLI commands require an explicit workspace path and local
 decision JSON only. Keep tracked `episodes/` empty. CPD-12 remains available at
-`docs/content_planning/operator_cockpit.html` for human source identity review;
-it is no longer the active implementation target of this handoff.
+`docs/content_planning/operator_cockpit.html`, but this handoff has already
+recorded the supplied human OK report for the current candidate. The next gate
+is `explicit_private_fetch_smoke_approval_required`.
+
+## Current EWS-05 Human OK Fetch-Prep Ready Package v0
+
+EWS-05 checkpoint, 2026-07-08 JST:
+`clip-ews05-human-ok-fetch-prep-ready-package-v0-001` is the active tracked
+content-planning package. It records the human operator report as
+`identity_decision=ok`, `reviewer=operator`, and
+`decision_source=human_operator_report` for
+`cpd01_bancho_marine_misunderstanding`.
+
+Package files:
+
+```text
+docs/content_planning/source_identity_human_ok_decision.json
+docs/content_planning/source_fetch_prep_ready_package.json
+docs/content_planning/source_fetch_prep_ready_package.md
+```
+
+The package is ready only for a later private/local fetch-prep smoke decision.
+It preserves `fetch_authorized=false`, `media_downloaded=false`,
+`rights_approved=false`, and `public_ready=false`; it also records that the
+worker did not open the source URL.
 
 ## Current EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0
 

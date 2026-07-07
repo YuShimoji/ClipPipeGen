@@ -76,6 +76,18 @@ decision template and records a human-provided `pending` / `ok` / `ng` / `hold`
 decision into the explicit workspace without opening the source, authorizing
 fetch, or approving rights/public use.
 
+EWS-04 turns that explicit workspace plus `source_identity.decision.json` into
+a local source fetch-prep plan. Missing, `pending`, `ng`, and `hold` decisions
+remain blocked; only `ok` with `allows_fetch_prep=true` becomes ready for a
+future private/local fetch plan, with fetch/media/rights/public gates still
+false.
+
+EWS-05 packages the human operator's source identity OK report and the EWS-04
+ready-state readback into tracked JSON/Markdown. The report says the URL opens,
+the candidate intent is consistent, and the content matches the explanation.
+This authorizes only future private/local fetch-prep planning, not fetch,
+rights, production, public use, or upload.
+
 If you are reviewing as a human, open the CPD-12 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
@@ -105,11 +117,15 @@ production/public usable.
 | EWS-02 artifact_id | `clip-ews02-episode-workspace-inspector-v0-001` |
 | EWS-03 artifact_id | `clip-ews03-source-identity-decision-intake-v0-001` |
 | EWS-04 artifact_id | `clip-ews04-source-fetch-prep-planner-v0-001` |
+| EWS-05 artifact_id | `clip-ews05-human-ok-fetch-prep-ready-package-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
 | episode workspace plan JSON | `docs/content_planning/episode_workspace_plan.json` |
 | automation contract JSON | `docs/content_planning/automation_contract.json` |
+| source identity human OK decision JSON | `docs/content_planning/source_identity_human_ok_decision.json` |
+| source fetch-prep ready package JSON | `docs/content_planning/source_fetch_prep_ready_package.json` |
+| source fetch-prep ready package Markdown | `docs/content_planning/source_fetch_prep_ready_package.md` |
 | content candidate JSON | `docs/content_planning/content_candidates.json` |
 | channel strategy JSON | `docs/content_planning/channel_strategy.json` |
 | content dashboard HTML | `docs/content_planning/content_dashboard.html` |
@@ -190,6 +206,14 @@ python -m src.cli.main record-source-identity-decision --workspace <workspace> -
 Plan the next source fetch-prep step without authorizing fetch:
 
 ```powershell
+python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
+```
+
+Apply the tracked human OK decision in an explicit tempdir smoke before opening
+any real fetch lane:
+
+```powershell
+python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision docs/content_planning/source_identity_human_ok_decision.json --format json
 python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
 ```
 
@@ -320,6 +344,12 @@ uvx python -m src.cli.main build-operator-cockpit `
   `allows_fetch_prep=true` returns `ready_for_future_private_fetch_plan`, and
   it still keeps `fetch_authorized=false`, `media_downloaded=false`,
   `rights_approved=false`, and `public_ready=false`.
+- EWS-05 records a human operator source identity OK report and packages the
+  resulting EWS-04 ready-state readback. It proves only
+  `prep_state=ready_for_future_private_fetch_plan` for a future private/local
+  fetch-prep plan; it does not open the source URL in the worker, fetch media,
+  process media, generate transcripts/renders/thumbnails, upload, approve
+  rights, or mark the item production/public ready.
 - `automation_contract.json` is the compact gate reference. It keeps local JSON
   generation, local CLI, tempdir/ignored skeletons, local decision records,
   docs/readme pointers, and targeted tests in `allowed_local_actions`; source
@@ -347,14 +377,15 @@ uvx python -m src.cli.main build-operator-cockpit `
    inspect the empty skeleton contract without touching tracked `episodes/`.
 5. Run `inspect-episode-workspace` against that explicit skeleton to get
    parseable readiness/status JSON for downstream local pipeline consumers.
-6. Run `prepare-source-identity-decision`, then record a human-provided
-   `pending` / `ok` / `ng` / `hold` decision JSON with
-   `record-source-identity-decision`.
-7. Run `plan-source-fetch-prep` to convert that decision into either a blocked
-   plan or a ready-for-future-private-fetch plan before opening any fetch lane.
-7. Fill `source_inspection_decisions.template.json` only after that review, then
+6. Use `docs/content_planning/source_identity_human_ok_decision.json` only as
+   the recorded human OK input for this reviewed candidate; do not reuse it for
+   other candidates.
+7. Run `plan-source-fetch-prep` to regenerate the ready-state plan in an
+   explicit tempdir or ignored workspace, then decide whether a separate
+   private/local fetch smoke should be opened.
+8. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
-8. Fill real source URLs for unresolved seed records in a local
+9. Fill real source URLs for unresolved seed records in a local
    `source_metadata_registry.json`, then rerun CPD-03 and CPD-04.
-9. Add a read-only public metadata adapter behind an explicit flag, keeping
+10. Add a read-only public metadata adapter behind an explicit flag, keeping
    fixture tests offline.

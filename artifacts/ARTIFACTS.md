@@ -16,6 +16,33 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-ews05-human-ok-fetch-prep-ready-package-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-05 Human OK Decision Application / Fetch-Prep Ready Package v0 |
+| purpose | Record the human operator's source identity OK report and package the resulting ready-for-future-private-fetch-plan readback for the current CPD-12 source-backed candidate. |
+| storage class | Tracked local JSON/Markdown package; consumes the EWS-01 workspace plan, EWS-03 decision intake, EWS-04 fetch-prep planner, and a human operator report. No worker URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights approval, production-ready, or public-ready state is created. |
+| repo_relative_path | `docs/content_planning/source_fetch_prep_ready_package.json; docs/content_planning/source_fetch_prep_ready_package.md; docs/content_planning/source_identity_human_ok_decision.json` |
+| machine_output | `source_identity.decision.json` and `source_fetch_prep_plan.json` inside an explicit tempdir smoke workspace; tracked portable readback stays under `docs/content_planning/`. |
+| source_inputs | `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; `docs/content_planning/source_identity_human_ok_decision.json`; explicit tempdir workspace |
+| open_command | `type docs\content_planning\source_fetch_prep_ready_package.json` |
+| validation_command | Tempdir init/record/plan smoke, JSON parse checks, `uvx pytest -q tests/test_episode_workspace.py tests/test_docs_dashboard.py`, `git diff --check`, and `git ls-files episodes`. |
+| review_status | Ready as the human OK fetch-prep package. The human report says the URL opens, candidate intent is consistent, and content matches the explanation; the worker did not open the URL. The generated plan reaches `prep_state=ready_for_future_private_fetch_plan` while preserving `fetch_authorized=false`, `media_downloaded=false`, `rights_approved=false`, and `public_ready=false`. |
+| next_action | Require explicit private fetch smoke approval before any source fetch/download lane. Do not treat this package as rights/public/production/upload approval. |
+
+Package boundary flags remain false:
+
+- `worker_source_url_opened=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `upload_created=false`
+- `rights_approved=false`
+- `public_ready=false`
+
 ## `clip-ews04-source-fetch-prep-planner-v0-001`
 
 | Field | Value |

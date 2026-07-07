@@ -1670,6 +1670,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
+      "title": "EWS-05 Human OK Decision Application / Fetch-Prep Ready Package v0",
+      "purpose": "Record the human operator's source identity OK report and package the resulting ready-for-future-private-fetch-plan readback for the current CPD-12 source-backed candidate.",
+      "storage_class": "Tracked local JSON/Markdown package; consumes the EWS-01 workspace plan, EWS-03 decision intake, EWS-04 fetch-prep planner, and a human operator report. No worker URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights approval, production-ready, or public-ready state is created.",
+      "repo_relative_path": "docs/content_planning/source_fetch_prep_ready_package.json; docs/content_planning/source_fetch_prep_ready_package.md; docs/content_planning/source_identity_human_ok_decision.json",
+      "open_command": "type docs\\content_planning\\source_fetch_prep_ready_package.json",
+      "review_status": "Ready as the human OK fetch-prep package. The human report says the URL opens, candidate intent is consistent, and content matches the explanation; the worker did not open the URL. The generated plan reaches prep_state=ready_for_future_private_fetch_plan while preserving fetch_authorized=false, media_downloaded=false, rights_approved=false, and public_ready=false.",
+      "next_action": "Require explicit private fetch smoke approval before any source fetch/download lane. Do not treat this package as rights/public/production/upload approval."
+    },
+    {
       "artifact_id": "clip-ews04-source-fetch-prep-planner-v0-001",
       "title": "EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0",
       "purpose": "Convert an explicit EWS workspace plus source_identity.decision.json into a local source fetch-prep plan or a blocked plan with machine-readable reason.",
@@ -2292,6 +2302,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
       "clip-ews04-source-fetch-prep-planner-v0-001",
       "clip-ews03-source-identity-decision-intake-v0-001",
       "clip-ews02-episode-workspace-inspector-v0-001",
@@ -2355,10 +2366,10 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 62
+    "artifact_count": 63
   },
   "artifact_coverage": {
-    "registered_artifact_count": 62,
+    "registered_artifact_count": 63,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
@@ -2625,7 +2636,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1420,
+      "line_count": 1447,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2756,7 +2767,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2010,
+      "line_count": 2037,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2764,7 +2775,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 807,
+      "boundary_term_count": 813,
       "status": "reference"
     },
     {
@@ -2826,7 +2837,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1195,
+      "line_count": 1221,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3179,7 +3190,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1420 lines) is likely carrying history.",
+        "detail": "Long active doc (1447 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3209,13 +3220,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2010 lines) is likely carrying history.",
+        "detail": "Long active doc (2037 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 807 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 813 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3239,7 +3250,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1195 lines) is likely carrying history.",
+        "detail": "Long active doc (1221 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

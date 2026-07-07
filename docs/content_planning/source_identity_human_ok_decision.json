@@ -1,0 +1,32 @@
+{
+  "schema_id": "clippipegen.source_identity_human_operator_report.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
+  "generated_at": "2026-07-08",
+  "source_candidate_id": "cpd01_bancho_marine_misunderstanding",
+  "episode_id": "ep_seed_cpd01_bancho_marine_misunderstanding",
+  "planning_label": "番長、船長を完全に勘違いする",
+  "label_provenance": "planning_label_unverified",
+  "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+  "decision_source": "human_operator_report",
+  "identity_decision": "ok",
+  "reviewer": "operator",
+  "reviewed_at": "2026-07-08",
+  "notes": "Human operator reported that the URL opens, the candidate intent is consistent, and the content matches the explanation. This records source identity OK for future private/local fetch-prep only; it does not authorize fetch, rights, production, public use, or upload.",
+  "allows_fetch_prep": true,
+  "fetch_authorized": false,
+  "rights_approved": false,
+  "public_ready": false,
+  "readback": {
+    "human_report_url_opens": true,
+    "human_report_candidate_intent_consistent": true,
+    "human_report_content_matches_explanation": true,
+    "worker_opened_source_url": false,
+    "worker_fetched_or_downloaded_media": false,
+    "worker_generated_transcript": false,
+    "worker_rendered_media": false,
+    "worker_created_thumbnail": false,
+    "worker_uploaded_publicly": false,
+    "future_private_fetch_prep_only": true
+  }
+}
