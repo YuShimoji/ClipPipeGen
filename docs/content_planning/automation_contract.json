@@ -1,0 +1,94 @@
+{
+  "schema_id": "clippipegen.automation_contract.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-ews01-thin-gate-contract-v0-001",
+  "generated_at": "2026-07-07",
+  "contract_type": "thin_gate_contract",
+  "allowed_local_actions": [
+    {
+      "action_id": "json_generation",
+      "description": "Generate tracked JSON readback from existing local planning artifacts."
+    },
+    {
+      "action_id": "local_cli",
+      "description": "Run local CLI commands that read/write planning artifacts."
+    },
+    {
+      "action_id": "tempdir_skeleton",
+      "description": "Materialize empty skeleton files under an explicit tempdir target."
+    },
+    {
+      "action_id": "ignored_local_workspace_skeleton",
+      "description": "Materialize empty skeleton files under an explicit ignored local workspace target."
+    },
+    {
+      "action_id": "docs_readme",
+      "description": "Update compact docs/readme pointers to generated artifacts."
+    },
+    {
+      "action_id": "targeted_tests",
+      "description": "Run targeted tests and JSON parse checks."
+    }
+  ],
+  "deferred_local_actions": [
+    {
+      "action_id": "source_url_opening",
+      "description": "Human/source identity review may open the URL later; this slice does not."
+    },
+    {
+      "action_id": "source_fetch_download",
+      "description": "Video/audio fetch and download remain later local integration work."
+    },
+    {
+      "action_id": "transcript",
+      "description": "Transcript generation remains later work after local media exists."
+    },
+    {
+      "action_id": "render",
+      "description": "Diagnostic or production render is not part of this slice."
+    },
+    {
+      "action_id": "thumbnail_proof",
+      "description": "Thumbnail proof or image generation remains later work."
+    },
+    {
+      "action_id": "local_media_processing",
+      "description": "Local media conversion and processing remain outside this slice."
+    }
+  ],
+  "true_external_gates": [
+    {
+      "action_id": "public_upload_publication",
+      "description": "Public upload, visibility, publishing, and monetization."
+    },
+    {
+      "action_id": "oauth_api_keys_credentials",
+      "description": "OAuth, API keys, credentials, and login-backed services."
+    },
+    {
+      "action_id": "payment",
+      "description": "Paid services or payment actions."
+    },
+    {
+      "action_id": "legal_rights_approval_claims",
+      "description": "Legal judgement, rights approval, or public-ready claims."
+    },
+    {
+      "action_id": "destructive_git",
+      "description": "Force push, reset, history rewrite, or broad destructive cleanup."
+    },
+    {
+      "action_id": "cross_repo_edits",
+      "description": "Cross-repository edits outside ClipPipeGen."
+    },
+    {
+      "action_id": "irreversible_source_overwrite",
+      "description": "Irreversible overwrite of source or operator-authored evidence."
+    }
+  ],
+  "classification_readback": {
+    "local_episode_workspace_init": "allowed_local_actions",
+    "local_episode_workspace_init_is_true_external_gate": false,
+    "safety_ui_policy": "compact_contract_reference_only"
+  }
+}

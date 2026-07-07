@@ -16,6 +16,43 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-ews01-episode-workspace-spine-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-01 Episode Workspace Spine / Thin Gate Contract v0 |
+| purpose | Convert the CPD-12 current Review item into a local episode workspace plan, with a compact contract that separates allowed local actions from deferred local actions and true external gates. |
+| storage class | Tracked local planning artifact; portable JSON contract and workspace plan. No source fetch, media, transcript, render, thumbnail proof, OAuth/API, rights approval, publication, or tracked `episodes/` material is created. |
+| repo_relative_path | `docs/content_planning/episode_workspace_plan.json` |
+| machine_output | `docs/content_planning/automation_contract.json` |
+| source_inputs | `docs/content_planning/operator_cockpit.json` |
+| open_command | `python -m src.cli.main build-episode-workspace-plan --format json` |
+| skeleton_command | `python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json` |
+| generated_from | `build-episode-workspace-plan` reading the CPD-12 current work item from local operator cockpit JSON. |
+| validation_command | `python -m pytest -q tests/test_episode_workspace.py` plus JSON parse checks and an explicit tempdir skeleton smoke. |
+| review_status | Ready as the downstream local workspace spine. The plan carries `episode_id=ep_seed_cpd01_bancho_marine_misunderstanding`, the CPD-12 planning label, `label_provenance=planning_label_unverified`, `source_url_state=present`, `identity_state=unverified`, and `fetch_authorized=false`. |
+| next_action | Inspect or regenerate the plan, then use `init-episode-workspace` only with a tempdir or explicit ignored target if a local skeleton is needed before any source/media lane opens. |
+
+Thin contract categories:
+
+- `allowed_local_actions`: JSON generation, local CLI, explicit tempdir skeletons, explicit ignored local skeletons, docs/readme pointers, and targeted tests.
+- `deferred_local_actions`: source URL opening, source fetch/download, transcript, render, thumbnail proof, and local media processing.
+- `true_external_gates`: public upload/publication, OAuth/API keys/credentials, payment, legal/rights approval claims, destructive git, cross-repo edits, and irreversible source overwrite.
+
+Boundary flags remain false or pending:
+
+- `planning_label_is_verified_video_title=false`
+- `source_url_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `oauth_or_credentials_used=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
 ## `clip-cpd12-minimal-review-console-v0-001`
 
 | Field | Value |

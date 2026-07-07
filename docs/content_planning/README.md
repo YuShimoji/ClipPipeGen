@@ -60,6 +60,12 @@ visible, switches Review / Backlog / System as true local modes, and labels the
 current title as a planning label with provenance badges instead of presenting
 it as a verified video title.
 
+EWS-01 consumes the CPD-12 current work item and writes a downstream local
+episode workspace plan plus a thin automation contract. It does not fetch or
+open the source; it only makes the next local skeleton initialization explicit
+and separates allowed local actions from deferred local actions and true
+external gates.
+
 If you are reviewing as a human, open the CPD-12 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
@@ -84,9 +90,13 @@ production/public usable.
 | CPD-10 artifact_id | `clip-cpd10-candidate-ledger-readability-v0-001` |
 | CPD-11 artifact_id | `clip-cpd11-operator-view-shell-v0-001` |
 | CPD-12 artifact_id | `clip-cpd12-minimal-review-console-v0-001` |
+| EWS-01 artifact_id | `clip-ews01-episode-workspace-spine-v0-001` |
+| EWS-01 contract artifact_id | `clip-ews01-thin-gate-contract-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
+| episode workspace plan JSON | `docs/content_planning/episode_workspace_plan.json` |
+| automation contract JSON | `docs/content_planning/automation_contract.json` |
 | content candidate JSON | `docs/content_planning/content_candidates.json` |
 | channel strategy JSON | `docs/content_planning/channel_strategy.json` |
 | content dashboard HTML | `docs/content_planning/content_dashboard.html` |
@@ -137,6 +147,18 @@ Operator cockpit:
 
 ```powershell
 uvx python -m src.cli.main build-operator-cockpit --format json
+```
+
+Episode workspace spine and thin gate contract:
+
+```powershell
+python -m src.cli.main build-episode-workspace-plan --format json
+```
+
+Explicit-target local workspace skeleton:
+
+```powershell
+python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json
 ```
 
 Optional output location:
@@ -247,6 +269,18 @@ uvx python -m src.cli.main build-operator-cockpit `
   provenance. The source URL is present in local data, but identity remains
   unverified, fetch is unauthorized, and the worker did not open or fetch the
   URL.
+- EWS-01 local workspace initialization is an allowed local action when an
+  explicit target is provided. It creates only empty skeleton files and does
+  not open source URLs, fetch media, create source receipts from real sources,
+  generate transcripts, render media, create thumbnails, approve rights, or
+  publish.
+- `automation_contract.json` is the compact gate reference. It keeps local JSON
+  generation, local CLI, tempdir/ignored skeletons, docs/readme pointers, and
+  targeted tests in `allowed_local_actions`; source opening, fetch/download,
+  transcript, render, thumbnail proof, and media processing remain
+  `deferred_local_actions`; public upload, credentials, payment, rights/legal
+  claims, destructive git, cross-repo edits, and irreversible source overwrite
+  remain `true_external_gates`.
 - Older CPD-01 through CPD-05 dashboards remain developer readback surfaces.
 - The JP/EN phrase-gap idea is currently `source_missing_idea_backlog`, not a
   source-backed video candidate. It needs a real `source_url` and source
@@ -261,9 +295,13 @@ uvx python -m src.cli.main build-operator-cockpit `
 2. Review the single ready source URL as a human/operator source identity
    check from Review mode only. This is still just OK / NG / HOLD source
    identity judgement, not fetch or approval.
-3. Fill `source_inspection_decisions.template.json` only after that review, then
+3. Run `build-episode-workspace-plan` when a local production spine needs a
+   repeatable plan before any source/media lane opens.
+4. Use `init-episode-workspace` with a tempdir or explicit ignored target to
+   inspect the empty skeleton contract without touching tracked `episodes/`.
+5. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
-4. Fill real source URLs for unresolved seed records in a local
+6. Fill real source URLs for unresolved seed records in a local
    `source_metadata_registry.json`, then rerun CPD-03 and CPD-04.
-5. Add a read-only public metadata adapter behind an explicit flag, keeping
+7. Add a read-only public metadata adapter behind an explicit flag, keeping
    fixture tests offline.

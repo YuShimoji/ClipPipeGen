@@ -32,6 +32,8 @@ Subcommands:
     build-episode-init-plan CPD-04: source resolution -> dry-run episode init plans.
     build-source-inspection-packet CPD-05: dry-run plans -> source inspection packets.
     build-operator-cockpit CPD-07: dark-mode vertical operator cockpit UX.
+    build-episode-workspace-plan EWS-01: CPD current work item -> local workspace plan.
+    init-episode-workspace EWS-01: materialize explicit-target local skeleton files.
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-docs-dashboard    Docs v1.5: wiki/dashboard status and doc-health findings.
@@ -63,6 +65,7 @@ from . import (
     build_cut_review_packet,
     build_episode_review_bundle,
     build_episode_init_plan,
+    build_episode_workspace_plan,
     build_operator_cockpit,
     build_source_inspection_packet,
     build_episode_seed_drafts,
@@ -81,6 +84,7 @@ from . import (
     import_subtitle_track,
     init_edit_pack,
     init_episode,
+    init_episode_workspace,
     measure_subtitle_width,
     patch_thumbnail,
     register_material,
@@ -124,6 +128,8 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-episode-init-plan": build_episode_init_plan.run,
     "build-source-inspection-packet": build_source_inspection_packet.run,
     "build-operator-cockpit": build_operator_cockpit.run,
+    "build-episode-workspace-plan": build_episode_workspace_plan.run,
+    "init-episode-workspace": init_episode_workspace.run,
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
     "build-docs-dashboard": build_docs_dashboard.run,
