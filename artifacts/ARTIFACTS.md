@@ -29,6 +29,7 @@ opened by the root launcher.
 | open_command | `start docs\content_planning\operator_cockpit.html` |
 | generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
 | validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| latest_validation_result | CPD-12 checkpoint on 2026-07-07 JST: `uvx pytest -q` -> `339 passed, 16 skipped`; targeted cockpit/dashboard tests -> `23 passed`; cockpit/dashboard JSON parsed; `git diff --check` clean; `git ls-files episodes` empty; pushed parity `0 0`. |
 | review_status | Ready as the normal human entry point for CPD planning review. The first viewport shows CPD-12 and the artifact id, a fixed shell label, status rail, true mode controls, and a Current Review data slot. The current item is labeled as a planning label with `planning_label`, `source_url_present`, `identity_unverified`, and `not_fetched` provenance badges. Backlog and System details stay behind their modes, and the Candidate Ledger remains readable and collapsed. |
 | next_action | Open the cockpit first, use Review mode for OK / NG / HOLD on the one planning-label source item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback. |
 

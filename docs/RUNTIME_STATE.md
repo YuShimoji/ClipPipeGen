@@ -10,7 +10,7 @@ next_review_due: open_cpd12_review_console_then_review_current_source_or_fill_so
 active_artifact: clip-cpd12-minimal-review-console-v0-001
 latest_content_planning_operator_cockpit_artifact: clip-cpd12-minimal-review-console-v0-001
 latest_content_planning_operator_cockpit_branch: codex/cpd-12-minimal-review-console-v0
-latest_content_planning_operator_cockpit_commit: branch_HEAD
+latest_content_planning_operator_cockpit_commit: 68c5ced
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -51,7 +51,7 @@ git pull --ff-only
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
 `clip-cpd12-minimal-review-console-v0-001`. The CPD-12 implementation
-commit is the HEAD of `codex/cpd-12-minimal-review-console-v0`; later handoff-only
+commit is `68c5ced` on `codex/cpd-12-minimal-review-console-v0`; later handoff-only
 commits on the same branch may update this resume packet without changing the
 artifact semantics.
 
@@ -76,6 +76,13 @@ It reads tracked local CPD-01 through CPD-05 artifacts, writes
 external APIs, download media, create `episodes/` folders, authorize fetch,
 approve rights, generate transcripts or renders, or mark anything
 production/public ready.
+
+Latest pushed validation for the CPD-12 checkpoint: `uvx pytest -q` returned
+`339 passed, 16 skipped`; targeted cockpit/dashboard tests returned
+`23 passed`; `docs/content_planning/operator_cockpit.json` and
+`docs/dashboard/project-status.json` parsed with `uvx python -m json.tool`;
+`git diff --check` was clean; `git ls-files episodes` printed nothing; remote
+parity after push was `0 0`.
 
 The next useful move is either to open
 `docs/content_planning/operator_cockpit.html`, use Review mode to review the

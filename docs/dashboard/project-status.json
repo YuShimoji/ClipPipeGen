@@ -2581,7 +2581,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1376,
+      "line_count": 1383,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2712,7 +2712,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1890,
+      "line_count": 1891,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2782,7 +2782,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1080,
+      "line_count": 1087,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3135,7 +3135,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1376 lines) is likely carrying history.",
+        "detail": "Long active doc (1383 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3165,7 +3165,7 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1890 lines) is likely carrying history.",
+        "detail": "Long active doc (1891 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3195,7 +3195,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1080 lines) is likely carrying history.",
+        "detail": "Long active doc (1087 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
