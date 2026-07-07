@@ -16,6 +16,33 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-ews02-episode-workspace-inspector-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-02 Episode Workspace Inspector / Manifest Consumer v0 |
+| purpose | Read a materialized local/temp EWS-01 workspace skeleton and emit machine-readable readiness/status JSON for downstream local pipeline consumers. |
+| storage class | Code-backed local status artifact; consumes an explicit workspace path and writes no media, transcript, render, thumbnail, source receipt, upload, auth, rights, or public-ready state. |
+| repo_relative_path | `src/pipeline/episode_workspace.py` |
+| machine_output | stdout JSON from `inspect-episode-workspace`; optional `--output` JSON path supplied by the operator. |
+| source_inputs | `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; explicit materialized workspace path |
+| open_command | `python -m src.cli.main inspect-episode-workspace --workspace <workspace> --format json` |
+| generated_from | `inspect-episode-workspace` reading a local skeleton created by `init-episode-workspace`. |
+| validation_command | `python -m pytest -q tests/test_episode_workspace.py` plus tempdir materialize/inspect smoke and JSON parse checks. |
+| review_status | Ready as the read-only local workspace consumer. A complete EWS-01 tempdir skeleton reports `manifest_state=initialized`, `source_identity_state=pending`, `readiness_level=source_identity_pending`, `skeleton_ready=true`, `ready_for_source_identity_decision=true`, and `ready_for_fetch=false`. |
+| next_action | Use the inspector JSON as the handoff to a later source-decision intake or local fetch-prep slice; do not fetch media or open external gates from this command. |
+
+Inspector boundary flags remain false:
+
+- `source_url_opened=false`
+- `media_files_created=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `rights_approved=false`
+- `ready_for_fetch=false`
+- `blocked_by_true_gate=false`
+
 ## `clip-ews01-episode-workspace-spine-v0-001`
 
 | Field | Value |

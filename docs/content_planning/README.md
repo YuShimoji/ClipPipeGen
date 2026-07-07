@@ -66,6 +66,11 @@ open the source; it only makes the next local skeleton initialization explicit
 and separates allowed local actions from deferred local actions and true
 external gates.
 
+EWS-02 reads a materialized local/temp episode workspace skeleton and emits a
+machine-readable readiness/status report. It is a read-only manifest consumer:
+it checks the expected skeleton files, source identity state, readiness level,
+and thin gate categories without opening the source or creating media.
+
 If you are reviewing as a human, open the CPD-12 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
@@ -92,6 +97,7 @@ production/public usable.
 | CPD-12 artifact_id | `clip-cpd12-minimal-review-console-v0-001` |
 | EWS-01 artifact_id | `clip-ews01-episode-workspace-spine-v0-001` |
 | EWS-01 contract artifact_id | `clip-ews01-thin-gate-contract-v0-001` |
+| EWS-02 artifact_id | `clip-ews02-episode-workspace-inspector-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
@@ -159,6 +165,12 @@ Explicit-target local workspace skeleton:
 
 ```powershell
 python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json
+```
+
+Inspect an explicit local workspace skeleton:
+
+```powershell
+python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
 ```
 
 Optional output location:
@@ -274,6 +286,10 @@ uvx python -m src.cli.main build-operator-cockpit `
   not open source URLs, fetch media, create source receipts from real sources,
   generate transcripts, render media, create thumbnails, approve rights, or
   publish.
+- EWS-02 workspace inspection is read-only. It consumes a materialized skeleton
+  and reports readiness/status JSON; it does not open source URLs, fetch media,
+  create transcripts, edit packs, renders, thumbnails, uploads, credentials, or
+  rights/public-use decisions.
 - `automation_contract.json` is the compact gate reference. It keeps local JSON
   generation, local CLI, tempdir/ignored skeletons, docs/readme pointers, and
   targeted tests in `allowed_local_actions`; source opening, fetch/download,
@@ -299,9 +315,11 @@ uvx python -m src.cli.main build-operator-cockpit `
    repeatable plan before any source/media lane opens.
 4. Use `init-episode-workspace` with a tempdir or explicit ignored target to
    inspect the empty skeleton contract without touching tracked `episodes/`.
-5. Fill `source_inspection_decisions.template.json` only after that review, then
+5. Run `inspect-episode-workspace` against that explicit skeleton to get
+   parseable readiness/status JSON for downstream local pipeline consumers.
+6. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
-6. Fill real source URLs for unresolved seed records in a local
+7. Fill real source URLs for unresolved seed records in a local
    `source_metadata_registry.json`, then rerun CPD-03 and CPD-04.
-7. Add a read-only public metadata adapter behind an explicit flag, keeping
+8. Add a read-only public metadata adapter behind an explicit flag, keeping
    fixture tests offline.

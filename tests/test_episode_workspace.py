@@ -10,6 +10,7 @@ import pytest
 from src.pipeline.episode_workspace import (
     EpisodeWorkspaceError,
     build_episode_workspace_plan,
+    inspect_episode_workspace,
     init_episode_workspace,
 )
 
@@ -258,3 +259,157 @@ def test_init_episode_workspace_refuses_existing_files_without_force(tmp_path: P
 
     with pytest.raises(EpisodeWorkspaceError, match="refusing to overwrite"):
         init_episode_workspace(plan_path=plan_path, target_root=target_root, materialize=True)
+
+
+def test_inspect_episode_workspace_reports_skeleton_status(tmp_path: Path):
+    plan_path = tmp_path / "episode_workspace_plan.json"
+    contract_path = tmp_path / "automation_contract.json"
+    build_episode_workspace_plan(
+        operator_cockpit_path=OPERATOR_COCKPIT,
+        output_path=plan_path,
+        contract_output_path=contract_path,
+        base_dir=REPO_ROOT,
+        generated_at="test-run",
+    )
+    target_root = tmp_path / "workspace_target"
+    init_result = init_episode_workspace(
+        plan_path=plan_path,
+        target_root=target_root,
+        materialize=True,
+        base_dir=REPO_ROOT,
+    )
+
+    result = inspect_episode_workspace(
+        workspace_path=Path(init_result["workspace_dir"]),
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    expected = {
+        "episode_manifest.json",
+        "README_NEXT.md",
+        "source_identity.pending.json",
+        "edit_plan_seed.json",
+        "thumbnail_brief_seed.json",
+    }
+    assert result["schema_id"] == "clippipegen.episode_workspace_inspection.v0"
+    assert result["artifact_id"] == "clip-ews02-episode-workspace-inspector-v0-001"
+    assert result["episode_id"] == "ep_seed_cpd01_bancho_marine_misunderstanding"
+    assert result["planned_slug"] == "ep_seed_cpd01_bancho_marine_misunderstanding"
+    assert result["manifest_state"] == "initialized"
+    assert result["source_identity_state"] == "pending"
+    assert result["source_url_state"] == "present"
+    assert result["fetch_authorized"] is False
+    assert set(result["skeleton_files_present"]) == expected
+    assert result["missing_files"] == []
+    assert result["files"]["unexpected_media_like"] == []
+    assert result["states"]["workspace_state"] == "skeleton_ready"
+    assert result["states"]["media_state"] == "not_present"
+    assert result["states"]["transcript_state"] == "not_present"
+    assert result["states"]["edit_pack_state"] == "seed_present"
+    assert result["states"]["render_state"] == "not_present"
+    assert result["readiness_level"] == "source_identity_pending"
+    assert result["readiness"]["skeleton_ready"] is True
+    assert result["readiness"]["ready_for_source_identity_decision"] is True
+    assert result["readiness"]["ready_for_fetch"] is False
+    assert result["readiness"]["blocked_by_true_gate"] is False
+    assert result["next_allowed_local_action"]["action_id"] == (
+        "record_source_identity_decision_local"
+    )
+    assert "source_url_opening" in result["deferred_local_actions"]
+    assert "public_upload_publication" in result["true_external_gates"]
+    assert result["thin_gate_contract"]["local_workspace_init_is_true_external_gate"] is False
+    assert result["side_effects"]["source_url_opened"] is False
+    assert result["side_effects"]["media_files_created"] is False
+    assert result["side_effects"]["transcript_generated"] is False
+    assert result["side_effects"]["render_generated"] is False
+    assert result["side_effects"]["thumbnail_generated"] is False
+    assert result["side_effects"]["rights_approved"] is False
+
+
+def test_inspect_episode_workspace_cli_emits_parseable_json(tmp_path: Path):
+    plan_path = tmp_path / "episode_workspace_plan.json"
+    contract_path = tmp_path / "automation_contract.json"
+    build_episode_workspace_plan(
+        operator_cockpit_path=OPERATOR_COCKPIT,
+        output_path=plan_path,
+        contract_output_path=contract_path,
+        base_dir=REPO_ROOT,
+        generated_at="test-run",
+    )
+    target_root = tmp_path / "workspace_target"
+    init_result = init_episode_workspace(
+        plan_path=plan_path,
+        target_root=target_root,
+        materialize=True,
+        base_dir=REPO_ROOT,
+    )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "inspect-episode-workspace",
+            "--workspace",
+            init_result["workspace_dir"],
+            "--plan",
+            str(plan_path),
+            "--contract",
+            str(contract_path),
+            "--format",
+            "json",
+        ],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    assert payload["artifact_id"] == "clip-ews02-episode-workspace-inspector-v0-001"
+    assert payload["episode_id"] == "ep_seed_cpd01_bancho_marine_misunderstanding"
+    assert payload["manifest_state"] == "initialized"
+    assert payload["source_identity_state"] == "pending"
+    assert payload["readiness_level"] == "source_identity_pending"
+    assert payload["readiness"]["skeleton_ready"] is True
+    assert payload["readiness"]["ready_for_fetch"] is False
+    assert payload["files"]["unexpected_media_like"] == []
+
+
+def test_inspect_episode_workspace_reports_missing_skeleton_files(tmp_path: Path):
+    plan_path = tmp_path / "episode_workspace_plan.json"
+    contract_path = tmp_path / "automation_contract.json"
+    build_episode_workspace_plan(
+        operator_cockpit_path=OPERATOR_COCKPIT,
+        output_path=plan_path,
+        contract_output_path=contract_path,
+        base_dir=REPO_ROOT,
+        generated_at="test-run",
+    )
+    target_root = tmp_path / "workspace_target"
+    init_result = init_episode_workspace(
+        plan_path=plan_path,
+        target_root=target_root,
+        materialize=True,
+        base_dir=REPO_ROOT,
+    )
+    workspace_dir = Path(init_result["workspace_dir"])
+    (workspace_dir / "thumbnail_brief_seed.json").unlink()
+
+    result = inspect_episode_workspace(
+        workspace_path=workspace_dir,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    assert result["missing_files"] == ["thumbnail_brief_seed.json"]
+    assert result["states"]["workspace_state"] == "planned_missing_files"
+    assert result["readiness_level"] == "planned"
+    assert result["readiness"]["skeleton_ready"] is False
+    assert result["next_allowed_local_action"]["action_id"] == (
+        "init_episode_workspace_explicit_target"
+    )

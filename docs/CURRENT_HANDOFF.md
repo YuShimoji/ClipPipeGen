@@ -3,11 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: episode_workspace_spine_ready
+health: episode_workspace_inspector_ready
 progress_pct: 100
 last_touched: 2026-07-07
-next_review_due: run_or_inspect_ews01_workspace_plan_then_choose_local_skeleton_or_source_identity_review
-active_artifact: clip-ews01-episode-workspace-spine-v0-001
+next_review_due: inspect_materialized_workspace_then_choose_source_decision_or_fetch_prep_slice
+active_artifact: clip-ews02-episode-workspace-inspector-v0-001
+latest_episode_workspace_inspector_artifact: clip-ews02-episode-workspace-inspector-v0-001
+latest_episode_workspace_inspector_branch: codex/ews-02-episode-workspace-inspector-v0
+latest_episode_workspace_inspector_commit: branch_head
 latest_episode_workspace_spine_artifact: clip-ews01-episode-workspace-spine-v0-001
 latest_episode_workspace_spine_branch: codex/ews-01-episode-workspace-spine-v0
 latest_episode_workspace_spine_commit: branch_head
@@ -29,40 +32,38 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch the remote EWS branch, then read the project context:
+Fetch the remote EWS inspector branch, then read the project context:
 
 ```powershell
 git fetch origin
-git switch codex/ews-01-episode-workspace-spine-v0
+git switch codex/ews-02-episode-workspace-inspector-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-ews01-episode-workspace-spine-v0-001`.
+`clip-ews02-episode-workspace-inspector-v0-001`.
 
-The durable state to carry forward is: EWS-01 turns the CPD-12 current Review
-item into a local episode workspace spine. The tracked outputs are
-`docs/content_planning/episode_workspace_plan.json` and
-`docs/content_planning/automation_contract.json`. The plan derives
-`episode_id=ep_seed_cpd01_bancho_marine_misunderstanding`,
-`planning_label=番長、船長を完全に勘違いする`,
-`label_provenance=planning_label_unverified`, `source_url_state=present`,
-`identity_state=unverified`, and `fetch_authorized=false` from
-`docs/content_planning/operator_cockpit.json`.
+The durable state to carry forward is: EWS-02 turns a materialized EWS-01
+workspace skeleton into a machine-readable local status unit. EWS-01 still
+writes `docs/content_planning/episode_workspace_plan.json` and
+`docs/content_planning/automation_contract.json`; EWS-02 reads an explicit
+workspace path and reports file presence, source identity state, readiness, and
+thin gate categories.
 
 The repeatable commands are:
 
 ```powershell
 python -m src.cli.main build-episode-workspace-plan --format json
 python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json
+python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
 ```
 
 The thin contract classifies local JSON generation, local CLI, tempdir or
@@ -73,13 +74,34 @@ upload/publication, OAuth/API keys/credentials, payment, rights/legal approval
 claims, destructive git, cross-repo edits, and irreversible source overwrite
 remain true external gates.
 
-Do not treat EWS-01 as source approval, fetch approval, production/public/
+Do not treat EWS-02 as source approval, fetch approval, production/public/
 rights/publishing/monetization approval, transcript/render creation, or media
-initialization. The CLI initializer requires an explicit target and creates
-empty skeleton files only. Keep tracked `episodes/` empty. CPD-12 remains
+initialization. The CLI inspector requires an explicit workspace path and reads
+status only. Keep tracked `episodes/` empty. CPD-12 remains
 available at `docs/content_planning/operator_cockpit.html` for human source
 identity review; it is no longer the active implementation target of this
 handoff.
+
+## Current EWS-02 Episode Workspace Inspector / Manifest Consumer v0
+
+EWS-02 checkpoint, 2026-07-07 JST:
+`clip-ews02-episode-workspace-inspector-v0-001` is the active tracked local
+workspace consumer. It reads a skeleton created by EWS-01 and emits readiness
+JSON. A complete tempdir skeleton reports `manifest_state=initialized`,
+`source_identity_state=pending`, `readiness_level=source_identity_pending`,
+`skeleton_ready=true`, `ready_for_source_identity_decision=true`, and
+`ready_for_fetch=false`.
+
+Inspector command:
+
+```powershell
+python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
+```
+
+The inspector does not create files unless an operator explicitly supplies
+`--output`, and that output is only a JSON status report. It does not open
+source URLs, fetch/download media, create transcripts, edit packs, renders,
+thumbnails, uploads, credentials, rights decisions, or public-ready claims.
 
 ## Current EWS-01 Episode Workspace Spine / Thin Gate Contract v0
 

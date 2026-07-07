@@ -19,9 +19,29 @@ CONTRACT_SCHEMA_ID = "clippipegen.automation_contract.v0"
 MANIFEST_SCHEMA_ID = "clippipegen.episode_workspace_manifest.v0"
 DEFAULT_ARTIFACT_ID = "clip-ews01-episode-workspace-spine-v0-001"
 DEFAULT_CONTRACT_ARTIFACT_ID = "clip-ews01-thin-gate-contract-v0-001"
+INSPECTOR_ARTIFACT_ID = "clip-ews02-episode-workspace-inspector-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-07"
 DEFAULT_PLAN_FILENAME = "episode_workspace_plan.json"
 DEFAULT_CONTRACT_FILENAME = "automation_contract.json"
+INSPECTION_SCHEMA_ID = "clippipegen.episode_workspace_inspection.v0"
+MEDIA_LIKE_EXTENSIONS = {
+    ".aac",
+    ".ass",
+    ".avi",
+    ".flac",
+    ".jpeg",
+    ".jpg",
+    ".m4a",
+    ".m4v",
+    ".mkv",
+    ".mov",
+    ".mp3",
+    ".mp4",
+    ".png",
+    ".srt",
+    ".wav",
+    ".webm",
+}
 
 
 class EpisodeWorkspaceError(ValueError):
@@ -265,6 +285,135 @@ def init_episode_workspace(
     }
 
 
+def inspect_episode_workspace(
+    *,
+    workspace_path: Path,
+    plan_path: Path,
+    contract_path: Path | None = None,
+    output_path: Path | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Inspect a materialized local episode workspace skeleton without side effects."""
+
+    base_dir = base_dir or Path.cwd()
+    plan = load_json_object(plan_path, "episode workspace plan")
+    if clean_string(plan.get("schema_id")) != PLAN_SCHEMA_ID:
+        raise EpisodeWorkspaceError("plan must be an EWS-01 episode workspace plan")
+    resolved_contract_path = resolve_contract_path(
+        plan=plan,
+        explicit_contract_path=contract_path,
+        plan_path=plan_path,
+    )
+    contract = load_json_object(resolved_contract_path, "automation contract")
+    if clean_string(contract.get("schema_id")) != CONTRACT_SCHEMA_ID:
+        raise EpisodeWorkspaceError("contract must be an EWS-01 automation contract")
+
+    workspace_root = workspace_path.resolve()
+    expected_files = expected_skeleton_files(plan)
+    present = [rel for rel in expected_files if (workspace_root / rel).is_file()]
+    missing = [rel for rel in expected_files if not (workspace_root / rel).is_file()]
+    unexpected_media_like = find_unexpected_media_like_files(workspace_root)
+
+    manifest_path = workspace_root / "episode_manifest.json"
+    source_identity_path = workspace_root / "source_identity.pending.json"
+    manifest = load_json_object(manifest_path, "episode manifest") if manifest_path.exists() else {}
+    source_identity = (
+        load_json_object(source_identity_path, "source identity") if source_identity_path.exists() else {}
+    )
+
+    episode_id = (
+        clean_string(manifest.get("episode_id"))
+        or clean_string(plan.get("episode_id"))
+        or clean_string(plan.get("planned_slug"))
+    )
+    manifest_state = derive_manifest_state(manifest)
+    source_identity_state = derive_source_identity_state(source_identity, plan)
+    skeleton_ready = not missing and not unexpected_media_like and bool(manifest)
+    ready_for_source_identity_decision = skeleton_ready and source_identity_state == "pending"
+    readiness_level = derive_readiness_level(
+        skeleton_ready=skeleton_ready,
+        source_identity_state=source_identity_state,
+        missing=missing,
+        unexpected_media_like=unexpected_media_like,
+    )
+    next_allowed_local_action = derive_next_allowed_local_action(
+        plan=plan,
+        skeleton_ready=skeleton_ready,
+        ready_for_source_identity_decision=ready_for_source_identity_decision,
+    )
+
+    result = {
+        "schema_id": INSPECTION_SCHEMA_ID,
+        "artifact_id": INSPECTOR_ARTIFACT_ID,
+        "workspace_id": episode_id,
+        "episode_id": episode_id,
+        "planned_slug": clean_string(plan.get("planned_slug")) or episode_id,
+        "workspace_path": str(workspace_root),
+        "workspace_root": str(workspace_root),
+        "input_plan_path": display_path(plan_path, base_dir),
+        "automation_contract_path": display_path(resolved_contract_path, base_dir),
+        "manifest_state": manifest_state,
+        "source_identity_state": source_identity_state,
+        "source_url_state": clean_string(plan.get("source_url_state")) or "unknown",
+        "fetch_authorized": bool(manifest.get("fetch_authorized")),
+        "skeleton_files_present": [path.as_posix() for path in present],
+        "missing_files": [path.as_posix() for path in missing],
+        "readiness_level": readiness_level,
+        "next_allowed_local_action": next_allowed_local_action,
+        "deferred_local_actions": contract_action_ids(contract, "deferred_local_actions"),
+        "true_external_gates": contract_action_ids(contract, "true_external_gates"),
+        "files": {
+            "present": [path.as_posix() for path in present],
+            "missing": [path.as_posix() for path in missing],
+            "unexpected_media_like": [display_path(path, workspace_root) for path in unexpected_media_like],
+        },
+        "states": {
+            "workspace_state": derive_workspace_state(
+                skeleton_ready=skeleton_ready,
+                missing=missing,
+                unexpected_media_like=unexpected_media_like,
+            ),
+            "manifest_state": manifest_state,
+            "source_identity_state": source_identity_state,
+            "source_url_state": clean_string(plan.get("source_url_state")) or "unknown",
+            "media_state": "unexpected_media_like_detected"
+            if unexpected_media_like
+            else "not_present",
+            "transcript_state": "not_present",
+            "edit_pack_state": "seed_present"
+            if (workspace_root / "edit_plan_seed.json").is_file()
+            else "missing",
+            "render_state": "not_present",
+        },
+        "readiness": {
+            "skeleton_ready": skeleton_ready,
+            "ready_for_source_identity_decision": ready_for_source_identity_decision,
+            "ready_for_fetch": False,
+            "blocked_by_true_gate": False,
+            "readiness_level": readiness_level,
+        },
+        "thin_gate_contract": {
+            "artifact_id": clean_string(contract.get("artifact_id")),
+            "local_workspace_init_is_true_external_gate": bool(
+                (contract.get("classification_readback") or {}).get(
+                    "local_episode_workspace_init_is_true_external_gate"
+                )
+            ),
+        },
+        "side_effects": {
+            "source_url_opened": False,
+            "media_files_created": False,
+            "transcript_generated": False,
+            "render_generated": False,
+            "thumbnail_generated": False,
+            "rights_approved": False,
+        },
+    }
+    if output_path is not None:
+        write_json(result, output_path)
+    return result
+
+
 def skeleton_file_payloads(*, plan: dict[str, Any], plan_path: Path) -> list[tuple[Path, str, Any]]:
     episode_id = clean_string(plan["episode_id"])
     common = {
@@ -368,6 +517,127 @@ def planned_paths(episode_id: str) -> dict[str, str]:
 
 def contract_rows(rows: list[tuple[str, str]]) -> list[dict[str, str]]:
     return [{"action_id": action_id, "description": description} for action_id, description in rows]
+
+
+def expected_skeleton_files(plan: dict[str, Any]) -> list[Path]:
+    skeleton = plan.get("skeleton") if isinstance(plan.get("skeleton"), dict) else {}
+    expected = skeleton.get("expected_files") if isinstance(skeleton, dict) else None
+    if not isinstance(expected, list) or not expected:
+        expected = [
+            "episode_manifest.json",
+            "README_NEXT.md",
+            "source_identity.pending.json",
+            "edit_plan_seed.json",
+            "thumbnail_brief_seed.json",
+        ]
+    return [Path(clean_string(item)) for item in expected if clean_string(item)]
+
+
+def resolve_contract_path(
+    *,
+    plan: dict[str, Any],
+    explicit_contract_path: Path | None,
+    plan_path: Path,
+) -> Path:
+    if explicit_contract_path is not None:
+        return explicit_contract_path
+    contract_ref = plan.get("automation_contract")
+    if isinstance(contract_ref, dict):
+        contract_path = clean_string(contract_ref.get("path"))
+        if contract_path:
+            return Path(contract_path)
+    return plan_path.parent / DEFAULT_CONTRACT_FILENAME
+
+
+def contract_action_ids(contract: dict[str, Any], key: str) -> list[str]:
+    rows = contract.get(key)
+    if not isinstance(rows, list):
+        return []
+    return [clean_string(item.get("action_id")) for item in rows if isinstance(item, dict)]
+
+
+def find_unexpected_media_like_files(workspace_root: Path) -> list[Path]:
+    if not workspace_root.exists():
+        return []
+    return [
+        path
+        for path in sorted(workspace_root.rglob("*"))
+        if path.is_file() and path.suffix.lower() in MEDIA_LIKE_EXTENSIONS
+    ]
+
+
+def derive_manifest_state(manifest: dict[str, Any]) -> str:
+    if not manifest:
+        return "missing"
+    return clean_string(manifest.get("local_workspace_state")) or "present"
+
+
+def derive_source_identity_state(source_identity: dict[str, Any], plan: dict[str, Any]) -> str:
+    if not source_identity:
+        return "missing"
+    review_status = clean_string(source_identity.get("review_status"))
+    if review_status:
+        return review_status
+    return clean_string(source_identity.get("identity_state")) or clean_string(plan.get("identity_state")) or "unknown"
+
+
+def derive_workspace_state(
+    *,
+    skeleton_ready: bool,
+    missing: list[Path],
+    unexpected_media_like: list[Path],
+) -> str:
+    if unexpected_media_like:
+        return "unexpected_media_like_detected"
+    if missing:
+        return "planned_missing_files"
+    if skeleton_ready:
+        return "skeleton_ready"
+    return "planned"
+
+
+def derive_readiness_level(
+    *,
+    skeleton_ready: bool,
+    source_identity_state: str,
+    missing: list[Path],
+    unexpected_media_like: list[Path],
+) -> str:
+    if unexpected_media_like:
+        return "planned"
+    if missing or not skeleton_ready:
+        return "planned"
+    if source_identity_state == "pending":
+        return "source_identity_pending"
+    return "skeleton_ready"
+
+
+def derive_next_allowed_local_action(
+    *,
+    plan: dict[str, Any],
+    skeleton_ready: bool,
+    ready_for_source_identity_decision: bool,
+) -> dict[str, Any]:
+    if ready_for_source_identity_decision:
+        return {
+            "action_id": "record_source_identity_decision_local",
+            "description": (
+                "Record a local OK/NG/HOLD source identity decision after human review; "
+                "the inspector itself does not open the source URL."
+            ),
+            "opens_source_url": False,
+            "fetches_media": False,
+            "writes_media": False,
+        }
+    if not skeleton_ready:
+        return dict(plan.get("next_allowed_local_action") or {})
+    return {
+        "action_id": "inspect_episode_workspace_again",
+        "description": "Re-run the local inspector after the next workspace-side record changes.",
+        "opens_source_url": False,
+        "fetches_media": False,
+        "writes_media": False,
+    }
 
 
 def load_json_object(path: Path, label: str) -> dict[str, Any]:
