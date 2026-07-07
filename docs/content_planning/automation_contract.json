@@ -22,6 +22,10 @@
       "description": "Materialize empty skeleton files under an explicit ignored local workspace target."
     },
     {
+      "action_id": "source_identity_decision_record",
+      "description": "Prepare and record local source identity decision JSON."
+    },
+    {
       "action_id": "docs_readme",
       "description": "Update compact docs/readme pointers to generated artifacts."
     },

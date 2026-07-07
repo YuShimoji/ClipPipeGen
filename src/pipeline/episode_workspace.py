@@ -20,10 +20,15 @@ MANIFEST_SCHEMA_ID = "clippipegen.episode_workspace_manifest.v0"
 DEFAULT_ARTIFACT_ID = "clip-ews01-episode-workspace-spine-v0-001"
 DEFAULT_CONTRACT_ARTIFACT_ID = "clip-ews01-thin-gate-contract-v0-001"
 INSPECTOR_ARTIFACT_ID = "clip-ews02-episode-workspace-inspector-v0-001"
+SOURCE_DECISION_ARTIFACT_ID = "clip-ews03-source-identity-decision-intake-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-07"
 DEFAULT_PLAN_FILENAME = "episode_workspace_plan.json"
 DEFAULT_CONTRACT_FILENAME = "automation_contract.json"
 INSPECTION_SCHEMA_ID = "clippipegen.episode_workspace_inspection.v0"
+SOURCE_DECISION_SCHEMA_ID = "clippipegen.source_identity_decision.v0"
+SOURCE_DECISION_TEMPLATE_FILENAME = "source_identity_decision.template.json"
+SOURCE_DECISION_RECORD_FILENAME = "source_identity.decision.json"
+ALLOWED_SOURCE_IDENTITY_DECISIONS = ("pending", "ok", "ng", "hold")
 MEDIA_LIKE_EXTENSIONS = {
     ".aac",
     ".ass",
@@ -184,6 +189,7 @@ def build_automation_contract_payload(*, generated_at: str, artifact_id: str) ->
         ("local_cli", "Run local CLI commands that read/write planning artifacts."),
         ("tempdir_skeleton", "Materialize empty skeleton files under an explicit tempdir target."),
         ("ignored_local_workspace_skeleton", "Materialize empty skeleton files under an explicit ignored local workspace target."),
+        ("source_identity_decision_record", "Prepare and record local source identity decision JSON."),
         ("docs_readme", "Update compact docs/readme pointers to generated artifacts."),
         ("targeted_tests", "Run targeted tests and JSON parse checks."),
     ]
@@ -414,6 +420,97 @@ def inspect_episode_workspace(
     return result
 
 
+def prepare_source_identity_decision(
+    *,
+    workspace_path: Path,
+    plan_path: Path,
+    contract_path: Path | None = None,
+    output_path: Path | None = None,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Create a pending local source identity decision template."""
+
+    base_dir = base_dir or Path.cwd()
+    inspection = inspect_episode_workspace(
+        workspace_path=workspace_path,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=base_dir,
+    )
+    ensure_workspace_ready_for_decision(inspection)
+    workspace_root = Path(inspection["workspace_root"])
+    output_path = output_path or workspace_root / SOURCE_DECISION_TEMPLATE_FILENAME
+    manifest = load_json_object(workspace_root / "episode_manifest.json", "episode manifest")
+    result = source_identity_decision_payload(
+        inspection=inspection,
+        manifest=manifest,
+        identity_decision="pending",
+        reviewer="",
+        reviewed_at=None,
+        notes="",
+        decision_source="template",
+        input_decision_path=None,
+        output_path=output_path,
+        base_dir=base_dir,
+    )
+    result["allowed_decisions"] = list(ALLOWED_SOURCE_IDENTITY_DECISIONS)
+    write_json(result, output_path)
+    return result
+
+
+def record_source_identity_decision(
+    *,
+    workspace_path: Path,
+    decision_path: Path,
+    plan_path: Path,
+    contract_path: Path | None = None,
+    output_path: Path | None = None,
+    force: bool = False,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Validate and record a local source identity decision file."""
+
+    base_dir = base_dir or Path.cwd()
+    inspection = inspect_episode_workspace(
+        workspace_path=workspace_path,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=base_dir,
+    )
+    ensure_workspace_ready_for_decision(inspection)
+    workspace_root = Path(inspection["workspace_root"])
+    output_path = output_path or workspace_root / SOURCE_DECISION_RECORD_FILENAME
+    if output_path.exists() and not force:
+        raise EpisodeWorkspaceError(f"refusing to overwrite existing decision record: {output_path}")
+
+    decision = load_json_object(decision_path, "source identity decision")
+    identity_decision = validate_identity_decision(decision)
+    reviewer = clean_string(decision.get("reviewer"))
+    notes = clean_string(decision.get("notes"))
+    if identity_decision == "ok" and not (reviewer or notes):
+        raise EpisodeWorkspaceError("ok decision requires reviewer or notes")
+    reviewed_at = decision.get("reviewed_at")
+    if reviewed_at is not None and not isinstance(reviewed_at, str):
+        raise EpisodeWorkspaceError("reviewed_at must be a string or null")
+
+    manifest = load_json_object(workspace_root / "episode_manifest.json", "episode manifest")
+    result = source_identity_decision_payload(
+        inspection=inspection,
+        manifest=manifest,
+        identity_decision=identity_decision,
+        reviewer=reviewer,
+        reviewed_at=reviewed_at,
+        notes=notes,
+        decision_source="human_input_file",
+        input_decision_path=decision_path,
+        output_path=output_path,
+        base_dir=base_dir,
+    )
+    result["input_decision_source"] = clean_string(decision.get("decision_source")) or "unknown"
+    write_json(result, output_path)
+    return result
+
+
 def skeleton_file_payloads(*, plan: dict[str, Any], plan_path: Path) -> list[tuple[Path, str, Any]]:
     episode_id = clean_string(plan["episode_id"])
     common = {
@@ -620,10 +717,14 @@ def derive_next_allowed_local_action(
 ) -> dict[str, Any]:
     if ready_for_source_identity_decision:
         return {
-            "action_id": "record_source_identity_decision_local",
+            "action_id": "prepare_source_identity_decision_template",
+            "command": (
+                "python -m src.cli.main prepare-source-identity-decision "
+                "--workspace <workspace> --format json"
+            ),
             "description": (
-                "Record a local OK/NG/HOLD source identity decision after human review; "
-                "the inspector itself does not open the source URL."
+                "Create a pending local decision template before recording any "
+                "human OK/NG/HOLD input."
             ),
             "opens_source_url": False,
             "fetches_media": False,
@@ -640,9 +741,78 @@ def derive_next_allowed_local_action(
     }
 
 
+def ensure_workspace_ready_for_decision(inspection: dict[str, Any]) -> None:
+    readiness = inspection.get("readiness") if isinstance(inspection.get("readiness"), dict) else {}
+    if not readiness.get("skeleton_ready"):
+        raise EpisodeWorkspaceError("workspace skeleton is not ready for source decision intake")
+    if inspection.get("source_identity_state") != "pending":
+        raise EpisodeWorkspaceError("source identity state must be pending for decision intake")
+
+
+def validate_identity_decision(decision: dict[str, Any]) -> str:
+    identity_decision = clean_string(decision.get("identity_decision")).lower()
+    if identity_decision not in ALLOWED_SOURCE_IDENTITY_DECISIONS:
+        allowed = ", ".join(ALLOWED_SOURCE_IDENTITY_DECISIONS)
+        raise EpisodeWorkspaceError(f"identity_decision must be one of: {allowed}")
+    return identity_decision
+
+
+def source_identity_decision_payload(
+    *,
+    inspection: dict[str, Any],
+    manifest: dict[str, Any],
+    identity_decision: str,
+    reviewer: str,
+    reviewed_at: Any,
+    notes: str,
+    decision_source: str,
+    input_decision_path: Path | None,
+    output_path: Path,
+    base_dir: Path,
+) -> dict[str, Any]:
+    allows_fetch_prep = identity_decision == "ok"
+    payload = {
+        "schema_id": SOURCE_DECISION_SCHEMA_ID,
+        "schema_version": "v0",
+        "artifact_id": SOURCE_DECISION_ARTIFACT_ID,
+        "workspace_id": clean_string(inspection.get("workspace_id")),
+        "episode_id": clean_string(inspection.get("episode_id")),
+        "workspace_path": clean_string(inspection.get("workspace_path")),
+        "decision_record_path": display_path(output_path, base_dir),
+        "planning_label": clean_string(manifest.get("planning_label")),
+        "label_provenance": clean_string(manifest.get("label_provenance")),
+        "source_url": clean_string(manifest.get("source_url")),
+        "source_url_state": clean_string(inspection.get("source_url_state")),
+        "identity_decision": identity_decision,
+        "reviewer": reviewer,
+        "reviewed_at": reviewed_at,
+        "notes": notes,
+        "allows_fetch_prep": allows_fetch_prep,
+        "fetch_authorized": False,
+        "rights_approved": False,
+        "public_ready": False,
+        "decision_source": decision_source,
+        "inspection_artifact_id": clean_string(inspection.get("artifact_id")),
+        "readiness_level": clean_string(inspection.get("readiness_level")),
+        "deferred_local_actions": list(inspection.get("deferred_local_actions") or []),
+        "true_external_gates": list(inspection.get("true_external_gates") or []),
+        "side_effects": {
+            "source_url_opened": False,
+            "media_files_created": False,
+            "transcript_generated": False,
+            "render_generated": False,
+            "thumbnail_generated": False,
+            "rights_approved": False,
+        },
+    }
+    if input_decision_path is not None:
+        payload["input_decision_path"] = display_path(input_decision_path, base_dir)
+    return payload
+
+
 def load_json_object(path: Path, label: str) -> dict[str, Any]:
     try:
-        with path.open("r", encoding="utf-8") as handle:
+        with path.open("r", encoding="utf-8-sig") as handle:
             payload = json.load(handle)
     except OSError as exc:
         raise EpisodeWorkspaceError(f"{label} JSON is not readable: {path}") from exc

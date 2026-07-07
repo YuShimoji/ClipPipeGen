@@ -71,6 +71,11 @@ machine-readable readiness/status report. It is a read-only manifest consumer:
 it checks the expected skeleton files, source identity state, readiness level,
 and thin gate categories without opening the source or creating media.
 
+EWS-03 creates the local source identity decision intake. It prepares a pending
+decision template and records a human-provided `pending` / `ok` / `ng` / `hold`
+decision into the explicit workspace without opening the source, authorizing
+fetch, or approving rights/public use.
+
 If you are reviewing as a human, open the CPD-12 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
@@ -98,6 +103,7 @@ production/public usable.
 | EWS-01 artifact_id | `clip-ews01-episode-workspace-spine-v0-001` |
 | EWS-01 contract artifact_id | `clip-ews01-thin-gate-contract-v0-001` |
 | EWS-02 artifact_id | `clip-ews02-episode-workspace-inspector-v0-001` |
+| EWS-03 artifact_id | `clip-ews03-source-identity-decision-intake-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
@@ -171,6 +177,13 @@ Inspect an explicit local workspace skeleton:
 
 ```powershell
 python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
+```
+
+Prepare and record a local source identity decision:
+
+```powershell
+python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json
+python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision <decision.json> --format json
 ```
 
 Optional output location:
@@ -290,10 +303,15 @@ uvx python -m src.cli.main build-operator-cockpit `
   and reports readiness/status JSON; it does not open source URLs, fetch media,
   create transcripts, edit packs, renders, thumbnails, uploads, credentials, or
   rights/public-use decisions.
+- EWS-03 source identity decision intake is local JSON only. The template always
+  starts with `identity_decision=pending`; the record command accepts only
+  `pending`, `ok`, `ng`, or `hold`, and `ok` allows future fetch-prep planning
+  only while keeping `fetch_authorized=false`, `rights_approved=false`, and
+  `public_ready=false`.
 - `automation_contract.json` is the compact gate reference. It keeps local JSON
-  generation, local CLI, tempdir/ignored skeletons, docs/readme pointers, and
-  targeted tests in `allowed_local_actions`; source opening, fetch/download,
-  transcript, render, thumbnail proof, and media processing remain
+  generation, local CLI, tempdir/ignored skeletons, local decision records,
+  docs/readme pointers, and targeted tests in `allowed_local_actions`; source
+  opening, fetch/download, transcript, render, thumbnail proof, and media processing remain
   `deferred_local_actions`; public upload, credentials, payment, rights/legal
   claims, destructive git, cross-repo edits, and irreversible source overwrite
   remain `true_external_gates`.
@@ -317,9 +335,12 @@ uvx python -m src.cli.main build-operator-cockpit `
    inspect the empty skeleton contract without touching tracked `episodes/`.
 5. Run `inspect-episode-workspace` against that explicit skeleton to get
    parseable readiness/status JSON for downstream local pipeline consumers.
-6. Fill `source_inspection_decisions.template.json` only after that review, then
+6. Run `prepare-source-identity-decision`, then record a human-provided
+   `pending` / `ok` / `ng` / `hold` decision JSON with
+   `record-source-identity-decision`.
+7. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
-7. Fill real source URLs for unresolved seed records in a local
+8. Fill real source URLs for unresolved seed records in a local
    `source_metadata_registry.json`, then rerun CPD-03 and CPD-04.
-8. Add a read-only public metadata adapter behind an explicit flag, keeping
+9. Add a read-only public metadata adapter behind an explicit flag, keeping
    fixture tests offline.

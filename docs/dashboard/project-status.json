@@ -1670,6 +1670,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-ews03-source-identity-decision-intake-v0-001",
+      "title": "EWS-03 Source Identity Decision Intake / Local Decision Record v0",
+      "purpose": "Create a pending local source identity decision template and validate/write a human-provided pending / ok / ng / hold decision record into an explicit workspace.",
+      "storage_class": "Code-backed local JSON artifact; consumes an inspected workspace and a local decision file. No source URL opening, fetch authorization, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created.",
+      "repo_relative_path": "src/pipeline/episode_workspace.py",
+      "open_command": "python -m src.cli.main prepare-source-identity-decision --workspace workspace --format json",
+      "review_status": "Ready as the local source identity decision intake. Generated templates default to identity_decision=pending; records reject unknown values; ok requires reviewer or notes; allows_fetch_prep=true only for ok, while fetch_authorized=false, rights_approved=false, and public_ready=false always remain.",
+      "next_action": "Use the decision record as the input to a later fetch-prep planning slice. Do not fetch media or open source/public/rights gates from this record."
+    },
+    {
       "artifact_id": "clip-ews02-episode-workspace-inspector-v0-001",
       "title": "EWS-02 Episode Workspace Inspector / Manifest Consumer v0",
       "purpose": "Read a materialized local/temp EWS-01 workspace skeleton and emit machine-readable readiness/status JSON for downstream local pipeline consumers.",
@@ -2272,6 +2282,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-ews03-source-identity-decision-intake-v0-001",
       "clip-ews02-episode-workspace-inspector-v0-001",
       "clip-ews01-episode-workspace-spine-v0-001",
       "clip-cpd12-minimal-review-console-v0-001",
@@ -2333,10 +2344,10 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 60
+    "artifact_count": 61
   },
   "artifact_coverage": {
-    "registered_artifact_count": 60,
+    "registered_artifact_count": 61,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
@@ -2603,7 +2614,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1379,
+      "line_count": 1382,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2611,7 +2622,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 320,
+      "boundary_term_count": 321,
       "status": "reference"
     },
     {
@@ -2734,7 +2745,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1955,
+      "line_count": 1983,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2742,7 +2753,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 799,
+      "boundary_term_count": 803,
       "status": "reference"
     },
     {
@@ -2804,7 +2815,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1143,
+      "line_count": 1168,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2812,7 +2823,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 281,
+      "boundary_term_count": 283,
       "status": "reference"
     },
     {
@@ -3157,7 +3168,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1379 lines) is likely carrying history.",
+        "detail": "Long active doc (1382 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3187,13 +3198,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1955 lines) is likely carrying history.",
+        "detail": "Long active doc (1983 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 799 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 803 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3217,7 +3228,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1143 lines) is likely carrying history.",
+        "detail": "Long active doc (1168 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

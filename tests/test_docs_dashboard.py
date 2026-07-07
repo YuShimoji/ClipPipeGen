@@ -171,7 +171,8 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_ews_artifact = "clip-ews02-episode-workspace-inspector-v0-001"
+    current_ews_artifact = "clip-ews03-source-identity-decision-intake-v0-001"
+    current_ews_inspector_artifact = "clip-ews02-episode-workspace-inspector-v0-001"
     current_ews_spine_artifact = "clip-ews01-episode-workspace-spine-v0-001"
     current_cpd_artifact = "clip-cpd12-minimal-review-console-v0-001"
     active_artifact = (
@@ -239,7 +240,11 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
             assert f"active_artifact: {current_ews_artifact}" in text
             assert (
-                f"latest_episode_workspace_inspector_artifact: {current_ews_artifact}"
+                f"latest_source_identity_decision_intake_artifact: {current_ews_artifact}"
+                in text
+            )
+            assert (
+                f"latest_episode_workspace_inspector_artifact: {current_ews_inspector_artifact}"
                 in text
             )
             assert (

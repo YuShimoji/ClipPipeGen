@@ -16,6 +16,34 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-ews03-source-identity-decision-intake-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-03 Source Identity Decision Intake / Local Decision Record v0 |
+| purpose | Create a pending local source identity decision template and validate/write a human-provided `pending` / `ok` / `ng` / `hold` decision record into an explicit workspace. |
+| storage class | Code-backed local JSON artifact; consumes an inspected workspace and a local decision file. No source URL opening, fetch authorization, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created. |
+| repo_relative_path | `src/pipeline/episode_workspace.py` |
+| machine_output | `source_identity_decision.template.json` and `source_identity.decision.json` inside an explicit local/temp workspace. |
+| source_inputs | explicit materialized workspace path; `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; local decision JSON for recording |
+| open_command | `python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json` |
+| prepare_command | `python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json` |
+| record_command | `python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision <decision.json> --format json` |
+| validation_command | `python -m pytest -q tests/test_episode_workspace.py` plus tempdir init/inspect/prepare/record smoke and JSON parse checks. |
+| review_status | Ready as the local source identity decision intake. Generated templates default to `identity_decision=pending`; records reject unknown values; `ok` requires reviewer or notes; `allows_fetch_prep=true` only for `ok`, while `fetch_authorized=false`, `rights_approved=false`, and `public_ready=false` always remain. |
+| next_action | Use the decision record as the input to a later fetch-prep planning slice. Do not fetch media or open source/public/rights gates from this record. |
+
+Decision intake boundary flags remain false:
+
+- `source_url_opened=false`
+- `fetch_authorized=false`
+- `media_files_created=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `rights_approved=false`
+- `public_ready=false`
+
 ## `clip-ews02-episode-workspace-inspector-v0-001`
 
 | Field | Value |
@@ -62,7 +90,7 @@ Inspector boundary flags remain false:
 
 Thin contract categories:
 
-- `allowed_local_actions`: JSON generation, local CLI, explicit tempdir skeletons, explicit ignored local skeletons, docs/readme pointers, and targeted tests.
+- `allowed_local_actions`: JSON generation, local CLI, explicit tempdir skeletons, explicit ignored local skeletons, local source identity decision records, docs/readme pointers, and targeted tests.
 - `deferred_local_actions`: source URL opening, source fetch/download, transcript, render, thumbnail proof, and local media processing.
 - `true_external_gates`: public upload/publication, OAuth/API keys/credentials, payment, legal/rights approval claims, destructive git, cross-repo edits, and irreversible source overwrite.
 

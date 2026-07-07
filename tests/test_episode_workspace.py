@@ -12,11 +12,33 @@ from src.pipeline.episode_workspace import (
     build_episode_workspace_plan,
     inspect_episode_workspace,
     init_episode_workspace,
+    prepare_source_identity_decision,
+    record_source_identity_decision,
 )
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 OPERATOR_COCKPIT = REPO_ROOT / "docs" / "content_planning" / "operator_cockpit.json"
+
+
+def materialize_test_workspace(tmp_path: Path) -> tuple[Path, Path, Path]:
+    plan_path = tmp_path / "episode_workspace_plan.json"
+    contract_path = tmp_path / "automation_contract.json"
+    build_episode_workspace_plan(
+        operator_cockpit_path=OPERATOR_COCKPIT,
+        output_path=plan_path,
+        contract_output_path=contract_path,
+        base_dir=REPO_ROOT,
+        generated_at="test-run",
+    )
+    target_root = tmp_path / "workspace_target"
+    init_result = init_episode_workspace(
+        plan_path=plan_path,
+        target_root=target_root,
+        materialize=True,
+        base_dir=REPO_ROOT,
+    )
+    return plan_path, contract_path, Path(init_result["workspace_dir"])
 
 
 def test_episode_workspace_plan_writes_contract_and_plan(tmp_path: Path):
@@ -315,7 +337,7 @@ def test_inspect_episode_workspace_reports_skeleton_status(tmp_path: Path):
     assert result["readiness"]["ready_for_fetch"] is False
     assert result["readiness"]["blocked_by_true_gate"] is False
     assert result["next_allowed_local_action"]["action_id"] == (
-        "record_source_identity_decision_local"
+        "prepare_source_identity_decision_template"
     )
     assert "source_url_opening" in result["deferred_local_actions"]
     assert "public_upload_publication" in result["true_external_gates"]
@@ -413,3 +435,151 @@ def test_inspect_episode_workspace_reports_missing_skeleton_files(tmp_path: Path
     assert result["next_allowed_local_action"]["action_id"] == (
         "init_episode_workspace_explicit_target"
     )
+
+
+def test_prepare_source_identity_decision_writes_pending_template(tmp_path: Path):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+
+    result = prepare_source_identity_decision(
+        workspace_path=workspace_dir,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    template_path = workspace_dir / "source_identity_decision.template.json"
+    assert template_path.exists()
+    template = json.loads(template_path.read_text(encoding="utf-8"))
+    assert result["schema_id"] == "clippipegen.source_identity_decision.v0"
+    assert result["artifact_id"] == "clip-ews03-source-identity-decision-intake-v0-001"
+    assert result["identity_decision"] == "pending"
+    assert result["decision_source"] == "template"
+    assert result["allowed_decisions"] == ["pending", "ok", "ng", "hold"]
+    assert result["allows_fetch_prep"] is False
+    assert result["fetch_authorized"] is False
+    assert result["rights_approved"] is False
+    assert result["public_ready"] is False
+    assert template["identity_decision"] == "pending"
+    assert template["side_effects"]["source_url_opened"] is False
+
+
+def test_record_source_identity_decision_writes_hold_record(tmp_path: Path):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = tmp_path / "hold_decision.json"
+    decision_path.write_text(
+        json.dumps(
+            {
+                "identity_decision": "hold",
+                "reviewer": "local-reviewer",
+                "reviewed_at": None,
+                "notes": "Needs later human source identity review.",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    result = record_source_identity_decision(
+        workspace_path=workspace_dir,
+        decision_path=decision_path,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    record_path = workspace_dir / "source_identity.decision.json"
+    assert record_path.exists()
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    assert result["identity_decision"] == "hold"
+    assert result["decision_source"] == "human_input_file"
+    assert result["allows_fetch_prep"] is False
+    assert result["fetch_authorized"] is False
+    assert result["rights_approved"] is False
+    assert result["public_ready"] is False
+    assert record["identity_decision"] == "hold"
+    assert record["input_decision_path"].endswith("hold_decision.json")
+    assert record["side_effects"]["media_files_created"] is False
+
+
+def test_record_source_identity_decision_cli_accepts_ok_with_reviewer(tmp_path: Path):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = tmp_path / "ok_decision.json"
+    decision_path.write_text(
+        json.dumps(
+            {
+                "identity_decision": "ok",
+                "reviewer": "local-reviewer",
+                "reviewed_at": "2026-07-07",
+                "notes": "",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "record-source-identity-decision",
+            "--workspace",
+            str(workspace_dir),
+            "--decision",
+            str(decision_path),
+            "--plan",
+            str(plan_path),
+            "--contract",
+            str(contract_path),
+            "--format",
+            "json",
+        ],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    assert payload["identity_decision"] == "ok"
+    assert payload["allows_fetch_prep"] is True
+    assert payload["fetch_authorized"] is False
+    assert payload["rights_approved"] is False
+    assert payload["public_ready"] is False
+
+
+def test_record_source_identity_decision_rejects_unknown_decision(tmp_path: Path):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = tmp_path / "bad_decision.json"
+    decision_path.write_text(
+        json.dumps({"identity_decision": "maybe"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(EpisodeWorkspaceError, match="identity_decision must be one of"):
+        record_source_identity_decision(
+            workspace_path=workspace_dir,
+            decision_path=decision_path,
+            plan_path=plan_path,
+            contract_path=contract_path,
+            base_dir=REPO_ROOT,
+        )
+
+
+def test_record_source_identity_decision_ok_requires_reviewer_or_notes(tmp_path: Path):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = tmp_path / "ok_decision_without_context.json"
+    decision_path.write_text(
+        json.dumps({"identity_decision": "ok", "reviewer": "", "notes": ""}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(EpisodeWorkspaceError, match="ok decision requires"):
+        record_source_identity_decision(
+            workspace_path=workspace_dir,
+            decision_path=decision_path,
+            plan_path=plan_path,
+            contract_path=contract_path,
+            base_dir=REPO_ROOT,
+        )
