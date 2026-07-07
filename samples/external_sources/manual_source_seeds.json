@@ -1,0 +1,37 @@
+{
+  "schema_id": "clippipegen.manual_source_seeds.v0",
+  "schema_version": "v0",
+  "source": {
+    "mode": "manual_fixture",
+    "network_used": false,
+    "readback": "Local manual seeds for HUB-01 parser tests; not human-verified source matches."
+  },
+  "seeds": [
+    {
+      "source_candidate_id": "hub_manual_jp_en_phrase_gap_seed",
+      "source_url": "",
+      "title": "JP/EN phrase gap source candidate seed",
+      "channel_or_feed": "manual intake",
+      "published_at": "",
+      "description": "Placeholder for a future human-supplied source URL for JP/EN phrase-gap moments. Not a verified match.",
+      "tags": ["jp_en_phrase_gap", "source_missing_idea"],
+      "language_hint": "ja/en",
+      "source_confidence": "low_manual_seed",
+      "candidate_state": "needs_review",
+      "notes": "Requires a real source URL and human source identity review before CPD/EWS mapping."
+    },
+    {
+      "source_candidate_id": "hub_manual_reaction_face_chain_seed",
+      "source_url": "https://example.invalid/reaction-face-chain-source-candidate",
+      "title": "Reaction face chain source candidate seed",
+      "channel_or_feed": "manual intake",
+      "published_at": "",
+      "description": "Manual sample with a placeholder URL for normalization coverage only.",
+      "tags": ["reaction", "thumbnail_candidate", "sample-metadata"],
+      "language_hint": "ja",
+      "source_confidence": "medium_manual_seed",
+      "candidate_state": "source_candidate",
+      "notes": "Placeholder metadata; not approved for fetch, rights, production, or public use."
+    }
+  ]
+}

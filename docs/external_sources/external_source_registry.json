@@ -1,0 +1,136 @@
+{
+  "schema_id": "clippipegen.external_source_registry.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-hub01-external-source-registry-v0-001",
+  "generated_at": "2026-07-08",
+  "source": {
+    "rss_fixture": "samples/external_sources/rss_fixture.xml",
+    "manual_source_seeds": "samples/external_sources/manual_source_seeds.json",
+    "network_required": false,
+    "network_used": false,
+    "parser": "python_stdlib_xml_etree"
+  },
+  "summary": {
+    "record_count": 4,
+    "rss_item_count": 2,
+    "manual_seed_count": 2,
+    "source_candidate_count": 3,
+    "needs_review_count": 1,
+    "rejected_count": 0,
+    "hold_count": 0,
+    "network_used_count": 0,
+    "media_downloaded_count": 0,
+    "rights_approved_count": 0,
+    "public_ready_count": 0
+  },
+  "gate_readback": {
+    "network_required": false,
+    "network_used": false,
+    "external_api_used": false,
+    "source_urls_opened": false,
+    "media_downloaded": false,
+    "transcript_generated": false,
+    "render_generated": false,
+    "thumbnail_generated": false,
+    "upload_created": false,
+    "oauth_or_credentials_used": false,
+    "rights_approved": false,
+    "public_ready": false,
+    "production_ready": false
+  },
+  "external_source_records": [
+    {
+      "source_candidate_id": "hub01_rss_hololive_sample_animation",
+      "source_kind": "rss_item",
+      "source_url": "https://example.invalid/hololive-sample-animation-source",
+      "title": "Sample hololive animation metadata item",
+      "channel_or_feed": "HUB-01 Local Fixture Feed",
+      "published_at": "Tue, 07 Jul 2026 10:00:00 +0900",
+      "description": "Fixture metadata only. This is not a verified clipping target and does not authorize fetch, rights, production, or public use.",
+      "tags": [
+        "hololive",
+        "sample-metadata"
+      ],
+      "language_hint": "ja",
+      "source_confidence": "fixture_metadata_unverified",
+      "candidate_state": "source_candidate",
+      "provenance": "fixture",
+      "network_used": false,
+      "media_downloaded": false,
+      "rights_approved": false,
+      "public_ready": false,
+      "next_local_action": "operator_source_review_required",
+      "generated_at": "2026-07-08"
+    },
+    {
+      "source_candidate_id": "hub01_rss_short_comedy_stream_moment",
+      "source_kind": "rss_item",
+      "source_url": "https://example.invalid/short-comedy-stream-moment",
+      "title": "Sample short comedy stream moment candidate",
+      "channel_or_feed": "HUB-01 Local Fixture Feed",
+      "published_at": "Tue, 07 Jul 2026 11:30:00 +0900",
+      "description": "Offline RSS item for parser coverage and source review queue shaping.",
+      "tags": [
+        "comedy",
+        "needs-review"
+      ],
+      "language_hint": "ja",
+      "source_confidence": "fixture_metadata_unverified",
+      "candidate_state": "source_candidate",
+      "provenance": "fixture",
+      "network_used": false,
+      "media_downloaded": false,
+      "rights_approved": false,
+      "public_ready": false,
+      "next_local_action": "operator_source_review_required",
+      "generated_at": "2026-07-08"
+    },
+    {
+      "source_candidate_id": "hub_manual_jp_en_phrase_gap_seed",
+      "source_kind": "manual_seed",
+      "source_url": "",
+      "title": "JP/EN phrase gap source candidate seed",
+      "channel_or_feed": "manual intake",
+      "published_at": "",
+      "description": "Placeholder for a future human-supplied source URL for JP/EN phrase-gap moments. Not a verified match.",
+      "tags": [
+        "jp_en_phrase_gap",
+        "source_missing_idea"
+      ],
+      "language_hint": "ja/en",
+      "source_confidence": "low_manual_seed",
+      "candidate_state": "needs_review",
+      "provenance": "manual_seed",
+      "network_used": false,
+      "media_downloaded": false,
+      "rights_approved": false,
+      "public_ready": false,
+      "next_local_action": "operator_source_review_required",
+      "generated_at": "2026-07-08"
+    },
+    {
+      "source_candidate_id": "hub_manual_reaction_face_chain_seed",
+      "source_kind": "manual_seed",
+      "source_url": "https://example.invalid/reaction-face-chain-source-candidate",
+      "title": "Reaction face chain source candidate seed",
+      "channel_or_feed": "manual intake",
+      "published_at": "",
+      "description": "Manual sample with a placeholder URL for normalization coverage only.",
+      "tags": [
+        "reaction",
+        "sample-metadata",
+        "thumbnail_candidate"
+      ],
+      "language_hint": "ja",
+      "source_confidence": "medium_manual_seed",
+      "candidate_state": "source_candidate",
+      "provenance": "manual_seed",
+      "network_used": false,
+      "media_downloaded": false,
+      "rights_approved": false,
+      "public_ready": false,
+      "next_local_action": "operator_source_review_required",
+      "generated_at": "2026-07-08"
+    }
+  ]
+}

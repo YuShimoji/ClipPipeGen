@@ -35,6 +35,7 @@ Subcommands:
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-docs-dashboard    Docs v1.5: wiki/dashboard status and doc-health findings.
+    build-external-source-registry HUB-01: local RSS/manual fixtures -> source registry.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -63,6 +64,7 @@ from . import (
     build_cut_review_packet,
     build_episode_review_bundle,
     build_episode_init_plan,
+    build_external_source_registry,
     build_operator_cockpit,
     build_source_inspection_packet,
     build_episode_seed_drafts,
@@ -127,6 +129,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
     "build-docs-dashboard": build_docs_dashboard.run,
+    "build-external-source-registry": build_external_source_registry.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>HUB-01 Local Fixture Feed</title>
+    <link>https://example.invalid/hub-01-local-fixture</link>
+    <description>Offline-only source candidate fixture for ClipPipeGen tests.</description>
+    <language>ja</language>
+    <item>
+      <title>Sample hololive animation metadata item</title>
+      <link>https://example.invalid/hololive-sample-animation-source</link>
+      <guid>hub01-rss-hololive-sample-animation</guid>
+      <pubDate>Tue, 07 Jul 2026 10:00:00 +0900</pubDate>
+      <description>Fixture metadata only. This is not a verified clipping target and does not authorize fetch, rights, production, or public use.</description>
+      <category>hololive</category>
+      <category>sample-metadata</category>
+    </item>
+    <item>
+      <title>Sample short comedy stream moment candidate</title>
+      <link>https://example.invalid/short-comedy-stream-moment</link>
+      <guid>hub01-rss-short-comedy-stream-moment</guid>
+      <pubDate>Tue, 07 Jul 2026 11:30:00 +0900</pubDate>
+      <description>Offline RSS item for parser coverage and source review queue shaping.</description>
+      <category>comedy</category>
+      <category>needs-review</category>
+    </item>
+  </channel>
+</rss>
