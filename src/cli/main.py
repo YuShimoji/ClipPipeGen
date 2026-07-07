@@ -37,6 +37,7 @@ Subcommands:
     inspect-episode-workspace EWS-02: read explicit workspace skeleton status.
     prepare-source-identity-decision EWS-03: create pending local decision template.
     record-source-identity-decision EWS-03: validate/write local decision record.
+    plan-source-fetch-prep EWS-04: decision-gated local source fetch-prep plan.
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-docs-dashboard    Docs v1.5: wiki/dashboard status and doc-health findings.
@@ -91,6 +92,7 @@ from . import (
     inspect_episode_workspace,
     measure_subtitle_width,
     patch_thumbnail,
+    plan_source_fetch_prep,
     prepare_source_identity_decision,
     register_material,
     render_tiny_proof,
@@ -139,6 +141,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "inspect-episode-workspace": inspect_episode_workspace.run,
     "prepare-source-identity-decision": prepare_source_identity_decision.run,
     "record-source-identity-decision": record_source_identity_decision.run,
+    "plan-source-fetch-prep": plan_source_fetch_prep.run,
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
     "build-docs-dashboard": build_docs_dashboard.run,

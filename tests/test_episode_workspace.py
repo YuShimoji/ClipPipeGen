@@ -12,6 +12,7 @@ from src.pipeline.episode_workspace import (
     build_episode_workspace_plan,
     inspect_episode_workspace,
     init_episode_workspace,
+    plan_source_fetch_prep,
     prepare_source_identity_decision,
     record_source_identity_decision,
 )
@@ -39,6 +40,28 @@ def materialize_test_workspace(tmp_path: Path) -> tuple[Path, Path, Path]:
         base_dir=REPO_ROOT,
     )
     return plan_path, contract_path, Path(init_result["workspace_dir"])
+
+
+def write_decision_fixture(
+    path: Path,
+    *,
+    identity_decision: str,
+    reviewer: str = "local-reviewer",
+    notes: str = "Fixture-only source identity decision.",
+) -> Path:
+    path.write_text(
+        json.dumps(
+            {
+                "identity_decision": identity_decision,
+                "reviewer": reviewer,
+                "reviewed_at": "2026-07-08",
+                "notes": notes,
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    return path
 
 
 def test_episode_workspace_plan_writes_contract_and_plan(tmp_path: Path):
@@ -547,6 +570,173 @@ def test_record_source_identity_decision_cli_accepts_ok_with_reviewer(tmp_path: 
     assert payload["fetch_authorized"] is False
     assert payload["rights_approved"] is False
     assert payload["public_ready"] is False
+
+
+def test_plan_source_fetch_prep_blocks_without_decision_record(tmp_path: Path):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+
+    result = plan_source_fetch_prep(
+        workspace_path=workspace_dir,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    output_path = workspace_dir / "source_fetch_prep_plan.json"
+    assert output_path.exists()
+    assert result["schema_id"] == "clippipegen.source_fetch_prep_plan.v0"
+    assert result["artifact_id"] == "clip-ews04-source-fetch-prep-planner-v0-001"
+    assert result["identity_decision"] == "missing"
+    assert result["allows_fetch_prep"] is False
+    assert result["prep_state"] == "blocked"
+    assert result["blocked_reason"] == "source_identity_decision_missing"
+    assert result["fetch_authorized"] is False
+    assert result["media_downloaded"] is False
+    assert result["rights_approved"] is False
+    assert result["public_ready"] is False
+    assert result["side_effects"]["url_opened"] is False
+    assert result["side_effects"]["media_created"] is False
+    assert result["side_effects"]["transcript_created"] is False
+    assert result["side_effects"]["render_created"] is False
+    assert result["side_effects"]["upload_created"] is False
+
+
+@pytest.mark.parametrize(
+    ("identity_decision", "blocked_reason"),
+    [
+        ("pending", "source_identity_pending"),
+        ("ng", "source_identity_rejected"),
+        ("hold", "source_identity_hold"),
+    ],
+)
+def test_plan_source_fetch_prep_blocks_non_ok_decisions(
+    tmp_path: Path, identity_decision: str, blocked_reason: str
+):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = write_decision_fixture(
+        tmp_path / f"{identity_decision}_decision.json",
+        identity_decision=identity_decision,
+    )
+    record_source_identity_decision(
+        workspace_path=workspace_dir,
+        decision_path=decision_path,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    result = plan_source_fetch_prep(
+        workspace_path=workspace_dir,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    assert result["identity_decision"] == identity_decision
+    assert result["allows_fetch_prep"] is False
+    assert result["prep_state"] == "blocked"
+    assert result["blocked_reason"] == blocked_reason
+    assert result["fetch_authorized"] is False
+    assert result["media_downloaded"] is False
+    assert result["rights_approved"] is False
+    assert result["public_ready"] is False
+
+
+def test_plan_source_fetch_prep_ready_after_ok_decision_without_authorizing_fetch(
+    tmp_path: Path,
+):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = write_decision_fixture(
+        tmp_path / "ok_decision.json",
+        identity_decision="ok",
+        reviewer="fixture-reviewer",
+        notes="Fixture OK for fetch-prep planning only.",
+    )
+    record_source_identity_decision(
+        workspace_path=workspace_dir,
+        decision_path=decision_path,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    result = plan_source_fetch_prep(
+        workspace_path=workspace_dir,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    output_path = workspace_dir / "source_fetch_prep_plan.json"
+    written = json.loads(output_path.read_text(encoding="utf-8"))
+    assert result["identity_decision"] == "ok"
+    assert result["allows_fetch_prep"] is True
+    assert result["prep_state"] == "ready_for_future_private_fetch_plan"
+    assert result["blocked_reason"] is None
+    assert result["source_receipt_path"].endswith(
+        "/materials/source/source_receipt.pending.json"
+    )
+    assert result["material_ledger_path"].endswith("/material_ledger.json")
+    assert result["future_fetch_inputs"]["fetch_authorized"] is False
+    assert "source_fetch_download" in result["deferred_local_actions"]
+    assert "legal_rights_approval_claims" in result["true_external_gates"]
+    assert result["fetch_authorized"] is False
+    assert result["media_downloaded"] is False
+    assert result["rights_approved"] is False
+    assert result["public_ready"] is False
+    assert result["side_effects"]["url_opened"] is False
+    assert result["side_effects"]["media_created"] is False
+    assert result["side_effects"]["transcript_created"] is False
+    assert result["side_effects"]["render_created"] is False
+    assert result["side_effects"]["upload_created"] is False
+    assert written["prep_state"] == "ready_for_future_private_fetch_plan"
+
+
+def test_plan_source_fetch_prep_cli_emits_parseable_json_for_blocked_decision(
+    tmp_path: Path,
+):
+    plan_path, contract_path, workspace_dir = materialize_test_workspace(tmp_path)
+    decision_path = write_decision_fixture(
+        tmp_path / "hold_decision.json",
+        identity_decision="hold",
+        notes="Fixture hold for blocked fetch-prep readback.",
+    )
+    record_source_identity_decision(
+        workspace_path=workspace_dir,
+        decision_path=decision_path,
+        plan_path=plan_path,
+        contract_path=contract_path,
+        base_dir=REPO_ROOT,
+    )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "src.cli.main",
+            "plan-source-fetch-prep",
+            "--workspace",
+            str(workspace_dir),
+            "--plan",
+            str(plan_path),
+            "--contract",
+            str(contract_path),
+            "--format",
+            "json",
+        ],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    assert payload["identity_decision"] == "hold"
+    assert payload["prep_state"] == "blocked"
+    assert payload["blocked_reason"] == "source_identity_hold"
+    assert payload["fetch_authorized"] is False
+    assert payload["side_effects"]["media_created"] is False
 
 
 def test_record_source_identity_decision_rejects_unknown_decision(tmp_path: Path):

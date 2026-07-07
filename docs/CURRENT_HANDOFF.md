@@ -3,11 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: source_identity_decision_intake_ready
+health: source_fetch_prep_planner_ready
 progress_pct: 100
-last_touched: 2026-07-07
-next_review_due: prepare_and_record_local_source_identity_decision_then_choose_fetch_prep_slice
-active_artifact: clip-ews03-source-identity-decision-intake-v0-001
+last_touched: 2026-07-08
+next_review_due: use_fetch_prep_plan_to_choose_future_private_fetch_smoke_after_human_identity_ok
+active_artifact: clip-ews04-source-fetch-prep-planner-v0-001
+latest_source_fetch_prep_planner_artifact: clip-ews04-source-fetch-prep-planner-v0-001
+latest_source_fetch_prep_planner_branch: codex/ews-04-source-fetch-prep-planner-v0
+latest_source_fetch_prep_planner_commit: branch_head
 latest_source_identity_decision_intake_artifact: clip-ews03-source-identity-decision-intake-v0-001
 latest_source_identity_decision_intake_branch: codex/ews-03-source-identity-decision-intake-v0
 latest_source_identity_decision_intake_commit: branch_head
@@ -35,30 +38,31 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch the remote EWS decision-intake branch, then read the project context:
+Fetch the remote EWS source fetch-prep branch, then read the project context:
 
 ```powershell
 git fetch origin
-git switch codex/ews-03-source-identity-decision-intake-v0
+git switch codex/ews-04-source-fetch-prep-planner-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
-`clip-ews03-source-identity-decision-intake-v0-001`.
+`clip-ews04-source-fetch-prep-planner-v0-001`.
 
-The durable state to carry forward is: EWS-03 turns an inspected EWS-01
-workspace skeleton into a local source identity decision intake. It prepares a
-pending decision template and records a human-provided `pending` / `ok` / `ng`
-/ `hold` decision into the explicit workspace without granting fetch, rights,
-or public readiness.
+The durable state to carry forward is: EWS-04 turns an inspected EWS-01
+workspace skeleton plus the EWS-03 source identity decision record into a local
+source fetch-prep plan. It blocks missing, `pending`, `ng`, and `hold`
+decisions with machine-readable reasons. Only `ok` with
+`allows_fetch_prep=true` becomes ready for a future private/local fetch plan,
+while fetch, rights, media, and public readiness remain false.
 
 The repeatable commands are:
 
@@ -68,6 +72,7 @@ python -m src.cli.main init-episode-workspace --plan docs/content_planning/episo
 python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
 python -m src.cli.main prepare-source-identity-decision --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
 python -m src.cli.main record-source-identity-decision --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --decision <decision.json> --format json
+python -m src.cli.main plan-source-fetch-prep --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
 ```
 
 The thin contract classifies local JSON generation, local CLI, tempdir or
@@ -78,13 +83,35 @@ processing are deferred local actions. Public upload/publication, OAuth/API
 keys/credentials, payment, rights/legal approval claims, destructive git,
 cross-repo edits, and irreversible source overwrite remain true external gates.
 
-Do not treat EWS-03 as source approval, fetch approval, production/public/
+Do not treat EWS-04 as source approval, fetch approval, production/public/
 rights/publishing/monetization approval, transcript/render creation, or media
 initialization. The CLI commands require an explicit workspace path and local
-decision JSON only. Keep tracked `episodes/` empty. CPD-12 remains
-available at `docs/content_planning/operator_cockpit.html` for human source
-identity review; it is no longer the active implementation target of this
-handoff.
+decision JSON only. Keep tracked `episodes/` empty. CPD-12 remains available at
+`docs/content_planning/operator_cockpit.html` for human source identity review;
+it is no longer the active implementation target of this handoff.
+
+## Current EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0
+
+EWS-04 checkpoint, 2026-07-08 JST:
+`clip-ews04-source-fetch-prep-planner-v0-001` is the active tracked local
+fetch-prep planner. It reads the workspace manifest, EWS-02 inspection path,
+automation contract, and EWS-03 `source_identity.decision.json`, then emits a
+parseable plan to stdout and writes `source_fetch_prep_plan.json` in the
+workspace by default.
+
+Planner command:
+
+```powershell
+python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
+```
+
+The planner names future source receipt and material ledger paths but creates
+no media or receipts. Missing decisions block with
+`source_identity_decision_missing`; `pending`, `ng`, and `hold` block with
+their corresponding source identity reasons. `ok` with `allows_fetch_prep=true`
+returns `prep_state=ready_for_future_private_fetch_plan` while preserving
+`fetch_authorized=false`, `media_downloaded=false`, `rights_approved=false`,
+and `public_ready=false`.
 
 ## Current EWS-03 Source Identity Decision Intake / Local Decision Record v0
 

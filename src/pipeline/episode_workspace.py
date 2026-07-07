@@ -21,13 +21,16 @@ DEFAULT_ARTIFACT_ID = "clip-ews01-episode-workspace-spine-v0-001"
 DEFAULT_CONTRACT_ARTIFACT_ID = "clip-ews01-thin-gate-contract-v0-001"
 INSPECTOR_ARTIFACT_ID = "clip-ews02-episode-workspace-inspector-v0-001"
 SOURCE_DECISION_ARTIFACT_ID = "clip-ews03-source-identity-decision-intake-v0-001"
+SOURCE_FETCH_PREP_ARTIFACT_ID = "clip-ews04-source-fetch-prep-planner-v0-001"
 DEFAULT_GENERATED_AT = "2026-07-07"
 DEFAULT_PLAN_FILENAME = "episode_workspace_plan.json"
 DEFAULT_CONTRACT_FILENAME = "automation_contract.json"
 INSPECTION_SCHEMA_ID = "clippipegen.episode_workspace_inspection.v0"
 SOURCE_DECISION_SCHEMA_ID = "clippipegen.source_identity_decision.v0"
+SOURCE_FETCH_PREP_SCHEMA_ID = "clippipegen.source_fetch_prep_plan.v0"
 SOURCE_DECISION_TEMPLATE_FILENAME = "source_identity_decision.template.json"
 SOURCE_DECISION_RECORD_FILENAME = "source_identity.decision.json"
+SOURCE_FETCH_PREP_PLAN_FILENAME = "source_fetch_prep_plan.json"
 ALLOWED_SOURCE_IDENTITY_DECISIONS = ("pending", "ok", "ng", "hold")
 MEDIA_LIKE_EXTENSIONS = {
     ".aac",
@@ -511,6 +514,142 @@ def record_source_identity_decision(
     return result
 
 
+def plan_source_fetch_prep(
+    *,
+    workspace_path: Path,
+    plan_path: Path,
+    contract_path: Path | None = None,
+    decision_path: Path | None = None,
+    output_path: Path | None = None,
+    write_output: bool = True,
+    base_dir: Path | None = None,
+) -> dict[str, Any]:
+    """Build a local source fetch-prep plan without authorizing fetch."""
+
+    base_dir = base_dir or Path.cwd()
+    plan = load_json_object(plan_path, "episode workspace plan")
+    if clean_string(plan.get("schema_id")) != PLAN_SCHEMA_ID:
+        raise EpisodeWorkspaceError("plan must be an EWS-01 episode workspace plan")
+    resolved_contract_path = resolve_contract_path(
+        plan=plan,
+        explicit_contract_path=contract_path,
+        plan_path=plan_path,
+    )
+    contract = load_json_object(resolved_contract_path, "automation contract")
+    if clean_string(contract.get("schema_id")) != CONTRACT_SCHEMA_ID:
+        raise EpisodeWorkspaceError("contract must be an EWS-01 automation contract")
+
+    inspection = inspect_episode_workspace(
+        workspace_path=workspace_path,
+        plan_path=plan_path,
+        contract_path=resolved_contract_path,
+        base_dir=base_dir,
+    )
+    workspace_root = Path(inspection["workspace_root"])
+    manifest_path = workspace_root / "episode_manifest.json"
+    manifest = load_json_object(manifest_path, "episode manifest") if manifest_path.exists() else {}
+    resolved_decision_path = decision_path or workspace_root / SOURCE_DECISION_RECORD_FILENAME
+    decision = (
+        load_json_object(resolved_decision_path, "source identity decision")
+        if resolved_decision_path.exists()
+        else None
+    )
+
+    identity_decision = ""
+    allows_fetch_prep = False
+    if decision is not None:
+        identity_decision = validate_identity_decision(decision)
+        allows_fetch_prep = bool(decision.get("allows_fetch_prep"))
+    prep_state, blocked_reason = source_fetch_prep_state(
+        identity_decision=identity_decision,
+        allows_fetch_prep=allows_fetch_prep,
+        decision_present=decision is not None,
+    )
+
+    planned = plan.get("planned_paths") if isinstance(plan.get("planned_paths"), dict) else {}
+    workspace_planned_root = clean_string(planned.get("workspace_root")) or clean_string(
+        plan.get("planned_slug")
+    )
+    source_receipt_path = (
+        clean_string(planned.get("source_receipt"))
+        or f"{workspace_planned_root}/materials/source/source_receipt.pending.json"
+    )
+    material_ledger_path = (
+        clean_string(planned.get("material_ledger"))
+        or f"{workspace_planned_root}/material_ledger.json"
+    )
+    output_path = output_path or workspace_root / SOURCE_FETCH_PREP_PLAN_FILENAME
+
+    payload = {
+        "schema_id": SOURCE_FETCH_PREP_SCHEMA_ID,
+        "schema_version": "v0",
+        "artifact_id": SOURCE_FETCH_PREP_ARTIFACT_ID,
+        "workspace_id": clean_string(inspection.get("workspace_id")),
+        "episode_id": clean_string(inspection.get("episode_id")),
+        "workspace_path": str(workspace_root),
+        "plan_path": display_path(plan_path, base_dir),
+        "inspection_artifact_id": clean_string(inspection.get("artifact_id")),
+        "automation_contract_path": display_path(resolved_contract_path, base_dir),
+        "decision_record_path": display_path(resolved_decision_path, base_dir),
+        "fetch_prep_plan_path": display_path(output_path, base_dir),
+        "planning_label": clean_string(manifest.get("planning_label"))
+        or clean_string(plan.get("planning_label")),
+        "source_url": clean_string(manifest.get("source_url")) or clean_string(plan.get("source_url")),
+        "identity_decision": identity_decision or "missing",
+        "allows_fetch_prep": allows_fetch_prep,
+        "prep_state": prep_state,
+        "blocked_reason": blocked_reason,
+        "fetch_authorized": False,
+        "media_downloaded": False,
+        "rights_approved": False,
+        "public_ready": False,
+        "future_fetch_inputs": {
+            "workspace_manifest_path": display_path(manifest_path, base_dir),
+            "source_identity_decision_path": display_path(resolved_decision_path, base_dir),
+            "automation_contract_path": display_path(resolved_contract_path, base_dir),
+            "source_url": clean_string(manifest.get("source_url"))
+            or clean_string(plan.get("source_url")),
+            "planning_label": clean_string(manifest.get("planning_label"))
+            or clean_string(plan.get("planning_label")),
+            "fetch_authorized": False,
+        },
+        "future_receipt_paths": {
+            "source_receipt": source_receipt_path,
+            "source_fetch_preflight_receipt": (
+                f"{workspace_planned_root}/materials/source/source_fetch_preflight.pending.json"
+            ),
+            "source_fetch_receipt": f"{workspace_planned_root}/materials/source/source_fetch_receipt.json",
+        },
+        "source_receipt_path": source_receipt_path,
+        "material_ledger_path": material_ledger_path,
+        "deferred_local_actions": contract_action_ids(contract, "deferred_local_actions"),
+        "true_external_gates": contract_action_ids(contract, "true_external_gates"),
+        "readback": {
+            "workspace_readiness_level": clean_string(inspection.get("readiness_level")),
+            "skeleton_ready": bool((inspection.get("readiness") or {}).get("skeleton_ready")),
+            "source_identity_decision_present": decision is not None,
+            "source_url_opened_by_worker": False,
+            "future_fetch_plan_only": True,
+        },
+        "side_effects": {
+            "url_opened": False,
+            "source_url_opened": False,
+            "media_created": False,
+            "media_files_created": False,
+            "transcript_created": False,
+            "transcript_generated": False,
+            "render_created": False,
+            "render_generated": False,
+            "thumbnail_created": False,
+            "upload_created": False,
+            "rights_approved": False,
+        },
+    }
+    if write_output:
+        write_json(payload, output_path)
+    return payload
+
+
 def skeleton_file_payloads(*, plan: dict[str, Any], plan_path: Path) -> list[tuple[Path, str, Any]]:
     episode_id = clean_string(plan["episode_id"])
     common = {
@@ -574,6 +713,27 @@ def skeleton_file_payloads(*, plan: dict[str, Any], plan_path: Path) -> list[tup
             readme_next(plan),
         ),
     ]
+
+
+def source_fetch_prep_state(
+    *,
+    identity_decision: str,
+    allows_fetch_prep: bool,
+    decision_present: bool,
+) -> tuple[str, str | None]:
+    if not decision_present:
+        return "blocked", "source_identity_decision_missing"
+    if identity_decision == "pending":
+        return "blocked", "source_identity_pending"
+    if identity_decision == "ng":
+        return "blocked", "source_identity_rejected"
+    if identity_decision == "hold":
+        return "blocked", "source_identity_hold"
+    if identity_decision == "ok" and allows_fetch_prep:
+        return "ready_for_future_private_fetch_plan", None
+    if identity_decision == "ok":
+        return "blocked", "source_identity_fetch_prep_not_allowed"
+    return "blocked", "source_identity_decision_invalid"
 
 
 def readme_next(plan: dict[str, Any]) -> str:

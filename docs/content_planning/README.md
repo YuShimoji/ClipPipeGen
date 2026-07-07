@@ -104,6 +104,7 @@ production/public usable.
 | EWS-01 contract artifact_id | `clip-ews01-thin-gate-contract-v0-001` |
 | EWS-02 artifact_id | `clip-ews02-episode-workspace-inspector-v0-001` |
 | EWS-03 artifact_id | `clip-ews03-source-identity-decision-intake-v0-001` |
+| EWS-04 artifact_id | `clip-ews04-source-fetch-prep-planner-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
@@ -184,6 +185,12 @@ Prepare and record a local source identity decision:
 ```powershell
 python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json
 python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision <decision.json> --format json
+```
+
+Plan the next source fetch-prep step without authorizing fetch:
+
+```powershell
+python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
 ```
 
 Optional output location:
@@ -308,6 +315,11 @@ uvx python -m src.cli.main build-operator-cockpit `
   `pending`, `ok`, `ng`, or `hold`, and `ok` allows future fetch-prep planning
   only while keeping `fetch_authorized=false`, `rights_approved=false`, and
   `public_ready=false`.
+- EWS-04 source fetch-prep planning is also local JSON only. Missing,
+  `pending`, `ng`, and `hold` decisions produce blocked plans; only `ok` with
+  `allows_fetch_prep=true` returns `ready_for_future_private_fetch_plan`, and
+  it still keeps `fetch_authorized=false`, `media_downloaded=false`,
+  `rights_approved=false`, and `public_ready=false`.
 - `automation_contract.json` is the compact gate reference. It keeps local JSON
   generation, local CLI, tempdir/ignored skeletons, local decision records,
   docs/readme pointers, and targeted tests in `allowed_local_actions`; source
@@ -338,6 +350,8 @@ uvx python -m src.cli.main build-operator-cockpit `
 6. Run `prepare-source-identity-decision`, then record a human-provided
    `pending` / `ok` / `ng` / `hold` decision JSON with
    `record-source-identity-decision`.
+7. Run `plan-source-fetch-prep` to convert that decision into either a blocked
+   plan or a ready-for-future-private-fetch plan before opening any fetch lane.
 7. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
 8. Fill real source URLs for unresolved seed records in a local

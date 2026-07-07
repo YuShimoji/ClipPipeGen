@@ -16,6 +16,33 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-ews04-source-fetch-prep-planner-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0 |
+| purpose | Convert an explicit EWS workspace plus `source_identity.decision.json` into a local source fetch-prep plan or a blocked plan with machine-readable reason. |
+| storage class | Code-backed local JSON artifact; consumes an inspected workspace, automation contract, and EWS-03 decision record. No source URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created. |
+| repo_relative_path | `src/pipeline/episode_workspace.py` |
+| machine_output | `source_fetch_prep_plan.json` inside an explicit local/temp workspace, plus parseable stdout JSON. |
+| source_inputs | explicit materialized workspace path; `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; workspace `source_identity.decision.json` |
+| open_command | `python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json` |
+| validation_command | `uvx pytest -q tests/test_episode_workspace.py` plus tempdir init/inspect/prepare/record/plan smoke and JSON parse checks. |
+| review_status | Ready as the local fetch-prep planning surface. Missing decisions block as `source_identity_decision_missing`; `pending`, `ng`, and `hold` decisions block with source identity reasons; `ok` plus `allows_fetch_prep=true` returns `prep_state=ready_for_future_private_fetch_plan` while preserving `fetch_authorized=false`, `media_downloaded=false`, `rights_approved=false`, and `public_ready=false`. |
+| next_action | Use the plan to decide whether a later private/local fetch smoke slice should be explicitly opened. Do not fetch media or open source/public/rights gates from this plan. |
+
+Fetch-prep planner boundary flags remain false:
+
+- `source_url_opened=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `transcript_created=false`
+- `render_created=false`
+- `thumbnail_created=false`
+- `upload_created=false`
+- `rights_approved=false`
+- `public_ready=false`
+
 ## `clip-ews03-source-identity-decision-intake-v0-001`
 
 | Field | Value |
