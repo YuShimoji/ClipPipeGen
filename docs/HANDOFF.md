@@ -1,10 +1,59 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-07-06 JST
+Last updated: 2026-07-08 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
+## Immediate Resume Capsule - 2026-07-08 HUB-01 External Source Registry
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git switch codex/hub-01-external-source-registry-v0
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count "HEAD...@{u}"
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected tracked state after pulling this handoff:
+
+- Branch: `codex/hub-01-external-source-registry-v0`
+- Upstream: `origin/codex/hub-01-external-source-registry-v0`
+- `HEAD...@{u}`: `0 0`
+- `git ls-files episodes`: empty
+- Active parallel-lane artifact: `clip-hub01-external-source-registry-v0-001`
+- Registry readback: `docs/external_sources/external_source_registry.json`
+- CLI: `uvx python -m src.cli.main build-external-source-registry --format json`
+
+HUB-01 creates a safe local source-intake hub. It parses
+`samples/external_sources/rss_fixture.xml` and
+`samples/external_sources/manual_source_seeds.json`, then writes a normalized
+registry with 4 records: 2 `rss_item` rows and 2 `manual_seed` rows. This is
+sample/unverified metadata only. It does not fetch live RSS, open source URLs,
+call metadata APIs, download media, generate transcripts/renders/thumbnails,
+upload, approve rights, or mark anything production/public ready.
+
+Validation at this checkpoint:
+
+- `uvx python -m src.cli.main build-external-source-registry --format json`
+  returned `record_count=4`, `rss_item_count=2`, `manual_seed_count=2`,
+  `source_candidate_count=3`, `needs_review_count=1`, and all network/media/
+  rights/public flags false.
+- `uvx python -m json.tool docs/external_sources/external_source_registry.json`
+  passed.
+- `uvx pytest -q tests/test_external_source_registry.py` passed with
+  `3 passed`.
+- `git diff --check` passed.
+- `git ls-files episodes` printed nothing.
+
+Next move: open HUB-02 only after deciding how reviewed registry rows should
+map into CPD source planning. Do not auto-advance registry rows to source
+identity OK or fetch-ready.
 
 ## Immediate Resume Capsule - 2026-07-06 CPD-07 Operator Cockpit Sync
 

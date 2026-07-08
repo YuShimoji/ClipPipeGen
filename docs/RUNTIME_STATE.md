@@ -5,9 +5,14 @@ type: resume_surface
 status: current_capsule
 health: content_planning_operator_cockpit_ready
 progress_pct: 100
-last_touched: 2026-07-06
+last_touched: 2026-07-08
 next_review_due: inspect_single_source_backed_item_or_fill_source_urls
 active_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
+active_parallel_lane: HUB-01 external source registry
+latest_external_source_registry_artifact: clip-hub01-external-source-registry-v0-001
+latest_external_source_registry_branch: codex/hub-01-external-source-registry-v0
+latest_external_source_registry_commit: cf0e846
+latest_external_source_registry_next: map_reviewed_registry_rows_to_cpd_without_auto_fetch_ready
 latest_content_planning_operator_cockpit_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
@@ -36,6 +41,35 @@ Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
 ## Cross-Terminal Resume Checkpoint
+
+HUB-01 parallel-lane checkpoint date: 2026-07-08 JST. A new terminal resuming
+the external source registry lane should run:
+
+```powershell
+git fetch --prune origin
+git switch codex/hub-01-external-source-registry-v0
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count "HEAD...@{u}"
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected HUB-01 state after pulling this handoff: branch
+`codex/hub-01-external-source-registry-v0`, upstream
+`origin/codex/hub-01-external-source-registry-v0`, parity `0 0`, and no
+tracked `episodes/` files. Read `docs/external_sources/README.md` and
+`docs/external_sources/external_source_registry.json` next. The active HUB-01
+artifact is `clip-hub01-external-source-registry-v0-001`.
+
+HUB-01 is a parallel source-intake lane, not a CPD/EWS auto-advance. It
+normalizes local RSS XML plus manual source seed JSON into a registry with
+4 records: 2 `rss_item` rows and 2 `manual_seed` rows. It does not fetch live
+RSS, open source URLs, call metadata APIs, download media, generate
+transcripts/renders/thumbnails, upload, approve rights, or mark anything
+production/public ready. The next useful move is HUB-02: map only reviewed
+registry rows into CPD source planning inputs without automatically making any
+candidate source-identity OK or fetch-ready.
 
 Checkpoint date: 2026-07-06 JST. A new terminal should pull `origin/main`, then
 read this file first, followed by `docs/CURRENT_HANDOFF.md`,
@@ -70,6 +104,45 @@ opener-repair state below remains valid historical/current evidence for the
 Thank v2 review path, but it is not the active content-planning entry point.
 Production/public/rights/publishing/monetization and micro-scene acceptance
 remain false or pending unless a later explicit decision opens those gates.
+
+## Current HUB-01 External Source Registry / RSS Intake Stub v0
+
+HUB-01 checkpoint, 2026-07-08 JST:
+`clip-hub01-external-source-registry-v0-001` is the current parallel-lane
+artifact. It adds an offline source hub that reads:
+
+```text
+samples/external_sources/rss_fixture.xml
+samples/external_sources/manual_source_seeds.json
+```
+
+The registry builder and CLI are:
+
+```text
+src/pipeline/external_source_registry.py
+src/cli/build_external_source_registry.py
+```
+
+Generated readback and docs are:
+
+```text
+docs/external_sources/external_source_registry.json
+docs/external_sources/README.md
+tests/test_external_source_registry.py
+```
+
+Regenerate the registry with:
+
+```powershell
+uvx python -m src.cli.main build-external-source-registry --format json
+```
+
+Latest validation before this handoff: the CLI returned `record_count=4`,
+`rss_item_count=2`, `manual_seed_count=2`, `source_candidate_count=3`,
+`needs_review_count=1`, and all network/source-open/media/rights/public flags
+false. JSON parse passed, `uvx pytest -q tests/test_external_source_registry.py`
+returned `3 passed`, `git diff --check` passed, and `git ls-files episodes`
+printed nothing.
 
 ## Current ED-10bc Thank V2 Open Command Repair Readback
 
