@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OUT-01 Local Output Readback</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f7f2;
+      --text: #1c2430;
+      --muted: #596575;
+      --line: #cbd2d9;
+      --accent: #006c67;
+      --warn: #9a4a00;
+      --gate: #7a1f3d;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+    main {
+      width: min(1160px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+    h1, h2 {
+      margin: 0 0 12px;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-top: 28px;
+    }
+    p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      max-width: 980px;
+    }
+    .status-line {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 18px 0 6px;
+    }
+    .status-line div {
+      border-top: 3px solid var(--accent);
+      padding: 8px 0 0;
+      min-width: 0;
+    }
+    .status-line b {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .status-line span {
+      display: block;
+      overflow-wrap: anywhere;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      table-layout: fixed;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+    th {
+      background: #e9efef;
+      color: #14242d;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .state-gated {
+      color: var(--gate);
+      font-weight: 700;
+    }
+    .state-absent, .status-proof_missing {
+      color: var(--warn);
+      font-weight: 700;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+    }
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>OUT-01 Local Output Readback</h1>
+    <p>This static readback records output-layer capability and gaps without source fetching, media processing, production render, or public upload.</p>
+    <section class="status-line" aria-label="readback status">
+      <div><b>artifact</b><span>clip-out01-output-layer-gap-logger-v0-001</span></div>
+      <div><b>generated</b><span>2026-07-08T06:41:49.713798+00:00</span></div>
+      <div><b>proof</b><span class="status-proof_missing">proof_missing</span></div>
+      <div><b>production ready</b><span>false</span></div>
+      <div><b>public ready</b><span>false</span></div>
+    </section>
+    <p>The repository has local diagnostic output code paths, but this slice has no tracked source video/source audio/edit pack bundle to prove.</p>
+
+    <h2>Capability Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>capability_id</th>
+          <th>current_state</th>
+          <th>evidence_path</th>
+          <th>missing_input</th>
+          <th>next_local_action</th>
+          <th>true_gate</th>
+          <th>notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>source_material_presence</code></td><td><span class="state-absent">absent</span></td><td><code>docs/RUNTIME_STATE.md</code></td><td>Concrete local source_video/source_audio materials and ledger entries for a target episode.</td><td>Use a later approved local-material intake/proof slice with operator-supplied files.</td><td>false</td><td>The current repo state can describe output gaps, but it has no tracked media to prove.</td></tr>
+        <tr><td><code>transcript_readiness</code></td><td><span class="state-local_ready">local_ready</span></td><td><code>docs/SCHEMAS/v1/transcript.md</code></td><td>A reviewed transcript for the target episode source audio.</td><td>Validate or create transcript.json from local audio/fixture, then review it before acceptance.</td><td>false</td><td>Transcript schema and CLI paths exist; this OUT slice did not ingest media or make a transcript.</td></tr>
+        <tr><td><code>edit_pack_readiness</code></td><td><span class="state-local_ready">local_ready</span></td><td><code>docs/SCHEMAS/v1/edit_pack.md</code></td><td>An edit_pack connected to the reviewed transcript with selected cuts.</td><td>Generate/validate cut candidates and selected_cut_ids after transcript review.</td><td>false</td><td>Editing artifacts are local diagnostics until human acceptance.</td></tr>
+        <tr><td><code>subtitle_readiness</code></td><td><span class="state-local_ready">local_ready</span></td><td><code>src/cli/generate_subtitles.py</code></td><td>Subtitle entries linked to selected cuts and reviewed for timing/text.</td><td>Generate subtitle drafts from transcript segments, then run review/proof readbacks.</td><td>false</td><td>Subtitle generation can support local proof; it is not a publication decision.</td></tr>
+        <tr><td><code>thumbnail_brief_readiness</code></td><td><span class="state-planned">planned</span></td><td><code>src/pipeline/episode_init_plan.py</code></td><td>A concrete thumbnail brief artifact and selected source imagery/material refs.</td><td>Promote thumbnail brief seed fields into an operator-reviewable output-layer artifact.</td><td>false</td><td>Planning code references thumbnail intent, but OUT has no current thumbnail proof surface.</td></tr>
+        <tr><td><code>preview_pack_readiness</code></td><td><span class="state-local_ready">local_ready</span></td><td><code>docs/PREVIEW_PACK.md</code></td><td>A target episode with local media or existing source audio material.</td><td>Build a read-only local preview pack once operator-supplied material exists.</td><td>false</td><td>Preview pack is useful readback, but it is not a rendered video proof.</td></tr>
+        <tr><td><code>nle_export_readiness</code></td><td><span class="state-local_ready">local_ready</span></td><td><code>docs/SCHEMAS/v1/nle_export.md</code></td><td>A validated edit_pack with selected cuts and optional transcript refs.</td><td>Export CSV/JSON/HTML cut-list readback for human review or NLE handoff.</td><td>false</td><td>NLE export proves edit structure, not final encoded video.</td></tr>
+        <tr><td><code>local_render_proof_readiness</code></td><td><span class="state-local_ready">local_ready</span></td><td><code>docs/SCHEMAS/v1/tiny_render.md</code></td><td>Source video, source audio, edit_pack, selected cut, and optional subtitle source.</td><td>Run a narrow diagnostic proof only after local materials are explicitly available.</td><td>false</td><td>The code path exists for local diagnostics; OUT-01 created a no-media proof_missing readback instead.</td></tr>
+        <tr><td><code>public_upload_readiness</code></td><td><span class="state-gated">gated</span></td><td><code>docs/AUTOMATION_BOUNDARY.md</code></td><td>Rights acceptance, publication judgment, account/OAuth setup, and public target selection.</td><td>Keep public/upload out of local proof work; prepare only decision packets for human review.</td><td>true</td><td>This is a true gate, not a missing local automation task.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Gap Log</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>gap_id</th>
+          <th>status</th>
+          <th>missing_input</th>
+          <th>local_vs_true_gate</th>
+          <th>suggested_next_slice</th>
+          <th>validation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><code>gap_source_material_absent</code></td><td>gap</td><td>No concrete local source_video/source_audio materials are present for this slice.</td><td>Local gap; operator-supplied files can unblock a diagnostic proof without public approval.</td><td>OUT-02-local-fixture-output-proof-smoke</td><td>A later proof run records source material ids and leaves git ls-files episodes empty.</td></tr>
+        <tr><td><code>gap_current_no_proof_artifact</code></td><td>proof_missing</td><td>No current portable render/proof manifest is available in tracked docs/artifacts.</td><td>Local gap; not a rights/publication gate while proof remains diagnostic.</td><td>OUT-02-local-fixture-output-proof-smoke</td><td>Generated proof manifest remains production_ready=false and public_ready=false.</td></tr>
+        <tr><td><code>gap_thumbnail_brief_only_planned</code></td><td>gap</td><td>A reviewable thumbnail brief/output artifact tied to selected source materials.</td><td>Local planning gap; final use still depends on human rights/creative acceptance.</td><td>TH-OUT-thumbnail-brief-readback</td><td>Brief JSON/HTML names source refs, intended crop/text, and acceptance boundaries.</td></tr>
+        <tr><td><code>confirm_preview_pack_ready_not_video</code></td><td>confirmation</td><td>A concrete local media target is still needed to run it.</td><td>Local confirmation; no true gate unless public/production claims are added.</td><td>SH-preview-pack-to-output-readback-link</td><td>Preview report remains read-only and contains no public upload behavior.</td></tr>
+        <tr><td><code>confirm_nle_export_ready_not_encoded_output</code></td><td>confirmation</td><td>An edit_pack with selected cuts for a real target episode.</td><td>Local confirmation; production/public acceptance remains outside the export.</td><td>EDIT-to-OUT-selected-cut-proof-link</td><td>CSV/HTML readback points to selected cuts and keeps production flags false.</td></tr>
+        <tr><td><code>gap_public_upload_true_gate</code></td><td>true_gate</td><td>Rights decision, publication approval, account/OAuth, and target channel.</td><td>True gate; local automation can only prepare review packets.</td><td>PB-decision-packet-before-upload</td><td>Upload/public fields stay blocked until human-owned acceptance is recorded.</td></tr>
+        <tr><td><code>recommend_next_out_slice</code></td><td>recommendation</td><td>A small approved local fixture/material bundle for a diagnostic proof run.</td><td>Local action; it should still avoid source fetching and public publication.</td><td>OUT-02-local-fixture-output-proof-smoke</td><td>Run targeted CLI/tests and attach generated proof readback to docs or artifacts.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Recommended Next Slice</h2>
+    <p><code>OUT-02-local-fixture-output-proof-smoke</code> - Run the smallest approved local-material proof using explicit local source video, source audio, edit_pack, and subtitle inputs.</p>
+    <p>It converts the current proof_missing readback into a concrete local render/proof receipt without crossing rights, network, or public gates.</p>
+    <ul>
+<li>CLI exits 0 on fixture/local-material inputs.</li>
+<li>render/proof manifest keeps production_ready=false.</li>
+<li>HTML readback embeds or links only local diagnostic outputs.</li>
+<li>git ls-files episodes remains empty.</li>
+    </ul>
+  </main>
+</body>
+</html>
