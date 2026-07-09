@@ -42,7 +42,7 @@ Subcommands:
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-docs-dashboard     Docs v1.5: wiki/dashboard status and doc-health findings.
     build-external-source-registry HUB-01: local RSS/manual fixtures -> source registry.
-    build-output-layer-gap-report OUT-01: output capability matrix and no-media gap log.
+    build-output-layer-gap-report OUT-02: output fixture proof package and gap log.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.

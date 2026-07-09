@@ -1,0 +1,66 @@
+{
+  "schema_id": "clippipegen.local_fixture_output_proof.v0.readback",
+  "schema_version": "v0",
+  "artifact_id": "clip-out02-local-fixture-output-proof-smoke-v0-001",
+  "generated_at": "2026-07-09T08:54:28.950688+00:00",
+  "proof_status": "local_fixture_output_proof_present",
+  "source_kind": "synthetic_fixture",
+  "external_media_used": false,
+  "network_used": false,
+  "fetch_authorized": false,
+  "rights_approved": false,
+  "public_ready": false,
+  "production_ready": false,
+  "production_candidate": false,
+  "title_card": {
+    "text": "OUT-02 local fixture proof",
+    "purpose": "Show the output-stage package shape without real media."
+  },
+  "subtitle_band": {
+    "source": "fixture_subtitles.srt",
+    "draft_count": 3,
+    "status": "diagnostic_fixture_only"
+  },
+  "segments": [
+    {
+      "segment_id": "seg_001",
+      "cut_id": "cut_fixture_001",
+      "start_seconds": 0.0,
+      "end_seconds": 2.8,
+      "speaker": "host",
+      "subtitle_text": "Local fixture proof starts here.",
+      "cut_reason": "Title card confirms that the proof is diagnostic and local-only.",
+      "visual_readback": "Title card plus first subtitle band."
+    },
+    {
+      "segment_id": "seg_002",
+      "cut_id": "cut_fixture_002",
+      "start_seconds": 2.8,
+      "end_seconds": 6.4,
+      "speaker": "guest",
+      "subtitle_text": "The selected cut list is visible without opening media.",
+      "cut_reason": "Shows how selected_cut_ids map to segment timing and speaker labels.",
+      "visual_readback": "Segment row with timing, speaker, and reason."
+    },
+    {
+      "segment_id": "seg_003",
+      "cut_id": "cut_fixture_003",
+      "start_seconds": 6.4,
+      "end_seconds": 9.6,
+      "speaker": "host",
+      "subtitle_text": "All public and production gates remain false.",
+      "cut_reason": "Keeps rights/public/upload states explicit at the output stage.",
+      "visual_readback": "Gate table plus export-readiness notes."
+    }
+  ],
+  "output_stage_readback": [
+    "The manifest is parseable JSON and records every external/public gate as false.",
+    "The fixture edit pack carries selected cut ids, timing, speakers, subtitle text, and cut reasons.",
+    "The HTML timeline is inspectable without opening a source URL, fetching media, or using a video player."
+  ],
+  "export_readiness_notes": [
+    "Ready for OUT-03 link/readback work against selected_cut_ids.",
+    "Not a production render, public-ready output, or rights/publication decision.",
+    "Real source material and transcript remain absent by design in this slice."
+  ]
+}

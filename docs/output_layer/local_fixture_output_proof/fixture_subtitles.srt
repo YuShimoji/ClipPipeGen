@@ -1,0 +1,11 @@
+1
+00:00:00,000 --> 00:00:02,800
+[host] Local fixture proof starts here.
+
+2
+00:00:02,800 --> 00:00:06,400
+[guest] The selected cut list is visible without opening media.
+
+3
+00:00:06,400 --> 00:00:09,600
+[host] All public and production gates remain false.

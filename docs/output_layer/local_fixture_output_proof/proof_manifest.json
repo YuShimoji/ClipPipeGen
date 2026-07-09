@@ -1,0 +1,54 @@
+{
+  "schema_id": "clippipegen.local_fixture_output_proof.v0.manifest",
+  "schema_version": "v0",
+  "artifact_id": "clip-out02-local-fixture-output-proof-smoke-v0-001",
+  "generated_at": "2026-07-09T08:54:28.950688+00:00",
+  "proof_status": "local_fixture_output_proof_present",
+  "proof_scope": "local_fixture_synthetic_no_external_media",
+  "source_kind": "synthetic_fixture",
+  "fixture_episode_id": "out02_synthetic_fixture_episode",
+  "external_media_used": false,
+  "network_used": false,
+  "source_urls_opened": false,
+  "fetch_authorized": false,
+  "media_downloaded": false,
+  "large_media_files_created": false,
+  "yt_dlp_used": false,
+  "oauth_or_api_used": false,
+  "rights_approved": false,
+  "public_ready": false,
+  "production_ready": false,
+  "production_candidate": false,
+  "public_upload_attempted": false,
+  "production_render_attempted": false,
+  "files": {
+    "proof_manifest": "docs/output_layer/local_fixture_output_proof/proof_manifest.json",
+    "proof_readback": "docs/output_layer/local_fixture_output_proof/proof_readback.json",
+    "proof_timeline": "docs/output_layer/local_fixture_output_proof/proof_timeline.html",
+    "fixture_edit_pack": "docs/output_layer/local_fixture_output_proof/fixture_edit_pack.json",
+    "fixture_subtitles": "docs/output_layer/local_fixture_output_proof/fixture_subtitles.srt",
+    "readme": "docs/output_layer/local_fixture_output_proof/README.md"
+  },
+  "selected_cut_ids": [
+    "cut_fixture_001",
+    "cut_fixture_002",
+    "cut_fixture_003"
+  ],
+  "segment_count": 3,
+  "subtitle_count": 3,
+  "timeline_duration_seconds": 9.6,
+  "visual_review_surfaces": [
+    "title_card",
+    "subtitle_band",
+    "segment_list",
+    "export_readiness_notes"
+  ],
+  "remaining_gaps": [
+    "real_source_material_absent",
+    "real_transcript_absent",
+    "production_render_absent",
+    "rights_approval_absent",
+    "public_upload_gated"
+  ],
+  "next_recommended_slice": "OUT-03-selected-cut-proof-link"
+}

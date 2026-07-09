@@ -1,0 +1,111 @@
+{
+  "schema_version": "v1",
+  "episode_id": "out02_synthetic_fixture_episode",
+  "rights_manifest_path": "not_applicable_synthetic_fixture",
+  "material_ledger_path": "not_applicable_synthetic_fixture",
+  "created_at": "2026-07-09T08:54:28.950688+00:00",
+  "updated_at": "2026-07-09T08:54:28.950688+00:00",
+  "proof_scope": "local_fixture_synthetic_no_external_media",
+  "source_kind": "synthetic_fixture",
+  "production_ready": false,
+  "public_ready": false,
+  "editing_intent": {
+    "target_duration_seconds": 9.6,
+    "topic": "OUT-02 local fixture output proof",
+    "audience_note": "Internal diagnostic readback only.",
+    "language": "en"
+  },
+  "cut_candidates": [
+    {
+      "id": "cut_fixture_001",
+      "start_seconds": 0.0,
+      "end_seconds": 2.8,
+      "source": "synthetic_fixture",
+      "reason": "Title card confirms that the proof is diagnostic and local-only.",
+      "confidence": 1.0,
+      "context_check": {
+        "status": "passed",
+        "notes": [
+          "Synthetic fixture row; not a real editorial acceptance."
+        ]
+      }
+    },
+    {
+      "id": "cut_fixture_002",
+      "start_seconds": 2.8,
+      "end_seconds": 6.4,
+      "source": "synthetic_fixture",
+      "reason": "Shows how selected_cut_ids map to segment timing and speaker labels.",
+      "confidence": 1.0,
+      "context_check": {
+        "status": "passed",
+        "notes": [
+          "Synthetic fixture row; not a real editorial acceptance."
+        ]
+      }
+    },
+    {
+      "id": "cut_fixture_003",
+      "start_seconds": 6.4,
+      "end_seconds": 9.6,
+      "source": "synthetic_fixture",
+      "reason": "Keeps rights/public/upload states explicit at the output stage.",
+      "confidence": 1.0,
+      "context_check": {
+        "status": "passed",
+        "notes": [
+          "Synthetic fixture row; not a real editorial acceptance."
+        ]
+      }
+    }
+  ],
+  "selected_cut_ids": [
+    "cut_fixture_001",
+    "cut_fixture_002",
+    "cut_fixture_003"
+  ],
+  "subtitles": [
+    {
+      "subtitle_id": "sub_001",
+      "segment_id": "seg_001",
+      "cut_id": "cut_fixture_001",
+      "speaker": "host",
+      "start_seconds": 0.0,
+      "end_seconds": 2.8,
+      "text": "Local fixture proof starts here.",
+      "source_type": "synthetic_fixture",
+      "review_status": "diagnostic_fixture_only"
+    },
+    {
+      "subtitle_id": "sub_002",
+      "segment_id": "seg_002",
+      "cut_id": "cut_fixture_002",
+      "speaker": "guest",
+      "start_seconds": 2.8,
+      "end_seconds": 6.4,
+      "text": "The selected cut list is visible without opening media.",
+      "source_type": "synthetic_fixture",
+      "review_status": "diagnostic_fixture_only"
+    },
+    {
+      "subtitle_id": "sub_003",
+      "segment_id": "seg_003",
+      "cut_id": "cut_fixture_003",
+      "speaker": "host",
+      "start_seconds": 6.4,
+      "end_seconds": 9.6,
+      "text": "All public and production gates remain false.",
+      "source_type": "synthetic_fixture",
+      "review_status": "diagnostic_fixture_only"
+    }
+  ],
+  "review": {
+    "status": "diagnostic_fixture_only",
+    "reviewed_by": "not_applicable",
+    "reviewed_at": "2026-07-09T08:54:28.950688+00:00",
+    "notes": [
+      "Synthetic fixture proves package shape only.",
+      "No production, public, rights, or creative acceptance is claimed."
+    ]
+  }
+}

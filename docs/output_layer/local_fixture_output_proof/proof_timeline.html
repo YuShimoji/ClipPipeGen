@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OUT-02 Local Fixture Output Proof</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f8f7f1;
+      --ink: #1b2430;
+      --muted: #566170;
+      --line: #c7d0d8;
+      --panel: #ffffff;
+      --accent: #006c67;
+      --band: #12343b;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+    h1, h2 {
+      letter-spacing: 0;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 30px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-top: 28px;
+    }
+    p {
+      max-width: 940px;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+    .title-card {
+      background: var(--band);
+      color: #ffffff;
+      min-height: 150px;
+      display: grid;
+      align-content: center;
+      padding: 24px;
+      margin: 18px 0;
+    }
+    .title-card strong {
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+    .subtitle-band {
+      margin-top: 18px;
+      padding: 12px 14px;
+      background: #e7f2ef;
+      border-left: 5px solid var(--accent);
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      table-layout: fixed;
+    }
+    th, td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+    }
+    th {
+      background: #e9efef;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>OUT-02 Local Fixture Output Proof</h1>
+    <p>Diagnostic local fixture only. This package uses synthetic timing, speaker, subtitle, and cut-reason rows; it does not open source URLs, fetch external media, render production video, approve rights, or upload anything.</p>
+    <section class="title-card" aria-label="title card">
+      <strong>OUT-02 local fixture proof</strong>
+      <span>Show the output-stage package shape without real media.</span>
+      <div class="subtitle-band">Subtitle band source: fixture_subtitles.srt; selected cuts: cut_fixture_001, cut_fixture_002, cut_fixture_003</div>
+    </section>
+
+    <h2>Fixture Timeline</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>cut</th>
+          <th>time</th>
+          <th>speaker</th>
+          <th>subtitle text</th>
+          <th>cut reason</th>
+          <th>output readback</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr><td><code>cut_fixture_001</code></td><td>0.0s to 2.8s</td><td>host</td><td>Local fixture proof starts here.</td><td>Title card confirms that the proof is diagnostic and local-only.</td><td>Title card plus first subtitle band.</td></tr>
+          <tr><td><code>cut_fixture_002</code></td><td>2.8s to 6.4s</td><td>guest</td><td>The selected cut list is visible without opening media.</td><td>Shows how selected_cut_ids map to segment timing and speaker labels.</td><td>Segment row with timing, speaker, and reason.</td></tr>
+          <tr><td><code>cut_fixture_003</code></td><td>6.4s to 9.6s</td><td>host</td><td>All public and production gates remain false.</td><td>Keeps rights/public/upload states explicit at the output stage.</td><td>Gate table plus export-readiness notes.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Thin Gate Contract</h2>
+    <table>
+      <thead><tr><th>gate</th><th>value</th></tr></thead>
+      <tbody>
+          <tr><td><code>external_media_used</code></td><td>false</td></tr>
+          <tr><td><code>network_used</code></td><td>false</td></tr>
+          <tr><td><code>fetch_authorized</code></td><td>false</td></tr>
+          <tr><td><code>rights_approved</code></td><td>false</td></tr>
+          <tr><td><code>public_ready</code></td><td>false</td></tr>
+          <tr><td><code>production_ready</code></td><td>false</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Export Readiness Notes</h2>
+    <ul>
+        <li>Ready for OUT-03 link/readback work against selected_cut_ids.</li>
+        <li>Not a production render, public-ready output, or rights/publication decision.</li>
+        <li>Real source material and transcript remain absent by design in this slice.</li>
+    </ul>
+
+    <h2>Proof Data Files</h2>
+    <p><code>docs/output_layer/local_fixture_output_proof/proof_manifest.json</code>, <code>docs/output_layer/local_fixture_output_proof/proof_readback.json</code>, and <code>docs/output_layer/local_fixture_output_proof/fixture_edit_pack.json</code> are parseable JSON. <code>docs/output_layer/local_fixture_output_proof/fixture_subtitles.srt</code> is the subtitle draft readback for this synthetic fixture.</p>
+  </main>
+</body>
+</html>

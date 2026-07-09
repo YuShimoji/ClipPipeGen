@@ -1,4 +1,4 @@
-"""CLI for OUT-01 output layer gap report generation."""
+"""CLI for output layer gap report and local fixture proof generation."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from tools.output_layer.build_output_layer_gap_report import (
 def run(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="build-output-layer-gap-report",
-        description="Build readback-only OUT-01 output capability and gap artifacts.",
+        description="Build OUT-02 local fixture output proof and gap artifacts.",
     )
     parser.add_argument(
         "--output-dir",
@@ -54,13 +54,18 @@ def run(argv: list[str]) -> int:
         "artifact_id": report["artifact_id"],
         "generated_at": report["generated_at"],
         "proof_status": report["proof_readback"]["proof_status"],
+        "source_kind": report["proof_readback"]["source_kind"],
+        "external_media_used": report["proof_readback"]["external_media_used"],
         "production_ready": report["proof_readback"]["production_ready"],
         "public_ready": report["proof_readback"]["public_ready"],
         "network_used": report["scope"]["network_used"],
+        "fetch_authorized": report["scope"]["fetch_authorized"],
+        "rights_approved": report["scope"]["rights_approved"],
         "media_generated": report["scope"]["media_generated"],
         "capability_count": len(report["capability_matrix"]),
         "gap_count": len(report["gap_log"]),
         "recommended_next_slice": report["recommended_next_slice"]["slice_id"],
+        "proof_artifacts": report["proof_artifacts"]["files"],
         "outputs": result["outputs"],
     }
 
