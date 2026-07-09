@@ -3,11 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: parallel_lane_integration_ready_for_review
+health: out02_local_fixture_output_proof_ready
 progress_pct: 100
 last_touched: 2026-07-09
-next_review_due: review_int01_then_branch_out02_from_integration
-active_artifact: clip-int01-parallel-lane-aggregation-v0-001
+next_review_due: review_out02_fixture_proof_then_choose_out03_or_real_material_smoke
+active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
+latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
+latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
+latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
 latest_int01_parallel_lane_aggregation_artifact: clip-int01-parallel-lane-aggregation-v0-001
 latest_int01_parallel_lane_aggregation_branch: codex/int-01-parallel-lane-aggregation-v0
 latest_int01_parallel_lane_aggregation_commit: branch_head_after_push
@@ -53,7 +56,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/THREAD_REGISTRY.md, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/output_layer/video_output_gap_log.json, docs/index.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/THREAD_REGISTRY.md, docs/output_layer/OUT_02_HANDOFF.md, docs/output_layer/video_output_gap_log.json, docs/output_layer/local_fixture_output_proof/proof_manifest.json, docs/output_layer/local_fixture_output_proof/proof_readback.json, docs/output_layer/local_fixture_output_proof/proof_timeline.html, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/index.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -68,22 +71,47 @@ instructions.
 ## Cross-Terminal Resume Checkpoint
 
 Checkpoint date: 2026-07-09 JST. A new terminal should fetch the remote and
-check out the INT-01 integration branch before reading project context:
+check out the OUT-02 branch before reading project context:
 
 ```powershell
 git fetch origin
-git switch codex/int-01-parallel-lane-aggregation-v0
+git switch codex/out-02-local-fixture-output-proof-smoke-v0
 git pull --ff-only
 ```
 
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
-`docs/THREAD_REGISTRY.md`, the INT-01 report under `docs/integration/`, and
-the `artifacts/ARTIFACTS.md` entry for
-`clip-int01-parallel-lane-aggregation-v0-001`.
+`docs/output_layer/OUT_02_HANDOFF.md`, `docs/THREAD_REGISTRY.md`, and the
+`artifacts/ARTIFACTS.md` entry for
+`clip-out02-local-fixture-output-proof-smoke-v0-001`.
 
-The latest tracked slice is INT-01. It aggregates four parallel lanes onto one
-review branch without opening source URLs, fetching media, making rights/public
-claims, or moving main:
+The latest tracked slice is OUT-02. It was created from the INT-01 integration
+branch and converts OUT-01 `proof_missing` into a portable local fixture output
+proof package. The proof is synthetic fixture data only: no source URL was
+opened, no external media was fetched/downloaded, no yt-dlp/OAuth/API was used,
+no production render/public upload was attempted, and rights/public/production
+flags remain false.
+
+OUT-02 package files:
+
+```text
+docs/output_layer/local_fixture_output_proof/proof_manifest.json
+docs/output_layer/local_fixture_output_proof/proof_readback.json
+docs/output_layer/local_fixture_output_proof/proof_timeline.html
+docs/output_layer/local_fixture_output_proof/fixture_edit_pack.json
+docs/output_layer/local_fixture_output_proof/fixture_subtitles.srt
+docs/output_layer/local_fixture_output_proof/README.md
+```
+
+The machine readback is `docs/output_layer/video_output_gap_log.json` with
+`proof_status=local_fixture_output_proof_present`,
+`source_kind=synthetic_fixture`, and
+`recommended_next_slice=OUT-03-selected-cut-proof-link`. Remaining gaps are
+real source material, real transcript, production render, rights approval, and
+public/upload.
+
+INT-01 remains the preserved integration source underneath OUT-02. It
+aggregated four parallel lanes onto one review branch without opening source
+URLs, fetching media, making rights/public claims, or moving main:
 
 - TRI-01 safety overcapture triage: `b04e422`
 - HUB-01 external source registry: `4f780d5`
@@ -92,10 +120,9 @@ claims, or moving main:
 
 The integration preserves each lane's artifacts and CLI/tests. The only code
 conflict was the shared CLI dispatcher, resolved by keeping HUB, OUT, and EWS
-subcommands together. Central docs/dashboard conflicts were normalized to the
-integration checkpoint and regenerated. Review INT-01 before promoting to
-main; OUT-02 should base on this integration branch after that review because
-it needs OUT-01 plus the EWS/HUB/TRI context.
+subcommands together. OUT-02 has already been branched from that integration
+state and pushed; do not restart OUT-02 from `origin/main` unless the
+integration and OUT-02 commits have first been carried there.
 
 For EWS-05 specifically, the repeatable local commands remain:
 

@@ -5,8 +5,9 @@ tracked synthetic fixture proof package so a reviewer can inspect the output
 package shape without source fetching, external media, production render,
 rights approval, or public upload.
 
-Start here when resuming the earlier OUT-01 context from another terminal:
+Start here when resuming from another terminal:
 
+- `OUT_02_HANDOFF.md` - current branch, artifact, validation, gate, and next-route context.
 - `OUT_01_HANDOFF.md` - branch, artifact, validation, gate, and next-route context.
 
 Regenerate the current OUT-02 artifacts from the repository root:

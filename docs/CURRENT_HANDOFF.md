@@ -3,11 +3,14 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: parallel_lane_integration_ready_for_review
+health: out02_local_fixture_output_proof_ready
 progress_pct: 100
 last_touched: 2026-07-09
-next_review_due: review_int01_then_branch_out02_from_integration
-active_artifact: clip-int01-parallel-lane-aggregation-v0-001
+next_review_due: review_out02_fixture_proof_then_choose_out03_or_real_material_smoke
+active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
+latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
+latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
+latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
 latest_int01_parallel_lane_aggregation_artifact: clip-int01-parallel-lane-aggregation-v0-001
 latest_int01_parallel_lane_aggregation_branch: codex/int-01-parallel-lane-aggregation-v0
 latest_int01_parallel_lane_aggregation_commit: branch_head_after_push
@@ -53,31 +56,59 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/output_layer/video_output_gap_log.json, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/output_layer/OUT_02_HANDOFF.md, docs/output_layer/video_output_gap_log.json, docs/output_layer/local_fixture_output_proof/proof_manifest.json, docs/output_layer/local_fixture_output_proof/proof_readback.json, docs/output_layer/local_fixture_output_proof/proof_timeline.html, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch the remote INT-01 integration branch, then read the project context:
+Fetch the remote OUT-02 branch, then read the project context:
 
 ```powershell
 git fetch origin
-git switch codex/int-01-parallel-lane-aggregation-v0
+git switch codex/out-02-local-fixture-output-proof-smoke-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
-`docs/THREAD_REGISTRY.md`, `docs/integration/int01_parallel_lane_aggregation_report.md`,
+`docs/output_layer/OUT_02_HANDOFF.md`, `docs/THREAD_REGISTRY.md`,
 and the `artifacts/ARTIFACTS.md` entry for
-`clip-int01-parallel-lane-aggregation-v0-001`.
+`clip-out02-local-fixture-output-proof-smoke-v0-001`.
 
-The durable state to carry forward is: INT-01 merges the TRI-01, HUB-01,
-OUT-01, and EWS-05 parallel branches into a reviewable integration branch. It
-keeps the lane artifacts intact, keeps all gates closed, and leaves main
-untouched. The branch is the recommended base for OUT-02 after review because
-OUT-02 needs OUT-01's gap log while benefiting from the EWS/HUB/TRI context.
+The durable state to carry forward is: OUT-02 is completed and pushed on
+`codex/out-02-local-fixture-output-proof-smoke-v0`. It converts OUT-01
+`proof_missing` into a tracked synthetic local fixture proof package without
+opening source URLs, fetching media, running yt-dlp, using OAuth/API, approving
+rights, rendering production media, uploading, or tracking `episodes/`.
+
+OUT-02 proof files are:
+
+```text
+docs/output_layer/local_fixture_output_proof/proof_manifest.json
+docs/output_layer/local_fixture_output_proof/proof_readback.json
+docs/output_layer/local_fixture_output_proof/proof_timeline.html
+docs/output_layer/local_fixture_output_proof/fixture_edit_pack.json
+docs/output_layer/local_fixture_output_proof/fixture_subtitles.srt
+docs/output_layer/local_fixture_output_proof/README.md
+```
+
+The machine readback is `docs/output_layer/video_output_gap_log.json`.
+Expected values: `proof_status=local_fixture_output_proof_present`,
+`source_kind=synthetic_fixture`, `external_media_used=false`,
+`network_used=false`, `fetch_authorized=false`, `rights_approved=false`,
+`production_ready=false`, and `public_ready=false`.
+
+The recommended next output slice is `OUT-03-selected-cut-proof-link`, because
+the proof package now exists but selected cut ids are not yet a first-class
+route into the proof surface. Real source material, real transcript,
+production render, rights approval, and public/upload remain separate gaps or
+true gates.
+
+The INT-01 integration context remains preserved underneath OUT-02. It merges
+the TRI-01, HUB-01, OUT-01, and EWS-05 parallel branches into a reviewable
+integration branch. It keeps the lane artifacts intact, keeps all gates closed,
+and leaves main untouched.
 
 The integrated source branches and commits are:
 

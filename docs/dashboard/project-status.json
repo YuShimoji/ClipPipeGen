@@ -1670,6 +1670,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-out02-local-fixture-output-proof-smoke-v0-001",
+      "title": "OUT-02 Local Fixture Output Proof Smoke v0",
+      "purpose": "Convert OUT-01 proof_missing into a tracked synthetic fixture proof package with parseable JSON, SRT subtitle draft, static HTML timeline, and remaining-gate readback.",
+      "storage_class": "Tracked local fixture artifact under docs/output_layer/; synthetic data only. It does not open source URLs, fetch/download external media, run yt-dlp, use OAuth/API, approve rights, create production render, mark public-ready, upload, or track episodes/.",
+      "repo_relative_path": "docs/output_layer/local_fixture_output_proof/proof_manifest.json; docs/output_layer/local_fixture_output_proof/proof_readback.json; docs/output_layer/local_fixture_output_proof/proof_timeline.html; docs/output_layer/local_fixture_output_proof/fixture_edit_pack.json; docs/output_layer/local_fixture_output_proof/fixture_subtitles.srt; docs/output_layer/local_fixture_output_proof/README.md",
+      "open_command": "start docs\\output_layer\\local_fixture_output_proof\\proof_timeline.html",
+      "review_status": "Ready as a local fixture output proof. It proves the package/readback shape only; real source material, real transcript, production render, rights approval, and public/upload readiness remain absent or gated.",
+      "next_action": "Use OUT-03-selected-cut-proof-link to connect selected cut ids to proof artifacts, or open a separately approved local-material/private-fetch smoke before any real-media output proof."
+    },
+    {
       "artifact_id": "clip-int01-parallel-lane-aggregation-v0-001",
       "title": "INT-01 Parallel Lane Aggregation / Thread Registry Sync v0",
       "purpose": "Merge TRI-01, HUB-01, OUT-01, and EWS-05 parallel lane outputs onto one reviewable integration branch and record the cross-terminal registry for the next worker.",
@@ -2322,6 +2332,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-out02-local-fixture-output-proof-smoke-v0-001",
       "clip-int01-parallel-lane-aggregation-v0-001",
       "clip-hub01-external-source-registry-v0-001",
       "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
@@ -2388,10 +2399,10 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 65
+    "artifact_count": 66
   },
   "artifact_coverage": {
-    "registered_artifact_count": 65,
+    "registered_artifact_count": 66,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
@@ -2658,7 +2669,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1465,
+      "line_count": 1492,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2666,7 +2677,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 323,
+      "boundary_term_count": 328,
       "status": "reference"
     },
     {
@@ -2789,7 +2800,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2087,
+      "line_count": 2115,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2797,7 +2808,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 821,
+      "boundary_term_count": 828,
       "status": "reference"
     },
     {
@@ -2859,7 +2870,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1241,
+      "line_count": 1272,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2867,7 +2878,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 284,
+      "boundary_term_count": 290,
       "status": "reference"
     },
     {
@@ -3226,7 +3237,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1465 lines) is likely carrying history.",
+        "detail": "Long active doc (1492 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3256,13 +3267,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2087 lines) is likely carrying history.",
+        "detail": "Long active doc (2115 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 821 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 828 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3286,7 +3297,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1241 lines) is likely carrying history.",
+        "detail": "Long active doc (1272 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
