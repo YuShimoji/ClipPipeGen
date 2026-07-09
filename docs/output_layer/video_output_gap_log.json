@@ -1,0 +1,232 @@
+{
+  "schema_id": "clippipegen.output_layer_gap_report.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-out01-output-layer-gap-logger-v0-001",
+  "generated_at": "2026-07-08T06:41:49.713798+00:00",
+  "active_slice": "OUT-01 Local Output Proof / Video Layer Gap Logger v0",
+  "scope": {
+    "repo": "ClipPipeGen",
+    "branch": "codex/out-01-output-layer-gap-logger-v0",
+    "readback_only": true,
+    "network_used": false,
+    "source_urls_opened": false,
+    "media_generated": false,
+    "production_render_attempted": false,
+    "public_upload_attempted": false,
+    "notes": [
+      "No source media was fetched, opened, downloaded, rendered, or uploaded.",
+      "This report classifies local readiness and true gates for the output layer."
+    ]
+  },
+  "proof_readback": {
+    "local_output_readback_status": "proof_missing_no_media_in_this_slice",
+    "proof_status": "proof_missing",
+    "production_ready": false,
+    "public_ready": false,
+    "reason": "The repository has local diagnostic output code paths, but this slice has no tracked source video/source audio/edit pack bundle to prove."
+  },
+  "capability_matrix": [
+    {
+      "capability_id": "source_material_presence",
+      "current_state": "absent",
+      "evidence_path": "docs/RUNTIME_STATE.md",
+      "missing_input": "Concrete local source_video/source_audio materials and ledger entries for a target episode.",
+      "next_local_action": "Use a later approved local-material intake/proof slice with operator-supplied files.",
+      "blocked_by_true_gate": false,
+      "notes": "The current repo state can describe output gaps, but it has no tracked media to prove.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "transcript_readiness",
+      "current_state": "local_ready",
+      "evidence_path": "docs/SCHEMAS/v1/transcript.md",
+      "missing_input": "A reviewed transcript for the target episode source audio.",
+      "next_local_action": "Validate or create transcript.json from local audio/fixture, then review it before acceptance.",
+      "blocked_by_true_gate": false,
+      "notes": "Transcript schema and CLI paths exist; this OUT slice did not ingest media or make a transcript.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "edit_pack_readiness",
+      "current_state": "local_ready",
+      "evidence_path": "docs/SCHEMAS/v1/edit_pack.md",
+      "missing_input": "An edit_pack connected to the reviewed transcript with selected cuts.",
+      "next_local_action": "Generate/validate cut candidates and selected_cut_ids after transcript review.",
+      "blocked_by_true_gate": false,
+      "notes": "Editing artifacts are local diagnostics until human acceptance.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "subtitle_readiness",
+      "current_state": "local_ready",
+      "evidence_path": "src/cli/generate_subtitles.py",
+      "missing_input": "Subtitle entries linked to selected cuts and reviewed for timing/text.",
+      "next_local_action": "Generate subtitle drafts from transcript segments, then run review/proof readbacks.",
+      "blocked_by_true_gate": false,
+      "notes": "Subtitle generation can support local proof; it is not a publication decision.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "thumbnail_brief_readiness",
+      "current_state": "planned",
+      "evidence_path": "src/pipeline/episode_init_plan.py",
+      "missing_input": "A concrete thumbnail brief artifact and selected source imagery/material refs.",
+      "next_local_action": "Promote thumbnail brief seed fields into an operator-reviewable output-layer artifact.",
+      "blocked_by_true_gate": false,
+      "notes": "Planning code references thumbnail intent, but OUT has no current thumbnail proof surface.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "preview_pack_readiness",
+      "current_state": "local_ready",
+      "evidence_path": "docs/PREVIEW_PACK.md",
+      "missing_input": "A target episode with local media or existing source audio material.",
+      "next_local_action": "Build a read-only local preview pack once operator-supplied material exists.",
+      "blocked_by_true_gate": false,
+      "notes": "Preview pack is useful readback, but it is not a rendered video proof.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "nle_export_readiness",
+      "current_state": "local_ready",
+      "evidence_path": "docs/SCHEMAS/v1/nle_export.md",
+      "missing_input": "A validated edit_pack with selected cuts and optional transcript refs.",
+      "next_local_action": "Export CSV/JSON/HTML cut-list readback for human review or NLE handoff.",
+      "blocked_by_true_gate": false,
+      "notes": "NLE export proves edit structure, not final encoded video.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "local_render_proof_readiness",
+      "current_state": "local_ready",
+      "evidence_path": "docs/SCHEMAS/v1/tiny_render.md",
+      "missing_input": "Source video, source audio, edit_pack, selected cut, and optional subtitle source.",
+      "next_local_action": "Run a narrow diagnostic proof only after local materials are explicitly available.",
+      "blocked_by_true_gate": false,
+      "notes": "The code path exists for local diagnostics; OUT-01 created a no-media proof_missing readback instead.",
+      "evidence_exists": true
+    },
+    {
+      "capability_id": "public_upload_readiness",
+      "current_state": "gated",
+      "evidence_path": "docs/AUTOMATION_BOUNDARY.md",
+      "missing_input": "Rights acceptance, publication judgment, account/OAuth setup, and public target selection.",
+      "next_local_action": "Keep public/upload out of local proof work; prepare only decision packets for human review.",
+      "blocked_by_true_gate": true,
+      "notes": "This is a true gate, not a missing local automation task.",
+      "evidence_exists": true
+    }
+  ],
+  "gap_log": [
+    {
+      "gap_id": "gap_source_material_absent",
+      "status": "gap",
+      "evidence_path": "docs/RUNTIME_STATE.md",
+      "missing_input": "No concrete local source_video/source_audio materials are present for this slice.",
+      "why_it_matters": "Visible video proof cannot be produced or inspected without source media.",
+      "local_vs_true_gate": "Local gap; operator-supplied files can unblock a diagnostic proof without public approval.",
+      "suggested_next_slice": "OUT-02-local-fixture-output-proof-smoke",
+      "validation": "A later proof run records source material ids and leaves git ls-files episodes empty."
+    },
+    {
+      "gap_id": "gap_current_no_proof_artifact",
+      "status": "proof_missing",
+      "evidence_path": "docs/SCHEMAS/v1/tiny_render.md",
+      "missing_input": "No current portable render/proof manifest is available in tracked docs/artifacts.",
+      "why_it_matters": "Reviewers can see readiness, but not inspect pixels/audio for a concrete episode yet.",
+      "local_vs_true_gate": "Local gap; not a rights/publication gate while proof remains diagnostic.",
+      "suggested_next_slice": "OUT-02-local-fixture-output-proof-smoke",
+      "validation": "Generated proof manifest remains production_ready=false and public_ready=false."
+    },
+    {
+      "gap_id": "gap_thumbnail_brief_only_planned",
+      "status": "gap",
+      "evidence_path": "src/pipeline/episode_init_plan.py",
+      "missing_input": "A reviewable thumbnail brief/output artifact tied to selected source materials.",
+      "why_it_matters": "The output layer cannot compare video proof, title, and thumbnail intent as one package.",
+      "local_vs_true_gate": "Local planning gap; final use still depends on human rights/creative acceptance.",
+      "suggested_next_slice": "TH-OUT-thumbnail-brief-readback",
+      "validation": "Brief JSON/HTML names source refs, intended crop/text, and acceptance boundaries."
+    },
+    {
+      "gap_id": "confirm_preview_pack_ready_not_video",
+      "status": "confirmation",
+      "evidence_path": "docs/PREVIEW_PACK.md",
+      "missing_input": "A concrete local media target is still needed to run it.",
+      "why_it_matters": "Preview pack can support review, but should not be mistaken for rendered video proof.",
+      "local_vs_true_gate": "Local confirmation; no true gate unless public/production claims are added.",
+      "suggested_next_slice": "SH-preview-pack-to-output-readback-link",
+      "validation": "Preview report remains read-only and contains no public upload behavior."
+    },
+    {
+      "gap_id": "confirm_nle_export_ready_not_encoded_output",
+      "status": "confirmation",
+      "evidence_path": "docs/SCHEMAS/v1/nle_export.md",
+      "missing_input": "An edit_pack with selected cuts for a real target episode.",
+      "why_it_matters": "NLE export proves editorial structure but not final output render quality.",
+      "local_vs_true_gate": "Local confirmation; production/public acceptance remains outside the export.",
+      "suggested_next_slice": "EDIT-to-OUT-selected-cut-proof-link",
+      "validation": "CSV/HTML readback points to selected cuts and keeps production flags false."
+    },
+    {
+      "gap_id": "gap_public_upload_true_gate",
+      "status": "true_gate",
+      "evidence_path": "docs/AUTOMATION_BOUNDARY.md",
+      "missing_input": "Rights decision, publication approval, account/OAuth, and target channel.",
+      "why_it_matters": "A local proof must not drift into public action or claim upload readiness.",
+      "local_vs_true_gate": "True gate; local automation can only prepare review packets.",
+      "suggested_next_slice": "PB-decision-packet-before-upload",
+      "validation": "Upload/public fields stay blocked until human-owned acceptance is recorded."
+    },
+    {
+      "gap_id": "recommend_next_out_slice",
+      "status": "recommendation",
+      "evidence_path": "docs/SCHEMAS/v1/tiny_render.md",
+      "missing_input": "A small approved local fixture/material bundle for a diagnostic proof run.",
+      "why_it_matters": "It is the shortest route from readiness inventory to inspectable output evidence.",
+      "local_vs_true_gate": "Local action; it should still avoid source fetching and public publication.",
+      "suggested_next_slice": "OUT-02-local-fixture-output-proof-smoke",
+      "validation": "Run targeted CLI/tests and attach generated proof readback to docs or artifacts."
+    }
+  ],
+  "recommended_next_slice": {
+    "slice_id": "OUT-02-local-fixture-output-proof-smoke",
+    "lane": "OUTPUT_VIDEO",
+    "goal": "Run the smallest approved local-material proof using explicit local source video, source audio, edit_pack, and subtitle inputs.",
+    "why_next": "It converts the current proof_missing readback into a concrete local render/proof receipt without crossing rights, network, or public gates.",
+    "validation": [
+      "CLI exits 0 on fixture/local-material inputs.",
+      "render/proof manifest keeps production_ready=false.",
+      "HTML readback embeds or links only local diagnostic outputs.",
+      "git ls-files episodes remains empty."
+    ]
+  },
+  "true_gates": [
+    {
+      "gate_id": "rights_and_publication_acceptance",
+      "blocked_by_true_gate": true,
+      "applies_to": [
+        "production_render",
+        "public_upload"
+      ],
+      "reason": "Rights, publication judgment, account/OAuth, and public destination are human-owned decisions.",
+      "evidence_path": "docs/AUTOMATION_BOUNDARY.md"
+    },
+    {
+      "gate_id": "source_media_acquisition",
+      "blocked_by_true_gate": false,
+      "applies_to": [
+        "local_diagnostic_proof"
+      ],
+      "reason": "A later local-material slice can use operator-supplied files without public acceptance.",
+      "evidence_path": "docs/SCHEMAS/v1/tiny_render.md"
+    }
+  ],
+  "validation_plan": [
+    "Run build-output-layer-gap-report and parse video_output_gap_log.json.",
+    "Confirm every capability row carries the required OUT-01 fields.",
+    "Confirm local_output_readback.html has no form, button, or video player.",
+    "Run targeted pytest coverage for this generator and asset-fetch boundary smoke.",
+    "Run git diff --check and confirm git ls-files episodes is empty."
+  ]
+}
