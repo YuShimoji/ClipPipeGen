@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -29,34 +30,187 @@ def build_cockpit(tmp_path: Path):
     )
 
 
-def test_operator_cockpit_classifies_source_grounding(tmp_path: Path):
+def test_operator_cockpit_builds_minimal_review_console_and_preserves_boundaries(tmp_path: Path):
     result = build_cockpit(tmp_path)
 
     payload = json.loads(result["output_path"].read_text(encoding="utf-8"))
     html = result["dashboard_path"].read_text(encoding="utf-8")
 
     assert payload["schema_id"] == "clippipegen.operator_cockpit.v0"
-    assert payload["title"] == "ClipPipeGen Operator Cockpit / Content Planning Review"
-    assert payload["artifact_id"] == "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
-    assert payload["ux"]["version"] == "v2_dark_mode_v0"
-    assert payload["ux"]["layout"] == "vertical_primary_review_card"
+    assert payload["title"] == "ClipPipeGen Review Console"
+    assert payload["artifact_id"] == "clip-cpd12-minimal-review-console-v0-001"
+    assert payload["ux"]["version"] == "v7_minimal_review_console_v0"
+    assert payload["ux"]["layout"] == "minimal_review_console_true_modes"
     assert payload["ux"]["default_theme"] == "dark"
     assert payload["ux"]["theme_toggle"] is True
-    assert payload["summary"]["total_candidates"] == 5
-    assert payload["summary"]["total_seed_drafts"] == 5
-    assert payload["summary"]["source_url_present_count"] == 1
-    assert payload["summary"]["source_backed_count"] == 1
-    assert payload["summary"]["source_missing_count"] == 4
-    assert payload["summary"]["source_missing_idea_backlog_count"] == 3
-    assert payload["summary"]["blocked_or_hold_count"] == 1
-    assert payload["summary"]["inspectable_packet_count"] == 1
-    assert payload["summary"]["decision_template_entry_count"] == 1
-    assert payload["summary"]["fetch_authorized_count"] == 0
-    assert payload["summary"]["media_downloaded"] is False
-    assert payload["summary"]["episode_dirs_created"] is False
-    assert payload["summary"]["health"] == "ready_for_single_source_identity_review"
+    assert payload["ux"]["fixed_shell"] == "visible"
+    assert payload["ux"]["default_visible_mode"] == "review"
+    assert payload["ux"]["mode_separation"] == "review_backlog_system"
+    assert payload["ux"]["briefing_board"] == "superseded_by_view_shell"
+    assert payload["ux"]["annotated_flow"] == "model_readback_only"
+    assert payload["ux"]["candidate_ledger"] == "responsive_stacked"
+    assert payload["ux"]["ledger_layout"] == "responsive_ledger_stacked"
+    assert payload["ux"]["title_wrapping_guard"] is True
+    assert payload["ux"]["id_wrapping_scope"] == "code_strip_only"
+    assert payload["ux"]["candidate_ledger_default"] == "collapsed"
+    assert payload["ux"]["system_mode_default"] == "collapsed"
+    assert payload["ux"]["microcopy_budget"] is True
+    assert payload["ux"]["usage_frequency_ia"] is False
+    assert payload["ux"]["developer_appendix_default"] == "collapsed"
+
+    summary = payload["summary"]
+    assert summary["total_candidates"] == 5
+    assert summary["total_seed_drafts"] == 5
+    assert summary["source_url_present_count"] == 1
+    assert summary["source_backed_count"] == 1
+    assert summary["source_missing_count"] == 4
+    assert summary["source_missing_idea_backlog_count"] == 3
+    assert summary["blocked_or_hold_count"] == 1
+    assert summary["inspectable_packet_count"] == 1
+    assert summary["decision_template_entry_count"] == 1
+    assert summary["fetch_authorized_count"] == 0
+    assert summary["media_downloaded"] is False
+    assert summary["episode_dirs_created"] is False
+    assert summary["health"] == "ready_for_single_source_identity_review"
     assert payload["recommended_next_action"]["action_id"] == "inspect_single_source_backed_item"
     assert payload["recommended_next_action"]["user_work"] == "open_only"
+
+    shell = payload["shell"]
+    assert shell["shell_id"] == "minimal_review_console"
+    assert shell["title"] == "Review Console"
+    assert shell["version_label"] == "CPD-12"
+    assert shell["artifact_id"] == "clip-cpd12-minimal-review-console-v0-001"
+    assert shell["branch_label"] == "codex/cpd-12-minimal-review-console-v0"
+    assert shell["default_mode"] == "review"
+    assert shell["mode_ids"] == ["review", "backlog", "system"]
+    assert "console_header" in shell["fixed_regions"]
+    assert "mode_switcher" in shell["fixed_regions"]
+    assert "current_work_item" in shell["dynamic_slots"]
+    assert "provenance_badges" in shell["dynamic_slots"]
+    assert set(shell["anchors"]) >= {
+        "#review-console",
+        "#mode-review",
+        "#current-review",
+        "#mode-backlog",
+        "#backlog",
+        "#candidate-ledger",
+        "#mode-system",
+        "#system",
+        "#safety-boundary",
+        "#developer-appendix",
+    }
+    assert payload["microcopy_policy"]["first_viewport_explanatory_paragraph_limit"] == 1
+    assert payload["microcopy_policy"]["machine_state_visibility"] == "system_mode_or_code_strip_only"
+
+    status_rail = payload["status_rail"]
+    assert [chip["id"] for chip in status_rail["chips"]] == [
+        "source_url_present",
+        "source_url_waiting",
+        "hold",
+        "locked",
+    ]
+    assert [chip["value"] for chip in status_rail["chips"]] == [1, 3, 1, "fetch/render/upload/rights"]
+    assert status_rail["lock_line"] == "locked: fetch/render/upload/rights"
+    assert payload["gate_summary"]["line"] == "locked: fetch / transcript / render / upload / rights"
+    assert payload["gate_summary"]["compact_line"] == "locked: fetch/render/upload/rights"
+    assert payload["gate_summary"]["locked_gate_count"] == 5
+
+    current = payload["current_work_item"]
+    assert current["work_item_id"] == "source_identity_review"
+    assert current["label"] == "Current Review"
+    assert current["title"] == "番長、船長を完全に勘違いする"
+    assert current["planning_label"] == "番長、船長を完全に勘違いする"
+    assert current["label_provenance"] == "planning_label_unverified"
+    assert current["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
+    assert current["source_url_state"] == "present"
+    assert current["identity_state"] == "unverified"
+    assert current["fetch_authorized"] is False
+    assert current["source_opened_by_worker"] is False
+    assert current["verified_video_title"] == ""
+    assert [item["label"] for item in current["decision_labels"]] == ["OK", "NG", "HOLD"]
+    assert all(marker["marker"] == "[ ]" for marker in current["unverified_markers"])
+    assert [badge["id"] for badge in payload["provenance_badges"]] == [
+        "planning_label",
+        "source_url_present",
+        "identity_unverified",
+        "not_fetched",
+    ]
+
+    assert [mode["mode_id"] for mode in payload["modes"]] == ["review", "backlog", "system"]
+    assert [mode["panel_id"] for mode in payload["modes"]] == ["mode-review", "mode-backlog", "mode-system"]
+    assert payload["modes"][0]["default_active"] is True
+    assert payload["modes"][1]["default_active"] is False
+    assert payload["modes"][2]["default_active"] is False
+    assert {target["id"] for target in payload["link_targets"]} >= {
+        "review-console",
+        "mode-review",
+        "current-review",
+        "mode-backlog",
+        "backlog",
+        "candidate-ledger",
+        "mode-system",
+        "system",
+        "safety-boundary",
+        "developer-appendix",
+    }
+
+    briefing = payload["briefing"]
+    assert briefing["briefing_id"] == "cpd12_minimal_review_console_readback"
+    assert briefing["primary_action"]["href"] == "#current-review"
+    assert briefing["primary_action"]["state"] == "human_review_waiting"
+    assert briefing["flow_stage_count"] == 5
+    assert briefing["locked_line"] == "locked: fetch/render/upload/rights"
+
+    assert [stage["stage_id"] for stage in payload["annotated_flow"]] == [
+        "ideas",
+        "source_backed",
+        "human_review_waiting",
+        "private_local_review",
+        "edit_render_public",
+    ]
+    assert [stage["count"] for stage in payload["annotated_flow"]] == [5, 1, 1, 0, 0]
+    assert payload["annotated_flow"][1]["href"] == "#current-review"
+    assert payload["annotated_flow"][2]["is_bottleneck"] is True
+    assert payload["annotated_flow"][3]["status"] == "locked"
+
+    assert [item["frequency"] for item in payload["usage_frequency_sections"]] == [
+        "常用",
+        "要確認",
+        "必要時",
+        "開発用",
+    ]
+    assert payload["usage_frequency_sections"][2]["section_id"] == "candidate-ledger"
+    ledger_by_id = {item["candidate_id"]: item for item in payload["candidate_ledger"]}
+    assert len(ledger_by_id) == 5
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["video_backed"] is True
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["href"] == "#current-review"
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["source_state_label"] == "URLあり"
+    assert ledger_by_id["cpd01_bancho_marine_misunderstanding"]["review_state_label"] == "確認待ち"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["ledger_group"] == "source_missing"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["video_backed"] is False
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["review_state"] == "not_reviewable_as_video"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["source_state_label"] == "URL待ち"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["review_state_label"] == "動画未確認"
+    assert ledger_by_id["cpd01_jp_en_phrase_gap"]["operator_use_label"] == "URL待ち"
+    assert ledger_by_id["cpd01_song_moment_hold"]["ledger_group"] == "blocked_hold"
+    assert ledger_by_id["cpd01_song_moment_hold"]["operator_use_label"] == "権利route待ち"
+
+    assert payload["action_script"]["script_id"] == "single_source_identity_check"
+    assert payload["action_script"]["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
+    assert payload["action_script"]["visual_choices"][0]["label"] == "OK"
+    assert all(marker["marker"] == "[ ]" for marker in payload["action_script"]["unverified_markers"])
+    assert {item["section_id"] for item in payload["section_links"]} >= {
+        "review-console",
+        "mode-review",
+        "current-review",
+        "mode-backlog",
+        "backlog",
+        "candidate-ledger",
+        "mode-system",
+        "system",
+        "safety-boundary",
+        "developer-appendix",
+    }
 
     gates = payload["gate_readback"]
     assert gates["source_opened_by_worker"] is False
@@ -76,17 +230,13 @@ def test_operator_cockpit_classifies_source_grounding(tmp_path: Path):
     ready = source_backed[0]
     assert ready["candidate_id"] == "cpd01_bancho_marine_misunderstanding"
     assert ready["seed_id"] == "seed_cpd01_bancho_marine_misunderstanding"
-    assert ready["inspection_packet_id"] == (
-        "source_inspection_packet_ep_seed_cpd01_bancho_marine_misunderstanding"
-    )
     assert ready["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
     assert ready["video_id"] == "7J5aS_pcBj4"
-    assert ready["provenance_state"] == "source_url_present_unreviewed"
     assert ready["source_grounding_status"] == "source_url_present_but_identity_unchecked_by_worker"
     assert ready["source_open_state"] == "not_opened_by_worker"
     assert ready["decision_state"] == "pending"
     assert ready["human_action"] == "open_source_url_and_check_identity"
-    assert ready["not_yet"] == ["fetch", "transcript", "render", "public", "rights"]
+    assert ready["not_yet"] == ["fetch", "transcript", "render", "upload", "rights"]
     assert ready["fetch_authorized"] is False
     assert ready["rights_status"] == "pending"
     assert ready["rights_approved"] is False
@@ -112,50 +262,106 @@ def test_operator_cockpit_classifies_source_grounding(tmp_path: Path):
     assert blocked[0]["reason"] == "song_or_music_rights_sensitive"
     assert blocked[0]["grounding_status"] == "not_grounded_to_source"
     assert blocked[0]["warning"] == "do_not_treat_as_video-backed_candidate"
+    assert all(item["open_by_default"] is False for item in payload["buckets"]["internal_pipeline_artifact_only"])
 
-    assert all(
-        item["candidate_id"] != "cpd01_jp_en_phrase_gap"
-        for item in source_backed
-    )
-    assert all(
-        item["open_by_default"] is False
-        for item in payload["buckets"]["internal_pipeline_artifact_only"]
-    )
-
-    assert "ClipPipeGen Operator Cockpit / Content Planning Review" in html
+    assert "ClipPipeGen Review Console" in html
+    assert "fixed shell: Review Console" in html
+    assert "data slot: current_work_item" in html
+    assert "CPD-12" in html
+    assert "clip-cpd12-minimal-review-console-v0-001" in html
+    assert html.index("clip-cpd12-minimal-review-console-v0-001") < html.index('id="mode-review"')
     assert 'data-theme="dark"' in html
     assert "--bg:" in html
     assert "--surface:" in html
     assert "toggleOperatorTheme" in html
     assert "localStorage" in html
+    assert "data-view" in html
+    assert "data-mode-target" in html
+    assert "data-mode-panel" in html
     assert 'id="theme-toggle"' in html
-    assert "今、人間が確認する動画は 1 件だけです。" in html
-    assert "残り 4 件は元動画未特定の企画メモ" in html
-    assert 'id="primary-review-card"' in html
-    assert "今回確認する1件" in html
-    assert "このURLは、「番長、船長を完全に勘違いする」の元動画として妥当か？" in html
-    assert "判断ラベル（表示のみ）" in html
-    assert "今は取得しない" in html
-    assert "文字起こししない" in html
-    assert "cpd01_jp_en_phrase_gap" in html
-    assert "do_not_treat_as_video-backed_candidate" not in html
-    assert "未特定の企画メモ" in html
-    assert "元動画未確認。動画候補として扱わない。" in html
+    assert 'id="review-console"' in html
+    assert 'id="mode-review"' in html
+    assert 'id="current-review"' in html
+    assert "Review / 常用" in html
+    assert "Backlog / 要確認" in html
+    assert "System / 開発用" in html
+    assert "status rail" in html
+    assert "Current Review" in html
+    assert "Planning label" in html
+    assert "planning_label" in html
+    assert "source_url_present" in html
+    assert "identity_unverified" in html
+    assert "not_fetched" in html
+    assert "Decision labels" in html
+    assert "locked: fetch / transcript / render / upload / rights" in html
+    assert 'id="candidate-ledger"' in html
+    assert "Candidate Ledger" in html
+    assert 'href="#current-review"' in html
+    assert 'href="#backlog"' in html
+    assert 'id="backlog"' in html
+    assert 'id="system"' in html
     assert 'id="safety-boundary"' in html
-    assert "安全境界" in html
     assert 'id="developer-appendix"' in html
-    assert "開発用詳細" in html
+    assert "not video-backed" in html
+    assert "cpd01_jp_en_phrase_gap" in html
+    assert "番長、船長を完全に勘違いする" in html
+    assert "日本語の一言で EN 組が固まる" in html
+    assert "表情が一瞬で変わるホロメン" in html
+    assert "失敗したのに立て直しが早すぎる" in html
+    assert "歌の合間に急に本音が出る" in html
+    assert "URLあり" in html
+    assert "URL待ち" in html
+    assert "動画未確認" in html
+    assert "権利route待ち" in html
+    assert "not source-ready" in html
+    assert "verified video title" not in html.lower()
+    assert "do_not_treat_as_video-backed_candidate" not in html
+    assert "checkmark" not in html
+    assert "✓" not in html
+    assert "☑" not in html
+    assert "✅" not in html
+    assert "✔" not in html
+    assert "Operator Home / Funnel Meters v0" not in html
+    assert 'id="operator-home"' not in html
+    assert "Action Queue" not in html
+    assert 'id="action-queue"' not in html
+    assert "Briefing Board / Usage-Frequency IA v0" not in html
+    assert 'id="briefing-board"' not in html
+    assert "今日のBriefing" not in html
+    assert "meter-grid" not in html
+    assert "queue-grid" not in html
     assert "content_dashboard.html" in html
     assert "source_inspection_packet_dashboard.html" in html
-    assert "source-backed" not in html
-    assert "artifact_id:" not in html[: html.index('id="developer-appendix"')]
-    primary = html[html.index('id="primary-review-card"') : html.index('id="source-missing-ideas"')]
-    assert "<table>" not in primary
-    assert html.index('id="primary-review-card"') < html.index('id="source-missing-ideas"')
-    assert html.index('id="source-missing-ideas"') < html.index('id="safety-boundary"')
-    assert html.index('id="safety-boundary"') < html.index('id="developer-appendix"')
-    assert "<details open" not in html
+    assert "artifact_id:" in html[html.index('id="developer-appendix"') :]
 
+    review_area = html[html.index('id="mode-review"') : html.index('id="mode-backlog"')]
+    assert "<table>" not in review_area
+    assert review_area.count("<p") <= 6
+    assert html.index('id="mode-review"') < html.index('id="mode-backlog"')
+    assert html.index('id="mode-backlog"') < html.index('id="candidate-ledger"')
+
+    ledger_area = html[html.index('id="candidate-ledger"') : html.index('id="mode-system"')]
+    assert '<table class="ledger-table">' not in ledger_area
+    assert "<table>" not in ledger_area
+    assert "<details>" in ledger_area
+    assert 'class="ledger-list"' in ledger_area
+    assert ledger_area.count('class="ledger-item') == 5
+    assert 'class="ledger-title"' in ledger_area
+    assert 'class="code-strip"' in ledger_area
+    assert "source_url_present_identity_unchecked" not in ledger_area
+    assert "human_review_pending" not in ledger_area
+    assert "source_url_intake_backlog" not in ledger_area
+    assert "word-break:break-all" in html
+    assert ".code-strip code" in html
+    assert ".ledger-title" in html
+    assert ".ledger-title{font-size:18px;line-height:1.48;letter-spacing:0;word-break:normal;overflow-wrap:normal" in html
+
+    assert html.index('id="candidate-ledger"') < html.index('id="mode-system"')
+    assert html.index('id="system"') < html.index('id="developer-appendix"')
+    assert "<details open" not in html
+    ids = set(re.findall(r'id="([^"]+)"', html))
+    for href in re.findall(r'href="#([^"]+)"', html):
+        assert href in ids
     assert not (tmp_path / "episodes").exists()
 
 
@@ -204,12 +410,29 @@ def test_build_operator_cockpit_cli_writes_outputs(tmp_path: Path):
 
     assert completed.returncode == 0, completed.stderr
     payload = json.loads(completed.stdout)
-    assert payload["artifact_id"] == "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+    assert payload["artifact_id"] == "clip-cpd12-minimal-review-console-v0-001"
     assert payload["total_candidates"] == 5
     assert payload["source_backed_count"] == 1
     assert payload["source_missing_count"] == 4
     assert payload["source_missing_idea_backlog_count"] == 3
     assert payload["blocked_or_hold_count"] == 1
+    assert payload["shell_present"] is True
+    assert payload["view_shell_present"] is True
+    assert payload["ux_version"] == "v7_minimal_review_console_v0"
+    assert payload["console_layout"] == "minimal_review_console_true_modes"
+    assert payload["default_visible_mode"] == "review"
+    assert payload["work_mode_count"] == 3
+    assert payload["mode_count"] == 3
+    assert payload["status_rail_chip_count"] == 4
+    assert payload["queue_chip_count"] == 4
+    assert payload["locked_gate_count"] == 5
+    assert payload["ledger_layout"] == "responsive_ledger_stacked"
+    assert payload["title_wrapping_guard"] is True
+    assert payload["candidate_ledger_row_count"] == 5
+    assert payload["provenance_badge_count"] == 4
+    assert payload["link_target_count"] >= 10
+    assert payload["action_script_id"] == "single_source_identity_check"
+    assert payload["current_work_item_id"] == "source_identity_review"
     assert payload["recommended_next_action"] == "inspect_single_source_backed_item"
     assert payload["source_opened_by_worker"] is False
     assert payload["network_required"] is False

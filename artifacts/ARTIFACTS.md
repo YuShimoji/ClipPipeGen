@@ -16,6 +16,32 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-int01-parallel-lane-aggregation-v0-001`
+
+| Field | Value |
+|---|---|
+| title | INT-01 Parallel Lane Aggregation / Thread Registry Sync v0 |
+| purpose | Merge TRI-01, HUB-01, OUT-01, and EWS-05 parallel lane outputs onto one reviewable integration branch and record the cross-terminal registry for the next worker. |
+| storage class | Tracked local Markdown/JSON integration report plus thread registry. It does not open source URLs, fetch media, call external APIs, approve rights, mark production/public ready, merge main, or create a PR. |
+| repo_relative_path | `docs/integration/int01_parallel_lane_aggregation_report.json; docs/integration/int01_parallel_lane_aggregation_report.md; docs/THREAD_REGISTRY.md` |
+| machine_output | `docs/integration/int01_parallel_lane_aggregation_report.json` |
+| source_inputs | `origin/codex/tri-01-safety-overcapture-triage-v0`; `origin/codex/hub-01-external-source-registry-v0`; `origin/codex/out-01-output-layer-gap-logger-v0`; `origin/codex/ews-05-human-ok-fetch-prep-ready-v0` |
+| open_command | `type docs\integration\int01_parallel_lane_aggregation_report.md` |
+| validation_command | Targeted lane tests, CLI smokes for external source registry/output gap/docs dashboard, JSON parse checks, `git diff --check`, and `git ls-files episodes`. |
+| review_status | Ready for integration review after targeted local validation. The shared CLI dispatcher preserves HUB, OUT, and EWS subcommands. Central docs/dashboard conflicts are recorded in `docs/THREAD_REGISTRY.md` and the INT-01 report. |
+| next_action | Review INT-01, then branch OUT-02 from `codex/int-01-parallel-lane-aggregation-v0` if the integration is accepted. Merge into main only after manual review of the combined central docs/dashboard surface. |
+
+Boundary flags remain false:
+
+- `source_urls_opened=false`
+- `network_fetch_used=false`
+- `media_downloaded=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+- `main_merged=false`
+- `pull_request_created=false`
+
 ## `clip-hub01-external-source-registry-v0-001`
 
 | Field | Value |
@@ -40,21 +66,249 @@ Boundary flags remain false:
 - `rights_approved=false`
 - `public_ready=false`
 
-## `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`
+## `clip-ews05-human-ok-fetch-prep-ready-package-v0-001`
 
 | Field | Value |
 |---|---|
-| title | ClipPipeGen Operator Cockpit / Content Planning Review UX v2 |
-| purpose | Give humans one dark-mode, vertical content-planning entry point with a Primary Review Card for the single known source URL and secondary folded sections for missing-source ideas and developer details. |
-| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-06 table-heavy layout in the same output path. |
+| title | EWS-05 Human OK Decision Application / Fetch-Prep Ready Package v0 |
+| purpose | Record the human operator's source identity OK report and package the resulting ready-for-future-private-fetch-plan readback for the current CPD-12 source-backed candidate. |
+| storage class | Tracked local JSON/Markdown package; consumes the EWS-01 workspace plan, EWS-03 decision intake, EWS-04 fetch-prep planner, and a human operator report. No worker URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights approval, production-ready, or public-ready state is created. |
+| repo_relative_path | `docs/content_planning/source_fetch_prep_ready_package.json; docs/content_planning/source_fetch_prep_ready_package.md; docs/content_planning/source_identity_human_ok_decision.json` |
+| machine_output | `source_identity.decision.json` and `source_fetch_prep_plan.json` inside an explicit tempdir smoke workspace; tracked portable readback stays under `docs/content_planning/`. |
+| source_inputs | `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; `docs/content_planning/source_identity_human_ok_decision.json`; explicit tempdir workspace |
+| open_command | `type docs\content_planning\source_fetch_prep_ready_package.json` |
+| validation_command | Tempdir init/record/plan smoke, JSON parse checks, `uvx pytest -q tests/test_episode_workspace.py tests/test_docs_dashboard.py`, `git diff --check`, and `git ls-files episodes`. |
+| review_status | Ready as the human OK fetch-prep package. The human report says the URL opens, candidate intent is consistent, and content matches the explanation; the worker did not open the URL. The generated plan reaches `prep_state=ready_for_future_private_fetch_plan` while preserving `fetch_authorized=false`, `media_downloaded=false`, `rights_approved=false`, and `public_ready=false`. |
+| next_action | Require explicit private fetch smoke approval before any source fetch/download lane. Do not treat this package as rights/public/production/upload approval. |
+
+Package boundary flags remain false:
+
+- `worker_source_url_opened=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `upload_created=false`
+- `rights_approved=false`
+- `public_ready=false`
+
+## `clip-ews04-source-fetch-prep-planner-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0 |
+| purpose | Convert an explicit EWS workspace plus `source_identity.decision.json` into a local source fetch-prep plan or a blocked plan with machine-readable reason. |
+| storage class | Code-backed local JSON artifact; consumes an inspected workspace, automation contract, and EWS-03 decision record. No source URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created. |
+| repo_relative_path | `src/pipeline/episode_workspace.py` |
+| machine_output | `source_fetch_prep_plan.json` inside an explicit local/temp workspace, plus parseable stdout JSON. |
+| source_inputs | explicit materialized workspace path; `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; workspace `source_identity.decision.json` |
+| open_command | `python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json` |
+| validation_command | `uvx pytest -q tests/test_episode_workspace.py` plus tempdir init/inspect/prepare/record/plan smoke and JSON parse checks. |
+| review_status | Ready as the local fetch-prep planning surface. Missing decisions block as `source_identity_decision_missing`; `pending`, `ng`, and `hold` decisions block with source identity reasons; `ok` plus `allows_fetch_prep=true` returns `prep_state=ready_for_future_private_fetch_plan` while preserving `fetch_authorized=false`, `media_downloaded=false`, `rights_approved=false`, and `public_ready=false`. |
+| next_action | Use the plan to decide whether a later private/local fetch smoke slice should be explicitly opened. Do not fetch media or open source/public/rights gates from this plan. |
+
+Fetch-prep planner boundary flags remain false:
+
+- `source_url_opened=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `transcript_created=false`
+- `render_created=false`
+- `thumbnail_created=false`
+- `upload_created=false`
+- `rights_approved=false`
+- `public_ready=false`
+
+## `clip-ews03-source-identity-decision-intake-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-03 Source Identity Decision Intake / Local Decision Record v0 |
+| purpose | Create a pending local source identity decision template and validate/write a human-provided `pending` / `ok` / `ng` / `hold` decision record into an explicit workspace. |
+| storage class | Code-backed local JSON artifact; consumes an inspected workspace and a local decision file. No source URL opening, fetch authorization, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created. |
+| repo_relative_path | `src/pipeline/episode_workspace.py` |
+| machine_output | `source_identity_decision.template.json` and `source_identity.decision.json` inside an explicit local/temp workspace. |
+| source_inputs | explicit materialized workspace path; `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; local decision JSON for recording |
+| open_command | `python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json` |
+| prepare_command | `python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json` |
+| record_command | `python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision <decision.json> --format json` |
+| validation_command | `python -m pytest -q tests/test_episode_workspace.py` plus tempdir init/inspect/prepare/record smoke and JSON parse checks. |
+| review_status | Ready as the local source identity decision intake. Generated templates default to `identity_decision=pending`; records reject unknown values; `ok` requires reviewer or notes; `allows_fetch_prep=true` only for `ok`, while `fetch_authorized=false`, `rights_approved=false`, and `public_ready=false` always remain. |
+| next_action | Use the decision record as the input to a later fetch-prep planning slice. Do not fetch media or open source/public/rights gates from this record. |
+
+Decision intake boundary flags remain false:
+
+- `source_url_opened=false`
+- `fetch_authorized=false`
+- `media_files_created=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `rights_approved=false`
+- `public_ready=false`
+
+## `clip-ews02-episode-workspace-inspector-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-02 Episode Workspace Inspector / Manifest Consumer v0 |
+| purpose | Read a materialized local/temp EWS-01 workspace skeleton and emit machine-readable readiness/status JSON for downstream local pipeline consumers. |
+| storage class | Code-backed local status artifact; consumes an explicit workspace path and writes no media, transcript, render, thumbnail, source receipt, upload, auth, rights, or public-ready state. |
+| repo_relative_path | `src/pipeline/episode_workspace.py` |
+| machine_output | stdout JSON from `inspect-episode-workspace`; optional `--output` JSON path supplied by the operator. |
+| source_inputs | `docs/content_planning/episode_workspace_plan.json`; `docs/content_planning/automation_contract.json`; explicit materialized workspace path |
+| open_command | `python -m src.cli.main inspect-episode-workspace --workspace <workspace> --format json` |
+| generated_from | `inspect-episode-workspace` reading a local skeleton created by `init-episode-workspace`. |
+| validation_command | `python -m pytest -q tests/test_episode_workspace.py` plus tempdir materialize/inspect smoke and JSON parse checks. |
+| review_status | Ready as the read-only local workspace consumer. A complete EWS-01 tempdir skeleton reports `manifest_state=initialized`, `source_identity_state=pending`, `readiness_level=source_identity_pending`, `skeleton_ready=true`, `ready_for_source_identity_decision=true`, and `ready_for_fetch=false`. |
+| next_action | Use the inspector JSON as the handoff to a later source-decision intake or local fetch-prep slice; do not fetch media or open external gates from this command. |
+
+Inspector boundary flags remain false:
+
+- `source_url_opened=false`
+- `media_files_created=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `rights_approved=false`
+- `ready_for_fetch=false`
+- `blocked_by_true_gate=false`
+
+## `clip-ews01-episode-workspace-spine-v0-001`
+
+| Field | Value |
+|---|---|
+| title | EWS-01 Episode Workspace Spine / Thin Gate Contract v0 |
+| purpose | Convert the CPD-12 current Review item into a local episode workspace plan, with a compact contract that separates allowed local actions from deferred local actions and true external gates. |
+| storage class | Tracked local planning artifact; portable JSON contract and workspace plan. No source fetch, media, transcript, render, thumbnail proof, OAuth/API, rights approval, publication, or tracked `episodes/` material is created. |
+| repo_relative_path | `docs/content_planning/episode_workspace_plan.json` |
+| machine_output | `docs/content_planning/automation_contract.json` |
+| source_inputs | `docs/content_planning/operator_cockpit.json` |
+| open_command | `python -m src.cli.main build-episode-workspace-plan --format json` |
+| skeleton_command | `python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json` |
+| generated_from | `build-episode-workspace-plan` reading the CPD-12 current work item from local operator cockpit JSON. |
+| validation_command | `python -m pytest -q tests/test_episode_workspace.py` plus JSON parse checks and an explicit tempdir skeleton smoke. |
+| review_status | Ready as the downstream local workspace spine. The plan carries `episode_id=ep_seed_cpd01_bancho_marine_misunderstanding`, the CPD-12 planning label, `label_provenance=planning_label_unverified`, `source_url_state=present`, `identity_state=unverified`, and `fetch_authorized=false`. |
+| next_action | Inspect or regenerate the plan, then use `init-episode-workspace` only with a tempdir or explicit ignored target if a local skeleton is needed before any source/media lane opens. |
+
+Thin contract categories:
+
+- `allowed_local_actions`: JSON generation, local CLI, explicit tempdir skeletons, explicit ignored local skeletons, local source identity decision records, docs/readme pointers, and targeted tests.
+- `deferred_local_actions`: source URL opening, source fetch/download, transcript, render, thumbnail proof, and local media processing.
+- `true_external_gates`: public upload/publication, OAuth/API keys/credentials, payment, legal/rights approval claims, destructive git, cross-repo edits, and irreversible source overwrite.
+
+Boundary flags remain false or pending:
+
+- `planning_label_is_verified_video_title=false`
+- `source_url_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `transcript_generated=false`
+- `render_generated=false`
+- `thumbnail_generated=false`
+- `oauth_or_credentials_used=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
+## `clip-cpd12-minimal-review-console-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Review Console / Minimal Review Console v0 |
+| purpose | Convert the CPD operator cockpit from a weak view shell into a compact reusable review console with explicit fixed shell regions, dynamic data slots, true Review / Backlog / System modes, and planning-label provenance. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-11 view-shell surface in the same output path. |
 | repo_relative_path | `docs/content_planning/operator_cockpit.html` |
 | machine_output | `docs/content_planning/operator_cockpit.json` |
 | source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
 | open_command | `start docs\content_planning\operator_cockpit.html` |
 | generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
 | validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
-| review_status | Ready as the normal human entry point for CPD planning review. Top screen is a Primary Review Card, not a wide status table. Only `cpd01_bancho_marine_misunderstanding` has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates. |
-| next_action | Open the cockpit first, inspect the single source-backed item as a human source identity check, or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04. |
+| latest_validation_result | CPD-12 checkpoint on 2026-07-07 JST: `uvx pytest -q` -> `339 passed, 16 skipped`; targeted cockpit/dashboard tests -> `23 passed`; cockpit/dashboard JSON parsed; `git diff --check` clean; `git ls-files episodes` empty; pushed parity `0 0`. |
+| review_status | Ready as the normal human entry point for CPD planning review. The first viewport shows CPD-12 and the artifact id, a fixed shell label, status rail, true mode controls, and a Current Review data slot. The current item is labeled as a planning label with `planning_label`, `source_url_present`, `identity_unverified`, and `not_fetched` provenance badges. Backlog and System details stay behind their modes, and the Candidate Ledger remains readable and collapsed. |
+| next_action | Open the cockpit first, use Review mode for OK / NG / HOLD on the one planning-label source item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback. |
+
+Boundary flags remain false or pending:
+
+- `source_url_opened_by_worker=false`
+- `source_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
+## `clip-cpd11-operator-view-shell-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Review Workbench / Operator View Shell v0 |
+| purpose | Convert the CPD operator cockpit from a case-specific briefing page into a reusable view shell with Review, Backlog, and System modes driven by a content model. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-10 one-page briefing/ledger surface in the same output path. |
+| repo_relative_path | `docs/content_planning/operator_cockpit.html` |
+| machine_output | `docs/content_planning/operator_cockpit.json` |
+| source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
+| open_command | `start docs\content_planning\operator_cockpit.html` |
+| generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
+| validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| review_status | Ready as the normal human entry point for CPD planning review. The first viewport is a reusable Review Workbench with state chips, a current source review item, OK / NG / HOLD labels, and a compact locked-gate line. Backlog and System details are separated from the default review mode, and the responsive Candidate Ledger remains available collapsed below. |
+| next_action | Open the cockpit first, use Review mode for the one source-ready item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback. |
+
+Boundary flags remain false or pending:
+
+- `source_url_opened_by_worker=false`
+- `source_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
+## `clip-cpd10-candidate-ledger-readability-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0 |
+| purpose | Preserve the accepted CPD-09 Briefing Board while making the lower Candidate Ledger readable for Japanese text-heavy candidate states. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-09 ledger table in the same output path. |
+| repo_relative_path | `docs/content_planning/operator_cockpit.html` |
+| machine_output | `docs/content_planning/operator_cockpit.json` |
+| source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
+| open_command | `start docs\content_planning\operator_cockpit.html` |
+| generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
+| validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| review_status | Ready as the normal human entry point for CPD planning review after the ledger readability repair. The visible Candidate Ledger is stacked/responsive, keeps Japanese titles as full phrase lines, and de-emphasizes machine IDs in a code strip. Source-missing ideas remain not video-backed. |
+| next_action | Open the cockpit first, confirm the Candidate Ledger titles read normally, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 through CPD-10. |
+
+Boundary flags remain false or pending:
+
+- `source_url_opened_by_worker=false`
+- `source_opened_by_worker=false`
+- `fetch_authorized=false`
+- `media_downloaded=false`
+- `episode_dirs_created=false`
+- `rights_approved=false`
+- `production_ready=false`
+- `public_ready=false`
+
+## `clip-cpd09-operator-briefing-board-v0-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0 |
+| purpose | Give humans one dark-mode content-planning briefing board with an annotated flow, one primary source-identity action, and a compact candidate ledger that does not make source-missing ideas look video-backed. |
+| storage class | Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-08 Operator Home / Action Queue layout in the same output path. |
+| repo_relative_path | `docs/content_planning/operator_cockpit.html` |
+| machine_output | `docs/content_planning/operator_cockpit.json` |
+| source_inputs | `docs/content_planning/content_candidates.json`; `docs/content_planning/episode_seed_drafts.json`; `docs/content_planning/episode_seed_source_resolution.json`; `docs/content_planning/episode_init_plan.json`; `docs/content_planning/source_inspection_packet.json`; `docs/content_planning/source_inspection_decisions.template.json` |
+| open_command | `start docs\content_planning\operator_cockpit.html` |
+| generated_from | `build-operator-cockpit` reading local CPD planning artifacts only. |
+| validation_command | `uvx python -m src.cli.main build-operator-cockpit --format json` plus `uvx pytest -q tests/test_operator_cockpit.py`. |
+| review_status | Ready as the normal human entry point for CPD planning review. Top screen is a Briefing Board with usage-frequency IA, not a card grid, wide status table, or folded archive. Only `cpd01_bancho_marine_misunderstanding` has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates. |
+| next_action | Open the cockpit first, read the Briefing Board annotated flow, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04. |
 
 Boundary flags remain false or pending:
 

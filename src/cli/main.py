@@ -32,6 +32,12 @@ Subcommands:
     build-episode-init-plan CPD-04: source resolution -> dry-run episode init plans.
     build-source-inspection-packet CPD-05: dry-run plans -> source inspection packets.
     build-operator-cockpit CPD-07: dark-mode vertical operator cockpit UX.
+    build-episode-workspace-plan EWS-01: CPD current work item -> local workspace plan.
+    init-episode-workspace EWS-01: materialize explicit-target local skeleton files.
+    inspect-episode-workspace EWS-02: read explicit workspace skeleton status.
+    prepare-source-identity-decision EWS-03: create pending local decision template.
+    record-source-identity-decision EWS-03: validate/write local decision record.
+    plan-source-fetch-prep EWS-04: decision-gated local source fetch-prep plan.
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
     build-docs-dashboard     Docs v1.5: wiki/dashboard status and doc-health findings.
@@ -67,6 +73,7 @@ from . import (
     build_episode_init_plan,
     build_external_source_registry,
     build_output_layer_gap_report,
+    build_episode_workspace_plan,
     build_operator_cockpit,
     build_source_inspection_packet,
     build_episode_seed_drafts,
@@ -85,10 +92,15 @@ from . import (
     import_subtitle_track,
     init_edit_pack,
     init_episode,
+    init_episode_workspace,
+    inspect_episode_workspace,
     measure_subtitle_width,
     patch_thumbnail,
+    plan_source_fetch_prep,
+    prepare_source_identity_decision,
     register_material,
     render_tiny_proof,
+    record_source_identity_decision,
     resolve_episode_seed_sources,
     review_transcript,
     set_compliance,
@@ -128,6 +140,12 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-episode-init-plan": build_episode_init_plan.run,
     "build-source-inspection-packet": build_source_inspection_packet.run,
     "build-operator-cockpit": build_operator_cockpit.run,
+    "build-episode-workspace-plan": build_episode_workspace_plan.run,
+    "init-episode-workspace": init_episode_workspace.run,
+    "inspect-episode-workspace": inspect_episode_workspace.run,
+    "prepare-source-identity-decision": prepare_source_identity_decision.run,
+    "record-source-identity-decision": record_source_identity_decision.run,
+    "plan-source-fetch-prep": plan_source_fetch_prep.run,
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
     "build-docs-dashboard": build_docs_dashboard.run,

@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-07-01"
+DEFAULT_GENERATED_AT = "2026-07-07"
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -66,25 +66,36 @@ STATUS_HEALTH = {
 
 
 CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID = (
-    "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+    "clip-cpd12-minimal-review-console-v0-001"
 )
 
 
 def _current_focus() -> dict[str, Any]:
     return {
-        "feature_id": "CPD-07",
+        "feature_id": "CPD-12",
         "artifact_id": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-        "state": "content_planning_operator_cockpit_ready",
-        "title": "ClipPipeGen Operator Cockpit / Content Planning Review UX v2",
+        "state": "content_planning_minimal_review_console_ready",
+        "title": "ClipPipeGen Review Console / Minimal Review Console v0",
         "human_entrypoint": "docs/content_planning/operator_cockpit.html",
         "machine_readback": "docs/content_planning/operator_cockpit.json",
         "handoff": "docs/CURRENT_HANDOFF.md",
         "notes": "docs/content_planning/README.md",
-        "review_shape": "single_source_identity_check",
+        "review_shape": "minimal_review_console_true_modes_provenance",
         "source_backed_count": 1,
         "source_missing_count": 4,
+        "source_missing_idea_backlog_count": 3,
         "blocked_or_hold_count": 1,
         "fetch_authorized_count": 0,
+        "view_shell_present": True,
+        "shell_present": True,
+        "default_visible_mode": "review",
+        "work_mode_count": 3,
+        "queue_chip_count": 4,
+        "status_rail_chip_count": 4,
+        "locked_gate_count": 5,
+        "candidate_ledger_row_count": 5,
+        "ledger_layout": "responsive_ledger_stacked",
+        "title_wrapping_guard": True,
         "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
         "source_backed_title": "番長、船長を完全に勘違いする",
         "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
@@ -99,16 +110,16 @@ def _current_focus() -> dict[str, Any]:
             "production_ready": False,
             "public_ready": False,
         },
-        "next_review_action_type": "INSPECT_SINGLE_SOURCE_BACKED_ITEM_OR_FILL_SOURCE_URLS",
+        "next_review_action_type": "OPEN_REVIEW_CONSOLE_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
         "next_action": (
-            "Open docs/content_planning/operator_cockpit.html for the one source "
-            "identity check, or add real source metadata before rerunning CPD-03 "
-            "through CPD-07."
+            "Open docs/content_planning/operator_cockpit.html, use Review mode for "
+            "the planning-label source item, then use Backlog mode for URL-waiting "
+            "ideas or System mode for closed gate readback before any CPD rerun."
         ),
         "legacy_context": {
-            "previous_focus_feature_id": "ED-10bc",
-            "previous_focus_artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
-            "previous_focus_state": "thank_v2_open_command_repair_ready",
+            "previous_focus_feature_id": "CPD-11",
+            "previous_focus_artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+            "previous_focus_state": "content_planning_operator_view_shell_ready",
         },
     }
 
@@ -636,10 +647,10 @@ def _next_review_items() -> list[dict[str, str]]:
     return [
 
         {
-            "item": "CPD-07 operator cockpit source identity review",
+            "item": "CPD-12 minimal review console / current planning-label review",
             "artifact": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-            "question": "Does the single known YouTube source match the Bancho/Marine misunderstanding candidate?",
-            "next_route": "Open docs/content_planning/operator_cockpit.html first; unresolved CPD ideas need real source URL/metadata intake before fetch/init/transcript/edit/render work.",
+            "question": "Does the Review Console make the CPD-12 version, fixed shell, dynamic slots, true modes, and planning-label provenance obvious enough for repeated use?",
+            "next_route": "Open docs/content_planning/operator_cockpit.html first; use Review mode for OK/NG/HOLD, Backlog mode for missing URLs, and System mode only for gate/internal readback.",
         },
         {
             "item": "ED-10bc Thank v2 opener repair",
@@ -901,7 +912,7 @@ def _open_surfaces() -> list[dict[str, str]]:
             "label": "CPD Operator Cockpit",
             "command": "start docs\\content_planning\\operator_cockpit.html",
             "target": "docs/content_planning/operator_cockpit.html",
-            "when_to_use": "Use first for current CPD review; it shows the one source-backed item and keeps missing-source ideas out of the video-candidate path.",
+            "when_to_use": "Use first for current CPD review; it shows the CPD-12 Review Console with true Review/Backlog/System modes and planning-label provenance.",
         },
         {
             "label": "Artifacts",

@@ -1,0 +1,211 @@
+{
+  "schema_id": "clippipegen.integration.parallel_lane_aggregation.v0",
+  "schema_version": "v0",
+  "artifact_id": "clip-int01-parallel-lane-aggregation-v0-001",
+  "generated_at": "2026-07-09T00:00:00+09:00",
+  "repo": "ClipPipeGen",
+  "worktree": "C:/Users/PLANNER007/ClipPipeGen",
+  "integration_branch": "codex/int-01-parallel-lane-aggregation-v0",
+  "base": {
+    "remote": "origin",
+    "branch": "origin/main",
+    "reason": "Remote INT-01 branch was absent, so integration started from latest origin/main."
+  },
+  "source_branches": [
+    {
+      "lane_id": "TRI-01",
+      "branch": "origin/codex/tri-01-safety-overcapture-triage-v0",
+      "head": "b04e422",
+      "prompt_commit": "b04e422",
+      "artifact_id": "clip-tri01-safety-overcapture-triage-v0-001"
+    },
+    {
+      "lane_id": "HUB-01",
+      "branch": "origin/codex/hub-01-external-source-registry-v0",
+      "head": "4f780d5",
+      "prompt_commit": "cf0e846",
+      "artifact_id": "clip-hub01-external-source-registry-v0-001",
+      "note": "Remote head included a later handoff refresh commit."
+    },
+    {
+      "lane_id": "OUT-01",
+      "branch": "origin/codex/out-01-output-layer-gap-logger-v0",
+      "head": "e903120",
+      "prompt_commit": "774beb0",
+      "artifact_id": "clip-out01-output-layer-gap-logger-v0-001",
+      "note": "Remote head included a later cross-terminal handoff commit."
+    },
+    {
+      "lane_id": "EWS-05",
+      "branch": "origin/codex/ews-05-human-ok-fetch-prep-ready-v0",
+      "head": "d2adc66",
+      "prompt_commit": "d2adc66",
+      "artifact_id": "clip-ews05-human-ok-fetch-prep-ready-package-v0-001"
+    }
+  ],
+  "merge_sequence": [
+    {
+      "lane_id": "TRI-01",
+      "result": "fast_forward",
+      "conflicts": [],
+      "resolution": "Accepted source branch as-is."
+    },
+    {
+      "lane_id": "HUB-01",
+      "result": "clean_merge",
+      "conflicts": [],
+      "resolution": "Accepted source branch changes and preserved dashboard/source registry additions."
+    },
+    {
+      "lane_id": "OUT-01",
+      "result": "merge_with_conflict",
+      "conflicts": [
+        "src/cli/main.py"
+      ],
+      "resolution": "Preserved both HUB-01 build-external-source-registry and OUT-01 build-output-layer-gap-report CLI imports, help text, and dispatch entries."
+    },
+    {
+      "lane_id": "EWS-05",
+      "result": "merge_with_conflicts",
+      "conflicts": [
+        "artifacts/ARTIFACTS.md",
+        "docs/CURRENT_HANDOFF.md",
+        "docs/RUNTIME_STATE.md",
+        "docs/dashboard/index.html",
+        "docs/dashboard/project-status.json",
+        "src/cli/main.py"
+      ],
+      "resolution": "Preserved EWS-05 package files and commands, preserved HUB/OUT CLI entries, added INT-01 checkpoint fields, added thread registry and integration report, and regenerated dashboard outputs."
+    }
+  ],
+  "preserved_lane_artifacts": {
+    "TRI-01": [
+      "docs/triage/safety_overcapture_report.json",
+      "docs/triage/safety_overcapture_report.md",
+      "docs/triage/README.md",
+      "tools/triage/build_safety_overcapture_report.py",
+      "tests/test_safety_overcapture_triage.py"
+    ],
+    "HUB-01": [
+      "docs/external_sources/external_source_registry.json",
+      "docs/external_sources/README.md",
+      "samples/external_sources/rss_fixture.xml",
+      "samples/external_sources/manual_source_seeds.json",
+      "src/cli/build_external_source_registry.py",
+      "src/pipeline/external_source_registry.py",
+      "tests/test_external_source_registry.py"
+    ],
+    "OUT-01": [
+      "docs/output_layer/video_output_gap_log.json",
+      "docs/output_layer/output_capability_matrix.md",
+      "docs/output_layer/local_output_readback.html",
+      "docs/output_layer/OUT_01_HANDOFF.md",
+      "docs/output_layer/README.md",
+      "tools/output_layer/build_output_layer_gap_report.py",
+      "src/cli/build_output_layer_gap_report.py",
+      "tests/test_output_layer_gap_report.py"
+    ],
+    "EWS-05": [
+      "docs/content_planning/source_fetch_prep_ready_package.json",
+      "docs/content_planning/source_fetch_prep_ready_package.md",
+      "docs/content_planning/source_identity_human_ok_decision.json",
+      "docs/content_planning/episode_workspace_plan.json",
+      "docs/content_planning/automation_contract.json",
+      "src/pipeline/episode_workspace.py",
+      "src/cli/build_episode_workspace_plan.py",
+      "src/cli/init_episode_workspace.py",
+      "src/cli/inspect_episode_workspace.py",
+      "src/cli/prepare_source_identity_decision.py",
+      "src/cli/record_source_identity_decision.py",
+      "src/cli/plan_source_fetch_prep.py",
+      "tests/test_episode_workspace.py"
+    ]
+  },
+  "central_files_touched": [
+    "artifacts/ARTIFACTS.md",
+    "docs/CURRENT_HANDOFF.md",
+    "docs/RUNTIME_STATE.md",
+    "docs/THREAD_REGISTRY.md",
+    "docs/integration/int01_parallel_lane_aggregation_report.json",
+    "docs/integration/int01_parallel_lane_aggregation_report.md",
+    "docs/dashboard/index.html",
+    "docs/dashboard/project-status.json",
+    "docs/features/index.md",
+    "docs/index.md",
+    "src/cli/main.py"
+  ],
+  "remaining_conflict_risk": [
+    "Central resume files now summarize four active lane contexts, so manual review is recommended before main promotion.",
+    "Dashboard output is regenerated from the integrated tree; review it if downstream workers rely on a single current_focus.",
+    "OUT-02 should not start from origin/main alone unless this integration is re-merged there first."
+  ],
+  "recommended_next_branch_base": {
+    "lane_id": "OUT-02",
+    "branch_base": "codex/int-01-parallel-lane-aggregation-v0",
+    "condition": "Use after INT-01 review accepts the combined central docs/dashboard surface."
+  },
+  "main_merge_assessment": {
+    "can_later_merge_from_integration": true,
+    "manual_review_required_first": true,
+    "reason": "The integration branch combines four lane histories and resolves central docs/dashboard/CLI conflicts; main should receive it only after review and targeted checks."
+  },
+  "gates_closed": {
+    "source_urls_opened": false,
+    "live_rss_fetched": false,
+    "media_downloaded": false,
+    "transcript_generated": false,
+    "render_generated": false,
+    "thumbnail_generated": false,
+    "oauth_or_credentials_used": false,
+    "rights_approved": false,
+    "production_ready": false,
+    "public_ready": false,
+    "main_merged": false,
+    "pull_request_created": false
+  },
+  "validation": {
+    "status": "passed",
+    "targeted_tests": {
+      "command": "python -m pytest -q tests/test_episode_workspace.py tests/test_external_source_registry.py tests/test_safety_overcapture_triage.py tests/test_output_layer_gap_report.py tests/test_docs_dashboard.py tests/test_asset_fetch_boundary.py",
+      "result": "58 passed"
+    },
+    "cli_smokes": [
+      {
+        "command": "python -m src.cli.main build-external-source-registry --format json",
+        "result": "passed; record_count=4, rss_item_count=2, manual_seed_count=2, all network/media/rights/public flags false"
+      },
+      {
+        "command": "python -m src.cli.main build-output-layer-gap-report --format json",
+        "result": "passed; proof_status=proof_missing, production_ready=false, public_ready=false"
+      },
+      {
+        "command": "python -m src.cli.main build-docs-dashboard --format json",
+        "result": "passed; feature_count=120, artifact_count=65, finding_count=27"
+      },
+      {
+        "command": "python -m src.cli.main build-episode-workspace-plan --format json",
+        "result": "passed; local_workspace_state=planned, source_url_opened_by_worker=false, media_downloaded=false"
+      }
+    ],
+    "json_parse_targets": {
+      "result": "passed",
+      "files": [
+        "docs/external_sources/external_source_registry.json",
+        "docs/triage/safety_overcapture_report.json",
+        "docs/output_layer/video_output_gap_log.json",
+        "docs/content_planning/source_fetch_prep_ready_package.json",
+        "docs/integration/int01_parallel_lane_aggregation_report.json"
+      ]
+    },
+    "repo_checks": [
+      {
+        "command": "git diff --check",
+        "result": "passed"
+      },
+      {
+        "command": "git ls-files episodes",
+        "result": "passed; no tracked files"
+      }
+    ]
+  }
+}

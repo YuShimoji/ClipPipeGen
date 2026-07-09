@@ -34,7 +34,61 @@ CPD-07 revises that same operator cockpit into a vertical Primary Review Card
 with native dark mode. It is a UX layer only, not a new fetch/init/source review
 pipeline stage.
 
-If you are reviewing as a human, open the CPD-07 operator cockpit first. The
+CPD-08 turns the polished CPD-07 surface into an Operator Home. It keeps dark
+mode and the Primary Review Card, then adds visible funnel meters, an Action
+Queue, and links from the top-level state to the detailed candidate sections.
+It is information architecture only, not a source review result.
+
+CPD-09 keeps the same entrypoint but changes the first screen into a Briefing
+Board. It replaces the card-heavy home with an annotated flow, one Primary
+Review Script, usage-frequency navigation, and a compact Candidate Ledger for
+source-missing and hold items.
+
+CPD-10 keeps the accepted Briefing Board and repairs the visible Candidate
+Ledger so Japanese titles stay readable as phrases. It replaces the previous
+wide ledger table with stacked, responsive rows, Japanese operator-facing state
+labels, and de-emphasized machine IDs.
+
+CPD-11 turns that same cockpit into a reusable Review Workbench view shell. It
+keeps the current source action and readable Candidate Ledger, but moves
+source-waiting items into Backlog mode, closed gates into System mode, and
+reduces case-specific explanatory copy in the default view.
+
+CPD-12 turns the same cockpit into a minimal Review Console. It shows CPD-12 and
+the artifact id near the top, makes the fixed shell and generated data slots
+visible, switches Review / Backlog / System as true local modes, and labels the
+current title as a planning label with provenance badges instead of presenting
+it as a verified video title.
+
+EWS-01 consumes the CPD-12 current work item and writes a downstream local
+episode workspace plan plus a thin automation contract. It does not fetch or
+open the source; it only makes the next local skeleton initialization explicit
+and separates allowed local actions from deferred local actions and true
+external gates.
+
+EWS-02 reads a materialized local/temp episode workspace skeleton and emits a
+machine-readable readiness/status report. It is a read-only manifest consumer:
+it checks the expected skeleton files, source identity state, readiness level,
+and thin gate categories without opening the source or creating media.
+
+EWS-03 creates the local source identity decision intake. It prepares a pending
+decision template and records a human-provided `pending` / `ok` / `ng` / `hold`
+decision into the explicit workspace without opening the source, authorizing
+fetch, or approving rights/public use.
+
+EWS-04 turns that explicit workspace plus `source_identity.decision.json` into
+a local source fetch-prep plan. Missing, `pending`, `ng`, and `hold` decisions
+remain blocked; only `ok` with `allows_fetch_prep=true` becomes ready for a
+future private/local fetch plan, with fetch/media/rights/public gates still
+false.
+
+EWS-05 packages the human operator's source identity OK report and the EWS-04
+ready-state readback into tracked JSON/Markdown. The report says the URL opens,
+the candidate intent is consistent, and the content matches the explanation.
+This authorizes only future private/local fetch-prep planning, not fetch,
+rights, production, public use, or upload.
+
+If you are reviewing as a human, open the CPD-12 operator cockpit first. The
 older CPD HTML pages are retained as internal readback and should not be used as
 separate report surfaces unless debugging a specific planning stage.
 
@@ -53,9 +107,25 @@ production/public usable.
 | CPD-05 artifact_id | `clip-cpd05-source-inspection-packet-v0-001` |
 | CPD-06 artifact_id | `clip-cpd06-operator-cockpit-consolidation-v0-001` |
 | CPD-07 artifact_id | `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001` |
+| CPD-08 artifact_id | `clip-cpd08-operator-home-funnel-meters-v0-001` |
+| CPD-09 artifact_id | `clip-cpd09-operator-briefing-board-v0-001` |
+| CPD-10 artifact_id | `clip-cpd10-candidate-ledger-readability-v0-001` |
+| CPD-11 artifact_id | `clip-cpd11-operator-view-shell-v0-001` |
+| CPD-12 artifact_id | `clip-cpd12-minimal-review-console-v0-001` |
+| EWS-01 artifact_id | `clip-ews01-episode-workspace-spine-v0-001` |
+| EWS-01 contract artifact_id | `clip-ews01-thin-gate-contract-v0-001` |
+| EWS-02 artifact_id | `clip-ews02-episode-workspace-inspector-v0-001` |
+| EWS-03 artifact_id | `clip-ews03-source-identity-decision-intake-v0-001` |
+| EWS-04 artifact_id | `clip-ews04-source-fetch-prep-planner-v0-001` |
+| EWS-05 artifact_id | `clip-ews05-human-ok-fetch-prep-ready-package-v0-001` |
 | fixture | `samples/content_planning/content_candidates_fixture.json` |
 | operator cockpit HTML | `docs/content_planning/operator_cockpit.html` |
 | operator cockpit JSON | `docs/content_planning/operator_cockpit.json` |
+| episode workspace plan JSON | `docs/content_planning/episode_workspace_plan.json` |
+| automation contract JSON | `docs/content_planning/automation_contract.json` |
+| source identity human OK decision JSON | `docs/content_planning/source_identity_human_ok_decision.json` |
+| source fetch-prep ready package JSON | `docs/content_planning/source_fetch_prep_ready_package.json` |
+| source fetch-prep ready package Markdown | `docs/content_planning/source_fetch_prep_ready_package.md` |
 | content candidate JSON | `docs/content_planning/content_candidates.json` |
 | channel strategy JSON | `docs/content_planning/channel_strategy.json` |
 | content dashboard HTML | `docs/content_planning/content_dashboard.html` |
@@ -106,6 +176,45 @@ Operator cockpit:
 
 ```powershell
 uvx python -m src.cli.main build-operator-cockpit --format json
+```
+
+Episode workspace spine and thin gate contract:
+
+```powershell
+python -m src.cli.main build-episode-workspace-plan --format json
+```
+
+Explicit-target local workspace skeleton:
+
+```powershell
+python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json
+```
+
+Inspect an explicit local workspace skeleton:
+
+```powershell
+python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
+```
+
+Prepare and record a local source identity decision:
+
+```powershell
+python -m src.cli.main prepare-source-identity-decision --workspace <workspace> --format json
+python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision <decision.json> --format json
+```
+
+Plan the next source fetch-prep step without authorizing fetch:
+
+```powershell
+python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
+```
+
+Apply the tracked human OK decision in an explicit tempdir smoke before opening
+any real fetch lane:
+
+```powershell
+python -m src.cli.main record-source-identity-decision --workspace <workspace> --decision docs/content_planning/source_identity_human_ok_decision.json --format json
+python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
 ```
 
 Optional output location:
@@ -208,22 +317,75 @@ uvx python -m src.cli.main build-operator-cockpit `
 - The operator cockpit is the normal human entry point. The individual CPD
   HTML/JSON files remain linked as internal artifacts only; they should not be
   treated as separate human report requests.
-- CPD-07 cockpit HTML defaults to native dark mode and includes a local
-  Light/Dark toggle. Older CPD-01 through CPD-05 dashboards remain developer
-  readback surfaces.
+- CPD-12 cockpit HTML defaults to native dark mode, includes a local
+  Light/Dark toggle, and starts with a reusable Review Console. Review,
+  Backlog, and System are true local modes; without JavaScript, the same
+  sections remain reachable as anchor content.
+- The current item uses `Planning label` / `planning_label_unverified`
+  provenance. The source URL is present in local data, but identity remains
+  unverified, fetch is unauthorized, and the worker did not open or fetch the
+  URL.
+- EWS-01 local workspace initialization is an allowed local action when an
+  explicit target is provided. It creates only empty skeleton files and does
+  not open source URLs, fetch media, create source receipts from real sources,
+  generate transcripts, render media, create thumbnails, approve rights, or
+  publish.
+- EWS-02 workspace inspection is read-only. It consumes a materialized skeleton
+  and reports readiness/status JSON; it does not open source URLs, fetch media,
+  create transcripts, edit packs, renders, thumbnails, uploads, credentials, or
+  rights/public-use decisions.
+- EWS-03 source identity decision intake is local JSON only. The template always
+  starts with `identity_decision=pending`; the record command accepts only
+  `pending`, `ok`, `ng`, or `hold`, and `ok` allows future fetch-prep planning
+  only while keeping `fetch_authorized=false`, `rights_approved=false`, and
+  `public_ready=false`.
+- EWS-04 source fetch-prep planning is also local JSON only. Missing,
+  `pending`, `ng`, and `hold` decisions produce blocked plans; only `ok` with
+  `allows_fetch_prep=true` returns `ready_for_future_private_fetch_plan`, and
+  it still keeps `fetch_authorized=false`, `media_downloaded=false`,
+  `rights_approved=false`, and `public_ready=false`.
+- EWS-05 records a human operator source identity OK report and packages the
+  resulting EWS-04 ready-state readback. It proves only
+  `prep_state=ready_for_future_private_fetch_plan` for a future private/local
+  fetch-prep plan; it does not open the source URL in the worker, fetch media,
+  process media, generate transcripts/renders/thumbnails, upload, approve
+  rights, or mark the item production/public ready.
+- `automation_contract.json` is the compact gate reference. It keeps local JSON
+  generation, local CLI, tempdir/ignored skeletons, local decision records,
+  docs/readme pointers, and targeted tests in `allowed_local_actions`; source
+  opening, fetch/download, transcript, render, thumbnail proof, and media processing remain
+  `deferred_local_actions`; public upload, credentials, payment, rights/legal
+  claims, destructive git, cross-repo edits, and irreversible source overwrite
+  remain `true_external_gates`.
+- Older CPD-01 through CPD-05 dashboards remain developer readback surfaces.
 - The JP/EN phrase-gap idea is currently `source_missing_idea_backlog`, not a
   source-backed video candidate. It needs a real `source_url` and source
   metadata before any fetch/init lane can continue.
 
 ## Next Useful Moves
 
-1. Open `docs/content_planning/operator_cockpit.html` first. It shows the only
-   source-backed item as a vertical Primary Review Card with native dark mode.
+1. Open `docs/content_planning/operator_cockpit.html` first. It shows the
+   CPD-12 Review Console, artifact/version chip, status rail, true Review /
+   Backlog / System mode controls, provenance badges, and the collapsed
+   responsive Candidate Ledger with native dark mode.
 2. Review the single ready source URL as a human/operator source identity
-   check. This is the previously known hololive official anime Bancho URL.
-3. Fill `source_inspection_decisions.template.json` only after that review, then
+   check from Review mode only. This is still just OK / NG / HOLD source
+   identity judgement, not fetch or approval.
+3. Run `build-episode-workspace-plan` when a local production spine needs a
+   repeatable plan before any source/media lane opens.
+4. Use `init-episode-workspace` with a tempdir or explicit ignored target to
+   inspect the empty skeleton contract without touching tracked `episodes/`.
+5. Run `inspect-episode-workspace` against that explicit skeleton to get
+   parseable readiness/status JSON for downstream local pipeline consumers.
+6. Use `docs/content_planning/source_identity_human_ok_decision.json` only as
+   the recorded human OK input for this reviewed candidate; do not reuse it for
+   other candidates.
+7. Run `plan-source-fetch-prep` to regenerate the ready-state plan in an
+   explicit tempdir or ignored workspace, then decide whether a separate
+   private/local fetch smoke should be opened.
+8. Fill `source_inspection_decisions.template.json` only after that review, then
    decide whether a later gated slice may run real source inspection/fetch/init.
-4. Fill real source URLs for unresolved seed records in a local
+9. Fill real source URLs for unresolved seed records in a local
    `source_metadata_registry.json`, then rerun CPD-03 and CPD-04.
-5. Add a read-only public metadata adapter behind an explicit flag, keeping
+10. Add a read-only public metadata adapter behind an explicit flag, keeping
    fixture tests offline.

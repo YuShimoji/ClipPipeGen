@@ -28,21 +28,32 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
     focus = status["current_focus"]
-    assert focus["feature_id"] == "CPD-07"
-    assert focus["artifact_id"] == "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
-    assert focus["state"] == "content_planning_operator_cockpit_ready"
+    assert focus["feature_id"] == "CPD-12"
+    assert focus["artifact_id"] == "clip-cpd12-minimal-review-console-v0-001"
+    assert focus["state"] == "content_planning_minimal_review_console_ready"
     assert focus["human_entrypoint"] == "docs/content_planning/operator_cockpit.html"
     assert focus["machine_readback"] == "docs/content_planning/operator_cockpit.json"
-    assert focus["review_shape"] == "single_source_identity_check"
+    assert focus["review_shape"] == "minimal_review_console_true_modes_provenance"
     assert focus["source_backed_count"] == 1
     assert focus["source_missing_count"] == 4
     assert focus["blocked_or_hold_count"] == 1
     assert focus["fetch_authorized_count"] == 0
+    assert focus["source_missing_idea_backlog_count"] == 3
+    assert focus["view_shell_present"] is True
+    assert focus["shell_present"] is True
+    assert focus["default_visible_mode"] == "review"
+    assert focus["work_mode_count"] == 3
+    assert focus["queue_chip_count"] == 4
+    assert focus["status_rail_chip_count"] == 4
+    assert focus["locked_gate_count"] == 5
+    assert focus["candidate_ledger_row_count"] == 5
+    assert focus["ledger_layout"] == "responsive_ledger_stacked"
+    assert focus["title_wrapping_guard"] is True
     assert focus["source_backed_candidate_id"] == "cpd01_bancho_marine_misunderstanding"
     assert focus["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
     assert focus["source_opened_by_worker"] is False
     assert all(value is False for value in focus["gate_readback"].values())
-    assert focus["legacy_context"]["previous_focus_feature_id"] == "ED-10bc"
+    assert focus["legacy_context"]["previous_focus_feature_id"] == "CPD-11"
     assert [item["command"] for item in status["open_surfaces"][:3]] == [
         ".\\open-dashboard.ps1",
         "start docs\\content_planning\\operator_cockpit.html",
@@ -50,7 +61,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     ]
     assert status["open_surfaces"][1]["target"] == "docs/content_planning/operator_cockpit.html"
     assert status["next_review_items"][0]["artifact"] == (
-        "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+        "clip-cpd12-minimal-review-console-v0-001"
     )
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is False
     assert status["doc_health"]["finding_total"] >= status["doc_health"]["finding_count"]
@@ -59,7 +70,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["features"][0]["id"] == "ED-01"
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
-    assert status["next_review_items"][0]["item"].startswith("CPD-07")
+    assert status["next_review_items"][0]["item"].startswith("CPD-12")
     assert status["next_review_items"][1]["artifact"] == (
         "clip-ed10bc-thank-v2-open-command-repair-readback-001"
     )
@@ -79,13 +90,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "artifacts/ARTIFACTS.md",
     ]
     assert persisted["current_focus"]["artifact_id"] == (
-        "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+        "clip-cpd12-minimal-review-console-v0-001"
     )
     assert persisted["next_review_items"][0]["artifact"] == (
-        "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+        "clip-cpd12-minimal-review-console-v0-001"
     )
     assert "Open Surfaces" in html
-    assert "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001" in html
+    assert "clip-cpd12-minimal-review-console-v0-001" in html
     assert "subtitle_known_kirinuki_font_pack" in html
     assert "subtitle_kirinuki_font_audit" in html
     assert "Doc Health Findings" in html
@@ -160,7 +171,13 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_cpd_artifact = "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+    current_int_artifact = "clip-int01-parallel-lane-aggregation-v0-001"
+    current_ews_artifact = "clip-ews05-human-ok-fetch-prep-ready-package-v0-001"
+    current_ews_fetch_prep_artifact = "clip-ews04-source-fetch-prep-planner-v0-001"
+    current_ews_decision_artifact = "clip-ews03-source-identity-decision-intake-v0-001"
+    current_ews_inspector_artifact = "clip-ews02-episode-workspace-inspector-v0-001"
+    current_ews_spine_artifact = "clip-ews01-episode-workspace-spine-v0-001"
+    current_cpd_artifact = "clip-cpd12-minimal-review-console-v0-001"
     active_artifact = (
         "clip-ed10bc-thank-v2-open-command-repair-readback-001"
     )
@@ -224,7 +241,34 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_cpd_artifact}" in text
+            assert f"active_artifact: {current_int_artifact}" in text
+            assert (
+                "latest_int01_parallel_lane_aggregation_artifact: "
+                f"{current_int_artifact}"
+                in text
+            )
+            assert (
+                f"latest_human_ok_fetch_prep_ready_artifact: {current_ews_artifact}"
+                in text
+            )
+            assert (
+                "latest_source_fetch_prep_planner_artifact: "
+                f"{current_ews_fetch_prep_artifact}"
+                in text
+            )
+            assert (
+                "latest_source_identity_decision_intake_artifact: "
+                f"{current_ews_decision_artifact}"
+                in text
+            )
+            assert (
+                f"latest_episode_workspace_inspector_artifact: {current_ews_inspector_artifact}"
+                in text
+            )
+            assert (
+                f"latest_episode_workspace_spine_artifact: {current_ews_spine_artifact}"
+                in text
+            )
             assert (
                 f"latest_content_planning_operator_cockpit_artifact: {current_cpd_artifact}"
                 in text
@@ -1228,7 +1272,7 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_active_cpd07_artifact(
+def test_docs_dashboard_current_focus_registration_uses_active_cpd12_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
@@ -1241,7 +1285,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_cpd07_artifact(
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+        "clip-cpd12-minimal-review-console-v0-001"
     )
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
@@ -1254,9 +1298,12 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"
+        "clip-cpd12-minimal-review-console-v0-001"
     )
-    assert "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001" in artifact_ids
+    assert "clip-cpd12-minimal-review-console-v0-001" in artifact_ids
+    assert "clip-cpd11-operator-view-shell-v0-001" in artifact_ids
+    assert "clip-cpd10-candidate-ledger-readability-v0-001" in artifact_ids
+    assert "clip-cpd09-operator-briefing-board-v0-001" in artifact_ids
     assert "clip-cpd01-content-candidate-dashboard-v0-001" in artifact_ids
     assert "clip-cpd02-candidate-to-episode-seed-bridge-v0-001" in artifact_ids
     assert "clip-cpd03-source-metadata-resolver-v0-001" in artifact_ids
@@ -1288,9 +1335,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
 
     artifact_by_id = {item["artifact_id"]: item for item in status["active_artifacts"]}
-    cpd07 = artifact_by_id["clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001"]
-    assert cpd07["repo_relative_path"] == "docs/content_planning/operator_cockpit.html"
-    assert cpd07["open_command"] == "start docs\\content_planning\\operator_cockpit.html"
+    cpd12 = artifact_by_id["clip-cpd12-minimal-review-console-v0-001"]
+    assert cpd12["repo_relative_path"] == "docs/content_planning/operator_cockpit.html"
+    assert cpd12["open_command"] == "start docs\\content_planning\\operator_cockpit.html"
 
 
 def test_ed10ar_internal_review_video_candidate_package_is_bounded_and_non_approving():

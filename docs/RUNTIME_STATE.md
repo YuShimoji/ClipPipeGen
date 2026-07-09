@@ -3,17 +3,42 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: content_planning_operator_cockpit_ready
+health: parallel_lane_integration_ready_for_review
 progress_pct: 100
-last_touched: 2026-07-08
-next_review_due: inspect_single_source_backed_item_or_fill_source_urls
-active_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
-active_parallel_lane: HUB-01 external source registry
-latest_external_source_registry_artifact: clip-hub01-external-source-registry-v0-001
-latest_external_source_registry_branch: codex/hub-01-external-source-registry-v0
-latest_external_source_registry_commit: cf0e846
-latest_external_source_registry_next: map_reviewed_registry_rows_to_cpd_without_auto_fetch_ready
-latest_content_planning_operator_cockpit_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
+last_touched: 2026-07-09
+next_review_due: review_int01_then_branch_out02_from_integration
+active_artifact: clip-int01-parallel-lane-aggregation-v0-001
+latest_int01_parallel_lane_aggregation_artifact: clip-int01-parallel-lane-aggregation-v0-001
+latest_int01_parallel_lane_aggregation_branch: codex/int-01-parallel-lane-aggregation-v0
+latest_int01_parallel_lane_aggregation_commit: branch_head_after_push
+latest_tri01_safety_overcapture_artifact: clip-tri01-safety-overcapture-triage-v0-001
+latest_tri01_safety_overcapture_branch: codex/tri-01-safety-overcapture-triage-v0
+latest_tri01_safety_overcapture_commit: b04e422
+latest_hub01_external_source_registry_artifact: clip-hub01-external-source-registry-v0-001
+latest_hub01_external_source_registry_branch: codex/hub-01-external-source-registry-v0
+latest_hub01_external_source_registry_commit: 4f780d5
+latest_out01_output_layer_gap_artifact: clip-out01-output-layer-gap-logger-v0-001
+latest_out01_output_layer_gap_branch: codex/out-01-output-layer-gap-logger-v0
+latest_out01_output_layer_gap_commit: e903120
+latest_human_ok_fetch_prep_ready_artifact: clip-ews05-human-ok-fetch-prep-ready-package-v0-001
+latest_human_ok_fetch_prep_ready_branch: codex/ews-05-human-ok-fetch-prep-ready-v0
+latest_human_ok_fetch_prep_ready_commit: d2adc66
+latest_source_fetch_prep_planner_artifact: clip-ews04-source-fetch-prep-planner-v0-001
+latest_source_fetch_prep_planner_branch: codex/ews-04-source-fetch-prep-planner-v0
+latest_source_fetch_prep_planner_commit: branch_head
+latest_source_identity_decision_intake_artifact: clip-ews03-source-identity-decision-intake-v0-001
+latest_source_identity_decision_intake_branch: codex/ews-03-source-identity-decision-intake-v0
+latest_source_identity_decision_intake_commit: branch_head
+latest_episode_workspace_inspector_artifact: clip-ews02-episode-workspace-inspector-v0-001
+latest_episode_workspace_inspector_branch: codex/ews-02-episode-workspace-inspector-v0
+latest_episode_workspace_inspector_commit: branch_head
+latest_episode_workspace_spine_artifact: clip-ews01-episode-workspace-spine-v0-001
+latest_episode_workspace_spine_branch: codex/ews-01-episode-workspace-spine-v0
+latest_episode_workspace_spine_commit: branch_head
+latest_thin_gate_contract_artifact: clip-ews01-thin-gate-contract-v0-001
+latest_content_planning_operator_cockpit_artifact: clip-cpd12-minimal-review-console-v0-001
+latest_content_planning_operator_cockpit_branch: codex/cpd-12-minimal-review-console-v0
+latest_content_planning_operator_cockpit_commit: 68c5ced
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
 latest_thank_ed10ba_v2_access_recovery_artifact: clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001
@@ -28,7 +53,7 @@ source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fu
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
 owner_lane: shared_infra
-related: docs/index.md, docs/dashboard/project-status.json, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
+related: docs/THREAD_REGISTRY.md, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/output_layer/video_output_gap_log.json, docs/index.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
@@ -42,62 +67,60 @@ instructions.
 
 ## Cross-Terminal Resume Checkpoint
 
-HUB-01 parallel-lane checkpoint date: 2026-07-08 JST. A new terminal resuming
-the external source registry lane should run:
+Checkpoint date: 2026-07-09 JST. A new terminal should fetch the remote and
+check out the INT-01 integration branch before reading project context:
 
 ```powershell
-git fetch --prune origin
-git switch codex/hub-01-external-source-registry-v0
+git fetch origin
+git switch codex/int-01-parallel-lane-aggregation-v0
 git pull --ff-only
-git status --short --branch
-git rev-list --left-right --count "HEAD...@{u}"
-git log -1 --oneline --decorate
-git ls-files episodes
 ```
 
-Expected HUB-01 state after pulling this handoff: branch
-`codex/hub-01-external-source-registry-v0`, upstream
-`origin/codex/hub-01-external-source-registry-v0`, parity `0 0`, and no
-tracked `episodes/` files. Read `docs/external_sources/README.md` and
-`docs/external_sources/external_source_registry.json` next. The active HUB-01
-artifact is `clip-hub01-external-source-registry-v0-001`.
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
+`docs/THREAD_REGISTRY.md`, the INT-01 report under `docs/integration/`, and
+the `artifacts/ARTIFACTS.md` entry for
+`clip-int01-parallel-lane-aggregation-v0-001`.
 
-HUB-01 is a parallel source-intake lane, not a CPD/EWS auto-advance. It
-normalizes local RSS XML plus manual source seed JSON into a registry with
-4 records: 2 `rss_item` rows and 2 `manual_seed` rows. It does not fetch live
-RSS, open source URLs, call metadata APIs, download media, generate
-transcripts/renders/thumbnails, upload, approve rights, or mark anything
-production/public ready. The next useful move is HUB-02: map only reviewed
-registry rows into CPD source planning inputs without automatically making any
-candidate source-identity OK or fetch-ready.
+The latest tracked slice is INT-01. It aggregates four parallel lanes onto one
+review branch without opening source URLs, fetching media, making rights/public
+claims, or moving main:
 
-Checkpoint date: 2026-07-06 JST. A new terminal should pull `origin/main`, then
-read this file first, followed by `docs/CURRENT_HANDOFF.md`,
-`docs/content_planning/README.md`, and
-`artifacts/ARTIFACTS.md` entry
-`clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`.
+- TRI-01 safety overcapture triage: `b04e422`
+- HUB-01 external source registry: `4f780d5`
+- OUT-01 output layer gap logger: `e903120`
+- EWS-05 human OK fetch-prep package: `d2adc66`
 
-The latest tracked slice is CPD-07. It responds to the review friction where
-the CPD HTML files felt like intermediate reports instead of a human-facing
-decision surface. The normal entry point is now
-`docs/content_planning/operator_cockpit.html`: a dark-mode vertical Primary
-Review Card that asks for only one human source-identity check. The only
-source-backed URL is
-`cpd01_bancho_marine_misunderstanding`
-(`https://www.youtube.com/watch?v=7J5aS_pcBj4`). The other four ideas are not
-video candidates yet; they remain missing-source or hold records until a real
-source URL and metadata are supplied.
+The integration preserves each lane's artifacts and CLI/tests. The only code
+conflict was the shared CLI dispatcher, resolved by keeping HUB, OUT, and EWS
+subcommands together. Central docs/dashboard conflicts were normalized to the
+integration checkpoint and regenerated. Review INT-01 before promoting to
+main; OUT-02 should base on this integration branch after that review because
+it needs OUT-01 plus the EWS/HUB/TRI context.
 
-CPD-07 is a planning UX consolidation only. It reads tracked local CPD-01
-through CPD-05 artifacts, writes `operator_cockpit.json/html`, and does not
-open source URLs, search the web, use external APIs, download media, create
-`episodes/` folders, authorize fetch, approve rights, generate transcripts or
-renders, or mark anything production/public ready.
+For EWS-05 specifically, the repeatable local commands remain:
 
-The next useful move is either to open
-`docs/content_planning/operator_cockpit.html` for the single source identity
-check, or to fill real source metadata for unresolved ideas in a local
-`source_metadata_registry.json` before rerunning CPD-03 through CPD-07.
+```powershell
+python -m src.cli.main build-episode-workspace-plan --format json
+python -m src.cli.main init-episode-workspace --plan docs/content_planning/episode_workspace_plan.json --target <tempdir> --materialize --format json
+python -m src.cli.main inspect-episode-workspace --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
+python -m src.cli.main record-source-identity-decision --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --decision docs/content_planning/source_identity_human_ok_decision.json --format json
+python -m src.cli.main plan-source-fetch-prep --workspace <tempdir>\ep_seed_cpd01_bancho_marine_misunderstanding --format json
+```
+
+The tracked decision file is
+`docs/content_planning/source_identity_human_ok_decision.json`, and the portable
+package is `docs/content_planning/source_fetch_prep_ready_package.json` plus
+`docs/content_planning/source_fetch_prep_ready_package.md`. The decision record
+sets `allows_fetch_prep=true` only because the human report is OK; it keeps
+`fetch_authorized=false`, `rights_approved=false`, and `public_ready=false`.
+The fetch-prep planner carries those gates forward and also keeps
+`media_downloaded=false`.
+
+CPD-12 remains the upstream planning console at
+`docs/content_planning/operator_cockpit.html`, but this branch has already
+recorded the supplied human OK for the current candidate. The next gate is
+`explicit_private_fetch_smoke_approval_required`; do not open a fetch/download
+lane without that separate approval.
 
 Keep `episodes/` ignored and keep `git ls-files episodes` empty. The ED-10bc
 opener-repair state below remains valid historical/current evidence for the
@@ -105,44 +128,56 @@ Thank v2 review path, but it is not the active content-planning entry point.
 Production/public/rights/publishing/monetization and micro-scene acceptance
 remain false or pending unless a later explicit decision opens those gates.
 
-## Current HUB-01 External Source Registry / RSS Intake Stub v0
+## Current EWS-05 Human OK Fetch-Prep Ready Package v0
 
-HUB-01 checkpoint, 2026-07-08 JST:
-`clip-hub01-external-source-registry-v0-001` is the current parallel-lane
-artifact. It adds an offline source hub that reads:
+EWS-05 checkpoint, 2026-07-08 JST:
+`clip-ews05-human-ok-fetch-prep-ready-package-v0-001` is the active tracked
+content-planning package. It records the human operator report as
+`identity_decision=ok`, `reviewer=operator`, and
+`decision_source=human_operator_report` for
+`cpd01_bancho_marine_misunderstanding`.
 
-```text
-samples/external_sources/rss_fixture.xml
-samples/external_sources/manual_source_seeds.json
-```
-
-The registry builder and CLI are:
+Package files:
 
 ```text
-src/pipeline/external_source_registry.py
-src/cli/build_external_source_registry.py
+docs/content_planning/source_identity_human_ok_decision.json
+docs/content_planning/source_fetch_prep_ready_package.json
+docs/content_planning/source_fetch_prep_ready_package.md
 ```
 
-Generated readback and docs are:
+The package is ready only for a later private/local fetch-prep smoke decision.
+It preserves `fetch_authorized=false`, `media_downloaded=false`,
+`rights_approved=false`, and `public_ready=false`; it also records that the
+worker did not open the source URL. The next useful move is to explicitly
+decide whether a separate private/local fetch smoke slice is allowed.
 
-```text
-docs/external_sources/external_source_registry.json
-docs/external_sources/README.md
-tests/test_external_source_registry.py
-```
+## Current EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0
 
-Regenerate the registry with:
+EWS-04 checkpoint, 2026-07-08 JST:
+`clip-ews04-source-fetch-prep-planner-v0-001` is the active tracked local
+fetch-prep planner. It reads an explicit workspace skeleton, the same
+inspection path as EWS-02, `docs/content_planning/automation_contract.json`,
+and the workspace `source_identity.decision.json` record from EWS-03.
+
+Planner command:
 
 ```powershell
-uvx python -m src.cli.main build-external-source-registry --format json
+python -m src.cli.main plan-source-fetch-prep --workspace <workspace> --format json
 ```
 
-Latest validation before this handoff: the CLI returned `record_count=4`,
-`rss_item_count=2`, `manual_seed_count=2`, `source_candidate_count=3`,
-`needs_review_count=1`, and all network/source-open/media/rights/public flags
-false. JSON parse passed, `uvx pytest -q tests/test_external_source_registry.py`
-returned `3 passed`, `git diff --check` passed, and `git ls-files episodes`
-printed nothing.
+The default output is `source_fetch_prep_plan.json` inside the workspace, and
+stdout remains parseable JSON with `--format json`. Missing decisions block with
+`blocked_reason=source_identity_decision_missing`; `pending`, `ng`, and `hold`
+block with their own source identity reasons. An `ok` decision only advances to
+`prep_state=ready_for_future_private_fetch_plan` when the EWS-03 record carries
+`allows_fetch_prep=true`.
+
+This is a plan-only artifact. It names future source receipt and
+`material_ledger.json` paths, but it does not create source receipts, fetch
+media, process local media, generate transcripts, render, create thumbnails,
+upload, approve rights, or mark anything public/production ready. The next
+useful move is to review the resulting plan and explicitly choose whether a
+later private/local fetch smoke slice is allowed.
 
 ## Current ED-10bc Thank V2 Open Command Repair Readback
 

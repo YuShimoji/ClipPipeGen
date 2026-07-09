@@ -13,14 +13,13 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current active focus is `ED-10v`: Keifont remains diagnostic representative
-normal-dialogue provisional baseline evidence from the ED-10n and ED-10o review
-history, and the active artifact is still
-`clip-ed10r-keifont-dense-stress-proof-001`. The corrected ED-10u `cut_008`
-multiline/dense-stress proof has now passed user review, so do not ask for
-another Review Card on the same evidence and do not ask for another general
-Keifont review on `cut_002` / `cut_003`. The current tracked work is the pass
-record plus line-break policy/readback note.
+Current active focus is `CPD-12`: the content-planning cockpit is now the
+minimal Review Console at
+`docs/content_planning/operator_cockpit.html`, with artifact
+`clip-cpd12-minimal-review-console-v0-001`. It shows the fixed shell, generated
+data slots, true Review / Backlog / System modes, and provenance badges for the
+current planning-label source item. It is not source identity approval, fetch
+approval, production/public approval, or rights approval.
 
 Start here:
 
@@ -29,7 +28,7 @@ Start here:
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
 | Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
 | Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
-| Content planning operator cockpit (dark UX v2) | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
+| Content planning Review Console / operator cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
 | Content planning dashboard | [content_planning/content_dashboard.html](content_planning/content_dashboard.html) |
 | Episode seed drafts | [content_planning/episode_seed_dashboard.html](content_planning/episode_seed_dashboard.html) |
 | Source resolution dashboard | [content_planning/source_resolution_dashboard.html](content_planning/source_resolution_dashboard.html) |
@@ -71,13 +70,11 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-Use ED-10v as the current closeout state for subtitle styling: dense/stress has
-passed diagnostically, and the next subtitle move must be a new axis. Keep
-ED-10p as consumed baseline evidence, ED-10o as comparison reference, and
-BIZ/Noto/Meiryo as rejected references unless the user explicitly reopens
-font-family selection. Use the dashboard to identify stale / unclear /
-over-guarded docs only when the current styling decision is not being advanced.
-A good docs update
+Use CPD-12 as the current content-planning entrypoint: open the Review Console
+first, review the one planning-label source item only as OK / NG / HOLD, use
+Backlog for URL-waiting ideas, and use System for closed-gate/internal
+readback. Use the dashboard to identify stale / unclear / over-guarded docs
+only when the current CPD review surface is not being advanced. A good docs update
 should make the first screen of a major doc answer:
 
 - what the page is for

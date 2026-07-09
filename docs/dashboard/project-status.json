@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-01",
+  "generated_at": "2026-07-07",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -24,19 +24,30 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "CPD-07",
-    "artifact_id": "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
-    "state": "content_planning_operator_cockpit_ready",
-    "title": "ClipPipeGen Operator Cockpit / Content Planning Review UX v2",
+    "feature_id": "CPD-12",
+    "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
+    "state": "content_planning_minimal_review_console_ready",
+    "title": "ClipPipeGen Review Console / Minimal Review Console v0",
     "human_entrypoint": "docs/content_planning/operator_cockpit.html",
     "machine_readback": "docs/content_planning/operator_cockpit.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "notes": "docs/content_planning/README.md",
-    "review_shape": "single_source_identity_check",
+    "review_shape": "minimal_review_console_true_modes_provenance",
     "source_backed_count": 1,
     "source_missing_count": 4,
+    "source_missing_idea_backlog_count": 3,
     "blocked_or_hold_count": 1,
     "fetch_authorized_count": 0,
+    "view_shell_present": true,
+    "shell_present": true,
+    "default_visible_mode": "review",
+    "work_mode_count": 3,
+    "queue_chip_count": 4,
+    "status_rail_chip_count": 4,
+    "locked_gate_count": 5,
+    "candidate_ledger_row_count": 5,
+    "ledger_layout": "responsive_ledger_stacked",
+    "title_wrapping_guard": true,
     "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
     "source_backed_title": "番長、船長を完全に勘違いする",
     "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
@@ -51,12 +62,12 @@
       "production_ready": false,
       "public_ready": false
     },
-    "next_review_action_type": "INSPECT_SINGLE_SOURCE_BACKED_ITEM_OR_FILL_SOURCE_URLS",
-    "next_action": "Open docs/content_planning/operator_cockpit.html for the one source identity check, or add real source metadata before rerunning CPD-03 through CPD-07.",
+    "next_review_action_type": "OPEN_REVIEW_CONSOLE_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
+    "next_action": "Open docs/content_planning/operator_cockpit.html, use Review mode for the planning-label source item, then use Backlog mode for URL-waiting ideas or System mode for closed gate readback before any CPD rerun.",
     "legacy_context": {
-      "previous_focus_feature_id": "ED-10bc",
-      "previous_focus_artifact_id": "clip-ed10bc-thank-v2-open-command-repair-readback-001",
-      "previous_focus_state": "thank_v2_open_command_repair_ready"
+      "previous_focus_feature_id": "CPD-11",
+      "previous_focus_artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+      "previous_focus_state": "content_planning_operator_view_shell_ready"
     }
   },
   "open_surfaces": [
@@ -70,7 +81,7 @@
       "label": "CPD Operator Cockpit",
       "command": "start docs\\content_planning\\operator_cockpit.html",
       "target": "docs/content_planning/operator_cockpit.html",
-      "when_to_use": "Use first for current CPD review; it shows the one source-backed item and keeps missing-source ideas out of the video-candidate path."
+      "when_to_use": "Use first for current CPD review; it shows the CPD-12 Review Console with true Review/Backlog/System modes and planning-label provenance."
     },
     {
       "label": "Artifacts",
@@ -1659,6 +1670,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-int01-parallel-lane-aggregation-v0-001",
+      "title": "INT-01 Parallel Lane Aggregation / Thread Registry Sync v0",
+      "purpose": "Merge TRI-01, HUB-01, OUT-01, and EWS-05 parallel lane outputs onto one reviewable integration branch and record the cross-terminal registry for the next worker.",
+      "storage_class": "Tracked local Markdown/JSON integration report plus thread registry. It does not open source URLs, fetch media, call external APIs, approve rights, mark production/public ready, merge main, or create a PR.",
+      "repo_relative_path": "docs/integration/int01_parallel_lane_aggregation_report.json; docs/integration/int01_parallel_lane_aggregation_report.md; docs/THREAD_REGISTRY.md",
+      "open_command": "type docs\\integration\\int01_parallel_lane_aggregation_report.md",
+      "review_status": "Ready for integration review after targeted local validation. The shared CLI dispatcher preserves HUB, OUT, and EWS subcommands. Central docs/dashboard conflicts are recorded in docs/THREAD_REGISTRY.md and the INT-01 report.",
+      "next_action": "Review INT-01, then branch OUT-02 from codex/int-01-parallel-lane-aggregation-v0 if the integration is accepted. Merge into main only after manual review of the combined central docs/dashboard surface."
+    },
+    {
       "artifact_id": "clip-hub01-external-source-registry-v0-001",
       "title": "HUB-01 External Source Hub / RSS Intake Stub v0",
       "purpose": "Normalize local RSS XML and manual source seed fixtures into a safe external source candidate registry for later source planning review.",
@@ -1669,14 +1690,94 @@
       "next_action": "Review registry rows before any HUB-02 mapping into CPD source planning. Do not auto-advance rows to source identity OK or fetch-ready."
     },
     {
-      "artifact_id": "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
-      "title": "ClipPipeGen Operator Cockpit / Content Planning Review UX v2",
-      "purpose": "Give humans one dark-mode, vertical content-planning entry point with a Primary Review Card for the single known source URL and secondary folded sections for missing-source ideas and developer details.",
-      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-06 table-heavy layout in the same output path.",
+      "artifact_id": "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
+      "title": "EWS-05 Human OK Decision Application / Fetch-Prep Ready Package v0",
+      "purpose": "Record the human operator's source identity OK report and package the resulting ready-for-future-private-fetch-plan readback for the current CPD-12 source-backed candidate.",
+      "storage_class": "Tracked local JSON/Markdown package; consumes the EWS-01 workspace plan, EWS-03 decision intake, EWS-04 fetch-prep planner, and a human operator report. No worker URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights approval, production-ready, or public-ready state is created.",
+      "repo_relative_path": "docs/content_planning/source_fetch_prep_ready_package.json; docs/content_planning/source_fetch_prep_ready_package.md; docs/content_planning/source_identity_human_ok_decision.json",
+      "open_command": "type docs\\content_planning\\source_fetch_prep_ready_package.json",
+      "review_status": "Ready as the human OK fetch-prep package. The human report says the URL opens, candidate intent is consistent, and content matches the explanation; the worker did not open the URL. The generated plan reaches prep_state=ready_for_future_private_fetch_plan while preserving fetch_authorized=false, media_downloaded=false, rights_approved=false, and public_ready=false.",
+      "next_action": "Require explicit private fetch smoke approval before any source fetch/download lane. Do not treat this package as rights/public/production/upload approval."
+    },
+    {
+      "artifact_id": "clip-ews04-source-fetch-prep-planner-v0-001",
+      "title": "EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0",
+      "purpose": "Convert an explicit EWS workspace plus source_identity.decision.json into a local source fetch-prep plan or a blocked plan with machine-readable reason.",
+      "storage_class": "Code-backed local JSON artifact; consumes an inspected workspace, automation contract, and EWS-03 decision record. No source URL opening, fetch/download, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created.",
+      "repo_relative_path": "src/pipeline/episode_workspace.py",
+      "open_command": "python -m src.cli.main plan-source-fetch-prep --workspace workspace --format json",
+      "review_status": "Ready as the local fetch-prep planning surface. Missing decisions block as source_identity_decision_missing; pending, ng, and hold decisions block with source identity reasons; ok plus allows_fetch_prep=true returns prep_state=ready_for_future_private_fetch_plan while preserving fetch_authorized=false, media_downloaded=false, rights_approved=false, and public_ready=false.",
+      "next_action": "Use the plan to decide whether a later private/local fetch smoke slice should be explicitly opened. Do not fetch media or open source/public/rights gates from this plan."
+    },
+    {
+      "artifact_id": "clip-ews03-source-identity-decision-intake-v0-001",
+      "title": "EWS-03 Source Identity Decision Intake / Local Decision Record v0",
+      "purpose": "Create a pending local source identity decision template and validate/write a human-provided pending / ok / ng / hold decision record into an explicit workspace.",
+      "storage_class": "Code-backed local JSON artifact; consumes an inspected workspace and a local decision file. No source URL opening, fetch authorization, media, transcript, render, thumbnail, upload, auth, rights, or public-ready state is created.",
+      "repo_relative_path": "src/pipeline/episode_workspace.py",
+      "open_command": "python -m src.cli.main prepare-source-identity-decision --workspace workspace --format json",
+      "review_status": "Ready as the local source identity decision intake. Generated templates default to identity_decision=pending; records reject unknown values; ok requires reviewer or notes; allows_fetch_prep=true only for ok, while fetch_authorized=false, rights_approved=false, and public_ready=false always remain.",
+      "next_action": "Use the decision record as the input to a later fetch-prep planning slice. Do not fetch media or open source/public/rights gates from this record."
+    },
+    {
+      "artifact_id": "clip-ews02-episode-workspace-inspector-v0-001",
+      "title": "EWS-02 Episode Workspace Inspector / Manifest Consumer v0",
+      "purpose": "Read a materialized local/temp EWS-01 workspace skeleton and emit machine-readable readiness/status JSON for downstream local pipeline consumers.",
+      "storage_class": "Code-backed local status artifact; consumes an explicit workspace path and writes no media, transcript, render, thumbnail, source receipt, upload, auth, rights, or public-ready state.",
+      "repo_relative_path": "src/pipeline/episode_workspace.py",
+      "open_command": "python -m src.cli.main inspect-episode-workspace --workspace workspace --format json",
+      "review_status": "Ready as the read-only local workspace consumer. A complete EWS-01 tempdir skeleton reports manifest_state=initialized, source_identity_state=pending, readiness_level=source_identity_pending, skeleton_ready=true, ready_for_source_identity_decision=true, and ready_for_fetch=false.",
+      "next_action": "Use the inspector JSON as the handoff to a later source-decision intake or local fetch-prep slice; do not fetch media or open external gates from this command."
+    },
+    {
+      "artifact_id": "clip-ews01-episode-workspace-spine-v0-001",
+      "title": "EWS-01 Episode Workspace Spine / Thin Gate Contract v0",
+      "purpose": "Convert the CPD-12 current Review item into a local episode workspace plan, with a compact contract that separates allowed local actions from deferred local actions and true external gates.",
+      "storage_class": "Tracked local planning artifact; portable JSON contract and workspace plan. No source fetch, media, transcript, render, thumbnail proof, OAuth/API, rights approval, publication, or tracked episodes/ material is created.",
+      "repo_relative_path": "docs/content_planning/episode_workspace_plan.json",
+      "open_command": "python -m src.cli.main build-episode-workspace-plan --format json",
+      "review_status": "Ready as the downstream local workspace spine. The plan carries episode_id=ep_seed_cpd01_bancho_marine_misunderstanding, the CPD-12 planning label, label_provenance=planning_label_unverified, source_url_state=present, identity_state=unverified, and fetch_authorized=false.",
+      "next_action": "Inspect or regenerate the plan, then use init-episode-workspace only with a tempdir or explicit ignored target if a local skeleton is needed before any source/media lane opens."
+    },
+    {
+      "artifact_id": "clip-cpd12-minimal-review-console-v0-001",
+      "title": "ClipPipeGen Review Console / Minimal Review Console v0",
+      "purpose": "Convert the CPD operator cockpit from a weak view shell into a compact reusable review console with explicit fixed shell regions, dynamic data slots, true Review / Backlog / System modes, and planning-label provenance.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-11 view-shell surface in the same output path.",
       "repo_relative_path": "docs/content_planning/operator_cockpit.html",
       "open_command": "start docs\\content_planning\\operator_cockpit.html",
-      "review_status": "Ready as the normal human entry point for CPD planning review. Top screen is a Primary Review Card, not a wide status table. Only cpd01_bancho_marine_misunderstanding has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates.",
-      "next_action": "Open the cockpit first, inspect the single source-backed item as a human source identity check, or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04."
+      "review_status": "Ready as the normal human entry point for CPD planning review. The first viewport shows CPD-12 and the artifact id, a fixed shell label, status rail, true mode controls, and a Current Review data slot. The current item is labeled as a planning label with planning_label, source_url_present, identity_unverified, and not_fetched provenance badges. Backlog and System details stay behind their modes, and the Candidate Ledger remains readable and collapsed.",
+      "next_action": "Open the cockpit first, use Review mode for OK / NG / HOLD on the one planning-label source item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback."
+    },
+    {
+      "artifact_id": "clip-cpd11-operator-view-shell-v0-001",
+      "title": "ClipPipeGen Review Workbench / Operator View Shell v0",
+      "purpose": "Convert the CPD operator cockpit from a case-specific briefing page into a reusable view shell with Review, Backlog, and System modes driven by a content model.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-10 one-page briefing/ledger surface in the same output path.",
+      "repo_relative_path": "docs/content_planning/operator_cockpit.html",
+      "open_command": "start docs\\content_planning\\operator_cockpit.html",
+      "review_status": "Ready as the normal human entry point for CPD planning review. The first viewport is a reusable Review Workbench with state chips, a current source review item, OK / NG / HOLD labels, and a compact locked-gate line. Backlog and System details are separated from the default review mode, and the responsive Candidate Ledger remains available collapsed below.",
+      "next_action": "Open the cockpit first, use Review mode for the one source-ready item, use Backlog mode for URL-waiting or hold records, and use System mode only for closed-gate/internal readback."
+    },
+    {
+      "artifact_id": "clip-cpd10-candidate-ledger-readability-v0-001",
+      "title": "ClipPipeGen Operator Cockpit / Candidate Ledger Readability v0",
+      "purpose": "Preserve the accepted CPD-09 Briefing Board while making the lower Candidate Ledger readable for Japanese text-heavy candidate states.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-09 ledger table in the same output path.",
+      "repo_relative_path": "docs/content_planning/operator_cockpit.html",
+      "open_command": "start docs\\content_planning\\operator_cockpit.html",
+      "review_status": "Ready as the normal human entry point for CPD planning review after the ledger readability repair. The visible Candidate Ledger is stacked/responsive, keeps Japanese titles as full phrase lines, and de-emphasizes machine IDs in a code strip. Source-missing ideas remain not video-backed.",
+      "next_action": "Open the cockpit first, confirm the Candidate Ledger titles read normally, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 through CPD-10."
+    },
+    {
+      "artifact_id": "clip-cpd09-operator-briefing-board-v0-001",
+      "title": "ClipPipeGen Operator Cockpit / Briefing Board Usage-Frequency IA v0",
+      "purpose": "Give humans one dark-mode content-planning briefing board with an annotated flow, one primary source-identity action, and a compact candidate ledger that does not make source-missing ideas look video-backed.",
+      "storage_class": "Tracked local planning artifact; portable CPD-01 through CPD-05 consolidation JSON/HTML. Supersedes the CPD-08 Operator Home / Action Queue layout in the same output path.",
+      "repo_relative_path": "docs/content_planning/operator_cockpit.html",
+      "open_command": "start docs\\content_planning\\operator_cockpit.html",
+      "review_status": "Ready as the normal human entry point for CPD planning review. Top screen is a Briefing Board with usage-frequency IA, not a card grid, wide status table, or folded archive. Only cpd01_bancho_marine_misunderstanding has a known source URL; JP/EN phrase gap and other unresolved ideas are not source-backed video candidates.",
+      "next_action": "Open the cockpit first, read the Briefing Board annotated flow, then inspect the single source-backed item through the Primary Review Script or fill source URLs for unresolved ideas before rerunning CPD-03 and CPD-04."
     },
     {
       "artifact_id": "clip-cpd01-content-candidate-dashboard-v0-001",
@@ -2221,8 +2322,17 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-int01-parallel-lane-aggregation-v0-001",
       "clip-hub01-external-source-registry-v0-001",
-      "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
+      "clip-ews05-human-ok-fetch-prep-ready-package-v0-001",
+      "clip-ews04-source-fetch-prep-planner-v0-001",
+      "clip-ews03-source-identity-decision-intake-v0-001",
+      "clip-ews02-episode-workspace-inspector-v0-001",
+      "clip-ews01-episode-workspace-spine-v0-001",
+      "clip-cpd12-minimal-review-console-v0-001",
+      "clip-cpd11-operator-view-shell-v0-001",
+      "clip-cpd10-candidate-ledger-readability-v0-001",
+      "clip-cpd09-operator-briefing-board-v0-001",
       "clip-cpd01-content-candidate-dashboard-v0-001",
       "clip-cpd02-candidate-to-episode-seed-bridge-v0-001",
       "clip-cpd03-source-metadata-resolver-v0-001",
@@ -2278,20 +2388,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 56
+    "artifact_count": 65
   },
   "artifact_coverage": {
-    "registered_artifact_count": 56,
+    "registered_artifact_count": 65,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "CPD-07 operator cockpit source identity review",
-      "artifact": "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
-      "question": "Does the single known YouTube source match the Bancho/Marine misunderstanding candidate?",
-      "next_route": "Open docs/content_planning/operator_cockpit.html first; unresolved CPD ideas need real source URL/metadata intake before fetch/init/transcript/edit/render work."
+      "item": "CPD-12 minimal review console / current planning-label review",
+      "artifact": "clip-cpd12-minimal-review-console-v0-001",
+      "question": "Does the Review Console make the CPD-12 version, fixed shell, dynamic slots, true modes, and planning-label provenance obvious enough for repeated use?",
+      "next_route": "Open docs/content_planning/operator_cockpit.html first; use Review mode for OK/NG/HOLD, Backlog mode for missing URLs, and System mode only for gate/internal readback."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2534,7 +2644,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 102,
+      "line_count": 99,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2542,13 +2652,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 12,
+      "boundary_term_count": 14,
       "status": "reference"
     },
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1430,
+      "line_count": 1465,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2679,7 +2789,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1833,
+      "line_count": 2087,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2687,7 +2797,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 791,
+      "boundary_term_count": 821,
       "status": "reference"
     },
     {
@@ -2749,7 +2859,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1089,
+      "line_count": 1241,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2757,7 +2867,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 279,
+      "boundary_term_count": 284,
       "status": "reference"
     },
     {
@@ -3039,6 +3149,20 @@
       "status": "reference"
     },
     {
+      "path": "docs/THREAD_REGISTRY.md",
+      "title": "Thread Registry - ClipPipeGen Parallel Lane Sync",
+      "line_count": 25,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 5,
+      "status": "reference"
+    },
+    {
       "path": "docs/WORKTREE_CLEANUP_POLICY.md",
       "title": "Worktree Cleanup Policy",
       "line_count": 49,
@@ -3102,7 +3226,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1430 lines) is likely carrying history.",
+        "detail": "Long active doc (1465 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3132,13 +3256,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1833 lines) is likely carrying history.",
+        "detail": "Long active doc (2087 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 791 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 821 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3162,7 +3286,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1089 lines) is likely carrying history.",
+        "detail": "Long active doc (1241 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
