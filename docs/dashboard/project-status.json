@@ -1659,6 +1659,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-hub01-external-source-registry-v0-001",
+      "title": "HUB-01 External Source Hub / RSS Intake Stub v0",
+      "purpose": "Normalize local RSS XML and manual source seed fixtures into a safe external source candidate registry for later source planning review.",
+      "storage_class": "Tracked local JSON/fixture/code artifact; offline-only. It does not fetch live RSS, open source URLs, call metadata APIs, download media, approve rights, or mark anything production/public ready.",
+      "repo_relative_path": "docs/external_sources/external_source_registry.json",
+      "open_command": "type docs\\external_sources\\external_source_registry.json",
+      "review_status": "Ready as an offline source-intake stub. Registry readback has 4 records: 2 RSS fixture items and 2 manual seeds. All records keep network_used=false, media_downloaded=false, rights_approved=false, and public_ready=false.",
+      "next_action": "Review registry rows before any HUB-02 mapping into CPD source planning. Do not auto-advance rows to source identity OK or fetch-ready."
+    },
+    {
       "artifact_id": "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
       "title": "ClipPipeGen Operator Cockpit / Content Planning Review UX v2",
       "purpose": "Give humans one dark-mode, vertical content-planning entry point with a Primary Review Card for the single known source URL and secondary folded sections for missing-source ideas and developer details.",
@@ -2211,6 +2221,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-hub01-external-source-registry-v0-001",
       "clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001",
       "clip-cpd01-content-candidate-dashboard-v0-001",
       "clip-cpd02-candidate-to-episode-seed-bridge-v0-001",
@@ -2267,10 +2278,10 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 55
+    "artifact_count": 56
   },
   "artifact_coverage": {
-    "registered_artifact_count": 55,
+    "registered_artifact_count": 56,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
@@ -2537,7 +2548,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1357,
+      "line_count": 1430,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2545,7 +2556,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 320,
+      "boundary_term_count": 323,
       "status": "reference"
     },
     {
@@ -2668,7 +2679,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 1809,
+      "line_count": 1833,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2676,7 +2687,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 787,
+      "boundary_term_count": 791,
       "status": "reference"
     },
     {
@@ -2738,7 +2749,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1026,
+      "line_count": 1089,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2746,7 +2757,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 276,
+      "boundary_term_count": 279,
       "status": "reference"
     },
     {
@@ -2808,7 +2819,7 @@
     {
       "path": "docs/HANDOFF.md",
       "title": "ClipPipeGen Handoff",
-      "line_count": 1461,
+      "line_count": 1510,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2816,7 +2827,7 @@
         "next": true,
         "constraints_risks": false
       },
-      "boundary_term_count": 339,
+      "boundary_term_count": 342,
       "status": "contains_done_history"
     },
     {
@@ -3091,7 +3102,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1357 lines) is likely carrying history.",
+        "detail": "Long active doc (1430 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3121,13 +3132,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (1809 lines) is likely carrying history.",
+        "detail": "Long active doc (1833 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 787 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 791 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3151,7 +3162,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1026 lines) is likely carrying history.",
+        "detail": "Long active doc (1089 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3169,13 +3180,13 @@
       {
         "type": "stale",
         "path": "docs/HANDOFF.md",
-        "detail": "Long active doc (1461 lines) is likely carrying history.",
+        "detail": "Long active doc (1510 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/HANDOFF.md",
-        "detail": "Boundary terms appear 339 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 342 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

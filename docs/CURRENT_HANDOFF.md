@@ -5,9 +5,14 @@ type: handoff
 status: active
 health: content_planning_operator_cockpit_ready
 progress_pct: 100
-last_touched: 2026-07-06
+last_touched: 2026-07-08
 next_review_due: inspect_single_source_backed_item_or_fill_source_urls
 active_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
+active_parallel_lane: HUB-01 external source registry
+latest_external_source_registry_artifact: clip-hub01-external-source-registry-v0-001
+latest_external_source_registry_branch: codex/hub-01-external-source-registry-v0
+latest_external_source_registry_commit: cf0e846
+latest_external_source_registry_next: map_reviewed_registry_rows_to_cpd_without_auto_fetch_ready
 latest_content_planning_operator_cockpit_artifact: clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001
 latest_content_planning_source_inspection_artifact: clip-cpd05-source-inspection-packet-v0-001
 latest_thank_v2_open_command_repair_artifact: clip-ed10bc-thank-v2-open-command-repair-readback-001
@@ -29,6 +34,36 @@ related: docs/RUNTIME_STATE.md, docs/dashboard/project-status.json, docs/SUBTITL
 # Current Handoff - ClipPipeGen
 
 ## Cross-Terminal Re-Entry Packet
+
+For the current HUB-01 external source registry lane, fetch and check out the
+parallel branch:
+
+```powershell
+git fetch --prune origin
+git switch codex/hub-01-external-source-registry-v0
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count "HEAD...@{u}"
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected HUB-01 state is branch
+`codex/hub-01-external-source-registry-v0`, upstream
+`origin/codex/hub-01-external-source-registry-v0`, parity `0 0`, and no
+tracked `episodes/` files. Then read `docs/external_sources/README.md`,
+`docs/external_sources/external_source_registry.json`, and the
+`artifacts/ARTIFACTS.md` entry for
+`clip-hub01-external-source-registry-v0-001`.
+
+The durable HUB-01 state to carry forward is: local RSS XML and manual source
+seed JSON normalize into `docs/external_sources/external_source_registry.json`
+through `build-external-source-registry`. The registry currently has
+4 records: 2 `rss_item` rows and 2 `manual_seed` rows. All rows keep
+`network_used=false`, `media_downloaded=false`, `rights_approved=false`, and
+`public_ready=false`. This lane does not fetch live RSS, open source URLs,
+call metadata APIs, download media, or advance any CPD/EWS candidate to source
+identity OK or fetch-ready.
 
 Pull `origin/main`, then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
 `docs/content_planning/README.md`, and the `artifacts/ARTIFACTS.md` entry for
@@ -56,6 +91,34 @@ initialization. The worker did not open the source URL and did not use network,
 external APIs, OAuth, or media download paths. Do not track `episodes/` media.
 The older ED-10bc/ED-10bb/ED-10ba sections below remain valid for the Thank v2
 review path, but they are not the active CPD review entry point.
+
+## Current HUB-01 External Source Registry / RSS Intake Stub v0
+
+HUB-01 checkpoint, 2026-07-08 JST:
+`clip-hub01-external-source-registry-v0-001` is the current parallel-lane
+artifact. It adds:
+
+```text
+samples/external_sources/rss_fixture.xml
+samples/external_sources/manual_source_seeds.json
+src/pipeline/external_source_registry.py
+src/cli/build_external_source_registry.py
+docs/external_sources/external_source_registry.json
+docs/external_sources/README.md
+tests/test_external_source_registry.py
+```
+
+Regenerate the registry with:
+
+```powershell
+uvx python -m src.cli.main build-external-source-registry --format json
+```
+
+The registry is intentionally local and unverified: it gives later source
+planning a normalized intake surface, but does not assert source identity OK,
+rights approval, production readiness, public readiness, or fetch permission.
+The next useful move is HUB-02, mapping reviewed registry rows into CPD source
+planning without auto-advancing them to fetch-ready.
 
 ## Current CPD-07 Operator Cockpit UX v2
 

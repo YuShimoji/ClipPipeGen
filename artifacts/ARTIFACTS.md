@@ -16,6 +16,30 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-hub01-external-source-registry-v0-001`
+
+| Field | Value |
+|---|---|
+| title | HUB-01 External Source Hub / RSS Intake Stub v0 |
+| purpose | Normalize local RSS XML and manual source seed fixtures into a safe external source candidate registry for later source planning review. |
+| storage class | Tracked local JSON/fixture/code artifact; offline-only. It does not fetch live RSS, open source URLs, call metadata APIs, download media, approve rights, or mark anything production/public ready. |
+| repo_relative_path | `docs/external_sources/external_source_registry.json` |
+| machine_output | `docs/external_sources/external_source_registry.json` |
+| source_inputs | `samples/external_sources/rss_fixture.xml`; `samples/external_sources/manual_source_seeds.json` |
+| open_command | `type docs\external_sources\external_source_registry.json` |
+| generated_from | `uvx python -m src.cli.main build-external-source-registry --format json` |
+| validation_command | `uvx pytest -q tests/test_external_source_registry.py` plus JSON parse, `git diff --check`, and `git ls-files episodes`. |
+| review_status | Ready as an offline source-intake stub. Registry readback has 4 records: 2 RSS fixture items and 2 manual seeds. All records keep `network_used=false`, `media_downloaded=false`, `rights_approved=false`, and `public_ready=false`. |
+| next_action | Review registry rows before any HUB-02 mapping into CPD source planning. Do not auto-advance rows to source identity OK or fetch-ready. |
+
+Boundary flags remain false:
+
+- `network_used=false`
+- `source_urls_opened=false`
+- `media_downloaded=false`
+- `rights_approved=false`
+- `public_ready=false`
+
 ## `clip-cpd07-operator-cockpit-ux-v2-dark-mode-v0-001`
 
 | Field | Value |
