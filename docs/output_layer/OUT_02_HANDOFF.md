@@ -2,13 +2,14 @@
 
 Last updated: 2026-07-09 JST
 
-This is the scoped resume packet for the OUT-02 output/video branch. It keeps
-the branch context, proof artifacts, validation, and next routes in the project
-so another terminal can continue without the previous chat.
+This is the preserved source-branch and proof-provenance packet for OUT-02.
+For current development resume, pull canonical `main` and follow
+`docs/RUNTIME_STATE.md`; use the branch commands below only to replay or audit
+the original OUT-02 source branch.
 
-## Branch To Pull
+## Historical Source Branch Replay
 
-Use the OUT-02 branch when resuming this slice:
+Use the OUT-02 source branch only when auditing its preserved history:
 
 ```powershell
 git fetch --prune origin

@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `CPD-12`
-- artifact: `clip-cpd12-minimal-review-console-v0-001`
-- state: `content_planning_minimal_review_console_ready`
+- feature: `OUT-02`
+- artifact: `clip-out02-local-fixture-output-proof-smoke-v0-001`
+- state: `out02_canonical_baseline_ready`
 
 ## Feature Table
 

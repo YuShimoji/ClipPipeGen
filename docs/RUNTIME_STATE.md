@@ -3,20 +3,21 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out02_ready_with_workflow_reform_decision_pending
+health: out02_canonical_baseline_ready
 progress_pct: 100
 last_touched: 2026-07-10
-state_revision: workflow-reform-handoff-2026-07-10
+state_revision: out02-canonical-baseline-2026-07-10
 current_slice: OUT-02
-phase: handoff_ready
-active_branch: codex/out-02-local-fixture-output-proof-smoke-v0
-current_title: OUT-02 local fixture proof with workflow-reform decision pending
+phase: canonical_baseline_ready
+active_branch: main
+current_title: OUT-02 local fixture output-proof baseline
 human_entrypoint: docs/output_layer/local_fixture_output_proof/proof_timeline.html
 machine_readback: docs/output_layer/local_fixture_output_proof/proof_readback.json
-current_handoff: docs/WORKFLOW_REFORM_HANDOFF.md
-decision_required: excise_control_plane_or_verify_main_integration_or_advance_dev_reproducibility_or_explore_next_visible_slice
+current_handoff: docs/CURRENT_HANDOFF.md
+decision_required: none
 last_verified_at: 2026-07-10
-next_review_due: review_out02_fixture_proof_then_choose_out03_or_real_material_smoke
+next_review_due: build_out03_real_local_selected_cut_review_proof
+next_action: Build one real-local selected-cut proof from the retained JP-Pilot artifacts, keeping rights, production, and public gates closed.
 active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
@@ -80,38 +81,28 @@ instructions.
 
 ## 2026-07-10 Authoritative Resume Addendum
 
-The active branch is `codex/out-02-local-fixture-output-proof-smoke-v0`.
-OUT-02 is ready as a tracked synthetic output-proof package; it is not real
-media, rights, production, or publishing acceptance. Before opening another
-feature slice, read the detailed [workflow reform handoff](WORKFLOW_REFORM_HANDOFF.md).
-It preserves the remote-sync result, development-readiness evidence, protected
-local-preview rule, workflow-friction audit, and four proposed next entry
-points.
-
-The current user intent is to keep this full context in the repository and
-remote, then resume from another terminal. The workflow-reform implementation
-order is deliberately not selected yet. Treat the older CPD/ED sections below
-as historical/reference context unless this addendum or the detailed handoff
-explicitly points to them.
+The canonical baseline is `main`. OUT-02 is ready as a tracked synthetic
+output-proof package; it is not real media, rights, production, or publishing
+acceptance. The next product move is one real-local selected-cut proof using
+the retained JP-Pilot inputs. Treat the older CPD/ED sections below as
+historical or upstream evidence unless this capsule explicitly reactivates
+one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-10 JST. A new terminal should fetch the remote and
-check out the OUT-02 branch before reading project context:
+Checkpoint date: 2026-07-10 JST. A new terminal should fetch and fast-forward
+the canonical baseline before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-02-local-fixture-output-proof-smoke-v0
-git pull --ff-only
+git switch main
+git pull --ff-only origin main
 ```
 
-Then read this file first, followed by
-`docs/WORKFLOW_REFORM_HANDOFF.md` and
-`docs/output_layer/OUT_02_HANDOFF.md`. Consult `docs/CURRENT_HANDOFF.md` and
-`docs/THREAD_REGISTRY.md` only when historical lane context is needed, then
-use the `artifacts/ARTIFACTS.md` entries for
-`clip-workflow-reform-handoff-20260710-001` and
-`clip-out02-local-fixture-output-proof-smoke-v0-001`.
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
+`docs/output_layer/OUT_02_HANDOFF.md`. Consult `docs/THREAD_REGISTRY.md` only
+for historical integration context, then use the `artifacts/ARTIFACTS.md`
+entry for `clip-out02-local-fixture-output-proof-smoke-v0-001`.
 
 The latest tracked slice is OUT-02. It was created from the INT-01 integration
 branch and converts OUT-01 `proof_missing` into a portable local fixture output

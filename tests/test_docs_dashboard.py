@@ -28,49 +28,41 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert status["schema_id"] == "clippipegen.docs_dashboard.v1_5"
     assert status["project"]["wiki_entry"] == "docs/index.md"
     focus = status["current_focus"]
-    assert focus["feature_id"] == "CPD-12"
-    assert focus["artifact_id"] == "clip-cpd12-minimal-review-console-v0-001"
-    assert focus["state"] == "content_planning_minimal_review_console_ready"
-    assert focus["human_entrypoint"] == "docs/content_planning/operator_cockpit.html"
-    assert focus["machine_readback"] == "docs/content_planning/operator_cockpit.json"
-    assert focus["review_shape"] == "minimal_review_console_true_modes_provenance"
-    assert focus["source_backed_count"] == 1
-    assert focus["source_missing_count"] == 4
-    assert focus["blocked_or_hold_count"] == 1
-    assert focus["fetch_authorized_count"] == 0
-    assert focus["source_missing_idea_backlog_count"] == 3
-    assert focus["view_shell_present"] is True
-    assert focus["shell_present"] is True
-    assert focus["default_visible_mode"] == "review"
-    assert focus["work_mode_count"] == 3
-    assert focus["queue_chip_count"] == 4
-    assert focus["status_rail_chip_count"] == 4
-    assert focus["locked_gate_count"] == 5
-    assert focus["candidate_ledger_row_count"] == 5
-    assert focus["ledger_layout"] == "responsive_ledger_stacked"
-    assert focus["title_wrapping_guard"] is True
-    assert focus["source_backed_candidate_id"] == "cpd01_bancho_marine_misunderstanding"
-    assert focus["source_url"] == "https://www.youtube.com/watch?v=7J5aS_pcBj4"
-    assert focus["source_opened_by_worker"] is False
-    assert all(value is False for value in focus["gate_readback"].values())
-    assert focus["legacy_context"]["previous_focus_feature_id"] == "CPD-11"
+    assert focus["feature_id"] == "FIX-01"
+    assert focus["artifact_id"] == "clip-test-artifact"
+    assert focus["state"] == "fixture_ready"
+    assert focus["title"] == "Fixture Current Focus"
+    assert focus["active_branch"] == "codex/fixture-current-state"
+    assert focus["phase"] == "review_ready"
+    assert focus["human_entrypoint"] == "docs/fixture_focus.html"
+    assert focus["machine_readback"] == "docs/fixture_focus.json"
+    assert focus["handoff"] == "docs/CURRENT_HANDOFF.md"
+    assert focus["last_verified_at"] == "2026-07-10"
+    assert focus["decision_required"] == "fixture_decision"
+    assert focus["next_review_action_type"] == "review_fixture_focus"
+    assert focus["next_action"] == "Review the fixture current focus."
+    assert focus["source_metadata"] == "docs/RUNTIME_STATE.md"
     assert [item["command"] for item in status["open_surfaces"][:3]] == [
         ".\\open-dashboard.ps1",
-        "start docs\\content_planning\\operator_cockpit.html",
+        "start docs\\fixture_focus.html",
         ".\\open-artifacts.ps1",
     ]
-    assert status["open_surfaces"][1]["target"] == "docs/content_planning/operator_cockpit.html"
-    assert status["next_review_items"][0]["artifact"] == (
-        "clip-cpd12-minimal-review-console-v0-001"
+    assert status["open_surfaces"][1]["target"] == "docs/fixture_focus.html"
+    assert status["open_surfaces"][1]["when_to_use"] == (
+        "Review the fixture current focus."
     )
-    assert status["artifact_coverage"]["current_focus_artifact_registered"] is False
+    assert status["next_review_items"][0]["artifact"] == "clip-test-artifact"
+    assert status["next_review_items"][0]["next_route"] == (
+        "Review the fixture current focus."
+    )
+    assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
     assert status["doc_health"]["finding_total"] >= status["doc_health"]["finding_count"]
     assert status["doc_health"]["finding_limit"] == 50
     assert status["feature_summary"]["status_counts"]["done"] == 1
     assert status["features"][0]["id"] == "ED-01"
     assert status["features"][0]["progress_pct"] == 100
     assert status["artifact_coverage"]["registered_artifact_count"] == 1
-    assert status["next_review_items"][0]["item"].startswith("CPD-12")
+    assert status["next_review_items"][0]["item"].startswith("FIX-01")
     assert status["next_review_items"][1]["artifact"] == (
         "clip-ed10bc-thank-v2-open-command-repair-readback-001"
     )
@@ -86,17 +78,14 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert persisted["generated_at"] == "test-run"
     assert [item["target"] for item in persisted["open_surfaces"][:3]] == [
         "docs/dashboard/index.html",
-        "docs/content_planning/operator_cockpit.html",
+        "docs/fixture_focus.html",
         "artifacts/ARTIFACTS.md",
     ]
-    assert persisted["current_focus"]["artifact_id"] == (
-        "clip-cpd12-minimal-review-console-v0-001"
-    )
-    assert persisted["next_review_items"][0]["artifact"] == (
-        "clip-cpd12-minimal-review-console-v0-001"
-    )
+    assert persisted["current_focus"]["artifact_id"] == "clip-test-artifact"
+    assert persisted["next_review_items"][0]["artifact"] == "clip-test-artifact"
     assert "Open Surfaces" in html
-    assert "clip-cpd12-minimal-review-console-v0-001" in html
+    assert "clip-test-artifact" in html
+    assert "Review the fixture current focus." in html
     assert "subtitle_known_kirinuki_font_pack" in html
     assert "subtitle_kirinuki_font_audit" in html
     assert "Doc Health Findings" in html
@@ -136,6 +125,77 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10n-keifont-overlay-proof-001" in html
     assert "clip-ed10l-known-kirinuki-font-pack-001" in html
     assert "| ED-01 | Editing | done | stable | 100 |  |" in features_index
+
+
+def test_docs_dashboard_default_state_follows_runtime_front_matter(tmp_path: Path):
+    _write_fixture_docs(tmp_path)
+
+    initial = build_project_status(base_dir=tmp_path)
+
+    assert initial["generated_at"] == "2026-07-10"
+    assert initial["current_focus"]["feature_id"] == "FIX-01"
+    assert initial["current_focus"]["artifact_id"] == "clip-test-artifact"
+
+    _write_runtime_state(
+        tmp_path,
+        health="fixture_updated",
+        last_touched="2026-07-12",
+        last_verified_at="2026-07-11",
+        current_slice="FIX-02",
+        active_branch="codex/fixture-updated-state",
+        current_title="Updated Fixture Current Focus",
+        human_entrypoint="docs/updated_fixture_focus.html",
+        machine_readback="docs/updated_fixture_focus.json",
+        active_artifact="clip-updated-test-artifact",
+        next_review_due="review_updated_fixture_focus",
+        next_action="Review the updated fixture current focus.",
+        decision_required="updated_fixture_decision",
+    )
+
+    updated = build_project_status(base_dir=tmp_path)
+    focus = updated["current_focus"]
+
+    assert updated["generated_at"] == "2026-07-11"
+    assert focus["feature_id"] == "FIX-02"
+    assert focus["artifact_id"] == "clip-updated-test-artifact"
+    assert focus["state"] == "fixture_updated"
+    assert focus["active_branch"] == "codex/fixture-updated-state"
+    assert focus["title"] == "Updated Fixture Current Focus"
+    assert focus["human_entrypoint"] == "docs/updated_fixture_focus.html"
+    assert focus["machine_readback"] == "docs/updated_fixture_focus.json"
+    assert focus["next_action"] == "Review the updated fixture current focus."
+    assert updated["open_surfaces"][1]["target"] == (
+        "docs/updated_fixture_focus.html"
+    )
+    assert updated["open_surfaces"][1]["when_to_use"] == (
+        "Review the updated fixture current focus."
+    )
+    assert updated["next_review_items"][0]["artifact"] == (
+        "clip-updated-test-artifact"
+    )
+    assert updated["next_review_items"][0]["next_route"] == (
+        "Review the updated fixture current focus."
+    )
+
+
+def test_docs_dashboard_default_generation_is_deterministic(tmp_path: Path):
+    _write_fixture_docs(tmp_path)
+    output_dir = tmp_path / "docs" / "dashboard"
+
+    first = write_project_status(base_dir=tmp_path, output_dir=output_dir)
+    first_bytes = {
+        key: first[key].read_bytes()
+        for key in ("json_path", "html_path", "features_path")
+    }
+
+    second = write_project_status(base_dir=tmp_path, output_dir=output_dir)
+    second_bytes = {
+        key: second[key].read_bytes()
+        for key in ("json_path", "html_path", "features_path")
+    }
+
+    assert second["status"]["generated_at"] == "2026-07-10"
+    assert second_bytes == first_bytes
 
 
 def test_artifact_registry_open_commands_are_not_polluted_by_ed10aq_notepad():
@@ -366,6 +426,7 @@ def test_build_docs_dashboard_cli_writes_outputs(tmp_path: Path):
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload["schema_id"] == "clippipegen.docs_dashboard.v1_5"
+    assert payload["generated_at"] == "cli-test"
     assert payload["dashboard_json"].endswith("project-status.json")
     assert payload["dashboard_html"].endswith("index.html")
     assert payload["features_index"].endswith("features/index.md")
@@ -1240,10 +1301,7 @@ def _write_fixture_docs(base: Path) -> None:
         "## Next\nUse dashboard.\n\n## Constraints / Risks\nDiagnostic only.\n",
         encoding="utf-8",
     )
-    (base / "docs" / "RUNTIME_STATE.md").write_text(
-        "# Runtime State\n\nThis page lacks the v1.5 front sections.\n",
-        encoding="utf-8",
-    )
+    _write_runtime_state(base)
     (base / "docs" / "FEATURE_REGISTRY.md").write_text(
         "# Feature Registry\n\n| ID | Name | Status | Summary |\n"
         "|---|---|---|---|\n| ED-01 | Editing | done | ok |\n",
@@ -1278,10 +1336,44 @@ def _write_fixture_docs(base: Path) -> None:
     )
 
 
-def test_docs_dashboard_current_focus_registration_uses_active_cpd12_artifact(
+def _write_runtime_state(base: Path, **overrides: str) -> None:
+    metadata = {
+        "id": "runtime-state",
+        "title": "Runtime State - Fixture",
+        "type": "resume_surface",
+        "status": "current_capsule",
+        "health": "fixture_ready",
+        "last_touched": "2026-07-10",
+        "current_slice": "FIX-01",
+        "phase": "review_ready",
+        "active_branch": "codex/fixture-current-state",
+        "current_title": "Fixture Current Focus",
+        "human_entrypoint": "docs/fixture_focus.html",
+        "machine_readback": "docs/fixture_focus.json",
+        "current_handoff": "docs/CURRENT_HANDOFF.md",
+        "decision_required": "fixture_decision",
+        "last_verified_at": "2026-07-10",
+        "next_review_due": "review_fixture_focus",
+        "active_artifact": "clip-test-artifact",
+        "next_action": "Review the fixture current focus.",
+        "source_of_truth": "true",
+    }
+    metadata.update(overrides)
+    front_matter = "\n".join(f"{key}: {value}" for key, value in metadata.items())
+    (base / "docs" / "RUNTIME_STATE.md").write_text(
+        "\ufeff---\n"
+        + front_matter
+        + "\n---\n\n# Runtime State\n\n"
+        + "This page lacks the v1.5 front sections.\n",
+        encoding="utf-8",
+    )
+
+
+def test_docs_dashboard_current_focus_registration_uses_runtime_artifact(
     tmp_path: Path,
 ):
     _write_fixture_docs(tmp_path)
+    _write_runtime_state(tmp_path, active_artifact="clip-runtime-current-artifact")
     (tmp_path / "artifacts" / "ARTIFACTS.md").write_text(
         "# Artifact Registry\n\n"
         "## `clip-ed10r-keifont-dense-stress-proof-001`\n",
@@ -1290,9 +1382,7 @@ def test_docs_dashboard_current_focus_registration_uses_active_cpd12_artifact(
 
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
-    assert status["current_focus"]["artifact_id"] == (
-        "clip-cpd12-minimal-review-console-v0-001"
-    )
+    assert status["current_focus"]["artifact_id"] == "clip-runtime-current-artifact"
     assert (
         status["artifact_coverage"]["current_focus_artifact_registered"]
         is False
@@ -1304,7 +1394,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-cpd12-minimal-review-console-v0-001"
+        "clip-out02-local-fixture-output-proof-smoke-v0-001"
     )
     assert "clip-cpd12-minimal-review-console-v0-001" in artifact_ids
     assert "clip-cpd11-operator-view-shell-v0-001" in artifact_ids

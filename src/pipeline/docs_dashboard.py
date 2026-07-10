@@ -14,7 +14,10 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_ID = "clippipegen.docs_dashboard.v1_5"
-DEFAULT_GENERATED_AT = "2026-07-07"
+# Kept as a public import for callers that previously imported the constant.
+# A missing override now means "derive from docs/RUNTIME_STATE.md".
+DEFAULT_GENERATED_AT: str | None = None
+RUNTIME_STATE_PATH = Path("docs/RUNTIME_STATE.md")
 FINDING_DISPLAY_LIMIT = 50
 FEATURE_DISPLAY_LIMIT = 120
 REQUIRED_FRONT_SECTIONS = {
@@ -65,80 +68,82 @@ STATUS_HEALTH = {
 }
 
 
-CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID = (
-    "clip-cpd12-minimal-review-console-v0-001"
-)
+def _runtime_state_metadata(base_dir: Path) -> dict[str, str]:
+    path = base_dir / RUNTIME_STATE_PATH
+    if not path.exists():
+        raise ValueError(f"current-state source is missing: {RUNTIME_STATE_PATH.as_posix()}")
+    metadata = _front_matter(path.read_text(encoding="utf-8"))
+    required = ("current_slice", "active_artifact")
+    missing = [field for field in required if not metadata.get(field)]
+    if missing:
+        raise ValueError(
+            "docs/RUNTIME_STATE.md front matter is missing current-state fields: "
+            + ", ".join(missing)
+        )
+    return metadata
 
 
-def _current_focus() -> dict[str, Any]:
+def _resolved_generated_at(
+    runtime_state: dict[str, str],
+    generated_at: str | None,
+) -> str:
+    if generated_at is not None:
+        return generated_at
+    source_value = runtime_state.get("last_verified_at") or runtime_state.get(
+        "last_touched"
+    )
+    if not source_value:
+        raise ValueError(
+            "docs/RUNTIME_STATE.md front matter needs last_touched or "
+            "last_verified_at for deterministic dashboard generation"
+        )
+    return source_value
+
+
+def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
+    next_action = (
+        runtime_state.get("next_action")
+        or runtime_state.get("next_review_due")
+        or runtime_state.get("decision_required")
+        or ""
+    )
     return {
-        "feature_id": "CPD-12",
-        "artifact_id": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-        "state": "content_planning_minimal_review_console_ready",
-        "title": "ClipPipeGen Review Console / Minimal Review Console v0",
-        "human_entrypoint": "docs/content_planning/operator_cockpit.html",
-        "machine_readback": "docs/content_planning/operator_cockpit.json",
-        "handoff": "docs/CURRENT_HANDOFF.md",
-        "notes": "docs/content_planning/README.md",
-        "review_shape": "minimal_review_console_true_modes_provenance",
-        "source_backed_count": 1,
-        "source_missing_count": 4,
-        "source_missing_idea_backlog_count": 3,
-        "blocked_or_hold_count": 1,
-        "fetch_authorized_count": 0,
-        "view_shell_present": True,
-        "shell_present": True,
-        "default_visible_mode": "review",
-        "work_mode_count": 3,
-        "queue_chip_count": 4,
-        "status_rail_chip_count": 4,
-        "locked_gate_count": 5,
-        "candidate_ledger_row_count": 5,
-        "ledger_layout": "responsive_ledger_stacked",
-        "title_wrapping_guard": True,
-        "source_backed_candidate_id": "cpd01_bancho_marine_misunderstanding",
-        "source_backed_title": "番長、船長を完全に勘違いする",
-        "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
-        "source_opened_by_worker": False,
-        "gate_readback": {
-            "network_required": False,
-            "external_api_used": False,
-            "media_downloaded": False,
-            "episode_dirs_created": False,
-            "fetch_authorized": False,
-            "rights_approved": False,
-            "production_ready": False,
-            "public_ready": False,
-        },
-        "next_review_action_type": "OPEN_REVIEW_CONSOLE_THEN_REVIEW_CURRENT_SOURCE_OR_FILL_SOURCE_URLS",
-        "next_action": (
-            "Open docs/content_planning/operator_cockpit.html, use Review mode for "
-            "the planning-label source item, then use Backlog mode for URL-waiting "
-            "ideas or System mode for closed gate readback before any CPD rerun."
-        ),
-        "legacy_context": {
-            "previous_focus_feature_id": "CPD-11",
-            "previous_focus_artifact_id": "clip-cpd11-operator-view-shell-v0-001",
-            "previous_focus_state": "content_planning_operator_view_shell_ready",
-        },
+        # Keep the v1.5 consumer keys while sourcing them from the canonical
+        # current-slice metadata instead of a feature-specific constant.
+        "feature_id": runtime_state["current_slice"],
+        "artifact_id": runtime_state["active_artifact"],
+        "state": runtime_state.get("health") or runtime_state.get("phase", ""),
+        "title": runtime_state.get("current_title") or runtime_state["current_slice"],
+        "active_branch": runtime_state.get("active_branch", ""),
+        "phase": runtime_state.get("phase", ""),
+        "human_entrypoint": runtime_state.get("human_entrypoint", ""),
+        "machine_readback": runtime_state.get("machine_readback", ""),
+        "handoff": runtime_state.get("current_handoff", "docs/CURRENT_HANDOFF.md"),
+        "last_verified_at": runtime_state.get("last_verified_at", ""),
+        "decision_required": runtime_state.get("decision_required", ""),
+        "next_review_action_type": runtime_state.get("next_review_due", ""),
+        "next_action": next_action,
+        "source_metadata": RUNTIME_STATE_PATH.as_posix(),
     }
 
 
 def build_project_status(
     *,
     base_dir: Path,
-    generated_at: str = DEFAULT_GENERATED_AT,
+    generated_at: str | None = DEFAULT_GENERATED_AT,
 ) -> dict[str, Any]:
+    runtime_state = _runtime_state_metadata(base_dir)
+    resolved_generated_at = _resolved_generated_at(runtime_state, generated_at)
     docs = _collect_docs(base_dir)
     all_findings = _doc_health_findings(docs)
     findings = all_findings[:FINDING_DISPLAY_LIMIT]
     features = _feature_rows(base_dir)
     artifacts = _artifact_rows(base_dir)
-    current_focus = _current_focus()
+    current_focus = _current_focus(runtime_state)
     status = {
         "schema_id": SCHEMA_ID,
         "schema_version": "v1.5",
-        "generated_at": generated_at,
+        "generated_at": resolved_generated_at,
         "project": {
             "name": "ClipPipeGen",
             "wiki_entry": "docs/index.md",
@@ -160,7 +165,7 @@ def build_project_status(
             ),
         },
         "current_focus": current_focus,
-        "open_surfaces": _open_surfaces(),
+        "open_surfaces": _open_surfaces(current_focus),
         "wiki_entrypoints": _wiki_entrypoints(),
         "features": features,
         "feature_summary": _feature_summary(features),
@@ -171,7 +176,7 @@ def build_project_status(
             artifacts,
             current_focus["artifact_id"],
         ),
-        "next_review_items": _next_review_items(),
+        "next_review_items": _next_review_items(current_focus),
         "docs": docs,
         "doc_health": {
             "finding_count": len(findings),
@@ -189,7 +194,7 @@ def write_project_status(
     *,
     base_dir: Path,
     output_dir: Path,
-    generated_at: str = DEFAULT_GENERATED_AT,
+    generated_at: str | None = DEFAULT_GENERATED_AT,
 ) -> dict[str, Any]:
     status = build_project_status(base_dir=base_dir, generated_at=generated_at)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -281,19 +286,20 @@ def render_dashboard_html(status: dict[str, Any]) -> str:
 
 def _current_focus_table_rows(focus: dict[str, Any]) -> str:
     rows = [
-        ("feature", focus.get("feature_id", "")),
+        ("slice", focus.get("feature_id", "")),
         ("artifact", focus.get("artifact_id", "")),
+        ("state", focus.get("state", "")),
+        ("title", focus.get("title", "")),
+        ("branch", focus.get("active_branch", "")),
+        ("phase", focus.get("phase", "")),
         ("entrypoint", focus.get("human_entrypoint", "")),
         ("machine readback", focus.get("machine_readback", "")),
-        ("review shape", focus.get("review_shape", "")),
-        ("known source", focus.get("source_backed_title", "")),
-        ("source URL", focus.get("source_url", "")),
-        (
-            "source-backed / missing",
-            f'{focus.get("source_backed_count", "")} / {focus.get("source_missing_count", "")}',
-        ),
+        ("handoff", focus.get("handoff", "")),
+        ("last verified", focus.get("last_verified_at", "")),
+        ("decision required", focus.get("decision_required", "")),
         ("next review", focus.get("next_review_action_type", "")),
         ("next action", focus.get("next_action", "")),
+        ("source metadata", focus.get("source_metadata", "")),
     ]
     gates = focus.get("gate_readback")
     if isinstance(gates, dict):
@@ -643,14 +649,13 @@ def _wiki_entrypoints() -> list[dict[str, str]]:
     ]
 
 
-def _next_review_items() -> list[dict[str, str]]:
+def _next_review_items(current_focus: dict[str, Any]) -> list[dict[str, str]]:
     return [
-
         {
-            "item": "CPD-12 minimal review console / current planning-label review",
-            "artifact": CURRENT_CPD_OPERATOR_COCKPIT_ARTIFACT_ID,
-            "question": "Does the Review Console make the CPD-12 version, fixed shell, dynamic slots, true modes, and planning-label provenance obvious enough for repeated use?",
-            "next_route": "Open docs/content_planning/operator_cockpit.html first; use Review mode for OK/NG/HOLD, Backlog mode for missing URLs, and System mode only for gate/internal readback.",
+            "item": f"{current_focus.get('feature_id', '')} current focus",
+            "artifact": str(current_focus.get("artifact_id", "")),
+            "question": str(current_focus.get("title", "")),
+            "next_route": str(current_focus.get("next_action", "")),
         },
         {
             "item": "ED-10bc Thank v2 opener repair",
@@ -900,7 +905,8 @@ def _top_next_improvements() -> list[dict[str, Any]]:
     ]
 
 
-def _open_surfaces() -> list[dict[str, str]]:
+def _open_surfaces(current_focus: dict[str, Any]) -> list[dict[str, str]]:
+    current_entrypoint = str(current_focus.get("human_entrypoint", ""))
     return [
         {
             "label": "Dashboard",
@@ -909,10 +915,14 @@ def _open_surfaces() -> list[dict[str, str]]:
             "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings.",
         },
         {
-            "label": "CPD Operator Cockpit",
-            "command": "start docs\\content_planning\\operator_cockpit.html",
-            "target": "docs/content_planning/operator_cockpit.html",
-            "when_to_use": "Use first for current CPD review; it shows the CPD-12 Review Console with true Review/Backlog/System modes and planning-label provenance.",
+            "label": f"{current_focus.get('feature_id', '')} Current Focus",
+            "command": (
+                "start " + current_entrypoint.replace("/", "\\")
+                if current_entrypoint
+                else ""
+            ),
+            "target": current_entrypoint,
+            "when_to_use": str(current_focus.get("next_action", "")),
         },
         {
             "label": "Artifacts",
@@ -1303,6 +1313,7 @@ def _title(text: str, *, fallback: str) -> str:
 
 
 def _front_matter(text: str) -> dict[str, str]:
+    text = text.lstrip("\ufeff")
     if not text.startswith("---\n"):
         return {}
     end = text.find("\n---", 4)

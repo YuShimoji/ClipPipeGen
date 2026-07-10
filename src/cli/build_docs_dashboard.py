@@ -19,7 +19,14 @@ def run(argv: list[str]) -> int:
         ),
     )
     parser.add_argument("--output-dir", default="docs/dashboard")
-    parser.add_argument("--generated-at", default=DEFAULT_GENERATED_AT)
+    parser.add_argument(
+        "--generated-at",
+        default=DEFAULT_GENERATED_AT,
+        help=(
+            "Override generated_at. By default the value is derived from "
+            "docs/RUNTIME_STATE.md front matter."
+        ),
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
 
@@ -29,7 +36,7 @@ def run(argv: list[str]) -> int:
             output_dir=Path(args.output_dir),
             generated_at=args.generated_at,
         )
-    except OSError as exc:
+    except (OSError, ValueError) as exc:
         print(f"build-docs-dashboard failed: {exc}", file=sys.stderr)
         return 1
 

@@ -1,12 +1,10 @@
 # ClipPipeGen
 
-> **Current development state (2026-07-10):** resume from
-> `codex/out-02-local-fixture-output-proof-smoke-v0`. The active tracked
-> artifact is the OUT-02 synthetic output-proof package. Start with
-> [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) and the detailed
-> [docs/WORKFLOW_REFORM_HANDOFF.md](docs/WORKFLOW_REFORM_HANDOFF.md); the
-> latter preserves the verified environment, retained local-preview boundary,
-> current workflow diagnosis, and decision-pending next routes.
+> **Current development state:** use
+> [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) as the current-state source.
+> OUT-02 is the tracked synthetic output-proof baseline; real local proof,
+> production acceptance, rights approval, and public readiness remain separate
+> states unless the Runtime capsule records a later reviewed transition.
 
 ED-10 note: official subtitle track import / transcript alignment is now implemented. Use `import-subtitle-track --base-transcript <path> --subtitle-track <path> --output <path> [--source-format youtube-json3] [--reviewed-by <id>] [--dry-run] [--force] [--format json]` to convert a YouTube JSON3 subtitle track into a `transcript.json`-compatible artifact with `stt.engine="subtitle_track"`. It preserves source-audio readback and alignment notes, and downstream `generate-subtitles` marks drafts as `source_type="imported_subtitle_track"`. This is still diagnostic data, not subtitle design, render, rights, creative, or publishing acceptance.
 
