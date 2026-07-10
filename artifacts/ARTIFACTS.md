@@ -1,7 +1,10 @@
 ﻿# Artifact Registry
 
 This registry points to reviewable artifacts without pretending that ignored
-local files are portable across clones.
+local files are portable across clones. As of the 2026-07-10 workflow handoff,
+start with `docs/RUNTIME_STATE.md` and `docs/WORKFLOW_REFORM_HANDOFF.md` rather
+than the generated dashboard: its current-focus generator is still a known
+legacy CPD-12 hardcode pending the selected Excise slice.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
 dashboard, then use an artifact-specific launcher. For the current ED-10z
@@ -15,6 +18,21 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-workflow-reform-handoff-20260710-001`
+
+| Field | Value |
+|---|---|
+| title | Workflow Reform and Cross-Terminal Handoff — 2026-07-10 |
+| purpose | Preserve the remote sync, verified development readiness, OUT-02 current state, retained-preview rule, workflow-friction audit, and decision-pending reform options for another terminal. |
+| storage class | Tracked Markdown handoff. It records local-only evidence boundaries but does not make remote claims about ignored preview media. |
+| repo_relative_path | `docs/WORKFLOW_REFORM_HANDOFF.md` |
+| machine_output | `git status --short --branch`; `git log -1 --oneline --decorate`; `git rev-list --left-right --count origin/main...HEAD`; local test/readback commands listed in the handoff. |
+| source_inputs | `docs/RUNTIME_STATE.md`; `docs/CURRENT_HANDOFF.md`; `docs/output_layer/OUT_02_HANDOFF.md`; `docs/triage/safety_overcapture_report.md`; local environment and Git readback on 2026-07-10. |
+| open_command | `start docs\WORKFLOW_REFORM_HANDOFF.md` |
+| validation_command | Targeted handoff link checks, docs dashboard test, full Python suite, GUI smoke, JSON parse checks, `git diff --check`, and `git ls-files episodes`. |
+| review_status | Ready as the current detailed cross-terminal context packet. The workflow implementation order remains a human decision; no product feature or public/rights gate is changed by this artifact. |
+| next_action | Choose Excise, Verify, Advance, or Explore from the packet before opening a new feature slice. |
 
 ## `clip-out02-local-fixture-output-proof-smoke-v0-001`
 

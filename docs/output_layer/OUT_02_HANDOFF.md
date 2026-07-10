@@ -23,7 +23,9 @@ Expected state:
 
 - Branch: `codex/out-02-local-fixture-output-proof-smoke-v0`
 - Remote: `origin/codex/out-02-local-fixture-output-proof-smoke-v0`
-- Latest commit: `2dd7162 Add OUT-02 local fixture output proof`
+- Proof implementation commit: `2dd7162 Add OUT-02 local fixture output proof`
+- Latest branch head: use `git log -1 --oneline --decorate` after pull; later
+  handoff-only commits are expected on this branch.
 - `git ls-files episodes`: empty
 - No tracked source media, rendered media, or local episode artifacts
 

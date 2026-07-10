@@ -1,5 +1,13 @@
 # ClipPipeGen
 
+> **Current development state (2026-07-10):** resume from
+> `codex/out-02-local-fixture-output-proof-smoke-v0`. The active tracked
+> artifact is the OUT-02 synthetic output-proof package. Start with
+> [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) and the detailed
+> [docs/WORKFLOW_REFORM_HANDOFF.md](docs/WORKFLOW_REFORM_HANDOFF.md); the
+> latter preserves the verified environment, retained local-preview boundary,
+> current workflow diagnosis, and decision-pending next routes.
+
 ED-10 note: official subtitle track import / transcript alignment is now implemented. Use `import-subtitle-track --base-transcript <path> --subtitle-track <path> --output <path> [--source-format youtube-json3] [--reviewed-by <id>] [--dry-run] [--force] [--format json]` to convert a YouTube JSON3 subtitle track into a `transcript.json`-compatible artifact with `stt.engine="subtitle_track"`. It preserves source-audio readback and alignment notes, and downstream `generate-subtitles` marks drafts as `source_type="imported_subtitle_track"`. This is still diagnostic data, not subtitle design, render, rights, creative, or publishing acceptance.
 
 ED-10a note: `build-cut-review-packet` now turns selected cuts into review packets and evidence summaries. It writes `cut_review_packet.json`, `cut_review_report.html`, `evidence_summary.json`, and `evidence_summary.html` from existing transcript/edit/NLE/render/rights artifacts. The packet keeps decisions as `undecided`, records rights pending as non-production, and exists to hand off final cut/context review.

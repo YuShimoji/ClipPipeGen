@@ -3,9 +3,19 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out02_local_fixture_output_proof_ready
+health: out02_ready_with_workflow_reform_decision_pending
 progress_pct: 100
-last_touched: 2026-07-09
+last_touched: 2026-07-10
+state_revision: workflow-reform-handoff-2026-07-10
+current_slice: OUT-02
+phase: handoff_ready
+active_branch: codex/out-02-local-fixture-output-proof-smoke-v0
+current_title: OUT-02 local fixture proof with workflow-reform decision pending
+human_entrypoint: docs/output_layer/local_fixture_output_proof/proof_timeline.html
+machine_readback: docs/output_layer/local_fixture_output_proof/proof_readback.json
+current_handoff: docs/WORKFLOW_REFORM_HANDOFF.md
+decision_required: excise_control_plane_or_verify_main_integration_or_advance_dev_reproducibility_or_explore_next_visible_slice
+last_verified_at: 2026-07-10
 next_review_due: review_out02_fixture_proof_then_choose_out03_or_real_material_smoke
 active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
@@ -68,20 +78,39 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
+## 2026-07-10 Authoritative Resume Addendum
+
+The active branch is `codex/out-02-local-fixture-output-proof-smoke-v0`.
+OUT-02 is ready as a tracked synthetic output-proof package; it is not real
+media, rights, production, or publishing acceptance. Before opening another
+feature slice, read the detailed [workflow reform handoff](WORKFLOW_REFORM_HANDOFF.md).
+It preserves the remote-sync result, development-readiness evidence, protected
+local-preview rule, workflow-friction audit, and four proposed next entry
+points.
+
+The current user intent is to keep this full context in the repository and
+remote, then resume from another terminal. The workflow-reform implementation
+order is deliberately not selected yet. Treat the older CPD/ED sections below
+as historical/reference context unless this addendum or the detailed handoff
+explicitly points to them.
+
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-09 JST. A new terminal should fetch the remote and
+Checkpoint date: 2026-07-10 JST. A new terminal should fetch the remote and
 check out the OUT-02 branch before reading project context:
 
 ```powershell
-git fetch origin
+git fetch --prune origin
 git switch codex/out-02-local-fixture-output-proof-smoke-v0
 git pull --ff-only
 ```
 
-Then read this file first, followed by `docs/CURRENT_HANDOFF.md`,
-`docs/output_layer/OUT_02_HANDOFF.md`, `docs/THREAD_REGISTRY.md`, and the
-`artifacts/ARTIFACTS.md` entry for
+Then read this file first, followed by
+`docs/WORKFLOW_REFORM_HANDOFF.md` and
+`docs/output_layer/OUT_02_HANDOFF.md`. Consult `docs/CURRENT_HANDOFF.md` and
+`docs/THREAD_REGISTRY.md` only when historical lane context is needed, then
+use the `artifacts/ARTIFACTS.md` entries for
+`clip-workflow-reform-handoff-20260710-001` and
 `clip-out02-local-fixture-output-proof-smoke-v0-001`.
 
 The latest tracked slice is OUT-02. It was created from the INT-01 integration

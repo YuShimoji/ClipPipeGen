@@ -13,21 +13,26 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current active focus is `CPD-12`: the content-planning cockpit is now the
-minimal Review Console at
-`docs/content_planning/operator_cockpit.html`, with artifact
-`clip-cpd12-minimal-review-console-v0-001`. It shows the fixed shell, generated
-data slots, true Review / Backlog / System modes, and provenance badges for the
-current planning-label source item. It is not source identity approval, fetch
-approval, production/public approval, or rights approval.
+Current active focus is `OUT-02` on
+`codex/out-02-local-fixture-output-proof-smoke-v0`. Its artifact is
+`clip-out02-local-fixture-output-proof-smoke-v0-001`: a tracked synthetic
+output-proof package with a static timeline and machine-readable readback.
+
+The complete 2026-07-10 cross-terminal context is
+[WORKFLOW_REFORM_HANDOFF.md](WORKFLOW_REFORM_HANDOFF.md). Read it after the
+Runtime State before selecting another feature slice. It records the verified
+development environment, the retained local-preview boundary, the workflow
+friction audit, and the four decision-pending next routes. The CPD-12 cockpit
+remains an upstream planning artifact, not the active resume focus.
 
 Start here:
 
 | Need | Entry |
 |---|---|
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
+| Current detailed handoff | [WORKFLOW_REFORM_HANDOFF.md](WORKFLOW_REFORM_HANDOFF.md) |
 | Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
-| Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
+| Generated docs dashboard (legacy current focus until Excise) | [dashboard/index.html](dashboard/index.html) |
 | Content planning Review Console / operator cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
 | Content planning dashboard | [content_planning/content_dashboard.html](content_planning/content_dashboard.html) |
 | Episode seed drafts | [content_planning/episode_seed_dashboard.html](content_planning/episode_seed_dashboard.html) |
@@ -45,15 +50,18 @@ Start here:
 
 ## Open Surfaces
 
-Normal order:
+Current normal order:
 
-1. Run `.\open-dashboard.ps1`.
-2. Choose the artifact or doc from the dashboard.
-3. Use an artifact-specific launcher only when needed.
+1. Read [RUNTIME_STATE.md](RUNTIME_STATE.md).
+2. Read [WORKFLOW_REFORM_HANDOFF.md](WORKFLOW_REFORM_HANDOFF.md).
+3. Open the OUT-02 proof timeline if review is needed.
+4. Use the generated dashboard only for its retained feature/artifact history
+   until the selected Excise slice makes it Runtime-driven.
 
 | Command | Opens | Use when |
 |---|---|---|
-| `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for current focus, feature progress, active artifacts, and doc-health findings. |
+| `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Retained historical dashboard; its current-focus generator is not Runtime-driven yet. |
+| `start docs\WORKFLOW_REFORM_HANDOFF.md` | `docs/WORKFLOW_REFORM_HANDOFF.md` | Current detailed cross-terminal context, verified environment, and decision-pending routes. |
 | `.\open-artifacts.ps1` | `artifacts/ARTIFACTS.md` | You need the artifact registry entry and exact open/readback notes. |
 | `.\open-current-proof.ps1` | ignored local ED-10v consumed proof if present | Use as retained evidence for the passed `cut_008` multiline/dense-stress proof; do not emit another Review Card for the same `sub_096` evidence. Missing proof is reported clearly and is not a Git failure. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` | ignored local ED-10o focused comparison if present | You need the accepted same-line comparison reference; it is not a request to rerun general Keifont acceptance. |

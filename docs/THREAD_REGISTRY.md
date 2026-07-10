@@ -5,6 +5,16 @@ outputs it carries. It is a resume surface, not an approval surface: source
 URLs, fetch/download, media generation, rights/publication, and production gates
 remain closed.
 
+## 2026-07-10 Current Resume Note
+
+INT-01 is preserved integration history, not the active resume slice. Resume
+from `codex/out-02-local-fixture-output-proof-smoke-v0` via
+`docs/RUNTIME_STATE.md`, then read `docs/WORKFLOW_REFORM_HANDOFF.md` and
+`docs/output_layer/OUT_02_HANDOFF.md`. This registry remains the branch/lane
+record for historical conflict and merge context. The workflow-reform handoff
+records the current decision-pending state and the distinction between the
+active branch and `origin/main`.
+
 | thread_id | lane_id | active_or_completed_slice | repo | branch | HEAD | worktree_or_terminal | target_artifact | weight | status | conflict_scope | next_action |
 |---|---|---|---|---|---:|---|---|---|---|---|---|
 | `clip-int-01-parallel-lane-aggregation-v0` | `INT-01` | active integration slice | `ClipPipeGen` | `codex/int-01-parallel-lane-aggregation-v0` | `branch_head_after_push` | `C:/Users/PLANNER007/ClipPipeGen` | `clip-int01-parallel-lane-aggregation-v0-001` | W5 | integrated | Central docs, dashboard, artifact registry, and shared CLI dispatcher | Push branch, then review before any main merge |

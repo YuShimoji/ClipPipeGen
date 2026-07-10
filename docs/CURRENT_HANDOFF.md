@@ -2,10 +2,17 @@
 id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
-status: active
-health: out02_local_fixture_output_proof_ready
+status: legacy_redirect
+health: out02_ready_with_workflow_reform_decision_pending
 progress_pct: 100
-last_touched: 2026-07-09
+last_touched: 2026-07-10
+current_slice: OUT-02
+phase: handoff_ready
+active_branch: codex/out-02-local-fixture-output-proof-smoke-v0
+current_handoff: docs/WORKFLOW_REFORM_HANDOFF.md
+superseded_by: docs/WORKFLOW_REFORM_HANDOFF.md
+decision_required: excise_control_plane_or_verify_main_integration_or_advance_dev_reproducibility_or_explore_next_visible_slice
+last_verified_at: 2026-07-10
 next_review_due: review_out02_fixture_proof_then_choose_out03_or_real_material_smoke
 active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
@@ -61,20 +68,35 @@ related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/output_layer/OUT_0
 
 # Current Handoff - ClipPipeGen
 
-## Cross-Terminal Re-Entry Packet
+## 2026-07-10 Immediate Re-Entry
 
-Fetch the remote OUT-02 branch, then read the project context:
+This file contains older lane material below. For the current, complete
+cross-terminal packet, read [WORKFLOW_REFORM_HANDOFF.md](WORKFLOW_REFORM_HANDOFF.md)
+immediately after [RUNTIME_STATE.md](RUNTIME_STATE.md). It records the OUT-02
+branch, remote-sync/development-readiness validation, protected local preview,
+workflow-friction evidence, and decision-pending next routes.
+
+The active branch is `codex/out-02-local-fixture-output-proof-smoke-v0`.
+Do not infer that the historical CPD-12 or ED-10 sections below are the active
+slice; they remain reference evidence unless the current Runtime or workflow
+handoff explicitly reactivates one.
+
+## Historical OUT-02 Re-Entry Packet
+
+This preserved OUT-02 packet remains useful after the current workflow handoff.
+Fetch the remote branch, then read the project context in the current order:
 
 ```powershell
-git fetch origin
+git fetch --prune origin
 git switch codex/out-02-local-fixture-output-proof-smoke-v0
 git pull --ff-only
 ```
 
-Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file,
-`docs/output_layer/OUT_02_HANDOFF.md`, `docs/THREAD_REGISTRY.md`,
-and the `artifacts/ARTIFACTS.md` entry for
-`clip-out02-local-fixture-output-proof-smoke-v0-001`.
+Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`,
+`docs/WORKFLOW_REFORM_HANDOFF.md`, and
+`docs/output_layer/OUT_02_HANDOFF.md`. Use this file and
+`docs/THREAD_REGISTRY.md` only for the preserved historical lane context, then
+consult the matching artifact-registry entries.
 
 The durable state to carry forward is: OUT-02 is completed and pushed on
 `codex/out-02-local-fixture-output-proof-smoke-v0`. It converts OUT-01
