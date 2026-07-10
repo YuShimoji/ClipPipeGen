@@ -6,7 +6,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-03`
 - artifact: `clip-out03-real-local-selected-cut-proof-v0-001`
-- state: `out03_real_local_selected_cut_review_proof_ready`
+- state: `out03_real_local_selected_cut_accepted_canonical_candidate`
 
 ## Feature Table
 

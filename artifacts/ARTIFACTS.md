@@ -31,8 +31,20 @@ opened by the root launcher.
 | source_inputs | JP-Pilot `edit_pack.json`, `transcript.json`, material ledger, rights manifest, `cut_002` diagnostic proof MP4, and representative visual proof readback. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` |
 | validation_command | `uvx pytest -q tests/test_selected_cut_proof.py`; run the builder twice and compare SHA-256; parse JSON; ffprobe copied MP4; browser DOM/media/layout readback; `git diff --check`; `git ls-files episodes`. |
-| review_status | Ready for freeform milestone review on this machine: `cut_002`, source `12.329`-`17.167`, duration `4.838s`, H.264/AAC 1920x1080, transcript `subtitle_track` / `youtube_subtitles` with `real_transcript=true`, subtitles linked to `seg_000008` and `seg_000009`. |
-| next_action | Open the single entrypoint and judge whether the real selected cut is directly reviewable; do not infer rights, production, creative, publishing, subtitle-design, or public acceptance. |
+| review_status | `accepted` |
+| reviewed_at | `2026-07-11 JST` |
+| review_scope | OUT-03 internal real-local selected-cut milestone only. |
+| playback | `pass` |
+| cut_boundary | `pass` |
+| content_audio_match | `pass` |
+| subtitle_timing | `pass` |
+| subtitle_readability | `pass` |
+| review_evidence | Page clarity passed. Evidence remains `cut_002`, source `12.329`-`17.167`, duration `4.838s`, H.264/AAC 1920x1080, transcript `subtitle_track` / `youtube_subtitles` with `real_transcript=true`, linked to `seg_000008` and `seg_000009`. |
+| rights_approval | `pending` (unchanged) |
+| production_acceptance | `false` |
+| public_or_publishing_acceptance | `false` |
+| implementation_commit | `01b42cd` |
+| next_action | Use accepted OUT-03 as the canonical baseline for OUT-04 editorial representative sequence work; do not infer rights, production, creative, publishing, system-wide subtitle-design, or public acceptance. |
 
 Boundary flags remain false or pending:
 

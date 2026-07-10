@@ -3,25 +3,37 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out03_real_local_selected_cut_review_proof_ready
+health: out03_real_local_selected_cut_accepted_canonical_candidate
 progress_pct: 100
-last_touched: 2026-07-10
-state_revision: out03-real-local-selected-cut-proof-2026-07-10
+last_touched: 2026-07-11
+state_revision: out03-real-local-selected-cut-accepted-2026-07-11
 current_slice: OUT-03
-phase: review_ready
+phase: accepted
+canonical_status: canonical_candidate
 active_branch: codex/out-03-real-local-selected-cut-proof-v0
-current_title: OUT-03 real-local selected-cut review proof
+current_title: OUT-03 accepted real-local selected-cut baseline
 human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_freeform
-last_verified_at: 2026-07-10
-next_review_due: review_out03_real_local_cut_002
-next_action: Open the OUT-03 entrypoint and review whether cut_002 is directly judgeable as one real selected cut; keep rights, production, and public gates closed.
+decision_required: none
+review_status: accepted
+playback: pass
+cut_boundary: pass
+content_audio_match: pass
+subtitle_timing: pass
+subtitle_readability: pass
+review_scope: OUT-03 internal real-local selected-cut milestone only
+reviewed_at: 2026-07-11 JST
+rights_approval: pending
+production_acceptance: false
+public_or_publishing_acceptance: false
+last_verified_at: 2026-07-11
+next_review_due: review_out04_editorial_representative_sequence
+next_action: Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed.
 active_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
-latest_out03_real_local_selected_cut_proof_commit: branch_head_after_push
+latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
 latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
@@ -82,10 +94,11 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-03 Real-Local Selected-Cut Review Proof
+## Accepted OUT-03 Real-Local Selected-Cut Baseline
 
-The active review branch is
-`codex/out-03-real-local-selected-cut-proof-v0`. It adds a bounded
+OUT-03 was accepted by the user on 2026-07-11 JST and is the canonical baseline
+for OUT-04. Its implementation came from
+`codex/out-03-real-local-selected-cut-proof-v0` at `01b42cd`. It adds a bounded
 `build-selected-cut-proof` route and generates one same-machine review bundle
 for JP-Pilot `cut_002` at
 `episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/`.
@@ -99,33 +112,41 @@ it to source interval `12.329`-`17.167`, transcript segments `seg_000008` and
 readback confirmed one video element, duration `4.838`, ready state, no media
 error, and no horizontal overflow.
 
+The user reported that the page was simple and understandable, playback was
+normal, the result matched its explanation, cut timing was appropriate,
+content matched the audio, and subtitle timing/readability matched the audio.
+The normalized result is `review_status=accepted`, with playback, cut boundary,
+content/audio match, subtitle timing, and subtitle readability all `pass`.
+This acceptance is scoped only to the OUT-03 internal real-local selected-cut
+milestone.
+
 The generated bundle is ignored, local-retained, and same-machine only. The
 tracked branch carries the builder, tests, and artifact contract, not source
 media. Rights remain `pending`; production, public, publishing, subtitle-design,
 and creative acceptance remain false. The existing retained
 `human_preview_session/` was hash-checked unchanged.
 
-## OUT-02 Canonical Baseline
+## OUT-02 Predecessor Baseline
 
-Canonical `main` is `e2c6fe2` and contains the accepted OUT-02 synthetic
-output-proof baseline plus Runtime-derived dashboard repair. OUT-02 remains
-portable tracked package-shape evidence; OUT-03 is the separate real-local
-review branch. Treat older CPD/ED sections below as historical or upstream
-evidence unless this capsule explicitly reactivates one of them.
+`e2c6fe2` was the accepted OUT-02 synthetic output-proof baseline before the
+OUT-03 fast-forward. OUT-02 remains portable tracked package-shape evidence;
+accepted OUT-03 adds the separate real-local milestone. Treat older CPD/ED
+sections below as historical or upstream evidence unless this capsule
+explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-10 JST. A new terminal should fetch and switch to the
-OUT-03 review branch before reading project context:
+Checkpoint date: 2026-07-11 JST. A new terminal should fetch and update the
+accepted canonical baseline before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-03-real-local-selected-cut-proof-v0
+git switch main
 git pull --ff-only
 ```
 
-Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
-`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md`. Consult
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and the accepted
+`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` contract. Consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
 `clip-out03-real-local-selected-cut-proof-v0-001`.

@@ -13,16 +13,19 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current active focus is `OUT-03` on
+Current focus is the accepted `OUT-03` canonical candidate on
 `codex/out-03-real-local-selected-cut-proof-v0`. Its artifact is
 `clip-out03-real-local-selected-cut-proof-v0-001`: one same-machine,
 real-local selected-cut review proof with a directly playable MP4, adjacent
-subtitle/timeline linkage, and compact machine readback.
+subtitle/timeline linkage, and compact machine readback. The user accepted its
+page clarity, playback, cut timing, content/audio match, and subtitle
+timing/readability on 2026-07-11 JST.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
-Canonical `main` retains the OUT-02 synthetic baseline at `e2c6fe2`. The
-CPD-12 cockpit remains an upstream planning artifact, not the active resume
-focus.
+OUT-02 at `e2c6fe2` is the portable synthetic predecessor; accepted OUT-03 is
+the candidate for the next main fast-forward. The next product slice is OUT-04,
+a real-local multi-cut editorial representative sequence. The CPD-12 cockpit
+remains an upstream planning artifact, not the active resume focus.
 
 Start here:
 
@@ -57,7 +60,7 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` | ignored OUT-03 real-local selected-cut proof | Review `cut_002` through the single playable milestone entrypoint; add `-Serve` only when local-file playback is blocked. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` | ignored accepted OUT-03 real-local selected-cut proof | Reopen the accepted `cut_002` evidence if needed; add `-Serve` only when local-file playback is blocked. |
 | `.\open-artifacts.ps1` | `artifacts/ARTIFACTS.md` | You need the artifact registry entry and exact open/readback notes. |
 | `.\open-current-proof.ps1` | ignored local ED-10v consumed proof if present | Use as retained evidence for the passed `cut_008` multiline/dense-stress proof; do not emit another Review Card for the same `sub_096` evidence. Missing proof is reported clearly and is not a Git failure. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1` | ignored local ED-10o focused comparison if present | You need the accepted same-line comparison reference; it is not a request to rerun general Keifont acceptance. |
@@ -74,11 +77,11 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-Open the OUT-03 entrypoint and judge whether `cut_002` is directly reviewable
-as one real selected cut with its source timing, transcript segments, and
-subtitles connected. This is a freeform milestone review, not rights,
-production, subtitle-design, publishing, or public acceptance. Use the
-dashboard to return to tracked project context. A good docs update should make
+Start OUT-04 from accepted OUT-03 and build one playable 10-30 second sequence
+from two or three retained real cuts. The next review is limited to editorial
+coherence, cut boundaries, pacing, and subtitle/audio continuity; it is not a
+rights, production, publishing, or public-use decision. Use the dashboard to
+return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 
 - what the page is for
