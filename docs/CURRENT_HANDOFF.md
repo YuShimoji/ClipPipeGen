@@ -3,21 +3,24 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: out02_canonical_baseline_ready
+health: out03_real_local_selected_cut_review_proof_ready
 progress_pct: 100
 last_touched: 2026-07-10
-current_slice: OUT-02
-phase: canonical_baseline_ready
-active_branch: main
-current_title: OUT-02 local fixture output-proof baseline
-human_entrypoint: docs/output_layer/local_fixture_output_proof/proof_timeline.html
-machine_readback: docs/output_layer/local_fixture_output_proof/proof_readback.json
+current_slice: OUT-03
+phase: review_ready
+active_branch: codex/out-03-real-local-selected-cut-proof-v0
+current_title: OUT-03 real-local selected-cut review proof
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none
+decision_required: review_freeform
 last_verified_at: 2026-07-10
-next_review_due: build_out03_real_local_selected_cut_review_proof
-next_action: Build one real-local selected-cut proof from the retained JP-Pilot artifacts, keeping rights, production, and public gates closed.
-active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
+next_review_due: review_out03_real_local_cut_002
+next_action: Open the OUT-03 entrypoint and review whether cut_002 is directly judgeable as one real selected cut; keep rights, production, and public gates closed.
+active_artifact: clip-out03-real-local-selected-cut-proof-v0-001
+latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
+latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
+latest_out03_real_local_selected_cut_proof_commit: branch_head_after_push
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
 latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
@@ -73,20 +76,36 @@ related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/output_layer/OUT_0
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch and fast-forward the canonical baseline, then read the project context:
+Fetch and switch to the OUT-03 review branch, then read the project context:
 
 ```powershell
 git fetch --prune origin
-git switch main
-git pull --ff-only origin main
+git switch codex/out-03-real-local-selected-cut-proof-v0
+git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file, and
-`docs/output_layer/OUT_02_HANDOFF.md`. Use `docs/THREAD_REGISTRY.md` only for
-historical integration context, then consult the matching artifact-registry
-entry.
+`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md`. Use
+`docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
+baseline/integration history, then consult the OUT-03 artifact-registry entry.
 
-The durable state to carry forward is: OUT-02 is the canonical tracked
+The durable OUT-03 state is a tracked builder/test/contract plus a same-machine
+ignored bundle at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/`.
+Run its `open_preview.ps1` as the single review entrypoint, adding `-Serve` only
+when local-file playback is unavailable. The page directly plays one real
+4.838-second selected cut and shows adjacent timing, imported official subtitle
+text, transcript segment linkage, and collapsed provenance/gates. The bundle
+does not travel by Git and the retained `human_preview_session/` remains
+unchanged.
+
+Canonical `main` remains at `e2c6fe2`; OUT-03 is intentionally not merged
+before milestone review. Rights remain pending and no production/public/
+publishing/creative/subtitle-design acceptance is granted.
+
+## OUT-02 Canonical Baseline Context
+
+The OUT-02 state to carry forward is: OUT-02 is the canonical tracked
 baseline, with its preserved source branch at
 `codex/out-02-local-fixture-output-proof-smoke-v0`. It converts OUT-01
 `proof_missing` into a tracked synthetic local fixture proof package without

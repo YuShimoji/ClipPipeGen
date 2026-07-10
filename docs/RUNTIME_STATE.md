@@ -3,22 +3,25 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out02_canonical_baseline_ready
+health: out03_real_local_selected_cut_review_proof_ready
 progress_pct: 100
 last_touched: 2026-07-10
-state_revision: out02-canonical-baseline-2026-07-10
-current_slice: OUT-02
-phase: canonical_baseline_ready
-active_branch: main
-current_title: OUT-02 local fixture output-proof baseline
-human_entrypoint: docs/output_layer/local_fixture_output_proof/proof_timeline.html
-machine_readback: docs/output_layer/local_fixture_output_proof/proof_readback.json
+state_revision: out03-real-local-selected-cut-proof-2026-07-10
+current_slice: OUT-03
+phase: review_ready
+active_branch: codex/out-03-real-local-selected-cut-proof-v0
+current_title: OUT-03 real-local selected-cut review proof
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none
+decision_required: review_freeform
 last_verified_at: 2026-07-10
-next_review_due: build_out03_real_local_selected_cut_review_proof
-next_action: Build one real-local selected-cut proof from the retained JP-Pilot artifacts, keeping rights, production, and public gates closed.
-active_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
+next_review_due: review_out03_real_local_cut_002
+next_action: Open the OUT-03 entrypoint and review whether cut_002 is directly judgeable as one real selected cut; keep rights, production, and public gates closed.
+active_artifact: clip-out03-real-local-selected-cut-proof-v0-001
+latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
+latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
+latest_out03_real_local_selected_cut_proof_commit: branch_head_after_push
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
 latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
@@ -79,32 +82,55 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## 2026-07-10 Authoritative Resume Addendum
+## Current OUT-03 Real-Local Selected-Cut Review Proof
 
-The canonical baseline is `main`. OUT-02 is ready as a tracked synthetic
-output-proof package; it is not real media, rights, production, or publishing
-acceptance. The next product move is one real-local selected-cut proof using
-the retained JP-Pilot inputs. Treat the older CPD/ED sections below as
-historical or upstream evidence unless this capsule explicitly reactivates
-one of them.
+The active review branch is
+`codex/out-03-real-local-selected-cut-proof-v0`. It adds a bounded
+`build-selected-cut-proof` route and generates one same-machine review bundle
+for JP-Pilot `cut_002` at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/`.
+The single operator entrypoint is `open_preview.ps1`; `-Serve` uses the same
+entrypoint when localhost playback is needed.
+
+The proof directly plays one 4.838-second H.264/AAC 1920x1080 MP4 and connects
+it to source interval `12.329`-`17.167`, transcript segments `seg_000008` and
+`seg_000009`, and subtitles `sub_008` and `sub_009`. Transcript provenance is
+`subtitle_track` / `youtube_subtitles` with `real_transcript=true`. Browser
+readback confirmed one video element, duration `4.838`, ready state, no media
+error, and no horizontal overflow.
+
+The generated bundle is ignored, local-retained, and same-machine only. The
+tracked branch carries the builder, tests, and artifact contract, not source
+media. Rights remain `pending`; production, public, publishing, subtitle-design,
+and creative acceptance remain false. The existing retained
+`human_preview_session/` was hash-checked unchanged.
+
+## OUT-02 Canonical Baseline
+
+Canonical `main` is `e2c6fe2` and contains the accepted OUT-02 synthetic
+output-proof baseline plus Runtime-derived dashboard repair. OUT-02 remains
+portable tracked package-shape evidence; OUT-03 is the separate real-local
+review branch. Treat older CPD/ED sections below as historical or upstream
+evidence unless this capsule explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-10 JST. A new terminal should fetch and fast-forward
-the canonical baseline before reading project context:
+Checkpoint date: 2026-07-10 JST. A new terminal should fetch and switch to the
+OUT-03 review branch before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch main
-git pull --ff-only origin main
+git switch codex/out-03-real-local-selected-cut-proof-v0
+git pull --ff-only
 ```
 
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
-`docs/output_layer/OUT_02_HANDOFF.md`. Consult `docs/THREAD_REGISTRY.md` only
-for historical integration context, then use the `artifacts/ARTIFACTS.md`
-entry for `clip-out02-local-fixture-output-proof-smoke-v0-001`.
+`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md`. Consult
+`docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
+baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
+`clip-out03-real-local-selected-cut-proof-v0-001`.
 
-The latest tracked slice is OUT-02. It was created from the INT-01 integration
+The latest canonical baseline slice is OUT-02. It was created from the INT-01 integration
 branch and converts OUT-01 `proof_missing` into a portable local fixture output
 proof package. The proof is synthetic fixture data only: no source URL was
 opened, no external media was fetched/downloaded, no yt-dlp/OAuth/API was used,

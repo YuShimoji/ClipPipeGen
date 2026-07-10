@@ -18,6 +18,31 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-out03-real-local-selected-cut-proof-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-03 Real-Local Selected-Cut Review Proof v0 |
+| purpose | Connect one real retained source segment, non-fixture transcript, selected cut, subtitles, playable diagnostic MP4, and compact readback through one human entrypoint. |
+| storage class | Tracked builder/tests/contract plus ignored same-machine review bundle. Source media and generated MP4 remain outside Git. |
+| repo_relative_path | `src/integrations/render/selected_cut_proof.py`; `src/cli/build_selected_cut_proof.py`; `docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` |
+| local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/` |
+| machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json` |
+| source_inputs | JP-Pilot `edit_pack.json`, `transcript.json`, material ledger, rights manifest, `cut_002` diagnostic proof MP4, and representative visual proof readback. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` |
+| validation_command | `uvx pytest -q tests/test_selected_cut_proof.py`; run the builder twice and compare SHA-256; parse JSON; ffprobe copied MP4; browser DOM/media/layout readback; `git diff --check`; `git ls-files episodes`. |
+| review_status | Ready for freeform milestone review on this machine: `cut_002`, source `12.329`-`17.167`, duration `4.838s`, H.264/AAC 1920x1080, transcript `subtitle_track` / `youtube_subtitles` with `real_transcript=true`, subtitles linked to `seg_000008` and `seg_000009`. |
+| next_action | Open the single entrypoint and judge whether the real selected cut is directly reviewable; do not infer rights, production, creative, publishing, subtitle-design, or public acceptance. |
+
+Boundary flags remain false or pending:
+
+- `diagnostic_only=true`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_ready=false`
+- `publishing_acceptance=false`
+- `public_ready=false`
+
 ## `clip-out02-local-fixture-output-proof-smoke-v0-001`
 
 | Field | Value |

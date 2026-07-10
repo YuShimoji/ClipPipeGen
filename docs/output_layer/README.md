@@ -1,13 +1,15 @@
 # Output Layer Readback
 
-This directory holds output/video-layer readback artifacts. OUT-02 adds a
-tracked synthetic fixture proof package so a reviewer can inspect the output
-package shape without source fetching, external media, production render,
-rights approval, or public upload.
+This directory holds output/video-layer readback artifacts. OUT-02 is the
+tracked synthetic fixture baseline: it lets a reviewer inspect package shape
+without external media. OUT-03 is the current product slice: one retained
+real-local JP-Pilot selected cut packaged for same-machine human review while
+rights, production, public, and publishing gates remain closed.
 
 Start here when resuming from another terminal:
 
-- `OUT_02_HANDOFF.md` - current branch, artifact, validation, gate, and next-route context.
+- `OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` - observable OUT-03 result, exact planned CLI contract, review entrypoint, machine readback, and closed gates.
+- `OUT_02_HANDOFF.md` - synthetic baseline branch, artifact, validation, gate, and next-route context.
 - `OUT_01_HANDOFF.md` - branch, artifact, validation, gate, and next-route context.
 
 Regenerate the current OUT-02 artifacts from the repository root:
@@ -15,6 +17,13 @@ Regenerate the current OUT-02 artifacts from the repository root:
 ```powershell
 python -m src.cli.main build-output-layer-gap-report --format json
 ```
+
+OUT-03 does not replace these tracked files. Its
+`build-selected-cut-proof` command writes only to a dedicated ignored episode
+review directory and exposes one `open_preview.ps1` entrypoint with a `-Serve`
+fallback. The existing `jp_pilot01r3_cut_review/human_preview_session/` remains
+untouched; see `OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` for the exact command
+and evidence contract.
 
 Generated files:
 

@@ -43,6 +43,7 @@ Subcommands:
     build-docs-dashboard     Docs v1.5: wiki/dashboard status and doc-health findings.
     build-external-source-registry HUB-01: local RSS/manual fixtures -> source registry.
     build-output-layer-gap-report OUT-02: output fixture proof package and gap log.
+    build-selected-cut-proof OUT-03: one real-local selected-cut playable review proof.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -73,6 +74,7 @@ from . import (
     build_episode_init_plan,
     build_external_source_registry,
     build_output_layer_gap_report,
+    build_selected_cut_proof,
     build_episode_workspace_plan,
     build_operator_cockpit,
     build_source_inspection_packet,
@@ -151,6 +153,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-docs-dashboard": build_docs_dashboard.run,
     "build-external-source-registry": build_external_source_registry.run,
     "build-output-layer-gap-report": build_output_layer_gap_report.run,
+    "build-selected-cut-proof": build_selected_cut_proof.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

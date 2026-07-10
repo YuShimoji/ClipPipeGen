@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-02`
-- artifact: `clip-out02-local-fixture-output-proof-smoke-v0-001`
-- state: `out02_canonical_baseline_ready`
+- feature: `OUT-03`
+- artifact: `clip-out03-real-local-selected-cut-proof-v0-001`
+- state: `out03_real_local_selected_cut_review_proof_ready`
 
 ## Feature Table
 

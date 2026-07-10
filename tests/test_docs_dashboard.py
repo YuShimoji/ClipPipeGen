@@ -231,7 +231,8 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out02_artifact = "clip-out02-local-fixture-output-proof-smoke-v0-001"
+    current_out03_artifact = "clip-out03-real-local-selected-cut-proof-v0-001"
+    baseline_out02_artifact = "clip-out02-local-fixture-output-proof-smoke-v0-001"
     current_int_artifact = "clip-int01-parallel-lane-aggregation-v0-001"
     current_ews_artifact = "clip-ews05-human-ok-fetch-prep-ready-package-v0-001"
     current_ews_fetch_prep_artifact = "clip-ews04-source-fetch-prep-planner-v0-001"
@@ -302,10 +303,15 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_out02_artifact}" in text
+            assert f"active_artifact: {current_out03_artifact}" in text
+            assert (
+                "latest_out03_real_local_selected_cut_proof_artifact: "
+                f"{current_out03_artifact}"
+                in text
+            )
             assert (
                 "latest_out02_local_fixture_output_proof_artifact: "
-                f"{current_out02_artifact}"
+                f"{baseline_out02_artifact}"
                 in text
             )
             assert (
@@ -1394,8 +1400,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out02-local-fixture-output-proof-smoke-v0-001"
+        "clip-out03-real-local-selected-cut-proof-v0-001"
     )
+    assert "clip-out03-real-local-selected-cut-proof-v0-001" in artifact_ids
     assert "clip-cpd12-minimal-review-console-v0-001" in artifact_ids
     assert "clip-cpd11-operator-view-shell-v0-001" in artifact_ids
     assert "clip-cpd10-candidate-ledger-readability-v0-001" in artifact_ids
