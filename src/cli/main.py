@@ -45,6 +45,7 @@ Subcommands:
     build-output-layer-gap-report OUT-02: output fixture proof package and gap log.
     build-selected-cut-proof OUT-03: one real-local selected-cut playable review proof.
     build-editorial-sequence OUT-04: one real-local ordered multi-cut editorial sequence.
+    build-vertical-short-candidate OUT-05: one accepted-timeline internal 1080x1920 candidate.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -68,6 +69,7 @@ from . import (
     audit_material_ledger,
     audit_thumbnail,
     build_editorial_sequence,
+    build_vertical_short_candidate,
     build_chapter_revision_board,
     build_content_candidate_dashboard,
     build_cut_decision_packet,
@@ -157,6 +159,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-output-layer-gap-report": build_output_layer_gap_report.run,
     "build-selected-cut-proof": build_selected_cut_proof.run,
     "build-editorial-sequence": build_editorial_sequence.run,
+    "build-vertical-short-candidate": build_vertical_short_candidate.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

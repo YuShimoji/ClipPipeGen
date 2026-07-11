@@ -3,40 +3,41 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out04_editorial_representative_sequence_accepted_canonical_candidate
+health: out05_vertical_short_internal_candidate_review_ready
 progress_pct: 100
 last_touched: 2026-07-12
-state_revision: out04-editorial-representative-sequence-accepted-2026-07-12
-current_slice: OUT-04
-phase: accepted
-canonical_status: canonical_candidate
-active_branch: codex/out-04-editorial-representative-sequence-v0
-current_title: OUT-04 accepted real-local editorial representative sequence
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json
+state_revision: out05-vertical-short-internal-candidate-2026-07-12
+current_slice: OUT-05
+phase: review_ready
+canonical_status: branch_review_pending
+active_branch: codex/out-05-vertical-short-internal-candidate-v0
+current_title: OUT-05 vertical short internal candidate
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none
-review_status: accepted
-editorial_coherence: pass
-hard_cut_boundary: pass
-hard_cut_abrupt_or_confusing: false
-subtitle_audio_continuity: pass
-audio_dropout: none_observed
-transition_visual_corruption: none_observed
-reviewer_note: 場面転換前後を含めて画面上の乱れは確認されなかった
-acceptance_scope: OUT-04 internal editorial representative sequence only
-reviewed_at: 2026-07-11 JST
+decision_required: review_freeform
+review_status: review_ready
+review_scope: OUT-05 internal vertical framing, subtitle placement/wrap/readability, and audio/boundary/screen export integrity only
+reviewed_at: pending
 rights_approval: pending
 production_acceptance: false
+production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-12
 next_review_due: review_out05_vertical_short_internal_candidate
-next_action: Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed.
-active_artifact: clip-out04-editorial-representative-sequence-v0-001
+next_action: Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed.
+active_artifact: clip-out05-vertical-short-internal-candidate-v0-001
+latest_out05_vertical_short_internal_candidate_artifact: clip-out05-vertical-short-internal-candidate-v0-001
+latest_out05_vertical_short_internal_candidate_branch: codex/out-05-vertical-short-internal-candidate-v0
+latest_out05_vertical_short_internal_candidate_output_sha256: d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827
 latest_out04_editorial_representative_sequence_artifact: clip-out04-editorial-representative-sequence-v0-001
 latest_out04_editorial_representative_sequence_branch: codex/out-04-editorial-representative-sequence-v0
-canonical_main_head: 92df1b6
-canonical_main_baseline: OUT-03 accepted
+latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
+latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
+latest_out04_review_status: accepted
+latest_out04_reviewed_at: 2026-07-11 JST
+canonical_main_head: 48c0c58
+canonical_main_baseline: OUT-04 accepted
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
@@ -102,6 +103,43 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## Current OUT-05 Vertical Short Internal Candidate
+
+The active review branch is
+`codex/out-05-vertical-short-internal-candidate-v0`. It adds the bounded
+`build-vertical-short-candidate` route and one ignored same-machine bundle at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/`.
+The only operator entrypoint is `open_preview.ps1`; use `-Serve` on the same
+script when localhost playback is needed.
+
+OUT-05 preserves the accepted `cut_001 -> cut_002` source and sequence ranges,
+the `6.840s` hard cut, all nine subtitle events, and total duration within the
+OUT-04 tolerance. It adds no `cut_003`, transition, sound effect, or speaker
+identity layer. Still-frame comparison selected full 16:9 fit over a
+source-derived blurred/toned canvas because the anchor crop loses meaningful
+left/right composition and the bounded hybrid has edge loss without a clear
+focal gain.
+
+The final MP4 SHA-256 is
+`d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827`.
+It probes as H.264/AAC, 1080x1920, 30fps, yuv420p, faststart, duration `11.700s`,
+with one video/audio stream. Full decode passed. Input audio measured
+`-19.22 LUFS / -2.11 dBTP`; the normalized candidate measures
+`-14.06 LUFS / -1.49 dBTP`.
+
+The subtitle route uses Keifont, the ED-10w Candidate 2 body treatment with
+Candidate 0 as fallback reference, existing selector/font-bbox wrapping, an
+OUT-05 measured-width balancing pass, explicit ASS lines, and FFmpeg/libass.
+All cues fit a conservative three-line internal vertical envelope. Browser
+readback confirmed one video, readyState `4`, duration `11.700`, intrinsic
+1080x1920 size, no media or console error, no horizontal overflow, and a
+height-bounded desktop presentation.
+
+OUT-03, OUT-04, and the retained human-preview tree digests remain unchanged.
+The bundle is internal review evidence only. Rights remain `pending`;
+production render/subtitle-design acceptance, public readiness, publishing,
+and upload remain false or unopened.
 
 ## Accepted OUT-04 Editorial Representative Sequence
 
@@ -178,26 +216,23 @@ explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-12 JST. A new terminal should fetch and update the
-accepted canonical baseline before reading project context:
+Checkpoint date: 2026-07-12 JST. A new terminal should fetch and switch to the
+OUT-05 review branch before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch main
+git switch codex/out-05-vertical-short-internal-candidate-v0
 git pull --ff-only
 ```
 
-Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and the accepted
-`docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md`. Use the
-accepted `docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` only for
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
+`docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md`. Use the accepted
+`docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md` and the accepted
+`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` only for
 the canonical predecessor, and consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
-`clip-out04-editorial-representative-sequence-v0-001`.
-
-The next product action is OUT-05: preserve the accepted timeline and convert
-the sequence into one internal 1080x1920 vertical-short candidate with explicit
-reframe, subtitle, audio, provenance, and non-production readback.
+`clip-out05-vertical-short-internal-candidate-v0-001`.
 
 The earlier portable synthetic predecessor is OUT-02. It was created from the
 INT-01 integration branch and converts OUT-01 `proof_missing` into a local

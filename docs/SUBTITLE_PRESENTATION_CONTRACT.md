@@ -682,6 +682,22 @@ publishing, and public-use false or pending. The next executable route is
 `production-limitation-lift-stage-5-user-decision-ready`; use
 `final-render-path-stage-4` only if a concrete diagnostic gap is found.
 
+## Current OUT-05 Vertical Internal Candidate Route
+
+OUT-05 applies the existing Keifont route and the ED-10w Candidate 2 body
+treatment to the user-accepted OUT-04 sequence. Candidate 0 remains the fallback
+reference. Because no verified speaker identity is available for these nine
+cues, the vertical candidate uses `bottom_center_emphasis` and omits the speaker
+badge/identity layer instead of rendering `SPK` or another placeholder.
+
+The 1080x1920 route preserves stable white body text, heavy black outline,
+font-bbox measured wrapping, explicit ASS line breaks, and FFmpeg/libass. An
+OUT-05-specific balanced partition chooses only measured-width-valid candidates
+and prevents a short verb/punctuation tail from becoming a fourth line. The
+conservative internal envelope allows at most three lines below the full-fit
+16:9 action band. This is internal vertical-candidate evidence only; it is not a
+platform-production-safe-area claim or production subtitle-design acceptance.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

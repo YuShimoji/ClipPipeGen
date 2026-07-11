@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-04`
-- artifact: `clip-out04-editorial-representative-sequence-v0-001`
-- state: `out04_editorial_representative_sequence_accepted_canonical_candidate`
+- feature: `OUT-05`
+- artifact: `clip-out05-vertical-short-internal-candidate-v0-001`
+- state: `out05_vertical_short_internal_candidate_review_ready`
 
 ## Feature Table
 

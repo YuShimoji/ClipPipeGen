@@ -18,6 +18,37 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-out05-vertical-short-internal-candidate-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-05 Vertical Short Internal Candidate v0 |
+| purpose | Preserve the accepted OUT-04 timeline while producing one directly reviewable 1080x1920 internal vertical-format candidate with explicit reframe, subtitle, audio, provenance, and closed-gate readback. |
+| storage class | Tracked builder/CLI/tests/contract plus ignored same-machine vertical candidate bundle. Source media and generated MP4 remain outside Git. |
+| repo_relative_path | `src/integrations/render/vertical_short_candidate.py`; `src/cli/build_vertical_short_candidate.py`; `docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md` |
+| local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/` |
+| machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/candidate_readback.json` |
+| source_inputs | Accepted OUT-04 readback/video and unchanged retained source video/audio, edit pack, transcript, material ledger, rights manifest, and cut decisions. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out05_vertical_short_internal_candidate\open_preview.ps1` |
+| validation_command | `uvx --with Pillow pytest -q tests/test_vertical_short_candidate.py tests/test_editorial_sequence.py`; parse JSON; ffprobe; full FFmpeg decode; loudness/true-peak measure; frame/contact-sheet inspection; browser DOM/media/layout readback; protected tree digests; `git diff --check`; `git ls-files episodes`. |
+| review_status | Review-ready on this machine: unchanged `cut_001 -> cut_002`, hard cut at `6.840s`, total `11.700s` within tolerance, 9 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, browser readyState `4`, no media error, console warning/error, or horizontal overflow. |
+| reframe | `full_16_9_fit_source_derived_blurred_canvas`; still-frame comparison rejected the explicit anchor crop for left/right information loss and held the bounded hybrid because it lost edge context without a clear focal gain. |
+| audio | Input `-19.22 LUFS / -2.11 dBTP`; normalized output `-14.06 LUFS / -1.49 dBTP`. |
+| output_sha256 | `d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827` |
+| next_action | Judge only vertical framing/naturalness, subtitle position/wrap/readability/non-obstruction, and audio/boundary/screen export integrity. |
+
+Boundary flags remain false or pending:
+
+- `internal_review_only=true`
+- `vertical_format_candidate=true`
+- `production_candidate=false`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `rights=pending`
+- `public_ready=false`
+- `publishing=false`
+- `publish_attempted=false`
+
 ## `clip-out04-editorial-representative-sequence-v0-001`
 
 | Field | Value |

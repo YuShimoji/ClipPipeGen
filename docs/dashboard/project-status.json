@@ -24,19 +24,19 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "OUT-04",
-    "artifact_id": "clip-out04-editorial-representative-sequence-v0-001",
-    "state": "out04_editorial_representative_sequence_accepted_canonical_candidate",
-    "title": "OUT-04 accepted real-local editorial representative sequence",
-    "active_branch": "codex/out-04-editorial-representative-sequence-v0",
-    "phase": "accepted",
-    "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
-    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json",
+    "feature_id": "OUT-05",
+    "artifact_id": "clip-out05-vertical-short-internal-candidate-v0-001",
+    "state": "out05_vertical_short_internal_candidate_review_ready",
+    "title": "OUT-05 vertical short internal candidate",
+    "active_branch": "codex/out-05-vertical-short-internal-candidate-v0",
+    "phase": "review_ready",
+    "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html",
+    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/candidate_readback.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-12",
-    "decision_required": "none",
+    "decision_required": "review_freeform",
     "next_review_action_type": "review_out05_vertical_short_internal_candidate",
-    "next_action": "Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed.",
+    "next_action": "Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed.",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -47,10 +47,10 @@
       "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings."
     },
     {
-      "label": "OUT-04 Current Focus",
-      "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out04_editorial_representative_sequence\\index.html",
-      "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
-      "when_to_use": "Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed."
+      "label": "OUT-05 Current Focus",
+      "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out05_vertical_short_internal_candidate\\index.html",
+      "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html",
+      "when_to_use": "Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed."
     },
     {
       "label": "Artifacts",
@@ -1639,6 +1639,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-out05-vertical-short-internal-candidate-v0-001",
+      "title": "OUT-05 Vertical Short Internal Candidate v0",
+      "purpose": "Preserve the accepted OUT-04 timeline while producing one directly reviewable 1080x1920 internal vertical-format candidate with explicit reframe, subtitle, audio, provenance, and closed-gate readback.",
+      "storage_class": "Tracked builder/CLI/tests/contract plus ignored same-machine vertical candidate bundle. Source media and generated MP4 remain outside Git.",
+      "repo_relative_path": "src/integrations/render/vertical_short_candidate.py; src/cli/build_vertical_short_candidate.py; docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out05_vertical_short_internal_candidate\\open_preview.ps1",
+      "review_status": "Review-ready on this machine: unchanged cut_001 -> cut_002, hard cut at 6.840s, total 11.700s within tolerance, 9 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, browser readyState 4, no media error, console warning/error, or horizontal overflow.",
+      "next_action": "Judge only vertical framing/naturalness, subtitle position/wrap/readability/non-obstruction, and audio/boundary/screen export integrity."
+    },
+    {
       "artifact_id": "clip-out04-editorial-representative-sequence-v0-001",
       "title": "OUT-04 Editorial Representative Sequence v0",
       "purpose": "Compose retained real selected cuts into one playable sequence so editorial order, hard-cut continuity, pacing, and subtitle/audio continuity can be reviewed in one playback.",
@@ -2321,6 +2331,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-out05-vertical-short-internal-candidate-v0-001",
       "clip-out04-editorial-representative-sequence-v0-001",
       "clip-out03-real-local-selected-cut-proof-v0-001",
       "clip-out02-local-fixture-output-proof-smoke-v0-001",
@@ -2390,20 +2401,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 68
+    "artifact_count": 69
   },
   "artifact_coverage": {
-    "registered_artifact_count": 68,
+    "registered_artifact_count": 69,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "OUT-04 current focus",
-      "artifact": "clip-out04-editorial-representative-sequence-v0-001",
-      "question": "OUT-04 accepted real-local editorial representative sequence",
-      "next_route": "Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed."
+      "item": "OUT-05 current focus",
+      "artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
+      "question": "OUT-05 vertical short internal candidate",
+      "next_route": "Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2660,46 +2671,47 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1607,
+      "line_count": 1642,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "out04_editorial_representative_sequence_accepted_canonical_candidate",
+        "health": "out05_vertical_short_internal_candidate_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-12",
-        "state_revision": "out04-editorial-representative-sequence-accepted-2026-07-12",
-        "current_slice": "OUT-04",
-        "phase": "accepted",
-        "canonical_status": "canonical_candidate",
-        "active_branch": "codex/out-04-editorial-representative-sequence-v0",
-        "current_title": "OUT-04 accepted real-local editorial representative sequence",
-        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
-        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json",
+        "state_revision": "out05-vertical-short-internal-candidate-2026-07-12",
+        "current_slice": "OUT-05",
+        "phase": "review_ready",
+        "canonical_status": "branch_review_pending",
+        "active_branch": "codex/out-05-vertical-short-internal-candidate-v0",
+        "current_title": "OUT-05 vertical short internal candidate",
+        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html",
+        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/candidate_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "none",
-        "review_status": "accepted",
-        "editorial_coherence": "pass",
-        "hard_cut_boundary": "pass",
-        "hard_cut_abrupt_or_confusing": "false",
-        "subtitle_audio_continuity": "pass",
-        "audio_dropout": "none_observed",
-        "transition_visual_corruption": "none_observed",
-        "reviewer_note": "場面転換前後を含めて画面上の乱れは確認されなかった",
-        "acceptance_scope": "OUT-04 internal editorial representative sequence only",
-        "reviewed_at": "2026-07-11 JST",
+        "decision_required": "review_freeform",
+        "review_status": "review_ready",
+        "review_scope": "OUT-05 internal vertical framing, subtitle placement/wrap/readability, and audio/boundary/screen export integrity only",
+        "reviewed_at": "pending",
         "rights_approval": "pending",
         "production_acceptance": "false",
+        "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-12",
         "next_review_due": "review_out05_vertical_short_internal_candidate",
-        "next_action": "Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed.",
-        "active_artifact": "clip-out04-editorial-representative-sequence-v0-001",
+        "next_action": "Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed.",
+        "active_artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
+        "latest_out05_vertical_short_internal_candidate_artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
+        "latest_out05_vertical_short_internal_candidate_branch": "codex/out-05-vertical-short-internal-candidate-v0",
+        "latest_out05_vertical_short_internal_candidate_output_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827",
         "latest_out04_editorial_representative_sequence_artifact": "clip-out04-editorial-representative-sequence-v0-001",
         "latest_out04_editorial_representative_sequence_branch": "codex/out-04-editorial-representative-sequence-v0",
-        "canonical_main_head": "92df1b6",
-        "canonical_main_baseline": "OUT-03 accepted",
+        "latest_out04_editorial_representative_sequence_implementation_commit": "b9c785f",
+        "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
+        "latest_out04_review_status": "accepted",
+        "latest_out04_reviewed_at": "2026-07-11 JST",
+        "canonical_main_head": "48c0c58",
+        "canonical_main_baseline": "OUT-04 accepted",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
         "latest_out03_real_local_selected_cut_proof_implementation_commit": "01b42cd",
@@ -2762,7 +2774,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 350,
+      "boundary_term_count": 355,
       "status": "current_capsule"
     },
     {
@@ -2885,7 +2897,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2196,
+      "line_count": 2227,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2893,7 +2905,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 861,
+      "boundary_term_count": 869,
       "status": "reference"
     },
     {
@@ -2955,45 +2967,46 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1326,
+      "line_count": 1329,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "out04_editorial_representative_sequence_accepted_canonical_candidate",
+        "health": "out05_vertical_short_internal_candidate_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-12",
-        "current_slice": "OUT-04",
-        "phase": "accepted",
-        "canonical_status": "canonical_candidate",
-        "active_branch": "codex/out-04-editorial-representative-sequence-v0",
-        "current_title": "OUT-04 accepted real-local editorial representative sequence",
-        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
-        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json",
+        "current_slice": "OUT-05",
+        "phase": "review_ready",
+        "canonical_status": "branch_review_pending",
+        "active_branch": "codex/out-05-vertical-short-internal-candidate-v0",
+        "current_title": "OUT-05 vertical short internal candidate",
+        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html",
+        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/candidate_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "none",
-        "review_status": "accepted",
-        "editorial_coherence": "pass",
-        "hard_cut_boundary": "pass",
-        "hard_cut_abrupt_or_confusing": "false",
-        "subtitle_audio_continuity": "pass",
-        "audio_dropout": "none_observed",
-        "transition_visual_corruption": "none_observed",
-        "reviewer_note": "場面転換前後を含めて画面上の乱れは確認されなかった",
-        "acceptance_scope": "OUT-04 internal editorial representative sequence only",
-        "reviewed_at": "2026-07-11 JST",
+        "decision_required": "review_freeform",
+        "review_status": "review_ready",
+        "review_scope": "OUT-05 internal vertical framing, subtitle placement/wrap/readability, and audio/boundary/screen export integrity only",
+        "reviewed_at": "pending",
         "rights_approval": "pending",
         "production_acceptance": "false",
+        "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-12",
         "next_review_due": "review_out05_vertical_short_internal_candidate",
-        "next_action": "Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed.",
-        "active_artifact": "clip-out04-editorial-representative-sequence-v0-001",
+        "next_action": "Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed.",
+        "active_artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
+        "latest_out05_vertical_short_internal_candidate_artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
+        "latest_out05_vertical_short_internal_candidate_branch": "codex/out-05-vertical-short-internal-candidate-v0",
+        "latest_out05_vertical_short_internal_candidate_output_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827",
         "latest_out04_editorial_representative_sequence_artifact": "clip-out04-editorial-representative-sequence-v0-001",
         "latest_out04_editorial_representative_sequence_branch": "codex/out-04-editorial-representative-sequence-v0",
-        "canonical_main_head": "92df1b6",
-        "canonical_main_baseline": "OUT-03 accepted",
+        "latest_out04_editorial_representative_sequence_implementation_commit": "b9c785f",
+        "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
+        "latest_out04_review_status": "accepted",
+        "latest_out04_reviewed_at": "2026-07-11 JST",
+        "canonical_main_head": "48c0c58",
+        "canonical_main_baseline": "OUT-04 accepted",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
         "latest_out03_real_local_selected_cut_proof_implementation_commit": "01b42cd",
@@ -3056,7 +3069,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 305,
+      "boundary_term_count": 307,
       "status": "active"
     },
     {
@@ -3312,7 +3325,7 @@
     {
       "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
       "title": "SUBTITLE_PRESENTATION_CONTRACT",
-      "line_count": 736,
+      "line_count": 752,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3320,7 +3333,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 246,
+      "boundary_term_count": 249,
       "status": "reference"
     },
     {
@@ -3415,7 +3428,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1607 lines) is likely carrying history.",
+        "detail": "Long active doc (1642 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3445,13 +3458,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2196 lines) is likely carrying history.",
+        "detail": "Long active doc (2227 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 861 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 869 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3475,7 +3488,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1326 lines) is likely carrying history.",
+        "detail": "Long active doc (1329 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3541,13 +3554,13 @@
       {
         "type": "stale",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Long active doc (736 lines) is likely carrying history.",
+        "detail": "Long active doc (752 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_PRESENTATION_CONTRACT.md",
-        "detail": "Boundary terms appear 246 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 249 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

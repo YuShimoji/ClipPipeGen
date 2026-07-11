@@ -2,7 +2,7 @@
 
 ## 2026-05-26 clarification: diagnostic render and rights gates
 
-Python may generate local diagnostic render artifacts only inside the render integration boundary (`src/integrations/render/`, `render-tiny-proof`, and the bounded `build-editorial-sequence` route). Such artifacts must keep `production_candidate=false`, must write receipt / manifest / report readback, and must not be described as production render, public-ready render, production subtitle burn-in, or creative acceptance.
+Python may generate local diagnostic render artifacts only inside the render integration boundary (`src/integrations/render/`, `render-tiny-proof`, the bounded `build-editorial-sequence` route, and the accepted-timeline `build-vertical-short-candidate` route). Such artifacts must keep `production_candidate=false`, must write receipt / manifest / report readback, and must not be described as production render, public-ready render, production subtitle burn-in, or creative acceptance.
 
 Python must not own production render acceptance, production subtitle design acceptance, upload, publishing, OAuth, visibility changes, or public-ready output. Those are later acceptance / integration surfaces and require explicit feature slices.
 
@@ -31,7 +31,7 @@ Python/CLI may own reviewable generated output for diagnostic and representative
 
 - **Compliance / Rights は記録層**。`compliance_check.status` は判断材料として表示するが、他レーンの local CLI gate にしない。
 - **Material Sourcing は横断レイヤー**。Editing／Thumbnail／Compliance がそれぞれ素材要求を出し、Material Sourcing が一元的に台帳化する。動画編集配下に置かない。
-- **Editing は transcript／cut EDL／字幕案／配置データまで**。production 動画の cut 実行・concat・production 字幕焼き込みは外部 NLE／YMM4／人手で行う。OUT-01c/OUT-01d の diagnostic subtitle overlay と timing/filter readback、および OUT-04 の bounded multi-cut representative sequence は render integration 内の diagnostic/review proof であり、Editing の責務や production acceptance ではない。
+- **Editing は transcript／cut EDL／字幕案／配置データまで**。production 動画の cut 実行・concat・production 字幕焼き込みは外部 NLE／YMM4／人手で行う。OUT-01c/OUT-01d の diagnostic subtitle overlay と timing/filter readback、OUT-04 の bounded multi-cut representative sequence、および OUT-05 の accepted-timeline vertical internal candidate は render integration 内の diagnostic/review proof であり、Editing の責務や production acceptance ではない。
 - **Thumbnail は YMM4 サムネテンプレへの slot patch を先行実装済み**。完全自動合成や画像レンダリングは必要になった時点で feature として起票する。
 - **Publishing は metadata／thumbnail 設定／upload receipt を扱う候補レーン**。visibility の扱いは CLI/GUI 実装時の引数仕様として決める。
 
@@ -41,7 +41,7 @@ Python/CLI may own reviewable generated output for diagnostic and representative
 
 - `src/integrations/youtube/` — OAuth・videos.insert・thumbnails.set
 - `src/integrations/asset_fetch/` — source audio/video 取得 adapter（INT-02a は fake WAV generator、INT-02c は local-media-audio FFmpeg normalize、INT-02d は yt-dlp-audio spec only。INT-02e は source audio URL fetch 限定の yt-dlp-audio actual smoke まで完了。INT-02f は local source video acquisition と FFprobe metadata readback まで完了。URL video fetch は後続）
-- `src/integrations/render/` — diagnostic output adapter（OUT-01 は source_video + source_audio + edit_pack selected cut から tiny rendered artifact / receipt / manifest / report を生成。OUT-01c は edit_pack subtitle draft を diagnostic overlay として接続し、OUT-01d は timing status / filter failure detail を readback する。OUT-04 は keep/context-passed の 2-3 cuts を explicit order で hard-cut し、sequence-relative 字幕付き representative review MP4/readback を生成する。production render / subtitle design acceptance / GUI action は後続）
+- `src/integrations/render/` — diagnostic output adapter（OUT-01 は source_video + source_audio + edit_pack selected cut から tiny rendered artifact / receipt / manifest / report を生成。OUT-01c は edit_pack subtitle draft を diagnostic overlay として接続し、OUT-01d は timing status / filter failure detail を readback する。OUT-04 は keep/context-passed の 2-3 cuts を explicit order で hard-cut し、OUT-05 は accepted OUT-04 timeline を one internal vertical candidate に変換する。production render / subtitle design acceptance / GUI action は後続）
 - future `src/integrations/stt/` — STT engine wrapper（URL / VOD 取得は含めない）
 - `src/integrations/bg_removal/` — 背景切り抜き API（外部送信を伴う）
 
