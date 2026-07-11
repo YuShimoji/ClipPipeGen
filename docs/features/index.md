@@ -6,7 +6,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-05`
 - artifact: `clip-out05-vertical-short-internal-candidate-v0-001`
-- state: `out05_vertical_short_internal_candidate_review_ready`
+- state: `out05_vertical_short_internal_candidate_accepted_canonical_candidate`
 
 ## Feature Table
 

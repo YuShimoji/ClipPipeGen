@@ -31,11 +31,22 @@ opened by the root launcher.
 | source_inputs | Accepted OUT-04 readback/video and unchanged retained source video/audio, edit pack, transcript, material ledger, rights manifest, and cut decisions. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out05_vertical_short_internal_candidate\open_preview.ps1` |
 | validation_command | `uvx --with Pillow pytest -q tests/test_vertical_short_candidate.py tests/test_editorial_sequence.py`; parse JSON; ffprobe; full FFmpeg decode; loudness/true-peak measure; frame/contact-sheet inspection; browser DOM/media/layout readback; protected tree digests; `git diff --check`; `git ls-files episodes`. |
-| review_status | Review-ready on this machine: unchanged `cut_001 -> cut_002`, hard cut at `6.840s`, total `11.700s` within tolerance, 9 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, browser readyState `4`, no media error, console warning/error, or horizontal overflow. |
+| review_status | `accepted` |
+| reviewed_at | `2026-07-12 JST` |
+| acceptance_scope | OUT-05 internal vertical short candidate only. |
+| vertical_framing_subject_action_preservation | `pass` |
+| subtitle_position_wrap_readability | `pass` |
+| audio_boundary_screen_export_integrity | `pass` |
+| review_evidence | Unchanged `cut_001 -> cut_002`, hard cut at `6.840s`, total `11.700s` within tolerance, 9 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, browser readyState `4`, no media error, console warning/error, or horizontal overflow. |
 | reframe | `full_16_9_fit_source_derived_blurred_canvas`; still-frame comparison rejected the explicit anchor crop for left/right information loss and held the bounded hybrid because it lost edge context without a clear focal gain. |
 | audio | Input `-19.22 LUFS / -2.11 dBTP`; normalized output `-14.06 LUFS / -1.49 dBTP`. |
 | output_sha256 | `d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827` |
-| next_action | Judge only vertical framing/naturalness, subtitle position/wrap/readability/non-obstruction, and audio/boundary/screen export integrity. |
+| rights_approval | `pending` (unchanged) |
+| production_acceptance | `false` |
+| production_subtitle_design_acceptance | `false` |
+| public_or_publishing_acceptance | `false` |
+| implementation_commit | `e2d0711` |
+| next_action | Use accepted OUT-05 as the immutable opening for OUT-06; do not infer rights, production, subtitle-design, publishing, or public acceptance. |
 
 Boundary flags remain false or pending:
 

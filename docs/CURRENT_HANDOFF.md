@@ -3,40 +3,48 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: out05_vertical_short_internal_candidate_review_ready
+health: out05_vertical_short_internal_candidate_accepted_canonical_candidate
 progress_pct: 100
 last_touched: 2026-07-12
 current_slice: OUT-05
-phase: review_ready
-canonical_status: branch_review_pending
+phase: accepted
+canonical_status: canonical_candidate
 active_branch: codex/out-05-vertical-short-internal-candidate-v0
-current_title: OUT-05 vertical short internal candidate
+current_title: OUT-05 accepted vertical short internal candidate
 human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_freeform
-review_status: review_ready
+decision_required: none
+review_status: accepted
 review_scope: OUT-05 internal vertical framing, subtitle placement/wrap/readability, and audio/boundary/screen export integrity only
-reviewed_at: pending
+vertical_framing_subject_action_preservation: pass
+subtitle_position_wrap_readability: pass
+audio_boundary_screen_export_integrity: pass
+acceptance_scope: OUT-05 internal vertical short candidate only
+reviewed_at: 2026-07-12 JST
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-12
-next_review_due: review_out05_vertical_short_internal_candidate
-next_action: Open the OUT-05 entrypoint and judge whether the vertical framing preserves subject/action naturally, whether subtitle placement/wrap/readability stays consistent and non-obstructive, and whether audio/boundary/screen shows any dropout, corruption, or export anomaly; keep rights, production, subtitle-design, publishing, and public gates closed.
+next_review_due: build_out06_complete_narrative_short_delivery_candidate
+next_action: Fast-forward the accepted OUT-05 candidate to main, then start OUT-06 and extend the immutable accepted opening with authoritative cut_003 as one complete internal narrative-short delivery candidate; keep rights, production, subtitle-design, publishing, and public gates closed.
 active_artifact: clip-out05-vertical-short-internal-candidate-v0-001
 latest_out05_vertical_short_internal_candidate_artifact: clip-out05-vertical-short-internal-candidate-v0-001
 latest_out05_vertical_short_internal_candidate_branch: codex/out-05-vertical-short-internal-candidate-v0
 latest_out05_vertical_short_internal_candidate_output_sha256: d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827
+latest_out05_vertical_short_internal_candidate_implementation_commit: e2d0711
+latest_out05_vertical_short_internal_candidate_acceptance_commit: branch_head_after_acceptance_push
+latest_out05_review_status: accepted
+latest_out05_reviewed_at: 2026-07-12 JST
 latest_out04_editorial_representative_sequence_artifact: clip-out04-editorial-representative-sequence-v0-001
 latest_out04_editorial_representative_sequence_branch: codex/out-04-editorial-representative-sequence-v0
 latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: 48c0c58
-canonical_main_baseline: OUT-04 accepted
+canonical_main_head: branch_head_after_out05_fast_forward
+canonical_main_baseline: OUT-05 accepted
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
@@ -98,11 +106,11 @@ related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/output_layer/OUT_0
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch and switch to the OUT-05 review branch, then read the project context:
+Fetch and update the accepted canonical baseline, then read the project context:
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-05-vertical-short-internal-candidate-v0
+git switch main
 git pull --ff-only
 ```
 
@@ -111,7 +119,7 @@ Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file, and
 accepted OUT-04 contract, OUT-03 contract, and OUT-02 handoff only for
 predecessor/baseline history.
 
-The durable OUT-05 state is a tracked builder/CLI/test/contract plus one ignored
+The durable OUT-05 state is an accepted tracked builder/CLI/test/contract plus one ignored
 same-machine package at
 `episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/`.
 Its `open_preview.ps1` is the single entrypoint, with `-Serve` as fallback. The
@@ -128,9 +136,19 @@ Full decode and browser/media/layout validation passed. Audio moved from
 `-19.22 LUFS / -2.11 dBTP` to `-14.06 LUFS / -1.49 dBTP` because the source
 sequence had a clear loudness gap for this candidate.
 
+The user accepted this internal OUT-05 milestone on 2026-07-12 JST. Vertical
+framing and subject/action preservation passed, subtitle position/wrap/readability
+passed, and audio/boundary/screen export integrity passed. The acceptance scope
+is OUT-05 only; no rights, production, production subtitle-design, publishing,
+or public-use gate changed.
+
 OUT-03, OUT-04, and the retained human-preview tree digests are unchanged.
 Rights stay pending; production render, production subtitle design, public,
 publishing, upload, and broader creative acceptance remain false or unopened.
+
+The next product action is OUT-06: preserve the accepted OUT-05 opening exactly,
+append authoritative `cut_003` (`22.606`-`49.566`, `sub_010..sub_029`) with one
+hard cut, and build one complete internal narrative-short delivery candidate.
 
 ## OUT-02 Predecessor Baseline Context
 
