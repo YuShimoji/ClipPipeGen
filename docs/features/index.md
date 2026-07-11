@@ -6,7 +6,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-04`
 - artifact: `clip-out04-editorial-representative-sequence-v0-001`
-- state: `out04_editorial_representative_sequence_review_ready`
+- state: `out04_editorial_representative_sequence_accepted_canonical_candidate`
 
 ## Feature Table
 

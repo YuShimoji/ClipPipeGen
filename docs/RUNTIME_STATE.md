@@ -3,28 +3,35 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out04_editorial_representative_sequence_review_ready
+health: out04_editorial_representative_sequence_accepted_canonical_candidate
 progress_pct: 100
-last_touched: 2026-07-11
-state_revision: out04-editorial-representative-sequence-2026-07-11
+last_touched: 2026-07-12
+state_revision: out04-editorial-representative-sequence-accepted-2026-07-12
 current_slice: OUT-04
-phase: review_ready
-canonical_status: branch_review_pending
+phase: accepted
+canonical_status: canonical_candidate
 active_branch: codex/out-04-editorial-representative-sequence-v0
-current_title: OUT-04 real-local editorial representative sequence
+current_title: OUT-04 accepted real-local editorial representative sequence
 human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_freeform
-review_status: review_ready
-review_scope: OUT-04 editorial coherence, cut boundary, pacing, and subtitle/audio continuity only
-reviewed_at: pending
+decision_required: none
+review_status: accepted
+editorial_coherence: pass
+hard_cut_boundary: pass
+hard_cut_abrupt_or_confusing: false
+subtitle_audio_continuity: pass
+audio_dropout: none_observed
+transition_visual_corruption: none_observed
+reviewer_note: 場面転換前後を含めて画面上の乱れは確認されなかった
+acceptance_scope: OUT-04 internal editorial representative sequence only
+reviewed_at: 2026-07-11 JST
 rights_approval: pending
 production_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-11
-next_review_due: review_out04_editorial_representative_sequence
-next_action: Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed.
+last_verified_at: 2026-07-12
+next_review_due: review_out05_vertical_short_internal_candidate
+next_action: Fast-forward the accepted OUT-04 candidate to main, then start OUT-05 and build one internal 1080x1920 vertical short candidate from the unchanged accepted sequence; keep rights, production, subtitle-design, publishing, and public gates closed.
 active_artifact: clip-out04-editorial-representative-sequence-v0-001
 latest_out04_editorial_representative_sequence_artifact: clip-out04-editorial-representative-sequence-v0-001
 latest_out04_editorial_representative_sequence_branch: codex/out-04-editorial-representative-sequence-v0
@@ -96,10 +103,11 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-04 Editorial Representative Sequence
+## Accepted OUT-04 Editorial Representative Sequence
 
-The active review branch is
-`codex/out-04-editorial-representative-sequence-v0`. It adds the narrow
+OUT-04 was accepted by the user on 2026-07-11 JST and is the canonical baseline
+for OUT-05. Its implementation came from
+`codex/out-04-editorial-representative-sequence-v0` at `b9c785f`. It adds the narrow
 `build-editorial-sequence` route and one same-machine bundle at
 `episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/`.
 The only operator entrypoint is `open_preview.ps1`; use the same script with
@@ -117,6 +125,12 @@ with one video and one audio stream. Browser readback confirmed one video,
 readyState `4`, no media error, and no horizontal overflow. Repeated generation
 produced identical hashes for all six package files. OUT-03 and the protected
 `human_preview_session/` retained their pre-run tree digests.
+
+The normalized review result is `review_status=accepted` with editorial
+coherence, hard-cut boundary, and subtitle/audio continuity all passing. No
+audio dropout or transition visual corruption was observed, including around
+the scene change. This acceptance is scoped only to the OUT-04 internal
+editorial representative sequence.
 
 The package is ignored, local-retained, and same-machine only. Rights remain
 `pending`; production render, production subtitle design, publishing, public
@@ -164,22 +178,26 @@ explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-11 JST. A new terminal should fetch and switch to the
-OUT-04 review branch before reading project context:
+Checkpoint date: 2026-07-12 JST. A new terminal should fetch and update the
+accepted canonical baseline before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-04-editorial-representative-sequence-v0
+git switch main
 git pull --ff-only
 ```
 
-Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and the accepted
 `docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md`. Use the
 accepted `docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` only for
 the canonical predecessor, and consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
 `clip-out04-editorial-representative-sequence-v0-001`.
+
+The next product action is OUT-05: preserve the accepted timeline and convert
+the sequence into one internal 1080x1920 vertical-short candidate with explicit
+reframe, subtitle, audio, provenance, and non-production readback.
 
 The earlier portable synthetic predecessor is OUT-02. It was created from the
 INT-01 integration branch and converts OUT-01 `proof_missing` into a local
