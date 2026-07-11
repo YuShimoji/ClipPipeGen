@@ -44,6 +44,7 @@ Subcommands:
     build-external-source-registry HUB-01: local RSS/manual fixtures -> source registry.
     build-output-layer-gap-report OUT-02: output fixture proof package and gap log.
     build-selected-cut-proof OUT-03: one real-local selected-cut playable review proof.
+    build-editorial-sequence OUT-04: one real-local ordered multi-cut editorial sequence.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -66,6 +67,7 @@ from . import (
     apply_boundary_recommendation,
     audit_material_ledger,
     audit_thumbnail,
+    build_editorial_sequence,
     build_chapter_revision_board,
     build_content_candidate_dashboard,
     build_cut_decision_packet,
@@ -154,6 +156,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-external-source-registry": build_external_source_registry.run,
     "build-output-layer-gap-report": build_output_layer_gap_report.run,
     "build-selected-cut-proof": build_selected_cut_proof.run,
+    "build-editorial-sequence": build_editorial_sequence.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

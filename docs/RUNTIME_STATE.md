@@ -3,37 +3,39 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out03_real_local_selected_cut_accepted_canonical_candidate
+health: out04_editorial_representative_sequence_review_ready
 progress_pct: 100
 last_touched: 2026-07-11
-state_revision: out03-real-local-selected-cut-accepted-2026-07-11
-current_slice: OUT-03
-phase: accepted
-canonical_status: canonical_candidate
-active_branch: codex/out-03-real-local-selected-cut-proof-v0
-current_title: OUT-03 accepted real-local selected-cut baseline
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json
+state_revision: out04-editorial-representative-sequence-2026-07-11
+current_slice: OUT-04
+phase: review_ready
+canonical_status: branch_review_pending
+active_branch: codex/out-04-editorial-representative-sequence-v0
+current_title: OUT-04 real-local editorial representative sequence
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none
-review_status: accepted
-playback: pass
-cut_boundary: pass
-content_audio_match: pass
-subtitle_timing: pass
-subtitle_readability: pass
-review_scope: OUT-03 internal real-local selected-cut milestone only
-reviewed_at: 2026-07-11 JST
+decision_required: review_freeform
+review_status: review_ready
+review_scope: OUT-04 editorial coherence, cut boundary, pacing, and subtitle/audio continuity only
+reviewed_at: pending
 rights_approval: pending
 production_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-11
 next_review_due: review_out04_editorial_representative_sequence
-next_action: Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed.
-active_artifact: clip-out03-real-local-selected-cut-proof-v0-001
+next_action: Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed.
+active_artifact: clip-out04-editorial-representative-sequence-v0-001
+latest_out04_editorial_representative_sequence_artifact: clip-out04-editorial-representative-sequence-v0-001
+latest_out04_editorial_representative_sequence_branch: codex/out-04-editorial-representative-sequence-v0
+canonical_main_head: 92df1b6
+canonical_main_baseline: OUT-03 accepted
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
+latest_out03_real_local_selected_cut_proof_acceptance_commit: 92df1b6
+latest_out03_review_status: accepted
+latest_out03_reviewed_at: 2026-07-11 JST
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
 latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
@@ -94,6 +96,32 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
+## Current OUT-04 Editorial Representative Sequence
+
+The active review branch is
+`codex/out-04-editorial-representative-sequence-v0`. It adds the narrow
+`build-editorial-sequence` route and one same-machine bundle at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/`.
+The only operator entrypoint is `open_preview.ps1`; use the same script with
+`-Serve` when localhost playback is needed.
+
+The sequence orders `cut_001 -> cut_002`. Source ranges `2.453`-`9.293` and
+`12.329`-`17.167` become sequence ranges `0.000`-`6.840` and
+`6.840`-`11.678`, joined by one hard cut. Both decisions are `keep`, both
+context states are `passed`, and all nine imported-track subtitle events are
+rebased and contained within their owning cut. `cut_003` stays excluded because
+its current context is `needs_review` and adding it would exceed 30 seconds.
+
+The generated MP4 probes as H.264/AAC, 1920x1080, 30fps, duration `11.678`,
+with one video and one audio stream. Browser readback confirmed one video,
+readyState `4`, no media error, and no horizontal overflow. Repeated generation
+produced identical hashes for all six package files. OUT-03 and the protected
+`human_preview_session/` retained their pre-run tree digests.
+
+The package is ignored, local-retained, and same-machine only. Rights remain
+`pending`; production render, production subtitle design, publishing, public
+use, upload, and broader creative acceptance remain false or unopened.
+
 ## Accepted OUT-03 Real-Local Selected-Cut Baseline
 
 OUT-03 was accepted by the user on 2026-07-11 JST and is the canonical baseline
@@ -136,24 +164,26 @@ explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-11 JST. A new terminal should fetch and update the
-accepted canonical baseline before reading project context:
+Checkpoint date: 2026-07-11 JST. A new terminal should fetch and switch to the
+OUT-04 review branch before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch main
+git switch codex/out-04-editorial-representative-sequence-v0
 git pull --ff-only
 ```
 
-Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and the accepted
-`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` contract. Consult
+Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
+`docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md`. Use the
+accepted `docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` only for
+the canonical predecessor, and consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
-`clip-out03-real-local-selected-cut-proof-v0-001`.
+`clip-out04-editorial-representative-sequence-v0-001`.
 
-The latest canonical baseline slice is OUT-02. It was created from the INT-01 integration
-branch and converts OUT-01 `proof_missing` into a portable local fixture output
-proof package. The proof is synthetic fixture data only: no source URL was
+The earlier portable synthetic predecessor is OUT-02. It was created from the
+INT-01 integration branch and converts OUT-01 `proof_missing` into a local
+fixture output proof package. The proof is synthetic fixture data only: no source URL was
 opened, no external media was fetched/downloaded, no yt-dlp/OAuth/API was used,
 no production render/public upload was attempted, and rights/public/production
 flags remain false.

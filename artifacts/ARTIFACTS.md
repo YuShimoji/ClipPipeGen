@@ -18,6 +18,34 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-out04-editorial-representative-sequence-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-04 Editorial Representative Sequence v0 |
+| purpose | Compose retained real selected cuts into one playable sequence so editorial order, hard-cut continuity, pacing, and subtitle/audio continuity can be reviewed in one playback. |
+| storage class | Tracked builder/CLI/tests/contract plus ignored same-machine sequence bundle. Source media and generated MP4 remain outside Git. |
+| repo_relative_path | `src/integrations/render/editorial_sequence.py`; `src/cli/build_editorial_sequence.py`; `docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md` |
+| local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/` |
+| machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json` |
+| source_inputs | Current JP-Pilot edit pack, accepted final cut decisions, transcript/subtitles, material ledger, rights manifest, retained source video/audio, and accepted OUT-03 as the single-cut predecessor. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` |
+| validation_command | `uvx pytest -q tests/test_editorial_sequence.py tests/test_selected_cut_proof.py tests/test_tiny_render.py tests/test_subtitle_generation.py`; parse readback JSON; ffprobe MP4; browser DOM/media/layout readback; compare repeat-generation hashes; `git diff --check`; `git ls-files episodes`. |
+| review_status | Review-ready on this machine: `cut_001 -> cut_002`, hard cut at `6.840s`, total `11.678s`, 9 rebased subtitles, H.264/AAC 1920x1080 30fps, one video/audio stream, browser readyState `4`, no media error or horizontal overflow. |
+| output_sha256 | `9fa17e8566acd3e4237793840edffa2485350575876c99b04bed065a8ae6e19a` |
+| next_action | Judge only whether the two cuts read as one coherent editorial unit, whether the boundary is abrupt/confusing, and whether subtitle/audio continuity survives. |
+
+Boundary flags remain false or pending:
+
+- `diagnostic_only=true`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_ready=false`
+- `production_acceptance=false`
+- `publishing_acceptance=false`
+- `public_ready=false`
+- `publish_attempted=false`
+
 ## `clip-out03-real-local-selected-cut-proof-v0-001`
 
 | Field | Value |

@@ -2,13 +2,15 @@
 
 This directory holds output/video-layer readback artifacts. OUT-02 is the
 tracked synthetic fixture baseline: it lets a reviewer inspect package shape
-without external media. OUT-03 is the current product slice: one retained
-real-local JP-Pilot selected cut packaged for same-machine human review while
-rights, production, public, and publishing gates remain closed.
+without external media. OUT-03 is the accepted single-cut real-local baseline.
+OUT-04 is the current product slice: two retained JP-Pilot cuts composed into
+one same-machine editorial sequence while rights, production, public, and
+publishing gates remain closed.
 
 Start here when resuming from another terminal:
 
-- `OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` - observable OUT-03 result, exact planned CLI contract, review entrypoint, machine readback, and closed gates.
+- `OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md` - current multi-cut sequence contract, exact real command, ordered timeline, review surface, and closed gates.
+- `OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` - accepted single-cut predecessor, exact CLI contract, evidence entrypoint, machine readback, and closed gates.
 - `OUT_02_HANDOFF.md` - synthetic baseline branch, artifact, validation, gate, and next-route context.
 - `OUT_01_HANDOFF.md` - branch, artifact, validation, gate, and next-route context.
 
@@ -24,6 +26,12 @@ review directory and exposes one `open_preview.ps1` entrypoint with a `-Serve`
 fallback. The existing `jp_pilot01r3_cut_review/human_preview_session/` remains
 untouched; see `OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md` for the exact command
 and evidence contract.
+
+OUT-04 likewise leaves OUT-03 and the protected `human_preview_session/`
+unchanged. `build-editorial-sequence` reads current keep/context/segment/
+subtitle/material evidence, extracts source-level ranges through the render
+integration, hard-cuts them in explicit order, and writes only a dedicated
+ignored `review/out04_*` package.
 
 Generated files:
 

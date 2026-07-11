@@ -3,36 +3,38 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: out03_real_local_selected_cut_accepted_canonical_candidate
+health: out04_editorial_representative_sequence_review_ready
 progress_pct: 100
 last_touched: 2026-07-11
-current_slice: OUT-03
-phase: accepted
-canonical_status: canonical_candidate
-active_branch: codex/out-03-real-local-selected-cut-proof-v0
-current_title: OUT-03 accepted real-local selected-cut baseline
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json
+current_slice: OUT-04
+phase: review_ready
+canonical_status: branch_review_pending
+active_branch: codex/out-04-editorial-representative-sequence-v0
+current_title: OUT-04 real-local editorial representative sequence
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none
-review_status: accepted
-playback: pass
-cut_boundary: pass
-content_audio_match: pass
-subtitle_timing: pass
-subtitle_readability: pass
-review_scope: OUT-03 internal real-local selected-cut milestone only
-reviewed_at: 2026-07-11 JST
+decision_required: review_freeform
+review_status: review_ready
+review_scope: OUT-04 editorial coherence, cut boundary, pacing, and subtitle/audio continuity only
+reviewed_at: pending
 rights_approval: pending
 production_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-11
 next_review_due: review_out04_editorial_representative_sequence
-next_action: Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed.
-active_artifact: clip-out03-real-local-selected-cut-proof-v0-001
+next_action: Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed.
+active_artifact: clip-out04-editorial-representative-sequence-v0-001
+latest_out04_editorial_representative_sequence_artifact: clip-out04-editorial-representative-sequence-v0-001
+latest_out04_editorial_representative_sequence_branch: codex/out-04-editorial-representative-sequence-v0
+canonical_main_head: 92df1b6
+canonical_main_baseline: OUT-03 accepted
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
+latest_out03_real_local_selected_cut_proof_acceptance_commit: 92df1b6
+latest_out03_review_status: accepted
+latest_out03_reviewed_at: 2026-07-11 JST
 latest_out02_local_fixture_output_proof_artifact: clip-out02-local-fixture-output-proof-smoke-v0-001
 latest_out02_local_fixture_output_proof_branch: codex/out-02-local-fixture-output-proof-smoke-v0
 latest_out02_local_fixture_output_proof_commit: branch_head_after_handoff_push
@@ -88,44 +90,35 @@ related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/output_layer/OUT_0
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch and update the accepted canonical baseline, then read the project context:
+Fetch and switch to the OUT-04 review branch, then read the project context:
 
 ```powershell
 git fetch --prune origin
-git switch main
+git switch codex/out-04-editorial-representative-sequence-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file, and
-`docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md`. Use
-`docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
-baseline/integration history, then consult the OUT-03 artifact-registry entry.
+`docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md`. Use the OUT-03
+contract and OUT-02 handoff only for accepted predecessor/baseline history.
 
-The durable OUT-03 state is an accepted tracked builder/test/contract plus a same-machine
-ignored bundle at
-`episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/`.
-Its `open_preview.ps1` remains the single evidence entrypoint, adding `-Serve`
-only when local-file playback is unavailable. The page directly plays one real
-4.838-second selected cut and shows adjacent timing, imported official subtitle
-text, transcript segment linkage, and collapsed provenance/gates. The bundle
-does not travel by Git and the retained `human_preview_session/` remains
-unchanged.
+The durable OUT-04 state is a tracked builder/CLI/test/contract plus one ignored
+same-machine package at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/`.
+Its `open_preview.ps1` is the single entrypoint, with `-Serve` as fallback. The
+page plays one 11.678-second H.264/AAC sequence, shows `cut_001 -> cut_002`, the
+hard boundary at 6.840 seconds, and all nine sequence-relative subtitles.
 
-The user accepted this internal OUT-03 milestone on 2026-07-11 JST: the page was
-simple and understandable, playback passed, cut timing passed, content/audio
-match passed, and subtitle timing/readability passed. This source branch is the
-accepted canonical candidate for the main fast-forward. Rights remain pending
-and no production, public, publishing, creative, or system-wide subtitle-design
-acceptance is granted.
+Canonical `main` is `92df1b6` and contains the user-accepted OUT-03 baseline.
+OUT-04 remains on its review branch until milestone review. Rights stay pending;
+production, public, publishing, upload, and system-wide subtitle-design
+acceptance stay false or unopened. The OUT-03 bundle and retained
+`human_preview_session/` were hash-checked unchanged.
 
-The next product action is OUT-04: compose two or three retained real selected
-cuts into one 10-30 second editorial representative sequence for continuity and
-pacing review.
+## OUT-02 Predecessor Baseline Context
 
-## OUT-02 Canonical Baseline Context
-
-The OUT-02 state to carry forward is: OUT-02 is the canonical tracked
-baseline, with its preserved source branch at
+The OUT-02 state to carry forward is portable synthetic predecessor evidence,
+with its preserved source branch at
 `codex/out-02-local-fixture-output-proof-smoke-v0`. It converts OUT-01
 `proof_missing` into a tracked synthetic local fixture proof package without
 opening source URLs, fetching media, running yt-dlp, using OAuth/API, approving
@@ -148,11 +141,9 @@ Expected values: `proof_status=local_fixture_output_proof_present`,
 `network_used=false`, `fetch_authorized=false`, `rights_approved=false`,
 `production_ready=false`, and `public_ready=false`.
 
-The recommended next output slice is `OUT-03-selected-cut-proof-link`, because
-the proof package now exists but selected cut ids are not yet a first-class
-route into the proof surface. Real source material, real transcript,
-production render, rights approval, and public/upload remain separate gaps or
-true gates.
+The historical recommended next slice, `OUT-03-selected-cut-proof-link`, was
+completed and accepted before OUT-04. Real production render, rights approval,
+and public/upload remain separate gaps or true gates.
 
 The INT-01 integration context remains preserved underneath OUT-02. It merges
 the TRI-01, HUB-01, OUT-01, and EWS-05 parallel branches into a reviewable

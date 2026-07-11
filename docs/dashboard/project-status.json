@@ -24,19 +24,19 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "OUT-03",
-    "artifact_id": "clip-out03-real-local-selected-cut-proof-v0-001",
-    "state": "out03_real_local_selected_cut_accepted_canonical_candidate",
-    "title": "OUT-03 accepted real-local selected-cut baseline",
-    "active_branch": "codex/out-03-real-local-selected-cut-proof-v0",
-    "phase": "accepted",
-    "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html",
-    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json",
+    "feature_id": "OUT-04",
+    "artifact_id": "clip-out04-editorial-representative-sequence-v0-001",
+    "state": "out04_editorial_representative_sequence_review_ready",
+    "title": "OUT-04 real-local editorial representative sequence",
+    "active_branch": "codex/out-04-editorial-representative-sequence-v0",
+    "phase": "review_ready",
+    "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
+    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-11",
-    "decision_required": "none",
+    "decision_required": "review_freeform",
     "next_review_action_type": "review_out04_editorial_representative_sequence",
-    "next_action": "Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed.",
+    "next_action": "Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed.",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -47,10 +47,10 @@
       "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings."
     },
     {
-      "label": "OUT-03 Current Focus",
-      "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out03_real_local_selected_cut_proof\\index.html",
-      "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html",
-      "when_to_use": "Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed."
+      "label": "OUT-04 Current Focus",
+      "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out04_editorial_representative_sequence\\index.html",
+      "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
+      "when_to_use": "Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed."
     },
     {
       "label": "Artifacts",
@@ -1639,6 +1639,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-out04-editorial-representative-sequence-v0-001",
+      "title": "OUT-04 Editorial Representative Sequence v0",
+      "purpose": "Compose retained real selected cuts into one playable sequence so editorial order, hard-cut continuity, pacing, and subtitle/audio continuity can be reviewed in one playback.",
+      "storage_class": "Tracked builder/CLI/tests/contract plus ignored same-machine sequence bundle. Source media and generated MP4 remain outside Git.",
+      "repo_relative_path": "src/integrations/render/editorial_sequence.py; src/cli/build_editorial_sequence.py; docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out04_editorial_representative_sequence\\open_preview.ps1",
+      "review_status": "Review-ready on this machine: cut_001 -> cut_002, hard cut at 6.840s, total 11.678s, 9 rebased subtitles, H.264/AAC 1920x1080 30fps, one video/audio stream, browser readyState 4, no media error or horizontal overflow.",
+      "next_action": "Judge only whether the two cuts read as one coherent editorial unit, whether the boundary is abrupt/confusing, and whether subtitle/audio continuity survives."
+    },
+    {
       "artifact_id": "clip-out03-real-local-selected-cut-proof-v0-001",
       "title": "OUT-03 Real-Local Selected-Cut Review Proof v0",
       "purpose": "Connect one real retained source segment, non-fixture transcript, selected cut, subtitles, playable diagnostic MP4, and compact readback through one human entrypoint.",
@@ -2311,6 +2321,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-out04-editorial-representative-sequence-v0-001",
       "clip-out03-real-local-selected-cut-proof-v0-001",
       "clip-out02-local-fixture-output-proof-smoke-v0-001",
       "clip-int01-parallel-lane-aggregation-v0-001",
@@ -2379,20 +2390,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 67
+    "artifact_count": 68
   },
   "artifact_coverage": {
-    "registered_artifact_count": 67,
+    "registered_artifact_count": 68,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "OUT-03 current focus",
-      "artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
-      "question": "OUT-03 accepted real-local selected-cut baseline",
-      "next_route": "Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed."
+      "item": "OUT-04 current focus",
+      "artifact": "clip-out04-editorial-representative-sequence-v0-001",
+      "question": "OUT-04 real-local editorial representative sequence",
+      "next_route": "Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2635,7 +2646,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 106,
+      "line_count": 105,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2649,43 +2660,45 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1559,
+      "line_count": 1589,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "out03_real_local_selected_cut_accepted_canonical_candidate",
+        "health": "out04_editorial_representative_sequence_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-11",
-        "state_revision": "out03-real-local-selected-cut-accepted-2026-07-11",
-        "current_slice": "OUT-03",
-        "phase": "accepted",
-        "canonical_status": "canonical_candidate",
-        "active_branch": "codex/out-03-real-local-selected-cut-proof-v0",
-        "current_title": "OUT-03 accepted real-local selected-cut baseline",
-        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html",
-        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json",
+        "state_revision": "out04-editorial-representative-sequence-2026-07-11",
+        "current_slice": "OUT-04",
+        "phase": "review_ready",
+        "canonical_status": "branch_review_pending",
+        "active_branch": "codex/out-04-editorial-representative-sequence-v0",
+        "current_title": "OUT-04 real-local editorial representative sequence",
+        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
+        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "none",
-        "review_status": "accepted",
-        "playback": "pass",
-        "cut_boundary": "pass",
-        "content_audio_match": "pass",
-        "subtitle_timing": "pass",
-        "subtitle_readability": "pass",
-        "review_scope": "OUT-03 internal real-local selected-cut milestone only",
-        "reviewed_at": "2026-07-11 JST",
+        "decision_required": "review_freeform",
+        "review_status": "review_ready",
+        "review_scope": "OUT-04 editorial coherence, cut boundary, pacing, and subtitle/audio continuity only",
+        "reviewed_at": "pending",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-11",
         "next_review_due": "review_out04_editorial_representative_sequence",
-        "next_action": "Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed.",
-        "active_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
+        "next_action": "Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed.",
+        "active_artifact": "clip-out04-editorial-representative-sequence-v0-001",
+        "latest_out04_editorial_representative_sequence_artifact": "clip-out04-editorial-representative-sequence-v0-001",
+        "latest_out04_editorial_representative_sequence_branch": "codex/out-04-editorial-representative-sequence-v0",
+        "canonical_main_head": "92df1b6",
+        "canonical_main_baseline": "OUT-03 accepted",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
         "latest_out03_real_local_selected_cut_proof_implementation_commit": "01b42cd",
+        "latest_out03_real_local_selected_cut_proof_acceptance_commit": "92df1b6",
+        "latest_out03_review_status": "accepted",
+        "latest_out03_reviewed_at": "2026-07-11 JST",
         "latest_out02_local_fixture_output_proof_artifact": "clip-out02-local-fixture-output-proof-smoke-v0-001",
         "latest_out02_local_fixture_output_proof_branch": "codex/out-02-local-fixture-output-proof-smoke-v0",
         "latest_out02_local_fixture_output_proof_commit": "branch_head_after_handoff_push",
@@ -2742,7 +2755,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 341,
+      "boundary_term_count": 347,
       "status": "current_capsule"
     },
     {
@@ -2865,7 +2878,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2154,
+      "line_count": 2182,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2873,7 +2886,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 843,
+      "boundary_term_count": 851,
       "status": "reference"
     },
     {
@@ -2915,7 +2928,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 47,
+      "boundary_term_count": 48,
       "status": "reference"
     },
     {
@@ -2935,42 +2948,44 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1321,
+      "line_count": 1312,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "out03_real_local_selected_cut_accepted_canonical_candidate",
+        "health": "out04_editorial_representative_sequence_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-11",
-        "current_slice": "OUT-03",
-        "phase": "accepted",
-        "canonical_status": "canonical_candidate",
-        "active_branch": "codex/out-03-real-local-selected-cut-proof-v0",
-        "current_title": "OUT-03 accepted real-local selected-cut baseline",
-        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html",
-        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/proof_readback.json",
+        "current_slice": "OUT-04",
+        "phase": "review_ready",
+        "canonical_status": "branch_review_pending",
+        "active_branch": "codex/out-04-editorial-representative-sequence-v0",
+        "current_title": "OUT-04 real-local editorial representative sequence",
+        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
+        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/sequence_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "none",
-        "review_status": "accepted",
-        "playback": "pass",
-        "cut_boundary": "pass",
-        "content_audio_match": "pass",
-        "subtitle_timing": "pass",
-        "subtitle_readability": "pass",
-        "review_scope": "OUT-03 internal real-local selected-cut milestone only",
-        "reviewed_at": "2026-07-11 JST",
+        "decision_required": "review_freeform",
+        "review_status": "review_ready",
+        "review_scope": "OUT-04 editorial coherence, cut boundary, pacing, and subtitle/audio continuity only",
+        "reviewed_at": "pending",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-11",
         "next_review_due": "review_out04_editorial_representative_sequence",
-        "next_action": "Fast-forward the accepted OUT-03 candidate to main, then start OUT-04 and build one real-local two- or three-cut editorial representative sequence; keep rights, production, publishing, and public gates closed.",
-        "active_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
+        "next_action": "Open the OUT-04 entrypoint and judge whether cut_001 to cut_002 reads as one coherent editorial unit, whether the hard-cut boundary is abrupt/confusing, and whether subtitle/audio continuity survives; keep rights, production, publishing, and public gates closed.",
+        "active_artifact": "clip-out04-editorial-representative-sequence-v0-001",
+        "latest_out04_editorial_representative_sequence_artifact": "clip-out04-editorial-representative-sequence-v0-001",
+        "latest_out04_editorial_representative_sequence_branch": "codex/out-04-editorial-representative-sequence-v0",
+        "canonical_main_head": "92df1b6",
+        "canonical_main_baseline": "OUT-03 accepted",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
         "latest_out03_real_local_selected_cut_proof_implementation_commit": "01b42cd",
+        "latest_out03_real_local_selected_cut_proof_acceptance_commit": "92df1b6",
+        "latest_out03_review_status": "accepted",
+        "latest_out03_reviewed_at": "2026-07-11 JST",
         "latest_out02_local_fixture_output_proof_artifact": "clip-out02-local-fixture-output-proof-smoke-v0-001",
         "latest_out02_local_fixture_output_proof_branch": "codex/out-02-local-fixture-output-proof-smoke-v0",
         "latest_out02_local_fixture_output_proof_commit": "branch_head_after_handoff_push",
@@ -3027,7 +3042,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 302,
+      "boundary_term_count": 303,
       "status": "active"
     },
     {
@@ -3125,7 +3140,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 42,
+      "boundary_term_count": 45,
       "status": "reference"
     },
     {
@@ -3386,7 +3401,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1559 lines) is likely carrying history.",
+        "detail": "Long active doc (1589 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3416,13 +3431,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2154 lines) is likely carrying history.",
+        "detail": "Long active doc (2182 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 843 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 851 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3434,7 +3449,7 @@
       {
         "type": "over_guarded",
         "path": "docs/AUTOMATION_BOUNDARY.md",
-        "detail": "Boundary terms appear 47 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 48 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3446,7 +3461,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1321 lines) is likely carrying history.",
+        "detail": "Long active doc (1312 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3482,7 +3497,7 @@
       {
         "type": "over_guarded",
         "path": "docs/INVARIANTS.md",
-        "detail": "Boundary terms appear 42 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 45 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
