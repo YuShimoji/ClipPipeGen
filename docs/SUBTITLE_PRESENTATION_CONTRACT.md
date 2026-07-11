@@ -698,6 +698,21 @@ conservative internal envelope allows at most three lines below the full-fit
 16:9 action band. This is internal vertical-candidate evidence only; it is not a
 platform-production-safe-area claim or production subtitle-design acceptance.
 
+## Current OUT-06 Complete Narrative Vertical Route
+
+OUT-06 reuses the accepted OUT-05 Keifont/Candidate 2 body treatment, Candidate
+0 reference, full-fit source-derived canvas, measured-width balancing, explicit
+ASS line breaks, and three-line internal safe envelope. It extends the semantic
+mapping from `sub_001..sub_009` to `sub_001..sub_029`; `sub_030` remains excluded.
+The one authoritative overlap in the `cut_003` source cues is retained in source
+provenance and resolved only in display timing by the existing replacement rule.
+
+No speaker identity is verified for the added cues, so OUT-06 continues to omit
+speaker badges, identity layers, diagnostic labels, and technical placeholders.
+This is one complete internal review candidate, not a new typography comparison,
+production-safe-area claim, production subtitle-design acceptance, or public-use
+approval.
+
 ## Future Shared Line-Break Policy Note
 
 The subtitle line-break and layout policy should remain structured enough that a

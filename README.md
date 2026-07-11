@@ -6,6 +6,15 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+OUT-06 note: the accepted OUT-05 vertical opening can now be extended with the
+authoritative kept `cut_003` through `build-complete-narrative-short`, producing
+one ignored same-machine three-cut/29-subtitle internal delivery candidate with
+manifest, media/audio/boundary readback, poster, frame QA, and a video-first
+review page. Rights remain pending and production subtitle/render, public, and
+publishing acceptance remain separate gates; see
+[docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) for the live artifact and review
+questions.
+
 ED-10 note: official subtitle track import / transcript alignment is now implemented. Use `import-subtitle-track --base-transcript <path> --subtitle-track <path> --output <path> [--source-format youtube-json3] [--reviewed-by <id>] [--dry-run] [--force] [--format json]` to convert a YouTube JSON3 subtitle track into a `transcript.json`-compatible artifact with `stt.engine="subtitle_track"`. It preserves source-audio readback and alignment notes, and downstream `generate-subtitles` marks drafts as `source_type="imported_subtitle_track"`. This is still diagnostic data, not subtitle design, render, rights, creative, or publishing acceptance.
 
 ED-10a note: `build-cut-review-packet` now turns selected cuts into review packets and evidence summaries. It writes `cut_review_packet.json`, `cut_review_report.html`, `evidence_summary.json`, and `evidence_summary.html` from existing transcript/edit/NLE/render/rights artifacts. The packet keeps decisions as `undecided`, records rights pending as non-production, and exists to hand off final cut/context review.

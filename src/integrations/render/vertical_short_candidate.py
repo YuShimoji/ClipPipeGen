@@ -74,6 +74,13 @@ REVIEW_QUESTIONS = (
     "字幕の位置・改行・読みやすさが一貫し、映像を邪魔していないか。",
     "音声・カット境界・画面に欠落、乱れ、書き出し異常がないか。",
 )
+OUT05_FRAME_SAMPLES = (
+    ("start", 0.250),
+    ("before_boundary", 6.700),
+    ("after_boundary", 6.980),
+    ("dense_subtitle", 9.300),
+    ("end", 11.450),
+)
 RenderExecutor = Callable[..., dict[str, Any]]
 
 
@@ -399,6 +406,9 @@ def _validate_predecessor(
 
 def _build_subtitle_presentation(
     predecessor_subtitles: list[dict[str, Any]],
+    *,
+    application_key: str = "out05_application",
+    dimension_source: str = "out05_vertical_canvas_width_clamped_safe_envelope",
 ) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     base_style = _diagnostic_ass_style_for_candidate(ED10L_KEIFONT_CANDIDATE_ID)
     base_layout = _subtitle_layout_contract(
@@ -417,7 +427,7 @@ def _build_subtitle_presentation(
         frame_width=FRAME_WIDTH,
         frame_height=FRAME_HEIGHT,
         mode="bottom_center_emphasis",
-        dimension_source="out05_vertical_canvas_width_clamped_safe_envelope",
+        dimension_source=dimension_source,
         diagnostic_ass_style=lead_style,
     )
     values = layout["values"]
@@ -480,7 +490,7 @@ def _build_subtitle_presentation(
             "readability_priority": "maximum",
         }
     )
-    selector["out05_application"] = {
+    selector[application_key] = {
         "lead_bounded_decoration_candidate_id": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
         "fallback_reference_candidate_id": ED10W_CANDIDATE0_BASELINE_ID,
         "base_font_candidate_id": ED10L_KEIFONT_CANDIDATE_ID,
@@ -490,6 +500,21 @@ def _build_subtitle_presentation(
         "body_text_color_policy": "stable_default_body_text",
     }
     return layout, presentation, selector
+
+
+def build_vertical_subtitle_presentation(
+    subtitles: list[dict[str, Any]],
+    *,
+    application_key: str,
+    dimension_source: str,
+) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+    """Shared measured subtitle-layout boundary for vertical review candidates."""
+
+    return _build_subtitle_presentation(
+        subtitles,
+        application_key=application_key,
+        dimension_source=dimension_source,
+    )
 
 
 def _apply_vertical_balanced_wrap(
@@ -700,6 +725,7 @@ def _validate_subtitle_containment(
     *,
     expected_duration: float,
     layout: dict[str, Any],
+    expected_count: int = 9,
 ) -> dict[str, Any]:
     safe = layout["vertical_safe_envelope"]["subtitle"]
     checks: list[dict[str, Any]] = []
@@ -733,8 +759,10 @@ def _validate_subtitle_containment(
                 "safe": True,
             }
         )
-    if len(checks) != 9:
-        raise VerticalShortCandidateError("candidate must preserve all nine subtitles")
+    if len(checks) != expected_count:
+        raise VerticalShortCandidateError(
+            f"candidate must preserve exactly {expected_count} subtitles"
+        )
     return {
         "status": "passed",
         "subtitle_count": len(checks),
@@ -743,6 +771,23 @@ def _validate_subtitle_containment(
         "maximum_line_count": max((item["wrapped_line_count"] for item in checks), default=0),
         "checks": checks,
     }
+
+
+def validate_vertical_subtitle_containment(
+    items: list[dict[str, Any]],
+    *,
+    expected_duration: float,
+    layout: dict[str, Any],
+    expected_count: int,
+) -> dict[str, Any]:
+    """Validate timing, overlap, line count, and the shared vertical envelope."""
+
+    return _validate_subtitle_containment(
+        items,
+        expected_duration=expected_duration,
+        layout=layout,
+        expected_count=expected_count,
+    )
 
 
 def _build_reframe_plan(predecessor: dict[str, Any]) -> dict[str, Any]:
@@ -944,6 +989,43 @@ def _render_candidate_assets(
     ffprobe_path: str | Path | None,
     runner: ffmpeg_tiny.Runner,
 ) -> dict[str, Any]:
+    return render_vertical_sequence_assets(
+        source_video_path=source_video_path,
+        source_audio_path=source_audio_path,
+        timeline=timeline,
+        ass_path=ass_path,
+        video_path=video_path,
+        compare_sheet_path=compare_sheet_path,
+        frame_sheet_path=frame_sheet_path,
+        work_dir=work_dir,
+        subtitle_layout=subtitle_layout,
+        expected_duration=EXPECTED_DURATION_SECONDS,
+        frame_samples=OUT05_FRAME_SAMPLES,
+        ffmpeg_path=ffmpeg_path,
+        ffprobe_path=ffprobe_path,
+        runner=runner,
+    )
+
+
+def render_vertical_sequence_assets(
+    *,
+    source_video_path: Path,
+    source_audio_path: Path,
+    timeline: list[dict[str, Any]],
+    ass_path: Path,
+    video_path: Path,
+    compare_sheet_path: Path | None,
+    frame_sheet_path: Path,
+    work_dir: Path,
+    subtitle_layout: dict[str, Any],
+    expected_duration: float,
+    frame_samples: tuple[tuple[str, float], ...],
+    ffmpeg_path: str | Path | None,
+    ffprobe_path: str | Path | None,
+    runner: ffmpeg_tiny.Runner = subprocess.run,
+) -> dict[str, Any]:
+    """Render a data-driven 9:16 hard-cut sequence using the OUT-05 path."""
+
     preflight = ffmpeg_tiny.preflight_tools(
         ffmpeg_path=ffmpeg_path,
         ffprobe_path=ffprobe_path,
@@ -992,13 +1074,14 @@ def _render_candidate_assets(
         normalization_filter = "anull"
         decision = "pass_through_no_clear_loudness_or_peak_issue"
 
-    _render_reframe_comparison_sheet(
-        ffmpeg_path=resolved_ffmpeg,
-        source_video_path=source_video_path,
-        output_path=compare_sheet_path,
-        work_dir=work_dir,
-        runner=runner,
-    )
+    if compare_sheet_path is not None:
+        _render_reframe_comparison_sheet(
+            ffmpeg_path=resolved_ffmpeg,
+            source_video_path=source_video_path,
+            output_path=compare_sheet_path,
+            work_dir=work_dir,
+            runner=runner,
+        )
     attempts: list[dict[str, Any]] = []
     selected_codec: str | None = None
     for codec in ("libx264", "libopenh264"):
@@ -1087,11 +1170,12 @@ def _render_candidate_assets(
         timeline=None,
         runner=runner,
     )
-    frame_samples = _render_frame_qa_sheet(
+    frame_sample_readback = _render_frame_qa_sheet(
         ffmpeg_path=resolved_ffmpeg,
         video_path=video_path,
         output_path=frame_sheet_path,
         work_dir=work_dir,
+        samples=frame_samples,
         runner=runner,
     )
     return {
@@ -1099,7 +1183,7 @@ def _render_candidate_assets(
         "selected_video_encoder": selected_codec,
         "attempts": attempts,
         "duration_matches_expected": (
-            abs(float(output_probe.get("duration_seconds") or 0.0) - EXPECTED_DURATION_SECONDS)
+            abs(float(output_probe.get("duration_seconds") or 0.0) - expected_duration)
             <= OUTPUT_DURATION_TOLERANCE_SECONDS
         ),
         "full_decode": full_decode,
@@ -1114,7 +1198,7 @@ def _render_candidate_assets(
             "render_filter_target_true_peak_dbtp": -1.5 if normalize else None,
             "output_measurement": output_measurement,
         },
-        "frame_samples": frame_samples,
+        "frame_samples": frame_sample_readback,
     }
 
 
@@ -1363,15 +1447,11 @@ def _render_frame_qa_sheet(
     video_path: Path,
     output_path: Path,
     work_dir: Path,
+    samples: tuple[tuple[str, float], ...] = OUT05_FRAME_SAMPLES,
     runner: ffmpeg_tiny.Runner,
 ) -> list[dict[str, Any]]:
-    samples = (
-        ("start", 0.250),
-        ("before_boundary", 6.700),
-        ("after_boundary", 6.980),
-        ("dense_subtitle", 9.300),
-        ("end", 11.450),
-    )
+    if not samples:
+        raise VerticalShortCandidateError("frame QA requires at least one sample")
     frames: list[Path] = []
     readback: list[dict[str, Any]] = []
     for label, seconds in samples:
@@ -1401,10 +1481,15 @@ def _render_frame_qa_sheet(
             raise VerticalShortCandidateError(f"frame QA extraction failed: {label}")
         frames.append(frame)
         readback.append({"label": label, "seconds": seconds, "status": "extracted"})
+    columns = min(5, len(frames))
+    layout = "|".join(
+        f"{(index % columns) * 216}_{(index // columns) * 384}"
+        for index in range(len(frames))
+    )
     _tile_images(
         ffmpeg_path=ffmpeg_path,
         inputs=frames,
-        layout="0_0|216_0|432_0|648_0|864_0",
+        layout=layout,
         output_path=output_path,
         runner=runner,
     )
@@ -1531,21 +1616,51 @@ def _render_srt(items: list[dict[str, Any]]) -> str:
     return "\n".join(blocks)
 
 
-def _validate_ass_visible_content(path: Path) -> None:
+def _validate_ass_visible_content(
+    path: Path,
+    *,
+    expected_count: int = 9,
+    required_texts: tuple[str, ...] = (
+        "もしもし？",
+        "体育館裏で待ってます！！",
+        "ホロライブの番長として",
+    ),
+) -> None:
     text = path.read_text(encoding="utf-8")
     event_lines = [line for line in text.splitlines() if line.startswith("Dialogue:")]
-    if len(event_lines) != 9:
-        raise VerticalShortCandidateError("ASS must contain exactly nine visible dialogue events")
+    if len(event_lines) != expected_count:
+        raise VerticalShortCandidateError(
+            f"ASS must contain exactly {expected_count} visible dialogue events"
+        )
     forbidden = ("SPK", "DIAGNOSTIC", "TECHNICAL", "PLACEHOLDER")
     if any(token in line.upper() for token in forbidden for line in event_lines):
         raise VerticalShortCandidateError("ASS contains a visible placeholder/technical label")
-    required_japanese = ("もしもし？", "体育館裏で待ってます！！", "ホロライブの番長として")
     flattened = text.replace(r"\N", "").replace(" ", "")
-    if not all(value.replace(" ", "") in flattened for value in required_japanese):
+    if not all(value.replace(" ", "") in flattened for value in required_texts):
         raise VerticalShortCandidateError("ASS lost expected UTF-8 Japanese subtitle text")
 
 
-def _validate_render_result(result: dict[str, Any], *, video_path: Path) -> None:
+def validate_ass_visible_content(
+    path: Path,
+    *,
+    expected_count: int,
+    required_texts: tuple[str, ...],
+) -> None:
+    """Shared visible-event and UTF-8 guard for vertical ASS output."""
+
+    _validate_ass_visible_content(
+        path,
+        expected_count=expected_count,
+        required_texts=required_texts,
+    )
+
+
+def _validate_render_result(
+    result: dict[str, Any],
+    *,
+    video_path: Path,
+    expected_duration: float = EXPECTED_DURATION_SECONDS,
+) -> None:
     _require_file(video_path, "vertical candidate video")
     media = result.get("media") if isinstance(result.get("media"), dict) else {}
     counts = media.get("stream_counts") if isinstance(media.get("stream_counts"), dict) else {}
@@ -1562,8 +1677,8 @@ def _validate_render_result(result: dict[str, Any], *, video_path: Path) -> None
         raise VerticalShortCandidateError("vertical candidate resolution must be 1080x1920")
     if abs(float(media.get("fps") or 0.0) - FRAME_RATE) > 0.01:
         raise VerticalShortCandidateError("vertical candidate frame rate must be 30fps")
-    if abs(float(media.get("duration_seconds") or 0.0) - EXPECTED_DURATION_SECONDS) > OUTPUT_DURATION_TOLERANCE_SECONDS:
-        raise VerticalShortCandidateError("vertical candidate duration changed from OUT-04")
+    if abs(float(media.get("duration_seconds") or 0.0) - expected_duration) > OUTPUT_DURATION_TOLERANCE_SECONDS:
+        raise VerticalShortCandidateError("vertical candidate duration changed from authority")
     if result.get("full_decode", {}).get("status") != "passed":
         raise VerticalShortCandidateError("vertical candidate full decode did not pass")
     final_audio = result.get("audio", {}).get("output_measurement", {})
@@ -1573,6 +1688,21 @@ def _validate_render_result(result: dict[str, Any], *, video_path: Path) -> None
         raise VerticalShortCandidateError("vertical candidate audio exceeded loudness window")
     if float(final_audio.get("true_peak_dbtp") or 999.0) > -1.0:
         raise VerticalShortCandidateError("vertical candidate true peak exceeds -1 dBTP")
+
+
+def validate_vertical_render_result(
+    result: dict[str, Any],
+    *,
+    video_path: Path,
+    expected_duration: float,
+) -> None:
+    """Shared media/decode/audio validation for vertical review candidates."""
+
+    _validate_render_result(
+        result,
+        video_path=video_path,
+        expected_duration=expected_duration,
+    )
 
 
 def _validate_staged_bundle(stage: Path, readback: dict[str, Any]) -> None:

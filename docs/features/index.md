@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-05`
-- artifact: `clip-out05-vertical-short-internal-candidate-v0-001`
-- state: `out05_vertical_short_internal_candidate_accepted_canonical_candidate`
+- feature: `OUT-06`
+- artifact: `clip-out06-complete-narrative-short-delivery-candidate-v0-001`
+- state: `out06_complete_narrative_short_delivery_candidate_review_ready`
 
 ## Feature Table
 
