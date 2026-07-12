@@ -31,7 +31,7 @@ latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-opera
 latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
 latest_out07_internal_operator_delivery_pack_video_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
 latest_out07_internal_operator_delivery_pack_readback_sha256: 923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244
-latest_out07_internal_operator_delivery_pack_manifest_sha256: 16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620
+latest_out07_internal_operator_delivery_pack_manifest_sha256: 2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f
 latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256: e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3
 latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
@@ -161,9 +161,9 @@ target `23.1799998`, current time `23.181926`, delta `0.0019262`,
 
 Two consecutive package generations were byte-stable across every file. The
 delivery manifest self-integrity recomputes to
-`804136f2e48093a8b52d25f747bcd54ab14c4eefe968c65a21064a259f283a98`, and the
+`d7a5d8ecb8e564ba7ca01dc1f08234130798d4e0bf5d9080bce8100ab3d1cddf`, and the
 manifest file SHA-256 is
-`16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620`.
+`2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f`.
 OUT-03, OUT-04, OUT-05, OUT-06, and the retained human-preview tree are treated
 as protected evidence and remain outside Git as ignored local artifacts.
 

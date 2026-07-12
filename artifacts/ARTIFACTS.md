@@ -40,7 +40,7 @@ opened by the root launcher.
 | contact_sheet_sha256 | `1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210` |
 | output_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |
 | operator_delivery_readback_sha256 | `923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244` |
-| delivery_manifest_sha256 | `16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620` |
+| delivery_manifest_sha256 | `2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f` |
 | next_action | Review only the recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Do not infer rights, production/public use, upload, thumbnail upload, visibility, made-for-kids, or publishing approval. |
 
 Boundary flags remain false or pending:

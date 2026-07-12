@@ -557,6 +557,9 @@ document.querySelectorAll('button[data-copy-target]').forEach((button) => {{
     const target = document.getElementById(button.dataset.copyTarget);
     const status = document.getElementById('copy-status');
     try {{
+      if (new URLSearchParams(location.search).has('qa-copy-deny')) {{
+        throw new Error('qa-copy-deny');
+      }}
       await navigator.clipboard.writeText(target.value);
       status.textContent = 'Copied: ' + button.dataset.copyTarget;
     }} catch (error) {{
