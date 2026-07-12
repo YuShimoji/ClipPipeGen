@@ -47,6 +47,7 @@ Subcommands:
     build-editorial-sequence OUT-04: one real-local ordered multi-cut editorial sequence.
     build-vertical-short-candidate OUT-05: one accepted-timeline internal 1080x1920 candidate.
     build-complete-narrative-short OUT-06: one complete three-cut internal delivery candidate.
+    build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -80,6 +81,7 @@ from . import (
     build_episode_init_plan,
     build_external_source_registry,
     build_output_layer_gap_report,
+    build_operator_delivery_pack,
     build_selected_cut_proof,
     build_episode_workspace_plan,
     build_operator_cockpit,
@@ -163,6 +165,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-editorial-sequence": build_editorial_sequence.run,
     "build-vertical-short-candidate": build_vertical_short_candidate.run,
     "build-complete-narrative-short": build_complete_narrative_short.run,
+    "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

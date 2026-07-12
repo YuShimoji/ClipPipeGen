@@ -3,20 +3,20 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: out06_complete_narrative_short_accepted_after_bounded_repair
+health: out07_internal_operator_delivery_pack_review_ready
 progress_pct: 100
 last_touched: 2026-07-12
-current_slice: OUT-06
-phase: accepted_after_bounded_repair
-canonical_status: accepted_on_main_after_fast_forward
-active_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
-current_title: OUT-06 complete narrative short delivery candidate
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json
+current_slice: OUT-07
+phase: internal_operator_delivery_pack_review_ready
+canonical_status: branch_review_pending
+active_branch: codex/out-07-internal-operator-delivery-pack-v0
+current_title: OUT-07 internal operator delivery pack
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
 decision_required: none
-review_status: accepted_after_bounded_repair
-review_scope: OUT-06 tempo and audio/video continuity accepted; the six subtitle wraps and localhost seekability repair were accepted as the bounded repair closure for the same artifact ID.
+review_status: internal_operator_draft_review_ready
+review_scope: OUT-07 packages the accepted OUT-06 MP4 byte-identically with three source-frame-derived thumbnail directions, one recommended thumbnail, and closed-gate Japanese metadata copy controls.
 reviewed_at: 2026-07-12 JST
 rights_approval: pending
 production_acceptance: false
@@ -24,8 +24,14 @@ production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-12
 next_review_due: none
-next_action: OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice.
-active_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
+next_action: Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.
+active_artifact: clip-out07-internal-operator-delivery-pack-v0-001
+latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
+latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
+latest_out07_internal_operator_delivery_pack_video_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
+latest_out07_internal_operator_delivery_pack_readback_sha256: 923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244
+latest_out07_internal_operator_delivery_pack_manifest_sha256: 16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620
+latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256: e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3
 latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
 latest_out06_complete_narrative_short_delivery_candidate_output_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
@@ -107,18 +113,50 @@ related: docs/RUNTIME_STATE.md, docs/THREAD_REGISTRY.md, docs/output_layer/OUT_0
 
 ## Cross-Terminal Re-Entry Packet
 
-Fetch and switch to the OUT-06 closure branch, then read the project context:
+Fetch and switch to the OUT-07 branch, then read the project context:
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-06-complete-narrative-short-delivery-candidate-v0
+git switch codex/out-07-internal-operator-delivery-pack-v0
 git pull --ff-only
 ```
 
 Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file, and
-`docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md`. Use
-the accepted OUT-05/OUT-04/OUT-03 contracts and OUT-02 handoff only for
-predecessor/baseline history.
+`docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md`. Use the accepted
+OUT-06/OUT-05/OUT-04/OUT-03 contracts only for predecessor/baseline history.
+
+The durable OUT-07 state is a tracked builder/CLI/test/contract plus one ignored
+same-machine package at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/`.
+`open_delivery.ps1` is the local-file entrypoint and `serve_delivery.ps1` serves
+the byte-range localhost review route on port `8070`.
+
+OUT-07 copies the accepted OUT-06 MP4 byte-identically. The OUT-06 source video
+and OUT-07 packaged video both hash to
+`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`; the builder
+does not rerender, remux, or transcode it.
+
+The package has exactly three source-frame-derived 1280x720 RGB JPEG thumbnail
+directions: `context`, `tension`, and `payoff`. `tension` is the only
+recommendation. The recommended thumbnail hash is
+`e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3`, and the
+contact sheet hash is
+`1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210`.
+
+The recommended Japanese title is `番長、団長を呼び出すも来ない！？`.
+`publish_draft.json` is `status=internal_operator_draft`,
+`language=ja`, `operator_copy_ready=true`, `publish_ready=false`,
+`rights_status=pending`, `visibility=operator_decision_required`,
+`made_for_kids=operator_decision_required`, and `scheduled_at=null`.
+
+Validation passed for targeted tests, OUT-06/OUT-07 MP4 hash equality, browser
+image/video/no-overflow/copy-button checks, Range 206, muted seek QA, manifest
+self-integrity, and two consecutive byte-stable generations. The three human
+review dimensions are only: recommended thumbnail direction, Japanese metadata
+copy, and whether this internal pack is operator-complete for the next
+non-public delivery step. Do not infer rights, production/public use, thumbnail
+upload, metadata publication, visibility, made-for-kids, publishing, or upload
+approval from OUT-07.
 
 The durable OUT-06 accepted-after-bounded-repair state is a tracked
 builder/CLI/test/contract plus one ignored same-machine package at

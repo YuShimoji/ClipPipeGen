@@ -49,6 +49,13 @@ reuses the data-driven vertical render boundary, and writes only a dedicated
 ignored `review/out06_*` package, and now serves as the immutable video predecessor
 for the OUT-07 internal operator delivery-pack slice.
 
+OUT-07 is the current operator handoff slice. It copies the accepted OUT-06 MP4
+byte-identically, derives exactly three 1280x720 thumbnail directions from source
+frames, recommends `tension`, and provides closed-gate Japanese metadata copy in
+`review/out07_internal_operator_delivery_pack/`. It does not perform upload,
+thumbnail upload, visibility, made-for-kids, public, publishing, production, or
+rights acceptance.
+
 Generated files:
 
 - `video_output_gap_log.json` - machine-readable capability matrix, gap log, proof status, fixture proof summary, and recommended next slice.

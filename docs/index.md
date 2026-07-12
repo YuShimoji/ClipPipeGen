@@ -13,18 +13,17 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current focus is `OUT-06` on
-`codex/out-06-complete-narrative-short-delivery-candidate-v0`. Its artifact is
-`clip-out06-complete-narrative-short-delivery-candidate-v0-001`: one
-same-machine, 38.633333-second vertical internal short that orders
-`cut_001 -> cut_002 -> cut_003`, keeps the two hard-cut boundaries, preserves
-29 subtitle events, and is now accepted after the 2026-07-12 bounded
-subtitle-wrap and localhost seekability repairs.
+Current focus is `OUT-07` on
+`codex/out-07-internal-operator-delivery-pack-v0`. Its artifact is
+`clip-out07-internal-operator-delivery-pack-v0-001`: one same-machine internal
+operator delivery pack that copies the accepted OUT-06 MP4 byte-identically,
+adds exactly three source-frame-derived 1280x720 thumbnail directions, recommends
+`tension`, and provides closed-gate Japanese metadata copy controls.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
-Canonical `main` is being advanced from the user-accepted OUT-05 baseline to the
-OUT-06 accepted-after-bounded-repair closure. The CPD-12 cockpit remains an
-upstream planning artifact, not the active resume focus.
+Canonical `main` is the OUT-06 accepted-after-bounded-repair baseline. OUT-07
+remains unmerged for operator review. The CPD-12 cockpit remains an upstream
+planning artifact, not the active resume focus.
 
 Start here:
 
@@ -59,6 +58,7 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 internal operator delivery pack | Open the port-8070 localhost route for recommended thumbnail, metadata copy controls, accepted OUT-06 video, gates, and provenance. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored accepted OUT-04 editorial sequence | Reopen the accepted single 11.678-second `cut_001 -> cut_002` sequence if predecessor evidence is needed. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` | ignored accepted OUT-03 real-local selected-cut proof | Reopen the accepted `cut_002` evidence if needed; add `-Serve` only when local-file playback is blocked. |
@@ -78,11 +78,12 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-06 is accepted after bounded repair and may be used as the immutable video
-predecessor for OUT-07. Do not infer production/public use, thumbnail upload,
-metadata publication, visibility, made-for-kids, publishing, or rights approval
-from the repaired internal artifact. Use the dashboard to return to tracked
-project context. A good docs update should make
+OUT-07 is ready for internal operator review. Review only the recommended
+thumbnail direction, Japanese metadata copy, and whether the pack is
+operator-complete for the next non-public delivery step. Do not infer
+production/public use, thumbnail upload, metadata publication, visibility,
+made-for-kids, publishing, upload, or rights approval from this internal pack.
+Use the dashboard to return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 
 - what the page is for

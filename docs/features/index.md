@@ -4,9 +4,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-06`
-- artifact: `clip-out06-complete-narrative-short-delivery-candidate-v0-001`
-- state: `out06_complete_narrative_short_accepted_after_bounded_repair`
+- feature: `OUT-07`
+- artifact: `clip-out07-internal-operator-delivery-pack-v0-001`
+- state: `out07_internal_operator_delivery_pack_review_ready`
 
 ## Feature Table
 

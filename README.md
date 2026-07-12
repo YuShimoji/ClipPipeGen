@@ -6,6 +6,12 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+OUT-07 note: the accepted OUT-06 MP4 is now packaged byte-identically with three
+source-frame-derived 1280x720 thumbnail directions, one recommended thumbnail,
+and a closed-gate Japanese metadata draft in an internal operator delivery pack.
+This is not upload, public readiness, rights approval, visibility, made-for-kids,
+or publishing acceptance; see [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
+
 OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the
 authoritative kept `cut_003` through `build-complete-narrative-short`, producing
 one ignored same-machine three-cut/29-subtitle internal delivery candidate with

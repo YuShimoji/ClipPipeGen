@@ -231,6 +231,9 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
+    current_out07_artifact = (
+        "clip-out07-internal-operator-delivery-pack-v0-001"
+    )
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -308,7 +311,12 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_out06_artifact}" in text
+            assert f"active_artifact: {current_out07_artifact}" in text
+            assert (
+                "latest_out06_complete_narrative_short_delivery_candidate_artifact: "
+                f"{current_out06_artifact}"
+                in text
+            )
             assert (
                 "latest_out05_vertical_short_internal_candidate_artifact: "
                 f"{accepted_out05_artifact}"
@@ -1415,8 +1423,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
+        "clip-out07-internal-operator-delivery-pack-v0-001"
     )
+    assert "clip-out07-internal-operator-delivery-pack-v0-001" in artifact_ids
     assert "clip-out06-complete-narrative-short-delivery-candidate-v0-001" in artifact_ids
     assert "clip-out05-vertical-short-internal-candidate-v0-001" in artifact_ids
     assert "clip-out04-editorial-representative-sequence-v0-001" in artifact_ids

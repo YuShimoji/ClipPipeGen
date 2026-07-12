@@ -18,6 +18,45 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-out07-internal-operator-delivery-pack-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-07 Internal Operator Delivery Pack v0 |
+| purpose | Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions and closed-gate Japanese metadata copy for internal operator review. |
+| storage class | Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media, generated MP4 copy, and thumbnails remain outside Git. |
+| repo_relative_path | `src/integrations/render/operator_delivery_pack.py`; `src/cli/build_operator_delivery_pack.py`; `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` |
+| local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/` |
+| machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json` |
+| delivery_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/delivery_manifest.json` |
+| source_inputs | Accepted OUT-06 readback/video and retained source video frame evidence. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1` |
+| preview_url | `http://127.0.0.1:8070/index.html` while the retained byte-range local server is running. |
+| recommended_thumbnail | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_recommended_1280x720.jpg` |
+| contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_direction_contact_sheet.jpg` |
+| validation_command | `uvx --with Pillow pytest -q tests/test_operator_delivery_pack.py tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py tests/test_docs_dashboard.py`; actual package generation twice for byte-stability; OUT-06/OUT-07 MP4 hash equality; manifest self-integrity; Range 206; browser image/video/copy/seek/no-overflow QA; `git diff --check`; `git ls-files episodes`. |
+| review_status | Internal operator draft review-ready: three source-frame-derived 1280x720 RGB JPEG thumbnail directions, `tension` recommended, Japanese metadata draft with copy controls, accepted OUT-06 MP4 copied byte-identically with no rerender/remux/transcode. |
+| recommended_thumbnail_sha256 | `e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3` |
+| contact_sheet_sha256 | `1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210` |
+| output_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |
+| operator_delivery_readback_sha256 | `923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244` |
+| delivery_manifest_sha256 | `16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620` |
+| next_action | Review only the recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Do not infer rights, production/public use, upload, thumbnail upload, visibility, made-for-kids, or publishing approval. |
+
+Boundary flags remain false or pending:
+
+- `status=internal_operator_draft`
+- `operator_copy_ready=true`
+- `publish_ready=false`
+- `production_acceptance=false`
+- `public_or_publishing=false`
+- `rights_status=pending`
+- `upload_attempted=false`
+- `thumbnail_upload_attempted=false`
+- `visibility=operator_decision_required`
+- `made_for_kids=operator_decision_required`
+- `scheduled_at=null`
+
 ## `clip-out06-complete-narrative-short-delivery-candidate-v0-001`
 
 | Field | Value |

@@ -24,19 +24,19 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "OUT-06",
-    "artifact_id": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
-    "state": "out06_complete_narrative_short_accepted_after_bounded_repair",
-    "title": "OUT-06 complete narrative short delivery candidate",
-    "active_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
-    "phase": "accepted_after_bounded_repair",
-    "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
-    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json",
+    "feature_id": "OUT-07",
+    "artifact_id": "clip-out07-internal-operator-delivery-pack-v0-001",
+    "state": "out07_internal_operator_delivery_pack_review_ready",
+    "title": "OUT-07 internal operator delivery pack",
+    "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
+    "phase": "internal_operator_delivery_pack_review_ready",
+    "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
+    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-12",
     "decision_required": "none",
     "next_review_action_type": "none",
-    "next_action": "OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice.",
+    "next_action": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -47,10 +47,10 @@
       "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings."
     },
     {
-      "label": "OUT-06 Current Focus",
-      "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out06_complete_narrative_short_delivery_candidate\\index.html",
-      "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
-      "when_to_use": "OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice."
+      "label": "OUT-07 Current Focus",
+      "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_internal_operator_delivery_pack\\index.html",
+      "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
+      "when_to_use": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed."
     },
     {
       "label": "Artifacts",
@@ -1639,6 +1639,16 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-out07-internal-operator-delivery-pack-v0-001",
+      "title": "OUT-07 Internal Operator Delivery Pack v0",
+      "purpose": "Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions and closed-gate Japanese metadata copy for internal operator review.",
+      "storage_class": "Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media, generated MP4 copy, and thumbnails remain outside Git.",
+      "repo_relative_path": "src/integrations/render/operator_delivery_pack.py; src/cli/build_operator_delivery_pack.py; docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_internal_operator_delivery_pack\\open_delivery.ps1",
+      "review_status": "Internal operator draft review-ready: three source-frame-derived 1280x720 RGB JPEG thumbnail directions, tension recommended, Japanese metadata draft with copy controls, accepted OUT-06 MP4 copied byte-identically with no rerender/remux/transcode.",
+      "next_action": "Review only the recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Do not infer rights, production/public use, upload, thumbnail upload, visibility, made-for-kids, or publishing approval."
+    },
+    {
       "artifact_id": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
       "title": "OUT-06 Complete Narrative Short Delivery Candidate v0",
       "purpose": "Preserve the accepted OUT-05 opening and append authoritative cut_003 as one directly reviewable introduction-development-close internal vertical short, now accepted after the 2026-07-12 bounded subtitle-wrap and seekability repairs for the same artifact ID.",
@@ -2341,6 +2351,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-out07-internal-operator-delivery-pack-v0-001",
       "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
       "clip-out05-vertical-short-internal-candidate-v0-001",
       "clip-out04-editorial-representative-sequence-v0-001",
@@ -2412,20 +2423,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 70
+    "artifact_count": 71
   },
   "artifact_coverage": {
-    "registered_artifact_count": 70,
+    "registered_artifact_count": 71,
     "features_with_artifact_count": 50,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "OUT-06 current focus",
-      "artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
-      "question": "OUT-06 complete narrative short delivery candidate",
-      "next_route": "OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice."
+      "item": "OUT-07 current focus",
+      "artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
+      "question": "OUT-07 internal operator delivery pack",
+      "next_route": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2654,7 +2665,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 101,
+      "line_count": 107,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2662,13 +2673,13 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 39,
+      "boundary_term_count": 42,
       "status": "contains_done_history"
     },
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 107,
+      "line_count": 108,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2682,27 +2693,27 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1728,
+      "line_count": 1787,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "out06_complete_narrative_short_accepted_after_bounded_repair",
+        "health": "out07_internal_operator_delivery_pack_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-12",
-        "state_revision": "out06-complete-narrative-short-accepted-after-bounded-repair-2026-07-12",
-        "current_slice": "OUT-06",
-        "phase": "accepted_after_bounded_repair",
-        "canonical_status": "accepted_on_main_after_fast_forward",
-        "active_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
-        "current_title": "OUT-06 complete narrative short delivery candidate",
-        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
-        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json",
+        "state_revision": "out07-internal-operator-delivery-pack-v0-2026-07-12",
+        "current_slice": "OUT-07",
+        "phase": "internal_operator_delivery_pack_review_ready",
+        "canonical_status": "branch_review_pending",
+        "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
+        "current_title": "OUT-07 internal operator delivery pack",
+        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
+        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
         "decision_required": "none",
-        "review_status": "accepted_after_bounded_repair",
-        "review_scope": "OUT-06 tempo and audio/video continuity accepted; the six subtitle wraps and localhost seekability repair were accepted as the bounded repair closure for the same artifact ID.",
+        "review_status": "internal_operator_draft_review_ready",
+        "review_scope": "OUT-07 packages the accepted OUT-06 MP4 byte-identically with three source-frame-derived thumbnail directions, one recommended thumbnail, and closed-gate Japanese metadata copy controls.",
         "reviewed_at": "2026-07-12 JST",
         "rights_approval": "pending",
         "production_acceptance": "false",
@@ -2710,8 +2721,14 @@
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-12",
         "next_review_due": "none",
-        "next_action": "OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice.",
-        "active_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
+        "next_action": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.",
+        "active_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
+        "latest_out07_internal_operator_delivery_pack_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
+        "latest_out07_internal_operator_delivery_pack_branch": "codex/out-07-internal-operator-delivery-pack-v0",
+        "latest_out07_internal_operator_delivery_pack_video_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+        "latest_out07_internal_operator_delivery_pack_readback_sha256": "923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244",
+        "latest_out07_internal_operator_delivery_pack_manifest_sha256": "16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620",
+        "latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256": "e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3",
         "latest_out06_complete_narrative_short_delivery_candidate_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
         "latest_out06_complete_narrative_short_delivery_candidate_output_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
@@ -2794,7 +2811,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 368,
+      "boundary_term_count": 372,
       "status": "current_capsule"
     },
     {
@@ -2917,7 +2934,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2275,
+      "line_count": 2314,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2925,7 +2942,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 894,
+      "boundary_term_count": 902,
       "status": "reference"
     },
     {
@@ -2967,7 +2984,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 48,
+      "boundary_term_count": 49,
       "status": "reference"
     },
     {
@@ -2987,26 +3004,26 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1389,
+      "line_count": 1427,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "out06_complete_narrative_short_accepted_after_bounded_repair",
+        "health": "out07_internal_operator_delivery_pack_review_ready",
         "progress_pct": "100",
         "last_touched": "2026-07-12",
-        "current_slice": "OUT-06",
-        "phase": "accepted_after_bounded_repair",
-        "canonical_status": "accepted_on_main_after_fast_forward",
-        "active_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
-        "current_title": "OUT-06 complete narrative short delivery candidate",
-        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
-        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json",
+        "current_slice": "OUT-07",
+        "phase": "internal_operator_delivery_pack_review_ready",
+        "canonical_status": "branch_review_pending",
+        "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
+        "current_title": "OUT-07 internal operator delivery pack",
+        "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
+        "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
         "decision_required": "none",
-        "review_status": "accepted_after_bounded_repair",
-        "review_scope": "OUT-06 tempo and audio/video continuity accepted; the six subtitle wraps and localhost seekability repair were accepted as the bounded repair closure for the same artifact ID.",
+        "review_status": "internal_operator_draft_review_ready",
+        "review_scope": "OUT-07 packages the accepted OUT-06 MP4 byte-identically with three source-frame-derived thumbnail directions, one recommended thumbnail, and closed-gate Japanese metadata copy controls.",
         "reviewed_at": "2026-07-12 JST",
         "rights_approval": "pending",
         "production_acceptance": "false",
@@ -3014,8 +3031,14 @@
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-12",
         "next_review_due": "none",
-        "next_action": "OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice.",
-        "active_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
+        "next_action": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.",
+        "active_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
+        "latest_out07_internal_operator_delivery_pack_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
+        "latest_out07_internal_operator_delivery_pack_branch": "codex/out-07-internal-operator-delivery-pack-v0",
+        "latest_out07_internal_operator_delivery_pack_video_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+        "latest_out07_internal_operator_delivery_pack_readback_sha256": "923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244",
+        "latest_out07_internal_operator_delivery_pack_manifest_sha256": "16db9a5eafb2fdd5f201fd67f5a43303390d492c3b7ed971f5ea9c9dede0f620",
+        "latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256": "e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3",
         "latest_out06_complete_narrative_short_delivery_candidate_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
         "latest_out06_complete_narrative_short_delivery_candidate_output_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
@@ -3098,7 +3121,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 325,
+      "boundary_term_count": 329,
       "status": "active"
     },
     {
@@ -3196,7 +3219,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 45,
+      "boundary_term_count": 46,
       "status": "reference"
     },
     {
@@ -3451,13 +3474,13 @@
       {
         "type": "over_guarded",
         "path": "README.md",
-        "detail": "Boundary terms appear 39 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 42 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1728 lines) is likely carrying history.",
+        "detail": "Long active doc (1787 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3487,13 +3510,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2275 lines) is likely carrying history.",
+        "detail": "Long active doc (2314 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 894 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 902 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3505,7 +3528,7 @@
       {
         "type": "over_guarded",
         "path": "docs/AUTOMATION_BOUNDARY.md",
-        "detail": "Boundary terms appear 48 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 49 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3517,7 +3540,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1389 lines) is likely carrying history.",
+        "detail": "Long active doc (1427 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3553,7 +3576,7 @@
       {
         "type": "over_guarded",
         "path": "docs/INVARIANTS.md",
-        "detail": "Boundary terms appear 45 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 46 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
