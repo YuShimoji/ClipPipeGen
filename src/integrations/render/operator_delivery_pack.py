@@ -90,6 +90,58 @@ THUMBNAIL_DIRECTIONS: tuple[dict[str, Any], ...] = (
     },
 )
 
+EPISODE_COPY_PLAN: dict[str, Any] = {
+    "title": "番長、団長を呼び出すも来ない！？",
+    "description_lines": [
+        "番長のはじめが団長を体育館裏へ呼び出し、「倒してやる！！」と意気込みます。",
+        "ところが団長は来ず、待ち続けたはじめが「なんで来なかったんすか！！」と問いかけます。",
+        "最後は“はじめの勝ち”で決着し、次の番長を探し始めます。",
+    ],
+    "tags": ["ホロライブ", "はじめ", "番長", "団長", "体育館裏", "呼び出し", "来なかった理由"],
+    "evidence_trace": [
+        {
+            "claim": "はじめが団長を体育館裏へ呼び出す",
+            "source_cut_ids": ["cut_001", "cut_002"],
+            "subtitle_ids": ["sub_002", "sub_004", "sub_006", "sub_008", "sub_009"],
+            "source_segment_ids": [
+                "seg_000002",
+                "seg_000004",
+                "seg_000006",
+                "seg_000008",
+                "seg_000009",
+            ],
+        },
+        {
+            "claim": "団長が呼び出し場所に来ず、はじめが理由を問いかける",
+            "source_cut_ids": ["cut_003"],
+            "subtitle_ids": ["sub_010", "sub_013", "sub_014"],
+            "source_segment_ids": ["seg_000010", "seg_000013", "seg_000014"],
+        },
+        {
+            "claim": "はじめの勝ちとして決着する",
+            "source_cut_ids": ["cut_003"],
+            "subtitle_ids": ["sub_019", "sub_020", "sub_021", "sub_022"],
+            "source_segment_ids": [
+                "seg_000019",
+                "seg_000020",
+                "seg_000021",
+                "seg_000022",
+            ],
+        },
+        {
+            "claim": "はじめが次の番長を探し始める",
+            "source_cut_ids": ["cut_003"],
+            "subtitle_ids": ["sub_024", "sub_026", "sub_027", "sub_028"],
+            "source_segment_ids": [
+                "seg_000024",
+                "seg_000026",
+                "seg_000027",
+                "seg_000028",
+            ],
+        },
+    ],
+}
+
 
 def build_operator_delivery_pack(
     *,
@@ -148,9 +200,6 @@ def build_operator_delivery_pack(
             ffmpeg_path=ffmpeg_path,
             runner=runner,
         )
-        publish_draft = _publish_draft()
-        thumbnail_plan = _thumbnail_plan(thumbnail_records)
-
         final_paths = {
             "video": output / "assets" / "complete_narrative_short.mp4",
             "thumbnail_context": output / "assets" / "thumbnail_context_1280x720.jpg",
@@ -166,6 +215,14 @@ def build_operator_delivery_pack(
             "open": output / "open_delivery.ps1",
             "serve": output / "serve_delivery.ps1",
         }
+        publish_draft = _publish_draft(
+            root=root,
+            episode=episode,
+            authority=authority,
+            thumbnails=thumbnail_records,
+            final_paths=final_paths,
+        )
+        thumbnail_plan = _thumbnail_plan(thumbnail_records)
         _write_json(stage / "thumbnail_plan.json", thumbnail_plan)
         _write_json(stage / "publish_draft.json", publish_draft)
         readback = _operator_readback(
@@ -328,42 +385,48 @@ def _write_contact_sheet(records: list[dict[str, Any]], out: Path) -> None:
     canvas.save(out, format="JPEG", quality=92, subsampling=0, optimize=False, progressive=False)
 
 
-def _publish_draft() -> dict[str, Any]:
+def _publish_draft(
+    *,
+    root: Path,
+    episode: Path,
+    authority: dict[str, Any],
+    thumbnails: list[dict[str, Any]],
+    final_paths: dict[str, Path],
+) -> dict[str, Any]:
+    recommended = next(item for item in thumbnails if item["direction_id"] == "tension")
     return {
         "schema_version": "clippipegen.out07.publish_draft.v0",
+        "artifact_id": ARTIFACT_ID,
+        "episode_id": episode.name,
         "status": "internal_operator_draft",
         "language": "ja",
-        "title": "番長、団長を呼び出すも来ない！？",
-        "description": "\n".join(
-            [
-                "はじめが団長を呼び出し、来なかった理由を問い詰める内部確認用ショートです。",
-                "サムネイル・タイトル・説明文は operator 判断前のドラフトで、公開判断ではありません。",
-                "権利確認、公開可否、 visibility、made for kids、アップロード操作は未実施です。",
-            ]
-        ),
-        "tags": ["ホロライブ", "番長", "団長", "マリン", "ショート候補", "内部レビュー"],
-        "evidence_trace": [
-            {
-                "claim": "呼び出し",
-                "subtitle_ids": ["sub_006", "sub_008", "sub_009"],
-                "source_cut_ids": ["cut_001", "cut_002"],
+        "title": EPISODE_COPY_PLAN["title"],
+        "description": "\n".join(EPISODE_COPY_PLAN["description_lines"]),
+        "tags": EPISODE_COPY_PLAN["tags"],
+        "evidence_trace": EPISODE_COPY_PLAN["evidence_trace"],
+        "video": {
+            "path": _relative(final_paths["video"], root),
+            "sha256": authority["out06_video_sha256"],
+        },
+        "selected_thumbnail": {
+            "candidate_id": recommended["direction_id"],
+            "path": _relative(final_paths["thumbnail_recommended"], root),
+            "sha256": recommended["recommended_copy_sha256"],
+            "source_cut_id": recommended["source_cut_id"],
+            "source_seconds": recommended["source_seconds"],
+            "evidence": {
+                "subtitle_ids": recommended["source_subtitle_ids"],
+                "segment_ids": recommended["supporting_segment_ids"],
             },
-            {
-                "claim": "来なかった理由を問い詰める",
-                "subtitle_ids": ["sub_013", "sub_014"],
-                "source_cut_ids": ["cut_003"],
-            },
-            {
-                "claim": "次の相手としてマリンに触れる",
-                "subtitle_ids": ["sub_028"],
-                "source_cut_ids": ["cut_003"],
-            },
-        ],
+        },
+        "source_attribution_status": "operator_decision_required",
+        "source_title": None,
+        "source_url": None,
         "operator_copy_ready": True,
         "publish_ready": False,
         "production_acceptance": False,
         "production_subtitle_design_acceptance": False,
-        "public_or_publishing": False,
+        "public_or_publishing_acceptance": False,
         "rights_status": "pending",
         "upload_attempted": False,
         "thumbnail_upload_attempted": False,
@@ -372,9 +435,6 @@ def _publish_draft() -> dict[str, Any]:
         "visibility": "operator_decision_required",
         "made_for_kids": "operator_decision_required",
         "scheduled_at": None,
-        "source_title": None,
-        "source_url": None,
-        "source_attribution": "operator_decision_required",
     }
 
 
@@ -455,13 +515,18 @@ def _operator_readback(
             "internal_operator_draft": True,
             "operator_copy_ready": True,
             "publish_ready": False,
+            "source_attribution_status": "operator_decision_required",
             "production_acceptance": False,
-            "public_or_publishing": False,
+            "production_subtitle_design_acceptance": False,
+            "public_or_publishing_acceptance": False,
             "rights_status": "pending",
             "upload_attempted": False,
             "thumbnail_upload_attempted": False,
+            "metadata_update_attempted": False,
+            "visibility_update_attempted": False,
             "visibility": "operator_decision_required",
             "made_for_kids": "operator_decision_required",
+            "scheduled_at": None,
         },
         "protected_evidence": protected,
         "input_hashes": input_hashes,
@@ -519,7 +584,7 @@ def _render_html(readback: dict[str, Any], publish: dict[str, Any], thumbnails: 
     )
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>OUT-07 Internal Operator Delivery Pack</title>
+<title>OUT-07 オペレーター納品パック</title>
 <style>
 body{{margin:0;background:#101114;color:#f5f5f5;font-family:system-ui,'Yu Gothic',sans-serif;}}
 main{{max-width:1080px;margin:0 auto;padding:24px;}}
@@ -534,21 +599,29 @@ button{{background:#ffd84d;color:#111;border:0;border-radius:999px;padding:8px 1
 table{{width:100%;border-collapse:collapse;font-size:14px}}td,th{{border-top:1px solid #333;padding:8px;text-align:left;vertical-align:top}}
 details{{border-top:1px solid #333;padding-top:12px}}code{{overflow-wrap:anywhere}}
 </style></head><body><main class="spine">
-<section><p class="badge">OUT-07 internal operator draft</p><p class="badge">publish_ready=false</p><p class="badge">rights=pending</p>
-<h1>内部 operator delivery pack</h1><p>推奨サムネ・動画・コピー用メタデータを一列で確認するための内部パックです。公開・アップロード・visibility・made for kids 判断は行いません。</p></section>
-<section><h2>推奨サムネイル: tension</h2><img id="recommended-thumb" src="assets/{escape(rec_path)}" alt="recommended thumbnail">
+<section id="recommended"><p class="badge">OUT-07 内部確認用</p>
+<h1>オペレーター納品パック</h1><h2>推奨サムネイル：tension</h2>
+<img id="recommended-thumb" src="assets/{escape(rec_path)}" alt="推奨サムネイル">
 <p>選定理由: 呼び出したのに来ない、という主摩擦を一枚で示すため。</p></section>
-<section><h2>コピー用メタデータ</h2>
-<label>タイトル</label><div class="copyrow"><textarea id="copy-title" readonly>{escape(title)}</textarea><button data-copy-target="copy-title">Copy</button></div>
-<label>説明文</label><div class="copyrow"><textarea id="copy-description" readonly>{escape(description)}</textarea><button data-copy-target="copy-description">Copy</button></div>
-<label>タグ</label><div class="copyrow"><textarea id="copy-tags" readonly>{escape(tags)}</textarea><button data-copy-target="copy-tags">Copy</button></div>
-<p id="copy-status" role="status">Copy buttons use clipboard API, then textarea selection fallback.</p></section>
-<section><h2>accepted OUT-06 video</h2><video id="delivery-video" controls preload="metadata" src="{video_path}"></video>
-<p><code>{escape(readback['video']['packaged_sha256'])}</code> / byte-identical copy, no rerender/remux/transcode.</p></section>
-<section><h2>閉じた gate</h2><p>{''.join(f'<span class="badge">{escape(k)}={escape(str(v))}</span>' for k,v in readback['gates'].items())}</p></section>
-<section><details open><summary>比較・provenance・manifest</summary>
-<table><tr><th>direction</th><th>cut</th><th>subtitle IDs</th><th>sha256</th><th>rationale</th></tr>{thumb_rows}</table>
-<p><img src="assets/thumbnail_direction_contact_sheet.jpg" alt="thumbnail contact sheet"></p>
+<section id="copy-metadata"><h2>コピー用メタデータ</h2>
+<label for="copy-title">タイトル</label><div class="copyrow"><textarea id="copy-title" readonly>{escape(title)}</textarea><button data-copy-target="copy-title" data-copy-label="タイトル">コピー</button></div>
+<label for="copy-description">説明文</label><div class="copyrow"><textarea id="copy-description" readonly>{escape(description)}</textarea><button data-copy-target="copy-description" data-copy-label="説明文">コピー</button></div>
+<label for="copy-tags">タグ</label><div class="copyrow"><textarea id="copy-tags" readonly>{escape(tags)}</textarea><button data-copy-target="copy-tags" data-copy-label="タグ">コピー</button></div>
+<p id="copy-status" role="status">タイトル・説明文・タグを個別にコピーできます。</p></section>
+<section id="accepted-video"><h2>採用済みOUT-06動画</h2><video id="delivery-video" controls preload="metadata" src="{video_path}"></video>
+<p>OUT-06で採用済みの動画を、バイト列を変えずに収録しています。</p></section>
+<section id="operator-status"><h2>オペレーター向け状態</h2>
+<p><span class="badge">内部ドラフト</span><span class="badge">コピー項目は技術的に準備済み</span><span class="badge">公開準備は未完了</span><span class="badge">権利確認待ち</span></p>
+<p>出典表記はオペレーター判断待ちです。制作採用・公開・アップロード・サムネイル設定・公開範囲・子ども向け設定はいずれも未承認または未実施です。</p>
+<h3>確認したい3点</h3><ol id="review-questions">
+<li>推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。</li>
+<li>title・description・tagsが自然で内容と一致するか。</li>
+<li>一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。</li>
+</ol></section>
+<section><details><summary>比較・来歴・manifest</summary>
+<table><tr><th>方向</th><th>cut</th><th>字幕ID</th><th>sha256</th><th>選定理由</th></tr>{thumb_rows}</table>
+<p><img src="assets/thumbnail_direction_contact_sheet.jpg" alt="サムネイル比較シート"></p>
+<p>動画SHA-256: <code>{escape(readback['video']['packaged_sha256'])}</code></p>
 <p>Manifest: <code>delivery_manifest.json</code> / Readback: <code>operator_delivery_readback.json</code></p>
 </details></section>
 <script>
@@ -561,12 +634,12 @@ document.querySelectorAll('button[data-copy-target]').forEach((button) => {{
         throw new Error('qa-copy-deny');
       }}
       await navigator.clipboard.writeText(target.value);
-      status.textContent = 'Copied: ' + button.dataset.copyTarget;
+      status.textContent = 'コピーしました：' + button.dataset.copyLabel;
     }} catch (error) {{
       target.focus();
       target.select();
       document.execCommand('copy');
-      status.textContent = 'Clipboard API denied; selected text and attempted fallback copy.';
+      status.textContent = 'コピーできるようにテキストを選択しました。Ctrl+Cでコピーしてください。';
     }}
   }});
 }});
@@ -729,12 +802,116 @@ REQUIRED_PACKAGE_FILES = (
 def _validate_bundle(stage: Path) -> None:
     for relative in REQUIRED_PACKAGE_FILES:
         _require_file(stage / relative, relative)
+    _validate_publish_draft(stage)
     manifest = _read_json(stage / "delivery_manifest.json", "delivery manifest")
     names = {item["package_relative_path"] for item in manifest["files"]}
     if names != set(REQUIRED_PACKAGE_FILES) - {"delivery_manifest.json"}:
         raise OperatorDeliveryPackError("manifest file list does not match required package files")
     if manifest["manifest_self_integrity"]["sha256"] != _canonical_manifest_self_hash(manifest):
         raise OperatorDeliveryPackError("manifest self-integrity hash mismatch")
+
+
+def _validate_publish_draft(stage: Path) -> None:
+    publish = _read_json(stage / "publish_draft.json", "publish draft")
+    required = {
+        "schema_version",
+        "artifact_id",
+        "episode_id",
+        "status",
+        "language",
+        "title",
+        "description",
+        "tags",
+        "evidence_trace",
+        "video",
+        "selected_thumbnail",
+        "source_attribution_status",
+        "source_title",
+        "source_url",
+        "operator_copy_ready",
+        "publish_ready",
+        "rights_status",
+        "production_acceptance",
+        "production_subtitle_design_acceptance",
+        "public_or_publishing_acceptance",
+        "upload_attempted",
+        "thumbnail_upload_attempted",
+        "metadata_update_attempted",
+        "visibility_update_attempted",
+        "visibility",
+        "made_for_kids",
+        "scheduled_at",
+    }
+    missing = sorted(required - publish.keys())
+    if missing:
+        raise OperatorDeliveryPackError(f"publish draft missing required fields: {missing}")
+
+    copied_text = "\n".join(
+        [str(publish["title"]), str(publish["description"]), *map(str, publish["tags"])]
+    ).lower()
+    banned_copy_terms = (
+        "内部確認用",
+        "operator判断前",
+        "operator 判断前",
+        "公開判断ではありません",
+        "未実施",
+        "visibility",
+        "made for kids",
+        "ショート候補",
+        "内部レビュー",
+    )
+    if any(term.lower() in copied_text for term in banned_copy_terms):
+        raise OperatorDeliveryPackError("copied metadata contains operator-only language")
+    description_lines = str(publish["description"]).splitlines()
+    if not 2 <= len(description_lines) <= 4 or any(not line.strip() for line in description_lines):
+        raise OperatorDeliveryPackError("publish description must contain 2-4 content lines")
+    if not isinstance(publish["tags"], list) or not 5 <= len(publish["tags"]) <= 10:
+        raise OperatorDeliveryPackError("publish tags must contain 5-10 content terms")
+    if not isinstance(publish["evidence_trace"], list) or not publish["evidence_trace"]:
+        raise OperatorDeliveryPackError("publish evidence trace is missing")
+
+    video = publish["video"]
+    packaged_video = stage / "assets" / "complete_narrative_short.mp4"
+    if (
+        video.get("sha256") != _sha256(packaged_video)
+        or not str(video.get("path", "")).endswith("/assets/complete_narrative_short.mp4")
+    ):
+        raise OperatorDeliveryPackError("publish video provenance mismatch")
+    selected = publish["selected_thumbnail"]
+    selected_path = stage / "assets" / "thumbnail_recommended_1280x720.jpg"
+    if (
+        selected.get("candidate_id") != "tension"
+        or selected.get("sha256") != _sha256(selected_path)
+        or not str(selected.get("path", "")).endswith(
+            "/assets/thumbnail_recommended_1280x720.jpg"
+        )
+        or selected.get("source_cut_id") != "cut_003"
+        or selected.get("source_seconds") != 25.35
+        or selected.get("evidence")
+        != {"subtitle_ids": ["sub_013", "sub_014"], "segment_ids": ["seg_000013", "seg_000014"]}
+    ):
+        raise OperatorDeliveryPackError("selected thumbnail provenance mismatch")
+
+    expected_gates = {
+        "source_attribution_status": "operator_decision_required",
+        "operator_copy_ready": True,
+        "publish_ready": False,
+        "rights_status": "pending",
+        "production_acceptance": False,
+        "production_subtitle_design_acceptance": False,
+        "public_or_publishing_acceptance": False,
+        "upload_attempted": False,
+        "thumbnail_upload_attempted": False,
+        "metadata_update_attempted": False,
+        "visibility_update_attempted": False,
+        "visibility": "operator_decision_required",
+        "made_for_kids": "operator_decision_required",
+        "scheduled_at": None,
+    }
+    if any(publish.get(key) != value for key, value in expected_gates.items()):
+        raise OperatorDeliveryPackError("publish gate readback mismatch")
+    if publish["source_title"] is not None or publish["source_url"] is not None:
+        raise OperatorDeliveryPackError("unresolved source attribution must remain null")
 
 
 def _protected_paths(episode: Path) -> dict[str, Path]:

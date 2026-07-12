@@ -12,6 +12,7 @@ and publishing gates remain closed.
 
 Start here when resuming from another terminal:
 
+- `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - current operator-pack contract, clean copy fields, separate gate readback, one review page, and closed external actions.
 - `OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` - current three-cut delivery-candidate contract, exact authority/timeline, build command, package, review surface, and closed gates.
 - `OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md` - current vertical candidate contract, exact real command, reframe/subtitle/audio readback, review surface, and closed gates.
 - `OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md` - accepted multi-cut sequence contract, exact real command, ordered timeline, review surface, and closed gates.
@@ -51,7 +52,8 @@ for the OUT-07 internal operator delivery-pack slice.
 
 OUT-07 is the current operator handoff slice. It copies the accepted OUT-06 MP4
 byte-identically, derives exactly three 1280x720 thumbnail directions from source
-frames, recommends `tension`, and provides closed-gate Japanese metadata copy in
+frames, recommends `tension`, and separates clean Japanese metadata copy from
+operator-only attribution and gate state in
 `review/out07_internal_operator_delivery_pack/`. It does not perform upload,
 thumbnail upload, visibility, made-for-kids, public, publishing, production, or
 rights acceptance.

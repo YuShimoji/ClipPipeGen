@@ -5,7 +5,7 @@ type: handoff
 status: active
 health: out07_internal_operator_delivery_pack_review_ready
 progress_pct: 100
-last_touched: 2026-07-12
+last_touched: 2026-07-13
 current_slice: OUT-07
 phase: internal_operator_delivery_pack_review_ready
 canonical_status: branch_review_pending
@@ -14,23 +14,23 @@ current_title: OUT-07 internal operator delivery pack
 human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none
+decision_required: review_freeform
 review_status: internal_operator_draft_review_ready
-review_scope: OUT-07 packages the accepted OUT-06 MP4 byte-identically with three source-frame-derived thumbnail directions, one recommended thumbnail, and closed-gate Japanese metadata copy controls.
-reviewed_at: 2026-07-12 JST
+review_scope: OUT-07 presents one recommended thumbnail, clean audience-facing Japanese copy, the accepted OUT-06 MP4, and separate operator-only attribution and gate status in one page.
+review_ready_at: 2026-07-13 JST
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-12
-next_review_due: none
-next_action: Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.
+last_verified_at: 2026-07-13
+next_review_due: review_out07_internal_operator_delivery_pack
+next_action: Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。
 active_artifact: clip-out07-internal-operator-delivery-pack-v0-001
 latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
 latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
 latest_out07_internal_operator_delivery_pack_video_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
-latest_out07_internal_operator_delivery_pack_readback_sha256: 923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244
-latest_out07_internal_operator_delivery_pack_manifest_sha256: 2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f
+latest_out07_internal_operator_delivery_pack_readback_sha256: 76c666c6cc74bbfb7664b5f18f42e5966e7559179c97fa55289f98d4b21bfa84
+latest_out07_internal_operator_delivery_pack_manifest_sha256: 5e3402ea3e63b0d9528e4ef5a46ab7c1afc1832b79f839452986edbd20ac7b74
 latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256: e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3
 latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
@@ -50,7 +50,7 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: f2afb4d
+canonical_main_head: 93c3935f93dc4fdb71610ea35874c33a58a02895
 canonical_main_baseline: OUT-06 accepted after bounded repair
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
@@ -143,20 +143,27 @@ recommendation. The recommended thumbnail hash is
 contact sheet hash is
 `1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210`.
 
-The recommended Japanese title is `番長、団長を呼び出すも来ない！？`.
-`publish_draft.json` is `status=internal_operator_draft`,
-`language=ja`, `operator_copy_ready=true`, `publish_ready=false`,
-`rights_status=pending`, `visibility=operator_decision_required`,
-`made_for_kids=operator_decision_required`, and `scheduled_at=null`.
+The recommended Japanese title remains `番長、団長を呼び出すも来ない！？`.
+`publish_draft.json` now keeps its three content-facing description lines and
+seven discovery terms cleanly separated from operator-only attribution and gate
+readback. It includes artifact, episode, packaged-video, selected-`tension`
+thumbnail, and subtitle/segment evidence fields. `source_title` and `source_url`
+remain `null` with `source_attribution_status=operator_decision_required`;
+`operator_copy_ready=true` does not change `publish_ready=false`,
+`rights_status=pending`, or any production/public/upload/update decision.
 
-Validation passed for targeted tests, OUT-06/OUT-07 MP4 hash equality, browser
-image/video/no-overflow/copy-button checks, Range 206, muted seek QA, manifest
-self-integrity, and two consecutive byte-stable generations. The three human
-review dimensions are only: recommended thumbnail direction, Japanese metadata
-copy, and whether this internal pack is operator-complete for the next
-non-public delivery step. Do not infer rights, production/public use, thumbnail
+The repaired page keeps alternatives folded and asks only whether the recommended
+`tension` thumbnail is accurate and not overhyped, whether the clean Japanese
+title/description/tags match the content, and whether one page makes copy,
+images, video, and evidence easy to inspect. It does not ask for authorization
+of a later delivery step. Do not infer rights, production/public use, thumbnail
 upload, metadata publication, visibility, made-for-kids, publishing, or upload
 approval from OUT-07.
+
+Browser verification on port `8070` confirmed three Japanese copy controls,
+normal copy success, a Japanese Ctrl+C selection fallback under forced clipboard
+denial, zero initially open details elements, both images, the 38.633333-second
+video, Range 206, resumed 60% seek, no horizontal overflow, and no media error.
 
 The durable OUT-06 accepted-after-bounded-repair state is a tracked
 builder/CLI/test/contract plus one ignored same-machine package at

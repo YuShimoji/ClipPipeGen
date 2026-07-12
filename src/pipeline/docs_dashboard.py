@@ -116,6 +116,10 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
         "title": runtime_state.get("current_title") or runtime_state["current_slice"],
         "active_branch": runtime_state.get("active_branch", ""),
         "phase": runtime_state.get("phase", ""),
+        "canonical_main_head": runtime_state.get("canonical_main_head", ""),
+        "canonical_main_baseline": runtime_state.get("canonical_main_baseline", ""),
+        "canonical_status": runtime_state.get("canonical_status", ""),
+        "review_status": runtime_state.get("review_status", ""),
         "human_entrypoint": runtime_state.get("human_entrypoint", ""),
         "machine_readback": runtime_state.get("machine_readback", ""),
         "handoff": runtime_state.get("current_handoff", "docs/CURRENT_HANDOFF.md"),
@@ -292,6 +296,10 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
         ("title", focus.get("title", "")),
         ("branch", focus.get("active_branch", "")),
         ("phase", focus.get("phase", "")),
+        ("canonical main", focus.get("canonical_main_head", "")),
+        ("canonical baseline", focus.get("canonical_main_baseline", "")),
+        ("canonical status", focus.get("canonical_status", "")),
+        ("review status", focus.get("review_status", "")),
         ("entrypoint", focus.get("human_entrypoint", "")),
         ("machine readback", focus.get("machine_readback", "")),
         ("handoff", focus.get("handoff", "")),
@@ -349,6 +357,12 @@ def render_features_index_markdown(status: dict[str, Any]) -> str:
         f"- feature: `{status['current_focus']['feature_id']}`\n"
         f"- artifact: `{status['current_focus']['artifact_id']}`\n"
         f"- state: `{status['current_focus']['state']}`\n\n"
+        f"- canonical main: `{status['current_focus']['canonical_main_head']}`\n"
+        f"- canonical baseline: `{status['current_focus']['canonical_main_baseline']}`\n"
+        f"- canonical status: `{status['current_focus']['canonical_status']}`\n"
+        f"- review status: `{status['current_focus']['review_status']}`\n"
+        f"- decision required: `{status['current_focus']['decision_required']}`\n"
+        f"- next review: `{status['current_focus']['next_review_action_type']}`\n\n"
         "## Feature Table\n\n"
         + "\n".join(rows)
         + "\n"

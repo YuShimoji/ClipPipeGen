@@ -34,6 +34,10 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert focus["title"] == "Fixture Current Focus"
     assert focus["active_branch"] == "codex/fixture-current-state"
     assert focus["phase"] == "review_ready"
+    assert focus["canonical_main_head"] == "fixture-main-head"
+    assert focus["canonical_main_baseline"] == "Fixture accepted baseline"
+    assert focus["canonical_status"] == "fixture_branch_review_pending"
+    assert focus["review_status"] == "fixture_review_ready"
     assert focus["human_entrypoint"] == "docs/fixture_focus.html"
     assert focus["machine_readback"] == "docs/fixture_focus.json"
     assert focus["handoff"] == "docs/CURRENT_HANDOFF.md"
@@ -1375,6 +1379,10 @@ def _write_runtime_state(base: Path, **overrides: str) -> None:
         "last_touched": "2026-07-10",
         "current_slice": "FIX-01",
         "phase": "review_ready",
+        "canonical_main_head": "fixture-main-head",
+        "canonical_main_baseline": "Fixture accepted baseline",
+        "canonical_status": "fixture_branch_review_pending",
+        "review_status": "fixture_review_ready",
         "active_branch": "codex/fixture-current-state",
         "current_title": "Fixture Current Focus",
         "human_entrypoint": "docs/fixture_focus.html",
@@ -1422,6 +1430,20 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
+    assert status["current_focus"]["canonical_main_head"] == (
+        "93c3935f93dc4fdb71610ea35874c33a58a02895"
+    )
+    assert status["current_focus"]["canonical_main_baseline"] == (
+        "OUT-06 accepted after bounded repair"
+    )
+    assert status["current_focus"]["canonical_status"] == "branch_review_pending"
+    assert status["current_focus"]["review_status"] == (
+        "internal_operator_draft_review_ready"
+    )
+    assert status["current_focus"]["decision_required"] == "review_freeform"
+    assert status["current_focus"]["next_review_action_type"] == (
+        "review_out07_internal_operator_delivery_pack"
+    )
     assert status["current_focus"]["artifact_id"] == (
         "clip-out07-internal-operator-delivery-pack-v0-001"
     )

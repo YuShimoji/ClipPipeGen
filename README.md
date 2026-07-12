@@ -8,7 +8,8 @@
 
 OUT-07 note: the accepted OUT-06 MP4 is now packaged byte-identically with three
 source-frame-derived 1280x720 thumbnail directions, one recommended thumbnail,
-and a closed-gate Japanese metadata draft in an internal operator delivery pack.
+clean audience-facing Japanese metadata, and separate operator-only gate readback
+in an internal operator delivery pack pending freeform review.
 This is not upload, public readiness, rights approval, visibility, made-for-kids,
 or publishing acceptance; see [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
 

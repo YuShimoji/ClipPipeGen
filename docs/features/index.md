@@ -8,6 +8,13 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - artifact: `clip-out07-internal-operator-delivery-pack-v0-001`
 - state: `out07_internal_operator_delivery_pack_review_ready`
 
+- canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
+- canonical baseline: `OUT-06 accepted after bounded repair`
+- canonical status: `branch_review_pending`
+- review status: `internal_operator_draft_review_ready`
+- decision required: `review_freeform`
+- next review: `review_out07_internal_operator_delivery_pack`
+
 ## Feature Table
 
 | id | title | status | health | progress_pct | active_artifact | next_action |

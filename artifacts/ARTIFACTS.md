@@ -23,7 +23,7 @@ opened by the root launcher.
 | Field | Value |
 |---|---|
 | title | OUT-07 Internal Operator Delivery Pack v0 |
-| purpose | Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions and closed-gate Japanese metadata copy for internal operator review. |
+| purpose | Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions, clean Japanese audience copy, and separate operator-only attribution/gate readback for internal review. |
 | storage class | Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media, generated MP4 copy, and thumbnails remain outside Git. |
 | repo_relative_path | `src/integrations/render/operator_delivery_pack.py`; `src/cli/build_operator_delivery_pack.py`; `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/` |
@@ -34,25 +34,29 @@ opened by the root launcher.
 | preview_url | `http://127.0.0.1:8070/index.html` while the retained byte-range local server is running. |
 | recommended_thumbnail | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_recommended_1280x720.jpg` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_direction_contact_sheet.jpg` |
-| validation_command | `uvx --with Pillow pytest -q tests/test_operator_delivery_pack.py tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py tests/test_docs_dashboard.py`; actual package generation twice for byte-stability; OUT-06/OUT-07 MP4 hash equality; manifest self-integrity; Range 206; browser image/video/copy/seek/no-overflow QA; `git diff --check`; `git ls-files episodes`. |
-| review_status | Internal operator draft review-ready: three source-frame-derived 1280x720 RGB JPEG thumbnail directions, `tension` recommended, Japanese metadata draft with copy controls, accepted OUT-06 MP4 copied byte-identically with no rerender/remux/transcode. |
+| validation_command | `uvx --with Pillow pytest -q tests/test_operator_delivery_pack.py tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py tests/test_docs_dashboard.py`; required-field and copy-separation assertions; actual package generation twice for byte-stability; protected OUT-03..OUT-06/human-preview digest equality; unchanged media hashes; manifest self-integrity; Range 206; browser Japanese copy/fallback/folded-details/image/video/seek/no-overflow QA; deterministic dashboard regeneration; `git diff --check`; `git ls-files episodes`. |
+| review_status | Internal operator draft review-ready: `tension` remains the single recommendation, clean title/description/tags copy only audience metadata, operator status remains separate, alternatives start folded, and the accepted OUT-06 MP4 remains byte-identical. |
 | recommended_thumbnail_sha256 | `e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3` |
 | contact_sheet_sha256 | `1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210` |
 | output_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |
-| operator_delivery_readback_sha256 | `923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244` |
-| delivery_manifest_sha256 | `2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f` |
-| next_action | Review only the recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Do not infer rights, production/public use, upload, thumbnail upload, visibility, made-for-kids, or publishing approval. |
+| operator_delivery_readback_sha256 | `76c666c6cc74bbfb7664b5f18f42e5966e7559179c97fa55289f98d4b21bfa84` |
+| delivery_manifest_sha256 | `5e3402ea3e63b0d9528e4ef5a46ab7c1afc1832b79f839452986edbd20ac7b74` |
+| next_action | Review only whether the recommended `tension` thumbnail is accurate and not overhyped, whether title/description/tags are natural and content-matched, and whether one page makes copy, images, video, and evidence easy to inspect. |
 
 Boundary flags remain false or pending:
 
 - `status=internal_operator_draft`
 - `operator_copy_ready=true`
 - `publish_ready=false`
+- `source_attribution_status=operator_decision_required`
 - `production_acceptance=false`
-- `public_or_publishing=false`
+- `production_subtitle_design_acceptance=false`
+- `public_or_publishing_acceptance=false`
 - `rights_status=pending`
 - `upload_attempted=false`
 - `thumbnail_upload_attempted=false`
+- `metadata_update_attempted=false`
+- `visibility_update_attempted=false`
 - `visibility=operator_decision_required`
 - `made_for_kids=operator_decision_required`
 - `scheduled_at=null`

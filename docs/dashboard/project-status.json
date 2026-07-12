@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-12",
+  "generated_at": "2026-07-13",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -30,13 +30,17 @@
     "title": "OUT-07 internal operator delivery pack",
     "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
     "phase": "internal_operator_delivery_pack_review_ready",
+    "canonical_main_head": "93c3935f93dc4fdb71610ea35874c33a58a02895",
+    "canonical_main_baseline": "OUT-06 accepted after bounded repair",
+    "canonical_status": "branch_review_pending",
+    "review_status": "internal_operator_draft_review_ready",
     "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
     "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
-    "last_verified_at": "2026-07-12",
-    "decision_required": "none",
-    "next_review_action_type": "none",
-    "next_action": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.",
+    "last_verified_at": "2026-07-13",
+    "decision_required": "review_freeform",
+    "next_review_action_type": "review_out07_internal_operator_delivery_pack",
+    "next_action": "Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -50,7 +54,7 @@
       "label": "OUT-07 Current Focus",
       "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_internal_operator_delivery_pack\\index.html",
       "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
-      "when_to_use": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed."
+      "when_to_use": "Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。"
     },
     {
       "label": "Artifacts",
@@ -1641,12 +1645,12 @@
     {
       "artifact_id": "clip-out07-internal-operator-delivery-pack-v0-001",
       "title": "OUT-07 Internal Operator Delivery Pack v0",
-      "purpose": "Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions and closed-gate Japanese metadata copy for internal operator review.",
+      "purpose": "Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions, clean Japanese audience copy, and separate operator-only attribution/gate readback for internal review.",
       "storage_class": "Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media, generated MP4 copy, and thumbnails remain outside Git.",
       "repo_relative_path": "src/integrations/render/operator_delivery_pack.py; src/cli/build_operator_delivery_pack.py; docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_internal_operator_delivery_pack\\open_delivery.ps1",
-      "review_status": "Internal operator draft review-ready: three source-frame-derived 1280x720 RGB JPEG thumbnail directions, tension recommended, Japanese metadata draft with copy controls, accepted OUT-06 MP4 copied byte-identically with no rerender/remux/transcode.",
-      "next_action": "Review only the recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Do not infer rights, production/public use, upload, thumbnail upload, visibility, made-for-kids, or publishing approval."
+      "review_status": "Internal operator draft review-ready: tension remains the single recommendation, clean title/description/tags copy only audience metadata, operator status remains separate, alternatives start folded, and the accepted OUT-06 MP4 remains byte-identical.",
+      "next_action": "Review only whether the recommended tension thumbnail is accurate and not overhyped, whether title/description/tags are natural and content-matched, and whether one page makes copy, images, video, and evidence easy to inspect."
     },
     {
       "artifact_id": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
@@ -2436,7 +2440,7 @@
       "item": "OUT-07 current focus",
       "artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
       "question": "OUT-07 internal operator delivery pack",
-      "next_route": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed."
+      "next_route": "Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。"
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2665,7 +2669,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 107,
+      "line_count": 108,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2679,7 +2683,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 108,
+      "line_count": 110,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2693,7 +2697,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1787,
+      "line_count": 1795,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -2701,8 +2705,8 @@
         "status": "current_capsule",
         "health": "out07_internal_operator_delivery_pack_review_ready",
         "progress_pct": "100",
-        "last_touched": "2026-07-12",
-        "state_revision": "out07-internal-operator-delivery-pack-v0-2026-07-12",
+        "last_touched": "2026-07-13",
+        "state_revision": "out07-internal-operator-delivery-pack-v0-2026-07-13-metadata-state-repair",
         "current_slice": "OUT-07",
         "phase": "internal_operator_delivery_pack_review_ready",
         "canonical_status": "branch_review_pending",
@@ -2711,23 +2715,23 @@
         "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
         "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "none",
+        "decision_required": "review_freeform",
         "review_status": "internal_operator_draft_review_ready",
-        "review_scope": "OUT-07 packages the accepted OUT-06 MP4 byte-identically with three source-frame-derived thumbnail directions, one recommended thumbnail, and closed-gate Japanese metadata copy controls.",
-        "reviewed_at": "2026-07-12 JST",
+        "review_scope": "OUT-07 presents one recommended thumbnail, clean audience-facing Japanese copy, the accepted OUT-06 MP4, and separate operator-only attribution and gate status in one page.",
+        "review_ready_at": "2026-07-13 JST",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "last_verified_at": "2026-07-12",
-        "next_review_due": "none",
-        "next_action": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.",
+        "last_verified_at": "2026-07-13",
+        "next_review_due": "review_out07_internal_operator_delivery_pack",
+        "next_action": "Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。",
         "active_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
         "latest_out07_internal_operator_delivery_pack_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
         "latest_out07_internal_operator_delivery_pack_branch": "codex/out-07-internal-operator-delivery-pack-v0",
         "latest_out07_internal_operator_delivery_pack_video_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
-        "latest_out07_internal_operator_delivery_pack_readback_sha256": "923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244",
-        "latest_out07_internal_operator_delivery_pack_manifest_sha256": "2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f",
+        "latest_out07_internal_operator_delivery_pack_readback_sha256": "76c666c6cc74bbfb7664b5f18f42e5966e7559179c97fa55289f98d4b21bfa84",
+        "latest_out07_internal_operator_delivery_pack_manifest_sha256": "5e3402ea3e63b0d9528e4ef5a46ab7c1afc1832b79f839452986edbd20ac7b74",
         "latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256": "e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3",
         "latest_out06_complete_narrative_short_delivery_candidate_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
@@ -2747,7 +2751,7 @@
         "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
         "latest_out04_review_status": "accepted",
         "latest_out04_reviewed_at": "2026-07-11 JST",
-        "canonical_main_head": "f2afb4d",
+        "canonical_main_head": "93c3935f93dc4fdb71610ea35874c33a58a02895",
         "canonical_main_baseline": "OUT-06 accepted after bounded repair",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
@@ -2811,7 +2815,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 372,
+      "boundary_term_count": 369,
       "status": "current_capsule"
     },
     {
@@ -2934,7 +2938,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2314,
+      "line_count": 2318,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2942,7 +2946,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 902,
+      "boundary_term_count": 901,
       "status": "reference"
     },
     {
@@ -3004,7 +3008,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1427,
+      "line_count": 1434,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3012,7 +3016,7 @@
         "status": "active",
         "health": "out07_internal_operator_delivery_pack_review_ready",
         "progress_pct": "100",
-        "last_touched": "2026-07-12",
+        "last_touched": "2026-07-13",
         "current_slice": "OUT-07",
         "phase": "internal_operator_delivery_pack_review_ready",
         "canonical_status": "branch_review_pending",
@@ -3021,23 +3025,23 @@
         "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html",
         "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "none",
+        "decision_required": "review_freeform",
         "review_status": "internal_operator_draft_review_ready",
-        "review_scope": "OUT-07 packages the accepted OUT-06 MP4 byte-identically with three source-frame-derived thumbnail directions, one recommended thumbnail, and closed-gate Japanese metadata copy controls.",
-        "reviewed_at": "2026-07-12 JST",
+        "review_scope": "OUT-07 presents one recommended thumbnail, clean audience-facing Japanese copy, the accepted OUT-06 MP4, and separate operator-only attribution and gate status in one page.",
+        "review_ready_at": "2026-07-13 JST",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "last_verified_at": "2026-07-12",
-        "next_review_due": "none",
-        "next_action": "Review the OUT-07 internal operator delivery pack in localhost on port 8070. Human judgement is limited to three dimensions: recommended thumbnail direction, Japanese metadata copy, and whether the pack is operator-complete for the next non-public delivery step. Keep rights, production render, production subtitle design, public readiness, upload, thumbnail upload, visibility, made-for-kids, and publishing gates closed.",
+        "last_verified_at": "2026-07-13",
+        "next_review_due": "review_out07_internal_operator_delivery_pack",
+        "next_action": "Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。",
         "active_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
         "latest_out07_internal_operator_delivery_pack_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
         "latest_out07_internal_operator_delivery_pack_branch": "codex/out-07-internal-operator-delivery-pack-v0",
         "latest_out07_internal_operator_delivery_pack_video_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
-        "latest_out07_internal_operator_delivery_pack_readback_sha256": "923e89b1097e46913dc46ff433a50d307cfb3bee821a63807285bb524d412244",
-        "latest_out07_internal_operator_delivery_pack_manifest_sha256": "2ee979a70a479a1ac440bdbc7bd5809ae4813a3ec2d7144a2f279e4a96a0563f",
+        "latest_out07_internal_operator_delivery_pack_readback_sha256": "76c666c6cc74bbfb7664b5f18f42e5966e7559179c97fa55289f98d4b21bfa84",
+        "latest_out07_internal_operator_delivery_pack_manifest_sha256": "5e3402ea3e63b0d9528e4ef5a46ab7c1afc1832b79f839452986edbd20ac7b74",
         "latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256": "e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3",
         "latest_out06_complete_narrative_short_delivery_candidate_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
@@ -3057,7 +3061,7 @@
         "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
         "latest_out04_review_status": "accepted",
         "latest_out04_reviewed_at": "2026-07-11 JST",
-        "canonical_main_head": "f2afb4d",
+        "canonical_main_head": "93c3935f93dc4fdb71610ea35874c33a58a02895",
         "canonical_main_baseline": "OUT-06 accepted after bounded repair",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
@@ -3121,7 +3125,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 329,
+      "boundary_term_count": 326,
       "status": "active"
     },
     {
@@ -3480,7 +3484,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1787 lines) is likely carrying history.",
+        "detail": "Long active doc (1795 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3510,13 +3514,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2314 lines) is likely carrying history.",
+        "detail": "Long active doc (2318 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 902 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 901 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3540,7 +3544,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1427 lines) is likely carrying history.",
+        "detail": "Long active doc (1434 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

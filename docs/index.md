@@ -18,7 +18,8 @@ Current focus is `OUT-07` on
 `clip-out07-internal-operator-delivery-pack-v0-001`: one same-machine internal
 operator delivery pack that copies the accepted OUT-06 MP4 byte-identically,
 adds exactly three source-frame-derived 1280x720 thumbnail directions, recommends
-`tension`, and provides closed-gate Japanese metadata copy controls.
+`tension`, and separates clean Japanese metadata copy from operator-only
+attribution and gate status.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
 Canonical `main` is the OUT-06 accepted-after-bounded-repair baseline. OUT-07
@@ -79,8 +80,9 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 ## Next
 
 OUT-07 is ready for internal operator review. Review only the recommended
-thumbnail direction, Japanese metadata copy, and whether the pack is
-operator-complete for the next non-public delivery step. Do not infer
+thumbnail's accuracy and restraint, the naturalness and content match of the
+Japanese title/description/tags, and the one-page usability of copy, images,
+video, and evidence. Do not infer
 production/public use, thumbnail upload, metadata publication, visibility,
 made-for-kids, publishing, upload, or rights approval from this internal pack.
 Use the dashboard to return to tracked project context. A good docs update should make

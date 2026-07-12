@@ -68,9 +68,16 @@ assets.
 
 ## Metadata draft
 
-`publish_draft.json` is Japanese-first and intentionally closed-gate:
+`publish_draft.json` is Japanese-first. Its audience-facing copy contains only
+content metadata; attribution, rights, production, public, publishing, and
+attempt state remain separate operator-only fields:
 
 - title: `番長、団長を呼び出すも来ない！？`
+- description:
+  - `番長のはじめが団長を体育館裏へ呼び出し、「倒してやる！！」と意気込みます。`
+  - `ところが団長は来ず、待ち続けたはじめが「なんで来なかったんすか！！」と問いかけます。`
+  - `最後は“はじめの勝ち”で決着し、次の番長を探し始めます。`
+- tags: `ホロライブ`, `はじめ`, `番長`, `団長`, `体育館裏`, `呼び出し`, `来なかった理由`
 - status: `internal_operator_draft`
 - language: `ja`
 - operator_copy_ready: `true`
@@ -79,6 +86,10 @@ assets.
 - visibility: `operator_decision_required`
 - made_for_kids: `operator_decision_required`
 - scheduled_at: `null`
+- source_attribution_status: `operator_decision_required`
+- source_title / source_url: `null`
+- artifact / episode / packaged-video / selected-thumbnail / subtitle and
+  segment evidence: present in the machine draft
 - upload / thumbnail upload / metadata update / visibility update attempts:
   `false`
 
@@ -86,10 +97,15 @@ assets.
 
 Human review should stay to three dimensions:
 
-1. Is `tension` the right recommended thumbnail direction?
-2. Is the Japanese title/description/tags copy acceptable as an internal draft?
-3. Is this pack operator-complete for the next non-public delivery step?
+1. 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。
+2. title・description・tagsが自然で内容と一致するか。
+3. 一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。
 
 Everything else remains closed: rights, production render, production subtitle
 design, public readiness, upload, thumbnail upload, visibility, made-for-kids,
 and publishing.
+
+The episode-specific thumbnail times, visible thumbnail copy, and metadata plan
+remain embedded in the OUT-07 builder. Extract them into a declarative input
+before the first second-episode execution; do not expand this repair into a
+general templating framework.
