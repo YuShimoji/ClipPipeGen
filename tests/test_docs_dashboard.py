@@ -236,7 +236,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
     current_out07_artifact = (
-        "clip-out07-internal-operator-delivery-pack-v0-001"
+        "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     )
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
@@ -1438,15 +1438,18 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["canonical_status"] == "branch_review_pending"
     assert status["current_focus"]["review_status"] == (
-        "internal_operator_draft_review_ready"
+        "poster_direction_review_ready"
     )
-    assert status["current_focus"]["decision_required"] == "review_freeform"
+    assert status["current_focus"]["decision_required"] == (
+        "human_direction_selection"
+    )
     assert status["current_focus"]["next_review_action_type"] == (
-        "review_out07_internal_operator_delivery_pack"
+        "human_direction_selection"
     )
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out07-internal-operator-delivery-pack-v0-001"
+        "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     )
+    assert "clip-out07-shorts-poster-frame-direction-proof-v0-001" in artifact_ids
     assert "clip-out07-internal-operator-delivery-pack-v0-001" in artifact_ids
     assert "clip-out06-complete-narrative-short-delivery-candidate-v0-001" in artifact_ids
     assert "clip-out05-vertical-short-internal-candidate-v0-001" in artifact_ids

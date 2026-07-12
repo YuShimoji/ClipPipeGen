@@ -43,7 +43,11 @@ def run(argv: list[str]) -> int:
         "review_entrypoint": result["readback"]["review_entrypoint"],
         "operator_delivery_readback": result["readback"]["operator_delivery_readback"],
         "delivery_manifest": result["readback"]["delivery_manifest"],
-        "recommended_thumbnail": result["readback"]["thumbnail"]["recommended"]["path"],
+        "recommended_thumbnail": None,
+        "selected_thumbnail": None,
+        "poster_decision_status": result["readback"]["metadata"][
+            "poster_decision_status"
+        ],
         "video_sha256": result["readback"]["video"]["packaged_sha256"],
         "open_command": result["readback"]["open_command"],
         "serve_command": result["readback"]["serve_command"],
@@ -52,6 +56,7 @@ def run(argv: list[str]) -> int:
         print(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True))
     else:
         print(f"OUT-07 operator delivery pack: {payload['review_entrypoint']}")
-        print(f"Recommended thumbnail: {payload['recommended_thumbnail']}")
+        print("Recommended thumbnail: none (legacy 16:9 directions user rejected)")
+        print(f"Poster decision: {payload['poster_decision_status']}")
         print(f"Open: {payload['open_command']}")
     return 0

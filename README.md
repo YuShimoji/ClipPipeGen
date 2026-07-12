@@ -6,12 +6,14 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-07 note: the accepted OUT-06 MP4 is now packaged byte-identically with three
-source-frame-derived 1280x720 thumbnail directions, one recommended thumbnail,
-clean audience-facing Japanese metadata, and separate operator-only gate readback
-in an internal operator delivery pack pending freeform review.
-This is not upload, public readiness, rights approval, visibility, made-for-kids,
-or publishing acceptance; see [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
+OUT-07 note: the accepted OUT-06 MP4 remains byte-identical. The former three
+16:9 thumbnail directions are user-rejected and no longer selected or
+recommended. The active ignored review proof contains three reference-derived
+1080x1920 Shorts poster directions, center-4:5 reduced previews, and three short
+tail-to-poster clips pending a human A/B/C or all-rejected judgment. Title,
+description, tags, full-video integration, upload, public readiness, rights,
+production, visibility, made-for-kids, and publishing acceptance remain outside
+this slice; see [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
 
 OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the
 authoritative kept `cut_003` through `build-complete-narrative-short`, producing

@@ -5,15 +5,15 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 ## Current Focus
 
 - feature: `OUT-07`
-- artifact: `clip-out07-internal-operator-delivery-pack-v0-001`
-- state: `out07_internal_operator_delivery_pack_review_ready`
+- artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
+- state: `out07_reference_derived_shorts_poster_frame_directions_review_ready`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
 - canonical baseline: `OUT-06 accepted after bounded repair`
 - canonical status: `branch_review_pending`
-- review status: `internal_operator_draft_review_ready`
-- decision required: `review_freeform`
-- next review: `review_out07_internal_operator_delivery_pack`
+- review status: `poster_direction_review_ready`
+- decision required: `human_direction_selection`
+- next review: `human_direction_selection`
 
 ## Feature Table
 

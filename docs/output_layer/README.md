@@ -12,7 +12,8 @@ and publishing gates remain closed.
 
 Start here when resuming from another terminal:
 
-- `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - current operator-pack contract, clean copy fields, separate gate readback, one review page, and closed external actions.
+- `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - current 9:16 poster-direction proof plus repaired legacy operator-pack state, frozen-reference regeneration, one review page, and closed external actions.
+- `OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` - tracked public URLs and structural annotations only; third-party pixels remain ignored locally.
 - `OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` - current three-cut delivery-candidate contract, exact authority/timeline, build command, package, review surface, and closed gates.
 - `OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md` - current vertical candidate contract, exact real command, reframe/subtitle/audio readback, review surface, and closed gates.
 - `OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md` - accepted multi-cut sequence contract, exact real command, ordered timeline, review surface, and closed gates.
@@ -50,13 +51,15 @@ reuses the data-driven vertical render boundary, and writes only a dedicated
 ignored `review/out06_*` package, and now serves as the immutable video predecessor
 for the OUT-07 internal operator delivery-pack slice.
 
-OUT-07 is the current operator handoff slice. It copies the accepted OUT-06 MP4
-byte-identically, derives exactly three 1280x720 thumbnail directions from source
-frames, recommends `tension`, and separates clean Japanese metadata copy from
-operator-only attribution and gate state in
-`review/out07_internal_operator_delivery_pack/`. It does not perform upload,
-thumbnail upload, visibility, made-for-kids, public, publishing, production, or
-rights acceptance.
+OUT-07 now keeps the accepted OUT-06 MP4 byte-identical while the former 16:9
+`context`/`tension`/`payoff` directions are explicit user-rejected evidence with
+no selection or recommendation. The current proof derives exactly three
+structurally different 1080x1920 poster directions from retained source pixels,
+adds three 2.400s tail-to-poster review clips, and exposes one ignored local
+review page in `review/out07_shorts_poster_frame_direction_proof/`. Human A/B/C
+or all-rejected selection is required before any full-video integration. Upload,
+metadata acceptance, visibility, made-for-kids, public, publishing, production,
+and rights decisions remain closed.
 
 Generated files:
 

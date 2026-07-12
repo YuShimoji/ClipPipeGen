@@ -3,35 +3,44 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: out07_internal_operator_delivery_pack_review_ready
+health: out07_reference_derived_shorts_poster_frame_directions_review_ready
 progress_pct: 100
 last_touched: 2026-07-13
 current_slice: OUT-07
-phase: internal_operator_delivery_pack_review_ready
+phase: reference_derived_shorts_poster_frame_directions_review_ready
 canonical_status: branch_review_pending
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 internal operator delivery pack
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json
+current_title: OUT-07 reference-derived Shorts poster frame directions
+human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/index.html
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_freeform
-review_status: internal_operator_draft_review_ready
-review_scope: OUT-07 presents one recommended thumbnail, clean audience-facing Japanese copy, the accepted OUT-06 MP4, and separate operator-only attribution and gate status in one page.
+decision_required: human_direction_selection
+review_status: poster_direction_review_ready
+review_scope: Compare only poster directions A/B/C and mention end-cap discomfort only if present; metadata, publishing, production and rights remain outside this review.
 review_ready_at: 2026-07-13 JST
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-13
-next_review_due: review_out07_internal_operator_delivery_pack
-next_action: Open http://127.0.0.1:8070/index.html and review only three freeform dimensions: 推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。title・description・tagsが自然で内容と一致するか。一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。
-active_artifact: clip-out07-internal-operator-delivery-pack-v0-001
+next_review_due: human_direction_selection
+next_action: Open http://127.0.0.1:8071/index.html and answer only: A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。
+active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
+latest_out07_shorts_poster_frame_direction_proof_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
+latest_out07_shorts_poster_frame_direction_proof_branch: codex/out-07-internal-operator-delivery-pack-v0
+latest_out07_shorts_poster_frame_direction_proof_readback_sha256: 400c5f0e8ec305d4e4400ac072e2452935ff6c9b963f160510fb5e81656aca48
+latest_out07_shorts_poster_frame_direction_proof_package_sha256: cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f
+latest_out07_shorts_poster_frame_direction_proof_contact_sheet_sha256: 5d8a337c192b5b41bd61f5524ba102fe9f11406e9583e3adcb1dc113bf0e6c57
+latest_out07_shorts_poster_frame_direction_reference_count: 24
+latest_out07_shorts_poster_frame_direction_channel_count: 17
+latest_out07_shorts_poster_frame_direction_human_acceptance: pending
 latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
 latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
 latest_out07_internal_operator_delivery_pack_video_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
-latest_out07_internal_operator_delivery_pack_readback_sha256: 76c666c6cc74bbfb7664b5f18f42e5966e7559179c97fa55289f98d4b21bfa84
-latest_out07_internal_operator_delivery_pack_manifest_sha256: 5e3402ea3e63b0d9528e4ef5a46ab7c1afc1832b79f839452986edbd20ac7b74
-latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256: e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3
+latest_out07_internal_operator_delivery_pack_readback_sha256: 1d62964e3b8ed5b7b7ff6f6fe5f0ca6d098cf08b12fdaca5e670d6fd68a47211
+latest_out07_internal_operator_delivery_pack_manifest_sha256: 77187a87ba77b2aa8bb7c1256a7d7ba3e96ef51bf80dc91ea978ca575ac486a3
+latest_out07_internal_operator_delivery_pack_legacy_thumbnail_status: user_rejected
+latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256: null
 latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
 latest_out06_complete_narrative_short_delivery_candidate_output_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
@@ -125,45 +134,50 @@ Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file, and
 `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md`. Use the accepted
 OUT-06/OUT-05/OUT-04/OUT-03 contracts only for predecessor/baseline history.
 
-The durable OUT-07 state is a tracked builder/CLI/test/contract plus one ignored
-same-machine package at
-`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/`.
-`open_delivery.ps1` is the local-file entrypoint and `serve_delivery.ps1` serves
-the byte-range localhost review route on port `8070`.
+The durable OUT-07 state now adds the tracked reference corpus and poster-proof
+builder/CLI/tests to the existing operator-pack contract. The current ignored
+same-machine package is
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/`.
+`open_preview.ps1 -Serve -Port 8071` is the single current review entrypoint.
 
 OUT-07 copies the accepted OUT-06 MP4 byte-identically. The OUT-06 source video
 and OUT-07 packaged video both hash to
 `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`; the builder
 does not rerender, remux, or transcode it.
 
-The package has exactly three source-frame-derived 1280x720 RGB JPEG thumbnail
-directions: `context`, `tension`, and `payoff`. `tension` is the only
-recommendation. The recommended thumbnail hash is
-`e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3`, and the
-contact sheet hash is
-`1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210`.
+The old `context`, `tension`, and `payoff` 16:9 directions are explicit
+`user_rejected` evidence. `selected_thumbnail` and the recommendation are both
+`null`; none of those images is returned as an A/B/C candidate. Their source
+image hashes and the accepted video remain unchanged.
 
-The recommended Japanese title remains `番長、団長を呼び出すも来ない！？`.
+The Japanese title remains `番長、団長を呼び出すも来ない！？`.
 `publish_draft.json` now keeps its three content-facing description lines and
 seven discovery terms cleanly separated from operator-only attribution and gate
-readback. It includes artifact, episode, packaged-video, selected-`tension`
-thumbnail, and subtitle/segment evidence fields. `source_title` and `source_url`
-remain `null` with `source_attribution_status=operator_decision_required`;
+readback. It includes artifact, episode, packaged-video, rejected-thumbnail,
+and subtitle/segment evidence fields. `source_title` and `source_url` remain
+`null` with `source_attribution_status=operator_decision_required`;
 `operator_copy_ready=true` does not change `publish_ready=false`,
 `rights_status=pending`, or any production/public/upload/update decision.
 
-The repaired page keeps alternatives folded and asks only whether the recommended
-`tension` thumbnail is accurate and not overhyped, whether the clean Japanese
-title/description/tags match the content, and whether one page makes copy,
-images, video, and evidence easy to inspect. It does not ask for authorization
-of a later delivery step. Do not infer rights, production/public use, thumbnail
-upload, metadata publication, visibility, made-for-kids, publishing, or upload
-approval from OUT-07.
+The poster proof contains exactly three original 1080x1920 directions using
+retained source pixels: A single reaction hero, B opposed dialogue, and C hero
+with reaction inset. It is based on 24 public references across 17 channels and
+three query strategies. Third-party pixels remain only in the ignored local
+reference board/cache; candidates contain no external art, logo, cutout, or AI
+face/expression change. All essential faces and headlines survive both 180x320
+and center-cropped 160x200 views.
 
-Browser verification on port `8070` confirmed three Japanese copy controls,
-normal copy success, a Japanese Ctrl+C selection fallback under forced clipboard
-denial, zero initially open details elements, both images, the 38.633333-second
-video, Range 206, resumed 60% seek, no horizontal overflow, and no media error.
+Each 2.400s transition proof preserves the accepted final 1.80s and adds the
+same 0.60s static poster treatment; narrative audio then changes to intentional
+poster-only silence. The complete accepted video was not rerendered or replaced.
+Two frozen-input generations produced the identical 14-file digest
+`cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f`.
+
+Review only this question: A/B/Cのどれが実用候補に最も近いか、または全案
+不採用か。末尾posterの出現が不自然な場合だけ併記してください。 Human
+acceptance remains pending; do not infer a winner, H1 integration, title/
+description/tags acceptance, rights, production/public use, upload, metadata
+publication, visibility, made-for-kids, or publishing approval.
 
 The durable OUT-06 accepted-after-bounded-repair state is a tracked
 builder/CLI/test/contract plus one ignored same-machine package at

@@ -92,7 +92,14 @@ def test_operator_delivery_pack_copies_video_and_builds_manifest(tmp_path: Path,
     assert readback["video"]["byte_identical_copy"] is True
     assert readback["video"]["rerendered"] is False
     assert readback["thumbnail"]["direction_count"] == 3
-    assert readback["thumbnail"]["recommended_direction_id"] == "tension"
+    assert readback["thumbnail"]["decision_status"] == "user_rejected"
+    assert readback["thumbnail"]["recommended_direction_id"] is None
+    assert readback["thumbnail"]["selected_direction_id"] is None
+    assert all(
+        item["decision_status"] == "user_rejected"
+        and "recommended" not in item["selection_role"]
+        for item in readback["thumbnail"]["directions"]
+    )
     assert readback["metadata"]["publish_ready"] is False
     assert readback["metadata"]["visibility"] == "operator_decision_required"
     assert readback["gates"]["public_or_publishing_acceptance"] is False
@@ -168,20 +175,9 @@ def test_operator_delivery_pack_separates_copy_from_operator_state(
     assert publish["video"]["sha256"] == odp._sha256(
         output / "assets" / "complete_narrative_short.mp4"
     )
-    selected = publish["selected_thumbnail"]
-    assert selected == {
-        "candidate_id": "tension",
-        "path": odp._relative(
-            output / "assets" / "thumbnail_recommended_1280x720.jpg", fixture["root"]
-        ),
-        "sha256": odp._sha256(output / "assets" / "thumbnail_recommended_1280x720.jpg"),
-        "source_cut_id": "cut_003",
-        "source_seconds": 25.35,
-        "evidence": {
-            "subtitle_ids": ["sub_013", "sub_014"],
-            "segment_ids": ["seg_000013", "seg_000014"],
-        },
-    }
+    assert publish["selected_thumbnail"] is None
+    assert publish["poster_decision_status"] == "human_selection_required"
+    assert publish["rejected_thumbnail_ids"] == ["context", "tension", "payoff"]
     copied = "\n".join([publish["title"], publish["description"], *publish["tags"]]).lower()
     for banned in (
         "内部確認用",
@@ -202,7 +198,7 @@ def test_operator_delivery_pack_separates_copy_from_operator_state(
     assert publish["public_or_publishing_acceptance"] is False
 
     html = (output / "index.html").read_text(encoding="utf-8")
-    assert html.index('id="recommended"') < html.index('id="copy-metadata"')
+    assert html.index('id="rejected-thumbnail-evidence"') < html.index('id="copy-metadata"')
     assert html.index('id="copy-metadata"') < html.index('id="accepted-video"')
     assert html.index('id="accepted-video"') < html.index('id="operator-status"')
     assert html.index('id="operator-status"') < html.index("<details>")
@@ -213,12 +209,9 @@ def test_operator_delivery_pack_separates_copy_from_operator_state(
     assert "コピーしました：" in html
     assert "テキストを選択しました。Ctrl+Cでコピーしてください。" in html
     assert "採用済みOUT-06動画" in html
-    assert "推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。" in html
-    assert "title・description・tagsが自然で内容と一致するか。" in html
-    assert (
-        "一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。"
-        in html
-    )
+    assert "3案はユーザー不採用" in html
+    assert "poster選択、title／description／tagsの採用、公開可否はいずれも未判断" in html
+    assert "推奨サムネイル：tension" not in html
 
 
 def test_operator_delivery_pack_rejects_output_overlap(tmp_path: Path, monkeypatch) -> None:

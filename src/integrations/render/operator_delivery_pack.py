@@ -1,8 +1,9 @@
 """OUT-07 internal operator delivery pack.
 
 This slice packages the already accepted OUT-06 video without re-rendering and
-adds source-frame-derived thumbnail candidates plus a closed-gate Japanese
-metadata draft.  It is an internal operator handoff surface only; it performs no
+retains the former source-frame-derived thumbnails as user-rejected evidence
+beside a closed-gate Japanese metadata draft.  It is an internal operator
+handoff surface only; it performs no
 upload, public/publishing action, rights approval, thumbnail upload, visibility
 choice, or made-for-kids decision.
 """
@@ -63,6 +64,8 @@ THUMBNAIL_DIRECTIONS: tuple[dict[str, Any], ...] = (
         "short_caption": "呼び出し",
         "selection_role": "setup_context",
         "rationale": "呼び出しの発端を伝えるが、対立の引きは tension より弱い。",
+        "decision_status": "user_rejected",
+        "rejection_reason": "後ろ向きの人物が主役で、Shorts posterとして視線が成立しない。",
     },
     {
         "id": "tension",
@@ -73,8 +76,10 @@ THUMBNAIL_DIRECTIONS: tuple[dict[str, Any], ...] = (
         "supporting_segment_ids": ["seg_000013", "seg_000014"],
         "visible_text": ["なんで", "来なかった！？"],
         "short_caption": "来なかった理由",
-        "selection_role": "recommended_conflict_hook",
-        "rationale": "呼び出したのに来ない、という短尺の主摩擦を一枚で示すため推奨。",
+        "selection_role": "rejected_legacy_conflict_hook",
+        "rationale": "呼び出したのに来ない主摩擦を示す旧案だが、ユーザー不採用のため候補外。",
+        "decision_status": "user_rejected",
+        "rejection_reason": "場面スクリーンショットへ文字を載せた構成で、参照構図の再構成になっていない。",
     },
     {
         "id": "payoff",
@@ -87,6 +92,8 @@ THUMBNAIL_DIRECTIONS: tuple[dict[str, Any], ...] = (
         "short_caption": "結果",
         "selection_role": "payoff_spoiler",
         "rationale": "結果の勢いは強いが、視聴前に結末を出しすぎるため推奨から外す。",
+        "decision_status": "user_rejected",
+        "rejection_reason": "場面スクリーンショットへ文字を載せた構成で、小さい補助文字も残る。",
     },
 )
 
@@ -205,7 +212,6 @@ def build_operator_delivery_pack(
             "thumbnail_context": output / "assets" / "thumbnail_context_1280x720.jpg",
             "thumbnail_tension": output / "assets" / "thumbnail_tension_1280x720.jpg",
             "thumbnail_payoff": output / "assets" / "thumbnail_payoff_1280x720.jpg",
-            "thumbnail_recommended": output / "assets" / "thumbnail_recommended_1280x720.jpg",
             "thumbnail_contact_sheet": output / "assets" / "thumbnail_direction_contact_sheet.jpg",
             "thumbnail_plan": output / "thumbnail_plan.json",
             "publish_draft": output / "publish_draft.json",
@@ -335,6 +341,8 @@ def _build_thumbnails(
                 "visible_text": direction["visible_text"],
                 "selection_role": direction["selection_role"],
                 "rationale": direction["rationale"],
+                "decision_status": direction["decision_status"],
+                "rejection_reason": direction["rejection_reason"],
                 "font": f"{font_path.name} (local system font)",
                 "layout": "source_frame_fit_1280x720_left_lower_high_contrast_text",
                 "source_video_sha256": source_video_sha256,
@@ -346,22 +354,13 @@ def _build_thumbnails(
                 "format": "JPEG",
             }
         )
-    recommended = next(item for item in records if item["direction_id"] == "tension")
-    shutil.copyfile(
-        assets / f"thumbnail_{recommended['direction_id']}_1280x720.jpg",
-        assets / "thumbnail_recommended_1280x720.jpg",
-    )
-    recommended_path = assets / "thumbnail_recommended_1280x720.jpg"
-    recommended["recommended_copy_path"] = _relative(
-        output / "assets" / "thumbnail_recommended_1280x720.jpg", root
-    )
-    recommended["recommended_copy_sha256"] = _sha256(recommended_path)
     contact_sheet = assets / "thumbnail_direction_contact_sheet.jpg"
     _write_contact_sheet(records, contact_sheet)
-    recommended["contact_sheet_path"] = _relative(
-        output / "assets" / "thumbnail_direction_contact_sheet.jpg", root
-    )
-    recommended["contact_sheet_sha256"] = _sha256(contact_sheet)
+    for record in records:
+        record["contact_sheet_path"] = _relative(
+            output / "assets" / "thumbnail_direction_contact_sheet.jpg", root
+        )
+        record["contact_sheet_sha256"] = _sha256(contact_sheet)
     return records
 
 
@@ -377,9 +376,7 @@ def _write_contact_sheet(records: list[dict[str, Any]], out: Path) -> None:
         small = image.resize((thumb_w, thumb_h))
         x = index * thumb_w
         canvas.paste(small, (x, 0))
-        label = record["label"]
-        if record["direction_id"] == "tension":
-            label = "tension / recommended"
+        label = f"{record['label']} / user rejected"
         draw.text((x + 10, 194), label, font=font, fill=(255, 255, 255))
         draw.text((x + 10, 224), "320x180 check", font=font, fill=(210, 210, 210))
     canvas.save(out, format="JPEG", quality=92, subsampling=0, optimize=False, progressive=False)
@@ -393,7 +390,6 @@ def _publish_draft(
     thumbnails: list[dict[str, Any]],
     final_paths: dict[str, Path],
 ) -> dict[str, Any]:
-    recommended = next(item for item in thumbnails if item["direction_id"] == "tension")
     return {
         "schema_version": "clippipegen.out07.publish_draft.v0",
         "artifact_id": ARTIFACT_ID,
@@ -408,17 +404,9 @@ def _publish_draft(
             "path": _relative(final_paths["video"], root),
             "sha256": authority["out06_video_sha256"],
         },
-        "selected_thumbnail": {
-            "candidate_id": recommended["direction_id"],
-            "path": _relative(final_paths["thumbnail_recommended"], root),
-            "sha256": recommended["recommended_copy_sha256"],
-            "source_cut_id": recommended["source_cut_id"],
-            "source_seconds": recommended["source_seconds"],
-            "evidence": {
-                "subtitle_ids": recommended["source_subtitle_ids"],
-                "segment_ids": recommended["supporting_segment_ids"],
-            },
-        },
+        "selected_thumbnail": None,
+        "poster_decision_status": "human_selection_required",
+        "rejected_thumbnail_ids": [item["direction_id"] for item in thumbnails],
         "source_attribution_status": "operator_decision_required",
         "source_title": None,
         "source_url": None,
@@ -439,13 +427,14 @@ def _publish_draft(
 
 
 def _thumbnail_plan(records: list[dict[str, Any]]) -> dict[str, Any]:
-    recommended = next(item for item in records if item["direction_id"] == "tension")
     return {
         "schema_version": "clippipegen.out07.thumbnail_plan.v0",
-        "status": "internal_operator_draft",
+        "status": "user_rejected_evidence",
         "direction_count": len(records),
-        "recommended_direction_id": recommended["direction_id"],
-        "recommendation_reason": recommended["rationale"],
+        "selected_direction_id": None,
+        "recommended_direction_id": None,
+        "recommendation_reason": None,
+        "successor_artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
         "directions": records,
         "constraints": {
             "ai_imagery": False,
@@ -472,7 +461,6 @@ def _operator_readback(
     publish_draft: dict[str, Any],
     final_paths: dict[str, Path],
 ) -> dict[str, Any]:
-    recommended = next(item for item in thumbnails if item["direction_id"] == "tension")
     return {
         "schema_version": SCHEMA_VERSION,
         "artifact_id": ARTIFACT_ID,
@@ -497,16 +485,14 @@ def _operator_readback(
         },
         "thumbnail": {
             "direction_count": len(thumbnails),
-            "recommended_direction_id": recommended["direction_id"],
-            "recommended": {
-                "path": _relative(final_paths["thumbnail_recommended"], root),
-                "sha256": recommended["recommended_copy_sha256"],
-                "source_direction_sha256": recommended["sha256"],
-            },
+            "decision_status": "user_rejected",
+            "selected_direction_id": None,
+            "recommended_direction_id": None,
+            "recommended": None,
             "directions": thumbnails,
             "contact_sheet": {
                 "path": _relative(final_paths["thumbnail_contact_sheet"], root),
-                "sha256": recommended["contact_sheet_sha256"],
+                "sha256": thumbnails[0]["contact_sheet_sha256"],
                 "reduced_size_legibility": "inspected_320x180_contact_sheet",
             },
         },
@@ -573,7 +559,6 @@ def _canonical_manifest_self_hash(manifest: dict[str, Any]) -> str:
 
 
 def _render_html(readback: dict[str, Any], publish: dict[str, Any], thumbnails: list[dict[str, Any]]) -> str:
-    rec_path = readback["thumbnail"]["recommended"]["path"].split("/")[-1]
     video_path = "assets/complete_narrative_short.mp4"
     title = publish["title"]
     description = publish["description"]
@@ -599,10 +584,10 @@ button{{background:#ffd84d;color:#111;border:0;border-radius:999px;padding:8px 1
 table{{width:100%;border-collapse:collapse;font-size:14px}}td,th{{border-top:1px solid #333;padding:8px;text-align:left;vertical-align:top}}
 details{{border-top:1px solid #333;padding-top:12px}}code{{overflow-wrap:anywhere}}
 </style></head><body><main class="spine">
-<section id="recommended"><p class="badge">OUT-07 内部確認用</p>
-<h1>オペレーター納品パック</h1><h2>推奨サムネイル：tension</h2>
-<img id="recommended-thumb" src="assets/{escape(rec_path)}" alt="推奨サムネイル">
-<p>選定理由: 呼び出したのに来ない、という主摩擦を一枚で示すため。</p></section>
+<section id="rejected-thumbnail-evidence"><p class="badge">OUT-07 旧16:9案</p>
+<h1>オペレーター納品パック</h1><h2>3案はユーザー不採用</h2>
+<img id="rejected-thumbnail-sheet" src="assets/thumbnail_direction_contact_sheet.jpg" alt="不採用になった旧16:9サムネイル3案">
+<p>context／tension／payoffはいずれも選択・推奨対象から除外済みです。次の判断対象は別artifactの9:16 Shorts poster方向proofです。</p></section>
 <section id="copy-metadata"><h2>コピー用メタデータ</h2>
 <label for="copy-title">タイトル</label><div class="copyrow"><textarea id="copy-title" readonly>{escape(title)}</textarea><button data-copy-target="copy-title" data-copy-label="タイトル">コピー</button></div>
 <label for="copy-description">説明文</label><div class="copyrow"><textarea id="copy-description" readonly>{escape(description)}</textarea><button data-copy-target="copy-description" data-copy-label="説明文">コピー</button></div>
@@ -613,11 +598,7 @@ details{{border-top:1px solid #333;padding-top:12px}}code{{overflow-wrap:anywher
 <section id="operator-status"><h2>オペレーター向け状態</h2>
 <p><span class="badge">内部ドラフト</span><span class="badge">コピー項目は技術的に準備済み</span><span class="badge">公開準備は未完了</span><span class="badge">権利確認待ち</span></p>
 <p>出典表記はオペレーター判断待ちです。制作採用・公開・アップロード・サムネイル設定・公開範囲・子ども向け設定はいずれも未承認または未実施です。</p>
-<h3>確認したい3点</h3><ol id="review-questions">
-<li>推奨tensionサムネが内容を正しく魅力的に伝え、誤認や過度な煽りがないか。</li>
-<li>title・description・tagsが自然で内容と一致するか。</li>
-<li>一ページでコピー・画像・動画・根拠を確認でき、operator packとして使いやすいか。</li>
-</ol></section>
+<p>poster選択、title／description／tagsの採用、公開可否はいずれも未判断です。</p></section>
 <section><details><summary>比較・来歴・manifest</summary>
 <table><tr><th>方向</th><th>cut</th><th>字幕ID</th><th>sha256</th><th>選定理由</th></tr>{thumb_rows}</table>
 <p><img src="assets/thumbnail_direction_contact_sheet.jpg" alt="サムネイル比較シート"></p>
@@ -787,7 +768,6 @@ REQUIRED_PACKAGE_FILES = (
     "assets/thumbnail_context_1280x720.jpg",
     "assets/thumbnail_tension_1280x720.jpg",
     "assets/thumbnail_payoff_1280x720.jpg",
-    "assets/thumbnail_recommended_1280x720.jpg",
     "assets/thumbnail_direction_contact_sheet.jpg",
     "thumbnail_plan.json",
     "publish_draft.json",
@@ -877,20 +857,12 @@ def _validate_publish_draft(stage: Path) -> None:
         or not str(video.get("path", "")).endswith("/assets/complete_narrative_short.mp4")
     ):
         raise OperatorDeliveryPackError("publish video provenance mismatch")
-    selected = publish["selected_thumbnail"]
-    selected_path = stage / "assets" / "thumbnail_recommended_1280x720.jpg"
-    if (
-        selected.get("candidate_id") != "tension"
-        or selected.get("sha256") != _sha256(selected_path)
-        or not str(selected.get("path", "")).endswith(
-            "/assets/thumbnail_recommended_1280x720.jpg"
-        )
-        or selected.get("source_cut_id") != "cut_003"
-        or selected.get("source_seconds") != 25.35
-        or selected.get("evidence")
-        != {"subtitle_ids": ["sub_013", "sub_014"], "segment_ids": ["seg_000013", "seg_000014"]}
-    ):
-        raise OperatorDeliveryPackError("selected thumbnail provenance mismatch")
+    if publish["selected_thumbnail"] is not None:
+        raise OperatorDeliveryPackError("user-rejected thumbnail must not remain selected")
+    if publish.get("poster_decision_status") != "human_selection_required":
+        raise OperatorDeliveryPackError("poster decision must remain pending human selection")
+    if publish.get("rejected_thumbnail_ids") != ["context", "tension", "payoff"]:
+        raise OperatorDeliveryPackError("rejected thumbnail evidence mismatch")
 
     expected_gates = {
         "source_attribution_status": "operator_decision_required",

@@ -18,6 +18,50 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-out07-shorts-poster-frame-direction-proof-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-07 Reference-Derived Shorts Poster Frame Direction Proof v0 |
+| purpose | Turn recurring Japanese VTuber thumbnail relationships into three original retained-source 9:16 poster directions and short end-cap proofs so a human can select A/B/C or reject all without modifying the accepted Short. |
+| storage class | Tracked builder/CLI/tests/reference URLs and structural notes plus ignored same-machine posters, transitions, reference pixels, and review page. Third-party pixels are not committed. |
+| repo_relative_path | `src/integrations/render/shorts_poster_frame_proof.py`; `src/cli/build_shorts_poster_frame_proof.py`; `docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json`; `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` |
+| local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/` |
+| machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json` |
+| reference_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/reference_manifest.json` |
+| source_inputs | Accepted OUT-07 video, repaired OUT-07 publish-draft state, retained source video, tracked 24-reference corpus, and ignored frozen reference cache. |
+| candidates | `poster_A_1080x1920.jpg`; `poster_B_1080x1920.jpg`; `poster_C_1080x1920.jpg` |
+| contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_contact_sheet.jpg` |
+| source_frame_contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/source_frame_contact_sheet.jpg` |
+| transition_proofs | `transition_A.mp4`; `transition_B.mp4`; `transition_C.mp4` |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
+| preview_url | `http://127.0.0.1:8071/index.html` while the fixed-root byte-range server is running. |
+| reference_corpus | 24 references, 17 channels, 3 query strategies, 18 within the latest 120 days, date coverage `2023-09-04..2026-07-10`, target surfaces 21 secondary 16:9 plus 3 older native-vertical safe-zone references. |
+| composition_families | A `single_reaction_hero`; B `opposed_dialogue`; C `hero_with_reaction_inset`. Each family has at least three references from at least two channels. |
+| source_frames | Retained-source 24.0s Noel three-quarter and 36.0s Hajime front-facing frames; 15-timestamp visual survey retained in the contact sheet. |
+| center_safe | Essential faces and one large headline per candidate stay inside `x=0..1080, y=285..1635`; all three survive 180x320 and center-cropped 160x200 previews. |
+| transition_contract | Exact 2.400s proof: accepted narrative tail 1.80s plus shared static poster 0.60s; narrative audio then intentional poster-only silence; review evidence only. |
+| accepted_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` (unchanged). |
+| poster_sha256 | A `7a314825a0be95d48801bc0d648615b81a340884c24273fa76abbf18395a3720`; B `8ab9e01f81490a3571fa60f59041da73c7122d76673ad8409ecbc7e20d57eab2`; C `8d2f05a9fc31f25bd9b8cc20702766c0ea3cc902717efa451837aaec3609ccb2`. |
+| poster_direction_readback_sha256 | `400c5f0e8ec305d4e4400ac072e2452935ff6c9b963f160510fb5e81656aca48` |
+| reference_manifest_sha256 | `a79a963c8077462af9b085dd3064450ec965105c4a8aac086abc7ab4dba0c4f2` |
+| deterministic_package_sha256 | `cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f` across 14 files on two consecutive frozen-input generations. |
+| validation_command | Focused poster/operator tests and changed-scope Ruff; JSON/manifest/hash consistency; image dimensions and safe-crop visual inspection; ffprobe/full decode and transition-boundary frames; browser DOM/media/layout/folded-details/Range QA; protected OUT-03..OUT-07 and accepted-video hashes; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
+| review_status | `poster_direction_review_ready`; human visual acceptance and winner remain pending. Automated integrity checks do not establish attractiveness. |
+| next_action | Ask only: A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。 |
+
+Boundary flags remain false or pending:
+
+- `selected_thumbnail=null`
+- `current_recommendation=null`
+- `human_selection_required=true`
+- `h1_full_short_integration=false`
+- `publish_ready=false`
+- `rights_status=pending`
+- `production_acceptance=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+
 ## `clip-out07-internal-operator-delivery-pack-v0-001`
 
 | Field | Value |
@@ -32,20 +76,23 @@ opened by the root launcher.
 | source_inputs | Accepted OUT-06 readback/video and retained source video frame evidence. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1` |
 | preview_url | `http://127.0.0.1:8070/index.html` while the retained byte-range local server is running. |
-| recommended_thumbnail | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_recommended_1280x720.jpg` |
+| recommended_thumbnail | `null`; the former context/tension/payoff directions are all `user_rejected`. |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_direction_contact_sheet.jpg` |
 | validation_command | `uvx --with Pillow pytest -q tests/test_operator_delivery_pack.py tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py tests/test_docs_dashboard.py`; required-field and copy-separation assertions; actual package generation twice for byte-stability; protected OUT-03..OUT-06/human-preview digest equality; unchanged media hashes; manifest self-integrity; Range 206; browser Japanese copy/fallback/folded-details/image/video/seek/no-overflow QA; deterministic dashboard regeneration; `git diff --check`; `git ls-files episodes`. |
-| review_status | Internal operator draft review-ready: `tension` remains the single recommendation, clean title/description/tags copy only audience metadata, operator status remains separate, alternatives start folded, and the accepted OUT-06 MP4 remains byte-identical. |
-| recommended_thumbnail_sha256 | `e13c9f5ff033ef2a6ea8f938c36b8dead690c5ed2fe5f9cb9152a81d51bc77f3` |
-| contact_sheet_sha256 | `1b31103734dab4ebf4e08067b51b8ddf22abec21b927022009f8fe6556297210` |
+| review_status | Legacy operator-pack state repaired: context/tension/payoff are rejected evidence, selected/recommended are null, metadata copy is unchanged and pending, and the accepted OUT-06 MP4 remains byte-identical. |
+| recommended_thumbnail_sha256 | `null` |
+| contact_sheet_sha256 | Rebuilt rejected-evidence sheet; candidate review moved to `clip-out07-shorts-poster-frame-direction-proof-v0-001`. |
 | output_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |
-| operator_delivery_readback_sha256 | `76c666c6cc74bbfb7664b5f18f42e5966e7559179c97fa55289f98d4b21bfa84` |
-| delivery_manifest_sha256 | `5e3402ea3e63b0d9528e4ef5a46ab7c1afc1832b79f839452986edbd20ac7b74` |
-| next_action | Review only whether the recommended `tension` thumbnail is accurate and not overhyped, whether title/description/tags are natural and content-matched, and whether one page makes copy, images, video, and evidence easy to inspect. |
+| operator_delivery_readback_sha256 | `1d62964e3b8ed5b7b7ff6f6fe5f0ca6d098cf08b12fdaca5e670d6fd68a47211` |
+| delivery_manifest_sha256 | `77187a87ba77b2aa8bb7c1256a7d7ba3e96ef51bf80dc91ea978ca575ac486a3` |
+| next_action | Use only as accepted-video/metadata and rejected-thumbnail predecessor evidence for the current 9:16 poster proof. |
 
 Boundary flags remain false or pending:
 
 - `status=internal_operator_draft`
+- `selected_thumbnail=null`
+- `poster_decision_status=human_selection_required`
+- `legacy_thumbnail_status=user_rejected`
 - `operator_copy_ready=true`
 - `publish_ready=false`
 - `source_attribution_status=operator_decision_required`
