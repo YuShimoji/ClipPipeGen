@@ -3,29 +3,29 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out06_complete_narrative_short_user_feedback_repaired
+health: out06_complete_narrative_short_accepted_after_bounded_repair
 progress_pct: 100
 last_touched: 2026-07-12
-state_revision: out06-complete-narrative-short-user-feedback-repair-2026-07-12
+state_revision: out06-complete-narrative-short-accepted-after-bounded-repair-2026-07-12
 current_slice: OUT-06
-phase: user_feedback_repaired
-canonical_status: branch_review_pending
+phase: accepted_after_bounded_repair
+canonical_status: accepted_on_main_after_fast_forward
 active_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
 current_title: OUT-06 complete narrative short delivery candidate
 human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
 decision_required: none
-review_status: user_feedback_repaired
-review_scope: OUT-06 tempo and audio/video continuity accepted; six subtitle wraps and localhost seekability repaired in the same artifact ID.
-reviewed_at: 2026-07-12 JST partial review
+review_status: accepted_after_bounded_repair
+review_scope: OUT-06 tempo and audio/video continuity accepted; the six subtitle wraps and localhost seekability repair were accepted as the bounded repair closure for the same artifact ID.
+reviewed_at: 2026-07-12 JST
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-12
-next_review_due: none_for_h0_repair
-next_action: OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed.
+next_review_due: none
+next_action: OUT-06 is accepted after bounded repair and may serve as the immutable video predecessor for OUT-07 internal operator delivery-pack work. Keep rights, production render, production subtitle design, public readiness, publishing, upload, thumbnail upload, visibility, and made-for-kids decisions closed or operator-required until a later explicit acceptance slice.
 active_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
@@ -46,7 +46,7 @@ latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
 canonical_main_head: f2afb4d
-canonical_main_baseline: OUT-05 accepted
+canonical_main_baseline: OUT-06 accepted after bounded repair
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
@@ -113,9 +113,9 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-06 Complete Narrative Short User-Feedback Repair
+## Accepted OUT-06 Complete Narrative Short After Bounded Repair
 
-The active review branch is
+The accepted OUT-06 closure branch is
 `codex/out-06-complete-narrative-short-delivery-candidate-v0`. It adds the
 bounded `build-complete-narrative-short` route and one ignored same-machine
 bundle at
@@ -143,9 +143,10 @@ full-fit source-derived canvas, Keifont/Candidate 2 body treatment, measured
 wrapping, explicit ASS lines, and maximum three-line internal envelope without
 opening another reframe comparison or subtitle micro-tuning loop.
 
-The 2026-07-12 JST user review accepted the roughly 38-second narrative tempo
-and audio/video continuity, then requested bounded repair for six subtitle
-line breaks and the primary review-page seek operation. The repaired wraps are:
+The 2026-07-12 JST review accepted the roughly 38-second narrative tempo and
+audio/video continuity, then requested bounded repair for six subtitle line
+breaks and the primary review-page seek operation. The repaired package was
+subsequently accepted as `accepted_after_bounded_repair`. The repaired wraps are:
 `sub_013` -> `なんで / 来なかった / んすか！！`, `sub_014` -> `ずっと /
 待ってたんすよ！！`, `sub_019` -> `はじめの勝ちって / ことでいいですね？`,
 `sub_024` -> `団長、ちなみに、 / 他の番長 / 知ってますか？`, `sub_028` ->
@@ -176,9 +177,10 @@ the automation browser did not make native controls seek reliably.
 The delivery manifest byte-hashes all ten non-manifest package payloads and
 declares a canonical self-integrity hash for the manifest. OUT-03, OUT-04,
 OUT-05, and the retained human-preview tree digests remain unchanged. The bundle
-is internal review evidence only. Rights remain `pending`; production render,
-production subtitle design, public readiness, publishing, and upload remain
-false or unopened.
+is now the accepted internal video predecessor for the next operator
+delivery-pack slice. It remains internal review evidence only: rights remain
+`pending`; production render, production subtitle design, public readiness,
+publishing, and upload remain false or unopened.
 
 ## Accepted OUT-05 Vertical Short Internal Candidate
 

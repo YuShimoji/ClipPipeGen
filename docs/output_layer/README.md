@@ -4,7 +4,7 @@ This directory holds output/video-layer readback artifacts. OUT-02 is the
 tracked synthetic fixture baseline: it lets a reviewer inspect package shape
 without external media. OUT-03 is the accepted single-cut real-local baseline.
 OUT-04 is the accepted editorial baseline. OUT-05 is the accepted vertical
-opening baseline. OUT-06 is the current repaired internal product slice: that
+opening baseline. OUT-06 is the accepted-after-bounded-repair internal product slice: that
 unchanged opening plus authoritative `cut_003` as one complete same-machine
 1080x1920 internal narrative candidate, with the 2026-07-12 subtitle-wrap and
 seekability findings repaired while rights, production, subtitle-design, public,
@@ -46,7 +46,8 @@ atomic staging/promotion, and exposes a single `open_preview.ps1` entrypoint.
 OUT-06 leaves OUT-05 and every earlier protected surface unchanged. It validates
 the exact accepted opening, reads `cut_003` keep/needs-review/proxy authority,
 reuses the data-driven vertical render boundary, and writes only a dedicated
-ignored `review/out06_*` package.
+ignored `review/out06_*` package, and now serves as the immutable video predecessor
+for the OUT-07 internal operator delivery-pack slice.
 
 Generated files:
 

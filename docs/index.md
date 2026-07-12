@@ -18,12 +18,12 @@ Current focus is `OUT-06` on
 `clip-out06-complete-narrative-short-delivery-candidate-v0-001`: one
 same-machine, 38.633333-second vertical internal short that orders
 `cut_001 -> cut_002 -> cut_003`, keeps the two hard-cut boundaries, preserves
-29 subtitle events, and now includes the 2026-07-12 user-requested subtitle-wrap
-and localhost seekability repairs.
+29 subtitle events, and is now accepted after the 2026-07-12 bounded
+subtitle-wrap and localhost seekability repairs.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
-Canonical `main` at `f2afb4d` is the user-accepted OUT-05 baseline. OUT-06 stays
-unmerged until an explicit next instruction. The CPD-12 cockpit remains an
+Canonical `main` is being advanced from the user-accepted OUT-05 baseline to the
+OUT-06 accepted-after-bounded-repair closure. The CPD-12 cockpit remains an
 upstream planning artifact, not the active resume focus.
 
 Start here:
@@ -78,10 +78,11 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-06 H0 repair is ready for supervisor closure. Do not infer overall human
-acceptance, main merge, production/public use, thumbnail, metadata, publishing,
-or rights approval from the repaired internal artifact. Use the dashboard to
-return to tracked project context. A good docs update should make
+OUT-06 is accepted after bounded repair and may be used as the immutable video
+predecessor for OUT-07. Do not infer production/public use, thumbnail upload,
+metadata publication, visibility, made-for-kids, publishing, or rights approval
+from the repaired internal artifact. Use the dashboard to return to tracked
+project context. A good docs update should make
 the first screen of a major doc answer:
 
 - what the page is for

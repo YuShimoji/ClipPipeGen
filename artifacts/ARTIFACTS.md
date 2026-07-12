@@ -23,7 +23,7 @@ opened by the root launcher.
 | Field | Value |
 |---|---|
 | title | OUT-06 Complete Narrative Short Delivery Candidate v0 |
-| purpose | Preserve the accepted OUT-05 opening and append authoritative `cut_003` as one directly reviewable introduction-development-close internal vertical short, now with the 2026-07-12 user-requested subtitle-wrap and seekability repairs applied to the same artifact ID. |
+| purpose | Preserve the accepted OUT-05 opening and append authoritative `cut_003` as one directly reviewable introduction-development-close internal vertical short, now accepted after the 2026-07-12 bounded subtitle-wrap and seekability repairs for the same artifact ID. |
 | storage class | Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media and generated MP4 remain outside Git. |
 | repo_relative_path | `src/integrations/render/complete_narrative_short.py`; `src/cli/build_complete_narrative_short.py`; `docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/` |
@@ -35,14 +35,14 @@ opened by the root launcher.
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/assets/frame_qa_contact_sheet.jpg` |
 | poster_frame | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/assets/poster_frame.jpg`; extracted from the final video, not a decorated thumbnail. |
 | validation_command | `uvx --with Pillow pytest -q tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py`; parse plan/readback/manifest; ffprobe; full FFmpeg decode; loudness/true-peak and decoded PCM boundary analysis; 16-point frame inspection; Range 206 check; browser seek QA; protected tree digests; `git diff --check`; `git ls-files episodes`. |
-| review_status | User-feedback repaired on this machine: tempo and audio/video continuity accepted by user; six reported subtitle wraps repaired; `cut_001 -> cut_002 -> cut_003`, semantic `38.638s`, media `38.633333s`, hard cuts at `6.840s` and `11.678s`, 29 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, Range seek route and browser seek QA passed. |
+| review_status | Accepted after bounded repair on this machine: tempo and audio/video continuity accepted; six reported subtitle wraps repaired and accepted; `cut_001 -> cut_002 -> cut_003`, semantic `38.638s`, media `38.633333s`, hard cuts at `6.840s` and `11.678s`, 29 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, Range seek route and browser seek QA passed. |
 | cut003_authority | `keep + needs_review`; `proxy_decision=proceed_with_limitations`; `context_risk_handling=keep_retained_risk_visible`; authority unchanged. |
 | reframe | Reused accepted OUT-05 `full_16_9_fit_source_derived_blurred_canvas`; no new comparison or micro-tuning loop. |
 | audio | Input `-19.21 LUFS / -2.11 dBTP`; normalized output `-14.39 LUFS / -1.49 dBTP`; both boundary PCM analyses passed without click/dropout risk. |
 | output_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |
 | candidate_readback_sha256 | `0f8ffcd19c3a1b48cca76cf01dd31c4309f405ac3ced3553ba8d6f29e278f9a2` |
 | delivery_manifest_sha256 | `e3be1ec84d97fe472df2c9fb9cdf1a334084a0f727173835a9e0428f6bbb95d0` |
-| next_action | H0 repair is ready for supervisor closure. Do not infer overall acceptance, main merge, H1 thumbnail/metadata, rights, public, or publishing approval without explicit instruction. |
+| next_action | Use as the immutable accepted video predecessor for OUT-07 internal operator delivery-pack work. Do not infer rights, production/public use, thumbnail upload, metadata publication, visibility, made-for-kids, or publishing approval. |
 
 Boundary flags remain false or pending:
 

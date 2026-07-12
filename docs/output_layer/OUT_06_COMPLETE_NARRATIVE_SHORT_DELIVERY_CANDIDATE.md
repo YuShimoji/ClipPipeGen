@@ -2,9 +2,13 @@
 
 OUT-06 preserves the user-accepted OUT-05 opening and appends only the existing
 authoritative `cut_003` range to create one complete introduction-development-
-close internal narrative short. It is an ignored same-machine review package,
+close internal narrative short. The 2026-07-12 bounded repair for six subtitle
+wraps and localhost seekability is now accepted as
+`accepted_after_bounded_repair`. This package is the immutable internal video
+predecessor for OUT-07, but it is still an ignored same-machine review package,
 not a production render, production subtitle-design acceptance, rights
-clearance, public-ready asset, thumbnail, metadata package, or publishing action.
+clearance, public-ready asset, thumbnail upload approval, metadata publication,
+visibility decision, made-for-kids decision, or publishing action.
 
 ## Observable result
 

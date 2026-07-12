@@ -6,15 +6,15 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-06 note: the accepted OUT-05 vertical opening can now be extended with the
+OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the
 authoritative kept `cut_003` through `build-complete-narrative-short`, producing
 one ignored same-machine three-cut/29-subtitle internal delivery candidate with
 manifest, media/audio/boundary readback, poster, frame QA, and a video-first
 review page. The 2026-07-12 review accepted tempo and audio/video continuity,
-then requested bounded subtitle-wrap and seekability repairs; those repairs are
-now built into the same artifact ID with a byte-range localhost review server.
-Rights remain pending and production subtitle/render, public, and publishing
-acceptance remain separate gates; see
+then accepted the bounded subtitle-wrap and seekability repair as
+`accepted_after_bounded_repair` for the same artifact ID. Rights remain pending
+and production subtitle/render, public, and publishing acceptance remain
+separate gates; see
 [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) for the live artifact and review
 state.
 
