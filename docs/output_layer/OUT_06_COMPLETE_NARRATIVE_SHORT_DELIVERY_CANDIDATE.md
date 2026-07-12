@@ -15,7 +15,8 @@ The only artifact ID is
 episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/
 ```
 
-`open_preview.ps1` is the single entrypoint; `-Serve` starts a localhost fallback.
+`open_preview.ps1` is the single entrypoint; `-Serve` starts the byte-range
+localhost route for seekable review.
 The page puts one vertical video first, asks only three whole-candidate questions,
 uses no card grid, and keeps timeline, frame, subtitle, media/provenance, and gate
 details folded.
@@ -41,8 +42,9 @@ preview server must be stopped before regeneration.
 
 The normal page keeps audio review manual. `index.html?qa-playback=1` is a
 muted-autoplay-only local QA route used to prove a full browser decode when the
-automation browser does not grant trusted media gestures; it is not the human
-audio-review route.
+automation browser does not grant trusted media gestures; `index.html?qa-seek=0.6`
+is a muted seek QA route used only to record `seeked` and resume behavior. These
+QA query routes are not the human audio-review route.
 
 ## Exact sequence authority
 
@@ -82,8 +84,14 @@ micro-tuning loop is reopened.
 
 ## Actual local readback
 
-The final MP4 SHA-256 is
-`b337240e501fa8ac6e3d0aef68d3f9cb32d847b88505b2f1b3b42b6f1b64aaee`.
+The 2026-07-12 JST user review accepted the narrative tempo and audio/video
+continuity, then requested bounded subtitle-wrap and seekability repair. The
+same artifact ID now carries repaired display wraps for `sub_013`, `sub_014`,
+`sub_019`, `sub_024`, `sub_028`, and `sub_029`; authoritative text, timing,
+IDs, and source mappings are unchanged.
+
+The final repaired MP4 SHA-256 is
+`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
 It probes as H.264/AAC, 1080x1920, 30fps, yuv420p, faststart, with one video and
 one audio stream. Media duration is `38.633333s`, within `0.20s` of the
 `38.638s` semantic authority. Full FFmpeg decode passed.
@@ -91,14 +99,15 @@ one audio stream. Media duration is `38.633333s`, within `0.20s` of the
 The source sequence measured `-19.21 LUFS / -2.11 dBTP`; normalization was
 applied and the final output measures `-14.39 LUFS / -1.49 dBTP`. Decoded PCM
 windows at both `6.840s` and `11.678s` passed without click risk or digital
-dropout risk. The ten-point contact sheet contains real frames at the required
-start/boundary/cut_003/dense/end positions with no black/corrupt sample or
-visible placeholder.
+dropout risk. The 16-point contact sheet contains real frames at the required
+start/boundary/cut_003/dense/repaired-cue/end positions with no black/corrupt
+sample or visible placeholder.
 
-Browser QA completed the full `38.633333s` muted playback and ended normally:
-`ended=true`, readyState `4`, intrinsic 1080x1920 media, no media error, and no
-horizontal overflow. The normal review page starts paused and keeps all five
-details folded.
+Browser seek QA on the localhost byte-range route reached 25%, 60%, and 90%
+with `seeked`, max target delta about `0.0008s`, `playStatus=resumed`,
+readyState `4`, no media error, no horizontal overflow, and all details folded.
+Native pointer-drag proof is not claimed. The normal review page starts paused
+and keeps all five details folded.
 
 ## Package files
 

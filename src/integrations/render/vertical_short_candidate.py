@@ -88,6 +88,46 @@ class VerticalShortCandidateError(ValueError):
     """Raised when OUT-05 cannot be built without violating its boundaries."""
 
 
+REVIEWED_LINE_BREAK_HINTS: dict[str, dict[str, Any]] = {
+    "sub_013": {
+        "reason": "out06_user_feedback_wrap_repair_2026_07_12",
+        "preferred_lines": [
+            ["なんで", "来なかったんすか！！"],
+            ["なんで", "来なかった", "んすか！！"],
+        ],
+        "forbidden_boundaries": ["来|なかった"],
+    },
+    "sub_014": {
+        "reason": "out06_user_feedback_wrap_repair_2026_07_12",
+        "preferred_lines": [["ずっと", "待ってたんすよ！！"]],
+        "forbidden_boundaries": ["待|って"],
+    },
+    "sub_019": {
+        "reason": "out06_user_feedback_wrap_repair_2026_07_12",
+        "preferred_lines": [["はじめの勝ちって", "ことでいいですね？"]],
+        "forbidden_boundaries": ["こ|とで"],
+    },
+    "sub_024": {
+        "reason": "out06_user_feedback_wrap_repair_2026_07_12",
+        "preferred_lines": [
+            ["団長、ちなみに、", "他の番長知ってますか？"],
+            ["団長、ちなみに、", "他の番長", "知ってますか？"],
+        ],
+        "forbidden_boundaries": ["知|って"],
+    },
+    "sub_028": {
+        "reason": "out06_user_feedback_wrap_repair_2026_07_12",
+        "preferred_lines": [["マリンなら", "あっちにいたよ"]],
+        "forbidden_boundaries": ["マリン|なら"],
+    },
+    "sub_029": {
+        "reason": "out06_user_feedback_wrap_repair_2026_07_12",
+        "preferred_lines": [["ありがとうございますー！"], ["ありがとう", "ございますー！"]],
+        "forbidden_boundaries": ["ありがとうご|ざいます"],
+    },
+}
+
+
 def build_vertical_short_candidate(
     *,
     episode_dir: str | Path,
@@ -534,6 +574,7 @@ def _apply_vertical_balanced_wrap(
             str(item.get("text") or ""),
             layout=layout,
             font_bbox_readback=item.get("font_bbox_wrap_readback") or {},
+            line_break_hint=_line_break_hint_for_item(item),
         )
         lines = balance["lines"] if balance["status"] == "applied" else original_lines
         wrapped_text = "\n".join(lines)
@@ -570,6 +611,7 @@ def _balanced_vertical_lines(
     *,
     layout: dict[str, Any],
     font_bbox_readback: dict[str, Any],
+    line_break_hint: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     source = text.strip()
     if not source:
@@ -613,6 +655,29 @@ def _balanced_vertical_lines(
         except Exception:
             measure_mode = "east_asian_width_proxy_after_font_measurement_failure"
 
+    hint_result = _select_preferred_hint_lines(
+        source,
+        hint=line_break_hint,
+        measure=measure,
+        max_width=max_width,
+    )
+    if hint_result is not None:
+        lines, widths, hint_readback = hint_result
+        return {
+            "status": "applied",
+            "algorithm": "out06_hint_validated_existing_measurement_partition_v1",
+            "measurement_mode": measure_mode,
+            "max_width": round(max_width, 3),
+            "line_count": len(lines),
+            "lines": lines,
+            "measured_widths": [round(value, 3) for value in widths],
+            "break_indices": _break_indices_for_lines(source, lines),
+            "score": 0.0,
+            "short_final_tail": len(lines) > 1 and _content_character_count(lines[-1]) < 4,
+            "line_break_hint": hint_readback,
+            "production_typography_readiness_claimed": False,
+        }
+
     total_content = _content_character_count(source)
     best: tuple[float, list[str], list[float], tuple[int, ...]] | None = None
     maximum_lines = min(3, max(1, len(source)))
@@ -641,6 +706,7 @@ def _balanced_vertical_lines(
                 widths=widths,
                 max_width=max_width,
                 line_count=line_count,
+                line_break_hint=line_break_hint,
             )
             candidate = (score, lines, widths, breaks)
             if best is None or candidate[0] < best[0]:
@@ -667,6 +733,7 @@ def _balanced_vertical_lines(
         "break_indices": list(breaks),
         "score": round(score, 6),
         "short_final_tail": len(lines) > 1 and _content_character_count(lines[-1]) < 4,
+        "line_break_hint": _line_break_hint_readback(source, line_break_hint),
         "production_typography_readiness_claimed": False,
     }
 
@@ -678,6 +745,7 @@ def _vertical_partition_score(
     widths: list[float],
     max_width: float,
     line_count: int,
+    line_break_hint: dict[str, Any] | None = None,
 ) -> float:
     mean = sum(widths) / len(widths)
     score = sum(((width - mean) / max_width) ** 2 for width in widths)
@@ -701,7 +769,106 @@ def _vertical_partition_score(
             score += 0.18
         elif previous in "はがをにへでとものやて" and not _is_hiragana(following):
             score -= 0.08
+    hinted = _line_break_hint_readback(source, line_break_hint)
+    for index in breaks:
+        boundary_tokens = _boundary_tokens(source, index)
+        if any(
+            forbidden in boundary_tokens
+            for forbidden in hinted.get("forbidden_boundaries", ())
+        ):
+            score += 25.0
     return score
+
+
+def _line_break_hint_for_item(item: dict[str, Any]) -> dict[str, Any] | None:
+    subtitle_id = str(item.get("subtitle_id") or item.get("id") or "")
+    hint = REVIEWED_LINE_BREAK_HINTS.get(subtitle_id)
+    if hint is None:
+        return None
+    return {
+        **hint,
+        "subtitle_id": subtitle_id,
+        "source": "reviewed_out06_user_feedback_declarative_cue_metadata",
+    }
+
+
+def _line_break_hint_readback(
+    source: str, hint: dict[str, Any] | None
+) -> dict[str, Any]:
+    if not hint:
+        return {"status": "none"}
+    preferred_lines = [
+        list(candidate)
+        for candidate in hint.get("preferred_lines", [])
+        if "".join(str(line) for line in candidate) == source
+    ]
+    return {
+        "status": "available",
+        "source": hint.get("source"),
+        "subtitle_id": hint.get("subtitle_id"),
+        "reason": hint.get("reason"),
+        "preferred_lines": preferred_lines,
+        "forbidden_boundaries": list(hint.get("forbidden_boundaries") or []),
+    }
+
+
+def _select_preferred_hint_lines(
+    source: str,
+    *,
+    hint: dict[str, Any] | None,
+    measure: Callable[[str], float],
+    max_width: float,
+) -> tuple[list[str], list[float], dict[str, Any]] | None:
+    if not hint:
+        return None
+    readback = _line_break_hint_readback(source, hint)
+    for candidate in readback.get("preferred_lines", []):
+        lines = [str(line).strip() for line in candidate]
+        if not lines or len(lines) > 3 or any(not line for line in lines):
+            continue
+        if "".join(lines) != source:
+            continue
+        if any(_invalid_line_edge(line) for line in lines):
+            continue
+        widths = [measure(line) for line in lines]
+        if any(width > max_width + 0.5 for width in widths):
+            continue
+        return (
+            lines,
+            widths,
+            {
+                **readback,
+                "status": "applied_preferred_lines",
+                "selected_lines": lines,
+                "measured_widths": [round(value, 3) for value in widths],
+            },
+        )
+    return None
+
+
+def _break_indices_for_lines(source: str, lines: list[str]) -> list[int]:
+    indices: list[int] = []
+    cursor = 0
+    for line in lines[:-1]:
+        cursor += len(line)
+        indices.append(cursor)
+    if "".join(lines) != source:
+        return []
+    return indices
+
+
+def _boundary_tokens(source: str, index: int) -> set[str]:
+    previous = source[:index].rstrip()
+    following = source[index:].lstrip()
+    if not previous or not following:
+        return set()
+    left = previous[-5:]
+    right = following[:5]
+    tokens = set()
+    for left_size in range(1, len(left) + 1):
+        for right_size in range(1, len(right) + 1):
+            tokens.add(f"{left[-left_size:]}|{right[:right_size]}")
+    return tokens
 
 
 def _invalid_line_edge(line: str) -> bool:

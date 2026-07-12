@@ -10,10 +10,13 @@ OUT-06 note: the accepted OUT-05 vertical opening can now be extended with the
 authoritative kept `cut_003` through `build-complete-narrative-short`, producing
 one ignored same-machine three-cut/29-subtitle internal delivery candidate with
 manifest, media/audio/boundary readback, poster, frame QA, and a video-first
-review page. Rights remain pending and production subtitle/render, public, and
-publishing acceptance remain separate gates; see
+review page. The 2026-07-12 review accepted tempo and audio/video continuity,
+then requested bounded subtitle-wrap and seekability repairs; those repairs are
+now built into the same artifact ID with a byte-range localhost review server.
+Rights remain pending and production subtitle/render, public, and publishing
+acceptance remain separate gates; see
 [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md) for the live artifact and review
-questions.
+state.
 
 ED-10 note: official subtitle track import / transcript alignment is now implemented. Use `import-subtitle-track --base-transcript <path> --subtitle-track <path> --output <path> [--source-format youtube-json3] [--reviewed-by <id>] [--dry-run] [--force] [--format json]` to convert a YouTube JSON3 subtitle track into a `transcript.json`-compatible artifact with `stt.engine="subtitle_track"`. It preserves source-audio readback and alignment notes, and downstream `generate-subtitles` marks drafts as `source_type="imported_subtitle_track"`. This is still diagnostic data, not subtitle design, render, rights, creative, or publishing acceptance.
 

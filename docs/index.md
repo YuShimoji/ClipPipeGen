@@ -13,17 +13,18 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current focus is `OUT-04` on
-`codex/out-04-editorial-representative-sequence-v0`. Its artifact is
-`clip-out04-editorial-representative-sequence-v0-001`: one same-machine,
-11.678-second sequence that orders `cut_001 -> cut_002`, hard-cuts at 6.840
-seconds, rebases nine subtitles, and exposes one directly playable H.264/AAC
-MP4 with compact timeline/readback.
+Current focus is `OUT-06` on
+`codex/out-06-complete-narrative-short-delivery-candidate-v0`. Its artifact is
+`clip-out06-complete-narrative-short-delivery-candidate-v0-001`: one
+same-machine, 38.633333-second vertical internal short that orders
+`cut_001 -> cut_002 -> cut_003`, keeps the two hard-cut boundaries, preserves
+29 subtitle events, and now includes the 2026-07-12 user-requested subtitle-wrap
+and localhost seekability repairs.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
-Canonical `main` at `92df1b6` is the user-accepted OUT-03 baseline. OUT-04 stays
-unmerged until this sequence milestone is reviewed. The CPD-12 cockpit remains
-an upstream planning artifact, not the active resume focus.
+Canonical `main` at `f2afb4d` is the user-accepted OUT-05 baseline. OUT-06 stays
+unmerged until an explicit next instruction. The CPD-12 cockpit remains an
+upstream planning artifact, not the active resume focus.
 
 Start here:
 
@@ -58,7 +59,8 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored OUT-04 editorial sequence | Review the single 11.678-second `cut_001 -> cut_002` sequence; add `-Serve` only when local-file playback is blocked. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored accepted OUT-04 editorial sequence | Reopen the accepted single 11.678-second `cut_001 -> cut_002` sequence if predecessor evidence is needed. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` | ignored accepted OUT-03 real-local selected-cut proof | Reopen the accepted `cut_002` evidence if needed; add `-Serve` only when local-file playback is blocked. |
 | `.\open-artifacts.ps1` | `artifacts/ARTIFACTS.md` | You need the artifact registry entry and exact open/readback notes. |
 | `.\open-current-proof.ps1` | ignored local ED-10v consumed proof if present | Use as retained evidence for the passed `cut_008` multiline/dense-stress proof; do not emit another Review Card for the same `sub_096` evidence. Missing proof is reported clearly and is not a Git failure. |
@@ -76,11 +78,10 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-Open the OUT-04 entrypoint and judge whether `cut_001 -> cut_002` reads as one
-coherent editorial unit, whether the hard-cut boundary is abrupt or confusing,
-and whether subtitle/audio continuity survives the join. This is not a rights,
-production, publishing, or public-use decision. Use the dashboard to return to
-tracked project context. A good docs update should make
+OUT-06 H0 repair is ready for supervisor closure. Do not infer overall human
+acceptance, main merge, production/public use, thumbnail, metadata, publishing,
+or rights approval from the repaired internal artifact. Use the dashboard to
+return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 
 - what the page is for

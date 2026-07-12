@@ -280,6 +280,52 @@ def test_subtitle_containment_wrap_and_safe_envelope() -> None:
     )
 
 
+def test_out06_reviewed_japanese_break_hints_are_measured_and_semantic() -> None:
+    reviewed = [
+        ("sub_013", "cut_003", 14.181, 15.549, "なんで来なかったんすか！！", ["なんで", "来なかった", "んすか！！"]),
+        ("sub_014", "cut_003", 15.549, 16.450, "ずっと待ってたんすよ！！", ["ずっと", "待ってたんすよ！！"]),
+        ("sub_019", "cut_003", 21.855, 23.924, "はじめの勝ちってことでいいですね？", ["はじめの勝ちって", "ことでいいですね？"]),
+        ("sub_024", "cut_003", 28.228, 30.797, "団長、ちなみに、他の番長知ってますか？", ["団長、ちなみに、", "他の番長", "知ってますか？"]),
+        ("sub_028", "cut_003", 36.570, 38.071, "マリンならあっちにいたよ", ["マリンなら", "あっちにいたよ"]),
+        ("sub_029", "cut_003", 38.071, 38.638, "ありがとうございますー！", ["ありがとう", "ございますー！"]),
+    ]
+    predecessor = [
+        {
+            "id": subtitle_id,
+            "cut_id": cut_id,
+            "sequence_start_seconds": start,
+            "sequence_end_seconds": end,
+            "text": text,
+            "source_type": "imported_subtitle_track",
+            "source_segment_ids": [],
+        }
+        for subtitle_id, cut_id, start, end, text, _expected in reviewed
+    ]
+    layout, items, _selector = vsc._build_subtitle_presentation(predecessor)
+    by_id = {item["subtitle_id"]: item for item in items}
+    forbidden = {
+        "sub_013": "なんで来|なかったんすか！！",
+        "sub_014": "ずっと待|ってたんすよ！！",
+        "sub_019": "はじめの勝ちってこ|とでいいですね？",
+        "sub_024": "他の番長知|ってますか？",
+        "sub_028": "マリン|ならあっちにいたよ",
+        "sub_029": "ありがとうご|ざいますー！",
+    }
+    for subtitle_id, _cut_id, _start, _end, text, expected_lines in reviewed:
+        item = by_id[subtitle_id]
+        assert "".join(item["wrapped_lines"]) == text
+        assert item["wrapped_lines"] == expected_lines
+        assert "|".join(item["wrapped_lines"]) != forbidden[subtitle_id]
+        assert item["wrapped_line_count"] <= 3
+        assert item["vertical_balance_readback"]["line_break_hint"]["status"] == (
+            "applied_preferred_lines"
+        )
+    result = vsc._validate_subtitle_containment(
+        items, expected_duration=38.638, layout=layout, expected_count=6
+    )
+    assert result["status"] == "passed"
+
+
 def test_subtitle_outside_candidate_is_rejected() -> None:
     predecessor = [
         {

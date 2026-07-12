@@ -75,8 +75,14 @@ FRAME_SAMPLES = (
     ("before_cut002_cut003", 11.500),
     ("after_cut002_cut003", 11.930),
     ("cut003_start", 12.200),
+    ("reviewed_wrap_sub013", 14.860),
+    ("reviewed_wrap_sub014", 16.000),
+    ("reviewed_wrap_sub019", 22.890),
     ("cut003_mid", 25.158),
     ("densest_subtitle", 28.850),
+    ("reviewed_wrap_sub024", 29.510),
+    ("reviewed_wrap_sub028", 37.320),
+    ("reviewed_wrap_sub029", 38.350),
     ("cut003_end", 38.200),
     ("end", 38.500),
 )
@@ -790,6 +796,7 @@ def _candidate_readback(
         "machine_readback": _relative(final_paths["readback"], root),
         "delivery_manifest": _relative(final_paths["manifest"], root),
         "open_command": _powershell_command(final_paths["open"], root),
+        "serve_command": _powershell_command(final_paths["serve"], root),
         "regeneration_command": _regeneration_command(
             root, episode, final_paths["readback"].parent, authority
         ),
@@ -1154,10 +1161,54 @@ playFullCandidate.addEventListener("click", async () => {{
   candidateVideo.currentTime = 0;
   await candidateVideo.play();
 }});
-if (new URLSearchParams(window.location.search).get("qa-playback") === "1") {{
+const qaParams = new URLSearchParams(window.location.search);
+if (qaParams.get("qa-playback") === "1") {{
   candidateVideo.muted = true;
   candidateVideo.currentTime = 0;
   candidateVideo.play();
+}}
+if (qaParams.has("qa-seek")) {{
+  document.body.dataset.qaSeekStatus = "pending";
+  candidateVideo.muted = true;
+  const requestedRatio = Number(qaParams.get("qa-seek"));
+  const runSeekQa = async () => {{
+    const duration = candidateVideo.duration;
+    const target = Math.max(0, Math.min(duration - 0.05, duration * requestedRatio));
+    const startedAt = candidateVideo.currentTime;
+    const completed = new Promise((resolve) => {{
+      const finish = (status) => resolve(status);
+      candidateVideo.addEventListener("seeked", () => finish("seeked"), {{ once: true }});
+      window.setTimeout(() => finish("timeout"), 5000);
+    }});
+    candidateVideo.currentTime = target;
+    const status = await completed;
+    let playStatus = "not_attempted";
+    try {{
+      await candidateVideo.play();
+      playStatus = "resumed";
+    }} catch (error) {{
+      playStatus = `play_failed:${{error && error.name ? error.name : "unknown"}}`;
+    }}
+    const qaResult = {{
+      status,
+      requestedRatio,
+      target,
+      startedAt,
+      currentTime: candidateVideo.currentTime,
+      delta: Math.abs(candidateVideo.currentTime - target),
+      duration,
+      playStatus,
+      readyState: candidateVideo.readyState,
+      mediaError: candidateVideo.error ? candidateVideo.error.message : null,
+    }};
+    document.body.dataset.qaSeek = JSON.stringify(qaResult);
+    document.body.dataset.qaSeekStatus = status;
+  }};
+  if (Number.isFinite(candidateVideo.duration) && candidateVideo.duration > 0) {{
+    runSeekQa();
+  }} else {{
+    candidateVideo.addEventListener("loadedmetadata", runSeekQa, {{ once: true }});
+  }}
 }}
 </script>
 </main></body></html>"""
@@ -1181,11 +1232,13 @@ def _serve_script() -> str:
     return """param([int]$Port = 8060)
 $ErrorActionPreference = 'Stop'
 $url = "http://127.0.0.1:$Port/index.html"
+$repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..\\..\\..\\..')
 Write-Host "OUT-06 review URL: $url"
+Write-Host "OUT-06 review root: $PSScriptRoot"
 Start-Process -FilePath $url
-Push-Location $PSScriptRoot
+Push-Location $repoRoot
 try {
-    uvx python -m http.server $Port --bind 127.0.0.1
+    uvx python -m src.cli.serve_review --root $PSScriptRoot --port $Port
 } finally {
     Pop-Location
 }

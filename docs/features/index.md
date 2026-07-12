@@ -6,7 +6,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-06`
 - artifact: `clip-out06-complete-narrative-short-delivery-candidate-v0-001`
-- state: `out06_complete_narrative_short_delivery_candidate_review_ready`
+- state: `out06_complete_narrative_short_user_feedback_repaired`
 
 ## Feature Table
 

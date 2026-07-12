@@ -3,35 +3,35 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out06_complete_narrative_short_delivery_candidate_review_ready
+health: out06_complete_narrative_short_user_feedback_repaired
 progress_pct: 100
 last_touched: 2026-07-12
-state_revision: out06-complete-narrative-short-delivery-candidate-2026-07-12
+state_revision: out06-complete-narrative-short-user-feedback-repair-2026-07-12
 current_slice: OUT-06
-phase: review_ready
+phase: user_feedback_repaired
 canonical_status: branch_review_pending
 active_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
 current_title: OUT-06 complete narrative short delivery candidate
 human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_freeform
-review_status: review_ready
-review_scope: OUT-06 whole narrative arc, cut_002-to-cut_003 tempo/boundary continuity, and cut_003 vertical framing plus 29-subtitle readability only
-reviewed_at: pending
+decision_required: none
+review_status: user_feedback_repaired
+review_scope: OUT-06 tempo and audio/video continuity accepted; six subtitle wraps and localhost seekability repaired in the same artifact ID.
+reviewed_at: 2026-07-12 JST partial review
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-12
-next_review_due: review_out06_complete_narrative_short_delivery_candidate
-next_action: Open the OUT-06 entrypoint and judge whether the roughly 38-second whole has a clear introduction/development/close without redundant cut_003, whether the cut_002-to-cut_003 tempo and audio/video boundary feel natural, and whether cut_003 plus all 29 subtitles remain natural and readable; keep rights, production, subtitle-design, publishing, and public gates closed.
+next_review_due: none_for_h0_repair
+next_action: OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed.
 active_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
 latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
-latest_out06_complete_narrative_short_delivery_candidate_output_sha256: b337240e501fa8ac6e3d0aef68d3f9cb32d847b88505b2f1b3b42b6f1b64aaee
-latest_out06_complete_narrative_short_delivery_candidate_readback_sha256: e1d0e7d5e47e125b8eb17ebe70e02ab32c753743c06548a1b832f6a138ccf9cb
-latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256: fc0a7baa5626783855499fee6ea756dc4da2c9471fca0067c9b59995fd708050
+latest_out06_complete_narrative_short_delivery_candidate_output_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
+latest_out06_complete_narrative_short_delivery_candidate_readback_sha256: 0f8ffcd19c3a1b48cca76cf01dd31c4309f405ac3ced3553ba8d6f29e278f9a2
+latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256: e3be1ec84d97fe472df2c9fb9cdf1a334084a0f727173835a9e0428f6bbb95d0
 latest_out05_vertical_short_internal_candidate_artifact: clip-out05-vertical-short-internal-candidate-v0-001
 latest_out05_vertical_short_internal_candidate_branch: codex/out-05-vertical-short-internal-candidate-v0
 latest_out05_vertical_short_internal_candidate_output_sha256: d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827
@@ -113,16 +113,20 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-06 Complete Narrative Short Delivery Candidate
+## Current OUT-06 Complete Narrative Short User-Feedback Repair
 
 The active review branch is
 `codex/out-06-complete-narrative-short-delivery-candidate-v0`. It adds the
 bounded `build-complete-narrative-short` route and one ignored same-machine
 bundle at
 `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/`.
-The only operator entrypoint is `open_preview.ps1`; use `-Serve` for localhost
-playback. The normal page keeps audio review manual; `?qa-playback=1` is a muted
-autoplay-only browser full-playback QA route.
+The artifact ID is unchanged:
+`clip-out06-complete-narrative-short-delivery-candidate-v0-001`. The only
+operator entrypoint is `open_preview.ps1`; use `-Serve` for localhost playback.
+The localhost route is now served by `src.cli.serve_review`, a fixed-root
+127.0.0.1 byte-range server. The normal page keeps audio review manual;
+`?qa-playback=1` is a muted autoplay-only browser full-playback QA route and
+`?qa-seek=<ratio>` is a muted browser QA route for seek verification.
 
 OUT-06 preserves the accepted OUT-05 opening exactly at the timeline,
 subtitle, reframe, and source-authority level, then appends authoritative
@@ -139,20 +143,35 @@ full-fit source-derived canvas, Keifont/Candidate 2 body treatment, measured
 wrapping, explicit ASS lines, and maximum three-line internal envelope without
 opening another reframe comparison or subtitle micro-tuning loop.
 
-The final MP4 SHA-256 is
-`b337240e501fa8ac6e3d0aef68d3f9cb32d847b88505b2f1b3b42b6f1b64aaee`.
+The 2026-07-12 JST user review accepted the roughly 38-second narrative tempo
+and audio/video continuity, then requested bounded repair for six subtitle
+line breaks and the primary review-page seek operation. The repaired wraps are:
+`sub_013` -> `なんで / 来なかった / んすか！！`, `sub_014` -> `ずっと /
+待ってたんすよ！！`, `sub_019` -> `はじめの勝ちって / ことでいいですね？`,
+`sub_024` -> `団長、ちなみに、 / 他の番長 / 知ってますか？`, `sub_028` ->
+`マリンなら / あっちにいたよ`, and `sub_029` -> `ありがとう / ございますー！`.
+Only those six display wraps changed; subtitle wording, IDs, source mappings,
+and timing remain unchanged.
+
+The final repaired MP4 SHA-256 is
+`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
 It probes as H.264/AAC, 1080x1920, 30fps, yuv420p, faststart, duration
 `38.633333s`, with one video/audio stream. Full decode passed. Input audio
 measured `-19.21 LUFS / -2.11 dBTP`; normalized output measures
 `-14.39 LUFS / -1.49 dBTP`. Decoded PCM windows at `6.840s` and `11.678s`
 found no click risk or digital dropout risk.
 
-The ten-point frame sheet covers start, both sides of both boundaries,
-`cut_003` start/mid/end, the densest subtitle sample, and final frames. Visual
-inspection found real frames with no black/corrupt sample or visible placeholder.
-Browser QA completed the full `38.633333s` muted decode with `ended=true`,
-readyState `4`, 1080x1920 intrinsic media, no media error, and no horizontal
-overflow. Normal review starts paused with all five details folded.
+The current frame sheet covers start, both sides of both boundaries, `cut_003`
+start/mid/end, the densest subtitle sample, all six repaired subtitle cues, and
+final frames. Visual inspection found real frames with no black/corrupt sample
+or visible placeholder. Range QA for
+`assets/complete_narrative_short.mp4` returned `206 Partial Content`,
+`Accept-Ranges: bytes`, `Content-Range: bytes 100-149/20780180`, and
+`Content-Length: 50`. Browser seek QA on the muted local route reached 25%,
+60%, and 90% with `seeked`, maximum recorded target delta about `0.0008s`,
+`playStatus=resumed`, readyState `4`, no media error, no horizontal overflow,
+and all details folded. Native pointer-drag proof was attempted but not claimed:
+the automation browser did not make native controls seek reliably.
 
 The delivery manifest byte-hashes all ten non-manifest package payloads and
 declares a canonical self-integrity hash for the manifest. OUT-03, OUT-04,

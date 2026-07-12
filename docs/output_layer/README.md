@@ -4,10 +4,11 @@ This directory holds output/video-layer readback artifacts. OUT-02 is the
 tracked synthetic fixture baseline: it lets a reviewer inspect package shape
 without external media. OUT-03 is the accepted single-cut real-local baseline.
 OUT-04 is the accepted editorial baseline. OUT-05 is the accepted vertical
-opening baseline. OUT-06 is the current product slice: that unchanged opening
-plus authoritative `cut_003` as one complete same-machine 1080x1920 internal
-narrative candidate while rights, production, subtitle-design, public, and
-publishing gates remain closed.
+opening baseline. OUT-06 is the current repaired internal product slice: that
+unchanged opening plus authoritative `cut_003` as one complete same-machine
+1080x1920 internal narrative candidate, with the 2026-07-12 subtitle-wrap and
+seekability findings repaired while rights, production, subtitle-design, public,
+and publishing gates remain closed.
 
 Start here when resuming from another terminal:
 

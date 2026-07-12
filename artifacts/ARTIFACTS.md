@@ -23,7 +23,7 @@ opened by the root launcher.
 | Field | Value |
 |---|---|
 | title | OUT-06 Complete Narrative Short Delivery Candidate v0 |
-| purpose | Preserve the accepted OUT-05 opening and append authoritative `cut_003` as one directly reviewable introduction-development-close internal vertical short with delivery-grade provenance and integrity readback. |
+| purpose | Preserve the accepted OUT-05 opening and append authoritative `cut_003` as one directly reviewable introduction-development-close internal vertical short, now with the 2026-07-12 user-requested subtitle-wrap and seekability repairs applied to the same artifact ID. |
 | storage class | Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media and generated MP4 remain outside Git. |
 | repo_relative_path | `src/integrations/render/complete_narrative_short.py`; `src/cli/build_complete_narrative_short.py`; `docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/` |
@@ -31,18 +31,18 @@ opened by the root launcher.
 | delivery_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/delivery_manifest.json` |
 | source_inputs | Accepted OUT-05 readback/video and accepted OUT-04 source timeline, unchanged retained source video/audio, edit pack, transcript, material ledger, rights manifest, cut decision packet, and operator proxy authority. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1` |
-| preview_url | `http://127.0.0.1:8060/index.html` while the retained local server is running. |
+| preview_url | `http://127.0.0.1:8060/index.html` while the retained byte-range local server is running. |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/assets/frame_qa_contact_sheet.jpg` |
 | poster_frame | `episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/assets/poster_frame.jpg`; extracted from the final video, not a decorated thumbnail. |
-| validation_command | `uvx --with Pillow pytest -q tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_editorial_sequence.py tests/test_selected_cut_proof.py`; parse plan/readback/manifest; ffprobe; full FFmpeg decode; loudness/true-peak and decoded PCM boundary analysis; ten-point frame inspection; full browser playback; protected tree digests; `git diff --check`; `git ls-files episodes`. |
-| review_status | Review-ready on this machine: `cut_001 -> cut_002 -> cut_003`, semantic `38.638s`, media `38.633333s`, hard cuts at `6.840s` and `11.678s`, 29 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, full browser playback ended normally, no media error or horizontal overflow. |
+| validation_command | `uvx --with Pillow pytest -q tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py`; parse plan/readback/manifest; ffprobe; full FFmpeg decode; loudness/true-peak and decoded PCM boundary analysis; 16-point frame inspection; Range 206 check; browser seek QA; protected tree digests; `git diff --check`; `git ls-files episodes`. |
+| review_status | User-feedback repaired on this machine: tempo and audio/video continuity accepted by user; six reported subtitle wraps repaired; `cut_001 -> cut_002 -> cut_003`, semantic `38.638s`, media `38.633333s`, hard cuts at `6.840s` and `11.678s`, 29 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, Range seek route and browser seek QA passed. |
 | cut003_authority | `keep + needs_review`; `proxy_decision=proceed_with_limitations`; `context_risk_handling=keep_retained_risk_visible`; authority unchanged. |
 | reframe | Reused accepted OUT-05 `full_16_9_fit_source_derived_blurred_canvas`; no new comparison or micro-tuning loop. |
 | audio | Input `-19.21 LUFS / -2.11 dBTP`; normalized output `-14.39 LUFS / -1.49 dBTP`; both boundary PCM analyses passed without click/dropout risk. |
-| output_sha256 | `b337240e501fa8ac6e3d0aef68d3f9cb32d847b88505b2f1b3b42b6f1b64aaee` |
-| candidate_readback_sha256 | `e1d0e7d5e47e125b8eb17ebe70e02ab32c753743c06548a1b832f6a138ccf9cb` |
-| delivery_manifest_sha256 | `fc0a7baa5626783855499fee6ea756dc4da2c9471fca0067c9b59995fd708050` |
-| next_action | Judge only the approximately 38-second narrative arc, `cut_002 -> cut_003` tempo/boundary/audio-video continuity, and `cut_003` plus all 29 subtitles in the vertical treatment. |
+| output_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |
+| candidate_readback_sha256 | `0f8ffcd19c3a1b48cca76cf01dd31c4309f405ac3ced3553ba8d6f29e278f9a2` |
+| delivery_manifest_sha256 | `e3be1ec84d97fe472df2c9fb9cdf1a334084a0f727173835a9e0428f6bbb95d0` |
+| next_action | H0 repair is ready for supervisor closure. Do not infer overall acceptance, main merge, H1 thumbnail/metadata, rights, public, or publishing approval without explicit instruction. |
 
 Boundary flags remain false or pending:
 

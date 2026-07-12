@@ -104,6 +104,11 @@ def _fixture(tmp_path: Path) -> dict[str, Path | str]:
     transcript_segments = []
     cut3_texts = [f"追加字幕{index}" for index in range(10, 30)]
     cut3_texts[0] = "来ねぇ！！"
+    cut3_texts[3] = "なんで来なかったんすか！！"
+    cut3_texts[4] = "ずっと待ってたんすよ！！"
+    cut3_texts[9] = "はじめの勝ちってことでいいですね？"
+    cut3_texts[14] = "団長、ちなみに、他の番長知ってますか？"
+    cut3_texts[18] = "マリンならあっちにいたよ"
     cut3_texts[-1] = "ありがとうございますー！"
     for offset, index in enumerate(range(10, 30)):
         start = 22.606 + offset * 1.25
@@ -331,6 +336,28 @@ def test_build_complete_narrative_short_atomic_package(tmp_path: Path) -> None:
     assert readback["subtitle"]["ids"] == list(cns.EXPECTED_SUBTITLE_IDS)
     assert readback["cut003_authority"]["proxy_decision"] == "proceed_with_limitations"
     assert readback["boundaries"] == cns._closed_gates()
+    assert readback["serve_command"].endswith("serve_preview.ps1")
+
+
+def test_out06_reviewed_wraps_are_repaired_in_package_readback(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    readback = _build(fixture)["readback"]
+    by_id = {item["subtitle_id"]: item for item in readback["subtitle"]["items"]}
+    expected = {
+        "sub_013": ["なんで", "来なかった", "んすか！！"],
+        "sub_014": ["ずっと", "待ってたんすよ！！"],
+        "sub_019": ["はじめの勝ちって", "ことでいいですね？"],
+        "sub_024": ["団長、ちなみに、", "他の番長", "知ってますか？"],
+        "sub_028": ["マリンなら", "あっちにいたよ"],
+        "sub_029": ["ありがとう", "ございますー！"],
+    }
+    for subtitle_id, lines in expected.items():
+        item = by_id[subtitle_id]
+        assert item["wrapped_lines"] == lines
+        assert "".join(lines) == item["text"]
+        assert item["vertical_balance_readback"]["line_break_hint"]["status"] == (
+            "applied_preferred_lines"
+        )
 
 
 def test_manifest_hashes_every_payload_and_declares_self_integrity(tmp_path: Path) -> None:

@@ -26,17 +26,17 @@
   "current_focus": {
     "feature_id": "OUT-06",
     "artifact_id": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
-    "state": "out06_complete_narrative_short_delivery_candidate_review_ready",
+    "state": "out06_complete_narrative_short_user_feedback_repaired",
     "title": "OUT-06 complete narrative short delivery candidate",
     "active_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
-    "phase": "review_ready",
+    "phase": "user_feedback_repaired",
     "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
     "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-12",
-    "decision_required": "review_freeform",
-    "next_review_action_type": "review_out06_complete_narrative_short_delivery_candidate",
-    "next_action": "Open the OUT-06 entrypoint and judge whether the roughly 38-second whole has a clear introduction/development/close without redundant cut_003, whether the cut_002-to-cut_003 tempo and audio/video boundary feel natural, and whether cut_003 plus all 29 subtitles remain natural and readable; keep rights, production, subtitle-design, publishing, and public gates closed.",
+    "decision_required": "none",
+    "next_review_action_type": "none_for_h0_repair",
+    "next_action": "OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed.",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -50,7 +50,7 @@
       "label": "OUT-06 Current Focus",
       "command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out06_complete_narrative_short_delivery_candidate\\index.html",
       "target": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
-      "when_to_use": "Open the OUT-06 entrypoint and judge whether the roughly 38-second whole has a clear introduction/development/close without redundant cut_003, whether the cut_002-to-cut_003 tempo and audio/video boundary feel natural, and whether cut_003 plus all 29 subtitles remain natural and readable; keep rights, production, subtitle-design, publishing, and public gates closed."
+      "when_to_use": "OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed."
     },
     {
       "label": "Artifacts",
@@ -1641,12 +1641,12 @@
     {
       "artifact_id": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
       "title": "OUT-06 Complete Narrative Short Delivery Candidate v0",
-      "purpose": "Preserve the accepted OUT-05 opening and append authoritative cut_003 as one directly reviewable introduction-development-close internal vertical short with delivery-grade provenance and integrity readback.",
+      "purpose": "Preserve the accepted OUT-05 opening and append authoritative cut_003 as one directly reviewable introduction-development-close internal vertical short, now with the 2026-07-12 user-requested subtitle-wrap and seekability repairs applied to the same artifact ID.",
       "storage_class": "Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media and generated MP4 remain outside Git.",
       "repo_relative_path": "src/integrations/render/complete_narrative_short.py; src/cli/build_complete_narrative_short.py; docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out06_complete_narrative_short_delivery_candidate\\open_preview.ps1",
-      "review_status": "Review-ready on this machine: cut_001 -> cut_002 -> cut_003, semantic 38.638s, media 38.633333s, hard cuts at 6.840s and 11.678s, 29 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, full browser playback ended normally, no media error or horizontal overflow.",
-      "next_action": "Judge only the approximately 38-second narrative arc, cut_002 -> cut_003 tempo/boundary/audio-video continuity, and cut_003 plus all 29 subtitles in the vertical treatment."
+      "review_status": "User-feedback repaired on this machine: tempo and audio/video continuity accepted by user; six reported subtitle wraps repaired; cut_001 -> cut_002 -> cut_003, semantic 38.638s, media 38.633333s, hard cuts at 6.840s and 11.678s, 29 measured/wrapped ASS cues, H.264/AAC 1080x1920 30fps yuv420p faststart, Range seek route and browser seek QA passed.",
+      "next_action": "H0 repair is ready for supervisor closure. Do not infer overall acceptance, main merge, H1 thumbnail/metadata, rights, public, or publishing approval without explicit instruction."
     },
     {
       "artifact_id": "clip-out05-vertical-short-internal-candidate-v0-001",
@@ -2425,7 +2425,7 @@
       "item": "OUT-06 current focus",
       "artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
       "question": "OUT-06 complete narrative short delivery candidate",
-      "next_route": "Open the OUT-06 entrypoint and judge whether the roughly 38-second whole has a clear introduction/development/close without redundant cut_003, whether the cut_002-to-cut_003 tempo and audio/video boundary feel natural, and whether cut_003 plus all 29 subtitles remain natural and readable; keep rights, production, subtitle-design, publishing, and public gates closed."
+      "next_route": "OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2654,7 +2654,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 98,
+      "line_count": 101,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2668,7 +2668,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 105,
+      "line_count": 106,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2676,47 +2676,47 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 15,
+      "boundary_term_count": 17,
       "status": "reference"
     },
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1707,
+      "line_count": 1726,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "out06_complete_narrative_short_delivery_candidate_review_ready",
+        "health": "out06_complete_narrative_short_user_feedback_repaired",
         "progress_pct": "100",
         "last_touched": "2026-07-12",
-        "state_revision": "out06-complete-narrative-short-delivery-candidate-2026-07-12",
+        "state_revision": "out06-complete-narrative-short-user-feedback-repair-2026-07-12",
         "current_slice": "OUT-06",
-        "phase": "review_ready",
+        "phase": "user_feedback_repaired",
         "canonical_status": "branch_review_pending",
         "active_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
         "current_title": "OUT-06 complete narrative short delivery candidate",
         "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
         "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "review_freeform",
-        "review_status": "review_ready",
-        "review_scope": "OUT-06 whole narrative arc, cut_002-to-cut_003 tempo/boundary continuity, and cut_003 vertical framing plus 29-subtitle readability only",
-        "reviewed_at": "pending",
+        "decision_required": "none",
+        "review_status": "user_feedback_repaired",
+        "review_scope": "OUT-06 tempo and audio/video continuity accepted; six subtitle wraps and localhost seekability repaired in the same artifact ID.",
+        "reviewed_at": "2026-07-12 JST partial review",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-12",
-        "next_review_due": "review_out06_complete_narrative_short_delivery_candidate",
-        "next_action": "Open the OUT-06 entrypoint and judge whether the roughly 38-second whole has a clear introduction/development/close without redundant cut_003, whether the cut_002-to-cut_003 tempo and audio/video boundary feel natural, and whether cut_003 plus all 29 subtitles remain natural and readable; keep rights, production, subtitle-design, publishing, and public gates closed.",
+        "next_review_due": "none_for_h0_repair",
+        "next_action": "OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed.",
         "active_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
-        "latest_out06_complete_narrative_short_delivery_candidate_output_sha256": "b337240e501fa8ac6e3d0aef68d3f9cb32d847b88505b2f1b3b42b6f1b64aaee",
-        "latest_out06_complete_narrative_short_delivery_candidate_readback_sha256": "e1d0e7d5e47e125b8eb17ebe70e02ab32c753743c06548a1b832f6a138ccf9cb",
-        "latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256": "fc0a7baa5626783855499fee6ea756dc4da2c9471fca0067c9b59995fd708050",
+        "latest_out06_complete_narrative_short_delivery_candidate_output_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+        "latest_out06_complete_narrative_short_delivery_candidate_readback_sha256": "0f8ffcd19c3a1b48cca76cf01dd31c4309f405ac3ced3553ba8d6f29e278f9a2",
+        "latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256": "e3be1ec84d97fe472df2c9fb9cdf1a334084a0f727173835a9e0428f6bbb95d0",
         "latest_out05_vertical_short_internal_candidate_artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
         "latest_out05_vertical_short_internal_candidate_branch": "codex/out-05-vertical-short-internal-candidate-v0",
         "latest_out05_vertical_short_internal_candidate_output_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827",
@@ -2794,7 +2794,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 366,
+      "boundary_term_count": 368,
       "status": "current_capsule"
     },
     {
@@ -2925,7 +2925,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 890,
+      "boundary_term_count": 893,
       "status": "reference"
     },
     {
@@ -2987,40 +2987,40 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 1373,
+      "line_count": 1388,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "out06_complete_narrative_short_delivery_candidate_review_ready",
+        "health": "out06_complete_narrative_short_user_feedback_repaired",
         "progress_pct": "100",
         "last_touched": "2026-07-12",
         "current_slice": "OUT-06",
-        "phase": "review_ready",
+        "phase": "user_feedback_repaired",
         "canonical_status": "branch_review_pending",
         "active_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
         "current_title": "OUT-06 complete narrative short delivery candidate",
         "human_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
         "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "review_freeform",
-        "review_status": "review_ready",
-        "review_scope": "OUT-06 whole narrative arc, cut_002-to-cut_003 tempo/boundary continuity, and cut_003 vertical framing plus 29-subtitle readability only",
-        "reviewed_at": "pending",
+        "decision_required": "none",
+        "review_status": "user_feedback_repaired",
+        "review_scope": "OUT-06 tempo and audio/video continuity accepted; six subtitle wraps and localhost seekability repaired in the same artifact ID.",
+        "reviewed_at": "2026-07-12 JST partial review",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-12",
-        "next_review_due": "review_out06_complete_narrative_short_delivery_candidate",
-        "next_action": "Open the OUT-06 entrypoint and judge whether the roughly 38-second whole has a clear introduction/development/close without redundant cut_003, whether the cut_002-to-cut_003 tempo and audio/video boundary feel natural, and whether cut_003 plus all 29 subtitles remain natural and readable; keep rights, production, subtitle-design, publishing, and public gates closed.",
+        "next_review_due": "none_for_h0_repair",
+        "next_action": "OUT-06 H0 repair is ready for supervisor closure: tempo and audio/video continuity are locked pass, the six reported subtitle wrap failures are repaired, and localhost seeking has byte-range plus browser seek evidence. Do not mark overall human acceptance, merge to main, or begin thumbnail/metadata/publishing work without explicit next instruction; keep rights, production, subtitle-design, publishing, and public gates closed.",
         "active_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_artifact": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
         "latest_out06_complete_narrative_short_delivery_candidate_branch": "codex/out-06-complete-narrative-short-delivery-candidate-v0",
-        "latest_out06_complete_narrative_short_delivery_candidate_output_sha256": "b337240e501fa8ac6e3d0aef68d3f9cb32d847b88505b2f1b3b42b6f1b64aaee",
-        "latest_out06_complete_narrative_short_delivery_candidate_readback_sha256": "e1d0e7d5e47e125b8eb17ebe70e02ab32c753743c06548a1b832f6a138ccf9cb",
-        "latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256": "fc0a7baa5626783855499fee6ea756dc4da2c9471fca0067c9b59995fd708050",
+        "latest_out06_complete_narrative_short_delivery_candidate_output_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+        "latest_out06_complete_narrative_short_delivery_candidate_readback_sha256": "0f8ffcd19c3a1b48cca76cf01dd31c4309f405ac3ced3553ba8d6f29e278f9a2",
+        "latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256": "e3be1ec84d97fe472df2c9fb9cdf1a334084a0f727173835a9e0428f6bbb95d0",
         "latest_out05_vertical_short_internal_candidate_artifact": "clip-out05-vertical-short-internal-candidate-v0-001",
         "latest_out05_vertical_short_internal_candidate_branch": "codex/out-05-vertical-short-internal-candidate-v0",
         "latest_out05_vertical_short_internal_candidate_output_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827",
@@ -3098,7 +3098,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 318,
+      "boundary_term_count": 325,
       "status": "active"
     },
     {
@@ -3457,7 +3457,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1707 lines) is likely carrying history.",
+        "detail": "Long active doc (1726 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3493,7 +3493,7 @@
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 890 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 893 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3517,7 +3517,7 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (1373 lines) is likely carrying history.",
+        "detail": "Long active doc (1388 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
