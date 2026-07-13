@@ -29,11 +29,12 @@ next_action: Open http://127.0.0.1:8071/index.html and answer only: A/B/Cのど�
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_branch: codex/out-07-internal-operator-delivery-pack-v0
-latest_out07_shorts_poster_frame_direction_proof_readback_sha256: 400c5f0e8ec305d4e4400ac072e2452935ff6c9b963f160510fb5e81656aca48
-latest_out07_shorts_poster_frame_direction_proof_package_sha256: cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f
-latest_out07_shorts_poster_frame_direction_proof_contact_sheet_sha256: 5d8a337c192b5b41bd61f5524ba102fe9f11406e9583e3adcb1dc113bf0e6c57
-latest_out07_shorts_poster_frame_direction_reference_count: 24
-latest_out07_shorts_poster_frame_direction_channel_count: 17
+latest_out07_shorts_poster_frame_direction_proof_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
+latest_out07_shorts_poster_frame_direction_proof_package_sha256: not_reverified_after_reference_fidelity_revision
+latest_out07_shorts_poster_frame_direction_proof_contact_sheet_sha256: 74af13b0a5ffc0558f427a0c75b382982e282a27608b638ed412e2e09bca3402
+latest_out07_shorts_poster_frame_direction_platform_contact_sheet_sha256: 828a0069ba649f42b11f8fd4b50bb112286e7ba5b7a2a62f77bb35a7fc10c875
+latest_out07_shorts_poster_frame_direction_reference_count: 50
+latest_out07_shorts_poster_frame_direction_channel_count: 41
 latest_out07_shorts_poster_frame_direction_human_acceptance: pending
 latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
 latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
@@ -146,35 +147,31 @@ image bytes are unchanged, while the misleading
 three-line description, seven tags, accepted video, subtitles, and audio were
 not semantically changed or accepted in this slice.
 
-Public unauthenticated research stopped at 24 references across 17 channels
-after three recurring families had multi-source support. Eighteen references
-fall within the latest 120 days; 21 conventional 16:9 examples are used only as
-secondary structural evidence with explicit 9:16 translation notes, and three
-older native-vertical examples are used only for center-safe scale/density.
+The current tracked corpus contains 50 active references across 41 channels.
+Twenty-seven are native-vertical exact-surface observations across 24 channels,
+22 of those fall within the latest 180 days, and 20 conventional 16:9 examples
+remain secondary structural evidence. YouTube surface behavior is not claimed
+as verified and view count is not treated as causal proof.
 Third-party pixels remain only in the ignored local cache/reference board and
 are absent from candidates A/B/C.
 
-The three 1080x1920 candidates use retained source pixels at 24.0s and/or
-36.0s and one distinct family each: single reaction hero (A), opposed dialogue
-(B), and hero with reaction inset (C). Every essential face and headline stays
-inside `x=0..1080, y=285..1635`; the 180x320 and center-cropped 160x200 checks
-retain the face/copy relationship. Dominant back-facing frames, raw full-scene
-backgrounds, small explanatory copy, external character art, and AI face or
-expression changes are excluded.
+The three 1080x1920 candidates are research-derived directions using retained
+source pixels and manual alpha masks without generated or modified person
+pixels. The package includes channel/search, center-4:5 heuristic, and
+approximate Shorts playback UI previews plus expression and mask inspection
+sheets. The center-4:5 preview is a project robustness heuristic, not an
+official YouTube crop guarantee.
 
-Each `transition_A/B/C.mp4` contains the final 1.80s of the accepted video plus
-a shared 0.60s static poster end-cap. Narrative audio is preserved for the tail
-and the poster-only interval is intentionally silent. The proofs are 2.400s,
+Each `transition_A/B/C.mp4` uses the final 1.75s of the accepted video, a shared
+0.12s dissolve, a 0.50s poster end-cap, and a 0.16s audio fade. The proofs are 2.133s,
 1080x1920, full-decode clean review evidence; they do not replace or modify the
 accepted 38.633333s video, whose SHA-256 remains
 `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
 
-After the one bounded typography correction from the Noto variable font's Thin
-default to Black, two consecutive frozen-input generations were byte-identical
-across all 14 package files. The package digest is
-`cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f`.
-Human visual acceptance is still pending; tests establish integrity and crop
-survival, not attractiveness or a winner.
+The reference-fidelity revision passes its six focused Pillow-enabled tests and
+`git diff --check`. A deterministic whole-package digest has not yet been
+reverified after this revision. Human visual acceptance is still pending;
+tests establish integrity, not attractiveness or a winner.
 
 The only current review question is: A/B/Cのどれが実用候補に最も近いか、
 または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。

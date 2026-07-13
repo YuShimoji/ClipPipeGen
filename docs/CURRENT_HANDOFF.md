@@ -28,11 +28,12 @@ next_action: Open http://127.0.0.1:8071/index.html and answer only: A/B/Cのど�
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_branch: codex/out-07-internal-operator-delivery-pack-v0
-latest_out07_shorts_poster_frame_direction_proof_readback_sha256: 400c5f0e8ec305d4e4400ac072e2452935ff6c9b963f160510fb5e81656aca48
-latest_out07_shorts_poster_frame_direction_proof_package_sha256: cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f
-latest_out07_shorts_poster_frame_direction_proof_contact_sheet_sha256: 5d8a337c192b5b41bd61f5524ba102fe9f11406e9583e3adcb1dc113bf0e6c57
-latest_out07_shorts_poster_frame_direction_reference_count: 24
-latest_out07_shorts_poster_frame_direction_channel_count: 17
+latest_out07_shorts_poster_frame_direction_proof_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
+latest_out07_shorts_poster_frame_direction_proof_package_sha256: not_reverified_after_reference_fidelity_revision
+latest_out07_shorts_poster_frame_direction_proof_contact_sheet_sha256: 74af13b0a5ffc0558f427a0c75b382982e282a27608b638ed412e2e09bca3402
+latest_out07_shorts_poster_frame_direction_platform_contact_sheet_sha256: 828a0069ba649f42b11f8fd4b50bb112286e7ba5b7a2a62f77bb35a7fc10c875
+latest_out07_shorts_poster_frame_direction_reference_count: 50
+latest_out07_shorts_poster_frame_direction_channel_count: 41
 latest_out07_shorts_poster_frame_direction_human_acceptance: pending
 latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
 latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
@@ -159,19 +160,19 @@ and subtitle/segment evidence fields. `source_title` and `source_url` remain
 `operator_copy_ready=true` does not change `publish_ready=false`,
 `rights_status=pending`, or any production/public/upload/update decision.
 
-The poster proof contains exactly three original 1080x1920 directions using
-retained source pixels: A single reaction hero, B opposed dialogue, and C hero
-with reaction inset. It is based on 24 public references across 17 channels and
-three query strategies. Third-party pixels remain only in the ignored local
-reference board/cache; candidates contain no external art, logo, cutout, or AI
-face/expression change. All essential faces and headlines survive both 180x320
-and center-cropped 160x200 views.
+The poster proof contains exactly three research-derived 1080x1920 directions
+using retained source pixels and manual alpha masks. It is based on 50 active
+references across 41 channels, including 27 native-vertical exact-surface
+observations across 24 channels. Third-party pixels remain only in the ignored
+local reference board/cache; person pixels are not generated or modified.
+Channel/search, center-4:5 heuristic, approximate Shorts UI, expression, and
+mask-inspection previews are included; the 4:5 view is not an official crop
+guarantee.
 
-Each 2.400s transition proof preserves the accepted final 1.80s and adds the
-same 0.60s static poster treatment; narrative audio then changes to intentional
-poster-only silence. The complete accepted video was not rerendered or replaced.
-Two frozen-input generations produced the identical 14-file digest
-`cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f`.
+Each 2.133s transition proof uses the accepted final 1.75s, a shared 0.12s
+dissolve, a 0.50s poster end-cap, and a 0.16s audio fade. The complete accepted
+video was not rerendered or replaced. The revised package's whole-package
+deterministic digest remains to be reverified.
 
 Review only this question: A/B/Cのどれが実用候補に最も近いか、または全案
 不採用か。末尾posterの出現が不自然な場合だけ併記してください。 Human

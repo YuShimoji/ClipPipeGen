@@ -125,22 +125,24 @@ The package contains:
 
 - `poster_A/B/C_1080x1920.jpg`
 - `poster_direction_contact_sheet.jpg`
-- `source_frame_contact_sheet.jpg`
+- `expression_contact_sheet_A/B/C.jpg`
+- `subject_mask_inspection.jpg`
+- `platform_preview_contact_sheet.jpg`
 - `reference_board.jpg`
 - `reference_manifest.json`
 - `poster_direction_readback.json`
 - `transition_A/B/C.mp4`
 - `index.html`, `open_preview.ps1`, and `serve_preview.ps1`
 
-A/B/C use three different recurring structures: single reaction hero, opposed
-dialogue, and hero with reaction inset. The candidates use only retained source
-pixels at 24.0s and/or 36.0s, project-local geometric treatment, and the local
-Noto Sans JP Black weight. All essential content is inside the center 4:5 safe
-rect `x=0..1080, y=285..1635`; each candidate has one large Japanese text block
-and survives the 180x320 and center-cropped 160x200 checks.
+A/B/C use three research-derived directions backed by primary and supporting
+references. Candidates use retained source pixels, manual alpha masks without
+generated or modified person pixels, project-local geometric treatment, and the
+local Noto Sans JP Black weight. The package includes channel/search,
+center-4:5 heuristic, and approximate Shorts playback UI previews; the 4:5
+preview is not an official YouTube crop guarantee.
 
-Each transition is review-only: accepted-video tail 1.80s plus a static 0.60s
-poster end-cap, with accepted narrative audio followed by intentional silence.
+Each transition is review-only: accepted-video tail 1.75s, a shared 0.12s
+dissolve, a 0.50s poster end-cap, and a 0.16s audio fade.
 The complete accepted video remains byte-identical at
 `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
 

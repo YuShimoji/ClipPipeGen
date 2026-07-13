@@ -34,15 +34,17 @@ from src.integrations.render.vertical_short_candidate import (
 
 ARTIFACT_ID = "clip-out07-shorts-poster-frame-direction-proof-v0-001"
 SCHEMA_VERSION = "clippipegen.out07.shorts_poster_frame_direction_proof.v0"
-STATE = "out07_reference_derived_shorts_poster_frame_directions_review_ready"
+STATE = "out07_reference_fidelity_shorts_poster_directions_review_ready"
 ACCEPTED_VIDEO_SHA256 = (
     "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0"
 )
 SOURCE_VIDEO_SHA256 = "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a"
 CANVAS = (1080, 1920)
 CENTER_4_5_SAFE_RECT = (0, 285, 1080, 1635)
-TAIL_DURATION_SECONDS = 1.80
-END_CAP_DURATION_SECONDS = 0.60
+TAIL_DURATION_SECONDS = 1.75
+END_CAP_DURATION_SECONDS = 0.50
+TRANSITION_DISSOLVE_SECONDS = 0.12
+AUDIO_FADE_SECONDS = 0.16
 DEFAULT_PORT = 8071
 OUTPUT_NAME = "out07_shorts_poster_frame_direction_proof"
 REFERENCE_CACHE_NAME = "out07_shorts_poster_reference_cache"
@@ -50,124 +52,36 @@ REVIEW_QUESTION = (
     "A/B/Cのどれが実用候補に最も近いか、または全案不採用か。"
     "末尾posterの出現が不自然な場合だけ併記してください。"
 )
-SURVEY_TIMESTAMPS = (
-    18.0,
-    20.0,
-    22.0,
-    24.0,
-    26.0,
-    28.0,
-    30.0,
-    32.0,
-    34.0,
-    36.0,
-    38.0,
-    40.0,
-    42.0,
-    48.0,
-    50.0,
+SURVEY_INTERVAL_SECONDS = 0.15
+SURVEY_WINDOWS = {
+    "A": {"start": 21.606, "end": 24.640},
+    "B": {"start": 24.109, "end": 27.477},
+    "C": {"start": 25.477, "end": 28.378},
+}
+SUPERSEDED_CANDIDATES = (
+    {
+        "candidate_id": "A",
+        "sha256": "7a314825a0be95d48801bc0d648615b81a340884c24273fa76abbf18395a3720",
+        "status": "supervisor_reframe_required",
+        "reason": "rounded rectangular scene screenshot panel",
+    },
+    {
+        "candidate_id": "B",
+        "sha256": "8ab9e01f81490a3571fa60f59041da73c7122d76673ad8409ecbc7e20d57eab2",
+        "status": "supervisor_reframe_required",
+        "reason": "two rounded rectangular scene screenshot panels",
+    },
+    {
+        "candidate_id": "C",
+        "sha256": "8d2f05a9fc31f25bd9b8cc20702766c0ea3cc902717efa451837aaec3609ccb2",
+        "status": "supervisor_reframe_required",
+        "reason": "rounded scene panel plus circular screenshot inset and speaker inversion",
+    },
 )
 
 
 class ShortsPosterFrameProofError(Exception):
     """Raised when the proof cannot be built without boundary drift."""
-
-
-CANDIDATE_SPECS: tuple[dict[str, Any], ...] = (
-    {
-        "candidate_id": "A",
-        "family_id": "single_reaction_hero",
-        "family_name_ja": "単一リアクション主役",
-        "headline_lines": ["来ねぇ!!"],
-        "essential_text_block_count": 1,
-        "dominant_face_orientation": "front",
-        "source_frame_timestamps": [36.0],
-        "source_frame_roles": ["Hajime front-facing close reaction"],
-        "source_cut_ids": ["cut_003"],
-        "copy_evidence": {
-            "subtitle_ids": ["sub_010"],
-            "segment_ids": ["seg_000010"],
-            "accepted_text": "来ねぇ！！",
-            "accepted_source_range_seconds": [22.606, 23.640],
-        },
-        "reference_ids": ["ref-08", "ref-10", "ref-14", "ref-21"],
-        "adopted_relationships": [
-            "one dominant forward-facing reaction",
-            "one oversized headline",
-            "simplified high-contrast background",
-        ],
-        "deliberate_changes": [
-            "retained-source portrait is placed in an original rounded panel",
-            "reference-specific colors, fonts, logos and decoration are not reused",
-        ],
-        "fit_reason": "The accepted cut opens its main friction with Hajime realizing Noel did not come.",
-        "essential_bounds": [70, 320, 1010, 1600],
-    },
-    {
-        "candidate_id": "B",
-        "family_id": "opposed_dialogue",
-        "family_name_ja": "対向する二者会話",
-        "headline_lines": ["なんで", "来なかった!?"],
-        "essential_text_block_count": 1,
-        "dominant_face_orientation": "front_and_three_quarter",
-        "source_frame_timestamps": [24.0, 36.0],
-        "source_frame_roles": [
-            "Noel three-quarter reaction",
-            "Hajime front-facing reaction",
-        ],
-        "source_cut_ids": ["cut_003"],
-        "copy_evidence": {
-            "subtitle_ids": ["sub_013"],
-            "segment_ids": ["seg_000013"],
-            "accepted_text": "なんで来なかったんすか！！",
-            "accepted_source_range_seconds": [25.109, 26.477],
-        },
-        "reference_ids": ["ref-02", "ref-09", "ref-15", "ref-17"],
-        "adopted_relationships": [
-            "two large faces in opposing panels",
-            "dialogue friction expressed by one central headline",
-            "background detail suppressed behind the face relationship",
-        ],
-        "deliberate_changes": [
-            "separate retained-source moments are recomposed into original diagonal panels",
-            "no external cutout, logo, typography or thumbnail pixels are reused",
-        ],
-        "fit_reason": "The two-person structure makes the accepted absence question understandable at one glance.",
-        "essential_bounds": [35, 320, 1045, 1590],
-    },
-    {
-        "candidate_id": "C",
-        "family_id": "hero_with_reaction_inset",
-        "family_name_ja": "主役＋反応inset",
-        "headline_lines": ["待ってたんすよ!!"],
-        "essential_text_block_count": 1,
-        "dominant_face_orientation": "three_quarter_with_front_inset",
-        "source_frame_timestamps": [24.0, 36.0],
-        "source_frame_roles": [
-            "Noel three-quarter dominant reaction",
-            "Hajime front-facing reaction inset",
-        ],
-        "source_cut_ids": ["cut_003"],
-        "copy_evidence": {
-            "subtitle_ids": ["sub_014"],
-            "segment_ids": ["seg_000014"],
-            "accepted_text": "ずっと待ってたんすよ！！",
-            "accepted_source_range_seconds": [26.477, 27.378],
-        },
-        "reference_ids": ["ref-05", "ref-07", "ref-19", "ref-22"],
-        "adopted_relationships": [
-            "one dominant reaction with one small counter-reaction inset",
-            "one large headline",
-            "simple graphic field carries the emotional focal point",
-        ],
-        "deliberate_changes": [
-            "the source roles are inverted into a new dominant-plus-inset hierarchy",
-            "collage density is reduced to two faces and one text block for Shorts scale",
-        ],
-        "fit_reason": "Noel's reaction and Hajime's complaint remain truthful without inventing a new event or expression.",
-        "essential_bounds": [55, 320, 1025, 1600],
-    },
-)
 
 
 def build_shorts_poster_frame_proof(
@@ -216,12 +130,13 @@ def build_shorts_poster_frame_proof(
     _validate_rejected_out07_truth(publish)
     metadata_copy_hash = _metadata_copy_hash(publish)
     corpus = _read_json(corpus_path, "reference corpus")
+    references = _reference_entries(corpus)
     corpus_summary = validate_reference_corpus(corpus)
-    validate_candidate_specs(CANDIDATE_SPECS)
+    candidate_specs = candidate_specs_from_corpus(corpus, references=references)
 
     cache.mkdir(parents=True, exist_ok=True)
     reference_inputs = _freeze_reference_inputs(
-        corpus=corpus,
+        references=references,
         cache_dir=cache,
         fetch_missing=fetch_missing_references,
     )
@@ -255,23 +170,24 @@ def build_shorts_poster_frame_proof(
 
         extracted = _extract_source_frames(
             source_video=source_video,
-            timestamps=SURVEY_TIMESTAMPS,
+            timestamps=_dense_survey_timestamps(candidate_specs),
             frame_dir=frames,
             ffmpeg_path=resolved_ffmpeg,
         )
-        _write_source_contact_sheet(
-            extracted,
-            stage / "source_frame_contact_sheet.jpg",
-            selected_seconds={24.0, 36.0},
+        _write_expression_contact_sheets(
+            frames=extracted,
+            stage=stage,
+            candidate_specs=candidate_specs,
         )
         _write_reference_board(
-            corpus=corpus,
+            references=references,
             reference_inputs=reference_inputs,
             out=stage / "reference_board.jpg",
         )
 
         candidate_records = _render_posters(
             frame_paths=extracted,
+            candidate_specs=candidate_specs,
             stage=stage,
             output=output,
             root=root,
@@ -279,6 +195,10 @@ def build_shorts_poster_frame_proof(
         _write_poster_contact_sheet(
             stage=stage,
             out=stage / "poster_direction_contact_sheet.jpg",
+        )
+        _write_platform_preview_contact_sheet(
+            stage=stage,
+            out=stage / "platform_preview_contact_sheet.jpg",
         )
 
         accepted_probe = _probe_media(accepted_video, ffprobe_path=resolved_ffprobe)
@@ -291,10 +211,21 @@ def build_shorts_poster_frame_proof(
             ffmpeg_path=resolved_ffmpeg,
             ffprobe_path=resolved_ffprobe,
         )
+        loop_probe = _render_loop_probe(
+            accepted_video=accepted_video,
+            transition_path=stage / "transition_A.mp4",
+            stage=stage,
+            output=output,
+            root=root,
+            ffmpeg_path=resolved_ffmpeg,
+            ffprobe_path=resolved_ffprobe,
+        )
 
         reference_manifest = _reference_manifest(
             corpus=corpus,
             corpus_summary=corpus_summary,
+            references=references,
+            candidate_specs=candidate_specs,
             reference_inputs=reference_inputs,
             root=root,
             reference_board=stage / "reference_board.jpg",
@@ -315,6 +246,7 @@ def build_shorts_poster_frame_proof(
             corpus_summary=corpus_summary,
             candidate_records=candidate_records,
             transition_records=transition_records,
+            loop_probe=loop_probe,
             reference_manifest=reference_manifest,
             protected_before=protected_before,
             input_hashes=input_hashes_before,
@@ -366,10 +298,51 @@ def build_shorts_poster_frame_proof(
     }
 
 
+def _reference_entries(corpus: dict[str, Any]) -> list[dict[str, Any]]:
+    legacy = corpus.get("references")
+    native = corpus.get("native_vertical_surface_references")
+    if not isinstance(legacy, list) or not isinstance(native, list):
+        raise ShortsPosterFrameProofError("reference corpus sections are missing")
+    defaults = corpus.get("native_vertical_surface_defaults")
+    if not isinstance(defaults, dict):
+        raise ShortsPosterFrameProofError("native vertical defaults are missing")
+    observed = date.fromisoformat(str(corpus["observed_at"]))
+    entries: list[dict[str, Any]] = []
+    for raw in [*legacy, *({**defaults, **entry} for entry in native)]:
+        if not isinstance(raw, dict):
+            raise ShortsPosterFrameProofError("reference entry must be an object")
+        entry = dict(raw)
+        entry.setdefault("active_for_structure_count", True)
+        published = date.fromisoformat(str(entry["publication_date"]))
+        entry.setdefault("days_since_publish", (observed - published).days)
+        entry.setdefault("surface_type", entry["target_surface"])
+        entry.setdefault("surface_evidence_path", None)
+        entry.setdefault("visible_view_count", None)
+        entry.setdefault("surface_visible_view_text", None)
+        entry.setdefault("success_proxy_causality", False)
+        entry.setdefault("face_occupancy_ratio", None)
+        entry.setdefault("subject_position", "legacy_annotation_only")
+        entry.setdefault("subject_center_normalized", None)
+        entry.setdefault("secondary_subject_ratio", None)
+        entry.setdefault("headline_bbox_normalized", None)
+        entry.setdefault("text_line_count", int(entry["text_block_count"]))
+        entry.setdefault("text_region", entry["text_scale_and_position"])
+        entry.setdefault("background_detail_level", "legacy_annotation_only")
+        entry.setdefault(
+            "repeated_layout_usage",
+            {"same_surface_family_count": None, "interpretation": "not_observed"},
+        )
+        entries.append(entry)
+    return entries
+
+
 def validate_reference_corpus(corpus: dict[str, Any]) -> dict[str, Any]:
-    references = corpus.get("references")
-    if not isinstance(references, list) or not 18 <= len(references) <= 30:
-        raise ShortsPosterFrameProofError("reference corpus must contain 18-30 entries")
+    references = _reference_entries(corpus)
+    active_references = [
+        entry for entry in references if entry["active_for_structure_count"]
+    ]
+    if len(active_references) < 36:
+        raise ShortsPosterFrameProofError("reference corpus must contain at least 36 entries")
     required = {
         "reference_id",
         "source_type",
@@ -381,29 +354,46 @@ def validate_reference_corpus(corpus: dict[str, Any]) -> dict[str, Any]:
         "observed_at",
         "query_strategy",
         "target_surface",
+        "surface_type",
         "character_count",
         "face_orientation",
         "face_occupancy",
+        "face_occupancy_ratio",
+        "subject_position",
+        "subject_center_normalized",
+        "secondary_subject_ratio",
         "layout_family",
         "text_block_count",
+        "headline_bbox_normalized",
+        "text_line_count",
         "text_scale_and_position",
+        "text_region",
         "background_treatment",
+        "background_detail_level",
         "hook_type",
         "content_fidelity_risk",
         "translation_note",
+        "visible_view_count",
+        "days_since_publish",
+        "repeated_layout_usage",
+        "success_proxy_causality",
+        "active_for_structure_count",
     }
     ids: set[str] = set()
-    channels: set[str] = set()
     query_strategies: set[str] = set()
     targets: dict[str, int] = {}
-    family_refs: dict[str, list[dict[str, Any]]] = {}
+    family_counts: dict[str, int] = {}
+    channel_counts: dict[str, int] = {}
     publication_dates: list[date] = []
-    latest_cutoff = date.fromisoformat(str(corpus["latest_120_day_cutoff"]))
-    latest_count = 0
+    native_channels: set[str] = set()
+    native_exact_count = 0
+    recent_native_exact_count = 0
+    conventional_16_9_count = 0
+    latest_cutoff = date.fromisoformat(str(corpus["latest_180_day_cutoff"]))
     for entry in references:
-        if not isinstance(entry, dict) or required - entry.keys():
+        if required - entry.keys():
             raise ShortsPosterFrameProofError(
-                "reference entry is missing structural annotations"
+                "reference entry is missing structural or surface annotations"
             )
         reference_id = str(entry["reference_id"])
         if reference_id in ids:
@@ -413,50 +403,89 @@ def validate_reference_corpus(corpus: dict[str, Any]) -> dict[str, Any]:
             raise ShortsPosterFrameProofError("unsupported reference source_type")
         if not str(entry["public_url"]).startswith("https://"):
             raise ShortsPosterFrameProofError("reference public URL must use https")
-        channels.add(str(entry["channel"]))
+        if entry["success_proxy_causality"] is not False:
+            raise ShortsPosterFrameProofError("view proxy must not be causal proof")
+        published = date.fromisoformat(str(entry["publication_date"]))
+        if entry["active_for_structure_count"] is not True:
+            continue
+        channel = str(entry["channel"])
+        channel_counts[channel] = channel_counts.get(channel, 0) + 1
         query_strategies.add(str(entry["query_strategy"]))
         target = str(entry["target_surface"])
         targets[target] = targets.get(target, 0) + 1
-        family_refs.setdefault(str(entry["layout_family"]), []).append(entry)
-        published = date.fromisoformat(str(entry["publication_date"]))
+        family = str(entry["layout_family"])
+        family_counts[family] = family_counts.get(family, 0) + 1
         publication_dates.append(published)
-        latest_count += int(published >= latest_cutoff)
+        if target == "native_vertical_exact_youtube_search_shorts_card":
+            native_exact_count += 1
+            native_channels.add(channel)
+            recent_native_exact_count += int(published >= latest_cutoff)
+            if not entry.get("surface_evidence_path"):
+                raise ShortsPosterFrameProofError(
+                    "native exact-surface reference lacks surface evidence"
+                )
+        if target == "conventional_16_9_secondary_reference":
+            conventional_16_9_count += 1
     if len(query_strategies) < 2:
         raise ShortsPosterFrameProofError("at least two query strategies are required")
-    required_families = {spec["family_id"] for spec in CANDIDATE_SPECS}
-    if set(family_refs) != required_families:
-        raise ShortsPosterFrameProofError(
-            "reference corpus must resolve to exactly three families"
-        )
-    for family_id, entries in family_refs.items():
-        family_channels = {str(entry["channel"]) for entry in entries}
-        if len(entries) < 3 or len(family_channels) < 2:
-            raise ShortsPosterFrameProofError(
-                f"composition family lacks multi-source support: {family_id}"
-            )
+    if max(channel_counts.values()) > 3:
+        raise ShortsPosterFrameProofError("one channel exceeds the three-reference cap")
+    if native_exact_count < 12 or len(native_channels) < 6:
+        raise ShortsPosterFrameProofError("native exact-surface coverage is insufficient")
+    if recent_native_exact_count < 8:
+        raise ShortsPosterFrameProofError("recent native exact-surface coverage is insufficient")
+    if conventional_16_9_count * 2 >= len(active_references):
+        raise ShortsPosterFrameProofError("16:9 references must remain below half")
+    policy = corpus.get("success_proxy_policy", {})
+    if policy.get("view_count_is_causal_proof") is not False:
+        raise ShortsPosterFrameProofError("success proxy policy must reject causality")
+    candidate_specs = candidate_specs_from_corpus(corpus, references=references)
     return {
-        "reference_count": len(references),
-        "channel_count": len(channels),
+        "reference_count": len(active_references),
+        "stored_reference_count": len(references),
+        "inactive_duplicate_reference_count": len(references) - len(active_references),
+        "channel_count": len(channel_counts),
         "query_strategy_count": len(query_strategies),
-        "latest_120_day_count": latest_count,
+        "native_vertical_exact_surface_count": native_exact_count,
+        "native_vertical_exact_surface_channel_count": len(native_channels),
+        "recent_180_day_native_vertical_exact_surface_count": recent_native_exact_count,
+        "conventional_16_9_secondary_count": conventional_16_9_count,
+        "conventional_16_9_ratio": round(
+            conventional_16_9_count / len(active_references), 4
+        ),
+        "max_references_per_channel": max(channel_counts.values()),
         "date_coverage": [
             min(publication_dates).isoformat(),
             max(publication_dates).isoformat(),
         ],
-        "target_surfaces": targets,
-        "family_counts": {
-            key: len(value) for key, value in sorted(family_refs.items())
-        },
+        "target_surfaces": dict(sorted(targets.items())),
+        "observed_family_counts": dict(sorted(family_counts.items())),
+        "candidate_family_ids_derived_after_research": [
+            spec["family_id"] for spec in candidate_specs
+        ],
+        "success_proxy_is_causal_proof": False,
     }
 
 
-def validate_candidate_specs(specs: tuple[dict[str, Any], ...]) -> None:
+def candidate_specs_from_corpus(
+    corpus: dict[str, Any], *, references: list[dict[str, Any]] | None = None
+) -> tuple[dict[str, Any], ...]:
+    raw_specs = corpus.get("candidate_directions")
+    if not isinstance(raw_specs, list):
+        raise ShortsPosterFrameProofError("research-derived candidate directions missing")
+    specs = tuple(dict(spec) for spec in raw_specs)
+    validate_candidate_specs(specs, references=references or _reference_entries(corpus))
+    return specs
+
+
+def validate_candidate_specs(
+    specs: tuple[dict[str, Any], ...], *, references: list[dict[str, Any]]
+) -> None:
     if len(specs) != 3 or [spec["candidate_id"] for spec in specs] != ["A", "B", "C"]:
         raise ShortsPosterFrameProofError("exactly candidates A, B and C are required")
     if len({spec["family_id"] for spec in specs}) != 3:
-        raise ShortsPosterFrameProofError(
-            "candidate composition families must be distinct"
-        )
+        raise ShortsPosterFrameProofError("candidate composition families must be distinct")
+    reference_by_id = {str(entry["reference_id"]): entry for entry in references}
     sx0, sy0, sx1, sy1 = CENTER_4_5_SAFE_RECT
     for spec in specs:
         bounds = spec["essential_bounds"]
@@ -470,22 +499,34 @@ def validate_candidate_specs(specs: tuple[dict[str, Any], ...]) -> None:
                 "candidate must use one or two essential text blocks"
             )
         if "back" in str(spec["dominant_face_orientation"]):
+            raise ShortsPosterFrameProofError("dominant back-facing character is forbidden")
+        reference_ids = [str(value) for value in spec["reference_ids"]]
+        if len(reference_ids) < 3 or str(spec["primary_exemplar_id"]) not in reference_ids:
             raise ShortsPosterFrameProofError(
-                "dominant back-facing character is forbidden"
+                "candidate must map a primary exemplar and supporting references"
             )
-        if len(spec["reference_ids"]) < 3:
+        if any(reference_id not in reference_by_id for reference_id in reference_ids):
+            raise ShortsPosterFrameProofError("candidate reference mapping is unresolved")
+        channels = {reference_by_id[reference_id]["channel"] for reference_id in reference_ids}
+        if len(channels) < 2:
             raise ShortsPosterFrameProofError(
-                "candidate must map to multiple references"
+                "candidate references must cover at least two channels"
             )
+        if spec.get("speaker") != spec.get("emotional_subject"):
+            raise ShortsPosterFrameProofError(
+                "dominant emotional subject must align with the speaker"
+            )
+        if not isinstance(spec.get("primary_exemplar_proportions"), dict):
+            raise ShortsPosterFrameProofError("primary exemplar proportions missing")
 
 
 def _freeze_reference_inputs(
-    *, corpus: dict[str, Any], cache_dir: Path, fetch_missing: bool
+    *, references: list[dict[str, Any]], cache_dir: Path, fetch_missing: bool
 ) -> list[Path]:
     from PIL import Image
 
     paths: list[Path] = []
-    for entry in corpus["references"]:
+    for entry in references:
         reference_id = str(entry["reference_id"])
         target = cache_dir / f"{reference_id}.jpg"
         if not target.is_file():
@@ -528,7 +569,7 @@ def _extract_source_frames(
 ) -> dict[float, Path]:
     outputs: dict[float, Path] = {}
     for index, seconds in enumerate(timestamps, start=1):
-        out = frame_dir / f"frame_{index:02d}_{seconds:.1f}s.png"
+        out = frame_dir / f"frame_{index:03d}_{seconds:.3f}s.png"
         command = [
             ffmpeg_path,
             "-hide_banner",
@@ -543,32 +584,126 @@ def _extract_source_frames(
             "1",
             str(out),
         ]
-        _run(command, label=f"source frame {seconds:.1f}s")
-        _require_file(out, f"source frame {seconds:.1f}s")
+        _run(command, label=f"source frame {seconds:.3f}s")
+        _require_file(out, f"source frame {seconds:.3f}s")
         outputs[seconds] = out
     return outputs
 
 
+def _dense_survey_timestamps(
+    candidate_specs: tuple[dict[str, Any], ...]
+) -> tuple[float, ...]:
+    values: set[float] = set()
+    for window in SURVEY_WINDOWS.values():
+        count = int((window["end"] - window["start"]) / SURVEY_INTERVAL_SECONDS) + 1
+        values.update(
+            round(window["start"] + index * SURVEY_INTERVAL_SECONDS, 3)
+            for index in range(count)
+        )
+    for spec in candidate_specs:
+        values.update(round(float(value), 3) for value in spec["source_frame_timestamps"])
+    return tuple(sorted(values))
+
+
 def _render_posters(
-    *, frame_paths: dict[float, Path], stage: Path, output: Path, root: Path
+    *,
+    frame_paths: dict[float, Path],
+    candidate_specs: tuple[dict[str, Any], ...],
+    stage: Path,
+    output: Path,
+    root: Path,
 ) -> list[dict[str, Any]]:
     from PIL import Image
 
+    selected_seconds = {
+        round(float(value), 3)
+        for spec in candidate_specs
+        for value in spec["source_frame_timestamps"]
+    }
     frames = {
         seconds: Image.open(path).convert("RGB")
         for seconds, path in frame_paths.items()
-        if seconds in {24.0, 32.0, 36.0}
-    }
-    renderers = {
-        "A": lambda: _poster_a(frames[36.0]),
-        "B": lambda: _poster_b(frames[24.0], frames[36.0]),
-        "C": lambda: _poster_c(frames[24.0], frames[36.0]),
+        if seconds in selected_seconds
     }
     records: list[dict[str, Any]] = []
+    opened_cutouts: list[Any] = []
     try:
-        for spec in CANDIDATE_SPECS:
+        for spec in candidate_specs:
             candidate_id = spec["candidate_id"]
-            image = renderers[candidate_id]()
+            subject_assets: list[dict[str, Any]] = []
+            if candidate_id == "A":
+                hajime, mask, info = _manual_subject_cutout(
+                    frames[22.806], subject="hajime_macro"
+                )
+                opened_cutouts.extend([hajime, mask])
+                subject_assets.append(
+                    _write_subject_asset(
+                        candidate_id="A",
+                        role="hajime",
+                        cutout=hajime,
+                        mask=mask,
+                        info=info,
+                        source_timestamp=22.806,
+                        stage=stage,
+                        output=output,
+                        root=root,
+                    )
+                )
+                image = _poster_a(hajime)
+            elif candidate_id == "B":
+                hajime, hajime_mask, hajime_info = _manual_subject_cutout(
+                    frames[22.656], subject="hajime_macro"
+                )
+                noel, noel_mask, noel_info = _manual_subject_cutout(
+                    frames[25.159], subject="noel_three_quarter"
+                )
+                opened_cutouts.extend([hajime, hajime_mask, noel, noel_mask])
+                subject_assets.extend(
+                    [
+                        _write_subject_asset(
+                            candidate_id="B",
+                            role="hajime",
+                            cutout=hajime,
+                            mask=hajime_mask,
+                            info=hajime_info,
+                            source_timestamp=22.656,
+                            stage=stage,
+                            output=output,
+                            root=root,
+                        ),
+                        _write_subject_asset(
+                            candidate_id="B",
+                            role="noel_secondary",
+                            cutout=noel,
+                            mask=noel_mask,
+                            info=noel_info,
+                            source_timestamp=25.159,
+                            stage=stage,
+                            output=output,
+                            root=root,
+                        ),
+                    ]
+                )
+                image = _poster_b(noel, hajime)
+            else:
+                hajime, mask, info = _manual_subject_cutout(
+                    frames[23.556], subject="hajime_macro"
+                )
+                opened_cutouts.extend([hajime, mask])
+                subject_assets.append(
+                    _write_subject_asset(
+                        candidate_id="C",
+                        role="hajime",
+                        cutout=hajime,
+                        mask=mask,
+                        info=info,
+                        source_timestamp=23.556,
+                        stage=stage,
+                        output=output,
+                        root=root,
+                    )
+                )
+                image = _poster_c(hajime)
             if image.size != CANVAS or image.mode != "RGB":
                 raise ShortsPosterFrameProofError(
                     "poster dimensions or color mode invalid"
@@ -582,6 +717,13 @@ def _render_posters(
                 optimize=False,
                 progressive=False,
             )
+            platform_previews = _write_platform_previews(
+                image=image,
+                candidate_id=candidate_id,
+                stage=stage,
+                output=output,
+                root=root,
+            )
             records.append(
                 {
                     **spec,
@@ -591,140 +733,322 @@ def _render_posters(
                     "height": CANVAS[1],
                     "mode": "RGB",
                     "format": "JPEG",
-                    "full_9_16_preview": [180, 320],
-                    "center_4_5_preview": [160, 200],
+                    "dominant_subject": spec["speaker"],
+                    "speaker_alignment": "speaker_is_dominant_subject",
+                    "subject_assets": subject_assets,
+                    "subject_isolation_method": "Pillow manual polygon alpha matte",
+                    "temporary_segmentation_tool_used": False,
+                    "platform_previews": platform_previews,
+                    "full_9_16_preview": [405, 720],
+                    "center_4_5_preview": [320, 400],
                     "center_4_5_crop_survives": True,
+                    "youtube_verified": False,
                     "third_party_pixels_used": False,
                     "ai_face_or_expression_change": False,
                     "raw_scene_screenshot_as_finished_background": False,
+                    "rectangular_scene_screenshot_panel_used": False,
+                    "circular_scene_screenshot_inset_used": False,
                     "human_acceptance": "pending",
                 }
             )
+            image.close()
+        _write_mask_inspection(stage=stage)
     finally:
         for image in frames.values():
+            image.close()
+        for image in opened_cutouts:
             image.close()
     return records
 
 
-def _poster_a(hajime_frame: Any) -> Any:
-    from PIL import ImageDraw
+def _manual_subject_cutout(
+    source: Any, *, subject: str
+) -> tuple[Any, Any, dict[str, Any]]:
+    from PIL import Image, ImageDraw, ImageFilter
 
-    image = _gradient_canvas((16, 32, 76), (14, 126, 153))
-    draw = ImageDraw.Draw(image, "RGBA")
-    for y in range(300, 1636, 110):
-        draw.rounded_rectangle(
-            (50, y, 1030, y + 45), radius=22, fill=(255, 255, 255, 18)
-        )
-    draw.rounded_rectangle((58, 610, 1022, 1608), radius=92, fill=(4, 9, 24, 135))
-    portrait = _cover_crop(hajime_frame, (860, 900), focus=(0.53, 0.40))
-    _paste_rounded(
-        image, portrait, (110, 650), radius=78, outline=(255, 226, 73), width=18
+    if source.size != (1920, 1080):
+        raise ShortsPosterFrameProofError("subject source frame dimensions changed")
+    if subject == "hajime_macro":
+        points = [
+            (455, 0),
+            (1465, 0),
+            (1635, 115),
+            (1775, 285),
+            (1885, 535),
+            (1760, 815),
+            (1435, 1080),
+            (485, 1080),
+            (165, 815),
+            (35, 535),
+            (175, 285),
+            (320, 115),
+        ]
+        feather_radius = 5
+    elif subject == "noel_three_quarter":
+        points = [
+            (300, 0),
+            (535, 0),
+            (615, 85),
+            (625, 255),
+            (690, 345),
+            (765, 410),
+            (805, 535),
+            (815, 655),
+            (770, 790),
+            (850, 1080),
+            (125, 1080),
+            (185, 930),
+            (235, 835),
+            (225, 680),
+            (245, 520),
+            (265, 405),
+            (300, 335),
+            (260, 230),
+        ]
+        feather_radius = 3
+    else:
+        raise ShortsPosterFrameProofError(f"unsupported manual mask subject: {subject}")
+    mask = Image.new("L", source.size, 0)
+    ImageDraw.Draw(mask).polygon(points, fill=255)
+    mask = mask.filter(ImageFilter.GaussianBlur(feather_radius))
+    bbox = mask.getbbox()
+    if bbox is None:
+        raise ShortsPosterFrameProofError("manual subject mask is empty")
+    cutout_mask = mask.crop(bbox)
+    cutout = source.crop(bbox).convert("RGBA")
+    cutout.putalpha(cutout_mask)
+    histogram = cutout_mask.histogram()
+    pixel_count = cutout_mask.width * cutout_mask.height
+    return cutout, cutout_mask, {
+        "subject": subject,
+        "source_dimensions": list(source.size),
+        "crop_box": list(bbox),
+        "mask_dimensions": list(cutout_mask.size),
+        "alpha_opaque_ratio": round(histogram[255] / pixel_count, 6),
+        "alpha_feather_ratio": round(sum(histogram[1:255]) / pixel_count, 6),
+        "alpha_transparent_ratio": round(histogram[0] / pixel_count, 6),
+        "edge_feather_radius_pixels": feather_radius,
+        "person_pixels_generated_or_modified": False,
+    }
+
+
+def _write_subject_asset(
+    *,
+    candidate_id: str,
+    role: str,
+    cutout: Any,
+    mask: Any,
+    info: dict[str, Any],
+    source_timestamp: float,
+    stage: Path,
+    output: Path,
+    root: Path,
+) -> dict[str, Any]:
+    cutout_name = f"subject_{candidate_id}_{role}_rgba.png"
+    mask_name = f"subject_{candidate_id}_{role}_mask.png"
+    cutout_path = stage / cutout_name
+    mask_path = stage / mask_name
+    cutout.save(cutout_path, format="PNG", optimize=False)
+    mask.save(mask_path, format="PNG", optimize=False)
+    return {
+        "role": role,
+        "source_timestamp_seconds": source_timestamp,
+        "cutout_path": _relative(output / cutout_name, root),
+        "cutout_sha256": _sha256(cutout_path),
+        "mask_path": _relative(output / mask_name, root),
+        "mask_sha256": _sha256(mask_path),
+        "method": "Pillow manual polygon alpha matte",
+        "tool": "Pillow",
+        "license": "HPND",
+        "purpose": "alpha mask generation only",
+        **info,
+    }
+
+
+def _place_cutout(
+    canvas: Any,
+    cutout: Any,
+    *,
+    xy: tuple[int, int],
+    width: int | None = None,
+    height: int | None = None,
+    outline: tuple[int, int, int, int] = (255, 255, 255, 220),
+) -> None:
+    from PIL import Image, ImageFilter
+
+    if (width is None) == (height is None):
+        raise ShortsPosterFrameProofError("cutout placement requires width or height")
+    scale = (width / cutout.width) if width is not None else (height / cutout.height)
+    size = (round(cutout.width * scale), round(cutout.height * scale))
+    resized = cutout.resize(size, Image.Resampling.LANCZOS)
+    alpha = resized.getchannel("A")
+    expanded = alpha.filter(ImageFilter.MaxFilter(31))
+    outline_layer = Image.new("RGBA", size, outline)
+    outline_layer.putalpha(expanded)
+    canvas.paste(outline_layer, (xy[0] + 5, xy[1] + 8), outline_layer)
+    canvas.paste(resized, xy, resized)
+    resized.close()
+    outline_layer.close()
+
+
+def _write_mask_inspection(*, stage: Path) -> None:
+    from PIL import Image, ImageDraw
+
+    paths = sorted(stage.glob("subject_*_rgba.png"))
+    cell_w, cell_h = 270, 520
+    canvas = Image.new("RGB", (cell_w * len(paths), cell_h), (18, 20, 24))
+    draw = ImageDraw.Draw(canvas)
+    font = _project_font(19)
+    for index, path in enumerate(paths):
+        x0 = index * cell_w
+        checker = Image.new("RGB", (cell_w, 430), (225, 225, 225))
+        checker_draw = ImageDraw.Draw(checker)
+        for y in range(0, 430, 24):
+            for x in range(0, cell_w, 24):
+                if (x // 24 + y // 24) % 2:
+                    checker_draw.rectangle((x, y, x + 23, y + 23), fill=(180, 180, 180))
+        with Image.open(path) as source:
+            rgba = source.convert("RGBA")
+            scale = min(240 / rgba.width, 360 / rgba.height)
+            size = (round(rgba.width * scale), round(rgba.height * scale))
+            large = rgba.resize(size, Image.Resampling.LANCZOS)
+            checker.paste(large, ((cell_w - size[0]) // 2, 28), large)
+            tiny_scale = min(80 / rgba.width, 120 / rgba.height)
+            tiny_size = (round(rgba.width * tiny_scale), round(rgba.height * tiny_scale))
+            tiny = rgba.resize(tiny_size, Image.Resampling.LANCZOS)
+            checker.paste(tiny, (cell_w - tiny_size[0] - 12, 430 - tiny_size[1] - 12), tiny)
+            large.close()
+            tiny.close()
+            rgba.close()
+        canvas.paste(checker, (x0, 0))
+        draw.text((x0 + 8, 448), path.stem, font=font, fill=(245, 245, 245))
+        draw.text((x0 + 8, 480), "large edge + reduced edge", font=font, fill=(185, 195, 210))
+        checker.close()
+    canvas.save(
+        stage / "subject_mask_inspection.jpg",
+        format="JPEG",
+        quality=94,
+        subsampling=0,
+        optimize=False,
     )
-    font = _project_font(178, weight="Black")
+
+
+def _poster_a(hajime_cutout: Any) -> Any:
+    from PIL import Image, ImageDraw
+
+    image = Image.new("RGBA", CANVAS, (10, 91, 116, 255))
+    draw = ImageDraw.Draw(image, "RGBA")
+    draw.ellipse((120, 245, 960, 1085), fill=(255, 219, 72, 235))
+    draw.polygon(
+        [(0, 1180), (270, 1040), (1080, 1300), (1080, 1920), (0, 1920)],
+        fill=(5, 45, 72, 255),
+    )
+    for x in (95, 250, 820, 965):
+        draw.ellipse((x - 28, 590, x + 28, 646), fill=(255, 255, 255, 90))
+    _place_cutout(
+        image,
+        hajime_cutout,
+        xy=(-150, 720),
+        width=1380,
+        outline=(255, 255, 255, 225),
+    )
+    font = _project_font(184, weight="Black")
     _draw_centered_text(
         draw,
         ["来ねぇ!!"],
-        center=(540, 465),
+        center=(540, 445),
         font=font,
-        fill=(255, 244, 91),
-        stroke_fill=(7, 15, 39),
-        stroke_width=18,
+        fill=(255, 255, 255),
+        stroke_fill=(4, 38, 58),
+        stroke_width=19,
         spacing=0,
     )
-    return image
+    return image.convert("RGB")
 
 
-def _poster_b(noel_frame: Any, hajime_frame: Any) -> Any:
-    from PIL import ImageDraw
+def _poster_b(noel_cutout: Any, hajime_cutout: Any) -> Any:
+    from PIL import Image, ImageDraw
 
-    image = _gradient_canvas((88, 18, 74), (19, 49, 97))
+    image = Image.new("RGBA", CANVAS, (242, 87, 111, 255))
     draw = ImageDraw.Draw(image, "RGBA")
+    draw.polygon([(0, 0), (1080, 0), (1080, 720), (0, 900)], fill=(255, 239, 196, 255))
     draw.polygon(
-        [(0, 570), (540, 640), (540, 1635), (0, 1635)], fill=(239, 77, 130, 230)
+        [(0, 1060), (1080, 810), (1080, 1920), (0, 1920)],
+        fill=(35, 45, 83, 255),
     )
-    draw.polygon(
-        [(540, 640), (1080, 570), (1080, 1635), (540, 1635)], fill=(255, 190, 60, 235)
+    draw.ellipse((650, 875, 1240, 1465), fill=(255, 205, 73, 210))
+    _place_cutout(
+        image,
+        noel_cutout,
+        xy=(-100, 680),
+        height=990,
+        outline=(255, 255, 255, 210),
     )
-    draw.polygon(
-        [(500, 600), (580, 590), (550, 1635), (510, 1635)], fill=(255, 255, 255, 220)
-    )
-    noel = _cover_crop(noel_frame, (470, 900), focus=(0.52, 0.40))
-    hajime = _cover_crop(hajime_frame, (470, 900), focus=(0.53, 0.40))
-    _paste_rounded(image, noel, (45, 655), radius=58, outline=(255, 255, 255), width=14)
-    _paste_rounded(
-        image, hajime, (565, 655), radius=58, outline=(255, 255, 255), width=14
+    _place_cutout(
+        image,
+        hajime_cutout,
+        xy=(175, 900),
+        width=1040,
+        outline=(255, 235, 95, 235),
     )
     font = _project_font(142, weight="Black")
     _draw_centered_text(
         draw,
         ["なんで", "来なかった!?"],
-        center=(540, 455),
+        center=(540, 460),
         font=font,
-        fill=(255, 255, 255),
-        stroke_fill=(48, 10, 43),
+        fill=(43, 49, 77),
+        stroke_fill=(255, 255, 255),
         stroke_width=17,
         spacing=-8,
     )
-    return image
+    return image.convert("RGB")
 
 
-def _poster_c(noel_frame: Any, hajime_frame: Any) -> Any:
-    from PIL import ImageDraw
+def _poster_c(hajime_cutout: Any) -> Any:
+    from PIL import Image, ImageDraw
 
-    image = _gradient_canvas((43, 16, 75), (111, 42, 120))
+    image = Image.new("RGBA", CANVAS, (24, 24, 57, 255))
     draw = ImageDraw.Draw(image, "RGBA")
-    center = (540, 1120)
-    for index in range(24):
-        angle = math.tau * index / 24
-        inner = 260
-        outer = 760
-        p1 = (
-            center[0] + math.cos(angle - 0.035) * inner,
-            center[1] + math.sin(angle - 0.035) * inner,
-        )
-        p2 = (
-            center[0] + math.cos(angle + 0.035) * inner,
-            center[1] + math.sin(angle + 0.035) * inner,
-        )
-        p3 = (
-            center[0] + math.cos(angle + 0.02) * outer,
-            center[1] + math.sin(angle + 0.02) * outer,
-        )
-        p4 = (
-            center[0] + math.cos(angle - 0.02) * outer,
-            center[1] + math.sin(angle - 0.02) * outer,
-        )
-        draw.polygon([p1, p2, p3, p4], fill=(255, 255, 255, 13))
-    draw.rounded_rectangle((55, 600, 945, 1605), radius=110, fill=(16, 8, 35, 150))
-    noel = _cover_crop(noel_frame, (760, 900), focus=(0.52, 0.40))
-    _paste_rounded(image, noel, (95, 650), radius=90, outline=(211, 145, 255), width=18)
-    hajime = _cover_crop(hajime_frame, (300, 300), focus=(0.53, 0.38))
-    _paste_circle(image, hajime, (700, 1210), outline=(255, 225, 81), width=18)
-    font = _project_font(112, weight="Black")
+    draw.polygon(
+        [(545, 0), (1080, 0), (1080, 1180), (725, 1050), (410, 260)],
+        fill=(255, 207, 67, 255),
+    )
+    draw.polygon(
+        [(0, 1340), (550, 1090), (1080, 1390), (1080, 1920), (0, 1920)],
+        fill=(11, 103, 116, 255),
+    )
+    draw.ellipse((670, 220, 1020, 570), fill=(255, 255, 255, 55))
+    _place_cutout(
+        image,
+        hajime_cutout,
+        xy=(-285, 760),
+        width=1260,
+        outline=(255, 255, 255, 225),
+    )
+    first_font = _project_font(148, weight="Black")
     _draw_centered_text(
         draw,
-        ["待ってたんすよ!!"],
-        center=(540, 445),
-        font=font,
-        fill=(255, 243, 111),
-        stroke_fill=(42, 11, 70),
+        ["ずっと"],
+        center=(735, 380),
+        font=first_font,
+        fill=(29, 31, 64),
+        stroke_fill=(255, 255, 255),
         stroke_width=16,
         spacing=0,
     )
-    return image
-
-
-def _gradient_canvas(top: tuple[int, int, int], bottom: tuple[int, int, int]) -> Any:
-    from PIL import Image
-
-    image = Image.new("RGB", CANVAS)
-    pixels = image.load()
-    for y in range(CANVAS[1]):
-        ratio = y / (CANVAS[1] - 1)
-        color = tuple(round(a * (1 - ratio) + b * ratio) for a, b in zip(top, bottom))
-        for x in range(CANVAS[0]):
-            pixels[x, y] = color
-    return image
+    second_font = _project_font(105, weight="Black")
+    _draw_centered_text(
+        draw,
+        ["待ってたんすよ!!"],
+        center=(535, 595),
+        font=second_font,
+        fill=(255, 255, 255),
+        stroke_fill=(24, 24, 57),
+        stroke_width=15,
+        spacing=0,
+    )
+    return image.convert("RGB")
 
 
 def _project_font(size: int, *, weight: str = "Bold") -> Any:
@@ -755,51 +1079,6 @@ def _cover_crop(
     left = min(max(0, focus_x - width // 2), resized.width - width)
     top = min(max(0, focus_y - height // 2), resized.height - height)
     return resized.crop((left, top, left + width, top + height))
-
-
-def _paste_rounded(
-    canvas: Any,
-    source: Any,
-    xy: tuple[int, int],
-    *,
-    radius: int,
-    outline: tuple[int, int, int],
-    width: int,
-) -> None:
-    from PIL import Image, ImageDraw
-
-    mask = Image.new("L", source.size, 0)
-    ImageDraw.Draw(mask).rounded_rectangle(
-        (0, 0, source.width - 1, source.height - 1), radius=radius, fill=255
-    )
-    canvas.paste(source, xy, mask)
-    draw = ImageDraw.Draw(canvas)
-    draw.rounded_rectangle(
-        (xy[0], xy[1], xy[0] + source.width - 1, xy[1] + source.height - 1),
-        radius=radius,
-        outline=outline,
-        width=width,
-    )
-
-
-def _paste_circle(
-    canvas: Any,
-    source: Any,
-    xy: tuple[int, int],
-    *,
-    outline: tuple[int, int, int],
-    width: int,
-) -> None:
-    from PIL import Image, ImageDraw
-
-    mask = Image.new("L", source.size, 0)
-    ImageDraw.Draw(mask).ellipse((0, 0, source.width - 1, source.height - 1), fill=255)
-    canvas.paste(source, xy, mask)
-    ImageDraw.Draw(canvas).ellipse(
-        (xy[0], xy[1], xy[0] + source.width - 1, xy[1] + source.height - 1),
-        outline=outline,
-        width=width,
-    )
 
 
 def _draw_centered_text(
@@ -852,48 +1131,167 @@ def _write_poster_contact_sheet(*, stage: Path, out: Path) -> None:
     canvas.save(out, format="JPEG", quality=94, subsampling=0, optimize=False)
 
 
-def _write_source_contact_sheet(
-    frames: dict[float, Path], out: Path, *, selected_seconds: set[float]
+def _write_platform_previews(
+    *, image: Any, candidate_id: str, stage: Path, output: Path, root: Path
+) -> dict[str, Any]:
+    from PIL import Image, ImageDraw
+
+    tile_name = f"preview_{candidate_id}_channel_search_tile.jpg"
+    center_name = f"preview_{candidate_id}_center_4_5.jpg"
+    ui_name = f"preview_{candidate_id}_shorts_ui_overlay.jpg"
+    tile_path = stage / tile_name
+    center_path = stage / center_name
+    ui_path = stage / ui_name
+
+    tile = image.resize((405, 720), Image.Resampling.LANCZOS)
+    tile.save(tile_path, format="JPEG", quality=94, subsampling=0, optimize=False)
+    center = image.crop(CENTER_4_5_SAFE_RECT).resize(
+        (320, 400), Image.Resampling.LANCZOS
+    )
+    center.save(center_path, format="JPEG", quality=94, subsampling=0, optimize=False)
+    ui = tile.convert("RGBA")
+    draw = ImageDraw.Draw(ui, "RGBA")
+    draw.rounded_rectangle((16, 14, 150, 54), radius=18, fill=(0, 0, 0, 130))
+    draw.ellipse((22, 22, 40, 40), fill=(255, 255, 255, 220))
+    draw.rounded_rectangle((322, 12, 389, 52), radius=18, fill=(0, 0, 0, 130))
+    for y in (255, 340, 425, 510):
+        draw.ellipse((349, y, 389, y + 40), fill=(0, 0, 0, 145))
+        draw.ellipse((359, y + 10, 379, y + 30), outline=(255, 255, 255, 230), width=3)
+    draw.rounded_rectangle((14, 615, 335, 704), radius=14, fill=(0, 0, 0, 155))
+    draw.rounded_rectangle((28, 639, 245, 652), radius=6, fill=(255, 255, 255, 215))
+    draw.rounded_rectangle((28, 666, 292, 678), radius=6, fill=(255, 255, 255, 145))
+    ui.convert("RGB").save(
+        ui_path, format="JPEG", quality=94, subsampling=0, optimize=False
+    )
+    tile.close()
+    center.close()
+    ui.close()
+    return {
+        "channel_search_tile": {
+            "path": _relative(output / tile_name, root),
+            "sha256": _sha256(tile_path),
+            "dimensions": [405, 720],
+            "basis": "observed public YouTube search Shorts card surface",
+        },
+        "center_4_5_heuristic": {
+            "path": _relative(output / center_name, root),
+            "sha256": _sha256(center_path),
+            "dimensions": [320, 400],
+            "official_guarantee": False,
+        },
+        "shorts_playback_ui_overlay": {
+            "path": _relative(output / ui_name, root),
+            "sha256": _sha256(ui_path),
+            "dimensions": [405, 720],
+            "approximation": True,
+        },
+    }
+
+
+def _write_platform_preview_contact_sheet(*, stage: Path, out: Path) -> None:
+    from PIL import Image, ImageDraw
+
+    canvas = Image.new("RGB", (1080, 1620), (13, 16, 22))
+    draw = ImageDraw.Draw(canvas)
+    heading = _project_font(30)
+    label = _project_font(21)
+    for row, candidate_id in enumerate(("A", "B", "C")):
+        y0 = row * 540
+        draw.text((18, y0 + 12), f"{candidate_id} platform previews", font=heading, fill=(255, 255, 255))
+        with Image.open(stage / f"preview_{candidate_id}_channel_search_tile.jpg") as source:
+            tile = source.convert("RGB").resize((270, 480), Image.Resampling.LANCZOS)
+        with Image.open(stage / f"preview_{candidate_id}_center_4_5.jpg") as source:
+            center = source.convert("RGB").resize((320, 400), Image.Resampling.LANCZOS)
+        with Image.open(stage / f"preview_{candidate_id}_shorts_ui_overlay.jpg") as source:
+            ui = source.convert("RGB").resize((270, 480), Image.Resampling.LANCZOS)
+        canvas.paste(tile, (20, y0 + 56))
+        canvas.paste(center, (380, y0 + 96))
+        canvas.paste(ui, (790, y0 + 56))
+        draw.text((54, y0 + 506), "channel / search", font=label, fill=(205, 214, 228))
+        draw.text((405, y0 + 506), "center 4:5 heuristic", font=label, fill=(205, 214, 228))
+        draw.text((820, y0 + 506), "Shorts UI overlay", font=label, fill=(205, 214, 228))
+        tile.close()
+        center.close()
+        ui.close()
+    canvas.save(out, format="JPEG", quality=94, subsampling=0, optimize=False)
+
+
+def _write_expression_contact_sheets(
+    *,
+    frames: dict[float, Path],
+    stage: Path,
+    candidate_specs: tuple[dict[str, Any], ...],
 ) -> None:
     from PIL import Image, ImageDraw
 
     tile_w, image_h, label_h = 384, 216, 44
-    canvas = Image.new("RGB", (tile_w * 5, (image_h + label_h) * 3), (14, 17, 23))
-    draw = ImageDraw.Draw(canvas)
     font = _project_font(25)
-    for index, (seconds, path) in enumerate(frames.items()):
-        with Image.open(path) as source:
-            small = source.convert("RGB").resize((tile_w, image_h))
-        col, row = index % 5, index // 5
-        x, y = col * tile_w, row * (image_h + label_h)
-        canvas.paste(small, (x, y))
-        selected = seconds in selected_seconds
-        color = (255, 224, 77) if selected else (213, 220, 232)
-        label = f"{seconds:.1f}s" + ("  selected source" if selected else "")
-        draw.rectangle(
-            (x, y, x + tile_w - 1, y + image_h + label_h - 1),
-            outline=color,
-            width=5 if selected else 2,
+    for spec in candidate_specs:
+        candidate_id = str(spec["candidate_id"])
+        window = SURVEY_WINDOWS[candidate_id]
+        selected_seconds = {
+            round(float(value), 3) for value in spec["source_frame_timestamps"]
+        }
+        window_seconds = [
+            seconds
+            for seconds in frames
+            if window["start"] - 0.001 <= seconds <= window["end"] + 0.001
+        ]
+        fallback_seconds = sorted(selected_seconds - set(window_seconds))
+        ordered_seconds = [*fallback_seconds, *window_seconds]
+        rows = math.ceil(len(ordered_seconds) / 5)
+        canvas = Image.new(
+            "RGB", (tile_w * 5, (image_h + label_h) * rows), (14, 17, 23)
         )
-        draw.text((x + 10, y + image_h + 6), label, font=font, fill=color)
-    canvas.save(out, format="JPEG", quality=92, subsampling=0, optimize=False)
+        draw = ImageDraw.Draw(canvas)
+        for index, seconds in enumerate(ordered_seconds):
+            with Image.open(frames[seconds]) as source:
+                small = source.convert("RGB").resize((tile_w, image_h))
+            col, row = index % 5, index // 5
+            x, y = col * tile_w, row * (image_h + label_h)
+            canvas.paste(small, (x, y))
+            selected = seconds in selected_seconds
+            fallback = seconds in fallback_seconds
+            color = (255, 224, 77) if selected else (213, 220, 232)
+            label = f"{candidate_id} {seconds:.3f}s"
+            if selected:
+                label += "  selected"
+            if fallback:
+                label += "  nearest frontal fallback"
+            draw.rectangle(
+                (x, y, x + tile_w - 1, y + image_h + label_h - 1),
+                outline=color,
+                width=5 if selected else 2,
+            )
+            draw.text((x + 10, y + image_h + 6), label, font=font, fill=color)
+        canvas.save(
+            stage / f"expression_contact_sheet_{candidate_id}.jpg",
+            format="JPEG",
+            quality=92,
+            subsampling=0,
+            optimize=False,
+        )
 
 
 def _write_reference_board(
-    *, corpus: dict[str, Any], reference_inputs: list[Path], out: Path
+    *, references: list[dict[str, Any]], reference_inputs: list[Path], out: Path
 ) -> None:
     from PIL import Image, ImageDraw
 
-    tile_w, image_h, label_h = 300, 170, 52
-    canvas = Image.new("RGB", (tile_w * 4, (image_h + label_h) * 6), (17, 20, 24))
+    cols = 6
+    tile_w, image_h, label_h = 180, 320, 66
+    rows = math.ceil(len(references) / cols)
+    canvas = Image.new(
+        "RGB", (tile_w * cols, (image_h + label_h) * rows), (17, 20, 24)
+    )
     draw = ImageDraw.Draw(canvas)
-    font = _project_font(17)
-    for index, (entry, path) in enumerate(zip(corpus["references"], reference_inputs)):
+    font = _project_font(14)
+    for index, (entry, path) in enumerate(zip(references, reference_inputs)):
         with Image.open(path) as source:
             small = _cover_crop(
                 source.convert("RGB"), (tile_w, image_h), focus=(0.5, 0.5)
             )
-        col, row = index % 4, index // 4
+        col, row = index % cols, index // cols
         x, y = col * tile_w, row * (image_h + label_h)
         canvas.paste(small, (x, y))
         draw.rectangle(
@@ -902,13 +1300,18 @@ def _write_reference_board(
             width=2,
         )
         target = (
-            "native 9:16"
-            if "native_vertical" in entry["target_surface"]
-            else "16:9 -> 9:16"
+            "exact search 9:16"
+            if entry["target_surface"]
+            == "native_vertical_exact_youtube_search_shorts_card"
+            else (
+                "older native 9:16"
+                if "native_vertical" in entry["target_surface"]
+                else "16:9 secondary"
+            )
         )
         draw.text(
             (x + 8, y + image_h + 4),
-            f"{entry['reference_id']}  {entry['layout_family']}",
+            f"{entry['reference_id']}  {entry['layout_family'][:20]}",
             font=font,
             fill=(255, 255, 255),
         )
@@ -927,6 +1330,10 @@ def _render_transitions(
     ffprobe_path: str,
 ) -> list[dict[str, Any]]:
     start = max(0.0, accepted_duration - TAIL_DURATION_SECONDS)
+    transition_offset = TAIL_DURATION_SECONDS - TRANSITION_DISSOLVE_SECONDS
+    proof_duration = TAIL_DURATION_SECONDS + END_CAP_DURATION_SECONDS - TRANSITION_DISSOLVE_SECONDS
+    audio_fade_start = TAIL_DURATION_SECONDS - AUDIO_FADE_SECONDS
+    audio_pad_seconds = proof_duration - TAIL_DURATION_SECONDS
     records: list[dict[str, Any]] = []
     for candidate_id in ("A", "B", "C"):
         poster = stage / f"poster_{candidate_id}_1080x1920.jpg"
@@ -936,11 +1343,12 @@ def _render_transitions(
             "scale=1080:1920,setsar=1,fps=30,format=yuv420p[v0];"
             f"[1:v]trim=duration={END_CAP_DURATION_SECONDS:.2f},setpts=PTS-STARTPTS,"
             "scale=1080:1920,setsar=1,fps=30,format=yuv420p[v1];"
-            "[v0][v1]concat=n=2:v=1:a=0[v];"
+            f"[v0][v1]xfade=transition=fade:duration={TRANSITION_DISSOLVE_SECONDS:.2f}:"
+            f"offset={transition_offset:.2f}[v];"
             f"[0:a]atrim=duration={TAIL_DURATION_SECONDS:.2f},asetpts=PTS-STARTPTS,"
-            "aformat=sample_rates=48000:channel_layouts=stereo[a0];"
-            f"anullsrc=r=48000:cl=stereo,atrim=duration={END_CAP_DURATION_SECONDS:.2f},"
-            "asetpts=PTS-STARTPTS[a1];[a0][a1]concat=n=2:v=0:a=1[a]"
+            "aformat=sample_rates=48000:channel_layouts=stereo,"
+            f"afade=t=out:st={audio_fade_start:.2f}:d={AUDIO_FADE_SECONDS:.2f},"
+            f"apad=pad_dur={audio_pad_seconds:.2f},atrim=duration={proof_duration:.2f}[a]"
         )
         command = [
             ffmpeg_path,
@@ -981,14 +1389,14 @@ def _render_transitions(
             "-threads",
             "1",
             "-t",
-            f"{TAIL_DURATION_SECONDS + END_CAP_DURATION_SECONDS:.2f}",
+            f"{proof_duration:.2f}",
             str(out),
         ]
         _run(command, label=f"transition {candidate_id}")
         probe = _probe_media(out, ffprobe_path=ffprobe_path)
         if probe["width"] != 1080 or probe["height"] != 1920:
             raise ShortsPosterFrameProofError("transition aspect or dimensions invalid")
-        if abs(float(probe["duration_seconds"]) - 2.40) > 0.12:
+        if abs(float(probe["duration_seconds"]) - proof_duration) > 0.12:
             raise ShortsPosterFrameProofError("transition duration outside tolerance")
         decode = [
             ffmpeg_path,
@@ -1012,14 +1420,98 @@ def _render_transitions(
                 "height": probe["height"],
                 "narrative_tail_seconds": TAIL_DURATION_SECONDS,
                 "poster_end_cap_seconds": END_CAP_DURATION_SECONDS,
-                "video_treatment": "hard_cut_to_shared_static_poster_end_cap",
-                "audio_treatment": "accepted_narrative_audio_then_intentional_silence_in_end_cap",
+                "dissolve_seconds": TRANSITION_DISSOLVE_SECONDS,
+                "fully_static_hold_seconds": round(
+                    END_CAP_DURATION_SECONDS - TRANSITION_DISSOLVE_SECONDS, 2
+                ),
+                "video_treatment": "shared_short_dissolve_to_static_poster_end_cap",
+                "audio_treatment": "accepted narrative tail with 0.16s fade; only the final hold remains silent",
+                "shared_treatment_id": "dissolve_0_12_poster_0_50_audio_fade_0_16",
                 "full_decode": "passed",
                 "review_only": True,
                 "replaces_accepted_video": False,
             }
         )
     return records
+
+
+def _render_loop_probe(
+    *,
+    accepted_video: Path,
+    transition_path: Path,
+    stage: Path,
+    output: Path,
+    root: Path,
+    ffmpeg_path: str,
+    ffprobe_path: str,
+) -> dict[str, Any]:
+    out = stage / "loop_probe_A_tail_poster_start.mp4"
+    first_loop_seconds = 0.80
+    filter_complex = (
+        "[0:v]setpts=PTS-STARTPTS,scale=1080:1920,setsar=1,fps=30,format=yuv420p[v0];"
+        f"[1:v]trim=duration={first_loop_seconds:.2f},setpts=PTS-STARTPTS,"
+        "scale=1080:1920,setsar=1,fps=30,format=yuv420p[v1];"
+        "[v0][v1]concat=n=2:v=1:a=0[v];"
+        "[0:a]asetpts=PTS-STARTPTS,aformat=sample_rates=48000:channel_layouts=stereo[a0];"
+        f"[1:a]atrim=duration={first_loop_seconds:.2f},asetpts=PTS-STARTPTS,"
+        "aformat=sample_rates=48000:channel_layouts=stereo[a1];"
+        "[a0][a1]concat=n=2:v=0:a=1[a]"
+    )
+    command = [
+        ffmpeg_path,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-y",
+        "-i",
+        str(transition_path),
+        "-i",
+        str(accepted_video),
+        "-filter_complex",
+        filter_complex,
+        "-map",
+        "[v]",
+        "-map",
+        "[a]",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "medium",
+        "-crf",
+        "18",
+        "-pix_fmt",
+        "yuv420p",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "192k",
+        "-movflags",
+        "+faststart",
+        "-map_metadata",
+        "-1",
+        "-threads",
+        "1",
+        str(out),
+    ]
+    _run(command, label="tail-poster-loop-start probe")
+    probe = _probe_media(out, ffprobe_path=ffprobe_path)
+    _run(
+        [ffmpeg_path, "-hide_banner", "-loglevel", "error", "-i", str(out), "-f", "null", "-"],
+        label="tail-poster-loop-start full decode",
+    )
+    return {
+        "candidate_id": "A",
+        "path": _relative(output / out.name, root),
+        "sha256": _sha256(out),
+        "duration_seconds": probe["duration_seconds"],
+        "width": probe["width"],
+        "height": probe["height"],
+        "first_loop_seconds": first_loop_seconds,
+        "shared_transition_treatment": "dissolve_0_12_poster_0_50_audio_fade_0_16",
+        "full_decode": "passed",
+        "browser_observation": "pending",
+        "human_naturalness_acceptance": "pending",
+    }
 
 
 def _probe_media(path: Path, *, ffprobe_path: str) -> dict[str, Any]:
@@ -1049,12 +1541,14 @@ def _reference_manifest(
     *,
     corpus: dict[str, Any],
     corpus_summary: dict[str, Any],
+    references: list[dict[str, Any]],
+    candidate_specs: tuple[dict[str, Any], ...],
     reference_inputs: list[Path],
     root: Path,
     reference_board: Path,
 ) -> dict[str, Any]:
     entries = []
-    for entry, path in zip(corpus["references"], reference_inputs):
+    for entry, path in zip(references, reference_inputs):
         entries.append(
             {
                 **entry,
@@ -1064,17 +1558,21 @@ def _reference_manifest(
             }
         )
     families = []
-    for spec in CANDIDATE_SPECS:
-        family_entries = [
-            entry for entry in entries if entry["layout_family"] == spec["family_id"]
-        ]
+    entry_by_id = {entry["reference_id"]: entry for entry in entries}
+    for spec in candidate_specs:
+        family_entries = [entry_by_id[value] for value in spec["reference_ids"]]
         families.append(
             {
                 "family_id": spec["family_id"],
                 "family_name_ja": spec["family_name_ja"],
                 "reference_ids": [entry["reference_id"] for entry in family_entries],
+                "primary_exemplar_id": spec["primary_exemplar_id"],
+                "primary_exemplar_proportions": spec[
+                    "primary_exemplar_proportions"
+                ],
                 "channels": sorted({entry["channel"] for entry in family_entries}),
                 "recurring_relationships": spec["adopted_relationships"],
+                "derived_after_surface_research": True,
             }
         )
     return {
@@ -1083,6 +1581,8 @@ def _reference_manifest(
         "source_priority": corpus["reference_priority"],
         "query_strategies": corpus["query_strategies"],
         "collection_stop_reason": corpus["collection_stop_reason"],
+        "surface_observation": corpus["surface_observation"],
+        "success_proxy_policy": corpus["success_proxy_policy"],
         "summary": corpus_summary,
         "families": families,
         "references": entries,
@@ -1100,6 +1600,8 @@ def _reference_manifest(
             "retained_source_pixels_only": True,
         },
         "tracked_reference_corpus": "docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json",
+        "official_platform_reference": "https://support.google.com/youtube/answer/10343433?co=GENIE.Platform%3DAndroid&hl=ja",
+        "youtube_verified": False,
     }
 
 
@@ -1115,6 +1617,7 @@ def _build_readback(
     corpus_summary: dict[str, Any],
     candidate_records: list[dict[str, Any]],
     transition_records: list[dict[str, Any]],
+    loop_probe: dict[str, Any],
     reference_manifest: dict[str, Any],
     protected_before: dict[str, Any],
     input_hashes: dict[str, str],
@@ -1141,6 +1644,28 @@ def _build_readback(
         "center_4_5_safe_rect": {"x0": 0, "y0": 285, "x1": 1080, "y1": 1635},
         "candidates": candidate_records,
         "transitions": transition_records,
+        "transition_treatment": {
+            "selected_shared_treatment_id": "dissolve_0_12_poster_0_50_audio_fade_0_16",
+            "comparison_options": [
+                {
+                    "id": "hard_cut_poster_0_45",
+                    "disposition": "not_selected",
+                    "reason": "preserved the abrupt stop signal from the superseded proof",
+                },
+                {
+                    "id": "dissolve_0_12_poster_0_50_audio_fade_0_16",
+                    "disposition": "selected_for_shared_review_proof",
+                    "reason": "keeps a readable poster hold while shortening and softening the stop before loop restart",
+                },
+                {
+                    "id": "dissolve_0_12_poster_0_65_audio_fade_0_16",
+                    "disposition": "not_selected",
+                    "reason": "longer static hold increased the perceived loop pause",
+                },
+            ],
+            "loop_probe": loop_probe,
+            "human_naturalness_acceptance": "pending",
+        },
         "reference_corpus": {
             **corpus_summary,
             "manifest_path": _relative(final_paths["reference_manifest"], root),
@@ -1152,11 +1677,43 @@ def _build_readback(
         "source_frame_survey": {
             "retained_source_path": _relative(source_video, root),
             "retained_source_sha256": _sha256(source_video),
-            "survey_timestamps_seconds": list(SURVEY_TIMESTAMPS),
-            "selected_timestamps_seconds": [24.0, 36.0],
+            "interval_seconds": SURVEY_INTERVAL_SECONDS,
+            "windows": SURVEY_WINDOWS,
+            "survey_timestamps_seconds": list(
+                _dense_survey_timestamps(tuple(candidate_records))
+            ),
+            "selected_timestamps_seconds": {
+                record["candidate_id"]: record["source_frame_timestamps"]
+                for record in candidate_records
+            },
             "dominant_back_facing_frames_rejected": True,
+            "fallback_policy": "nearest truthful frontal complaint frame from the same accepted cut when the exact spoken interval is back-facing",
             "visual_inspection_required_and_performed": True,
-            "contact_sheet": _relative(final_paths["source_contact_sheet"], root),
+            "expression_contact_sheets": {
+                candidate_id: _relative(
+                    output / f"expression_contact_sheet_{candidate_id}.jpg", root
+                )
+                for candidate_id in ("A", "B", "C")
+            },
+        },
+        "subject_isolation": {
+            "method": "Pillow manual polygon alpha matte",
+            "tool": "Pillow",
+            "license": "HPND",
+            "temporary_segmentation_tool_used": False,
+            "person_pixels_generated_or_modified": False,
+            "inspection_contact_sheet": _relative(
+                output / "subject_mask_inspection.jpg", root
+            ),
+            "full_resolution_masks_and_reduced_edge_previews_available": True,
+        },
+        "platform_preview_contract": {
+            "channel_search_tile_observed_surface": True,
+            "center_4_5_is_project_heuristic_not_official_guarantee": True,
+            "shorts_playback_ui_overlay_is_approximation": True,
+            "youtube_verified": False,
+            "official_reference": "https://support.google.com/youtube/answer/10343433?co=GENIE.Platform%3DAndroid&hl=ja",
+            "contact_sheet": _relative(output / "platform_preview_contact_sheet.jpg", root),
         },
         "accepted_video": {
             "path": _relative(accepted_video, root),
@@ -1170,6 +1727,12 @@ def _build_readback(
             "selected_thumbnail": publish["selected_thumbnail"],
             "recommended_direction_id": None,
             "returned_as_candidates": False,
+        },
+        "superseded_poster_candidates": {
+            "status": "supervisor_reframe_required",
+            "human_rejection": False,
+            "returned_as_candidates": False,
+            "candidates": list(SUPERSEDED_CANDIDATES),
         },
         "metadata_copy": {
             "title": publish["title"],
@@ -1226,20 +1789,25 @@ def _render_html(readback: dict[str, Any]) -> str:
         candidate_sections.append(
             f"""<figure class="candidate" data-candidate="{candidate_id}">
 <figcaption><strong>{candidate_id}</strong> — {escape(candidate["family_name_ja"])}</figcaption>
+<p class="mapping">話者: {escape(candidate["speaker"])} / primary: {escape(candidate["primary_exemplar_id"])} / {escape(candidate["fit_reason"])}</p>
 <img class="poster-main" id="poster-{candidate_id}" src="{poster_name}" alt="候補{candidate_id} {escape(candidate["family_name_ja"])}">
-<div class="reduced"><div><span>180×320</span><img class="preview-9x16" src="{poster_name}" alt="候補{candidate_id} 180x320"></div>
-<div><span>center 4:5 / 160×200</span><img class="preview-4x5" src="{poster_name}" alt="候補{candidate_id} center 4:5"></div></div>
+<div class="platform-previews">
+<div><span>channel / search 405×720</span><img src="preview_{candidate_id}_channel_search_tile.jpg" alt="候補{candidate_id} channel search tile"></div>
+<div><span>center 4:5 heuristic</span><img src="preview_{candidate_id}_center_4_5.jpg" alt="候補{candidate_id} center 4:5 heuristic"></div>
+<div><span>Shorts playback UI overlay</span><img src="preview_{candidate_id}_shorts_ui_overlay.jpg" alt="候補{candidate_id} Shorts UI overlay"></div>
+</div>
 </figure>"""
         )
         transition_sections.append(
-            f"""<figure><figcaption><strong>{candidate_id}</strong> — 末尾1.80秒＋poster 0.60秒</figcaption>
+            f"""<figure><figcaption><strong>{candidate_id}</strong> — 末尾1.75秒＋0.12秒dissolve＋poster 0.50秒</figcaption>
 <video id="transition-{candidate_id}" controls preload="metadata" src="transition_{candidate_id}.mp4"></video></figure>"""
         )
     evidence_rows = "".join(
         f"<tr><td>{candidate['candidate_id']}</td><td>{escape(candidate['family_name_ja'])}</td>"
+        f"<td>{escape(candidate['speaker'])}</td>"
         f"<td>{escape(', '.join(f'{value:.1f}s' for value in candidate['source_frame_timestamps']))}</td>"
         f"<td>{escape(candidate['copy_evidence']['accepted_text'])}</td>"
-        f"<td>{escape(', '.join(candidate['reference_ids']))}</td></tr>"
+        f"<td>{escape(candidate['primary_exemplar_id'])} + {escape(', '.join(candidate['reference_ids'][1:]))}</td></tr>"
         for candidate in readback["candidates"]
     )
     return f"""<!doctype html>
@@ -1251,21 +1819,23 @@ def _render_html(readback: dict[str, Any]) -> str:
 main{{max-width:1320px;margin:0 auto;padding:24px}}h1{{margin:.15em 0}}.status{{color:var(--muted)}}.question{{font-size:clamp(18px,2vw,26px);font-weight:800;border-left:6px solid var(--accent);padding:12px 16px;background:#181b23}}
 .candidates{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}}figure{{margin:0;min-width:0}}figcaption{{margin:0 0 10px;font-size:18px}}
 .poster-main{{display:block;width:100%;height:auto;border-radius:18px;background:#000;border:1px solid var(--line)}}
-.reduced{{display:flex;gap:16px;align-items:end;justify-content:center;margin-top:14px;flex-wrap:wrap}}.reduced>div{{display:grid;gap:5px;justify-items:center;color:var(--muted);font-size:13px}}
-.preview-9x16{{width:180px;height:320px;object-fit:cover;border:1px solid var(--line)}}.preview-4x5{{width:160px;height:200px;object-fit:cover;object-position:center;border:1px solid var(--line)}}
+.mapping{{min-height:5.4em;color:var(--muted);line-height:1.45}}.platform-previews{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:14px;align-items:end}}
+.platform-previews>div{{display:grid;gap:6px;justify-items:center;color:var(--muted);font-size:12px;text-align:center}}.platform-previews img{{display:block;width:100%;height:auto;border:1px solid var(--line);background:#000}}
 section{{margin-top:34px}}.sheet{{display:block;width:100%;height:auto;border:1px solid var(--line);background:#000}}
 .transitions{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}}video{{display:block;width:100%;max-height:72vh;background:#000;border:1px solid var(--line);border-radius:14px}}
 details{{margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}}summary{{cursor:pointer;font-weight:800;font-size:19px}}table{{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}}th,td{{border-top:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}}code{{overflow-wrap:anywhere}}.secondary{{color:var(--muted)}}
 @media(max-width:900px){{.candidates,.transitions{{grid-template-columns:1fr}}.poster-main{{max-width:560px;margin:0 auto}}main{{padding:16px}}table{{display:block;overflow-x:auto}}}}
 </style></head><body><main>
-<header><p class="status">9:16 Shorts selectable in-video poster / human selection pending</p><h1>poster frame 方向比較 A／B／C</h1><p class="question">{escape(REVIEW_QUESTION)}</p></header>
+<header><p class="status">reference-fidelity 9:16 Shorts poster / human selection pending / youtube_verified=false</p><h1>poster frame 方向比較 A／B／C</h1><p class="question">{escape(REVIEW_QUESTION)}</p></header>
 <section class="candidates" id="candidates">{"".join(candidate_sections)}</section>
 <section><h2>3案比較</h2><img class="sheet" id="poster-contact-sheet" src="poster_direction_contact_sheet.jpg" alt="poster方向A B C比較シート"></section>
-<section><h2>末尾transition proof</h2><p class="secondary">受入済み本編の末尾1.80秒に、共通処理の静止poster 0.60秒をハードカットで付加。poster区間だけ意図的に無音です。proofは本編を置換しません。</p><div class="transitions">{"".join(transition_sections)}</div></section>
+<section><h2>platform preview 一覧</h2><p class="secondary">center 4:5 は project robustness heuristic であり、YouTube の公式 crop 保証ではありません。UI overlay も比較用近似です。</p><img class="sheet" src="platform_preview_contact_sheet.jpg" alt="channel search center 4:5 Shorts UI preview comparison"></section>
+<section><h2>末尾transition proof</h2><p class="secondary">受入済み本編の末尾1.75秒から、全案共通の0.12秒dissolveでposterを0.50秒表示し、音声は末尾0.16秒でfade。proofは本編を置換しません。感覚的な自然さはhuman acceptance pendingです。</p><div class="transitions">{"".join(transition_sections)}</div></section>
 <details id="evidence"><summary>参照構造・元フレーム・provenance</summary>
-<p>24件／{readback["reference_corpus"]["channel_count"]}チャンネル。第三者画像はこのignored local proofのreference boardだけに保持し、候補A/B/Cには流用していません。</p>
-<table><thead><tr><th>候補</th><th>構図文法</th><th>実素材timestamp</th><th>受入済み内容根拠</th><th>構造参照</th></tr></thead><tbody>{evidence_rows}</tbody></table>
-<h3>元フレームsurvey</h3><img class="sheet" src="source_frame_contact_sheet.jpg" alt="元動画の正面・斜め正面フレームsurvey">
+<p>{readback["reference_corpus"]["reference_count"]}件／{readback["reference_corpus"]["channel_count"]}チャンネル。native vertical exact-surface {readback["reference_corpus"]["native_vertical_exact_surface_count"]}件、16:9補助 {readback["reference_corpus"]["conventional_16_9_secondary_count"]}件。view count は因果証明ではありません。第三者画像はignored local reference boardだけに保持し、候補A/B/Cには流用していません。</p>
+<table><thead><tr><th>候補</th><th>構図文法</th><th>話者</th><th>実素材timestamp</th><th>受入済み内容根拠</th><th>primary + supporting</th></tr></thead><tbody>{evidence_rows}</tbody></table>
+<h3>発話区間 dense expression survey（0.15秒）</h3><img class="sheet" src="expression_contact_sheet_A.jpg" alt="候補A dense expression survey"><img class="sheet" src="expression_contact_sheet_B.jpg" alt="候補B dense expression survey"><img class="sheet" src="expression_contact_sheet_C.jpg" alt="候補C dense expression survey">
+<h3>人物mask edge inspection</h3><img class="sheet" src="subject_mask_inspection.jpg" alt="人物maskの原寸系と縮小edge inspection">
 <h3>公開参照board（構造抽出専用）</h3><img class="sheet" src="reference_board.jpg" alt="公開サムネイル参照board">
 <p><code>reference_manifest.json</code> / <code>poster_direction_readback.json</code></p>
 </details>
@@ -1287,8 +1857,10 @@ def _final_paths(output: Path) -> dict[str, Path]:
         "readback": output / "poster_direction_readback.json",
         "reference_manifest": output / "reference_manifest.json",
         "reference_board": output / "reference_board.jpg",
-        "source_contact_sheet": output / "source_frame_contact_sheet.jpg",
         "poster_contact_sheet": output / "poster_direction_contact_sheet.jpg",
+        "platform_contact_sheet": output / "platform_preview_contact_sheet.jpg",
+        "mask_inspection": output / "subject_mask_inspection.jpg",
+        "loop_probe": output / "loop_probe_A_tail_poster_start.mp4",
     }
     return paths
 
@@ -1330,13 +1902,35 @@ REQUIRED_PACKAGE_FILES = (
     "poster_B_1080x1920.jpg",
     "poster_C_1080x1920.jpg",
     "poster_direction_contact_sheet.jpg",
-    "source_frame_contact_sheet.jpg",
+    "platform_preview_contact_sheet.jpg",
+    "expression_contact_sheet_A.jpg",
+    "expression_contact_sheet_B.jpg",
+    "expression_contact_sheet_C.jpg",
+    "subject_mask_inspection.jpg",
+    "subject_A_hajime_rgba.png",
+    "subject_A_hajime_mask.png",
+    "subject_B_hajime_rgba.png",
+    "subject_B_hajime_mask.png",
+    "subject_B_noel_secondary_rgba.png",
+    "subject_B_noel_secondary_mask.png",
+    "subject_C_hajime_rgba.png",
+    "subject_C_hajime_mask.png",
+    "preview_A_channel_search_tile.jpg",
+    "preview_A_center_4_5.jpg",
+    "preview_A_shorts_ui_overlay.jpg",
+    "preview_B_channel_search_tile.jpg",
+    "preview_B_center_4_5.jpg",
+    "preview_B_shorts_ui_overlay.jpg",
+    "preview_C_channel_search_tile.jpg",
+    "preview_C_center_4_5.jpg",
+    "preview_C_shorts_ui_overlay.jpg",
     "reference_board.jpg",
     "reference_manifest.json",
     "poster_direction_readback.json",
     "transition_A.mp4",
     "transition_B.mp4",
     "transition_C.mp4",
+    "loop_probe_A_tail_poster_start.mp4",
     "open_preview.ps1",
     "serve_preview.ps1",
 )
@@ -1358,15 +1952,40 @@ def _validate_package(stage: Path) -> None:
         raise ShortsPosterFrameProofError("proof must remain pending human selection")
     if readback["accepted_video"]["sha256"] != ACCEPTED_VIDEO_SHA256:
         raise ShortsPosterFrameProofError("accepted video hash drifted in readback")
+    if (
+        readback["superseded_poster_candidates"]["status"]
+        != "supervisor_reframe_required"
+        or readback["superseded_poster_candidates"]["human_rejection"] is not False
+    ):
+        raise ShortsPosterFrameProofError("superseded candidate status is incorrect")
     for candidate_id in ("A", "B", "C"):
         with Image.open(stage / f"poster_{candidate_id}_1080x1920.jpg") as image:
             if image.size != CANVAS or image.mode != "RGB":
                 raise ShortsPosterFrameProofError(
                     "poster file dimensions or mode invalid"
                 )
+        for preview_name, expected_size in (
+            (f"preview_{candidate_id}_channel_search_tile.jpg", (405, 720)),
+            (f"preview_{candidate_id}_center_4_5.jpg", (320, 400)),
+            (f"preview_{candidate_id}_shorts_ui_overlay.jpg", (405, 720)),
+        ):
+            with Image.open(stage / preview_name) as preview:
+                if preview.size != expected_size:
+                    raise ShortsPosterFrameProofError("platform preview dimensions changed")
+    for mask_path in stage.glob("subject_*_mask.png"):
+        with Image.open(mask_path) as mask:
+            if mask.mode != "L" or mask.getextrema() != (0, 255):
+                raise ShortsPosterFrameProofError("subject alpha mask is invalid")
     manifest = _read_json(stage / "reference_manifest.json", "reference manifest")
     if len(manifest["references"]) < 18 or len(manifest["families"]) != 3:
         raise ShortsPosterFrameProofError("reference manifest coverage mismatch")
+    summary = manifest["summary"]
+    if (
+        summary["native_vertical_exact_surface_count"] < 12
+        or summary["native_vertical_exact_surface_channel_count"] < 6
+        or summary["conventional_16_9_ratio"] >= 0.5
+    ):
+        raise ShortsPosterFrameProofError("reference fidelity coverage mismatch")
     html = (stage / "index.html").read_text(encoding="utf-8")
     if html.count('class="candidate"') != 3 or html.count("<video") != 3:
         raise ShortsPosterFrameProofError(
@@ -1376,6 +1995,8 @@ def _validate_package(stage: Path) -> None:
         raise ShortsPosterFrameProofError(
             "review page question or folded evidence mismatch"
         )
+    if "source_frame_contact_sheet" in html or "hard cut" in html.lower():
+        raise ShortsPosterFrameProofError("superseded poster or transition method leaked")
 
 
 def _validate_rejected_out07_truth(publish: dict[str, Any]) -> None:

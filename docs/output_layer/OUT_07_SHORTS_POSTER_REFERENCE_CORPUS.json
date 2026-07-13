@@ -368,6 +368,7 @@
     },
     {
       "reference_id": "ref-17",
+      "active_for_structure_count": false,
       "source_type": "research_collected",
       "public_url": "https://www.youtube.com/watch?v=PIXaOuRc1Xs",
       "thumbnail_url": "https://i.ytimg.com/vi/PIXaOuRc1Xs/maxresdefault.jpg",
@@ -541,6 +542,266 @@
       "hook_type": "favorite moment collage",
       "content_fidelity_risk": "medium",
       "translation_note": "Use only as older native-vertical safe-zone evidence; do not copy its collage pixels or typography."
+    }
+  ],
+  "latest_180_day_cutoff": "2026-01-14",
+  "success_proxy_policy": {
+    "view_count_is_causal_proof": false,
+    "view_count_is_absolute_quality_judgement": false,
+    "allowed_use": "descriptive surface-visible proxy only, alongside age and repeated-layout observation"
+  },
+  "surface_observation": {
+    "surface": "youtube_public_search_results_shorts_shelf",
+    "query": "VTuber 切り抜き Shorts",
+    "observed_at": "2026-07-13",
+    "observed_native_vertical_card_dimensions": [405, 720],
+    "ignored_local_screenshot": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_reference_cache/surface_evidence/youtube_search_vtuber_kirinuki_shorts_2026-07-13.png",
+    "ignored_local_dom_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_reference_cache/surface_evidence/youtube_search_vtuber_kirinuki_shorts_2026-07-13.json",
+    "youtube_verified": false,
+    "note": "Public search cards were observed without authentication. YouTube app frame selection remains an operator gate."
+  },
+  "legacy_reference_reassessment": {
+    "reference_ids": [
+      "ref-01", "ref-02", "ref-03", "ref-04", "ref-05", "ref-06", "ref-07", "ref-08",
+      "ref-09", "ref-10", "ref-11", "ref-12", "ref-13", "ref-14", "ref-15", "ref-16",
+      "ref-17", "ref-18", "ref-19", "ref-20", "ref-21", "ref-22", "ref-23", "ref-24"
+    ],
+    "conventional_16_9_secondary_reference_count": 21,
+    "older_native_vertical_reference_count": 3,
+    "inactive_duplicate_reference_ids": ["ref-17"],
+    "reassessment": "Retained as secondary structure history. They do not override the current exact-surface vertical corpus."
+  },
+  "native_vertical_surface_defaults": {
+    "source_type": "research_collected",
+    "observed_at": "2026-07-13",
+    "query_strategy": "public_youtube_search_exact_shorts_surface_2026_07_13",
+    "target_surface": "native_vertical_exact_youtube_search_shorts_card",
+    "surface_type": "youtube_public_search_results_shorts_shelf",
+    "surface_evidence_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_reference_cache/surface_evidence/youtube_search_vtuber_kirinuki_shorts_2026-07-13.png",
+    "success_proxy_causality": false,
+    "content_fidelity_risk": "medium",
+    "translation_note": "Extract only recurring spatial relationships and scale. Do not reuse reference pixels, people, logos, colors, fonts, or decoration."
+  },
+  "native_vertical_surface_references": [
+    {
+      "reference_id": "ref-25", "video_id": "rvEeOKQMlg4", "public_url": "https://www.youtube.com/shorts/rvEeOKQMlg4", "thumbnail_url": "https://i.ytimg.com/vi/rvEeOKQMlg4/oardefault.jpg",
+      "channel": "ホロまる【ホロライブ切り抜き】", "channel_id": "UCkhYsQyyZQI2tNNSu2two0A", "video_title": "『罰ゲームで泣いちゃった枢ちゃん』", "publication_date": "2026-07-11", "days_since_publish": 2,
+      "source_dimensions": [1080, 1920], "visible_view_count": 104806, "surface_visible_view_text": "10万回視聴", "character_count": 1, "face_orientation": "three_quarter", "face_occupancy": "medium", "face_occupancy_ratio": 0.22,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.62], "secondary_subject_ratio": 0.0, "layout_family": "centered_character_with_top_headline", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.24], "text_line_count": 2,
+      "text_scale_and_position": "oversized top headline", "text_region": "top", "background_treatment": "scene retained but subordinated by centered character and headline", "background_detail_level": "medium", "hook_type": "single emotional reaction", "repeated_layout_usage": {"same_surface_family_count": 2, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-26", "video_id": "2mpb0cIG81I", "public_url": "https://www.youtube.com/shorts/2mpb0cIG81I", "thumbnail_url": "https://i.ytimg.com/vi/2mpb0cIG81I/oardefault.jpg",
+      "channel": "ホロフィルムch", "channel_id": "UCKU784Kp23nQ6Uii4_l-1NQ", "video_title": "ポニョポニョじゃない", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 45953, "surface_visible_view_text": "4.5万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "large", "face_occupancy_ratio": 0.48,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.62], "secondary_subject_ratio": 0.0, "layout_family": "centered_character_with_top_headline", "text_block_count": 1, "headline_bbox_normalized": [0.08, 0.05, 0.84, 0.24], "text_line_count": 3,
+      "text_scale_and_position": "large repeated-word headline above face", "text_region": "top", "background_treatment": "bright simplified character field", "background_detail_level": "low", "hook_type": "repeated reaction word", "repeated_layout_usage": {"same_surface_family_count": 2, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-27", "video_id": "5AJkUgWuWRU", "public_url": "https://www.youtube.com/shorts/5AJkUgWuWRU", "thumbnail_url": "https://i.ytimg.com/vi/5AJkUgWuWRU/oardefault.jpg",
+      "channel": "メーメントヴァニタス / MEMENTOVANITAS", "channel_id": "UCE4W22kKQQVdrA2KTiyZ_cA", "video_title": "恐怖のあまりとんでもない声がwww", "publication_date": "2025-07-18", "days_since_publish": 360,
+      "source_dimensions": [1080, 1920], "visible_view_count": 797592, "surface_visible_view_text": "79万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "medium", "face_occupancy_ratio": 0.28,
+      "subject_position": "center_lower", "subject_center_normalized": [0.51, 0.68], "secondary_subject_ratio": 0.0, "layout_family": "stacked_scene_plus_reaction", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.01, 0.92, 0.22], "text_line_count": 3,
+      "text_scale_and_position": "large top claim plus mid reaction", "text_region": "top_and_middle", "background_treatment": "scene strip behind lower reaction", "background_detail_level": "high", "hook_type": "fear reaction", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-28", "video_id": "bG550E2nMXc", "public_url": "https://www.youtube.com/shorts/bG550E2nMXc", "thumbnail_url": "https://i.ytimg.com/vi/bG550E2nMXc/oar2.jpg",
+      "channel": "にじさんじ愛好家【切り抜き】", "channel_id": "UCj15Nezmu3C7wvol91rp4mA", "video_title": "偽装がすごすぎる！驚く叶", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 6783, "surface_visible_view_text": "6783回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "medium", "face_occupancy_ratio": 0.30,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.70], "secondary_subject_ratio": 0.0, "layout_family": "stacked_scene_plus_reaction", "text_block_count": 1, "headline_bbox_normalized": [0.05, 0.02, 0.90, 0.15], "text_line_count": 1,
+      "text_scale_and_position": "large top headline", "text_region": "top", "background_treatment": "scene upper field with reaction anchored below", "background_detail_level": "high", "hook_type": "surprise", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-29", "video_id": "N7kOW92yMb4", "public_url": "https://www.youtube.com/shorts/N7kOW92yMb4", "thumbnail_url": "https://i.ytimg.com/vi/N7kOW92yMb4/oardefault.jpg",
+      "channel": "小森めと切り抜き", "channel_id": "UC_41Vg-saBGcscTzhHEEGKg", "video_title": "リスナーの道になっていた小森めと", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 58888, "surface_visible_view_text": "5.8万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "very_large", "face_occupancy_ratio": 0.62,
+      "subject_position": "center_lower", "subject_center_normalized": [0.52, 0.69], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 1, "headline_bbox_normalized": [0.05, 0.03, 0.90, 0.18], "text_line_count": 2,
+      "text_scale_and_position": "boxed top headline over macro face", "text_region": "top", "background_treatment": "face fills lower field; scene detail suppressed", "background_detail_level": "low", "hook_type": "direct reaction", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-30", "video_id": "oXl85FD7Is8", "public_url": "https://www.youtube.com/shorts/oXl85FD7Is8", "thumbnail_url": "https://i.ytimg.com/vi/oXl85FD7Is8/oar2.jpg",
+      "channel": "心雨あむ / Kosame Amu", "channel_id": "UC00ZTUHsLqj48Osy8Ds2OUg", "video_title": "アレを見つけてニッコニコなVTuber。", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 1219, "surface_visible_view_text": "1219回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "medium", "face_occupancy_ratio": 0.30,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.72], "secondary_subject_ratio": 0.0, "layout_family": "stacked_scene_plus_reaction", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.04, 0.92, 0.14], "text_line_count": 2,
+      "text_scale_and_position": "large top boxed headline", "text_region": "top", "background_treatment": "scene strip above reaction", "background_detail_level": "high", "hook_type": "happy discovery", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-31", "video_id": "7H7aYeim8mU", "public_url": "https://www.youtube.com/shorts/7H7aYeim8mU", "thumbnail_url": "https://i.ytimg.com/vi/7H7aYeim8mU/oar2.jpg",
+      "channel": "あるかね / Arcane", "channel_id": "UCGrGZeygTL4TisxSreBVrQA", "video_title": "お宝攻撃！！！！", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 7731, "surface_visible_view_text": "7731回視聴", "character_count": 1, "face_orientation": "front_small", "face_occupancy": "small", "face_occupancy_ratio": 0.10,
+      "subject_position": "bottom_right", "subject_center_normalized": [0.73, 0.84], "secondary_subject_ratio": 0.0, "layout_family": "gameplay_with_avatar_footer", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.70, 0.65, 0.12], "text_line_count": 1,
+      "text_scale_and_position": "large lower caption", "text_region": "lower_middle", "background_treatment": "gameplay dominates with small avatar footer", "background_detail_level": "high", "hook_type": "gameplay action", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-32", "video_id": "b5knW8oasg4", "public_url": "https://www.youtube.com/shorts/b5knW8oasg4", "thumbnail_url": "https://i.ytimg.com/vi/b5knW8oasg4/oardefault.jpg",
+      "channel": "緑青くれは / Kureha Channel【ななしいんく】", "channel_id": "UCiWkgRl4asSN5kRUSWgRLWQ", "video_title": "平成にもドパガキがいたんだな", "publication_date": "2026-06-21", "days_since_publish": 22,
+      "source_dimensions": [1080, 1920], "visible_view_count": 137532, "surface_visible_view_text": "13万回視聴", "character_count": 1, "face_orientation": "absent_scene_led", "face_occupancy": "none", "face_occupancy_ratio": 0.0,
+      "subject_position": "scene_only", "subject_center_normalized": [0.50, 0.60], "secondary_subject_ratio": 0.0, "layout_family": "scene_led_text_overlay", "text_block_count": 2, "headline_bbox_normalized": [0.07, 0.05, 0.86, 0.28], "text_line_count": 2,
+      "text_scale_and_position": "large top and center scene text", "text_region": "top_and_middle", "background_treatment": "game scene dominates", "background_detail_level": "high", "hook_type": "scene joke", "repeated_layout_usage": {"same_surface_family_count": 2, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-33", "video_id": "TzIZaplIMRM", "public_url": "https://www.youtube.com/shorts/TzIZaplIMRM", "thumbnail_url": "https://i.ytimg.com/vi/TzIZaplIMRM/oar2.jpg",
+      "channel": "あるかね / Arcane", "channel_id": "UCGrGZeygTL4TisxSreBVrQA", "video_title": "確実に、クリアリングをしましょう。", "publication_date": "2026-07-11", "days_since_publish": 2,
+      "source_dimensions": [1080, 1920], "visible_view_count": 10594, "surface_visible_view_text": "1万回視聴", "character_count": 1, "face_orientation": "front_small", "face_occupancy": "small", "face_occupancy_ratio": 0.10,
+      "subject_position": "bottom_right", "subject_center_normalized": [0.74, 0.84], "secondary_subject_ratio": 0.0, "layout_family": "gameplay_with_avatar_footer", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.68, 0.72, 0.14], "text_line_count": 2,
+      "text_scale_and_position": "large lower caption", "text_region": "lower_middle", "background_treatment": "gameplay dominates with small avatar footer", "background_detail_level": "high", "hook_type": "gameplay failure", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-34", "video_id": "uit9izfQwB4", "public_url": "https://www.youtube.com/shorts/uit9izfQwB4", "thumbnail_url": "https://i.ytimg.com/vi/uit9izfQwB4/oardefault.jpg",
+      "channel": "ホロライブ推し【切り抜き】", "channel_id": "UCtDv-WrI2_7rISYJ2aP0eLg", "video_title": "予想以上に怖がっちゃうリオナ", "publication_date": "2026-07-06", "days_since_publish": 7,
+      "source_dimensions": [1080, 1920], "visible_view_count": 14450, "surface_visible_view_text": "1.4万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "very_large", "face_occupancy_ratio": 0.58,
+      "subject_position": "center_lower", "subject_center_normalized": [0.53, 0.68], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 2, "headline_bbox_normalized": [0.05, 0.03, 0.90, 0.30], "text_line_count": 3,
+      "text_scale_and_position": "large top headline and center quotation", "text_region": "top_and_middle", "background_treatment": "dark simplified field behind macro face", "background_detail_level": "low", "hook_type": "fear reaction", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-35", "video_id": "AwXNzhDglnU", "public_url": "https://www.youtube.com/shorts/AwXNzhDglnU", "thumbnail_url": "https://i.ytimg.com/vi/AwXNzhDglnU/oardefault.jpg",
+      "channel": "福神漬【VTuber切り抜き】", "channel_id": "UCwYRYxaL1m2Bke7NaGX3awQ", "video_title": "頭の回転が速すぎる葛葉", "publication_date": "2025-05-15", "days_since_publish": 424,
+      "source_dimensions": [1080, 1920], "visible_view_count": 2917978, "surface_visible_view_text": "291万回視聴", "character_count": 2, "face_orientation": "stacked_front", "face_occupancy": "large_and_medium", "face_occupancy_ratio": 0.36,
+      "subject_position": "stacked_center", "subject_center_normalized": [0.50, 0.68], "secondary_subject_ratio": 0.22, "layout_family": "speaker_dominant_multi_subject", "text_block_count": 2, "headline_bbox_normalized": [0.05, 0.04, 0.90, 0.26], "text_line_count": 2,
+      "text_scale_and_position": "top and middle headline between faces", "text_region": "top_and_middle", "background_treatment": "two isolated faces dominate over simplified scene", "background_detail_level": "medium", "hook_type": "fast retort", "repeated_layout_usage": {"same_surface_family_count": 6, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-36", "video_id": "BAF_kvlseco", "public_url": "https://www.youtube.com/shorts/BAF_kvlseco", "thumbnail_url": "https://i.ytimg.com/vi/BAF_kvlseco/oardefault.jpg",
+      "channel": "メルトン工房", "channel_id": "UCOP47bay0g3rvL8-d-CcPuQ", "video_title": "褒められたら貶されたりするアンジュのケーキ擬態", "publication_date": "2026-07-11", "days_since_publish": 2,
+      "source_dimensions": [1080, 1920], "visible_view_count": 60807, "surface_visible_view_text": "6万回視聴", "character_count": 2, "face_orientation": "front_insets", "face_occupancy": "small", "face_occupancy_ratio": 0.12,
+      "subject_position": "lower_corners", "subject_center_normalized": [0.52, 0.80], "secondary_subject_ratio": 0.10, "layout_family": "scene_led_text_overlay", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.02, 0.92, 0.22], "text_line_count": 3,
+      "text_scale_and_position": "large top headline and mid callout", "text_region": "top_and_middle", "background_treatment": "game scene dominates with small reaction cutouts", "background_detail_level": "high", "hook_type": "visual mistake", "repeated_layout_usage": {"same_surface_family_count": 2, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-37", "video_id": "N7-e5osCJk4", "public_url": "https://www.youtube.com/shorts/N7-e5osCJk4", "thumbnail_url": "https://i.ytimg.com/vi/N7-e5osCJk4/oar2.jpg",
+      "channel": "星川サラ専用にじさんじ切り抜き機", "channel_id": "UCpwFoNaQr_L8KoS3hIjWAZg", "video_title": "7年目で遂にメイクをして事務所に行き始めた星川サラ", "publication_date": "2026-07-06", "days_since_publish": 7,
+      "source_dimensions": [1080, 1920], "visible_view_count": 1616859, "surface_visible_view_text": "161万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "very_large", "face_occupancy_ratio": 0.64,
+      "subject_position": "center_lower", "subject_center_normalized": [0.52, 0.67], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 2, "headline_bbox_normalized": [0.05, 0.02, 0.90, 0.28], "text_line_count": 3,
+      "text_scale_and_position": "large top premise and lower quotation", "text_region": "top_and_middle", "background_treatment": "face fills frame; scene nearly absent", "background_detail_level": "low", "hook_type": "personal reveal", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-38", "video_id": "FX8BV1fnmH8", "public_url": "https://www.youtube.com/shorts/FX8BV1fnmH8", "thumbnail_url": "https://i.ytimg.com/vi/FX8BV1fnmH8/oardefault.jpg",
+      "channel": "ホロステ【ホロライブ切り抜き】", "channel_id": "UC9ceGSBsg3tCYFK63rJ5Gwg", "video_title": "ルイ姉が困惑したリスナーの正体は", "publication_date": "2026-07-05", "days_since_publish": 8,
+      "source_dimensions": [1080, 1920], "visible_view_count": 417867, "surface_visible_view_text": "41万回視聴", "character_count": 1, "face_orientation": "front_small", "face_occupancy": "small", "face_occupancy_ratio": 0.12,
+      "subject_position": "bottom_center", "subject_center_normalized": [0.52, 0.86], "secondary_subject_ratio": 0.0, "layout_family": "gameplay_with_avatar_footer", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.20], "text_line_count": 2,
+      "text_scale_and_position": "large top headline", "text_region": "top", "background_treatment": "scene dominates with small avatar footer", "background_detail_level": "high", "hook_type": "identity reveal", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-39", "video_id": "No8xRE9sKEY", "public_url": "https://www.youtube.com/shorts/No8xRE9sKEY", "thumbnail_url": "https://i.ytimg.com/vi/No8xRE9sKEY/oardefault.jpg",
+      "channel": "クロネコ「切り抜きチャンネル」", "channel_id": "UClMGZrq4OWMWfNmGq2oS-rA", "video_title": "かなかなとルンルンの挨拶交換", "publication_date": "2026-07-10", "days_since_publish": 3,
+      "source_dimensions": [1080, 1920], "visible_view_count": 23931, "surface_visible_view_text": "2.3万回視聴", "character_count": 2, "face_orientation": "front_pair", "face_occupancy": "large_and_medium", "face_occupancy_ratio": 0.34,
+      "subject_position": "lower_pair", "subject_center_normalized": [0.55, 0.70], "secondary_subject_ratio": 0.22, "layout_family": "speaker_dominant_multi_subject", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.02, 0.92, 0.19], "text_line_count": 2,
+      "text_scale_and_position": "large top exchange headline", "text_region": "top", "background_treatment": "two characters dominate over simplified scene", "background_detail_level": "medium", "hook_type": "greeting exchange", "repeated_layout_usage": {"same_surface_family_count": 6, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-40", "video_id": "TPMELLW4ep8", "public_url": "https://www.youtube.com/shorts/TPMELLW4ep8", "thumbnail_url": "https://i.ytimg.com/vi/TPMELLW4ep8/oardefault.jpg",
+      "channel": "栞葉るり / Shioriha Ruri【にじさんじ】", "channel_id": "UC7_MFM9b8hp5kuTSpa8WyOQ", "video_title": "後輩から犬扱いされているにも関わらず満更でもなさそうなVTuber", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 49121, "surface_visible_view_text": "4.9万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "large", "face_occupancy_ratio": 0.42,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.72], "secondary_subject_ratio": 0.0, "layout_family": "stacked_scene_plus_reaction", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.62, 0.92, 0.18], "text_line_count": 1,
+      "text_scale_and_position": "oversized lower reaction copy", "text_region": "lower_middle", "background_treatment": "scene above, dominant reaction below", "background_detail_level": "medium", "hook_type": "comic protest", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-41", "video_id": "jrTZApSxSOg", "public_url": "https://www.youtube.com/shorts/jrTZApSxSOg", "thumbnail_url": "https://i.ytimg.com/vi/jrTZApSxSOg/oar2.jpg",
+      "channel": "樋口楓【にじさんじ所属】", "channel_id": "UCsg-YqdqQ-KFF0LNk23BY4A", "video_title": "自称キッズ大好きVTuberさんの神対応まとめ", "publication_date": "2023-03-13", "days_since_publish": 1218,
+      "source_dimensions": [1080, 1920], "visible_view_count": 8324745, "surface_visible_view_text": "832万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "very_large", "face_occupancy_ratio": 0.58,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.72], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.02, 0.92, 0.28], "text_line_count": 4,
+      "text_scale_and_position": "boxed top quotation", "text_region": "top", "background_treatment": "macro face with scene suppressed", "background_detail_level": "low", "hook_type": "angry response", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-42", "video_id": "yPtIJWSayNo", "public_url": "https://www.youtube.com/shorts/yPtIJWSayNo", "thumbnail_url": "https://i.ytimg.com/vi/yPtIJWSayNo/oardefault.jpg",
+      "channel": "小森めと切り抜き", "channel_id": "UC_41Vg-saBGcscTzhHEEGKg", "video_title": "謹慎期間中に帰省したか聞かれる小森めと", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 48314, "surface_visible_view_text": "4.8万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "very_large", "face_occupancy_ratio": 0.64,
+      "subject_position": "center_lower", "subject_center_normalized": [0.52, 0.69], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.20], "text_line_count": 2,
+      "text_scale_and_position": "oversized top headline over macro face", "text_region": "top", "background_treatment": "macro face occupies lower two thirds", "background_detail_level": "low", "hook_type": "direct question", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-43", "video_id": "fMubsgMKOx8", "public_url": "https://www.youtube.com/shorts/fMubsgMKOx8", "thumbnail_url": "https://i.ytimg.com/vi/fMubsgMKOx8/oardefault.jpg",
+      "channel": "山神 カルタ / Karuta Yamagami", "channel_id": "UCllKI7VjyANuS1RXatizfLQ", "video_title": "現代落語 まんじゅう怖い", "publication_date": "2026-07-08", "days_since_publish": 5,
+      "source_dimensions": [1080, 1920], "visible_view_count": 75347, "surface_visible_view_text": "7.5万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "large", "face_occupancy_ratio": 0.42,
+      "subject_position": "bottom_center", "subject_center_normalized": [0.50, 0.78], "secondary_subject_ratio": 0.0, "layout_family": "graphic_explainer_with_face_anchor", "text_block_count": 2, "headline_bbox_normalized": [0.12, 0.02, 0.76, 0.52], "text_line_count": 4,
+      "text_scale_and_position": "large explanatory copy above face", "text_region": "top_and_middle", "background_treatment": "original illustration above anchored face", "background_detail_level": "low", "hook_type": "explainer reveal", "repeated_layout_usage": {"same_surface_family_count": 2, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-44", "video_id": "4AxWWmEEoMA", "public_url": "https://www.youtube.com/shorts/4AxWWmEEoMA", "thumbnail_url": "https://i.ytimg.com/vi/4AxWWmEEoMA/oardefault.jpg",
+      "channel": "hololive clips【Kirimaru】", "channel_id": "UCH201mByeQb7H8973gP1GdQ", "video_title": "フワモコのシンクロ集", "publication_date": "2025-06-20", "days_since_publish": 388,
+      "source_dimensions": [1080, 1920], "visible_view_count": 9676077, "surface_visible_view_text": "967万回視聴", "character_count": 2, "face_orientation": "front_pair", "face_occupancy": "medium_pair", "face_occupancy_ratio": 0.30,
+      "subject_position": "lower_pair", "subject_center_normalized": [0.52, 0.72], "secondary_subject_ratio": 0.28, "layout_family": "speaker_dominant_multi_subject", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.27], "text_line_count": 3,
+      "text_scale_and_position": "large top and middle dialogue", "text_region": "top_and_middle", "background_treatment": "two isolated characters over simplified scene", "background_detail_level": "medium", "hook_type": "paired reaction", "repeated_layout_usage": {"same_surface_family_count": 6, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-45", "video_id": "EI2demBDP_k", "public_url": "https://www.youtube.com/shorts/EI2demBDP_k", "thumbnail_url": "https://i.ytimg.com/vi/EI2demBDP_k/oardefault.jpg",
+      "channel": "Ateshi no! [Clipping Channel]", "channel_id": "UC_FR4aRTjqm494ZcK3QoE_A", "video_title": "軟骨がなくなってスプラトゥーンをやめたミオしゃ", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 10041, "surface_visible_view_text": "1万回視聴", "character_count": 2, "face_orientation": "front_pair", "face_occupancy": "medium_pair", "face_occupancy_ratio": 0.28,
+      "subject_position": "stacked_lower", "subject_center_normalized": [0.50, 0.73], "secondary_subject_ratio": 0.20, "layout_family": "speaker_dominant_multi_subject", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.02, 0.92, 0.25], "text_line_count": 3,
+      "text_scale_and_position": "large top setup and lower reaction", "text_region": "top_and_middle", "background_treatment": "two character reactions over a small source strip", "background_detail_level": "medium", "hook_type": "story reaction", "repeated_layout_usage": {"same_surface_family_count": 6, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-46", "video_id": "xABqTaMYDTI", "public_url": "https://www.youtube.com/shorts/xABqTaMYDTI", "thumbnail_url": "https://i.ytimg.com/vi/xABqTaMYDTI/oar2.jpg",
+      "channel": "チビドキ日本語切り抜き【Chibidoki】", "channel_id": "UCifrOMHfQclfgvjLc2ZhaJQ", "video_title": "もしチビドキが実は男だったら", "publication_date": "2026-07-10", "days_since_publish": 3,
+      "source_dimensions": [1080, 1920], "visible_view_count": 135680, "surface_visible_view_text": "13万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "large", "face_occupancy_ratio": 0.44,
+      "subject_position": "center_lower", "subject_center_normalized": [0.50, 0.70], "secondary_subject_ratio": 0.0, "layout_family": "graphic_explainer_with_face_anchor", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.20], "text_line_count": 2,
+      "text_scale_and_position": "large top premise", "text_region": "top", "background_treatment": "large character prop on simplified field", "background_detail_level": "low", "hook_type": "hypothetical reveal", "repeated_layout_usage": {"same_surface_family_count": 2, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-47", "video_id": "QIUmueLBu0o", "public_url": "https://www.youtube.com/shorts/QIUmueLBu0o", "thumbnail_url": "https://i.ytimg.com/vi/QIUmueLBu0o/oardefault.jpg",
+      "channel": "推しの日常", "channel_id": "UCJA_H76a0yTpp1iEH8ZJ30g", "video_title": "速攻みつかるひなーの", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [720, 1280], "visible_view_count": 6777, "surface_visible_view_text": "6767回視聴", "character_count": 1, "face_orientation": "front_small", "face_occupancy": "small", "face_occupancy_ratio": 0.14,
+      "subject_position": "bottom_center", "subject_center_normalized": [0.52, 0.82], "secondary_subject_ratio": 0.0, "layout_family": "gameplay_with_avatar_footer", "text_block_count": 1, "headline_bbox_normalized": [0.05, 0.68, 0.90, 0.15], "text_line_count": 1,
+      "text_scale_and_position": "large lower reaction caption", "text_region": "lower_middle", "background_treatment": "gameplay dominates with avatar footer", "background_detail_level": "high", "hook_type": "instant discovery", "repeated_layout_usage": {"same_surface_family_count": 4, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-48", "video_id": "YkE78YY048M", "public_url": "https://www.youtube.com/shorts/YkE78YY048M", "thumbnail_url": "https://i.ytimg.com/vi/YkE78YY048M/oardefault.jpg",
+      "channel": "【ホロライブ切り抜き】しゃこ", "channel_id": "UCOmK3nt4DybkzyS3XzwWarw", "video_title": "舌を出すおかゆが可愛すぎる", "publication_date": "2025-03-10", "days_since_publish": 490,
+      "source_dimensions": [1080, 1920], "visible_view_count": 420577, "surface_visible_view_text": "42万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "very_large", "face_occupancy_ratio": 0.66,
+      "subject_position": "center_lower", "subject_center_normalized": [0.52, 0.69], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 1, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.20], "text_line_count": 2,
+      "text_scale_and_position": "large top repeated question", "text_region": "top", "background_treatment": "macro face fills lower field", "background_detail_level": "low", "hook_type": "cute reaction", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-49", "video_id": "m6sSYfkTm4A", "public_url": "https://www.youtube.com/shorts/m6sSYfkTm4A", "thumbnail_url": "https://i.ytimg.com/vi/m6sSYfkTm4A/oar2.jpg",
+      "channel": "いいとこ鳥【ぶいすぽ雑学まとめch】", "channel_id": "UCSDMf7EBkYZ6M2hWTs9DrlQ", "video_title": "醸造所がなかなか言えない橘ひなの", "publication_date": "2026-07-12", "days_since_publish": 1,
+      "source_dimensions": [1080, 1920], "visible_view_count": 30677, "surface_visible_view_text": "3万回視聴", "character_count": 1, "face_orientation": "front", "face_occupancy": "medium", "face_occupancy_ratio": 0.34,
+      "subject_position": "center_lower", "subject_center_normalized": [0.51, 0.76], "secondary_subject_ratio": 0.0, "layout_family": "macro_reaction_with_top_headline", "text_block_count": 2, "headline_bbox_normalized": [0.05, 0.05, 0.90, 0.44], "text_line_count": 4,
+      "text_scale_and_position": "large stacked headline above face", "text_region": "top_and_middle", "background_treatment": "black simplified field with face anchor", "background_detail_level": "low", "hook_type": "tongue-twister reaction", "repeated_layout_usage": {"same_surface_family_count": 7, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-50", "video_id": "rP80z11r_wo", "public_url": "https://www.youtube.com/shorts/rP80z11r_wo", "thumbnail_url": "https://i.ytimg.com/vi/rP80z11r_wo/oardefault.jpg",
+      "channel": "夜絆ニウ / yozuna niu", "channel_id": "UCZmUoMwjyuQ59sk5_7Tx07A", "video_title": "呼び方で距離感変わる？私だって…！", "publication_date": "2026-07-11", "days_since_publish": 2,
+      "source_dimensions": [1080, 2400], "visible_view_count": 251821, "surface_visible_view_text": "25万回視聴", "character_count": 3, "face_orientation": "stacked_front", "face_occupancy": "large_and_small", "face_occupancy_ratio": 0.42,
+      "subject_position": "center_stack", "subject_center_normalized": [0.50, 0.68], "secondary_subject_ratio": 0.18, "layout_family": "speaker_dominant_multi_subject", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.32], "text_line_count": 4,
+      "text_scale_and_position": "large top dialogue over stacked reactions", "text_region": "top_and_middle", "background_treatment": "isolated faces with small context strip", "background_detail_level": "medium", "hook_type": "distance dialogue", "repeated_layout_usage": {"same_surface_family_count": 6, "interpretation": "descriptive_not_causal"}
+    },
+    {
+      "reference_id": "ref-51", "video_id": "qSnX7IhbHok", "public_url": "https://www.youtube.com/shorts/qSnX7IhbHok", "thumbnail_url": "https://i.ytimg.com/vi/qSnX7IhbHok/oardefault.jpg",
+      "channel": "Ateshi no! [Clipping Channel]", "channel_id": "UC_FR4aRTjqm494ZcK3QoE_A", "video_title": "限界飯の時のぺこらの声を初めて聞いた団長", "publication_date": "2026-07-11", "days_since_publish": 2,
+      "source_dimensions": [1080, 1920], "visible_view_count": 22109, "surface_visible_view_text": "2.2万回視聴", "character_count": 2, "face_orientation": "front_pair", "face_occupancy": "large_and_medium", "face_occupancy_ratio": 0.38,
+      "subject_position": "lower_pair", "subject_center_normalized": [0.54, 0.69], "secondary_subject_ratio": 0.24, "layout_family": "speaker_dominant_multi_subject", "text_block_count": 2, "headline_bbox_normalized": [0.04, 0.02, 0.92, 0.28], "text_line_count": 4,
+      "text_scale_and_position": "large top dialogue with secondary context", "text_region": "top_and_middle", "background_treatment": "two isolated reactions with small context strip", "background_detail_level": "medium", "hook_type": "dialogue discovery", "repeated_layout_usage": {"same_surface_family_count": 6, "interpretation": "descriptive_not_causal"}
+    }
+  ],
+  "candidate_directions": [
+    {
+      "candidate_id": "A", "family_id": "macro_reaction_topline", "family_name_ja": "大顔リアクション＋上部見出し", "headline_lines": ["来ねぇ!!"], "essential_text_block_count": 1,
+      "dominant_face_orientation": "front", "speaker": "Hajime", "emotional_subject": "Hajime", "source_frame_timestamps": [22.806], "source_frame_roles": ["Hajime front-facing open-mouth complaint reaction"], "source_cut_ids": ["cut_003"],
+      "copy_evidence": {"subtitle_ids": ["sub_010"], "segment_ids": ["seg_000010"], "accepted_text": "来ねぇ！！", "accepted_source_range_seconds": [22.606, 23.640]},
+      "primary_exemplar_id": "ref-42", "reference_ids": ["ref-42", "ref-29", "ref-34", "ref-37", "ref-48"],
+      "primary_exemplar_proportions": {"dominant_face_or_body_ratio": 0.64, "subject_center_normalized": [0.52, 0.69], "secondary_subject_ratio": 0.0, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.20], "text_line_count": 2, "background_detail_level": "low"},
+      "adopted_relationships": ["single dominant frontal reaction", "one oversized headline above the eyes", "low-detail original graphic field"],
+      "fit_reason": "The accepted complaint beat contains a direct frontal shock expression and the current vertical corpus repeatedly uses one large face under one top headline.", "essential_bounds": [45, 310, 890, 1570]
+    },
+    {
+      "candidate_id": "B", "family_id": "speaker_first_asymmetric_duo", "family_name_ja": "話者最大の非対称二者", "headline_lines": ["なんで", "来なかった!?"], "essential_text_block_count": 1,
+      "dominant_face_orientation": "front_with_secondary_three_quarter", "speaker": "Hajime", "emotional_subject": "Hajime", "source_frame_timestamps": [22.656, 25.159], "source_frame_roles": ["Hajime front-facing clenched complaint reaction as dominant", "Noel front three-quarter reaction as secondary"], "source_cut_ids": ["cut_003"],
+      "copy_evidence": {"subtitle_ids": ["sub_013"], "segment_ids": ["seg_000013"], "accepted_text": "なんで来なかったんすか！！", "accepted_source_range_seconds": [25.109, 26.477]},
+      "frame_selection_note": "Dense in-range survey showed Hajime back-facing throughout the spoken line. The nearest truthful frontal complaint beat from the same accepted cut is used for Hajime; the exact-line Noel reaction remains secondary.",
+      "primary_exemplar_id": "ref-51", "reference_ids": ["ref-51", "ref-35", "ref-39", "ref-44", "ref-50"],
+      "primary_exemplar_proportions": {"dominant_face_or_body_ratio": 0.38, "subject_center_normalized": [0.54, 0.69], "secondary_subject_ratio": 0.24, "headline_bbox_normalized": [0.04, 0.02, 0.92, 0.28], "text_line_count": 4, "background_detail_level": "medium"},
+      "adopted_relationships": ["speaker reaction remains the largest element", "secondary listener is independently cut out and clearly subordinate", "one shared headline describes the exchange"],
+      "fit_reason": "The absence question needs both roles, but the speaker remains visually dominant and readable at Shorts tile scale.", "essential_bounds": [35, 310, 875, 1570]
+    },
+    {
+      "candidate_id": "C", "family_id": "offset_reaction_side_copy", "family_name_ja": "片寄せリアクション＋側面大見出し", "headline_lines": ["ずっと", "待ってたんすよ!!"], "essential_text_block_count": 2,
+      "dominant_face_orientation": "front", "speaker": "Hajime", "emotional_subject": "Hajime", "source_frame_timestamps": [23.556], "source_frame_roles": ["Hajime front-facing open-mouth complaint reaction offset from center"], "source_cut_ids": ["cut_003"],
+      "copy_evidence": {"subtitle_ids": ["sub_014"], "segment_ids": ["seg_000014"], "accepted_text": "ずっと待ってたんすよ！！", "accepted_source_range_seconds": [26.477, 27.378]},
+      "frame_selection_note": "Dense in-range survey showed Hajime back-facing. A distinct nearby frontal complaint frame from the same accepted cut preserves the actual expression without generation or pose change.",
+      "primary_exemplar_id": "ref-25", "reference_ids": ["ref-25", "ref-26", "ref-40", "ref-43"],
+      "primary_exemplar_proportions": {"dominant_face_or_body_ratio": 0.45, "subject_center_normalized": [0.50, 0.66], "secondary_subject_ratio": 0.0, "headline_bbox_normalized": [0.04, 0.03, 0.92, 0.24], "text_line_count": 2, "background_detail_level": "low"},
+      "adopted_relationships": ["one offset frontal reaction", "two large headline blocks share the central safe zone", "simple original graphic field leaves the face independent"],
+      "fit_reason": "The accepted waiting complaint can be expressed as a single speaker-led offset reaction without promoting Noel or reusing a scene panel.", "essential_bounds": [35, 310, 875, 1570]
     }
   ]
 }

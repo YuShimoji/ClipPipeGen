@@ -29,23 +29,23 @@ opened by the root launcher.
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/` |
 | machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json` |
 | reference_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/reference_manifest.json` |
-| source_inputs | Accepted OUT-07 video, repaired OUT-07 publish-draft state, retained source video, tracked 24-reference corpus, and ignored frozen reference cache. |
+| source_inputs | Accepted OUT-07 video, repaired OUT-07 publish-draft state, retained source video, tracked 50-active-reference corpus, and ignored frozen reference cache. |
 | candidates | `poster_A_1080x1920.jpg`; `poster_B_1080x1920.jpg`; `poster_C_1080x1920.jpg` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_contact_sheet.jpg` |
-| source_frame_contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/source_frame_contact_sheet.jpg` |
+| inspection_sheets | `expression_contact_sheet_A/B/C.jpg`; `subject_mask_inspection.jpg`; `platform_preview_contact_sheet.jpg` |
 | transition_proofs | `transition_A.mp4`; `transition_B.mp4`; `transition_C.mp4` |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
 | preview_url | `http://127.0.0.1:8071/index.html` while the fixed-root byte-range server is running. |
-| reference_corpus | 24 references, 17 channels, 3 query strategies, 18 within the latest 120 days, date coverage `2023-09-04..2026-07-10`, target surfaces 21 secondary 16:9 plus 3 older native-vertical safe-zone references. |
-| composition_families | A `single_reaction_hero`; B `opposed_dialogue`; C `hero_with_reaction_inset`. Each family has at least three references from at least two channels. |
-| source_frames | Retained-source 24.0s Noel three-quarter and 36.0s Hajime front-facing frames; 15-timestamp visual survey retained in the contact sheet. |
-| center_safe | Essential faces and one large headline per candidate stay inside `x=0..1080, y=285..1635`; all three survive 180x320 and center-cropped 160x200 previews. |
-| transition_contract | Exact 2.400s proof: accepted narrative tail 1.80s plus shared static poster 0.60s; narrative audio then intentional poster-only silence; review evidence only. |
+| reference_corpus | 50 active references across 41 channels; 27 native-vertical exact-surface observations across 24 channels, 22 recent within 180 days, and 20 secondary 16:9 references. YouTube surface behavior remains unverified and view count is not causal proof. |
+| composition_families | A `macro_reaction_topline`; B `speaker_first_asymmetric_duo`; C `offset_reaction_side_copy`, each derived from primary and supporting references. |
+| source_frames | Retained-source dense 0.15s expression surveys and manual alpha-mask edge inspection; person pixels are not generated or modified. |
+| platform_previews | Channel/search 405x720, project heuristic center-4:5 320x400, and approximate Shorts UI 405x720 for each candidate. |
+| transition_contract | Exact 2.133s proof: accepted narrative tail 1.75s, shared 0.12s dissolve, static poster 0.50s, and audio fade 0.16s; review evidence only. |
 | accepted_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` (unchanged). |
 | poster_sha256 | A `7a314825a0be95d48801bc0d648615b81a340884c24273fa76abbf18395a3720`; B `8ab9e01f81490a3571fa60f59041da73c7122d76673ad8409ecbc7e20d57eab2`; C `8d2f05a9fc31f25bd9b8cc20702766c0ea3cc902717efa451837aaec3609ccb2`. |
-| poster_direction_readback_sha256 | `400c5f0e8ec305d4e4400ac072e2452935ff6c9b963f160510fb5e81656aca48` |
-| reference_manifest_sha256 | `a79a963c8077462af9b085dd3064450ec965105c4a8aac086abc7ab4dba0c4f2` |
-| deterministic_package_sha256 | `cb186b51dd66dc4a67cbfe365bbb31c698e96c7bea927f6996b19616788f604f` across 14 files on two consecutive frozen-input generations. |
+| poster_direction_readback_sha256 | `43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb` |
+| reference_manifest_sha256 | `8c2e663a86353334752674dfdbefd0082cf5519cde1e8658d4b68a8b1b66e8a9` |
+| deterministic_package_sha256 | Not yet reverified after the reference-fidelity revision. |
 | validation_command | Focused poster/operator tests and changed-scope Ruff; JSON/manifest/hash consistency; image dimensions and safe-crop visual inspection; ffprobe/full decode and transition-boundary frames; browser DOM/media/layout/folded-details/Range QA; protected OUT-03..OUT-07 and accepted-video hashes; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
 | review_status | `poster_direction_review_ready`; human visual acceptance and winner remain pending. Automated integrity checks do not establish attractiveness. |
 | next_action | Ask only: A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。 |

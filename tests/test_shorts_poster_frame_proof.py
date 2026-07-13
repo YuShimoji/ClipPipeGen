@@ -21,93 +21,151 @@ def _corpus() -> dict:
     return json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
 
 
-def test_reference_corpus_has_bounded_multi_source_support() -> None:
+def test_reference_corpus_has_current_vertical_exact_surface_coverage() -> None:
     corpus = _corpus()
     summary = proof.validate_reference_corpus(corpus)
 
-    assert summary == {
-        "reference_count": 24,
-        "channel_count": 17,
-        "query_strategy_count": 3,
-        "latest_120_day_count": 18,
-        "date_coverage": ["2023-09-04", "2026-07-10"],
-        "target_surfaces": {
-            "conventional_16_9_secondary_reference": 21,
-            "native_vertical_short_poster_reference": 3,
-        },
-        "family_counts": {
-            "hero_with_reaction_inset": 8,
-            "opposed_dialogue": 7,
-            "single_reaction_hero": 9,
-        },
-    }
-    assert corpus["reference_priority"] == ["user_supplied", "research_collected"]
-    assert all(entry["translation_note"] for entry in corpus["references"])
+    assert summary["stored_reference_count"] == 51
+    assert summary["reference_count"] == 50
+    assert summary["inactive_duplicate_reference_count"] == 1
+    assert summary["channel_count"] == 41
+    assert summary["query_strategy_count"] == 4
+    assert summary["native_vertical_exact_surface_count"] == 27
+    assert summary["native_vertical_exact_surface_channel_count"] == 24
+    assert summary["recent_180_day_native_vertical_exact_surface_count"] == 22
+    assert summary["conventional_16_9_secondary_count"] == 20
+    assert summary["conventional_16_9_ratio"] == 0.4
+    assert summary["max_references_per_channel"] == 3
+    assert summary["success_proxy_is_causal_proof"] is False
+    assert corpus["surface_observation"]["youtube_verified"] is False
+    assert corpus["success_proxy_policy"]["view_count_is_causal_proof"] is False
+
+    references = proof._reference_entries(corpus)
+    exact = [
+        entry
+        for entry in references
+        if entry["target_surface"]
+        == "native_vertical_exact_youtube_search_shorts_card"
+    ]
+    assert len(exact) == 27
+    assert all(entry["surface_evidence_path"] for entry in exact)
+    assert all(entry["face_occupancy_ratio"] is not None for entry in exact)
+    assert all(entry["subject_position"] for entry in exact)
+    assert all(entry["text_region"] for entry in exact)
+    assert all(entry["background_treatment"] for entry in exact)
+    assert all(entry["repeated_layout_usage"] for entry in exact)
 
 
-def test_candidate_specs_are_distinct_safe_and_traceable() -> None:
-    proof.validate_candidate_specs(proof.CANDIDATE_SPECS)
+def test_candidate_directions_are_research_derived_safe_and_traceable() -> None:
+    corpus = _corpus()
+    references = proof._reference_entries(corpus)
+    specs = proof.candidate_specs_from_corpus(corpus, references=references)
+    proof.validate_candidate_specs(specs, references=references)
 
-    assert [spec["candidate_id"] for spec in proof.CANDIDATE_SPECS] == ["A", "B", "C"]
-    assert len({spec["family_id"] for spec in proof.CANDIDATE_SPECS}) == 3
-    for spec in proof.CANDIDATE_SPECS:
-        assert spec["essential_text_block_count"] == 1
+    assert [spec["candidate_id"] for spec in specs] == ["A", "B", "C"]
+    assert len({spec["family_id"] for spec in specs}) == 3
+    assert specs[2]["essential_text_block_count"] == 2
+    for spec in specs:
         assert "back" not in spec["dominant_face_orientation"]
+        assert spec["speaker"] == spec["emotional_subject"]
+        assert spec["primary_exemplar_id"] in spec["reference_ids"]
         assert len(spec["reference_ids"]) >= 3
+        assert spec["primary_exemplar_proportions"]
         assert spec["copy_evidence"]["subtitle_ids"]
         assert spec["copy_evidence"]["segment_ids"]
 
-    unsafe = list(deepcopy(proof.CANDIDATE_SPECS))
+    research_renamed = list(deepcopy(specs))
+    research_renamed[0]["family_id"] = "later_research_derived_family_name"
+    proof.validate_candidate_specs(tuple(research_renamed), references=references)
+
+    unsafe = list(deepcopy(specs))
     unsafe[0]["essential_bounds"] = [0, 200, 1080, 1600]
     try:
-        proof.validate_candidate_specs(tuple(unsafe))
+        proof.validate_candidate_specs(tuple(unsafe), references=references)
     except proof.ShortsPosterFrameProofError as exc:
         assert "safe area" in str(exc)
     else:
         raise AssertionError("expected unsafe essential bounds to be rejected")
 
 
-def test_poster_renderers_produce_original_vertical_rgb_compositions() -> None:
-    noel = Image.new("RGB", (1920, 1080), (80, 100, 140))
-    hajime = Image.new("RGB", (1920, 1080), (235, 190, 80))
-
-    images = [
-        proof._poster_a(hajime),
-        proof._poster_b(noel, hajime),
-        proof._poster_c(noel, hajime),
-    ]
+def test_manual_masks_and_poster_renderers_preserve_source_pixels() -> None:
+    source = Image.new("RGB", (1920, 1080), (235, 190, 80))
+    noel_source = Image.new("RGB", (1920, 1080), (80, 100, 140))
+    hajime, hajime_mask, hajime_info = proof._manual_subject_cutout(
+        source, subject="hajime_macro"
+    )
+    noel, noel_mask, noel_info = proof._manual_subject_cutout(
+        noel_source, subject="noel_three_quarter"
+    )
+    images = [proof._poster_a(hajime), proof._poster_b(noel, hajime), proof._poster_c(hajime)]
     try:
+        assert hajime.mode == "RGBA"
+        assert noel.mode == "RGBA"
+        assert hajime_mask.mode == noel_mask.mode == "L"
+        assert hajime_mask.getextrema()[1] == noel_mask.getextrema()[1] == 255
+        assert hajime_info["person_pixels_generated_or_modified"] is False
+        assert noel_info["person_pixels_generated_or_modified"] is False
         assert all(image.size == proof.CANVAS for image in images)
         assert all(image.mode == "RGB" for image in images)
         assert len({image.getpixel((10, 10)) for image in images}) == 3
     finally:
         for image in images:
             image.close()
-        noel.close()
         hajime.close()
+        hajime_mask.close()
+        noel.close()
+        noel_mask.close()
+        source.close()
+        noel_source.close()
+
+
+def test_platform_preview_assets_have_required_dimensions(tmp_path: Path) -> None:
+    image = Image.new("RGB", proof.CANVAS, (25, 45, 75))
+    try:
+        readback = proof._write_platform_previews(
+            image=image,
+            candidate_id="A",
+            stage=tmp_path,
+            output=tmp_path,
+            root=tmp_path,
+        )
+        assert readback["channel_search_tile"]["dimensions"] == [405, 720]
+        assert readback["center_4_5_heuristic"]["official_guarantee"] is False
+        assert readback["shorts_playback_ui_overlay"]["approximation"] is True
+        with Image.open(tmp_path / "preview_A_channel_search_tile.jpg") as preview:
+            assert preview.size == (405, 720)
+        with Image.open(tmp_path / "preview_A_center_4_5.jpg") as preview:
+            assert preview.size == (320, 400)
+        with Image.open(tmp_path / "preview_A_shorts_ui_overlay.jpg") as preview:
+            assert preview.size == (405, 720)
+    finally:
+        image.close()
 
 
 def test_review_html_keeps_candidates_first_and_evidence_folded() -> None:
+    specs = proof.candidate_specs_from_corpus(_corpus())
     readback = {
-        "candidates": [
-            {
-                **spec,
-                "source_frame_timestamps": spec["source_frame_timestamps"],
-            }
-            for spec in proof.CANDIDATE_SPECS
-        ],
-        "reference_corpus": {"channel_count": 17},
+        "candidates": [dict(spec) for spec in specs],
+        "reference_corpus": {
+            "reference_count": 50,
+            "channel_count": 41,
+            "native_vertical_exact_surface_count": 27,
+            "conventional_16_9_secondary_count": 20,
+        },
     }
     html = proof._render_html(readback)
 
     assert html.count('class="candidate"') == 3
     assert html.count("<video") == 3
     assert html.count(proof.REVIEW_QUESTION) == 1
-    assert html.index('id="candidates"') < html.index("末尾transition proof")
+    assert html.index('id="candidates"') < html.index("platform preview 一覧")
+    assert html.index("platform preview 一覧") < html.index("末尾transition proof")
     assert html.index("末尾transition proof") < html.index('id="evidence"')
     assert "<details open" not in html
-    assert "180×320" in html
-    assert "center 4:5 / 160×200" in html
+    assert "channel / search 405×720" in html
+    assert "center 4:5 heuristic" in html
+    assert "Shorts playback UI overlay" in html
+    assert "hard cut" not in html.lower()
 
 
 def test_cli_exposes_poster_proof_help() -> None:
