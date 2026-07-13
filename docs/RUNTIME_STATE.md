@@ -3,29 +3,37 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out07_reference_derived_shorts_poster_frame_directions_review_ready
-progress_pct: 100
+health: out07_portable_implementation_ready_planner007_fixed_input_recovery_blocked
+progress_pct: 70
 last_touched: 2026-07-13
-state_revision: out07-reference-derived-shorts-poster-frame-proof-v0-2026-07-13
+state_revision: out07-planner007-portable-state-repair-2026-07-13
 current_slice: OUT-07
-phase: reference_derived_shorts_poster_frame_directions_review_ready
-canonical_status: branch_review_pending
+phase: portable_implementation_ready_local_recovery_blocked
+canonical_status: branch_review_pending_local_recovery_required
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 reference-derived Shorts poster frame directions
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json
+current_title: OUT-07 portable poster proof implementation with Planner007 input recovery blocked
+human_entrypoint: null
+machine_readback: null
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: human_direction_selection
-review_status: poster_direction_review_ready
-review_scope: Compare only the three 9:16 poster directions A/B/C and note end-cap discomfort only if present; title, description, tags, publishing, production and rights are outside this review.
-review_ready_at: 2026-07-13 JST
+decision_required: recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection
+review_status: local_review_package_unavailable_fixed_source_hash_mismatch
+review_scope: Do not review A/B/C on Planner007 until the fixed source and accepted OUT-06 package are restored and the current proof is regenerated and locally verified.
+review_ready_at: null
+portable_access: tracked_builder_cli_tests_corpus_available
+local_package_requirement: required_not_satisfied_on_planner007
+local_source_path: episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4
+local_source_expected_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
+local_source_observed_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
+local_accepted_out06_package_status: missing
+local_reference_cache_status: missing_refetch_allowed_after_fixed_inputs_recover
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
+current_host: Planner007
 last_verified_at: 2026-07-13
-next_review_due: human_direction_selection
-next_action: Open http://127.0.0.1:8071/index.html and answer only: A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。
+next_review_due: local_proof_reconstitution_and_verification
+next_action: Restore the exact retained source at local_source_path with local_source_expected_sha256 and the complete accepted OUT-06 package; then regenerate OUT-07 inputs, freeze references, build twice, and verify locally before exposing the review URL.
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_branch: codex/out-07-internal-operator-delivery-pack-v0
@@ -129,15 +137,29 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-07 Reference-Derived Shorts Poster Frame Proof
+## Current OUT-07 Portable Implementation / Planner007 Recovery Block
 
-The active branch remains `codex/out-07-internal-operator-delivery-pack-v0`.
-The current artifact is
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`, stored as one ignored
-same-machine package at
-`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/`.
-Use `open_preview.ps1 -Serve -Port 8071` or
-`http://127.0.0.1:8071/index.html` for the single review entrypoint.
+The active branch remains `codex/out-07-internal-operator-delivery-pack-v0`,
+and the artifact identity remains
+`clip-out07-shorts-poster-frame-direction-proof-v0-001`. The tracked builder,
+CLI, tests, reference URLs, and structural annotations are portable. The
+ignored poster package is not portable and is not present on Planner007, so
+there is currently no verified human entrypoint or machine readback on this
+host. A localhost URL becomes valid only after a same-host build and local
+verification.
+
+The expected retained source at
+`episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4`
+must hash to
+`6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`.
+Planner007 instead contains a receipt-consistent but different byte stream at
+`e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`.
+The accepted OUT-06 package and its fixed video
+`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`
+are also absent. An inventory of every episode MP4 found neither fixed hash.
+The frozen reference cache is absent, but it may be explicitly refetched from
+the tracked public corpus only after the fixed source and accepted predecessor
+are recovered.
 
 The former `context`, `tension`, and `payoff` 16:9 directions are now explicit
 `user_rejected` evidence. `publish_draft.json` has
@@ -162,22 +184,23 @@ approximate Shorts playback UI previews plus expression and mask inspection
 sheets. The center-4:5 preview is a project robustness heuristic, not an
 official YouTube crop guarantee.
 
-Each `transition_A/B/C.mp4` uses the final 1.75s of the accepted video, a shared
-0.12s dissolve, a 0.50s poster end-cap, and a 0.16s audio fade. The proofs are 2.133s,
-1080x1920, full-decode clean review evidence; they do not replace or modify the
-accepted 38.633333s video, whose SHA-256 remains
+When regenerated, each `transition_A/B/C.mp4` must use the final 1.75s of the
+accepted video, a shared 0.12s dissolve, a 0.50s poster end-cap, and a 0.16s
+audio fade, producing a roughly 2.133s 1080x1920 review proof. The accepted
+38.633333s video must remain byte-identical at
 `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
 
-The reference-fidelity revision passes its six focused Pillow-enabled tests and
-`git diff --check`. A deterministic whole-package digest has not yet been
-reverified after this revision. Human visual acceptance is still pending;
-tests establish integrity, not attractiveness or a winner.
+The reference-fidelity implementation has tracked test evidence, but its latest
+whole-package deterministic digest has not been verified on Planner007. Human
+visual acceptance remains pending; no A/B/C winner may be inferred from the
+portable implementation or earlier source-host hashes.
 
-The only current review question is: A/B/Cのどれが実用候補に最も近いか、
-または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。
-Rights, production render, production subtitle design, public readiness,
-upload, visibility, made-for-kids, publishing, and H1 full-video integration
-remain closed.
+After recovery, two deterministic builds, media/browser QA, and local entrypoint
+verification, the only human question will again be: A/B/Cのどれが実用候補に
+最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記して
+ください。 Rights, production render, production subtitle design, public
+readiness, upload, visibility, made-for-kids, publishing, and H1 full-video
+integration remain closed.
 
 ## Accepted OUT-06 Complete Narrative Short After Bounded Repair
 

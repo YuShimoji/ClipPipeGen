@@ -8,10 +8,23 @@ import subprocess
 import sys
 from pathlib import Path
 
-from src.pipeline.docs_dashboard import build_project_status, write_project_status
+from src.pipeline.docs_dashboard import (
+    _front_matter,
+    build_project_status,
+    write_project_status,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+
+def test_front_matter_treats_yaml_null_as_unavailable() -> None:
+    metadata = _front_matter(
+        "---\nhuman_entrypoint: null\nmachine_readback: ~\n---\n"
+    )
+
+    assert metadata["human_entrypoint"] == ""
+    assert metadata["machine_readback"] == ""
 
 
 def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
@@ -1436,16 +1449,20 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-06 accepted after bounded repair"
     )
-    assert status["current_focus"]["canonical_status"] == "branch_review_pending"
+    assert status["current_focus"]["canonical_status"] == (
+        "branch_review_pending_local_recovery_required"
+    )
     assert status["current_focus"]["review_status"] == (
-        "poster_direction_review_ready"
+        "local_review_package_unavailable_fixed_source_hash_mismatch"
     )
     assert status["current_focus"]["decision_required"] == (
-        "human_direction_selection"
+        "recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "human_direction_selection"
+        "local_proof_reconstitution_and_verification"
     )
+    assert status["current_focus"]["human_entrypoint"] == ""
+    assert status["current_focus"]["machine_readback"] == ""
     assert status["current_focus"]["artifact_id"] == (
         "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     )

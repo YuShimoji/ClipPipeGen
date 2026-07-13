@@ -6,14 +6,14 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-07`
 - artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `out07_reference_derived_shorts_poster_frame_directions_review_ready`
+- state: `out07_portable_implementation_ready_planner007_fixed_input_recovery_blocked`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
 - canonical baseline: `OUT-06 accepted after bounded repair`
-- canonical status: `branch_review_pending`
-- review status: `poster_direction_review_ready`
-- decision required: `human_direction_selection`
-- next review: `human_direction_selection`
+- canonical status: `branch_review_pending_local_recovery_required`
+- review status: `local_review_package_unavailable_fixed_source_hash_mismatch`
+- decision required: `recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection`
+- next review: `local_proof_reconstitution_and_verification`
 
 ## Feature Table
 

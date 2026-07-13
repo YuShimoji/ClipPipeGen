@@ -1338,7 +1338,8 @@ def _front_matter(text: str) -> dict[str, str]:
         if ":" not in line or line.startswith(" "):
             continue
         key, value = line.split(":", 1)
-        metadata[key.strip()] = value.strip().strip('"')
+        scalar = value.strip().strip('"')
+        metadata[key.strip()] = "" if scalar.lower() in {"null", "~"} else scalar
     return metadata
 
 

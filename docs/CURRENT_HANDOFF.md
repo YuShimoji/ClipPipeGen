@@ -3,28 +3,29 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: out07_reference_derived_shorts_poster_frame_directions_review_ready
-progress_pct: 100
+health: out07_portable_implementation_ready_planner007_fixed_input_recovery_blocked
+progress_pct: 70
 last_touched: 2026-07-13
 current_slice: OUT-07
-phase: reference_derived_shorts_poster_frame_directions_review_ready
-canonical_status: branch_review_pending
+phase: portable_implementation_ready_local_recovery_blocked
+canonical_status: branch_review_pending_local_recovery_required
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 reference-derived Shorts poster frame directions
-human_entrypoint: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/index.html
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json
+current_title: OUT-07 portable poster proof implementation with Planner007 input recovery blocked
+human_entrypoint: null
+machine_readback: null
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: human_direction_selection
-review_status: poster_direction_review_ready
-review_scope: Compare only poster directions A/B/C and mention end-cap discomfort only if present; metadata, publishing, production and rights remain outside this review.
-review_ready_at: 2026-07-13 JST
+decision_required: recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection
+review_status: local_review_package_unavailable_fixed_source_hash_mismatch
+review_scope: Do not review A/B/C on Planner007 until fixed inputs are restored and the current proof is regenerated and locally verified.
+review_ready_at: null
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
+current_host: Planner007
 last_verified_at: 2026-07-13
-next_review_due: human_direction_selection
-next_action: Open http://127.0.0.1:8071/index.html and answer only: A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。
+next_review_due: local_proof_reconstitution_and_verification
+next_action: Follow docs/RUNTIME_STATE.md to restore the exact retained source and complete accepted OUT-06 package before regenerating and exposing any local review URL.
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 latest_out07_shorts_poster_frame_direction_proof_branch: codex/out-07-internal-operator-delivery-pack-v0
@@ -135,11 +136,21 @@ Then read `AGENTS.md`, `docs/RUNTIME_STATE.md`, this file, and
 `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md`. Use the accepted
 OUT-06/OUT-05/OUT-04/OUT-03 contracts only for predecessor/baseline history.
 
-The durable OUT-07 state now adds the tracked reference corpus and poster-proof
-builder/CLI/tests to the existing operator-pack contract. The current ignored
-same-machine package is
-`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/`.
-`open_preview.ps1 -Serve -Port 8071` is the single current review entrypoint.
+The durable OUT-07 state includes the tracked reference corpus and poster-proof
+builder/CLI/tests. On Planner007 the ignored same-machine proof package is
+absent, so `open_preview.ps1` and port 8071 are not current entrypoints. The
+stable contract is that a source host can regenerate the proof, while every
+host must verify its own ignored package before exposing a localhost URL.
+
+Planner007's retained source path currently hashes to
+`e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`,
+not the required
+`6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`.
+No episode MP4 matches the required source or accepted OUT-06 video hash. The
+complete accepted OUT-06 package must therefore be restored together with the
+exact retained source before OUT-07 regeneration. The frozen reference cache
+need not be transferred because the tracked public corpus permits an explicit
+new freeze after fixed-input recovery.
 
 OUT-07 copies the accepted OUT-06 MP4 byte-identically. The OUT-06 source video
 and OUT-07 packaged video both hash to

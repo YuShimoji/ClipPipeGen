@@ -55,8 +55,9 @@ OUT-07 now keeps the accepted OUT-06 MP4 byte-identical while the former 16:9
 `context`/`tension`/`payoff` directions are explicit user-rejected evidence with
 no selection or recommendation. The current proof derives exactly three
 structurally different 1080x1920 poster directions from retained source pixels,
-adds three 2.400s tail-to-poster review clips, and exposes one ignored local
-review page in `review/out07_shorts_poster_frame_direction_proof/`. Human A/B/C
+adds three approximately 2.133s tail-to-poster review clips, and can expose one
+ignored local review page in `review/out07_shorts_poster_frame_direction_proof/`
+after same-host generation and verification. Human A/B/C
 or all-rejected selection is required before any full-video integration. Upload,
 metadata acceptance, visibility, made-for-kids, public, publishing, production,
 and rights decisions remain closed.

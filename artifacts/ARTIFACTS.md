@@ -34,8 +34,8 @@ opened by the root launcher.
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_contact_sheet.jpg` |
 | inspection_sheets | `expression_contact_sheet_A/B/C.jpg`; `subject_mask_inspection.jpg`; `platform_preview_contact_sheet.jpg` |
 | transition_proofs | `transition_A.mp4`; `transition_B.mp4`; `transition_C.mp4` |
-| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
-| preview_url | `http://127.0.0.1:8071/index.html` while the fixed-root byte-range server is running. |
+| open_command | Conditional after same-host generation and verification: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
+| preview_url | No verified Planner007 URL. `http://127.0.0.1:8071/index.html` is valid only while a verified same-host package server is running. |
 | reference_corpus | 50 active references across 41 channels; 27 native-vertical exact-surface observations across 24 channels, 22 recent within 180 days, and 20 secondary 16:9 references. YouTube surface behavior remains unverified and view count is not causal proof. |
 | composition_families | A `macro_reaction_topline`; B `speaker_first_asymmetric_duo`; C `offset_reaction_side_copy`, each derived from primary and supporting references. |
 | source_frames | Retained-source dense 0.15s expression surveys and manual alpha-mask edge inspection; person pixels are not generated or modified. |
@@ -47,8 +47,8 @@ opened by the root launcher.
 | reference_manifest_sha256 | `8c2e663a86353334752674dfdbefd0082cf5519cde1e8658d4b68a8b1b66e8a9` |
 | deterministic_package_sha256 | Not yet reverified after the reference-fidelity revision. |
 | validation_command | Focused poster/operator tests and changed-scope Ruff; JSON/manifest/hash consistency; image dimensions and safe-crop visual inspection; ffprobe/full decode and transition-boundary frames; browser DOM/media/layout/folded-details/Range QA; protected OUT-03..OUT-07 and accepted-video hashes; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
-| review_status | `poster_direction_review_ready`; human visual acceptance and winner remain pending. Automated integrity checks do not establish attractiveness. |
-| next_action | Ask only: A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。 |
+| review_status | Portable implementation ready; Planner007 local package unavailable because the retained source hash differs and the accepted OUT-06 package is missing. Human visual acceptance and winner remain pending. |
+| next_action | Restore the exact fixed-hash source and complete accepted OUT-06 package, then regenerate twice and verify this host before asking the A/B/C or all-rejected question. |
 
 Boundary flags remain false or pending:
 
