@@ -5,13 +5,11 @@ local files are portable across clones. Use `docs/RUNTIME_STATE.md` for the
 current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
-Normal open order is `.\open-dashboard.ps1` first, choose the artifact from the
-dashboard, then use an artifact-specific launcher. For the current ED-10z
-tiny render-path-nearer probe pack, use `.\open-current-proof.ps1`; if that
-ignored local pack is absent, the launcher falls back to the retained ED-10v
-focused proof on this machine;
-for the accepted ED-10o focused comparison
-reference, use
+Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
+current artifact, then use an artifact-specific launcher. The active review is
+the OUT-07 accepted-baseline native Shorts-cover package below. Historical
+ED-10 proof launchers remain retained evidence; for the accepted ED-10o focused
+comparison reference, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`;
 for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
@@ -22,40 +20,35 @@ opened by the root launcher.
 
 | Field | Value |
 |---|---|
-| title | OUT-07 Planner007 Media-Revision Baseline + Shorts Poster Direction Proof v0 |
-| purpose | Qualify the current episode media revision, reconstruct the fixed 38.6-second narrative baseline, and place that video before three source-pixel 9:16 poster directions so one human review can detect baseline drift and choose A/B/C or reject all. |
-| storage class | Tracked revision-aware builder/CLI/tests/rebuild contract/reference URLs plus ignored same-machine baseline, posters, transitions, reference pixels, and review page. Third-party pixels are not committed. |
-| repo_relative_path | `src/integrations/render/out07_reconstitution.py`; `src/cli/reconstitute_out07_review.py`; `src/integrations/render/shorts_poster_frame_proof.py`; `artifacts/ACTIVE_REBUILD.json`; `docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` |
+| title | OUT-07 Accepted Baseline + Native Shorts Cover Operator Review v0 |
+| purpose | Preserve Planner007's explicitly accepted current baseline byte-for-byte, recommend one actual 11.930-second video frame with its existing burn-in subtitle as the Shorts list cover, and integrate unchanged metadata plus closed operator gates into one review surface. |
+| storage class | Tracked native-cover builder/CLI/tests/hash-only recovery contract/reference observations plus one ignored same-machine baseline copy, cover, previews, readbacks, manifest, and review page. `episodes/` and media pixels remain untracked. |
+| repo_relative_path | `src/integrations/render/out07_native_cover.py`; `src/integrations/render/out07_reconstitution.py`; `src/cli/reconstitute_out07_review.py`; `artifacts/ACTIVE_REBUILD.json`; `docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/` |
 | machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json` |
+| operator_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/operator_delivery_readback.json` |
 | combined_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json` |
 | determinism_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/determinism_receipt.json` |
 | media_revision_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json` |
-| reference_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/reference_manifest.json` |
-| active_rebuild_contract | `artifacts/ACTIVE_REBUILD.json` (`resume_class=reacquirable`; exact 3-cut/29-subtitle semantic snapshot, direct proxy/caption authority inventory, existing init/video/audio fetch commands, and source hash stop gate; no absolute host path, credentials, or pixels). |
-| source_inputs | Planner007 source revision `e2206cef...1889`, episode edit/transcript/decision/rights/material authority, tracked copy plan and 50-active-reference corpus, and ignored frozen reference cache. Historical fixed-hash packages are optional comparison evidence. |
-| baseline | `reinstantiated_baseline.mp4`; fixed 3-cut/29-subtitle semantics; H.264/AAC 1080x1920 30fps about 38.633s; output differs from historical accepted OUT-06 and is `reinstantiated_baseline_candidate`, `human_acceptance=false`. |
-| candidates | `poster_A_1080x1920.jpg`; `poster_B_1080x1920.jpg`; `poster_C_1080x1920.jpg` |
-| contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_contact_sheet.jpg` |
-| inspection_sheets | `expression_contact_sheet_A/B/C.jpg`; `subject_mask_inspection.jpg`; `platform_preview_contact_sheet.jpg` |
-| transition_proofs | `transition_A.mp4`; `transition_B.mp4`; `transition_C.mp4` |
+| active_rebuild_contract | `artifacts/ACTIVE_REBUILD.json` (`resume_class=conditional_reacquire`; exact 3-cut/29-subtitle timing/segment/text-hash/wrap-break contract but no caption plaintext; missing official-caption authority stops as `caption_authority_reacquire_required`; another host must also restore the exact accepted baseline rather than rerender it). |
+| source_inputs | Qualified source revision `e2206cef...1889`, explicitly accepted baseline `2c1c59bc...2d18`, tracked unchanged copy plan, and tracked reference corpus as observation-only evidence. No new crawl or third-party reference pixels are used. |
+| accepted_baseline | `reinstantiated_baseline.mp4`; 21,669,538-byte SHA-verified copy of the accepted H.264/AAC 1080x1920 30fps, 38.633333-second baseline. Acceptance date 2026-07-13 JST; historical OUT-06 acceptance is not inherited. |
+| recommended_cover | `native_shorts_cover_1080x1920.png`; baseline 11.930s / mapped source 22.858s / existing `sub_010`; SHA-256 `6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`; selected-by-human remains false. |
+| preview_artifacts | `cover_list_preview.jpg` (405x720), `cover_shorts_ui_overlay_preview.jpg` (generic 405x720 UI-overlap approximation), and `cover_center_4x5.jpg` (864x1080) are preview-only derivatives; `mapped_source_frame_1920x1080.png` is the unmodified timestamp/fingerprint comparison frame. |
+| superseded_evidence | Prior active A/B/C are hash-only `superseded_by_user_short_context_reframe`, not quality-rejected, and never returned for selection; historical context/tension/payoff remains separately `user_rejected`. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
 | preview_url | `http://127.0.0.1:8071/index.html` while the retained Planner007 byte-range server is running. Other hosts must rebuild and locally verify first. |
-| reference_corpus | New frozen revision: 51 stored entries / 50 active after one duplicate exclusion, 41 channels, 27 native-vertical exact-surface observations across 24 channels, 22 recent within 180 days, 20 secondary 16:9 references, zero fetch failures. URLs, MIME, dimensions, hashes, failures, and revision are manifest-recorded. |
-| composition_families | A `macro_reaction_topline`; B `speaker_first_asymmetric_duo`; C `offset_reaction_side_copy`, each derived from primary and supporting references. |
-| source_frames | Retained-source dense 0.15s expression surveys and manual alpha-mask edge inspection; person pixels are not generated or modified. |
-| platform_previews | Channel/search 405x720, project heuristic center-4:5 320x400, and approximate Shorts UI 405x720 for each candidate. |
-| transition_contract | About 2.133s proof from the reinstantiated baseline tail: 1.75s tail, shared 0.12s dissolve, static poster 0.50s, and audio fade 0.16s; review evidence only. |
 | historical_accepted_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` comparison evidence only; current acceptance is not inherited. |
-| determinism | Same frozen inputs built twice; source-derived core digest and separately-scoped reference evidence digest both matched. Generated time, absolute paths, staging UUID, stderr, server PID, and reference pixels are excluded from core. |
-| validation_command | Focused poster/operator tests and changed-scope Ruff; JSON/manifest/hash consistency; image dimensions and safe-crop visual inspection; ffprobe/full decode and transition-boundary frames; browser DOM/media/layout/folded-details/Range QA; protected OUT-03..OUT-07 and accepted-video hashes; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
-| review_status | Planner007 combined review package generated twice and locally machine-verified. Baseline human acceptance and A/B/C winner remain pending. |
-| next_action | Review the baseline first for any new anomaly, then choose A/B/C or reject all and note poster discomfort; keep rights/production/public gates closed. |
+| determinism | Same fixed inputs built twice; core `35d91185...e05f6` and package `a849d66d...43303` match. Per-file hashes, exact inventory, and canonical whole-manifest self-integrity pass. |
+| validation_command | Focused native-cover/recovery/docs tests and changed-scope Ruff; JSON/manifest/hash consistency; baseline SHA/probe/full decode; cover/list/4:5 visual inspection; browser DOM/media/layout/folded-details/seek/Range QA; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
+| review_status | Baseline is explicitly accepted and unchanged. One native-frame cover is recommended and locally verified; only cover-direction human acceptance remains pending. |
+| next_action | Answer the single Shorts-cover question; if accepted, record final cover selection at H1 without reopening baseline, metadata, rights, production, or public decisions. |
 
 Boundary flags remain false or pending:
 
 - `selected_thumbnail=null`
-- `current_recommendation=null`
+- `current_recommendation=native_shorts_cover_1080x1920.png`
+- `selected_by_human=false`
 - `human_selection_required=true`
 - `h1_full_short_integration=false`
 - `publish_ready=false`
@@ -66,22 +59,25 @@ Boundary flags remain false or pending:
 
 ## `clip-out07-internal-operator-delivery-pack-v0-001`
 
+Historical lineage only; this is not the current review target and its ignored
+local package may be absent.
+
 | Field | Value |
 |---|---|
 | title | OUT-07 Internal Operator Delivery Pack v0 |
 | purpose | Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions, clean Japanese audience copy, and separate operator-only attribution/gate readback for internal review. |
-| storage class | Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media, generated MP4 copy, and thumbnails remain outside Git. |
+| storage class | Tracked historical builder/CLI/tests/contract plus an ignored same-machine delivery package only if retained on the host. Source media, generated MP4 copy, and thumbnails remain outside Git. |
 | repo_relative_path | `src/integrations/render/operator_delivery_pack.py`; `src/cli/build_operator_delivery_pack.py`; `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/` |
 | machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/operator_delivery_readback.json` |
 | delivery_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/delivery_manifest.json` |
 | source_inputs | Accepted OUT-06 readback/video and retained source video frame evidence. |
-| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1` |
-| preview_url | `http://127.0.0.1:8070/index.html` while the retained byte-range local server is running. |
+| open_command | If the historical local package is retained: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1` |
+| preview_url | Historical `http://127.0.0.1:8070/index.html` only while that optional retained package server is running; it is not the current review URL. |
 | recommended_thumbnail | `null`; the former context/tension/payoff directions are all `user_rejected`. |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/thumbnail_direction_contact_sheet.jpg` |
 | validation_command | `uvx --with Pillow pytest -q tests/test_operator_delivery_pack.py tests/test_complete_narrative_short.py tests/test_vertical_short_candidate.py tests/test_review_range_server.py tests/test_docs_dashboard.py`; required-field and copy-separation assertions; actual package generation twice for byte-stability; protected OUT-03..OUT-06/human-preview digest equality; unchanged media hashes; manifest self-integrity; Range 206; browser Japanese copy/fallback/folded-details/image/video/seek/no-overflow QA; deterministic dashboard regeneration; `git diff --check`; `git ls-files episodes`. |
-| review_status | Legacy operator-pack state repaired: context/tension/payoff are rejected evidence, selected/recommended are null, metadata copy is unchanged and pending, and the accepted OUT-06 MP4 remains byte-identical. |
+| review_status | Historical lineage only. Context/tension/payoff are rejected evidence and this artifact must not be reopened as the current selection surface. |
 | recommended_thumbnail_sha256 | `null` |
 | contact_sheet_sha256 | Rebuilt rejected-evidence sheet; candidate review moved to `clip-out07-shorts-poster-frame-direction-proof-v0-001`. |
 | output_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` |

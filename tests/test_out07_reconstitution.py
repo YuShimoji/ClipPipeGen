@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -163,7 +164,7 @@ def test_canonical_digest_is_stable_and_reference_evidence_is_separable() -> Non
     assert rebuild._canonical_digest(core) != rebuild._canonical_digest(references)
 
 
-def test_tracked_semantic_authority_is_complete_and_self_sufficient() -> None:
+def test_tracked_semantic_authority_is_complete_but_contains_no_caption_text() -> None:
     contract = json.loads(
         (ROOT / "artifacts" / "ACTIVE_REBUILD.json").read_text(encoding="utf-8")
     )
@@ -174,11 +175,63 @@ def test_tracked_semantic_authority_is_complete_and_self_sufficient() -> None:
 
     assert [item["id"] for item in timeline] == list(complete.EXPECTED_CUT_IDS)
     assert [item["id"] for item in subtitles] == list(complete.EXPECTED_SUBTITLE_IDS)
+    assert all("text" not in item and "wrapped_lines" not in item for item in subtitles)
+    assert all(len(item["text_sha256"]) == 64 for item in subtitles)
     assert subtitles[-1]["sequence_end_seconds"] == 38.638
     assert [item["cut_id"] for item in decision["decisions"]] == list(
         complete.EXPECTED_CUT_IDS
     )
     assert proxy["status"] == "validated_from_tracked_rebuild_contract"
+
+
+def test_hash_only_contract_rehydrates_from_caption_authority(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    contract_rows = []
+    events = []
+    digest_rows = []
+    for index in range(1, 30):
+        subtitle_id = f"sub_{index:03d}"
+        separator = "\u3000" if index in {20, 25} else " "
+        text = f"fixture{separator}caption {index}"
+        start = (index - 1) * 0.25
+        end = start + 0.25
+        text_sha256 = hashlib.sha256(text.encode("utf-8")).hexdigest()
+        contract_rows.append(
+            {
+                "id": subtitle_id,
+                "cut_id": "cut_001",
+                "source_segment_ids": [f"seg_{index:06d}"],
+                "source_start_seconds": start,
+                "source_end_seconds": end,
+                "sequence_start_seconds": start,
+                "sequence_end_seconds": end,
+                "text_sha256": text_sha256,
+            }
+        )
+        events.append(
+            {
+                "tStartMs": int(start * 1000),
+                "dDurationMs": 250,
+                "segs": [{"utf8": f"\u200b{text}\u200b"}],
+            }
+        )
+        digest_rows.append({"id": subtitle_id, "text_sha256": text_sha256})
+    digest = hashlib.sha256(
+        json.dumps(digest_rows, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    monkeypatch.setattr(rebuild, "CAPTION_PAYLOAD_DIGEST", digest)
+
+    hydrated = rebuild._rehydrate_semantic_subtitles_from_caption(
+        subtitle_contract=contract_rows,
+        subtitle_track={"events": events},
+    )
+
+    assert len(hydrated) == 29
+    assert hydrated[0]["text"] == "fixture caption 1"
+    assert hydrated[19]["text"] == "fixture\u3000caption 20"
+    assert hydrated[24]["text"] == "fixture\u3000caption 25"
+    assert hydrated[-1]["text"] == "fixture caption 29"
 
 
 def test_episode_identity_validator_rejects_transcript_or_edit_pack_drift() -> None:
@@ -195,7 +248,7 @@ def test_episode_identity_validator_rejects_transcript_or_edit_pack_drift() -> N
         )
 
 
-def test_contract_authority_fallback_rebuilds_without_ignored_semantic_files(
+def test_contract_authority_fallback_requires_caption_reacquisition(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     root = tmp_path
@@ -300,17 +353,16 @@ def test_contract_authority_fallback_rebuilds_without_ignored_semantic_files(
 
     monkeypatch.setattr(rebuild, "_sha256", fixture_sha256)
 
-    authority = rebuild.load_current_episode_authority(
-        episode_dir=episode,
-        base_dir=root,
-        execute_media_checks=False,
-    )
+    with pytest.raises(
+        rebuild.Out07ReconstitutionError,
+        match="caption_authority_reacquire_required",
+    ):
+        rebuild.load_current_episode_authority(
+            episode_dir=episode,
+            base_dir=root,
+            execute_media_checks=False,
+        )
 
-    assert authority["authority_mode"] == "tracked_rebuild_contract"
-    assert len(authority["semantic_subtitles"]) == 29
-    assert authority["receipt"]["identity_evidence"]["episode_authority_mode"] == (
-        "tracked_rebuild_contract"
-    )
     assert not (episode / "review").exists()
     assert rebuild._ensure_review_directory(episode) == episode / "review"
     assert (episode / "review").is_dir()

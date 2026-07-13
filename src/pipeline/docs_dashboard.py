@@ -135,6 +135,15 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
         ),
         "active_rebuild_contract": runtime_state.get("active_rebuild_contract", ""),
         "evidence_revision": runtime_state.get("evidence_revision", ""),
+        "accepted_baseline_sha256": runtime_state.get("accepted_baseline_sha256", ""),
+        "recommended_cover_path": runtime_state.get("recommended_cover_path", ""),
+        "recommended_cover_sha256": runtime_state.get("recommended_cover_sha256", ""),
+        "recommended_cover_timestamp_seconds": runtime_state.get(
+            "recommended_cover_timestamp_seconds", ""
+        ),
+        "recommended_cover_selection_status": runtime_state.get(
+            "recommended_cover_selection_status", ""
+        ),
         "last_verified_host": runtime_state.get("last_verified_host", ""),
         "local_artifact_evidence_receipt": runtime_state.get(
             "local_artifact_evidence_receipt", ""
@@ -326,6 +335,17 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
         ("cross-machine resume", focus.get("cross_machine_resume_class", "")),
         ("active rebuild contract", focus.get("active_rebuild_contract", "")),
         ("evidence revision", focus.get("evidence_revision", "")),
+        ("accepted baseline SHA-256", focus.get("accepted_baseline_sha256", "")),
+        ("recommended cover", focus.get("recommended_cover_path", "")),
+        ("recommended cover SHA-256", focus.get("recommended_cover_sha256", "")),
+        (
+            "recommended cover timestamp",
+            focus.get("recommended_cover_timestamp_seconds", ""),
+        ),
+        (
+            "recommended cover selection",
+            focus.get("recommended_cover_selection_status", ""),
+        ),
         ("last verified host", focus.get("last_verified_host", "")),
         (
             "local artifact evidence",
@@ -396,6 +416,11 @@ def render_features_index_markdown(status: dict[str, Any]) -> str:
         f"- cross-machine resume: `{status['current_focus']['cross_machine_resume_class']}`\n"
         f"- active rebuild contract: `{status['current_focus']['active_rebuild_contract']}`\n"
         f"- evidence revision: `{status['current_focus']['evidence_revision']}`\n"
+        f"- accepted baseline SHA-256: `{status['current_focus']['accepted_baseline_sha256']}`\n"
+        f"- recommended cover: `{status['current_focus']['recommended_cover_path']}`\n"
+        f"- recommended cover SHA-256: `{status['current_focus']['recommended_cover_sha256']}`\n"
+        f"- recommended cover timestamp: `{status['current_focus']['recommended_cover_timestamp_seconds']}`\n"
+        f"- recommended cover selection: `{status['current_focus']['recommended_cover_selection_status']}`\n"
         f"- decision required: `{status['current_focus']['decision_required']}`\n"
         f"- next review: `{status['current_focus']['next_review_action_type']}`\n\n"
         "## Feature Table\n\n" + "\n".join(rows) + "\n"

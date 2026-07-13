@@ -6,35 +6,66 @@
   "slice_id": "out07-shorts-poster-frame-direction-proof-v0",
   "artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
   "episode_id": "jp_pilot01_hololive_bancho_20260525",
-  "resume_class": "reacquirable",
+  "resume_class": "conditional_reacquire",
+  "state": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
   "source_identity": {
     "provider": "youtube",
     "provider_id": "7J5aS_pcBj4",
     "canonical_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
-    "acquisition_route": "yt-dlp-video",
-    "historical_source_host_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
-    "historical_source_role": "historical_source_host_evidence_only",
     "current_media_revision": {
       "revision_id": "planner007-e2206cef-20260525",
       "sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
-      "qualification_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json",
       "same_underlying_source_identity": true,
       "byte_equivalence_to_historical_claimed": false
     }
   },
+  "accepted_baseline": {
+    "accepted_by": "Planner007",
+    "accepted_on": "2026-07-13 JST",
+    "sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+    "byte_size": 21669538,
+    "duration_seconds": 38.633333,
+    "accepted_scope": [
+      "content_and_narrative",
+      "timing_and_tempo",
+      "cut_continuity",
+      "audio_video_continuity",
+      "subtitle_timing_and_readability",
+      "visual_integrity"
+    ],
+    "historical_out06_acceptance_inherited": false,
+    "rights_status": "pending",
+    "production_acceptance": false,
+    "public_or_publishing_acceptance": false
+  },
+  "active_cover_direction": {
+    "kind": "accepted_vertical_video_frame_plus_existing_burn_in_subtitle_only",
+    "baseline_seconds": 11.93,
+    "source_seconds": 22.858,
+    "subtitle_id": "sub_010",
+    "baseline_frame_fingerprint_sha256": "d2187bfb68f14b2eebfea2249061c7130a5bc5a6e25fbb0d5592782c9cb33062",
+    "source_frame_fingerprint_sha256": "c44c9258b165dda344dab75a68e9f8ee0a0b0c265f2264492275da0de74b64d3",
+    "fingerprint_profile": "raw_rgb24_320x180_bilinear",
+    "selection_status": "recommended_pending_human_acceptance",
+    "selected_by_human": false,
+    "old_active_abc_status": "superseded_by_user_short_context_reframe",
+    "old_active_abc_quality_rejection": false,
+    "historical_context_tension_payoff_status": "user_rejected"
+  },
   "dependencies": [
     {
-      "id": "tracked_rebuild_code",
+      "id": "tracked_native_cover_builder",
       "recovery_class": "tracked",
       "required": true,
-      "locator": "src/integrations/render/out07_reconstitution.py",
+      "locator": "src/integrations/render/out07_native_cover.py",
       "produced_by": "git clone or git pull"
     },
     {
-      "id": "tracked_semantic_authority_snapshot",
+      "id": "tracked_subtitle_timing_hash_contract",
       "recovery_class": "tracked",
       "required": true,
-      "locator": "artifacts/ACTIVE_REBUILD.json#semantic_authority_snapshot",
+      "locator": "artifacts/ACTIVE_REBUILD.json#semantic_authority_snapshot.subtitles",
+      "contains_caption_plaintext": false,
       "produced_by": "git clone or git pull"
     },
     {
@@ -42,270 +73,44 @@
       "recovery_class": "tracked",
       "required": true,
       "locator": "docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json",
-      "produced_by": "git clone or git pull"
+      "role": "observation_only_no_third_party_pixels"
     },
     {
       "id": "tracked_copy_and_gate_contract",
       "recovery_class": "tracked",
       "required": true,
-      "locator": "src/integrations/render/operator_delivery_pack.py",
-      "produced_by": "git clone or git pull"
+      "locator": "src/integrations/render/operator_delivery_pack.py"
     },
     {
       "id": "source_video_current_revision",
       "recovery_class": "reacquire",
       "required": true,
       "locator": "youtube:7J5aS_pcBj4",
+      "expected_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
       "produced_by": "fetch-source-video --mode yt-dlp-video"
     },
     {
-      "id": "source_audio_current_revision",
+      "id": "official_caption_track",
       "recovery_class": "reacquire",
       "required": true,
-      "locator": "youtube:7J5aS_pcBj4#audio",
-      "produced_by": "fetch-source-audio --mode yt-dlp-audio"
-    },
-    {
-      "id": "keifont_render_dependency",
-      "recovery_class": "reacquire",
-      "required": true,
-      "locator": "font-family:Keifont;file-name:keifont.ttf",
-      "expected_sha256": "d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f",
-      "produced_by": "install the same redistributable Keifont file and verify the render readback"
-    },
-    {
-      "id": "official_caption_track_provenance",
-      "recovery_class": "reacquire",
-      "required": false,
       "locator": "youtube-caption:7J5aS_pcBj4:ja",
-      "produced_by": "optional provenance refresh; tracked semantic authority snapshot is the rebuild input"
+      "ignored_local_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+      "expected_caption_payload_digest": "e9a18053baf3b6d042f35a91bb18ee7c5b28c878ef9e9d66ce649563ce11c23b",
+      "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "on_missing": "caption_authority_reacquire_required"
     },
     {
-      "id": "reference_pixel_cache",
-      "recovery_class": "reacquire",
-      "required": true,
-      "locator": "docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json#thumbnail_url",
-      "produced_by": "reconstitute-out07-review --fetch-missing-references"
-    },
-    {
-      "id": "episode_material_chain",
-      "recovery_class": "derive",
-      "required": true,
-      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/material_ledger.json",
-      "produced_by": "init-episode then fetch-source-video and fetch-source-audio"
-    },
-    {
-      "id": "media_revision_receipt",
-      "recovery_class": "derive",
-      "required": true,
-      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json",
-      "produced_by": "reconstitute-out07-review source qualification"
-    },
-    {
-      "id": "reinstantiated_baseline",
-      "recovery_class": "derive",
+      "id": "accepted_reinstantiated_baseline",
+      "recovery_class": "retained_artifact_reacquire",
       "required": true,
       "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_reinstantiated_baseline_candidate/assets/reinstantiated_baseline.mp4",
-      "produced_by": "reconstitute-out07-review shared vertical render primitives"
-    },
-    {
-      "id": "operator_publish_draft",
-      "recovery_class": "derive",
-      "required": true,
-      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/publish_draft.json",
-      "produced_by": "reconstitute-out07-review tracked copy plan plus closed gates"
-    },
-    {
-      "id": "poster_candidates_and_transitions",
-      "recovery_class": "derive",
-      "required": true,
-      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof",
-      "produced_by": "reconstitute-out07-review source-pixel poster and transition primitives"
-    },
-    {
-      "id": "historical_out03_out06_binary_packages",
-      "recovery_class": "private_only",
-      "required": false,
-      "locator": "historical-source-host-only",
-      "produced_by": "not required for current revision rebuild"
+      "expected_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+      "rule": "restore only the exact accepted artifact through an authorized retained-artifact channel; the active route copies and verifies bytes and never rerenders, remuxes, or transcodes it",
+      "on_missing": "accepted_baseline_reacquire_required"
     }
   ],
-  "semantic_contract": {
-    "cut_order": [
-      "cut_001",
-      "cut_002",
-      "cut_003"
-    ],
-    "source_ranges_seconds": [
-      [
-        2.453,
-        9.293
-      ],
-      [
-        12.329,
-        17.167
-      ],
-      [
-        22.606,
-        49.566
-      ]
-    ],
-    "sequence_boundaries_seconds": [
-      6.84,
-      11.678
-    ],
-    "semantic_duration_seconds": 38.638,
-    "subtitle_first_id": "sub_001",
-    "subtitle_last_id": "sub_029",
-    "excluded_subtitle_ids": [
-      "sub_030"
-    ],
-    "reviewed_wrap_overrides": {
-      "sub_013": [
-        "なんで",
-        "来なかった",
-        "んすか！！"
-      ],
-      "sub_014": [
-        "ずっと",
-        "待ってたんすよ！！"
-      ],
-      "sub_019": [
-        "はじめの勝ちって",
-        "ことでいいですね？"
-      ],
-      "sub_024": [
-        "団長、ちなみに、",
-        "他の番長",
-        "知ってますか？"
-      ],
-      "sub_028": [
-        "マリンなら",
-        "あっちにいたよ"
-      ],
-      "sub_029": [
-        "ありがとう",
-        "ございますー！"
-      ]
-    }
-  },
-  "builder_order": [
-    {
-      "position": 1,
-      "step": "inventory_material_chain_and_direct_authority"
-    },
-    {
-      "position": 2,
-      "step": "reacquire_materials_if_missing_with_existing_asset_fetch_clis"
-    },
-    {
-      "position": 3,
-      "step": "load_direct_or_tracked_semantic_authority"
-    },
-    {
-      "position": 4,
-      "step": "qualify_source_media_revision"
-    },
-    {
-      "position": 5,
-      "step": "rebuild_reinstantiated_baseline"
-    },
-    {
-      "position": 6,
-      "step": "reconstruct_operator_publish_draft"
-    },
-    {
-      "position": 7,
-      "step": "freeze_public_reference_revision"
-    },
-    {
-      "position": 8,
-      "step": "build_source_pixel_posters_transitions_and_combined_review"
-    },
-    {
-      "position": 9,
-      "step": "repeat_frozen_build_and_compare_digests"
-    }
-  ],
-  "required_outputs": [
-    "media_revision_receipt.json",
-    "reinstantiated_baseline.mp4",
-    "baseline_readback.json",
-    "baseline_manifest.json",
-    "publish_draft.json",
-    "reference_manifest.json",
-    "poster_A_1080x1920.jpg",
-    "poster_B_1080x1920.jpg",
-    "poster_C_1080x1920.jpg",
-    "platform_preview_contact_sheet.jpg",
-    "transition_A.mp4",
-    "transition_B.mp4",
-    "transition_C.mp4",
-    "index.html",
-    "poster_direction_readback.json",
-    "deterministic_core_readback.json",
-    "determinism_receipt.json",
-    "combined_review_manifest.json",
-    "open_preview.ps1",
-    "serve_preview.ps1"
-  ],
-  "media_contract": {
-    "baseline": {
-      "duration_seconds": 38.638,
-      "duration_tolerance_seconds": 0.2,
-      "width": 1080,
-      "height": 1920,
-      "fps": 30,
-      "video_codec": "h264",
-      "audio_codec": "aac",
-      "subtitle_count": 29,
-      "hard_cut_boundaries_seconds": [
-        6.84,
-        11.678
-      ]
-    },
-    "transition": {
-      "tail_seconds": 1.75,
-      "dissolve_seconds": 0.12,
-      "poster_hold_seconds": 0.5,
-      "audio_fade_seconds": 0.16
-    }
-  },
-  "acceptance_inheritance": {
-    "editorial_decisions_may_carry": true,
-    "reviewed_subtitle_wraps_may_carry": true,
-    "historical_accepted_output_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
-    "historical_human_acceptance_carries_only_when_output_sha_matches": true,
-    "nonmatching_output_class": "reinstantiated_baseline_candidate",
-    "nonmatching_output_human_acceptance": false,
-    "rights_status": "pending",
-    "production_acceptance": false,
-    "public_or_publishing_acceptance": false
-  },
-  "determinism": {
-    "same_frozen_inputs_required_build_count": 2,
-    "deterministic_core_digest": "source-derived baseline/posters/previews/masks/transitions plus canonical semantic readback",
-    "reference_evidence_digest": "frozen public reference URLs, MIME, dimensions and bytes",
-    "excluded_from_core": [
-      "absolute paths",
-      "staging UUID",
-      "generated timestamps",
-      "FFmpeg stderr",
-      "remote reference pixels",
-      "preview server PID"
-    ]
-  },
-  "regeneration_command": "uvx --with Pillow python -m src.cli.main reconstitute-out07-review --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json --fetch-missing-references --verify-determinism --format json",
-  "security_and_storage": {
-    "absolute_host_paths_allowed": false,
-    "credentials_allowed": false,
-    "copyrighted_pixels_tracked_in_git": false,
-    "third_party_reference_pixels_used_in_candidates": false,
-    "episodes_must_remain_untracked": true
-  },
   "authority_file_inventory": {
-    "role": "direct_current-host evidence; none of these ignored files is required on a fresh clone once the material chain exists",
-    "fallback": "artifacts/ACTIVE_REBUILD.json#semantic_authority_snapshot",
+    "role": "ignored current-host authority hashes; caption text is not copied into tracked state",
     "files": [
       {
         "id": "rights_manifest",
@@ -339,7 +144,63 @@
       }
     ]
   },
+  "semantic_contract": {
+    "cut_order": [
+      "cut_001",
+      "cut_002",
+      "cut_003"
+    ],
+    "source_ranges_seconds": [
+      [
+        2.453,
+        9.293
+      ],
+      [
+        12.329,
+        17.167
+      ],
+      [
+        22.606,
+        49.566
+      ]
+    ],
+    "sequence_boundaries_seconds": [
+      6.84,
+      11.678
+    ],
+    "semantic_duration_seconds": 38.638,
+    "subtitle_first_id": "sub_001",
+    "subtitle_last_id": "sub_029",
+    "excluded_subtitle_ids": [
+      "sub_030"
+    ],
+    "caption_payload_digest": "e9a18053baf3b6d042f35a91bb18ee7c5b28c878ef9e9d66ce649563ce11c23b",
+    "reviewed_wrap_break_indices": {
+      "sub_013": [
+        3,
+        8
+      ],
+      "sub_014": [
+        3
+      ],
+      "sub_019": [
+        8
+      ],
+      "sub_024": [
+        8,
+        12
+      ],
+      "sub_028": [
+        5
+      ],
+      "sub_029": [
+        5
+      ]
+    }
+  },
   "semantic_authority_snapshot": {
+    "role": "tracked timing/hash/locator contract; actual caption text is loaded from ignored authority or reacquired official captions",
+    "caption_payload_digest": "e9a18053baf3b6d042f35a91bb18ee7c5b28c878ef9e9d66ce649563ce11c23b",
     "timeline": [
       {
         "id": "cut_001",
@@ -380,11 +241,21 @@
         "source_end_seconds": 3.32,
         "sequence_start_seconds": 0,
         "sequence_end_seconds": 0.867,
-        "text": "もしもし？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000001"
-        ]
+        ],
+        "text_sha256": "7ad90c563c74760f87f20732368929bb19667621f01837424f4485c5f85bfb74",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 1
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_002",
@@ -393,11 +264,21 @@
         "source_end_seconds": 4.054,
         "sequence_start_seconds": 0.867,
         "sequence_end_seconds": 1.601,
-        "text": "はじめです！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000002"
-        ]
+        ],
+        "text_sha256": "24c538f03e03e616293a0c5e62845bee87f4624c42928748cdeb3f6b1d8b327a",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 2
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_003",
@@ -406,11 +287,21 @@
         "source_end_seconds": 4.822,
         "sequence_start_seconds": 1.601,
         "sequence_end_seconds": 2.369,
-        "text": "…はい？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000003"
-        ]
+        ],
+        "text_sha256": "429097fda047ab087a5425a58793c4ebe0d285d4b061cce3e49a2a6ca2742ddf",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 3
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_004",
@@ -419,11 +310,21 @@
         "source_end_seconds": 5.556,
         "sequence_start_seconds": 2.369,
         "sequence_end_seconds": 3.103,
-        "text": "はじめです！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000004"
-        ]
+        ],
+        "text_sha256": "9d8ab6ed220ea39b91d582b2f1772084f334172c7520e9462c11ae567ac4250b",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 4
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_005",
@@ -432,11 +333,21 @@
         "source_end_seconds": 7.291,
         "sequence_start_seconds": 3.103,
         "sequence_end_seconds": 4.838,
-        "text": "なんと…？ もう一度いいですか？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000005"
-        ]
+        ],
+        "text_sha256": "25eefd99c1d05a7d1414b1620f6be32e1d928dedb4fc83c113c916425fbd1c35",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 5
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_006",
@@ -445,11 +356,21 @@
         "source_end_seconds": 8.525,
         "sequence_start_seconds": 4.838,
         "sequence_end_seconds": 6.072,
-        "text": "体育館裏で待ってます！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000006"
-        ]
+        ],
+        "text_sha256": "1bc17cc44c2bddaef86a570eea9dfab0cc601b070086e1404ce220e4ce13e025",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 6
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_007",
@@ -458,11 +379,21 @@
         "source_end_seconds": 9.293,
         "sequence_start_seconds": 6.072,
         "sequence_end_seconds": 6.84,
-        "text": "なんて？？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000007"
-        ]
+        ],
+        "text_sha256": "58dbcd2963bb81a9a74eacc31ed553c33a2fddd1ba9589c89c5b522f35bb272e",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 7
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_008",
@@ -471,11 +402,21 @@
         "source_end_seconds": 14.298,
         "sequence_start_seconds": 6.84,
         "sequence_end_seconds": 8.809,
-        "text": "ふっふっふ😏 呼び出してやったぞ😏",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000008"
-        ]
+        ],
+        "text_sha256": "16bef7900aff5df6c593e21452c19ed82f6a6b8c9395a60f5d8114fbe33a9c5a",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 8
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_009",
@@ -484,11 +425,21 @@
         "source_end_seconds": 17.167,
         "sequence_start_seconds": 8.809,
         "sequence_end_seconds": 11.678,
-        "text": "ホロライブの番長として、 団長を倒してやる！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000009"
-        ]
+        ],
+        "text_sha256": "8e892976e96ab254fed7957b6e16360d80ec39505fa4860b169c7ffd7160e328",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 9
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_010",
@@ -497,11 +448,21 @@
         "source_end_seconds": 23.64,
         "sequence_start_seconds": 11.678,
         "sequence_end_seconds": 12.712,
-        "text": "来ねぇ！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000010"
-        ]
+        ],
+        "text_sha256": "55520df85f88b66e66ae9d057a814ebedf8e6b4578281665d24ca4341f6bd9ed",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 10
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_011",
@@ -510,11 +471,21 @@
         "source_end_seconds": 25.109,
         "sequence_start_seconds": 13.113,
         "sequence_end_seconds": 14.181,
-        "text": "団長！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000011"
-        ]
+        ],
+        "text_sha256": "2f380e32599614c4e323ed7443fb83be0fc3fe67bb89e16cb723f308f5ddbed5",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 11
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_012",
@@ -523,11 +494,21 @@
         "source_end_seconds": 25.109,
         "sequence_start_seconds": 13.58,
         "sequence_end_seconds": 14.181,
-        "text": "お？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000012"
-        ]
+        ],
+        "text_sha256": "bca2568ec041d8b7cb9429ae525b743a81159e8eeb5cff15e07463c541f47320",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 12
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_013",
@@ -536,11 +517,24 @@
         "source_end_seconds": 26.477,
         "sequence_start_seconds": 14.181,
         "sequence_end_seconds": 15.549,
-        "text": "なんで来なかったんすか！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000013"
-        ]
+        ],
+        "text_sha256": "e6459f68bbfaecc3e4d72798fb107254bb62aa2e59347fa2fd1c2cd7572b6472",
+        "wrap_break_indices": [
+          3,
+          8
+        ],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 13
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_014",
@@ -549,11 +543,23 @@
         "source_end_seconds": 27.378,
         "sequence_start_seconds": 15.549,
         "sequence_end_seconds": 16.45,
-        "text": "ずっと待ってたんすよ！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000014"
-        ]
+        ],
+        "text_sha256": "ac56f845c4df51904a2dc35e7203321d8c6f404da7d7d2b332582b179385aeef",
+        "wrap_break_indices": [
+          3
+        ],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 14
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_015",
@@ -562,11 +568,21 @@
         "source_end_seconds": 28.012,
         "sequence_start_seconds": 16.45,
         "sequence_end_seconds": 17.084,
-        "text": "ぉん？😄",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000015"
-        ]
+        ],
+        "text_sha256": "f1705e9df0af6976cee44aaa06053cb12ea6c351434f24ba942c49224504c5ac",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 15
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_016",
@@ -575,11 +591,21 @@
         "source_end_seconds": 29.813,
         "sequence_start_seconds": 17.084,
         "sequence_end_seconds": 18.885,
-        "text": "よくわかんないけど、ごめんね！😄",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000016"
-        ]
+        ],
+        "text_sha256": "9bd7f55c3516d8592ded96f6eb5f9a1c209bc53d0d0b942840686fc641d6dc20",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 16
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_017",
@@ -588,11 +614,21 @@
         "source_end_seconds": 32.049,
         "sequence_start_seconds": 18.885,
         "sequence_end_seconds": 21.121,
-        "text": "まあ謝るんなら許してあげます",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000017"
-        ]
+        ],
+        "text_sha256": "f4b3c92ab9a49d8dbb49aa57a03fe7b646d53e189fdb98ba618cce86e809fb54",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 17
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_018",
@@ -601,11 +637,21 @@
         "source_end_seconds": 32.783,
         "sequence_start_seconds": 21.121,
         "sequence_end_seconds": 21.855,
-        "text": "ん？😄",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000018"
-        ]
+        ],
+        "text_sha256": "560fb89a60622ddf6c91df54a724b22a60e507d5dffefd94a41bac9cd7fc83a8",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 18
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_019",
@@ -614,11 +660,23 @@
         "source_end_seconds": 34.852,
         "sequence_start_seconds": 21.855,
         "sequence_end_seconds": 23.924,
-        "text": "はじめの勝ちってことでいいですね？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000019"
-        ]
+        ],
+        "text_sha256": "8a0b39ecdc7b863f6a7122380a3fcc5941b7c4b1e7abde158a86dcc5b41f8779",
+        "wrap_break_indices": [
+          8
+        ],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 19
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_020",
@@ -627,11 +685,21 @@
         "source_end_seconds": 35.953,
         "sequence_start_seconds": 23.924,
         "sequence_end_seconds": 25.025,
-        "text": "…うん！　いいよ！👍️",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000020"
-        ]
+        ],
+        "text_sha256": "41e7036c84ccd084afdc0a3b8f2fc14b453e396ed1852052b7e10ef06a207916",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 20
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_021",
@@ -640,11 +708,21 @@
         "source_end_seconds": 36.587,
         "sequence_start_seconds": 25.025,
         "sequence_end_seconds": 25.659,
-        "text": "よしっ！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000021"
-        ]
+        ],
+        "text_sha256": "48cedd9363aa51e9b81870c1de5e1864dd9b342f0cdbd8eb63e964cd653c4dd1",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 21
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_022",
@@ -653,11 +731,21 @@
         "source_end_seconds": 38.122,
         "sequence_start_seconds": 25.659,
         "sequence_end_seconds": 27.194,
-        "text": "団長倒したど～！！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000022"
-        ]
+        ],
+        "text_sha256": "63395ebbe8d66168437a28c4c426585671386ab461c6da10730bdf96b3b2c7a2",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 22
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_023",
@@ -666,11 +754,21 @@
         "source_end_seconds": 39.156,
         "sequence_start_seconds": 27.194,
         "sequence_end_seconds": 28.228,
-        "text": "わぁ～😊",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000023"
-        ]
+        ],
+        "text_sha256": "92e3f2fa3d1788d207f5f128fef29f40172b1d4f868042a1917727c26952514f",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 23
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_024",
@@ -679,11 +777,24 @@
         "source_end_seconds": 41.725,
         "sequence_start_seconds": 28.228,
         "sequence_end_seconds": 30.797,
-        "text": "団長、ちなみに、他の番長知ってますか？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000024"
-        ]
+        ],
+        "text_sha256": "6e93dab01b0e46af97c434e056789dec787d8df375605438b9409cde7734d7da",
+        "wrap_break_indices": [
+          8,
+          12
+        ],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 24
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_025",
@@ -692,11 +803,21 @@
         "source_end_seconds": 43.36,
         "sequence_start_seconds": 30.797,
         "sequence_end_seconds": 32.432,
-        "text": "長(ちょう)？　長って言った？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000025"
-        ]
+        ],
+        "text_sha256": "3b911ca82253478f22c07cb91cef6accb9562f9c7ad4bd98e405c9ec58c2efdd",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 25
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_026",
@@ -705,11 +826,21 @@
         "source_end_seconds": 44.762,
         "sequence_start_seconds": 32.432,
         "sequence_end_seconds": 33.834,
-        "text": "倒して回ってるんです！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000026"
-        ]
+        ],
+        "text_sha256": "f3b3a7bd39fba899ad688c1c0900e1f5fbca7375cd09bd2abd8642e0d74d1fd7",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 26
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_027",
@@ -718,11 +849,21 @@
         "source_end_seconds": 47.498,
         "sequence_start_seconds": 33.834,
         "sequence_end_seconds": 36.57,
-        "text": "長…長… 船長のことかな？",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000027"
-        ]
+        ],
+        "text_sha256": "44dbede0cbfaa85aab5e1fe8057b9fff0e6aa6ea6fc22fbdb3035a4822bd6b34",
+        "wrap_break_indices": [],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 27
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_028",
@@ -731,11 +872,23 @@
         "source_end_seconds": 48.999,
         "sequence_start_seconds": 36.57,
         "sequence_end_seconds": 38.071,
-        "text": "マリンならあっちにいたよ",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000028"
-        ]
+        ],
+        "text_sha256": "0db5c9a54928aa990d87a3756876f5cc397f093bed280559c40df8e6b6922507",
+        "wrap_break_indices": [
+          5
+        ],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 28
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       },
       {
         "id": "sub_029",
@@ -744,11 +897,23 @@
         "source_end_seconds": 49.566,
         "sequence_start_seconds": 38.071,
         "sequence_end_seconds": 38.638,
-        "text": "ありがとうございますー！",
         "source_type": "imported_subtitle_track",
         "source_segment_ids": [
           "seg_000029"
-        ]
+        ],
+        "text_sha256": "c9722e79281f8804393f9e3edfed692499d68158b3ab7c745fd957fbf5d7deec",
+        "wrap_break_indices": [
+          5
+        ],
+        "source_locator": {
+          "track_dependency_id": "official_caption_track",
+          "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+          "normalized_caption_event_ordinal": 29
+        },
+        "recovery_class": "reacquire",
+        "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
+        "recovery_rule": "normalize official ja caption events, then require exact per-text SHA-256 and timing contract match",
+        "on_missing": "caption_authority_reacquire_required"
       }
     ],
     "cut_decisions": [
@@ -784,20 +949,69 @@
       "cut_003_retained_context_risk": true
     }
   },
+  "required_outputs": [
+    "reinstantiated_baseline.mp4",
+    "native_shorts_cover_1080x1920.png",
+    "mapped_source_frame_1920x1080.png",
+    "cover_list_preview.jpg",
+    "cover_center_4x5.jpg",
+    "cover_shorts_ui_overlay_preview.jpg",
+    "baseline_acceptance.json",
+    "baseline_readback.json",
+    "media_revision_receipt.json",
+    "reference_observation_readback.json",
+    "publish_draft.json",
+    "superseded_poster_evidence.json",
+    "operator_delivery_readback.json",
+    "poster_direction_readback.json",
+    "deterministic_core_readback.json",
+    "determinism_receipt.json",
+    "combined_review_manifest.json",
+    "index.html",
+    "open_preview.ps1",
+    "serve_preview.ps1"
+  ],
+  "determinism": {
+    "same_frozen_inputs_required_build_count": 2,
+    "core_and_package_digest_match_required": true,
+    "manifest_file_hash_and_self_integrity_required": true,
+    "remote_reference_pixels_excluded": true
+  },
+  "regeneration_command": "python -m src.cli.main reconstitute-out07-review --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json --verify-determinism --format json",
   "fresh_clone_recovery": {
-    "precondition": "Keifont is installed and yt-dlp/FFmpeg are discoverable; no historical OUT-03..06 package is needed",
-    "commands": [
+    "resume_class": "conditional_reacquire",
+    "proof_status": "H2_successor_data_only_not_executed_in_H0",
+    "caption_precondition": "official Japanese JSON3 authority must exist before semantic rebuild; tracked data alone is intentionally insufficient",
+    "authority_reacquisition_commands": [
       "python -m src.cli.main init-episode --episode-id jp_pilot01_hololive_bancho_20260525",
       "python -m src.cli.main fetch-source-video --episode-id jp_pilot01_hololive_bancho_20260525 --material-id src_video_jp_pilot01 --mode yt-dlp-video --source-url https://www.youtube.com/watch?v=7J5aS_pcBj4",
       "python -m src.cli.main fetch-source-audio --episode-id jp_pilot01_hololive_bancho_20260525 --material-id src_audio_jp_pilot01 --mode yt-dlp-audio --source-url https://www.youtube.com/watch?v=7J5aS_pcBj4",
-      "uvx --with Pillow python -m src.cli.main reconstitute-out07-review --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json --fetch-missing-references --verify-determinism --format json"
+      "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4"
     ],
+    "accepted_baseline_restore_condition": {
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_reinstantiated_baseline_candidate/assets/reinstantiated_baseline.mp4",
+      "sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+      "byte_size": 21669538,
+      "rerender_allowed": false,
+      "on_missing": "accepted_baseline_reacquire_required"
+    },
+    "package_command_after_all_preconditions": "python -m src.cli.main reconstitute-out07-review --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json --verify-determinism --format json",
+    "on_caption_missing": "caption_authority_reacquire_required",
     "source_revision_gate": {
       "video_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
-      "audio_sha256": "7cd566dc62683651b05b10b1b4397c44699807249f90af784b88ba0f572cae5d",
-      "on_mismatch": "stop this evidence revision and qualify a new same-source media revision; never alias hashes"
-    },
-    "authority_mode_when_episode_derivatives_are_absent": "tracked_rebuild_contract",
-    "direct_episode_authority_mode": "episode_files_direct_and_compared_to_tracked_snapshot"
+      "on_mismatch": "stop and qualify a new same-source media revision; never alias hashes"
+    }
+  },
+  "history_boundary": {
+    "current_tracked_tip_contains_bulk_caption_plaintext_snapshot": false,
+    "prior_commits_may_still_contain_caption_plaintext": true,
+    "history_scrub_claimed": false
+  },
+  "security_and_storage": {
+    "absolute_host_paths_allowed": false,
+    "credentials_allowed": false,
+    "copyrighted_pixels_tracked_in_git": false,
+    "third_party_reference_pixels_used_in_cover": false,
+    "episodes_must_remain_untracked": true
   }
 }

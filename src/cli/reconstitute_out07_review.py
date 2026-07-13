@@ -6,9 +6,9 @@ import argparse
 import json
 import sys
 
-from src.integrations.render.out07_reconstitution import (
-    Out07ReconstitutionError,
-    reconstitute_out07_review,
+from src.integrations.render.out07_native_cover import (
+    Out07NativeCoverError,
+    reconstitute_out07_native_cover,
 )
 
 
@@ -16,8 +16,8 @@ def run(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="reconstitute-out07-review",
         description=(
-            "Qualify the current episode media revision and rebuild one baseline-first "
-            "OUT-07 poster review package without historical predecessor binaries."
+            "Copy the explicitly accepted OUT-07 baseline byte-for-byte and build one "
+            "native-frame Shorts cover/operator review package."
         ),
     )
     parser.add_argument("--episode-dir", required=True)
@@ -32,7 +32,7 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
     try:
-        result = reconstitute_out07_review(
+        result = reconstitute_out07_native_cover(
             episode_dir=args.episode_dir,
             reference_corpus_path=args.reference_corpus,
             output_dir=args.output_dir,
@@ -43,7 +43,7 @@ def run(argv: list[str]) -> int:
             ffmpeg_path=args.ffmpeg_path,
             ffprobe_path=args.ffprobe_path,
         )
-    except Out07ReconstitutionError as exc:
+    except Out07NativeCoverError as exc:
         print(f"reconstitute-out07-review failed: {exc}", file=sys.stderr)
         return 1
     payload = {

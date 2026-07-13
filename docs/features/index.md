@@ -6,19 +6,24 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-07`
 - artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `out07_combined_review_ready_planner007`
+- state: `OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
 - canonical baseline: `OUT-06 accepted after bounded repair`
-- canonical status: `branch_review_pending_human_combined_review`
-- review status: `planner007_combined_review_package_verified_human_decision_pending`
+- canonical status: `branch_review_pending_human_cover_direction`
+- review status: `accepted_baseline_native_cover_package_verified_cover_decision_pending`
 - remote code complete: `true`
 - local artifact available: `true`
-- cross-machine resume: `reacquirable`
+- cross-machine resume: `conditional_reacquire`
 - active rebuild contract: `artifacts/ACTIVE_REBUILD.json`
 - evidence revision: `planner007-e2206cef-20260525`
-- decision required: `review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all`
-- next review: `combined_baseline_and_poster_human_review`
+- accepted baseline SHA-256: `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
+- recommended cover: `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png`
+- recommended cover SHA-256: `6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`
+- recommended cover timestamp: `11.930`
+- recommended cover selection: `recommended_pending_human_acceptance`
+- decision required: `approve_native_shorts_cover_direction_or_describe_discomfort`
+- next review: `native_shorts_cover_direction_human_review`
 
 ## Feature Table
 

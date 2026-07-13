@@ -80,14 +80,21 @@ PCM_FINGERPRINT_WINDOWS = (
     ("cut003_mid", 36.587, 0.500),
     ("cut003_close", 49.066, 0.500),
 )
-EXPECTED_WRAP_LINES = {
-    "sub_013": ["なんで", "来なかった", "んすか！！"],
-    "sub_014": ["ずっと", "待ってたんすよ！！"],
-    "sub_019": ["はじめの勝ちって", "ことでいいですね？"],
-    "sub_024": ["団長、ちなみに、", "他の番長", "知ってますか？"],
-    "sub_028": ["マリンなら", "あっちにいたよ"],
-    "sub_029": ["ありがとう", "ございますー！"],
+EXPECTED_WRAP_BREAK_INDICES = {
+    "sub_013": [3, 8],
+    "sub_014": [3],
+    "sub_019": [8],
+    "sub_024": [8, 12],
+    "sub_028": [5],
+    "sub_029": [5],
 }
+CAPTION_PAYLOAD_DIGEST = (
+    "e9a18053baf3b6d042f35a91bb18ee7c5b28c878ef9e9d66ce649563ce11c23b"
+)
+CAPTION_REACQUIRE_ERROR = (
+    "caption_authority_reacquire_required: restore the official Japanese JSON3 "
+    f"caption for {SOURCE_PROVIDER_ID} and rerun the revision authority check"
+)
 
 
 class Out07ReconstitutionError(Exception):
@@ -137,16 +144,23 @@ def load_current_episode_authority(
     }
     _require_file(paths["ledger"], "material ledger")
     ledger = _read_json(paths["ledger"], "material ledger")
-    direct_names = ("edit_pack", "transcript", "decision", "proxy", "subtitle_track")
-    direct_presence = {name: paths[name].is_file() for name in direct_names}
-    if any(direct_presence.values()) and not all(direct_presence.values()):
+    semantic_names = ("edit_pack", "transcript", "decision", "proxy")
+    semantic_presence = {name: paths[name].is_file() for name in semantic_names}
+    caption_present = paths["subtitle_track"].is_file()
+    direct_authority = all(semantic_presence.values()) and caption_present
+    caption_rehydration = not any(semantic_presence.values()) and caption_present
+    if not direct_authority and not caption_rehydration:
+        if not any(semantic_presence.values()) and not caption_present:
+            raise Out07ReconstitutionError(CAPTION_REACQUIRE_ERROR)
         missing = sorted(
-            name for name, present in direct_presence.items() if not present
+            name for name, present in semantic_presence.items() if not present
         )
+        if not caption_present:
+            missing.append("subtitle_track")
         raise Out07ReconstitutionError(
-            f"episode authority is partial; restore all direct files or none: {missing}"
+            "episode authority is partial; restore all direct semantic files plus "
+            f"the official caption, or retain only the caption: {missing}"
         )
-    direct_authority = all(direct_presence.values())
     rights = (
         _read_json(paths["rights"], "rights manifest")
         if paths["rights"].is_file()
@@ -160,7 +174,8 @@ def load_current_episode_authority(
         subtitle_track = _read_json(paths["subtitle_track"], "subtitle track")
         _validate_direct_authority_inventory(contract=contract, paths=paths)
     else:
-        edit_pack = transcript = proxy = subtitle_track = None
+        edit_pack = transcript = proxy = None
+        subtitle_track = _read_json(paths["subtitle_track"], "subtitle track")
         _, _, decision, _ = _semantic_authority_from_contract(contract)
 
     video_entry = _single_material(ledger, SOURCE_MATERIAL_ID)
@@ -252,13 +267,11 @@ def load_current_episode_authority(
             transcript=transcript,
             decision=decision,
         )
-        contract_timeline, contract_subtitles, _, _ = _semantic_authority_from_contract(
-            contract
+        _validate_semantic_authority_against_contract(
+            contract=contract,
+            timeline=timeline,
+            subtitles=semantic_subtitles,
         )
-        if timeline != contract_timeline or semantic_subtitles != contract_subtitles:
-            raise Out07ReconstitutionError(
-                "direct episode authority differs from tracked semantic authority"
-            )
         proxy_authority = _validate_operator_proxy_authority(
             proxy=proxy,
             episode_id=episode.name,
@@ -267,14 +280,18 @@ def load_current_episode_authority(
         )
         authority_mode = "episode_files_direct"
     else:
-        timeline, semantic_subtitles, decision, proxy_authority = (
+        timeline, subtitle_contract, decision, proxy_authority = (
             _semantic_authority_from_contract(contract)
+        )
+        semantic_subtitles = _rehydrate_semantic_subtitles_from_caption(
+            subtitle_contract=subtitle_contract,
+            subtitle_track=subtitle_track,
         )
         if rights is not None and rights.get("episode_id") != episode.name:
             raise Out07ReconstitutionError(
                 "rights skeleton belongs to a different episode"
             )
-        authority_mode = "tracked_rebuild_contract"
+        authority_mode = "official_caption_plus_tracked_timing_contract"
     resolved_ffmpeg, _ = ffmpeg_tiny.discover_ffmpeg(ffmpeg_path=ffmpeg_path)
     resolved_ffprobe, _ = ffmpeg_tiny.discover_ffprobe(ffprobe_path=ffprobe_path)
     if execute_media_checks and (not resolved_ffmpeg or not resolved_ffprobe):
@@ -348,9 +365,8 @@ def load_current_episode_authority(
             "decision_packet_provider_id_and_material_ids": (
                 "passed" if direct_authority else "tracked_contract_identity"
             ),
-            "subtitle_track_provider_id_and_content": (
-                "passed" if direct_authority else "tracked_contract_snapshot"
-            ),
+            "subtitle_track_provider_id_and_content": "passed",
+            "caption_payload_digest": CAPTION_PAYLOAD_DIGEST,
             "operator_proxy_authority": proxy_authority,
             "episode_id_agreement": "passed",
             "semantic_timeline_mapping": "passed",
@@ -428,6 +444,21 @@ def _semantic_authority_from_contract(
         raise Out07ReconstitutionError("tracked cut authority is incomplete")
     if [item.get("id") for item in subtitles] != list(complete.EXPECTED_SUBTITLE_IDS):
         raise Out07ReconstitutionError("tracked subtitle authority is incomplete")
+    if any("text" in item or "wrapped_lines" in item for item in subtitles):
+        raise Out07ReconstitutionError(
+            "tracked subtitle authority exposes caption text"
+        )
+    if any(
+        len(str(item.get("text_sha256") or "")) != 64
+        or item.get("wrap_break_indices")
+        != EXPECTED_WRAP_BREAK_INDICES.get(str(item.get("id")), [])
+        for item in subtitles
+    ):
+        raise Out07ReconstitutionError(
+            "tracked subtitle digest or wrap contract changed"
+        )
+    if snapshot.get("caption_payload_digest") != CAPTION_PAYLOAD_DIGEST:
+        raise Out07ReconstitutionError("tracked caption payload digest changed")
     if [item.get("cut_id") for item in cut_decisions] != list(
         complete.EXPECTED_CUT_IDS
     ):
@@ -469,6 +500,130 @@ def _semantic_authority_from_contract(
             "role": "retained_limitation_authority_not_final_timing_authority",
         },
     )
+
+
+def _subtitle_contract_record(item: dict[str, Any]) -> dict[str, Any]:
+    subtitle_id = str(item.get("id") or "")
+    text = str(item.get("text") or "")
+    return {
+        "id": subtitle_id,
+        "cut_id": item.get("cut_id"),
+        "source_segment_ids": item.get("source_segment_ids"),
+        "source_start_seconds": item.get("source_start_seconds"),
+        "source_end_seconds": item.get("source_end_seconds"),
+        "sequence_start_seconds": item.get("sequence_start_seconds"),
+        "sequence_end_seconds": item.get("sequence_end_seconds"),
+        "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+        "wrap_break_indices": EXPECTED_WRAP_BREAK_INDICES.get(subtitle_id, []),
+    }
+
+
+def _caption_digest(records: list[dict[str, Any]]) -> str:
+    payload = [
+        {"id": item["id"], "text_sha256": item["text_sha256"]} for item in records
+    ]
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def _validate_semantic_authority_against_contract(
+    *,
+    contract: dict[str, Any],
+    timeline: list[dict[str, Any]],
+    subtitles: list[dict[str, Any]],
+) -> None:
+    contract_timeline, contract_subtitles, _, _ = _semantic_authority_from_contract(
+        contract
+    )
+    actual_subtitles = [_subtitle_contract_record(item) for item in subtitles]
+    expected_subtitles = [
+        {
+            key: copy.deepcopy(item.get(key))
+            for key in (
+                "id",
+                "cut_id",
+                "source_segment_ids",
+                "source_start_seconds",
+                "source_end_seconds",
+                "sequence_start_seconds",
+                "sequence_end_seconds",
+                "text_sha256",
+                "wrap_break_indices",
+            )
+        }
+        for item in contract_subtitles
+    ]
+    if timeline != contract_timeline or actual_subtitles != expected_subtitles:
+        raise Out07ReconstitutionError(
+            "direct episode authority differs from tracked semantic digest contract"
+        )
+    if _caption_digest(actual_subtitles) != CAPTION_PAYLOAD_DIGEST:
+        raise Out07ReconstitutionError("direct caption payload digest changed")
+
+
+def _normalized_caption_text(value: str) -> str:
+    without_formatting = re.sub(r"[\u200b-\u200f\u2060\ufeff]", "", value)
+    # YouTube JSON3 may use U+3000 as meaningful Japanese punctuation/spacing.
+    # Collapse only ASCII transport whitespace so rehydration preserves the
+    # exact Unicode text covered by the tracked semantic hashes.
+    return re.sub(r"[ \t\r\n\f\v]+", " ", without_formatting).strip(" \t\r\n\f\v")
+
+
+def _rehydrate_semantic_subtitles_from_caption(
+    *, subtitle_contract: list[dict[str, Any]], subtitle_track: dict[str, Any]
+) -> list[dict[str, Any]]:
+    events = list(subtitle_track.get("events") or [])
+    hydrated = []
+    for contract_item in subtitle_contract:
+        segment_ids = list(contract_item.get("source_segment_ids") or [])
+        if len(segment_ids) != 1 or not re.fullmatch(r"seg_\d{6}", segment_ids[0]):
+            raise Out07ReconstitutionError("caption source segment locator changed")
+        event_index = int(segment_ids[0].split("_")[-1]) - 1
+        if event_index < 0 or event_index >= len(events):
+            raise Out07ReconstitutionError(CAPTION_REACQUIRE_ERROR)
+        event = events[event_index]
+        text = _normalized_caption_text(
+            "".join(str(item.get("utf8") or "") for item in event.get("segs") or [])
+        )
+        start = float(event.get("tStartMs") or 0) / 1000.0
+        end = start + float(event.get("dDurationMs") or 0) / 1000.0
+        _assert_close(
+            start,
+            contract_item.get("source_start_seconds"),
+            f"caption start {contract_item['id']}",
+        )
+        _assert_close(
+            end,
+            contract_item.get("source_end_seconds"),
+            f"caption end {contract_item['id']}",
+        )
+        if hashlib.sha256(text.encode("utf-8")).hexdigest() != contract_item.get(
+            "text_sha256"
+        ):
+            raise Out07ReconstitutionError(
+                f"caption text digest changed: {contract_item['id']}"
+            )
+        hydrated.append(
+            {
+                key: copy.deepcopy(contract_item[key])
+                for key in (
+                    "id",
+                    "cut_id",
+                    "source_segment_ids",
+                    "source_start_seconds",
+                    "source_end_seconds",
+                    "sequence_start_seconds",
+                    "sequence_end_seconds",
+                )
+            }
+            | {"text": text}
+        )
+    if _caption_digest([_subtitle_contract_record(item) for item in hydrated]) != (
+        CAPTION_PAYLOAD_DIGEST
+    ):
+        raise Out07ReconstitutionError("rehydrated caption payload digest changed")
+    return hydrated
 
 
 def _validate_episode_identity(*, episode_id: str, values: dict[str, Any]) -> None:
@@ -524,15 +679,11 @@ def _validate_subtitle_track_authority(
     if len(events) != len(segments) or len(events) < 29:
         raise Out07ReconstitutionError("subtitle-track event coverage changed")
 
-    def normalized(value: str) -> str:
-        without_formatting = re.sub(r"[\u200b-\u200f\u2060\ufeff]", "", value)
-        return re.sub(r"\s+", " ", without_formatting).strip()
-
     for index, (event, segment) in enumerate(zip(events, segments, strict=True)):
-        text = normalized(
+        text = _normalized_caption_text(
             "".join(str(item.get("utf8") or "") for item in event.get("segs") or [])
         )
-        if text != normalized(str(segment.get("text") or "")):
+        if text != _normalized_caption_text(str(segment.get("text") or "")):
             raise Out07ReconstitutionError(
                 f"subtitle-track text differs from transcript at event {index}"
             )
@@ -1037,12 +1188,7 @@ def build_reinstantiated_baseline(
         validate_ass_visible_content(
             ass_path,
             expected_count=29,
-            required_texts=(
-                "もしもし？",
-                "体育館裏で待ってます！！",
-                "来ねぇ！！",
-                "ありがとうございますー！",
-            ),
+            required_texts=tuple(str(item["text"]) for item in subtitle_items),
         )
         executor = render_executor or render_vertical_sequence_assets
         render_result = executor(
@@ -1137,7 +1283,7 @@ def build_reinstantiated_baseline(
                 "count": 29,
                 "ids": list(complete.EXPECTED_SUBTITLE_IDS),
                 "sub030_excluded": True,
-                "reviewed_wrap_lines": EXPECTED_WRAP_LINES,
+                "reviewed_wrap_break_indices": EXPECTED_WRAP_BREAK_INDICES,
                 "font_family": layout["diagnostic_ass_style"].get("font_name"),
                 "font_file": layout["diagnostic_ass_style"].get("resolved_font_file"),
                 "font_file_status": layout["diagnostic_ass_style"].get(
@@ -1250,7 +1396,7 @@ def _baseline_plan(
         "subtitle_count": 29,
         "subtitle_ids": list(complete.EXPECTED_SUBTITLE_IDS),
         "subtitle_mapping": mapping,
-        "six_reviewed_wraps": EXPECTED_WRAP_LINES,
+        "six_reviewed_wrap_break_indices": EXPECTED_WRAP_BREAK_INDICES,
         "cut003_limitation": {
             "final_cut_decision": "keep",
             "context_status": "needs_review",
@@ -1269,8 +1415,18 @@ def _baseline_plan(
 
 def _validate_reviewed_wraps(items: list[dict[str, Any]]) -> None:
     by_id = {str(item["subtitle_id"]): item for item in items}
-    for subtitle_id, lines in EXPECTED_WRAP_LINES.items():
-        if by_id.get(subtitle_id, {}).get("wrapped_lines") != lines:
+    for subtitle_id, expected_breaks in EXPECTED_WRAP_BREAK_INDICES.items():
+        item = by_id.get(subtitle_id, {})
+        lines = list(item.get("wrapped_lines") or [])
+        text = str(item.get("text") or "")
+        actual_breaks = []
+        offset = 0
+        for line in lines[:-1]:
+            offset += len(str(line))
+            actual_breaks.append(offset)
+        if "".join(str(line) for line in lines) != text or actual_breaks != (
+            expected_breaks
+        ):
             raise Out07ReconstitutionError(f"reviewed wrap changed: {subtitle_id}")
 
 
@@ -2059,7 +2215,9 @@ def _deterministic_core_payload(*, output: Path) -> dict[str, Any]:
         "subtitle_contract": {
             "count": baseline["subtitle"]["count"],
             "ids": baseline["subtitle"]["ids"],
-            "reviewed_wrap_lines": baseline["subtitle"]["reviewed_wrap_lines"],
+            "reviewed_wrap_break_indices": baseline["subtitle"][
+                "reviewed_wrap_break_indices"
+            ],
             "sub030_excluded": baseline["subtitle"]["sub030_excluded"],
         },
         "baseline_render": {

@@ -81,6 +81,13 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert focus["local_artifact_available"] == "true"
     assert focus["cross_machine_resume_class"] == "reacquirable"
     assert focus["active_rebuild_contract"] == "artifacts/ACTIVE_REBUILD.json"
+    assert focus["accepted_baseline_sha256"] == "a" * 64
+    assert focus["recommended_cover_path"] == "docs/fixture_cover.png"
+    assert focus["recommended_cover_sha256"] == "b" * 64
+    assert focus["recommended_cover_timestamp_seconds"] == "11.930"
+    assert focus["recommended_cover_selection_status"] == (
+        "recommended_pending_human_acceptance"
+    )
     assert focus["handoff"] == "docs/CURRENT_HANDOFF.md"
     assert focus["last_verified_at"] == "2026-07-10"
     assert focus["decision_required"] == "fixture_decision"
@@ -1563,6 +1570,11 @@ def _write_runtime_state(base: Path, **overrides: str) -> None:
         "cross_machine_resume_class": "reacquirable",
         "active_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
         "evidence_revision": "fixture-r1",
+        "accepted_baseline_sha256": "a" * 64,
+        "recommended_cover_path": "docs/fixture_cover.png",
+        "recommended_cover_sha256": "b" * 64,
+        "recommended_cover_timestamp_seconds": "11.930",
+        "recommended_cover_selection_status": "recommended_pending_human_acceptance",
         "last_verified_host": "fixture-host",
         "local_artifact_evidence_receipt": "docs/fixture_manifest.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
@@ -1611,16 +1623,16 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "OUT-06 accepted after bounded repair"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "branch_review_pending_human_combined_review"
+        "branch_review_pending_human_cover_direction"
     )
     assert status["current_focus"]["review_status"] == (
-        "planner007_combined_review_package_verified_human_decision_pending"
+        "accepted_baseline_native_cover_package_verified_cover_decision_pending"
     )
     assert status["current_focus"]["decision_required"] == (
-        "review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all"
+        "approve_native_shorts_cover_direction_or_describe_discomfort"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "combined_baseline_and_poster_human_review"
+        "native_shorts_cover_direction_human_review"
     )
     assert status["current_focus"]["human_entrypoint"] == (
         "http://127.0.0.1:8071/index.html"
@@ -1633,9 +1645,24 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
-    assert status["current_focus"]["cross_machine_resume_class"] == "reacquirable"
+    assert status["current_focus"]["cross_machine_resume_class"] == (
+        "conditional_reacquire"
+    )
     assert status["current_focus"]["active_rebuild_contract"] == (
         "artifacts/ACTIVE_REBUILD.json"
+    )
+    assert status["current_focus"]["accepted_baseline_sha256"] == (
+        "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18"
+    )
+    assert status["current_focus"]["recommended_cover_path"].endswith(
+        "out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png"
+    )
+    assert status["current_focus"]["recommended_cover_sha256"] == (
+        "6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174"
+    )
+    assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ("11.930")
+    assert status["current_focus"]["recommended_cover_selection_status"] == (
+        "recommended_pending_human_acceptance"
     )
     assert status["current_focus"]["artifact_id"] == (
         "clip-out07-shorts-poster-frame-direction-proof-v0-001"

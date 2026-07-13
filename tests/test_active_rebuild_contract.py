@@ -7,13 +7,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "artifacts" / "ACTIVE_REBUILD.json"
+EXPECTED_BASELINE_SHA256 = (
+    "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18"
+)
+EXPECTED_SOURCE_SHA256 = (
+    "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889"
+)
 
 
 def _contract() -> dict:
     return json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 
 
-def test_active_rebuild_contract_is_one_portable_machine_readable_route() -> None:
+def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None:
     contract = _contract()
 
     assert contract["schema_id"] == "clippipegen.active_rebuild.v1"
@@ -21,122 +27,105 @@ def test_active_rebuild_contract_is_one_portable_machine_readable_route() -> Non
         "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     )
     assert contract["episode_id"] == "jp_pilot01_hololive_bancho_20260525"
-    assert contract["resume_class"] == "reacquirable"
+    assert contract["resume_class"] == "conditional_reacquire"
+    assert contract["state"] == (
+        "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_"
+        "OPERATOR_PACK_REVIEW_READY"
+    )
     assert contract["source_identity"]["provider_id"] == "7J5aS_pcBj4"
-    current = contract["source_identity"]["current_media_revision"]
-    assert current["sha256"] == (
-        "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889"
-    )
-    assert current["byte_equivalence_to_historical_claimed"] is False
-    assert contract["source_identity"]["historical_source_host_sha256"] == (
-        "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a"
+    assert contract["source_identity"]["current_media_revision"]["sha256"] == (
+        EXPECTED_SOURCE_SHA256
     )
 
-    dependencies = contract["dependencies"]
-    assert {item["recovery_class"] for item in dependencies} == {
-        "tracked",
-        "reacquire",
-        "derive",
-        "private_only",
-    }
-    historical = next(
-        item
-        for item in dependencies
-        if item["id"] == "historical_out03_out06_binary_packages"
-    )
-    assert historical["required"] is False
-    optional_ids = {
-        "historical_out03_out06_binary_packages",
-        "official_caption_track_provenance",
-    }
-    assert all(
-        item["required"] for item in dependencies if item["id"] not in optional_ids
-    )
-    keifont = next(
-        item for item in dependencies if item["id"] == "keifont_render_dependency"
-    )
-    assert keifont["expected_sha256"] == (
-        "d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f"
-    )
+    baseline = contract["accepted_baseline"]
+    assert baseline["sha256"] == EXPECTED_BASELINE_SHA256
+    assert baseline["accepted_by"] == "Planner007"
+    assert baseline["accepted_on"] == "2026-07-13 JST"
+    assert baseline["historical_out06_acceptance_inherited"] is False
+    assert baseline["rights_status"] == "pending"
+    assert baseline["production_acceptance"] is False
+    assert baseline["public_or_publishing_acceptance"] is False
 
-    steps = [item["step"] for item in contract["builder_order"]]
-    assert steps == [
-        "inventory_material_chain_and_direct_authority",
-        "reacquire_materials_if_missing_with_existing_asset_fetch_clis",
-        "load_direct_or_tracked_semantic_authority",
-        "qualify_source_media_revision",
-        "rebuild_reinstantiated_baseline",
-        "reconstruct_operator_publish_draft",
-        "freeze_public_reference_revision",
-        "build_source_pixel_posters_transitions_and_combined_review",
-        "repeat_frozen_build_and_compare_digests",
-    ]
-    assert [item["position"] for item in contract["builder_order"]] == list(
-        range(1, 10)
+    cover = contract["active_cover_direction"]
+    assert cover["kind"] == (
+        "accepted_vertical_video_frame_plus_existing_burn_in_subtitle_only"
     )
-
-    recovery = contract["fresh_clone_recovery"]
-    assert len(recovery["commands"]) == 4
-    assert "init-episode" in recovery["commands"][0]
-    assert "fetch-source-video" in recovery["commands"][1]
-    assert "fetch-source-audio" in recovery["commands"][2]
-    assert "reconstitute-out07-review" in recovery["commands"][3]
-    assert recovery["authority_mode_when_episode_derivatives_are_absent"] == (
-        "tracked_rebuild_contract"
+    assert cover["baseline_seconds"] == 11.93
+    assert cover["subtitle_id"] == "sub_010"
+    assert cover["selection_status"] == "recommended_pending_human_acceptance"
+    assert cover["selected_by_human"] is False
+    assert cover["old_active_abc_status"] == (
+        "superseded_by_user_short_context_reframe"
     )
+    required = set(contract["required_outputs"])
+    assert {
+        "native_shorts_cover_1080x1920.png",
+        "cover_shorts_ui_overlay_preview.jpg",
+        "mapped_source_frame_1920x1080.png",
+        "operator_delivery_readback.json",
+    } <= required
 
 
-def test_active_rebuild_contract_preserves_semantics_and_acceptance_boundary() -> None:
+def test_caption_contract_is_hash_only_and_conditionally_reacquired() -> None:
     contract = _contract()
-    semantic = contract["semantic_contract"]
-    media = contract["media_contract"]["baseline"]
-    acceptance = contract["acceptance_inheritance"]
+    dependencies = {item["id"]: item for item in contract["dependencies"]}
+    caption = dependencies["official_caption_track"]
 
-    assert semantic["cut_order"] == ["cut_001", "cut_002", "cut_003"]
-    assert semantic["source_ranges_seconds"] == [
-        [2.453, 9.293],
-        [12.329, 17.167],
-        [22.606, 49.566],
-    ]
-    assert semantic["sequence_boundaries_seconds"] == [6.84, 11.678]
-    assert semantic["semantic_duration_seconds"] == 38.638
-    assert semantic["subtitle_first_id"] == "sub_001"
-    assert semantic["subtitle_last_id"] == "sub_029"
-    assert semantic["excluded_subtitle_ids"] == ["sub_030"]
-    assert len(semantic["reviewed_wrap_overrides"]) == 6
-    assert media == {
-        "duration_seconds": 38.638,
-        "duration_tolerance_seconds": 0.2,
-        "width": 1080,
-        "height": 1920,
-        "fps": 30,
-        "video_codec": "h264",
-        "audio_codec": "aac",
-        "subtitle_count": 29,
-        "hard_cut_boundaries_seconds": [6.84, 11.678],
-    }
-    assert acceptance["historical_accepted_output_sha256"] == (
-        "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0"
-    )
-    assert acceptance[
-        "historical_human_acceptance_carries_only_when_output_sha_matches"
-    ]
-    assert acceptance["nonmatching_output_class"] == "reinstantiated_baseline_candidate"
-    assert acceptance["nonmatching_output_human_acceptance"] is False
-    assert acceptance["rights_status"] == "pending"
+    assert caption["required"] is True
+    assert caption["recovery_class"] == "reacquire"
+    assert caption["on_missing"] == "caption_authority_reacquire_required"
+    assert "yt-dlp --skip-download --write-subs" in caption["recovery_command"]
+
     snapshot = contract["semantic_authority_snapshot"]
-    assert [item["id"] for item in snapshot["timeline"]] == [
-        "cut_001",
-        "cut_002",
-        "cut_003",
-    ]
-    assert [item["id"] for item in snapshot["subtitles"]] == [
+    subtitles = snapshot["subtitles"]
+    assert len(subtitles) == 29
+    assert [item["id"] for item in subtitles] == [
         f"sub_{index:03d}" for index in range(1, 30)
     ]
-    assert snapshot["subtitles"][-1]["sequence_end_seconds"] == 38.638
-    assert snapshot["operator_proxy_authority"]["operator_fields_state"] == (
-        "undecided"
+    assert all("text" not in item and "wrapped_lines" not in item for item in subtitles)
+    assert all(re.fullmatch(r"[0-9a-f]{64}", item["text_sha256"]) for item in subtitles)
+    assert all(item["recovery_class"] == "reacquire" for item in subtitles)
+    assert all(
+        item["on_missing"] == "caption_authority_reacquire_required"
+        for item in subtitles
     )
+    assert snapshot["caption_payload_digest"] == (
+        "e9a18053baf3b6d042f35a91bb18ee7c5b28c878ef9e9d66ce649563ce11c23b"
+    )
+    wraps = contract["semantic_contract"]["reviewed_wrap_break_indices"]
+    assert wraps == {
+        "sub_013": [3, 8],
+        "sub_014": [3],
+        "sub_019": [8],
+        "sub_024": [8, 12],
+        "sub_028": [5],
+        "sub_029": [5],
+    }
+
+    recovery = contract["fresh_clone_recovery"]
+    assert recovery["resume_class"] == "conditional_reacquire"
+    assert recovery["proof_status"] == "H2_successor_data_only_not_executed_in_H0"
+    assert recovery["on_caption_missing"] == "caption_authority_reacquire_required"
+    assert len(recovery["authority_reacquisition_commands"]) == 4
+    assert "write-subs" in recovery["authority_reacquisition_commands"][3]
+    baseline_restore = recovery["accepted_baseline_restore_condition"]
+    assert baseline_restore["sha256"] == EXPECTED_BASELINE_SHA256
+    assert baseline_restore["rerender_allowed"] is False
+    assert baseline_restore["on_missing"] == "accepted_baseline_reacquire_required"
+    assert "reconstitute-out07-review" in recovery[
+        "package_command_after_all_preconditions"
+    ]
+
+
+def test_current_tip_declares_history_boundary_without_scrub_claim() -> None:
+    contract = _contract()
+    boundary = contract["history_boundary"]
+    assert (
+        boundary["current_tracked_tip_contains_bulk_caption_plaintext_snapshot"]
+        is False
+    )
+    assert boundary["prior_commits_may_still_contain_caption_plaintext"] is True
+    assert boundary["history_scrub_claimed"] is False
 
 
 def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None:
@@ -149,24 +138,21 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
         "absolute_host_paths_allowed": False,
         "credentials_allowed": False,
         "copyrighted_pixels_tracked_in_git": False,
-        "third_party_reference_pixels_used_in_candidates": False,
+        "third_party_reference_pixels_used_in_cover": False,
         "episodes_must_remain_untracked": True,
     }
     assert "username" not in text.lower()
     assert "password" not in text.lower()
-    assert all(
-        not str(item["locator"]).startswith(("/", "\\"))
-        for item in contract["dependencies"]
-    )
 
 
-def test_runtime_points_to_active_rebuild_contract_and_combined_review() -> None:
+def test_runtime_points_to_conditional_reacquire_review_state() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
-    assert "cross_machine_resume_class: reacquirable" in runtime
-    assert "last_verified_host: DESKTOP-U9P4LKJ" in runtime
-    assert "last_verified_host_label: Planner007" in runtime
-    assert "current_host:" not in runtime.split("---", 2)[1]
+    assert "cross_machine_resume_class: conditional_reacquire" in runtime
+    assert (
+        "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_"
+        "OPERATOR_PACK_REVIEW_READY" in runtime
+    )

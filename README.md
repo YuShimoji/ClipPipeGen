@@ -6,14 +6,15 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-07 note: the accepted OUT-06 MP4 remains byte-identical. The former three
-16:9 thumbnail directions are user-rejected and no longer selected or
-recommended. The active ignored review proof contains three reference-derived
-1080x1920 Shorts poster directions, center-4:5 reduced previews, and three short
-tail-to-poster clips pending a human A/B/C or all-rejected judgment. Title,
-description, tags, full-video integration, upload, public readiness, rights,
-production, visibility, made-for-kids, and publishing acceptance remain outside
-this slice; see [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
+OUT-07 note: Planner007 explicitly accepted the current 38.633333-second
+baseline (`2c1c59bc...2d18`) on 2026-07-13 JST. The active ignored review
+package preserves those bytes unchanged and recommends one actual 11.930-second
+vertical-video frame with its existing burn-in subtitle as the Shorts list
+cover. The former active A/B/C are superseded by this Shorts-context reframe,
+not quality-rejected, and are not returned for selection. Only cover-direction
+acceptance remains open; metadata, upload, public readiness, rights, production,
+visibility, made-for-kids, and publishing remain closed or pending. See
+[docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
 
 OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the
 authoritative kept `cut_003` through `build-complete-narrative-short`, producing

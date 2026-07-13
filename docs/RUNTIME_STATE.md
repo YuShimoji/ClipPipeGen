@@ -3,27 +3,27 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out07_combined_review_ready_planner007
-progress_pct: 88
+health: OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY
+progress_pct: 92
 last_touched: 2026-07-13
-state_revision: out07-planner007-media-revision-reinstantiation-2026-07-13
+state_revision: out07-planner007-baseline-accepted-native-shorts-cover-2026-07-13
 current_slice: OUT-07
-phase: combined_baseline_and_poster_review_ready
-canonical_status: branch_review_pending_human_combined_review
+phase: native_shorts_cover_operator_pack_review_ready
+canonical_status: branch_review_pending_human_cover_direction
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 Planner007 media revision baseline and Shorts poster combined review
+current_title: OUT-07 accepted baseline and native Shorts cover operator review
 human_entrypoint: http://127.0.0.1:8071/index.html
 review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071
 review_server_restart_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\serve_preview.ps1 -Port 8071
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all
-review_status: planner007_combined_review_package_verified_human_decision_pending
-review_scope: Review the 38.6-second reinstantiated baseline first, then choose A/B/C or reject all; report any baseline or poster anomaly in the two freeform questions only.
+decision_required: approve_native_shorts_cover_direction_or_describe_discomfort
+review_status: accepted_baseline_native_cover_package_verified_cover_decision_pending
+review_scope: Decide only whether the accepted-video frame plus its existing burn-in subtitle works as the Shorts list cover; baseline, metadata, rights, production, and publishing are not re-questioned.
 review_ready_at: 2026-07-13
 remote_code_complete: true
 local_artifact_available: true
-cross_machine_resume_class: reacquirable
+cross_machine_resume_class: conditional_reacquire
 active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 evidence_revision: planner007-e2206cef-20260525
 last_verified_host: DESKTOP-U9P4LKJ
@@ -31,19 +31,24 @@ last_verified_host_label: Planner007
 local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json
 local_package_requirement: satisfied_on_last_verified_host
 historical_fixed_input_packages: private_only_not_required_for_revision_rebuild
-local_reference_cache_status: frozen_51_stored_50_active_zero_failures
+local_reference_cache_status: tracked_corpus_observation_only_no_pixel_fetch
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-13
-next_review_due: combined_baseline_and_poster_human_review
-next_action: Open the combined localhost review, confirm the reinstantiated baseline has no new content/timing/subtitle/audio/visual anomaly, then choose A/B/C or reject all and note poster discomfort if any.
+next_review_due: native_shorts_cover_direction_human_review
+next_action: Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle.
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
-current_review_component: reinstantiated_baseline_plus_source_pixel_A_B_C
-current_baseline_acceptance: reinstantiated_baseline_candidate_human_acceptance_false
-current_reference_revision: frozen_51_stored_50_active_zero_failures
-current_determinism_status: same_frozen_inputs_two_build_core_and_reference_digests_match
+current_review_component: accepted_baseline_plus_one_native_shorts_cover_and_operator_readback
+current_baseline_acceptance: explicit_planner007_acceptance_2026_07_13_jst
+accepted_baseline_sha256: 2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18
+recommended_cover_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png
+recommended_cover_sha256: 6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174
+recommended_cover_timestamp_seconds: 11.930
+recommended_cover_selection_status: recommended_pending_human_acceptance
+current_reference_revision: tracked_corpus_observation_only_no_third_party_pixels
+current_determinism_status: same_fixed_inputs_two_build_core_and_package_digests_match_manifest_passed
 historical_source_host_out07_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 historical_source_host_out07_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
 historical_source_host_operator_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
@@ -130,54 +135,51 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-07 Planner007 Combined Review
+## Current OUT-07 Accepted Baseline and Native Shorts Cover Review
 
-The active artifact remains
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`, but its evidence is now
-an explicit Planner007 media revision rather than a silent replacement of the
-historical source-host input. Receipt, sidecar, ledger, rights URL, decision
-packet, provider ID `7J5aS_pcBj4`, full decode, fixed frame fingerprints, fixed
-mono-PCM fingerprints, and the 29 subtitle/source mappings qualify
-`e2206cef...1889` as the same underlying episode with compatible timing. It is
-not byte-equivalent to historical input `6f78657e...103a`.
+Planner007 explicitly accepted the current 38.633333-second vertical baseline
+on 2026-07-13 JST. The accepted SHA-256 is
+`2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`;
+the accepted scope is content/narrative, tempo, cut continuity, A/V continuity,
+subtitle timing/readability, and visual integrity. This is a new explicit
+acceptance of the current bytes, not inheritance from historical OUT-06.
+Rights, production, public/publishing, upload/visibility, and made-for-kids
+remain outside that acceptance.
 
-The revision-aware route validates the current transcript/edit/cut packet,
-official-caption content, and operator-proxy limitation authority directly.
-It also compares those ignored files with the tracked semantic snapshot in
-`artifacts/ACTIVE_REBUILD.json`. If a fresh clone has only a reacquired
-receipt/sidecar/ledger material chain, the same route can use that snapshot;
-the contract records the exact init/video/audio/rebuild command order and the
-source-revision hash stop gate. Missing OUT-03 through OUT-06 binary packages
-are never required. The route preserves
-`cut_001 -> cut_002 -> cut_003`, source ranges `2.453-9.293`,
-`12.329-17.167`, `22.606-49.566`, sequence boundaries `6.840` and `11.678`,
-duration `38.638`, `sub_001..sub_029`, exclusion of `sub_030`, and all six
-reviewed display wraps. The rendered baseline probes as H.264/AAC,
-1080x1920, 30fps, duration about 38.633 seconds; full decode, boundary audio,
-and sampled black/corrupt-frame checks passed.
+The active artifact ID and review directory stay unchanged. The package now
+copies the accepted MP4 byte-for-byte and verifies its SHA before and after;
+it never renders, remuxes, transcodes, edits, or retimes the baseline. The only
+recommended cover is the accepted video's 11.930-second frame, which already
+contains the one-line `sub_010` burn-in subtitle. No extra headline, logo, CTA,
+background replacement, mask, cutout, collage, or third-party pixel is used.
+The 9:16 PNG hash is
+`6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`.
 
-The new baseline bytes differ from the historical accepted OUT-06 video, so
-the package records `reinstantiated_baseline_candidate` and
-`human_acceptance=false`. Historical editorial decisions and wrap choices are
-reused, but historical byte acceptance is not inherited. Rights, production,
-public, upload, visibility, made-for-kids, and publishing gates remain closed.
+Three timestamps were compared internally, but only the recommended frame is
+exported. The previous A/B/C are
+`superseded_by_user_short_context_reframe`: this is not a quality rejection,
+and they must not be offered for selection again. Historical context/tension/
+payoff directions remain separately `user_rejected`. The title, description,
+tags, and evidence trace are carried unchanged into the operator readback;
+`selected_thumbnail=null`, `selected_by_human=false`, and
+`publish_ready=false`, with every external-action gate closed and every
+attempt flag false.
 
-The same page presents the baseline first, followed by source-pixel-only
-poster A/B/C, channel/search and crop/UI previews, and transitions derived from
-the new baseline. The legacy `context`, `tension`, and `payoff` 16:9 directions
-remain `user_rejected`; `selected_thumbnail=null`; they were not regenerated.
-The frozen reference revision contains 51 stored records with 50 active after
-one duplicate exclusion and zero fetch failures. Third-party pixels appear
-only in the ignored evidence board/cache, never in A/B/C or Git.
+The tracked rebuild contract now stores 29 subtitle timing/segment/hash rows
+and six wrap break-index lists without caption plaintext. Actual text must come
+from the ignored official-caption authority or be reacquired; if absent the
+route stops with `caption_authority_reacquire_required`. A different host must
+also restore the exact accepted baseline artifact and pass its SHA/size gate;
+the active route is not allowed to rerender it. Cross-machine resume is
+therefore `conditional_reacquire`, and its real proof remains H2 successor
+work. Earlier commits may still contain the former plaintext snapshot; no
+history scrub is claimed.
 
-Two builds from the same frozen inputs produced matching deterministic core
-digests and matching, separately computed reference-evidence digests. The
-portable source of truth for another machine is
-[`artifacts/ACTIVE_REBUILD.json`](../artifacts/ACTIVE_REBUILD.json), not this
-host's ignored pixels. On Planner007, open
-`http://127.0.0.1:8071/index.html` through the recorded launcher and answer only
-the two freeform questions: whether the baseline has a new anomaly, then which
-poster is closest to usable (or reject all and note discomfort).
+Two fixed-input builds produced matching core digest
+`35d91185...e05f6` and package digest `a849d66d...43303`; manifest hashes and
+self-integrity also pass. Open `http://127.0.0.1:8071/index.html` and answer
+only whether this accepted-video frame plus existing subtitle should be used
+as the Shorts list cover, with freeform discomfort if needed.
 
 ## Accepted OUT-06 Complete Narrative Short After Bounded Repair
 
@@ -212,13 +214,11 @@ opening another reframe comparison or subtitle micro-tuning loop.
 The 2026-07-12 JST review accepted the roughly 38-second narrative tempo and
 audio/video continuity, then requested bounded repair for six subtitle line
 breaks and the primary review-page seek operation. The repaired package was
-subsequently accepted as `accepted_after_bounded_repair`. The repaired wraps are:
-`sub_013` -> `なんで / 来なかった / んすか！！`, `sub_014` -> `ずっと /
-待ってたんすよ！！`, `sub_019` -> `はじめの勝ちって / ことでいいですね？`,
-`sub_024` -> `団長、ちなみに、 / 他の番長 / 知ってますか？`, `sub_028` ->
-`マリンなら / あっちにいたよ`, and `sub_029` -> `ありがとう / ございますー！`.
-Only those six display wraps changed; subtitle wording, IDs, source mappings,
-and timing remain unchanged.
+subsequently accepted as `accepted_after_bounded_repair`. Current tracked
+authority records those reviewed breaks without caption plaintext:
+`sub_013=[3,8]`, `sub_014=[3]`, `sub_019=[8]`, `sub_024=[8,12]`,
+`sub_028=[5]`, and `sub_029=[5]`. Only those display-break positions changed;
+subtitle wording, IDs, source mappings, and timing remain unchanged.
 
 The final repaired MP4 SHA-256 is
 `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
@@ -385,7 +385,9 @@ Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
 the canonical predecessor, and consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
-`clip-out07-internal-operator-delivery-pack-v0-001`.
+the active `clip-out07-shorts-poster-frame-direction-proof-v0-001`. The
+historical `clip-out07-internal-operator-delivery-pack-v0-001` entry is lineage
+evidence only and must not replace the current review target.
 
 The earlier portable synthetic predecessor is OUT-02. It was created from the
 INT-01 integration branch and converts OUT-01 `proof_missing` into a local

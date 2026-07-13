@@ -26,30 +26,35 @@
   "current_focus": {
     "feature_id": "OUT-07",
     "artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
-    "state": "out07_combined_review_ready_planner007",
-    "title": "OUT-07 Planner007 media revision baseline and Shorts poster combined review",
+    "state": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
+    "title": "OUT-07 accepted baseline and native Shorts cover operator review",
     "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
-    "phase": "combined_baseline_and_poster_review_ready",
+    "phase": "native_shorts_cover_operator_pack_review_ready",
     "canonical_main_head": "93c3935f93dc4fdb71610ea35874c33a58a02895",
     "canonical_main_baseline": "OUT-06 accepted after bounded repair",
-    "canonical_status": "branch_review_pending_human_combined_review",
-    "review_status": "planner007_combined_review_package_verified_human_decision_pending",
+    "canonical_status": "branch_review_pending_human_cover_direction",
+    "review_status": "accepted_baseline_native_cover_package_verified_cover_decision_pending",
     "human_entrypoint": "http://127.0.0.1:8071/index.html",
     "review_open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\open_preview.ps1 -Serve -Port 8071",
     "review_server_restart_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\serve_preview.ps1 -Port 8071",
     "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json",
     "remote_code_complete": "true",
     "local_artifact_available": "true",
-    "cross_machine_resume_class": "reacquirable",
+    "cross_machine_resume_class": "conditional_reacquire",
     "active_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
     "evidence_revision": "planner007-e2206cef-20260525",
+    "accepted_baseline_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+    "recommended_cover_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png",
+    "recommended_cover_sha256": "6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174",
+    "recommended_cover_timestamp_seconds": "11.930",
+    "recommended_cover_selection_status": "recommended_pending_human_acceptance",
     "last_verified_host": "DESKTOP-U9P4LKJ",
     "local_artifact_evidence_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-13",
-    "decision_required": "review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all",
-    "next_review_action_type": "combined_baseline_and_poster_human_review",
-    "next_action": "Open the combined localhost review, confirm the reinstantiated baseline has no new content/timing/subtitle/audio/visual anomaly, then choose A/B/C or reject all and note poster discomfort if any.",
+    "decision_required": "approve_native_shorts_cover_direction_or_describe_discomfort",
+    "next_review_action_type": "native_shorts_cover_direction_human_review",
+    "next_action": "Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle.",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -63,7 +68,7 @@
       "label": "OUT-07 Current Focus",
       "command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\open_preview.ps1 -Serve -Port 8071",
       "target": "http://127.0.0.1:8071/index.html",
-      "when_to_use": "Open the combined localhost review, confirm the reinstantiated baseline has no new content/timing/subtitle/audio/visual anomaly, then choose A/B/C or reject all and note poster discomfort if any."
+      "when_to_use": "Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle."
     },
     {
       "label": "Artifacts",
@@ -1653,22 +1658,22 @@
   "active_artifacts": [
     {
       "artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
-      "title": "OUT-07 Planner007 Media-Revision Baseline + Shorts Poster Direction Proof v0",
-      "purpose": "Qualify the current episode media revision, reconstruct the fixed 38.6-second narrative baseline, and place that video before three source-pixel 9:16 poster directions so one human review can detect baseline drift and choose A/B/C or reject all.",
-      "storage_class": "Tracked revision-aware builder/CLI/tests/rebuild contract/reference URLs plus ignored same-machine baseline, posters, transitions, reference pixels, and review page. Third-party pixels are not committed.",
-      "repo_relative_path": "src/integrations/render/out07_reconstitution.py; src/cli/reconstitute_out07_review.py; src/integrations/render/shorts_poster_frame_proof.py; artifacts/ACTIVE_REBUILD.json; docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json",
+      "title": "OUT-07 Accepted Baseline + Native Shorts Cover Operator Review v0",
+      "purpose": "Preserve Planner007's explicitly accepted current baseline byte-for-byte, recommend one actual 11.930-second video frame with its existing burn-in subtitle as the Shorts list cover, and integrate unchanged metadata plus closed operator gates into one review surface.",
+      "storage_class": "Tracked native-cover builder/CLI/tests/hash-only recovery contract/reference observations plus one ignored same-machine baseline copy, cover, previews, readbacks, manifest, and review page. episodes/ and media pixels remain untracked.",
+      "repo_relative_path": "src/integrations/render/out07_native_cover.py; src/integrations/render/out07_reconstitution.py; src/cli/reconstitute_out07_review.py; artifacts/ACTIVE_REBUILD.json; docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json",
       "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\open_preview.ps1 -Serve -Port 8071",
-      "review_status": "Planner007 combined review package generated twice and locally machine-verified. Baseline human acceptance and A/B/C winner remain pending.",
-      "next_action": "Review the baseline first for any new anomaly, then choose A/B/C or reject all and note poster discomfort; keep rights/production/public gates closed."
+      "review_status": "Baseline is explicitly accepted and unchanged. One native-frame cover is recommended and locally verified; only cover-direction human acceptance remains pending.",
+      "next_action": "Answer the single Shorts-cover question; if accepted, record final cover selection at H1 without reopening baseline, metadata, rights, production, or public decisions."
     },
     {
       "artifact_id": "clip-out07-internal-operator-delivery-pack-v0-001",
       "title": "OUT-07 Internal Operator Delivery Pack v0",
       "purpose": "Bundle the accepted OUT-06 MP4 with source-frame-derived thumbnail directions, clean Japanese audience copy, and separate operator-only attribution/gate readback for internal review.",
-      "storage_class": "Tracked builder/CLI/tests/contract plus ignored same-machine delivery package. Source media, generated MP4 copy, and thumbnails remain outside Git.",
+      "storage_class": "Tracked historical builder/CLI/tests/contract plus an ignored same-machine delivery package only if retained on the host. Source media, generated MP4 copy, and thumbnails remain outside Git.",
       "repo_relative_path": "src/integrations/render/operator_delivery_pack.py; src/cli/build_operator_delivery_pack.py; docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
-      "open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_internal_operator_delivery_pack\\open_delivery.ps1",
-      "review_status": "Legacy operator-pack state repaired: context/tension/payoff are rejected evidence, selected/recommended are null, metadata copy is unchanged and pending, and the accepted OUT-06 MP4 remains byte-identical.",
+      "open_command": "If the historical local package is retained: powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_internal_operator_delivery_pack\\open_delivery.ps1",
+      "review_status": "Historical lineage only. Context/tension/payoff are rejected evidence and this artifact must not be reopened as the current selection surface.",
       "next_action": "Use only as accepted-video/metadata and rejected-thumbnail predecessor evidence for the current 9:16 poster proof."
     },
     {
@@ -2459,8 +2464,8 @@
     {
       "item": "OUT-07 current focus",
       "artifact": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
-      "question": "OUT-07 Planner007 media revision baseline and Shorts poster combined review",
-      "next_route": "Open the combined localhost review, confirm the reinstantiated baseline has no new content/timing/subtitle/audio/visual anomaly, then choose A/B/C or reject all and note poster discomfort if any."
+      "question": "OUT-07 accepted baseline and native Shorts cover operator review",
+      "next_route": "Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle."
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2689,7 +2694,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 110,
+      "line_count": 111,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2703,7 +2708,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 115,
+      "line_count": 116,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -2711,39 +2716,39 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 16,
+      "boundary_term_count": 17,
       "status": "reference"
     },
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1795,
+      "line_count": 1797,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "current_capsule",
-        "health": "out07_combined_review_ready_planner007",
-        "progress_pct": "88",
+        "health": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
+        "progress_pct": "92",
         "last_touched": "2026-07-13",
-        "state_revision": "out07-planner007-media-revision-reinstantiation-2026-07-13",
+        "state_revision": "out07-planner007-baseline-accepted-native-shorts-cover-2026-07-13",
         "current_slice": "OUT-07",
-        "phase": "combined_baseline_and_poster_review_ready",
-        "canonical_status": "branch_review_pending_human_combined_review",
+        "phase": "native_shorts_cover_operator_pack_review_ready",
+        "canonical_status": "branch_review_pending_human_cover_direction",
         "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
-        "current_title": "OUT-07 Planner007 media revision baseline and Shorts poster combined review",
+        "current_title": "OUT-07 accepted baseline and native Shorts cover operator review",
         "human_entrypoint": "http://127.0.0.1:8071/index.html",
         "review_open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\open_preview.ps1 -Serve -Port 8071",
         "review_server_restart_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\serve_preview.ps1 -Port 8071",
         "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all",
-        "review_status": "planner007_combined_review_package_verified_human_decision_pending",
-        "review_scope": "Review the 38.6-second reinstantiated baseline first, then choose A/B/C or reject all; report any baseline or poster anomaly in the two freeform questions only.",
+        "decision_required": "approve_native_shorts_cover_direction_or_describe_discomfort",
+        "review_status": "accepted_baseline_native_cover_package_verified_cover_decision_pending",
+        "review_scope": "Decide only whether the accepted-video frame plus its existing burn-in subtitle works as the Shorts list cover; baseline, metadata, rights, production, and publishing are not re-questioned.",
         "review_ready_at": "2026-07-13",
         "remote_code_complete": "true",
         "local_artifact_available": "true",
-        "cross_machine_resume_class": "reacquirable",
+        "cross_machine_resume_class": "conditional_reacquire",
         "active_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
         "evidence_revision": "planner007-e2206cef-20260525",
         "last_verified_host": "DESKTOP-U9P4LKJ",
@@ -2751,19 +2756,24 @@
         "local_artifact_evidence_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json",
         "local_package_requirement": "satisfied_on_last_verified_host",
         "historical_fixed_input_packages": "private_only_not_required_for_revision_rebuild",
-        "local_reference_cache_status": "frozen_51_stored_50_active_zero_failures",
+        "local_reference_cache_status": "tracked_corpus_observation_only_no_pixel_fetch",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-13",
-        "next_review_due": "combined_baseline_and_poster_human_review",
-        "next_action": "Open the combined localhost review, confirm the reinstantiated baseline has no new content/timing/subtitle/audio/visual anomaly, then choose A/B/C or reject all and note poster discomfort if any.",
+        "next_review_due": "native_shorts_cover_direction_human_review",
+        "next_action": "Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle.",
         "active_artifact": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
-        "current_review_component": "reinstantiated_baseline_plus_source_pixel_A_B_C",
-        "current_baseline_acceptance": "reinstantiated_baseline_candidate_human_acceptance_false",
-        "current_reference_revision": "frozen_51_stored_50_active_zero_failures",
-        "current_determinism_status": "same_frozen_inputs_two_build_core_and_reference_digests_match",
+        "current_review_component": "accepted_baseline_plus_one_native_shorts_cover_and_operator_readback",
+        "current_baseline_acceptance": "explicit_planner007_acceptance_2026_07_13_jst",
+        "accepted_baseline_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+        "recommended_cover_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png",
+        "recommended_cover_sha256": "6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174",
+        "recommended_cover_timestamp_seconds": "11.930",
+        "recommended_cover_selection_status": "recommended_pending_human_acceptance",
+        "current_reference_revision": "tracked_corpus_observation_only_no_third_party_pixels",
+        "current_determinism_status": "same_fixed_inputs_two_build_core_and_package_digests_match_manifest_passed",
         "historical_source_host_out07_artifact": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
         "historical_source_host_out07_readback_sha256": "43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb",
         "historical_source_host_operator_pack_artifact": "clip-out07-internal-operator-delivery-pack-v0-001",
@@ -2846,7 +2856,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 371,
+      "boundary_term_count": 374,
       "status": "current_capsule"
     },
     {
@@ -2969,7 +2979,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2367,
+      "line_count": 2363,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3039,30 +3049,36 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 99,
+      "line_count": 114,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "out07_combined_review_ready_planner007",
-        "progress_pct": "88",
+        "health": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
+        "progress_pct": "92",
         "last_touched": "2026-07-13",
         "current_slice": "OUT-07",
-        "phase": "combined_baseline_and_poster_review_ready",
-        "canonical_status": "branch_review_pending_human_combined_review",
+        "phase": "native_shorts_cover_operator_pack_review_ready",
+        "canonical_status": "branch_review_pending_human_cover_direction",
         "active_branch": "codex/out-07-internal-operator-delivery-pack-v0",
-        "current_title": "OUT-07 Planner007 media revision baseline and Shorts poster combined review",
+        "current_title": "OUT-07 accepted baseline and native Shorts cover operator review",
         "human_entrypoint": "http://127.0.0.1:8071/index.html",
         "review_open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\open_preview.ps1 -Serve -Port 8071",
         "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json",
-        "decision_required": "review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all",
-        "review_status": "planner007_combined_review_package_verified_human_decision_pending",
+        "operator_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/operator_delivery_readback.json",
+        "decision_required": "approve_native_shorts_cover_direction_or_describe_discomfort",
+        "review_status": "accepted_baseline_native_cover_package_verified_cover_decision_pending",
         "remote_code_complete": "true",
         "local_artifact_available": "true",
-        "cross_machine_resume_class": "reacquirable",
+        "cross_machine_resume_class": "conditional_reacquire",
         "active_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
         "evidence_revision": "planner007-e2206cef-20260525",
+        "accepted_baseline_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+        "recommended_cover_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png",
+        "recommended_cover_sha256": "6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174",
+        "recommended_cover_timestamp_seconds": "11.930",
+        "recommended_cover_selection_status": "recommended_pending_human_acceptance",
         "last_verified_host": "DESKTOP-U9P4LKJ",
         "last_verified_host_label": "Planner007",
         "local_artifact_evidence_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json",
@@ -3070,8 +3086,8 @@
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "next_review_due": "combined_baseline_and_poster_human_review",
-        "next_action": "Open the combined localhost review, inspect the reinstantiated baseline first, then choose A/B/C or reject all; note any baseline or poster anomaly without granting production or rights acceptance.",
+        "next_review_due": "native_shorts_cover_direction_human_review",
+        "next_action": "Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle.",
         "active_artifact": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
@@ -3083,7 +3099,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 14,
+      "boundary_term_count": 15,
       "status": "active"
     },
     {
@@ -3367,7 +3383,7 @@
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
       "title": "Planner007 OUT-07 host receipt — 2026-07-13",
-      "line_count": 24,
+      "line_count": 57,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3375,7 +3391,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 0,
+      "boundary_term_count": 6,
       "status": "reference"
     },
     {
@@ -3456,7 +3472,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1795 lines) is likely carrying history.",
+        "detail": "Long active doc (1797 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3486,7 +3502,7 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2367 lines) is likely carrying history.",
+        "detail": "Long active doc (2363 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

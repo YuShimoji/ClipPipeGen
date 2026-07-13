@@ -15,13 +15,14 @@ around workflow decisions, not only around file names.
 
 Current focus is `OUT-07` on
 `codex/out-07-internal-operator-delivery-pack-v0`. The active review artifact is
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`. Planner007 now has a
-verified combined page containing a newly instantiated 38.6-second baseline,
-poster A/B/C, platform previews, and transitions. The current source is an
-explicit same-identity media revision, not a byte alias for the historical
-source. The baseline therefore remains human-unaccepted until this review. The
-former `context`, `tension`, and `payoff` 16:9 directions remain only
-`user_rejected` evidence; no thumbnail is selected or recommended.
+`clip-out07-shorts-poster-frame-direction-proof-v0-001`. Planner007 explicitly
+accepted the current 38.633333-second baseline on 2026-07-13 JST. The verified
+combined page byte-copies that accepted MP4 and recommends one 11.930-second
+frame with its existing burn-in subtitle, with list-scale, Shorts-UI overlap,
+9:16, center-4:5, and mapped-source comparison readbacks. The former active
+A/B/C are non-returnable `superseded_by_user_short_context_reframe` evidence;
+older `context`, `tension`, and `payoff` remain separately `user_rejected`.
+No cover is selected by a human yet.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
 Canonical `main` is the OUT-06 accepted-after-bounded-repair baseline. OUT-07
@@ -63,7 +64,7 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` | Planner007 combined baseline＋OUT-07 poster review | Open the verified page, review the reinstantiated baseline first, then compare A/B/C or reject all. Another machine must rebuild from `artifacts/ACTIVE_REBUILD.json` and verify its own ignored package. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` | Planner007 accepted-baseline＋native Shorts-cover review | Open the verified page and decide only whether the one video-derived frame plus existing subtitle works as the Shorts list cover. Another machine must restore the exact accepted baseline, conditionally reacquire caption authority, rebuild from `artifacts/ACTIVE_REBUILD.json`, and verify its own ignored package. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 predecessor operator pack | Reopen the port-8070 metadata/video provenance pack only when predecessor evidence is needed; its rejected 16:9 directions are not current candidates. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored accepted OUT-04 editorial sequence | Reopen the accepted single 11.678-second `cut_001 -> cut_002` sequence if predecessor evidence is needed. |
@@ -84,12 +85,12 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-07 is locally review-ready on Planner007. First report whether the
-reinstantiated baseline has any new content/timing/subtitle/audio/visual
-anomaly; then choose A/B/C or reject all and note poster discomfort if present.
-Do not infer a winner from tests or reopen
-title/description/tags, production/public use, thumbnail upload, metadata
-publication, visibility, made-for-kids, publishing, upload, or rights approval.
+OUT-07 is locally review-ready on Planner007 and the current baseline is already
+explicitly accepted. Decide only whether the video-derived frame plus its
+existing subtitle should become the Shorts list cover, and describe any
+discomfort freely. Do not reopen title/description/tags, baseline acceptance,
+production/public use, thumbnail upload, metadata publication, visibility,
+made-for-kids, publishing, upload, or rights approval.
 Use the dashboard to return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 

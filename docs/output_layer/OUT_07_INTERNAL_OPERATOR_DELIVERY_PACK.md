@@ -1,198 +1,135 @@
-# OUT-07 Operator Pack and Media-Revision Combined Review
+# OUT-07 Accepted Baseline Native Shorts Cover Operator Pack
 
-## Active Planner007 route
+## Active route
 
-The active artifact is still
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`, but Planner007 uses the
-explicit media-revision route in
-`src/integrations/render/out07_reconstitution.py`. It qualifies the current
-episode source, validates edit/transcript/decision/proxy/caption authority,
-rebuilds the fixed 38.6-second baseline, and reconstructs the publish draft
-without regenerating the
-rejected 16:9 thumbnails, freezes public reference evidence, and generates a
-baseline-first A/B/C review page. Missing historical OUT-03 through OUT-06
-packages are not required.
+The active artifact remains
+`clip-out07-shorts-poster-frame-direction-proof-v0-001` on branch
+`codex/out-07-internal-operator-delivery-pack-v0`. Planner007 explicitly
+accepted the current baseline on 2026-07-13 JST. The accepted bytes are fixed
+at:
+
+- source YouTube ID: `7J5aS_pcBj4`
+- qualified source SHA-256: `e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`
+- accepted baseline SHA-256: `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
+- accepted baseline size: `21,669,538` bytes
+- accepted baseline duration: about `38.633333s`
+
+The acceptance covers content/narrative, timing/tempo, cut continuity, A/V
+continuity, subtitle timing/readability, and visual integrity. It does not
+inherit historical OUT-06 acceptance and does not grant rights, production,
+public/publishing, upload/visibility, or made-for-kids approval.
+
+`src/integrations/render/out07_native_cover.py` verifies the retained baseline,
+copies it byte-for-byte, and extracts one decoded frame. It never rerenders,
+remuxes, transcodes, edits, or retimes the MP4, subtitles, or audio.
+
+## Cover direction
+
+The selected internal recommendation is the accepted baseline at `11.930s`,
+mapped to current source time `22.858s` in `cut_003`, with existing burn-in cue
+`sub_010`. The cover adds no separate catchcopy, long-form headline, small
+label, logo, CTA, abstract background, geometry, gradient, background
+replacement, mask, sticker cutout, collage, invented person, or third-party
+pixel.
+
+The canonical frame fingerprints are:
+
+| Evidence surface | Timestamp | Profile | SHA-256 |
+|---|---:|---|---|
+| accepted baseline | 11.930s | `raw_rgb24_320x180_bilinear` | `d2187bfb68f14b2eebfea2249061c7130a5bc5a6e25fbb0d5592782c9cb33062` |
+| mapped current source | 22.858s | `raw_rgb24_320x180_bilinear` | `c44c9258b165dda344dab75a68e9f8ee0a0b0c265f2264492275da0de74b64d3` |
+
+At most three timestamps are compared internally; only this recommended frame
+is exported. The active prior A/B/C are retained by hash as
+`superseded_by_user_short_context_reframe`. That state records a Shorts-context
+reframe, not a quality rejection, and those candidates must not be returned for
+selection. Historical context/tension/payoff remains separately
+`user_rejected`.
+
+## Build and package
+
+Run the fixed-input two-build route:
 
 ```powershell
-uvx --with Pillow python -m src.cli.main reconstitute-out07-review `
+python -m src.cli.main reconstitute-out07-review `
   --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 `
   --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json `
   --verify-determinism `
   --format json
 ```
 
-Add `--fetch-missing-references` only for the first cache freeze. The portable
-dependency/recovery order, exact semantic snapshot, and fresh-clone
-init/video/audio/rebuild commands are machine-readable in
-`artifacts/ACTIVE_REBUILD.json`. The generated baseline differs from historical
-accepted OUT-06 bytes, so it is a `reinstantiated_baseline_candidate` with
-`human_acceptance=false`; editorial timing and six wrap repairs carry, but byte
-acceptance does not. The combined page at port 8071 asks exactly two freeform
-questions: baseline anomaly readback, then A/B/C or all-rejected direction.
-
-The fixed-hash operator pack documented below remains an unchanged historical
-route. It is comparison evidence, not the current Planner007 input contract.
-
-## Historical fixed-hash internal operator pack
-
-OUT-07 creates one internal operator delivery pack from the accepted OUT-06
-video. It does not rerender, remux, transcode, upload, publish, approve rights,
-choose visibility, choose made-for-kids state, or set a public thumbnail.
-
-The artifact ID is `clip-out07-internal-operator-delivery-pack-v0-001`. The
-ignored same-machine package is:
-
-```text
-episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/
-```
-
-Use:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve
-```
-
-The default localhost port is `8070`.
-
-## Build command
-
-```powershell
-uvx --with Pillow python -m src.cli.main build-operator-delivery-pack `
-  --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 `
-  --output-dir episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack `
-  --out06-readback episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/candidate_readback.json `
-  --format json
-```
-
-The builder validates the accepted OUT-06 readback, accepted OUT-06 MP4 hash,
-and source video hash. It copies the MP4 bytes into
-`assets/complete_narrative_short.mp4`; the source and package SHA-256 are both
-`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
-
-## Package contents
-
-- `assets/complete_narrative_short.mp4`
-- `assets/thumbnail_context_1280x720.jpg`
-- `assets/thumbnail_tension_1280x720.jpg`
-- `assets/thumbnail_payoff_1280x720.jpg`
-- `assets/thumbnail_direction_contact_sheet.jpg`
-- `thumbnail_plan.json`
-- `publish_draft.json`
-- `operator_delivery_readback.json`
-- `delivery_manifest.json`
-- `index.html`
-- `open_delivery.ps1`
-- `serve_delivery.ps1`
-
-## Rejected 16:9 thumbnail evidence
-
-The package contains exactly three source-frame-derived 1280x720 RGB JPEG
-directions:
-
-| Direction | Source | Visible text | Role |
-|---|---|---|---|
-| `context` | `cut_001`, `sub_006` | `体育館裏で / 待ってます！！` | user rejected |
-| `tension` | `cut_003`, `sub_013..sub_014` | `なんで / 来なかった！？` | user rejected |
-| `payoff` | `cut_003`, `sub_022`, `sub_028` | `団長 / 倒したど～！！` | user rejected |
-
-All three 16:9 directions are retained only as rejected evidence. The old
-`thumbnail_recommended_1280x720.jpg` copy was removed,
-`recommended_direction_id=null`, and `selected_thumbnail=null`. They must not
-be repaired, recolored, relabeled, or returned as candidates.
-
-## Metadata draft
-
-`publish_draft.json` is Japanese-first. Its audience-facing copy contains only
-content metadata; attribution, rights, production, public, publishing, and
-attempt state remain separate operator-only fields:
-
-- title: `番長、団長を呼び出すも来ない！？`
-- description:
-  - `番長のはじめが団長を体育館裏へ呼び出し、「倒してやる！！」と意気込みます。`
-  - `ところが団長は来ず、待ち続けたはじめが「なんで来なかったんすか！！」と問いかけます。`
-  - `最後は“はじめの勝ち”で決着し、次の番長を探し始めます。`
-- tags: `ホロライブ`, `はじめ`, `番長`, `団長`, `体育館裏`, `呼び出し`, `来なかった理由`
-- status: `internal_operator_draft`
-- language: `ja`
-- operator_copy_ready: `true`
-- publish_ready: `false`
-- rights_status: `pending`
-- visibility: `operator_decision_required`
-- made_for_kids: `operator_decision_required`
-- scheduled_at: `null`
-- source_attribution_status: `operator_decision_required`
-- source_title / source_url: `null`
-- artifact / episode / packaged-video / rejected-thumbnail / subtitle and
-  segment evidence: present in the machine draft
-- upload / thumbnail upload / metadata update / visibility update attempts:
-  `false`
-
-## Reference-derived Shorts poster direction proof
-
-The current review artifact is
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`. It writes only to the
-ignored same-machine package:
+The active ignored output is the single review directory:
 
 ```text
 episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/
 ```
 
-Regenerate from the frozen local reference cache with:
+Its review-facing files are:
+
+| File | Purpose |
+|---|---|
+| `reinstantiated_baseline.mp4` | byte-identical copy of the accepted baseline |
+| `native_shorts_cover_1080x1920.png` | only recommended cover output |
+| `cover_list_preview.jpg` | 405x720 list-scale preview only |
+| `cover_shorts_ui_overlay_preview.jpg` | generic Shorts-UI overlap survival preview only |
+| `cover_center_4x5.jpg` | center 4:5 crop heuristic only |
+| `mapped_source_frame_1920x1080.png` | unmodified mapped-source frame for timestamp/fingerprint comparison |
+| `baseline_acceptance.json` / `baseline_readback.json` | explicit acceptance and unchanged-byte proof |
+| `publish_draft.json` / `operator_delivery_readback.json` | unchanged metadata, recommended cover, and closed gates |
+| `superseded_poster_evidence.json` | non-returnable old A/B/C and historical rejected-direction hashes/status |
+| `poster_direction_readback.json` | active one-question review contract |
+| `determinism_receipt.json` / `combined_review_manifest.json` | two-build digest and file/self-integrity proof |
+| `index.html` | list preview, 9:16, center 4:5, source comparison, metadata, baseline SHA, then folded provenance/gates/history |
+
+Open through the retained byte-range localhost route:
 
 ```powershell
-uvx --with Pillow python -m src.cli.main build-shorts-poster-frame-proof `
-  --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 `
-  --output-dir episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof `
-  --source-video episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 `
-  --accepted-video episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/assets/complete_narrative_short.mp4 `
-  --out07-publish-draft episodes/jp_pilot01_hololive_bancho_20260525/review/out07_internal_operator_delivery_pack/publish_draft.json `
-  --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json `
-  --reference-cache-dir episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_reference_cache `
-  --format json
+powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071
 ```
 
-`--fetch-missing-references` is an explicit first-freeze action only. Normal
-regeneration is network-free and refuses a missing frozen image. The tracked
-corpus stores URLs and structural annotations only; third-party pixels stay in
-the ignored cache and `reference_board.jpg`.
+The page asks exactly:
 
-The package contains:
+> Shorts一覧用coverとして、映像由来フレーム＋既存字幕だけのこの方向を採用してよいか。違和感があれば自由記述してください。
 
-- `poster_A/B/C_1080x1920.jpg`
-- `poster_direction_contact_sheet.jpg`
-- `expression_contact_sheet_A/B/C.jpg`
-- `subject_mask_inspection.jpg`
-- `platform_preview_contact_sheet.jpg`
-- `reference_board.jpg`
-- `reference_manifest.json`
-- `poster_direction_readback.json`
-- `transition_A/B/C.mp4`
-- `index.html`, `open_preview.ps1`, and `serve_preview.ps1`
+It does not re-question the baseline, metadata, rights, production, or public
+state.
 
-A/B/C use three research-derived directions backed by primary and supporting
-references. Candidates use retained source pixels, manual alpha masks without
-generated or modified person pixels, project-local geometric treatment, and the
-local Noto Sans JP Black weight. The package includes channel/search,
-center-4:5 heuristic, and approximate Shorts playback UI previews; the 4:5
-preview is not an official YouTube crop guarantee.
+## Caption authority and cross-machine recovery
 
-Each transition is review-only: accepted-video tail 1.75s, a shared 0.12s
-dissolve, a 0.50s poster end-cap, and a 0.16s audio fade.
-The complete accepted video remains byte-identical at
-`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
+`artifacts/ACTIVE_REBUILD.json` no longer stores the bulk 29-line caption
+plaintext snapshot. It retains IDs, cut and source/sequence timing, segment
+IDs, per-text SHA-256, caption payload digest, wrap break indices, source
+locator, recovery class/command, and mismatch rules. Actual text is loaded from
+the ignored official JSON3 authority or reacquired from the source. If it is
+absent, semantic rebuild stops with
+`caption_authority_reacquire_required`; cross-machine resume is therefore
+`conditional_reacquire`.
 
-## Current review scope
+Earlier commits may still contain the former tracked plaintext snapshot. No
+history scrub is claimed.
 
-Human review has one freeform question:
+A different host must also restore the exact 21,669,538-byte accepted baseline
+artifact and verify `2c1c59...2d18` before the package command can run. The
+active route cannot recreate it by rendering. That real conditional recovery
+proof is H2 successor work, not a claim made by the current H0 package.
 
-> A/B/Cのどれが実用候補に最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記してください。
+## Determinism and gates
 
-Human selection is required before H1 can integrate any poster into the full
-Short. Title, description, tags, rights, production render, production subtitle
-design, public readiness, upload, thumbnail upload, visibility, made-for-kids,
-and publishing remain pending or closed.
+Two fixed-input builds must match both core and package digests. The active
+receipt records core `35d91185...e05f6` and package `a849d66d...43303`, followed
+by per-file manifest and manifest self-integrity validation. The tracked
+reference corpus is observation-only in this route; no new crawl or third-party
+reference pixel is loaded into the cover.
 
-The episode-specific thumbnail times, visible thumbnail copy, and metadata plan
-remain embedded in the OUT-07 builder. Extract them into a declarative input
-before the first second-episode execution; do not expand this repair into a
-general templating framework.
+The metadata draft remains unchanged. `selected_thumbnail=null`, the cover is
+`recommended_pending_human_acceptance`, `selected_by_human=false`, and
+`publish_ready=false`. Rights are pending, every production/public/external
+action gate is closed, and upload, thumbnail upload, visibility,
+made-for-kids, publish, and other external mutations are all unattempted.
+
+## Historical predecessor
+
+`clip-out07-internal-operator-delivery-pack-v0-001` and its fixed-hash builder
+remain historical evidence. They are not the active readback ID and do not
+replace the current single review directory. They may be consulted for lineage
+only; current operation begins with the active native-cover artifact above.
