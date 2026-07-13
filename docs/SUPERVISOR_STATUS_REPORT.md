@@ -2,8 +2,8 @@
 
 ## 今どこまで進んでいるか
 
-ローカル作業基点は、リモートで最終更新されている
-`codex/out-07-internal-operator-delivery-pack-v0` の `f0f7d31` へ移行済みです。
+リモートから取り込んだ実装基点は、当時の最終更新ブランチ
+`codex/out-07-internal-operator-delivery-pack-v0` の `f0f7d31` です。
 このブランチは canonical `main` の OUT-06 accepted baseline より 5 commit
 先にあり、OUT-07 operator delivery pack、Shorts poster direction proof、状態修正、
 参照忠実度の補強まで含みます。ローカルブランチは同名の origin branch を追跡し、
@@ -73,4 +73,3 @@ tests は artifact integrity と再現可能なロジックを支える証拠で
 - **Advance — tracked 実装をレビューする:** 視覚成果物の移送を待つ間も、OUT-07 の
   builder、reference corpus、mask/reference fidelity、copy fallback の code review は
   継続でき、branch review pending の技術側摩擦を減らせます。
-
