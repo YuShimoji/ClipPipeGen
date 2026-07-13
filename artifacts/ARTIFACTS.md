@@ -22,7 +22,7 @@ opened by the root launcher.
 |---|---|
 | title | OUT-07 Accepted Baseline + Native Shorts Cover Operator Review v0 |
 | purpose | Preserve Planner007's explicitly accepted current baseline byte-for-byte, recommend one actual 11.930-second video frame with its existing burn-in subtitle as the Shorts list cover, and integrate unchanged metadata plus closed operator gates into one review surface. |
-| storage class | Tracked native-cover builder/CLI/tests/hash-only recovery contract/reference observations plus one ignored same-machine baseline copy, cover, previews, readbacks, manifest, and review page. `episodes/` and media pixels remain untracked. |
+| storage class | Tracked native-cover builder/CLI/tests/hash-only recovery contract/reference observations plus one ignored Planner007-only baseline copy, cover, previews, readbacks, manifest, and review page. `episodes/` and media pixels remain untracked. |
 | repo_relative_path | `src/integrations/render/out07_native_cover.py`; `src/integrations/render/out07_reconstitution.py`; `src/cli/reconstitute_out07_review.py`; `artifacts/ACTIVE_REBUILD.json`; `docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/` |
 | machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json` |
@@ -31,18 +31,21 @@ opened by the root launcher.
 | determinism_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/determinism_receipt.json` |
 | media_revision_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json` |
 | active_rebuild_contract | `artifacts/ACTIVE_REBUILD.json` (`resume_class=conditional_reacquire`; exact 3-cut/29-subtitle timing/segment/text-hash/wrap-break contract but no caption plaintext; missing official-caption authority stops as `caption_authority_reacquire_required`; another host must also restore the exact accepted baseline rather than rerender it). |
+| durable_handoff_state | `OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF`; H0 package state is retained as the last verified Planner007 evidence, while the portable current state is paused until another host restores the exact baseline. |
+| portable_availability | `portable_local_artifact_available=false`; no portable human entrypoint, open command, or machine readback is advertised. |
+| recovery_classification | tracked / ignored_local_retained / conditional_reacquire / retained_artifact_reacquire / derive / private_only are defined in `artifacts/ACTIVE_REBUILD.json#handoff.recovery_classification`. |
 | source_inputs | Qualified source revision `e2206cef...1889`, explicitly accepted baseline `2c1c59bc...2d18`, tracked unchanged copy plan, and tracked reference corpus as observation-only evidence. No new crawl or third-party reference pixels are used. |
 | accepted_baseline | `reinstantiated_baseline.mp4`; 21,669,538-byte SHA-verified copy of the accepted H.264/AAC 1080x1920 30fps, 38.633333-second baseline. Acceptance date 2026-07-13 JST; historical OUT-06 acceptance is not inherited. |
 | recommended_cover | `native_shorts_cover_1080x1920.png`; baseline 11.930s / mapped source 22.858s / existing `sub_010`; SHA-256 `6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`; selected-by-human remains false. |
 | preview_artifacts | `cover_list_preview.jpg` (405x720), `cover_shorts_ui_overlay_preview.jpg` (generic 405x720 UI-overlap approximation), and `cover_center_4x5.jpg` (864x1080) are preview-only derivatives; `mapped_source_frame_1920x1080.png` is the unmodified timestamp/fingerprint comparison frame. |
 | superseded_evidence | Prior active A/B/C are hash-only `superseded_by_user_short_context_reframe`, not quality-rejected, and never returned for selection; historical context/tension/payoff remains separately `user_rejected`. |
-| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
-| preview_url | `http://127.0.0.1:8071/index.html` while the retained Planner007 byte-range server is running. Other hosts must rebuild and locally verify first. |
+| open_command | Last-verified Planner007 host only: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071`; not a portable current command. |
+| preview_url | Last-verified Planner007 host only: `http://127.0.0.1:8071/index.html`; server PID 41872 was stopped and port 8071 released. |
 | historical_accepted_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` comparison evidence only; current acceptance is not inherited. |
 | determinism | Same fixed inputs built twice; core `35d91185...e05f6` and package `a849d66d...43303` match. Per-file hashes, exact inventory, and canonical whole-manifest self-integrity pass. |
 | validation_command | Focused native-cover/recovery/docs tests and changed-scope Ruff; JSON/manifest/hash consistency; baseline SHA/probe/full decode; cover/list/4:5 visual inspection; browser DOM/media/layout/folded-details/seek/Range QA; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
-| review_status | Baseline is explicitly accepted and unchanged. One native-frame cover is recommended and locally verified; only cover-direction human acceptance remains pending. |
-| next_action | Answer the single Shorts-cover question; if accepted, record final cover selection at H1 without reopening baseline, metadata, rights, production, or public decisions. |
+| review_status | Paused durable cross-device handoff. Baseline remains explicitly accepted and unchanged; one native-frame cover remains recommended and `recommended_pending_human_acceptance`. |
+| next_action | On the next host, verify exact baseline SHA before visual review; then the human may ACCEPT or REFRAME the native Shorts cover. H1 follows only after that decision. |
 
 Boundary flags remain false or pending:
 

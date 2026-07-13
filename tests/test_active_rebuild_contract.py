@@ -13,6 +13,9 @@ EXPECTED_BASELINE_SHA256 = (
 EXPECTED_SOURCE_SHA256 = (
     "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889"
 )
+EXPECTED_CAPTION_SHA256 = (
+    "3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919"
+)
 
 
 def _contract() -> dict:
@@ -29,6 +32,9 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
     assert contract["episode_id"] == "jp_pilot01_hololive_bancho_20260525"
     assert contract["resume_class"] == "conditional_reacquire"
     assert contract["state"] == (
+        "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF"
+    )
+    assert contract["handoff"]["from_state"] == (
         "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_"
         "OPERATOR_PACK_REVIEW_READY"
     )
@@ -73,6 +79,7 @@ def test_caption_contract_is_hash_only_and_conditionally_reacquired() -> None:
 
     assert caption["required"] is True
     assert caption["recovery_class"] == "reacquire"
+    assert caption["expected_sha256"] == EXPECTED_CAPTION_SHA256
     assert caption["on_missing"] == "caption_authority_reacquire_required"
     assert "yt-dlp --skip-download --write-subs" in caption["recovery_command"]
 
@@ -112,9 +119,19 @@ def test_caption_contract_is_hash_only_and_conditionally_reacquired() -> None:
     assert baseline_restore["sha256"] == EXPECTED_BASELINE_SHA256
     assert baseline_restore["rerender_allowed"] is False
     assert baseline_restore["on_missing"] == "accepted_baseline_reacquire_required"
-    assert "reconstitute-out07-review" in recovery[
-        "package_command_after_all_preconditions"
-    ]
+    assert (
+        "reconstitute-out07-review"
+        in recovery["package_command_after_all_preconditions"]
+    )
+    assert contract["handoff"]["portable_availability"] == {
+        "portable_local_artifact_available": False,
+        "human_entrypoint": None,
+        "review_open_command": None,
+        "machine_readback": None,
+    }
+    assert contract["handoff"]["accepted_baseline_stop_gate"] == (
+        "accepted_baseline_reacquire_required"
+    )
 
 
 def test_current_tip_declares_history_boundary_without_scrub_claim() -> None:
@@ -150,9 +167,9 @@ def test_runtime_points_to_conditional_reacquire_review_state() -> None:
 
     assert "active_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: true" in runtime
+    assert "local_artifact_available: false" in runtime
+    assert "portable_local_artifact_available: false" in runtime
+    assert "human_entrypoint: null" in runtime
+    assert "review_open_command: null" in runtime
     assert "cross_machine_resume_class: conditional_reacquire" in runtime
-    assert (
-        "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_"
-        "OPERATOR_PACK_REVIEW_READY" in runtime
-    )
+    assert "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF" in runtime

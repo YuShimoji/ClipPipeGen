@@ -1623,28 +1623,41 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "OUT-06 accepted after bounded repair"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "branch_review_pending_human_cover_direction"
+        "paused_durable_cross_device_handoff"
     )
     assert status["current_focus"]["review_status"] == (
-        "accepted_baseline_native_cover_package_verified_cover_decision_pending"
+        "native_shorts_cover_review_pending_paused_durable_handoff"
     )
     assert status["current_focus"]["decision_required"] == (
-        "approve_native_shorts_cover_direction_or_describe_discomfort"
+        "accept_native_shorts_cover_or_reframe"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "native_shorts_cover_direction_human_review"
+        "paused_durable_cross_device_handoff"
     )
-    assert status["current_focus"]["human_entrypoint"] == (
+    assert status["current_focus"]["human_entrypoint"] == ""
+    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["machine_readback"] == ""
+    assert status["current_focus"]["remote_code_complete"] == "true"
+    assert status["current_focus"]["local_artifact_available"] == "false"
+    assert status["current_focus"]["portable_local_artifact_available"] == "false"
+    assert (
+        status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
+    )
+    assert status["current_focus"]["last_verified_host_entrypoint"] == (
         "http://127.0.0.1:8071/index.html"
     )
-    assert status["current_focus"]["review_open_command"].endswith(
-        "open_preview.ps1 -Serve -Port 8071"
+    assert status["current_focus"]["pause_reason"] == (
+        "user_requested_cross_device_handoff"
     )
-    assert status["current_focus"]["machine_readback"].endswith(
-        "out07_shorts_poster_frame_direction_proof/poster_direction_readback.json"
+    assert status["current_focus"]["accepted_baseline_recovery_status"] == (
+        "retained_artifact_required"
     )
-    assert status["current_focus"]["remote_code_complete"] == "true"
-    assert status["current_focus"]["local_artifact_available"] == "true"
+    assert status["current_focus"]["cover_review_status"] == (
+        "pending_human_acceptance"
+    )
+    assert all(
+        item["label"] != "OUT-07 Current Focus" for item in status["open_surfaces"]
+    )
     assert status["current_focus"]["cross_machine_resume_class"] == (
         "conditional_reacquire"
     )

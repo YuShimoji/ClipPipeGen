@@ -6,14 +6,20 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-07`
 - artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY`
+- state: `OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
 - canonical baseline: `OUT-06 accepted after bounded repair`
-- canonical status: `branch_review_pending_human_cover_direction`
-- review status: `accepted_baseline_native_cover_package_verified_cover_decision_pending`
+- canonical status: `paused_durable_cross_device_handoff`
+- review status: `native_shorts_cover_review_pending_paused_durable_handoff`
 - remote code complete: `true`
-- local artifact available: `true`
+- local artifact available: `false`
+- portable local artifact available: `false`
+- last verified host local artifact available: `true`
+- last verified host entrypoint: `http://127.0.0.1:8071/index.html`
+- pause reason: `user_requested_cross_device_handoff`
+- accepted baseline recovery: `retained_artifact_required`
+- cover review status: `pending_human_acceptance`
 - cross-machine resume: `conditional_reacquire`
 - active rebuild contract: `artifacts/ACTIVE_REBUILD.json`
 - evidence revision: `planner007-e2206cef-20260525`
@@ -22,8 +28,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: `6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`
 - recommended cover timestamp: `11.930`
 - recommended cover selection: `recommended_pending_human_acceptance`
-- decision required: `approve_native_shorts_cover_direction_or_describe_discomfort`
-- next review: `native_shorts_cover_direction_human_review`
+- decision required: `accept_native_shorts_cover_or_reframe`
+- next review: `paused_durable_cross_device_handoff`
 
 ## Feature Table
 

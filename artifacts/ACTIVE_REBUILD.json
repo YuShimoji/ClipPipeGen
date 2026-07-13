@@ -7,7 +7,89 @@
   "artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
   "episode_id": "jp_pilot01_hololive_bancho_20260525",
   "resume_class": "conditional_reacquire",
-  "state": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
+  "state": "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF",
+  "handoff": {
+    "from_state": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
+    "state": "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF",
+    "pause_reason": "user_requested_cross_device_handoff",
+    "portable_availability": {
+      "portable_local_artifact_available": false,
+      "human_entrypoint": null,
+      "review_open_command": null,
+      "machine_readback": null
+    },
+    "last_verified_host": {
+      "host": "DESKTOP-U9P4LKJ",
+      "label": "Planner007",
+      "local_artifact_available": true,
+      "entrypoint": "http://127.0.0.1:8071/index.html",
+      "package_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/",
+      "server_shutdown": {
+        "pid": 41872,
+        "status": "stopped_target_out07_server",
+        "port": 8071,
+        "port_released": true
+      }
+    },
+    "accepted_baseline_recovery_status": "retained_artifact_required",
+    "accepted_baseline_stop_gate": "accepted_baseline_reacquire_required",
+    "cover_review_status": "pending_human_acceptance",
+    "next_human_decision": "accept_native_shorts_cover_or_reframe",
+    "recovery_classification": {
+      "tracked": [
+        "builders_cli_tests",
+        "caption_plaintext_free_rebuild_contract",
+        "accepted_baseline_sha_size_duration",
+        "cover_timestamp_sha_fingerprints",
+        "runtime_handoff_dashboard_contracts",
+        "source_caption_identity_and_digest",
+        "recovery_commands_and_stop_gates"
+      ],
+      "ignored_local_retained": [
+        "source_media",
+        "accepted_baseline_mp4",
+        "official_caption_json3",
+        "native_cover_png",
+        "review_package",
+        "manifests_readbacks_previews",
+        "local_reference_cache"
+      ],
+      "conditional_reacquire": [
+        "youtube_source_identity_7J5aS_pcBj4",
+        "official_caption_authority",
+        "lockfile_dependencies"
+      ],
+      "retained_artifact_reacquire": {
+        "accepted_baseline_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+        "remote_git_present": false,
+        "authorized_channel": null,
+        "on_missing": "accepted_baseline_reacquire_required"
+      },
+      "derive": [
+        "native_cover",
+        "list_ui_4x5_previews",
+        "operator_readbacks",
+        "review_package",
+        "manifests"
+      ],
+      "private_only": [
+        "media_bytes",
+        "caption_plaintext",
+        "third_party_reference_pixels_and_cache",
+        "credentials",
+        "oauth_information"
+      ]
+    },
+    "resume_ladder": [
+      "remote_code_and_docs_only_resume_is_allowed",
+      "exact_baseline_sha_required_before_visual_review_or_H1",
+      "official_caption_sha_or_payload_digest_required_before_semantic_rebuild",
+      "missing_exact_baseline_stops_as_accepted_baseline_reacquire_required",
+      "missing_caption_stops_as_caption_authority_reacquire_required",
+      "source_or_baseline_hash_change_creates_new_media_revision",
+      "never_represent_old_abc_or_self_assign_cover_acceptance"
+    ]
+  },
   "source_identity": {
     "provider": "youtube",
     "provider_id": "7J5aS_pcBj4",
@@ -95,6 +177,7 @@
       "required": true,
       "locator": "youtube-caption:7J5aS_pcBj4:ja",
       "ignored_local_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+      "expected_sha256": "3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919",
       "expected_caption_payload_digest": "e9a18053baf3b6d042f35a91bb18ee7c5b28c878ef9e9d66ce649563ce11c23b",
       "recovery_command": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4",
       "on_missing": "caption_authority_reacquire_required"
@@ -103,7 +186,7 @@
       "id": "accepted_reinstantiated_baseline",
       "recovery_class": "retained_artifact_reacquire",
       "required": true,
-      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_reinstantiated_baseline_candidate/assets/reinstantiated_baseline.mp4",
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/reinstantiated_baseline.mp4",
       "expected_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
       "rule": "restore only the exact accepted artifact through an authorized retained-artifact channel; the active route copies and verifies bytes and never rerenders, remuxes, or transcodes it",
       "on_missing": "accepted_baseline_reacquire_required"
@@ -989,7 +1072,7 @@
       "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3 --output \"episodes/jp_pilot01_hololive_bancho_20260525/source_subs/%(id)s.%(ext)s\" https://www.youtube.com/watch?v=7J5aS_pcBj4"
     ],
     "accepted_baseline_restore_condition": {
-      "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_reinstantiated_baseline_candidate/assets/reinstantiated_baseline.mp4",
+      "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/reinstantiated_baseline.mp4",
       "sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
       "byte_size": 21669538,
       "rerender_allowed": false,

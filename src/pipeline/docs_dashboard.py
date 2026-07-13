@@ -130,6 +130,20 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
         "machine_readback": runtime_state.get("machine_readback", ""),
         "remote_code_complete": runtime_state.get("remote_code_complete", ""),
         "local_artifact_available": runtime_state.get("local_artifact_available", ""),
+        "portable_local_artifact_available": runtime_state.get(
+            "portable_local_artifact_available", ""
+        ),
+        "last_verified_host_local_artifact_available": runtime_state.get(
+            "last_verified_host_local_artifact_available", ""
+        ),
+        "last_verified_host_entrypoint": runtime_state.get(
+            "last_verified_host_entrypoint", ""
+        ),
+        "pause_reason": runtime_state.get("pause_reason", ""),
+        "accepted_baseline_recovery_status": runtime_state.get(
+            "accepted_baseline_recovery_status", ""
+        ),
+        "cover_review_status": runtime_state.get("cover_review_status", ""),
         "cross_machine_resume_class": runtime_state.get(
             "cross_machine_resume_class", ""
         ),
@@ -332,6 +346,24 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
         ("machine readback", focus.get("machine_readback", "")),
         ("remote code complete", focus.get("remote_code_complete", "")),
         ("local artifact available", focus.get("local_artifact_available", "")),
+        (
+            "portable local artifact available",
+            focus.get("portable_local_artifact_available", ""),
+        ),
+        (
+            "last verified host local artifact available",
+            focus.get("last_verified_host_local_artifact_available", ""),
+        ),
+        (
+            "last verified host entrypoint",
+            focus.get("last_verified_host_entrypoint", ""),
+        ),
+        ("pause reason", focus.get("pause_reason", "")),
+        (
+            "accepted baseline recovery",
+            focus.get("accepted_baseline_recovery_status", ""),
+        ),
+        ("cover review status", focus.get("cover_review_status", "")),
         ("cross-machine resume", focus.get("cross_machine_resume_class", "")),
         ("active rebuild contract", focus.get("active_rebuild_contract", "")),
         ("evidence revision", focus.get("evidence_revision", "")),
@@ -413,6 +445,12 @@ def render_features_index_markdown(status: dict[str, Any]) -> str:
         f"- review status: `{status['current_focus']['review_status']}`\n"
         f"- remote code complete: `{status['current_focus']['remote_code_complete']}`\n"
         f"- local artifact available: `{status['current_focus']['local_artifact_available']}`\n"
+        f"- portable local artifact available: `{status['current_focus']['portable_local_artifact_available']}`\n"
+        f"- last verified host local artifact available: `{status['current_focus']['last_verified_host_local_artifact_available']}`\n"
+        f"- last verified host entrypoint: `{status['current_focus']['last_verified_host_entrypoint']}`\n"
+        f"- pause reason: `{status['current_focus']['pause_reason']}`\n"
+        f"- accepted baseline recovery: `{status['current_focus']['accepted_baseline_recovery_status']}`\n"
+        f"- cover review status: `{status['current_focus']['cover_review_status']}`\n"
         f"- cross-machine resume: `{status['current_focus']['cross_machine_resume_class']}`\n"
         f"- active rebuild contract: `{status['current_focus']['active_rebuild_contract']}`\n"
         f"- evidence revision: `{status['current_focus']['evidence_revision']}`\n"

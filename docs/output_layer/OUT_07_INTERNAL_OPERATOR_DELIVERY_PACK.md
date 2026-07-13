@@ -14,6 +14,12 @@ at:
 - accepted baseline size: `21,669,538` bytes
 - accepted baseline duration: about `38.633333s`
 
+The tracked state is now
+`OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF`. The package
+and media below are last-verified Planner007 local evidence; the portable
+current state advertises no localhost entrypoint. The next host must restore
+the exact accepted baseline before visual review or H1.
+
 The acceptance covers content/narrative, timing/tempo, cut continuity, A/V
 continuity, subtitle timing/readability, and visual integrity. It does not
 inherit historical OUT-06 acceptance and does not grant rights, production,
@@ -81,7 +87,9 @@ Its review-facing files are:
 | `determinism_receipt.json` / `combined_review_manifest.json` | two-build digest and file/self-integrity proof |
 | `index.html` | list preview, 9:16, center 4:5, source comparison, metadata, baseline SHA, then folded provenance/gates/history |
 
-Open through the retained byte-range localhost route:
+The last-verified Planner007 host used this byte-range localhost route; its
+server was stopped for the durable handoff, so this is not a portable current
+entrypoint:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071

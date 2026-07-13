@@ -2,23 +2,24 @@
 id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
-status: active
-health: OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY
+status: paused_durable_handoff
+health: OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF
 progress_pct: 92
 last_touched: 2026-07-13
 current_slice: OUT-07
-phase: native_shorts_cover_operator_pack_review_ready
-canonical_status: branch_review_pending_human_cover_direction
+phase: paused_durable_cross_device_handoff
+canonical_status: paused_durable_cross_device_handoff
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 accepted baseline and native Shorts cover operator review
-human_entrypoint: http://127.0.0.1:8071/index.html
-review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json
-operator_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/operator_delivery_readback.json
-decision_required: approve_native_shorts_cover_direction_or_describe_discomfort
-review_status: accepted_baseline_native_cover_package_verified_cover_decision_pending
+current_title: OUT-07 paused durable cross-device handoff
+human_entrypoint: null
+review_open_command: null
+machine_readback: null
+operator_readback: null
+decision_required: accept_native_shorts_cover_or_reframe
+review_status: native_shorts_cover_review_pending_paused_durable_handoff
 remote_code_complete: true
-local_artifact_available: true
+local_artifact_available: false
+portable_local_artifact_available: false
 cross_machine_resume_class: conditional_reacquire
 active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 evidence_revision: planner007-e2206cef-20260525
@@ -29,13 +30,19 @@ recommended_cover_timestamp_seconds: 11.930
 recommended_cover_selection_status: recommended_pending_human_acceptance
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: Planner007
-local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json
+last_verified_host_local_artifact_available: true
+last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
+local_artifact_evidence_receipt: null
+pause_reason: user_requested_cross_device_handoff
+accepted_baseline_recovery_status: retained_artifact_required
+cover_review_status: pending_human_acceptance
+server_shutdown_status: stopped_target_out07_server_pid_41872_port_8071_released
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-next_review_due: native_shorts_cover_direction_human_review
-next_action: Open the localhost review and answer the single cover-direction question; describe only any discomfort with the accepted-video frame plus existing subtitle.
+next_review_due: paused_durable_cross_device_handoff
+next_action: On the next host, verify the exact accepted baseline SHA before any visual review; then a human may ACCEPT or REFRAME the native Shorts cover. Do not reopen old A/B/C.
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 source_of_truth: false
 owner_lane: shared_infra
@@ -75,20 +82,29 @@ operator readback. The recommended cover is still
 `selected_by_human=false`; `selected_thumbnail=null`, `publish_ready=false`,
 all external-action gates are closed, and all attempt flags are false.
 
-## Open and Review
+## Paused Durable Handoff
 
-Start or reopen the retained byte-range server:
+The Planner007 package and media remain ignored local evidence on the last
+verified host. The target server was stopped after command-line, port, and
+served-directory verification. Do not start or reopen the localhost route as a
+portable review entrypoint.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071
-```
+The next host may review the cover only after restoring the exact accepted
+baseline SHA. The baseline is accepted for the Planner007 media revision;
+the cover remains `recommended_pending_human_acceptance` and the next human
+decision is ACCEPT or REFRAME. The baseline SHA, metadata, source mapping,
+gates, and old A/B/C remain readback context only.
 
-Then use `http://127.0.0.1:8071/index.html`. The page asks exactly one thing:
+## Recovery Classification
 
-> Shorts一覧用coverとして、映像由来フレーム＋既存字幕だけのこの方向を採用してよいか。違和感があれば自由記述してください。
-
-The baseline SHA, metadata, source mapping, gates, and old A/B/C are readback
-context only; do not turn them into additional questions.
+| Class | Contents and rule |
+|---|---|
+| tracked | builders, CLI, tests, hash-only caption/timing contract, baseline SHA/size/duration, cover timestamp/SHA/fingerprints, Runtime/Handoff/dashboard/contracts, source and caption identity/digest, recovery commands and stop gates |
+| ignored_local_retained | Planner007 source media, accepted baseline MP4, official JSON3 caption, native cover, review package, manifests/readbacks/previews, and local reference cache |
+| conditional_reacquire | YouTube source identity `7J5aS_pcBj4`, official caption authority, and lockfile dependencies; hash/digest mismatch creates a new revision and does not inherit acceptance |
+| retained_artifact_reacquire | Exact accepted baseline SHA `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`; it is not in Git and absence stops as `accepted_baseline_reacquire_required` |
+| derive | Native cover, list/UI/4:5 previews, operator readbacks, review package, and manifests only after the exact baseline is present |
+| private_only | Media bytes, caption plaintext, third-party reference pixels/cache, credentials, and OAuth information |
 
 ## Next
 

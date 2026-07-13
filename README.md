@@ -11,9 +11,11 @@ baseline (`2c1c59bc...2d18`) on 2026-07-13 JST. The active ignored review
 package preserves those bytes unchanged and recommends one actual 11.930-second
 vertical-video frame with its existing burn-in subtitle as the Shorts list
 cover. The former active A/B/C are superseded by this Shorts-context reframe,
-not quality-rejected, and are not returned for selection. Only cover-direction
-acceptance remains open; metadata, upload, public readiness, rights, production,
-visibility, made-for-kids, and publishing remain closed or pending. See
+not quality-rejected, and are not returned for selection. The current tracked
+state is paused for durable cross-device handoff; a next host must restore the
+exact baseline before visual review. Only cover-direction acceptance remains
+open; metadata, upload, public readiness, rights, production, visibility,
+made-for-kids, and publishing remain closed or pending. See
 [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
 
 OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the
