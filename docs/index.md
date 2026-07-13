@@ -14,12 +14,11 @@ around workflow decisions, not only around file names.
 ## Current State
 
 Current focus is `OUT-07` on
-`codex/out-07-internal-operator-delivery-pack-v0`. Its artifact is
-`clip-out07-internal-operator-delivery-pack-v0-001`: one same-machine internal
-operator delivery pack that copies the accepted OUT-06 MP4 byte-identically,
-adds exactly three source-frame-derived 1280x720 thumbnail directions, recommends
-`tension`, and separates clean Japanese metadata copy from operator-only
-attribution and gate status.
+`codex/out-07-internal-operator-delivery-pack-v0`. The active review artifact is
+`clip-out07-shorts-poster-frame-direction-proof-v0-001`: one ignored same-machine
+package with three reference-derived 1080x1920 Shorts poster directions. The
+former `context`, `tension`, and `payoff` 16:9 directions are retained only as
+`user_rejected` evidence; no thumbnail is selected or recommended.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
 Canonical `main` is the OUT-06 accepted-after-bounded-repair baseline. OUT-07
@@ -32,6 +31,7 @@ Start here:
 |---|---|
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
 | Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
+| Supervising review status | [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md) |
 | Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
 | Content planning Review Console / operator cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
 | Content planning dashboard | [content_planning/content_dashboard.html](content_planning/content_dashboard.html) |
@@ -59,7 +59,8 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 internal operator delivery pack | Open the port-8070 localhost route for recommended thumbnail, metadata copy controls, accepted OUT-06 video, gates, and provenance. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` | ignored OUT-07 Shorts poster direction proof | Compare only A/B/C or reject all; mention end-cap discomfort only if present. The package must first exist on the same machine. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 predecessor operator pack | Reopen the port-8070 metadata/video provenance pack only when predecessor evidence is needed; its rejected 16:9 directions are not current candidates. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored accepted OUT-04 editorial sequence | Reopen the accepted single 11.678-second `cut_001 -> cut_002` sequence if predecessor evidence is needed. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out03_real_local_selected_cut_proof\open_preview.ps1` | ignored accepted OUT-03 real-local selected-cut proof | Reopen the accepted `cut_002` evidence if needed; add `-Serve` only when local-file playback is blocked. |
@@ -79,12 +80,11 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-07 is ready for internal operator review. Review only the recommended
-thumbnail's accuracy and restraint, the naturalness and content match of the
-Japanese title/description/tags, and the one-page usability of copy, images,
-video, and evidence. Do not infer
-production/public use, thumbnail upload, metadata publication, visibility,
-made-for-kids, publishing, upload, or rights approval from this internal pack.
+OUT-07 is ready for a bounded Shorts poster direction review when its ignored
+same-machine package is present. Compare only A/B/C or reject all, and mention
+end-cap discomfort only if present. Do not infer a winner from tests or reopen
+title/description/tags, production/public use, thumbnail upload, metadata
+publication, visibility, made-for-kids, publishing, upload, or rights approval.
 Use the dashboard to return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 

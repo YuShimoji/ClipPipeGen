@@ -3438,6 +3438,20 @@
       "status": "reference"
     },
     {
+      "path": "docs/SUPERVISOR_STATUS_REPORT.md",
+      "title": "監修AI向け現状報告 — 2026-07-13",
+      "line_count": 76,
+      "metadata": {},
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": true,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 4,
+      "status": "reference"
+    },
+    {
       "path": "docs/THREAD_REGISTRY.md",
       "title": "Thread Registry - ClipPipeGen Parallel Lane Sync",
       "line_count": 26,
