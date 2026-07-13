@@ -6,14 +6,19 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-07`
 - artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `out07_portable_implementation_ready_planner007_fixed_input_recovery_blocked`
+- state: `out07_combined_review_ready_planner007`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
 - canonical baseline: `OUT-06 accepted after bounded repair`
-- canonical status: `branch_review_pending_local_recovery_required`
-- review status: `local_review_package_unavailable_fixed_source_hash_mismatch`
-- decision required: `recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection`
-- next review: `local_proof_reconstitution_and_verification`
+- canonical status: `branch_review_pending_human_combined_review`
+- review status: `planner007_combined_review_package_verified_human_decision_pending`
+- remote code complete: `true`
+- local artifact available: `true`
+- cross-machine resume: `reacquirable`
+- active rebuild contract: `artifacts/ACTIVE_REBUILD.json`
+- evidence revision: `planner007-e2206cef-20260525`
+- decision required: `review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all`
+- next review: `combined_baseline_and_poster_human_review`
 
 ## Feature Table
 

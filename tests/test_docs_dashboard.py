@@ -19,12 +19,35 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def test_front_matter_treats_yaml_null_as_unavailable() -> None:
-    metadata = _front_matter(
-        "---\nhuman_entrypoint: null\nmachine_readback: ~\n---\n"
-    )
+    metadata = _front_matter("---\nhuman_entrypoint: null\nmachine_readback: ~\n---\n")
 
     assert metadata["human_entrypoint"] == ""
     assert metadata["machine_readback"] == ""
+
+
+def test_docs_dashboard_omits_unavailable_current_focus_surface(tmp_path: Path) -> None:
+    _write_fixture_docs(tmp_path)
+    _write_runtime_state(
+        tmp_path,
+        human_entrypoint="null",
+        review_open_command="null",
+        machine_readback="null",
+    )
+
+    result = write_project_status(
+        base_dir=tmp_path,
+        output_dir=tmp_path / "docs" / "dashboard",
+        generated_at="test-run",
+    )
+    status = result["status"]
+
+    assert all(item["command"] and item["target"] for item in status["open_surfaces"])
+    assert all(
+        item["label"] != "FIX-01 Current Focus" for item in status["open_surfaces"]
+    )
+    html = result["html_path"].read_text(encoding="utf-8")
+    assert "<th>entrypoint</th><td></td>" not in html
+    assert "<th>machine readback</th><td></td>" not in html
 
 
 def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
@@ -52,7 +75,12 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert focus["canonical_status"] == "fixture_branch_review_pending"
     assert focus["review_status"] == "fixture_review_ready"
     assert focus["human_entrypoint"] == "docs/fixture_focus.html"
+    assert focus["review_open_command"] == "start docs\\fixture_focus.html"
     assert focus["machine_readback"] == "docs/fixture_focus.json"
+    assert focus["remote_code_complete"] == "true"
+    assert focus["local_artifact_available"] == "true"
+    assert focus["cross_machine_resume_class"] == "reacquirable"
+    assert focus["active_rebuild_contract"] == "artifacts/ACTIVE_REBUILD.json"
     assert focus["handoff"] == "docs/CURRENT_HANDOFF.md"
     assert focus["last_verified_at"] == "2026-07-10"
     assert focus["decision_required"] == "fixture_decision"
@@ -73,7 +101,9 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
         "Review the fixture current focus."
     )
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
-    assert status["doc_health"]["finding_total"] >= status["doc_health"]["finding_count"]
+    assert (
+        status["doc_health"]["finding_total"] >= status["doc_health"]["finding_count"]
+    )
     assert status["doc_health"]["finding_limit"] == 50
     assert status["feature_summary"]["status_counts"]["done"] == 1
     assert status["features"][0]["id"] == "ED-01"
@@ -117,8 +147,12 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert "clip-ed10at-internal-review-observation-readback-001" in html
     assert "clip-ed10as-internal-review-access-sheet-fullpath-001" in html
     assert "clip-ed10ar-internal-review-video-candidate-package-001" in html
-    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in html
-    assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in html
+    assert (
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in html
+    )
+    assert (
+        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in html
+    )
     assert "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001" in html
     assert "clip-ed10am-production-limitation-lift-stage-1-001" in html
     assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in html
@@ -162,6 +196,7 @@ def test_docs_dashboard_default_state_follows_runtime_front_matter(tmp_path: Pat
         active_branch="codex/fixture-updated-state",
         current_title="Updated Fixture Current Focus",
         human_entrypoint="docs/updated_fixture_focus.html",
+        review_open_command="start docs\\updated_fixture_focus.html",
         machine_readback="docs/updated_fixture_focus.json",
         active_artifact="clip-updated-test-artifact",
         next_review_due="review_updated_fixture_focus",
@@ -179,17 +214,14 @@ def test_docs_dashboard_default_state_follows_runtime_front_matter(tmp_path: Pat
     assert focus["active_branch"] == "codex/fixture-updated-state"
     assert focus["title"] == "Updated Fixture Current Focus"
     assert focus["human_entrypoint"] == "docs/updated_fixture_focus.html"
+    assert focus["review_open_command"] == "start docs\\updated_fixture_focus.html"
     assert focus["machine_readback"] == "docs/updated_fixture_focus.json"
     assert focus["next_action"] == "Review the updated fixture current focus."
-    assert updated["open_surfaces"][1]["target"] == (
-        "docs/updated_fixture_focus.html"
-    )
+    assert updated["open_surfaces"][1]["target"] == ("docs/updated_fixture_focus.html")
     assert updated["open_surfaces"][1]["when_to_use"] == (
         "Review the updated fixture current focus."
     )
-    assert updated["next_review_items"][0]["artifact"] == (
-        "clip-updated-test-artifact"
-    )
+    assert updated["next_review_items"][0]["artifact"] == ("clip-updated-test-artifact")
     assert updated["next_review_items"][0]["next_route"] == (
         "Review the updated fixture current focus."
     )
@@ -239,18 +271,16 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
     assert "clip-ed10az-observation-readback-and-v2-route-decision-001" in artifact_ids
     artifact_by_id = {item["artifact_id"]: item for item in status["active_artifacts"]}
-    assert artifact_by_id[
-        "clip-ed10az-observation-readback-and-v2-route-decision-001"
-    ]["repo_relative_path"] == (
+    assert artifact_by_id["clip-ed10az-observation-readback-and-v2-route-decision-001"][
+        "repo_relative_path"
+    ] == (
         "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json; "
         "docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md"
     )
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out07_artifact = (
-        "clip-out07-shorts-poster-frame-direction-proof-v0-001"
-    )
+    current_out07_artifact = "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -265,15 +295,9 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
     current_ews_inspector_artifact = "clip-ews02-episode-workspace-inspector-v0-001"
     current_ews_spine_artifact = "clip-ews01-episode-workspace-spine-v0-001"
     current_cpd_artifact = "clip-cpd12-minimal-review-console-v0-001"
-    active_artifact = (
-        "clip-ed10bc-thank-v2-open-command-repair-readback-001"
-    )
-    active_json = (
-        "docs/style_intent/thank-v2-open-command-repair-readback.json"
-    )
-    active_md = (
-        "docs/style_intent/thank-v2-open-command-repair-readback.md"
-    )
+    active_artifact = "clip-ed10bc-thank-v2-open-command-repair-readback-001"
+    active_json = "docs/style_intent/thank-v2-open-command-repair-readback.json"
+    active_md = "docs/style_intent/thank-v2-open-command-repair-readback.md"
     source_access_artifact = (
         "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
     )
@@ -283,15 +307,9 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
     source_access_md = (
         "docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md"
     )
-    source_v2_artifact = (
-        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
-    )
-    source_v2_json = (
-        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
-    )
-    source_v2_md = (
-        "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
-    )
+    source_v2_artifact = "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+    source_v2_json = "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json"
+    source_v2_md = "docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md"
     active_launcher = (
         "open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1"
     )
@@ -303,15 +321,9 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
     source_review_frame_plan = (
         "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
     )
-    source_plan_json = (
-        "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json"
-    )
-    source_plan_md = (
-        "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md"
-    )
-    source_frame_readback = (
-        "clip-ed10av-micro-scene-observation-frame-readback-001"
-    )
+    source_plan_json = "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json"
+    source_plan_md = "docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md"
+    source_frame_readback = "clip-ed10av-micro-scene-observation-frame-readback-001"
     source_specimen = (
         "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
     )
@@ -327,37 +339,39 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
     ]:
         text = path.read_text(encoding="utf-8")
 
+        if path.name == "CURRENT_HANDOFF.md":
+            assert f"active_artifact: {current_out07_artifact}" in text
+            assert "active_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in text
+            assert "local_artifact_available: true" in text
+            assert "http://127.0.0.1:8071/index.html" in text
+            assert "latest_out06_complete_narrative_short" not in text
+            continue
+
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
             assert f"active_artifact: {current_out07_artifact}" in text
             assert (
-                "latest_out06_complete_narrative_short_delivery_candidate_artifact: "
-                f"{current_out06_artifact}"
-                in text
+                "historical_source_host_out06_artifact: "
+                f"{current_out06_artifact}" in text
             )
             assert (
                 "latest_out05_vertical_short_internal_candidate_artifact: "
-                f"{accepted_out05_artifact}"
-                in text
+                f"{accepted_out05_artifact}" in text
             )
             assert (
                 "latest_out04_editorial_representative_sequence_artifact: "
-                f"{current_out04_artifact}"
-                in text
+                f"{current_out04_artifact}" in text
             )
             assert (
                 "latest_out03_real_local_selected_cut_proof_artifact: "
-                f"{current_out03_artifact}"
-                in text
+                f"{current_out03_artifact}" in text
             )
             assert (
                 "latest_out02_local_fixture_output_proof_artifact: "
-                f"{baseline_out02_artifact}"
-                in text
+                f"{baseline_out02_artifact}" in text
             )
             assert (
                 "latest_int01_parallel_lane_aggregation_artifact: "
-                f"{current_int_artifact}"
-                in text
+                f"{current_int_artifact}" in text
             )
             assert (
                 f"latest_human_ok_fetch_prep_ready_artifact: {current_ews_artifact}"
@@ -365,13 +379,11 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
             )
             assert (
                 "latest_source_fetch_prep_planner_artifact: "
-                f"{current_ews_fetch_prep_artifact}"
-                in text
+                f"{current_ews_fetch_prep_artifact}" in text
             )
             assert (
                 "latest_source_identity_decision_intake_artifact: "
-                f"{current_ews_decision_artifact}"
-                in text
+                f"{current_ews_decision_artifact}" in text
             )
             assert (
                 f"latest_episode_workspace_inspector_artifact: {current_ews_inspector_artifact}"
@@ -424,8 +436,12 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
             assert route_decision_json in text
             assert review_frame_surface in text
         assert source_review_frame_plan in text
-        assert source_plan_json in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
-        assert source_plan_md in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
+        assert (
+            source_plan_json in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
+        )
+        assert (
+            source_plan_md in text or path.name == "SUBTITLE_PRESENTATION_CONTRACT.md"
+        )
         assert source_frame_readback in text
         assert source_specimen in text
         assert observation_artifact in text
@@ -527,17 +543,14 @@ def test_subtitle_style_intent_registry_is_machine_readable():
         "system_note",
     ]
     assert registry["body_text_color_policy"]["default"] == "stable"
-    assert registry["agent_rule"][
-        "semantic_tags_to_presets_without_numeric_review"
-    ] is True
-    assert "new_color_palette" in registry["agent_rule"][
-        "human_review_required_for"
-    ]
+    assert (
+        registry["agent_rule"]["semantic_tags_to_presets_without_numeric_review"]
+        is True
+    )
+    assert "new_color_palette" in registry["agent_rule"]["human_review_required_for"]
     assert "font_size" in registry["perceptual_impact"]["high"]
     assert "one_pixel_outline_delta" in registry["perceptual_impact"]["low"]
-    assert registry["review_surface_layout_debt"][
-        "not_a_new_review_request"
-    ] is True
+    assert registry["review_surface_layout_debt"]["not_a_new_review_request"] is True
     assert registry["boundaries"]["broad_renderer_style_system_built"] is False
     assert registry["boundaries"]["production_render_acceptance"] is False
 
@@ -575,22 +588,29 @@ def test_subtitle_preset_selector_readback_is_machine_readable():
         "accent_color_token",
     ]
     assert selector["selector_contract"]["same_candidate_comparison_reopened"] is False
-    assert examples["neutral_dialogue_intensity_0"]["style_tokens"][
-        "body_text_color_changed"
-    ] is False
+    assert (
+        examples["neutral_dialogue_intensity_0"]["style_tokens"][
+            "body_text_color_changed"
+        ]
+        is False
+    )
     assert examples["shout_intensity_2"]["style_tokens"]["font_size_scale"] == 1.16
-    assert examples["whisper_intensity_1"]["style_tokens"][
-        "outline_shadow_strength"
-    ] == "soft_readable"
-    assert examples["ominous_intensity_2"]["style_tokens"][
-        "safe_area_line_break_behavior"
-    ] == "maximum_readability"
-    assert examples["narration_intensity_0"]["style_tokens"][
-        "font_family_role"
-    ] == "narration_current_family_role"
-    assert examples["system_note_intensity_0"]["style_tokens"][
-        "badge_color_token"
-    ] == "system_badge"
+    assert (
+        examples["whisper_intensity_1"]["style_tokens"]["outline_shadow_strength"]
+        == "soft_readable"
+    )
+    assert (
+        examples["ominous_intensity_2"]["style_tokens"]["safe_area_line_break_behavior"]
+        == "maximum_readability"
+    )
+    assert (
+        examples["narration_intensity_0"]["style_tokens"]["font_family_role"]
+        == "narration_current_family_role"
+    )
+    assert (
+        examples["system_note_intensity_0"]["style_tokens"]["badge_color_token"]
+        == "system_badge"
+    )
     assert selector["render_gate"]["new_render_run"] is False
     assert selector["boundaries"]["new_render_created"] is False
     assert selector["boundaries"]["production_subtitle_design_acceptance"] is False
@@ -626,15 +646,15 @@ def test_subtitle_visual_selector_proof_is_machine_readable():
         "narration_intensity_0",
         "system_note_intensity_0",
     ]
-    assert examples["shout_intensity_2"]["visual_sample"][
-        "font_size_percent"
-    ] == 116
-    assert examples["whisper_intensity_1"]["readback_tokens"][
-        "backplate_box_token"
-    ] == "soft"
-    assert examples["system_note_intensity_0"]["readback_tokens"][
-        "body_text_color_token"
-    ] == "stable_default_body_text"
+    assert examples["shout_intensity_2"]["visual_sample"]["font_size_percent"] == 116
+    assert (
+        examples["whisper_intensity_1"]["readback_tokens"]["backplate_box_token"]
+        == "soft"
+    )
+    assert (
+        examples["system_note_intensity_0"]["readback_tokens"]["body_text_color_token"]
+        == "stable_default_body_text"
+    )
     assert proof["review_policy"]["human_review_required"] is False
     assert proof["render_gate"]["new_render_run"] is False
     assert proof["boundaries"]["production_render_acceptance"] is False
@@ -642,10 +662,7 @@ def test_subtitle_visual_selector_proof_is_machine_readable():
 
 def test_subtitle_style_family_palette_axis_proof_is_machine_readable():
     proof_path = (
-        REPO_ROOT
-        / "docs"
-        / "style_intent"
-        / "subtitle-style-family-palette-proof.json"
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-style-family-palette-proof.json"
     )
 
     proof = json.loads(proof_path.read_text(encoding="utf-8"))
@@ -685,9 +702,7 @@ def test_subtitle_style_family_palette_axis_proof_is_machine_readable():
     )
     assert examples["shout_intensity_2"]["palette_route"] == "high_energy_warm"
     assert examples["ominous_intensity_2"]["palette_route"] == "ominous_dark"
-    assert examples["system_note_intensity_0"]["family_group"] == (
-        "system_note_family"
-    )
+    assert examples["system_note_intensity_0"]["family_group"] == ("system_note_family")
     assert {
         example["palette_surfaces"]["body_text_color_token"]
         for example in proof["examples"]
@@ -708,8 +723,7 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
 
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     entries = {
-        item["semantic_preset_id"]: item
-        for item in contract["contract_entries"]
+        item["semantic_preset_id"]: item for item in contract["contract_entries"]
     }
 
     assert contract["artifact_id"] == (
@@ -721,18 +735,22 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
     assert contract["status"] == "render_path_selector_contract_ready"
     assert contract["contract_kind"] == "static_selector_to_render_path_readback"
     assert contract["render_level"] == "L0 No Render"
-    assert "semantic_preset_id" in contract["render_adapter_input_contract"][
-        "semantic_fields"
-    ]
-    assert "palette_route" in contract["render_adapter_input_contract"][
-        "style_axis_fields"
-    ]
-    assert "body_text_color_token" in contract["render_adapter_input_contract"][
-        "color_surface_fields"
-    ]
-    assert "safe_area_line_break_behavior" in contract[
-        "render_adapter_input_contract"
-    ]["motion_line_break_fields"]
+    assert (
+        "semantic_preset_id"
+        in contract["render_adapter_input_contract"]["semantic_fields"]
+    )
+    assert (
+        "palette_route"
+        in contract["render_adapter_input_contract"]["style_axis_fields"]
+    )
+    assert (
+        "body_text_color_token"
+        in contract["render_adapter_input_contract"]["color_surface_fields"]
+    )
+    assert (
+        "safe_area_line_break_behavior"
+        in contract["render_adapter_input_contract"]["motion_line_break_fields"]
+    )
     assert contract["examples_represented"] == [
         "neutral_dialogue_intensity_0",
         "shout_intensity_2",
@@ -741,12 +759,14 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
         "narration_intensity_0",
         "system_note_intensity_0",
     ]
-    assert entries["shout_intensity_2"]["render_adapter_input"]["style"][
-        "family_id"
-    ] == "emphasis_energy_family"
-    assert entries["ominous_intensity_2"]["render_adapter_input"]["style"][
-        "palette_route"
-    ] == "ominous_dark"
+    assert (
+        entries["shout_intensity_2"]["render_adapter_input"]["style"]["family_id"]
+        == "emphasis_energy_family"
+    )
+    assert (
+        entries["ominous_intensity_2"]["render_adapter_input"]["style"]["palette_route"]
+        == "ominous_dark"
+    )
     assert {
         entry["render_adapter_input"]["color_surfaces"]["body_text_color_token"]
         for entry in contract["contract_entries"]
@@ -758,9 +778,10 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
     assert contract["later_l2_render_path_probe_trigger"]["status"] == (
         "not_triggered_in_this_slice"
     )
-    assert "HTML proof updates" in contract["later_l2_render_path_probe_trigger"][
-        "not_triggered_by"
-    ]
+    assert (
+        "HTML proof updates"
+        in contract["later_l2_render_path_probe_trigger"]["not_triggered_by"]
+    )
     assert contract["render_gate"]["new_render_run"] is False
     assert contract["readiness_separation"]["production_readiness"] == "not_accepted"
     assert contract["boundaries"]["production_render_acceptance"] is False
@@ -768,10 +789,7 @@ def test_subtitle_render_path_selector_contract_is_machine_readable():
 
 def test_subtitle_render_path_selector_probe_is_machine_readable():
     probe_path = (
-        REPO_ROOT
-        / "docs"
-        / "style_intent"
-        / "subtitle-render-path-selector-probe.json"
+        REPO_ROOT / "docs" / "style_intent" / "subtitle-render-path-selector-probe.json"
     )
     probe = json.loads(probe_path.read_text(encoding="utf-8"))
 
@@ -808,8 +826,14 @@ def test_subtitle_render_path_selector_probe_is_machine_readable():
         for example in probe["examples"]
     )
     assert probe["local_probe"]["status"] == "local_ignored_probe_generated"
-    assert "subtitle_render_path_selector_probe.ass" in probe["local_probe"]["outputs"]["ass"]
-    assert "subtitle_render_path_selector_probe.mp4" in probe["local_probe"]["outputs"]["video"]
+    assert (
+        "subtitle_render_path_selector_probe.ass"
+        in probe["local_probe"]["outputs"]["ass"]
+    )
+    assert (
+        "subtitle_render_path_selector_probe.mp4"
+        in probe["local_probe"]["outputs"]["video"]
+    )
     assert probe["render_gate"]["new_render_run"] is True
     assert probe["render_gate"]["tracked_binary_artifact_created"] is False
     assert probe["boundaries"]["production_render_acceptance"] is False
@@ -852,92 +876,126 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10j_research_audit_slice"]["artifact_id"] == (
         "clip-ed10j-kirinuki-font-audit-001"
     )
-    assert registry["ed10j_research_audit_slice"]["recommended_default_candidate_id"] == (
-        "ed10j_biz_udgothic_bold_telop_candidate"
-    )
+    assert registry["ed10j_research_audit_slice"][
+        "recommended_default_candidate_id"
+    ] == ("ed10j_biz_udgothic_bold_telop_candidate")
     assert registry["ed10j_research_audit_slice"]["selected_candidate_id"] == (
         "ed10j_biz_udgothic_bold_telop_candidate"
     )
     assert registry["ed10j_research_audit_slice"]["selected_overlay_artifact_id"] == (
         "clip-ed10k-biz-overlay-proof-001"
     )
-    assert registry["ed10j_research_audit_slice"]["badge_color_readback"][
-        "blue_badge_candidate_id"
-    ] == "ed10j_noto_sans_jp_local_telop_candidate"
-    assert registry["ed10j_research_audit_slice"]["badge_color_readback"][
-        "blue_badge_is_meiryo_reference"
-    ] is False
+    assert (
+        registry["ed10j_research_audit_slice"]["badge_color_readback"][
+            "blue_badge_candidate_id"
+        ]
+        == "ed10j_noto_sans_jp_local_telop_candidate"
+    )
+    assert (
+        registry["ed10j_research_audit_slice"]["badge_color_readback"][
+            "blue_badge_is_meiryo_reference"
+        ]
+        is False
+    )
     assert registry["ed10k_overlay_proof_slice"]["review_status"] == (
         "reviewed_not_accepted_as_normal_baseline"
     )
     assert registry["ed10l_known_font_pack_slice"]["artifact_id"] == (
         "clip-ed10l-known-kirinuki-font-pack-001"
     )
-    assert registry["ed10l_known_font_pack_slice"]["recommended_default_candidate_id"] == (
-        "ed10l_keifont_pop_dialogue_candidate"
-    )
     assert registry["ed10l_known_font_pack_slice"][
-        "selected_source_license_install_route_candidate_id"
-    ] == "ed10l_keifont_pop_dialogue_candidate"
-    assert registry["ed10m_real_font_source_license_install_route"][
-        "selected_candidate_id"
-    ] == "ed10l_keifont_pop_dialogue_candidate"
-    assert registry["ed10m_real_font_source_license_install_route"][
-        "font_binaries_downloaded"
-    ] is False
+        "recommended_default_candidate_id"
+    ] == ("ed10l_keifont_pop_dialogue_candidate")
+    assert (
+        registry["ed10l_known_font_pack_slice"][
+            "selected_source_license_install_route_candidate_id"
+        ]
+        == "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert (
+        registry["ed10m_real_font_source_license_install_route"][
+            "selected_candidate_id"
+        ]
+        == "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert (
+        registry["ed10m_real_font_source_license_install_route"][
+            "font_binaries_downloaded"
+        ]
+        is False
+    )
     assert registry["ed10l_known_font_pack_slice"]["selected_candidate_id"] == (
         "ed10l_keifont_pop_dialogue_candidate"
     )
     assert registry["ed10l_known_font_pack_slice"]["review_status"] == (
         "per_user_font_readback_valid_keifont_proof_generated"
     )
-    assert registry["ed10l_known_font_pack_slice"][
-        "candidate_selection_from_current_pngs_allowed"
-    ] is True
+    assert (
+        registry["ed10l_known_font_pack_slice"][
+            "candidate_selection_from_current_pngs_allowed"
+        ]
+        is True
+    )
     assert registry["ed10l_known_font_pack_slice"][
         "current_visual_comparison_validity"
-    ] == (
-        "valid_requested_font_visual_evidence_after_per_user_font_readback"
+    ] == ("valid_requested_font_visual_evidence_after_per_user_font_readback")
+    assert (
+        registry["ed10l_known_font_pack_slice"]["self_diagnosis"][
+            "candidate_universe_bias"
+        ]
+        == "system_safe_generic_readability"
     )
-    assert registry["ed10l_known_font_pack_slice"]["self_diagnosis"][
-        "candidate_universe_bias"
-    ] == "system_safe_generic_readability"
     assert registry["ed10l_known_font_pack_slice"]["local_font_readback"][
         "target_fonts_found"
     ] == ["Keifont", "851 Chikara Yowaku", "M+ FONTS", "Yasashisa Gothic"]
-    assert registry["ed10m_real_font_source_license_install_route"][
-        "local_font_file_found"
-    ] is True
-    assert registry["ed10n_per_user_font_readback_and_real_proof"][
-        "selected_overlay_candidate_id"
-    ] == "ed10l_keifont_pop_dialogue_candidate"
-    assert registry["ed10n_per_user_font_readback_and_real_proof"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10m_real_font_source_license_install_route"][
+            "local_font_file_found"
+        ]
+        is True
+    )
+    assert (
+        registry["ed10n_per_user_font_readback_and_real_proof"][
+            "selected_overlay_candidate_id"
+        ]
+        == "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert (
+        registry["ed10n_per_user_font_readback_and_real_proof"][
+            "font_binaries_copied_or_vendored"
+        ]
+        is False
+    )
     assert registry["ed10o_multifont_focused_review"]["artifact_id"] == (
         "clip-ed10o-multifont-focused-review-001"
     )
     assert registry["ed10o_multifont_focused_review"]["review_surface_status"] == (
         "focused_review_surface_accepted_as_review_direction"
     )
-    assert registry["ed10o_multifont_focused_review"]["human_review_consumed"][
-        "focused_review_surface_easier_to_understand"
-    ] is True
-    assert registry["ed10o_multifont_focused_review"]["human_review_consumed"][
-        "final_baseline_acceptance"
-    ] is False
-    assert registry["ed10o_multifont_focused_review"][
-        "source_proof_artifact_id"
-    ] == "clip-ed10n-keifont-overlay-proof-001"
+    assert (
+        registry["ed10o_multifont_focused_review"]["human_review_consumed"][
+            "focused_review_surface_easier_to_understand"
+        ]
+        is True
+    )
+    assert (
+        registry["ed10o_multifont_focused_review"]["human_review_consumed"][
+            "final_baseline_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10o_multifont_focused_review"]["source_proof_artifact_id"]
+        == "clip-ed10n-keifont-overlay-proof-001"
+    )
     assert registry["ed10o_multifont_focused_review"]["primary_visual"] == (
         "subtitle_area_crop_matrix"
     )
-    assert registry["ed10o_multifont_focused_review"][
-        "current_lead_candidate_id"
-    ] == "ed10l_keifont_pop_dialogue_candidate"
-    assert registry["ed10o_multifont_focused_review"][
-        "included_candidate_ids"
-    ] == [
+    assert (
+        registry["ed10o_multifont_focused_review"]["current_lead_candidate_id"]
+        == "ed10l_keifont_pop_dialogue_candidate"
+    )
+    assert registry["ed10o_multifont_focused_review"]["included_candidate_ids"] == [
         "ed10l_keifont_pop_dialogue_candidate",
         "ed10l_851_chikara_yowaku_dialogue_candidate",
         "ed10l_yasashisa_gothic_goodfreefonts_candidate",
@@ -953,18 +1011,23 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
             ),
         }
     ]
-    assert registry["ed10o_multifont_focused_review"][
-        "production_subtitle_design_acceptance"
-    ] is False
-    assert registry["ed10o_multifont_focused_review"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10o_multifont_focused_review"][
+            "production_subtitle_design_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10o_multifont_focused_review"]["font_binaries_copied_or_vendored"]
+        is False
+    )
     assert registry["ed10p_keifont_lead_representative_proof"]["artifact_id"] == (
         "clip-ed10p-keifont-lead-representative-proof-001"
     )
-    assert registry["ed10p_keifont_lead_representative_proof"][
-        "source_review_artifact_id"
-    ] == "clip-ed10o-multifont-focused-review-001"
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"]["source_review_artifact_id"]
+        == "clip-ed10o-multifont-focused-review-001"
+    )
     assert registry["ed10p_keifont_lead_representative_proof"]["proof_profile"] == (
         "ed10p_keifont_lead_representative_proof"
     )
@@ -974,15 +1037,17 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10p_keifont_lead_representative_proof"][
         "detailed_overlay_report"
     ].endswith("subtitle_overlay_visual_proof_report.html")
-    assert registry["ed10p_keifont_lead_representative_proof"][
-        "current_lead_candidate_id"
-    ] == "ed10l_keifont_pop_dialogue_candidate"
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"]["current_lead_candidate_id"]
+        == "ed10l_keifont_pop_dialogue_candidate"
+    )
     assert registry["ed10p_keifont_lead_representative_proof"]["lead_status"] == (
         "diagnostic_representative_normal_dialogue_provisional_baseline"
     )
-    assert registry["ed10p_keifont_lead_representative_proof"][
-        "review_surface_direction"
-    ] == "ed10o_focused_matrix_accepted_as_preferred_review_direction"
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"]["review_surface_direction"]
+        == "ed10o_focused_matrix_accepted_as_preferred_review_direction"
+    )
     assert registry["ed10p_keifont_lead_representative_proof"][
         "included_candidate_ids"
     ] == ["ed10l_keifont_pop_dialogue_candidate"]
@@ -992,21 +1057,32 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "ed10l_851_chikara_yowaku_dialogue_candidate",
         "ed10l_yasashisa_gothic_goodfreefonts_candidate",
     ]
-    assert registry["ed10p_keifont_lead_representative_proof"]["review_debt"][0][
-        "debt_id"
-    ] == "cut_008_dense_stress_proof"
-    assert registry["ed10p_keifont_lead_representative_proof"]["review_debt"][0][
-        "status"
-    ] == "superseded_by_ed10r_current_target"
-    assert registry["ed10p_keifont_lead_representative_proof"][
-        "keifont_general_acceptance_reopened"
-    ] is False
-    assert registry["ed10p_keifont_lead_representative_proof"][
-        "production_subtitle_design_acceptance"
-    ] is False
-    assert registry["ed10p_keifont_lead_representative_proof"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"]["review_debt"][0]["debt_id"]
+        == "cut_008_dense_stress_proof"
+    )
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"]["review_debt"][0]["status"]
+        == "superseded_by_ed10r_current_target"
+    )
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"][
+            "keifont_general_acceptance_reopened"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"][
+            "production_subtitle_design_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10p_keifont_lead_representative_proof"][
+            "font_binaries_copied_or_vendored"
+        ]
+        is False
+    )
     assert registry["ed10q_current_proof_focused_review_fix"]["feature_id"] == (
         "ED-10q"
     )
@@ -1016,15 +1092,20 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10q_current_proof_focused_review_fix"][
         "launcher_target"
     ].endswith("current_proof_focused_review.html")
-    assert registry["ed10q_current_proof_focused_review_fix"][
-        "debug_tables_primary"
-    ] is False
-    assert registry["ed10q_current_proof_focused_review_fix"][
-        "first_view_order"
-    ][0] == "Review Focus: Current Proof"
-    assert registry["ed10q_current_proof_focused_review_fix"][
-        "production_subtitle_design_acceptance"
-    ] is False
+    assert (
+        registry["ed10q_current_proof_focused_review_fix"]["debug_tables_primary"]
+        is False
+    )
+    assert (
+        registry["ed10q_current_proof_focused_review_fix"]["first_view_order"][0]
+        == "Review Focus: Current Proof"
+    )
+    assert (
+        registry["ed10q_current_proof_focused_review_fix"][
+            "production_subtitle_design_acceptance"
+        ]
+        is False
+    )
     assert registry["ed10r_keifont_dense_stress_proof"]["feature_id"] == "ED-10v"
     assert registry["ed10r_keifont_dense_stress_proof"]["artifact_id"] == (
         "clip-ed10r-keifont-dense-stress-proof-001"
@@ -1032,75 +1113,117 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10r_keifont_dense_stress_proof"]["proof_profile"] == (
         "ed10r_keifont_dense_stress_proof"
     )
-    assert registry["ed10r_keifont_dense_stress_proof"]["target_cut_ids"] == [
-        "cut_008"
-    ]
+    assert registry["ed10r_keifont_dense_stress_proof"]["target_cut_ids"] == ["cut_008"]
     assert registry["ed10r_keifont_dense_stress_proof"]["baseline_scope"] == (
         "diagnostic_representative_normal_dialogue_provisional"
     )
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "keifont_general_acceptance_reopened"
-    ] is False
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"][
+            "keifont_general_acceptance_reopened"
+        ]
+        is False
+    )
     assert registry["ed10r_keifont_dense_stress_proof"]["user_action_type"] == (
         "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
     )
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "next_review_action_type"
-    ] == "NEW_AXIS_ONLY"
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
-        "prior_review_count"
-    ] == "3+"
-    assert "linebreak_policy_readback" in registry[
-        "ed10r_keifont_dense_stress_proof"
-    ]["review_memory"]["next_nonredundant_axis"]
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
-        "repeated_general_review"
-    ] is False
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
-        "current_blocker"
-    ] == "none_for_diagnostic_dense_stress"
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
-        "font_evidence_gate"
-    ] == "valid_requested_keifont_visual_evidence"
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_debt"][0][
-        "status"
-    ] == "closed_diagnostic_pass"
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "current_workspace_font_visual_evidence"
-    ]["status"] == "valid_requested_keifont_visual_evidence"
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "multiline_wrap_evidence"
-    ]["status"] == "passed_diagnostic_review"
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "multiline_wrap_evidence"
-    ]["subtitle_id"] == "sub_096"
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "multiline_wrap_evidence"
-    ]["default_display_max_width_px"] == 220
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "line_break_policy_readback"
-    ]["status"] == "diagnostic_policy_recorded"
-    assert "NLMYTGen" in registry["ed10r_keifont_dense_stress_proof"][
-        "line_break_policy_readback"
-    ]["nlmytgen_portability_note"]
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
-        "action_type"
-    ] == "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
-        "status"
-    ] == "withheld_no_redundant_review_after_pass"
-    assert registry["ed10r_keifont_dense_stress_proof"]["review_card"][
-        "axis"
-    ] == "dense_stress"
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "production_subtitle_design_acceptance"
-    ] is False
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "production_render_acceptance"
-    ] is False
-    assert registry["ed10r_keifont_dense_stress_proof"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["next_review_action_type"]
+        == "NEW_AXIS_ONLY"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
+            "prior_review_count"
+        ]
+        == "3+"
+    )
+    assert (
+        "linebreak_policy_readback"
+        in registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
+            "next_nonredundant_axis"
+        ]
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
+            "repeated_general_review"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_memory"]["current_blocker"]
+        == "none_for_diagnostic_dense_stress"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_memory"][
+            "font_evidence_gate"
+        ]
+        == "valid_requested_keifont_visual_evidence"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_debt"][0]["status"]
+        == "closed_diagnostic_pass"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"][
+            "current_workspace_font_visual_evidence"
+        ]["status"]
+        == "valid_requested_keifont_visual_evidence"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["multiline_wrap_evidence"][
+            "status"
+        ]
+        == "passed_diagnostic_review"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["multiline_wrap_evidence"][
+            "subtitle_id"
+        ]
+        == "sub_096"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["multiline_wrap_evidence"][
+            "default_display_max_width_px"
+        ]
+        == 220
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["line_break_policy_readback"][
+            "status"
+        ]
+        == "diagnostic_policy_recorded"
+    )
+    assert (
+        "NLMYTGen"
+        in registry["ed10r_keifont_dense_stress_proof"]["line_break_policy_readback"][
+            "nlmytgen_portability_note"
+        ]
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_card"]["action_type"]
+        == "NO_REVIEW_CARD_CURRENT_AXIS_PASSED"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_card"]["status"]
+        == "withheld_no_redundant_review_after_pass"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["review_card"]["axis"]
+        == "dense_stress"
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"][
+            "production_subtitle_design_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["production_render_acceptance"]
+        is False
+    )
+    assert (
+        registry["ed10r_keifont_dense_stress_proof"]["font_binaries_copied_or_vendored"]
+        is False
+    )
     assert registry["ed10w_subtitle_presentation_review_pack"]["feature_id"] == (
         "ED-10w"
     )
@@ -1121,32 +1244,51 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
         "ed10w_badge_label_pressure_adjustment",
         "ed10w_balanced_combined_low_risk",
     ]
-    assert registry["ed10w_subtitle_presentation_review_pack"][
-        "render_path_readiness"
-    ]["status"] == "decision_card_included_no_production_claim"
-    assert registry["ed10w_subtitle_presentation_review_pack"][
-        "candidate_delta_visibility"
-    ]["status"] == "reviewable_after_ed10x_fix"
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"]["render_path_readiness"][
+            "status"
+        ]
+        == "decision_card_included_no_production_claim"
+    )
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"][
+            "candidate_delta_visibility"
+        ]["status"]
+        == "reviewable_after_ed10x_fix"
+    )
     assert registry["ed10w_subtitle_presentation_review_pack"][
         "candidate_delta_visibility"
     ]["candidate_3_expected_delta"] == (
         "combined_outline_shadow_and_badge_pressure_reduction"
     )
-    assert registry["ed10w_subtitle_presentation_review_pack"]["review_card"][
-        "status"
-    ] == "emitted_nonredundant_new_axis"
-    assert registry["ed10w_subtitle_presentation_review_pack"][
-        "keifont_general_acceptance_reopened"
-    ] is False
-    assert registry["ed10w_subtitle_presentation_review_pack"][
-        "production_subtitle_design_acceptance"
-    ] is False
-    assert registry["ed10w_subtitle_presentation_review_pack"][
-        "production_render_acceptance"
-    ] is False
-    assert registry["ed10w_subtitle_presentation_review_pack"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"]["review_card"]["status"]
+        == "emitted_nonredundant_new_axis"
+    )
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"][
+            "keifont_general_acceptance_reopened"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"][
+            "production_subtitle_design_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"][
+            "production_render_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10w_subtitle_presentation_review_pack"][
+            "font_binaries_copied_or_vendored"
+        ]
+        is False
+    )
     assert registry["ed10y_candidate2_carry_forward"]["feature_id"] == "ED-10y"
     assert registry["ed10y_candidate2_carry_forward"]["artifact_id"] == (
         "clip-ed10y-candidate2-carry-forward-001"
@@ -1157,33 +1299,46 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10y_candidate2_carry_forward"]["current_lead_candidate_id"] == (
         "ed10w_badge_label_pressure_adjustment"
     )
-    assert registry["ed10y_candidate2_carry_forward"][
-        "fallback_reference_candidate_id"
-    ] == "ed10w_current_pass_reference"
+    assert (
+        registry["ed10y_candidate2_carry_forward"]["fallback_reference_candidate_id"]
+        == "ed10w_current_pass_reference"
+    )
     assert registry["ed10y_candidate2_carry_forward"][
         "held_reference_candidate_ids"
     ] == [
         "ed10w_lighter_outline_shadow_pressure",
         "ed10w_balanced_combined_low_risk",
     ]
-    assert registry["ed10y_candidate2_carry_forward"]["review_memory"][
-        "latest_freeform_review_consumed"
-    ] is True
-    assert registry["ed10y_candidate2_carry_forward"]["review_memory"][
-        "same_candidate_comparison_review_allowed"
-    ] is False
-    assert registry["ed10y_candidate2_carry_forward"]["render_path_readiness"][
-        "status"
-    ] == "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
-    assert registry["ed10y_candidate2_carry_forward"]["review_card"][
-        "action_type"
-    ] == "NO_REVIEW_CARD_REVIEW_CONSUMED"
-    assert registry["ed10y_candidate2_carry_forward"][
-        "production_subtitle_design_acceptance"
-    ] is False
-    assert registry["ed10y_candidate2_carry_forward"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10y_candidate2_carry_forward"]["review_memory"][
+            "latest_freeform_review_consumed"
+        ]
+        is True
+    )
+    assert (
+        registry["ed10y_candidate2_carry_forward"]["review_memory"][
+            "same_candidate_comparison_review_allowed"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10y_candidate2_carry_forward"]["render_path_readiness"]["status"]
+        == "candidate2_tiny_render_path_nearer_diagnostic_probe_completed"
+    )
+    assert (
+        registry["ed10y_candidate2_carry_forward"]["review_card"]["action_type"]
+        == "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    )
+    assert (
+        registry["ed10y_candidate2_carry_forward"][
+            "production_subtitle_design_acceptance"
+        ]
+        is False
+    )
+    assert (
+        registry["ed10y_candidate2_carry_forward"]["font_binaries_copied_or_vendored"]
+        is False
+    )
     assert registry["ed10z_tiny_render_path_nearer_probe"]["feature_id"] == "ED-10z"
     assert registry["ed10z_tiny_render_path_nearer_probe"]["artifact_id"] == (
         "clip-ed10z-tiny-render-path-nearer-probe-001"
@@ -1191,30 +1346,46 @@ def test_subtitle_font_candidate_registry_is_machine_readable():
     assert registry["ed10z_tiny_render_path_nearer_probe"]["proof_profile"] == (
         "ed10z_tiny_render_path_nearer_probe"
     )
-    assert registry["ed10z_tiny_render_path_nearer_probe"][
-        "source_previous_artifact_id"
-    ] == "clip-ed10y-candidate2-carry-forward-001"
-    assert registry["ed10z_tiny_render_path_nearer_probe"][
-        "current_lead_candidate_id"
-    ] == "ed10w_badge_label_pressure_adjustment"
-    assert registry["ed10z_tiny_render_path_nearer_probe"][
-        "fallback_reference_candidate_id"
-    ] == "ed10w_current_pass_reference"
-    assert registry["ed10z_tiny_render_path_nearer_probe"]["render_path_readiness"][
-        "status"
-    ] == "ed10z_tiny_render_path_nearer_probe_completed"
-    assert registry["ed10z_tiny_render_path_nearer_probe"][
-        "actual_materialization_status"
-    ]["status"] == "blocked_environment_missing_ffprobe"
-    assert registry["ed10z_tiny_render_path_nearer_probe"]["review_card"][
-        "action_type"
-    ] == "NO_REVIEW_CARD_REVIEW_CONSUMED"
-    assert registry["ed10z_tiny_render_path_nearer_probe"][
-        "production_render_acceptance"
-    ] is False
-    assert registry["ed10z_tiny_render_path_nearer_probe"][
-        "font_binaries_copied_or_vendored"
-    ] is False
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"]["source_previous_artifact_id"]
+        == "clip-ed10y-candidate2-carry-forward-001"
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"]["current_lead_candidate_id"]
+        == "ed10w_badge_label_pressure_adjustment"
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"][
+            "fallback_reference_candidate_id"
+        ]
+        == "ed10w_current_pass_reference"
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"]["render_path_readiness"][
+            "status"
+        ]
+        == "ed10z_tiny_render_path_nearer_probe_completed"
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"][
+            "actual_materialization_status"
+        ]["status"]
+        == "blocked_environment_missing_ffprobe"
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"]["review_card"]["action_type"]
+        == "NO_REVIEW_CARD_REVIEW_CONSUMED"
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"]["production_render_acceptance"]
+        is False
+    )
+    assert (
+        registry["ed10z_tiny_render_path_nearer_probe"][
+            "font_binaries_copied_or_vendored"
+        ]
+        is False
+    )
     assert "noto_sans_jp_clean_outline" in candidate_ids
     assert "ed10i_reference_noto_clean_outline" in candidate_ids
     assert "ed10i_biz_udgothic_bold_balanced_outline" in candidate_ids
@@ -1252,27 +1423,14 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     assert "Current ED-10aj Final Render-Path Stage 1" in text
     assert "Current ED-10ak Final Render-Path Stage 2 Replayability" in text
     assert "Current ED-10am Production Limitation-Lift Stage 1" in text
+    assert "Current ED-10an Production Limitation-Lift Stage 2 Decision Packet" in text
     assert (
-        "Current ED-10an Production Limitation-Lift Stage 2 Decision Packet"
-        in text
+        "Current ED-10ao Production Limitation-Lift Stage 3 Owner-Review Prep" in text
     )
-    assert (
-        "Current ED-10ao Production Limitation-Lift Stage 3 Owner-Review Prep"
-        in text
-    )
-    assert (
-        "Current ED-10as Internal Review Access Sheet Fullpath"
-        in text
-    )
+    assert "Current ED-10as Internal Review Access Sheet Fullpath" in text
     assert "Current ED-10at Internal Review Observation Readback" in text
-    assert (
-        "Current ED-10av Micro-Scene Observation Frame Readback"
-        in text
-    )
-    assert (
-        "Source ED-10au Representative Micro-Scene Internal Review Specimen"
-        in text
-    )
+    assert "Current ED-10av Micro-Scene Observation Frame Readback" in text
+    assert "Source ED-10au Representative Micro-Scene Internal Review Specimen" in text
     assert "clip-ed10z-tiny-render-path-nearer-probe-001" in text
     assert "clip-ed10w-subtitle-presentation-review-pack-001" in text
     assert "clip-ed10af-render-contract-consumer-dry-read-001" in text
@@ -1284,24 +1442,14 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     assert "clip-ed10ak-final-render-path-stage-2-replayability-001" in text
     assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in text
     assert "clip-ed10am-production-limitation-lift-stage-1-001" in text
+    assert "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001" in text
     assert (
-        "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
-        in text
+        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in text
     )
-    assert (
-        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
-        in text
-    )
-    assert (
-        "clip-ed10as-internal-review-access-sheet-fullpath-001"
-        in text
-    )
+    assert "clip-ed10as-internal-review-access-sheet-fullpath-001" in text
     assert "clip-ed10ar-internal-review-video-candidate-package-001" in text
     assert "clip-ed10at-internal-review-observation-readback-001" in text
-    assert (
-        "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
-        in text
-    )
+    assert "clip-ed10au-representative-micro-scene-internal-review-specimen-001" in text
     assert "clip-ed10av-micro-scene-observation-frame-readback-001" in text
     assert (
         "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
@@ -1309,14 +1457,22 @@ def test_subtitle_presentation_contract_records_ed10v_linebreak_policy():
     )
     assert "internal-review-video-observation-readback.json" in text
     assert "internal-review-video-observation-readback.md" in text
-    assert "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json" in text
-    assert "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md" in text
+    assert (
+        "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json"
+        in text
+    )
+    assert (
+        "grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md"
+        in text
+    )
     assert "micro-scene-observation-frame-readback.json" in text
     assert "micro-scene-observation-frame-readback.md" in text
     assert "representative-micro-scene-internal-review-specimen.json" in text
     assert "representative-micro-scene-internal-review-specimen.md" in text
     assert "open_representative_micro_scene_internal_review_specimen.ps1" in text
-    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in text
+    assert (
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in text
+    )
     assert "final-render-path-stage-1" in text
     assert "final-render-path-stage-2" in text
     assert "final-render-path-stage-3" in text
@@ -1399,7 +1555,16 @@ def _write_runtime_state(base: Path, **overrides: str) -> None:
         "active_branch": "codex/fixture-current-state",
         "current_title": "Fixture Current Focus",
         "human_entrypoint": "docs/fixture_focus.html",
+        "review_open_command": "start docs\\fixture_focus.html",
+        "review_server_restart_command": "fixture-restart",
         "machine_readback": "docs/fixture_focus.json",
+        "remote_code_complete": "true",
+        "local_artifact_available": "true",
+        "cross_machine_resume_class": "reacquirable",
+        "active_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
+        "evidence_revision": "fixture-r1",
+        "last_verified_host": "fixture-host",
+        "local_artifact_evidence_receipt": "docs/fixture_manifest.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
         "decision_required": "fixture_decision",
         "last_verified_at": "2026-07-10",
@@ -1425,18 +1590,14 @@ def test_docs_dashboard_current_focus_registration_uses_runtime_artifact(
     _write_fixture_docs(tmp_path)
     _write_runtime_state(tmp_path, active_artifact="clip-runtime-current-artifact")
     (tmp_path / "artifacts" / "ARTIFACTS.md").write_text(
-        "# Artifact Registry\n\n"
-        "## `clip-ed10r-keifont-dense-stress-proof-001`\n",
+        "# Artifact Registry\n\n## `clip-ed10r-keifont-dense-stress-proof-001`\n",
         encoding="utf-8",
     )
 
     status = build_project_status(base_dir=tmp_path, generated_at="test-run")
 
     assert status["current_focus"]["artifact_id"] == "clip-runtime-current-artifact"
-    assert (
-        status["artifact_coverage"]["current_focus_artifact_registered"]
-        is False
-    )
+    assert status["artifact_coverage"]["current_focus_artifact_registered"] is False
 
 
 def test_artifact_registry_records_content_planning_and_ed10ah_sources():
@@ -1450,25 +1611,40 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "OUT-06 accepted after bounded repair"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "branch_review_pending_local_recovery_required"
+        "branch_review_pending_human_combined_review"
     )
     assert status["current_focus"]["review_status"] == (
-        "local_review_package_unavailable_fixed_source_hash_mismatch"
+        "planner007_combined_review_package_verified_human_decision_pending"
     )
     assert status["current_focus"]["decision_required"] == (
-        "recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection"
+        "review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "local_proof_reconstitution_and_verification"
+        "combined_baseline_and_poster_human_review"
     )
-    assert status["current_focus"]["human_entrypoint"] == ""
-    assert status["current_focus"]["machine_readback"] == ""
+    assert status["current_focus"]["human_entrypoint"] == (
+        "http://127.0.0.1:8071/index.html"
+    )
+    assert status["current_focus"]["review_open_command"].endswith(
+        "open_preview.ps1 -Serve -Port 8071"
+    )
+    assert status["current_focus"]["machine_readback"].endswith(
+        "out07_shorts_poster_frame_direction_proof/poster_direction_readback.json"
+    )
+    assert status["current_focus"]["remote_code_complete"] == "true"
+    assert status["current_focus"]["local_artifact_available"] == "true"
+    assert status["current_focus"]["cross_machine_resume_class"] == "reacquirable"
+    assert status["current_focus"]["active_rebuild_contract"] == (
+        "artifacts/ACTIVE_REBUILD.json"
+    )
     assert status["current_focus"]["artifact_id"] == (
         "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     )
     assert "clip-out07-shorts-poster-frame-direction-proof-v0-001" in artifact_ids
     assert "clip-out07-internal-operator-delivery-pack-v0-001" in artifact_ids
-    assert "clip-out06-complete-narrative-short-delivery-candidate-v0-001" in artifact_ids
+    assert (
+        "clip-out06-complete-narrative-short-delivery-candidate-v0-001" in artifact_ids
+    )
     assert "clip-out05-vertical-short-internal-candidate-v0-001" in artifact_ids
     assert "clip-out04-editorial-representative-sequence-v0-001" in artifact_ids
     assert "clip-out03-real-local-selected-cut-proof-v0-001" in artifact_ids
@@ -1491,25 +1667,47 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert "clip-ed10ak-final-render-path-stage-2-replayability-001" in artifact_ids
     assert "clip-ed10al-final-render-path-stage-3-rehearsal-001" in artifact_ids
     assert "clip-ed10am-production-limitation-lift-stage-1-001" in artifact_ids
-    assert "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001" in artifact_ids
-    assert "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001" in artifact_ids
+    assert (
+        "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
+        in artifact_ids
+    )
+    assert (
+        "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
+        in artifact_ids
+    )
     assert "clip-ed10as-internal-review-access-sheet-fullpath-001" in artifact_ids
     assert "clip-ed10ar-internal-review-video-candidate-package-001" in artifact_ids
-    assert "clip-ed10au-representative-micro-scene-internal-review-specimen-001" in artifact_ids
+    assert (
+        "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
+        in artifact_ids
+    )
     assert "clip-ed10av-micro-scene-observation-frame-readback-001" in artifact_ids
-    assert "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001" in artifact_ids
+    assert (
+        "clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001"
+        in artifact_ids
+    )
     assert "clip-ed10ax-review-frame-clarification-surface-001" in artifact_ids
-    assert "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001" in artifact_ids
-    assert "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001" in artifact_ids
+    assert (
+        "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
+        in artifact_ids
+    )
+    assert (
+        "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001" in artifact_ids
+    )
     assert "clip-ed10bc-thank-v2-open-command-repair-readback-001" in artifact_ids
     assert "clip-ed10at-internal-review-observation-readback-001" in artifact_ids
-    assert "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001" in artifact_ids
+    assert (
+        "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
+        in artifact_ids
+    )
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
 
     artifact_by_id = {item["artifact_id"]: item for item in status["active_artifacts"]}
     cpd12 = artifact_by_id["clip-cpd12-minimal-review-console-v0-001"]
     assert cpd12["repo_relative_path"] == "docs/content_planning/operator_cockpit.html"
-    assert cpd12["open_command"] == "start docs\\content_planning\\operator_cockpit.html"
+    assert (
+        cpd12["open_command"] == "start docs\\content_planning\\operator_cockpit.html"
+    )
 
 
 def test_ed10ar_internal_review_video_candidate_package_is_bounded_and_non_approving():
@@ -1564,7 +1762,9 @@ def test_ed10ar_internal_review_video_candidate_package_is_bounded_and_non_appro
     assert payload["boundaries"]["monetization_acceptance"] is False
     assert payload["boundaries"]["final_render_path_approved"] is False
     assert payload["boundaries"]["episodes_tracked"] is False
-    assert payload["next_executable_route"] == "optional-internal-review-video-observation"
+    assert (
+        payload["next_executable_route"] == "optional-internal-review-video-observation"
+    )
     serialized = json.dumps(payload, ensure_ascii=False)
     assert ("yes_no" + "_unclear") not in serialized
     assert ('"decision' + '_card":') not in serialized
@@ -1616,7 +1816,9 @@ def test_ed10as_internal_review_access_sheet_records_full_paths_and_boundaries()
     assert payload["boundaries"]["publishing_acceptance"] is False
     assert payload["boundaries"]["monetization_acceptance"] is False
 
-    script = REPO_ROOT / "scripts" / "operator" / "open_internal_review_video_candidate.ps1"
+    script = (
+        REPO_ROOT / "scripts" / "operator" / "open_internal_review_video_candidate.ps1"
+    )
     script_text = script.read_text(encoding="utf-8")
     assert "Invoke-Item -LiteralPath $video" in script_text
     assert "OpenFolder" in script_text
@@ -1635,17 +1837,24 @@ def test_ed10at_internal_review_observation_readback_is_bounded_and_non_approvin
         "clip-ed10at-internal-review-observation-readback-001"
     )
     assert payload["feature_id"] == "ED-10at"
-    assert payload[
-        "source_internal_review_video_candidate_access_sheet_artifact_id"
-    ] == "clip-ed10as-internal-review-access-sheet-fullpath-001"
-    assert payload[
-        "source_internal_review_video_candidate_package_artifact_id"
-    ] == "clip-ed10ar-internal-review-video-candidate-package-001"
+    assert (
+        payload["source_internal_review_video_candidate_access_sheet_artifact_id"]
+        == "clip-ed10as-internal-review-access-sheet-fullpath-001"
+    )
+    assert (
+        payload["source_internal_review_video_candidate_package_artifact_id"]
+        == "clip-ed10ar-internal-review-video-candidate-package-001"
+    )
     assert payload["source_context"]["requested_access_sheet_files_present"] is True
-    assert payload["source_context"]["requested_candidate_package_files_present"] is True
+    assert (
+        payload["source_context"]["requested_candidate_package_files_present"] is True
+    )
     assert payload["source_context"]["stale_checkout_anchor_repaired"] is True
     assert payload["user_observation"]["opened_mp4"] is True
-    assert payload["user_observation"]["reported_duration_matches_short_expectation"] is True
+    assert (
+        payload["user_observation"]["reported_duration_matches_short_expectation"]
+        is True
+    )
     assert payload["user_observation"]["reported_subtitles_all_present"] == [
         "NORMAL DIALOGUE CUE",
         "SHOUT HIGH INTENSITY",
@@ -1711,16 +1920,20 @@ def test_ed10au_representative_micro_scene_specimen_is_access_verified_and_bound
     assert payload["source_internal_review_observation_readback_artifact_id"] == (
         "clip-ed10at-internal-review-observation-readback-001"
     )
-    assert payload[
-        "source_internal_review_video_candidate_access_sheet_artifact_id"
-    ] == "clip-ed10as-internal-review-access-sheet-fullpath-001"
-    assert payload[
-        "source_internal_review_video_candidate_package_artifact_id"
-    ] == "clip-ed10ar-internal-review-video-candidate-package-001"
+    assert (
+        payload["source_internal_review_video_candidate_access_sheet_artifact_id"]
+        == "clip-ed10as-internal-review-access-sheet-fullpath-001"
+    )
+    assert (
+        payload["source_internal_review_video_candidate_package_artifact_id"]
+        == "clip-ed10ar-internal-review-video-candidate-package-001"
+    )
     assert payload["source_context"]["source_text"] == (
         "real_transcript_sub_004_to_sub_006"
     )
-    assert payload["source_context"]["source_episode_segment"]["source_subtitle_ids"] == [
+    assert payload["source_context"]["source_episode_segment"][
+        "source_subtitle_ids"
+    ] == [
         "sub_004",
         "sub_005",
         "sub_006",

@@ -3,59 +3,52 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: out07_portable_implementation_ready_planner007_fixed_input_recovery_blocked
-progress_pct: 70
+health: out07_combined_review_ready_planner007
+progress_pct: 88
 last_touched: 2026-07-13
-state_revision: out07-planner007-portable-state-repair-2026-07-13
+state_revision: out07-planner007-media-revision-reinstantiation-2026-07-13
 current_slice: OUT-07
-phase: portable_implementation_ready_local_recovery_blocked
-canonical_status: branch_review_pending_local_recovery_required
+phase: combined_baseline_and_poster_review_ready
+canonical_status: branch_review_pending_human_combined_review
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 portable poster proof implementation with Planner007 input recovery blocked
-human_entrypoint: null
-machine_readback: null
+current_title: OUT-07 Planner007 media revision baseline and Shorts poster combined review
+human_entrypoint: http://127.0.0.1:8071/index.html
+review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071
+review_server_restart_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\serve_preview.ps1 -Port 8071
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: recover_fixed_inputs_then_generate_and_verify_before_human_direction_selection
-review_status: local_review_package_unavailable_fixed_source_hash_mismatch
-review_scope: Do not review A/B/C on Planner007 until the fixed source and accepted OUT-06 package are restored and the current proof is regenerated and locally verified.
-review_ready_at: null
-portable_access: tracked_builder_cli_tests_corpus_available
-local_package_requirement: required_not_satisfied_on_planner007
-local_source_path: episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4
-local_source_expected_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
-local_source_observed_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
-local_accepted_out06_package_status: missing
-local_reference_cache_status: missing_refetch_allowed_after_fixed_inputs_recover
+decision_required: review_reinstantiated_baseline_then_choose_A_B_C_or_reject_all
+review_status: planner007_combined_review_package_verified_human_decision_pending
+review_scope: Review the 38.6-second reinstantiated baseline first, then choose A/B/C or reject all; report any baseline or poster anomaly in the two freeform questions only.
+review_ready_at: 2026-07-13
+remote_code_complete: true
+local_artifact_available: true
+cross_machine_resume_class: reacquirable
+active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
+evidence_revision: planner007-e2206cef-20260525
+last_verified_host: DESKTOP-U9P4LKJ
+last_verified_host_label: Planner007
+local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json
+local_package_requirement: satisfied_on_last_verified_host
+historical_fixed_input_packages: private_only_not_required_for_revision_rebuild
+local_reference_cache_status: frozen_51_stored_50_active_zero_failures
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-current_host: Planner007
 last_verified_at: 2026-07-13
-next_review_due: local_proof_reconstitution_and_verification
-next_action: Restore the exact retained source at local_source_path with local_source_expected_sha256 and the complete accepted OUT-06 package; then regenerate OUT-07 inputs, freeze references, build twice, and verify locally before exposing the review URL.
+next_review_due: combined_baseline_and_poster_human_review
+next_action: Open the combined localhost review, confirm the reinstantiated baseline has no new content/timing/subtitle/audio/visual anomaly, then choose A/B/C or reject all and note poster discomfort if any.
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
-latest_out07_shorts_poster_frame_direction_proof_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
-latest_out07_shorts_poster_frame_direction_proof_branch: codex/out-07-internal-operator-delivery-pack-v0
-latest_out07_shorts_poster_frame_direction_proof_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
-latest_out07_shorts_poster_frame_direction_proof_package_sha256: not_reverified_after_reference_fidelity_revision
-latest_out07_shorts_poster_frame_direction_proof_contact_sheet_sha256: 74af13b0a5ffc0558f427a0c75b382982e282a27608b638ed412e2e09bca3402
-latest_out07_shorts_poster_frame_direction_platform_contact_sheet_sha256: 828a0069ba649f42b11f8fd4b50bb112286e7ba5b7a2a62f77bb35a7fc10c875
-latest_out07_shorts_poster_frame_direction_reference_count: 50
-latest_out07_shorts_poster_frame_direction_channel_count: 41
-latest_out07_shorts_poster_frame_direction_human_acceptance: pending
-latest_out07_internal_operator_delivery_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
-latest_out07_internal_operator_delivery_pack_branch: codex/out-07-internal-operator-delivery-pack-v0
-latest_out07_internal_operator_delivery_pack_video_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
-latest_out07_internal_operator_delivery_pack_readback_sha256: 1d62964e3b8ed5b7b7ff6f6fe5f0ca6d098cf08b12fdaca5e670d6fd68a47211
-latest_out07_internal_operator_delivery_pack_manifest_sha256: 77187a87ba77b2aa8bb7c1256a7d7ba3e96ef51bf80dc91ea978ca575ac486a3
-latest_out07_internal_operator_delivery_pack_legacy_thumbnail_status: user_rejected
-latest_out07_internal_operator_delivery_pack_recommended_thumbnail_sha256: null
-latest_out06_complete_narrative_short_delivery_candidate_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
-latest_out06_complete_narrative_short_delivery_candidate_branch: codex/out-06-complete-narrative-short-delivery-candidate-v0
-latest_out06_complete_narrative_short_delivery_candidate_output_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
-latest_out06_complete_narrative_short_delivery_candidate_readback_sha256: 0f8ffcd19c3a1b48cca76cf01dd31c4309f405ac3ced3553ba8d6f29e278f9a2
-latest_out06_complete_narrative_short_delivery_candidate_manifest_sha256: e3be1ec84d97fe472df2c9fb9cdf1a334084a0f727173835a9e0428f6bbb95d0
+current_review_component: reinstantiated_baseline_plus_source_pixel_A_B_C
+current_baseline_acceptance: reinstantiated_baseline_candidate_human_acceptance_false
+current_reference_revision: frozen_51_stored_50_active_zero_failures
+current_determinism_status: same_frozen_inputs_two_build_core_and_reference_digests_match
+historical_source_host_out07_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
+historical_source_host_out07_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
+historical_source_host_operator_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
+historical_source_host_out06_artifact: clip-out06-complete-narrative-short-delivery-candidate-v0-001
+historical_source_host_out06_video_sha256: 02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0
 latest_out05_vertical_short_internal_candidate_artifact: clip-out05-vertical-short-internal-candidate-v0-001
 latest_out05_vertical_short_internal_candidate_branch: codex/out-05-vertical-short-internal-candidate-v0
 latest_out05_vertical_short_internal_candidate_output_sha256: d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827
@@ -137,70 +130,54 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-07 Portable Implementation / Planner007 Recovery Block
+## Current OUT-07 Planner007 Combined Review
 
-The active branch remains `codex/out-07-internal-operator-delivery-pack-v0`,
-and the artifact identity remains
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`. The tracked builder,
-CLI, tests, reference URLs, and structural annotations are portable. The
-ignored poster package is not portable and is not present on Planner007, so
-there is currently no verified human entrypoint or machine readback on this
-host. A localhost URL becomes valid only after a same-host build and local
-verification.
+The active artifact remains
+`clip-out07-shorts-poster-frame-direction-proof-v0-001`, but its evidence is now
+an explicit Planner007 media revision rather than a silent replacement of the
+historical source-host input. Receipt, sidecar, ledger, rights URL, decision
+packet, provider ID `7J5aS_pcBj4`, full decode, fixed frame fingerprints, fixed
+mono-PCM fingerprints, and the 29 subtitle/source mappings qualify
+`e2206cef...1889` as the same underlying episode with compatible timing. It is
+not byte-equivalent to historical input `6f78657e...103a`.
 
-The expected retained source at
-`episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4`
-must hash to
-`6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`.
-Planner007 instead contains a receipt-consistent but different byte stream at
-`e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`.
-The accepted OUT-06 package and its fixed video
-`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`
-are also absent. An inventory of every episode MP4 found neither fixed hash.
-The frozen reference cache is absent, but it may be explicitly refetched from
-the tracked public corpus only after the fixed source and accepted predecessor
-are recovered.
+The revision-aware route validates the current transcript/edit/cut packet,
+official-caption content, and operator-proxy limitation authority directly.
+It also compares those ignored files with the tracked semantic snapshot in
+`artifacts/ACTIVE_REBUILD.json`. If a fresh clone has only a reacquired
+receipt/sidecar/ledger material chain, the same route can use that snapshot;
+the contract records the exact init/video/audio/rebuild command order and the
+source-revision hash stop gate. Missing OUT-03 through OUT-06 binary packages
+are never required. The route preserves
+`cut_001 -> cut_002 -> cut_003`, source ranges `2.453-9.293`,
+`12.329-17.167`, `22.606-49.566`, sequence boundaries `6.840` and `11.678`,
+duration `38.638`, `sub_001..sub_029`, exclusion of `sub_030`, and all six
+reviewed display wraps. The rendered baseline probes as H.264/AAC,
+1080x1920, 30fps, duration about 38.633 seconds; full decode, boundary audio,
+and sampled black/corrupt-frame checks passed.
 
-The former `context`, `tension`, and `payoff` 16:9 directions are now explicit
-`user_rejected` evidence. `publish_draft.json` has
-`selected_thumbnail=null`, and no old direction remains recommended. Their
-image bytes are unchanged, while the misleading
-`thumbnail_recommended_1280x720.jpg` copy has been removed. The title,
-three-line description, seven tags, accepted video, subtitles, and audio were
-not semantically changed or accepted in this slice.
+The new baseline bytes differ from the historical accepted OUT-06 video, so
+the package records `reinstantiated_baseline_candidate` and
+`human_acceptance=false`. Historical editorial decisions and wrap choices are
+reused, but historical byte acceptance is not inherited. Rights, production,
+public, upload, visibility, made-for-kids, and publishing gates remain closed.
 
-The current tracked corpus contains 50 active references across 41 channels.
-Twenty-seven are native-vertical exact-surface observations across 24 channels,
-22 of those fall within the latest 180 days, and 20 conventional 16:9 examples
-remain secondary structural evidence. YouTube surface behavior is not claimed
-as verified and view count is not treated as causal proof.
-Third-party pixels remain only in the ignored local cache/reference board and
-are absent from candidates A/B/C.
+The same page presents the baseline first, followed by source-pixel-only
+poster A/B/C, channel/search and crop/UI previews, and transitions derived from
+the new baseline. The legacy `context`, `tension`, and `payoff` 16:9 directions
+remain `user_rejected`; `selected_thumbnail=null`; they were not regenerated.
+The frozen reference revision contains 51 stored records with 50 active after
+one duplicate exclusion and zero fetch failures. Third-party pixels appear
+only in the ignored evidence board/cache, never in A/B/C or Git.
 
-The three 1080x1920 candidates are research-derived directions using retained
-source pixels and manual alpha masks without generated or modified person
-pixels. The package includes channel/search, center-4:5 heuristic, and
-approximate Shorts playback UI previews plus expression and mask inspection
-sheets. The center-4:5 preview is a project robustness heuristic, not an
-official YouTube crop guarantee.
-
-When regenerated, each `transition_A/B/C.mp4` must use the final 1.75s of the
-accepted video, a shared 0.12s dissolve, a 0.50s poster end-cap, and a 0.16s
-audio fade, producing a roughly 2.133s 1080x1920 review proof. The accepted
-38.633333s video must remain byte-identical at
-`02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0`.
-
-The reference-fidelity implementation has tracked test evidence, but its latest
-whole-package deterministic digest has not been verified on Planner007. Human
-visual acceptance remains pending; no A/B/C winner may be inferred from the
-portable implementation or earlier source-host hashes.
-
-After recovery, two deterministic builds, media/browser QA, and local entrypoint
-verification, the only human question will again be: A/B/Cのどれが実用候補に
-最も近いか、または全案不採用か。末尾posterの出現が不自然な場合だけ併記して
-ください。 Rights, production render, production subtitle design, public
-readiness, upload, visibility, made-for-kids, publishing, and H1 full-video
-integration remain closed.
+Two builds from the same frozen inputs produced matching deterministic core
+digests and matching, separately computed reference-evidence digests. The
+portable source of truth for another machine is
+[`artifacts/ACTIVE_REBUILD.json`](../artifacts/ACTIVE_REBUILD.json), not this
+host's ignored pixels. On Planner007, open
+`http://127.0.0.1:8071/index.html` through the recorded launcher and answer only
+the two freeform questions: whether the baseline has a new anomaly, then which
+poster is closest to usable (or reject all and note discomfort).
 
 ## Accepted OUT-06 Complete Narrative Short After Bounded Repair
 

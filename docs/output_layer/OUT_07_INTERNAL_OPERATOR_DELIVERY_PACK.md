@@ -1,4 +1,39 @@
-# OUT-07 Internal Operator Delivery Pack
+# OUT-07 Operator Pack and Media-Revision Combined Review
+
+## Active Planner007 route
+
+The active artifact is still
+`clip-out07-shorts-poster-frame-direction-proof-v0-001`, but Planner007 uses the
+explicit media-revision route in
+`src/integrations/render/out07_reconstitution.py`. It qualifies the current
+episode source, validates edit/transcript/decision/proxy/caption authority,
+rebuilds the fixed 38.6-second baseline, and reconstructs the publish draft
+without regenerating the
+rejected 16:9 thumbnails, freezes public reference evidence, and generates a
+baseline-first A/B/C review page. Missing historical OUT-03 through OUT-06
+packages are not required.
+
+```powershell
+uvx --with Pillow python -m src.cli.main reconstitute-out07-review `
+  --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 `
+  --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json `
+  --verify-determinism `
+  --format json
+```
+
+Add `--fetch-missing-references` only for the first cache freeze. The portable
+dependency/recovery order, exact semantic snapshot, and fresh-clone
+init/video/audio/rebuild commands are machine-readable in
+`artifacts/ACTIVE_REBUILD.json`. The generated baseline differs from historical
+accepted OUT-06 bytes, so it is a `reinstantiated_baseline_candidate` with
+`human_acceptance=false`; editorial timing and six wrap repairs carry, but byte
+acceptance does not. The combined page at port 8071 asks exactly two freeform
+questions: baseline anomaly readback, then A/B/C or all-rejected direction.
+
+The fixed-hash operator pack documented below remains an unchanged historical
+route. It is comparison evidence, not the current Planner007 input contract.
+
+## Historical fixed-hash internal operator pack
 
 OUT-07 creates one internal operator delivery pack from the accepted OUT-06
 video. It does not rerender, remux, transcode, upload, publish, approve rights,

@@ -51,16 +51,22 @@ reuses the data-driven vertical render boundary, and writes only a dedicated
 ignored `review/out06_*` package, and now serves as the immutable video predecessor
 for the OUT-07 internal operator delivery-pack slice.
 
-OUT-07 now keeps the accepted OUT-06 MP4 byte-identical while the former 16:9
-`context`/`tension`/`payoff` directions are explicit user-rejected evidence with
-no selection or recommendation. The current proof derives exactly three
-structurally different 1080x1920 poster directions from retained source pixels,
-adds three approximately 2.133s tail-to-poster review clips, and can expose one
-ignored local review page in `review/out07_shorts_poster_frame_direction_proof/`
-after same-host generation and verification. Human A/B/C
-or all-rejected selection is required before any full-video integration. Upload,
-metadata acceptance, visibility, made-for-kids, public, publishing, production,
-and rights decisions remain closed.
+OUT-07 keeps its historical fixed-hash builders unchanged and adds one explicit
+Planner007 media-revision route. That route qualifies same-source identity and
+timing without claiming historical byte equivalence, rebuilds the fixed
+three-cut/29-subtitle baseline, and marks the differing output
+`reinstantiated_baseline_candidate` with `human_acceptance=false`. The former
+16:9 `context`/`tension`/`payoff` directions remain user-rejected evidence and
+are not regenerated. The combined ignored page presents the baseline first,
+then exactly three source-pixel 1080x1920 directions, platform previews, and
+approximately 2.133s tail-to-poster clips. `artifacts/ACTIVE_REBUILD.json`
+defines the exact semantic snapshot, dependency classes, existing
+init/video/audio fetch commands, recovery order, and source-revision stop
+gate; every host verifies its own ignored package. Human baseline readback
+plus A/B/C or all-rejected selection is
+required before integration. Upload, metadata acceptance, visibility,
+made-for-kids, public, publishing, production, and rights decisions remain
+closed.
 
 Generated files:
 

@@ -71,7 +71,9 @@ STATUS_HEALTH = {
 def _runtime_state_metadata(base_dir: Path) -> dict[str, str]:
     path = base_dir / RUNTIME_STATE_PATH
     if not path.exists():
-        raise ValueError(f"current-state source is missing: {RUNTIME_STATE_PATH.as_posix()}")
+        raise ValueError(
+            f"current-state source is missing: {RUNTIME_STATE_PATH.as_posix()}"
+        )
     metadata = _front_matter(path.read_text(encoding="utf-8"))
     required = ("current_slice", "active_artifact")
     missing = [field for field in required if not metadata.get(field)]
@@ -121,7 +123,22 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
         "canonical_status": runtime_state.get("canonical_status", ""),
         "review_status": runtime_state.get("review_status", ""),
         "human_entrypoint": runtime_state.get("human_entrypoint", ""),
+        "review_open_command": runtime_state.get("review_open_command", ""),
+        "review_server_restart_command": runtime_state.get(
+            "review_server_restart_command", ""
+        ),
         "machine_readback": runtime_state.get("machine_readback", ""),
+        "remote_code_complete": runtime_state.get("remote_code_complete", ""),
+        "local_artifact_available": runtime_state.get("local_artifact_available", ""),
+        "cross_machine_resume_class": runtime_state.get(
+            "cross_machine_resume_class", ""
+        ),
+        "active_rebuild_contract": runtime_state.get("active_rebuild_contract", ""),
+        "evidence_revision": runtime_state.get("evidence_revision", ""),
+        "last_verified_host": runtime_state.get("last_verified_host", ""),
+        "local_artifact_evidence_receipt": runtime_state.get(
+            "local_artifact_evidence_receipt", ""
+        ),
         "handoff": runtime_state.get("current_handoff", "docs/CURRENT_HANDOFF.md"),
         "last_verified_at": runtime_state.get("last_verified_at", ""),
         "decision_required": runtime_state.get("decision_required", ""),
@@ -301,7 +318,19 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
         ("canonical status", focus.get("canonical_status", "")),
         ("review status", focus.get("review_status", "")),
         ("entrypoint", focus.get("human_entrypoint", "")),
+        ("open command", focus.get("review_open_command", "")),
+        ("server restart", focus.get("review_server_restart_command", "")),
         ("machine readback", focus.get("machine_readback", "")),
+        ("remote code complete", focus.get("remote_code_complete", "")),
+        ("local artifact available", focus.get("local_artifact_available", "")),
+        ("cross-machine resume", focus.get("cross_machine_resume_class", "")),
+        ("active rebuild contract", focus.get("active_rebuild_contract", "")),
+        ("evidence revision", focus.get("evidence_revision", "")),
+        ("last verified host", focus.get("last_verified_host", "")),
+        (
+            "local artifact evidence",
+            focus.get("local_artifact_evidence_receipt", ""),
+        ),
         ("handoff", focus.get("handoff", "")),
         ("last verified", focus.get("last_verified_at", "")),
         ("decision required", focus.get("decision_required", "")),
@@ -318,6 +347,7 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
     return "".join(
         f"<tr><th>{escape(label)}</th><td>{escape(str(value))}</td></tr>"
         for label, value in rows
+        if value not in (None, "")
     )
 
 
@@ -361,11 +391,14 @@ def render_features_index_markdown(status: dict[str, Any]) -> str:
         f"- canonical baseline: `{status['current_focus']['canonical_main_baseline']}`\n"
         f"- canonical status: `{status['current_focus']['canonical_status']}`\n"
         f"- review status: `{status['current_focus']['review_status']}`\n"
+        f"- remote code complete: `{status['current_focus']['remote_code_complete']}`\n"
+        f"- local artifact available: `{status['current_focus']['local_artifact_available']}`\n"
+        f"- cross-machine resume: `{status['current_focus']['cross_machine_resume_class']}`\n"
+        f"- active rebuild contract: `{status['current_focus']['active_rebuild_contract']}`\n"
+        f"- evidence revision: `{status['current_focus']['evidence_revision']}`\n"
         f"- decision required: `{status['current_focus']['decision_required']}`\n"
         f"- next review: `{status['current_focus']['next_review_action_type']}`\n\n"
-        "## Feature Table\n\n"
-        + "\n".join(rows)
-        + "\n"
+        "## Feature Table\n\n" + "\n".join(rows) + "\n"
     )
 
 
@@ -411,7 +444,9 @@ def _doc_health_findings(docs: list[dict[str, Any]]) -> list[dict[str, Any]]:
         missing = [
             key for key, exists in doc["front_sections"].items() if exists is not True
         ]
-        if missing and doc["path"] in {str(path).replace("\\", "/") for path in PRIORITY_DOCS}:
+        if missing and doc["path"] in {
+            str(path).replace("\\", "/") for path in PRIORITY_DOCS
+        }:
             findings.append(
                 {
                     "type": "unclear",
@@ -524,13 +559,21 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         if feature_id == "ED-10am":
             active_artifact = "clip-ed10am-production-limitation-lift-stage-1-001"
         if feature_id == "ED-10an":
-            active_artifact = "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
+            active_artifact = (
+                "clip-ed10an-production-limitation-lift-stage-2-decision-packet-001"
+            )
         if feature_id == "ED-10ao":
-            active_artifact = "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
+            active_artifact = (
+                "clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001"
+            )
         if feature_id == "ED-10ap":
-            active_artifact = "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+            active_artifact = (
+                "clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001"
+            )
         if feature_id == "ED-10aq":
-            active_artifact = "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
+            active_artifact = (
+                "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
+            )
         if feature_id == "ED-10ar":
             active_artifact = "clip-ed10ar-internal-review-video-candidate-package-001"
         if feature_id == "ED-10as":
@@ -538,7 +581,9 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         if feature_id == "ED-10at":
             active_artifact = "clip-ed10at-internal-review-observation-readback-001"
         if feature_id == "ED-10au":
-            active_artifact = "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
+            active_artifact = (
+                "clip-ed10au-representative-micro-scene-internal-review-specimen-001"
+            )
         if feature_id == "ED-10av":
             active_artifact = "clip-ed10av-micro-scene-observation-frame-readback-001"
         if feature_id == "ED-10aw":
@@ -546,13 +591,19 @@ def _feature_rows(base_dir: Path) -> list[dict[str, Any]]:
         if feature_id == "ED-10ax":
             active_artifact = "clip-ed10ax-review-frame-clarification-surface-001"
         if feature_id == "ED-10ay":
-            active_artifact = "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001"
+            active_artifact = (
+                "clip-ed10ay-thank-ed10au-local-access-recovery-readback-001"
+            )
         if feature_id == "ED-10az":
-            active_artifact = "clip-ed10az-observation-readback-and-v2-route-decision-001"
+            active_artifact = (
+                "clip-ed10az-observation-readback-and-v2-route-decision-001"
+            )
         if feature_id == "ED-10ba":
             active_artifact = "clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001"
         if feature_id == "ED-10bb":
-            active_artifact = "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+            active_artifact = (
+                "clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001"
+            )
         if feature_id == "ED-10bc":
             active_artifact = "clip-ed10bc-thank-v2-open-command-repair-readback-001"
         features.append(
@@ -618,7 +669,9 @@ def _artifact_coverage(
 ) -> dict[str, Any]:
     artifact_ids = {artifact["artifact_id"] for artifact in artifacts}
     mentioned = [
-        feature for feature in features if feature.get("active_artifact") in artifact_ids
+        feature
+        for feature in features
+        if feature.get("active_artifact") in artifact_ids
     ]
     current_focus_registered = current_focus_artifact_id in artifact_ids
     return {
@@ -921,22 +974,13 @@ def _top_next_improvements() -> list[dict[str, Any]]:
 
 def _open_surfaces(current_focus: dict[str, Any]) -> list[dict[str, str]]:
     current_entrypoint = str(current_focus.get("human_entrypoint", ""))
-    return [
+    current_command = str(current_focus.get("review_open_command", ""))
+    surfaces = [
         {
             "label": "Dashboard",
             "command": ".\\open-dashboard.ps1",
             "target": "docs/dashboard/index.html",
             "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings.",
-        },
-        {
-            "label": f"{current_focus.get('feature_id', '')} Current Focus",
-            "command": (
-                "start " + current_entrypoint.replace("/", "\\")
-                if current_entrypoint
-                else ""
-            ),
-            "target": current_entrypoint,
-            "when_to_use": str(current_focus.get("next_action", "")),
         },
         {
             "label": "Artifacts",
@@ -1317,6 +1361,17 @@ def _open_surfaces(current_focus: dict[str, Any]) -> list[dict[str, str]]:
             "when_to_use": "Use when ED-10h font universe or local/system font availability is the next question.",
         },
     ]
+    if current_entrypoint and current_command:
+        surfaces.insert(
+            1,
+            {
+                "label": f"{current_focus.get('feature_id', '')} Current Focus",
+                "command": current_command,
+                "target": current_entrypoint,
+                "when_to_use": str(current_focus.get("next_action", "")),
+            },
+        )
+    return surfaces
 
 
 def _title(text: str, *, fallback: str) -> str:

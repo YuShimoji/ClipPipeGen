@@ -1,0 +1,803 @@
+{
+  "schema_id": "clippipegen.active_rebuild.v1",
+  "schema_version": "v1",
+  "thread_id": "clip-out07-operator-delivery-pack-01",
+  "lane_id": "MANUAL_DELIVERY_REVENUE",
+  "slice_id": "out07-shorts-poster-frame-direction-proof-v0",
+  "artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
+  "episode_id": "jp_pilot01_hololive_bancho_20260525",
+  "resume_class": "reacquirable",
+  "source_identity": {
+    "provider": "youtube",
+    "provider_id": "7J5aS_pcBj4",
+    "canonical_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+    "acquisition_route": "yt-dlp-video",
+    "historical_source_host_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+    "historical_source_role": "historical_source_host_evidence_only",
+    "current_media_revision": {
+      "revision_id": "planner007-e2206cef-20260525",
+      "sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
+      "qualification_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json",
+      "same_underlying_source_identity": true,
+      "byte_equivalence_to_historical_claimed": false
+    }
+  },
+  "dependencies": [
+    {
+      "id": "tracked_rebuild_code",
+      "recovery_class": "tracked",
+      "required": true,
+      "locator": "src/integrations/render/out07_reconstitution.py",
+      "produced_by": "git clone or git pull"
+    },
+    {
+      "id": "tracked_semantic_authority_snapshot",
+      "recovery_class": "tracked",
+      "required": true,
+      "locator": "artifacts/ACTIVE_REBUILD.json#semantic_authority_snapshot",
+      "produced_by": "git clone or git pull"
+    },
+    {
+      "id": "tracked_reference_corpus",
+      "recovery_class": "tracked",
+      "required": true,
+      "locator": "docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json",
+      "produced_by": "git clone or git pull"
+    },
+    {
+      "id": "tracked_copy_and_gate_contract",
+      "recovery_class": "tracked",
+      "required": true,
+      "locator": "src/integrations/render/operator_delivery_pack.py",
+      "produced_by": "git clone or git pull"
+    },
+    {
+      "id": "source_video_current_revision",
+      "recovery_class": "reacquire",
+      "required": true,
+      "locator": "youtube:7J5aS_pcBj4",
+      "produced_by": "fetch-source-video --mode yt-dlp-video"
+    },
+    {
+      "id": "source_audio_current_revision",
+      "recovery_class": "reacquire",
+      "required": true,
+      "locator": "youtube:7J5aS_pcBj4#audio",
+      "produced_by": "fetch-source-audio --mode yt-dlp-audio"
+    },
+    {
+      "id": "keifont_render_dependency",
+      "recovery_class": "reacquire",
+      "required": true,
+      "locator": "font-family:Keifont;file-name:keifont.ttf",
+      "expected_sha256": "d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f",
+      "produced_by": "install the same redistributable Keifont file and verify the render readback"
+    },
+    {
+      "id": "official_caption_track_provenance",
+      "recovery_class": "reacquire",
+      "required": false,
+      "locator": "youtube-caption:7J5aS_pcBj4:ja",
+      "produced_by": "optional provenance refresh; tracked semantic authority snapshot is the rebuild input"
+    },
+    {
+      "id": "reference_pixel_cache",
+      "recovery_class": "reacquire",
+      "required": true,
+      "locator": "docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json#thumbnail_url",
+      "produced_by": "reconstitute-out07-review --fetch-missing-references"
+    },
+    {
+      "id": "episode_material_chain",
+      "recovery_class": "derive",
+      "required": true,
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/material_ledger.json",
+      "produced_by": "init-episode then fetch-source-video and fetch-source-audio"
+    },
+    {
+      "id": "media_revision_receipt",
+      "recovery_class": "derive",
+      "required": true,
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json",
+      "produced_by": "reconstitute-out07-review source qualification"
+    },
+    {
+      "id": "reinstantiated_baseline",
+      "recovery_class": "derive",
+      "required": true,
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_reinstantiated_baseline_candidate/assets/reinstantiated_baseline.mp4",
+      "produced_by": "reconstitute-out07-review shared vertical render primitives"
+    },
+    {
+      "id": "operator_publish_draft",
+      "recovery_class": "derive",
+      "required": true,
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/publish_draft.json",
+      "produced_by": "reconstitute-out07-review tracked copy plan plus closed gates"
+    },
+    {
+      "id": "poster_candidates_and_transitions",
+      "recovery_class": "derive",
+      "required": true,
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof",
+      "produced_by": "reconstitute-out07-review source-pixel poster and transition primitives"
+    },
+    {
+      "id": "historical_out03_out06_binary_packages",
+      "recovery_class": "private_only",
+      "required": false,
+      "locator": "historical-source-host-only",
+      "produced_by": "not required for current revision rebuild"
+    }
+  ],
+  "semantic_contract": {
+    "cut_order": [
+      "cut_001",
+      "cut_002",
+      "cut_003"
+    ],
+    "source_ranges_seconds": [
+      [
+        2.453,
+        9.293
+      ],
+      [
+        12.329,
+        17.167
+      ],
+      [
+        22.606,
+        49.566
+      ]
+    ],
+    "sequence_boundaries_seconds": [
+      6.84,
+      11.678
+    ],
+    "semantic_duration_seconds": 38.638,
+    "subtitle_first_id": "sub_001",
+    "subtitle_last_id": "sub_029",
+    "excluded_subtitle_ids": [
+      "sub_030"
+    ],
+    "reviewed_wrap_overrides": {
+      "sub_013": [
+        "なんで",
+        "来なかった",
+        "んすか！！"
+      ],
+      "sub_014": [
+        "ずっと",
+        "待ってたんすよ！！"
+      ],
+      "sub_019": [
+        "はじめの勝ちって",
+        "ことでいいですね？"
+      ],
+      "sub_024": [
+        "団長、ちなみに、",
+        "他の番長",
+        "知ってますか？"
+      ],
+      "sub_028": [
+        "マリンなら",
+        "あっちにいたよ"
+      ],
+      "sub_029": [
+        "ありがとう",
+        "ございますー！"
+      ]
+    }
+  },
+  "builder_order": [
+    {
+      "position": 1,
+      "step": "inventory_material_chain_and_direct_authority"
+    },
+    {
+      "position": 2,
+      "step": "reacquire_materials_if_missing_with_existing_asset_fetch_clis"
+    },
+    {
+      "position": 3,
+      "step": "load_direct_or_tracked_semantic_authority"
+    },
+    {
+      "position": 4,
+      "step": "qualify_source_media_revision"
+    },
+    {
+      "position": 5,
+      "step": "rebuild_reinstantiated_baseline"
+    },
+    {
+      "position": 6,
+      "step": "reconstruct_operator_publish_draft"
+    },
+    {
+      "position": 7,
+      "step": "freeze_public_reference_revision"
+    },
+    {
+      "position": 8,
+      "step": "build_source_pixel_posters_transitions_and_combined_review"
+    },
+    {
+      "position": 9,
+      "step": "repeat_frozen_build_and_compare_digests"
+    }
+  ],
+  "required_outputs": [
+    "media_revision_receipt.json",
+    "reinstantiated_baseline.mp4",
+    "baseline_readback.json",
+    "baseline_manifest.json",
+    "publish_draft.json",
+    "reference_manifest.json",
+    "poster_A_1080x1920.jpg",
+    "poster_B_1080x1920.jpg",
+    "poster_C_1080x1920.jpg",
+    "platform_preview_contact_sheet.jpg",
+    "transition_A.mp4",
+    "transition_B.mp4",
+    "transition_C.mp4",
+    "index.html",
+    "poster_direction_readback.json",
+    "deterministic_core_readback.json",
+    "determinism_receipt.json",
+    "combined_review_manifest.json",
+    "open_preview.ps1",
+    "serve_preview.ps1"
+  ],
+  "media_contract": {
+    "baseline": {
+      "duration_seconds": 38.638,
+      "duration_tolerance_seconds": 0.2,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "subtitle_count": 29,
+      "hard_cut_boundaries_seconds": [
+        6.84,
+        11.678
+      ]
+    },
+    "transition": {
+      "tail_seconds": 1.75,
+      "dissolve_seconds": 0.12,
+      "poster_hold_seconds": 0.5,
+      "audio_fade_seconds": 0.16
+    }
+  },
+  "acceptance_inheritance": {
+    "editorial_decisions_may_carry": true,
+    "reviewed_subtitle_wraps_may_carry": true,
+    "historical_accepted_output_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+    "historical_human_acceptance_carries_only_when_output_sha_matches": true,
+    "nonmatching_output_class": "reinstantiated_baseline_candidate",
+    "nonmatching_output_human_acceptance": false,
+    "rights_status": "pending",
+    "production_acceptance": false,
+    "public_or_publishing_acceptance": false
+  },
+  "determinism": {
+    "same_frozen_inputs_required_build_count": 2,
+    "deterministic_core_digest": "source-derived baseline/posters/previews/masks/transitions plus canonical semantic readback",
+    "reference_evidence_digest": "frozen public reference URLs, MIME, dimensions and bytes",
+    "excluded_from_core": [
+      "absolute paths",
+      "staging UUID",
+      "generated timestamps",
+      "FFmpeg stderr",
+      "remote reference pixels",
+      "preview server PID"
+    ]
+  },
+  "regeneration_command": "uvx --with Pillow python -m src.cli.main reconstitute-out07-review --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json --fetch-missing-references --verify-determinism --format json",
+  "security_and_storage": {
+    "absolute_host_paths_allowed": false,
+    "credentials_allowed": false,
+    "copyrighted_pixels_tracked_in_git": false,
+    "third_party_reference_pixels_used_in_candidates": false,
+    "episodes_must_remain_untracked": true
+  },
+  "authority_file_inventory": {
+    "role": "direct_current-host evidence; none of these ignored files is required on a fresh clone once the material chain exists",
+    "fallback": "artifacts/ACTIVE_REBUILD.json#semantic_authority_snapshot",
+    "files": [
+      {
+        "id": "rights_manifest",
+        "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/rights_manifest.json",
+        "sha256": "e6ea94717b3bffceaa7cda9c608d2d2ecb6a0a46233958a9113f058c73464c12"
+      },
+      {
+        "id": "transcript",
+        "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/transcript.json",
+        "sha256": "ef928d4e3b47e5ab522cf8292d08fefdc81fcda9c904551941158814cdfb42d6"
+      },
+      {
+        "id": "edit_pack",
+        "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/edit_pack.json",
+        "sha256": "5e010fa600a3dcf701e004642a32a2ac2dbefeb5dbb9ba6ddab0e704daf9600d"
+      },
+      {
+        "id": "cut_decision_packet",
+        "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_decision_packet.json",
+        "sha256": "71ed9064d0df5e68aa8dcb70d0d14cd973a2fb719ca37fd203b9ef87d1fb748b"
+      },
+      {
+        "id": "operator_proxy_authority",
+        "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/cut_002_cut_003_operator_proxy_decision_handoff.json",
+        "sha256": "f237bad0faceb2db5e10570dc9dbd63b6c2f65369a190d924cb6e5f257ee9625"
+      },
+      {
+        "id": "official_subtitle_track",
+        "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+        "sha256": "3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919"
+      }
+    ]
+  },
+  "semantic_authority_snapshot": {
+    "timeline": [
+      {
+        "id": "cut_001",
+        "source_start_seconds": 2.453,
+        "source_end_seconds": 9.293,
+        "sequence_start_seconds": 0,
+        "sequence_end_seconds": 6.84,
+        "duration_seconds": 6.84,
+        "transition_in": "sequence_start",
+        "context_status": "passed"
+      },
+      {
+        "id": "cut_002",
+        "source_start_seconds": 12.329,
+        "source_end_seconds": 17.167,
+        "sequence_start_seconds": 6.84,
+        "sequence_end_seconds": 11.678,
+        "duration_seconds": 4.838,
+        "transition_in": "hard_cut",
+        "context_status": "passed"
+      },
+      {
+        "id": "cut_003",
+        "source_start_seconds": 22.606,
+        "source_end_seconds": 49.566,
+        "sequence_start_seconds": 11.678,
+        "sequence_end_seconds": 38.638,
+        "duration_seconds": 26.96,
+        "transition_in": "hard_cut",
+        "context_status": "needs_review"
+      }
+    ],
+    "subtitles": [
+      {
+        "id": "sub_001",
+        "cut_id": "cut_001",
+        "source_start_seconds": 2.453,
+        "source_end_seconds": 3.32,
+        "sequence_start_seconds": 0,
+        "sequence_end_seconds": 0.867,
+        "text": "もしもし？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000001"
+        ]
+      },
+      {
+        "id": "sub_002",
+        "cut_id": "cut_001",
+        "source_start_seconds": 3.32,
+        "source_end_seconds": 4.054,
+        "sequence_start_seconds": 0.867,
+        "sequence_end_seconds": 1.601,
+        "text": "はじめです！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000002"
+        ]
+      },
+      {
+        "id": "sub_003",
+        "cut_id": "cut_001",
+        "source_start_seconds": 4.054,
+        "source_end_seconds": 4.822,
+        "sequence_start_seconds": 1.601,
+        "sequence_end_seconds": 2.369,
+        "text": "…はい？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000003"
+        ]
+      },
+      {
+        "id": "sub_004",
+        "cut_id": "cut_001",
+        "source_start_seconds": 4.822,
+        "source_end_seconds": 5.556,
+        "sequence_start_seconds": 2.369,
+        "sequence_end_seconds": 3.103,
+        "text": "はじめです！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000004"
+        ]
+      },
+      {
+        "id": "sub_005",
+        "cut_id": "cut_001",
+        "source_start_seconds": 5.556,
+        "source_end_seconds": 7.291,
+        "sequence_start_seconds": 3.103,
+        "sequence_end_seconds": 4.838,
+        "text": "なんと…？ もう一度いいですか？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000005"
+        ]
+      },
+      {
+        "id": "sub_006",
+        "cut_id": "cut_001",
+        "source_start_seconds": 7.291,
+        "source_end_seconds": 8.525,
+        "sequence_start_seconds": 4.838,
+        "sequence_end_seconds": 6.072,
+        "text": "体育館裏で待ってます！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000006"
+        ]
+      },
+      {
+        "id": "sub_007",
+        "cut_id": "cut_001",
+        "source_start_seconds": 8.525,
+        "source_end_seconds": 9.293,
+        "sequence_start_seconds": 6.072,
+        "sequence_end_seconds": 6.84,
+        "text": "なんて？？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000007"
+        ]
+      },
+      {
+        "id": "sub_008",
+        "cut_id": "cut_002",
+        "source_start_seconds": 12.329,
+        "source_end_seconds": 14.298,
+        "sequence_start_seconds": 6.84,
+        "sequence_end_seconds": 8.809,
+        "text": "ふっふっふ😏 呼び出してやったぞ😏",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000008"
+        ]
+      },
+      {
+        "id": "sub_009",
+        "cut_id": "cut_002",
+        "source_start_seconds": 14.298,
+        "source_end_seconds": 17.167,
+        "sequence_start_seconds": 8.809,
+        "sequence_end_seconds": 11.678,
+        "text": "ホロライブの番長として、 団長を倒してやる！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000009"
+        ]
+      },
+      {
+        "id": "sub_010",
+        "cut_id": "cut_003",
+        "source_start_seconds": 22.606,
+        "source_end_seconds": 23.64,
+        "sequence_start_seconds": 11.678,
+        "sequence_end_seconds": 12.712,
+        "text": "来ねぇ！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000010"
+        ]
+      },
+      {
+        "id": "sub_011",
+        "cut_id": "cut_003",
+        "source_start_seconds": 24.041,
+        "source_end_seconds": 25.109,
+        "sequence_start_seconds": 13.113,
+        "sequence_end_seconds": 14.181,
+        "text": "団長！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000011"
+        ]
+      },
+      {
+        "id": "sub_012",
+        "cut_id": "cut_003",
+        "source_start_seconds": 24.508,
+        "source_end_seconds": 25.109,
+        "sequence_start_seconds": 13.58,
+        "sequence_end_seconds": 14.181,
+        "text": "お？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000012"
+        ]
+      },
+      {
+        "id": "sub_013",
+        "cut_id": "cut_003",
+        "source_start_seconds": 25.109,
+        "source_end_seconds": 26.477,
+        "sequence_start_seconds": 14.181,
+        "sequence_end_seconds": 15.549,
+        "text": "なんで来なかったんすか！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000013"
+        ]
+      },
+      {
+        "id": "sub_014",
+        "cut_id": "cut_003",
+        "source_start_seconds": 26.477,
+        "source_end_seconds": 27.378,
+        "sequence_start_seconds": 15.549,
+        "sequence_end_seconds": 16.45,
+        "text": "ずっと待ってたんすよ！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000014"
+        ]
+      },
+      {
+        "id": "sub_015",
+        "cut_id": "cut_003",
+        "source_start_seconds": 27.378,
+        "source_end_seconds": 28.012,
+        "sequence_start_seconds": 16.45,
+        "sequence_end_seconds": 17.084,
+        "text": "ぉん？😄",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000015"
+        ]
+      },
+      {
+        "id": "sub_016",
+        "cut_id": "cut_003",
+        "source_start_seconds": 28.012,
+        "source_end_seconds": 29.813,
+        "sequence_start_seconds": 17.084,
+        "sequence_end_seconds": 18.885,
+        "text": "よくわかんないけど、ごめんね！😄",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000016"
+        ]
+      },
+      {
+        "id": "sub_017",
+        "cut_id": "cut_003",
+        "source_start_seconds": 29.813,
+        "source_end_seconds": 32.049,
+        "sequence_start_seconds": 18.885,
+        "sequence_end_seconds": 21.121,
+        "text": "まあ謝るんなら許してあげます",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000017"
+        ]
+      },
+      {
+        "id": "sub_018",
+        "cut_id": "cut_003",
+        "source_start_seconds": 32.049,
+        "source_end_seconds": 32.783,
+        "sequence_start_seconds": 21.121,
+        "sequence_end_seconds": 21.855,
+        "text": "ん？😄",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000018"
+        ]
+      },
+      {
+        "id": "sub_019",
+        "cut_id": "cut_003",
+        "source_start_seconds": 32.783,
+        "source_end_seconds": 34.852,
+        "sequence_start_seconds": 21.855,
+        "sequence_end_seconds": 23.924,
+        "text": "はじめの勝ちってことでいいですね？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000019"
+        ]
+      },
+      {
+        "id": "sub_020",
+        "cut_id": "cut_003",
+        "source_start_seconds": 34.852,
+        "source_end_seconds": 35.953,
+        "sequence_start_seconds": 23.924,
+        "sequence_end_seconds": 25.025,
+        "text": "…うん！　いいよ！👍️",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000020"
+        ]
+      },
+      {
+        "id": "sub_021",
+        "cut_id": "cut_003",
+        "source_start_seconds": 35.953,
+        "source_end_seconds": 36.587,
+        "sequence_start_seconds": 25.025,
+        "sequence_end_seconds": 25.659,
+        "text": "よしっ！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000021"
+        ]
+      },
+      {
+        "id": "sub_022",
+        "cut_id": "cut_003",
+        "source_start_seconds": 36.587,
+        "source_end_seconds": 38.122,
+        "sequence_start_seconds": 25.659,
+        "sequence_end_seconds": 27.194,
+        "text": "団長倒したど～！！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000022"
+        ]
+      },
+      {
+        "id": "sub_023",
+        "cut_id": "cut_003",
+        "source_start_seconds": 38.122,
+        "source_end_seconds": 39.156,
+        "sequence_start_seconds": 27.194,
+        "sequence_end_seconds": 28.228,
+        "text": "わぁ～😊",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000023"
+        ]
+      },
+      {
+        "id": "sub_024",
+        "cut_id": "cut_003",
+        "source_start_seconds": 39.156,
+        "source_end_seconds": 41.725,
+        "sequence_start_seconds": 28.228,
+        "sequence_end_seconds": 30.797,
+        "text": "団長、ちなみに、他の番長知ってますか？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000024"
+        ]
+      },
+      {
+        "id": "sub_025",
+        "cut_id": "cut_003",
+        "source_start_seconds": 41.725,
+        "source_end_seconds": 43.36,
+        "sequence_start_seconds": 30.797,
+        "sequence_end_seconds": 32.432,
+        "text": "長(ちょう)？　長って言った？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000025"
+        ]
+      },
+      {
+        "id": "sub_026",
+        "cut_id": "cut_003",
+        "source_start_seconds": 43.36,
+        "source_end_seconds": 44.762,
+        "sequence_start_seconds": 32.432,
+        "sequence_end_seconds": 33.834,
+        "text": "倒して回ってるんです！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000026"
+        ]
+      },
+      {
+        "id": "sub_027",
+        "cut_id": "cut_003",
+        "source_start_seconds": 44.762,
+        "source_end_seconds": 47.498,
+        "sequence_start_seconds": 33.834,
+        "sequence_end_seconds": 36.57,
+        "text": "長…長… 船長のことかな？",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000027"
+        ]
+      },
+      {
+        "id": "sub_028",
+        "cut_id": "cut_003",
+        "source_start_seconds": 47.498,
+        "source_end_seconds": 48.999,
+        "sequence_start_seconds": 36.57,
+        "sequence_end_seconds": 38.071,
+        "text": "マリンならあっちにいたよ",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000028"
+        ]
+      },
+      {
+        "id": "sub_029",
+        "cut_id": "cut_003",
+        "source_start_seconds": 48.999,
+        "source_end_seconds": 49.566,
+        "sequence_start_seconds": 38.071,
+        "sequence_end_seconds": 38.638,
+        "text": "ありがとうございますー！",
+        "source_type": "imported_subtitle_track",
+        "source_segment_ids": [
+          "seg_000029"
+        ]
+      }
+    ],
+    "cut_decisions": [
+      {
+        "cut_id": "cut_001",
+        "final_cut_decision": "keep",
+        "context_status": "passed",
+        "manual_override_reason": null
+      },
+      {
+        "cut_id": "cut_002",
+        "final_cut_decision": "keep",
+        "context_status": "passed",
+        "manual_override_reason": null
+      },
+      {
+        "cut_id": "cut_003",
+        "final_cut_decision": "keep",
+        "context_status": "needs_review",
+        "manual_override_reason": "context flag is caused by immediate following subtitle boundary; official subtitle track source, moderate subtitle density, and retained context risk visibility make it worth carrying to production subtitle/render acceptance as a candidate, not as production-approved"
+      }
+    ],
+    "operator_proxy_authority": {
+      "target_cuts": [
+        "cut_002",
+        "cut_003"
+      ],
+      "rights_status": "pending",
+      "production_candidate": false,
+      "operator_fields_state": "undecided",
+      "cut_002_context_status": "passed",
+      "cut_003_context_status": "needs_review",
+      "cut_003_retained_context_risk": true
+    }
+  },
+  "fresh_clone_recovery": {
+    "precondition": "Keifont is installed and yt-dlp/FFmpeg are discoverable; no historical OUT-03..06 package is needed",
+    "commands": [
+      "python -m src.cli.main init-episode --episode-id jp_pilot01_hololive_bancho_20260525",
+      "python -m src.cli.main fetch-source-video --episode-id jp_pilot01_hololive_bancho_20260525 --material-id src_video_jp_pilot01 --mode yt-dlp-video --source-url https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "python -m src.cli.main fetch-source-audio --episode-id jp_pilot01_hololive_bancho_20260525 --material-id src_audio_jp_pilot01 --mode yt-dlp-audio --source-url https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "uvx --with Pillow python -m src.cli.main reconstitute-out07-review --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --reference-corpus docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json --fetch-missing-references --verify-determinism --format json"
+    ],
+    "source_revision_gate": {
+      "video_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
+      "audio_sha256": "7cd566dc62683651b05b10b1b4397c44699807249f90af784b88ba0f572cae5d",
+      "on_mismatch": "stop this evidence revision and qualify a new same-source media revision; never alias hashes"
+    },
+    "authority_mode_when_episode_derivatives_are_absent": "tracked_rebuild_contract",
+    "direct_episode_authority_mode": "episode_files_direct_and_compared_to_tracked_snapshot"
+  }
+}

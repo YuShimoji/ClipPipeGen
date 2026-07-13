@@ -22,33 +22,35 @@ opened by the root launcher.
 
 | Field | Value |
 |---|---|
-| title | OUT-07 Reference-Derived Shorts Poster Frame Direction Proof v0 |
-| purpose | Turn recurring Japanese VTuber thumbnail relationships into three original retained-source 9:16 poster directions and short end-cap proofs so a human can select A/B/C or reject all without modifying the accepted Short. |
-| storage class | Tracked builder/CLI/tests/reference URLs and structural notes plus ignored same-machine posters, transitions, reference pixels, and review page. Third-party pixels are not committed. |
-| repo_relative_path | `src/integrations/render/shorts_poster_frame_proof.py`; `src/cli/build_shorts_poster_frame_proof.py`; `docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json`; `docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` |
+| title | OUT-07 Planner007 Media-Revision Baseline + Shorts Poster Direction Proof v0 |
+| purpose | Qualify the current episode media revision, reconstruct the fixed 38.6-second narrative baseline, and place that video before three source-pixel 9:16 poster directions so one human review can detect baseline drift and choose A/B/C or reject all. |
+| storage class | Tracked revision-aware builder/CLI/tests/rebuild contract/reference URLs plus ignored same-machine baseline, posters, transitions, reference pixels, and review page. Third-party pixels are not committed. |
+| repo_relative_path | `src/integrations/render/out07_reconstitution.py`; `src/cli/reconstitute_out07_review.py`; `src/integrations/render/shorts_poster_frame_proof.py`; `artifacts/ACTIVE_REBUILD.json`; `docs/output_layer/OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/` |
 | machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_readback.json` |
+| combined_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/combined_review_manifest.json` |
+| determinism_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/determinism_receipt.json` |
+| media_revision_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/media_revision_receipt.json` |
 | reference_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/reference_manifest.json` |
-| source_inputs | Accepted OUT-07 video, repaired OUT-07 publish-draft state, retained source video, tracked 50-active-reference corpus, and ignored frozen reference cache. |
+| active_rebuild_contract | `artifacts/ACTIVE_REBUILD.json` (`resume_class=reacquirable`; exact 3-cut/29-subtitle semantic snapshot, direct proxy/caption authority inventory, existing init/video/audio fetch commands, and source hash stop gate; no absolute host path, credentials, or pixels). |
+| source_inputs | Planner007 source revision `e2206cef...1889`, episode edit/transcript/decision/rights/material authority, tracked copy plan and 50-active-reference corpus, and ignored frozen reference cache. Historical fixed-hash packages are optional comparison evidence. |
+| baseline | `reinstantiated_baseline.mp4`; fixed 3-cut/29-subtitle semantics; H.264/AAC 1080x1920 30fps about 38.633s; output differs from historical accepted OUT-06 and is `reinstantiated_baseline_candidate`, `human_acceptance=false`. |
 | candidates | `poster_A_1080x1920.jpg`; `poster_B_1080x1920.jpg`; `poster_C_1080x1920.jpg` |
 | contact_sheet | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/poster_direction_contact_sheet.jpg` |
 | inspection_sheets | `expression_contact_sheet_A/B/C.jpg`; `subject_mask_inspection.jpg`; `platform_preview_contact_sheet.jpg` |
 | transition_proofs | `transition_A.mp4`; `transition_B.mp4`; `transition_C.mp4` |
-| open_command | Conditional after same-host generation and verification: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
-| preview_url | No verified Planner007 URL. `http://127.0.0.1:8071/index.html` is valid only while a verified same-host package server is running. |
-| reference_corpus | 50 active references across 41 channels; 27 native-vertical exact-surface observations across 24 channels, 22 recent within 180 days, and 20 secondary 16:9 references. YouTube surface behavior remains unverified and view count is not causal proof. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_shorts_poster_frame_direction_proof\open_preview.ps1 -Serve -Port 8071` |
+| preview_url | `http://127.0.0.1:8071/index.html` while the retained Planner007 byte-range server is running. Other hosts must rebuild and locally verify first. |
+| reference_corpus | New frozen revision: 51 stored entries / 50 active after one duplicate exclusion, 41 channels, 27 native-vertical exact-surface observations across 24 channels, 22 recent within 180 days, 20 secondary 16:9 references, zero fetch failures. URLs, MIME, dimensions, hashes, failures, and revision are manifest-recorded. |
 | composition_families | A `macro_reaction_topline`; B `speaker_first_asymmetric_duo`; C `offset_reaction_side_copy`, each derived from primary and supporting references. |
 | source_frames | Retained-source dense 0.15s expression surveys and manual alpha-mask edge inspection; person pixels are not generated or modified. |
 | platform_previews | Channel/search 405x720, project heuristic center-4:5 320x400, and approximate Shorts UI 405x720 for each candidate. |
-| transition_contract | Exact 2.133s proof: accepted narrative tail 1.75s, shared 0.12s dissolve, static poster 0.50s, and audio fade 0.16s; review evidence only. |
-| accepted_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` (unchanged). |
-| poster_sha256 | A `7a314825a0be95d48801bc0d648615b81a340884c24273fa76abbf18395a3720`; B `8ab9e01f81490a3571fa60f59041da73c7122d76673ad8409ecbc7e20d57eab2`; C `8d2f05a9fc31f25bd9b8cc20702766c0ea3cc902717efa451837aaec3609ccb2`. |
-| poster_direction_readback_sha256 | `43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb` |
-| reference_manifest_sha256 | `8c2e663a86353334752674dfdbefd0082cf5519cde1e8658d4b68a8b1b66e8a9` |
-| deterministic_package_sha256 | Not yet reverified after the reference-fidelity revision. |
+| transition_contract | About 2.133s proof from the reinstantiated baseline tail: 1.75s tail, shared 0.12s dissolve, static poster 0.50s, and audio fade 0.16s; review evidence only. |
+| historical_accepted_video_sha256 | `02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0` comparison evidence only; current acceptance is not inherited. |
+| determinism | Same frozen inputs built twice; source-derived core digest and separately-scoped reference evidence digest both matched. Generated time, absolute paths, staging UUID, stderr, server PID, and reference pixels are excluded from core. |
 | validation_command | Focused poster/operator tests and changed-scope Ruff; JSON/manifest/hash consistency; image dimensions and safe-crop visual inspection; ffprobe/full decode and transition-boundary frames; browser DOM/media/layout/folded-details/Range QA; protected OUT-03..OUT-07 and accepted-video hashes; deterministic regeneration; dashboard twice; `git diff --check`; `git ls-files episodes`. |
-| review_status | Portable implementation ready; Planner007 local package unavailable because the retained source hash differs and the accepted OUT-06 package is missing. Human visual acceptance and winner remain pending. |
-| next_action | Restore the exact fixed-hash source and complete accepted OUT-06 package, then regenerate twice and verify this host before asking the A/B/C or all-rejected question. |
+| review_status | Planner007 combined review package generated twice and locally machine-verified. Baseline human acceptance and A/B/C winner remain pending. |
+| next_action | Review the baseline first for any new anomaly, then choose A/B/C or reject all and note poster discomfort; keep rights/production/public gates closed. |
 
 Boundary flags remain false or pending:
 
