@@ -1623,40 +1623,66 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "OUT-06 accepted after bounded repair"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "paused_durable_cross_device_handoff"
+        "direction_proxy_review_ready"
     )
     assert status["current_focus"]["review_status"] == (
-        "native_shorts_cover_review_pending_paused_durable_handoff"
+        "thank_native_shorts_cover_direction_proxy_pending_human_acceptance"
     )
     assert status["current_focus"]["decision_required"] == (
-        "accept_native_shorts_cover_or_reframe"
+        "accept_thank_semantic_cover_direction_or_reframe"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "paused_durable_cross_device_handoff"
+        "human_cover_review"
     )
-    assert status["current_focus"]["human_entrypoint"] == ""
-    assert status["current_focus"]["review_open_command"] == ""
-    assert status["current_focus"]["machine_readback"] == ""
+    assert status["current_focus"]["human_entrypoint"] == (
+        "http://127.0.0.1:8071/index.html"
+    )
+    assert "out07_native_shorts_cover_direction_proxy" in (
+        status["current_focus"]["review_open_command"]
+    )
+    assert status["current_focus"]["machine_readback"].endswith(
+        "out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json"
+    )
     assert status["current_focus"]["remote_code_complete"] == "true"
-    assert status["current_focus"]["local_artifact_available"] == "false"
+    assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
+    assert status["current_focus"]["portable_entrypoint"] == ""
+    assert status["current_focus"]["exact_baseline_available"] == "false"
+    assert status["current_focus"]["accepted_baseline_status"] == (
+        "accepted_historical_fact"
+    )
+    assert status["current_focus"]["cover_direction_review_available"] == "true"
+    assert status["current_focus"]["cover_direction_acceptance"] == "pending"
+    assert status["current_focus"]["proxy_classification"] == (
+        "cover_direction_semantic_proxy"
+    )
+    assert status["current_focus"]["source_byte_equivalence_claimed"] == "false"
+    assert status["current_focus"]["review_server_status"] == (
+        "localhost_127_0_0_1_port_8071_http_200_verified"
+    )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
     assert status["current_focus"]["last_verified_host_entrypoint"] == (
         "http://127.0.0.1:8071/index.html"
     )
-    assert status["current_focus"]["pause_reason"] == (
-        "user_requested_cross_device_handoff"
-    )
+    assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
+    assert status["current_focus"]["pause_reason"] == ""
     assert status["current_focus"]["accepted_baseline_recovery_status"] == (
-        "retained_artifact_required"
+        "retained_artifact_required_for_strict_exact_route_only"
     )
     assert status["current_focus"]["cover_review_status"] == (
-        "pending_human_acceptance"
+        "thank_semantic_direction_proxy_pending_human_acceptance"
     )
-    assert all(
-        item["label"] != "OUT-07 Current Focus" for item in status["open_surfaces"]
+    current_surfaces = [
+        item
+        for item in status["open_surfaces"]
+        if item["label"] == "OUT-07 Current Focus"
+    ]
+    assert len(current_surfaces) == 1
+    assert current_surfaces[0]["target"] == "http://127.0.0.1:8071/index.html"
+    assert "out07_native_shorts_cover_direction_proxy" in (
+        current_surfaces[0]["command"]
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
         "conditional_reacquire"
@@ -1668,14 +1694,15 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18"
     )
     assert status["current_focus"]["recommended_cover_path"].endswith(
-        "out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png"
+        "out07_native_shorts_cover_direction_proxy/"
+        "native_shorts_cover_direction_proxy_1080x1920.png"
     )
     assert status["current_focus"]["recommended_cover_sha256"] == (
-        "6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174"
+        "e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da"
     )
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ("11.930")
     assert status["current_focus"]["recommended_cover_selection_status"] == (
-        "recommended_pending_human_acceptance"
+        "semantic_direction_proxy_pending_human_acceptance"
     )
     assert status["current_focus"]["artifact_id"] == (
         "clip-out07-shorts-poster-frame-direction-proof-v0-001"

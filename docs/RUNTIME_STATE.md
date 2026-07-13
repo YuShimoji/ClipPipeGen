@@ -3,59 +3,71 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF
-progress_pct: 92
-last_touched: 2026-07-13
-state_revision: out07-paused-durable-cross-device-handoff-2026-07-13
+health: OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY
+progress_pct: 94
+last_touched: 2026-07-14
+state_revision: out07-thank-native-shorts-cover-direction-proxy-review-ready-2026-07-14
 current_slice: OUT-07
-phase: paused_durable_cross_device_handoff
-canonical_status: paused_durable_cross_device_handoff
+phase: thank_native_shorts_cover_direction_proxy_review
+canonical_status: direction_proxy_review_ready
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 paused durable cross-device handoff
-human_entrypoint: null
-review_open_command: null
-review_server_restart_command: null
-machine_readback: null
+current_title: OUT-07 Thank native Shorts cover direction proxy review
+human_entrypoint: http://127.0.0.1:8071/index.html
+portable_entrypoint: null
+review_open_command: "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_native_shorts_cover_direction_proxy\\open_preview.ps1 -Port 8071"
+review_server_restart_command: "uvx python -m src.cli.serve_review --root episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy --port 8071"
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: accept_native_shorts_cover_or_reframe
-review_status: native_shorts_cover_review_pending_paused_durable_handoff
-review_scope: Decide only whether the accepted-video frame plus its existing burn-in subtitle works as the Shorts list cover; baseline, metadata, rights, production, and publishing are not re-questioned.
-review_ready_at: 2026-07-13
+decision_required: accept_thank_semantic_cover_direction_or_reframe
+review_status: thank_native_shorts_cover_direction_proxy_pending_human_acceptance
+review_scope: Decide only whether the Thank source revision frame at the mapped timestamp, existing sub_010 presentation, crop, expression, and list appearance work as the Shorts cover direction; baseline bytes, tempo, full subtitle track, metadata, rights, production, and publishing are not re-reviewed.
+review_ready_at: 2026-07-14
 remote_code_complete: true
-local_artifact_available: false
+local_artifact_available: true
 portable_local_artifact_available: false
 cross_machine_resume_class: conditional_reacquire
 active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
-evidence_revision: planner007-e2206cef-20260525
-last_verified_host: DESKTOP-U9P4LKJ
-last_verified_host_label: Planner007
-local_artifact_evidence_receipt: null
-local_package_requirement: retained_artifact_required_on_other_host
+evidence_revision: thank-6f78657e-native-cover-direction-proxy-v1
+last_verified_host: DESKTOP-H53P1T4
+last_verified_host_label: Thank
+local_verified_host: DESKTOP-H53P1T4
+local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/determinism_receipt.json
+local_package_requirement: thank_known_source_and_caption_authority_required_for_semantic_proxy_rebuild
 historical_fixed_input_packages: private_only_not_required_for_revision_rebuild
 local_reference_cache_status: tracked_corpus_observation_only_no_pixel_fetch
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-13
+last_verified_at: 2026-07-14
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
-pause_reason: user_requested_cross_device_handoff
-accepted_baseline_recovery_status: retained_artifact_required
-cover_review_status: pending_human_acceptance
-server_shutdown_status: stopped_target_out07_server_pid_41872_port_8071_released
-next_review_due: paused_durable_cross_device_handoff
-next_action: On the next host, verify the exact accepted baseline SHA before any visual review; then a human may ACCEPT or REFRAME the native Shorts cover. Do not reopen old A/B/C.
+pause_reason: null
+exact_baseline_available: false
+accepted_baseline_status: accepted_historical_fact
+accepted_baseline_recovery_status: retained_artifact_required_for_strict_exact_route_only
+cover_direction_review_available: true
+cover_direction_acceptance: pending
+cover_review_status: thank_semantic_direction_proxy_pending_human_acceptance
+review_server_status: localhost_127_0_0_1_port_8071_http_200_verified
+next_review_due: human_cover_review
+next_action: このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
-current_review_component: accepted_baseline_plus_one_native_shorts_cover_and_operator_readback
-current_baseline_acceptance: explicit_planner007_acceptance_2026_07_13_jst
+current_review_component: thank_source_revision_single_semantic_direction_proxy_and_readback
+current_baseline_acceptance: accepted_historical_fact_planner007_2026_07_13_jst_not_reopened
 accepted_baseline_sha256: 2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18
-recommended_cover_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png
-recommended_cover_sha256: 6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174
+recommended_cover_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png
+recommended_cover_sha256: e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da
 recommended_cover_timestamp_seconds: 11.930
-recommended_cover_selection_status: recommended_pending_human_acceptance
+recommended_cover_source_timestamp_seconds: 22.858
+recommended_cover_actual_decode_seconds: 22.866667
+recommended_cover_selection_status: semantic_direction_proxy_pending_human_acceptance
+proxy_classification: cover_direction_semantic_proxy
+local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
+planner_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
+source_byte_equivalence_claimed: false
 current_reference_revision: tracked_corpus_observation_only_no_third_party_pixels
-current_determinism_status: same_fixed_inputs_two_build_core_and_package_digests_match_manifest_passed
+current_determinism_status: thank_proxy_same_fixed_inputs_two_build_all_files_match_manifest_passed
 historical_source_host_out07_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 historical_source_host_out07_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
 historical_source_host_operator_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
@@ -142,57 +154,55 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-07 Paused Durable Cross-Device Handoff
+## Current OUT-07 Thank Native Shorts Cover Direction Proxy Review
 
-Planner007 explicitly accepted the current 38.633333-second vertical baseline
-on 2026-07-13 JST. The accepted SHA-256 is
-`2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`;
-the accepted scope is content/narrative, tempo, cut continuity, A/V continuity,
-subtitle timing/readability, and visual integrity. This is a new explicit
-acceptance of the current bytes, not inheritance from historical OUT-06.
-Rights, production, public/publishing, upload/visibility, and made-for-kids
-remain outside that acceptance.
+Thank の既知 source revision
+`6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`
+から、同一 provider identity、source `22.858` 秒、sequence `11.930` 秒、
+`cut_003`、`sub_010` の対応を検証した単一 1080x1920 cover direction
+proxy を生成した。Planner source revision
+`e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`
+との byte equivalence は主張しない。要求時刻に最も近い 30fps frame は
+`22.866667` 秒で、差分 `+0.008667` 秒は同じ subtitle cue 内に収まる。
 
-The active artifact ID and review directory stay unchanged. The package now
-copies the accepted MP4 byte-for-byte and verifies its SHA before and after;
-it never renders, remuxes, transcodes, edits, or retimes the baseline. The only
-recommended cover is the accepted video's 11.930-second frame, which already
-contains the one-line `sub_010` burn-in subtitle. No extra headline, logo, CTA,
-background replacement, mask, cutout, collage, or third-party pixel is used.
-The 9:16 PNG hash is
-`6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`.
+proxy は既存の source-derived 9:16 reframe、Keifont、subtitle presentation
+を再利用し、実映像 frame と既存 `sub_010` だけを提示する。poster 固有の
+抽象背景、追加見出し、mask、collage、第三者 pixel は加えていない。
+proxy PNG SHA-256 は
+`e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`。
+Planner 側の既知 cover／frame hash とは一致しない。local source frame の
+scene と cue/timing/caption authority は実画像と契約から直接確認したが、
+Planner pixels は Thank にないため、同一 provider identity と mapping に
+基づく semantic continuity は推定で、Planner との pixel equivalence は
+unknown である。したがって分類は `cover_direction_semantic_proxy` とする。
+これは視覚方向の判断材料であり、accepted baseline bytes の再構成物でも
+代替物でもない。
 
-Three timestamps were compared internally, but only the recommended frame is
-exported. The previous A/B/C are
-`superseded_by_user_short_context_reframe`: this is not a quality rejection,
-and they must not be offered for selection again. Historical context/tension/
-payoff directions remain separately `user_rejected`. The title, description,
-tags, and evidence trace are carried unchanged into the operator readback;
-`selected_thumbnail=null`, `selected_by_human=false`, and
-`publish_ready=false`, with every external-action gate closed and every
-attempt flag false.
+Planner007 が 2026-07-13 JST に受理した baseline SHA-256
+`2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
+は historical accepted fact のまま維持するが、Thank には存在しない。
+`exact_baseline_available=false` と
+`cover_direction_review_available=true` を分離して扱う。strict exact route
+の SHA／size／duration／byte-copy／acceptance inheritance gate は変更して
+おらず、その route の再実行には exact bytes の復旧が必要である。
 
-The tracked rebuild contract now stores 29 subtitle timing/segment/hash rows
-and six wrap break-index lists without caption plaintext. Actual text must come
-from the ignored official-caption authority or be reacquired; if absent the
-route stops with `caption_authority_reacquire_required`. A different host must
-also restore the exact accepted baseline artifact and pass its SHA/size gate;
-the active route is not allowed to rerender it. Cross-machine resume is
-therefore `conditional_reacquire`, and its real proof remains H2 successor
-work. Earlier commits may still contain the former plaintext snapshot; no
-history scrub is claimed.
+official caption 全体 SHA、caption payload digest、`sub_010` の text hash、
+timing、segment、cut mapping は tracked hash-only contract と一致した。
+caption plaintext は tracked docs／JSON に追加していない。二回の
+fixed-input build は全 package files で一致し、core digest
+`deb93e2f03286e5e670881836e05ae3ab27a1004a03d33fe9ffffd41542ac652`
+と package digest
+`0eeb4958a65425c7ed742852ae5918bf0bc049e4e936feeba39ddae614032832`
+を記録した。manifest inventory と self-integrity も通過した。
 
-Two fixed-input builds produced matching core digest
-`35d91185...e05f6` and package digest `a849d66d...43303`; manifest hashes and
-self-integrity also pass. Those bytes are last-verified-host evidence only.
-The Planner007 localhost server was stopped for this handoff, so the URL
-`http://127.0.0.1:8071/index.html` is not a portable entrypoint.
-
-The next human decision remains whether to ACCEPT or REFRAME the native Shorts
-cover, but H1 must wait until a host restores the exact accepted baseline and
-passes the SHA gate. Missing baseline bytes stop as
-`accepted_baseline_reacquire_required`; missing official captions stop as
-`caption_authority_reacquire_required`.
+Thank の local review entrypoint は
+`http://127.0.0.1:8071/index.html`。portable entrypoint はなく、この ignored
+package は同端末の host receipt である。review page は一覧縮小、single
+proxy、Shorts UI overlap、center 4:5、mapped source frame、折り畳み証跡の
+順で、baseline video や旧候補を表示しない。人間への一問は次の通り：
+「このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。」
+ACCEPT でも baseline bytes、A/V、rights、production、public/publishing へ
+受入は波及しない。
 
 ## Accepted OUT-06 Complete Narrative Short After Bounded Repair
 

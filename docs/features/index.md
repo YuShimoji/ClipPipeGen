@@ -6,30 +6,36 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-07`
 - artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF`
+- state: `OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
 - canonical baseline: `OUT-06 accepted after bounded repair`
-- canonical status: `paused_durable_cross_device_handoff`
-- review status: `native_shorts_cover_review_pending_paused_durable_handoff`
+- canonical status: `direction_proxy_review_ready`
+- review status: `thank_native_shorts_cover_direction_proxy_pending_human_acceptance`
 - remote code complete: `true`
-- local artifact available: `false`
+- local artifact available: `true`
 - portable local artifact available: `false`
+- portable entrypoint: ``
+- exact baseline available: `false`
+- accepted baseline status: `accepted_historical_fact`
+- cover direction review available: `true`
+- cover direction acceptance: `pending`
+- proxy classification: `cover_direction_semantic_proxy`
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `http://127.0.0.1:8071/index.html`
-- pause reason: `user_requested_cross_device_handoff`
-- accepted baseline recovery: `retained_artifact_required`
-- cover review status: `pending_human_acceptance`
+- pause reason: ``
+- accepted baseline recovery: `retained_artifact_required_for_strict_exact_route_only`
+- cover review status: `thank_semantic_direction_proxy_pending_human_acceptance`
 - cross-machine resume: `conditional_reacquire`
 - active rebuild contract: `artifacts/ACTIVE_REBUILD.json`
-- evidence revision: `planner007-e2206cef-20260525`
+- evidence revision: `thank-6f78657e-native-cover-direction-proxy-v1`
 - accepted baseline SHA-256: `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
-- recommended cover: `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png`
-- recommended cover SHA-256: `6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174`
+- recommended cover: `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png`
+- recommended cover SHA-256: `e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`
 - recommended cover timestamp: `11.930`
-- recommended cover selection: `recommended_pending_human_acceptance`
-- decision required: `accept_native_shorts_cover_or_reframe`
-- next review: `paused_durable_cross_device_handoff`
+- recommended cover selection: `semantic_direction_proxy_pending_human_acceptance`
+- decision required: `accept_thank_semantic_cover_direction_or_reframe`
+- next review: `human_cover_review`
 
 ## Feature Table
 

@@ -6,16 +6,16 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-07 note: Planner007 explicitly accepted the current 38.633333-second
-baseline (`2c1c59bc...2d18`) on 2026-07-13 JST. The active ignored review
-package preserves those bytes unchanged and recommends one actual 11.930-second
-vertical-video frame with its existing burn-in subtitle as the Shorts list
-cover. The former active A/B/C are superseded by this Shorts-context reframe,
-not quality-rejected, and are not returned for selection. The current tracked
-state is paused for durable cross-device handoff; a next host must restore the
-exact baseline before visual review. Only cover-direction acceptance remains
-open; metadata, upload, public readiness, rights, production, visibility,
-made-for-kids, and publishing remain closed or pending. See
+OUT-07 note: Thank の既知 source revision から、source 22.858 秒／sequence
+11.930 秒／`cut_003`／`sub_010` を照合した単一 native Shorts cover direction
+proxy を生成済み。Planner の既知 pixel hash とは一致しないため分類は
+`cover_direction_semantic_proxy` で、`http://127.0.0.1:8071/index.html` は
+Thank 端末だけの review entrypoint である。Planner007 が受理した exact
+baseline (`2c1c59bc...2d18`) は historical accepted fact のままだが Thank
+には存在せず、strict exact route の SHA／size／byte-copy gate も変更して
+いない。人間が判断するのはこの cover 方向だけで、baseline、metadata、
+upload、public readiness、rights、production、visibility、made-for-kids、
+publishing は再審査せず閉鎖または pending のまま。See
 [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
 
 OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the

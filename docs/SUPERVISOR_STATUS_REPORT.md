@@ -1,10 +1,53 @@
-# Planner007 OUT-07 host receipt — 2026-07-13
+# Thank OUT-07 semantic direction proxy host receipt — 2026-07-14
 
 This is a non-authoritative host receipt. The portable current state and next
-action remain in [RUNTIME_STATE.md](RUNTIME_STATE.md); this page records what
-the supervising host last verified before the requested cross-device pause.
-The durable handoff target state is
-`OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF`.
+action remain in [RUNTIME_STATE.md](RUNTIME_STATE.md). The current host verified
+state is `OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`.
+
+Thank has the known source SHA
+`6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`
+and official caption SHA
+`3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919`.
+The separate semantic proxy route validated provider `7J5aS_pcBj4`, source
+`22.858s`, nearest decoded frame `22.866667s`, sequence `11.930s`, `cut_003`,
+and `sub_010`, then reused the established vertical reframe, Keifont, and
+subtitle treatment. It did not add an abstract poster background, headline,
+mask, collage, or third-party pixel.
+
+The output is
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/`.
+The proxy PNG SHA is
+`e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`.
+Its source and proxy fingerprints differ from the Planner-known fingerprints,
+so the classification is `cover_direction_semantic_proxy`, not exact or
+pixel-equivalent. Local scene/cue/timing evidence was directly observed;
+continuity to Planner is inferred from provider identity and authoritative
+mapping because Planner pixels are unavailable on Thank. Two consecutive builds matched every package byte; core and
+package digests are `deb93e2f...652` and `0eeb4958...832`, with manifest
+inventory and self-integrity passing.
+
+The local entrypoint is `http://127.0.0.1:8071/index.html` on
+`DESKTOP-H53P1T4`; it is not portable. The page presents list preview, one
+1080x1920 proxy, UI overlap, 4:5 crop, mapped source frame, folded evidence, and
+one question. It contains no exact baseline video or former candidate set.
+
+Planner007's accepted baseline SHA `2c1c59bc...2d18` remains an accepted
+historical fact but is absent on Thank. The strict exact route is unchanged and
+still requires its exact SHA/size/duration and byte-copy acceptance gate. The
+proxy is only a cover-direction decision surface. Rights, production,
+public/publishing, upload, metadata mutation, visibility, made-for-kids, and
+all external actions remain pending, false, closed, or unattempted.
+
+The one pending human question is:
+
+> このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。
+
+---
+
+# Historical Planner007 OUT-07 host receipt — 2026-07-13
+
+The section below records what Planner007 verified before the cross-device
+pause. It is lineage evidence, not the current Thank entrypoint.
 
 ## What is true on this host
 

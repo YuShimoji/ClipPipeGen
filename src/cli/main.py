@@ -50,6 +50,7 @@ Subcommands:
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
     reconstitute-out07-review OUT-07: current media revision -> baseline-first combined poster review.
+    build-out07-direction-proxy OUT-07: Thank source -> one native-cover direction proxy.
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
@@ -84,6 +85,7 @@ from . import (
     build_external_source_registry,
     build_output_layer_gap_report,
     build_operator_delivery_pack,
+    build_out07_direction_proxy,
     build_shorts_poster_frame_proof,
     reconstitute_out07_review,
     build_selected_cut_proof,
@@ -172,6 +174,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-shorts-poster-frame-proof": build_shorts_poster_frame_proof.run,
     "reconstitute-out07-review": reconstitute_out07_review.run,
+    "build-out07-direction-proxy": build_out07_direction_proxy.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,

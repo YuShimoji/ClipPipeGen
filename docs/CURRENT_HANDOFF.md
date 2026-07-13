@@ -2,47 +2,58 @@
 id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
-status: paused_durable_handoff
-health: OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF
-progress_pct: 92
-last_touched: 2026-07-13
+status: review_ready
+health: OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY
+progress_pct: 94
+last_touched: 2026-07-14
 current_slice: OUT-07
-phase: paused_durable_cross_device_handoff
-canonical_status: paused_durable_cross_device_handoff
+phase: thank_native_shorts_cover_direction_proxy_review
+canonical_status: direction_proxy_review_ready
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 paused durable cross-device handoff
-human_entrypoint: null
-review_open_command: null
-machine_readback: null
-operator_readback: null
-decision_required: accept_native_shorts_cover_or_reframe
-review_status: native_shorts_cover_review_pending_paused_durable_handoff
+current_title: OUT-07 Thank native Shorts cover direction proxy review
+human_entrypoint: http://127.0.0.1:8071/index.html
+portable_entrypoint: null
+review_open_command: "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_native_shorts_cover_direction_proxy\\open_preview.ps1 -Port 8071"
+review_server_restart_command: "uvx python -m src.cli.serve_review --root episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy --port 8071"
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json
+operator_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json
+decision_required: accept_thank_semantic_cover_direction_or_reframe
+review_status: thank_native_shorts_cover_direction_proxy_pending_human_acceptance
 remote_code_complete: true
-local_artifact_available: false
+local_artifact_available: true
 portable_local_artifact_available: false
 cross_machine_resume_class: conditional_reacquire
 active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
-evidence_revision: planner007-e2206cef-20260525
+evidence_revision: thank-6f78657e-native-cover-direction-proxy-v1
+exact_baseline_available: false
+accepted_baseline_status: accepted_historical_fact
 accepted_baseline_sha256: 2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18
-recommended_cover_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/native_shorts_cover_1080x1920.png
-recommended_cover_sha256: 6d8cf92ae49658a9eacb98e7a6e584aa69d2a4ecbb56b553c93eec69e6a3a174
+cover_direction_review_available: true
+cover_direction_acceptance: pending
+recommended_cover_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png
+recommended_cover_sha256: e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da
 recommended_cover_timestamp_seconds: 11.930
-recommended_cover_selection_status: recommended_pending_human_acceptance
-last_verified_host: DESKTOP-U9P4LKJ
-last_verified_host_label: Planner007
+recommended_cover_source_timestamp_seconds: 22.858
+recommended_cover_actual_decode_seconds: 22.866667
+recommended_cover_selection_status: semantic_direction_proxy_pending_human_acceptance
+proxy_classification: cover_direction_semantic_proxy
+local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
+planner_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
+source_byte_equivalence_claimed: false
+last_verified_host: DESKTOP-H53P1T4
+last_verified_host_label: Thank
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
-local_artifact_evidence_receipt: null
-pause_reason: user_requested_cross_device_handoff
-accepted_baseline_recovery_status: retained_artifact_required
-cover_review_status: pending_human_acceptance
-server_shutdown_status: stopped_target_out07_server_pid_41872_port_8071_released
+local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/determinism_receipt.json
+accepted_baseline_recovery_status: retained_artifact_required_for_strict_exact_route_only
+cover_review_status: thank_semantic_direction_proxy_pending_human_acceptance
+review_server_status: localhost_127_0_0_1_port_8071_http_200_verified
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-next_review_due: paused_durable_cross_device_handoff
-next_action: On the next host, verify the exact accepted baseline SHA before any visual review; then a human may ACCEPT or REFRAME the native Shorts cover. Do not reopen old A/B/C.
+next_review_due: human_cover_review
+next_action: このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 source_of_truth: false
 owner_lane: shared_infra
@@ -53,78 +64,70 @@ related: docs/RUNTIME_STATE.md, artifacts/ACTIVE_REBUILD.json, artifacts/ARTIFAC
 
 ## What This Is
 
-This is the short re-entry note for the active OUT-07 branch. The authoritative
-state is [RUNTIME_STATE.md](RUNTIME_STATE.md), and the cross-machine recovery
-contract is [ACTIVE_REBUILD.json](../artifacts/ACTIVE_REBUILD.json). The only
-pending human judgement is the native Shorts cover direction.
+これは active OUT-07 branch の短い再開メモである。現在地の正本は
+[RUNTIME_STATE.md](RUNTIME_STATE.md)、hash-only rebuild contract は
+[ACTIVE_REBUILD.json](../artifacts/ACTIVE_REBUILD.json)。いま人間が判断できる
+対象は Thank source revision から作った単一 Shorts cover 方向だけである。
 
 ## Current State
 
-Planner007 explicitly accepted the current vertical baseline on 2026-07-13
-JST for content/narrative, timing/tempo, cut continuity, A/V continuity,
-subtitle timing/readability, and visual integrity. Its SHA-256 is
+Thank の既知 source SHA
+`6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`
+と official caption SHA
+`3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919`
+を照合し、source `22.858` 秒（actual decode `22.866667` 秒）、sequence
+`11.930` 秒、`cut_003`、`sub_010` の対応から単一 proxy を生成した。
+Planner source SHA との byte equivalence は主張しない。Planner の既知
+cover／frame hash とも一致しないため、証拠分類は
+`cover_direction_semantic_proxy` である。
+
+review package は既存 9:16 reframe、font、subtitle presentation を再利用し、
+source frame と既存 subtitle だけを含む。追加 headline、poster 固有の抽象
+背景、mask、collage、第三者 pixel はない。proxy SHA-256 は
+`e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`。
+二回 build、manifest inventory、自身の hash 検査は通過した。
+
+Planner007 の exact accepted baseline SHA
 `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
-and its duration is about 38.633333 seconds. The active package copies those
-bytes without rerender, remux, transcode, edit, subtitle, audio, or timing
-changes. Historical OUT-06 acceptance is not inherited.
+は historical accepted fact のままだが、Thank には存在しない。したがって
+`exact_baseline_available=false` と
+`cover_direction_review_available=true` を混同しない。strict exact route
+の SHA／size／byte-copy／acceptance inheritance gate はそのままである。
 
-The only recommended cover is the accepted video's frame at 11.930 seconds,
-with the already-burned-in `sub_010` line. It adds no headline, logo, CTA,
-background replacement, mask, cutout, collage, invented person, or third-party
-pixel. Three timestamps were compared internally, but alternatives were not
-exported. The prior A/B/C are retained only as folded hash evidence with
-`superseded_by_user_short_context_reframe`; this is not a quality rejection and
-they must not be offered again. Historical context/tension/payoff remains
-separately `user_rejected`.
+## Review Access
 
-The unchanged title, description, tags, and evidence trace are present as
-operator readback. The recommended cover is still
-`selected_by_human=false`; `selected_thumbnail=null`, `publish_ready=false`,
-all external-action gates are closed, and all attempt flags are false.
-
-## Paused Durable Handoff
-
-The Planner007 package and media remain ignored local evidence on the last
-verified host. The target server was stopped after command-line, port, and
-served-directory verification. Do not start or reopen the localhost route as a
-portable review entrypoint.
-
-The next host may review the cover only after restoring the exact accepted
-baseline SHA. The baseline is accepted for the Planner007 media revision;
-the cover remains `recommended_pending_human_acceptance` and the next human
-decision is ACCEPT or REFRAME. The baseline SHA, metadata, source mapping,
-gates, and old A/B/C remain readback context only.
+同端末では `http://127.0.0.1:8071/index.html` を開く。package は
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/`
+にある ignored local evidence で、portable entrypoint ではない。page は
+single proxy と list／UI／4:5／mapped-source readback だけを提示し、exact
+baseline video や旧候補を再提示しない。
 
 ## Recovery Classification
 
-| Class | Contents and rule |
+| 区分 | 現在の意味 |
 |---|---|
-| tracked | builders, CLI, tests, hash-only caption/timing contract, baseline SHA/size/duration, cover timestamp/SHA/fingerprints, Runtime/Handoff/dashboard/contracts, source and caption identity/digest, recovery commands and stop gates |
-| ignored_local_retained | Planner007 source media, accepted baseline MP4, official JSON3 caption, native cover, review package, manifests/readbacks/previews, and local reference cache |
-| conditional_reacquire | YouTube source identity `7J5aS_pcBj4`, official caption authority, and lockfile dependencies; hash/digest mismatch creates a new revision and does not inherit acceptance |
-| retained_artifact_reacquire | Exact accepted baseline SHA `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`; it is not in Git and absence stops as `accepted_baseline_reacquire_required` |
-| derive | Native cover, list/UI/4:5 previews, operator readbacks, review package, and manifests only after the exact baseline is present |
-| private_only | Media bytes, caption plaintext, third-party reference pixels/cache, credentials, and OAuth information |
+| tracked | strict exact route、semantic proxy route、CLI、tests、caption/timing hash contract、state/docs |
+| ignored_local_retained | Thank source、official caption、proxy画像、review package、manifest/readback |
+| accepted historical fact | Planner exact baseline の受理事実。Thank 上の availability を意味しない |
+| retained_artifact_reacquire | strict exact route を再実行するときだけ exact accepted baseline bytes が必要 |
+| conditional_reacquire | 別端末では source／caption authority が同じ hash で揃うまで local proxy entrypoint を約束しない |
+| private_only | media bytes、caption plaintext、credentials、OAuth information |
 
 ## Next
 
-After a positive cover decision, H1 can record the final cover selection, run
-the closure/full suite, and prepare the main-branch decision. H2 is only for a
-real other-host recovery and must reacquire official captions before rebuilding
-semantic media. H3 remains rights, production, public/publishing, or external
-system work and is not authorized by this handoff.
+人間への質問は一問だけである：
+「このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。」
+
+ACCEPT または REFRAME の記録、OUT-07 closure、full suite、main 統合候補化は
+H1。retained artifact の別端末復旧は H2。rights、production、public／
+publishing、upload は H3 の個別 gate であり、この handoff は開かない。
 
 ## Constraints / Risks
 
-- `episodes/` stays ignored and untracked; the review package is retained local
-  evidence, not a Git payload.
-- The tracked contract retains subtitle IDs, timing, segment locators, hashes,
-  and wrap break indices, but no 29-line caption plaintext snapshot. Missing
-  ignored authority must stop as `caption_authority_reacquire_required`.
-- Another host must also restore the exact accepted 21,669,538-byte baseline
-  through an authorized retained-artifact channel; absence stops as
-  `accepted_baseline_reacquire_required`, and rerender is not an alternative.
-- Earlier commits may still contain the removed plaintext snapshot. This tip
-  makes no history-scrub claim.
-- Rights remain pending. Production, public/publishing, upload/visibility, and
-  made-for-kids decisions remain closed and unattempted.
+- `episodes/` は ignored／untracked のまま維持する。
+- caption plaintext は tracked docs／JSON に追加していない。別端末で authority
+  が欠ける場合は `caption_authority_reacquire_required` とする。
+- semantic proxy は accepted baseline bytes の代替でも canonical accepted
+  cover bytes の自己承認でもない。
+- cover direction の ACCEPT は baseline bytes、A/V、subtitle 全体、metadata、
+  rights、production、public／publishing へ波及しない。

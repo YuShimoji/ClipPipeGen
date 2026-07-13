@@ -133,6 +133,24 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
         "portable_local_artifact_available": runtime_state.get(
             "portable_local_artifact_available", ""
         ),
+        "portable_entrypoint": runtime_state.get("portable_entrypoint", ""),
+        "exact_baseline_available": runtime_state.get(
+            "exact_baseline_available", ""
+        ),
+        "accepted_baseline_status": runtime_state.get(
+            "accepted_baseline_status", ""
+        ),
+        "cover_direction_review_available": runtime_state.get(
+            "cover_direction_review_available", ""
+        ),
+        "cover_direction_acceptance": runtime_state.get(
+            "cover_direction_acceptance", ""
+        ),
+        "proxy_classification": runtime_state.get("proxy_classification", ""),
+        "source_byte_equivalence_claimed": runtime_state.get(
+            "source_byte_equivalence_claimed", ""
+        ),
+        "review_server_status": runtime_state.get("review_server_status", ""),
         "last_verified_host_local_artifact_available": runtime_state.get(
             "last_verified_host_local_artifact_available", ""
         ),
@@ -159,6 +177,7 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
             "recommended_cover_selection_status", ""
         ),
         "last_verified_host": runtime_state.get("last_verified_host", ""),
+        "local_verified_host": runtime_state.get("local_verified_host", ""),
         "local_artifact_evidence_receipt": runtime_state.get(
             "local_artifact_evidence_receipt", ""
         ),
@@ -350,6 +369,23 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
             "portable local artifact available",
             focus.get("portable_local_artifact_available", ""),
         ),
+        ("portable entrypoint", focus.get("portable_entrypoint", "")),
+        ("exact baseline available", focus.get("exact_baseline_available", "")),
+        ("accepted baseline status", focus.get("accepted_baseline_status", "")),
+        (
+            "cover direction review available",
+            focus.get("cover_direction_review_available", ""),
+        ),
+        (
+            "cover direction acceptance",
+            focus.get("cover_direction_acceptance", ""),
+        ),
+        ("proxy classification", focus.get("proxy_classification", "")),
+        (
+            "source byte equivalence claimed",
+            focus.get("source_byte_equivalence_claimed", ""),
+        ),
+        ("review server status", focus.get("review_server_status", "")),
         (
             "last verified host local artifact available",
             focus.get("last_verified_host_local_artifact_available", ""),
@@ -379,6 +415,7 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
             focus.get("recommended_cover_selection_status", ""),
         ),
         ("last verified host", focus.get("last_verified_host", "")),
+        ("local verified host", focus.get("local_verified_host", "")),
         (
             "local artifact evidence",
             focus.get("local_artifact_evidence_receipt", ""),
@@ -446,6 +483,12 @@ def render_features_index_markdown(status: dict[str, Any]) -> str:
         f"- remote code complete: `{status['current_focus']['remote_code_complete']}`\n"
         f"- local artifact available: `{status['current_focus']['local_artifact_available']}`\n"
         f"- portable local artifact available: `{status['current_focus']['portable_local_artifact_available']}`\n"
+        f"- portable entrypoint: `{status['current_focus']['portable_entrypoint']}`\n"
+        f"- exact baseline available: `{status['current_focus']['exact_baseline_available']}`\n"
+        f"- accepted baseline status: `{status['current_focus']['accepted_baseline_status']}`\n"
+        f"- cover direction review available: `{status['current_focus']['cover_direction_review_available']}`\n"
+        f"- cover direction acceptance: `{status['current_focus']['cover_direction_acceptance']}`\n"
+        f"- proxy classification: `{status['current_focus']['proxy_classification']}`\n"
         f"- last verified host local artifact available: `{status['current_focus']['last_verified_host_local_artifact_available']}`\n"
         f"- last verified host entrypoint: `{status['current_focus']['last_verified_host_entrypoint']}`\n"
         f"- pause reason: `{status['current_focus']['pause_reason']}`\n"

@@ -7,11 +7,11 @@
   "artifact_id": "clip-out07-shorts-poster-frame-direction-proof-v0-001",
   "episode_id": "jp_pilot01_hololive_bancho_20260525",
   "resume_class": "conditional_reacquire",
-  "state": "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF",
+  "state": "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY",
   "handoff": {
-    "from_state": "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_OPERATOR_PACK_REVIEW_READY",
-    "state": "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF",
-    "pause_reason": "user_requested_cross_device_handoff",
+    "from_state": "OUT07_PAUSED_DURABLE_HANDOFF_ACCEPTED_BASELINE_MISSING",
+    "state": "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY",
+    "transition_reason": "thank_local_source_revision_semantic_direction_proxy_built_and_verified",
     "portable_availability": {
       "portable_local_artifact_available": false,
       "human_entrypoint": null,
@@ -19,25 +19,23 @@
       "machine_readback": null
     },
     "last_verified_host": {
-      "host": "DESKTOP-U9P4LKJ",
-      "label": "Planner007",
+      "host": "DESKTOP-H53P1T4",
+      "label": "Thank",
       "local_artifact_available": true,
       "entrypoint": "http://127.0.0.1:8071/index.html",
-      "package_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/",
-      "server_shutdown": {
-        "pid": 41872,
-        "status": "stopped_target_out07_server",
-        "port": 8071,
-        "port_released": true
-      }
+      "portable_entrypoint": null,
+      "package_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/",
+      "review_open_command": "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_native_shorts_cover_direction_proxy\\open_preview.ps1 -Port 8071",
+      "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json"
     },
     "accepted_baseline_recovery_status": "retained_artifact_required",
     "accepted_baseline_stop_gate": "accepted_baseline_reacquire_required",
-    "cover_review_status": "pending_human_acceptance",
-    "next_human_decision": "accept_native_shorts_cover_or_reframe",
+    "cover_direction_review_available": true,
+    "cover_review_status": "thank_semantic_direction_proxy_pending_human_acceptance",
+    "next_human_decision": "accept_thank_semantic_cover_direction_or_reframe",
     "recovery_classification": {
       "tracked": [
-        "builders_cli_tests",
+        "strict_exact_and_semantic_proxy_builders_cli_tests",
         "caption_plaintext_free_rebuild_contract",
         "accepted_baseline_sha_size_duration",
         "cover_timestamp_sha_fingerprints",
@@ -49,8 +47,8 @@
         "source_media",
         "accepted_baseline_mp4",
         "official_caption_json3",
-        "native_cover_png",
-        "review_package",
+        "native_cover_and_semantic_proxy_png",
+        "strict_exact_and_semantic_proxy_review_packages",
         "manifests_readbacks_previews",
         "local_reference_cache"
       ],
@@ -82,7 +80,8 @@
     },
     "resume_ladder": [
       "remote_code_and_docs_only_resume_is_allowed",
-      "exact_baseline_sha_required_before_visual_review_or_H1",
+      "semantic_direction_proxy_review_allowed_without_exact_baseline",
+      "exact_baseline_sha_required_only_for_strict_exact_reconstitution_route",
       "official_caption_sha_or_payload_digest_required_before_semantic_rebuild",
       "missing_exact_baseline_stops_as_accepted_baseline_reacquire_required",
       "missing_caption_stops_as_caption_authority_reacquire_required",
@@ -99,6 +98,12 @@
       "sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
       "same_underlying_source_identity": true,
       "byte_equivalence_to_historical_claimed": false
+    },
+    "thank_known_historical_revision": {
+      "revision_id": "thank-6f78657e",
+      "sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+      "same_provider_identity": true,
+      "byte_equivalence_to_planner_revision_claimed": false
     }
   },
   "accepted_baseline": {
@@ -121,20 +126,96 @@
     "public_or_publishing_acceptance": false
   },
   "active_cover_direction": {
-    "kind": "accepted_vertical_video_frame_plus_existing_burn_in_subtitle_only",
+    "kind": "thank_source_frame_plus_existing_subtitle_semantic_direction_proxy",
     "baseline_seconds": 11.93,
     "source_seconds": 22.858,
+    "actual_decode_seconds": 22.866667,
     "subtitle_id": "sub_010",
     "baseline_frame_fingerprint_sha256": "d2187bfb68f14b2eebfea2249061c7130a5bc5a6e25fbb0d5592782c9cb33062",
-    "source_frame_fingerprint_sha256": "c44c9258b165dda344dab75a68e9f8ee0a0b0c265f2264492275da0de74b64d3",
+    "planner_source_frame_fingerprint_sha256": "c44c9258b165dda344dab75a68e9f8ee0a0b0c265f2264492275da0de74b64d3",
+    "thank_source_frame_fingerprint_sha256": "905a45b5d27e1bb58e01841ad66cc7ebc51f470db952656c51341a3b2b6df87a",
+    "thank_proxy_frame_fingerprint_sha256": "a1d3bfbb14eed9d629c7f8c524b2e122d1408a95ef8e9bf74a931d09ae38aeb4",
+    "thank_proxy_sha256": "e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da",
     "fingerprint_profile": "raw_rgb24_320x180_bilinear",
-    "selection_status": "recommended_pending_human_acceptance",
+    "proxy_classification": "cover_direction_semantic_proxy",
+    "semantic_continuity_is_inference": true,
+    "planner_pixel_equivalence": "unknown",
+    "evidence_revision": "thank-6f78657e-native-cover-direction-proxy-v1",
+    "exact_baseline_available": false,
+    "accepted_baseline_status": "accepted_historical_fact",
+    "cover_direction_review_available": true,
+    "selection_status": "semantic_direction_proxy_pending_human_acceptance",
     "selected_by_human": false,
     "old_active_abc_status": "superseded_by_user_short_context_reframe",
     "old_active_abc_quality_rejection": false,
     "historical_context_tension_payoff_status": "user_rejected"
   },
+  "semantic_direction_proxy": {
+    "route": "separate_from_strict_exact_reconstitution",
+    "builder": "src/integrations/render/out07_direction_proxy.py",
+    "cli": "python -m src.cli.main build-out07-direction-proxy --episode-dir episodes/jp_pilot01_hololive_bancho_20260525 --verify-determinism --format json",
+    "evidence_revision": "thank-6f78657e-native-cover-direction-proxy-v1",
+    "local_verified_host": "DESKTOP-H53P1T4",
+    "local_source_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+    "planner_source_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
+    "byte_equivalence_claimed": false,
+    "caption_sha256": "3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919",
+    "proxy_classification": "cover_direction_semantic_proxy",
+    "output_directory": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/",
+    "human_entrypoint": "http://127.0.0.1:8071/index.html",
+    "portable_entrypoint": null,
+    "machine_readback": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json",
+    "proxy_sha256": "e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da",
+    "deterministic_core_digest": "deb93e2f03286e5e670881836e05ae3ab27a1004a03d33fe9ffffd41542ac652",
+    "package_digest": "0eeb4958a65425c7ed742852ae5918bf0bc049e4e936feeba39ddae614032832",
+    "exact_baseline_available": false,
+    "accepted_baseline_status": "accepted_historical_fact",
+    "cover_direction_review_available": true,
+    "cover_direction_acceptance": "pending",
+    "source_frame_only": true,
+    "existing_subtitle_only": true,
+    "poster_added_abstract_background": false,
+    "poster_added_auxiliary_text": false,
+    "masks_used": false,
+    "collage_used": false,
+    "third_party_pixels_used": false,
+    "rights_status": "pending",
+    "production_acceptance": false,
+    "public_or_publishing_acceptance": false,
+    "all_external_attempts": false,
+    "required_outputs": [
+      "native_shorts_cover_direction_proxy_1080x1920.png",
+      "cover_list_preview.jpg",
+      "cover_shorts_ui_overlay_preview.jpg",
+      "cover_center_4x5.jpg",
+      "mapped_source_frame_1920x1080.png",
+      "cover_direction_proxy_readback.json",
+      "deterministic_core_readback.json",
+      "determinism_receipt.json",
+      "combined_review_manifest.json",
+      "index.html",
+      "open_preview.ps1",
+      "serve_preview.ps1"
+    ]
+  },
+  "strict_exact_route": {
+    "builder": "src/integrations/render/out07_native_cover.py",
+    "accepted_baseline_sha256": "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18",
+    "accepted_baseline_byte_size": 21669538,
+    "accepted_baseline_duration_seconds": 38.633333,
+    "byte_copy_only": true,
+    "acceptance_inheritance_requires_exact_hash": true,
+    "available_on_thank": false,
+    "validation_weakened": false
+  },
   "dependencies": [
+    {
+      "id": "tracked_semantic_direction_proxy_builder",
+      "recovery_class": "tracked",
+      "required": true,
+      "locator": "src/integrations/render/out07_direction_proxy.py",
+      "produced_by": "git clone or git pull"
+    },
     {
       "id": "tracked_native_cover_builder",
       "recovery_class": "tracked",
@@ -170,6 +251,14 @@
       "locator": "youtube:7J5aS_pcBj4",
       "expected_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
       "produced_by": "fetch-source-video --mode yt-dlp-video"
+    },
+    {
+      "id": "thank_known_historical_source_revision",
+      "recovery_class": "ignored_local_retained",
+      "required_for_semantic_direction_proxy": true,
+      "locator": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+      "expected_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+      "byte_equivalence_to_planner_revision_claimed": false
     },
     {
       "id": "official_caption_track",

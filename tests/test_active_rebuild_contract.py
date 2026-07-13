@@ -32,11 +32,10 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
     assert contract["episode_id"] == "jp_pilot01_hololive_bancho_20260525"
     assert contract["resume_class"] == "conditional_reacquire"
     assert contract["state"] == (
-        "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF"
+        "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY"
     )
     assert contract["handoff"]["from_state"] == (
-        "OUT07_REINSTANTIATED_BASELINE_ACCEPTED_NATIVE_SHORTS_COVER_"
-        "OPERATOR_PACK_REVIEW_READY"
+        "OUT07_PAUSED_DURABLE_HANDOFF_ACCEPTED_BASELINE_MISSING"
     )
     assert contract["source_identity"]["provider_id"] == "7J5aS_pcBj4"
     assert contract["source_identity"]["current_media_revision"]["sha256"] == (
@@ -54,11 +53,18 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
 
     cover = contract["active_cover_direction"]
     assert cover["kind"] == (
-        "accepted_vertical_video_frame_plus_existing_burn_in_subtitle_only"
+        "thank_source_frame_plus_existing_subtitle_semantic_direction_proxy"
     )
     assert cover["baseline_seconds"] == 11.93
     assert cover["subtitle_id"] == "sub_010"
-    assert cover["selection_status"] == "recommended_pending_human_acceptance"
+    assert cover["selection_status"] == (
+        "semantic_direction_proxy_pending_human_acceptance"
+    )
+    assert cover["proxy_classification"] == "cover_direction_semantic_proxy"
+    assert cover["semantic_continuity_is_inference"] is True
+    assert cover["planner_pixel_equivalence"] == "unknown"
+    assert cover["exact_baseline_available"] is False
+    assert cover["cover_direction_review_available"] is True
     assert cover["selected_by_human"] is False
     assert cover["old_active_abc_status"] == (
         "superseded_by_user_short_context_reframe"
@@ -70,6 +76,28 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
         "mapped_source_frame_1920x1080.png",
         "operator_delivery_readback.json",
     } <= required
+
+    proxy = contract["semantic_direction_proxy"]
+    assert proxy["route"] == "separate_from_strict_exact_reconstitution"
+    assert proxy["local_source_sha256"] == (
+        "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a"
+    )
+    assert proxy["planner_source_sha256"] == EXPECTED_SOURCE_SHA256
+    assert proxy["byte_equivalence_claimed"] is False
+    assert proxy["caption_sha256"] == EXPECTED_CAPTION_SHA256
+    assert proxy["proxy_classification"] == "cover_direction_semantic_proxy"
+    assert proxy["exact_baseline_available"] is False
+    assert proxy["accepted_baseline_status"] == "accepted_historical_fact"
+    assert proxy["cover_direction_review_available"] is True
+    assert proxy["cover_direction_acceptance"] == "pending"
+    assert proxy["portable_entrypoint"] is None
+
+    strict = contract["strict_exact_route"]
+    assert strict["accepted_baseline_sha256"] == EXPECTED_BASELINE_SHA256
+    assert strict["byte_copy_only"] is True
+    assert strict["acceptance_inheritance_requires_exact_hash"] is True
+    assert strict["available_on_thank"] is False
+    assert strict["validation_weakened"] is False
 
 
 def test_caption_contract_is_hash_only_and_conditionally_reacquired() -> None:
@@ -162,14 +190,18 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_conditional_reacquire_review_state() -> None:
+def test_runtime_points_to_thank_semantic_proxy_review_state() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: false" in runtime
+    assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: null" in runtime
-    assert "review_open_command: null" in runtime
+    assert "human_entrypoint: http://127.0.0.1:8071/index.html" in runtime
+    assert "portable_entrypoint: null" in runtime
+    assert "out07_native_shorts_cover_direction_proxy" in runtime
     assert "cross_machine_resume_class: conditional_reacquire" in runtime
-    assert "OUT07_NATIVE_SHORTS_COVER_REVIEW_PENDING_PAUSED_DURABLE_HANDOFF" in runtime
+    assert "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY" in runtime
+    assert "exact_baseline_available: false" in runtime
+    assert "accepted_baseline_status: accepted_historical_fact" in runtime
+    assert "cover_direction_review_available: true" in runtime

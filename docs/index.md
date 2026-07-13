@@ -15,16 +15,13 @@ around workflow decisions, not only around file names.
 
 Current focus is `OUT-07` on
 `codex/out-07-internal-operator-delivery-pack-v0`. The active review artifact is
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`. Planner007 explicitly
-accepted the current 38.633333-second baseline on 2026-07-13 JST. The last
-verified Planner007 package byte-copies that accepted MP4 and recommends one
-11.930-second frame with its existing burn-in subtitle, with list-scale,
-Shorts-UI overlap, 9:16, center-4:5, and mapped-source comparison readbacks.
-The former active A/B/C are non-returnable
-`superseded_by_user_short_context_reframe` evidence; older `context`,
-`tension`, and `payoff` remain separately `user_rejected`. No cover is selected
-by a human yet, and the current state is paused for durable cross-device
-handoff.
+`clip-out07-shorts-poster-frame-direction-proof-v0-001`. Thank の既知 source
+revision から、source `22.858s`／sequence `11.930s`／`cut_003`／`sub_010`
+を照合した単一 cover direction proxy が local review-ready になった。
+Planner-known pixel hash とは一致しないため分類は
+`cover_direction_semantic_proxy`。Planner007 の exact accepted baseline は
+historical accepted fact のままだが Thank には存在せず、strict exact route
+も変更していない。人間判断はこの proxy の cover 方向だけである。
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
 Canonical `main` is the OUT-06 accepted-after-bounded-repair baseline. OUT-07
@@ -66,7 +63,7 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| Last-verified Planner007 command (not current) | OUT-07 accepted-baseline＋native Shorts-cover review | The prior host package used `open_preview.ps1 -Serve -Port 8071`; its server is stopped. Another machine must restore the exact accepted baseline, conditionally reacquire caption authority, rebuild from `artifacts/ACTIVE_REBUILD.json`, and verify its own ignored package before visual review. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_native_shorts_cover_direction_proxy\open_preview.ps1 -Port 8071` | Thank OUT-07 semantic cover direction proxy | Opens the local-only single-direction page. It is not an exact-baseline or portable entrypoint. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 predecessor operator pack | Reopen the port-8070 metadata/video provenance pack only when predecessor evidence is needed; its rejected 16:9 directions are not current candidates. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored accepted OUT-04 editorial sequence | Reopen the accepted single 11.678-second `cut_001 -> cut_002` sequence if predecessor evidence is needed. |
@@ -87,11 +84,10 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-07 is paused for durable cross-device handoff. The Planner007 baseline is
-already explicitly accepted, but a next host must restore the exact baseline
-SHA before visual review. The next human decision is only whether to ACCEPT or
-REFRAME the video-derived frame plus its existing subtitle as the Shorts list
-cover. Do not reopen title/description/tags, baseline acceptance, production/
+OUT-07 is ready for one Thank-host semantic cover-direction review even though
+the exact accepted baseline is absent. The next human decision is only whether
+to ACCEPT or REFRAME the source-derived frame plus its existing subtitle as the
+Shorts list cover direction. Do not reopen title/description/tags, baseline acceptance, production/
 public use, thumbnail upload, metadata publication, visibility, made-for-kids,
 publishing, upload, or rights approval.
 Use the dashboard to return to tracked project context. A good docs update should make
