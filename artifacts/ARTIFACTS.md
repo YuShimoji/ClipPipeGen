@@ -6,9 +6,10 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-07 is parked;
-its Thank native Shorts-cover semantic direction proxy below is historical local
-evidence, not an active review or a selected thumbnail. Historical
+current artifact, then use an artifact-specific launcher. OUT-08 is the active
+same-machine two-video review. OUT-07 is parked; its Thank native Shorts-cover
+semantic direction proxy below is historical local evidence, not an active
+review or a selected thumbnail. Historical
 ED-10 proof launchers remain retained evidence; for the accepted ED-10o focused
 comparison reference, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`;
@@ -16,6 +17,47 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out08-real-unused-range-short-minibatch-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-08 Real Unused-Range Vertical Shorts Mini-Batch v0 |
+| purpose | Turn previously unused real source ranges into two content-distinct vertical Shorts candidates on one direct-play review page, so a human can judge each as a whole editing unit without reopening thumbnail work. |
+| storage class | Tracked builder/CLI/tests/contract plus one ignored same-machine package. Source media, generated MP4/ASS/SRT/JPG, plan/readback/manifest, and page remain outside Git under `episodes/`. |
+| repo_relative_path | `src/integrations/render/real_unused_range_short_minibatch.py`; `src/cli/build_real_unused_range_short_minibatch.py`; `docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` |
+| local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/` |
+| machine_output | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_readback.json` |
+| scan_readback | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_scan_readback.json` |
+| candidate_plan | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_plan.json` |
+| batch_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json`; all 16 non-manifest package payloads byte-hashed; self-integrity `219e709f4f88e69e09893a782a761bfd51f84ffdb09eea7b0428af78733a102d`. |
+| state | `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`; target `2`, minimum `1`, actual `2`; human review pending. |
+| source_inputs | YouTube ID `7J5aS_pcBj4`; source video SHA-256 `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`; source audio SHA-256 `46e4bc9e26d52ed8f83b0b4088ddcd6ddac5a873fa1bb4a440c209834f026671`; official caption SHA-256 `3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919`; current edit/cut authority read without mutation. |
+| candidate_01 | `cut_004` `50.868–60.277` + `cut_005` `60.277–79.163`; semantic `28.295s`, media `28.266667s`, 17 subtitles; MP4 SHA-256 `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`. |
+| candidate_02 | `cut_006` tail `81.298–98.315` + `cut_007` `98.315–116.467` + `cut_008` `116.934–135.219` + dependent payoff `137.054–138.055`; semantic `54.455s`, media `54.5s`, 55 subtitles; MP4 SHA-256 `c6d3ff01624c359c1ca0030bb360eb3906e6b35a62ec439c0efb14378e9c8320`. |
+| rejected_cut_boundary | `cut_009` remains final decision `reject`; only the 1.001-second `sub_102` dependent payoff is consumed, explicitly not as cut promotion. |
+| navigation_images | `candidate_01_navigation.jpg` and `candidate_02_navigation.jpg` are final-video frames for navigation only; no headline/mask/decoration/reference pixels, and no thumbnail acceptance is claimed. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071` |
+| preview_url | `http://127.0.0.1:8071/index.html`; last verified running as PID `39652` through the exact `src.cli.serve_review` route. |
+| media_validation | Both H.264/AAC 1080x1920 30fps yuv420p faststart; full decode passed; no black interval >=0.5s; no silence interval >=1.5s at -50dB. |
+| browser_validation | Before bounded subtitle repair, both videos reached `readyState=4` with media error `null`; desktop/mobile horizontal overflow was absent and console was clean. Final repaired package returned HTTP `200` and Range `206`; native-control direct seek/currentTime advance was not observed reliably. |
+| review_status | Final media/manifest/access evidence is ready; direct playback/seek and whole-candidate tempo/boundary/subtitle/audio acceptance remain human review. Navigation images do not open a thumbnail decision. |
+| next_action | Ask only: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。 |
+
+Boundary flags remain false or pending:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `authority_mutated=false`
+- `cut009_final_cut_decision=reject`
+- `navigation_frames_are_thumbnails=false`
+- `production_candidate=false`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `rights_status=pending`
+- `public_ready=false`
+- `publishing_acceptance=false`
+- `publish_attempted=false`
 
 ## `clip-out07-shorts-poster-frame-direction-proof-v0-001`
 
@@ -42,7 +84,7 @@ opened by the root launcher.
 | historical_preview_url | Thank host receipt only: `http://127.0.0.1:8071/index.html`; review server stopped after closure. |
 | determinism | Same fixed inputs built twice with every package byte equal; core `deb93e2f...652` and package `0eeb4958...832`; manifest inventory and self-integrity pass. |
 | review_status | `PARK_PROVISIONAL_USABLE`: viable and provisionally usable for this episode, but not selected, canonical, default, reproducible, or accepted as a thumbnail system. No additional OUT-07 thumbnail iteration is allowed. Revisit only after 3–5 real Shorts exist. |
-| next_action | Ask only: このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。 |
+| next_action | Keep as parked predecessor evidence. Do not reopen OUT-07 thumbnail iteration; revisit only after 3–5 real Shorts and an explicit successor scope. |
 
 Boundary flags remain false or pending:
 

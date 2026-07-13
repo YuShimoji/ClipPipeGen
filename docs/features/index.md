@@ -4,38 +4,38 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-07`
-- artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED`
+- feature: `OUT-08`
+- artifact: `clip-out08-real-unused-range-short-minibatch-v0-001`
+- state: `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`
 
-- canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
-- canonical baseline: `OUT-07 parked with viable noncanonical cover`
-- canonical status: `parked_provisional_usable_noncanonical`
-- review status: `PARK_PROVISIONAL_USABLE`
+- canonical main: `4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9`
+- canonical baseline: `OUT-07 PARK_PROVISIONAL_USABLE parked predecessor`
+- canonical status: `internal_review_ready_human_decision_pending`
+- review status: `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
 - portable entrypoint: ``
-- exact baseline available: `false`
-- accepted baseline status: `accepted_historical_fact`
-- cover direction review available: `false`
-- cover direction acceptance: `not_granted`
-- proxy classification: `cover_direction_semantic_proxy`
+- exact baseline available: ``
+- accepted baseline status: ``
+- cover direction review available: ``
+- cover direction acceptance: ``
+- proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: ``
-- pause reason: `thumbnail_iteration_parked_until_3_to_5_real_shorts`
-- accepted baseline recovery: `retained_artifact_required_for_strict_exact_route_only`
-- cover review status: `parked_viable_noncanonical_no_additional_iteration`
-- cross-machine resume: `conditional_reacquire`
-- active rebuild contract: `artifacts/ACTIVE_REBUILD.json`
-- evidence revision: `thank-6f78657e-native-cover-direction-proxy-v1`
-- accepted baseline SHA-256: `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
+- last verified host entrypoint: `http://127.0.0.1:8071/index.html`
+- pause reason: `human_review_required_before_candidate_acceptance`
+- accepted baseline recovery: ``
+- cover review status: ``
+- cross-machine resume: `same_machine_ignored_package`
+- active rebuild contract: ``
+- evidence revision: `thank-6f78657e-out08-real-unused-range-minibatch-v1`
+- accepted baseline SHA-256: ``
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
-- recommended cover selection: `parked_provisional_usable_not_selected`
-- decision required: `none_out07_closed`
-- next review: `after_3_to_5_real_shorts`
+- recommended cover selection: ``
+- decision required: `out08_whole_candidate_human_review`
+- next review: `out08_candidate_review_now`
 
 ## Feature Table
 

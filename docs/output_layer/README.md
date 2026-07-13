@@ -8,10 +8,13 @@ opening baseline. OUT-06 is the accepted-after-bounded-repair internal product s
 unchanged opening plus authoritative `cut_003` as one complete same-machine
 1080x1920 internal narrative candidate, with the 2026-07-12 subtitle-wrap and
 seekability findings repaired while rights, production, subtitle-design, public,
-and publishing gates remain closed.
+and publishing gates remain closed. OUT-07 is the parked, viable but noncanonical
+cover predecessor. OUT-08 is the current human-review slice: two content-distinct
+vertical candidates built from real source ranges not used by OUT-06.
 
 Start here when resuming from another terminal:
 
+- `OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` - active target-2/actual-2 review package, exact unused-range authority, media/browser evidence, one human question, and closed gates.
 - `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - parked OUT-07 closure, historical Thank semantic proxy, unchanged strict exact-baseline route, and closed external actions.
 - `OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` - tracked public URLs and structural annotations only; third-party pixels remain ignored locally.
 - `OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` - accepted historical three-cut delivery-candidate contract, exact authority/timeline, build command, package, review surface, and closed gates.
@@ -66,6 +69,19 @@ select or canonicalize it. OUT-07 is parked, its current entrypoint is removed,
 and additional thumbnail iteration is prohibited until 3–5 real Shorts exist.
 Upload, visibility, made-for-kids, public, publishing, production, and rights
 decisions remain closed.
+
+OUT-08 starts from updated main after that parked closure and does not refine a
+cover. `build-real-unused-range-short-minibatch` validates current source,
+caption, edit/cut, ledger, and rights authority; excludes the real ranges already
+used by OUT-06; then atomically writes two H.264/AAC 1080x1920 review candidates,
+subtitle sidecars, frame QA, navigation-only frames, scan/plan/readback/manifest,
+and one direct-play page to a dedicated ignored `review/out08_*` package.
+Candidate 01 uses `cut_004..cut_005`; candidate 02 uses the tail of `cut_006`,
+`cut_007..cut_008`, and only the `sub_102` dependent payoff. `cut_009` remains
+rejected and is not promoted. The navigation frames are not thumbnails. Human
+review now decides whether each result is a coherent editing unit and whether
+tempo, boundary, subtitle, or audio discomfort remains. Rights, production,
+subtitle-design, public, publishing, and upload gates stay closed.
 
 Generated files:
 

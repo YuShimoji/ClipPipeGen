@@ -287,7 +287,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out07_artifact = "clip-out07-shorts-poster-frame-direction-proof-v0-001"
+    current_out08_artifact = "clip-out08-real-unused-range-short-minibatch-v0-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -347,15 +347,15 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_out07_artifact}" in text
-            assert "active_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in text
+            assert f"active_artifact: {current_out08_artifact}" in text
+            assert "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in text
             assert "local_artifact_available: true" in text
             assert "http://127.0.0.1:8071/index.html" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_out07_artifact}" in text
+            assert f"active_artifact: {current_out08_artifact}" in text
             assert (
                 "historical_source_host_out06_artifact: "
                 f"{current_out06_artifact}" in text
@@ -1617,79 +1617,78 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["canonical_main_head"] == (
-        "93c3935f93dc4fdb71610ea35874c33a58a02895"
+        "4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9"
     )
     assert status["current_focus"]["canonical_main_baseline"] == (
-        "OUT-07 parked with viable noncanonical cover"
+        "OUT-07 PARK_PROVISIONAL_USABLE parked predecessor"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "parked_provisional_usable_noncanonical"
+        "internal_review_ready_human_decision_pending"
     )
-    assert status["current_focus"]["review_status"] == "PARK_PROVISIONAL_USABLE"
-    assert status["current_focus"]["decision_required"] == "none_out07_closed"
+    assert status["current_focus"]["review_status"] == (
+        "OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY"
+    )
+    assert status["current_focus"]["decision_required"] == (
+        "out08_whole_candidate_human_review"
+    )
     assert status["current_focus"]["next_review_action_type"] == (
-        "after_3_to_5_real_shorts"
+        "out08_candidate_review_now"
     )
-    assert status["current_focus"]["human_entrypoint"] == ""
-    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["human_entrypoint"] == (
+        "http://127.0.0.1:8071/index.html"
+    )
+    assert "out08_real_unused_range_short_minibatch\\open_preview.ps1" in status[
+        "current_focus"
+    ]["review_open_command"]
     assert status["current_focus"]["machine_readback"] == (
-        "artifacts/ACTIVE_REBUILD.json"
+        "episodes/jp_pilot01_hololive_bancho_20260525/review/"
+        "out08_real_unused_range_short_minibatch/batch_readback.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == ""
-    assert status["current_focus"]["exact_baseline_available"] == "false"
-    assert status["current_focus"]["accepted_baseline_status"] == (
-        "accepted_historical_fact"
-    )
-    assert status["current_focus"]["cover_direction_review_available"] == "false"
-    assert status["current_focus"]["cover_direction_acceptance"] == "not_granted"
-    assert status["current_focus"]["proxy_classification"] == (
-        "cover_direction_semantic_proxy"
-    )
-    assert status["current_focus"]["source_byte_equivalence_claimed"] == "false"
+    assert status["current_focus"]["exact_baseline_available"] == ""
+    assert status["current_focus"]["accepted_baseline_status"] == ""
+    assert status["current_focus"]["cover_direction_review_available"] == ""
+    assert status["current_focus"]["cover_direction_acceptance"] == ""
+    assert status["current_focus"]["proxy_classification"] == ""
+    assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "stopped_after_human_review"
+        "running_pid_39652_exact_serve_review_command_verified"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
-    assert status["current_focus"]["last_verified_host_entrypoint"] == ""
+    assert status["current_focus"]["last_verified_host_entrypoint"] == (
+        "http://127.0.0.1:8071/index.html"
+    )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
     assert status["current_focus"]["pause_reason"] == (
-        "thumbnail_iteration_parked_until_3_to_5_real_shorts"
+        "human_review_required_before_candidate_acceptance"
     )
-    assert status["current_focus"]["accepted_baseline_recovery_status"] == (
-        "retained_artifact_required_for_strict_exact_route_only"
-    )
-    assert status["current_focus"]["cover_review_status"] == (
-        "parked_viable_noncanonical_no_additional_iteration"
-    )
+    assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
+    assert status["current_focus"]["cover_review_status"] == ""
     current_surfaces = [
         item
         for item in status["open_surfaces"]
-        if item["label"] == "OUT-07 Current Focus"
+        if item["label"] == "OUT-08 Current Focus"
     ]
-    assert current_surfaces == []
+    assert len(current_surfaces) == 1
+    assert current_surfaces[0]["target"] == "http://127.0.0.1:8071/index.html"
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "conditional_reacquire"
+        "same_machine_ignored_package"
     )
-    assert status["current_focus"]["active_rebuild_contract"] == (
-        "artifacts/ACTIVE_REBUILD.json"
-    )
-    assert status["current_focus"]["accepted_baseline_sha256"] == (
-        "2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18"
-    )
+    assert status["current_focus"]["active_rebuild_contract"] == ""
+    assert status["current_focus"]["accepted_baseline_sha256"] == ""
     assert status["current_focus"]["recommended_cover_path"] == ""
     assert status["current_focus"]["recommended_cover_sha256"] == ""
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
-    assert status["current_focus"]["recommended_cover_selection_status"] == (
-        "parked_provisional_usable_not_selected"
-    )
+    assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out07-shorts-poster-frame-direction-proof-v0-001"
+        "clip-out08-real-unused-range-short-minibatch-v0-001"
     )
+    assert "clip-out08-real-unused-range-short-minibatch-v0-001" in artifact_ids
     assert "clip-out07-shorts-poster-frame-direction-proof-v0-001" in artifact_ids
     assert "clip-out07-internal-operator-delivery-pack-v0-001" in artifact_ids
     assert (

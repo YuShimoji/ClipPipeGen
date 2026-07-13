@@ -449,6 +449,7 @@ def _build_subtitle_presentation(
     *,
     application_key: str = "out05_application",
     dimension_source: str = "out05_vertical_canvas_width_clamped_safe_envelope",
+    line_break_hints: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     base_style = _diagnostic_ass_style_for_candidate(ED10L_KEIFONT_CANDIDATE_ID)
     base_layout = _subtitle_layout_contract(
@@ -513,13 +514,21 @@ def _build_subtitle_presentation(
             "render_start_seconds": float(item["sequence_start_seconds"]),
             "render_end_seconds": float(item["sequence_end_seconds"]),
             "text": str(item["text"]),
+            "source_text": str(item.get("source_text") or item["text"]),
+            "display_text_normalization": str(
+                item.get("display_text_normalization") or "none"
+            ),
             "source_type": str(item.get("source_type") or ""),
             "source_segment_ids": list(item.get("source_segment_ids") or []),
         }
         for item in predecessor_subtitles
     ]
     presentation = _presentation_items(raw_items, layout=layout)
-    presentation = _apply_vertical_balanced_wrap(presentation, layout=layout)
+    presentation = _apply_vertical_balanced_wrap(
+        presentation,
+        layout=layout,
+        line_break_hints=line_break_hints,
+    )
     selector = select_subtitle_preset(
         {
             "speaker_id": "unknown",
@@ -547,6 +556,7 @@ def build_vertical_subtitle_presentation(
     *,
     application_key: str,
     dimension_source: str,
+    line_break_hints: dict[str, dict[str, Any]] | None = None,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     """Shared measured subtitle-layout boundary for vertical review candidates."""
 
@@ -554,11 +564,15 @@ def build_vertical_subtitle_presentation(
         subtitles,
         application_key=application_key,
         dimension_source=dimension_source,
+        line_break_hints=line_break_hints,
     )
 
 
 def _apply_vertical_balanced_wrap(
-    items: list[dict[str, Any]], *, layout: dict[str, Any]
+    items: list[dict[str, Any]],
+    *,
+    layout: dict[str, Any],
+    line_break_hints: dict[str, dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     """Rebalance measured-valid lines for the narrower vertical canvas.
 
@@ -574,7 +588,10 @@ def _apply_vertical_balanced_wrap(
             str(item.get("text") or ""),
             layout=layout,
             font_bbox_readback=item.get("font_bbox_wrap_readback") or {},
-            line_break_hint=_line_break_hint_for_item(item),
+            line_break_hint=_line_break_hint_for_item(
+                item,
+                line_break_hints=line_break_hints,
+            ),
         )
         lines = balance["lines"] if balance["status"] == "applied" else original_lines
         wrapped_text = "\n".join(lines)
@@ -780,15 +797,23 @@ def _vertical_partition_score(
     return score
 
 
-def _line_break_hint_for_item(item: dict[str, Any]) -> dict[str, Any] | None:
+def _line_break_hint_for_item(
+    item: dict[str, Any],
+    *,
+    line_break_hints: dict[str, dict[str, Any]] | None = None,
+) -> dict[str, Any] | None:
     subtitle_id = str(item.get("subtitle_id") or item.get("id") or "")
-    hint = REVIEWED_LINE_BREAK_HINTS.get(subtitle_id)
+    hint = (line_break_hints or {}).get(subtitle_id)
+    source = "caller_supplied_reviewed_line_break_hint"
+    if hint is None:
+        hint = REVIEWED_LINE_BREAK_HINTS.get(subtitle_id)
+        source = "reviewed_out06_user_feedback_declarative_cue_metadata"
     if hint is None:
         return None
     return {
         **hint,
         "subtitle_id": subtitle_id,
-        "source": "reviewed_out06_user_feedback_declarative_cue_metadata",
+        "source": str(hint.get("source") or source),
     }
 
 

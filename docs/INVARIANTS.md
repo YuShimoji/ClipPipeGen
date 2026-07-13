@@ -2,7 +2,7 @@
 
 ## 2026-05-26 clarification: diagnostic render and rights gates
 
-Python may generate local diagnostic render artifacts only inside the render integration boundary (`src/integrations/render/`, `render-tiny-proof`, the bounded `build-editorial-sequence` route, the accepted-timeline `build-vertical-short-candidate` route, and the bounded `build-complete-narrative-short` route). Such artifacts must keep `production_candidate=false`, must write receipt / manifest / report readback, and must not be described as production render, public-ready render, production subtitle burn-in, or creative acceptance.
+Python may generate local diagnostic render artifacts only inside the render integration boundary (`src/integrations/render/`, `render-tiny-proof`, the bounded `build-editorial-sequence` route, the accepted-timeline `build-vertical-short-candidate` route, the bounded `build-complete-narrative-short` route, and the bounded `build-real-unused-range-short-minibatch` route). Such artifacts must keep `production_candidate=false`, must write receipt / manifest / report readback, and must not be described as production render, public-ready render, production subtitle burn-in, or creative acceptance.
 
 Python must not own production render acceptance, production subtitle design acceptance, upload, publishing, OAuth, visibility changes, or public-ready output. Those are later acceptance / integration surfaces and require explicit feature slices.
 
@@ -17,7 +17,7 @@ Python/CLI may own reviewable generated output for diagnostic and representative
 - **Python は制作接着層**：元動画 URL／素材／rights 記録／EDL／字幕案／manifest／slot patch／publishing metadata を episode 単位でつなぐ。
 - **外部素材取得・背景切り抜き・upload は通常の integration 候補**。未実装なら未実装として扱い、方針上の禁止にしない。
 - **STT と素材取得を混ぜない**。`transcribe-audio` はローカル音声ファイルから `transcript.json` を作る。URL / VOD 取得は INT-02 `asset_fetch` として別に扱う。
-- **FFmpeg / yt-dlp を core に漏らさない**。実 downloader は `src/integrations/asset_fetch/` に閉じ込める。FFmpeg は asset_fetch では source audio 正規化だけ、OUT-01 では `src/integrations/render/` の diagnostic render だけ。yt-dlp は元 media 取得だけ。Editing core / STT / GUI から直接呼ばない。
+- **FFmpeg / yt-dlp を core に漏らさない**。実 downloader は `src/integrations/asset_fetch/` に閉じ込める。FFmpeg は asset_fetch では source audio 正規化だけ、render integration では承認された bounded diagnostic/internal review route だけ。yt-dlp は元 media 取得だけ。Editing core / STT / GUI から直接呼ばない。
 - **rights / license / restriction は readback**。`pending` / `unverified` / `unknown` / `fair_use_claimed` / `denied` などの値だけで local CLI を停止しない。
 - **外部ツール境界は明示する**。YMM4、外部 NLE、YouTube API、背景切り抜き API などは integration / bridge / handoff として扱う。
 
@@ -42,7 +42,7 @@ Python/CLI may own reviewable generated output for diagnostic and representative
 
 - `src/integrations/youtube/` — OAuth・videos.insert・thumbnails.set
 - `src/integrations/asset_fetch/` — source audio/video 取得 adapter（INT-02a は fake WAV generator、INT-02c は local-media-audio FFmpeg normalize、INT-02d は yt-dlp-audio spec only。INT-02e は source audio URL fetch 限定の yt-dlp-audio actual smoke まで完了。INT-02f は local source video acquisition と FFprobe metadata readback まで完了。URL video fetch は後続）
-- `src/integrations/render/` — diagnostic output adapter（OUT-01 は source_video + source_audio + edit_pack selected cut から tiny rendered artifact / receipt / manifest / report を生成。OUT-01c は edit_pack subtitle draft を diagnostic overlay として接続し、OUT-01d は timing status / filter failure detail を readback する。OUT-04 は keep/context-passed の 2-3 cuts を explicit order で hard-cut し、OUT-05 は accepted OUT-04 timeline を one internal vertical candidate に変換し、OUT-06 は accepted OUT-05 opening と authoritative cut_003 を complete narrative internal delivery candidate にする。現在の OUT-07 は Planner007 が明示受理した current baseline SHA を入力gateとしてbyte copyし、動画由来frame＋既存burn-in字幕だけのcover 1枚、source比較、preview、metadata/evidence/gate readbackをoperator packへ統合する。production render / subtitle design acceptance / GUI action / upload / publishing は後続）
+- `src/integrations/render/` — diagnostic output adapter（OUT-01 は source_video + source_audio + edit_pack selected cut から tiny rendered artifact / receipt / manifest / report を生成。OUT-01c は edit_pack subtitle draft を diagnostic overlay として接続し、OUT-01d は timing status / filter failure detail を readback する。OUT-04 は keep/context-passed の 2-3 cuts を explicit order で hard-cut し、OUT-05 は accepted OUT-04 timeline を one internal vertical candidate に変換し、OUT-06 は accepted OUT-05 opening と authoritative cut_003 を complete narrative internal delivery candidate にする。OUT-07 は Planner007 が明示受理した current baseline SHA を入力gateとしてbyte copyし、動画由来frame＋既存burn-in字幕だけのcover 1枚、source比較、preview、metadata/evidence/gate readbackをoperator packへ統合する。OUT-08 は authoritative evidence と declarative plan を照合し、既使用/reject 範囲を除いた 1-2 本の相互非重複 vertical candidate を subtitle/audio/media/navigation readback 付き atomic package にする。production render / subtitle design acceptance / GUI action / upload / publishing は後続）
 - future `src/integrations/stt/` — STT engine wrapper（URL / VOD 取得は含めない）
 - `src/integrations/bg_removal/` — 背景切り抜き API（外部送信を伴う）
 

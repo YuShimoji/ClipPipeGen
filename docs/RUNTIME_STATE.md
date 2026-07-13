@@ -3,38 +3,39 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED
+health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
 progress_pct: 100
 last_touched: 2026-07-14
-state_revision: out07-park-provisional-usable-main-landed-2026-07-14
-current_slice: OUT-07
-phase: parked_closure
-canonical_status: parked_provisional_usable_noncanonical
-active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 parked closure - viable noncanonical cover
-human_entrypoint: null
+state_revision: out08-real-unused-range-short-minibatch-review-ready-2026-07-14
+current_slice: OUT-08
+phase: human_review
+canonical_status: internal_review_ready_human_decision_pending
+active_branch: codex/out-08-real-unused-range-short-minibatch-v0
+current_title: OUT-08 real unused-range vertical Shorts mini-batch review
+human_entrypoint: http://127.0.0.1:8071/index.html
 portable_entrypoint: null
-review_open_command: null
-review_server_restart_command: null
-machine_readback: artifacts/ACTIVE_REBUILD.json
+review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
+review_server_restart_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\serve_preview.ps1 -Port 8071
+machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none_out07_closed
-review_status: PARK_PROVISIONAL_USABLE
-review_scope: Human review found the current cover natural and viable for this episode, but one example cannot establish selection, reproducibility, canonical status, or a default template; no additional OUT-07 thumbnail iteration is allowed.
-reviewed_at: 2026-07-14
+decision_required: out08_whole_candidate_human_review
+review_status: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
+review_scope: 二本を候補ごとに一本の編集単位として見て、テンポ、境界、字幕、音声の違和感を確認する。navigation frame は移動補助であり thumbnail acceptance ではない。
+reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: historical_retained_evidence
+local_artifact_role: active_same_machine_internal_review_evidence
 portable_local_artifact_available: false
-cross_machine_resume_class: conditional_reacquire
-active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
-evidence_revision: thank-6f78657e-native-cover-direction-proxy-v1
+cross_machine_resume_class: same_machine_ignored_package
+active_rebuild_contract: null
+parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
+evidence_revision: thank-6f78657e-out08-real-unused-range-minibatch-v1
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
-local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/determinism_receipt.json
-local_package_requirement: historical_local_evidence_only_no_active_review_requirement
-historical_fixed_input_packages: private_only_not_required_for_revision_rebuild
+local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json
+local_package_requirement: active_same_machine_review_package_required
+historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
 production_acceptance: false
@@ -42,61 +43,80 @@ production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-14
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: null
-historical_last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
-pause_reason: thumbnail_iteration_parked_until_3_to_5_real_shorts
-exact_baseline_available: false
-accepted_baseline_status: accepted_historical_fact
-accepted_baseline_recovery_status: retained_artifact_required_for_strict_exact_route_only
-cover_direction_review_available: false
+last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
+historical_last_verified_host_entrypoint: null
+pause_reason: human_review_required_before_candidate_acceptance
+exact_baseline_available: null
+accepted_baseline_status: null
+accepted_baseline_recovery_status: null
+cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
-cover_direction_acceptance: not_granted
-human_review_decision: PARK_PROVISIONAL_USABLE
-reviewed_by_human: true
+cover_direction_acceptance: null
+human_review_decision: pending
+reviewed_by_human: false
 acceptance_granted: false
-cover_review_status: parked_viable_noncanonical_no_additional_iteration
-review_server_status: stopped_after_human_review
-next_review_due: after_3_to_5_real_shorts
-next_action: updated main から OUT-08 branch を作り、未使用実素材から内容の異なる vertical Shorts 候補を target 2、minimum 1 で生成して一つの review page にまとめる。
-active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
-current_review_component: null
-current_baseline_acceptance: accepted_historical_fact_planner007_2026_07_13_jst_not_reopened
-accepted_baseline_sha256: 2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18
+cover_review_status: null
+review_server_status: running_pid_39652_exact_serve_review_command_verified
+next_review_due: out08_candidate_review_now
+next_action: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
+active_artifact: clip-out08-real-unused-range-short-minibatch-v0-001
+current_review_component: two_real_unused_range_vertical_short_candidates
+target_candidate_count: 2
+minimum_candidate_count: 1
+actual_candidate_count: 2
+candidate_01_semantic_duration_seconds: 28.295
+candidate_01_media_duration_seconds: 28.266667
+candidate_01_subtitle_count: 17
+candidate_01_sha256: f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a
+candidate_02_semantic_duration_seconds: 54.455
+candidate_02_media_duration_seconds: 54.5
+candidate_02_subtitle_count: 55
+candidate_02_sha256: c6d3ff01624c359c1ca0030bb360eb3906e6b35a62ec439c0efb14378e9c8320
+navigation_frame_role: navigation_only_not_thumbnail_acceptance
+cut009_final_cut_decision: reject
+cut009_usage: sub_102_dependent_payoff_only_not_cut_promotion
+authority_mutated: false
+media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed
+blackdetect_readback: no_black_interval_at_or_above_0_5_seconds
+silencedetect_readback: no_silence_interval_at_or_above_1_5_seconds_at_minus_50dB
+browser_readback: pre_repair_readyState4_error_null_desktop_mobile_no_overflow_console_clean_final_package_http200_range206_direct_seek_not_observed
+http_range_readback: 206_partial_content_passed
+current_baseline_acceptance: human_review_pending
+accepted_baseline_sha256: null
 recommended_cover_path: null
 recommended_cover_sha256: null
 recommended_cover_timestamp_seconds: null
 recommended_cover_source_timestamp_seconds: null
 recommended_cover_actual_decode_seconds: null
-recommended_cover_selection_status: parked_provisional_usable_not_selected
+recommended_cover_selection_status: null
+out07_review_result: PARK_PROVISIONAL_USABLE
+out07_viable_candidate: true
+out07_provisionally_usable_for_episode: true
+out07_human_selected: false
+out07_selected_thumbnail: null
+out07_selection_status: deferred
+out07_canonical_pattern: false
+out07_default_template: false
+out07_reuse_as_standard: false
+out07_final_thumbnail_system_acceptance: false
+out07_reference_collection_process_valid: true
+out07_reference_to_output_lineage: weak
+out07_accidental_success_not_ruled_out: true
+out07_revisit_after_real_short_count: 3_to_5
+out07_additional_thumbnail_iteration: prohibited
 historical_proxy_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png
 historical_proxy_sha256: e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da
 historical_proxy_sequence_timestamp_seconds: 11.930
 historical_proxy_source_timestamp_seconds: 22.858
 historical_proxy_actual_decode_seconds: 22.866667
-proxy_classification: cover_direction_semantic_proxy
+proxy_classification: null
+historical_proxy_classification: cover_direction_semantic_proxy
 local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
 planner_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
-source_byte_equivalence_claimed: false
+source_byte_equivalence_claimed: null
+out07_source_byte_equivalence_claimed: false
 current_reference_revision: tracked_corpus_examples_only_not_canonical_design_rules
 current_determinism_status: thank_proxy_same_fixed_inputs_two_build_all_files_match_manifest_passed
-out07_review_result: PARK_PROVISIONAL_USABLE
-viable_candidate: true
-provisionally_usable_for_episode: true
-human_selected: false
-selected_thumbnail: null
-selection_status: deferred
-canonical_pattern: false
-default_template: false
-reuse_as_standard: false
-final_thumbnail_system_acceptance: false
-reference_collection_process_valid: true
-reference_to_output_lineage: weak
-accidental_success_not_ruled_out: true
-revisit_after_real_short_count: 3_to_5
-additional_OUT07_thumbnail_iteration: prohibited
-additional_out07_thumbnail_iteration_allowed: false
-revisit_count_min: 3
-revisit_count_max: 5
 historical_source_host_out07_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 historical_source_host_out07_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
 historical_source_host_operator_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
@@ -115,8 +135,8 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: 93c3935f93dc4fdb71610ea35874c33a58a02895
-canonical_main_baseline: OUT-07 parked with viable noncanonical cover
+canonical_main_head: 4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9
+canonical_main_baseline: OUT-07 PARK_PROVISIONAL_USABLE parked predecessor
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
@@ -183,7 +203,47 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-07 Parked Closure
+## Current OUT-08 Real Unused-Range Vertical Shorts Mini-Batch
+
+OUT-08 は、OUT-06 までに使った `cut_001..cut_003` を除外し、同じ実素材の
+未使用範囲から内容の異なる vertical Shorts 候補を target 2 / minimum 1 で
+組み立てた。実生成数は 2 で、状態は
+`OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`。active branch は
+`codex/out-08-real-unused-range-short-minibatch-v0`、artifact は
+`clip-out08-real-unused-range-short-minibatch-v0-001` である。
+
+| 候補 | source authority | semantic / media | 字幕 | MP4 SHA-256 | 一本としての狙い |
+|---|---|---:|---:|---|---|
+| `candidate_01` | `cut_004` `50.868–60.277` + `cut_005` `60.277–79.163` | `28.295s` / `28.266667s` | 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | 勝負の提示から帽子を巡る認識違い、勝利扱いと困惑した別れまでを一場面にする。 |
+| `candidate_02` | `cut_006` tail `81.298–98.315` + `cut_007` `98.315–116.467` + `cut_008` `116.934–135.219` + dependent payoff `137.054–138.055` | `54.455s` / `54.5s` | 55 | `c6d3ff01624c359c1ca0030bb360eb3906e6b35a62ec439c0efb14378e9c8320` | 番長との遭遇、対立の進展、最後の短い勝敗 payoff までを一編集単位にする。 |
+
+`cut_009` の final cut decision は `reject` のままで、authority は変更して
+いない。candidate 02 が使うのは `sub_102` に対応する 1.001 秒だけであり、
+`dependent_payoff_only_not_cut_promotion` として明示した。navigation JPG は
+候補間を移動しやすくするための video frame で、decorated thumbnail、
+thumbnail candidate、thumbnail acceptance のいずれでもない。
+
+両 MP4 は H.264/AAC、1080x1920、30fps、yuv420p、faststart で、full decode
+を通過した。0.5 秒以上の black interval と、-50dB で 1.5 秒以上の silence
+interval は検出されていない。bounded subtitle repair 前の同じ review page では
+二本とも `readyState=4`、media error `null`、desktop/mobile overflow なし、
+console clean を確認した。最終 repair package は HTTP `200` と byte Range
+`206 Partial Content`、ffprobe、full decode を再確認したが、automation browser
+から native control の direct seek は確実に進められなかった。この未観測点は
+人間の direct playback review に残し、machine acceptance には転用しない。
+
+同端末の ignored package は
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/`。
+PID `39652` の exact `src.cli.serve_review` route が
+`http://127.0.0.1:8071/index.html` を提供している。人間に尋ねるのは次の一問：
+「追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。」
+
+rights は `pending`。production render、production subtitle design、public、
+publishing、upload の acceptance は false / unopened のままである。
+`artifacts/ACTIVE_REBUILD.json` は parked OUT-07 predecessor の hash-only rebuild
+contract であり、OUT-08 の active machine readback ではない。
+
+## Parked OUT-07 Predecessor Closure
 
 人間レビューは、現在の Shorts cover が自然で、構図・バランス・要所選択も
 良好であり、この episode では暫定利用可能な viable candidate だと確認した。
@@ -444,17 +504,18 @@ explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-13 JST. A new terminal should fetch and switch to the
-OUT-07 review branch before reading project context:
+Checkpoint date: 2026-07-14 JST. A new terminal should fetch and switch to the
+OUT-08 review branch before reading project context:
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-07-internal-operator-delivery-pack-v0
+git switch codex/out-08-real-unused-range-short-minibatch-v0
 git pull --ff-only
 ```
 
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
-`docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md`. Use the accepted
+`docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md`. Use the parked
+`docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` and the accepted
 `docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md`,
 `docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md`,
 `docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md` and the accepted
@@ -462,9 +523,9 @@ Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
 the canonical predecessor, and consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
-the active `clip-out07-shorts-poster-frame-direction-proof-v0-001`. The
-historical `clip-out07-internal-operator-delivery-pack-v0-001` entry is lineage
-evidence only and must not replace the current review target.
+the active `clip-out08-real-unused-range-short-minibatch-v0-001`. OUT-07 entries
+and `artifacts/ACTIVE_REBUILD.json` are parked predecessor evidence only and
+must not replace the two-video OUT-08 review target.
 
 The earlier portable synthetic predecessor is OUT-02. It was created from the
 INT-01 integration branch and converts OUT-01 `proof_missing` into a local
