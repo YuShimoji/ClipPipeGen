@@ -61,4 +61,3 @@ def run(argv: list[str]) -> int:
         print(f"classification: {payload['proxy_classification']}")
         print(f"review: {payload['index_path']}")
     return 0
-
