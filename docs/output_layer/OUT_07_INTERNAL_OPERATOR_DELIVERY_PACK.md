@@ -1,9 +1,33 @@
 # OUT-07 Native Shorts Cover Review Routes
 
-## Current Thank semantic direction proxy route
+## Parked closure
 
-The current tracked state is
-`OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`. It keeps the
+Human review found the current Shorts cover natural, well-balanced, and useful
+at an important point in this episode. That supports
+`viable_candidate=true` and `provisionally_usable_for_episode=true`, but the
+single example cannot establish final selection, reproducibility, or a reusable
+design system. OUT-07 therefore closes as `PARK_PROVISIONAL_USABLE`, not ACCEPT.
+
+`human_selected=false`, `selected_thumbnail=null`, `selection_status=deferred`,
+`canonical_pattern=false`, `default_template=false`,
+`reuse_as_standard=false`, and `final_thumbnail_system_acceptance=false` remain
+explicit. The reference-collection process is valid, but its concrete lineage
+to this output is weak and accidental success is not ruled out. No additional
+OUT-07 candidate generation, reference retrieval/reclassification, pixel-match
+tracking, mask improvement, or copy addition is allowed. Thumbnail exploration
+may be revisited only after 3–5 real Shorts exist; the reference corpus remains
+a set of concrete examples, not canonical design rules.
+
+The ignored Thank proxy package is retained without regeneration as historical
+local evidence. Its old launcher and localhost URL are not the current human
+entrypoint, and the review server is stopped after closure. Rights, production,
+public/publishing, upload, metadata mutation, visibility, and made-for-kids
+gates remain closed or pending.
+
+## Historical Thank semantic direction proxy route
+
+The pre-closure tracked state was
+`OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`. It kept the
 same artifact ID, branch, slice, and lane, while adding evidence revision
 `thank-6f78657e-native-cover-direction-proxy-v1`. This route uses the known
 Thank source revision
@@ -42,18 +66,18 @@ manifest, scripts, and one simple `index.html`. The page does not include the
 exact baseline video or former candidate directions. Thank can open it at
 `http://127.0.0.1:8071/index.html`; `portable_entrypoint=null`.
 
-The only question is:
+The historical page asked:
 
 > このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。
 
 The exact baseline remains unavailable on Thank while its Planner acceptance
-remains a historical accepted fact. Proxy ACCEPT cannot flow into baseline
+remains a historical accepted fact. The parked human finding cannot flow into baseline
 bytes, A/V, full-track subtitles, metadata, rights, production, public, or
 publishing acceptance.
 
 ## Strict exact accepted-baseline route (unchanged)
 
-The active artifact remains
+The registered historical artifact remains
 `clip-out07-shorts-poster-frame-direction-proof-v0-001` on branch
 `codex/out-07-internal-operator-delivery-pack-v0`. Planner007 explicitly
 accepted the current baseline on 2026-07-13 JST. The accepted bytes are fixed
@@ -79,9 +103,9 @@ public/publishing, upload/visibility, or made-for-kids approval.
 copies it byte-for-byte, and extracts one decoded frame. It never rerenders,
 remuxes, transcodes, edits, or retimes the MP4, subtitles, or audio.
 
-## Strict exact cover direction
+## Strict exact cover direction (historical)
 
-The selected internal recommendation is the accepted baseline at `11.930s`,
+The strict-route internal recommendation was the accepted baseline at `11.930s`,
 mapped to current source time `22.858s` in `cut_003`, with existing burn-in cue
 `sub_010`. The cover adds no separate catchcopy, long-form headline, small
 label, logo, CTA, abstract background, geometry, gradient, background
@@ -180,9 +204,10 @@ by per-file manifest and manifest self-integrity validation. The tracked
 reference corpus is observation-only in this route; no new crawl or third-party
 reference pixel is loaded into the cover.
 
-The metadata draft remains unchanged. `selected_thumbnail=null`, the cover is
-`recommended_pending_human_acceptance`, `selected_by_human=false`, and
-`publish_ready=false`. Rights are pending, every production/public/external
+The historical metadata draft remains unchanged, but the closure receipt now
+supersedes its pending recommendation state. `selected_thumbnail=null`,
+`selected_by_human=false`, `selection_status=deferred`, and `publish_ready=false`.
+Rights are pending, every production/public/external
 action gate is closed, and upload, thumbnail upload, visibility,
 made-for-kids, publish, and other external mutations are all unattempted.
 

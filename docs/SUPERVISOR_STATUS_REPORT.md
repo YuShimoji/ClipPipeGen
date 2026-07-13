@@ -1,8 +1,27 @@
-# Thank OUT-07 semantic direction proxy host receipt — 2026-07-14
+# OUT-07 parked closure receipt — 2026-07-14
+
+This non-authoritative receipt records the consumed human review. OUT-07 is
+closed as `PARK_PROVISIONAL_USABLE`: the current cover is natural, balanced, and
+provisionally usable for this episode, but it is not selected, canonical,
+default, reusable as a standard, or accepted as a final thumbnail system.
+Only one example exists, so reproducibility is unknown and accidental success
+is not ruled out. The reference-collection process remains valid while the
+reference-to-output lineage remains weak.
+
+The Thank proxy package below is retained unchanged as historical local
+evidence. It is no longer the current human entrypoint, and its review server is
+stopped. Additional OUT-07 thumbnail iteration is prohibited. Revisit thumbnail
+exploration only after 3–5 real Shorts exist, treating the reference corpus as
+concrete examples rather than canonical design rules. Rights, production,
+public/publishing, upload, and other external gates remain closed or pending.
+
+---
+
+# Historical Thank OUT-07 semantic direction proxy host receipt — 2026-07-14
 
 This is a non-authoritative host receipt. The portable current state and next
 action remain in [RUNTIME_STATE.md](RUNTIME_STATE.md). The current host verified
-state is `OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`.
+pre-closure state was `OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`.
 
 Thank has the known source SHA
 `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`
@@ -26,7 +45,7 @@ mapping because Planner pixels are unavailable on Thank. Two consecutive builds 
 package digests are `deb93e2f...652` and `0eeb4958...832`, with manifest
 inventory and self-integrity passing.
 
-The local entrypoint is `http://127.0.0.1:8071/index.html` on
+The historical local entrypoint was `http://127.0.0.1:8071/index.html` on
 `DESKTOP-H53P1T4`; it is not portable. The page presents list preview, one
 1080x1920 proxy, UI overlap, 4:5 crop, mapped source frame, folded evidence, and
 one question. It contains no exact baseline video or former candidate set.
@@ -38,7 +57,7 @@ proxy is only a cover-direction decision surface. Rights, production,
 public/publishing, upload, metadata mutation, visibility, made-for-kids, and
 all external actions remain pending, false, closed, or unattempted.
 
-The one pending human question is:
+The consumed human question was:
 
 > このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。
 

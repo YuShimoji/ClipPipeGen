@@ -22,7 +22,7 @@ def _contract() -> dict:
     return json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
 
 
-def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None:
+def test_active_rebuild_contract_records_parked_noncanonical_cover_closure() -> None:
     contract = _contract()
 
     assert contract["schema_id"] == "clippipegen.active_rebuild.v1"
@@ -30,13 +30,15 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
         "clip-out07-shorts-poster-frame-direction-proof-v0-001"
     )
     assert contract["episode_id"] == "jp_pilot01_hololive_bancho_20260525"
-    assert contract["resume_class"] == "conditional_reacquire"
+    assert contract["resume_class"] == "parked_predecessor"
     assert contract["state"] == (
-        "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY"
+        "OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED"
     )
     assert contract["handoff"]["from_state"] == (
-        "OUT07_PAUSED_DURABLE_HANDOFF_ACCEPTED_BASELINE_MISSING"
+        "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY"
     )
+    assert contract["handoff"]["cover_direction_review_available"] is False
+    assert contract["handoff"]["next_human_decision"] is None
     assert contract["source_identity"]["provider_id"] == "7J5aS_pcBj4"
     assert contract["source_identity"]["current_media_revision"]["sha256"] == (
         EXPECTED_SOURCE_SHA256
@@ -57,14 +59,13 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
     )
     assert cover["baseline_seconds"] == 11.93
     assert cover["subtitle_id"] == "sub_010"
-    assert cover["selection_status"] == (
-        "semantic_direction_proxy_pending_human_acceptance"
-    )
+    assert cover["selection_status"] == "deferred"
     assert cover["proxy_classification"] == "cover_direction_semantic_proxy"
     assert cover["semantic_continuity_is_inference"] is True
     assert cover["planner_pixel_equivalence"] == "unknown"
     assert cover["exact_baseline_available"] is False
-    assert cover["cover_direction_review_available"] is True
+    assert cover["cover_direction_review_available"] is False
+    assert cover["historical_cover_direction_evidence_available"] is True
     assert cover["selected_by_human"] is False
     assert cover["old_active_abc_status"] == (
         "superseded_by_user_short_context_reframe"
@@ -88,9 +89,47 @@ def test_active_rebuild_contract_points_to_accepted_native_cover_route() -> None
     assert proxy["proxy_classification"] == "cover_direction_semantic_proxy"
     assert proxy["exact_baseline_available"] is False
     assert proxy["accepted_baseline_status"] == "accepted_historical_fact"
-    assert proxy["cover_direction_review_available"] is True
-    assert proxy["cover_direction_acceptance"] == "pending"
+    assert proxy["cover_direction_review_available"] is False
+    assert proxy["historical_cover_direction_evidence_available"] is True
+    assert proxy["cover_direction_acceptance"] == "not_granted"
+    assert proxy["human_review_decision"] == "PARK_PROVISIONAL_USABLE"
+    assert proxy["acceptance_granted"] is False
+    assert proxy["historical_local_evidence"] is True
+    assert proxy["artifact_disposition"] == (
+        "retained_historical_ignored_local_evidence"
+    )
+    assert proxy["current_iteration_allowed"] is False
+    assert proxy["machine_readback"] is None
+    assert proxy["historical_machine_readback"].endswith(
+        "out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json"
+    )
     assert proxy["portable_entrypoint"] is None
+
+    closure = contract["human_review_closure"]
+    assert closure == {
+        "review_result": "PARK_PROVISIONAL_USABLE",
+        "reviewed_by_human": True,
+        "viable_candidate": True,
+        "provisionally_usable_for_episode": True,
+        "acceptance_granted": False,
+        "human_selected": False,
+        "selected_thumbnail": None,
+        "selection_status": "deferred",
+        "canonical_pattern": False,
+        "default_template": False,
+        "reuse_as_standard": False,
+        "final_thumbnail_system_acceptance": False,
+        "reference_collection_process_valid": True,
+        "reference_to_output_lineage": "weak",
+        "accidental_success_not_ruled_out": True,
+        "revisit_after_real_short_count": "3_to_5",
+        "additional_OUT07_thumbnail_iteration": "prohibited",
+        "additional_out07_thumbnail_iteration_allowed": False,
+        "revisit_count_min": 3,
+        "revisit_count_max": 5,
+        "thumbnail_is_active_product": False,
+        "reference_corpus_role": "concrete_examples_not_canonical_design_rules",
+    }
 
     strict = contract["strict_exact_route"]
     assert strict["accepted_baseline_sha256"] == EXPECTED_BASELINE_SHA256
@@ -190,18 +229,27 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_thank_semantic_proxy_review_state() -> None:
+def test_runtime_points_to_out07_parked_closure_state() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8071/index.html" in runtime
+    assert "human_entrypoint: null" in runtime
     assert "portable_entrypoint: null" in runtime
     assert "out07_native_shorts_cover_direction_proxy" in runtime
     assert "cross_machine_resume_class: conditional_reacquire" in runtime
-    assert "OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY" in runtime
+    assert "OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED" in runtime
     assert "exact_baseline_available: false" in runtime
     assert "accepted_baseline_status: accepted_historical_fact" in runtime
-    assert "cover_direction_review_available: true" in runtime
+    assert "cover_direction_review_available: false" in runtime
+    assert "human_review_decision: PARK_PROVISIONAL_USABLE" in runtime
+    assert "acceptance_granted: false" in runtime
+    assert "selection_status: deferred" in runtime
+    assert "canonical_pattern: false" in runtime
+    assert "default_template: false" in runtime
+    assert "reuse_as_standard: false" in runtime
+    assert "final_thumbnail_system_acceptance: false" in runtime
+    assert "additional_OUT07_thumbnail_iteration: prohibited" in runtime
+    assert "revisit_after_real_short_count: 3_to_5" in runtime

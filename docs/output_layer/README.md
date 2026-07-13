@@ -12,7 +12,7 @@ and publishing gates remain closed.
 
 Start here when resuming from another terminal:
 
-- `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - current Thank semantic cover-direction proxy plus unchanged strict exact-baseline route, hashes, one-question review page, and closed external actions.
+- `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - parked OUT-07 closure, historical Thank semantic proxy, unchanged strict exact-baseline route, and closed external actions.
 - `OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` - tracked public URLs and structural annotations only; third-party pixels remain ignored locally.
 - `OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` - accepted historical three-cut delivery-candidate contract, exact authority/timeline, build command, package, review surface, and closed gates.
 - `OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md` - accepted historical vertical candidate contract, exact real command, reframe/subtitle/audio readback, review surface, and closed gates.
@@ -52,7 +52,7 @@ ignored `review/out06_*` package. It is an accepted historical predecessor; the
 active OUT-07 route starts from Planner007's separate explicit acceptance of the
 current baseline bytes and does not inherit OUT-06 acceptance.
 
-OUT-07 now has two explicit routes. The strict exact route keeps Planner007's
+OUT-07 retains two explicit historical routes. The strict exact route keeps Planner007's
 accepted 38.633333-second baseline SHA/size/duration, byte-copy, and acceptance-
 inheritance gates unchanged. The separate Thank semantic direction-proxy route
 uses a known source revision plus official caption/timing authority to render
@@ -60,9 +60,12 @@ one 1080x1920 source-frame-and-existing-subtitle direction, list/UI/4:5 previews
 and mapped-source evidence. It does not emit the baseline video or claim byte/
 pixel equivalence, and it does not add headline, poster background, mask,
 collage, or third-party pixels. `artifacts/ACTIVE_REBUILD.json` retains the
-caption timing/hash contract without caption plaintext. The local page asks one
-cover-direction question only; upload, visibility, made-for-kids, public,
-publishing, production, and rights decisions remain closed.
+caption timing/hash contract without caption plaintext. Human review found the
+single cover natural and provisionally usable for this episode, but did not
+select or canonicalize it. OUT-07 is parked, its current entrypoint is removed,
+and additional thumbnail iteration is prohibited until 3–5 real Shorts exist.
+Upload, visibility, made-for-kids, public, publishing, production, and rights
+decisions remain closed.
 
 Generated files:
 

@@ -6,16 +6,16 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-07 note: Thank の既知 source revision から、source 22.858 秒／sequence
-11.930 秒／`cut_003`／`sub_010` を照合した単一 native Shorts cover direction
-proxy を生成済み。Planner の既知 pixel hash とは一致しないため分類は
-`cover_direction_semantic_proxy` で、`http://127.0.0.1:8071/index.html` は
-Thank 端末だけの review entrypoint である。Planner007 が受理した exact
-baseline (`2c1c59bc...2d18`) は historical accepted fact のままだが Thank
-には存在せず、strict exact route の SHA／size／byte-copy gate も変更して
-いない。人間が判断するのはこの cover 方向だけで、baseline、metadata、
-upload、public readiness、rights、production、visibility、made-for-kids、
-publishing は再審査せず閉鎖または pending のまま。See
+OUT-07 note: Thank の単一 native Shorts cover direction proxy は、人間レビュー
+で自然かつこの episode には暫定利用可能と確認されたが、比較が一種類だけの
+ため選定・再現性・canonical 化・default template 化は行わない。
+`PARK_PROVISIONAL_USABLE` として追加 thumbnail iteration を禁止して閉じ、
+ignored proxy package は historical local evidence として保持する。thumbnail
+exploration の再開は実 Shorts が 3〜5 本揃った後だけで、reference corpus は
+具体例群であり canonical design rules ではない。Planner007 の exact baseline
+(`2c1c59bc...2d18`) は historical accepted fact のまま。metadata、upload、
+public readiness、rights、production、visibility、made-for-kids、publishing は
+閉鎖または pending のままである。See
 [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md).
 
 OUT-06 note: the accepted OUT-05 vertical opening has now been extended with the

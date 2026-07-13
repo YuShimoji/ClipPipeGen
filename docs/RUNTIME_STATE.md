@@ -3,27 +3,28 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: current_capsule
-health: OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY
-progress_pct: 94
+health: OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED
+progress_pct: 100
 last_touched: 2026-07-14
-state_revision: out07-thank-native-shorts-cover-direction-proxy-review-ready-2026-07-14
+state_revision: out07-park-provisional-usable-main-landed-2026-07-14
 current_slice: OUT-07
-phase: thank_native_shorts_cover_direction_proxy_review
-canonical_status: direction_proxy_review_ready
+phase: parked_closure
+canonical_status: parked_provisional_usable_noncanonical
 active_branch: codex/out-07-internal-operator-delivery-pack-v0
-current_title: OUT-07 Thank native Shorts cover direction proxy review
-human_entrypoint: http://127.0.0.1:8071/index.html
+current_title: OUT-07 parked closure - viable noncanonical cover
+human_entrypoint: null
 portable_entrypoint: null
-review_open_command: "powershell -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_native_shorts_cover_direction_proxy\\open_preview.ps1 -Port 8071"
-review_server_restart_command: "uvx python -m src.cli.serve_review --root episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy --port 8071"
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/cover_direction_proxy_readback.json
+review_open_command: null
+review_server_restart_command: null
+machine_readback: artifacts/ACTIVE_REBUILD.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: accept_thank_semantic_cover_direction_or_reframe
-review_status: thank_native_shorts_cover_direction_proxy_pending_human_acceptance
-review_scope: Decide only whether the Thank source revision frame at the mapped timestamp, existing sub_010 presentation, crop, expression, and list appearance work as the Shorts cover direction; baseline bytes, tempo, full subtitle track, metadata, rights, production, and publishing are not re-reviewed.
-review_ready_at: 2026-07-14
+decision_required: none_out07_closed
+review_status: PARK_PROVISIONAL_USABLE
+review_scope: Human review found the current cover natural and viable for this episode, but one example cannot establish selection, reproducibility, canonical status, or a default template; no additional OUT-07 thumbnail iteration is allowed.
+reviewed_at: 2026-07-14
 remote_code_complete: true
 local_artifact_available: true
+local_artifact_role: historical_retained_evidence
 portable_local_artifact_available: false
 cross_machine_resume_class: conditional_reacquire
 active_rebuild_contract: artifacts/ACTIVE_REBUILD.json
@@ -32,42 +33,70 @@ last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
 local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/determinism_receipt.json
-local_package_requirement: thank_known_source_and_caption_authority_required_for_semantic_proxy_rebuild
+local_package_requirement: historical_local_evidence_only_no_active_review_requirement
 historical_fixed_input_packages: private_only_not_required_for_revision_rebuild
-local_reference_cache_status: tracked_corpus_observation_only_no_pixel_fetch
+local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-14
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
-pause_reason: null
+last_verified_host_entrypoint: null
+historical_last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
+pause_reason: thumbnail_iteration_parked_until_3_to_5_real_shorts
 exact_baseline_available: false
 accepted_baseline_status: accepted_historical_fact
 accepted_baseline_recovery_status: retained_artifact_required_for_strict_exact_route_only
-cover_direction_review_available: true
-cover_direction_acceptance: pending
-cover_review_status: thank_semantic_direction_proxy_pending_human_acceptance
-review_server_status: localhost_127_0_0_1_port_8071_http_200_verified
-next_review_due: human_cover_review
-next_action: このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。
+cover_direction_review_available: false
+historical_cover_direction_evidence_available: true
+cover_direction_acceptance: not_granted
+human_review_decision: PARK_PROVISIONAL_USABLE
+reviewed_by_human: true
+acceptance_granted: false
+cover_review_status: parked_viable_noncanonical_no_additional_iteration
+review_server_status: stopped_after_human_review
+next_review_due: after_3_to_5_real_shorts
+next_action: updated main から OUT-08 branch を作り、未使用実素材から内容の異なる vertical Shorts 候補を target 2、minimum 1 で生成して一つの review page にまとめる。
 active_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
-current_review_component: thank_source_revision_single_semantic_direction_proxy_and_readback
+current_review_component: null
 current_baseline_acceptance: accepted_historical_fact_planner007_2026_07_13_jst_not_reopened
 accepted_baseline_sha256: 2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18
-recommended_cover_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png
-recommended_cover_sha256: e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da
-recommended_cover_timestamp_seconds: 11.930
-recommended_cover_source_timestamp_seconds: 22.858
-recommended_cover_actual_decode_seconds: 22.866667
-recommended_cover_selection_status: semantic_direction_proxy_pending_human_acceptance
+recommended_cover_path: null
+recommended_cover_sha256: null
+recommended_cover_timestamp_seconds: null
+recommended_cover_source_timestamp_seconds: null
+recommended_cover_actual_decode_seconds: null
+recommended_cover_selection_status: parked_provisional_usable_not_selected
+historical_proxy_path: episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png
+historical_proxy_sha256: e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da
+historical_proxy_sequence_timestamp_seconds: 11.930
+historical_proxy_source_timestamp_seconds: 22.858
+historical_proxy_actual_decode_seconds: 22.866667
 proxy_classification: cover_direction_semantic_proxy
 local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
 planner_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
 source_byte_equivalence_claimed: false
-current_reference_revision: tracked_corpus_observation_only_no_third_party_pixels
+current_reference_revision: tracked_corpus_examples_only_not_canonical_design_rules
 current_determinism_status: thank_proxy_same_fixed_inputs_two_build_all_files_match_manifest_passed
+out07_review_result: PARK_PROVISIONAL_USABLE
+viable_candidate: true
+provisionally_usable_for_episode: true
+human_selected: false
+selected_thumbnail: null
+selection_status: deferred
+canonical_pattern: false
+default_template: false
+reuse_as_standard: false
+final_thumbnail_system_acceptance: false
+reference_collection_process_valid: true
+reference_to_output_lineage: weak
+accidental_success_not_ruled_out: true
+revisit_after_real_short_count: 3_to_5
+additional_OUT07_thumbnail_iteration: prohibited
+additional_out07_thumbnail_iteration_allowed: false
+revisit_count_min: 3
+revisit_count_max: 5
 historical_source_host_out07_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 historical_source_host_out07_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
 historical_source_host_operator_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
@@ -87,7 +116,7 @@ latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
 canonical_main_head: 93c3935f93dc4fdb71610ea35874c33a58a02895
-canonical_main_baseline: OUT-06 accepted after bounded repair
+canonical_main_baseline: OUT-07 parked with viable noncanonical cover
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
@@ -154,7 +183,32 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-07 Thank Native Shorts Cover Direction Proxy Review
+## Current OUT-07 Parked Closure
+
+人間レビューは、現在の Shorts cover が自然で、構図・バランス・要所選択も
+良好であり、この episode では暫定利用可能な viable candidate だと確認した。
+一方、比較対象が一種類だけなので、最終選定、再現性、一般化可能性は確認
+できない。良さが設計由来か偶然かも未証明であり、参照画像の収集手順は有効
+でも、参照から今回出力への具体的 lineage は `weak` のままである。
+
+したがって OUT-07 は失敗にせず `PARK_PROVISIONAL_USABLE` で閉じる。
+`human_selected=false`、`selected_thumbnail=null`、`selection_status=deferred`、
+`canonical_pattern=false`、`default_template=false`、
+`reuse_as_standard=false`、`final_thumbnail_system_acceptance=false` を維持する。
+追加候補、reference 再取得・再分類、pixel 一致追跡、mask 改善、copy 追加を
+含む追加 OUT-07 thumbnail iteration は `prohibited` である。
+
+Thank 上の proxy package は削除せず historical local evidence として保持する。
+現在の human entrypoint からは外し、review server は停止する。再検討は実際の
+Shorts が合計 3〜5 本揃った後に限り、reference corpus は具体例群であって
+canonical design rules ではない。次の active product は thumbnail ではなく、
+未使用実素材から作る OUT-08 vertical Shorts mini-batch である。rights、
+production、public/publishing、upload の gate は変わらず閉じている。
+
+## Historical OUT-07 Thank Native Shorts Cover Direction Proxy Review
+
+以下は closure 前に使用した host-local review receipt である。現在の判断待ちや
+entrypoint を表すものではなく、OUT-07 の追加作業を再開する指示でもない。
 
 Thank の既知 source revision
 `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`

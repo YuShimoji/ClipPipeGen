@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. The active review is
-the OUT-07 Thank native Shorts-cover semantic direction proxy below. Historical
+current artifact, then use an artifact-specific launcher. OUT-07 is parked;
+its Thank native Shorts-cover semantic direction proxy below is historical local
+evidence, not an active review or a selected thumbnail. Historical
 ED-10 proof launchers remain retained evidence; for the accepted ED-10o focused
 comparison reference, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`;
@@ -20,8 +21,8 @@ opened by the root launcher.
 
 | Field | Value |
 |---|---|
-| title | OUT-07 Thank Native Shorts Cover Direction Proxy Review v0 |
-| purpose | Restore one practical Shorts-list cover-direction decision without transporting the exact accepted baseline: validate the Thank source/caption/timestamp mapping, render one source-frame-plus-existing-subtitle proxy, and expose only the bounded visual question. |
+| title | OUT-07 Parked Viable Noncanonical Cover Receipt v0 |
+| purpose | Preserve the verified Thank semantic proxy and the human finding that it is natural and provisionally usable for this episode, while closing OUT-07 without selection, canonicalization, standard reuse, or additional thumbnail iteration. |
 | storage class | Tracked strict/proxy builders, CLI, tests, hash-only rebuild contract, and docs; ignored Thank source, caption authority, proxy pixels, previews, readbacks, manifest, and page. `episodes/` remains untracked. |
 | repo_relative_path | `src/integrations/render/out07_direction_proxy.py`; `src/cli/build_out07_direction_proxy.py`; `src/integrations/render/out07_native_cover.py`; `src/integrations/render/out07_reconstitution.py`; `artifacts/ACTIVE_REBUILD.json` |
 | local_artifact_path | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/` |
@@ -29,30 +30,42 @@ opened by the root launcher.
 | combined_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/combined_review_manifest.json` |
 | determinism_receipt | `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/determinism_receipt.json` |
 | evidence_revision | `thank-6f78657e-native-cover-direction-proxy-v1` |
-| current_state | `OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY` |
+| current_state | `OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED` |
 | source_inputs | Thank source `6f78657e...103a`; Planner source `e2206cef...1889`; byte equivalence is not claimed. Official caption SHA is `3c15535f...169919`; its tracked contract contains hashes/timing/segments, not plaintext. |
 | mapping | source target `22.858s`, nearest decoded frame `22.866667s`, sequence `11.930s`, `cut_003`, `sub_010` |
-| recommended_cover | `native_shorts_cover_direction_proxy_1080x1920.png`; SHA-256 `e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`; classification `cover_direction_semantic_proxy`; local scene/authority are observed, Planner continuity is inferred, and Planner pixel equivalence is unknown; selected-by-human remains false. |
+| historical_cover_evidence | `native_shorts_cover_direction_proxy_1080x1920.png`; SHA-256 `e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`; classification `cover_direction_semantic_proxy`; local scene/authority are observed, Planner continuity is inferred, Planner pixel equivalence is unknown, and selected-by-human remains false. |
 | preview_artifacts | `cover_list_preview.jpg` (405x720), `cover_shorts_ui_overlay_preview.jpg` (405x720), `cover_center_4x5.jpg` (864x1080), and `mapped_source_frame_1920x1080.png` (1920x1080) |
 | pixel_policy | Existing source-derived reframe and subtitle pixels only; poster-specific abstract background, auxiliary copy, masks, collage, and third-party pixels are false. |
 | exact_baseline | SHA `2c1c59bc...2d18` remains `accepted_historical_fact`; `exact_baseline_available=false` on Thank. The unchanged strict route retains SHA/size/duration, byte-copy, and acceptance-inheritance gates. |
-| availability | `local_artifact_available=true`; `cover_direction_review_available=true`; `portable_entrypoint=null`; `cover_direction_acceptance=pending`. |
-| open_command | Thank host: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_native_shorts_cover_direction_proxy\open_preview.ps1 -Port 8071` |
-| preview_url | Thank host only: `http://127.0.0.1:8071/index.html` |
+| availability | `local_artifact_available=true` as historical local evidence; `cover_direction_review_available=false`; `human_entrypoint=null`; `portable_entrypoint=null`; `cover_direction_acceptance=not_granted`. |
+| historical_open_command | Thank host receipt only: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_native_shorts_cover_direction_proxy\open_preview.ps1 -Port 8071`; do not present it as the current review entrypoint. |
+| historical_preview_url | Thank host receipt only: `http://127.0.0.1:8071/index.html`; review server stopped after closure. |
 | determinism | Same fixed inputs built twice with every package byte equal; core `deb93e2f...652` and package `0eeb4958...832`; manifest inventory and self-integrity pass. |
-| review_status | One semantic direction proxy is pending human acceptance. The page contains no exact baseline video or prior candidate set and does not reopen baseline, metadata, rights, production, or publishing. |
+| review_status | `PARK_PROVISIONAL_USABLE`: viable and provisionally usable for this episode, but not selected, canonical, default, reproducible, or accepted as a thumbnail system. No additional OUT-07 thumbnail iteration is allowed. Revisit only after 3–5 real Shorts exist. |
 | next_action | Ask only: このThank source revisionによる同一時刻・同一字幕のShorts一覧cover方向を採用してよいか。違和感があれば自由記述してください。 |
 
 Boundary flags remain false or pending:
 
 - `selected_thumbnail=null`
-- `current_recommendation=native_shorts_cover_direction_proxy_1080x1920.png`
+- `viable_candidate=true`
+- `provisionally_usable_for_episode=true`
 - `selected_by_human=false`
-- `human_selection_required=true`
+- `human_selected=false`
+- `selection_status=deferred`
+- `canonical_pattern=false`
+- `default_template=false`
+- `reuse_as_standard=false`
+- `final_thumbnail_system_acceptance=false`
+- `reference_collection_process_valid=true`
+- `reference_to_output_lineage=weak`
+- `accidental_success_not_ruled_out=true`
+- `revisit_after_real_short_count=3_to_5`
+- `additional_OUT07_thumbnail_iteration=prohibited`
 - `exact_baseline_available=false`
 - `accepted_baseline_status=accepted_historical_fact`
-- `cover_direction_review_available=true`
-- `cover_direction_acceptance=pending`
+- `cover_direction_review_available=false`
+- `human_review_decision=PARK_PROVISIONAL_USABLE`
+- `cover_direction_acceptance=not_granted`
 - `h1_full_short_integration=false`
 - `publish_ready=false`
 - `rights_status=pending`

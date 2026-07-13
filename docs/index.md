@@ -14,19 +14,17 @@ around workflow decisions, not only around file names.
 ## Current State
 
 Current focus is `OUT-07` on
-`codex/out-07-internal-operator-delivery-pack-v0`. The active review artifact is
-`clip-out07-shorts-poster-frame-direction-proof-v0-001`. Thank の既知 source
-revision から、source `22.858s`／sequence `11.930s`／`cut_003`／`sub_010`
-を照合した単一 cover direction proxy が local review-ready になった。
-Planner-known pixel hash とは一致しないため分類は
-`cover_direction_semantic_proxy`。Planner007 の exact accepted baseline は
-historical accepted fact のままだが Thank には存在せず、strict exact route
-も変更していない。人間判断はこの proxy の cover 方向だけである。
+`codex/out-07-internal-operator-delivery-pack-v0` の parked closure である。
+`clip-out07-shorts-poster-frame-direction-proof-v0-001` は、この episode では
+viable / provisionally usable だが未選定・非canonical・非default とする
+`PARK_PROVISIONAL_USABLE` receipt になった。追加 OUT-07 thumbnail iteration
+は禁止し、local proxy package は historical evidence としてだけ保持する。
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
-Canonical `main` is the OUT-06 accepted-after-bounded-repair baseline. OUT-07
-remains unmerged for operator review. The CPD-12 cockpit remains an upstream
-planning artifact, not the active resume focus.
+Canonical `main` receives this OUT-07 parked closure by fast-forward after the
+integration audit. The next active product is OUT-08 real unused-range vertical
+Shorts, not thumbnail refinement. The CPD-12 cockpit remains an upstream planning
+artifact, not the active resume focus.
 
 Start here:
 
@@ -63,7 +61,7 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_native_shorts_cover_direction_proxy\open_preview.ps1 -Port 8071` | Thank OUT-07 semantic cover direction proxy | Opens the local-only single-direction page. It is not an exact-baseline or portable entrypoint. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_native_shorts_cover_direction_proxy\open_preview.ps1 -Port 8071` | historical Thank OUT-07 semantic proxy | Historical evidence only. It is not the current human entrypoint, a selected thumbnail, or a reason to resume OUT-07 iteration. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 predecessor operator pack | Reopen the port-8070 metadata/video provenance pack only when predecessor evidence is needed; its rejected 16:9 directions are not current candidates. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out04_editorial_representative_sequence\open_preview.ps1` | ignored accepted OUT-04 editorial sequence | Reopen the accepted single 11.678-second `cut_001 -> cut_002` sequence if predecessor evidence is needed. |
@@ -84,12 +82,13 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-07 is ready for one Thank-host semantic cover-direction review even though
-the exact accepted baseline is absent. The next human decision is only whether
-to ACCEPT or REFRAME the source-derived frame plus its existing subtitle as the
-Shorts list cover direction. Do not reopen title/description/tags, baseline acceptance, production/
-public use, thumbnail upload, metadata publication, visibility, made-for-kids,
-publishing, upload, or rights approval.
+OUT-07 is closed as `PARK_PROVISIONAL_USABLE`; it is not accepted, selected,
+canonical, default, or reusable as a standard. Build OUT-08 from unused real
+source ranges and collect direct video review evidence. Revisit thumbnail
+exploration only after 3–5 real Shorts exist, without turning the reference
+corpus into canonical design rules. Do not reopen title/description/tags,
+production/public use, thumbnail upload, metadata publication, visibility,
+made-for-kids, publishing, upload, or rights approval.
 Use the dashboard to return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 

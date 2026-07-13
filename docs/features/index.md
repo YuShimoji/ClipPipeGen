@@ -6,36 +6,36 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-07`
 - artifact: `clip-out07-shorts-poster-frame-direction-proof-v0-001`
-- state: `OUT07_THANK_NATIVE_SHORTS_COVER_DIRECTION_PROXY_REVIEW_READY`
+- state: `OUT07_PARKED_WITH_VIABLE_NONCANONICAL_COVER_AND_MAIN_LANDED`
 
 - canonical main: `93c3935f93dc4fdb71610ea35874c33a58a02895`
-- canonical baseline: `OUT-06 accepted after bounded repair`
-- canonical status: `direction_proxy_review_ready`
-- review status: `thank_native_shorts_cover_direction_proxy_pending_human_acceptance`
+- canonical baseline: `OUT-07 parked with viable noncanonical cover`
+- canonical status: `parked_provisional_usable_noncanonical`
+- review status: `PARK_PROVISIONAL_USABLE`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
 - portable entrypoint: ``
 - exact baseline available: `false`
 - accepted baseline status: `accepted_historical_fact`
-- cover direction review available: `true`
-- cover direction acceptance: `pending`
+- cover direction review available: `false`
+- cover direction acceptance: `not_granted`
 - proxy classification: `cover_direction_semantic_proxy`
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `http://127.0.0.1:8071/index.html`
-- pause reason: ``
+- last verified host entrypoint: ``
+- pause reason: `thumbnail_iteration_parked_until_3_to_5_real_shorts`
 - accepted baseline recovery: `retained_artifact_required_for_strict_exact_route_only`
-- cover review status: `thank_semantic_direction_proxy_pending_human_acceptance`
+- cover review status: `parked_viable_noncanonical_no_additional_iteration`
 - cross-machine resume: `conditional_reacquire`
 - active rebuild contract: `artifacts/ACTIVE_REBUILD.json`
 - evidence revision: `thank-6f78657e-native-cover-direction-proxy-v1`
 - accepted baseline SHA-256: `2c1c59bcd6e311cbd9fab1a2dbc117cf1ced0e4c06217febde158867fcfb2d18`
-- recommended cover: `episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/native_shorts_cover_direction_proxy_1080x1920.png`
-- recommended cover SHA-256: `e7aaae24401b5b6c75e13926329af19c8a59008dd3c93229735d7465da2f18da`
-- recommended cover timestamp: `11.930`
-- recommended cover selection: `semantic_direction_proxy_pending_human_acceptance`
-- decision required: `accept_thank_semantic_cover_direction_or_reframe`
-- next review: `human_cover_review`
+- recommended cover: ``
+- recommended cover SHA-256: ``
+- recommended cover timestamp: ``
+- recommended cover selection: `parked_provisional_usable_not_selected`
+- decision required: `none_out07_closed`
+- next review: `after_3_to_5_real_shorts`
 
 ## Feature Table
 
