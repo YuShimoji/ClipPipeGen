@@ -2734,7 +2734,7 @@
     {
       "path": "docs/index.md",
       "title": "ClipPipeGen Docs Wiki",
-      "line_count": 118,
+      "line_count": 121,
       "metadata": {},
       "front_sections": {
         "what_it_is": true,
@@ -3143,7 +3143,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 119,
+      "line_count": 122,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3194,7 +3194,10 @@
         "canonical_main_baseline": "OUT-07 PARK_PROVISIONAL_USABLE parked predecessor",
         "source_of_truth": "false",
         "owner_lane": "shared_infra",
-        "related": "docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json, artifacts/ACTIVE_REBUILD.json"
+        "related": "docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json, artifacts/ACTIVE_REBUILD.json",
+        "durable_context": "docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md",
+        "remote_head": "d3798c4cf1c622631b9a1089634909475d640b9f",
+        "upstream_parity": "0 0"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3218,6 +3221,26 @@
       },
       "boundary_term_count": 27,
       "status": "reference"
+    },
+    {
+      "path": "docs/decision-log.md",
+      "title": "Decision Log - ClipPipeGen",
+      "line_count": 53,
+      "metadata": {
+        "id": "decision-log",
+        "title": "Decision Log - ClipPipeGen",
+        "type": "durable_decision_log",
+        "status": "current",
+        "last_touched": "2026-07-14"
+      },
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 12,
+      "status": "current"
     },
     {
       "path": "docs/FIRST_SLICE.md",
@@ -3288,6 +3311,26 @@
       },
       "boundary_term_count": 37,
       "status": "contains_done_history"
+    },
+    {
+      "path": "docs/idea-ledger.md",
+      "title": "Idea Ledger - ClipPipeGen",
+      "line_count": 28,
+      "metadata": {
+        "id": "idea-ledger",
+        "title": "Idea Ledger - ClipPipeGen",
+        "type": "durable_idea_ledger",
+        "status": "current",
+        "last_touched": "2026-07-14"
+      },
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 8,
+      "status": "current"
     },
     {
       "path": "docs/INVARIANTS.md",
@@ -3372,6 +3415,31 @@
       },
       "boundary_term_count": 44,
       "status": "reference"
+    },
+    {
+      "path": "docs/project-context.md",
+      "title": "Project Context - ClipPipeGen",
+      "line_count": 79,
+      "metadata": {
+        "id": "project-context",
+        "title": "Project Context - ClipPipeGen",
+        "type": "durable_context",
+        "status": "current",
+        "last_touched": "2026-07-14",
+        "current_slice": "OUT-08",
+        "active_branch": "codex/out-08-real-unused-range-short-minibatch-v0",
+        "head": "d3798c4cf1c622631b9a1089634909475d640b9f",
+        "upstream_parity": "0 0",
+        "health": "OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY"
+      },
+      "front_sections": {
+        "what_it_is": false,
+        "current_state": false,
+        "next": false,
+        "constraints_risks": false
+      },
+      "boundary_term_count": 12,
+      "status": "current"
     },
     {
       "path": "docs/PROMPT_CHANGE_MANAGEMENT.md",

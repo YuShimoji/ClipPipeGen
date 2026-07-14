@@ -49,6 +49,9 @@ canonical_main_baseline: OUT-07 PARK_PROVISIONAL_USABLE parked predecessor
 source_of_truth: false
 owner_lane: shared_infra
 related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json, artifacts/ACTIVE_REBUILD.json
+durable_context: docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md
+remote_head: d3798c4cf1c622631b9a1089634909475d640b9f
+upstream_parity: 0 0
 ---
 
 # Current Handoff - ClipPipeGen

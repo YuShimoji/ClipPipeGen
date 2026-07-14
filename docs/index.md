@@ -34,6 +34,9 @@ Start here:
 |---|---|
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
 | Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
+| Durable project context | [project-context.md](project-context.md) |
+| Decision history | [decision-log.md](decision-log.md) |
+| Active next-step ideas | [idea-ledger.md](idea-ledger.md) |
 | Supervising review status | [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md) |
 | Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
 | Content planning Review Console / operator cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
