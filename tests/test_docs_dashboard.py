@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -1654,8 +1655,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["cover_direction_acceptance"] == ""
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
-    assert status["current_focus"]["review_server_status"] == (
-        "running_pid_39652_exact_serve_review_command_verified"
+    assert re.fullmatch(
+        r"running_pid_\d+_exact_serve_review_command_verified",
+        status["current_focus"]["review_server_status"],
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"

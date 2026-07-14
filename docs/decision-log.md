@@ -3,10 +3,21 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-14
+last_touched: 2026-07-15
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-15 — OUT-08 active / OUT-07 parked の regression 境界を固定
+
+full suite で、OUT-07 時代の test が `artifacts/ACTIVE_REBUILD.json` を current
+active contract として要求し続けていることが判明した。現行正本では OUT-08 の
+same-machine package が active review evidence であり、同 JSON は OUT-07 の parked
+predecessor contract である。test はこの二つを同時に検証する形へ更新する。
+
+この変更は artifact、caption/cut authority、human decision、rights、production、
+public/publishing gate を変更しない。根拠: `docs/RUNTIME_STATE.md` current capsule +
+`docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md`
 
 ## 2026-07-14 — OUT-08 を review-ready で停止
 

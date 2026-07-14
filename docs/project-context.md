@@ -3,10 +3,10 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-14
+last_touched: 2026-07-15
 current_slice: OUT-08
 active_branch: codex/out-08-real-unused-range-short-minibatch-v0
-head: d3798c4cf1c622631b9a1089634909475d640b9f
+verified_remote_base_head: 3c634f738cb9cade32a29a9bc53529ea202c2c4d
 upstream_parity: 0 0
 health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
 ---
@@ -42,6 +42,11 @@ black/silence bounded check、HTTP 200 / Range 206 を通過している。
 typography acceptance ではない。browser の readyState / overflow / console 証跡は
 repair 前の確認を含み、最終 package の direct seek は自動観測できていないため、
 開始・境界・終端の自然さは人間レビューに残る。
+
+2026-07-15 の再開確認では、OUT-08 package の全 payload hash と manifest
+self-integrity、両 MP4 の full decode、`status-episode` の `review_ready=true`、
+localhost HTTP 200 / Range 206、Python 520 tests、GUI/Electron smoke を再確認した。
+server は listener PID `23616` で復旧済み。current state は変わらず、人間判断待ちである。
 
 ## 再開契約
 

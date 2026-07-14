@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-14",
+  "generated_at": "2026-07-15",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -48,7 +48,7 @@
     "cover_direction_acceptance": "",
     "proxy_classification": "",
     "source_byte_equivalence_claimed": "",
-    "review_server_status": "running_pid_39652_exact_serve_review_command_verified",
+    "review_server_status": "running_pid_23616_exact_serve_review_command_verified",
     "last_verified_host_local_artifact_available": "true",
     "last_verified_host_entrypoint": "http://127.0.0.1:8071/index.html",
     "pause_reason": "human_review_required_before_candidate_acceptance",
@@ -66,7 +66,7 @@
     "local_verified_host": "DESKTOP-H53P1T4",
     "local_artifact_evidence_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
-    "last_verified_at": "2026-07-14",
+    "last_verified_at": "2026-07-15",
     "decision_required": "out08_whole_candidate_human_review",
     "next_review_action_type": "out08_candidate_review_now",
     "next_action": "追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。",
@@ -2748,7 +2748,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1935,
+      "line_count": 1960,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -2756,8 +2756,8 @@
         "status": "current_capsule",
         "health": "OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY",
         "progress_pct": "100",
-        "last_touched": "2026-07-14",
-        "state_revision": "out08-real-unused-range-short-minibatch-review-ready-2026-07-14",
+        "last_touched": "2026-07-15",
+        "state_revision": "out08-real-unused-range-short-minibatch-review-ready-verified-2026-07-15",
         "current_slice": "OUT-08",
         "phase": "human_review",
         "canonical_status": "internal_review_ready_human_decision_pending",
@@ -2792,7 +2792,7 @@
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "last_verified_at": "2026-07-14",
+        "last_verified_at": "2026-07-15",
         "last_verified_host_local_artifact_available": "true",
         "last_verified_host_entrypoint": "http://127.0.0.1:8071/index.html",
         "historical_last_verified_host_entrypoint": "",
@@ -2807,7 +2807,7 @@
         "reviewed_by_human": "false",
         "acceptance_granted": "false",
         "cover_review_status": "",
-        "review_server_status": "running_pid_39652_exact_serve_review_command_verified",
+        "review_server_status": "running_pid_23616_exact_serve_review_command_verified",
         "next_review_due": "out08_candidate_review_now",
         "next_action": "追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。",
         "active_artifact": "clip-out08-real-unused-range-short-minibatch-v0-001",
@@ -2950,7 +2950,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 385,
+      "boundary_term_count": 388,
       "status": "current_capsule"
     },
     {
@@ -3143,7 +3143,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 122,
+      "line_count": 148,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3151,7 +3151,7 @@
         "status": "review_ready",
         "health": "OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY",
         "progress_pct": "100",
-        "last_touched": "2026-07-14",
+        "last_touched": "2026-07-15",
         "current_slice": "OUT-08",
         "phase": "human_review",
         "canonical_status": "internal_review_ready_human_decision_pending",
@@ -3178,7 +3178,8 @@
         "last_verified_host_local_artifact_available": "true",
         "last_verified_host_entrypoint": "http://127.0.0.1:8071/index.html",
         "local_artifact_evidence_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json",
-        "review_server_status": "running_pid_39652_exact_serve_review_command_verified",
+        "review_server_status": "running_pid_23616_exact_serve_review_command_verified",
+        "last_verified_at": "2026-07-15",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
@@ -3196,7 +3197,7 @@
         "owner_lane": "shared_infra",
         "related": "docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json, artifacts/ACTIVE_REBUILD.json",
         "durable_context": "docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md",
-        "remote_head": "d3798c4cf1c622631b9a1089634909475d640b9f",
+        "verified_remote_base_head": "3c634f738cb9cade32a29a9bc53529ea202c2c4d",
         "upstream_parity": "0 0"
       },
       "front_sections": {
@@ -3205,7 +3206,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 16,
+      "boundary_term_count": 24,
       "status": "review_ready"
     },
     {
@@ -3225,13 +3226,13 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 53,
+      "line_count": 63,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
         "type": "durable_decision_log",
         "status": "current",
-        "last_touched": "2026-07-14"
+        "last_touched": "2026-07-15"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3239,7 +3240,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 12,
+      "boundary_term_count": 15,
       "status": "current"
     },
     {
@@ -3315,13 +3316,13 @@
     {
       "path": "docs/idea-ledger.md",
       "title": "Idea Ledger - ClipPipeGen",
-      "line_count": 28,
+      "line_count": 45,
       "metadata": {
         "id": "idea-ledger",
         "title": "Idea Ledger - ClipPipeGen",
         "type": "durable_idea_ledger",
         "status": "current",
-        "last_touched": "2026-07-14"
+        "last_touched": "2026-07-15"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3329,7 +3330,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 8,
+      "boundary_term_count": 32,
       "status": "current"
     },
     {
@@ -3419,16 +3420,16 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 79,
+      "line_count": 83,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
-        "last_touched": "2026-07-14",
+        "last_touched": "2026-07-15",
         "current_slice": "OUT-08",
         "active_branch": "codex/out-08-real-unused-range-short-minibatch-v0",
-        "head": "d3798c4cf1c622631b9a1089634909475d640b9f",
+        "verified_remote_base_head": "3c634f738cb9cade32a29a9bc53529ea202c2c4d",
         "upstream_parity": "0 0",
         "health": "OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY"
       },
@@ -3623,8 +3624,8 @@
     }
   ],
   "doc_health": {
-    "finding_count": 27,
-    "finding_total": 27,
+    "finding_count": 29,
+    "finding_total": 29,
     "finding_limit": 50,
     "findings_truncated": false,
     "findings": [
@@ -3643,7 +3644,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1935 lines) is likely carrying history.",
+        "detail": "Long active doc (1960 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3702,6 +3703,12 @@
       },
       {
         "type": "over_guarded",
+        "path": "docs/CURRENT_HANDOFF.md",
+        "detail": "Boundary terms appear 24 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
         "path": "docs/CUT_003_REVIEW_CONTRACT_TAXONOMY_AUDIT.md",
         "detail": "Boundary terms appear 27 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
@@ -3728,6 +3735,12 @@
         "type": "over_guarded",
         "path": "docs/HOLOEN_PILOT.md",
         "detail": "Boundary terms appear 37 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/idea-ledger.md",
+        "detail": "Boundary terms appear 32 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
