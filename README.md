@@ -8,7 +8,8 @@
 
 OUT-08 note: authoritative episode evidence の未使用範囲から、重複しない 2 本の
 実尺 vertical Shorts 候補を 1 回の atomic render で生成し、単一列の localhost
-review page に束ねた。これは同一マシン内の internal review artifact であり、
+review page に束ねた。candidate 02 は reject 済み `cut_009` の source-time
+interval を完全除外した。これは同一マシン内の internal review artifact であり、
 navigation frame は thumbnail ではない。人間の候補判断、rights、production、
 publishing の gate は未承認のまま保持する。
 

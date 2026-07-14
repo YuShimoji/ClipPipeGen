@@ -151,7 +151,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path | str]:
             else "needs_adjustment",
             "context_status": "needs_review",
             "decision_reason": (
-                "Standalone fragment rejected; better treated as dependent payoff"
+                "Standalone fragment rejected"
                 if cut_id == "cut_009"
                 else "usable after bounded range planning"
             ),
@@ -212,11 +212,11 @@ def _fixture(tmp_path: Path) -> dict[str, Path | str]:
                 },
                 {
                     "candidate_id": "candidate_02",
-                    "rationale": "挨拶から勝利の dependent payoff までを確認する。",
+                    "rationale": "挨拶から対決の転換点までを確認する。",
                     "narrative_arc": {
                         "setup": "cut_006 後半の挨拶",
                         "development": "cut_007 と cut_008",
-                        "payoff": "sub_102 の勝利だけを dependent payoff として使用",
+                        "payoff": "cut_008 末尾の攻撃で転換点を作る",
                     },
                     "ranges": [
                         {
@@ -236,13 +236,6 @@ def _fixture(tmp_path: Path) -> dict[str, Path | str]:
                             "source_end_seconds": 135.219,
                             "authority_cut_ids": ["cut_008"],
                             "boundary_basis": "cut_authority",
-                        },
-                        {
-                            "source_start_seconds": 137.054,
-                            "source_end_seconds": 138.055,
-                            "authority_cut_ids": ["cut_009"],
-                            "boundary_basis": "dependent_payoff_subtitle",
-                            "dependent_payoff_only": True,
                         },
                     ],
                 },
@@ -332,9 +325,10 @@ def test_build_two_candidate_atomic_package_and_manifest(tmp_path: Path) -> None
     assert readback["actual_candidate_count"] == 2
     assert [item["semantic_duration_seconds"] for item in readback["candidates"]] == [
         28.295,
-        54.455,
+        53.454,
     ]
-    assert readback["candidates"][1]["dependent_payoff_sub102_consumed"] is True
+    assert readback["candidates"][1]["subtitle_count"] == 6
+    assert "sub_102" not in readback["candidates"][1]["subtitle_ids"]
     assert readback["boundaries"]["cut009_final_cut_decision"] == "reject"
     for candidate in readback["candidates"]:
         navigation = candidate["navigation_frame"]
@@ -426,25 +420,63 @@ def test_source_audio_fixed_hash_rejects_coordinated_ledger_replacement(
     assert not Path(fixture["output"]).exists()
 
 
-def test_non_dependent_cut009_use_is_rejected(tmp_path: Path) -> None:
+def test_cut009_overlap_is_rejected_before_render_regardless_of_dependent_flag(
+    tmp_path: Path,
+) -> None:
     fixture = _fixture(tmp_path)
     plan_path = Path(fixture["plan"])
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     plan["candidates"] = [plan["candidates"][0]]
     plan["candidates"][0]["ranges"] = [
         {
-            "source_start_seconds": 135.219,
-            "source_end_seconds": 144.0,
-            "authority_cut_ids": ["cut_009"],
+            "source_start_seconds": 137.054,
+            "source_end_seconds": 138.055,
+            "authority_cut_ids": ["cut_008"],
             "boundary_basis": "cut_authority",
+            "dependent_payoff_only": True,
         }
     ]
     _write_json(plan_path, plan)
+    called = False
+
+    def renderer(**_kwargs):
+        nonlocal called
+        called = True
+        return {}
+
     with pytest.raises(
-        batch.RealUnusedRangeShortMinibatchError, match="cut_004..cut_008"
+        batch.RealUnusedRangeShortMinibatchError,
+        match="candidate overlaps rejected cut_009",
     ):
-        _build(fixture)
+        _build(fixture, render_executor=renderer)
+    assert called is False
     assert not Path(fixture["output"]).exists()
+
+
+def test_existing_candidate01_bytes_are_reused_without_render(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fixture = _fixture(tmp_path)
+    _build(fixture)
+    candidate01 = Path(fixture["output"]) / "candidate_01.mp4"
+    before = batch._sha256(candidate01)
+    monkeypatch.setattr(batch, "CANDIDATE_01_SHA256", before)
+    rendered_ids: list[str] = []
+
+    def record_render(**kwargs):
+        rendered_ids.append(Path(kwargs["video_path"]).stem)
+        return _fake_render(**kwargs)
+
+    result = _build(fixture, render_executor=record_render)
+    assert rendered_ids == ["candidate_02"]
+    assert batch._sha256(candidate01) == before
+    reused = result["readback"]["candidates"][0]["render_reuse"]
+    assert reused == {
+        "status": "reused_existing_candidate_bytes",
+        "video_sha256": before,
+        "manifest_verified": True,
+    }
 
 
 def test_second_render_failure_preserves_existing_package(tmp_path: Path) -> None:

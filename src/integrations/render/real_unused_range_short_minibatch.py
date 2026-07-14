@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 import uuid
 from html import escape
@@ -71,8 +72,7 @@ USED_RANGES = (
 )
 ELIGIBLE_CUT_IDS = tuple(f"cut_{index:03d}" for index in range(4, 9))
 REJECTED_CUT_ID = "cut_009"
-DEPENDENT_PAYOFF_SUBTITLE_ID = "sub_102"
-DEPENDENT_PAYOFF_REASON = "better treated as dependent payoff"
+CANDIDATE_01_SHA256 = "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a"
 SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 ABSOLUTE_PATH = re.compile(r"(?:^[A-Za-z]:[\\/]|^\\\\)")
 REVIEW_QUESTION = "追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。"
@@ -217,6 +217,14 @@ def build_real_unused_range_short_minibatch(
         executor = render_executor or render_vertical_sequence_assets
         nav_executor = navigation_executor or _extract_navigation_frame
         for candidate in plan["candidates"]:
+            reused = _reuse_existing_candidate(
+                output=output,
+                stage=stage,
+                candidate=candidate,
+            )
+            if reused is not None:
+                rendered.append(reused)
+                continue
             rendered.append(
                 _render_candidate(
                     root=root,
@@ -421,13 +429,6 @@ def _candidate_scan(*, episode: Path, authority: dict[str, Any]) -> dict[str, An
         raise RealUnusedRangeShortMinibatchError("cut_009 reject authority is missing")
     if rejected_decision.get("final_cut_decision") != "reject":
         raise RealUnusedRangeShortMinibatchError("cut_009 rejection changed")
-    if (
-        DEPENDENT_PAYOFF_REASON
-        not in str(rejected_decision.get("decision_reason") or "").lower()
-    ):
-        raise RealUnusedRangeShortMinibatchError(
-            "cut_009 dependent-payoff reason changed"
-        )
     return {
         "schema_version": "clippipegen.out08.candidate_scan.v0",
         "artifact_id": ARTIFACT_ID,
@@ -455,14 +456,6 @@ def _candidate_scan(*, episode: Path, authority: dict[str, Any]) -> dict[str, An
                 "start_seconds": float(rejected["start_seconds"]),
                 "end_seconds": float(rejected["end_seconds"]),
                 "reason": "final_cut_decision_reject",
-                "dependent_payoff_exception": {
-                    "allowed": True,
-                    "subtitle_id": DEPENDENT_PAYOFF_SUBTITLE_ID,
-                    "scope": "dependent_payoff_only_not_cut_promotion",
-                    "decision_reason": str(
-                        rejected_decision.get("decision_reason") or ""
-                    ),
-                },
             }
         ],
         "boundary_authority": authority["boundary_options"],
@@ -528,7 +521,6 @@ def _normalize_plan(
         timeline: list[dict[str, Any]] = []
         semantic_subtitles: list[dict[str, Any]] = []
         offset = 0.0
-        dependent_payoff_consumed = False
         for range_index, item in enumerate(ranges, start=1):
             normalized = _normalize_range(
                 candidate_id=expected_id,
@@ -581,12 +573,6 @@ def _normalize_plan(
                 raise RealUnusedRangeShortMinibatchError(
                     f"{expected_id} range {range_index} has no fully contained subtitles"
                 )
-            if normalized["dependent_payoff_only"]:
-                if [item["id"] for item in selected] != [DEPENDENT_PAYOFF_SUBTITLE_ID]:
-                    raise RealUnusedRangeShortMinibatchError(
-                        "cut_009 exception must consume only sub_102"
-                    )
-                dependent_payoff_consumed = True
             for subtitle in selected:
                 semantic_subtitles.append(
                     {
@@ -635,7 +621,6 @@ def _normalize_plan(
                     item["sequence_end_seconds"] for item in timeline[:-1]
                 ],
                 "cut009_rejection_preserved": True,
-                "dependent_payoff_sub102_consumed": dependent_payoff_consumed,
             }
         )
     return {
@@ -672,6 +657,18 @@ def _normalize_range(
         raise RealUnusedRangeShortMinibatchError(
             "candidate range must have positive duration"
         )
+    rejected = cuts.get(REJECTED_CUT_ID)
+    if rejected is None:
+        raise RealUnusedRangeShortMinibatchError("cut_009 reject authority is missing")
+    if _overlap(
+        start,
+        end,
+        float(rejected["start_seconds"]),
+        float(rejected["end_seconds"]),
+    ):
+        raise RealUnusedRangeShortMinibatchError(
+            "candidate overlaps rejected cut_009"
+        )
     cut_ids = item.get("authority_cut_ids")
     if (
         not isinstance(cut_ids, list)
@@ -681,89 +678,50 @@ def _normalize_range(
         raise RealUnusedRangeShortMinibatchError(
             "candidate range authority_cut_ids are missing"
         )
-    dependent = item.get("dependent_payoff_only") is True
-    if dependent:
-        if (
-            cut_ids != [REJECTED_CUT_ID]
-            or item.get("boundary_basis") != "dependent_payoff_subtitle"
-        ):
-            raise RealUnusedRangeShortMinibatchError(
-                "invalid cut_009 dependent-payoff declaration"
-            )
-        decision = decisions.get(REJECTED_CUT_ID) or {}
-        if (
-            decision.get("final_cut_decision") != "reject"
-            or DEPENDENT_PAYOFF_REASON
-            not in str(decision.get("decision_reason") or "").lower()
-        ):
-            raise RealUnusedRangeShortMinibatchError(
-                "cut_009 reject/dependent-payoff authority changed"
-            )
-        sub102 = next(
-            (
-                value
-                for value in subtitles
-                if value.get("id") == DEPENDENT_PAYOFF_SUBTITLE_ID
-            ),
-            None,
+    if "dependent_payoff_only" in item:
+        raise RealUnusedRangeShortMinibatchError(
+            "dependent_payoff_only is not supported"
         )
-        if (
-            sub102 is None
-            or not _close(start, sub102.get("start_seconds"))
-            or not _close(end, sub102.get("end_seconds"))
-        ):
+    if any(cut_id not in ELIGIBLE_CUT_IDS for cut_id in cut_ids):
+        raise RealUnusedRangeShortMinibatchError(
+            "candidate range may use only cut_004..cut_008"
+        )
+    for cut_id in cut_ids:
+        if cut_id not in cuts or str(
+            (decisions.get(cut_id) or {}).get("final_cut_decision") or ""
+        ) not in {"keep", "accepted", "needs_adjustment"}:
             raise RealUnusedRangeShortMinibatchError(
-                "dependent payoff must be exactly sub_102"
+                f"range authority is not usable: {cut_id}"
+            )
+    envelope_start = min(float(cuts[value]["start_seconds"]) for value in cut_ids)
+    envelope_end = max(float(cuts[value]["end_seconds"]) for value in cut_ids)
+    if (
+        start < envelope_start - TIME_TOLERANCE_SECONDS
+        or end > envelope_end + TIME_TOLERANCE_SECONDS
+    ):
+        raise RealUnusedRangeShortMinibatchError(
+            "candidate range leaves its cut authority envelope"
+        )
+    basis = item.get("boundary_basis")
+    if basis == "cut_authority":
+        if not _close(start, envelope_start) or not _close(end, envelope_end):
+            raise RealUnusedRangeShortMinibatchError(
+                "cut-authority range must match its envelope"
+            )
+    elif basis == "subtitle_aligned_derivation":
+        owned = [value for value in subtitles if value.get("cut_id") in cut_ids]
+        if not any(
+            _close(start, value.get("start_seconds")) for value in owned
+        ) or not any(_close(end, value.get("end_seconds")) for value in owned):
+            raise RealUnusedRangeShortMinibatchError(
+                "derived range must align to subtitle boundaries"
             )
     else:
-        if any(cut_id not in ELIGIBLE_CUT_IDS for cut_id in cut_ids):
-            raise RealUnusedRangeShortMinibatchError(
-                "candidate range may use only cut_004..cut_008"
-            )
-        for cut_id in cut_ids:
-            if cut_id not in cuts or str(
-                (decisions.get(cut_id) or {}).get("final_cut_decision") or ""
-            ) not in {"keep", "accepted", "needs_adjustment"}:
-                raise RealUnusedRangeShortMinibatchError(
-                    f"range authority is not usable: {cut_id}"
-                )
-        envelope_start = min(float(cuts[value]["start_seconds"]) for value in cut_ids)
-        envelope_end = max(float(cuts[value]["end_seconds"]) for value in cut_ids)
-        if (
-            start < envelope_start - TIME_TOLERANCE_SECONDS
-            or end > envelope_end + TIME_TOLERANCE_SECONDS
-        ):
-            raise RealUnusedRangeShortMinibatchError(
-                "candidate range leaves its cut authority envelope"
-            )
-        basis = item.get("boundary_basis")
-        if basis == "cut_authority":
-            if not _close(start, envelope_start) or not _close(end, envelope_end):
-                raise RealUnusedRangeShortMinibatchError(
-                    "cut-authority range must match its envelope"
-                )
-        elif basis == "subtitle_aligned_derivation":
-            owned = [value for value in subtitles if value.get("cut_id") in cut_ids]
-            if not any(
-                _close(start, value.get("start_seconds")) for value in owned
-            ) or not any(_close(end, value.get("end_seconds")) for value in owned):
-                raise RealUnusedRangeShortMinibatchError(
-                    "derived range must align to subtitle boundaries"
-                )
-        else:
-            raise RealUnusedRangeShortMinibatchError("unsupported boundary_basis")
+        raise RealUnusedRangeShortMinibatchError("unsupported boundary_basis")
     for cut_id, used_start, used_end in USED_RANGES:
         if _overlap(start, end, used_start, used_end):
             raise RealUnusedRangeShortMinibatchError(
                 f"candidate overlaps used range {cut_id}"
-            )
-    if not dependent:
-        rejected = cuts[REJECTED_CUT_ID]
-        if _overlap(
-            start, end, float(rejected["start_seconds"]), float(rejected["end_seconds"])
-        ):
-            raise RealUnusedRangeShortMinibatchError(
-                "candidate overlaps rejected cut_009"
             )
     return {
         "source_start_seconds": round(start, 3),
@@ -771,9 +729,6 @@ def _normalize_range(
         "authority_cut_ids": cut_ids,
         "boundary_basis": str(item.get("boundary_basis")),
         "authority_mutated": False,
-        "dependent_payoff_only": dependent,
-        "cut009_final_cut_decision": "reject" if dependent else None,
-        "dependent_payoff_reason": DEPENDENT_PAYOFF_REASON if dependent else None,
     }
 
 
@@ -840,6 +795,119 @@ def _subtitles_for_range(
             }
         )
     return sorted(selected, key=lambda value: (value["start_seconds"], value["id"]))
+
+
+def _reuse_existing_candidate(
+    *,
+    output: Path,
+    stage: Path,
+    candidate: dict[str, Any],
+) -> dict[str, Any] | None:
+    """Copy the unchanged candidate 01 bytes into a replacement package."""
+
+    if candidate["candidate_id"] != "candidate_01" or not output.is_dir():
+        return None
+    readback_path = output / "batch_readback.json"
+    manifest_path = output / "batch_manifest.json"
+    if not readback_path.is_file() or not manifest_path.is_file():
+        return None
+    readback = _read_json(readback_path, "existing batch readback")
+    manifest = _read_json(manifest_path, "existing batch manifest")
+    if manifest.get("manifest_self_integrity", {}).get(
+        "sha256"
+    ) != _canonical_manifest_self_hash(manifest):
+        raise RealUnusedRangeShortMinibatchError(
+            "existing manifest self-integrity mismatch"
+        )
+    existing = next(
+        (
+            value
+            for value in readback.get("candidates", [])
+            if value.get("candidate_id") == "candidate_01"
+        ),
+        None,
+    )
+    if existing is None:
+        raise RealUnusedRangeShortMinibatchError(
+            "existing candidate_01 readback is missing"
+        )
+    range_keys = (
+        "source_start_seconds",
+        "source_end_seconds",
+        "authority_cut_ids",
+        "boundary_basis",
+        "id",
+        "duration_seconds",
+        "sequence_start_seconds",
+        "sequence_end_seconds",
+        "transition_in",
+    )
+    existing_ranges = [
+        {key: value.get(key) for key in range_keys}
+        for value in existing.get("source_ranges", [])
+        if isinstance(value, dict)
+    ]
+    current_ranges = [
+        {key: value.get(key) for key in range_keys}
+        for value in candidate["timeline"]
+    ]
+    expected_plan_values = (
+        ("semantic_duration_seconds", candidate["semantic_duration_seconds"]),
+        ("subtitle_count", candidate["subtitle_count"]),
+        ("subtitle_ids", candidate["subtitle_ids"]),
+        ("rationale", candidate["rationale"]),
+        ("narrative_arc", candidate["narrative_arc"]),
+    )
+    if existing_ranges != current_ranges or any(
+        existing.get(key) != expected for key, expected in expected_plan_values
+    ):
+        raise RealUnusedRangeShortMinibatchError(
+            "existing candidate_01 does not match the unchanged plan"
+        )
+    if (existing.get("video") or {}).get("sha256") != CANDIDATE_01_SHA256:
+        raise RealUnusedRangeShortMinibatchError(
+            "existing candidate_01 SHA-256 changed"
+        )
+
+    expected_files = {
+        "candidate_01.mp4",
+        "candidate_01_subtitles.ass",
+        "candidate_01_subtitles.srt",
+        "candidate_01_navigation.jpg",
+        "candidate_01_frame_qa.jpg",
+    }
+    entries = {
+        str(value.get("package_relative_path")): value
+        for value in manifest.get("files", [])
+        if isinstance(value, dict)
+    }
+    for relative in sorted(expected_files):
+        source = output / relative
+        entry = entries.get(relative) or {}
+        _require_file(source, f"existing {relative}")
+        if _sha256(source) != entry.get("sha256"):
+            raise RealUnusedRangeShortMinibatchError(
+                f"existing candidate_01 manifest hash mismatch: {relative}"
+            )
+        shutil.copy2(source, stage / relative)
+    if _sha256(stage / "candidate_01.mp4") != CANDIDATE_01_SHA256:
+        raise RealUnusedRangeShortMinibatchError(
+            "staged candidate_01 SHA-256 changed"
+        )
+    return {
+        "candidate_id": "candidate_01",
+        "video": existing["video"],
+        "subtitle": existing["subtitle"],
+        "navigation_frame": existing["navigation_frame"],
+        "frame_qa": existing["frame_qa"],
+        "render": existing["render"],
+        "audio": existing["audio"],
+        "render_reuse": {
+            "status": "reused_existing_candidate_bytes",
+            "video_sha256": CANDIDATE_01_SHA256,
+            "manifest_verified": True,
+        },
+    }
 
 
 def _render_candidate(
@@ -1049,9 +1117,6 @@ def _batch_readback(
                 "rationale": candidate["rationale"],
                 "narrative_arc": candidate["narrative_arc"],
                 "cut009_rejection_preserved": candidate["cut009_rejection_preserved"],
-                "dependent_payoff_sub102_consumed": candidate[
-                    "dependent_payoff_sub102_consumed"
-                ],
                 **rendered_item,
                 "browser_qa": {
                     "required": True,
@@ -1239,17 +1304,12 @@ def _render_html(readback: dict[str, Any]) -> str:
         )
         media = candidate["render"]["media"]
         audio = candidate["audio"]["output_measurement"]
-        dependent = (
-            '<p class="notice">sub_102 は cut_009 の採用ではなく、packet 理由どおり dependent payoff としてのみ使用。cut_009=reject は維持。</p>'
-            if candidate["dependent_payoff_sub102_consumed"]
-            else ""
-        )
         sections.append(
             f"""<section class="candidate" data-candidate-id="{escape(candidate["candidate_id"])}">
 <h2>{escape(candidate["candidate_id"])}</h2>
 <video controls preload="metadata" playsinline poster="{escape(candidate["navigation_frame"]["package_relative_path"])}" src="{escape(candidate["video"]["package_relative_path"])}"></video>
 <p>source {escape(ranges)} / sequence {candidate["semantic_duration_seconds"]:.3f}s / subtitles {candidate["subtitle_count"]}</p>
-<p>{escape(candidate["rationale"])}</p>{dependent}
+<p>{escape(candidate["rationale"])}</p>
 <details><summary>構成と根拠</summary><dl><dt>導入</dt><dd>{escape(candidate["narrative_arc"]["setup"])}</dd><dt>展開</dt><dd>{escape(candidate["narrative_arc"]["development"])}</dd><dt>着地</dt><dd>{escape(candidate["narrative_arc"]["payoff"])}</dd></dl></details>
 <details><summary>media / subtitle / audio evidence</summary><p>{escape(str(media["video_codec"]))}/{escape(str(media["audio_codec"]))} · {media["width"]}x{media["height"]} · {media["fps"]}fps · {media["duration_seconds"]:.3f}s</p><p>Audio {audio["integrated_lufs"]:.2f} LUFS / {audio["true_peak_dbtp"]:.2f} dBTP</p><p>navigation role=navigation_only / human_thumbnail_review_required=false</p></details>
 </section>"""
