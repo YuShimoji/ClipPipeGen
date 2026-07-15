@@ -17,8 +17,9 @@ public-ready asset、publishing action ではない。
 episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/
 ```
 
-last-verified URL は `http://127.0.0.1:8071/index.html`。PID `15676` が exact
-`src.cli.serve_review` command で配信している。停止後は repository root から
+last-verified URL は `http://127.0.0.1:8071/index.html`。port `8071` の exact
+`src.cli.serve_review` route で page HTTP `200` と MP4 Range `206` を確認済み。
+listener PID は再起動ごとに変わるため引き継ぎ値にしない。停止後は repository root から
 次を実行する。
 
 ```powershell

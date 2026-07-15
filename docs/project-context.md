@@ -51,7 +51,8 @@ label、dependent flag より先に適用し、candidate 01 を再renderせず S
 のまま保持した。candidate 02 は semantic `53.454s`、54 subtitles、SHA-256
 `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`。
 targeted tests 8、changed-scope Ruff、manifest、ffprobe/full decode、browser
-desktop/mobile check が pass した。server は listener PID `15676`、current state は
+desktop/mobile check が pass した。server は exact route / port `8071` で page
+HTTP `200` と MP4 Range `206` を確認済みで、listener PID は可変値として正本化しない。current state は
 人間判断待ちである。実装 baseline は remote commit `9ab8445` まで反映済み。
 
 ## 再開契約

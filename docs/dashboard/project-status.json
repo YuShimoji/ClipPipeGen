@@ -48,7 +48,7 @@
     "cover_direction_acceptance": "",
     "proxy_classification": "",
     "source_byte_equivalence_claimed": "",
-    "review_server_status": "running_pid_15676_exact_serve_review_command_verified",
+    "review_server_status": "running_port_8071_exact_serve_review_route_http200_range206_verified",
     "last_verified_host_local_artifact_available": "true",
     "last_verified_host_entrypoint": "http://127.0.0.1:8071/index.html",
     "pause_reason": "human_review_required_before_candidate_acceptance",
@@ -2748,7 +2748,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 1964,
+      "line_count": 1966,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -2812,7 +2812,7 @@
         "reviewed_by_human": "false",
         "acceptance_granted": "false",
         "cover_review_status": "",
-        "review_server_status": "running_pid_15676_exact_serve_review_command_verified",
+        "review_server_status": "running_port_8071_exact_serve_review_route_http200_range206_verified",
         "next_review_due": "out08_candidate_review_now",
         "next_action": "追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。",
         "active_artifact": "clip-out08-real-unused-range-short-minibatch-v0-001",
@@ -3148,7 +3148,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 170,
+      "line_count": 172,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3186,7 +3186,7 @@
         "last_verified_host_local_artifact_available": "true",
         "last_verified_host_entrypoint": "http://127.0.0.1:8071/index.html",
         "local_artifact_evidence_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json",
-        "review_server_status": "running_pid_15676_exact_serve_review_command_verified",
+        "review_server_status": "running_port_8071_exact_serve_review_route_http200_range206_verified",
         "last_verified_at": "2026-07-15",
         "rights_approval": "pending",
         "production_acceptance": "false",
@@ -3428,7 +3428,7 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 90,
+      "line_count": 91,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
@@ -3653,7 +3653,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (1964 lines) is likely carrying history.",
+        "detail": "Long active doc (1966 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

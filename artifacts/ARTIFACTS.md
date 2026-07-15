@@ -38,7 +38,7 @@ opened by the root launcher.
 | rejected_cut_boundary | `cut_009` remains final decision `reject`; its `135.219–144.000` source-time interval is fully excluded from candidate ranges regardless of ID, label, or dependent flag. |
 | navigation_images | `candidate_01_navigation.jpg` and `candidate_02_navigation.jpg` are final-video frames for navigation only; no headline/mask/decoration/reference pixels, and no thumbnail acceptance is claimed. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071` |
-| preview_url | `http://127.0.0.1:8071/index.html`; last verified running as PID `15676` through the exact `src.cli.serve_review` route. |
+| preview_url | `http://127.0.0.1:8071/index.html`; last verified on port `8071` through the exact `src.cli.serve_review` route with page HTTP `200` and MP4 Range `206`. The listener PID is intentionally not durable state. |
 | media_validation | Both H.264/AAC 1080x1920 30fps yuv420p faststart; full decode passed; no black interval >=0.5s; no silence interval >=1.5s at -50dB. |
 | browser_validation | Both current videos reached `readyState=4` with media error `null`; desktop/mobile horizontal overflow was absent and console was clean. The repaired package returned HTTP `200` and Range `206`; native-control direct seek/currentTime advance was not observed reliably. |
 | review_status | Final media/manifest/access evidence is ready; direct playback/seek and whole-candidate tempo/boundary/subtitle/audio acceptance remain human review. Navigation images do not open a thumbnail decision. |
