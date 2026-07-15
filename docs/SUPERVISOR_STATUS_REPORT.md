@@ -11,11 +11,13 @@ still require human authority.
 
 The clean local branch
 `codex/out-08-real-unused-range-short-minibatch-v0` was fetched with prune and
-fast-forwarded from `15a3572` to remote tip `b747705`. Upstream parity is
-`0 0`. The branch is 7 commits ahead of `origin/main` and 0 behind; canonical
-main remains `4fad107`, while the active OUT-08 implementation baseline remains
-`9ab8445`. No tracked or untracked work was present before this report, and
-`git ls-files episodes` remains empty.
+fast-forwarded from `15a3572` to validated input tip `b747705`. Upstream parity
+was `0 0`; that input was 7 commits ahead of `origin/main` and 0 behind. This
+receipt is committed after validation on the same branch, so `b747705` is an
+evidence baseline rather than a fixed checkout instruction. Re-entry must pull
+the current upstream tip. Canonical main remains `4fad107`, while the active
+OUT-08 implementation baseline remains `9ab8445`. No tracked or untracked work
+was present before this report, and `git ls-files episodes` remains empty.
 
 Development dependencies and the active review route are usable on this host.
 `npm ci` reproduced 23 packages with 0 vulnerabilities, the complete Python
@@ -26,7 +28,7 @@ and FFmpeg/FFprobe 8.0.1.
 
 | Check | Current result | Meaning for the supervising decision |
 |---|---|---|
-| Remote / branch | HEAD `b747705`, active upstream parity `0 0`, `origin/main` relation `7 0` | Work must continue on active OUT-08; no remote commit is missing locally. |
+| Remote / branch | Validated input `b747705`, active upstream parity `0 0`; the receipt commits follow on the same branch | Work must continue by pulling the current OUT-08 upstream tip; no implementation commit was missing at validation time. |
 | Python behavior | `uvx --with Pillow pytest -q` -> 521 passed in 290.80s | The pulled tracked behavior is executable with the image dependency made explicit. |
 | Static / entrypoint | 7 changed Python files passed Ruff; `src.cli.main --help`, dashboard JSON parse, and `git diff --check` passed | OUT-08 changed scope and the primary CLI entrypoint are usable. |
 | Full-repo lint audit | `uvx ruff check src tests` found 14 baseline findings in 9 unrelated files | This is known non-blocking maintenance debt, not an OUT-08 review failure; it should be a separate bounded cleanup if a global lint gate is required. |
