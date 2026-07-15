@@ -134,12 +134,8 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
             "portable_local_artifact_available", ""
         ),
         "portable_entrypoint": runtime_state.get("portable_entrypoint", ""),
-        "exact_baseline_available": runtime_state.get(
-            "exact_baseline_available", ""
-        ),
-        "accepted_baseline_status": runtime_state.get(
-            "accepted_baseline_status", ""
-        ),
+        "exact_baseline_available": runtime_state.get("exact_baseline_available", ""),
+        "accepted_baseline_status": runtime_state.get("accepted_baseline_status", ""),
         "cover_direction_review_available": runtime_state.get(
             "cover_direction_review_available", ""
         ),
@@ -151,6 +147,21 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
             "source_byte_equivalence_claimed", ""
         ),
         "review_server_status": runtime_state.get("review_server_status", ""),
+        "product_candidate_status": runtime_state.get("product_candidate_status", ""),
+        "current_host": runtime_state.get("current_host", ""),
+        "current_host_package_status": runtime_state.get(
+            "current_host_package_status", ""
+        ),
+        "current_host_access_status": runtime_state.get(
+            "current_host_access_status", ""
+        ),
+        "cross_host_resume_status": runtime_state.get("cross_host_resume_status", ""),
+        "recovery_contract": runtime_state.get("recovery_contract", ""),
+        "recovery_operator_guide": runtime_state.get("recovery_operator_guide", ""),
+        "host_probe_command": runtime_state.get("host_probe_command", ""),
+        "private_export_command": runtime_state.get("private_export_command", ""),
+        "private_import_command": runtime_state.get("private_import_command", ""),
+        "host_receipt": runtime_state.get("host_receipt", ""),
         "last_verified_host_local_artifact_available": runtime_state.get(
             "last_verified_host_local_artifact_available", ""
         ),
@@ -386,6 +397,23 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
             focus.get("source_byte_equivalence_claimed", ""),
         ),
         ("review server status", focus.get("review_server_status", "")),
+        ("product candidate status", focus.get("product_candidate_status", "")),
+        ("current host", focus.get("current_host", "")),
+        (
+            "current host package status",
+            focus.get("current_host_package_status", ""),
+        ),
+        (
+            "current host access status",
+            focus.get("current_host_access_status", ""),
+        ),
+        ("cross-host resume", focus.get("cross_host_resume_status", "")),
+        ("recovery contract", focus.get("recovery_contract", "")),
+        ("recovery operator guide", focus.get("recovery_operator_guide", "")),
+        ("host probe command", focus.get("host_probe_command", "")),
+        ("private export command", focus.get("private_export_command", "")),
+        ("private import command", focus.get("private_import_command", "")),
+        ("host receipt", focus.get("host_receipt", "")),
         (
             "last verified host local artifact available",
             focus.get("last_verified_host_local_artifact_available", ""),
@@ -484,6 +512,10 @@ def render_features_index_markdown(status: dict[str, Any]) -> str:
         f"- local artifact available: `{status['current_focus']['local_artifact_available']}`\n"
         f"- portable local artifact available: `{status['current_focus']['portable_local_artifact_available']}`\n"
         f"- portable entrypoint: `{status['current_focus']['portable_entrypoint']}`\n"
+        f"- product candidate status: `{status['current_focus']['product_candidate_status']}`\n"
+        f"- current host package status: `{status['current_focus']['current_host_package_status']}`\n"
+        f"- current host access status: `{status['current_focus']['current_host_access_status']}`\n"
+        f"- recovery operator guide: `{status['current_focus']['recovery_operator_guide']}`\n"
         f"- exact baseline available: `{status['current_focus']['exact_baseline_available']}`\n"
         f"- accepted baseline status: `{status['current_focus']['accepted_baseline_status']}`\n"
         f"- cover direction review available: `{status['current_focus']['cover_direction_review_available']}`\n"
@@ -1081,6 +1113,8 @@ def _top_next_improvements() -> list[dict[str, Any]]:
 def _open_surfaces(current_focus: dict[str, Any]) -> list[dict[str, str]]:
     current_entrypoint = str(current_focus.get("human_entrypoint", ""))
     current_command = str(current_focus.get("review_open_command", ""))
+    recovery_guide = str(current_focus.get("recovery_operator_guide", ""))
+    recovery_command = str(current_focus.get("host_probe_command", ""))
     surfaces = [
         {
             "label": "Dashboard",
@@ -1467,6 +1501,16 @@ def _open_surfaces(current_focus: dict[str, Any]) -> list[dict[str, str]]:
             "when_to_use": "Use when ED-10h font universe or local/system font availability is the next question.",
         },
     ]
+    if recovery_guide and recovery_command:
+        surfaces.insert(
+            1,
+            {
+                "label": f"{current_focus.get('feature_id', '')} Recovery Kit",
+                "command": recovery_command,
+                "target": recovery_guide,
+                "when_to_use": str(current_focus.get("next_action", "")),
+            },
+        )
     if current_entrypoint and current_command:
         surfaces.insert(
             1,

@@ -5,17 +5,21 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 ## Current Focus
 
 - feature: `OUT-08`
-- artifact: `clip-out08-real-unused-range-short-minibatch-v0-001`
-- state: `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`
+- artifact: `clip-out08-private-review-package-recovery-v0-001`
+- state: `OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY`
 
 - canonical main: `4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9`
 - canonical baseline: `OUT-07 PARK_PROVISIONAL_USABLE parked predecessor`
-- canonical status: `internal_review_ready_human_decision_pending`
-- review status: `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`
+- canonical status: `exact_candidates_review_ready_on_last_verified_host`
+- review status: `OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY`
 - remote code complete: `true`
-- local artifact available: `true`
+- local artifact available: `false`
 - portable local artifact available: `false`
 - portable entrypoint: ``
+- product candidate status: `exact_candidate_bytes_preserved_human_review_pending`
+- current host package status: `package_missing`
+- current host access status: `recovery_kit_ready_package_not_yet_imported`
+- recovery operator guide: `docs/output_layer/OUT_08_PRIVATE_REVIEW_PACKAGE_RECOVERY.md`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
@@ -23,10 +27,10 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `http://127.0.0.1:8071/index.html`
-- pause reason: `human_review_required_before_candidate_acceptance`
+- pause reason: `exact_private_package_missing_on_current_host`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `same_machine_ignored_package`
+- cross-machine resume: `private_package_transfer_required`
 - active rebuild contract: ``
 - evidence revision: `thank-6f78657e-out08-real-unused-range-minibatch-v1`
 - accepted baseline SHA-256: ``
@@ -34,8 +38,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `out08_whole_candidate_human_review`
-- next review: `out08_candidate_review_now`
+- decision required: `perform_one_private_package_transfer`
+- next review: `out08_private_package_transfer`
 
 ## Feature Table
 

@@ -1,0 +1,99 @@
+{
+  "schema_version": "clippipegen.out08.private_review_package_recovery.v0",
+  "artifact_id": "clip-out08-private-review-package-recovery-v0-001",
+  "source_artifact_id": "clip-out08-real-unused-range-short-minibatch-v0-001",
+  "source_package": {
+    "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch",
+    "expected_file_count": 17,
+    "manifest_payload_count": 16,
+    "expected_files": [
+      "batch_manifest.json",
+      "batch_readback.json",
+      "candidate_01.mp4",
+      "candidate_01_frame_qa.jpg",
+      "candidate_01_navigation.jpg",
+      "candidate_01_subtitles.ass",
+      "candidate_01_subtitles.srt",
+      "candidate_02.mp4",
+      "candidate_02_frame_qa.jpg",
+      "candidate_02_navigation.jpg",
+      "candidate_02_subtitles.ass",
+      "candidate_02_subtitles.srt",
+      "candidate_plan.json",
+      "candidate_scan_readback.json",
+      "index.html",
+      "open_preview.ps1",
+      "serve_preview.ps1"
+    ],
+    "batch_manifest_schema": "clippipegen.out08.batch_manifest.v0",
+    "batch_manifest_self_integrity_sha256": "22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4"
+  },
+  "candidate_identity": {
+    "candidate_01": {
+      "package_relative_path": "candidate_01.mp4",
+      "sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a"
+    },
+    "candidate_02": {
+      "package_relative_path": "candidate_02.mp4",
+      "sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b"
+    }
+  },
+  "source_identity": {
+    "provider_id": "7J5aS_pcBj4",
+    "last_verified_source_video_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+    "known_planner_source_video_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
+    "source_byte_equivalence": "not_established"
+  },
+  "cut_009_exclusion": {
+    "cut_id": "cut_009",
+    "final_decision": "reject",
+    "reject_interval_start_seconds": 135.219,
+    "reject_interval_end_seconds": 144.0,
+    "candidate_02_max_source_end_seconds": 135.219,
+    "status": "fully_excluded_no_source_time_overlap"
+  },
+  "host_contract": {
+    "last_verified_host_label": "Thank",
+    "last_verified_host_name": "DESKTOP-H53P1T4",
+    "portable_package_available": false,
+    "portable_entrypoint": null,
+    "current_host_must_probe": true,
+    "host_receipt_repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_private_recovery_host_receipt.json",
+    "classifications": [
+      "package_verified_exact",
+      "package_present_invalid",
+      "package_missing",
+      "server_running_verified",
+      "server_stopped",
+      "host_unknown"
+    ]
+  },
+  "archive_contract": {
+    "format": "zip",
+    "compression": "stored",
+    "transfer_receipt_filename": "out08_private_transfer_receipt.json",
+    "destination_must_be_explicit": true,
+    "destination_inside_repo_allowed": false,
+    "source_package_files_only": true,
+    "git_transport_allowed": false,
+    "external_upload_performed": false
+  },
+  "transfer_state": {
+    "current_host_label": "Planner007",
+    "current_host_name": "DESKTOP-U9P4LKJ",
+    "current_host_package_status": "package_missing",
+    "current_host_access_status": "recovery_kit_ready_package_not_yet_imported",
+    "decision_required": "perform_one_private_package_transfer",
+    "next_action": "export on Thank, copy privately through a user-chosen channel, then import and verify on Planner007"
+  },
+  "closed_gates": {
+    "media_regeneration": false,
+    "out07_thumbnail_iteration": false,
+    "rights_approval": false,
+    "production_acceptance": false,
+    "production_subtitle_design_acceptance": false,
+    "public_or_publishing_acceptance": false,
+    "upload": false,
+    "git_media_transport": false
+  }
+}

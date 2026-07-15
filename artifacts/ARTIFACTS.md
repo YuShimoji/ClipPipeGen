@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-08 is the active
-same-machine two-video review. OUT-07 is parked; its Thank native Shorts-cover
+current artifact, then use an artifact-specific launcher. OUT-08 currently has
+an active host-aware package recovery kit; its exact two-video package remains
+last-verified on Thank and is absent on Planner007. OUT-07 is parked; its Thank native Shorts-cover
 semantic direction proxy below is historical local evidence, not an active
 review or a selected thumbnail. Historical
 ED-10 proof launchers remain retained evidence; for the accepted ED-10o focused
@@ -17,6 +18,30 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out08-private-review-package-recovery-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-08 Exact Private Review Package Recovery v0 |
+| purpose | Restore access to the exact Thank-verified OUT-08 candidate package on Planner007 without regenerating media, weakening identity checks, uploading files, or placing media/archive bytes in Git. |
+| storage class | Tracked Python recovery module, CLI, PowerShell wrapper, contract, guide, and tests. The source package, transfer archive, imported package, and host receipt remain private/ignored or explicitly outside the repository. |
+| repo_relative_path | `src/pipeline/out08_private_review_package_recovery.py`; `src/cli/recover_out08_private_review_package.py`; `scripts/operator/out08_private_review_package_recovery.ps1`; `docs/output_layer/out08_private_review_package_recovery_contract.json`; `docs/output_layer/OUT_08_PRIVATE_REVIEW_PACKAGE_RECOVERY.md` |
+| source_artifact | `clip-out08-real-unused-range-short-minibatch-v0-001`; 17 files, 16 manifest payloads, self-integrity `22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4`. |
+| candidate_identity | candidate 01 `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`; candidate 02 `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`. |
+| rejected_cut_boundary | `cut_009` remains `reject`; interval `135.219–144.000` is fully excluded and candidate 02 may not end after `135.219`. |
+| host_state | Last verified host Thank `DESKTOP-H53P1T4`; current host Planner007 `DESKTOP-U9P4LKJ`; current probe `package_missing` / `server_stopped`; access `recovery_kit_ready_package_not_yet_imported`. |
+| probe_command | `uvx python -m src.cli.main recover-out08-private-review-package --format json probe` |
+| export_command | On Thank, provide a new repository-external destination: `uvx python -m src.cli.main recover-out08-private-review-package --format json export --destination D:\private-transfer\out08-review.zip` |
+| import_command | On Planner007 after private copy: `uvx python -m src.cli.main recover-out08-private-review-package --format json import --archive D:\private-transfer\out08-review.zip --start-server` |
+| archive_validation | Exact package allowlist plus sanitized receipt only; fail closed on missing/extra/traversal/absolute/drive/backslash/duplicate/case-collision/directory/encrypted/link/non-regular/oversized/corrupt entries and all manifest, candidate, receipt, or cut-exclusion identity mismatches. |
+| promotion | Extract to a unique sibling stage, validate before promotion, preserve/refuse an invalid or different existing package, and reuse an existing exact package without overwrite. |
+| current_state | `OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY`; no portable/current localhost entrypoint until exact import and server probe pass on the receiving host. |
+| next_action | Perform one user-owned private package transfer from Thank, then atomic import and server verification on Planner007. |
+
+Human review, candidate acceptance, production/subtitle-design acceptance,
+rights, public/publishing, upload, media regeneration, Git media transport, and
+OUT-07 thumbnail iteration remain closed.
 
 ## `clip-out08-real-unused-range-short-minibatch-v0-001`
 
@@ -37,12 +62,12 @@ opened by the root launcher.
 | candidate_02 | `cut_006` tail `81.298–98.315` + `cut_007` `98.315–116.467` + `cut_008` `116.934–135.219`; semantic `53.454s`, media `53.466667s`, 54 subtitles; MP4 SHA-256 `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`. |
 | rejected_cut_boundary | `cut_009` remains final decision `reject`; its `135.219–144.000` source-time interval is fully excluded from candidate ranges regardless of ID, label, or dependent flag. |
 | navigation_images | `candidate_01_navigation.jpg` and `candidate_02_navigation.jpg` are final-video frames for navigation only; no headline/mask/decoration/reference pixels, and no thumbnail acceptance is claimed. |
-| open_command | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071` |
-| preview_url | `http://127.0.0.1:8071/index.html`; last verified on port `8071` through the exact `src.cli.serve_review` route with page HTTP `200` and MP4 Range `206`. The listener PID is intentionally not durable state. |
+| historical_open_command | Thank-only evidence: `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071`; not a current Planner007 command while the package is absent. |
+| historical_preview_url | Thank-only `http://127.0.0.1:8071/index.html`; last verified on port `8071` through the exact route with page HTTP `200` and MP4 Range `206`. It is not portable or current on Planner007. |
 | media_validation | Both H.264/AAC 1080x1920 30fps yuv420p faststart; full decode passed; no black interval >=0.5s; no silence interval >=1.5s at -50dB. |
 | browser_validation | Both current videos reached `readyState=4` with media error `null`; desktop/mobile horizontal overflow was absent and console was clean. The repaired package returned HTTP `200` and Range `206`; native-control direct seek/currentTime advance was not observed reliably. |
-| review_status | Final media/manifest/access evidence is ready; direct playback/seek and whole-candidate tempo/boundary/subtitle/audio acceptance remain human review. Navigation images do not open a thumbnail decision. |
-| next_action | Ask only: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。 |
+| review_status | Exact media/manifest evidence is last-verified on Thank. Planner007 package access is missing; direct playback/seek and whole-candidate acceptance remain pending after private recovery. Navigation images do not open a thumbnail decision. |
+| next_action | Use `clip-out08-private-review-package-recovery-v0-001`; do not regenerate the candidate bytes or present a generic localhost entrypoint. |
 
 Boundary flags remain false or pending:
 

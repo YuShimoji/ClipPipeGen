@@ -1,65 +1,55 @@
-# Planner007 OUT-08 re-entry / development readiness receipt — 2026-07-15
+# Planner007 OUT-08 private review package recovery receipt — 2026-07-15
 
-This is a non-authoritative host receipt for `DESKTOP-U9P4LKJ`. The portable
-current state remains in [RUNTIME_STATE.md](RUNTIME_STATE.md), and the active
-execution handoff remains in [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md). This
-receipt separates tracked development readiness from the ignored review
-package that was last verified on Thank.
+This non-authoritative host receipt reports the recovery implementation for
+`DESKTOP-U9P4LKJ`. Portable current state remains in
+[RUNTIME_STATE.md](RUNTIME_STATE.md), and execution resumes from
+[CURRENT_HANDOFF.md](CURRENT_HANDOFF.md).
 
-## Remote synchronization and development health
+## Outcome for supervising AI
 
-The repository was fetched with prune, the parked OUT-07 branch was
-fast-forwarded through main commit `4fad107`, and the local workspace was then
-switched to the remote active branch
-`codex/out-08-real-unused-range-short-minibatch-v0`. The current local tip is
-`15a3572` and tracks the same remote branch without local tracked changes before
-this receipt. The active implementation baseline remains `9ab8445`; later
-commits are restart and PID-independent handoff hardening.
+The exact OUT-08 candidates are preserved as Thank-host evidence and now have a
+host-aware recovery path. The implementation does not regenerate media or use
+Git as transport. It validates the 17-file/16-payload package, manifest
+self-integrity, both candidate hashes, Thank source identity, closed gates, and
+the full `cut_009` exclusion before export and at import staging. Export is a
+deterministic ZIP to an explicit repository-external new path; import rejects
+unsafe archive structures and promotes only a fully verified sibling stage.
 
-| Check | Planner007 result | Meaning for the next action |
+| Supervisor question | Current answer | Workflow effect |
 |---|---|---|
-| Git source | active OUT-08 branch at remote tip `15a3572`; canonical main remains `4fad107` | tracked code and handoff context are current; new work must continue on OUT-08, not the parked OUT-07 branch |
-| GUI dependencies | `npm ci` installed 23 packages from `package-lock.json`; audit found 0 vulnerabilities | the Electron operator GUI can be developed and smoke-tested locally |
-| Python suite | `uvx --with Pillow pytest -q` -> 521 passed | tracked Python behavior is green with the repository's optional image dependency made explicit |
-| OUT-08 regression | minibatch, active-rebuild, and dashboard tests -> 37 passed | rejected `cut_009` exclusion and current dashboard/readback contracts remain intact |
-| Static / entrypoint | changed-scope Ruff passed; dashboard JSON parsed; CLI help loaded; `git diff --check` passed | the pulled implementation is syntactically usable and its primary CLI entrypoint imports successfully |
-| GUI smoke | `npm run smoke` and `npm run smoke:electron` both passed | both the Node-only and Electron startup paths are available on this host |
-| Media tools | Python 3.11.0, uv 0.10.0, Node 22.19.0, npm 10.9.3, FFmpeg/FFprobe 8.1.1 available | the local toolchain needed for ordinary code, test, GUI, and bounded diagnostic-render work is present |
+| Are the product candidates lost? | No. Thank evidence preserves candidate 01 `f7ea3f...388a`, candidate 02 `47c844...593b`, and manifest self-integrity `22c713...b4a4`. | Recovery transports those exact bytes; it does not create a new revision. |
+| Can Planner007 review now? | No. The current probe is `package_missing` / `server_stopped`; no current human entrypoint is claimed. | One private package transfer is required before playback review. |
+| Is transfer implemented safely? | Yes. The kit provides host-gated deterministic export, strict archive/receipt validation, fail-closed atomic import, existing-package preservation, and HTTP 200/Range 206 probe. | Thank can export; after a user-owned private copy, Planner007 can import and verify without reopening generation. |
+| Did scope expand into delivery or acceptance? | No. No upload, transfer-channel operation, media mutation, GUI opening, candidate acceptance, or production/public gate change occurred. | Human review and all downstream gates stay pending. |
 
-The first unqualified `uvx pytest -q` attempt stopped during collection because
-Pillow was not installed in that ephemeral environment. This was resolved by
-the documented optional-dependency form `uvx --with Pillow`; no source change
-was required and the complete suite then passed.
+## Verified current-host classification
 
-## Current workflow state on this host
+`uvx python -m src.cli.main recover-out08-private-review-package --format json probe`
+observed host `DESKTOP-U9P4LKJ`, package `package_missing`, and port 8071
+`server_stopped`. It wrote a sanitized receipt under ignored `episodes/` storage;
+the receipt contains repository-relative paths and hashes rather than absolute
+private paths. A generic localhost URL has therefore been removed from current
+Runtime, Handoff, dashboard, and registry surfaces; Thank's former URL remains
+last-verified historical evidence only.
 
-OUT-08 has tracked code and contracts for two real unused-range vertical Shorts
-candidates. Remote evidence records `candidate_01` as about 28.27 seconds and
-`candidate_02` as about 53.47 seconds, with `cut_009` fully excluded by
-source-time overlap. The open decision remains a whole-candidate human review
-of tempo, boundaries, subtitles, and audio. Navigation frames are not thumbnail
-candidates, and OUT-07 remains parked as provisionally usable but noncanonical.
+The recovery-specific suite passes 21 tests covering deterministic
+export, exact allowlists, missing/extra files, traversal, unknown files,
+duplicate and case-colliding entries, corrupt archives, candidate/manifest
+identity failure, `cut_009` overlap, atomic promotion, invalid-existing-package
+preservation, and sanitized missing-state probe. The combined recovery, OUT-08
+builder, active-rebuild, and dashboard focus is 58 passing tests. CLI
+import/help, PowerShell parsing, changed-scope Ruff, and dashboard regeneration
+also pass.
 
-The ignored package
-`episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/`
-is not present on Planner007, and port 8071 has no listener. Therefore the
-Thank-host statements `local_artifact_available=true` and
-`http://127.0.0.1:8071/index.html` are historical same-machine evidence, not a
-working Planner007 entrypoint. This host must be classified
-`review_blocked_missing_local_package` for human review while remaining fully
-ready for tracked code development. Git must not be used to transport the
-missing media package.
+## Remaining operator-owned move
 
-## Recommendation to the supervising AI
-
-Do not regenerate or mutate OUT-08 media merely to make the localhost URL
-appear available, and do not reopen OUT-07 thumbnail iteration. Choose an
-authorized private artifact-transfer or bounded regeneration route before
-asking for the pending human review. Until that choice is made, safe progress
-is limited to tracked implementation, tests, docs/readback consistency, and
-planning that does not claim candidate acceptance. Rights remain pending;
-production render, production subtitle design, public/publishing, upload, and
-external-system gates remain closed.
+On Thank, export to a new explicit repository-external ZIP. The user then copies
+that ZIP through a private channel they choose. On Planner007, import with
+`--start-server`; proceed to direct playback/seek only when the receiving probe
+reports `package_verified_exact` and `server_running_verified`. Rights,
+production render, production subtitle design, public/publishing, upload,
+OUT-07 thumbnail iteration, and source-byte equivalence remain closed or
+unestablished.
 
 ---
 

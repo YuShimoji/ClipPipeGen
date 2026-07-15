@@ -11,20 +11,28 @@ public-ready asset、publishing action ではない。
 
 ## 直接見る入口
 
-同端末の ignored package は次にある。
+ignored package の canonical location は次である。
 
 ```text
 episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/
 ```
 
-last-verified URL は `http://127.0.0.1:8071/index.html`。port `8071` の exact
-`src.cli.serve_review` route で page HTTP `200` と MP4 Range `206` を確認済み。
-listener PID は再起動ごとに変わるため引き継ぎ値にしない。停止後は repository root から
-次を実行する。
+Thank (`DESKTOP-H53P1T4`) では `http://127.0.0.1:8071/index.html` と exact
+`src.cli.serve_review` route の page HTTP `200` / MP4 Range `206` を確認したが、
+これは last-host evidence であって portable current entrypoint ではない。
+Planner007 (`DESKTOP-U9P4LKJ`) の 2026-07-15 probe は `package_missing` /
+`server_stopped`。したがって現在は URL や package 内 launcher を開かず、先に
+exact private package recovery を行う。
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
+uvx python -m src.cli.main recover-out08-private-review-package --format json probe
 ```
+
+Thank での export、利用者所有の private copy、Planner007 での atomic import は
+`OUT_08_PRIVATE_REVIEW_PACKAGE_RECOVERY.md` を正とする。媒体を再生成せず、ZIP と
+media を Git に追加しない。import 後の probe が
+`package_verified_exact` / `server_running_verified` になったときだけ、その host
+固有 localhost URL が current human entrypoint になる。
 
 page は candidate 01 と 02 の playable video を縦一列に置き、details は
 折り畳む。navigation JPG は候補を識別しやすくする final-video frame であり、

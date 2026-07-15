@@ -48,6 +48,7 @@ Subcommands:
     build-vertical-short-candidate OUT-05: one accepted-timeline internal 1080x1920 candidate.
     build-complete-narrative-short OUT-06: one complete three-cut internal delivery candidate.
     build-real-unused-range-short-minibatch OUT-08: unused real ranges -> 1-2 vertical review candidates.
+    recover-out08-private-review-package OUT-08: probe/export/import the exact ignored review package.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
     reconstitute-out07-review OUT-07: current media revision -> baseline-first combined poster review.
@@ -90,6 +91,7 @@ from . import (
     build_out07_direction_proxy,
     build_shorts_poster_frame_proof,
     reconstitute_out07_review,
+    recover_out08_private_review_package,
     build_selected_cut_proof,
     build_episode_workspace_plan,
     build_operator_cockpit,
@@ -174,6 +176,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-vertical-short-candidate": build_vertical_short_candidate.run,
     "build-complete-narrative-short": build_complete_narrative_short.run,
     "build-real-unused-range-short-minibatch": build_real_unused_range_short_minibatch.run,
+    "recover-out08-private-review-package": recover_out08_private_review_package.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-shorts-poster-frame-proof": build_shorts_poster_frame_proof.run,
     "reconstitute-out07-review": reconstitute_out07_review.run,

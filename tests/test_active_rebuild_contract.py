@@ -234,16 +234,25 @@ def test_runtime_points_to_out08_and_keeps_out07_rebuild_contract_parked() -> No
 
     assert "active_rebuild_contract: null" in runtime
     assert (
-        "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json"
-        in runtime
+        "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: true" in runtime
+    assert "local_artifact_available: false" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8071/index.html" in runtime
+    assert "human_entrypoint: null" in runtime
     assert "portable_entrypoint: null" in runtime
-    assert "cross_machine_resume_class: same_machine_ignored_package" in runtime
-    assert "health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY" in runtime
+    assert "cross_machine_resume_class: private_package_transfer_required" in runtime
+    assert "health: OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY" in runtime
+    assert "current_host_package_status: package_missing" in runtime
+    assert (
+        "current_host_access_status: recovery_kit_ready_package_not_yet_imported"
+        in runtime
+    )
+    assert (
+        "recovery_contract: "
+        "docs/output_layer/out08_private_review_package_recovery_contract.json"
+        in runtime
+    )
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
     assert "acceptance_granted: false" in runtime
     assert "out07_selection_status: deferred" in runtime

@@ -2,59 +2,57 @@
 id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
-status: review_ready
-health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
+status: recovery_ready
+health: OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY
 progress_pct: 100
 last_touched: 2026-07-15
 current_slice: OUT-08
-phase: human_review
-canonical_status: internal_review_ready_human_decision_pending
-active_branch: codex/out-08-real-unused-range-short-minibatch-v0
-verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
+phase: private_artifact_recovery
+canonical_status: exact_candidates_review_ready_on_last_verified_host
+active_branch: codex/out-08-private-review-package-recovery-v0
+verified_source_head: b747705c7f7500071787fdba55048f4df6721b47
 remote_resume_contract: pull_current_active_branch_tip_then_read_this_file
-current_title: OUT-08 real unused-range vertical Shorts mini-batch review
-human_entrypoint: http://127.0.0.1:8071/index.html
+current_title: OUT-08 exact private review package recovery
+human_entrypoint: null
 portable_entrypoint: null
-review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
-review_server_restart_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\serve_preview.ps1 -Port 8071
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_readback.json
-operator_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html
-decision_required: out08_whole_candidate_human_review
-review_status: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
-contract_repair_status: OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY
+review_open_command: null
+machine_readback: null
+decision_required: perform_one_private_package_transfer
+review_status: OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY
 remote_code_complete: true
-local_artifact_available: true
-local_artifact_role: active_same_machine_internal_review_evidence
+local_artifact_available: false
 portable_local_artifact_available: false
-cross_machine_resume_class: same_machine_ignored_package
+cross_machine_resume_class: private_package_transfer_required
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
-evidence_revision: thank-6f78657e-out08-real-unused-range-minibatch-v1
+current_host: DESKTOP-U9P4LKJ
+current_host_package_status: package_missing
+current_host_access_status: recovery_kit_ready_package_not_yet_imported
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
-local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json
-review_server_status: running_port_8071_exact_serve_review_route_http200_range206_verified
-last_verified_at: 2026-07-15
+review_server_status: server_stopped
+host_probe_command: uvx python -m src.cli.main recover-out08-private-review-package --format json probe
+private_export_command: uvx python -m src.cli.main recover-out08-private-review-package --format json export --destination D:\private-transfer\out08-review.zip
+private_import_command: uvx python -m src.cli.main recover-out08-private-review-package --format json import --archive D:\private-transfer\out08-review.zip --start-server
+recovery_contract: docs/output_layer/out08_private_review_package_recovery_contract.json
+recovery_operator_guide: docs/output_layer/OUT_08_PRIVATE_REVIEW_PACKAGE_RECOVERY.md
+host_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_private_recovery_host_receipt.json
+human_review_pending: true
+acceptance_granted: false
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-human_review_pending: true
-acceptance_granted: false
-target_candidate_count: 2
-minimum_candidate_count: 1
-actual_candidate_count: 2
-next_action: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
-active_artifact: clip-out08-real-unused-range-short-minibatch-v0-001
+next_action: Thank で exact package を repo 外 ZIP へ export し、私的コピー後に Planner007 で atomic import と server probe を行う。
+active_artifact: clip-out08-private-review-package-recovery-v0-001
 canonical_main_head: 4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9
 canonical_main_baseline: OUT-07 PARK_PROVISIONAL_USABLE parked predecessor
 source_of_truth: false
 owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json, artifacts/ACTIVE_REBUILD.json
+related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_PRIVATE_REVIEW_PACKAGE_RECOVERY.md, docs/output_layer/out08_private_review_package_recovery_contract.json, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
 durable_context: docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md
-verified_remote_base_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
 upstream_parity: 0 0
 ---
 
@@ -62,111 +60,70 @@ upstream_parity: 0 0
 
 ## 現在地
 
-OUT-07 は `PARK_PROVISIONAL_USABLE` として main commit
-`4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9` に着地済みである。選定、
-canonical 化、default template 化は行っておらず、追加 OUT-07 thumbnail
-iteration も禁止した。その parked predecessor から OUT-08 branch を切り、
-既存 Shorts が使っていない実素材範囲から target 2 / minimum 1 に対して
-二本の vertical Shorts 候補を一つの review page にまとめた。
+OUT-08 の二本は Thank (`DESKTOP-H53P1T4`) で exact package として検証済みだが、
+`episodes/` 配下の 17-file package は Git に含まれず、Planner007
+(`DESKTOP-U9P4LKJ`) には存在しない。現在ホストの probe は
+`package_missing` / `server_stopped` であり、localhost URL は current
+entrypoint ではない。tracked code、contract、tests、運用ガイドは揃っているので、
+状態は build failure ではなく `recovery_kit_ready_package_not_yet_imported` である。
 
-現在の human entrypoint は `http://127.0.0.1:8071/index.html`。同端末では
-port `8071` の exact `src.cli.serve_review` route が page HTTP `200` と MP4 Range
-`206` を返すことを確認した。listener PID は再起動ごとに変わるため引き継ぎ値にせず、
-停止時は frontmatter の `review_server_restart_command` で復旧する。package は
-次の ignored path にあり、Git へは追加しない。
+| 維持済み evidence | exact value | ここから変えてはいけないこと |
+|---|---|---|
+| candidate 01 | SHA-256 `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | media を再生成・変換しない |
+| candidate 02 | SHA-256 `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` | `cut_009` を再導入しない |
+| batch manifest | 17 package files、16 payload hashes、self-integrity `22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4` | allowlist 外 file や identity の違う package を受け入れない |
+| cut exclusion | `cut_009` reject interval `135.219–144.000`; candidate 02 max source end `135.219` | label や dependent flag で source-time guard を迂回しない |
+| source relation | Thank source `6f78657e...103a`; Planner-known source `e2206cef...1889`; byte equivalence not established | Planner sourceから候補を再構築して同一と主張しない |
 
-```text
-episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/
+## 次の三手
+
+1. Thank で `private_export_command` を実行し、利用者が明示した repository 外の
+   未作成 ZIP に exact package と sanitized transfer receipt を書く。
+2. 利用者が選ぶ private channel で ZIP を一度コピーする。この repository と
+   recovery tool は transfer channel の選択、upload、Git transport を行わない。
+3. Planner007 で `private_import_command` を実行する。全 archive/package identity
+   が通った場合だけ sibling staging を atomic promotion し、local server の HTTP
+   200 と MP4 Range 206 を probe する。
+
+PowerShell wrapper を使う場合は次の三つが同じ操作になる。
+
+```powershell
+scripts\operator\out08_private_review_package_recovery.ps1 Probe
+scripts\operator\out08_private_review_package_recovery.ps1 Export -Destination D:\private-transfer\out08-review.zip
+scripts\operator\out08_private_review_package_recovery.ps1 Import -Archive D:\private-transfer\out08-review.zip -StartServer
 ```
 
-## 判断できる二本
+export は last-verified host 名が Thank と一致しなければ停止する。import は unknown
+file、欠損、path traversal、backslash、absolute/drive path、duplicate、case
+collision、directory、encrypted/link/non-regular entry、CRC failure、hash/size/self
+identity mismatch、cut_009 overlap を promotion 前に拒否する。既存 package が invalid
+または別 identity なら上書きせず停止し、exact ならそのまま保全する。
 
-| 候補 | 使った authority | semantic / media | 字幕 | SHA-256 | 確認する編集効果 |
-|---|---|---:|---:|---|---|
-| `candidate_01` | `cut_004` `50.868–60.277` + `cut_005` `60.277–79.163` | `28.295s` / `28.266667s` | 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | 勝負の提示から認識違い、勝利扱いと困惑した別れまでが短い一場面として成立するか。 |
-| `candidate_02` | `cut_006` tail `81.298–98.315` + `cut_007` `98.315–116.467` + `cut_008` `116.934–135.219` | `53.454s` / `53.466667s` | 54 | `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` | 遭遇から対立の進展、相手の隙を突いて攻撃する転換点までが一本の流れとして持続するか。 |
+## import 後に初めて開く判断
 
-`cut_009` は final cut decision `reject` のまま変更していない。candidate 02
-の全 source range は reject interval `135.219–144.000` と非交差で、`cut_009`
-由来の映像・音声・字幕・caption・segment は含まない。二枚の navigation image は候補間の移動補助であり、
-decorated thumbnail、thumbnail candidate、thumbnail acceptance ではない。
-
-修復前 package の `137.054–138.055` / `sub_102` 例外は supervisor correction
-により廃止され、現行 plan・readback・HTML には selected usage として残っていない。
-
-## 機械確認と人間判断の境界
-
-両動画は H.264/AAC、1080x1920、30fps、yuv420p、faststart。full decode は
-通過し、0.5 秒以上の black interval と -50dB で 1.5 秒以上の silence
-interval は検出されていない。現行 browser check では二本とも `readyState=4`、
-media error `null`、desktop/mobile overflow なし、console clean。HTTP 200、
-Range 206、ffprobe、full decode を再確認した。automation browser で native control の direct seek は観測できて
-いないため、開始・主要境界・終端の direct playback は人間レビューに残る。
-
-ここまでで delivery/access の機械条件は満たしたが、候補が一本の編集単位と
-して自然かは未判断である。次に尋ねるのは次の一問だけとする。
-
-> 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
+probe が `package_verified_exact` / `server_running_verified` になった後にだけ、
+candidate 01 と 02 を一本ずつ direct playback / seek し、テンポ、境界、字幕、
+音声の違和感を自由記述で確認する。navigation JPG は移動補助であり thumbnail
+candidate ではない。現時点では `human_review_pending=true`、candidate acceptance
+も production candidate 化も行っていない。
 
 rights は `pending`。production render、production subtitle design、public、
-publishing、upload は false / unopened のままで、この review は開かない。
+publishing、upload、OUT-07 thumbnail iteration は閉じたまま。source byte
+equivalence も未確立であり、復旧を regeneration に置換しない。
 
-## 2026-07-15 cut_009 除外修復の確認
-
-| 確認対象 | 目的 | 結果 | 残る判断 |
-|---|---|---|---|
-| Git 同期 | 現行 OUT-08 branch を remote と一致させる | implementation baseline `9ab8445` と handoff context commit `78dac4e` を push 済み。branch tip の pull を再開契約とし、この PID-independent hardening も同 branch へ反映する | push 後に upstream parity `0 0` と clean worktree を再確認する |
-| OUT-08 package | reject 素材を含まない同一端末証拠が tracked contract と一致するか確かめる | candidate 01 は SHA 不変で再利用、candidate 02 は三許可範囲だけで再生成。16 payload hash、manifest self-integrity、2 candidates、single-column page、単一 review question が pass | candidate の編集上の自然さは機械判定しない |
-| live episode state | 古い docs ではなく現在の episode を読む | `review_ready=true`、missing artifact 0、selected cuts 9、subtitles 105、rights pending、production candidate false | candidate 01 / 02 の human review |
-| playback delivery | レビュー入口を再開可能にする | exact route / port `8071` を復旧し、page HTTP 200、MP4 Range 206、両 MP4 full decode pass。PID ではなく再起動 command を正本化 | native control の direct playback/seek と編集上の違和感は人間確認 |
-| 開発 health | reject interval の契約と atomic rebuild を狭く検証する | targeted test 8 passed、changed-scope Ruff、JSON/manifest、ffprobe/full decode が pass | candidate の編集上の成立性は human review |
-
-validator は authority ID、label、dependent flag より先に source-time overlap を
-検査し、`cut_009` reject interval と交差する range を render 前に拒否する。
-artifact bytes は candidate 02 だけ更新し、candidate 01 と cut/caption authority、
-rights、production/public gate は変更していない。
-
-## 監修時に見る先の目標
-
-現在の実行可能な最短路は human review の消費である。その先は、単発 candidate の
-微調整を続けるのではなく、(1) feedback の decision packet 化、(2) 3–5 本の real
-Shorts portfolio、(3) production subtitle/render と rights の limitation lift、
-(4) episode_pack と private artifact transport、(5) private/unlisted publishing
-receipt、(6) 複数素材での再現可能な閉ループ、の順で評価する。各段階の目的、必要条件、
-owner、次の動きは `docs/idea-ledger.md` に未承認提案として記録した。
-
-## 次の端末での再開
-
-| 再開環境 | 最初に使えるもの | package の扱い | 最初の停止点 |
-|---|---|---|---|
-| 同じ Windows マシンの別 terminal | tracked context と既存 ignored package | 下記 branch を pull 後、port `8071` を確認して review page を開く | candidate 01 / 02 の自由記述 human review |
-| 別ホスト / fresh clone | tracked code、tests、docs、hash/readback contract | `episodes/` は remote に無い。欠損を code failure とせず `review_blocked_missing_local_package` と報告する | private transport または再生成方針の確認。payload を Git に追加しない |
-
-実装 baseline は `9ab8445afa247d07b46ef031cdc30f3fbbafafdd`。handoff
-文脈は下記 active branch の current remote tip を正とし、固定 commit を checkout
-するのではなく `pull --ff-only` で取得する。
+## 別端末での再開
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-08-real-unused-range-short-minibatch-v0
+git switch codex/out-08-private-review-package-recovery-v0
 git pull --ff-only
 git status --short --branch
 git rev-list --left-right --count 'HEAD...@{u}'
 git ls-files episodes
+uvx python -m src.cli.main recover-out08-private-review-package --format json probe
 ```
 
-その後は `docs/RUNTIME_STATE.md`、この handoff、
-`docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` の順に読み、
-localhost page を開く。server が止まっている場合だけ `review_open_command`
-を使う。`artifacts/ACTIVE_REBUILD.json` は parked OUT-07 predecessor の
-rebuild contract であって、OUT-08 の active readback ではない。
-
-別 terminal が最初に確認する expected state は、upstream `0 0`、worktree clean、
-tracked `episodes/` 0、`cut009_usage=fully_excluded_no_source_time_overlap`、
-candidate 02 SHA-256
-`47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`。
-これと異なる場合は human review に進まず、差分を報告する。
-
-意図的に触れていないのは、ignored `episodes/` の追跡化、OUT-07 の追加調整、
-caption/cut authority の変更、thumbnail 選定、rights/public/production/
-publishing gate である。
+expected state は upstream `0 0`、clean worktree、tracked `episodes/` 0。package
+がなければ `package_missing` は正常な recovery input であり、code failure ではない。
+package が present-invalid の場合は export/import/regeneration を続けず、その category
+を報告する。
