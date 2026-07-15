@@ -12,6 +12,9 @@ current_slice: OUT-08
 phase: human_review
 canonical_status: internal_review_ready_human_decision_pending
 active_branch: codex/out-08-real-unused-range-short-minibatch-v0
+verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
+remote_resume_contract: pull_current_active_branch_tip_then_read_current_handoff
+upstream_parity: 0 0
 current_title: OUT-08 real unused-range vertical Shorts mini-batch review
 human_entrypoint: http://127.0.0.1:8071/index.html
 portable_entrypoint: null
@@ -28,6 +31,7 @@ local_artifact_available: true
 local_artifact_role: active_same_machine_internal_review_evidence
 portable_local_artifact_available: false
 cross_machine_resume_class: same_machine_ignored_package
+cross_host_resume_status: tracked_context_available_local_review_payload_not_portable
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 evidence_revision: thank-6f78657e-out08-real-unused-range-minibatch-v1

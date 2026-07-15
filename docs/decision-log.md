@@ -8,6 +8,25 @@ last_touched: 2026-07-15
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-15 — OUT-08 の cut_009 source-time exception を廃止
+
+supervisor correction により、`cut_009` が final decision `reject` のままであることと、
+その素材を candidate へ使わないことを別契約として固定した。candidate 02 は
+`81.298–98.315`、`98.315–116.467`、`116.934–135.219` の三範囲だけを使い、
+旧 `137.054–138.055` / `sub_102` dependent payoff 例外は plan、validator、tests、
+readback、HTML、current docs から除去した。
+
+validator は authority ID、label、dependent flag より先に source-time overlap を
+検査し、`cut_009` reject interval `135.219–144.000` と交差する range を render
+前に拒否する。candidate 01 は再renderせず SHA-256 を保持し、candidate 02 の実装
+baseline は remote commit `9ab8445afa247d07b46ef031cdc30f3fbbafafdd`。
+
+状態は `OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY` で human
+review pending、既存 acceptance boundary は不変。review package は tracked 0 の
+same-machine evidence で、別ホストへ自動 transport されない。根拠:
+`docs/RUNTIME_STATE.md` current capsule +
+`docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md`
+
 ## 2026-07-15 — OUT-08 active / OUT-07 parked の regression 境界を固定
 
 full suite で、OUT-07 時代の test が `artifacts/ACTIVE_REBUILD.json` を current
