@@ -1,3 +1,68 @@
+# Planner007 OUT-08 re-entry / development readiness receipt — 2026-07-15
+
+This is a non-authoritative host receipt for `DESKTOP-U9P4LKJ`. The portable
+current state remains in [RUNTIME_STATE.md](RUNTIME_STATE.md), and the active
+execution handoff remains in [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md). This
+receipt separates tracked development readiness from the ignored review
+package that was last verified on Thank.
+
+## Remote synchronization and development health
+
+The repository was fetched with prune, the parked OUT-07 branch was
+fast-forwarded through main commit `4fad107`, and the local workspace was then
+switched to the remote active branch
+`codex/out-08-real-unused-range-short-minibatch-v0`. The current local tip is
+`15a3572` and tracks the same remote branch without local tracked changes before
+this receipt. The active implementation baseline remains `9ab8445`; later
+commits are restart and PID-independent handoff hardening.
+
+| Check | Planner007 result | Meaning for the next action |
+|---|---|---|
+| Git source | active OUT-08 branch at remote tip `15a3572`; canonical main remains `4fad107` | tracked code and handoff context are current; new work must continue on OUT-08, not the parked OUT-07 branch |
+| GUI dependencies | `npm ci` installed 23 packages from `package-lock.json`; audit found 0 vulnerabilities | the Electron operator GUI can be developed and smoke-tested locally |
+| Python suite | `uvx --with Pillow pytest -q` -> 521 passed | tracked Python behavior is green with the repository's optional image dependency made explicit |
+| OUT-08 regression | minibatch, active-rebuild, and dashboard tests -> 37 passed | rejected `cut_009` exclusion and current dashboard/readback contracts remain intact |
+| Static / entrypoint | changed-scope Ruff passed; dashboard JSON parsed; CLI help loaded; `git diff --check` passed | the pulled implementation is syntactically usable and its primary CLI entrypoint imports successfully |
+| GUI smoke | `npm run smoke` and `npm run smoke:electron` both passed | both the Node-only and Electron startup paths are available on this host |
+| Media tools | Python 3.11.0, uv 0.10.0, Node 22.19.0, npm 10.9.3, FFmpeg/FFprobe 8.1.1 available | the local toolchain needed for ordinary code, test, GUI, and bounded diagnostic-render work is present |
+
+The first unqualified `uvx pytest -q` attempt stopped during collection because
+Pillow was not installed in that ephemeral environment. This was resolved by
+the documented optional-dependency form `uvx --with Pillow`; no source change
+was required and the complete suite then passed.
+
+## Current workflow state on this host
+
+OUT-08 has tracked code and contracts for two real unused-range vertical Shorts
+candidates. Remote evidence records `candidate_01` as about 28.27 seconds and
+`candidate_02` as about 53.47 seconds, with `cut_009` fully excluded by
+source-time overlap. The open decision remains a whole-candidate human review
+of tempo, boundaries, subtitles, and audio. Navigation frames are not thumbnail
+candidates, and OUT-07 remains parked as provisionally usable but noncanonical.
+
+The ignored package
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/`
+is not present on Planner007, and port 8071 has no listener. Therefore the
+Thank-host statements `local_artifact_available=true` and
+`http://127.0.0.1:8071/index.html` are historical same-machine evidence, not a
+working Planner007 entrypoint. This host must be classified
+`review_blocked_missing_local_package` for human review while remaining fully
+ready for tracked code development. Git must not be used to transport the
+missing media package.
+
+## Recommendation to the supervising AI
+
+Do not regenerate or mutate OUT-08 media merely to make the localhost URL
+appear available, and do not reopen OUT-07 thumbnail iteration. Choose an
+authorized private artifact-transfer or bounded regeneration route before
+asking for the pending human review. Until that choice is made, safe progress
+is limited to tracked implementation, tests, docs/readback consistency, and
+planning that does not claim candidate acceptance. Rights remain pending;
+production render, production subtitle design, public/publishing, upload, and
+external-system gates remain closed.
+
+---
+
 # OUT-07 parked closure receipt — 2026-07-14
 
 This non-authoritative receipt records the consumed human review. OUT-07 is
