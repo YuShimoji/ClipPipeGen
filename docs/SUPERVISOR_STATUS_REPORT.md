@@ -1,4 +1,118 @@
-# Planner007 OUT-08 re-entry / development readiness receipt — 2026-07-15
+# Thank OUT-08 remote-sync / development readiness report — 2026-07-15
+
+This is the latest non-authoritative host receipt for `DESKTOP-H53P1T4` after
+pulling the active OUT-08 branch. Portable current-state authority remains
+[RUNTIME_STATE.md](RUNTIME_STATE.md), and execution handoff remains
+[CURRENT_HANDOFF.md](CURRENT_HANDOFF.md). This report separates tracked
+development health, same-machine ignored review evidence, and decisions that
+still require human authority.
+
+## Current outcome
+
+The clean local branch
+`codex/out-08-real-unused-range-short-minibatch-v0` was fetched with prune and
+fast-forwarded from `15a3572` to remote tip `b747705`. Upstream parity is
+`0 0`. The branch is 7 commits ahead of `origin/main` and 0 behind; canonical
+main remains `4fad107`, while the active OUT-08 implementation baseline remains
+`9ab8445`. No tracked or untracked work was present before this report, and
+`git ls-files episodes` remains empty.
+
+Development dependencies and the active review route are usable on this host.
+`npm ci` reproduced 23 packages with 0 vulnerabilities, the complete Python
+suite passed, the changed OUT-08 Python scope passed Ruff, CLI import/help
+loaded, and both Node-only and Electron GUI smoke tests passed. The current
+toolchain is Python 3.13.3 through `uvx`, uv 0.10.7, Node 24.13.0, npm 11.6.2,
+and FFmpeg/FFprobe 8.0.1.
+
+| Check | Current result | Meaning for the supervising decision |
+|---|---|---|
+| Remote / branch | HEAD `b747705`, active upstream parity `0 0`, `origin/main` relation `7 0` | Work must continue on active OUT-08; no remote commit is missing locally. |
+| Python behavior | `uvx --with Pillow pytest -q` -> 521 passed in 290.80s | The pulled tracked behavior is executable with the image dependency made explicit. |
+| Static / entrypoint | 7 changed Python files passed Ruff; `src.cli.main --help`, dashboard JSON parse, and `git diff --check` passed | OUT-08 changed scope and the primary CLI entrypoint are usable. |
+| Full-repo lint audit | `uvx ruff check src tests` found 14 baseline findings in 9 unrelated files | This is known non-blocking maintenance debt, not an OUT-08 review failure; it should be a separate bounded cleanup if a global lint gate is required. |
+| GUI | `npm ci`, `npm run smoke`, and `npm run smoke:electron` passed | The Electron operator GUI is ready for ordinary development and startup smoke on Thank. |
+| Episode readback | `status-episode` reports `review_ready`, 9 selected cuts, 105 subtitles, rights `pending`, and `production_candidate=false` | Same-machine R3 evidence exists; local diagnostic readiness does not open production/public gates. |
+| OUT-08 package integrity | 16 manifest payload hashes matched, manifest self-integrity matched, 2 videos and one review question remain in a single-column page | The retained package matches the verified OUT-08 bytes and did not require regeneration. |
+| Review delivery | localhost page HTTP `200`; candidate 01 and 02 byte ranges each returned `206` | `http://127.0.0.1:8071/index.html` is available again on Thank for human review. |
+| Public Git hygiene | tracked `episodes/` count is 0; `episodes/`, `node_modules/`, and test/lint caches remain ignored | Source-derived review media stays local and is not being transported through Git. |
+
+The full-repo Ruff audit is deliberately reported rather than auto-fixed here.
+Its findings are outside the seven Python files changed between `origin/main`
+and the active OUT-08 branch, while the full behavior suite is green. Mixing
+that maintenance cleanup into the pending candidate-review receipt would widen
+the slice and make the review decision harder to isolate.
+
+## Current OUT-08 review state
+
+The retained artifact is
+`clip-out08-real-unused-range-short-minibatch-v0-001` at
+`episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/`.
+It remains ignored, same-machine evidence. Candidate 01 retains SHA-256
+`f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`;
+candidate 02 retains SHA-256
+`47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`.
+The package readback records two candidates, `cut_009` rejection preserved,
+`authority_mutated=false`, `human_review_pending=true`, rights `pending`, and
+all production/public/publishing acceptance flags false.
+
+The live server was restarted from the existing package without rendering or
+mutating episode evidence. Current HTTP and Range delivery were rechecked, but
+this sync/readiness pass did not repeat visual browser playback, native-control
+seek, or editorial acceptance. Those remain human-review concerns rather than
+claims inferred from HTTP availability.
+
+The exact pending question remains:
+
+> 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
+
+## Recommendation to the supervising AI
+
+Use the current Thank localhost page and consume the two whole-candidate human
+reviews before authorizing any render or plan mutation. Do not reopen OUT-07
+thumbnail iteration, do not regenerate OUT-08 merely because another host
+lacks the ignored package, and do not treat navigation frames as thumbnail
+candidates. After review, encode the feedback as a bounded decision packet and
+choose either one narrow candidate repair or portfolio expansion; do not start
+both in the same slice.
+
+| Remaining work | Purpose and effect | Requirement / owner | Current state and next move |
+|---|---|---|---|
+| Whole-candidate review | Determines whether each candidate works as one edit across tempo, boundaries, subtitles, and audio. | Human reviewer on Thank; no automated substitute. | Pending. Open `http://127.0.0.1:8071/index.html`, review candidate 01 and 02 separately, and provide freeform notes. |
+| Ruff baseline cleanup | Makes an optional full-repo Ruff gate green without changing the OUT-08 decision. | Assistant-owned bounded maintenance slice if the supervisor requires a global lint gate. | 14 findings in 9 files; defer until it will not obscure the human-review slice. |
+| Cross-host review portability | Allows a fresh host to inspect the same private bytes without Git leakage. | Supervisor must authorize private artifact transfer or bounded regeneration. | Same-machine package only; do not add `episodes/` to Git. |
+| Rights / production limitation lift | Separates internal diagnostic success from public or production use. | Explicit human rights and production/public decisions. | Closed or pending; no upload, publishing, visibility, thumbnail setting, or production claim is authorized. |
+
+The work intentionally did not alter episode media, candidate plans, cut or
+caption authority, OUT-07 closure, rights state, production/public gates, or
+human decision templates. No individual-case micro-tuning or docs-only product
+substitution was introduced; the next product bottleneck remains the pending
+human candidate review.
+
+## Commands and evidence used for this receipt
+
+```powershell
+git fetch --prune origin
+git pull --ff-only
+git rev-list --left-right --count 'HEAD...@{u}'
+git rev-list --left-right --count HEAD...origin/main
+uvx --with Pillow pytest -q
+uvx ruff check <seven OUT-08 changed Python files>
+uvx python -m src.cli.main --help
+npm ci
+npm run smoke
+npm run smoke:electron
+uvx python -m src.cli.main status-episode --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --format json
+git diff --check
+git ls-files episodes
+```
+
+Package validation also recomputed all 16 payload hashes and canonical
+manifest self-integrity. Delivery validation requested the page and 1 KiB byte
+ranges from both MP4s and observed HTTP `200`, `206`, and `206` respectively.
+
+---
+
+# Historical Planner007 OUT-08 re-entry / development readiness receipt — 2026-07-15
 
 This is a non-authoritative host receipt for `DESKTOP-U9P4LKJ`. The portable
 current state remains in [RUNTIME_STATE.md](RUNTIME_STATE.md), and the active
