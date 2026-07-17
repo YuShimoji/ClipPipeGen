@@ -1,55 +1,132 @@
-# Planner007 OUT-08 private review package recovery receipt — 2026-07-15
+# Planner007 remote sync / development readiness / supervising handoff — 2026-07-17
 
-This non-authoritative host receipt reports the recovery implementation for
-`DESKTOP-U9P4LKJ`. Portable current state remains in
-[RUNTIME_STATE.md](RUNTIME_STATE.md), and execution resumes from
-[CURRENT_HANDOFF.md](CURRENT_HANDOFF.md).
+## これは何か
 
-## Outcome for supervising AI
+この文書は `DESKTOP-U9P4LKJ` で実測した非正本の監修用 receipt である。portable な
+現在値は [RUNTIME_STATE.md](RUNTIME_STATE.md)、実行再開点は
+[CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) を正本とする。今回、episode media、candidate
+plan、human decision、rights / production / public gate は変更していない。
 
-The exact OUT-08 candidates are preserved as Thank-host evidence and now have a
-host-aware recovery path. The implementation does not regenerate media or use
-Git as transport. It validates the 17-file/16-payload package, manifest
-self-integrity, both candidate hashes, Thank source identity, closed gates, and
-the full `cut_009` exclusion before export and at import staging. Export is a
-deterministic ZIP to an explicit repository-external new path; import rejects
-unsafe archive structures and promotes only a fully verified sibling stage.
+## 今の状態
 
-| Supervisor question | Current answer | Workflow effect |
+現行ブランチ `codex/out-08-private-review-package-recovery-v0` は fetch / prune 後に
+upstream `0 0`、`git pull --ff-only` は `Already up to date` だった。HEAD は
+`180bd28`、`origin/main` の `4fad107` より 8 commits 先行しており、OUT-08 の
+mini-batch、`cut_009` 完全除外修正、cross-terminal handoff、Planner007 readiness、
+exact private package recovery を含む。追跡・未追跡の作業差分は開始時点で無く、
+`git ls-files episodes` も 0 件のままである。
+
+同じ source baseline から分岐した
+`origin/codex/out-08-real-unused-range-short-minibatch-v0` には `a96e6f9` と
+`2d45bd8` の監修報告更新だけが存在する。fetch により object はローカルへ取得済み
+だが、その報告は Thank 上で package を直接開けた復旧前の状態を記述するため、現行
+recovery branch へ機械的に merge していない。未取得の実装変更があるのではなく、
+現行状態では本書と recovery contract が後継となる。
+
+コードと開発環境はローカルで実行可能である。一方、OUT-08 の exact 17-file review
+package は Thank にだけ残り、Planner007 の probe は `package_missing` /
+`server_stopped` である。したがって、開発を継続できる状態と、候補動画をこの端末で
+人間レビューできる状態は分けて扱う必要がある。現在の唯一の product bottleneck は
+一度の私的 package 移送であり、再 render や Git への media 追加ではない。
+
+| 監修判断 | 実測された現在値 | 次工程への意味 |
 |---|---|---|
-| Are the product candidates lost? | No. Thank evidence preserves candidate 01 `f7ea3f...388a`, candidate 02 `47c844...593b`, and manifest self-integrity `22c713...b4a4`. | Recovery transports those exact bytes; it does not create a new revision. |
-| Can Planner007 review now? | No. The current probe is `package_missing` / `server_stopped`; no current human entrypoint is claimed. | One private package transfer is required before playback review. |
-| Is transfer implemented safely? | Yes. The kit provides host-gated deterministic export, strict archive/receipt validation, fail-closed atomic import, existing-package preservation, and HTTP 200/Range 206 probe. | Thank can export; after a user-owned private copy, Planner007 can import and verify without reopening generation. |
-| Did scope expand into delivery or acceptance? | No. No upload, transfer-channel operation, media mutation, GUI opening, candidate acceptance, or production/public gate change occurred. | Human review and all downstream gates stay pending. |
+| remote 同期 | active upstream `0 0`、pull は更新不要、HEAD `180bd28` | 現行 recovery branch から安全に開発を続けられる |
+| 開発環境 | `npm ci` で 23 packages を再配置、24 packages audit、脆弱性 0 | Node / Electron GUI を lockfile どおり再現できる |
+| Python behavior | 全体 `542 passed in 53.91s`、OUT-08 focus `58 passed in 7.49s` | tracked behavior と recovery guard が現在ホストで green |
+| entrypoint / lint | CLI help 正常、現行差分 11 Python files の Ruff は全 pass | OUT-08 変更範囲は追加修正なしで着手可能 |
+| GUI | Node-only smoke / Electron smoke ともに pass | GUI の通常開発・起動 smoke は可能 |
+| 全体 lint debt | `src tests` 全体では既存 14 findings / 9 files | 実行 blocker ではない。CI lint gate 化前に独立保守スライスで解消する |
+| docs health | dashboard 再生成は成功、既存 27 findings（stale / unclear / over-guarded） | H0 を止めない。長大 HANDOFF の archive 化等は product decision 後の保守候補 |
+| current-host review | probe は `package_missing` / `server_stopped`、current URL は null | exact import と server probe が終わるまで human playback を開始しない |
+| public hygiene | `episodes/` は ignored、tracked 0、広域 ignored cleanup 未実施 | source-derived media と保護対象 review evidence を Git に漏らしていない |
 
-## Verified current-host classification
+検証ホストの toolchain は uvx `0.10.0`、Python `3.11.0`、Node `22.19.0`、npm
+`10.9.3`、FFmpeg / FFprobe `8.1.1`。以前の Thank receipt と version が異なるため、
+将来 version-dependent な media 差分が出た場合は host/toolchain を provenance に
+含める。今回は media generation を行っておらず、candidate bytes は変化していない。
 
-`uvx python -m src.cli.main recover-out08-private-review-package --format json probe`
-observed host `DESKTOP-U9P4LKJ`, package `package_missing`, and port 8071
-`server_stopped`. It wrote a sanitized receipt under ignored `episodes/` storage;
-the receipt contains repository-relative paths and hashes rather than absolute
-private paths. A generic localhost URL has therefore been removed from current
-Runtime, Handoff, dashboard, and registry surfaces; Thank's former URL remains
-last-verified historical evidence only.
+## Constraints / Risks（確定証拠と、まだ成立していないこと）
 
-The recovery-specific suite passes 21 tests covering deterministic
-export, exact allowlists, missing/extra files, traversal, unknown files,
-duplicate and case-colliding entries, corrupt archives, candidate/manifest
-identity failure, `cut_009` overlap, atomic promotion, invalid-existing-package
-preservation, and sanitized missing-state probe. The combined recovery, OUT-08
-builder, active-rebuild, and dashboard focus is 58 passing tests. CLI
-import/help, PowerShell parsing, changed-scope Ruff, and dashboard regeneration
-also pass.
+Thank evidence には candidate 01
+`f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`、candidate 02
+`47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`、manifest
+self-integrity
+`22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4` が保持されて
+いる。candidate 02 の最大 source end は `135.219`、reject 済み `cut_009` の
+`135.219–144.000` と source-time overlap しない。recovery kit は exact allowlist、
+hash / size / self-integrity、host identity、archive safety、atomic promotion、existing
+package preservation を fail-closed で検証し、別 revision の生成を許さない。
 
-## Remaining operator-owned move
+Planner007 では次の probe を 2026-07-17 に再実行し、仕様どおり
+`recovery_kit_ready_package_not_yet_imported` を得た。
 
-On Thank, export to a new explicit repository-external ZIP. The user then copies
-that ZIP through a private channel they choose. On Planner007, import with
-`--start-server`; proceed to direct playback/seek only when the receiving probe
-reports `package_verified_exact` and `server_running_verified`. Rights,
-production render, production subtitle design, public/publishing, upload,
-OUT-07 thumbnail iteration, and source-byte equivalence remain closed or
-unestablished.
+```powershell
+uvx python -m src.cli.main recover-out08-private-review-package --format json probe
+```
+
+これは build failure ではないが、current `human_entrypoint`、direct playback / seek、
+candidate acceptance は未成立である。rights は `pending`、production subtitle design、
+production render、public/publishing、upload、visibility、made-for-kids、thumbnail
+selection はすべて未承認または閉鎖中である。navigation JPG は移動補助であって
+thumbnail candidate ではない。
+
+## 次に進める入口
+
+1. Thank で explicit な repo 外の新規 ZIP へ exact package を export する。
+2. 利用者が選ぶ private channel で ZIP を一度だけ Planner007 へコピーする。
+3. Planner007 で atomic import と server start を行い、probe が
+   `package_verified_exact` / `server_running_verified` になったことを確認する。
+4. candidate 01 / 02 を一本ずつ direct playback / seek し、テンポ、開始終端、字幕、
+   音声の違和感を自由記述する。
+5. 返答を candidate 単位の decision packet に正規化し、accept-internal、bounded
+   repair、park/reject のどれか一つへ閉じる。
+
+```powershell
+# Thank
+uvx python -m src.cli.main recover-out08-private-review-package --format json export --destination D:\private-transfer\out08-review.zip
+
+# Planner007 after a user-owned private copy
+uvx python -m src.cli.main recover-out08-private-review-package --format json import --archive D:\private-transfer\out08-review.zip --start-server
+```
+
+transfer channel の選択・upload・credential 操作は repository の責務外であり、
+自動化しない。Planner-known source と Thank source の byte equivalence も未確立なので、
+Planner source から再生成した候補を exact recovery と呼ばない。
+
+## 可能な限り先まで見た目標階層（未承認提案）
+
+以下は順序を監修する goal ladder であり、FEATURE の `approved`、production/public
+操作、OAuth、rights 判断を許可するものではない。各段は前段の証拠と owner 判断を
+受け取ってから一つずつ起票する。
+
+| 地平 | 目標と完了条件 | 主な依存・停止条件 | 完了後に開ける開発 |
+|---|---|---|---|
+| H0: OUT-08 decision closure | exact 2 candidates を再生し、各々を accept-internal / bounded repair / park-reject に分類。修正するなら tempo / boundary / subtitle / audio の一領域だけを successor slice にする | private transfer、exact import、server probe、人間の自由記述 | 単発の感想を edit/render へ戻せる decision packet として固定できる |
+| H1: real Shorts portfolio 3–5 本 | 少なくとも 3 本、できれば複数 episode で、尺・境界・字幕密度・cover 方向・判断理由を共通 scorecard 化する | H0 closure、rights readback 維持、個別候補への過適合を避ける | 再利用可能な編集規則を抽出し、OUT-07 thumbnail exploration 再開の是非を初めて評価できる |
+| H2: production limitation lift | subtitle design、render、rights を独立 packet で acceptance。safe-area、line break、font/license、A/V/seek/full-decode を明示基準化する | H1 の反復証拠と人間 owner。どれか一 gate の pass を他 gate へ継承しない | internal candidate を production candidate へ昇格するための再現可能な品質 gate ができる |
+| H3: portable episode delivery | tracked manifest と private payload receipt を分離し、provenance / access / retention / rollback 付きで別端末復旧を実証する | private artifact store / transport の明示承認、`episodes/` public Git 禁止、SH-02 契約 | 一回限りの OUT-08 recovery を episode 共通 handoff へ一般化できる |
+| H4: controlled private publishing rehearsal | metadata-only dry-run の後、production-accepted video / thumbnail / metadata を private-unlisted upload、readback、rollback receipt まで接続する | H2/H3、PB-01..04、INT-01、OAuth/credentials、rights/publication の明示承認 | 公開前に failure と rollback を観測できる publishing integration が成立する |
+| H5: multi-episode production-assist loop | 2–3 episodes で source→ledger→transcript→edit→review→production→private publish を反復し、lead time、手動判断数、再生成一致率、recovery 成功率を計測する | H4 成功、official caption が無い素材の STT quality route、failure telemetry | 繰り返し発生した境界だけを GUI / automation に昇格し、判断証拠を失わず制作摩擦を減らせる |
+
+監修上の推奨は H0 の前半、すなわち exact transfer / import / probe を最優先にすること。
+review 返答前に lint cleanup や portfolio expansion を混ぜると product bottleneck が
+見えにくくなる。H0 後は bounded repair と portfolio expansion を同時に始めず、返答が
+示した一方だけを次スライスにする。
+
+## 実行した確認と残る不確実性
+
+実行した主な確認は `git fetch --prune origin`、`git pull --ff-only`、branch parity、
+`npm ci`、recovery probe、targeted/full pytest、changed-scope/full-repo Ruff audit、CLI
+help、Node/Electron smoke、docs dashboard regeneration である。全体 Ruff の 14 findings
+と docs health の 27 findings は今回の OUT-08 product decision 外で、自動 fix すると
+pending human-review slice を広げるため変更していない。
+
+残る不確実性は、Thank 上の private package が export 時にも exact 検証を通るか、
+Planner007 への物理コピーと atomic import が成功するか、native-control seek と二本の
+編集品質を人間がどう評価するか、rights / production / public owner が将来どの gate を
+承認するかである。今回の作業は docs だけを product progress とみなさず、次の consumer
+を exact package import と candidate decision に固定している。
 
 ---
 

@@ -3357,13 +3357,13 @@
     {
       "path": "docs/idea-ledger.md",
       "title": "Idea Ledger - ClipPipeGen",
-      "line_count": 45,
+      "line_count": 46,
       "metadata": {
         "id": "idea-ledger",
         "title": "Idea Ledger - ClipPipeGen",
         "type": "durable_idea_ledger",
         "status": "current",
-        "last_touched": "2026-07-15"
+        "last_touched": "2026-07-17"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3461,18 +3461,18 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 91,
+      "line_count": 108,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
-        "last_touched": "2026-07-15",
+        "last_touched": "2026-07-17",
         "current_slice": "OUT-08",
-        "active_branch": "codex/out-08-real-unused-range-short-minibatch-v0",
-        "verified_remote_base_head": "9ab8445afa247d07b46ef031cdc30f3fbbafafdd",
+        "active_branch": "codex/out-08-private-review-package-recovery-v0",
+        "verified_remote_head": "180bd28228642a4689246ceaf31babc47a044531",
         "upstream_parity": "0 0",
-        "health": "OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY",
+        "health": "OUT08_PRIVATE_REVIEW_PACKAGE_RECOVERY_READY",
         "contract_repair_status": "OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY"
       },
       "front_sections": {
@@ -3481,7 +3481,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 13,
+      "boundary_term_count": 12,
       "status": "current"
     },
     {
@@ -3596,16 +3596,16 @@
     },
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-      "title": "Planner007 OUT-08 private review package recovery receipt — 2026-07-15",
-      "line_count": 199,
+      "title": "Planner007 remote sync / development readiness / supervising handoff — 2026-07-17",
+      "line_count": 276,
       "metadata": {},
       "front_sections": {
-        "what_it_is": false,
-        "current_state": false,
-        "next": false,
-        "constraints_risks": false
+        "what_it_is": true,
+        "current_state": true,
+        "next": true,
+        "constraints_risks": true
       },
-      "boundary_term_count": 25,
+      "boundary_term_count": 46,
       "status": "reference"
     },
     {
@@ -3666,8 +3666,8 @@
     }
   ],
   "doc_health": {
-    "finding_count": 28,
-    "finding_total": 28,
+    "finding_count": 27,
+    "finding_total": 27,
     "finding_limit": 50,
     "findings_truncated": false,
     "findings": [
@@ -3824,12 +3824,6 @@
       {
         "type": "over_guarded",
         "path": "docs/SUBTITLE_RENDERER_TYPOGRAPHY_SPIKE.md",
-        "detail": "Boundary terms appear 25 times without a front Constraints / Risks section.",
-        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
-      },
-      {
-        "type": "over_guarded",
-        "path": "docs/SUPERVISOR_STATUS_REPORT.md",
         "detail": "Boundary terms appear 25 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
