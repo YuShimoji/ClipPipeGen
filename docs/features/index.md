@@ -6,14 +6,14 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-08`
 - artifact: `clip-out08-real-unused-range-short-minibatch-v0-001`
-- state: `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`
+- state: `OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN`
 
-- canonical main: `4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9`
-- canonical baseline: `OUT-07 PARK_PROVISIONAL_USABLE parked predecessor`
-- canonical status: `internal_review_ready_human_decision_pending`
-- review status: `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`
+- canonical main: `resolve_origin_main_at_resume`
+- canonical baseline: `OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2`
+- canonical status: `accepted_internal_out08_closed`
+- review status: `OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN`
 - remote code complete: `true`
-- local artifact available: `true`
+- local artifact available: `false`
 - portable local artifact available: `false`
 - portable entrypoint: ``
 - exact baseline available: ``
@@ -23,10 +23,10 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `http://127.0.0.1:8071/index.html`
-- pause reason: `human_review_required_before_candidate_acceptance`
+- pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `same_machine_ignored_package`
+- cross-machine resume: `accepted_decision_portable_media_optional`
 - active rebuild contract: ``
 - evidence revision: `thank-6f78657e-out08-real-unused-range-minibatch-v1`
 - accepted baseline SHA-256: ``
@@ -34,8 +34,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `out08_whole_candidate_human_review`
-- next review: `out08_candidate_review_now`
+- decision required: `none_out08_closed`
+- next review: `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_proposal_only`
 
 ## Feature Table
 

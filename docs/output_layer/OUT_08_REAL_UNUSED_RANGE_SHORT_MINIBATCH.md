@@ -3,13 +3,13 @@
 OUT-08 は、OUT-06 までに使用した実素材範囲を避け、残る real source authority
 から内容の異なる vertical Shorts 候補を target 2 / minimum 1 で作る薄い
 output slice である。実生成数は 2。artifact
-`clip-out08-real-unused-range-short-minibatch-v0-001` は
-`OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY` で、人間が各候補を
-一本の編集単位として判断できる。これは internal review evidence であり、
+`clip-out08-real-unused-range-short-minibatch-v0-001` は、修復後exact二本へのユーザー
+回答「両方問題ありません」を受け、batch `accepted_all_internal`、candidate 01 / 02
+`accepted_internal`、winner noneで閉じた。これは internal acceptance であり、
 production render、production subtitle-design acceptance、rights clearance、
 public-ready asset、publishing action ではない。
 
-## 直接見る入口
+## Last-verified review evidence
 
 同端末の ignored package は次にある。
 
@@ -17,7 +17,8 @@ public-ready asset、publishing action ではない。
 episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/
 ```
 
-last-verified URL は `http://127.0.0.1:8071/index.html`。port `8071` の exact
+last-verified URL は `http://127.0.0.1:8071/index.html`。これはcurrent entrypointや
+closure条件ではない。port `8071` の exact
 `src.cli.serve_review` route で page HTTP `200` と MP4 Range `206` を確認済み。
 listener PID は再起動ごとに変わるため引き継ぎ値にしない。停止後は repository root から
 次を実行する。
@@ -110,18 +111,24 @@ loudness、true peak、normalization decision を記録した。
 warning/error なしを確認した。HTTP `200`、byte range `206 Partial Content`、
 ffprobe、full decode を再確認した。
 automation browser では native control の direct seek/currentTime 進行を確実に
-観測できていない。開始、主要境界、終端の frame QA は通過したが、direct
-playback/seek は人間レビューに残し、編集の自然さを machine acceptance しない。
+観測できていない。この自動未観測点はhistorical evidenceの限界として残るが、
+修復後exact二本に対する人間受入を失効させない。
 
-## 人間判断と閉じた gate
+## 記録済み人間判断と閉じた gate
 
-page が尋ねる一問は次である。
+page が尋ねた一問は次である。
 
 > 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
 
-返答は candidate ごとの自由記述で受ける。人間判断前は次を維持する。
+受領済みユーザー回答は「両方問題ありません」。exact identityへ結び、次を記録する。
 
-- `human_review_pending=true`
+- `batch_acceptance=accepted_all_internal`
+- `candidate_01_acceptance=accepted_internal`
+- `candidate_02_acceptance=accepted_internal`
+- `accepted_candidate_ids=[candidate_01,candidate_02]`
+- `winner=null`
+- `human_review_pending=false`
+- `acceptance_granted=true`
 - `internal_review_only=true`
 - `authority_mutated=false`
 - `cut009_final_cut_decision=reject`
@@ -133,6 +140,10 @@ page が尋ねる一問は次である。
 - `public_ready=false`
 - `publishing_acceptance=false`
 - `publish_attempted=false`
+
+`sub_067` / `sub_068`はこのexact render内では受入済みだが、全動画共通の字幕規則へ
+昇格させない。Planner007でpackageが欠けていること、serverが止まっていること、
+private transferが未実行であることはOUT-08 closureのblockerではない。
 
 OUT-07 は main commit `4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9`
 上の `PARK_PROVISIONAL_USABLE` predecessor で、追加 thumbnail iteration は

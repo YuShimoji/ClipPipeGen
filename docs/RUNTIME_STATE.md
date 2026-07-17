@@ -2,44 +2,50 @@
 id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
-status: current_capsule
-health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
+status: closed
+health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
 progress_pct: 100
-last_touched: 2026-07-15
-state_revision: out08-cut009-fully-excluded-contract-repaired-review-ready-2026-07-15
+last_touched: 2026-07-17
+state_revision: out08-accepted-internal-canonical-main-2026-07-17
 contract_repair_status: OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY
 current_slice: OUT-08
-phase: human_review
-canonical_status: internal_review_ready_human_decision_pending
-active_branch: codex/out-08-real-unused-range-short-minibatch-v0
+phase: accepted_closure
+canonical_status: accepted_internal_out08_closed
+active_branch: main
 verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
-remote_resume_contract: pull_current_active_branch_tip_then_read_current_handoff
+source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
+closure_branch: codex/out-08-accepted-closure-v0
+remote_resume_contract: pull_origin_main_then_read_current_handoff
 upstream_parity: 0 0
-current_title: OUT-08 real unused-range vertical Shorts mini-batch review
-human_entrypoint: http://127.0.0.1:8071/index.html
+current_title: OUT-08 accepted internal canonical closure
+human_entrypoint: null
 portable_entrypoint: null
-review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
-review_server_restart_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\serve_preview.ps1 -Port 8071
+review_open_command: null
+review_server_restart_command: null
 machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: out08_whole_candidate_human_review
-review_status: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
-review_scope: 二本を候補ごとに一本の編集単位として見て、テンポ、境界、字幕、音声の違和感を確認する。navigation frame は移動補助であり thumbnail acceptance ではない。
-reviewed_at: null
+decision_required: none_out08_closed
+review_status: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
+review_scope: 修復後の exact candidate 01 / 02 は、一本の編集単位、テンポ、開始・境界・終端、字幕可読性、音声・映像連続性について人間受入済み。
+reviewed_at: 2026-07-17 JST
 remote_code_complete: true
-local_artifact_available: true
-local_artifact_role: active_same_machine_internal_review_evidence
+local_artifact_available: false
+local_artifact_role: optional_same_machine_historical_evidence_not_acceptance_prerequisite
 portable_local_artifact_available: false
-cross_machine_resume_class: same_machine_ignored_package
-cross_host_resume_status: tracked_context_available_local_review_payload_not_portable
+cross_machine_resume_class: accepted_decision_portable_media_optional
+cross_host_resume_status: acceptance_preserved_local_review_payload_optional
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
+optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
+optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
+optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
+optional_recovery_merged: false
 evidence_revision: thank-6f78657e-out08-real-unused-range-minibatch-v1
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
-local_verified_host: DESKTOP-H53P1T4
+local_verified_host: null
 local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json
-local_package_requirement: active_same_machine_review_package_required
+local_package_requirement: none_for_out08_closure
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
@@ -50,22 +56,29 @@ last_verified_at: 2026-07-15
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: human_review_required_before_candidate_acceptance
+pause_reason: null
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending
-reviewed_by_human: false
-acceptance_granted: false
+human_review_decision: both_candidates_accepted_internal
+reviewed_by_human: true
+human_review_pending: false
+acceptance_granted: true
+batch_acceptance: accepted_all_internal
+candidate_01_acceptance: accepted_internal
+candidate_02_acceptance: accepted_internal
+accepted_candidate_ids: [candidate_01, candidate_02]
+winner: null
+subtitle_debt_acceptance_scope: sub_067_sub_068_accepted_for_exact_renders_only_not_global_rule
 cover_review_status: null
-review_server_status: running_port_8071_exact_serve_review_route_http200_range206_verified
-next_review_due: out08_candidate_review_now
-next_action: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
+review_server_status: not_required_out08_closed
+next_review_due: OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_proposal_only
+next_action: OUT-09 second-source repeatability を後継proposal dataとして検討する。承認前に実装しない。
 active_artifact: clip-out08-real-unused-range-short-minibatch-v0-001
-current_review_component: two_real_unused_range_vertical_short_candidates
+current_review_component: closed_accepted_internal_exact_candidates
 target_candidate_count: 2
 minimum_candidate_count: 1
 actual_candidate_count: 2
@@ -86,7 +99,7 @@ blackdetect_readback: no_black_interval_at_or_above_0_5_seconds
 silencedetect_readback: no_silence_interval_at_or_above_1_5_seconds_at_minus_50dB
 browser_readback: final_package_readyState4_error_null_desktop_mobile_no_overflow_console_clean_http200_range206_direct_seek_not_observed
 http_range_readback: 206_partial_content_passed
-current_baseline_acceptance: human_review_pending
+current_baseline_acceptance: accepted_all_internal
 accepted_baseline_sha256: null
 recommended_cover_path: null
 recommended_cover_sha256: null
@@ -140,8 +153,8 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: 4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9
-canonical_main_baseline: OUT-07 PARK_PROVISIONAL_USABLE parked predecessor
+canonical_main_head: resolve_origin_main_at_resume
+canonical_main_baseline: OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
 latest_out03_real_local_selected_cut_proof_implementation_commit: 01b42cd
@@ -208,13 +221,14 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current OUT-08 Real Unused-Range Vertical Shorts Mini-Batch
+## Accepted OUT-08 Real Unused-Range Vertical Shorts Mini-Batch
 
 OUT-08 は、OUT-06 までに使った `cut_001..cut_003` を除外し、同じ実素材の
 未使用範囲から内容の異なる vertical Shorts 候補を target 2 / minimum 1 で
-組み立てた。実生成数は 2 で、状態は
-`OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`。active branch は
-`codex/out-08-real-unused-range-short-minibatch-v0`、artifact は
+組み立てた。実生成数は 2。修復後の exact candidate 01 / 02 に対するユーザー回答
+「両方問題ありません」を受け、batch は `accepted_all_internal`、両 candidate は
+`accepted_internal` として閉じた。winner は設けない。source lineage は
+`2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2`、artifact は
 `clip-out08-real-unused-range-short-minibatch-v0-001` である。
 
 | 候補 | source authority | semantic / media | 字幕 | MP4 SHA-256 | 一本としての狙い |
@@ -237,16 +251,18 @@ thumbnail candidate、thumbnail acceptance のいずれでもない。
 interval は検出されていない。現行 review page では二本とも `readyState=4`、
 media error `null`、desktop/mobile overflow なし、console clean を確認した。
 HTTP `200` と byte Range `206 Partial Content`、ffprobe、full decode も再確認したが、automation browser
-から native control の direct seek は確実に進められなかった。この未観測点は
-人間の direct playback review に残し、machine acceptance には転用しない。
+から native control の direct seek は確実に進められなかった。この自動未観測点は
+historical evidence の限界として残るが、修復後の exact 二本に対する人間受入を
+失効させない。
 
 同端末の ignored package は
 `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/`。
 port `8071` の exact `src.cli.serve_review` route が
 `http://127.0.0.1:8071/index.html` を提供し、page HTTP `200` と MP4 Range
 `206` を返すことを確認した。listener PID は再起動ごとに変わるため正本にせず、
-停止時は frontmatter の `review_server_restart_command` で復旧する。人間に尋ねるのは次の一問：
-「追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。」
+server と package は last-verified same-machine evidence であり、current entrypoint や
+OUT-08 closure 条件ではない。Planner007 で package が無いこと、server が止まっている
+こと、private transfer が未実行であることは受入を失効させない。
 
 rights は `pending`。production render、production subtitle design、public、
 publishing、upload の acceptance は false / unopened のままである。
@@ -271,8 +287,9 @@ representative frame QA、black/silence detection も pass した。
 
 localhost server は exact route / port `8071` で再開し、page HTTP `200`、MP4 Range `206`、
 desktop/mobile の両方で `readyState=4`、media error なし、horizontal overflow
-なし、console clean を確認した。この修復は candidate acceptance を追加せず、
-停止点は candidate 01 / 02 を一本ずつ再生した人間の自由記述レビューである。
+なし、console clean を確認した。この修復直後は candidate acceptance を追加して
+いなかったが、2026-07-17 に受領済みユーザー回答を exact identity へ結び、両方を
+`accepted_internal` として記録した。
 
 ## Parked OUT-07 Predecessor Closure
 
@@ -292,8 +309,9 @@ desktop/mobile の両方で `readyState=4`、media error なし、horizontal ove
 Thank 上の proxy package は削除せず historical local evidence として保持する。
 現在の human entrypoint からは外し、review server は停止する。再検討は実際の
 Shorts が合計 3〜5 本揃った後に限り、reference corpus は具体例群であって
-canonical design rules ではない。次の active product は thumbnail ではなく、
-未使用実素材から作る OUT-08 vertical Shorts mini-batch である。rights、
+canonical design rules ではない。OUT-08 closure 後の successor data は、異なる
+source / episode で既存 pipeline の再現性を検証する `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`
+である。これは未承認proposalで、このclosureでは実装しない。rights、
 production、public/publishing、upload の gate は変わらず閉じている。
 
 ## Historical OUT-07 Thank Native Shorts Cover Direction Proxy Review
@@ -535,13 +553,13 @@ explicitly reactivates one of them.
 
 ## Cross-Terminal Resume Checkpoint
 
-Checkpoint date: 2026-07-14 JST. A new terminal should fetch and switch to the
-OUT-08 review branch before reading project context:
+Checkpoint date: 2026-07-17 JST. OUT-08 は main に accepted-internal closure として
+着地する。新しい terminal は main を取得して current state を読む：
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-08-real-unused-range-short-minibatch-v0
-git pull --ff-only
+git switch main
+git pull --ff-only origin main
 ```
 
 Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
@@ -554,9 +572,10 @@ Then read this file first, followed by `docs/CURRENT_HANDOFF.md` and
 the canonical predecessor, and consult
 `docs/output_layer/OUT_02_HANDOFF.md` and `docs/THREAD_REGISTRY.md` only for
 baseline/integration history, then use the `artifacts/ARTIFACTS.md` entry for
-the active `clip-out08-real-unused-range-short-minibatch-v0-001`. OUT-07 entries
-and `artifacts/ACTIVE_REBUILD.json` are parked predecessor evidence only and
-must not replace the two-video OUT-08 review target.
+the accepted `clip-out08-real-unused-range-short-minibatch-v0-001`. OUT-07 entries
+and `artifacts/ACTIVE_REBUILD.json` are parked predecessor evidence only。
+`codex/out-08-private-review-package-recovery-v0` は任意の非canonical infra proof として
+remote に保持するが、main へ merge していない。
 
 The earlier portable synthetic predecessor is OUT-02. It was created from the
 INT-01 integration branch and converts OUT-01 `proof_missing` into a local

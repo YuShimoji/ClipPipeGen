@@ -238,14 +238,19 @@ def test_runtime_points_to_out08_and_keeps_out07_rebuild_contract_parked() -> No
         in runtime
     )
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: true" in runtime
+    assert "local_artifact_available: false" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8071/index.html" in runtime
+    assert "human_entrypoint: null" in runtime
     assert "portable_entrypoint: null" in runtime
-    assert "cross_machine_resume_class: same_machine_ignored_package" in runtime
-    assert "health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY" in runtime
+    assert "cross_machine_resume_class: accepted_decision_portable_media_optional" in runtime
+    assert "health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
-    assert "acceptance_granted: false" in runtime
+    assert "human_review_pending: false" in runtime
+    assert "acceptance_granted: true" in runtime
+    assert "batch_acceptance: accepted_all_internal" in runtime
+    assert "candidate_01_acceptance: accepted_internal" in runtime
+    assert "candidate_02_acceptance: accepted_internal" in runtime
+    assert "optional_recovery_merged: false" in runtime
     assert "out07_selection_status: deferred" in runtime
     assert "out07_canonical_pattern: false" in runtime
     assert "out07_default_template: false" in runtime

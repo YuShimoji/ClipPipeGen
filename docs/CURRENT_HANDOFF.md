@@ -2,59 +2,55 @@
 id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
-status: review_ready
-health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
+status: closed
+health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
 progress_pct: 100
-last_touched: 2026-07-15
+last_touched: 2026-07-17
 current_slice: OUT-08
-phase: human_review
-canonical_status: internal_review_ready_human_decision_pending
-active_branch: codex/out-08-real-unused-range-short-minibatch-v0
+phase: accepted_closure
+canonical_status: accepted_internal_out08_closed
+active_branch: main
 verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
-remote_resume_contract: pull_current_active_branch_tip_then_read_this_file
-current_title: OUT-08 real unused-range vertical Shorts mini-batch review
-human_entrypoint: http://127.0.0.1:8071/index.html
+source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
+closure_branch: codex/out-08-accepted-closure-v0
+remote_resume_contract: pull_origin_main_then_read_this_file
+current_title: OUT-08 accepted internal canonical closure
+human_entrypoint: null
 portable_entrypoint: null
-review_open_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
-review_server_restart_command: powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\serve_preview.ps1 -Port 8071
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_readback.json
-operator_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html
-decision_required: out08_whole_candidate_human_review
-review_status: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
+review_open_command: null
+decision_required: none_out08_closed
+review_status: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
 contract_repair_status: OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY
 remote_code_complete: true
-local_artifact_available: true
-local_artifact_role: active_same_machine_internal_review_evidence
+local_artifact_available: false
+local_artifact_role: optional_same_machine_historical_evidence_not_acceptance_prerequisite
 portable_local_artifact_available: false
-cross_machine_resume_class: same_machine_ignored_package
-active_rebuild_contract: null
+cross_machine_resume_class: accepted_decision_portable_media_optional
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
-evidence_revision: thank-6f78657e-out08-real-unused-range-minibatch-v1
-last_verified_host: DESKTOP-H53P1T4
-last_verified_host_label: Thank
-last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
-local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json
-review_server_status: running_port_8071_exact_serve_review_route_http200_range206_verified
-last_verified_at: 2026-07-15
+optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
+optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
+optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
+optional_recovery_merged: false
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
+thumbnail_acceptance: false
 public_or_publishing_acceptance: false
-human_review_pending: true
-acceptance_granted: false
-target_candidate_count: 2
-minimum_candidate_count: 1
-actual_candidate_count: 2
-next_action: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
+human_review_pending: false
+acceptance_granted: true
+batch_acceptance: accepted_all_internal
+candidate_01_acceptance: accepted_internal
+candidate_02_acceptance: accepted_internal
+accepted_candidate_ids: [candidate_01, candidate_02]
+winner: null
+next_action: OUT-09 second-source repeatability を後継proposal dataとして検討する。承認前に実装しない。
 active_artifact: clip-out08-real-unused-range-short-minibatch-v0-001
-canonical_main_head: 4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9
-canonical_main_baseline: OUT-07 PARK_PROVISIONAL_USABLE parked predecessor
+canonical_main_head: resolve_origin_main_at_resume
+canonical_main_baseline: OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
 source_of_truth: false
-owner_lane: shared_infra
-related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json, artifacts/ACTIVE_REBUILD.json
-durable_context: docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md
-verified_remote_base_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
+owner_lane: output_video_acceptance_integration
+related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/decision-log.md, docs/dashboard/project-status.json
+durable_context: docs/project-context.md, docs/idea-ledger.md
 upstream_parity: 0 0
 ---
 
@@ -62,111 +58,40 @@ upstream_parity: 0 0
 
 ## 現在地
 
-OUT-07 は `PARK_PROVISIONAL_USABLE` として main commit
-`4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9` に着地済みである。選定、
-canonical 化、default template 化は行っておらず、追加 OUT-07 thumbnail
-iteration も禁止した。その parked predecessor から OUT-08 branch を切り、
-既存 Shorts が使っていない実素材範囲から target 2 / minimum 1 に対して
-二本の vertical Shorts 候補を一つの review page にまとめた。
+修復後の exact OUT-08 candidate 01 / 02 に対するユーザー回答
+「両方問題ありません」を正本へ結び、OUT-08 を閉じた。batch は
+`accepted_all_internal`、両 candidate は `accepted_internal`、winner は設けない。
+一本の編集単位、テンポ、開始・境界・終端、字幕可読性、音声・映像連続性が
+この exact render の internal acceptance 対象である。
 
-現在の human entrypoint は `http://127.0.0.1:8071/index.html`。同端末では
-port `8071` の exact `src.cli.serve_review` route が page HTTP `200` と MP4 Range
-`206` を返すことを確認した。listener PID は再起動ごとに変わるため引き継ぎ値にせず、
-停止時は frontmatter の `review_server_restart_command` で復旧する。package は
-次の ignored path にあり、Git へは追加しない。
+| candidate | media duration | subtitles | SHA-256 | state |
+|---|---:|---:|---|---|
+| `candidate_01` | `28.266667s` | 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | `accepted_internal` |
+| `candidate_02` | `53.466667s` | 54 | `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` | `accepted_internal` |
 
-```text
-episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/
-```
+candidate 02 の最大 source end は `135.219`。reject 済み `cut_009` の interval
+`135.219–144.000` と source-time overlap はなく、`cut_009=reject` を維持する。
+`sub_067` / `sub_068` はこの exact render 内で受入済みだが、全動画共通の字幕規則へ
+一般化しない。
 
-## 判断できる二本
+## 証拠とportabilityの境界
 
-| 候補 | 使った authority | semantic / media | 字幕 | SHA-256 | 確認する編集効果 |
-|---|---|---:|---:|---|---|
-| `candidate_01` | `cut_004` `50.868–60.277` + `cut_005` `60.277–79.163` | `28.295s` / `28.266667s` | 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | 勝負の提示から認識違い、勝利扱いと困惑した別れまでが短い一場面として成立するか。 |
-| `candidate_02` | `cut_006` tail `81.298–98.315` + `cut_007` `98.315–116.467` + `cut_008` `116.934–135.219` | `53.454s` / `53.466667s` | 54 | `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` | 遭遇から対立の進展、相手の隙を突いて攻撃する転換点までが一本の流れとして持続するか。 |
+Planner007 に exact package が無く再視聴できないことは、記録済み受入を失効させない。
+ZIP export、端末間copy、import、localhost server は OUT-08 closure 条件ではない。
+recovery branch `d1f44d1` は private artifact portability 用の任意・非canonical infra
+proof としてremoteに保持し、source lineageにもmainにもmergeしていない。
 
-`cut_009` は final cut decision `reject` のまま変更していない。candidate 02
-の全 source range は reject interval `135.219–144.000` と非交差で、`cut_009`
-由来の映像・音声・字幕・caption・segment は含まない。二枚の navigation image は候補間の移動補助であり、
-decorated thumbnail、thumbnail candidate、thumbnail acceptance ではない。
+## 閉じたgateと次の入口
 
-修復前 package の `137.054–138.055` / `sub_102` 例外は supervisor correction
-により廃止され、現行 plan・readback・HTML には selected usage として残っていない。
+rights は `pending`。production render、production subtitle design、thumbnail、
+public/publishing、upload/OAuth/visibility/made-for-kids は false / unopened のまま。
 
-## 機械確認と人間判断の境界
+次の製品軸は data-only successor
+`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`。異なる source または episode から、既存
+Shorts pipeline を大規模に書き換えず、最低1本の12〜60秒・9:16・reviewable
+candidateを生成できることを将来のacceptance signalとする。このhandoffはOUT-09の
+実装承認ではない。
 
-両動画は H.264/AAC、1080x1920、30fps、yuv420p、faststart。full decode は
-通過し、0.5 秒以上の black interval と -50dB で 1.5 秒以上の silence
-interval は検出されていない。現行 browser check では二本とも `readyState=4`、
-media error `null`、desktop/mobile overflow なし、console clean。HTTP 200、
-Range 206、ffprobe、full decode を再確認した。automation browser で native control の direct seek は観測できて
-いないため、開始・主要境界・終端の direct playback は人間レビューに残る。
-
-ここまでで delivery/access の機械条件は満たしたが、候補が一本の編集単位と
-して自然かは未判断である。次に尋ねるのは次の一問だけとする。
-
-> 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。
-
-rights は `pending`。production render、production subtitle design、public、
-publishing、upload は false / unopened のままで、この review は開かない。
-
-## 2026-07-15 cut_009 除外修復の確認
-
-| 確認対象 | 目的 | 結果 | 残る判断 |
-|---|---|---|---|
-| Git 同期 | 現行 OUT-08 branch を remote と一致させる | implementation baseline `9ab8445` と handoff context commit `78dac4e` を push 済み。branch tip の pull を再開契約とし、この PID-independent hardening も同 branch へ反映する | push 後に upstream parity `0 0` と clean worktree を再確認する |
-| OUT-08 package | reject 素材を含まない同一端末証拠が tracked contract と一致するか確かめる | candidate 01 は SHA 不変で再利用、candidate 02 は三許可範囲だけで再生成。16 payload hash、manifest self-integrity、2 candidates、single-column page、単一 review question が pass | candidate の編集上の自然さは機械判定しない |
-| live episode state | 古い docs ではなく現在の episode を読む | `review_ready=true`、missing artifact 0、selected cuts 9、subtitles 105、rights pending、production candidate false | candidate 01 / 02 の human review |
-| playback delivery | レビュー入口を再開可能にする | exact route / port `8071` を復旧し、page HTTP 200、MP4 Range 206、両 MP4 full decode pass。PID ではなく再起動 command を正本化 | native control の direct playback/seek と編集上の違和感は人間確認 |
-| 開発 health | reject interval の契約と atomic rebuild を狭く検証する | targeted test 8 passed、changed-scope Ruff、JSON/manifest、ffprobe/full decode が pass | candidate の編集上の成立性は human review |
-
-validator は authority ID、label、dependent flag より先に source-time overlap を
-検査し、`cut_009` reject interval と交差する range を render 前に拒否する。
-artifact bytes は candidate 02 だけ更新し、candidate 01 と cut/caption authority、
-rights、production/public gate は変更していない。
-
-## 監修時に見る先の目標
-
-現在の実行可能な最短路は human review の消費である。その先は、単発 candidate の
-微調整を続けるのではなく、(1) feedback の decision packet 化、(2) 3–5 本の real
-Shorts portfolio、(3) production subtitle/render と rights の limitation lift、
-(4) episode_pack と private artifact transport、(5) private/unlisted publishing
-receipt、(6) 複数素材での再現可能な閉ループ、の順で評価する。各段階の目的、必要条件、
-owner、次の動きは `docs/idea-ledger.md` に未承認提案として記録した。
-
-## 次の端末での再開
-
-| 再開環境 | 最初に使えるもの | package の扱い | 最初の停止点 |
-|---|---|---|---|
-| 同じ Windows マシンの別 terminal | tracked context と既存 ignored package | 下記 branch を pull 後、port `8071` を確認して review page を開く | candidate 01 / 02 の自由記述 human review |
-| 別ホスト / fresh clone | tracked code、tests、docs、hash/readback contract | `episodes/` は remote に無い。欠損を code failure とせず `review_blocked_missing_local_package` と報告する | private transport または再生成方針の確認。payload を Git に追加しない |
-
-実装 baseline は `9ab8445afa247d07b46ef031cdc30f3fbbafafdd`。handoff
-文脈は下記 active branch の current remote tip を正とし、固定 commit を checkout
-するのではなく `pull --ff-only` で取得する。
-
-```powershell
-git fetch --prune origin
-git switch codex/out-08-real-unused-range-short-minibatch-v0
-git pull --ff-only
-git status --short --branch
-git rev-list --left-right --count 'HEAD...@{u}'
-git ls-files episodes
-```
-
-その後は `docs/RUNTIME_STATE.md`、この handoff、
-`docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` の順に読み、
-localhost page を開く。server が止まっている場合だけ `review_open_command`
-を使う。`artifacts/ACTIVE_REBUILD.json` は parked OUT-07 predecessor の
-rebuild contract であって、OUT-08 の active readback ではない。
-
-別 terminal が最初に確認する expected state は、upstream `0 0`、worktree clean、
-tracked `episodes/` 0、`cut009_usage=fully_excluded_no_source_time_overlap`、
-candidate 02 SHA-256
-`47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`。
-これと異なる場合は human review に進まず、差分を報告する。
-
-意図的に触れていないのは、ignored `episodes/` の追跡化、OUT-07 の追加調整、
-caption/cut authority の変更、thumbnail 選定、rights/public/production/
-publishing gate である。
+別terminalでは `git switch main`、`git pull --ff-only origin main` の後、
+`docs/RUNTIME_STATE.md` とこのhandoffを読む。main HEADは文書へ自己参照固定せず、
+再開時の `origin/main` を解決する。

@@ -8,6 +8,33 @@ last_touched: 2026-07-15
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-17 — OUT-08 exact二本をaccepted_internalとして閉じる
+
+Web Supervisorが、`cut_009`を完全除外した修復後exact candidate 01 / 02への
+ユーザー回答「両方問題ありません」を受領済みであることを正本へ統合した。
+
+- batch: `accepted_all_internal`
+- candidate 01 / 02: `accepted_internal`
+- accepted IDs: both
+- winner: none
+- `human_review_pending=false`
+- `acceptance_granted=true`
+
+対象identityはcandidate 01 SHA
+`f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`、candidate 02 SHA
+`47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`。
+candidate 02 max source end `135.219`はreject interval `135.219–144.000`と非交差で、
+`cut_009=reject`を維持する。`sub_067` / `sub_068`はこのexact render内だけで受入済み。
+
+正本lineageはsource tip `2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2`。
+recovery tip `d1f44d17e9747419f307706cad802aefdd012efd`は
+`PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF`としてremote保持し、mainへ統合しない。
+package欠落、server停止、private transfer未実行はclosure blockerではない。
+
+rights、production render、production subtitle design、thumbnail、public/publishing、
+upload/OAuth/visibility/made-for-kidsは閉じたまま。次のdata-only successorは
+`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`で、このdecisionは実装承認を含まない。
+
 ## 2026-07-15 — OUT-08 の cut_009 source-time exception を廃止
 
 supervisor correction により、`cut_009` が final decision `reject` のままであることと、

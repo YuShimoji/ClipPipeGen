@@ -31,7 +31,7 @@ opened by the root launcher.
 | scan_readback | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_scan_readback.json` |
 | candidate_plan | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_plan.json` |
 | batch_manifest | `episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json`; all 16 non-manifest package payloads byte-hashed; self-integrity `22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4`. |
-| state | `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`; contract repair `OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY`; target `2`, minimum `1`, actual `2`; human review pending. |
+| state | `OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN`; contract repair `OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY`; target `2`, minimum `1`, actual `2`; batch `accepted_all_internal`; both candidates `accepted_internal`; winner none. |
 | source_inputs | YouTube ID `7J5aS_pcBj4`; source video SHA-256 `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`; source audio SHA-256 `46e4bc9e26d52ed8f83b0b4088ddcd6ddac5a873fa1bb4a440c209834f026671`; official caption SHA-256 `3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919`; current edit/cut authority read without mutation. |
 | candidate_01 | `cut_004` `50.868–60.277` + `cut_005` `60.277–79.163`; semantic `28.295s`, media `28.266667s`, 17 subtitles; MP4 SHA-256 `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`. |
 | candidate_02 | `cut_006` tail `81.298–98.315` + `cut_007` `98.315–116.467` + `cut_008` `116.934–135.219`; semantic `53.454s`, media `53.466667s`, 54 subtitles; MP4 SHA-256 `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`. |
@@ -41,13 +41,18 @@ opened by the root launcher.
 | preview_url | `http://127.0.0.1:8071/index.html`; last verified on port `8071` through the exact `src.cli.serve_review` route with page HTTP `200` and MP4 Range `206`. The listener PID is intentionally not durable state. |
 | media_validation | Both H.264/AAC 1080x1920 30fps yuv420p faststart; full decode passed; no black interval >=0.5s; no silence interval >=1.5s at -50dB. |
 | browser_validation | Both current videos reached `readyState=4` with media error `null`; desktop/mobile horizontal overflow was absent and console was clean. The repaired package returned HTTP `200` and Range `206`; native-control direct seek/currentTime advance was not observed reliably. |
-| review_status | Final media/manifest/access evidence is ready; direct playback/seek and whole-candidate tempo/boundary/subtitle/audio acceptance remain human review. Navigation images do not open a thumbnail decision. |
-| next_action | Ask only: 追加Shorts候補ごとに、一本の編集単位として成立するか、テンポ・境界・字幕・音声に違和感があれば自由記述してください。 |
+| review_status | User reply 「両方問題ありません」 accepted both exact candidates for internal use across whole-edit coherence, tempo, boundaries, subtitle readability, and A/V continuity. Missing local package or server does not revoke acceptance. Navigation images do not open a thumbnail decision. |
+| optional_recovery_proof | Remote branch `codex/out-08-private-review-package-recovery-v0` at `d1f44d17e9747419f307706cad802aefdd012efd` is parked optional noncanonical infra proof and is not merged into the source lineage or main. |
+| next_action | Treat OUT-08 as closed. Keep `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY` as data-only successor until a later implementation approval. |
 
 Boundary flags remain false or pending:
 
 - `internal_review_only=true`
-- `human_review_pending=true`
+- `human_review_pending=false`
+- `acceptance_granted=true`
+- `batch_acceptance=accepted_all_internal`
+- `candidate_01_acceptance=accepted_internal`
+- `candidate_02_acceptance=accepted_internal`
 - `authority_mutated=false`
 - `cut009_final_cut_decision=reject`
 - `navigation_frames_are_thumbnails=false`

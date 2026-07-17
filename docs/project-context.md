@@ -3,89 +3,51 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-15
+last_touched: 2026-07-17
 current_slice: OUT-08
-active_branch: codex/out-08-real-unused-range-short-minibatch-v0
-verified_remote_base_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
+active_branch: main
+source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
 upstream_parity: 0 0
-health: OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY
+health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
 contract_repair_status: OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY
 ---
 
 # Project Context - ClipPipeGen
 
-この文書は、別端末・別セッションで最初に読むための短いプロジェクト文脈である。
-現在の状態値と詳細な証跡は `docs/RUNTIME_STATE.md`、現在の停止点は
-`docs/CURRENT_HANDOFF.md`、OUT-08 のレビュー契約は
-`docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` を正本とする。
+## 現在地
 
-## 軸・レーン・スライス
+ClipPipeGenは、real source authorityからinternal review evidenceを作り、rights、
+production、public/publishingの判断と混同せずに段階化する。現在の正本は
+`docs/RUNTIME_STATE.md`、再開点は`docs/CURRENT_HANDOFF.md`である。
 
-- 軸: real source authority からの internal review evidence を、rights / production /
-  publishing の判断と混同せずに積み上げる。
-- レーン: Shared infra / output layer。ClipPipeGen のみを扱い、NLMYTGen は CLI
-  subprocess 境界の外へ持ち込まない。
-- 現在のスライス: `OUT-08 real unused-range vertical Shorts mini-batch`。
-- 状態: target 2 / minimum 1 に対して candidate 01 と 02 の 2 本を生成済み、
-  人間レビュー待ち。`production_candidate=false`、rights は `pending`。
+OUT-08では未使用実素材から二本のvertical Shortsを生成し、`cut_009` reject intervalを
+完全除外した修復後exact bytesについて、ユーザー回答「両方問題ありません」を受領した。
+batchは`accepted_all_internal`、candidate 01 / 02はともに`accepted_internal`、winnerは
+none。OUT-08はaccepted-internal closureとしてmainへ着地する。
 
-## いま成立していること
+| candidate | media duration | subtitles | SHA-256 |
+|---|---:|---:|---|
+| `candidate_01` | `28.266667s` | 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` |
+| `candidate_02` | `53.466667s` | 54 | `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` |
 
-artifact `clip-out08-real-unused-range-short-minibatch-v0-001` は、ignored な同一端末
-レビュー package に保存されている。candidate 01 は `cut_004 -> cut_005` の
-28.266667 秒、candidate 02 は `cut_006` tail、`cut_007`、`cut_008` だけからなる
-53.466667 秒である。`cut_009` は reject のまま、全 source range は reject interval
-`135.219–144.000` と非交差で、authority は変更していない。両候補は H.264/AAC
-1080x1920 30fps、full decode、
-black/silence bounded check、HTTP 200 / Range 206 を通過している。
+## 境界
 
-字幕の明確な語中分断には bounded repair を適用したが、`sub_067` の「特殊 / な」
-と `sub_068` の「ホロ / モワール」は review debt として残す。これは production
-typography acceptance ではない。browser の readyState / overflow / console 証跡は
-repair 前の確認を含み、最終 package の direct seek は自動観測できていないため、
-開始・境界・終端の自然さは人間レビューに残る。
+Planner007でpackageが欠けていることは再視聴不能を示すだけで、受入を失効させない。
+recovery branch `d1f44d1`は任意・非canonical infra proofとしてparkし、mainへ統合しない。
+rightsは`pending`。production render、production subtitle design、thumbnail、public/
+publishing、upload/OAuth/visibility/made-for-kidsは閉じたまま。
 
-2026-07-15 の contract repair では、source-time overlap validator を authority ID、
-label、dependent flag より先に適用し、candidate 01 を再renderせず SHA-256
-`f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a`
-のまま保持した。candidate 02 は semantic `53.454s`、54 subtitles、SHA-256
-`47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b`。
-targeted tests 8、changed-scope Ruff、manifest、ffprobe/full decode、browser
-desktop/mobile check が pass した。server は exact route / port `8071` で page
-HTTP `200` と MP4 Range `206` を確認済みで、listener PID は可変値として正本化しない。current state は
-人間判断待ちである。実装 baseline は remote commit `9ab8445` まで反映済み。
+`sub_067` / `sub_068`はこのexact render内で受入済みだが、全動画共通ルールではない。
+OUT-07は`PARK_PROVISIONAL_USABLE` predecessorのままで、3〜5本のreal Shortsが揃うまで
+thumbnail explorationを再開しない。
 
-## 再開契約
+## 次の製品軸
 
-新しい端末では、まず次を実行する。
+data-only successorは`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`。異なるsourceまたは
+episodeから、既存Shorts pipelineを大規模に書き換えず、最低1本の12〜60秒・9:16・
+reviewable candidateを生成できることを将来のacceptance signalとする。現時点では
+proposalであり、実装承認ではない。
 
-```powershell
-git fetch --prune origin
-git switch codex/out-08-real-unused-range-short-minibatch-v0
-git pull --ff-only
-git status --short --branch
-git rev-list --left-right --count "HEAD...@{u}"
-git ls-files episodes
-```
-
-その後、`README.md` → `docs/RUNTIME_STATE.md` → `docs/INVARIANTS.md` →
-`docs/AUTOMATION_BOUNDARY.md` → `docs/CURRENT_HANDOFF.md` の順で読む。ローカル
-package が存在する端末では、次でレビューを再開する。
-
-```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
-```
-
-`episodes/` は Git 管理外なので、別ホストには動画・字幕・manifest は自動では移ら
-ない。別ホストでそれらが無いことは remote code failure ではなく、同一端末ローカル
-証拠の不在である。その場合は `review_blocked_missing_local_package` として報告し、
-private transport の承認なしに payload を Git へ追加しない。再生成が必要なら、先に
-OUT-08 build contract と source hash、artifact identity の扱いを確認する。
-
-## 人間判断と閉じた境界
-
-次の入力は candidate ごとの自由記述だけでよい。一本の編集単位として成立するか、
-テンポ・境界・字幕・音声の違和感を記録する。人間判断が返るまで、rights、production
-render、production subtitle design、public/publishing、upload、thumbnail acceptance
-は開かない。OUT-07 は `PARK_PROVISIONAL_USABLE` の parked predecessor であり、
-real Shorts が 3–5 本に達するまで追加 thumbnail iteration を再開しない。
+再開時は`git switch main`、`git pull --ff-only origin main`の後、RuntimeとCurrent
+Handoffを読む。NLMYTGenのsourceを直接import・copyせず、必要な再利用はCLI subprocess
+境界だけに保つ。
