@@ -48,6 +48,17 @@ episodeから、既存Shorts pipelineを大規模に書き換えず、最低1本
 reviewable candidateを生成できることを将来のacceptance signalとする。現時点では
 proposalであり、実装承認ではない。
 
+その先の完成像は、単一episodeで成功したbuilderを複数sourceへ一般化し、3〜5本の
+real Shorts portfolioで字幕・境界・thumbnailの再現性を比較した後、production render、
+rights/material-use、thumbnail、private/unlisted publishingをそれぞれ独立した人間gateで
+開くこと。最終的には、承認済みsourceからtraceableなepisode packとreviewable outputを
+作り、rollback可能なreceiptを伴って公開判断へ渡せるproduction-assist loopを目指す。
+
+2026-07-17のsync auditでは`main`=`origin/main`=`b3cec5d`、tracked worktree clean、
+同一マシンのOUT-08 exact package hash一致、Python 521 testsとGUI smokes passを確認した。
+現状・不足・段階目標の詳細は
+[SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md)に集約する。
+
 再開時は`git switch main`、`git pull --ff-only origin main`の後、RuntimeとCurrent
 Handoffを読む。NLMYTGenのsourceを直接import・copyせず、必要な再利用はCLI subprocess
 境界だけに保つ。

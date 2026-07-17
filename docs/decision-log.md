@@ -8,6 +8,22 @@ last_touched: 2026-07-15
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-17 — sync auditはOUT-08 closureを維持し、OUT-09をproposalのままにする
+
+`main`を`origin/main`の`b3cec5d`までfast-forwardし、parity `0 0`、tracked
+worktree cleanを確認した。同一マシンのOUT-08二本はaccepted SHA-256と一致し、
+R3 operator surfaceも`review_ready=true`だった。一方、bare `uvx pytest -q`は
+Pillow未注入でcollection停止するため、full validation contractは
+`uvx --with pillow pytest -q`とし、521 tests passを確認した。
+
+この監査は新しいproduct acceptanceを開かない。OUT-08はclosed、rights/
+production/thumbnail/public/publishingはclosedまたはpending、OUT-09は
+`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY` proposal-onlyのままとする。修復前の
+review待ち説明と`sub_102`例外を残していた`docs/index.md`はcurrent closureへ合わせる。
+長期目標は監修提案としてidea ledger/reportへ置き、feature statusや実装承認へは
+自動昇格させない。根拠: `docs/RUNTIME_STATE.md` current capsule + live Git/package/
+test readback。
+
 ## 2026-07-17 — OUT-08 exact二本をaccepted_internalとして閉じる
 
 Web Supervisorが、`cut_009`を完全除外した修復後exact candidate 01 / 02への

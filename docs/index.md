@@ -13,20 +13,19 @@ around workflow decisions, not only around file names.
 
 ## Current State
 
-Current focus is `OUT-08` on
-`codex/out-08-real-unused-range-short-minibatch-v0`。artifact
-`clip-out08-real-unused-range-short-minibatch-v0-001` は、既存 Shorts 未使用の
-実素材範囲から target 2 / minimum 1 に対して二本を生成し、一つの direct-play
-page で human review できる状態である。OUT-07 は main commit
-`4fad107ca5ecb9c86de2df73f08dedfbe14cf9c9` 上の
-`PARK_PROVISIONAL_USABLE` predecessor として閉じており、追加 thumbnail
-iteration は再開しない。
+Current focus is the accepted OUT-08 closure on `main`. Artifact
+`clip-out08-real-unused-range-short-minibatch-v0-001` produced two candidates
+from previously unused real-source ranges. The exact candidates were both
+accepted for internal use, with no winner, and `cut_009` remains fully excluded.
+OUT-07 stays `PARK_PROVISIONAL_USABLE`; thumbnail iteration does not reopen
+until 3-5 real Shorts provide a comparison set.
 
 `RUNTIME_STATE.md` is the current-state source for the generated dashboard.
-OUT-08 の次の判断は、各候補が一本の編集単位として成立するかと、テンポ・
-境界・字幕・音声の違和感である。navigation frame は thumbnail acceptance
-ではない。CPD-12 cockpit は upstream planning artifact のままで、active resume
-focus ではない。
+There is no pending OUT-08 human review. The next product axis is the unapproved
+data-only proposal `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`: prove that the
+existing Shorts path can produce at least one reviewable 12-60 second 9:16
+candidate from a different source or episode without a large rewrite. Rights,
+production, thumbnail, public, and publishing gates remain separate and closed.
 
 Start here:
 
@@ -66,7 +65,7 @@ Normal order:
 | Command | Opens | Use when |
 |---|---|---|
 | `.\open-dashboard.ps1` | `docs/dashboard/index.html` | Default start for Runtime-driven current focus, feature progress, active artifacts, and doc-health findings. |
-| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071` | active OUT-08 two-video localhost review | Review each unused-range vertical candidate as a whole editing unit. The navigation frames are navigation only, not thumbnail candidates. |
+| `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071` | optional same-machine OUT-08 accepted evidence | Reopen the exact accepted candidates only for evidence readback. No new OUT-08 decision is pending, and the navigation frames are not thumbnail candidates. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_native_shorts_cover_direction_proxy\open_preview.ps1 -Port 8071` | historical Thank OUT-07 semantic proxy | Historical evidence only. It is not the current human entrypoint, a selected thumbnail, or a reason to resume OUT-07 iteration. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out07_internal_operator_delivery_pack\open_delivery.ps1 -Serve` | ignored OUT-07 predecessor operator pack | Reopen the port-8070 metadata/video provenance pack only when predecessor evidence is needed; its rejected 16:9 directions are not current candidates. |
 | `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out06_complete_narrative_short_delivery_candidate\open_preview.ps1 -Serve` | ignored OUT-06 repaired complete narrative short | Open the seekable localhost review route for the repaired 38.633333-second `cut_001 -> cut_002 -> cut_003` internal short. |
@@ -88,14 +87,15 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Next
 
-OUT-08 has two real unused-range vertical candidates and direct video evidence.
-Review each candidate as one editing unit and report any tempo, boundary,
-subtitle, or audio discomfort. `cut_009` remains rejected; only the explicitly
-dependent `sub_102` payoff is present in candidate 02. OUT-07 remains parked and
-thumbnail exploration may be revisited only after 3–5 real Shorts exist,
-without turning the reference corpus into canonical design rules. Do not open
-title/description/tags, production/public use, thumbnail upload, metadata
-publication, visibility, made-for-kids, publishing, upload, or rights approval.
+OUT-08 is closed with both exact candidates accepted internally and `cut_009`
+fully excluded. Do not ask for another OUT-08 review or restore the removed
+`sub_102` exception. The recommended next decision is whether to approve
+`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY` as the next narrow implementation
+slice. OUT-07 remains parked and thumbnail exploration may be revisited only
+after 3-5 real Shorts exist, without turning the reference corpus into canonical
+design rules. Do not infer title/description/tags, production/public use,
+thumbnail upload, metadata publication, visibility, made-for-kids, publishing,
+upload, or rights approval from the internal acceptance.
 Use the dashboard to return to tracked project context. A good docs update should make
 the first screen of a major doc answer:
 

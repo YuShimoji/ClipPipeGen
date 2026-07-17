@@ -14,6 +14,9 @@ verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
 source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
 closure_branch: codex/out-08-accepted-closure-v0
 remote_resume_contract: pull_origin_main_then_read_this_file
+sync_audit_head: b3cec5d45425fe4ea1bcb447a93c15a4c071410d
+sync_audit_status: main_origin_parity_clean_tracked
+live_workspace_audit: exact_out08_package_present_hashes_match
 current_title: OUT-08 accepted internal canonical closure
 human_entrypoint: null
 portable_entrypoint: null
@@ -49,7 +52,7 @@ canonical_main_head: resolve_origin_main_at_resume
 canonical_main_baseline: OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
 source_of_truth: false
 owner_lane: output_video_acceptance_integration
-related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/decision-log.md, docs/dashboard/project-status.json
+related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/decision-log.md, docs/dashboard/project-status.json
 durable_context: docs/project-context.md, docs/idea-ledger.md
 upstream_parity: 0 0
 ---
@@ -63,6 +66,25 @@ upstream_parity: 0 0
 `accepted_all_internal`、両 candidate は `accepted_internal`、winner は設けない。
 一本の編集単位、テンポ、開始・境界・終端、字幕可読性、音声・映像連続性が
 この exact render の internal acceptance 対象である。
+
+## 今回の同期・再開確認
+
+2026-07-17 JST に `origin` を prune fetch し、feature branch が
+`origin/main` の直系1コミット手前であることを確認した後、`main` を
+`b3cec5d45425fe4ea1bcb447a93c15a4c071410d` へ fast-forward した。
+`HEAD...origin/main` は `0 0`、追跡済みworktreeはclean、tracked `episodes/`は0件。
+
+このworkspaceにはignored OUT-08 packageがあり、二本のMP4 SHA-256は下表の
+accepted identityと一致した。`status-episode`はR3 operator surfaceを
+`review_ready=true`、rightsを`pending`、`production_candidate=false`として返した。
+package内`batch_readback.json`のstateは生成時点の`REVIEW_READY`のままだが、後から
+受領した人間判断はtracked docsでcandidate identityへ固定済みであり、矛盾ではない。
+
+検証は`uvx --with pillow pytest -q`で`521 passed`、`npm run smoke`と
+`npm run smoke:electron`でともにOK。bare `uvx pytest -q`はPillow未注入だと画像系
+2 test moduleのcollectionで止まるため、次terminalもPillow明示コマンドを使う。
+詳細な監修報告と長期目標案は
+[SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md)を読む。
 
 | candidate | media duration | subtitles | SHA-256 | state |
 |---|---:|---:|---|---|

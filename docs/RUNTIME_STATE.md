@@ -17,6 +17,11 @@ source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
 closure_branch: codex/out-08-accepted-closure-v0
 remote_resume_contract: pull_origin_main_then_read_current_handoff
 upstream_parity: 0 0
+sync_audit_head: b3cec5d45425fe4ea1bcb447a93c15a4c071410d
+sync_audit_status: main_origin_parity_clean_tracked
+sync_audit_live_out08_package: present_exact_candidate_hashes_match
+sync_audit_live_r3_reviewability: review_ready
+sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
 current_title: OUT-08 accepted internal canonical closure
 human_entrypoint: null
 portable_entrypoint: null
@@ -220,6 +225,29 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-17 Sync and Development Readiness
+
+`main` was fast-forwarded to `b3cec5d45425fe4ea1bcb447a93c15a4c071410d`
+(`docs(out08): record accepted internal closure`) and matched `origin/main` at
+`0 0`. The tracked worktree was clean before this handoff refresh and
+`git ls-files episodes` returned zero paths.
+
+This Thank workspace contains the ignored OUT-08 package. The current
+`candidate_01.mp4` / `candidate_02.mp4` hashes match the accepted identities
+recorded below, and the batch manifest self-integrity remains
+`22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4`.
+The generated package readback still says `REVIEW_READY` because it predates the
+tracked human-decision receipt; the tracked Runtime, Current Handoff, decision
+log, and artifact registry remain the acceptance authority.
+
+`status-episode` also returned the older R3 operator surface as
+`review_ready=true`, with rights `pending` and `production_candidate=false`.
+That live result is useful evidence availability, not a reason to reopen the
+closed OUT-08 decision or any production/public gate. Full validation requires
+Pillow explicitly: `uvx --with pillow pytest -q` passed 521 tests; both GUI
+smokes passed. The detailed supervisory readback and proposed long-range goal
+ladder are in [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md).
 
 ## Accepted OUT-08 Real Unused-Range Vertical Shorts Mini-Batch
 
