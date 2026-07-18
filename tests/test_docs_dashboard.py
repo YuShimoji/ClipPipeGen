@@ -1623,24 +1623,24 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "out09_clear_short_cue_caption_presentation_review_ready"
+        "out09_stable_manual_safe_review_ready"
     )
     assert status["current_focus"]["review_status"] == (
-        "OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY"
+        "OUT09_STABLE_MANUAL_SAFE_REVIEW_READY"
     )
     assert status["current_focus"]["decision_required"] == (
-        "one_bounded_out09_caption_presentation_question"
+        "two_bounded_out09_safe_review_questions"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "OUT09_ONE_CAPTION_PRESENTATION_QUESTION"
+        "OUT09_TWO_SAFE_REVIEW_QUESTIONS"
     )
     assert status["current_focus"]["human_entrypoint"] == (
         "http://127.0.0.1:8072/index.html"
     )
     assert status["current_focus"]["review_open_command"] == (
-        "powershell -ExecutionPolicy Bypass -File "
+        "powershell -NoProfile -ExecutionPolicy Bypass -File "
         "episodes\\holoen01_kronii_wisdomteeth_out09_20260718\\review\\"
-        "out09_second_source_short_repeatability\\open_preview.ps1 -Port 8072"
+        "out09_second_source_short_repeatability\\open_preview.ps1 -Serve -Port 8072"
     )
     assert status["current_focus"]["machine_readback"] == (
         "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/"
@@ -1657,7 +1657,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "running_localhost_8072_at_last_verification"
+        "operator_foreground_start_required_server_stopped_cleanly_after_validation"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"

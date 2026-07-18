@@ -3,36 +3,36 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY
-progress_pct: 93
-last_touched: 2026-07-18
-state_revision: out09-clear-short-cue-caption-presentation-review-ready-2026-07-18
-contract_repair_status: OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REPAIR_PASSED
+health: OUT09_STABLE_MANUAL_SAFE_REVIEW_READY
+progress_pct: 94
+last_touched: 2026-07-19
+state_revision: out09-stable-manual-safe-review-ready-2026-07-19
+contract_repair_status: OUT09_REVIEW_ACCESS_STABILITY_AND_PLAYBACK_SAFETY_REPAIR_PASSED
 current_slice: OUT-09
 phase: human_review_pending
-canonical_status: out09_clear_short_cue_caption_presentation_review_ready
+canonical_status: out09_stable_manual_safe_review_ready
 active_branch: codex/out-09-second-source-short-repeatability-v0
-verified_implementation_head: branch_head_after_caption_presentation_push
-source_branch_tip: 754a15856b4d397b89b560f4a73535fddd8f496c
+verified_implementation_head: branch_head_after_access_safety_push
+source_branch_tip: 1ad83c3b37e1867557eef4069393efe13901196b
 closure_branch: null
 remote_resume_contract: fetch_then_switch_out09_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: branch_head_after_caption_presentation_push
-sync_audit_status: out09_caption_presentation_branch_push_at_closeout
+sync_audit_head: branch_head_after_access_safety_push
+sync_audit_status: out09_access_safety_branch_push_at_closeout
 sync_audit_live_out08_package: historical_accepted_package_untouched
-sync_audit_live_out09_package: clear_short_cue_package_present_manifest_and_video_hashes_match
+sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-09 clear short-cue caption presentation human review
+current_title: OUT-09 stable manual-safe review access
 human_entrypoint: http://127.0.0.1:8072/index.html
 portable_entrypoint: null
-review_open_command: powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
-review_server_restart_command: uvx python -m src.cli.serve_review --root episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability --port 8072
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Serve -Port 8072
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\serve_preview.ps1 -Port 8072
 machine_readback: episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: one_bounded_out09_caption_presentation_question
-review_status: OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY
-review_scope: 修復後exact candidate_01について、字幕が短い単位で自然に切り替わり、画面を邪魔せず読めるか、最後の終わり方を含めほかに明確な違和感があるかの一問だけを判断する。
+decision_required: two_bounded_out09_safe_review_questions
+review_status: OUT09_STABLE_MANUAL_SAFE_REVIEW_READY
+review_scope: exact candidate_01について、初期状態で動画・音が勝手に始まらずserverが維持されるかを確認し、その後に手動再生・音声解除して字幕の切替・可読性・終わり方の明確な違和感だけを判断する。
 reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
@@ -69,8 +69,8 @@ accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending_one_caption_presentation_question
-user_feedback_overall: bounded_presentation_repair_required
+human_review_decision: pending_two_safe_review_questions
+user_feedback_overall: unstable_server_and_audible_autoplay_risk_required_access_safety_repair
 content_selection_status: not_rejected_not_yet_accepted
 subtitle_presentation_timing_status: clear_short_cue_presentation_repaired_pending_review
 endpoint_status: unchanged_not_reopened
@@ -78,15 +78,15 @@ reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
 batch_acceptance: null
-candidate_01_acceptance: pending_caption_presentation_exact_sha_human_review
+candidate_01_acceptance: pending_safe_review_exact_sha_human_review
 candidate_02_acceptance: null
 accepted_candidate_ids: []
 winner: null
 subtitle_debt_acceptance_scope: prior_native_caption_legibility_blur_duplication_and_frosted_canvas_repaired_new_sha_pending_human_review
 cover_review_status: null
-review_server_status: running_localhost_8072_at_last_verification
-next_review_due: OUT09_ONE_CAPTION_PRESENTATION_QUESTION
-next_action: 修復後candidate_01を開き、字幕が短い単位で自然に切り替わり、画面を邪魔せず読めるか、最後の終わり方を含めほかに明確な違和感があるかの一問だけを回答する。
+review_server_status: operator_foreground_start_required_server_stopped_cleanly_after_validation
+next_review_due: OUT09_TWO_SAFE_REVIEW_QUESTIONS
+next_action: foreground serverを維持したclean URLで、初期停止・無音とserver継続を確認し、次に手動再生・音声解除後の字幕切替・可読性・終わり方の明確な違和感だけを回答する。
 active_artifact: clip-out09-second-source-short-repeatability-v0-001
 current_review_component: second_source_candidate_01
 target_candidate_count: 1
@@ -111,7 +111,7 @@ source_video_resolution: 640x360
 source_caption_provider: youtube_subtitles
 source_caption_review_status: needs_review
 candidate_plan_sha256: 569ba9d193348d76ee368dde32ebd7c00c485a03792b4728562efec452b00c7e
-candidate_manifest_self_integrity: fec262226982bab5f650b954efb121f646d19d054896cf93a0e1098ccaba1aa7
+candidate_manifest_self_integrity: 50ff14e5ee9ffae0ab1cb31f33a584c346026d7674c360546302e10de24e62ff
 render_execution_count: 1
 corrective_pass_count: 1
 additional_autonomous_repair_count: 0
@@ -128,7 +128,7 @@ additional_blur_or_frosted_caption_surface: false
 endpoint_source_seconds: 64.480
 endpoint_last_caption_seconds: 64.360
 endpoint_last_speech_seconds: 64.362812
-quality_debt: source_resolution_640x360_and_human_caption_presentation_acceptance_pending
+quality_debt: source_resolution_640x360_and_human_safe_review_acceptance_pending
 known_unrelated_test_failure: tests/test_vertical_short_candidate.py::test_out06_reviewed_japanese_break_hints_are_measured_and_semantic
 known_unrelated_test_failure_2: tests/test_complete_narrative_short.py::test_out06_reviewed_wraps_are_repaired_in_package_readback
 known_unrelated_test_failure_scope: unchanged_OUT06_reviewed_wrap_expectations_two_tests_deselected
@@ -141,7 +141,7 @@ authority_mutated: false
 media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed_duration_33_333008
 blackdetect_readback: event_0_at_d0_5_pix_th0_10
 silencedetect_readback: event_0_at_minus50dB_d1_0
-browser_readback: readyState4_error_null_desktop_mobile_no_horizontal_overflow_console_clean_http200_range206_play_pause_generated_short_cues_legible_native_caption_and_blur_glyphs_absent
+browser_readback: clean_url_paused_muted_currentTime0_default_and_mobile_no_overflow_manual_play_advanced_close_reopen_reset_qa_exact_route_muted_then_paused_console_clean_http200_range206
 http_range_readback: 206_partial_content_passed
 current_baseline_acceptance: human_review_pending
 accepted_baseline_sha256: null
@@ -264,6 +264,41 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-19 OUT-09 Stable Manual-Safe Review Ready
+
+人間が観測したlocalhost serverの短命化と大音量自動再生リスクを、同じexact candidateの
+review access / presentation safety defectとして修復した。MP4/ASS/SRT、source
+`31.160–64.480s`、semantic `33.320s`、27 cue、endpoint `64.480s`、codec/durationは
+不変で、媒体render/remux/transcodeは行っていない。
+
+| 対象 | 現在値 | 意味 |
+|---|---|---|
+| state | `OUT09_STABLE_MANUAL_SAFE_REVIEW_READY` | 技術アクセスは再検証済み、human acceptanceはpending |
+| exact MP4 | `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50` | access修復前後で同一 |
+| manifest | self `50ff14e5ee9ffae0ab1cb31f33a584c346026d7674c360546302e10de24e62ff` | 10 package file hashと媒体identityを再検証 |
+| human route | clean `http://127.0.0.1:8072/index.html` | autoplayなし、初期paused/muted、visible note、音量上限25% |
+| server | `serve_preview.ps1 -Port 8072`を人間が見えるforeground PowerShellで維持 | `127.0.0.1`固定、`Ctrl+C`で停止、worker retentionに依存しない |
+| port conflict | 正しいpage/artifact/SHA/Rangeだけreuse | 未知ownerをkillせず、alternate portも選ばない |
+| QA route | exact `?qa-playback=1`のみ | muted/volume 0で短時間再生しpause。人間文書には渡さない |
+| validation | page 200 / Range 206、54秒超3 probe、browser close/reopen、double-start reuse、unknown owner reject、Ctrl+C cleanup | 検証終了後serverは停止、8072/8074 listener 0 |
+
+正本起動command:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\serve_preview.ps1 -Port 8072
+```
+
+便宜routeは同じpathの`open_preview.ps1 -Serve -Port 8072`。`-Serve`なしではhealthy
+serverがある場合だけclean URLを開き、なければ正本commandを表示して終了する。
+
+人間へ渡す質問は次の二つだけである。
+
+1. ページを開いた直後に動画や音が勝手に始まらず、レビュー中にserverが維持されるか。
+2. 手動で再生・音声解除した後、字幕の切替・可読性・終わり方に明確な違和感があるか。
+
+この二回答をexact MP4 SHAへbindするまではacceptanceを推論しない。rights、production、
+human transcript、thumbnail、public/publishing、cross-machine portabilityも別gateのままである。
 
 ## 2026-07-18 OUT-09 Clear Short-Cue Caption Presentation Review Ready
 

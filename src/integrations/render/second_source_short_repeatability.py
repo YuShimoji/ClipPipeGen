@@ -49,9 +49,12 @@ from src.integrations.render.vertical_short_candidate import (
 ARTIFACT_ID = "clip-out09-second-source-short-repeatability-v0-001"
 SCHEMA_VERSION = "clippipegen.out09.second_source_short_repeatability.v0"
 PLAN_SCHEMA_VERSION = "clippipegen.out09.candidate_plan_input.v0"
-STATE = "OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY"
+STATE = "OUT09_STABLE_MANUAL_SAFE_REVIEW_READY"
 OUTPUT_PREFIX = "out09_"
 OUT08_PROVIDER_ID = "7J5aS_pcBj4"
+CURRENT_MP4_SHA256 = (
+    "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
+)
 INITIAL_PREDECESSOR_MP4_SHA256 = (
     "300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9"
 )
@@ -64,6 +67,13 @@ REPAIR_REVIEW_QUESTION = (
     "字幕が短い単位で自然に切り替わり、画面を邪魔せず読めるか。"
     "最後の終わり方を含め、ほかに明確な違和感があれば教えてください。"
 )
+SAFE_REVIEW_QUESTIONS = (
+    "ページを開いた直後に動画や音が勝手に始まらず、レビュー中にserverが維持されるか。",
+    "手動で再生・音声解除した後、字幕の切替・可読性・終わり方に明確な違和感があるか。",
+)
+REVIEW_PORT = 8072
+REVIEW_HOST = "127.0.0.1"
+INITIAL_VOLUME_CEILING = 0.25
 MIN_DURATION_SECONDS = 12.0
 MAX_DURATION_SECONDS = 60.0
 TIME_TOLERANCE_SECONDS = 0.002
@@ -225,6 +235,12 @@ def build_second_source_short_repeatability(
             for item in presentation
         ]
         elapsed = round(time.monotonic() - started, 3)
+        video_sha256 = _sha256(video_path)
+        review_access = _review_access_contract(
+            output=output,
+            root=root,
+            video_sha256=video_sha256,
+        )
         readback = {
             "schema_version": SCHEMA_VERSION,
             "artifact_id": ARTIFACT_ID,
@@ -271,7 +287,7 @@ def build_second_source_short_repeatability(
             },
             "video": {
                 "package_relative_path": video_path.name,
-                "sha256": _sha256(video_path),
+                "sha256": video_sha256,
             },
             "render": {
                 "media": render_result["media"],
@@ -300,9 +316,13 @@ def build_second_source_short_repeatability(
                 "thumbnail_acceptance_claimed": False,
                 "extraction": navigation,
             },
-            "review_questions": list(plan["review_questions"]),
-            "review_entrypoint": _relative(output / "index.html", root),
-            "open_command": _powershell_command(output / "open_preview.ps1", root),
+            "review_questions": list(SAFE_REVIEW_QUESTIONS),
+            "review_entrypoint": review_access["clean_human_url"],
+            "open_command": review_access["convenience_open_command"],
+            "canonical_server_command": review_access[
+                "canonical_foreground_server_command"
+            ],
+            "review_access": review_access,
             "machine_readback": _relative(output / "candidate_readback.json", root),
             "candidate_manifest": _relative(output / "candidate_manifest.json", root),
             "candidate_plan": _relative(output / "candidate_plan.json", root),
@@ -317,7 +337,10 @@ def build_second_source_short_repeatability(
         _write_json(stage / "candidate_readback.json", readback)
         _write_text(stage / "index.html", _render_html(readback))
         _write_text(stage / "open_preview.ps1", _open_script())
-        _write_text(stage / "serve_preview.ps1", _serve_script())
+        _write_text(
+            stage / "serve_preview.ps1",
+            _serve_script(expected_video_sha256=readback["video"]["sha256"]),
+        )
 
         files = []
         for file_path in sorted(path for path in stage.iterdir() if path.is_file()):
@@ -347,6 +370,7 @@ def build_second_source_short_repeatability(
                 "additional_blur_or_frosted_caption_surface": False,
             },
             "composition_policy": normalized["composition_policy"],
+            "review_access": review_access,
             "files": files,
             "boundaries": normalized["boundaries"],
             "manifest_self_integrity": {"algorithm": "sha256", "sha256": None},
@@ -370,6 +394,174 @@ def build_second_source_short_repeatability(
         if stage.exists():
             _cleanup_internal_directory(stage, expected_parent=review_dir)
         raise
+
+
+def repair_second_source_review_access_package(
+    *,
+    output_dir: Path,
+    base_dir: Path | None = None,
+    expected_video_sha256: str = CURRENT_MP4_SHA256,
+) -> dict[str, Any]:
+    """Repair only OUT-09 HTML/scripts/readback while preserving media bytes."""
+
+    root = (base_dir or Path.cwd()).resolve()
+    output = _resolved(root, output_dir)
+    _require_directory(output, "OUT-09 review package")
+    episode = output.parent.parent
+    _validate_output_directory(episode, output)
+    readback_path = output / "candidate_readback.json"
+    manifest_path = output / "candidate_manifest.json"
+    video_path = output / "candidate_01.mp4"
+    for path, label in (
+        (readback_path, "candidate readback"),
+        (manifest_path, "candidate manifest"),
+        (video_path, "current MP4"),
+    ):
+        _require_file(path, label)
+
+    readback = _read_json(readback_path, "candidate readback")
+    manifest = _read_json(manifest_path, "candidate manifest")
+    if readback.get("artifact_id") != ARTIFACT_ID or manifest.get("artifact_id") != ARTIFACT_ID:
+        raise SecondSourceShortRepeatabilityError("OUT-09 artifact identity mismatch")
+    if manifest.get("manifest_self_integrity", {}).get(
+        "sha256"
+    ) != _canonical_manifest_self_hash(manifest):
+        raise SecondSourceShortRepeatabilityError(
+            "existing manifest self-integrity mismatch"
+        )
+    video_sha_before = _sha256(video_path)
+    if video_sha_before != expected_video_sha256:
+        raise SecondSourceShortRepeatabilityError(
+            "current MP4 SHA-256 changed; access repair refused"
+        )
+    if readback.get("video", {}).get("sha256") != video_sha_before:
+        raise SecondSourceShortRepeatabilityError("readback MP4 identity mismatch")
+    if manifest.get("candidate_video_sha256") != video_sha_before:
+        raise SecondSourceShortRepeatabilityError("manifest MP4 identity mismatch")
+    file_names: list[str] = []
+    for row in manifest.get("files", []):
+        name = str(row.get("package_relative_path") or "")
+        path = output / name
+        _require_file(path, f"manifest file {name}")
+        if _sha256(path) != str(row.get("sha256") or ""):
+            raise SecondSourceShortRepeatabilityError(
+                f"existing manifest file hash mismatch: {name}"
+            )
+        file_names.append(name)
+
+    required_access_files = {
+        "candidate_readback.json",
+        "index.html",
+        "open_preview.ps1",
+        "serve_preview.ps1",
+    }
+    if not required_access_files.issubset(file_names):
+        raise SecondSourceShortRepeatabilityError(
+            "manifest does not contain the required review access files"
+        )
+
+    access = _review_access_contract(
+        output=output,
+        root=root,
+        video_sha256=video_sha_before,
+    )
+    updated_readback = json.loads(json.dumps(readback))
+    updated_readback["state"] = STATE
+    updated_readback["review_questions"] = list(SAFE_REVIEW_QUESTIONS)
+    updated_readback["review_entrypoint"] = access["clean_human_url"]
+    updated_readback["open_command"] = access["convenience_open_command"]
+    updated_readback["canonical_server_command"] = access[
+        "canonical_foreground_server_command"
+    ]
+    updated_readback["review_access"] = access
+    updated_readback["access_repair"] = {
+        "kind": "stable_manual_safe_review_access_only",
+        "media_sha256_before": video_sha_before,
+        "media_sha256_after": video_sha_before,
+        "media_bytes_changed": False,
+        "updated_files": sorted(required_access_files),
+    }
+
+    stage = output / f".access-staging-{uuid.uuid4().hex}"
+    stage.mkdir()
+    try:
+        _write_json(stage / "candidate_readback.json", updated_readback)
+        _write_text(stage / "index.html", _render_html(updated_readback))
+        _write_text(stage / "open_preview.ps1", _open_script())
+        _write_text(
+            stage / "serve_preview.ps1",
+            _serve_script(expected_video_sha256=video_sha_before),
+        )
+        _validate_safe_review_assets(
+            html=(stage / "index.html").read_text(encoding="utf-8"),
+            open_script=(stage / "open_preview.ps1").read_text(encoding="utf-8"),
+            serve_script=(stage / "serve_preview.ps1").read_text(encoding="utf-8"),
+            expected_video_sha256=video_sha_before,
+        )
+
+        updated_manifest = json.loads(json.dumps(manifest))
+        updated_manifest["state"] = STATE
+        updated_manifest["review_access"] = access
+        updated_files = []
+        for name in sorted(file_names):
+            source = stage / name if name in required_access_files else output / name
+            updated_files.append(
+                {
+                    "package_relative_path": name,
+                    "sha256": _sha256(source),
+                    "byte_size": source.stat().st_size,
+                }
+            )
+        updated_manifest["files"] = updated_files
+        updated_manifest["manifest_self_integrity"] = {
+            "algorithm": "sha256",
+            "sha256": None,
+        }
+        updated_manifest["manifest_self_integrity"]["sha256"] = (
+            _canonical_manifest_self_hash(updated_manifest)
+        )
+        _write_json(stage / "candidate_manifest.json", updated_manifest)
+
+        if updated_manifest["candidate_video_sha256"] != video_sha_before:
+            raise SecondSourceShortRepeatabilityError(
+                "access repair attempted to change MP4 identity"
+            )
+        if updated_manifest["manifest_self_integrity"][
+            "sha256"
+        ] != _canonical_manifest_self_hash(updated_manifest):
+            raise SecondSourceShortRepeatabilityError(
+                "updated manifest self-integrity mismatch"
+            )
+        for name in sorted(required_access_files):
+            os.replace(stage / name, output / name)
+        os.replace(stage / "candidate_manifest.json", manifest_path)
+    finally:
+        if stage.exists():
+            _cleanup_internal_directory(stage, expected_parent=output)
+
+    video_sha_after = _sha256(video_path)
+    if video_sha_after != video_sha_before:
+        raise SecondSourceShortRepeatabilityError(
+            "current MP4 changed during access repair"
+        )
+    parsed_manifest = _read_json(manifest_path, "updated candidate manifest")
+    if parsed_manifest.get("manifest_self_integrity", {}).get(
+        "sha256"
+    ) != _canonical_manifest_self_hash(parsed_manifest):
+        raise SecondSourceShortRepeatabilityError(
+            "promoted manifest self-integrity mismatch"
+        )
+    return {
+        "artifact_id": ARTIFACT_ID,
+        "state": STATE,
+        "output_dir": output,
+        "video_sha256": video_sha_after,
+        "media_bytes_changed": False,
+        "review_access": access,
+        "manifest_self_integrity": parsed_manifest["manifest_self_integrity"][
+            "sha256"
+        ],
+    }
 
 
 def _load_authority(*, root: Path, episode: Path, plan: dict[str, Any]) -> dict[str, Any]:
@@ -1401,10 +1593,131 @@ def _validate_staged_bundle(
                 f"manifest file hash mismatch: {path.name}"
             )
     html = (stage / "index.html").read_text(encoding="utf-8")
-    if html.count("<video ") != 1 or html.count("data-review-question=") != 1:
+    if html.count("<video ") != 1 or html.count("data-review-question=") != len(
+        SAFE_REVIEW_QUESTIONS
+    ):
         raise SecondSourceShortRepeatabilityError(
-            "review page must contain one video and exactly one repair question"
+            "review page must contain one video and exactly two safe review questions"
         )
+    _validate_safe_review_assets(
+        html=html,
+        open_script=(stage / "open_preview.ps1").read_text(encoding="utf-8"),
+        serve_script=(stage / "serve_preview.ps1").read_text(encoding="utf-8"),
+        expected_video_sha256=str(readback["video"]["sha256"]),
+    )
+
+
+def _validate_safe_review_assets(
+    *,
+    html: str,
+    open_script: str,
+    serve_script: str,
+    expected_video_sha256: str,
+) -> None:
+    video_tag = re.search(r"<video\b[^>]*>", html)
+    if video_tag is None:
+        raise SecondSourceShortRepeatabilityError("safe review video is missing")
+    tag = video_tag.group(0)
+    if re.search(r"\bautoplay\b", tag, flags=re.IGNORECASE):
+        raise SecondSourceShortRepeatabilityError("human review video must not autoplay")
+    for attribute in ("controls", "playsinline", "muted"):
+        if re.search(rf"\b{attribute}\b", tag, flags=re.IGNORECASE) is None:
+            raise SecondSourceShortRepeatabilityError(
+                f"human review video is missing {attribute}"
+            )
+    if 'preload="metadata"' not in tag:
+        raise SecondSourceShortRepeatabilityError(
+            "human review video must preload metadata only"
+        )
+    required_html = (
+        expected_video_sha256,
+        ARTIFACT_ID,
+        'window.location.search === "?qa-playback=1"',
+        "video.defaultMuted = true",
+        "video.muted = true",
+        f"const maximumVolume = {INITIAL_VOLUME_CEILING:.2f}",
+        "初期状態は停止・ミュート",
+    )
+    if any(value not in html for value in required_html):
+        raise SecondSourceShortRepeatabilityError(
+            "human review playback safety contract is incomplete"
+        )
+    if html.count("video.play()") != 1 or "if (exactMutedQaRoute)" not in html:
+        raise SecondSourceShortRepeatabilityError(
+            "QA playback must be explicit and exact-query gated"
+        )
+    if "localStorage" in html or "sessionStorage" in html:
+        raise SecondSourceShortRepeatabilityError(
+            "review playback state must not be restored from browser storage"
+        )
+    if "qa-playback" in open_script or "Start-Process -FilePath $url" not in open_script:
+        raise SecondSourceShortRepeatabilityError(
+            "open helper must use only the clean human URL"
+        )
+    if "[switch]$Serve" not in open_script or "-ProbeOnly" not in open_script:
+        raise SecondSourceShortRepeatabilityError(
+            "open helper must separate probe and explicit server startup"
+        )
+    required_server = (
+        "127.0.0.1",
+        expected_video_sha256,
+        ARTIFACT_ID,
+        "$request.AddRange(0, 1023)",
+        "No process was stopped",
+        "Press Ctrl+C",
+    )
+    if any(value not in serve_script for value in required_server):
+        raise SecondSourceShortRepeatabilityError(
+            "foreground server safety contract is incomplete"
+        )
+    if "Stop-Process" in serve_script or "taskkill" in serve_script.lower():
+        raise SecondSourceShortRepeatabilityError(
+            "foreground server helper must not kill a port owner"
+        )
+
+
+def _review_access_contract(
+    *,
+    output: Path,
+    root: Path,
+    video_sha256: str = CURRENT_MP4_SHA256,
+) -> dict[str, Any]:
+    clean_url = f"http://{REVIEW_HOST}:{REVIEW_PORT}/index.html"
+    server = _powershell_script_command(
+        output / "serve_preview.ps1",
+        root,
+        arguments=f"-Port {REVIEW_PORT}",
+    )
+    opener = _powershell_script_command(
+        output / "open_preview.ps1",
+        root,
+        arguments=f"-Serve -Port {REVIEW_PORT}",
+    )
+    return {
+        "state": STATE,
+        "clean_human_url": clean_url,
+        "canonical_foreground_server_command": server,
+        "convenience_open_command": opener,
+        "server_bind": REVIEW_HOST,
+        "server_port": REVIEW_PORT,
+        "server_ownership": "operator_foreground_powershell_until_ctrl_c",
+        "server_window_must_remain_open": True,
+        "worker_process_retention_claimed": False,
+        "unknown_port_owner_killed": False,
+        "autoplay": False,
+        "initial_paused": True,
+        "initial_muted": True,
+        "initial_volume_maximum": INITIAL_VOLUME_CEILING,
+        "qa_route": {
+            "exact_query": "qa-playback=1",
+            "human_documentation_allowed": False,
+            "isolated_context_required": True,
+            "muted_or_zero_volume_required": True,
+            "pause_after_check": True,
+        },
+        "candidate_video_sha256": video_sha256,
+        "media_mutation_allowed": False,
+    }
 
 
 def _render_html(readback: dict[str, Any]) -> str:
@@ -1418,40 +1731,212 @@ def _render_html(readback: dict[str, Any]) -> str:
     arc = candidate["narrative_arc"]
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="clippipegen-artifact-id" content="{ARTIFACT_ID}"><meta name="clippipegen-video-sha256" content="{escape(readback['video']['sha256'])}">
 <title>OUT-09 second-source Short review</title><style>
 :root{{color-scheme:dark;font-family:"Yu Gothic UI","Noto Sans JP",sans-serif;background:#06101d;color:#eff7ff}}*{{box-sizing:border-box}}body{{margin:0;overflow-x:hidden}}main{{width:min(900px,100%);margin:auto;padding:22px;overflow-wrap:anywhere}}section,details{{margin-top:18px;padding:16px;border:1px solid #30445f;border-radius:14px;background:#0d1a2c}}video{{display:block;width:auto;height:min(76vh,820px);max-width:100%;aspect-ratio:9/16;margin:18px auto;background:#000}}code{{color:#9fe7ff}}.boundary{{color:#ffd166}}table{{width:100%;border-collapse:collapse}}th,td{{padding:8px;border-bottom:1px solid #30445f;text-align:left}}@media(max-width:620px){{main{{padding:14px}}video{{height:min(72vh,700px)}}}}
-</style></head><body><main><h1>OUT-09 second-source Short review</h1>
+</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback['video']['sha256'])}"><main><h1>OUT-09 second-source Short review</h1>
 <p><code>{escape(readback['source_identity']['provider_id'])}</code> / source {candidate['source_start_seconds']:.3f}–{candidate['source_end_seconds']:.3f}s / sequence {candidate['duration_seconds']:.3f}s</p>
 <p class="boundary">rights=pending / production_candidate=false / public use is not allowed</p>
-<video controls preload="metadata" playsinline poster="{escape(readback['navigation_frame']['package_relative_path'])}?v={escape(readback['navigation_frame']['sha256'][:16])}" src="{escape(readback['video']['package_relative_path'])}?v={escape(readback['video']['sha256'][:16])}"></video>
-<section><h2>修復後に確認する1点</h2><ol>{questions}</ol></section>
+<p id="playback-safety-note">初期状態は停止・ミュートです。音声確認時は手動で再生・解除してください（音量上限25%）。</p>
+<video id="candidate-video" controls playsinline muted preload="metadata" poster="{escape(readback['navigation_frame']['package_relative_path'])}?v={escape(readback['navigation_frame']['sha256'][:16])}" src="{escape(readback['video']['package_relative_path'])}?v={escape(readback['video']['sha256'][:16])}"></video>
+<script>
+(() => {{
+  const video = document.getElementById("candidate-video");
+  const maximumVolume = {INITIAL_VOLUME_CEILING:.2f};
+  const exactMutedQaRoute = window.location.search === "?qa-playback=1" && window.location.hash === "";
+  video.defaultMuted = true;
+  video.muted = true;
+  video.volume = exactMutedQaRoute ? 0 : maximumVolume;
+  const qaState = {{ exactRoute: exactMutedQaRoute, playEvents: 0, playingEvents: 0, audibleStateEvents: 0, completed: false, error: null }};
+  window.__clipPipeReviewQa = qaState;
+  video.addEventListener("play", () => {{ qaState.playEvents += 1; }});
+  video.addEventListener("playing", () => {{ qaState.playingEvents += 1; }});
+  video.addEventListener("volumechange", () => {{
+    if (video.volume > maximumVolume) video.volume = maximumVolume;
+    if (!video.muted && video.volume > 0) qaState.audibleStateEvents += 1;
+  }});
+  const runMutedQaPlayback = async () => {{
+    video.defaultMuted = true;
+    video.muted = true;
+    video.volume = 0;
+    try {{
+      await video.play();
+      window.setTimeout(() => {{ video.pause(); qaState.completed = true; }}, 1200);
+    }} catch (error) {{
+      qaState.error = error && error.name ? error.name : "play_failed";
+      video.pause();
+      qaState.completed = true;
+    }}
+  }};
+  if (exactMutedQaRoute) {{
+    if (video.readyState >= 2) window.queueMicrotask(runMutedQaPlayback);
+    else video.addEventListener("canplay", runMutedQaPlayback, {{ once: true }});
+  }}
+}})();
+</script>
+<section><h2>安全なレビューで確認する2点</h2><ol>{questions}</ol></section>
 <details open><summary>構成</summary><table><tr><th>導入</th><td>{escape(str(arc.get('setup') or ''))}</td></tr><tr><th>展開</th><td>{escape(str(arc.get('development') or ''))}</td></tr><tr><th>着地</th><td>{escape(str(arc.get('payoff') or ''))}</td></tr></table></details>
 <details><summary>検証 readback</summary><p>{escape(str(media['video_codec']))}/{escape(str(media['audio_codec']))} · {media['width']}x{media['height']} · {media['fps']}fps · {media['duration_seconds']:.3f}s</p><p>Audio {audio['integrated_lufs']:.2f} LUFS / {audio['true_peak_dbtp']:.2f} dBTP · full decode {escape(str(readback['render']['full_decode']['status']))} · black/silence {escape(str(readback['signal_qa']['status']))}</p><p>Subtitle display authority: generated short-cue overlay from source JSON3. Source-native caption pixels are bottom-cropped; ASS/SRT preserve display and provenance.</p><p>Background: caption-free source crop only; no full-source fallback and no frosted caption surface.</p><p>Transcript: {escape(readback['transcript_authority']['engine'])}/{escape(readback['transcript_authority']['provider'])}; imported source captions, human transcript acceptance not claimed.</p></details>
 </main></body></html>"""
 
 
 def _open_script() -> str:
-    return """param([int]$Port = 8072)
+    return r"""param([switch]$Serve, [int]$Port = 8072)
 $ErrorActionPreference = 'Stop'
-& (Join-Path $PSScriptRoot 'serve_preview.ps1') -Port $Port
-exit $LASTEXITCODE
+$serveScript = Join-Path $PSScriptRoot 'serve_preview.ps1'
+$url = "http://127.0.0.1:$Port/index.html"
+$canonical = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$serveScript`" -Port $Port"
+
+function Get-ReviewProbeExitCode {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $serveScript -Port $Port -ProbeOnly *> $null
+    return $LASTEXITCODE
+}
+
+$probe = Get-ReviewProbeExitCode
+if ($probe -eq 0) {
+    Start-Process -FilePath $url
+    return
+}
+if ($probe -eq 5) {
+    throw "Port $Port is occupied by an unrecognized process. No process was stopped."
+}
+if (-not $Serve) {
+    Write-Host "OUT-09 review server is not running."
+    Write-Host "Start it in a foreground PowerShell and keep that window open:"
+    Write-Host $canonical
+    exit 2
+}
+
+$serverArgs = @(
+    '-NoProfile',
+    '-ExecutionPolicy', 'Bypass',
+    '-File', "`"$serveScript`"",
+    '-Port', "$Port"
+)
+$serverProcess = Start-Process -FilePath 'powershell.exe' -ArgumentList $serverArgs -PassThru
+$deadline = [DateTime]::UtcNow.AddSeconds(20)
+do {
+    Start-Sleep -Milliseconds 400
+    $serverProcess.Refresh()
+    if ($serverProcess.HasExited) {
+        throw "The foreground review server PowerShell exited before becoming healthy."
+    }
+    $probe = Get-ReviewProbeExitCode
+    if ($probe -eq 0) {
+        Start-Process -FilePath $url
+        Write-Host "Review opened at $url"
+        Write-Host "Keep the foreground server PowerShell window open during review; use Ctrl+C to stop it."
+        return
+    }
+} while ([DateTime]::UtcNow -lt $deadline)
+throw "The foreground review server did not pass its identity and Range health gate."
 """
 
 
-def _serve_script() -> str:
-    return r"""param([int]$Port = 8072)
+def _serve_script(*, expected_video_sha256: str = CURRENT_MP4_SHA256) -> str:
+    template = r"""param([int]$Port = 8072, [switch]$ProbeOnly)
 $ErrorActionPreference = 'Stop'
+$expectedArtifact = '__ARTIFACT_ID__'
+$expectedVideoSha256 = '__VIDEO_SHA256__'
+$videoName = 'candidate_01.mp4'
 $url = "http://127.0.0.1:$Port/index.html"
+
+function Confirm-ReviewPackage {
+    $root = (Resolve-Path -LiteralPath $PSScriptRoot).Path
+    $indexPath = Join-Path $root 'index.html'
+    $manifestPath = Join-Path $root 'candidate_manifest.json'
+    $videoPath = Join-Path $root $videoName
+    foreach ($path in @($indexPath, $manifestPath, $videoPath)) {
+        if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+            throw "Required review file is missing: $path"
+        }
+    }
+    $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+    if ($manifest.artifact_id -ne $expectedArtifact) {
+        throw "Review manifest artifact identity mismatch."
+    }
+    if ($manifest.candidate_video_sha256 -ne $expectedVideoSha256) {
+        throw "Review manifest video identity mismatch."
+    }
+    $actualVideoSha256 = (Get-FileHash -LiteralPath $videoPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    if ($actualVideoSha256 -ne $expectedVideoSha256) {
+        throw "Current MP4 SHA-256 mismatch. Media serving was refused."
+    }
+    $index = Get-Content -LiteralPath $indexPath -Raw
+    if (-not $index.Contains($expectedArtifact) -or -not $index.Contains($expectedVideoSha256)) {
+        throw "Review index identity mismatch."
+    }
+    return [pscustomobject]@{ Root = $root; VideoLength = (Get-Item -LiteralPath $videoPath).Length }
+}
+
+function Test-PortListener {
+    $client = [System.Net.Sockets.TcpClient]::new()
+    try {
+        $connect = $client.BeginConnect('127.0.0.1', $Port, $null, $null)
+        if (-not $connect.AsyncWaitHandle.WaitOne(400)) { return $false }
+        $client.EndConnect($connect)
+        return $true
+    } catch {
+        return $false
+    } finally {
+        $client.Dispose()
+    }
+}
+
+function Test-ReviewServerIdentity([long]$VideoLength) {
+    try {
+        $page = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 3
+        if ([int]$page.StatusCode -ne 200) { return $false }
+        if (-not $page.Content.Contains($expectedArtifact) -or -not $page.Content.Contains($expectedVideoSha256)) { return $false }
+        $request = [System.Net.HttpWebRequest]::Create("http://127.0.0.1:$Port/$videoName")
+        $request.Method = 'GET'
+        $request.Timeout = 3000
+        $request.AddRange(0, 1023)
+        $range = [System.Net.HttpWebResponse]$request.GetResponse()
+        try {
+            if ([int]$range.StatusCode -ne 206) { return $false }
+            if ($range.Headers['Content-Range'] -ne "bytes 0-1023/$VideoLength") { return $false }
+            if ([long]$range.ContentLength -ne 1024) { return $false }
+        } finally {
+            $range.Close()
+        }
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+$package = Confirm-ReviewPackage
+$hasListener = Test-PortListener
+if ($ProbeOnly) {
+    if (-not $hasListener) { exit 4 }
+    if (Test-ReviewServerIdentity -VideoLength $package.VideoLength) { exit 0 }
+    exit 5
+}
+if ($hasListener) {
+    if (Test-ReviewServerIdentity -VideoLength $package.VideoLength) {
+        Write-Host "Verified existing OUT-09 server at $url"
+        Write-Host "Its owning foreground PowerShell remains responsible for server lifetime."
+        exit 0
+    }
+    throw "Port $Port is occupied by an unrecognized process. No process was stopped and no alternate port was selected."
+}
+
+$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..\..')).Path
 Write-Host "OUT-09 review URL: $url"
-Start-Process -FilePath $url
-$repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..\..\..\..')
-Push-Location $repoRoot
+Write-Host "Keep this PowerShell window open during review. Press Ctrl+C to stop the server."
+Push-Location -LiteralPath $repoRoot
 try {
-    uvx python -m src.cli.serve_review --root $PSScriptRoot --port $Port
+    & uvx python -m src.cli.serve_review --root $package.Root --port $Port
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } finally {
     Pop-Location
 }
 """
+    return (
+        template.replace("__ARTIFACT_ID__", ARTIFACT_ID)
+        .replace("__VIDEO_SHA256__", expected_video_sha256)
+    )
 
 
 def _render_srt(items: list[dict[str, Any]]) -> str:
@@ -1565,3 +2050,17 @@ def _overlap(left_start: float, left_end: float, right_start: float, right_end: 
 def _powershell_command(path: Path, root: Path) -> str:
     relative = _relative(path, root).replace("/", "\\")
     return f"powershell -ExecutionPolicy Bypass -File {relative}"
+
+
+def _powershell_script_command(
+    path: Path,
+    root: Path,
+    *,
+    arguments: str = "",
+) -> str:
+    relative = _relative(path, root).replace("/", "\\")
+    suffix = f" {arguments}" if arguments else ""
+    return (
+        "powershell -NoProfile -ExecutionPolicy Bypass "
+        f"-File {relative}{suffix}"
+    )

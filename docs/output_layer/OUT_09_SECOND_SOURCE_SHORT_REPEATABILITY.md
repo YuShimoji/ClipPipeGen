@@ -5,19 +5,37 @@
 | 項目 | 値 |
 |---|---|
 | artifact | `clip-out09-second-source-short-repeatability-v0-001` |
-| state | `OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY` |
+| state | `OUT09_STABLE_MANUAL_SAFE_REVIEW_READY` |
 | branch | `codex/out-09-second-source-short-repeatability-v0` |
 | candidate | `candidate_01` |
 | source | YouTube `D4i4fjs9PWc` / `【Kroniicle Animation】 Wisdom Teeth Removal Woes` |
 | source range | `31.160–64.480s`、semantic `33.320s`、endpointは再openしていない |
 | display authority | `generated_short_cue_overlay_from_source_json3` |
 | current MP4 | SHA `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`、5,976,722 bytes |
-| human state | `human_review_pending=true` / `acceptance_granted=false` |
+| human state | `human_review_pending=true` / `acceptance_granted=false`; 二つのsafe review question待ち |
 
 目的は、OUT-08とは異なるreal source/episodeでも既存vertical render pathからreviewableな
 Shortを再現できるかを確かめること。source固有renderer branchや広範pipeline rewriteは
-作らない。current sliceは、人間観測で発覚したcaption presentation欠陥だけを直し、同じ
-source range、主題、candidate identity、endpoint authorityを保つ。
+作らない。current sliceは、人間観測で発覚したserver短命化と大音量自動再生リスクを
+review access / presentation safety defectとして直し、同じsource range、主題、candidate
+identity、caption、endpoint authority、媒体byteを保つ。
+
+## Stable manual-safe review access
+
+| 面 | 契約 |
+|---|---|
+| canonical server | `serve_preview.ps1 -Port 8072`を人間が見えるforeground PowerShellで実行し、レビュー中は窓を維持、停止は`Ctrl+C` |
+| binding | `127.0.0.1`固定。正しいartifact ID、full MP4 SHA、page 200、Range 206だけをreuse |
+| conflict | 未知port ownerを終了しない、alternate portを選ばない |
+| human URL | clean `http://127.0.0.1:8072/index.html`; query/hashを付けない |
+| playback | `controls playsinline muted preload="metadata"`; autoplayなし、初期paused/muted、volume上限25%、storage復元なし |
+| QA | exact `?qa-playback=1`だけをmuted/volume 0で短時間再生してpause。human docs/URLへは渡さない |
+| convenience | `open_preview.ps1 -Serve -Port 8072`が別の見えるPowerShellへcanonical serverを起動し、health後にclean URLを開く |
+| no-Serve | healthy serverがあればclean URLを開く。なければcanonical commandを表示してexitし、暗黙起動しない |
+| access repair | readback/index/opener/server/manifestだけをatomic更新。MP4/ASS/SRTをrender/remux/transcodeしない |
+
+access-only CLIは`repair-second-source-review-access`。既存manifest self/file hashとfixed MP4
+SHAを検証し、媒体identityが一致しなければ変更前にfail closedする。
 
 ## 人間観測とlineage
 
@@ -98,7 +116,8 @@ ignored package:
 | `candidate_01_frame_qa.jpg` | 10 samples、SHA `792f6b2f...9901` |
 | `candidate_01_navigation.jpg` | SHA `1df89d1f...156d`、navigation-only、thumbnail acceptanceではない |
 | plan input | SHA `569ba9d193348d76ee368dde32ebd7c00c485a03792b4728562efec452b00c7e` |
-| manifest | 10 files / 6 inputs、self `fec262226982bab5f650b954efb121f646d19d054896cf93a0e1098ccaba1aa7` |
+| manifest | 10 package files、self `50ff14e5ee9ffae0ab1cb31f33a584c346026d7674c360546302e10de24e62ff` |
+| ASS/SRT SHA | `03df9259d8b9c56b532477187d9990a73c0d847b1659420ffed4c926220b9ea9` / `de1290f236e556fbd7a2159c43c86c01e455990e9cefb19c7e822fc2b1cb016f`、access修復前後で不変 |
 | render count | corrective 1、additional 0、builder 32.904s、outer 33.498s |
 
 `episodes/`はignoredで、Gitにcopyrighted pixelsを追加しない。packageは同一マシン証跡で
@@ -112,30 +131,48 @@ ignored package:
 | loudness | input `-27.77 LUFS / -6.87 dBTP`、output `-14.80 LUFS / -1.46 dBTP` |
 | signal | blackdetect event 0、silencedetect event 0 |
 | frame | 10点でnative caption/blur glyph/frosted surfaceなし、short cueと重要内容を確認 |
-| HTTP | root 200、MP4 Range 206 |
-| browser | readyState 4、error null、duration 33.333008、1080x1920、play/pause successful |
-| responsive | default / 375px級ともhorizontal overflow false、question count 1 |
+| HTTP | page 200、MP4 Range 206、Content-Range/Length一致、3 probeを54秒超にわたり通過 |
+| server lifecycle | browser close/reopen中も維持、correct double-start reuse、unknown owner reject/owner生存、Ctrl+C後8072/8074 listener 0 |
+| browser human | clean URLは2.1秒後もpaused/muted/currentTime 0、manual Space playでcurrentTime前進、close/reopenで初期状態へ復帰 |
+| browser QA | exact QA queryだけがmutedで約1.08秒進行後pause、clean URLへ戻すとcurrentTime 0 |
+| responsive | default / 375px級ともhorizontal overflow false、question count 2 |
 | console | warn/error 0 |
-| OUT-09 tests | 13 passed |
-| shared direct consumers | 33 passed / 2 OUT-06 reviewed-wrap tests deselected |
-| Ruff | changed renderer/test files passed |
+| targeted tests | review Range server + OUT-09 access/build tests passed |
+| PowerShell | generated opener/server parse 0 error |
+| Ruff | changed Python/test files passed |
 
-full repository pytestとGUI/Electronはvalidation budget外で実行していない。2 deselectedは
-既存OUT-06 wrap expectationの別監査事項で、OUT-09を広げて直していない。
+full repository pytestとGUI/Electronはvalidation budget外で実行していない。既存OUT-06
+wrap expectationは別監査事項で、OUT-09を広げて直していない。
 
 ## Review entrypoint
 
+canonical foreground route:
+
 ```powershell
-powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\serve_preview.ps1 -Port 8072
 ```
 
-URL: `http://127.0.0.1:8072/index.html`
+convenience route:
 
-review pageはcurrent MP4/poster SHAをqueryへ含み、質問を次の一つだけ表示する。
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Serve -Port 8072
+```
 
-1. 字幕が短い単位で自然に切り替わり、画面を邪魔せず読めるか。最後の終わり方を含め、ほかに明確な違和感があれば教えてください。
+URL: `http://127.0.0.1:8072/index.html`。review pageはcurrent MP4/poster SHAをqueryへ含み、
+質問を次の二つだけ表示する。
+
+1. ページを開いた直後に動画や音が勝手に始まらず、レビュー中にserverが維持されるか。
+2. 手動で再生・音声解除した後、字幕の切替・可読性・終わり方に明確な違和感があるか。
 
 ## Rebuild command
+
+媒体を変えずreview accessだけを再構成するcommand:
+
+```powershell
+uvx python -m src.cli.main repair-second-source-review-access --output-dir episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability --format json
+```
+
+媒体buildは別routeであり、access defectだけのために実行しない:
 
 ```powershell
 uvx python -m src.cli.main build-second-source-short-repeatability `

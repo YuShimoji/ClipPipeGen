@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import mimetypes
 import posixpath
+import sys
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -66,8 +67,33 @@ class RangeRequestHandler(BaseHTTPRequestHandler):
                 chunk = handle.read(min(1024 * 256, remaining))
                 if not chunk:
                     break
-                self.wfile.write(chunk)
+                try:
+                    self.wfile.write(chunk)
+                except (BrokenPipeError, ConnectionResetError):
+                    # Browsers routinely cancel an in-flight media range when a
+                    # review tab closes. Treat that as a completed client action,
+                    # not as an operator-visible server failure.
+                    return
                 remaining -= len(chunk)
+
+
+class ReviewHTTPServer(ThreadingHTTPServer):
+    """Loopback-only review server whose request threads never outlive shutdown."""
+
+    daemon_threads = True
+
+
+def create_review_server(*, root: Path, port: int) -> ReviewHTTPServer:
+    """Create a fixed-root loopback server without killing or changing ports."""
+
+    resolved_root = root.resolve()
+    if not resolved_root.is_dir():
+        raise ValueError(f"review root must be a directory: {resolved_root}")
+    if not 1 <= port <= 65_535:
+        raise ValueError("review port must be between 1 and 65535")
+    server = ReviewHTTPServer(("127.0.0.1", port), RangeRequestHandler)
+    server.root = resolved_root  # type: ignore[attr-defined]
+    return server
 
 
 def _resolve_request_path(root: Path, raw_path: str) -> Path | None:
@@ -117,8 +143,15 @@ def run(argv: list[str] | None = None) -> int:
     root = args.root.resolve()
     if not root.is_dir():
         parser.error(f"--root must be a directory: {root}")
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), RangeRequestHandler)
-    server.root = root  # type: ignore[attr-defined]
+    try:
+        server = create_review_server(root=root, port=args.port)
+    except (OSError, ValueError) as exc:
+        print(
+            f"serve-review failed: cannot bind fixed loopback endpoint "
+            f"127.0.0.1:{args.port}: {exc}",
+            file=sys.stderr,
+        )
+        return 2
     print(f"Serving {root} at http://127.0.0.1:{args.port}/")
     try:
         server.serve_forever()

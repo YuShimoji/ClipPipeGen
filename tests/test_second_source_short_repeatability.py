@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -578,6 +579,12 @@ def test_builds_one_hash_bound_second_source_package(tmp_path: Path) -> None:
         "different": True,
     }
     assert readback["candidate"]["duration_seconds"] == 12.0
+    assert readback["state"] == out09.STATE
+    assert readback["review_questions"] == list(out09.SAFE_REVIEW_QUESTIONS)
+    assert readback["review_access"]["autoplay"] is False
+    assert readback["review_access"]["initial_paused"] is True
+    assert readback["review_access"]["initial_muted"] is True
+    assert readback["review_access"]["initial_volume_maximum"] == 0.25
     assert readback["subtitle"]["count"] == 6
     assert readback["subtitle"]["display_authority"] == (
         "generated_short_cue_overlay_from_source_json3"
@@ -606,10 +613,68 @@ def test_builds_one_hash_bound_second_source_package(tmp_path: Path) -> None:
 
     html = (output / "index.html").read_text(encoding="utf-8")
     assert html.count("<video ") == 1
-    assert html.count("data-review-question=") == 1
-    assert out09.REPAIR_REVIEW_QUESTION in html
+    assert html.count("data-review-question=") == 2
+    assert all(question in html for question in out09.SAFE_REVIEW_QUESTIONS)
+    video_tag = re.search(r"<video\b[^>]*>", html)
+    assert video_tag is not None
+    assert "autoplay" not in video_tag.group(0)
+    assert " muted " in video_tag.group(0)
+    assert 'preload="metadata"' in video_tag.group(0)
+    assert 'window.location.search === "?qa-playback=1"' in html
+    assert html.count("video.play()") == 1
+    assert "localStorage" not in html
+    assert "sessionStorage" not in html
+    open_script = (output / "open_preview.ps1").read_text(encoding="utf-8")
+    serve_script = (output / "serve_preview.ps1").read_text(encoding="utf-8")
+    assert "qa-playback" not in open_script
+    assert "[switch]$Serve" in open_script
+    assert "-ProbeOnly" in open_script
+    assert "Start-Process -FilePath $url" in open_script
+    assert "127.0.0.1" in serve_script
+    assert "Stop-Process" not in serve_script
+    assert "taskkill" not in serve_script.lower()
+    assert "Start-Process -FilePath $url" not in serve_script
     manifest = json.loads((output / "candidate_manifest.json").read_text(encoding="utf-8"))
     assert manifest["manifest_self_integrity"]["sha256"] == out09._canonical_manifest_self_hash(manifest)
+    for row in manifest["files"]:
+        assert out09._sha256(output / row["package_relative_path"]) == row["sha256"]
+
+
+def test_repairs_only_review_access_and_preserves_media_bytes(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    built = _build(fixture)
+    output = fixture["output"]
+    media_files = (
+        "candidate_01.mp4",
+        "candidate_01_subtitles.ass",
+        "candidate_01_subtitles.srt",
+    )
+    before = {name: out09._sha256(output / name) for name in media_files}
+
+    result = out09.repair_second_source_review_access_package(
+        output_dir=output,
+        base_dir=fixture["root"],
+        expected_video_sha256=built["readback"]["video"]["sha256"],
+    )
+
+    after = {name: out09._sha256(output / name) for name in media_files}
+    assert after == before
+    assert result["media_bytes_changed"] is False
+    assert result["video_sha256"] == before["candidate_01.mp4"]
+    readback = json.loads(
+        (output / "candidate_readback.json").read_text(encoding="utf-8")
+    )
+    manifest = json.loads(
+        (output / "candidate_manifest.json").read_text(encoding="utf-8")
+    )
+    assert readback["state"] == out09.STATE
+    assert readback["access_repair"]["media_bytes_changed"] is False
+    assert readback["review_access"]["worker_process_retention_claimed"] is False
+    assert manifest["state"] == out09.STATE
+    assert manifest["candidate_video_sha256"] == before["candidate_01.mp4"]
+    assert manifest["manifest_self_integrity"][
+        "sha256"
+    ] == out09._canonical_manifest_self_hash(manifest)
     for row in manifest["files"]:
         assert out09._sha256(output / row["package_relative_path"]) == row["sha256"]
 

@@ -247,19 +247,19 @@ def test_runtime_points_to_out09_and_keeps_out07_rebuild_contract_parked() -> No
         "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
         in runtime
     )
-    assert "health: OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY" in runtime
+    assert "health: OUT09_STABLE_MANUAL_SAFE_REVIEW_READY" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
     assert "human_review_pending: true" in runtime
     assert "acceptance_granted: false" in runtime
     assert "batch_acceptance: null" in runtime
     assert (
         "candidate_01_acceptance: "
-        "pending_caption_presentation_exact_sha_human_review"
+        "pending_safe_review_exact_sha_human_review"
         in runtime
     )
     assert (
         "review_status: "
-        "OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY"
+        "OUT09_STABLE_MANUAL_SAFE_REVIEW_READY"
         in runtime
     )
     assert (
