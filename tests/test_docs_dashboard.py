@@ -1623,16 +1623,16 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "out08_closed_out09_review_ready"
+        "out09_bounded_repair_review_ready"
     )
     assert status["current_focus"]["review_status"] == (
-        "OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY"
+        "OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY"
     )
     assert status["current_focus"]["decision_required"] == (
-        "two_bounded_out09_human_questions"
+        "one_bounded_out09_repair_question"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "OUT09_TWO_BOUNDED_HUMAN_QUESTIONS"
+        "OUT09_ONE_BOUNDED_REPAIR_QUESTION"
     )
     assert status["current_focus"]["human_entrypoint"] == (
         "http://127.0.0.1:8072/index.html"

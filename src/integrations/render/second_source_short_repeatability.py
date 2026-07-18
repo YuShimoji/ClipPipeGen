@@ -48,9 +48,17 @@ from src.integrations.render.vertical_short_candidate import (
 ARTIFACT_ID = "clip-out09-second-source-short-repeatability-v0-001"
 SCHEMA_VERSION = "clippipegen.out09.second_source_short_repeatability.v0"
 PLAN_SCHEMA_VERSION = "clippipegen.out09.candidate_plan_input.v0"
-STATE = "OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY"
+STATE = "OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY"
 OUTPUT_PREFIX = "out09_"
 OUT08_PROVIDER_ID = "7J5aS_pcBj4"
+PREDECESSOR_MP4_SHA256 = (
+    "300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9"
+)
+SUBTITLE_DISPLAY_AUTHORITY = "source_native_caption_pixels"
+REPAIR_REVIEW_QUESTION = (
+    "字幕の切替リズムと終わり方が自然になったか、"
+    "ほかに明確な違和感があれば教えてください。"
+)
 MIN_DURATION_SECONDS = 12.0
 MAX_DURATION_SECONDS = 60.0
 TIME_TOLERANCE_SECONDS = 0.002
@@ -115,6 +123,7 @@ def build_second_source_short_repeatability(
 
         ass_path = stage / "candidate_01_subtitles.ass"
         srt_path = stage / "candidate_01_subtitles.srt"
+        render_ass_path = work / "no_additional_burn_in.ass"
         video_path = stage / "candidate_01.mp4"
         frame_path = stage / "candidate_01_frame_qa.jpg"
         navigation_path = stage / "candidate_01_navigation.jpg"
@@ -132,6 +141,7 @@ def build_second_source_short_repeatability(
         )
         _write_ass(ass_path, presentation, layout=layout, review_label=None)
         _write_text(srt_path, _render_srt(presentation))
+        _write_no_overlay_ass(render_ass_path)
         validate_ass_visible_content(
             ass_path,
             expected_count=len(presentation),
@@ -145,7 +155,7 @@ def build_second_source_short_repeatability(
             source_video_path=authority["source_video_path"],
             source_audio_path=authority["source_audio_path"],
             timeline=normalized["timeline"],
-            ass_path=ass_path,
+            ass_path=render_ass_path,
             video_path=video_path,
             compare_sheet_path=None,
             frame_sheet_path=frame_path,
@@ -217,6 +227,8 @@ def build_second_source_short_repeatability(
             "input_integrity": authority["input_integrity"],
             "materials": authority["materials"],
             "transcript_authority": normalized["transcript_authority"],
+            "user_feedback": normalized["user_feedback"],
+            "repair": normalized["repair"],
             "selection_authority": normalized["selection_authority"],
             "candidate": {
                 "candidate_id": normalized["candidate_id"],
@@ -236,6 +248,12 @@ def build_second_source_short_repeatability(
                 "selector": selector,
                 "items": presentation_items,
                 "source_type": "imported_subtitle_track",
+                "display_authority": SUBTITLE_DISPLAY_AUTHORITY,
+                "burn_in_applied": False,
+                "visible_additional_overlay_event_count": 0,
+                "ass_srt_role": (
+                    "provenance_navigation_machine_readback_sidecar_only"
+                ),
                 "human_transcript_acceptance_claimed": False,
             },
             "video": {
@@ -305,6 +323,12 @@ def build_second_source_short_repeatability(
             "candidate_video_sha256": readback["video"]["sha256"],
             "plan_input_sha256": _sha256(plan_path),
             "input_integrity": authority["input_integrity"],
+            "repair": normalized["repair"],
+            "subtitle_display_authority": {
+                "mode": SUBTITLE_DISPLAY_AUTHORITY,
+                "additional_burn_in": False,
+                "ass_srt_sidecar_only": True,
+            },
             "files": files,
             "boundaries": normalized["boundaries"],
             "manifest_self_integrity": {"algorithm": "sha256", "sha256": None},
@@ -457,6 +481,113 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     if abs(duration - _number(candidate.get("duration_seconds"), "candidate duration")) > TIME_TOLERANCE_SECONDS:
         raise SecondSourceShortRepeatabilityError("candidate duration readback mismatch")
 
+    feedback = plan.get("user_feedback")
+    expected_feedback = {
+        "overall": "bounded_repair_required",
+        "content_selection": "not_rejected_not_yet_accepted",
+        "subtitle_presentation_timing": "needs_adjustment",
+        "endpoint_edit": "needs_adjustment",
+    }
+    if not isinstance(feedback, dict) or any(
+        feedback.get(key) != value for key, value in expected_feedback.items()
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "bounded-repair user feedback is incomplete"
+        )
+
+    repair = plan.get("repair") if isinstance(plan.get("repair"), dict) else {}
+    if repair.get("kind") != "bounded_subtitle_authority_and_endpoint":
+        raise SecondSourceShortRepeatabilityError("unsupported OUT-09 repair kind")
+    predecessor = (
+        repair.get("superseded_predecessor")
+        if isinstance(repair.get("superseded_predecessor"), dict)
+        else {}
+    )
+    if (
+        predecessor.get("candidate_id") != candidate_id
+        or predecessor.get("video_sha256") != PREDECESSOR_MP4_SHA256
+        or predecessor.get("human_acceptance_claimed") is not False
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "superseded predecessor identity mismatch"
+        )
+    if not _close(
+        _number(predecessor.get("source_start_seconds"), "predecessor source start"),
+        start,
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "bounded repair must preserve candidate start"
+        )
+
+    subtitle_repair = (
+        repair.get("subtitle_presentation")
+        if isinstance(repair.get("subtitle_presentation"), dict)
+        else {}
+    )
+    expected_subtitle_repair = {
+        "display_authority": SUBTITLE_DISPLAY_AUTHORITY,
+        "additional_burn_in": False,
+        "native_caption_pixels_modified": False,
+        "ass_srt_role": "provenance_navigation_machine_readback_sidecar_only",
+        "scope": "source_specific",
+        "fallback_if_not_legible": (
+            "REFRAME_REQUIRED_NATIVE_CAPTION_NOT_LEGIBLE"
+        ),
+    }
+    if any(
+        subtitle_repair.get(key) != value
+        for key, value in expected_subtitle_repair.items()
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "source-native caption authority is incomplete"
+        )
+
+    endpoint = (
+        repair.get("endpoint_authority")
+        if isinstance(repair.get("endpoint_authority"), dict)
+        else {}
+    )
+    if endpoint.get("basis") != (
+        "first_scene_transition_after_last_caption_and_speech"
+    ):
+        raise SecondSourceShortRepeatabilityError("endpoint basis is not natural")
+    last_caption_end = _number(
+        endpoint.get("last_native_caption_end_seconds"),
+        "last native caption end",
+    )
+    last_speech_end = _number(
+        endpoint.get("last_speech_end_seconds"), "last speech end"
+    )
+    silence_end = _number(endpoint.get("silence_end_seconds"), "silence end")
+    next_scene_start = _number(
+        endpoint.get("next_scene_start_seconds"), "next scene start"
+    )
+    next_caption_start = _number(
+        endpoint.get("next_native_caption_start_seconds"),
+        "next native caption start",
+    )
+    selected_end = _number(
+        endpoint.get("selected_source_end_seconds"), "selected source end"
+    )
+    if (
+        last_caption_end > selected_end + TIME_TOLERANCE_SECONDS
+        or last_speech_end > selected_end + TIME_TOLERANCE_SECONDS
+        or selected_end > silence_end + TIME_TOLERANCE_SECONDS
+        or not _close(selected_end, end)
+        or not _close(next_scene_start, end)
+        or next_caption_start < end - TIME_TOLERANCE_SECONDS
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "candidate endpoint does not preserve caption/speech/scene completion"
+        )
+    if (
+        endpoint.get("fixed_padding_used") is not False
+        or endpoint.get("fade_sfx_freeze_or_silence_added") is not False
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "endpoint repair must not hide the boundary with padding or effects"
+        )
+
     cut_ids = _string_list(candidate.get("authority_cut_ids"))
     if not cut_ids:
         raise SecondSourceShortRepeatabilityError("candidate authority_cut_ids are missing")
@@ -550,8 +681,10 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         raise SecondSourceShortRepeatabilityError("subtitles must end with candidate")
 
     review_questions = plan.get("review_questions")
-    if not isinstance(review_questions, list) or len(review_questions) != 2 or any(not isinstance(value, str) or not value.strip() for value in review_questions):
-        raise SecondSourceShortRepeatabilityError("exactly two review questions are required")
+    if review_questions != [REPAIR_REVIEW_QUESTION]:
+        raise SecondSourceShortRepeatabilityError(
+            "the bounded repair requires exactly one review question"
+        )
     boundaries = plan.get("boundaries") if isinstance(plan.get("boundaries"), dict) else {}
     expected_boundaries = {
         "rights_status": "pending",
@@ -566,8 +699,9 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     authority_boundary = round(float(cuts[cut_ids[-1]]["start_seconds"]) - start, 3)
     frame_samples = (
         ("start", 0.25),
-        ("subtitle_dense", round(duration * 0.34, 3)),
         ("authority_boundary", max(0.25, min(duration - 0.25, authority_boundary))),
+        ("native_caption_switch", round(min(duration - 0.25, 23.5), 3)),
+        ("endpoint_caption", round(duration - 2.0, 3)),
         ("end", round(duration - 0.25, 3)),
     )
     timeline = [
@@ -610,6 +744,45 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "used_source_segment_ids": source_segment_ids,
             "display_normalization": "rolling_caption_dedup_subsequence_v1",
             "human_transcript_acceptance_claimed": False,
+        },
+        "user_feedback": expected_feedback,
+        "repair": {
+            "kind": "bounded_subtitle_authority_and_endpoint",
+            "superseded_predecessor": {
+                "candidate_id": candidate_id,
+                "source_start_seconds": _number(
+                    predecessor.get("source_start_seconds"),
+                    "predecessor source start",
+                ),
+                "source_end_seconds": _number(
+                    predecessor.get("source_end_seconds"),
+                    "predecessor source end",
+                ),
+                "duration_seconds": _number(
+                    predecessor.get("duration_seconds"),
+                    "predecessor duration",
+                ),
+                "media_duration_seconds": _number(
+                    predecessor.get("media_duration_seconds"),
+                    "predecessor media duration",
+                ),
+                "video_sha256": PREDECESSOR_MP4_SHA256,
+                "human_acceptance_claimed": False,
+            },
+            "subtitle_presentation": expected_subtitle_repair,
+            "endpoint_authority": {
+                "basis": str(endpoint["basis"]),
+                "last_native_caption_end_seconds": last_caption_end,
+                "last_speech_end_seconds": last_speech_end,
+                "silence_end_seconds": silence_end,
+                "next_scene_start_seconds": next_scene_start,
+                "next_native_caption_start_seconds": next_caption_start,
+                "selected_source_end_seconds": selected_end,
+                "fixed_padding_used": False,
+                "fade_sfx_freeze_or_silence_added": False,
+                "candidate_start_preserved": True,
+                "verified_before_render": True,
+            },
         },
         "selection_authority": {
             "allowed_ranges": allowed,
@@ -740,9 +913,9 @@ def _validate_staged_bundle(
                 f"manifest file hash mismatch: {path.name}"
             )
     html = (stage / "index.html").read_text(encoding="utf-8")
-    if html.count("<video ") != 1 or html.count("data-review-question=") != 2:
+    if html.count("<video ") != 1 or html.count("data-review-question=") != 1:
         raise SecondSourceShortRepeatabilityError(
-            "review page must contain one video and exactly two questions"
+            "review page must contain one video and exactly one repair question"
         )
 
 
@@ -763,9 +936,9 @@ def _render_html(readback: dict[str, Any]) -> str:
 <p><code>{escape(readback['source_identity']['provider_id'])}</code> / source {candidate['source_start_seconds']:.3f}–{candidate['source_end_seconds']:.3f}s / sequence {candidate['duration_seconds']:.3f}s</p>
 <p class="boundary">rights=pending / production_candidate=false / public use is not allowed</p>
 <video controls preload="metadata" playsinline poster="{escape(readback['navigation_frame']['package_relative_path'])}" src="{escape(readback['video']['package_relative_path'])}"></video>
-<section><h2>確認する2点</h2><ol>{questions}</ol></section>
+<section><h2>修復後に確認する1点</h2><ol>{questions}</ol></section>
 <details open><summary>構成</summary><table><tr><th>導入</th><td>{escape(str(arc.get('setup') or ''))}</td></tr><tr><th>展開</th><td>{escape(str(arc.get('development') or ''))}</td></tr><tr><th>着地</th><td>{escape(str(arc.get('payoff') or ''))}</td></tr></table></details>
-<details><summary>検証 readback</summary><p>{escape(str(media['video_codec']))}/{escape(str(media['audio_codec']))} · {media['width']}x{media['height']} · {media['fps']}fps · {media['duration_seconds']:.3f}s</p><p>Audio {audio['integrated_lufs']:.2f} LUFS / {audio['true_peak_dbtp']:.2f} dBTP · full decode {escape(str(readback['render']['full_decode']['status']))} · black/silence {escape(str(readback['signal_qa']['status']))}</p><p>Transcript: {escape(readback['transcript_authority']['engine'])}/{escape(readback['transcript_authority']['provider'])}; imported source captions, human transcript acceptance not claimed.</p></details>
+<details><summary>検証 readback</summary><p>{escape(str(media['video_codec']))}/{escape(str(media['audio_codec']))} · {media['width']}x{media['height']} · {media['fps']}fps · {media['duration_seconds']:.3f}s</p><p>Audio {audio['integrated_lufs']:.2f} LUFS / {audio['true_peak_dbtp']:.2f} dBTP · full decode {escape(str(readback['render']['full_decode']['status']))} · black/silence {escape(str(readback['signal_qa']['status']))}</p><p>Subtitle display authority: source-native caption pixels. ASS/SRT are sidecar provenance only; additional burn-in=false.</p><p>Transcript: {escape(readback['transcript_authority']['engine'])}/{escape(readback['transcript_authority']['provider'])}; imported source captions, human transcript acceptance not claimed.</p></details>
 </main></body></html>"""
 
 
@@ -791,6 +964,28 @@ try {
     Pop-Location
 }
 """
+
+
+def _write_no_overlay_ass(path: Path) -> None:
+    """Write a valid zero-dialogue ASS carrier for the shared render path."""
+
+    _write_text(
+        path,
+        """[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: NativeOnly,Arial,48,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+""",
+    )
 
 
 def _render_srt(items: list[dict[str, Any]]) -> str:

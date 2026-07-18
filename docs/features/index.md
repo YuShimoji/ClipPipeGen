@@ -6,12 +6,12 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-09`
 - artifact: `clip-out09-second-source-short-repeatability-v0-001`
-- state: `OUT09_SECOND_SOURCE_REVIEW_READY`
+- state: `OUT09_REPAIRED_REVIEW_READY`
 
 - canonical main: `resolve_origin_main_at_resume`
 - canonical baseline: `OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2`
-- canonical status: `out08_closed_out09_review_ready`
-- review status: `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY`
+- canonical status: `out09_bounded_repair_review_ready`
+- review status: `OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -34,8 +34,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `two_bounded_out09_human_questions`
-- next review: `OUT09_TWO_BOUNDED_HUMAN_QUESTIONS`
+- decision required: `one_bounded_out09_repair_question`
+- next review: `OUT09_ONE_BOUNDED_REPAIR_QUESTION`
 
 ## Feature Table
 

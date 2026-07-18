@@ -3,40 +3,40 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT09_SECOND_SOURCE_REVIEW_READY
-progress_pct: 90
+health: OUT09_REPAIRED_REVIEW_READY
+progress_pct: 92
 last_touched: 2026-07-18
-state_revision: out09-second-source-review-ready-2026-07-18
-contract_repair_status: OUT09_INPUT_HASH_RANGE_PROVENANCE_GUARDS_PASSED
+state_revision: out09-subtitle-authority-endpoint-repaired-review-ready-2026-07-18
+contract_repair_status: OUT09_NATIVE_CAPTION_AND_ENDPOINT_REPAIR_PASSED
 current_slice: OUT-09
 phase: human_review_pending
-canonical_status: out08_closed_out09_review_ready
+canonical_status: out09_bounded_repair_review_ready
 active_branch: codex/out-09-second-source-short-repeatability-v0
-verified_implementation_head: branch_head_after_push
-source_branch_tip: 29a1a51902bf8140862839e077936b908f775167
+verified_implementation_head: branch_head_after_repair_push
+source_branch_tip: 0177629021e5926e989cdce0c86f2d42e20bbfc8
 closure_branch: null
 remote_resume_contract: fetch_then_switch_out09_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: 29a1a51902bf8140862839e077936b908f775167
-sync_audit_status: out09_branch_push_at_closeout
+sync_audit_head: 0177629021e5926e989cdce0c86f2d42e20bbfc8
+sync_audit_status: out09_repair_branch_push_at_closeout
 sync_audit_live_out08_package: historical_accepted_package_untouched
-sync_audit_live_out09_package: present_manifest_and_video_hashes_match
+sync_audit_live_out09_package: repaired_package_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-09 second-source Short repeatability human review
+current_title: OUT-09 native-caption and endpoint bounded repair human review
 human_entrypoint: http://127.0.0.1:8072/index.html
 portable_entrypoint: null
 review_open_command: powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
 review_server_restart_command: uvx python -m src.cli.serve_review --root episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability --port 8072
 machine_readback: episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: two_bounded_out09_human_questions
-review_status: OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY
-review_scope: exact candidate_01について、内容とテンポが1本のShortとして成立するか、境界・字幕・音声・映像に違和感があるかの二点だけを判断する。
+decision_required: one_bounded_out09_repair_question
+review_status: OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY
+review_scope: 修復後exact candidate_01について、字幕の切替リズムと終わり方が自然か、ほかに明確な違和感があるかの一問だけを判断する。
 reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: active_same_machine_review_evidence_human_acceptance_pending
+local_artifact_role: active_same_machine_repaired_review_evidence_human_acceptance_pending
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_builder_docs_portable_ignored_review_payload_same_machine_only
 cross_host_resume_status: review_requires_rebuild_or_private_transfer_not_yet_accepted
@@ -69,29 +69,34 @@ accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending_two_bounded_questions
+human_review_decision: pending_one_bounded_repair_question
+user_feedback_overall: bounded_repair_required
+content_selection_status: not_rejected_not_yet_accepted
+subtitle_presentation_timing_status: needs_adjustment_addressed_pending_review
+endpoint_status: needs_adjustment_addressed_pending_review
 reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
 batch_acceptance: null
-candidate_01_acceptance: pending_human_review
+candidate_01_acceptance: pending_repaired_exact_sha_human_review
 candidate_02_acceptance: null
 accepted_candidate_ids: []
 winner: null
-subtitle_debt_acceptance_scope: out09_sub_006_support_word_split_pending_human_review_not_global_rule
+subtitle_debt_acceptance_scope: prior_double_caption_and_support_word_split_repaired_new_sha_pending_human_review
 cover_review_status: null
 review_server_status: running_localhost_8072_at_last_verification
-next_review_due: OUT09_TWO_BOUNDED_HUMAN_QUESTIONS
-next_action: exact candidate_01を開き、内容とテンポの成立可否、境界・字幕・音声・映像の違和感の二点だけを回答する。
+next_review_due: OUT09_ONE_BOUNDED_REPAIR_QUESTION
+next_action: 修復後candidate_01を開き、字幕の切替リズムと終わり方が自然か、ほかに明確な違和感があるかの一問だけを回答する。
 active_artifact: clip-out09-second-source-short-repeatability-v0-001
 current_review_component: second_source_candidate_01
 target_candidate_count: 1
 minimum_candidate_count: 1
 actual_candidate_count: 1
-candidate_01_semantic_duration_seconds: 27.720
-candidate_01_media_duration_seconds: 27.733333
-candidate_01_subtitle_count: 7
-candidate_01_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
+candidate_01_semantic_duration_seconds: 33.320
+candidate_01_media_duration_seconds: 33.333333
+candidate_01_subtitle_count: 9
+candidate_01_sha256: 3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916
+candidate_01_superseded_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
 candidate_02_semantic_duration_seconds: null
 candidate_02_media_duration_seconds: null
 candidate_02_subtitle_count: null
@@ -103,21 +108,30 @@ source_audio_sha256: b33b3521e495edf13675b91bbbd6b89642ea28e46cd38555e77862cd631
 source_video_resolution: 640x360
 source_caption_provider: youtube_subtitles
 source_caption_review_status: needs_review
-candidate_plan_sha256: 6b9b48ed05db8a72d0647508d65629766af531fd9b1cf0bca53e3fc479e205e9
-candidate_manifest_self_integrity: 3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692
+candidate_plan_sha256: e9e68b1a9dcd1b1edc0691a5cb43675235aa54f4d1a37ddf36b96a7d93fc53c1
+candidate_manifest_self_integrity: 440c73dde6b33e9ba9ce63a512e61f5974e947032a507ac17c560d560a028078
 render_execution_count: 1
-corrective_pass_count: 0
-build_elapsed_seconds: 47.413
-quality_debt: source_native_caption_duplicates_large_caption_and_out09_sub_006_word_split
+corrective_pass_count: 1
+additional_autonomous_repair_count: 0
+build_elapsed_seconds: 31.729
+subtitle_display_authority: source_native_caption_pixels
+additional_subtitle_burn_in: false
+endpoint_source_seconds: 64.480
+endpoint_last_caption_seconds: 64.360
+endpoint_last_speech_seconds: 64.362812
+quality_debt: source_resolution_640x360_and_human_acceptance_pending
+known_unrelated_test_failure: tests/test_vertical_short_candidate.py::test_out06_reviewed_japanese_break_hints_are_measured_and_semantic
+known_unrelated_test_failure_scope: unchanged_OUT06_Japanese_line_measurement_expected_3_lines_observed_2
+known_unrelated_test_failure_owner: future_OUT06_regression_audit_not_OUT09_repair
 h1_successor_data_only: true
 navigation_frame_role: representative_navigation_only_not_thumbnail_acceptance
 out08_cut009_final_cut_decision: reject
 out08_cut009_usage: fully_excluded_no_source_time_overlap
 authority_mutated: false
-media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed_duration_27_733333
+media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed_duration_33_333333
 blackdetect_readback: event_0_at_d0_5_pix_th0_10
 silencedetect_readback: event_0_at_minus50dB_d1_0
-browser_readback: readyState4_error_null_no_horizontal_overflow_console_clean_http200_range206_seek_resume_advanced
+browser_readback: readyState4_error_null_desktop_mobile_no_horizontal_overflow_console_clean_http200_range206_seek_resume_advanced_native_caption_legible
 http_range_readback: 206_partial_content_passed
 current_baseline_acceptance: human_review_pending
 accepted_baseline_sha256: null
@@ -241,38 +255,38 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## 2026-07-18 OUT-09 Second-Source Review Ready
+## 2026-07-18 OUT-09 Native-Caption and Endpoint Repair Review Ready
 
 OUT-08 accepted-internal closureを変更せず、指定base
 `29a1a51902bf8140862839e077936b908f775167`から
 `codex/out-09-second-source-short-repeatability-v0`を作成した。OUT-08の
 YouTube ID `7J5aS_pcBj4`とは異なる既知source `D4i4fjs9PWc`を既存adapterで取得し、
-base Vosk EN transcriptとYouTube English Original caption importを保持した新episodeで、
-1本の27.720秒vertical candidateを生成した。
+base Vosk EN transcriptとYouTube English Original caption importを保持した新episodeで
+作った候補へ、ユーザー指摘の字幕authorityと終端だけを1回のbounded repairで反映した。
 
 | 対象 | 現在値 | 意味 |
 |---|---|---|
 | source identity | `D4i4fjs9PWc` / video `61c06f75...fd938` / audio `b33b3521...f81b` | OUT-08とは別source。ledgerと実file hash一致 |
-| candidate | source `31.160–58.880s` / media `27.733333s` / 7 subtitles | 12〜60秒条件内、1本の連続構成 |
+| candidate | source `31.160–64.480s` / media `33.333333s` / 9 sidecar events | 開始と主題を維持し、最初の自然なscene transitionまで延長 |
 | output | H.264/AAC、1080x1920、30fps、yuv420p、faststart | internal review media contract passed |
-| candidate identity | `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9` | 人間判断を結ぶexact MP4 hash |
-| manifest | self-integrity `3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692` | package payloadのhash readback |
-| actual render | 1回、corrective 0、builder `47.413s` | one-pass/no-micro-tuningを維持 |
-| media QA | full decode/faststart passed、`-14.54 LUFS / -1.48 dBTP`、black/silence event 0 | 技術的reviewability passed |
-| browser QA | HTTP 200、Range 206、readyState 4、seek/resume advance、overflow false、console clean | localhost direct review passed |
+| subtitle authority | source-native caption pixelsのみ、追加burn-in 0 | ASS/SRTはprovenance/navigation/readback sidecar-only |
+| candidate identity | `3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916` | 新しい人間判断を結ぶexact MP4 hash。旧`300ee360...e0c9`はsuperseded |
+| manifest | self-integrity `440c73dde6b33e9ba9ce63a512e61f5974e947032a507ac17c560d560a028078` | package payloadのhash readback |
+| repair render | corrective 1回、追加repair 0、builder `31.729s` | bounded repair budget内 |
+| media QA | full decode/faststart passed、`-14.80 LUFS / -1.46 dBTP`、black/silence event 0 | 技術的reviewability passed |
+| browser QA | HTTP 200、Range 206、readyState 4、seek/resume、desktop/mobile overflow false、console clean | native captionを375px viewportでも判読 |
 
 review surfaceは同一マシンの
 `http://127.0.0.1:8072/index.html`。再起動時はfrontmatterの
-`review_open_command`を使う。人間へ渡す質問は次の二つだけである。
+`review_open_command`を使う。人間へ渡す質問は次の一つだけである。
 
-1. 内容とテンポは、1本のShortとして成立していますか？
-2. 境界・字幕・音声・映像に違和感はありますか？
+1. 字幕の切替リズムと終わり方が自然になったか、ほかに明確な違和感があれば教えてください。
 
-frame QAでは原動画内の小English captionとOUT-09大字幕の二重表示、および
-`out09_sub_006`の`support`が`suppo / rt`へ途中wrapされることを確認した。safe
-envelope、再生、overflowはpassedだが、これはquestion 2で判断する明示的quality debtで
-あり、acceptanceや一般字幕ruleへ先取りしない。詳細なsource/hash/plan/media/browser
-契約は
+初回feedbackは`bounded_repair_required`、content selectionはreject/accept未確定、
+subtitle presentation/timingとendpoint editは`needs_adjustment`として保持する。修復後は
+二重字幕と`support`途中wrapがなく、last caption `64.360s`・last speech `64.362812s`
+完了後、次scene直前`64.480s`で閉じる。これらはtechnical repair evidenceであり、
+human acceptanceや一般字幕ruleへ先取りしない。詳細なsource/hash/plan/media/browser契約は
 [OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md](output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md)、
 監修向け現状と長期目標は
 [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md)を正本とする。

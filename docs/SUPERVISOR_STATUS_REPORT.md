@@ -1,173 +1,139 @@
-# ClipPipeGen 監修役向け現状報告 — 2026-07-18
+# ClipPipeGen 監修役向け現状報告 — 2026-07-18 OUT-09 Bounded Repair
 
 ## 監修上の結論
 
-OUT-09 second-source repeatabilityは、指定base
-`29a1a51902bf8140862839e077936b908f775167`から独立branchで実装され、実source取得、
-real transcript authority、宣言的plan、1回の実render、media/frame/browser QAまで完了した。
-OUT-08のID `7J5aS_pcBj4`とは異なる`D4i4fjs9PWc`から、27.720秒のreviewable
-1080x1920 Shortを大規模rewriteなしで生成できたため、cross-source plumbingの最初の
-成功例としては十分である。
+OUT-09初回候補へのユーザーfeedbackは、内容選択のreject/acceptではなく、追加字幕の
+presentation/timingと終端editだけに対する`bounded_repair_required`だった。この二点を
+同じsource、主題、開始点、artifact ID、candidate IDのまま、corrective render 1回で
+修復した。
 
-ただし現在状態は`review_ready`で、`accepted`ではない。監修上の次のボトルネックは
-実装や配管ではなく、exact MP4について「1本のShortとして成立するか」「境界・字幕・
-音声・映像に違和感があるか」の二点を人間が判断することにある。原動画内captionとの
-二重表示と`support`の途中wrapを既知quality debtとして隠さず残したため、先にこの判断を
-閉じ、accept / bounded repair / rejectを選ぶべきである。
+状態は
+`OUT09_DISTINCT_REAL_SOURCE_SHORT_REPEATABILITY_REVIEW_READY`から
+`OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY`へ遷移した。これは
+acceptance closureでもproduction reframeでもない。新MP4 SHAだけが次の人間判断対象で、
+human acceptanceはpendingである。
 
-rights、production render、production subtitle design、thumbnail、public/publishing、
-OAuth/upload、portability、H1は閉じたまま。OUT-09成功だけでそれらを前倒ししない。
+## User feedbackの記録
 
-## 同期・branch・scope
-
-| 確認対象 | 実測 | 監修上の意味 |
+| 軸 | 記録値 | 今回の扱い |
 |---|---|---|
-| base | `29a1a51902bf8140862839e077936b908f775167` | Prompt指定baseと一致 |
-| branch | `codex/out-09-second-source-short-repeatability-v0` | mainへmergeせず独立review可能 |
-| scope | ClipPipeGenのみ | NLMYTGenを含む他repoは未読・未編集 |
-| episode storage | ignored `episodes/holoen01_kronii_wisdomteeth_out09_20260718/` | source/media/private review payloadをGitへ入れない |
-| active preview保護 | 既存episode/human previewを削除せず新episodeへ出力 | broad ignored cleanupなし |
-| render budget | actual 1、corrective 0 | one-pass/no-micro-tuningを遵守 |
+| overall | `bounded_repair_required` | 同一candidateの限定修復 |
+| content selection | `not_rejected_not_yet_accepted` | 開始・主題・中心構成を維持 |
+| subtitle presentation/timing | `needs_adjustment` | native-caption-onlyへ変更 |
+| endpoint edit | `needs_adjustment` | 実caption/audio/scene根拠で延長 |
 
-branchのcommit/push/parityはcloseoutで確定する。docsはartifactとbrowser evidenceの確定後に
-一度だけ同期した。
+## Subtitle authorityのbefore/after
 
-## source とtranscriptの選択
+sourceには短周期で切り替わるburned-in English captionがある。初回はその上に
+ClipPipeGenの長文ASSを追加burn-inしたため、二重字幕、切替timing衝突、`support`の
+途中wrapが見えた。
 
-既存在庫にはOUT-08と異なる完成済み実episodeがなかった。repo authorityに既知かつ
-public、認証不要、過去にpipeline実績のあるOuro Kronii source
-`https://www.youtube.com/watch?v=D4i4fjs9PWc`が記録されていたため、既存
-`fetch-source-video` / `fetch-source-audio` routeで新episodeへ再取得した。
-
-| evidence | 結果 | 境界 |
+| 項目 | Before | After |
 |---|---|---|
-| source video | `61c06f75...fd938`、640x360、H.264/AAC、77.786848s | 現行yt-dlpのJS runtime/format制約。production画質主張なし |
-| source audio | `b33b3521...f81b`、mono PCM 16kHz、77.738688s | STT/render用実audio |
-| Vosk EN | real transcript、13 segments | 誤認識が多く表示字幕の正本から除外 |
-| English Original JSON3 | `36bdbf38...83e6` | YouTube auto-caption、human acceptanceではない |
-| imported transcript | `subtitle_track/youtube_subtitles`、24 segments、24 aligned | rolling overlap 21、review status needs_review |
-| edit authority | 3 cuts、context `3 passed` | candidateはcut_002 + cut_003 envelope内 |
+| on-screen authority | native caption + ClipPipeGen長文ASS | `source_native_caption_pixels`のみ |
+| additional burn-in | 7 visible events | 0 visible events / `burn_in_applied=false` |
+| ASS/SRT | 表示とprovenanceを兼用 | 9eventをprovenance/navigation/machine readback sidecar-onlyで保持 |
+| native pixels | reframe後に長文字幕を重ねた | mask/overwrite/changeなし |
+| fallback | 未定義 | 判読不能なら`REFRAME_REQUIRED_NATIVE_CAPTION_NOT_LEGIBLE`で停止 |
 
-Voskを捨てずbase provenanceとしてhash固定しつつ、表示字幕はcaption importへ切り替えた。
-display文はrolling captionを短くdedupeし、linked source segment textのtoken subsequenceで
-あることをbuilderがrender前に検証する。これにより「real providerである」ことと
-「human transcript acceptedである」ことを混同しない。
+共有OUT-05 render pathには、Dialogue 0件のinternal ASS carrierを渡す。packageのASS/SRT
+は実transcript linkageを維持するが、動画には焼かない。1080x1920 frame、216x384 frame、
+375px browser viewportでnative captionを実観測し、mobile video幅341.8pxでも判読できた。
 
-## 実装した再利用境界
+## Endpointのbefore/after
 
-新builderはsource固有ID、時刻、字幕本文をcodeへ埋め込まない。ignored planが次を宣言し、
-generic validatorが読む。
+初回end `58.880s`はnative captionが`Man,`、発話も続きの途中だった。source video、
+caption JSON3、import transcript、audio silenceを突き合わせ、次を確定した。
 
-- OUT-08と異なるsource identity
-- source video/audio material IDsとhash
-- rights/ledger/base Vosk/caption/imported transcript/edit packの6 input paths/hashes
-- context-passed cut authority、allowed range、excluded/unselected ranges
-- source segment linkageとdisplay normalization
-- narrative arc、candidate duration、二つのhuman question
-- rights/public/production/H1のclosed gates
+| evidence | source time |
+|---|---:|
+| last native caption completion | `64.360s` |
+| last speech completion | `64.362812s` |
+| short silence end / next speech | `64.541125s` |
+| next scene and next native caption start | `64.480s` |
+| selected end-exclusive boundary | `64.480s` |
 
-OUT-05のvertical renderer、OUT-06のmanifest self-integrity、OUT-08のatomic promotion、
-navigation/frame QA、ASS/SRT/Range review surfaceを再利用した。source違いに応じて増えた
-実装はplan validationとprovenance readbackであり、renderer分岐ではない。
+開始`31.160s`は維持し、次sceneへ入る直前をendにした。固定padding、fade、SFX、
+freeze frame、追加無音は使っていない。semantic durationは`27.720→33.320s`、mediaは
+`27.733333→33.333333s`になった。
 
-## artifact とvalidation
+## Exact identityとpackage
 
-| 項目 | exact readback |
+| 項目 | 値 |
 |---|---|
-| artifact | `clip-out09-second-source-short-repeatability-v0-001` |
+| artifact / candidate | `clip-out09-second-source-short-repeatability-v0-001` / `candidate_01` |
+| source | YouTube `D4i4fjs9PWc`、video `61c06f75...fd938`、audio `b33b3521...f81b` |
+| superseded MP4 | `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9`、acceptanceなし |
+| repaired MP4 | `3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916`、6,637,874 bytes |
+| plan input | `e9e68b1a9dcd1b1edc0691a5cb43675235aa54f4d1a37ddf36b96a7d93fc53c1` |
+| manifest self-integrity | `440c73dde6b33e9ba9ce63a512e61f5974e947032a507ac17c560d560a028078` |
 | package | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/` |
-| candidate | source `31.160–58.880s`、semantic `27.720s`、media `27.733333s` |
-| video | 5,863,660 bytes、SHA-256 `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9` |
-| format | H.264 High / AAC / 1080x1920 / 30fps / yuv420p / faststart |
-| subtitles | 7 ASS burn-in events + SRT、containment passed、最大3行 |
-| audio | normalized `-14.54 LUFS / -1.48 dBTP` |
-| signal QA | blackdetect event 0、silencedetect event 0 |
-| decode | full video/audio decode exit 0、stderr empty |
-| frame QA | `0.250 / 9.425 / 15.160 / 27.470s` contact sheet |
-| manifest | self-integrity `3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692` |
-| browser | page 200、Range 206、readyState 4、media error null、seek/resume advance、overflow false、console clean |
-| elapsed | builder 47.413s、外側48.01s |
 
-review URLは`http://127.0.0.1:8072/index.html`。再起動commandは次である。
+## Renderとvalidation
+
+| 検証 | 結果 |
+|---|---|
+| corrective render | 1回、追加autonomous repair 0 |
+| elapsed | builder `31.729s`、外側`32.276s` |
+| targeted tests | OUT-09・直接影響・現状面は`41 passed, 2 skipped, 1 deselected` |
+| Ruff | changed scope passed |
+| media | H.264 High/AAC、1080x1920、30fps、yuv420p、33.333333s、faststart |
+| decode/audio | full decode exit 0、`-14.80 LUFS / -1.46 dBTP` |
+| signal | blackdetect 0、silencedetect 0 |
+| frames | start、authority boundary、native-caption switch、endpoint caption、endの5点 |
+| integrity | 10 package files、6 inputs、plan/readback/manifest/hash/self-integrity一致 |
+| HTTP | index 200、MP4 Range 206 / 1024 bytes |
+| browser | readyState 4、error null、Space play/pause、ArrowRight seek、resume前進 |
+| responsive | desktop/mobile overflow false、question 1件、console warning/error 0 |
+
+## Review entrypoint
+
+URLは`http://127.0.0.1:8072/index.html`。
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
 ```
 
-## 現在の判断packet
+最終質問は一つだけである。
 
-人間に求める回答は二つだけ。
+> 字幕の切替リズムと終わり方が自然になったか、ほかに明確な違和感があれば教えてください。
 
-1. 内容とテンポは、1本のShortとして成立していますか？
-2. 境界・字幕・音声・映像に違和感はありますか？
+## Evidence boundaryと残るdebt
 
-判断対象は上記MP4 hashに限定する。frame QAで次を確認済みで、回答時に隠さない。
+- verified: source/hash/provenance、plan/readback/manifest、tests、ffprobe/decode、HTTP/Range。
+- observed: endpoint前後frame/audio、desktop/mobile caption legibility、browser playback/seek。
+- unknown: 修復後exact MP4への人間editorial acceptance。
+- closed: rights、production render、production subtitle design、thumbnail、public/publishing、upload/OAuth。
+- local-only: ignored packageはThank端末のsame-machine evidence。portabilityは未証明。
 
-- source-native小captionとOUT-09大字幕が同時に見える。
-- `out09_sub_006`の`support`が`suppo / rt`へ途中wrapする。
-- safe envelope、media decode、overflow、音量、black/silence、browser再生はpassed。
-- sourceは640x360からのreframe/upscaleで、production画質acceptanceではない。
+技術的に修復したのは二重字幕、途中wrap、長文cue衝突、途中終端。残るquality debtは、
+sourceが640x360取得物であること、native captionの読みやすさがこのsource固有観測であること、
+human acceptanceがpendingであること。人間回答がcaption判読不能を示した場合だけ
+`REFRAME_REQUIRED_NATIVE_CAPTION_NOT_LEGIBLE`、自然終端がなお成立しない場合だけ
+`REFRAME_REQUIRED_NO_BOUNDED_ENDPOINT`として同一candidateの追加micro-tuneを止める。
 
-回答が「成立し、違和感なし」ならexact candidateをinternal acceptへ遷移できる。字幕の
-途中wrapまたは二重表示が違和感なら、同じsource/candidate identityを保つbounded repair
-を1回だけ別sliceで定義する。内容やテンポが成立しないなら、format tuneではなくcandidate
-selection failureとしてrejectし、failure taxonomyへ残す。
+限定テストでは、今回未変更の
+`tests/test_vertical_short_candidate.py::test_out06_reviewed_japanese_break_hints_are_measured_and_semantic`
+が単独でもfailした。期待3行に対して現行測定が2行を返すOUT-06経路の既知監査事項で、
+OUT-09実装ファイルには差分がない。今回のrepairからは1件を明示deselectし、OUT-06の別
+regression auditへ所有を分けた。これはOUT-09の人間reviewを止めないが、全repo greenは
+主張しない。
 
-## 残作業の責任と次の動き
+## 開発を先へ進める目標階段
 
-| 作業 | 目的 | 効果 | 必要条件 | 現在状態 | owner / 次の動き |
-|---|---|---|---|---|---|
-| OUT-09 human review | exact候補のcreative/readability判断 | review_readyをaccept/repair/rejectへ変える | localhost再生と二問回答 | pending | Human ownerが二問へ回答 |
-| subtitle debt classification | 二重captionと途中wrapをsource固有/共通問題へ分ける | one-off micro-tuneを避ける | OUT-09回答 + 次source観測 | dataあり、未一般化 | Agentがportfolio時に集計、Supervisorがrule昇格判断 |
-| source quality/tooling | 640x360取得制約を可視化 | 次sourceのformat選定を安定化 | yt-dlp/JS runtime方針 | diagnostic debt | Tooling ownerがG2前後で必要時だけ扱う |
-| rights clearance | material use判断を人間へ渡す | production/public gateの前提 | source identity、guideline/owner判断 | `pending` | Rights owner。OUT-09 reviewと混ぜない |
-| artifact portability | 別端末reviewを可能にする | same-machine依存を下げる | retention/private transfer方針 | scope外 | Infra owner。現在のacceptance条件ではない |
+| 段階 | 目標 | 完了信号 | 現在状態 |
+|---|---|---|---|
+| G0 | repaired OUT-09 exact decision | 一問回答を新SHAへ結びaccept / reframe / reject | **active / pending** |
+| G1 | OUT-09 closure | 必要ならreframeへ別ID/別sliceで移行し、bounded repairを再反復しない | G0待ち |
+| G2 | 3〜5本real Shorts portfolio | source、caption authority、endpoint、human resultを同じscorecardで比較 | proposal |
+| G3 | cross-source failure taxonomy | subtitle authority、selection、endpoint、reframe、toolingを共通/固有へ分離 | G2後 |
+| G4 | production limitation-lift packet | render acceptanceとsubtitle design acceptanceを別判断可能にする | gate closed |
+| G5 | rights/material-use clearance | exact candidateの利用条件と判断receiptを残す | rights owner待ち |
+| G6 | thumbnail system再開 | 3〜5本比較後にOUT-07 parked directionを再評価 | G2後 |
+| G7 | private/unlisted delivery | visibility、upload receipt、rollbackを伴う安全なhandoff | G4–G6とOAuth承認後 |
+| G8 | episode operator cockpit | source→evidence→decision→deliveryを一画面で追跡 | proposal |
+| G9 | multi-episode production-assist loop | human gate、lineage、receipt、rollbackを複数episodeで再現 | long-term north star |
 
-true blockerはhuman answerだけ。credentials、public state、rights判断、destructive git操作は
-実行していない。
-
-## project全体の現在地
-
-| workflow | 到達済み | 次の本質的gap |
-|---|---|---|
-| source/material | local/URL acquisition、sidecar、ledger、receipt、hash | source横断format/toolingの安定性 |
-| transcript | Vosk JP/EN、subtitle import、review patch、provenance | human correction、speaker、official captionなしsource |
-| editing | cut/context/subtitle/NLE/review packet、宣言的range | creative selection failure taxonomy |
-| output | OUT-03〜OUT-09、real vertical、decode/audio/frame/browser | 3〜5本でのrepeatabilityとproduction acceptance |
-| subtitle | measured wrap、ASS/SRT、source-linked normalization | word boundary、二重caption、production design |
-| thumbnail | OUT-07 provisional usable direction | 3〜5本比較後のcanonical/default判断 |
-| rights | pending readbackをhard gateにせず保持 | human material-use clearance |
-| publishing | integration boundaryのみ | credentials、安全なvisibility、receipt/rollback |
-| operator UX | CLI/docs/dashboard/artifact launcher | episode全体を一画面で再開するcockpit |
-
-## 開発を可能な限り先へ進める目標階段
-
-目標は依存順に置く。遠い目標を記録するが、手前のacceptanceを飛ばさない。
-
-| 段階 | 目標 | 完了信号 | 先に必要なもの | 現在状態 |
-|---|---|---|---|---|
-| G0 | OUT-09 exact human decision | 二問回答をMP4 hashへ結び、accept/repair/rejectを記録 | 現在のreview package | **active / pending** |
-| G1 | OUT-09 bounded closure | 必要なら限定repairを一回だけ行い、OUT-09を閉じる | G0回答 | 未着手。不要ならskip |
-| G2 | 3〜5本real Shorts portfolio | sourceごとのduration、caption authority、wrap、audio、render/browser、human resultを同じscorecardで比較 | G0/G1 closure、追加source承認 | proposal |
-| G3 | cross-source failure taxonomy | selection/transcript/wrap/reframe/toolingを分類し、共通fixとsource例外を分離 | G2の複数結果 | proposal |
-| G4 | production limitation-lift packet | production renderとproduction subtitle designを別々にaccept/rejectできるexact evidence | G2/G3、明示的production scope | gate closed |
-| G5 | rights/material-use clearance | 一候補の利用条件、制限、判断者、receiptが明確 | exact candidate、rights owner | `pending` |
-| G6 | thumbnail system再開 | 3〜5本を比較し、偶然でないcover方向を選ぶ。canonical/defaultは別判断 | G2 portfolio、独立review | OUT-07 parked |
-| G7 | private/unlisted delivery | dry-run、safe visibility、upload/thumbnail receipt、rollback付きhandoff | G4〜G6の必要gate、OAuth承認 | 未実装 |
-| G8 | episode operator cockpit | source→evidence→decision→deliveryを一画面で追跡し、artifact探索を減らす | 安定したG2〜G7 contract | proposal |
-| G9 | multi-episode production-assist loop | 複数episodeでtraceable artifact、human gate、rollback、private/public handoffを再現 | G8、retention/privacy、運用KPI | long-term north star |
-
-G9の最終像は、承認済みsourceを入力し、source/rights/transcript/edit/subtitle/output/
-thumbnail/publish metadataを一つのepisode lineageでつなぎ、各human gateを越えたものだけを
-private/unlisted/public deliveryへ渡し、全操作をreceiptとrollback情報で再現する
-production-assist loopである。公開判断やrights判断そのものは自動化しない。
-
-## 直近の推奨順
-
-1. **Verify** — OUT-09の二問へ回答し、exact identityを閉じる。
-2. **Audit** — 回答結果を二重caption/word-boundary/fidelityのtaxonomyへ記録する。
-3. **Advance** — 別sourceを増やし、3〜5本portfolioを作る。
-4. **Explore** — portfolioからproduction limitation-lift packetを設計する。
-
-今はVerifyが唯一の最短経路。OUT-09判断前にthumbnail、publishing、portability、docs-health、
-H1へ横展開すると、配管成功と品質成功が混ざるため進めない。
+H1へ渡せるdataはbefore/after SHA、caption mode、endpoint timing、source resolution、
+render elapsed、desktop/mobile/browser readiness、human acceptance pendingのみ。H1を今回
+実行したり、native-caption-onlyをproduction policyへ一般化したりしない。

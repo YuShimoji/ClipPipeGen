@@ -6,12 +6,13 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-09 note: OUT-08と異なる実source `D4i4fjs9PWc` / episodeから、宣言的planと
-6入力hash、real imported English caption transcript、allowed/excluded rangeをrender前に
-検証し、27.720秒のH.264/AAC 1080x1920候補を1本生成した。media/frame/browser QAは
-passed、human reviewはpending。原動画内captionとの二重表示と`support`の途中wrapは
-人間が判断するquality debtとして保持し、rights、production、thumbnail、public/
-publishing gateは閉じたまま。詳細は
+OUT-09 note: OUT-08と異なる実source `D4i4fjs9PWc` / episodeから生成した候補へ、
+ユーザー指摘の二重字幕・切替timingと不自然な終端だけを1回のbounded repairで反映した。
+画面上のsubtitle authorityはsource-native caption pixelsのみ、ASS/SRTはprovenance
+sidecarのみ。開始`31.160s`を維持し、最後のcaption/発話後・次scene直前の`64.480s`へ
+終端を延長した33.320秒候補で、media/frame/mobile/browser QAはpassed、human reviewは
+pending。旧MP4 `300ee360...e0c9`はsupersededで、新MP4 `3e7ef9d8...2916`だけを判断対象に
+する。rights、production、thumbnail、public/publishing gateは閉じたまま。詳細は
 [docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md](docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md)。
 
 OUT-08 note: authoritative episode evidence の未使用範囲から、重複しない 2 本の

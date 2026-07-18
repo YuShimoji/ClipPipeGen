@@ -173,6 +173,49 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                 "provider": "youtube_subtitles",
                 "real_transcript": True,
             },
+            "user_feedback": {
+                "overall": "bounded_repair_required",
+                "content_selection": "not_rejected_not_yet_accepted",
+                "subtitle_presentation_timing": "needs_adjustment",
+                "endpoint_edit": "needs_adjustment",
+            },
+            "repair": {
+                "kind": "bounded_subtitle_authority_and_endpoint",
+                "superseded_predecessor": {
+                    "candidate_id": "candidate_01",
+                    "source_start_seconds": 10.0,
+                    "source_end_seconds": 32.0,
+                    "duration_seconds": 22.0,
+                    "media_duration_seconds": 22.0,
+                    "video_sha256": out09.PREDECESSOR_MP4_SHA256,
+                    "human_acceptance_claimed": False,
+                },
+                "subtitle_presentation": {
+                    "display_authority": out09.SUBTITLE_DISPLAY_AUTHORITY,
+                    "additional_burn_in": False,
+                    "native_caption_pixels_modified": False,
+                    "ass_srt_role": (
+                        "provenance_navigation_machine_readback_sidecar_only"
+                    ),
+                    "scope": "source_specific",
+                    "fallback_if_not_legible": (
+                        "REFRAME_REQUIRED_NATIVE_CAPTION_NOT_LEGIBLE"
+                    ),
+                },
+                "endpoint_authority": {
+                    "basis": (
+                        "first_scene_transition_after_last_caption_and_speech"
+                    ),
+                    "last_native_caption_end_seconds": 31.8,
+                    "last_speech_end_seconds": 31.9,
+                    "silence_end_seconds": 32.1,
+                    "next_scene_start_seconds": 32.0,
+                    "next_native_caption_start_seconds": 32.0,
+                    "selected_source_end_seconds": 32.0,
+                    "fixed_padding_used": False,
+                    "fade_sfx_freeze_or_silence_added": False,
+                },
+            },
             "selection_authority": {
                 "allowed_ranges": [
                     {
@@ -233,7 +276,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                     },
                 ],
             },
-            "review_questions": ["Question one?", "Question two?"],
+            "review_questions": [out09.REPAIR_REVIEW_QUESTION],
             "boundaries": {
                 "rights_status": "pending",
                 "production_candidate": False,
@@ -253,6 +296,9 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
 
 
 def _fake_render(**kwargs) -> dict:
+    render_ass = Path(kwargs["ass_path"]).read_text(encoding="utf-8")
+    assert Path(kwargs["ass_path"]).name == "no_additional_burn_in.ass"
+    assert "Dialogue:" not in render_ass
     Path(kwargs["video_path"]).write_bytes(b"out09-video")
     Path(kwargs["frame_sheet_path"]).write_bytes(b"out09-frame-sheet")
     duration = float(kwargs["expected_duration"])
@@ -327,6 +373,14 @@ def test_builds_one_hash_bound_second_source_package(tmp_path: Path) -> None:
     }
     assert readback["candidate"]["duration_seconds"] == 22.0
     assert readback["subtitle"]["count"] == 3
+    assert readback["subtitle"]["display_authority"] == (
+        "source_native_caption_pixels"
+    )
+    assert readback["subtitle"]["burn_in_applied"] is False
+    assert readback["subtitle"]["visible_additional_overlay_event_count"] == 0
+    assert readback["repair"]["superseded_predecessor"]["video_sha256"] == (
+        out09.PREDECESSOR_MP4_SHA256
+    )
     assert readback["render"]["execution_count"] == 1
     assert readback["render"]["corrective_pass_count"] == 0
     assert readback["selection_authority"]["checked_before_render"] is True
@@ -334,8 +388,8 @@ def test_builds_one_hash_bound_second_source_package(tmp_path: Path) -> None:
 
     html = (output / "index.html").read_text(encoding="utf-8")
     assert html.count("<video ") == 1
-    assert html.count("data-review-question=") == 2
-    assert "Question one?" in html and "Question two?" in html
+    assert html.count("data-review-question=") == 1
+    assert out09.REPAIR_REVIEW_QUESTION in html
     manifest = json.loads((output / "candidate_manifest.json").read_text(encoding="utf-8"))
     assert manifest["manifest_self_integrity"]["sha256"] == out09._canonical_manifest_self_hash(manifest)
     for row in manifest["files"]:
@@ -347,6 +401,7 @@ def test_rejects_excluded_overlap_before_render(tmp_path: Path) -> None:
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
     plan["candidate"]["source_start_seconds"] = 9.0
     plan["candidate"]["duration_seconds"] = 23.0
+    plan["repair"]["superseded_predecessor"]["source_start_seconds"] = 9.0
     plan["selection_authority"]["allowed_ranges"][0]["source_start_seconds"] = 9.0
     plan["candidate"]["subtitles"][0]["source_start_seconds"] = 9.0
     _write_json(fixture["plan"], plan)
@@ -379,6 +434,32 @@ def test_rejects_non_provenance_subtitle_before_render(tmp_path: Path) -> None:
     plan["candidate"]["subtitles"][1]["text"] = "Words not present in source"
     _write_json(fixture["plan"], plan)
     with pytest.raises(out09.SecondSourceShortRepeatabilityError, match="not transcript-backed"):
+        _build(fixture)
+    assert not fixture["output"].exists()
+
+
+def test_rejects_additional_burn_in_before_render(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["repair"]["subtitle_presentation"]["additional_burn_in"] = True
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="source-native caption authority is incomplete",
+    ):
+        _build(fixture)
+    assert not fixture["output"].exists()
+
+
+def test_rejects_endpoint_that_cuts_before_speech_completion(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["repair"]["endpoint_authority"]["last_speech_end_seconds"] = 32.2
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="does not preserve caption/speech/scene completion",
+    ):
         _build(fixture)
     assert not fixture["output"].exists()
 
