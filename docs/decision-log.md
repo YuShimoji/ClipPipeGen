@@ -3,10 +3,36 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-15
+last_touched: 2026-07-19
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-19 — OUT-09 exact candidateをaccepted_internalとしてcanonical mainへ閉じる
+
+Web Supervisor経由のユーザー自由記述を、MP4 SHA
+`b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`へbindした。
+字幕と音声の一致、短い字幕の切替と可読性、初期自動再生・突然の音がないこと、foreground
+server accessの維持、発話途中ではない終端はいずれもpassし、overallをinternal review用途で
+acceptする。`human_review_pending=false`、`acceptance_granted=true`、
+`candidate_01_acceptance=accepted_internal`とする。
+
+上下のblur/mosaic状canvasは、source `640x360`の下部74px native caption bandを除外し、
+`0,0,640,286`だけで余白を補完して元焼き込み字幕とshort cueの二重表示を防ぐ
+source-specific処理として今回だけacceptableだった。記録値は
+`source_specific_caption_band_suppression_observed_acceptable_not_generalized`。美観、共通Shorts
+design、caption bandのないsource、重要内容とcropが衝突するsource、production subtitle
+design/image qualityへは昇格しない。
+
+merge-preflightではorigin/main `29a1a519`とsource branch `17436ad`を同一toolchain/font環境で
+比較し、既知OUT-06 reviewed-wrap 2件が双方で同一失敗となることを確認した。optional policy
+未指定のdefault render commandもSHA `a863ee1a...7ebf`で一致したため、branch-only regressionは
+false。OUT-06 debtはparkし、OUT-09または次製品レーンへ便乗修正しない。
+
+次候補は`OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION`一件だけをdata-onlyで保持する。本決定は
+OUT-10実装、rights、production、thumbnail、public/publishing、portabilityの承認を含まない。
+根拠: user acceptance + `docs/RUNTIME_STATE.md` current capsule + exact package hash readback +
+origin/main対source branch regression comparison。
 
 ## 2026-07-17 — sync auditはOUT-08 closureを維持し、OUT-09をproposalのままにする
 

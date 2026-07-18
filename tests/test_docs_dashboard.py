@@ -349,7 +349,7 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         if path.name == "CURRENT_HANDOFF.md":
             assert f"active_artifact: {current_out09_artifact}" in text
             assert "local_artifact_available: true" in text
-            assert "human_entrypoint: http://127.0.0.1:8072/index.html" in text
+            assert "human_entrypoint: null" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
@@ -1616,32 +1616,26 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["canonical_main_head"] == (
-        "resolve_origin_main_at_resume"
+        "branch_head_after_out09_acceptance_fast_forward"
     )
     assert status["current_focus"]["canonical_main_baseline"] == (
-        "OUT-08 accepted internal closure from source tip "
-        "2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2"
+        "OUT-09 accepted internal exact SHA "
+        "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "out09_stable_manual_safe_review_ready"
+        "out09_accepted_internal_canonical_main"
     )
     assert status["current_focus"]["review_status"] == (
-        "OUT09_STABLE_MANUAL_SAFE_REVIEW_READY"
+        "accepted_internal"
     )
     assert status["current_focus"]["decision_required"] == (
-        "two_bounded_out09_safe_review_questions"
+        "none_out09_accepted_internal"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "OUT09_TWO_SAFE_REVIEW_QUESTIONS"
+        ""
     )
-    assert status["current_focus"]["human_entrypoint"] == (
-        "http://127.0.0.1:8072/index.html"
-    )
-    assert status["current_focus"]["review_open_command"] == (
-        "powershell -NoProfile -ExecutionPolicy Bypass -File "
-        "episodes\\holoen01_kronii_wisdomteeth_out09_20260718\\review\\"
-        "out09_second_source_short_repeatability\\open_preview.ps1 -Serve -Port 8072"
-    )
+    assert status["current_focus"]["human_entrypoint"] == ""
+    assert status["current_focus"]["review_open_command"] == ""
     assert status["current_focus"]["machine_readback"] == (
         "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/"
         "out09_second_source_short_repeatability/candidate_readback.json"
@@ -1657,7 +1651,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "operator_foreground_start_required_server_stopped_cleanly_after_validation"
+        "stopped_after_accepted_internal_closure"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
@@ -1679,7 +1673,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
-    assert status["current_focus"]["accepted_baseline_sha256"] == ""
+    assert status["current_focus"]["accepted_baseline_sha256"] == (
+        "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
+    )
     assert status["current_focus"]["recommended_cover_path"] == ""
     assert status["current_focus"]["recommended_cover_sha256"] == ""
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""

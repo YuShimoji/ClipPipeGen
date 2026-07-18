@@ -6,12 +6,12 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-09`
 - artifact: `clip-out09-second-source-short-repeatability-v0-001`
-- state: `OUT09_STABLE_MANUAL_SAFE_REVIEW_READY`
+- state: `OUT09_ACCEPTED_INTERNAL_CANONICAL_MAIN`
 
-- canonical main: `resolve_origin_main_at_resume`
-- canonical baseline: `OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2`
-- canonical status: `out09_stable_manual_safe_review_ready`
-- review status: `OUT09_STABLE_MANUAL_SAFE_REVIEW_READY`
+- canonical main: `branch_head_after_out09_acceptance_fast_forward`
+- canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
+- canonical status: `out09_accepted_internal_canonical_main`
+- review status: `accepted_internal`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -29,13 +29,13 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cross-machine resume: `tracked_builder_docs_portable_ignored_review_payload_same_machine_only`
 - active rebuild contract: ``
 - evidence revision: `kronii-61c06f75-out09-second-source-repeatability-v0`
-- accepted baseline SHA-256: ``
+- accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `two_bounded_out09_safe_review_questions`
-- next review: `OUT09_TWO_SAFE_REVIEW_QUESTIONS`
+- decision required: `none_out09_accepted_internal`
+- next review: ``
 
 ## Feature Table
 

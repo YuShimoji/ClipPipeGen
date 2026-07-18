@@ -6,8 +6,8 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-09 is the active
-same-machine second-source one-video review. OUT-08 is closed accepted-internal
+current artifact, then use an artifact-specific launcher. OUT-09 is closed
+accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
 baseline evidence. OUT-07 is parked; its Thank native Shorts-cover
 semantic direction proxy below is historical local evidence, not an active
 review or a selected thumbnail. Historical
@@ -31,7 +31,7 @@ opened by the root launcher.
 | machine_output | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json` |
 | candidate_plan | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_plan.json`; original ignored input at episode root. |
 | candidate_manifest | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_manifest.json`; self-integrity `50ff14e5ee9ffae0ab1cb31f33a584c346026d7674c360546302e10de24e62ff`. |
-| state | `OUT09_STABLE_MANUAL_SAFE_REVIEW_READY`; same logical candidate after access-only stability/playback-safety repair; `human_review_pending=true`; `acceptance_granted=false`. |
+| state | `OUT09_ACCEPTED_INTERNAL_CANONICAL_MAIN`; same logical candidate after caption/access repair; `human_review_pending=false`; `acceptance_granted=true`; `review_status=accepted_internal`. |
 | source_identity | YouTube ID `D4i4fjs9PWc`, different from OUT-08 `7J5aS_pcBj4`; title `【Kroniicle Animation】 Wisdom Teeth Removal Woes`; source video SHA-256 `61c06f75cf914deb0f5cc358c9a2405e2206166b10724533aff9c478f49fd938`; source audio SHA-256 `b33b3521e495edf13675b91bbbd6b89642ea28e46cd38555e77862cd6315f81b`. |
 | transcript | Base Vosk EN real transcript retained for provenance; displayed text uses imported English Original JSON3 through `subtitle_track/youtube_subtitles`. Human transcript acceptance is not claimed. |
 | selection_authority | Continuous `31.160–64.480s`, semantic `33.320s`, `cut_002` + `cut_003`, 12 linked caption segments. Unselected `0.000–31.160s` and `64.480–77.786848s` ranges were overlap-checked before render. Endpoint is unchanged and remains the first scene transition after caption `64.360s` and speech `64.362812s` complete. |
@@ -42,14 +42,18 @@ opened by the root launcher.
 | media_validation | Full decode and faststart passed; output `-14.80 LUFS / -1.46 dBTP`; blackdetect/silencedetect event 0; ten frame samples extracted. |
 | browser_validation | Clean human URL remained paused/muted at currentTime 0 after 2.1 seconds, manual Space play advanced currentTime, close/reopen restored the safe initial state, exact QA query played muted then paused, desktop and 375px-class mobile overflow was false, exactly two review questions were present, and console warning/error count was 0. |
 | repair_result | Access-only update changed readback/index/opener/server/manifest while MP4 SHA `b6b90a4b...73da50`, ASS SHA `03df9259...9ea9`, SRT SHA `de1290f2...016f`, 27 cues, source range, endpoint, codec, and duration remained unchanged. Unknown port owners are not killed and no alternate port is selected. Browser media-range disconnects are treated as normal client exits. |
-| review_questions | 1. ページを開いた直後に動画や音が勝手に始まらず、レビュー中にserverが維持されるか。 2. 手動で再生・音声解除した後、字幕の切替・可読性・終わり方に明確な違和感があるか。 |
-| next_action | Collect only the two bounded safe-review answers and bind them to MP4 SHA `b6b90a4b...73da50`. Do not infer rights, production/public use, publishing, thumbnail, portability, or successor acceptance. |
+| acceptance | User confirmed subtitle/audio agreement, expected short-cue switching/readability, no immediate autoplay or sudden audio, foreground-server access continuity, and a complete non-mid-speech endpoint; overall accepted for internal review. Bound only to exact MP4 SHA `b6b90a4b...73da50`. |
+| source_specific_observation | `source_specific_caption_band_suppression_observed_acceptable_not_generalized`: the upper/lower blurred or mosaic-like canvas is the result of excluding the lower 74px native-caption band and filling 9:16 space from source rect `0,0,640,286`. Acceptable here only; not a shared aesthetic/design rule or production subtitle acceptance. |
+| merge_preflight | origin/main `29a1a519` and branch `17436ad` produced the same two known OUT-06 wrap failures; default no-policy vertical render command SHA matched at `a863ee1a...7ebf`; branch-only regression false. |
+| review_questions | Consumed by the accepted internal decision; no further OUT-09 review loop is open. |
+| next_action | Keep `OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION` as the only data-only successor candidate. Do not implement without explicit approval or infer rights, production/public use, publishing, thumbnail, portability, or generalized caption-suppression acceptance. |
 
 Boundary flags remain false or pending:
 
 - `internal_review_only=true`
-- `human_review_pending=true`
-- `acceptance_granted=false`
+- `human_review_pending=false`
+- `acceptance_granted=true`
+- `candidate_01_acceptance=accepted_internal`
 - `human_transcript_acceptance_claimed=false`
 - `rights_status=pending`
 - `production_candidate=false`
@@ -59,7 +63,7 @@ Boundary flags remain false or pending:
 - `public_ready=false`
 - `publishing_acceptance=false`
 - `publish_attempted=false`
-- `h1_successor_data_only=true`
+- `out10_successor_data_only=true`
 
 ## `clip-out08-real-unused-range-short-minibatch-v0-001`
 
