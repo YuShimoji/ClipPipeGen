@@ -9,12 +9,14 @@ unchanged opening plus authoritative `cut_003` as one complete same-machine
 1080x1920 internal narrative candidate, with the 2026-07-12 subtitle-wrap and
 seekability findings repaired while rights, production, subtitle-design, public,
 and publishing gates remain closed. OUT-07 is the parked, viable but noncanonical
-cover predecessor. OUT-08 is the current human-review slice: two content-distinct
-vertical candidates built from real source ranges not used by OUT-06.
+cover predecessor. OUT-08 is the closed accepted-internal two-candidate baseline.
+OUT-09 is the current human-review slice: one declarative vertical candidate from
+a different real source/episode, with hash-bound authority and cross-source QA.
 
 Start here when resuming from another terminal:
 
-- `OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` - active target-2/actual-2 review package, exact unused-range authority, media/browser evidence, one human question, and closed gates.
+- `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` - active second-source review package, source/transcript/hash provenance, media/frame/browser evidence, exactly two human questions, quality debt, and closed gates.
+- `OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` - closed accepted-internal target-2/actual-2 baseline, exact unused-range authority, media/browser evidence, and closed gates.
 - `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - parked OUT-07 closure, historical Thank semantic proxy, unchanged strict exact-baseline route, and closed external actions.
 - `OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` - tracked public URLs and structural annotations only; third-party pixels remain ignored locally.
 - `OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md` - accepted historical three-cut delivery-candidate contract, exact authority/timeline, build command, package, review surface, and closed gates.
@@ -82,6 +84,18 @@ rejected and is not promoted. The navigation frames are not thumbnails. Human
 review now decides whether each result is a coherent editing unit and whether
 tempo, boundary, subtitle, or audio discomfort remains. Rights, production,
 subtitle-design, public, publishing, and upload gates stay closed.
+
+OUT-09 starts from the closed OUT-08 baseline but uses a different YouTube source
+identity (`D4i4fjs9PWc`) and episode. `build-second-source-short-repeatability`
+reads one declarative ignored plan, verifies six authority hashes, material
+ledger provenance, a real imported caption transcript, context-passed cut
+envelopes, allowed/excluded ranges, and transcript-backed display normalization
+before invoking the shared vertical render path. The current ignored package has
+one 27.720-second H.264/AAC 1080x1920 candidate, seven subtitle events, frame QA,
+manifest/readback, and a single-video Range-capable review page. Human review is
+pending; production, rights, public, publishing, thumbnail, and portability gates
+remain closed. See `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` for exact hashes,
+commands, browser evidence, and the observed subtitle word-split debt.
 
 Generated files:
 

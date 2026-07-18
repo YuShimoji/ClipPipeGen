@@ -2,64 +2,65 @@
 id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
-status: closed
-health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
-progress_pct: 100
-last_touched: 2026-07-17
-state_revision: out08-accepted-internal-canonical-main-2026-07-17
-contract_repair_status: OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY
-current_slice: OUT-08
-phase: accepted_closure
-canonical_status: accepted_internal_out08_closed
-active_branch: main
-verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
-source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
-closure_branch: codex/out-08-accepted-closure-v0
-remote_resume_contract: pull_origin_main_then_read_current_handoff
+status: active
+health: OUT09_SECOND_SOURCE_REVIEW_READY
+progress_pct: 90
+last_touched: 2026-07-18
+state_revision: out09-second-source-review-ready-2026-07-18
+contract_repair_status: OUT09_INPUT_HASH_RANGE_PROVENANCE_GUARDS_PASSED
+current_slice: OUT-09
+phase: human_review_pending
+canonical_status: out08_closed_out09_review_ready
+active_branch: codex/out-09-second-source-short-repeatability-v0
+verified_implementation_head: branch_head_after_push
+source_branch_tip: 29a1a51902bf8140862839e077936b908f775167
+closure_branch: null
+remote_resume_contract: fetch_then_switch_out09_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: b3cec5d45425fe4ea1bcb447a93c15a4c071410d
-sync_audit_status: main_origin_parity_clean_tracked
-sync_audit_live_out08_package: present_exact_candidate_hashes_match
+sync_audit_head: 29a1a51902bf8140862839e077936b908f775167
+sync_audit_status: out09_branch_push_at_closeout
+sync_audit_live_out08_package: historical_accepted_package_untouched
+sync_audit_live_out09_package: present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-08 accepted internal canonical closure
-human_entrypoint: null
+current_title: OUT-09 second-source Short repeatability human review
+human_entrypoint: http://127.0.0.1:8072/index.html
 portable_entrypoint: null
-review_open_command: null
-review_server_restart_command: null
-machine_readback: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_readback.json
+review_open_command: powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
+review_server_restart_command: uvx python -m src.cli.serve_review --root episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability --port 8072
+machine_readback: episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none_out08_closed
-review_status: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
-review_scope: 修復後の exact candidate 01 / 02 は、一本の編集単位、テンポ、開始・境界・終端、字幕可読性、音声・映像連続性について人間受入済み。
-reviewed_at: 2026-07-17 JST
+decision_required: two_bounded_out09_human_questions
+review_status: OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY
+review_scope: exact candidate_01について、内容とテンポが1本のShortとして成立するか、境界・字幕・音声・映像に違和感があるかの二点だけを判断する。
+reviewed_at: null
 remote_code_complete: true
-local_artifact_available: false
-local_artifact_role: optional_same_machine_historical_evidence_not_acceptance_prerequisite
+local_artifact_available: true
+local_artifact_role: active_same_machine_review_evidence_human_acceptance_pending
 portable_local_artifact_available: false
-cross_machine_resume_class: accepted_decision_portable_media_optional
-cross_host_resume_status: acceptance_preserved_local_review_payload_optional
+cross_machine_resume_class: tracked_builder_docs_portable_ignored_review_payload_same_machine_only
+cross_host_resume_status: review_requires_rebuild_or_private_transfer_not_yet_accepted
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: thank-6f78657e-out08-real-unused-range-minibatch-v1
+evidence_revision: kronii-61c06f75-out09-second-source-repeatability-v0
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
-local_verified_host: null
-local_artifact_evidence_receipt: episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/batch_manifest.json
-local_package_requirement: none_for_out08_closure
+local_verified_host: DESKTOP-H53P1T4
+local_artifact_evidence_receipt: episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_manifest.json
+local_package_requirement: required_for_current_out09_human_review
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-15
+last_verified_at: 2026-07-18
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: http://127.0.0.1:8071/index.html
+last_verified_host_entrypoint: http://127.0.0.1:8072/index.html
 historical_last_verified_host_entrypoint: null
 pause_reason: null
 exact_baseline_available: null
@@ -68,43 +69,57 @@ accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: both_candidates_accepted_internal
-reviewed_by_human: true
-human_review_pending: false
-acceptance_granted: true
-batch_acceptance: accepted_all_internal
-candidate_01_acceptance: accepted_internal
-candidate_02_acceptance: accepted_internal
-accepted_candidate_ids: [candidate_01, candidate_02]
+human_review_decision: pending_two_bounded_questions
+reviewed_by_human: false
+human_review_pending: true
+acceptance_granted: false
+batch_acceptance: null
+candidate_01_acceptance: pending_human_review
+candidate_02_acceptance: null
+accepted_candidate_ids: []
 winner: null
-subtitle_debt_acceptance_scope: sub_067_sub_068_accepted_for_exact_renders_only_not_global_rule
+subtitle_debt_acceptance_scope: out09_sub_006_support_word_split_pending_human_review_not_global_rule
 cover_review_status: null
-review_server_status: not_required_out08_closed
-next_review_due: OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_proposal_only
-next_action: OUT-09 second-source repeatability を後継proposal dataとして検討する。承認前に実装しない。
-active_artifact: clip-out08-real-unused-range-short-minibatch-v0-001
-current_review_component: closed_accepted_internal_exact_candidates
-target_candidate_count: 2
+review_server_status: running_localhost_8072_at_last_verification
+next_review_due: OUT09_TWO_BOUNDED_HUMAN_QUESTIONS
+next_action: exact candidate_01を開き、内容とテンポの成立可否、境界・字幕・音声・映像の違和感の二点だけを回答する。
+active_artifact: clip-out09-second-source-short-repeatability-v0-001
+current_review_component: second_source_candidate_01
+target_candidate_count: 1
 minimum_candidate_count: 1
-actual_candidate_count: 2
-candidate_01_semantic_duration_seconds: 28.295
-candidate_01_media_duration_seconds: 28.266667
-candidate_01_subtitle_count: 17
-candidate_01_sha256: f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a
-candidate_02_semantic_duration_seconds: 53.454
-candidate_02_media_duration_seconds: 53.466667
-candidate_02_subtitle_count: 54
-candidate_02_sha256: 47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b
-navigation_frame_role: navigation_only_not_thumbnail_acceptance
-cut009_final_cut_decision: reject
-cut009_usage: fully_excluded_no_source_time_overlap
+actual_candidate_count: 1
+candidate_01_semantic_duration_seconds: 27.720
+candidate_01_media_duration_seconds: 27.733333
+candidate_01_subtitle_count: 7
+candidate_01_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
+candidate_02_semantic_duration_seconds: null
+candidate_02_media_duration_seconds: null
+candidate_02_subtitle_count: null
+candidate_02_sha256: null
+source_provider_id: D4i4fjs9PWc
+source_provider_id_different_from_out08: true
+source_video_sha256: 61c06f75cf914deb0f5cc358c9a2405e2206166b10724533aff9c478f49fd938
+source_audio_sha256: b33b3521e495edf13675b91bbbd6b89642ea28e46cd38555e77862cd6315f81b
+source_video_resolution: 640x360
+source_caption_provider: youtube_subtitles
+source_caption_review_status: needs_review
+candidate_plan_sha256: 6b9b48ed05db8a72d0647508d65629766af531fd9b1cf0bca53e3fc479e205e9
+candidate_manifest_self_integrity: 3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692
+render_execution_count: 1
+corrective_pass_count: 0
+build_elapsed_seconds: 47.413
+quality_debt: source_native_caption_duplicates_large_caption_and_out09_sub_006_word_split
+h1_successor_data_only: true
+navigation_frame_role: representative_navigation_only_not_thumbnail_acceptance
+out08_cut009_final_cut_decision: reject
+out08_cut009_usage: fully_excluded_no_source_time_overlap
 authority_mutated: false
-media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed
-blackdetect_readback: no_black_interval_at_or_above_0_5_seconds
-silencedetect_readback: no_silence_interval_at_or_above_1_5_seconds_at_minus_50dB
-browser_readback: final_package_readyState4_error_null_desktop_mobile_no_overflow_console_clean_http200_range206_direct_seek_not_observed
+media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed_duration_27_733333
+blackdetect_readback: event_0_at_d0_5_pix_th0_10
+silencedetect_readback: event_0_at_minus50dB_d1_0
+browser_readback: readyState4_error_null_no_horizontal_overflow_console_clean_http200_range206_seek_resume_advanced
 http_range_readback: 206_partial_content_passed
-current_baseline_acceptance: accepted_all_internal
+current_baseline_acceptance: human_review_pending
 accepted_baseline_sha256: null
 recommended_cover_path: null
 recommended_cover_sha256: null
@@ -134,12 +149,12 @@ historical_proxy_source_timestamp_seconds: 22.858
 historical_proxy_actual_decode_seconds: 22.866667
 proxy_classification: null
 historical_proxy_classification: cover_direction_semantic_proxy
-local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
-planner_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
+out07_local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
+out07_planner_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
 source_byte_equivalence_claimed: null
 out07_source_byte_equivalence_claimed: false
 current_reference_revision: tracked_corpus_examples_only_not_canonical_design_rules
-current_determinism_status: thank_proxy_same_fixed_inputs_two_build_all_files_match_manifest_passed
+out07_determinism_status: thank_proxy_same_fixed_inputs_two_build_all_files_match_manifest_passed
 historical_source_host_out07_artifact: clip-out07-shorts-poster-frame-direction-proof-v0-001
 historical_source_host_out07_readback_sha256: 43c9f1085fe6d5c9dacf8834cc9a491e6c30e310e4168baeb7a43dc52a3faefb
 historical_source_host_operator_pack_artifact: clip-out07-internal-operator-delivery-pack-v0-001
@@ -225,6 +240,42 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-18 OUT-09 Second-Source Review Ready
+
+OUT-08 accepted-internal closureを変更せず、指定base
+`29a1a51902bf8140862839e077936b908f775167`から
+`codex/out-09-second-source-short-repeatability-v0`を作成した。OUT-08の
+YouTube ID `7J5aS_pcBj4`とは異なる既知source `D4i4fjs9PWc`を既存adapterで取得し、
+base Vosk EN transcriptとYouTube English Original caption importを保持した新episodeで、
+1本の27.720秒vertical candidateを生成した。
+
+| 対象 | 現在値 | 意味 |
+|---|---|---|
+| source identity | `D4i4fjs9PWc` / video `61c06f75...fd938` / audio `b33b3521...f81b` | OUT-08とは別source。ledgerと実file hash一致 |
+| candidate | source `31.160–58.880s` / media `27.733333s` / 7 subtitles | 12〜60秒条件内、1本の連続構成 |
+| output | H.264/AAC、1080x1920、30fps、yuv420p、faststart | internal review media contract passed |
+| candidate identity | `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9` | 人間判断を結ぶexact MP4 hash |
+| manifest | self-integrity `3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692` | package payloadのhash readback |
+| actual render | 1回、corrective 0、builder `47.413s` | one-pass/no-micro-tuningを維持 |
+| media QA | full decode/faststart passed、`-14.54 LUFS / -1.48 dBTP`、black/silence event 0 | 技術的reviewability passed |
+| browser QA | HTTP 200、Range 206、readyState 4、seek/resume advance、overflow false、console clean | localhost direct review passed |
+
+review surfaceは同一マシンの
+`http://127.0.0.1:8072/index.html`。再起動時はfrontmatterの
+`review_open_command`を使う。人間へ渡す質問は次の二つだけである。
+
+1. 内容とテンポは、1本のShortとして成立していますか？
+2. 境界・字幕・音声・映像に違和感はありますか？
+
+frame QAでは原動画内の小English captionとOUT-09大字幕の二重表示、および
+`out09_sub_006`の`support`が`suppo / rt`へ途中wrapされることを確認した。safe
+envelope、再生、overflowはpassedだが、これはquestion 2で判断する明示的quality debtで
+あり、acceptanceや一般字幕ruleへ先取りしない。詳細なsource/hash/plan/media/browser
+契約は
+[OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md](output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md)、
+監修向け現状と長期目標は
+[SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md)を正本とする。
 
 ## 2026-07-17 Sync and Development Readiness
 

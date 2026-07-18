@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-08 is the active
-same-machine two-video review. OUT-07 is parked; its Thank native Shorts-cover
+current artifact, then use an artifact-specific launcher. OUT-09 is the active
+same-machine second-source one-video review. OUT-08 is closed accepted-internal
+baseline evidence. OUT-07 is parked; its Thank native Shorts-cover
 semantic direction proxy below is historical local evidence, not an active
 review or a selected thumbnail. Historical
 ED-10 proof launchers remain retained evidence; for the accepted ED-10o focused
@@ -17,6 +18,47 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out09-second-source-short-repeatability-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-09 Second-Source Short Repeatability v0 |
+| purpose | Verify that the existing vertical Short path can produce one reviewable 12–60 second candidate from a real source/episode distinct from OUT-08, without a source-specific renderer branch or a broad pipeline rewrite. |
+| storage class | Tracked generic builder/CLI/tests/contract plus one ignored same-machine package. Source media, captions, transcript/edit authority, plan, MP4/ASS/SRT/JPG/readback/manifest/page remain under ignored `episodes/`. |
+| repo_relative_path | `src/integrations/render/second_source_short_repeatability.py`; `src/cli/build_second_source_short_repeatability.py`; `docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` |
+| local_artifact_path | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/` |
+| machine_output | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json` |
+| candidate_plan | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_plan.json`; original ignored input at episode root. |
+| candidate_manifest | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_manifest.json`; self-integrity `3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692`. |
+| state | `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY`; one candidate; `human_review_pending=true`; `acceptance_granted=false`. |
+| source_identity | YouTube ID `D4i4fjs9PWc`, different from OUT-08 `7J5aS_pcBj4`; title `【Kroniicle Animation】 Wisdom Teeth Removal Woes`; source video SHA-256 `61c06f75cf914deb0f5cc358c9a2405e2206166b10724533aff9c478f49fd938`; source audio SHA-256 `b33b3521e495edf13675b91bbbd6b89642ea28e46cd38555e77862cd6315f81b`. |
+| transcript | Base Vosk EN real transcript retained for provenance; displayed text uses imported English Original JSON3 through `subtitle_track/youtube_subtitles`. Human transcript acceptance is not claimed. |
+| selection_authority | Continuous `31.160–58.880s`, semantic `27.720s`, `cut_002` + `cut_003`, 10 linked caption segments. Unselected `0.000–31.160s` and `58.880–77.786848s` ranges were overlap-checked before render. |
+| candidate | Media `27.733333s`, 7 subtitles, H.264/AAC 1080x1920 30fps yuv420p faststart; MP4 SHA-256 `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9`; 5,863,660 bytes. |
+| open_command | `powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072` |
+| preview_url | `http://127.0.0.1:8072/index.html`; verified through `src.cli.serve_review` with page HTTP `200` and MP4 Range `206`. Listener state is not durable acceptance evidence. |
+| media_validation | Full decode and faststart passed; output `-14.54 LUFS / -1.48 dBTP`; blackdetect/silencedetect event 0; four frame samples extracted. |
+| browser_validation | One video reached `readyState=4`, media error null, seek/resume advanced currentTime, horizontal overflow false, exactly two review questions, console warning/error 0. |
+| visual_debt | Source-native small English captions coexist with the OUT-09 large captions. `out09_sub_006` remains inside the measured envelope but wraps `support` as `suppo / rt`. This is explicit question-2 review evidence, not an accepted global subtitle rule. |
+| review_questions | (1) 内容とテンポは、1本のShortとして成立していますか？ (2) 境界・字幕・音声・映像に違和感はありますか？ |
+| next_action | Collect only the two bounded human answers and bind the result to the exact MP4 hash. Do not infer rights, production/public use, publishing, thumbnail, portability, or H1 acceptance. |
+
+Boundary flags remain false or pending:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `acceptance_granted=false`
+- `human_transcript_acceptance_claimed=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `thumbnail_acceptance=false`
+- `public_ready=false`
+- `publishing_acceptance=false`
+- `publish_attempted=false`
+- `h1_successor_data_only=true`
 
 ## `clip-out08-real-unused-range-short-minibatch-v0-001`
 

@@ -287,7 +287,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out08_artifact = "clip-out08-real-unused-range-short-minibatch-v0-001"
+    current_out09_artifact = "clip-out09-second-source-short-repeatability-v0-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -347,16 +347,14 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_out08_artifact}" in text
-            assert "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in text
-            assert "local_artifact_available: false" in text
-            assert "human_entrypoint: null" in text
-            assert "http://127.0.0.1:8071/index.html" not in text
+            assert f"active_artifact: {current_out09_artifact}" in text
+            assert "local_artifact_available: true" in text
+            assert "human_entrypoint: http://127.0.0.1:8072/index.html" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_out08_artifact}" in text
+            assert f"active_artifact: {current_out09_artifact}" in text
             assert (
                 "historical_source_host_out06_artifact: "
                 f"{current_out06_artifact}" in text
@@ -1625,25 +1623,31 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "accepted_internal_out08_closed"
+        "out08_closed_out09_review_ready"
     )
     assert status["current_focus"]["review_status"] == (
-        "OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN"
+        "OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY"
     )
     assert status["current_focus"]["decision_required"] == (
-        "none_out08_closed"
+        "two_bounded_out09_human_questions"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_proposal_only"
+        "OUT09_TWO_BOUNDED_HUMAN_QUESTIONS"
     )
-    assert status["current_focus"]["human_entrypoint"] == ""
-    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["human_entrypoint"] == (
+        "http://127.0.0.1:8072/index.html"
+    )
+    assert status["current_focus"]["review_open_command"] == (
+        "powershell -ExecutionPolicy Bypass -File "
+        "episodes\\holoen01_kronii_wisdomteeth_out09_20260718\\review\\"
+        "out09_second_source_short_repeatability\\open_preview.ps1 -Port 8072"
+    )
     assert status["current_focus"]["machine_readback"] == (
-        "episodes/jp_pilot01_hololive_bancho_20260525/review/"
-        "out08_real_unused_range_short_minibatch/batch_readback.json"
+        "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/"
+        "out09_second_source_short_repeatability/candidate_readback.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
-    assert status["current_focus"]["local_artifact_available"] == "false"
+    assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == ""
     assert status["current_focus"]["exact_baseline_available"] == ""
@@ -1653,15 +1657,15 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "not_required_out08_closed"
+        "running_localhost_8072_at_last_verification"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
     assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "http://127.0.0.1:8071/index.html"
+        "http://127.0.0.1:8072/index.html"
     )
-    assert status["current_focus"]["local_verified_host"] == ""
+    assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
     assert status["current_focus"]["pause_reason"] == ""
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
@@ -1672,7 +1676,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     ]
     assert current_surfaces == []
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "accepted_decision_portable_media_optional"
+        "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == ""
@@ -1681,8 +1685,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out08-real-unused-range-short-minibatch-v0-001"
+        "clip-out09-second-source-short-repeatability-v0-001"
     )
+    assert "clip-out09-second-source-short-repeatability-v0-001" in artifact_ids
     assert "clip-out08-real-unused-range-short-minibatch-v0-001" in artifact_ids
     assert "clip-out07-shorts-poster-frame-direction-proof-v0-001" in artifact_ids
     assert "clip-out07-internal-operator-delivery-pack-v0-001" in artifact_ids

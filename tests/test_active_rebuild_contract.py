@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out08_and_keeps_out07_rebuild_contract_parked() -> None:
+def test_runtime_points_to_out09_and_keeps_out07_rebuild_contract_parked() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: null" in runtime
@@ -238,18 +238,22 @@ def test_runtime_points_to_out08_and_keeps_out07_rebuild_contract_parked() -> No
         in runtime
     )
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: false" in runtime
+    assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: null" in runtime
+    assert "human_entrypoint: http://127.0.0.1:8072/index.html" in runtime
     assert "portable_entrypoint: null" in runtime
-    assert "cross_machine_resume_class: accepted_decision_portable_media_optional" in runtime
-    assert "health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN" in runtime
+    assert (
+        "cross_machine_resume_class: "
+        "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
+        in runtime
+    )
+    assert "health: OUT09_SECOND_SOURCE_REVIEW_READY" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
-    assert "human_review_pending: false" in runtime
-    assert "acceptance_granted: true" in runtime
-    assert "batch_acceptance: accepted_all_internal" in runtime
-    assert "candidate_01_acceptance: accepted_internal" in runtime
-    assert "candidate_02_acceptance: accepted_internal" in runtime
+    assert "human_review_pending: true" in runtime
+    assert "acceptance_granted: false" in runtime
+    assert "batch_acceptance: null" in runtime
+    assert "candidate_01_acceptance: pending_human_review" in runtime
+    assert "candidate_02_acceptance: null" in runtime
     assert "optional_recovery_merged: false" in runtime
     assert "out07_selection_status: deferred" in runtime
     assert "out07_canonical_pattern: false" in runtime

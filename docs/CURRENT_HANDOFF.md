@@ -2,57 +2,48 @@
 id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
-status: closed
-health: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
-progress_pct: 100
-last_touched: 2026-07-17
-current_slice: OUT-08
-phase: accepted_closure
-canonical_status: accepted_internal_out08_closed
-active_branch: main
-verified_implementation_head: 9ab8445afa247d07b46ef031cdc30f3fbbafafdd
-source_branch_tip: 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
-closure_branch: codex/out-08-accepted-closure-v0
-remote_resume_contract: pull_origin_main_then_read_this_file
-sync_audit_head: b3cec5d45425fe4ea1bcb447a93c15a4c071410d
-sync_audit_status: main_origin_parity_clean_tracked
-live_workspace_audit: exact_out08_package_present_hashes_match
-current_title: OUT-08 accepted internal canonical closure
-human_entrypoint: null
+status: active
+health: OUT09_SECOND_SOURCE_REVIEW_READY
+progress_pct: 90
+last_touched: 2026-07-18
+current_slice: OUT-09
+phase: human_review_pending
+canonical_status: out08_closed_out09_review_ready
+active_branch: codex/out-09-second-source-short-repeatability-v0
+verified_implementation_head: branch_head_after_push
+source_branch_tip: 29a1a51902bf8140862839e077936b908f775167
+closure_branch: null
+remote_resume_contract: fetch_then_switch_out09_branch_then_read_this_file
+sync_audit_head: 29a1a51902bf8140862839e077936b908f775167
+sync_audit_status: out09_branch_push_at_closeout
+live_workspace_audit: out09_package_present_manifest_and_video_hashes_match
+current_title: OUT-09 second-source Short repeatability human review
+human_entrypoint: http://127.0.0.1:8072/index.html
 portable_entrypoint: null
-review_open_command: null
-decision_required: none_out08_closed
-review_status: OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN
-contract_repair_status: OUT08_CUT009_FULLY_EXCLUDED_CONTRACT_REPAIRED_REVIEW_READY
+review_open_command: powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
+decision_required: two_bounded_out09_human_questions
+review_status: OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY
+contract_repair_status: OUT09_INPUT_HASH_RANGE_PROVENANCE_GUARDS_PASSED
 remote_code_complete: true
-local_artifact_available: false
-local_artifact_role: optional_same_machine_historical_evidence_not_acceptance_prerequisite
+local_artifact_available: true
+local_artifact_role: active_same_machine_review_evidence_human_acceptance_pending
 portable_local_artifact_available: false
-cross_machine_resume_class: accepted_decision_portable_media_optional
-parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
-optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
-optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
-optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
-optional_recovery_merged: false
+cross_machine_resume_class: tracked_builder_docs_portable_ignored_review_payload_same_machine_only
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
 thumbnail_acceptance: false
 public_or_publishing_acceptance: false
-human_review_pending: false
-acceptance_granted: true
-batch_acceptance: accepted_all_internal
-candidate_01_acceptance: accepted_internal
-candidate_02_acceptance: accepted_internal
-accepted_candidate_ids: [candidate_01, candidate_02]
-winner: null
-next_action: OUT-09 second-source repeatability を後継proposal dataとして検討する。承認前に実装しない。
-active_artifact: clip-out08-real-unused-range-short-minibatch-v0-001
+human_review_pending: true
+acceptance_granted: false
+candidate_01_acceptance: pending_human_review
+next_action: exact candidate_01について二つの質問だけを回答する
+active_artifact: clip-out09-second-source-short-repeatability-v0-001
 canonical_main_head: resolve_origin_main_at_resume
-canonical_main_baseline: OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2
+canonical_main_baseline: OUT-08 accepted internal closure remains unchanged
 source_of_truth: false
-owner_lane: output_video_acceptance_integration
-related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md, artifacts/ARTIFACTS.md, docs/decision-log.md, docs/dashboard/project-status.json
+owner_lane: output_video_cross_source_repeatability
+related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
 durable_context: docs/project-context.md, docs/idea-ledger.md
 upstream_parity: 0 0
 ---
@@ -61,59 +52,89 @@ upstream_parity: 0 0
 
 ## 現在地
 
-修復後の exact OUT-08 candidate 01 / 02 に対するユーザー回答
-「両方問題ありません」を正本へ結び、OUT-08 を閉じた。batch は
-`accepted_all_internal`、両 candidate は `accepted_internal`、winner は設けない。
-一本の編集単位、テンポ、開始・境界・終端、字幕可読性、音声・映像連続性が
-この exact render の internal acceptance 対象である。
+OUT-09は実装、1回の実render、media/frame/browser QAまで完了し、
+`clip-out09-second-source-short-repeatability-v0-001`を人間レビューへ渡せる。
+OUT-08 accepted-internal closureは変更していない。現在は`review_ready`であり、
+`accepted`ではない。
 
-## 今回の同期・再開確認
+| 対象 | 実体 | 現在状態 |
+|---|---|---|
+| source | YouTube `D4i4fjs9PWc`、`【Kroniicle Animation】 Wisdom Teeth Removal Woes` | OUT-08 `7J5aS_pcBj4`と別identity |
+| transcript | base Vosk EN + imported YouTube English Original JSON3 | real provider/provenanceあり、human transcript acceptanceなし |
+| candidate | source `31.160–58.880s`、semantic `27.720s`、7字幕 | human review pending |
+| media | `27.733333s`、H.264/AAC、1080x1920、30fps、yuv420p | full decode/faststart passed |
+| exact identity | MP4 `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9` | 人間判断を結ぶhash |
+| package integrity | manifest `3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692` | self-integrity passed |
 
-2026-07-17 JST に `origin` を prune fetch し、feature branch が
-`origin/main` の直系1コミット手前であることを確認した後、`main` を
-`b3cec5d45425fe4ea1bcb447a93c15a4c071410d` へ fast-forward した。
-`HEAD...origin/main` は `0 0`、追跡済みworktreeはclean、tracked `episodes/`は0件。
+## 何を実装したか
 
-このworkspaceにはignored OUT-08 packageがあり、二本のMP4 SHA-256は下表の
-accepted identityと一致した。`status-episode`はR3 operator surfaceを
-`review_ready=true`、rightsを`pending`、`production_candidate=false`として返した。
-package内`batch_readback.json`のstateは生成時点の`REVIEW_READY`のままだが、後から
-受領した人間判断はtracked docsでcandidate identityへ固定済みであり、矛盾ではない。
+`build-second-source-short-repeatability`はsource固有のbranchを持たず、ignored planを
+入力にする。planはsource identity、source video/audio material hash、rights/ledger/
+Vosk transcript/caption/imported transcript/edit packの6 input hash、allowed/excluded
+range、cut/segment linkage、字幕normalization、二つのreview question、closed gatesを
+宣言する。
 
-検証は`uvx --with pillow pytest -q`で`521 passed`、`npm run smoke`と
-`npm run smoke:electron`でともにOK。bare `uvx pytest -q`はPillow未注入だと画像系
-2 test moduleのcollectionで止まるため、次terminalもPillow明示コマンドを使う。
-詳細な監修報告と長期目標案は
-[SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md)を読む。
+builderはこれらをrender前にfail closedで照合し、OUT-05の共有vertical renderer、
+OUT-06のmanifest self-hash、OUT-08のatomic package/navigation/frame QA経路を再利用する。
+outputにはMP4、ASS/SRT、4点contact sheet、representative navigation frame、plan、
+readback、manifest、single-video HTML、Range server scriptsがある。
 
-| candidate | media duration | subtitles | SHA-256 | state |
-|---|---:|---:|---|---|
-| `candidate_01` | `28.266667s` | 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | `accepted_internal` |
-| `candidate_02` | `53.466667s` | 54 | `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` | `accepted_internal` |
+## 実証した範囲
 
-candidate 02 の最大 source end は `135.219`。reject 済み `cut_009` の interval
-`135.219–144.000` と source-time overlap はなく、`cut_009=reject` を維持する。
-`sub_067` / `sub_068` はこの exact render 内で受入済みだが、全動画共通の字幕規則へ
-一般化しない。
+| 検証 | 結果 | 意味 |
+|---|---|---|
+| source/material | video `61c06f75...fd938`、audio `b33b3521...f81b`、ledger一致 | 実acquisition routeとbytesを固定 |
+| authority hash | 6/6 verified | planと入力の協調置換を拒否 |
+| range | allowed `31.160–58.880s`、excluded overlap 0 | unselected区間をrender前に拒否 |
+| transcript linkage | `subtitle_track/youtube_subtitles`、10 linked segments、7 display events | fixtureやVosk誤認識を表示正本にしない |
+| render | actual 1、corrective 0、builder 47.413s、外側48.01s | one-pass方針を維持 |
+| audio/video | `-14.54 LUFS / -1.48 dBTP`、black/silence event 0 | technical reviewability passed |
+| HTTP/browser | page 200、Range 206、readyState 4、seek/resume advance、overflow false、console clean | direct localhost review passed |
 
-## 証拠とportabilityの境界
+## 人間が見るべき二点
 
-Planner007 に exact package が無く再視聴できないことは、記録済み受入を失効させない。
-ZIP export、端末間copy、import、localhost server は OUT-08 closure 条件ではない。
-recovery branch `d1f44d1` は private artifact portability 用の任意・非canonical infra
-proof としてremoteに保持し、source lineageにもmainにもmergeしていない。
+次の二問以外へ判断範囲を広げない。
 
-## 閉じたgateと次の入口
+1. 内容とテンポは、1本のShortとして成立していますか？
+2. 境界・字幕・音声・映像に違和感はありますか？
 
-rights は `pending`。production render、production subtitle design、thumbnail、
-public/publishing、upload/OAuth/visibility/made-for-kids は false / unopened のまま。
+```powershell
+powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
+```
 
-次の製品軸は data-only successor
-`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`。異なる source または episode から、既存
-Shorts pipeline を大規模に書き換えず、最低1本の12〜60秒・9:16・reviewable
-candidateを生成できることを将来のacceptance signalとする。このhandoffはOUT-09の
-実装承認ではない。
+URLは`http://127.0.0.1:8072/index.html`。serverが止まっていればopen scriptが
+`src.cli.serve_review`で再起動する。
 
-別terminalでは `git switch main`、`git pull --ff-only origin main` の後、
-`docs/RUNTIME_STATE.md` とこのhandoffを読む。main HEADは文書へ自己参照固定せず、
-再開時の `origin/main` を解決する。
+## 判断時に隠さない観測
+
+source videoは現行yt-dlpのformat制約により`640x360`で、vertical outputはこれを
+1080x1920へreframe/upscaleしたもの。原動画自体に小English captionが焼き込まれて
+いるため、下側のOUT-09大字幕と二重表示になる。
+
+さらに`out09_sub_006`はsafe envelope内・3行以下だが、`support`を`suppo / rt`へ
+単語途中でwrapする。再生不能、overflow、subtitle containment failureではないが、
+question 2の明示的quality debtである。one-pass/no-micro-tuning方針により二回目renderは
+行っていない。このexact候補をacceptするか、bounded repairを要求するか、rejectするかを
+回答から決める。
+
+## evidence とgateの境界
+
+- `rights=pending`。利用許諾やpublic useを推定しない。
+- `production_candidate=false`。production render / subtitle designを受け入れていない。
+- thumbnail、metadata、upload、OAuth、visibility、made-for-kids、publishingは未実行。
+- packageはignored same-machine evidence。端末間copy/ZIP/importを完了条件にしない。
+- YouTube auto-captionはreal provenanceだがhuman transcript acceptanceではない。
+- OUT-09一例から3〜5本portfolioや汎用failure rateを結論しない。
+- H1へはsource resolution、caption overlap、render elapsed、word split、browser/Range
+  readiness、human acceptance pendingをdata-onlyで渡せる。H1自体は実行しない。
+
+## 次に進める入口
+
+| 入口 | 目的 | 次に可能になること | 必要条件 |
+|---|---|---|---|
+| Verify | exact候補を二問で判断 | accept / bounded repair / rejectへ遷移 | 人間回答 |
+| Audit | rolling captionとword wrapをfailure taxonomy化 | source固有tuneと共通ruleを分離 | OUT-09回答 + 追加source evidence |
+| Advance | 3〜5本real Shorts portfolioへ進む | cross-source成功率と例外を比較 | OUT-09判断、別source承認 |
+| Explore | production limitation-lift packetを設計 | render acceptanceとsubtitle design acceptanceを分離 | portfolio evidence、別ownerのrights判断 |
+
+最短のnext actionは`Verify`。未回答のOUT-09を残したまま別sourceを増やさない。

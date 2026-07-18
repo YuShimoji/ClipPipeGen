@@ -4,16 +4,16 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-08`
-- artifact: `clip-out08-real-unused-range-short-minibatch-v0-001`
-- state: `OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN`
+- feature: `OUT-09`
+- artifact: `clip-out09-second-source-short-repeatability-v0-001`
+- state: `OUT09_SECOND_SOURCE_REVIEW_READY`
 
 - canonical main: `resolve_origin_main_at_resume`
 - canonical baseline: `OUT-08 accepted internal closure from source tip 2d45bd8d9ff5cb5f2efcdeeaa839b4ef000e96a2`
-- canonical status: `accepted_internal_out08_closed`
-- review status: `OUT08_ACCEPTED_INTERNAL_CANONICAL_MAIN`
+- canonical status: `out08_closed_out09_review_ready`
+- review status: `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_REVIEW_READY`
 - remote code complete: `true`
-- local artifact available: `false`
+- local artifact available: `true`
 - portable local artifact available: `false`
 - portable entrypoint: ``
 - exact baseline available: ``
@@ -22,20 +22,20 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `http://127.0.0.1:8071/index.html`
+- last verified host entrypoint: `http://127.0.0.1:8072/index.html`
 - pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `accepted_decision_portable_media_optional`
+- cross-machine resume: `tracked_builder_docs_portable_ignored_review_payload_same_machine_only`
 - active rebuild contract: ``
-- evidence revision: `thank-6f78657e-out08-real-unused-range-minibatch-v1`
+- evidence revision: `kronii-61c06f75-out09-second-source-repeatability-v0`
 - accepted baseline SHA-256: ``
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `none_out08_closed`
-- next review: `OUT09_SECOND_SOURCE_SHORT_REPEATABILITY_proposal_only`
+- decision required: `two_bounded_out09_human_questions`
+- next review: `OUT09_TWO_BOUNDED_HUMAN_QUESTIONS`
 
 ## Feature Table
 

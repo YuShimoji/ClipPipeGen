@@ -1,172 +1,173 @@
-# ClipPipeGen 同期・開発再開・長期目標提案 — 2026-07-17
+# ClipPipeGen 監修役向け現状報告 — 2026-07-18
 
 ## 監修上の結論
 
-ClipPipeGen は `main` を最新の `origin/main` へ fast-forward し、OUT-08 accepted
-internal closure を基準に開発再開できる状態へ戻した。追跡済みworktreeはclean、
-upstream parityは`0 0`。このworkspaceに残るignored OUT-08 packageは、tracked docsが
-受理対象として固定したexact二本とSHA-256が一致する。
+OUT-09 second-source repeatabilityは、指定base
+`29a1a51902bf8140862839e077936b908f775167`から独立branchで実装され、実source取得、
+real transcript authority、宣言的plan、1回の実render、media/frame/browser QAまで完了した。
+OUT-08のID `7J5aS_pcBj4`とは異なる`D4i4fjs9PWc`から、27.720秒のreviewable
+1080x1920 Shortを大規模rewriteなしで生成できたため、cross-source plumbingの最初の
+成功例としては十分である。
 
-OUT-08に追加実装や追加人間レビューは不要。次のproduct bottleneckは、同じ一つの
-sourceで成功したShorts pipelineが別source/episodeでも成立するか未証明なことにある。
-したがって次の推奨目標は、未承認proposal
-`OUT09_SECOND_SOURCE_SHORT_REPEATABILITY`をnarrow sliceとして承認し、別sourceまたは
-episodeから最低1本の12〜60秒・9:16・reviewable candidateを、大規模rewriteなしで
-生成すること。これは提案であり、この報告だけでは実装承認に昇格しない。
+ただし現在状態は`review_ready`で、`accepted`ではない。監修上の次のボトルネックは
+実装や配管ではなく、exact MP4について「1本のShortとして成立するか」「境界・字幕・
+音声・映像に違和感があるか」の二点を人間が判断することにある。原動画内captionとの
+二重表示と`support`の途中wrapを既知quality debtとして隠さず残したため、先にこの判断を
+閉じ、accept / bounded repair / rejectを選ぶべきである。
 
-## 同期と作業環境
+rights、production render、production subtitle design、thumbnail、public/publishing、
+OAuth/upload、portability、H1は閉じたまま。OUT-09成功だけでそれらを前倒ししない。
 
-| 確認対象 | 実測結果 | 開発への意味 |
+## 同期・branch・scope
+
+| 確認対象 | 実測 | 監修上の意味 |
 |---|---|---|
-| remote fetch | `git fetch --prune origin`成功 | `origin/main`とremote branchを2026-07-17現在へ更新 |
-| 開始branch | `codex/out-08-real-unused-range-short-minibatch-v0`、upstream `0 0` | feature tip自体は同期済みだった |
-| mainとの差 | feature tipは`origin/main`の直系1コミット手前 | merge/rebase判断なしにfast-forward可能だった |
-| 現在branch / HEAD | `main` / `b3cec5d45425fe4ea1bcb447a93c15a4c071410d` | canonical OUT-08 closure上で再開する |
-| upstream parity | `HEAD...origin/main = 0 0` | remoteへ未取得・未送信のtracked commitなし |
-| tracked worktree | clean | user変更を混ぜずに次sliceへ入れる |
-| untracked cleanup | 空の`docs/verification/`のみpath-scopedで除去 | 不明な内容やepisode evidenceは削除していない |
-| ignored state | `episodes/`、`node_modules/`、cache類あり | runtime evidenceと実行依存が同一マシンにある |
-| cleanup protection | R3 `human_preview_session/`あり | broad `git clean -fdX`は禁止のまま |
-| tracked episode paths | 0件 | source media / render / subtitle payloadをGitへ混入していない |
+| base | `29a1a51902bf8140862839e077936b908f775167` | Prompt指定baseと一致 |
+| branch | `codex/out-09-second-source-short-repeatability-v0` | mainへmergeせず独立review可能 |
+| scope | ClipPipeGenのみ | NLMYTGenを含む他repoは未読・未編集 |
+| episode storage | ignored `episodes/holoen01_kronii_wisdomteeth_out09_20260718/` | source/media/private review payloadをGitへ入れない |
+| active preview保護 | 既存episode/human previewを削除せず新episodeへ出力 | broad ignored cleanupなし |
+| render budget | actual 1、corrective 0 | one-pass/no-micro-tuningを遵守 |
 
-## 現在のスライスと受理済み成果
+branchのcommit/push/parityはcloseoutで確定する。docsはartifactとbrowser evidenceの確定後に
+一度だけ同期した。
 
-OUT-08は、既使用`cut_001..cut_003`とreject済み`cut_009`を避け、未使用実素材から
-二本のvertical Shorts候補を作った。修復後exact二本へのユーザー回答
-「両方問題ありません」はtracked authorityへ結び付け済みである。
+## source とtranscriptの選択
 
-| 対象 | 構成 | 実尺 / 字幕 | SHA-256 | 現在状態 |
-|---|---|---:|---|---|
-| candidate 01 | `cut_004 50.868–60.277` + `cut_005 60.277–79.163` | `28.266667s` / 17 | `f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a` | `accepted_internal` |
-| candidate 02 | `cut_006 tail 81.298–98.315` + `cut_007 98.315–116.467` + `cut_008 116.934–135.219` | `53.466667s` / 54 | `47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b` | `accepted_internal` |
-| batch | 二本を一括したatomic package | target 2 / actual 2 | manifest self-integrity `22c7137d81361f662a3053fbd796837f16a58473ba0ecbcb99bb0e031499b4a4` | `accepted_all_internal`、winnerなし |
+既存在庫にはOUT-08と異なる完成済み実episodeがなかった。repo authorityに既知かつ
+public、認証不要、過去にpipeline実績のあるOuro Kronii source
+`https://www.youtube.com/watch?v=D4i4fjs9PWc`が記録されていたため、既存
+`fetch-source-video` / `fetch-source-audio` routeで新episodeへ再取得した。
 
-candidate 02の最大source endは`135.219`で、`cut_009` reject interval
-`135.219–144.000`とoverlapしない。修復前の`137.054–138.055` / `sub_102`例外は
-現行plan・validator・packageから除去済みで、復活させない。
+| evidence | 結果 | 境界 |
+|---|---|---|
+| source video | `61c06f75...fd938`、640x360、H.264/AAC、77.786848s | 現行yt-dlpのJS runtime/format制約。production画質主張なし |
+| source audio | `b33b3521...f81b`、mono PCM 16kHz、77.738688s | STT/render用実audio |
+| Vosk EN | real transcript、13 segments | 誤認識が多く表示字幕の正本から除外 |
+| English Original JSON3 | `36bdbf38...83e6` | YouTube auto-caption、human acceptanceではない |
+| imported transcript | `subtitle_track/youtube_subtitles`、24 segments、24 aligned | rolling overlap 21、review status needs_review |
+| edit authority | 3 cuts、context `3 passed` | candidateはcut_002 + cut_003 envelope内 |
 
-## live readbackとtracked authorityの分離
+Voskを捨てずbase provenanceとしてhash固定しつつ、表示字幕はcaption importへ切り替えた。
+display文はrolling captionを短くdedupeし、linked source segment textのtoken subsequenceで
+あることをbuilderがrender前に検証する。これにより「real providerである」ことと
+「human transcript acceptedである」ことを混同しない。
 
-同一マシンのpackageは次に存在する。
+## 実装した再利用境界
 
-```text
-episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/
-```
+新builderはsource固有ID、時刻、字幕本文をcodeへ埋め込まない。ignored planが次を宣言し、
+generic validatorが読む。
 
-- `candidate_01.mp4` / `candidate_02.mp4`の実ファイルhashは上表と一致した。
-- `batch_readback.json`は生成時点の
-  `OUT08_REAL_UNUSED_RANGE_SHORT_MINIBATCH_REVIEW_READY`を保持する。
-- 後から受領した人間判断は`docs/RUNTIME_STATE.md`、`docs/CURRENT_HANDOFF.md`、
-  `docs/decision-log.md`、`artifacts/ARTIFACTS.md`へexact identity付きで記録済み。
-- packageを再生成・書換えしてacceptanceを埋め戻す必要はない。package欠落やserver停止も
-  記録済みacceptanceを失効させない。
-- `status-episode`はR3 operator surfaceについて`review_ready=true`、missing artifact 0、
-  rights `pending`、`production_candidate=false`を返した。これは過去/下位層の証拠が
-  読めることを示すだけで、OUT-08を人間レビュー待ちへ戻さない。
+- OUT-08と異なるsource identity
+- source video/audio material IDsとhash
+- rights/ledger/base Vosk/caption/imported transcript/edit packの6 input paths/hashes
+- context-passed cut authority、allowed range、excluded/unselected ranges
+- source segment linkageとdisplay normalization
+- narrative arc、candidate duration、二つのhuman question
+- rights/public/production/H1のclosed gates
 
-必要な時だけ、repository rootから次を実行してexact二本を再表示できる。
+OUT-05のvertical renderer、OUT-06のmanifest self-integrity、OUT-08のatomic promotion、
+navigation/frame QA、ASS/SRT/Range review surfaceを再利用した。source違いに応じて増えた
+実装はplan validationとprovenance readbackであり、renderer分岐ではない。
+
+## artifact とvalidation
+
+| 項目 | exact readback |
+|---|---|
+| artifact | `clip-out09-second-source-short-repeatability-v0-001` |
+| package | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/` |
+| candidate | source `31.160–58.880s`、semantic `27.720s`、media `27.733333s` |
+| video | 5,863,660 bytes、SHA-256 `300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9` |
+| format | H.264 High / AAC / 1080x1920 / 30fps / yuv420p / faststart |
+| subtitles | 7 ASS burn-in events + SRT、containment passed、最大3行 |
+| audio | normalized `-14.54 LUFS / -1.48 dBTP` |
+| signal QA | blackdetect event 0、silencedetect event 0 |
+| decode | full video/audio decode exit 0、stderr empty |
+| frame QA | `0.250 / 9.425 / 15.160 / 27.470s` contact sheet |
+| manifest | self-integrity `3f55d16388b1b4197d35ad0e4385e711353932366d8f93ff60ee04500deea692` |
+| browser | page 200、Range 206、readyState 4、media error null、seek/resume advance、overflow false、console clean |
+| elapsed | builder 47.413s、外側48.01s |
+
+review URLは`http://127.0.0.1:8072/index.html`。再起動commandは次である。
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\out08_real_unused_range_short_minibatch\open_preview.ps1 -Port 8071
+powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072
 ```
 
-navigation JPGは候補識別用frameであり、thumbnail candidateやthumbnail acceptanceでは
-ない。
+## 現在の判断packet
 
-## pipeline全体の現在地
+人間に求める回答は二つだけ。
 
-| workflow段階 | 可能になっていること | 残る主要gap |
+1. 内容とテンポは、1本のShortとして成立していますか？
+2. 境界・字幕・音声・映像に違和感はありますか？
+
+判断対象は上記MP4 hashに限定する。frame QAで次を確認済みで、回答時に隠さない。
+
+- source-native小captionとOUT-09大字幕が同時に見える。
+- `out09_sub_006`の`support`が`suppo / rt`へ途中wrapする。
+- safe envelope、media decode、overflow、音量、black/silence、browser再生はpassed。
+- sourceは640x360からのreframe/upscaleで、production画質acceptanceではない。
+
+回答が「成立し、違和感なし」ならexact candidateをinternal acceptへ遷移できる。字幕の
+途中wrapまたは二重表示が違和感なら、同じsource/candidate identityを保つbounded repair
+を1回だけ別sliceで定義する。内容やテンポが成立しないなら、format tuneではなくcandidate
+selection failureとしてrejectし、failure taxonomyへ残す。
+
+## 残作業の責任と次の動き
+
+| 作業 | 目的 | 効果 | 必要条件 | 現在状態 | owner / 次の動き |
+|---|---|---|---|---|---|
+| OUT-09 human review | exact候補のcreative/readability判断 | review_readyをaccept/repair/rejectへ変える | localhost再生と二問回答 | pending | Human ownerが二問へ回答 |
+| subtitle debt classification | 二重captionと途中wrapをsource固有/共通問題へ分ける | one-off micro-tuneを避ける | OUT-09回答 + 次source観測 | dataあり、未一般化 | Agentがportfolio時に集計、Supervisorがrule昇格判断 |
+| source quality/tooling | 640x360取得制約を可視化 | 次sourceのformat選定を安定化 | yt-dlp/JS runtime方針 | diagnostic debt | Tooling ownerがG2前後で必要時だけ扱う |
+| rights clearance | material use判断を人間へ渡す | production/public gateの前提 | source identity、guideline/owner判断 | `pending` | Rights owner。OUT-09 reviewと混ぜない |
+| artifact portability | 別端末reviewを可能にする | same-machine依存を下げる | retention/private transfer方針 | scope外 | Infra owner。現在のacceptance条件ではない |
+
+true blockerはhuman answerだけ。credentials、public state、rights判断、destructive git操作は
+実行していない。
+
+## project全体の現在地
+
+| workflow | 到達済み | 次の本質的gap |
 |---|---|---|
-| source / material | local/URL source audio/video取得adapter、ledger、receipt、source identity | 次sourceの選定・取得承認とcross-source再現性 |
-| transcript | Vosk JP/EN、公式subtitle track import、review patch、schema readback | 公式字幕なしsourceの品質比較、話者分離、GUI correction |
-| editing | cut生成、context check、subtitle draft、chapter/review packet、NLE CSV | creative/production cut acceptance、FCPXML/Resolve XML |
-| diagnostic output | tiny proofからOUT-03〜OUT-08のreal vertical internal candidateまで | multi-source repeatability、production render acceptance |
-| subtitle presentation | Keifont系diagnostic evidence、line-break/readback、exact OUT-08 acceptance | production subtitle design acceptance、source横断rule |
-| thumbnail | YMM4 slot patch、OUT-07 provisional usable direction | 3〜5本portfolioでの比較、canonical/default判断 |
-| rights | manifest/readback、pendingでもlocal diagnostic継続 | human rights/material-use clearance |
-| publishing | metadata/upload/thumbnail/OAuthをintegration候補として分離 | 実装、credentials、safe visibility、receipt、rollback |
-| operator surface | CLI、docs dashboard、read-only/action GUI、artifact-specific launcher | episode全体を一画面で再開する統合cockpit |
+| source/material | local/URL acquisition、sidecar、ledger、receipt、hash | source横断format/toolingの安定性 |
+| transcript | Vosk JP/EN、subtitle import、review patch、provenance | human correction、speaker、official captionなしsource |
+| editing | cut/context/subtitle/NLE/review packet、宣言的range | creative selection failure taxonomy |
+| output | OUT-03〜OUT-09、real vertical、decode/audio/frame/browser | 3〜5本でのrepeatabilityとproduction acceptance |
+| subtitle | measured wrap、ASS/SRT、source-linked normalization | word boundary、二重caption、production design |
+| thumbnail | OUT-07 provisional usable direction | 3〜5本比較後のcanonical/default判断 |
+| rights | pending readbackをhard gateにせず保持 | human material-use clearance |
+| publishing | integration boundaryのみ | credentials、安全なvisibility、receipt/rollback |
+| operator UX | CLI/docs/dashboard/artifact launcher | episode全体を一画面で再開するcockpit |
 
-## 完了度の見立て
+## 開発を可能な限り先へ進める目標階段
 
-- 現スライス OUT-08: `██████████ 100%` — 実装、repair、exact human acceptance、main
-  closureまで完了。
-- multi-source internal-review workflow: `██████░░░░ 60%` — sourceからreviewable
-  vertical outputまで通るが、成功例が実質一つのsource familyへ偏る。
-- production/public delivery north star: `████░░░░░░ 40%` — 接着層は広く存在するが、
-  production render、rights、thumbnail、publishingの独立gateが閉じている。
+目標は依存順に置く。遠い目標を記録するが、手前のacceptanceを飛ばさない。
 
-後二つはacceptance値ではなく、次の投資順を決めるための計画上の概算である。
-
-## 開発を先へ進める目標階段
-
-| 段階 | 達成目標 | 完了信号 | 先に必要なもの | 現在状態 / owner |
+| 段階 | 目標 | 完了信号 | 先に必要なもの | 現在状態 |
 |---|---|---|---|---|
-| G1 | OUT-09 second-source repeatability | 別source/episodeから12〜60秒・9:16・reviewable candidateを最低1本、大規模rewriteなしで生成 | explicit slice approval、source方針、rights readback | proposal-only。Supervisor/Userが承認、Agentが実装 |
-| G2 | 3〜5本のreal Shorts portfolio | source別の境界・字幕wrap・音量・再生性scorecardとfailure taxonomy | G1成功と追加episode evidence | 未起票proposal。Agentがcontract案、Supervisorが一般化範囲を判断 |
-| G3 | production limitation lift | production renderとproduction subtitle designを別々にaccept/rejectできるexact packet | G2再現性、明示的production slice | gate closed。Human decision ownerが対象を限定 |
-| G4 | rights/material-use clearance | 一候補について利用条件・制限・判断者・receiptが明示される | source identityとrights owner | `rights=pending`。Human rights ownerの判断が必要 |
-| G5 | thumbnail system再開 | 3〜5本を比較し、偶然でないcover方向を選べる。canonical/defaultは別判断 | G2 portfolio、複数方向、独立review | OUT-07 parked。Supervisor/Userが再開可否を決める |
-| G6 | private/unlisted delivery | dry-run、safe visibility、upload/thumbnail receipt、rollback付きhandoff | G3〜G5の必要gate、OAuth/credential承認 | PB/YouTube integration未実装。外部状態変更前にhuman approval |
-| G7 | episode operator cockpit | intake→evidence→decision→deliveryを一画面で追跡し、artifact探索を減らす | 安定したG1〜G6 contract、episode_pack、private artifact方針 | 既存GUI/CLIは点在。consumer-first vertical sliceが必要 |
-| G8 | multi-episode production-assist loop | 複数source/episodeでtraceable artifact、判断receipt、rollback、公開handoffを再現 | G7、retention/privacy、運用KPI | 長期north star。公開判断そのものは自動化しない |
+| G0 | OUT-09 exact human decision | 二問回答をMP4 hashへ結び、accept/repair/rejectを記録 | 現在のreview package | **active / pending** |
+| G1 | OUT-09 bounded closure | 必要なら限定repairを一回だけ行い、OUT-09を閉じる | G0回答 | 未着手。不要ならskip |
+| G2 | 3〜5本real Shorts portfolio | sourceごとのduration、caption authority、wrap、audio、render/browser、human resultを同じscorecardで比較 | G0/G1 closure、追加source承認 | proposal |
+| G3 | cross-source failure taxonomy | selection/transcript/wrap/reframe/toolingを分類し、共通fixとsource例外を分離 | G2の複数結果 | proposal |
+| G4 | production limitation-lift packet | production renderとproduction subtitle designを別々にaccept/rejectできるexact evidence | G2/G3、明示的production scope | gate closed |
+| G5 | rights/material-use clearance | 一候補の利用条件、制限、判断者、receiptが明確 | exact candidate、rights owner | `pending` |
+| G6 | thumbnail system再開 | 3〜5本を比較し、偶然でないcover方向を選ぶ。canonical/defaultは別判断 | G2 portfolio、独立review | OUT-07 parked |
+| G7 | private/unlisted delivery | dry-run、safe visibility、upload/thumbnail receipt、rollback付きhandoff | G4〜G6の必要gate、OAuth承認 | 未実装 |
+| G8 | episode operator cockpit | source→evidence→decision→deliveryを一画面で追跡し、artifact探索を減らす | 安定したG2〜G7 contract | proposal |
+| G9 | multi-episode production-assist loop | 複数episodeでtraceable artifact、human gate、rollback、private/public handoffを再現 | G8、retention/privacy、運用KPI | long-term north star |
 
-最終deliverable像は、承認済みsourceを入力し、source/rights/transcript/edit/subtitle/
-output/thumbnail/publish metadataを一つのepisode lineageでつなぎ、各人間gateを越えた
-ものだけをprivate/unlisted/public deliveryへ渡し、全操作をreceiptとrollback情報で
-再現できるproduction-assist loopである。
+G9の最終像は、承認済みsourceを入力し、source/rights/transcript/edit/subtitle/output/
+thumbnail/publish metadataを一つのepisode lineageでつなぎ、各human gateを越えたものだけを
+private/unlisted/public deliveryへ渡し、全操作をreceiptとrollback情報で再現する
+production-assist loopである。公開判断やrights判断そのものは自動化しない。
 
-## 監修役に求める次の判断
+## 直近の推奨順
 
-推奨はG1を次のactive sliceとして承認すること。承認時に最低限、次を固定する。
+1. **Verify** — OUT-09の二問へ回答し、exact identityを閉じる。
+2. **Audit** — 回答結果を二重caption/word-boundary/fidelityのtaxonomyへ記録する。
+3. **Advance** — 別sourceを増やし、3〜5本portfolioを作る。
+4. **Explore** — portfolioからproduction limitation-lift packetを設計する。
 
-1. source方針: 既存localの別episodeを使うか、新しいlow-risk public sourceを別途承認する。
-2. acceptance: 12〜60秒、9:16、最低1本、direct review可能、authority/receipt/hashあり、
-   `production_candidate=false`、rights statusをreadbackする。
-3. non-goals: production/public acceptance、thumbnail再開、publishing/OAuth、artifact
-   portability一般化、pipeline大規模rewriteを含めない。
-4. stop condition: candidateを作れない理由をfailure taxonomyとして記録できた場合は、
-   無理にrender成功へ寄せずG1の有効なdiagnostic outcomeとして監修へ返す。
-
-承認がまだ出ない場合も開発はblockedではない。次の独立入口がある。
-
-- **Audit**: `sub_067` / `sub_068`のexact acceptanceを全動画共通ruleへ誤一般化しない
-  cross-source scorecard準備。
-- **Excise**: 1,900行超のRuntime historical sectionと
-  `FEATURE_REGISTRY.md`のmojibakeを別docs-health sliceで整理し、one-pass re-entryを改善。
-- **Explore**: private artifact portabilityをepisode共通contractにするか評価。ただしstorage、
-  retention、privacy、rollback承認が必要で、OUT-08 closure条件には戻さない。
-
-## 検証結果と既知の開発上の注意
-
-| command | 結果 |
-|---|---|
-| `uvx python -m src.cli.main status-episode --episode-dir episodes\jp_pilot01_hololive_bancho_20260525 --format json` | success。R3 `review_ready=true`、rights pending、production false |
-| `uvx pytest -q` | collection error。`PIL`未注入で画像系2 moduleがimport不能 |
-| `uvx --with pillow pytest -q` | final post-edit run: `521 passed in 126.92s` |
-| `npm run smoke` | `gui smoke: OK` |
-| `npm run smoke:electron` | `electron smoke: OK` |
-| candidate MP4 SHA-256 readback | 二本ともaccepted identityと一致 |
-| `git ls-files episodes` | 0件 |
-| `git rev-list --left-right --count HEAD...origin/main` | sync直後`0 0` |
-
-Pillowはreview/test用optional依存として既存docsに現れるが、full suiteには必須になって
-いる。次terminalではbare commandではなく`uvx --with pillow pytest -q`を使う。将来、
-dependency manifestを整備するなら別のsmall tooling sliceとして行い、Pillowをproduction
-renderer dependencyへ誤昇格させない。
-
-## 変えなかった境界
-
-- rights approval: `pending`
-- production render acceptance: `false`
-- production subtitle design acceptance: `false`
-- thumbnail acceptance: `false`
-- public/publishing acceptance: `false`
-- upload/OAuth/visibility/made-for-kids: unopened / not attempted
-- `episodes/`: ignored、tracked 0
-- optional recovery branch `d1f44d1`: parked noncanonical、mainへ未統合
-- OUT-07: `PARK_PROVISIONAL_USABLE`、3〜5本揃うまで追加iteration禁止
-
-この報告は次の開発目標を遠くまで並べるが、個々のproposalをapprovedへ遷移させる
-authorityではない。次に実装してよいのは、監修役またはユーザーが明示的に開いた一つの
-narrow sliceだけである。
+今はVerifyが唯一の最短経路。OUT-09判断前にthumbnail、publishing、portability、docs-health、
+H1へ横展開すると、配管成功と品質成功が混ざるため進めない。
