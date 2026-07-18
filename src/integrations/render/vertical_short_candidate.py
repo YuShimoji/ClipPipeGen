@@ -64,6 +64,8 @@ FRAME_RATE = 30.0
 SAFE_IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 OUTPUT_NAME_PREFIX = "out05_"
 SELECTED_REFRAME = "full_16_9_fit_source_derived_blurred_canvas"
+DEFAULT_BACKGROUND_POLICY = "full_source_blurred_canvas_default"
+CAPTION_FREE_BACKGROUND_POLICY = "caption_free_background_canvas"
 REFRAME_OPTIONS = (
     "cut_level_explicit_anchor_crop",
     SELECTED_REFRAME,
@@ -520,6 +522,9 @@ def _build_subtitle_presentation(
             ),
             "source_type": str(item.get("source_type") or ""),
             "source_segment_ids": list(item.get("source_segment_ids") or []),
+            "json3_timing_authority": dict(
+                item.get("json3_timing_authority") or {}
+            ),
         }
         for item in predecessor_subtitles
     ]
@@ -1214,6 +1219,7 @@ def render_vertical_sequence_assets(
     frame_samples: tuple[tuple[str, float], ...],
     ffmpeg_path: str | Path | None,
     ffprobe_path: str | Path | None,
+    composition_policy: dict[str, Any] | None = None,
     runner: ffmpeg_tiny.Runner = subprocess.run,
 ) -> dict[str, Any]:
     """Render a data-driven 9:16 hard-cut sequence using the OUT-05 path."""
@@ -1248,6 +1254,10 @@ def render_vertical_sequence_assets(
     except ffmpeg_tiny.TinyRenderError as exc:
         raise VerticalShortCandidateError(f"source probe failed: {exc}") from exc
     _validate_source_probe(source_video_probe, source_audio_probe, timeline)
+    composition_readback = _validate_vertical_composition_policy(
+        composition_policy,
+        source_video_probe=source_video_probe,
+    )
 
     input_measurement = _measure_loudness(
         ffmpeg_path=resolved_ffmpeg,
@@ -1289,6 +1299,7 @@ def render_vertical_sequence_assets(
             output_path=video_path,
             video_codec=codec,
             audio_filter=normalization_filter,
+            composition_policy=composition_policy,
         )
         result = _run_command(command, runner=runner, timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS)
         status = "passed" if result.returncode == 0 and video_path.is_file() else "failed"
@@ -1381,6 +1392,7 @@ def render_vertical_sequence_assets(
         "full_decode": full_decode,
         "faststart": faststart,
         "source_probe": {"video": source_video_probe, "audio": source_audio_probe},
+        "composition_policy": composition_readback,
         "audio": {
             "measurement_method": "ffmpeg_loudnorm_json_true_peak",
             "input_measurement": input_measurement,
@@ -1489,22 +1501,22 @@ def _vertical_render_command(
     output_path: Path,
     video_codec: str,
     audio_filter: str,
+    composition_policy: dict[str, Any] | None = None,
 ) -> list[str]:
     filters: list[str] = []
     concat_inputs: list[str] = []
     for index, cut in enumerate(timeline):
         start = _seconds(float(cut["source_start_seconds"]))
         end = _seconds(float(cut["source_end_seconds"]))
+        background_filter, foreground_filter = _vertical_composition_filters(
+            index=index,
+            composition_policy=composition_policy,
+        )
         filters.extend(
             [
                 f"[0:v]trim=start={start}:end={end},setpts=PTS-STARTPTS,split=2[bgraw{index}][fgraw{index}]",
-                (
-                    f"[bgraw{index}]scale={FRAME_WIDTH}:{FRAME_HEIGHT}:"
-                    "force_original_aspect_ratio=increase:flags=lanczos,"
-                    f"crop={FRAME_WIDTH}:{FRAME_HEIGHT},gblur=sigma=42,"
-                    f"eq=saturation=0.72:brightness=-0.10[bg{index}]"
-                ),
-                f"[fgraw{index}]scale={FRAME_WIDTH}:-2:flags=lanczos[fg{index}]",
+                background_filter,
+                foreground_filter,
                 (
                     f"[bg{index}][fg{index}]overlay=(W-w)/2:(H-h)/2,setsar=1,"
                     f"fps={int(FRAME_RATE)},format=yuv420p[v{index}]"
@@ -1559,6 +1571,160 @@ def _vertical_render_command(
         "-shortest",
         str(output_path),
     ]
+
+
+def _vertical_composition_filters(
+    *,
+    index: int,
+    composition_policy: dict[str, Any] | None,
+) -> tuple[str, str]:
+    if composition_policy is None:
+        return (
+            (
+                f"[bgraw{index}]scale={FRAME_WIDTH}:{FRAME_HEIGHT}:"
+                "force_original_aspect_ratio=increase:flags=lanczos,"
+                f"crop={FRAME_WIDTH}:{FRAME_HEIGHT},gblur=sigma=42,"
+                f"eq=saturation=0.72:brightness=-0.10[bg{index}]"
+            ),
+            f"[fgraw{index}]scale={FRAME_WIDTH}:-2:flags=lanczos[fg{index}]",
+        )
+    background = composition_policy["background_source_crop_pixels"]
+    foreground = composition_policy["foreground_source_crop_pixels"]
+    background_crop = _pixel_crop_filter(background)
+    foreground_crop = _pixel_crop_filter(foreground)
+    return (
+        (
+            f"[bgraw{index}]{background_crop},"
+            f"scale={FRAME_WIDTH}:{FRAME_HEIGHT}:"
+            "force_original_aspect_ratio=increase:flags=lanczos,"
+            f"crop={FRAME_WIDTH}:{FRAME_HEIGHT},gblur=sigma=42,"
+            f"eq=saturation=0.72:brightness=-0.10[bg{index}]"
+        ),
+        (
+            f"[fgraw{index}]{foreground_crop},"
+            f"scale={FRAME_WIDTH}:-2:flags=lanczos[fg{index}]"
+        ),
+    )
+
+
+def _pixel_crop_filter(rectangle: dict[str, Any]) -> str:
+    return (
+        f"crop={int(rectangle['width'])}:{int(rectangle['height'])}:"
+        f"{int(rectangle['x'])}:{int(rectangle['y'])}"
+    )
+
+
+def _validate_vertical_composition_policy(
+    composition_policy: dict[str, Any] | None,
+    *,
+    source_video_probe: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate an optional source-specific canvas policy without changing defaults."""
+
+    if composition_policy is None:
+        return {
+            "mode": DEFAULT_BACKGROUND_POLICY,
+            "default_policy_unchanged": True,
+        }
+    if composition_policy.get("mode") != CAPTION_FREE_BACKGROUND_POLICY:
+        raise VerticalShortCandidateError("unsupported vertical composition policy")
+    if (
+        composition_policy.get("full_source_blur_fallback_allowed") is not False
+        or composition_policy.get("additional_blur_or_frosted_caption_surface")
+        is not False
+    ):
+        raise VerticalShortCandidateError(
+            "caption-free composition must fail closed without full-source blur fallback"
+        )
+    expected_width = int(source_video_probe.get("width") or 0)
+    expected_height = int(source_video_probe.get("height") or 0)
+    source_frame = composition_policy.get("source_frame_pixels") or {}
+    if source_frame != {"width": expected_width, "height": expected_height}:
+        raise VerticalShortCandidateError(
+            "composition policy source dimensions do not match probed video"
+        )
+    background = _validated_pixel_rectangle(
+        composition_policy.get("background_source_crop_pixels"),
+        frame_width=expected_width,
+        frame_height=expected_height,
+        label="background source crop",
+    )
+    foreground = _validated_pixel_rectangle(
+        composition_policy.get("foreground_source_crop_pixels"),
+        frame_width=expected_width,
+        frame_height=expected_height,
+        label="foreground source crop",
+    )
+    band = _validated_pixel_rectangle(
+        composition_policy.get("native_caption_band_pixels"),
+        frame_width=expected_width,
+        frame_height=expected_height,
+        label="native caption band",
+    )
+    suppression = composition_policy.get("native_caption_suppression") or {}
+    if suppression.get("method") != "bottom_crop":
+        raise VerticalShortCandidateError(
+            "native caption suppression must use the approved bottom crop"
+        )
+    if _rectangles_overlap(background, band) or _rectangles_overlap(foreground, band):
+        raise VerticalShortCandidateError(
+            "caption-free crop intersects the native caption band"
+        )
+    if (
+        foreground["x"] != 0
+        or foreground["y"] != 0
+        or foreground["width"] != expected_width
+        or foreground["height"] != band["y"]
+    ):
+        raise VerticalShortCandidateError(
+            "bottom-crop suppression does not exactly remove the measured caption band"
+        )
+    return {
+        **composition_policy,
+        "background_source_crop_pixels": background,
+        "foreground_source_crop_pixels": foreground,
+        "native_caption_band_pixels": band,
+        "default_policy_unchanged": False,
+        "validated_against_source_probe": True,
+    }
+
+
+def _validated_pixel_rectangle(
+    value: Any,
+    *,
+    frame_width: int,
+    frame_height: int,
+    label: str,
+) -> dict[str, int]:
+    if not isinstance(value, dict):
+        raise VerticalShortCandidateError(f"{label} is missing")
+    try:
+        rectangle = {
+            key: int(value[key]) for key in ("x", "y", "width", "height")
+        }
+    except (KeyError, TypeError, ValueError) as exc:
+        raise VerticalShortCandidateError(f"{label} is invalid") from exc
+    if (
+        rectangle["x"] < 0
+        or rectangle["y"] < 0
+        or rectangle["width"] <= 0
+        or rectangle["height"] <= 0
+        or rectangle["x"] + rectangle["width"] > frame_width
+        or rectangle["y"] + rectangle["height"] > frame_height
+        or rectangle["width"] % 2
+        or rectangle["height"] % 2
+    ):
+        raise VerticalShortCandidateError(f"{label} leaves the source frame")
+    return rectangle
+
+
+def _rectangles_overlap(left: dict[str, int], right: dict[str, int]) -> bool:
+    return (
+        max(left["x"], right["x"])
+        < min(left["x"] + left["width"], right["x"] + right["width"])
+        and max(left["y"], right["y"])
+        < min(left["y"] + left["height"], right["y"] + right["height"])
+    )
 
 
 def _render_reframe_comparison_sheet(

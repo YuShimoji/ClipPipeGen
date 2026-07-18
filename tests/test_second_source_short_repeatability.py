@@ -7,6 +7,7 @@ import pytest
 
 from src.cli import build_second_source_short_repeatability as out09_cli
 from src.integrations.render import second_source_short_repeatability as out09
+from src.integrations.render import vertical_short_candidate as vertical
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -72,27 +73,63 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             "segments": [{"id": "vosk_001", "text": "fixture"}],
         },
     )
-    _write_json(captions, {"events": [{"tStartMs": 10000, "segs": [{"utf8": "Hello"}]}]})
+    _write_json(
+        captions,
+        {
+            "events": [
+                {
+                    "tStartMs": 10000,
+                    "dDurationMs": 4000,
+                    "segs": [
+                        {"utf8": "Hello"},
+                        {"utf8": " there", "tOffsetMs": 1000},
+                        {"utf8": " this", "tOffsetMs": 2000},
+                        {"utf8": " is", "tOffsetMs": 3000},
+                    ],
+                },
+                {
+                    "tStartMs": 14000,
+                    "dDurationMs": 4000,
+                    "segs": [
+                        {"utf8": "the"},
+                        {"utf8": " middle", "tOffsetMs": 1000},
+                        {"utf8": " stays", "tOffsetMs": 2000},
+                        {"utf8": " clear", "tOffsetMs": 3000},
+                    ],
+                },
+                {
+                    "tStartMs": 18000,
+                    "dDurationMs": 4000,
+                    "segs": [
+                        {"utf8": "final"},
+                        {"utf8": " payoff", "tOffsetMs": 1000},
+                        {"utf8": " lands", "tOffsetMs": 2000},
+                        {"utf8": " now", "tOffsetMs": 3000},
+                    ],
+                },
+            ]
+        },
+    )
     segments = [
         {
             "id": "seg_000001",
             "start_seconds": 10.0,
-            "end_seconds": 16.0,
-            "text": "Hello there this is the setup",
+            "end_seconds": 14.0,
+            "text": "Hello there this is",
             "review_status": "unreviewed",
         },
         {
             "id": "seg_000002",
-            "start_seconds": 16.0,
-            "end_seconds": 24.0,
-            "text": "this is the middle with a repeated repeated word",
+            "start_seconds": 14.0,
+            "end_seconds": 18.0,
+            "text": "the middle stays clear",
             "review_status": "unreviewed",
         },
         {
             "id": "seg_000003",
-            "start_seconds": 24.0,
-            "end_seconds": 32.0,
-            "text": "and this is the final payoff",
+            "start_seconds": 18.0,
+            "end_seconds": 22.0,
+            "text": "final payoff lands now",
             "review_status": "unreviewed",
         },
     ]
@@ -174,46 +211,126 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                 "real_transcript": True,
             },
             "user_feedback": {
-                "overall": "bounded_repair_required",
+                "overall": "bounded_presentation_repair_required",
+                "human_observation_priority": (
+                    "authoritative_over_agent_legibility_observation"
+                ),
+                "native_caption_only_result": "failed_unreadable_at_review_size",
+                "blurred_caption_duplication": "observed_in_lower_canvas",
                 "content_selection": "not_rejected_not_yet_accepted",
-                "subtitle_presentation_timing": "needs_adjustment",
-                "endpoint_edit": "needs_adjustment",
+                "endpoint_edit": "unchanged_not_reopened",
             },
             "repair": {
-                "kind": "bounded_subtitle_authority_and_endpoint",
-                "superseded_predecessor": {
+                "kind": "caption_canvas_presentation_repair",
+                "lineage_index": 2,
+                "initial_predecessor": {
                     "candidate_id": "candidate_01",
                     "source_start_seconds": 10.0,
-                    "source_end_seconds": 32.0,
-                    "duration_seconds": 22.0,
-                    "media_duration_seconds": 22.0,
-                    "video_sha256": out09.PREDECESSOR_MP4_SHA256,
+                    "source_end_seconds": 20.0,
+                    "duration_seconds": 10.0,
+                    "media_duration_seconds": 10.0,
+                    "video_sha256": out09.INITIAL_PREDECESSOR_MP4_SHA256,
                     "human_acceptance_claimed": False,
+                },
+                "failed_repair_predecessor": {
+                    "candidate_id": "candidate_01",
+                    "source_start_seconds": 10.0,
+                    "source_end_seconds": 22.0,
+                    "duration_seconds": 12.0,
+                    "media_duration_seconds": 12.0,
+                    "video_sha256": out09.FAILED_REPAIR_PREDECESSOR_MP4_SHA256,
+                    "reason": (
+                        "unreadable_native_caption_and_blurred_caption_duplication"
+                    ),
+                    "human_acceptance_claimed": False,
+                },
+                "human_observation": {
+                    "native_caption_too_small_in_16_9_foreground": True,
+                    "full_source_blur_duplicates_caption_glyphs": True,
+                    "lower_canvas_appears_frosted_and_unreadable": True,
+                    "agent_legibility_observation_overridden": True,
+                },
+                "background_canvas": {
+                    "mode": vertical.CAPTION_FREE_BACKGROUND_POLICY,
+                    "measurement_source": "ten_caption_active_source_frames",
+                    "source_frame_pixels": {"width": 640, "height": 360},
+                    "caption_free_crop_pixels": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 640,
+                        "height": 286,
+                    },
+                    "caption_free_crop_normalized": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "width": 1.0,
+                        "height": 286 / 360,
+                    },
+                    "representative_frame_source_seconds": [
+                        10.1,
+                        11.0,
+                        12.0,
+                        13.0,
+                        14.0,
+                        15.0,
+                        16.0,
+                        17.0,
+                        18.0,
+                        21.8,
+                    ],
+                    "fallback": "neutral_solid_or_caption_free_edge_only",
+                    "full_source_blur_fallback_allowed": False,
+                },
+                "native_caption_suppression": {
+                    "method": "bottom_crop",
+                    "caption_band_pixels": {
+                        "x": 0,
+                        "y": 286,
+                        "width": 640,
+                        "height": 74,
+                    },
+                    "caption_band_normalized": {
+                        "x": 0.0,
+                        "y": 286 / 360,
+                        "width": 1.0,
+                        "height": 74 / 360,
+                    },
+                    "foreground_source_crop_pixels": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 640,
+                        "height": 286,
+                    },
+                    "validated_caption_active_frame_count": 10,
+                    "important_content_preserved": True,
+                    "mask_used": False,
+                    "conflict_status": "none",
                 },
                 "subtitle_presentation": {
                     "display_authority": out09.SUBTITLE_DISPLAY_AUTHORITY,
-                    "additional_burn_in": False,
-                    "native_caption_pixels_modified": False,
-                    "ass_srt_role": (
-                        "provenance_navigation_machine_readback_sidecar_only"
-                    ),
+                    "source_native_caption_pixels_suppressed": True,
+                    "timing_authority": "youtube_json3_event_and_token_offsets",
+                    "ass_srt_role": "display_and_provenance_sidecar",
+                    "maximum_words_per_cue": 6,
+                    "maximum_lines_per_cue": 2,
+                    "caption_plate": "opaque_solid_black",
+                    "caption_plate_alpha": 1.0,
+                    "additional_blur_or_frosted_caption_surface": False,
                     "scope": "source_specific",
-                    "fallback_if_not_legible": (
-                        "REFRAME_REQUIRED_NATIVE_CAPTION_NOT_LEGIBLE"
-                    ),
                 },
                 "endpoint_authority": {
                     "basis": (
                         "first_scene_transition_after_last_caption_and_speech"
                     ),
-                    "last_native_caption_end_seconds": 31.8,
-                    "last_speech_end_seconds": 31.9,
-                    "silence_end_seconds": 32.1,
-                    "next_scene_start_seconds": 32.0,
-                    "next_native_caption_start_seconds": 32.0,
-                    "selected_source_end_seconds": 32.0,
+                    "last_native_caption_end_seconds": 22.0,
+                    "last_speech_end_seconds": 21.9,
+                    "silence_end_seconds": 22.1,
+                    "next_scene_start_seconds": 22.0,
+                    "next_native_caption_start_seconds": 22.0,
+                    "selected_source_end_seconds": 22.0,
                     "fixed_padding_used": False,
                     "fade_sfx_freeze_or_silence_added": False,
+                    "reopened_for_this_repair": False,
                 },
             },
             "selection_authority": {
@@ -221,7 +338,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                     {
                         "id": "allowed_001",
                         "source_start_seconds": 10.0,
-                        "source_end_seconds": 32.0,
+                        "source_end_seconds": 22.0,
                     }
                 ],
                 "excluded_ranges": [
@@ -233,7 +350,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                     },
                     {
                         "id": "after",
-                        "source_start_seconds": 32.0,
+                        "source_start_seconds": 22.0,
                         "source_end_seconds": 40.0,
                         "reason": "unselected",
                     },
@@ -242,8 +359,8 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             "candidate": {
                 "candidate_id": "candidate_01",
                 "source_start_seconds": 10.0,
-                "source_end_seconds": 32.0,
-                "duration_seconds": 22.0,
+                "source_end_seconds": 22.0,
+                "duration_seconds": 12.0,
                 "authority_cut_ids": ["cut_001", "cut_002"],
                 "source_segment_ids": ["seg_000001", "seg_000002", "seg_000003"],
                 "rationale": "fixture setup to payoff",
@@ -254,25 +371,109 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                 },
                 "subtitles": [
                     {
-                        "id": "out09_sub_001",
+                        "id": "out09_cue_001",
                         "source_start_seconds": 10.0,
-                        "source_end_seconds": 16.0,
-                        "text": "Hello there this is the setup",
+                        "source_end_seconds": 12.0,
+                        "text": "Hello there",
                         "source_segment_ids": ["seg_000001"],
+                        "timing_authority": {
+                            "source": "youtube_json3_event_and_token_offsets",
+                            "event_index": 0,
+                            "token_start_index": 0,
+                            "token_end_index_exclusive": 2,
+                            "end_boundary": {
+                                "kind": "token_onset",
+                                "event_index": 0,
+                                "token_index": 2,
+                            },
+                        },
                     },
                     {
-                        "id": "out09_sub_002",
-                        "source_start_seconds": 16.0,
-                        "source_end_seconds": 24.0,
-                        "text": "This is the middle with a repeated word",
+                        "id": "out09_cue_002",
+                        "source_start_seconds": 12.0,
+                        "source_end_seconds": 14.0,
+                        "text": "this is",
+                        "source_segment_ids": ["seg_000001"],
+                        "timing_authority": {
+                            "source": "youtube_json3_event_and_token_offsets",
+                            "event_index": 0,
+                            "token_start_index": 2,
+                            "token_end_index_exclusive": 4,
+                            "end_boundary": {
+                                "kind": "json3_event_start",
+                                "event_index": 1,
+                            },
+                        },
+                    },
+                    {
+                        "id": "out09_cue_003",
+                        "source_start_seconds": 14.0,
+                        "source_end_seconds": 16.0,
+                        "text": "the middle",
                         "source_segment_ids": ["seg_000002"],
+                        "timing_authority": {
+                            "source": "youtube_json3_event_and_token_offsets",
+                            "event_index": 1,
+                            "token_start_index": 0,
+                            "token_end_index_exclusive": 2,
+                            "end_boundary": {
+                                "kind": "token_onset",
+                                "event_index": 1,
+                                "token_index": 2,
+                            },
+                        },
                     },
                     {
-                        "id": "out09_sub_003",
-                        "source_start_seconds": 24.0,
-                        "source_end_seconds": 32.0,
-                        "text": "And this is the final payoff",
+                        "id": "out09_cue_004",
+                        "source_start_seconds": 16.0,
+                        "source_end_seconds": 18.0,
+                        "text": "stays clear",
+                        "source_segment_ids": ["seg_000002"],
+                        "timing_authority": {
+                            "source": "youtube_json3_event_and_token_offsets",
+                            "event_index": 1,
+                            "token_start_index": 2,
+                            "token_end_index_exclusive": 4,
+                            "end_boundary": {
+                                "kind": "json3_event_start",
+                                "event_index": 2,
+                            },
+                        },
+                    },
+                    {
+                        "id": "out09_cue_005",
+                        "source_start_seconds": 18.0,
+                        "source_end_seconds": 20.0,
+                        "text": "final payoff",
                         "source_segment_ids": ["seg_000003"],
+                        "timing_authority": {
+                            "source": "youtube_json3_event_and_token_offsets",
+                            "event_index": 2,
+                            "token_start_index": 0,
+                            "token_end_index_exclusive": 2,
+                            "end_boundary": {
+                                "kind": "token_onset",
+                                "event_index": 2,
+                                "token_index": 2,
+                            },
+                        },
+                    },
+                    {
+                        "id": "out09_cue_006",
+                        "source_start_seconds": 20.0,
+                        "source_end_seconds": 22.0,
+                        "text": "lands now",
+                        "source_segment_ids": ["seg_000003"],
+                        "timing_authority": {
+                            "source": "youtube_json3_event_and_token_offsets",
+                            "event_index": 2,
+                            "token_start_index": 2,
+                            "token_end_index_exclusive": 4,
+                            "end_boundary": {
+                                "kind": "json3_event_end",
+                                "event_index": 2,
+                            },
+                        },
                     },
                 ],
             },
@@ -297,8 +498,12 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
 
 def _fake_render(**kwargs) -> dict:
     render_ass = Path(kwargs["ass_path"]).read_text(encoding="utf-8")
-    assert Path(kwargs["ass_path"]).name == "no_additional_burn_in.ass"
-    assert "Dialogue:" not in render_ass
+    assert Path(kwargs["ass_path"]).name == "candidate_01_subtitles.ass"
+    assert render_ass.count("Dialogue:") == 6
+    assert "BorderStyle" in render_ass
+    assert kwargs["composition_policy"]["mode"] == (
+        vertical.CAPTION_FREE_BACKGROUND_POLICY
+    )
     Path(kwargs["video_path"]).write_bytes(b"out09-video")
     Path(kwargs["frame_sheet_path"]).write_bytes(b"out09-frame-sheet")
     duration = float(kwargs["expected_duration"])
@@ -319,6 +524,7 @@ def _fake_render(**kwargs) -> dict:
         "full_decode": {"status": "passed", "exit_code": 0, "stderr_empty": True},
         "faststart": {"status": "passed", "moov_before_mdat": True},
         "source_probe": {"video": {"duration_seconds": 40}, "audio": {"duration_seconds": 40}},
+        "composition_policy": kwargs["composition_policy"],
         "audio": {
             "measurement_method": "fixture",
             "input_measurement": {"integrated_lufs": -18.0, "true_peak_dbtp": -2.0},
@@ -371,15 +577,27 @@ def test_builds_one_hash_bound_second_source_package(tmp_path: Path) -> None:
         "out09_provider_id": "SECOND123",
         "different": True,
     }
-    assert readback["candidate"]["duration_seconds"] == 22.0
-    assert readback["subtitle"]["count"] == 3
+    assert readback["candidate"]["duration_seconds"] == 12.0
+    assert readback["subtitle"]["count"] == 6
     assert readback["subtitle"]["display_authority"] == (
-        "source_native_caption_pixels"
+        "generated_short_cue_overlay_from_source_json3"
     )
-    assert readback["subtitle"]["burn_in_applied"] is False
-    assert readback["subtitle"]["visible_additional_overlay_event_count"] == 0
-    assert readback["repair"]["superseded_predecessor"]["video_sha256"] == (
-        out09.PREDECESSOR_MP4_SHA256
+    assert readback["subtitle"]["burn_in_applied"] is True
+    assert readback["subtitle"]["source_native_caption_pixels_suppressed"] is True
+    assert readback["subtitle"]["visible_overlay_event_count"] == 6
+    assert readback["subtitle"]["statistics"]["word_count_range"] == {
+        "minimum": 2,
+        "maximum": 2,
+    }
+    assert readback["repair"]["lineage_index"] == 2
+    assert readback["repair"]["initial_predecessor"]["video_sha256"] == (
+        out09.INITIAL_PREDECESSOR_MP4_SHA256
+    )
+    assert readback["repair"]["failed_repair_predecessor"]["video_sha256"] == (
+        out09.FAILED_REPAIR_PREDECESSOR_MP4_SHA256
+    )
+    assert readback["render"]["composition_policy"]["mode"] == (
+        vertical.CAPTION_FREE_BACKGROUND_POLICY
     )
     assert readback["render"]["execution_count"] == 1
     assert readback["render"]["corrective_pass_count"] == 0
@@ -400,8 +618,9 @@ def test_rejects_excluded_overlap_before_render(tmp_path: Path) -> None:
     fixture = _fixture(tmp_path)
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
     plan["candidate"]["source_start_seconds"] = 9.0
-    plan["candidate"]["duration_seconds"] = 23.0
-    plan["repair"]["superseded_predecessor"]["source_start_seconds"] = 9.0
+    plan["candidate"]["duration_seconds"] = 13.0
+    plan["repair"]["initial_predecessor"]["source_start_seconds"] = 9.0
+    plan["repair"]["failed_repair_predecessor"]["source_start_seconds"] = 9.0
     plan["selection_authority"]["allowed_ranges"][0]["source_start_seconds"] = 9.0
     plan["candidate"]["subtitles"][0]["source_start_seconds"] = 9.0
     _write_json(fixture["plan"], plan)
@@ -433,19 +652,26 @@ def test_rejects_non_provenance_subtitle_before_render(tmp_path: Path) -> None:
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
     plan["candidate"]["subtitles"][1]["text"] = "Words not present in source"
     _write_json(fixture["plan"], plan)
-    with pytest.raises(out09.SecondSourceShortRepeatabilityError, match="not transcript-backed"):
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="not JSON3/transcript-backed",
+    ):
         _build(fixture)
     assert not fixture["output"].exists()
 
 
-def test_rejects_additional_burn_in_before_render(tmp_path: Path) -> None:
+def test_rejects_native_caption_as_display_authority_before_render(
+    tmp_path: Path,
+) -> None:
     fixture = _fixture(tmp_path)
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
-    plan["repair"]["subtitle_presentation"]["additional_burn_in"] = True
+    plan["repair"]["subtitle_presentation"]["display_authority"] = (
+        "source_native_caption_pixels"
+    )
     _write_json(fixture["plan"], plan)
     with pytest.raises(
         out09.SecondSourceShortRepeatabilityError,
-        match="source-native caption authority is incomplete",
+        match="short-cue caption authority is incomplete",
     ):
         _build(fixture)
     assert not fixture["output"].exists()
@@ -454,7 +680,7 @@ def test_rejects_additional_burn_in_before_render(tmp_path: Path) -> None:
 def test_rejects_endpoint_that_cuts_before_speech_completion(tmp_path: Path) -> None:
     fixture = _fixture(tmp_path)
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
-    plan["repair"]["endpoint_authority"]["last_speech_end_seconds"] = 32.2
+    plan["repair"]["endpoint_authority"]["last_speech_end_seconds"] = 22.2
     _write_json(fixture["plan"], plan)
     with pytest.raises(
         out09.SecondSourceShortRepeatabilityError,
@@ -462,6 +688,107 @@ def test_rejects_endpoint_that_cuts_before_speech_completion(tmp_path: Path) -> 
     ):
         _build(fixture)
     assert not fixture["output"].exists()
+
+
+def test_rejects_caption_crop_that_intersects_measured_band(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["repair"]["background_canvas"]["caption_free_crop_pixels"][
+        "height"
+    ] = 288
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="does not match the measured source rectangle",
+    ):
+        _build(fixture)
+    assert not fixture["output"].exists()
+
+
+def test_rejects_json3_token_boundary_drift_before_render(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["candidate"]["subtitles"][1]["timing_authority"][
+        "token_start_index"
+    ] = 3
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="does not match JSON3 boundary",
+    ):
+        _build(fixture)
+    assert not fixture["output"].exists()
+
+
+def test_rejects_more_than_six_words_before_render(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["candidate"]["subtitles"][0]["text"] = (
+        "one two three four five six seven"
+    )
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="must contain 1-6 whole words",
+    ):
+        _build(fixture)
+    assert not fixture["output"].exists()
+
+
+def test_rejects_failed_predecessor_chain_drift(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["repair"]["failed_repair_predecessor"]["video_sha256"] = "0" * 64
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out09.SecondSourceShortRepeatabilityError,
+        match="failed repair predecessor identity mismatch",
+    ):
+        _build(fixture)
+    assert not fixture["output"].exists()
+
+
+def test_shared_renderer_default_background_filter_is_unchanged() -> None:
+    command = vertical._vertical_render_command(
+        ffmpeg_path="ffmpeg",
+        source_video_path=Path("source.mp4"),
+        source_audio_path=Path("source.wav"),
+        ass_path=Path("captions.ass"),
+        font_file=Path("font.ttf"),
+        timeline=[{"source_start_seconds": 1.0, "source_end_seconds": 2.0}],
+        output_path=Path("output.mp4"),
+        video_codec="libx264",
+        audio_filter="anull",
+    )
+    filter_complex = command[command.index("-filter_complex") + 1]
+    assert "[bgraw0]scale=1080:1920:" in filter_complex
+    assert "crop=1080:1920,gblur=sigma=42" in filter_complex
+    assert "[fgraw0]scale=1080:-2:flags=lanczos[fg0]" in filter_complex
+    assert "crop=640:286:0:0" not in filter_complex
+
+
+def test_caption_free_policy_crops_before_background_and_foreground_scale(
+    tmp_path: Path,
+) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    policy = out09._normalize_composition_policy(plan["repair"])
+    command = vertical._vertical_render_command(
+        ffmpeg_path="ffmpeg",
+        source_video_path=Path("source.mp4"),
+        source_audio_path=Path("source.wav"),
+        ass_path=Path("captions.ass"),
+        font_file=Path("font.ttf"),
+        timeline=[{"source_start_seconds": 1.0, "source_end_seconds": 2.0}],
+        output_path=Path("output.mp4"),
+        video_codec="libx264",
+        audio_filter="anull",
+        composition_policy=policy,
+    )
+    filter_complex = command[command.index("-filter_complex") + 1]
+    assert filter_complex.count("crop=640:286:0:0") == 2
+    assert "[bgraw0]crop=640:286:0:0,scale=1080:1920" in filter_complex
+    assert "[fgraw0]crop=640:286:0:0,scale=1080:-2" in filter_complex
 
 
 def test_cli_reports_controlled_builder_failure(

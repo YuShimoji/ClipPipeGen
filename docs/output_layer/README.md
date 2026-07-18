@@ -11,12 +11,13 @@ seekability findings repaired while rights, production, subtitle-design, public,
 and publishing gates remain closed. OUT-07 is the parked, viable but noncanonical
 cover predecessor. OUT-08 is the closed accepted-internal two-candidate baseline.
 OUT-09 is the current human-review slice: one declarative vertical candidate from
-a different real source/episode, repaired once so source-native captions are the
-sole display authority and the endpoint reaches the first natural scene boundary.
+a different real source/episode. A second bounded presentation repair removes
+source-native caption pixels from foreground and background, uses a caption-free
+canvas, and burns 27 short JSON3-timed cues while preserving range and endpoint.
 
 Start here when resuming from another terminal:
 
-- `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` - active repaired second-source review package, before/after identity, native-caption/endpoint authority, media/mobile/browser evidence, exactly one human question, and closed gates.
+- `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` - active second-source caption-presentation repair, three-generation lineage, caption-free crop, JSON3 short-cue authority, media/mobile/browser evidence, exactly one human question, and closed gates.
 - `OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` - closed accepted-internal target-2/actual-2 baseline, exact unused-range authority, media/browser evidence, and closed gates.
 - `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - parked OUT-07 closure, historical Thank semantic proxy, unchanged strict exact-baseline route, and closed external actions.
 - `OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` - tracked public URLs and structural annotations only; third-party pixels remain ignored locally.
@@ -90,14 +91,17 @@ OUT-09 starts from the closed OUT-08 baseline but uses a different YouTube sourc
 identity (`D4i4fjs9PWc`) and episode. `build-second-source-short-repeatability`
 reads one declarative ignored plan, verifies six authority hashes, material
 ledger provenance, a real imported caption transcript, context-passed cut
-envelopes, allowed/excluded ranges, source-native caption display mode, and a
-caption/speech/scene-backed endpoint before invoking the shared vertical render
-path. The current ignored package has one 33.320-second H.264/AAC 1080x1920
-candidate, nine sidecar-only subtitle events, frame QA, manifest/readback, and a
-single-video Range-capable review page. Human review is
+envelopes, allowed/excluded ranges, a caption/speech/scene-backed endpoint, and
+an optional fail-closed composition policy before invoking the shared vertical
+render path. The current ignored package has one 33.320-second H.264/AAC
+1080x1920 candidate. Foreground and blurred background use only source
+`0,0,640,286`, excluding the lower 74px native-caption band. The video burns 27
+one-to-six-word JSON3 event/token-timed cues on an opaque plate; full-source blur
+fallback and frosted caption surfaces are prohibited. The package includes
+10-point frame QA, manifest/readback, and a single-video Range-capable review page. Human review is
 pending; production, rights, public, publishing, thumbnail, and portability gates
 remain closed. See `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` for exact hashes,
-commands, browser evidence, and the observed subtitle word-split debt.
+commands, browser evidence, and the three-generation repair lineage.
 
 Generated files:
 

@@ -7,12 +7,15 @@
 > states unless the Runtime capsule records a later reviewed transition.
 
 OUT-09 note: OUT-08と異なる実source `D4i4fjs9PWc` / episodeから生成した候補へ、
-ユーザー指摘の二重字幕・切替timingと不自然な終端だけを1回のbounded repairで反映した。
-画面上のsubtitle authorityはsource-native caption pixelsのみ、ASS/SRTはprovenance
-sidecarのみ。開始`31.160s`を維持し、最後のcaption/発話後・次scene直前の`64.480s`へ
-終端を延長した33.320秒候補で、media/frame/mobile/browser QAはpassed、human reviewは
-pending。旧MP4 `300ee360...e0c9`はsupersededで、新MP4 `3e7ef9d8...2916`だけを判断対象に
-する。rights、production、thumbnail、public/publishing gateは閉じたまま。詳細は
+人間の実見で判明した「中央16:9内のnative captionが小さい」「full-source blurが字幕字形を
+下部canvasへ複製する」「下部が霜ガラス状で読めない」という表示欠陥を1回の補正renderで
+修復した。source `31.160–64.480s`と33.320秒の意味範囲は変更せず、source下部74pxを
+背景・前景の双方からcropし、JSON3 event/token timingに基づく1–6語・1–2行の短い27 cueを
+不透明な黒plate上へburn-inした。caption-free cropだけをbackgroundに使い、full-source blur
+fallbackとfrosted subtitle surfaceを禁止している。MP4は
+`b6b90a4b...73da50`、media/frame/mobile/browser QAはpassed、human reviewはpending。
+旧MP4 `300ee360...e0c9`と失敗repair `3e7ef9d8...2916`はlineageとしてのみ保持する。
+rights、production、thumbnail、public/publishing gateは閉じたまま。詳細は
 [docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md](docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md)。
 
 OUT-08 note: authoritative episode evidence の未使用範囲から、重複しない 2 本の

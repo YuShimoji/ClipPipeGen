@@ -247,22 +247,32 @@ def test_runtime_points_to_out09_and_keeps_out07_rebuild_contract_parked() -> No
         "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
         in runtime
     )
-    assert "health: OUT09_REPAIRED_REVIEW_READY" in runtime
+    assert "health: OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
     assert "human_review_pending: true" in runtime
     assert "acceptance_granted: false" in runtime
     assert "batch_acceptance: null" in runtime
-    assert "candidate_01_acceptance: pending_repaired_exact_sha_human_review" in runtime
     assert (
-        "review_status: "
-        "OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY"
+        "candidate_01_acceptance: "
+        "pending_caption_presentation_exact_sha_human_review"
         in runtime
     )
-    assert "subtitle_display_authority: source_native_caption_pixels" in runtime
-    assert "additional_subtitle_burn_in: false" in runtime
+    assert (
+        "review_status: "
+        "OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY"
+        in runtime
+    )
+    assert (
+        "subtitle_display_authority: generated_short_cue_overlay_from_source_json3"
+        in runtime
+    )
+    assert "additional_subtitle_burn_in: true" in runtime
+    assert "source_native_caption_pixels_suppressed: true" in runtime
+    assert "full_source_blur_fallback_allowed: false" in runtime
+    assert "additional_blur_or_frosted_caption_surface: false" in runtime
     assert (
         "candidate_01_sha256: "
-        "3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916"
+        "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
         in runtime
     )
     assert "candidate_02_acceptance: null" in runtime

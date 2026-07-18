@@ -31,6 +31,7 @@ from src.integrations.render.real_unused_range_short_minibatch import (
 )
 from src.integrations.render.subtitle_overlay_visual_proof import _write_ass
 from src.integrations.render.vertical_short_candidate import (
+    CAPTION_FREE_BACKGROUND_POLICY,
     VerticalShortCandidateError,
     _atomic_promote,
     _cleanup_internal_directory,
@@ -48,16 +49,20 @@ from src.integrations.render.vertical_short_candidate import (
 ARTIFACT_ID = "clip-out09-second-source-short-repeatability-v0-001"
 SCHEMA_VERSION = "clippipegen.out09.second_source_short_repeatability.v0"
 PLAN_SCHEMA_VERSION = "clippipegen.out09.candidate_plan_input.v0"
-STATE = "OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY"
+STATE = "OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY"
 OUTPUT_PREFIX = "out09_"
 OUT08_PROVIDER_ID = "7J5aS_pcBj4"
-PREDECESSOR_MP4_SHA256 = (
+INITIAL_PREDECESSOR_MP4_SHA256 = (
     "300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9"
 )
-SUBTITLE_DISPLAY_AUTHORITY = "source_native_caption_pixels"
+FAILED_REPAIR_PREDECESSOR_MP4_SHA256 = (
+    "3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916"
+)
+PREDECESSOR_MP4_SHA256 = INITIAL_PREDECESSOR_MP4_SHA256
+SUBTITLE_DISPLAY_AUTHORITY = "generated_short_cue_overlay_from_source_json3"
 REPAIR_REVIEW_QUESTION = (
-    "字幕の切替リズムと終わり方が自然になったか、"
-    "ほかに明確な違和感があれば教えてください。"
+    "字幕が短い単位で自然に切り替わり、画面を邪魔せず読めるか。"
+    "最後の終わり方を含め、ほかに明確な違和感があれば教えてください。"
 )
 MIN_DURATION_SECONDS = 12.0
 MAX_DURATION_SECONDS = 60.0
@@ -123,7 +128,6 @@ def build_second_source_short_repeatability(
 
         ass_path = stage / "candidate_01_subtitles.ass"
         srt_path = stage / "candidate_01_subtitles.srt"
-        render_ass_path = work / "no_additional_burn_in.ass"
         video_path = stage / "candidate_01.mp4"
         frame_path = stage / "candidate_01_frame_qa.jpg"
         navigation_path = stage / "candidate_01_navigation.jpg"
@@ -133,6 +137,11 @@ def build_second_source_short_repeatability(
             application_key="out09_application",
             dimension_source="out09_second_source_vertical_canvas",
         )
+        _apply_out09_short_cue_style(layout)
+        presentation_statistics = _validate_short_cue_presentation(
+            presentation,
+            expected_count=len(normalized["semantic_subtitles"]),
+        )
         containment = validate_vertical_subtitle_containment(
             presentation,
             expected_duration=normalized["duration_seconds"],
@@ -141,7 +150,6 @@ def build_second_source_short_repeatability(
         )
         _write_ass(ass_path, presentation, layout=layout, review_label=None)
         _write_text(srt_path, _render_srt(presentation))
-        _write_no_overlay_ass(render_ass_path)
         validate_ass_visible_content(
             ass_path,
             expected_count=len(presentation),
@@ -155,7 +163,7 @@ def build_second_source_short_repeatability(
             source_video_path=authority["source_video_path"],
             source_audio_path=authority["source_audio_path"],
             timeline=normalized["timeline"],
-            ass_path=render_ass_path,
+            ass_path=ass_path,
             video_path=video_path,
             compare_sheet_path=None,
             frame_sheet_path=frame_path,
@@ -165,6 +173,7 @@ def build_second_source_short_repeatability(
             frame_samples=normalized["frame_samples"],
             ffmpeg_path=ffmpeg_path,
             ffprobe_path=ffprobe_path,
+            composition_policy=normalized["composition_policy"],
             runner=runner,
         )
         validate_vertical_render_result(
@@ -209,6 +218,9 @@ def build_second_source_short_repeatability(
                 "display_text_normalization": str(
                     item.get("display_text_normalization") or "none"
                 ),
+                "json3_timing_authority": dict(
+                    item.get("json3_timing_authority") or {}
+                ),
             }
             for item in presentation
         ]
@@ -249,11 +261,12 @@ def build_second_source_short_repeatability(
                 "items": presentation_items,
                 "source_type": "imported_subtitle_track",
                 "display_authority": SUBTITLE_DISPLAY_AUTHORITY,
-                "burn_in_applied": False,
-                "visible_additional_overlay_event_count": 0,
-                "ass_srt_role": (
-                    "provenance_navigation_machine_readback_sidecar_only"
-                ),
+                "burn_in_applied": True,
+                "source_native_caption_pixels_suppressed": True,
+                "visible_overlay_event_count": len(presentation_items),
+                "ass_srt_role": "display_and_provenance_sidecar",
+                "statistics": presentation_statistics,
+                "additional_blur_or_frosted_caption_surface": False,
                 "human_transcript_acceptance_claimed": False,
             },
             "video": {
@@ -267,6 +280,7 @@ def build_second_source_short_repeatability(
                 "full_decode": render_result["full_decode"],
                 "faststart": render_result.get("faststart"),
                 "source_probe": render_result.get("source_probe"),
+                "composition_policy": render_result.get("composition_policy"),
                 "execution_count": 1,
                 "corrective_pass_count": 0,
                 "build_elapsed_seconds": elapsed,
@@ -326,9 +340,13 @@ def build_second_source_short_repeatability(
             "repair": normalized["repair"],
             "subtitle_display_authority": {
                 "mode": SUBTITLE_DISPLAY_AUTHORITY,
-                "additional_burn_in": False,
-                "ass_srt_sidecar_only": True,
+                "source_native_caption_pixels_suppressed": True,
+                "burn_in_applied": True,
+                "visible_overlay_event_count": len(presentation_items),
+                "ass_srt_role": "display_and_provenance_sidecar",
+                "additional_blur_or_frosted_caption_surface": False,
             },
+            "composition_policy": normalized["composition_policy"],
             "files": files,
             "boundaries": normalized["boundaries"],
             "manifest_self_integrity": {"algorithm": "sha256", "sha256": None},
@@ -423,10 +441,12 @@ def _load_authority(*, root: Path, episode: Path, plan: dict[str, Any]) -> dict[
         raise SecondSourceShortRepeatabilityError("source audio plan hash mismatch")
 
     transcript = _read_json(paths["authoritative_transcript"], "authoritative transcript")
+    source_captions = _read_json(paths["source_caption_track"], "source caption track")
     edit_pack = _read_json(paths["edit_pack"], "edit pack")
     return {
         "rights": rights,
         "transcript": transcript,
+        "source_captions": source_captions,
         "edit_pack": edit_pack,
         "source_video_path": _resolved(root, Path(video["file_path"])),
         "source_audio_path": _resolved(root, Path(audio["file_path"])),
@@ -483,10 +503,14 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
 
     feedback = plan.get("user_feedback")
     expected_feedback = {
-        "overall": "bounded_repair_required",
+        "overall": "bounded_presentation_repair_required",
+        "human_observation_priority": (
+            "authoritative_over_agent_legibility_observation"
+        ),
+        "native_caption_only_result": "failed_unreadable_at_review_size",
+        "blurred_caption_duplication": "observed_in_lower_canvas",
         "content_selection": "not_rejected_not_yet_accepted",
-        "subtitle_presentation_timing": "needs_adjustment",
-        "endpoint_edit": "needs_adjustment",
+        "endpoint_edit": "unchanged_not_reopened",
     }
     if not isinstance(feedback, dict) or any(
         feedback.get(key) != value for key, value in expected_feedback.items()
@@ -496,27 +520,64 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         )
 
     repair = plan.get("repair") if isinstance(plan.get("repair"), dict) else {}
-    if repair.get("kind") != "bounded_subtitle_authority_and_endpoint":
+    if (
+        repair.get("kind") != "caption_canvas_presentation_repair"
+        or repair.get("lineage_index") != 2
+    ):
         raise SecondSourceShortRepeatabilityError("unsupported OUT-09 repair kind")
-    predecessor = (
-        repair.get("superseded_predecessor")
-        if isinstance(repair.get("superseded_predecessor"), dict)
+    initial_predecessor = (
+        repair.get("initial_predecessor")
+        if isinstance(repair.get("initial_predecessor"), dict)
         else {}
     )
     if (
-        predecessor.get("candidate_id") != candidate_id
-        or predecessor.get("video_sha256") != PREDECESSOR_MP4_SHA256
-        or predecessor.get("human_acceptance_claimed") is not False
+        initial_predecessor.get("candidate_id") != candidate_id
+        or initial_predecessor.get("video_sha256")
+        != INITIAL_PREDECESSOR_MP4_SHA256
+        or initial_predecessor.get("human_acceptance_claimed") is not False
     ):
         raise SecondSourceShortRepeatabilityError(
-            "superseded predecessor identity mismatch"
+            "initial predecessor identity mismatch"
         )
     if not _close(
-        _number(predecessor.get("source_start_seconds"), "predecessor source start"),
+        _number(
+            initial_predecessor.get("source_start_seconds"),
+            "initial predecessor source start",
+        ),
         start,
     ):
         raise SecondSourceShortRepeatabilityError(
             "bounded repair must preserve candidate start"
+        )
+    failed_predecessor = (
+        repair.get("failed_repair_predecessor")
+        if isinstance(repair.get("failed_repair_predecessor"), dict)
+        else {}
+    )
+    if (
+        failed_predecessor.get("candidate_id") != candidate_id
+        or failed_predecessor.get("video_sha256")
+        != FAILED_REPAIR_PREDECESSOR_MP4_SHA256
+        or failed_predecessor.get("reason")
+        != "unreadable_native_caption_and_blurred_caption_duplication"
+        or failed_predecessor.get("human_acceptance_claimed") is not False
+        or not _close(
+            _number(
+                failed_predecessor.get("source_start_seconds"),
+                "failed predecessor source start",
+            ),
+            start,
+        )
+        or not _close(
+            _number(
+                failed_predecessor.get("source_end_seconds"),
+                "failed predecessor source end",
+            ),
+            end,
+        )
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "failed repair predecessor identity mismatch"
         )
 
     subtitle_repair = (
@@ -526,21 +587,25 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     )
     expected_subtitle_repair = {
         "display_authority": SUBTITLE_DISPLAY_AUTHORITY,
-        "additional_burn_in": False,
-        "native_caption_pixels_modified": False,
-        "ass_srt_role": "provenance_navigation_machine_readback_sidecar_only",
+        "source_native_caption_pixels_suppressed": True,
+        "timing_authority": "youtube_json3_event_and_token_offsets",
+        "ass_srt_role": "display_and_provenance_sidecar",
+        "maximum_words_per_cue": 6,
+        "maximum_lines_per_cue": 2,
+        "caption_plate": "opaque_solid_black",
+        "caption_plate_alpha": 1.0,
+        "additional_blur_or_frosted_caption_surface": False,
         "scope": "source_specific",
-        "fallback_if_not_legible": (
-            "REFRAME_REQUIRED_NATIVE_CAPTION_NOT_LEGIBLE"
-        ),
     }
     if any(
         subtitle_repair.get(key) != value
         for key, value in expected_subtitle_repair.items()
     ):
         raise SecondSourceShortRepeatabilityError(
-            "source-native caption authority is incomplete"
+            "short-cue caption authority is incomplete"
         )
+
+    composition_policy = _normalize_composition_policy(repair)
 
     endpoint = (
         repair.get("endpoint_authority")
@@ -583,9 +648,10 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     if (
         endpoint.get("fixed_padding_used") is not False
         or endpoint.get("fade_sfx_freeze_or_silence_added") is not False
+        or endpoint.get("reopened_for_this_repair") is not False
     ):
         raise SecondSourceShortRepeatabilityError(
-            "endpoint repair must not hide the boundary with padding or effects"
+            "presentation repair must preserve the endpoint without effects"
         )
 
     cut_ids = _string_list(candidate.get("authority_cut_ids"))
@@ -635,6 +701,7 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     subtitles = candidate.get("subtitles") if isinstance(candidate.get("subtitles"), list) else []
     if not subtitles:
         raise SecondSourceShortRepeatabilityError("candidate subtitles are missing")
+    json3_events = _json3_event_index(authority["source_captions"])
     semantic: list[dict[str, Any]] = []
     previous_end = 0.0
     for index, raw in enumerate(subtitles, start=1):
@@ -650,8 +717,12 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         display_end = round(source_end - start, 3)
         if index == 1 and not _close(display_start, 0.0):
             raise SecondSourceShortRepeatabilityError("first subtitle must start with candidate")
-        if not _close(display_start, previous_end):
-            raise SecondSourceShortRepeatabilityError("subtitle plan must be contiguous")
+        if display_start < previous_end - TIME_TOLERANCE_SECONDS:
+            raise SecondSourceShortRepeatabilityError("short cue plan must not overlap")
+        if display_start - previous_end > 0.15 + TIME_TOLERANCE_SECONDS:
+            raise SecondSourceShortRepeatabilityError(
+                "short cue plan contains an unexplained display gap"
+            )
         linked_ids = _string_list(raw.get("source_segment_ids"))
         if not linked_ids or any(value not in segments for value in linked_ids):
             raise SecondSourceShortRepeatabilityError(
@@ -659,9 +730,24 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             )
         source_text = " ".join(str(segments[value].get("text") or "") for value in linked_ids)
         text = str(raw.get("text") or "").strip()
-        if not text or not _token_subsequence(text, source_text):
+        words = _normalized_tokens(text)
+        if not text or not 1 <= len(words) <= 6 or "\n" in text or "\r" in text:
             raise SecondSourceShortRepeatabilityError(
-                f"subtitle normalization is not transcript-backed: {subtitle_id}"
+                f"short cue must contain 1-6 whole words: {subtitle_id}"
+            )
+        timing_authority = _validate_json3_cue_timing(
+            raw,
+            events=json3_events,
+            source_start=source_start,
+            source_end=source_end,
+            subtitle_id=subtitle_id,
+        )
+        if (
+            not _token_subsequence(text, source_text)
+            or words != _normalized_tokens(timing_authority["token_text"])
+        ):
+            raise SecondSourceShortRepeatabilityError(
+                f"short cue is not JSON3/transcript-backed: {subtitle_id}"
             )
         semantic.append(
             {
@@ -671,14 +757,19 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
                 "sequence_end_seconds": display_end,
                 "text": text,
                 "source_text": source_text,
-                "display_text_normalization": "rolling_caption_dedup_subsequence_v1",
+                "display_text_normalization": (
+                    "short_phrase_from_json3_token_offsets_v1"
+                ),
                 "source_type": "imported_subtitle_track",
                 "source_segment_ids": linked_ids,
+                "json3_timing_authority": timing_authority,
             }
         )
         previous_end = display_end
-    if not _close(previous_end, duration):
-        raise SecondSourceShortRepeatabilityError("subtitles must end with candidate")
+    if duration - previous_end > 0.15 + TIME_TOLERANCE_SECONDS:
+        raise SecondSourceShortRepeatabilityError(
+            "last short cue leaves an unexplained trailing gap"
+        )
 
     review_questions = plan.get("review_questions")
     if review_questions != [REPAIR_REVIEW_QUESTION]:
@@ -698,10 +789,18 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
 
     authority_boundary = round(float(cuts[cut_ids[-1]]["start_seconds"]) - start, 3)
     frame_samples = (
-        ("start", 0.25),
-        ("authority_boundary", max(0.25, min(duration - 0.25, authority_boundary))),
-        ("native_caption_switch", round(min(duration - 0.25, 23.5), 3)),
-        ("endpoint_caption", round(duration - 2.0, 3)),
+        ("caption_start", 0.25),
+        ("caption_early_a", round(duration * 0.10, 3)),
+        ("caption_early_b", round(duration * 0.20, 3)),
+        ("caption_mid_a", round(duration * 0.30, 3)),
+        (
+            "authority_boundary",
+            max(0.25, min(duration - 0.25, authority_boundary)),
+        ),
+        ("caption_mid_b", round(duration * 0.60, 3)),
+        ("caption_late_a", round(duration * 0.70, 3)),
+        ("caption_late_b", round(duration * 0.83, 3)),
+        ("endpoint_caption", round(duration * 0.925, 3)),
         ("end", round(duration - 0.25, 3)),
     )
     timeline = [
@@ -742,33 +841,57 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "review_status": str((transcript.get("review") or {}).get("status") or "unknown"),
             "segment_count": len(segments),
             "used_source_segment_ids": source_segment_ids,
-            "display_normalization": "rolling_caption_dedup_subsequence_v1",
+            "display_normalization": "short_phrase_from_json3_token_offsets_v1",
             "human_transcript_acceptance_claimed": False,
         },
         "user_feedback": expected_feedback,
         "repair": {
-            "kind": "bounded_subtitle_authority_and_endpoint",
-            "superseded_predecessor": {
+            "kind": "caption_canvas_presentation_repair",
+            "lineage_index": 2,
+            "initial_predecessor": {
                 "candidate_id": candidate_id,
                 "source_start_seconds": _number(
-                    predecessor.get("source_start_seconds"),
-                    "predecessor source start",
+                    initial_predecessor.get("source_start_seconds"),
+                    "initial predecessor source start",
                 ),
                 "source_end_seconds": _number(
-                    predecessor.get("source_end_seconds"),
-                    "predecessor source end",
+                    initial_predecessor.get("source_end_seconds"),
+                    "initial predecessor source end",
                 ),
                 "duration_seconds": _number(
-                    predecessor.get("duration_seconds"),
-                    "predecessor duration",
+                    initial_predecessor.get("duration_seconds"),
+                    "initial predecessor duration",
                 ),
                 "media_duration_seconds": _number(
-                    predecessor.get("media_duration_seconds"),
-                    "predecessor media duration",
+                    initial_predecessor.get("media_duration_seconds"),
+                    "initial predecessor media duration",
                 ),
-                "video_sha256": PREDECESSOR_MP4_SHA256,
+                "video_sha256": INITIAL_PREDECESSOR_MP4_SHA256,
                 "human_acceptance_claimed": False,
             },
+            "failed_repair_predecessor": {
+                "candidate_id": candidate_id,
+                "source_start_seconds": start,
+                "source_end_seconds": end,
+                "duration_seconds": _number(
+                    failed_predecessor.get("duration_seconds"),
+                    "failed predecessor duration",
+                ),
+                "media_duration_seconds": _number(
+                    failed_predecessor.get("media_duration_seconds"),
+                    "failed predecessor media duration",
+                ),
+                "video_sha256": FAILED_REPAIR_PREDECESSOR_MP4_SHA256,
+                "reason": (
+                    "unreadable_native_caption_and_blurred_caption_duplication"
+                ),
+                "human_acceptance_claimed": False,
+            },
+            "human_observation": dict(repair.get("human_observation") or {}),
+            "background_canvas": dict(repair.get("background_canvas") or {}),
+            "native_caption_suppression": dict(
+                repair.get("native_caption_suppression") or {}
+            ),
             "subtitle_presentation": expected_subtitle_repair,
             "endpoint_authority": {
                 "basis": str(endpoint["basis"]),
@@ -780,10 +903,12 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
                 "selected_source_end_seconds": selected_end,
                 "fixed_padding_used": False,
                 "fade_sfx_freeze_or_silence_added": False,
+                "reopened_for_this_repair": False,
                 "candidate_start_preserved": True,
                 "verified_before_render": True,
             },
         },
+        "composition_policy": composition_policy,
         "selection_authority": {
             "allowed_ranges": allowed,
             "excluded_ranges": excluded_readback,
@@ -792,6 +917,369 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "checked_before_render": True,
         },
         "boundaries": expected_boundaries,
+    }
+
+
+def _normalize_composition_policy(repair: dict[str, Any]) -> dict[str, Any]:
+    observation = repair.get("human_observation") or {}
+    expected_observation = {
+        "native_caption_too_small_in_16_9_foreground": True,
+        "full_source_blur_duplicates_caption_glyphs": True,
+        "lower_canvas_appears_frosted_and_unreadable": True,
+        "agent_legibility_observation_overridden": True,
+    }
+    if not isinstance(observation, dict) or any(
+        observation.get(key) != value
+        for key, value in expected_observation.items()
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "human caption/canvas observation is incomplete"
+        )
+
+    background = repair.get("background_canvas") or {}
+    suppression = repair.get("native_caption_suppression") or {}
+    if (
+        not isinstance(background, dict)
+        or background.get("mode") != CAPTION_FREE_BACKGROUND_POLICY
+        or background.get("measurement_source")
+        != "ten_caption_active_source_frames"
+        or background.get("full_source_blur_fallback_allowed") is not False
+        or background.get("fallback")
+        != "neutral_solid_or_caption_free_edge_only"
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "caption-free background policy is incomplete"
+        )
+    source_frame = _exact_pixel_rect_source(background.get("source_frame_pixels"))
+    if source_frame != {"width": 640, "height": 360}:
+        raise SecondSourceShortRepeatabilityError(
+            "OUT-09 caption crop requires the measured 640x360 source"
+        )
+    background_crop = _exact_pixel_rectangle(
+        background.get("caption_free_crop_pixels"),
+        label="caption-free background crop",
+    )
+    foreground_crop = _exact_pixel_rectangle(
+        suppression.get("foreground_source_crop_pixels"),
+        label="caption-free foreground crop",
+    )
+    caption_band = _exact_pixel_rectangle(
+        suppression.get("caption_band_pixels"),
+        label="native caption band",
+    )
+    if (
+        suppression.get("method") != "bottom_crop"
+        or suppression.get("mask_used") is not False
+        or suppression.get("validated_caption_active_frame_count") != 10
+        or suppression.get("important_content_preserved") is not True
+        or suppression.get("conflict_status") != "none"
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            "native caption suppression evidence is incomplete"
+        )
+    expected_crop = {"x": 0, "y": 0, "width": 640, "height": 286}
+    expected_band = {"x": 0, "y": 286, "width": 640, "height": 74}
+    if background_crop != expected_crop or foreground_crop != expected_crop:
+        raise SecondSourceShortRepeatabilityError(
+            "caption-free crop does not match the measured source rectangle"
+        )
+    if caption_band != expected_band:
+        raise SecondSourceShortRepeatabilityError(
+            "native caption band does not match the measured source rectangle"
+        )
+    _validate_normalized_rectangle(
+        background.get("caption_free_crop_normalized"),
+        pixels=background_crop,
+        source_frame=source_frame,
+        label="caption-free background crop",
+    )
+    _validate_normalized_rectangle(
+        suppression.get("caption_band_normalized"),
+        pixels=caption_band,
+        source_frame=source_frame,
+        label="native caption band",
+    )
+    sample_times = background.get("representative_frame_source_seconds")
+    if not isinstance(sample_times, list) or len(sample_times) != 10:
+        raise SecondSourceShortRepeatabilityError(
+            "caption-free crop requires ten measured source frames"
+        )
+    return {
+        "mode": CAPTION_FREE_BACKGROUND_POLICY,
+        "source_frame_pixels": source_frame,
+        "background_source_crop_pixels": background_crop,
+        "background_source_crop_normalized": dict(
+            background["caption_free_crop_normalized"]
+        ),
+        "foreground_source_crop_pixels": foreground_crop,
+        "native_caption_band_pixels": caption_band,
+        "native_caption_band_normalized": dict(
+            suppression["caption_band_normalized"]
+        ),
+        "native_caption_suppression": {
+            "method": "bottom_crop",
+            "mask_used": False,
+            "important_content_preserved": True,
+            "validated_caption_active_frame_count": 10,
+            "conflict_status": "none",
+        },
+        "representative_frame_source_seconds": [
+            round(_number(value, "caption crop sample time"), 3)
+            for value in sample_times
+        ],
+        "full_source_blur_fallback_allowed": False,
+        "fallback": "neutral_solid_or_caption_free_edge_only",
+        "additional_blur_or_frosted_caption_surface": False,
+    }
+
+
+def _exact_pixel_rect_source(value: Any) -> dict[str, int]:
+    if not isinstance(value, dict):
+        return {}
+    try:
+        return {"width": int(value["width"]), "height": int(value["height"])}
+    except (KeyError, TypeError, ValueError):
+        return {}
+
+
+def _exact_pixel_rectangle(value: Any, *, label: str) -> dict[str, int]:
+    if not isinstance(value, dict):
+        raise SecondSourceShortRepeatabilityError(f"{label} is missing")
+    try:
+        return {key: int(value[key]) for key in ("x", "y", "width", "height")}
+    except (KeyError, TypeError, ValueError) as exc:
+        raise SecondSourceShortRepeatabilityError(f"{label} is invalid") from exc
+
+
+def _validate_normalized_rectangle(
+    value: Any,
+    *,
+    pixels: dict[str, int],
+    source_frame: dict[str, int],
+    label: str,
+) -> None:
+    if not isinstance(value, dict):
+        raise SecondSourceShortRepeatabilityError(f"{label} normalized rectangle is missing")
+    expected = {
+        "x": pixels["x"] / source_frame["width"],
+        "y": pixels["y"] / source_frame["height"],
+        "width": pixels["width"] / source_frame["width"],
+        "height": pixels["height"] / source_frame["height"],
+    }
+    if any(
+        abs(_number(value.get(key), f"{label} normalized {key}") - target)
+        > 0.00001
+        for key, target in expected.items()
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            f"{label} normalized rectangle does not match pixels"
+        )
+
+
+def _json3_event_index(captions: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    raw_events = captions.get("events")
+    if not isinstance(raw_events, list):
+        raise SecondSourceShortRepeatabilityError("JSON3 caption events are missing")
+    return {
+        index: event
+        for index, event in enumerate(raw_events)
+        if isinstance(event, dict)
+    }
+
+
+def _validate_json3_cue_timing(
+    raw: dict[str, Any],
+    *,
+    events: dict[int, dict[str, Any]],
+    source_start: float,
+    source_end: float,
+    subtitle_id: str,
+) -> dict[str, Any]:
+    timing = raw.get("timing_authority") or {}
+    if (
+        not isinstance(timing, dict)
+        or timing.get("source") != "youtube_json3_event_and_token_offsets"
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            f"JSON3 timing authority is missing: {subtitle_id}"
+        )
+    try:
+        event_index = int(timing["event_index"])
+        token_start = int(timing["token_start_index"])
+        token_end = int(timing["token_end_index_exclusive"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise SecondSourceShortRepeatabilityError(
+            f"JSON3 token span is invalid: {subtitle_id}"
+        ) from exc
+    event = events.get(event_index)
+    if event is None:
+        raise SecondSourceShortRepeatabilityError(
+            f"JSON3 event is missing: {subtitle_id}"
+        )
+    tokens = _json3_text_tokens(event)
+    if token_start < 0 or token_end <= token_start or token_end > len(tokens):
+        raise SecondSourceShortRepeatabilityError(
+            f"JSON3 token span leaves event: {subtitle_id}"
+        )
+    event_start = _json3_event_start_seconds(event)
+    expected_start = event_start + (tokens[token_start]["offset_ms"] / 1000.0)
+    boundary = timing.get("end_boundary") or {}
+    expected_end = _json3_boundary_seconds(boundary, events=events)
+    if (
+        not _close(source_start, expected_start)
+        or not _close(source_end, expected_end)
+    ):
+        raise SecondSourceShortRepeatabilityError(
+            f"short cue timing does not match JSON3 boundary: {subtitle_id}"
+        )
+    token_text = "".join(token["text"] for token in tokens[token_start:token_end])
+    return {
+        "source": "youtube_json3_event_and_token_offsets",
+        "event_index": event_index,
+        "event_start_seconds": round(event_start, 3),
+        "token_start_index": token_start,
+        "token_end_index_exclusive": token_end,
+        "token_text": " ".join(token_text.split()),
+        "cue_source_start_seconds": round(expected_start, 3),
+        "cue_source_end_seconds": round(expected_end, 3),
+        "end_boundary": dict(boundary),
+    }
+
+
+def _json3_text_tokens(event: dict[str, Any]) -> list[dict[str, Any]]:
+    tokens: list[dict[str, Any]] = []
+    for segment in event.get("segs") or []:
+        if not isinstance(segment, dict):
+            continue
+        text = str(segment.get("utf8") or "")
+        if not text.strip():
+            continue
+        offset = segment.get("tOffsetMs")
+        tokens.append(
+            {
+                "text": text,
+                "offset_ms": 0 if offset is None else int(offset),
+            }
+        )
+    return tokens
+
+
+def _json3_event_start_seconds(event: dict[str, Any]) -> float:
+    return _number(event.get("tStartMs"), "JSON3 event start") / 1000.0
+
+
+def _json3_boundary_seconds(
+    boundary: Any,
+    *,
+    events: dict[int, dict[str, Any]],
+) -> float:
+    if not isinstance(boundary, dict):
+        raise SecondSourceShortRepeatabilityError("JSON3 cue end boundary is missing")
+    kind = boundary.get("kind")
+    try:
+        event_index = int(boundary["event_index"])
+    except (KeyError, TypeError, ValueError) as exc:
+        raise SecondSourceShortRepeatabilityError(
+            "JSON3 cue end event is invalid"
+        ) from exc
+    event = events.get(event_index)
+    if event is None:
+        raise SecondSourceShortRepeatabilityError("JSON3 cue end event is missing")
+    if kind == "token_onset":
+        try:
+            token_index = int(boundary["token_index"])
+            token = _json3_text_tokens(event)[token_index]
+        except (KeyError, TypeError, ValueError, IndexError) as exc:
+            raise SecondSourceShortRepeatabilityError(
+                "JSON3 cue end token is invalid"
+            ) from exc
+        return _json3_event_start_seconds(event) + token["offset_ms"] / 1000.0
+    if kind == "json3_event_start":
+        return _json3_event_start_seconds(event)
+    if kind == "json3_event_end":
+        duration_ms = _number(event.get("dDurationMs"), "JSON3 event duration")
+        return _json3_event_start_seconds(event) + duration_ms / 1000.0
+    raise SecondSourceShortRepeatabilityError("unsupported JSON3 cue end boundary")
+
+
+def _validate_short_cue_presentation(
+    presentation: list[dict[str, Any]],
+    *,
+    expected_count: int,
+) -> dict[str, Any]:
+    if len(presentation) != expected_count or not presentation:
+        raise SecondSourceShortRepeatabilityError(
+            "short-cue presentation count mismatch"
+        )
+    word_counts: list[int] = []
+    line_counts: list[int] = []
+    durations: list[float] = []
+    for item in presentation:
+        text = str(item.get("text") or "")
+        lines = [str(value) for value in item.get("wrapped_lines") or []]
+        words = _normalized_tokens(text)
+        duration = round(
+            float(item["display_end_seconds"])
+            - float(item["display_start_seconds"]),
+            3,
+        )
+        if not 1 <= len(words) <= 6:
+            raise SecondSourceShortRepeatabilityError(
+                "short cue word count must stay within 1-6"
+            )
+        if not 1 <= len(lines) <= 2:
+            raise SecondSourceShortRepeatabilityError(
+                "short cue must render in one or two lines"
+            )
+        if _normalized_tokens(" ".join(lines)) != words:
+            raise SecondSourceShortRepeatabilityError(
+                "short cue line wrapping split a word"
+            )
+        if duration < 0.4 - TIME_TOLERANCE_SECONDS or duration > 2.5:
+            raise SecondSourceShortRepeatabilityError(
+                "short cue duration must stay within 0.4-2.5 seconds"
+            )
+        word_counts.append(len(words))
+        line_counts.append(len(lines))
+        durations.append(duration)
+    return {
+        "cue_count": len(presentation),
+        "word_count_range": {"minimum": min(word_counts), "maximum": max(word_counts)},
+        "line_count_range": {"minimum": min(line_counts), "maximum": max(line_counts)},
+        "duration_seconds_range": {
+            "minimum": min(durations),
+            "maximum": max(durations),
+        },
+        "whole_word_wrap": True,
+        "timing_authority": "youtube_json3_event_and_token_offsets",
+    }
+
+
+def _apply_out09_short_cue_style(layout: dict[str, Any]) -> None:
+    """Use a crisp opaque plate so canvas blur is never the caption surface."""
+
+    style = dict(layout.get("diagnostic_ass_style") or {})
+    style.update(
+        {
+            "border_style": 3,
+            "back_colour": "&H00000000",
+            "out09_caption_plate": "opaque_solid_black",
+            "out09_caption_plate_alpha": 1.0,
+            "additional_blur_or_frosted_caption_surface": False,
+        }
+    )
+    layout["diagnostic_ass_style"] = style
+    layout["values"]["outline"] = 6
+    layout["values"]["shadow"] = 1
+    layout["out09_short_cue_overlay"] = {
+        "caption_plate": "opaque_solid_black",
+        "caption_plate_alpha": 1.0,
+        "position": {
+            "x": layout["values"]["bottom_center_x"],
+            "y": layout["values"]["bottom_center_y"],
+        },
+        "safe_area": dict(layout["vertical_safe_envelope"]["subtitle"]),
+        "additional_blur_or_frosted_caption_surface": False,
     }
 
 
@@ -935,10 +1423,10 @@ def _render_html(readback: dict[str, Any]) -> str:
 </style></head><body><main><h1>OUT-09 second-source Short review</h1>
 <p><code>{escape(readback['source_identity']['provider_id'])}</code> / source {candidate['source_start_seconds']:.3f}–{candidate['source_end_seconds']:.3f}s / sequence {candidate['duration_seconds']:.3f}s</p>
 <p class="boundary">rights=pending / production_candidate=false / public use is not allowed</p>
-<video controls preload="metadata" playsinline poster="{escape(readback['navigation_frame']['package_relative_path'])}" src="{escape(readback['video']['package_relative_path'])}"></video>
+<video controls preload="metadata" playsinline poster="{escape(readback['navigation_frame']['package_relative_path'])}?v={escape(readback['navigation_frame']['sha256'][:16])}" src="{escape(readback['video']['package_relative_path'])}?v={escape(readback['video']['sha256'][:16])}"></video>
 <section><h2>修復後に確認する1点</h2><ol>{questions}</ol></section>
 <details open><summary>構成</summary><table><tr><th>導入</th><td>{escape(str(arc.get('setup') or ''))}</td></tr><tr><th>展開</th><td>{escape(str(arc.get('development') or ''))}</td></tr><tr><th>着地</th><td>{escape(str(arc.get('payoff') or ''))}</td></tr></table></details>
-<details><summary>検証 readback</summary><p>{escape(str(media['video_codec']))}/{escape(str(media['audio_codec']))} · {media['width']}x{media['height']} · {media['fps']}fps · {media['duration_seconds']:.3f}s</p><p>Audio {audio['integrated_lufs']:.2f} LUFS / {audio['true_peak_dbtp']:.2f} dBTP · full decode {escape(str(readback['render']['full_decode']['status']))} · black/silence {escape(str(readback['signal_qa']['status']))}</p><p>Subtitle display authority: source-native caption pixels. ASS/SRT are sidecar provenance only; additional burn-in=false.</p><p>Transcript: {escape(readback['transcript_authority']['engine'])}/{escape(readback['transcript_authority']['provider'])}; imported source captions, human transcript acceptance not claimed.</p></details>
+<details><summary>検証 readback</summary><p>{escape(str(media['video_codec']))}/{escape(str(media['audio_codec']))} · {media['width']}x{media['height']} · {media['fps']}fps · {media['duration_seconds']:.3f}s</p><p>Audio {audio['integrated_lufs']:.2f} LUFS / {audio['true_peak_dbtp']:.2f} dBTP · full decode {escape(str(readback['render']['full_decode']['status']))} · black/silence {escape(str(readback['signal_qa']['status']))}</p><p>Subtitle display authority: generated short-cue overlay from source JSON3. Source-native caption pixels are bottom-cropped; ASS/SRT preserve display and provenance.</p><p>Background: caption-free source crop only; no full-source fallback and no frosted caption surface.</p><p>Transcript: {escape(readback['transcript_authority']['engine'])}/{escape(readback['transcript_authority']['provider'])}; imported source captions, human transcript acceptance not claimed.</p></details>
 </main></body></html>"""
 
 
@@ -966,28 +1454,6 @@ try {
 """
 
 
-def _write_no_overlay_ass(path: Path) -> None:
-    """Write a valid zero-dialogue ASS carrier for the shared render path."""
-
-    _write_text(
-        path,
-        """[Script Info]
-ScriptType: v4.00+
-PlayResX: 1080
-PlayResY: 1920
-WrapStyle: 0
-ScaledBorderAndShadow: yes
-
-[V4+ Styles]
-Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: NativeOnly,Arial,48,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,2,0,0,0,1
-
-[Events]
-Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
-""",
-    )
-
-
 def _render_srt(items: list[dict[str, Any]]) -> str:
     blocks = []
     for index, item in enumerate(items, start=1):
@@ -1008,12 +1474,16 @@ def _srt_time(seconds: float) -> str:
 
 
 def _token_subsequence(display_text: str, source_text: str) -> bool:
-    display = re.findall(r"[a-z0-9]+", display_text.lower())
-    source = re.findall(r"[a-z0-9]+", source_text.lower())
+    display = _normalized_tokens(display_text)
+    source = _normalized_tokens(source_text)
     if not display:
         return False
     cursor = iter(source)
     return all(any(token == candidate for candidate in cursor) for token in display)
+
+
+def _normalized_tokens(text: str) -> list[str]:
+    return re.findall(r"[a-z0-9]+", text.lower())
 
 
 def _validate_output_directory(episode: Path, output: Path) -> None:

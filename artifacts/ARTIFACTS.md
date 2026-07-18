@@ -30,19 +30,19 @@ opened by the root launcher.
 | local_artifact_path | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/` |
 | machine_output | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json` |
 | candidate_plan | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_plan.json`; original ignored input at episode root. |
-| candidate_manifest | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_manifest.json`; self-integrity `440c73dde6b33e9ba9ce63a512e61f5974e947032a507ac17c560d560a028078`. |
-| state | `OUT09_SUBTITLE_AUTHORITY_AND_ENDPOINT_REPAIRED_REVIEW_READY`; same logical candidate after one bounded repair; `human_review_pending=true`; `acceptance_granted=false`. |
+| candidate_manifest | `episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_manifest.json`; self-integrity `fec262226982bab5f650b954efb121f646d19d054896cf93a0e1098ccaba1aa7`. |
+| state | `OUT09_CLEAR_SHORT_CUE_CAPTION_PRESENTATION_REVIEW_READY`; same logical candidate after one caption-presentation repair; `human_review_pending=true`; `acceptance_granted=false`. |
 | source_identity | YouTube ID `D4i4fjs9PWc`, different from OUT-08 `7J5aS_pcBj4`; title `【Kroniicle Animation】 Wisdom Teeth Removal Woes`; source video SHA-256 `61c06f75cf914deb0f5cc358c9a2405e2206166b10724533aff9c478f49fd938`; source audio SHA-256 `b33b3521e495edf13675b91bbbd6b89642ea28e46cd38555e77862cd6315f81b`. |
 | transcript | Base Vosk EN real transcript retained for provenance; displayed text uses imported English Original JSON3 through `subtitle_track/youtube_subtitles`. Human transcript acceptance is not claimed. |
-| selection_authority | Continuous `31.160–64.480s`, semantic `33.320s`, `cut_002` + `cut_003`, 12 linked caption segments. Unselected `0.000–31.160s` and `64.480–77.786848s` ranges were overlap-checked before render. Endpoint is the first scene transition after caption `64.360s` and speech `64.362812s` complete. |
-| candidate | Media `33.333333s`, native caption pixels only, ASS/SRT 9event sidecar, H.264/AAC 1080x1920 30fps yuv420p faststart; MP4 SHA-256 `3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916`; 6,637,874 bytes. Superseded predecessor `300ee360...e0c9` has no acceptance. |
+| selection_authority | Continuous `31.160–64.480s`, semantic `33.320s`, `cut_002` + `cut_003`, 12 linked caption segments. Unselected `0.000–31.160s` and `64.480–77.786848s` ranges were overlap-checked before render. Endpoint is unchanged and remains the first scene transition after caption `64.360s` and speech `64.362812s` complete. |
+| candidate | Media `33.333008s`, 27 one-to-six-word JSON3 event/token-timed cues burned in over an opaque solid plate, H.264/AAC 1080x1920 30fps yuv420p faststart; MP4 SHA-256 `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`; 5,976,722 bytes. Initial `300ee360...e0c9` and failed repair `3e7ef9d8...2916` have no acceptance. |
 | open_command | `powershell -ExecutionPolicy Bypass -File episodes\holoen01_kronii_wisdomteeth_out09_20260718\review\out09_second_source_short_repeatability\open_preview.ps1 -Port 8072` |
 | preview_url | `http://127.0.0.1:8072/index.html`; verified through `src.cli.serve_review` with page HTTP `200` and MP4 Range `206`. Listener state is not durable acceptance evidence. |
-| media_validation | Full decode and faststart passed; output `-14.80 LUFS / -1.46 dBTP`; blackdetect/silencedetect event 0; five frame samples extracted. |
-| browser_validation | One video reached `readyState=4`, media error null, Space/ArrowRight seek/resume advanced currentTime, desktop and 375px mobile overflow false, native caption legible at mobile video width 341.8px, exactly one review question, console warning/error 0. |
-| repair_result | Added long-form burn-in removed; native caption pixels are unchanged and are the sole on-screen subtitle authority. `support` word split and timing collision are absent. Candidate ends after the final caption/speech beat and before the next scene. |
-| review_questions | 字幕の切替リズムと終わり方が自然になったか、ほかに明確な違和感があれば教えてください。 |
-| next_action | Collect only the one bounded human answer and bind it to new MP4 SHA `3e7ef9d8...2916`. Do not infer rights, production/public use, publishing, thumbnail, portability, or successor acceptance. |
+| media_validation | Full decode and faststart passed; output `-14.80 LUFS / -1.46 dBTP`; blackdetect/silencedetect event 0; ten frame samples extracted. |
+| browser_validation | One video reached `readyState=4`, media error null, play/pause advanced currentTime, desktop and 375px-class mobile overflow false, generated short cues legible, native caption and blurred duplicate glyphs absent, exactly one review question, console warning/error 0. |
+| repair_result | Foreground/background both crop source `0,0,640,286`, excluding native-caption band `0,286,640,74`; full-source blur fallback and frosted subtitle surfaces are prohibited. ASS/SRT 27 cues are display/provenance authority. Candidate endpoint is unchanged. |
+| review_questions | 字幕が短い単位で自然に切り替わり、画面を邪魔せず読めるか。最後の終わり方を含め、ほかに明確な違和感があれば教えてください。 |
+| next_action | Collect only the one bounded human answer and bind it to MP4 SHA `b6b90a4b...73da50`. Do not infer rights, production/public use, publishing, thumbnail, portability, or successor acceptance. |
 
 Boundary flags remain false or pending:
 
