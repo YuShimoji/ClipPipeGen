@@ -1780,8 +1780,12 @@ def _render_html(readback: dict[str, Any]) -> str:
 </main></body></html>"""
 
 
-def _open_script() -> str:
-    return r"""param([switch]$Serve, [int]$Port = 8072)
+def _open_script(
+    *,
+    default_port: int = REVIEW_PORT,
+    review_label: str = "OUT-09",
+) -> str:
+    template = r"""param([switch]$Serve, [int]$Port = __DEFAULT_PORT__)
 $ErrorActionPreference = 'Stop'
 $serveScript = Join-Path $PSScriptRoot 'serve_preview.ps1'
 $url = "http://127.0.0.1:$Port/index.html"
@@ -1801,7 +1805,7 @@ if ($probe -eq 5) {
     throw "Port $Port is occupied by an unrecognized process. No process was stopped."
 }
 if (-not $Serve) {
-    Write-Host "OUT-09 review server is not running."
+    Write-Host "__REVIEW_LABEL__ review server is not running."
     Write-Host "Start it in a foreground PowerShell and keep that window open:"
     Write-Host $canonical
     exit 2
@@ -1831,10 +1835,20 @@ do {
 } while ([DateTime]::UtcNow -lt $deadline)
 throw "The foreground review server did not pass its identity and Range health gate."
 """
+    return (
+        template.replace("__DEFAULT_PORT__", str(default_port))
+        .replace("__REVIEW_LABEL__", review_label)
+    )
 
 
-def _serve_script(*, expected_video_sha256: str = CURRENT_MP4_SHA256) -> str:
-    template = r"""param([int]$Port = 8072, [switch]$ProbeOnly)
+def _serve_script(
+    *,
+    expected_video_sha256: str = CURRENT_MP4_SHA256,
+    artifact_id: str = ARTIFACT_ID,
+    default_port: int = REVIEW_PORT,
+    review_label: str = "OUT-09",
+) -> str:
+    template = r"""param([int]$Port = __DEFAULT_PORT__, [switch]$ProbeOnly)
 $ErrorActionPreference = 'Stop'
 $expectedArtifact = '__ARTIFACT_ID__'
 $expectedVideoSha256 = '__VIDEO_SHA256__'
@@ -1915,7 +1929,7 @@ if ($ProbeOnly) {
 }
 if ($hasListener) {
     if (Test-ReviewServerIdentity -VideoLength $package.VideoLength) {
-        Write-Host "Verified existing OUT-09 server at $url"
+        Write-Host "Verified existing __REVIEW_LABEL__ server at $url"
         Write-Host "Its owning foreground PowerShell remains responsible for server lifetime."
         exit 0
     }
@@ -1923,7 +1937,7 @@ if ($hasListener) {
 }
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..\..')).Path
-Write-Host "OUT-09 review URL: $url"
+Write-Host "__REVIEW_LABEL__ review URL: $url"
 Write-Host "Keep this PowerShell window open during review. Press Ctrl+C to stop the server."
 Push-Location -LiteralPath $repoRoot
 try {
@@ -1934,8 +1948,10 @@ try {
 }
 """
     return (
-        template.replace("__ARTIFACT_ID__", ARTIFACT_ID)
+        template.replace("__ARTIFACT_ID__", artifact_id)
         .replace("__VIDEO_SHA256__", expected_video_sha256)
+        .replace("__DEFAULT_PORT__", str(default_port))
+        .replace("__REVIEW_LABEL__", review_label)
     )
 
 

@@ -66,6 +66,7 @@ OUTPUT_NAME_PREFIX = "out05_"
 SELECTED_REFRAME = "full_16_9_fit_source_derived_blurred_canvas"
 DEFAULT_BACKGROUND_POLICY = "full_source_blurred_canvas_default"
 CAPTION_FREE_BACKGROUND_POLICY = "caption_free_background_canvas"
+NEUTRAL_MATTE_BACKGROUND_POLICY = "neutral_matte_canvas"
 REFRAME_OPTIONS = (
     "cut_level_explicit_anchor_crop",
     SELECTED_REFRAME,
@@ -1588,6 +1589,22 @@ def _vertical_composition_filters(
             ),
             f"[fgraw{index}]scale={FRAME_WIDTH}:-2:flags=lanczos[fg{index}]",
         )
+    if composition_policy["mode"] == NEUTRAL_MATTE_BACKGROUND_POLICY:
+        foreground = composition_policy["foreground_source_crop_pixels"]
+        foreground_crop = _pixel_crop_filter(foreground)
+        matte_color = composition_policy["matte_color"]
+        return (
+            (
+                f"[bgraw{index}]scale={FRAME_WIDTH}:{FRAME_HEIGHT}:"
+                "force_original_aspect_ratio=increase:flags=lanczos,"
+                f"crop={FRAME_WIDTH}:{FRAME_HEIGHT},"
+                f"drawbox=x=0:y=0:w=iw:h=ih:color={matte_color}:t=fill[bg{index}]"
+            ),
+            (
+                f"[fgraw{index}]{foreground_crop},"
+                f"scale={FRAME_WIDTH}:-2:flags=lanczos[fg{index}]"
+            ),
+        )
     background = composition_policy["background_source_crop_pixels"]
     foreground = composition_policy["foreground_source_crop_pixels"]
     background_crop = _pixel_crop_filter(background)
@@ -1626,7 +1643,13 @@ def _validate_vertical_composition_policy(
             "mode": DEFAULT_BACKGROUND_POLICY,
             "default_policy_unchanged": True,
         }
-    if composition_policy.get("mode") != CAPTION_FREE_BACKGROUND_POLICY:
+    mode = composition_policy.get("mode")
+    if mode == NEUTRAL_MATTE_BACKGROUND_POLICY:
+        return _validate_neutral_matte_policy(
+            composition_policy,
+            source_video_probe=source_video_probe,
+        )
+    if mode != CAPTION_FREE_BACKGROUND_POLICY:
         raise VerticalShortCandidateError("unsupported vertical composition policy")
     if (
         composition_policy.get("full_source_blur_fallback_allowed") is not False
@@ -1684,6 +1707,64 @@ def _validate_vertical_composition_policy(
         "background_source_crop_pixels": background,
         "foreground_source_crop_pixels": foreground,
         "native_caption_band_pixels": band,
+        "default_policy_unchanged": False,
+        "validated_against_source_probe": True,
+    }
+
+
+def _validate_neutral_matte_policy(
+    composition_policy: dict[str, Any],
+    *,
+    source_video_probe: dict[str, Any],
+) -> dict[str, Any]:
+    """Validate a full-source fit over a non-source-derived solid matte."""
+
+    expected_width = int(source_video_probe.get("width") or 0)
+    expected_height = int(source_video_probe.get("height") or 0)
+    source_frame = composition_policy.get("source_frame_pixels") or {}
+    if source_frame != {"width": expected_width, "height": expected_height}:
+        raise VerticalShortCandidateError(
+            "composition policy source dimensions do not match probed video"
+        )
+    foreground = _validated_pixel_rectangle(
+        composition_policy.get("foreground_source_crop_pixels"),
+        frame_width=expected_width,
+        frame_height=expected_height,
+        label="foreground source crop",
+    )
+    if foreground != {
+        "x": 0,
+        "y": 0,
+        "width": expected_width,
+        "height": expected_height,
+    }:
+        raise VerticalShortCandidateError(
+            "neutral matte composition must preserve the full source frame"
+        )
+    matte_color = str(composition_policy.get("matte_color") or "")
+    if re.fullmatch(r"0x[0-9A-Fa-f]{6}", matte_color) is None:
+        raise VerticalShortCandidateError(
+            "neutral matte color must be an FFmpeg-safe 0xRRGGBB value"
+        )
+    required_false = (
+        "source_derived_background",
+        "blur_applied",
+        "crop_applied",
+        "source_native_caption_pixels_suppressed",
+        "additional_blur_or_frosted_caption_surface",
+        "full_source_blur_fallback_allowed",
+    )
+    if any(composition_policy.get(key) is not False for key in required_false):
+        raise VerticalShortCandidateError(
+            "neutral matte composition must preserve full source without blur or caption suppression"
+        )
+    if composition_policy.get("important_content_preserved") is not True:
+        raise VerticalShortCandidateError(
+            "neutral matte composition must record important-content preservation"
+        )
+    return {
+        **composition_policy,
+        "foreground_source_crop_pixels": foreground,
         "default_policy_unchanged": False,
         "validated_against_source_probe": True,
     }

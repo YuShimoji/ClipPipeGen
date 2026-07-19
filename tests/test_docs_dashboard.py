@@ -349,7 +349,7 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         if path.name == "CURRENT_HANDOFF.md":
             assert f"active_artifact: {current_out10_artifact}" in text
             assert "local_artifact_available: true" in text
-            assert "human_entrypoint: null" in text
+            assert "human_entrypoint: http://127.0.0.1:8073/index.html" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
@@ -1623,25 +1623,28 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "no_eligible_local_third_source_decision_ready"
+        "third_distinct_external_source_short_review_ready"
     )
-    assert status["current_focus"]["review_status"] == (
-        "no_candidate_generated"
-    )
+    assert status["current_focus"]["review_status"] == "pending_human_review"
     assert status["current_focus"]["decision_required"] == (
-        "provide_eligible_local_real_source_or_authorize_one_bounded_external_acquisition"
+        "review_exact_out10_candidate_accept_repair_or_reject"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         ""
     )
-    assert status["current_focus"]["human_entrypoint"] == ""
-    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["human_entrypoint"] == (
+        "http://127.0.0.1:8073/index.html"
+    )
+    assert status["current_focus"]["review_open_command"].endswith(
+        "out10_third_source_short_portfolio\\open_preview.ps1 -Serve -Port 8073"
+    )
     assert status["current_focus"]["machine_readback"] == (
-        "docs/output_layer/out10_third_source_inventory_receipt.json"
+        "episodes/out10_hololive_secret_clinic_20260719/review/"
+        "out10_third_source_short_portfolio/candidate_readback.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
-    assert status["current_focus"]["portable_local_artifact_available"] == "true"
+    assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == ""
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1650,14 +1653,18 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "not_started_no_candidate"
+        "stopped_after_validation_restart_on_demand"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
-    assert status["current_focus"]["last_verified_host_entrypoint"] == ""
+    assert status["current_focus"]["last_verified_host_entrypoint"] == (
+        "http://127.0.0.1:8073/index.html"
+    )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
-    assert status["current_focus"]["pause_reason"] == "no_eligible_local_third_source"
+    assert status["current_focus"]["pause_reason"] == (
+        "awaiting_exact_candidate_human_review"
+    )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
     current_surfaces = [
@@ -1665,9 +1672,16 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         for item in status["open_surfaces"]
         if item["label"] == "OUT-10 Current Focus"
     ]
-    assert current_surfaces == []
+    assert current_surfaces == [
+        {
+            "label": "OUT-10 Current Focus",
+            "command": status["current_focus"]["review_open_command"],
+            "target": "http://127.0.0.1:8073/index.html",
+            "when_to_use": status["current_focus"]["next_action"],
+        }
+    ]
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_inventory_receipt_portable_no_out10_media_candidate"
+        "tracked_code_docs_receipt_only_media_package_same_machine"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (

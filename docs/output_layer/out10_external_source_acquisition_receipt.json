@@ -1,0 +1,157 @@
+{
+  "schema_id": "clippipegen.out10.external_source_acquisition_receipt.v1",
+  "artifact_id": "clip-out10-third-source-short-portfolio-expansion-v0-001",
+  "state": "OUT10_BOUNDED_EXTERNAL_ACQUISITION_AUTHORIZED",
+  "generated_at": "2026-07-19",
+  "epoch": "clip-out10-20260719-02",
+  "base_revision": "8be2ffed791a64a8428b8d252a36061d759f5df3",
+  "branch": "codex/out-10-third-source-short-portfolio-expansion-v0",
+  "scope": {
+    "repository": "ClipPipeGen",
+    "channel_scope": "official public hololive-related YouTube only",
+    "metadata_candidate_limit": 5,
+    "metadata_candidate_count": 5,
+    "detailed_preflight_limit": 3,
+    "detailed_preflight_count": 3,
+    "media_download_limit": 1,
+    "media_download_count": 1,
+    "candidate_limit": 1,
+    "candidate_count": 1,
+    "anonymous_metadata_and_media_only": true,
+    "cookies_login_oauth_used": false,
+    "drm_geo_age_bot_bypass_used": false,
+    "mirror_reupload_third_party_downloader_used": false,
+    "cross_repository_access_used": false
+  },
+  "tooling": {
+    "yt_dlp_version": "2026.03.17",
+    "version_warning": "yt-dlp reported that the installed version is older than 90 days; no tool update was performed in this bounded slice.",
+    "javascript_runtime_warning": "No supported JavaScript runtime was available to yt-dlp; the selected public source and official subtitle were nevertheless acquired anonymously without a bypass.",
+    "source_video_ingest": "fetch-source-video --mode yt-dlp-video",
+    "source_audio_ingest": "fetch-source-audio --mode local-media-audio from the one downloaded source video",
+    "caption_acquisition": "yt-dlp --skip-download --write-subs --sub-langs ja --sub-format json3"
+  },
+  "official_channel": {
+    "name": "hololive ホロライブ - VTuber Group",
+    "handle": "@hololive",
+    "channel_id": "UCJFZiqLMntJufDCHc6bQixg",
+    "channel_verified": true,
+    "channel_url": "https://www.youtube.com/@hololive"
+  },
+  "metadata_candidates": [
+    {
+      "rank": 1,
+      "provider_id": "TlnviOwLRmk",
+      "title": "【アニメ】君だけが​入れる​秘密の​診察室",
+      "flat_title": "[Anime] You'll Live",
+      "duration_seconds": 117,
+      "recording_identity": "youtube:TlnviOwLRmk"
+    },
+    {
+      "rank": 2,
+      "provider_id": "23qdzlX4m3Y",
+      "title": "【アニメ】ちょっと​酔っちゃったかも。。。",
+      "flat_title": "[Anime] Pour Decisions",
+      "duration_seconds": 98,
+      "recording_identity": "youtube:23qdzlX4m3Y"
+    },
+    {
+      "rank": 3,
+      "provider_id": "BP7H7bASFek",
+      "title": "【アニメ】地図・連絡手段・​食料なし。​無人島で​生き残るには……",
+      "flat_title": "[Anime] Touching Sand",
+      "duration_seconds": 107,
+      "recording_identity": "youtube:BP7H7bASFek"
+    },
+    {
+      "rank": 4,
+      "provider_id": "Mz42k8Jn3UY",
+      "title": "[Anime] Time to Confess",
+      "duration_seconds": 112,
+      "recording_identity": "youtube:Mz42k8Jn3UY"
+    },
+    {
+      "rank": 5,
+      "provider_id": "oqeXYJ7wruQ",
+      "title": "[Anime] Turn That Off",
+      "duration_seconds": 149,
+      "recording_identity": "youtube:oqeXYJ7wruQ"
+    }
+  ],
+  "detailed_preflight": [
+    {
+      "rank": 1,
+      "provider_id": "TlnviOwLRmk",
+      "availability": "public",
+      "live_status": "not_live",
+      "age_limit": 0,
+      "maximum_anonymous_height": 1440,
+      "video_format_count": 21,
+      "audio_format_count": 5,
+      "drm_format_count": 0,
+      "official_subtitle_languages": ["zh-Hans", "zh-Hant", "en", "id", "ja", "ko", "es", "th"],
+      "eligibility": "pass_selected"
+    },
+    {
+      "rank": 2,
+      "provider_id": "23qdzlX4m3Y",
+      "availability": "public",
+      "live_status": "not_live",
+      "age_limit": 0,
+      "maximum_anonymous_height": 1440,
+      "video_format_count": 21,
+      "audio_format_count": 5,
+      "drm_format_count": 0,
+      "official_subtitle_languages": ["zh-Hans", "zh-Hant", "en", "id", "ja", "ko", "es", "th"],
+      "eligibility": "pass_not_selected",
+      "selection_note": "Technically eligible, but the intoxication premise adds avoidable editorial sensitivity without improving the bounded technical proof."
+    },
+    {
+      "rank": 3,
+      "provider_id": "BP7H7bASFek",
+      "availability": "public",
+      "live_status": "not_live",
+      "age_limit": 0,
+      "maximum_anonymous_height": 1440,
+      "video_format_count": 21,
+      "audio_format_count": 5,
+      "drm_format_count": 0,
+      "official_subtitle_languages": ["zh-Hans", "zh-Hant", "en", "id", "ja", "ko", "es", "th"],
+      "eligibility": "pass_not_selected",
+      "selection_note": "Technically eligible, but its survival and multi-location premise increases scene and vertical-composition pressure for no necessary proof gain."
+    }
+  ],
+  "selected_source": {
+    "rank": 1,
+    "provider_id": "TlnviOwLRmk",
+    "recording_identity": "youtube:TlnviOwLRmk",
+    "url": "https://www.youtube.com/watch?v=TlnviOwLRmk",
+    "title": "【アニメ】君だけが​入れる​秘密の​診察室",
+    "channel_id": "UCJFZiqLMntJufDCHc6bQixg",
+    "different_from_out08": true,
+    "different_from_out09": true,
+    "selection_basis": "First-ranked eligible official-channel source with public anonymous access, official Japanese subtitle authority, 1080p-or-higher formats, and a visually inspectable opening consultation scene that can close inside 12-60 seconds."
+  },
+  "acquisition_result": {
+    "episode_id": "out10_hololive_secret_clinic_20260719",
+    "source_video_sha256": "8cbb98eeaa62f539fc0a72c7e587bc961f47cb254a1aaabdb11bba7001c4a3a4",
+    "source_video_byte_size": 27754881,
+    "source_video_duration_seconds": 116.517732,
+    "source_video_resolution": "1920x1080",
+    "source_video_codec": "av1",
+    "source_audio_codec": "aac",
+    "source_audio_derived_wav_sha256": "159b95ffbe2cfe7c39923fa14fe4637e432683a58a0a22fcf141b8afe81f56c7",
+    "official_japanese_caption_sha256": "fa9fe66e8a9b5302a66faa7ea256d3e5b500bd0eb5047e9d451d6ee00bc34d21",
+    "additional_media_download_count": 0
+  },
+  "decision": {
+    "selected_provider_id": "TlnviOwLRmk",
+    "rejected_preflight_provider_ids": ["23qdzlX4m3Y", "BP7H7bASFek"],
+    "candidate_interval_seconds": [0.0, 20.304],
+    "candidate_count_considered": 1,
+    "render_authorized": true,
+    "rights_approval": false,
+    "production_acceptance": false,
+    "public_or_publishing_acceptance": false
+  }
+}

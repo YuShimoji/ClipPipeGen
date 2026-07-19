@@ -50,6 +50,7 @@ Subcommands:
     build-real-unused-range-short-minibatch OUT-08: unused real ranges -> 1-2 vertical review candidates.
     build-second-source-short-repeatability OUT-09: declarative second-source vertical review candidate.
     repair-second-source-review-access OUT-09: access-only stable manual-safe review repair.
+    build-third-source-short-portfolio OUT-10: third-source neutral-matte candidate + 3-source scorecard.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
     reconstitute-out07-review OUT-07: current media revision -> baseline-first combined poster review.
@@ -80,6 +81,7 @@ from . import (
     build_complete_narrative_short,
     build_real_unused_range_short_minibatch,
     build_second_source_short_repeatability,
+    build_third_source_short_portfolio,
     build_vertical_short_candidate,
     build_chapter_revision_board,
     build_content_candidate_dashboard,
@@ -179,6 +181,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-complete-narrative-short": build_complete_narrative_short.run,
     "build-real-unused-range-short-minibatch": build_real_unused_range_short_minibatch.run,
     "build-second-source-short-repeatability": build_second_source_short_repeatability.run,
+    "build-third-source-short-portfolio": build_third_source_short_portfolio.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-shorts-poster-frame-proof": build_shorts_poster_frame_proof.run,
