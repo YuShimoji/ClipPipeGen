@@ -4,17 +4,17 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-09`
-- artifact: `clip-out09-second-source-short-repeatability-v0-001`
-- state: `OUT09_ACCEPTED_INTERNAL_CANONICAL_MAIN`
+- feature: `OUT-10`
+- artifact: `clip-out10-third-source-short-portfolio-expansion-v0-001`
+- state: `NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY`
 
-- canonical main: `branch_head_after_out09_acceptance_fast_forward`
+- canonical main: `663c6e6f19d1f176b96bc04c90993b00925b039c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `out09_accepted_internal_canonical_main`
-- review status: `accepted_internal`
+- canonical status: `no_eligible_local_third_source_decision_ready`
+- review status: `no_candidate_generated`
 - remote code complete: `true`
 - local artifact available: `true`
-- portable local artifact available: `false`
+- portable local artifact available: `true`
 - portable entrypoint: ``
 - exact baseline available: ``
 - accepted baseline status: ``
@@ -22,19 +22,19 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `http://127.0.0.1:8072/index.html`
-- pause reason: ``
+- last verified host entrypoint: ``
+- pause reason: `no_eligible_local_third_source`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_builder_docs_portable_ignored_review_payload_same_machine_only`
+- cross-machine resume: `tracked_inventory_receipt_portable_no_out10_media_candidate`
 - active rebuild contract: ``
-- evidence revision: `kronii-61c06f75-out09-second-source-repeatability-v0`
+- evidence revision: `out10-bounded-local-inventory-5-preflight-3-v0`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `none_out09_accepted_internal`
+- decision required: `provide_eligible_local_real_source_or_authorize_one_bounded_external_acquisition`
 - next review: ``
 
 ## Feature Table

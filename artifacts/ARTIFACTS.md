@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-09 is closed
-accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
+current artifact, then use an artifact-specific launcher. OUT-10 is currently a
+tracked source-inventory decision receipt with no media candidate or launcher.
+OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
 baseline evidence. OUT-07 is parked; its Thank native Shorts-cover
 semantic direction proxy below is historical local evidence, not an active
 review or a selected thumbnail. Historical
@@ -18,6 +19,46 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out10-third-source-short-portfolio-expansion-v0-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-10 Third-Source Short Portfolio Expansion v0 — local inventory decision receipt |
+| purpose | Determine whether an existing ClipPipeGen local source can serve as a third distinct real recording for a 12–60 second vertical Short and 3-source scorecard without relaxing source, provenance, transcript, or composition gates. |
+| storage class | Tracked JSON inventory receipt and human-readable contract only. No OUT-10 episode package, media, caption sidecar, manifest, frame, or review page exists. |
+| repo_relative_path | `docs/output_layer/out10_third_source_inventory_receipt.json`; `docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` |
+| state | `NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY` |
+| bounded_inventory | 5 entries total: the two accepted recording identities were excluded, then three distinct local sources were preflighted. Eligible count 0. |
+| preflight_1 | OUT-01b/OUT-01e source video SHA `68a10aa7ba513831d4dfc7bf00714dde62cf9d2b31a756e6be662d755f52ddd6`; H.264/AAC 640x360 24fps 14.0s, but tracked as a synthetic local fixture and reused byte-for-byte across both smoke episodes. OUT-01e transcript audio is synthetic TTS. |
+| preflight_2 | INT-02e MDN T-Rex audio SHA `ea500e8d9d05d0e16ebb415dff6fa6e8257c719741489abfb08ae49ef4c162b1`; 2.07425s PCM mono, no video or speech transcript. |
+| preflight_3 | OUT-01a source SHA `f303228500d56b920ca10e5000c9af0031dc7b16dd312e51c3005e2bc8a30f3d`; H.264/AAC 160x90 15fps 2.5s, synthetic and transcript-free. |
+| selected_source | none |
+| selected_slice | none |
+| candidate | none; render execution count 0 |
+| portfolio_scorecard | Not created because there is no third source/candidate row. OUT-08/09 missing values were not guessed. |
+| preview_url | none |
+| open_command | none |
+| decision_required | Provide one eligible local real source with provenance/video/audio/transcript authority and a closed 12–60 second interval, or explicitly authorize one bounded external acquisition. |
+| protected_predecessors | OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc` accepted authority/media/packages are unchanged. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `candidate_generated=false`
+- `human_review_pending=false`
+- `acceptance_granted=false`
+- `external_acquisition_required=true`
+- `external_acquisition_authorized=false`
+- `rights_status=pending`
+- `production_candidate=false`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `production_image_quality_acceptance=false`
+- `thumbnail_acceptance=false`
+- `public_ready=false`
+- `publishing_acceptance=false`
+- `publish_attempted=false`
 
 ## `clip-out09-second-source-short-repeatability-v0-001`
 

@@ -3,55 +3,55 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT09_ACCEPTED_INTERNAL_CANONICAL_MAIN
-progress_pct: 100
+health: NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY
+progress_pct: 25
 last_touched: 2026-07-19
-state_revision: out09-accepted-internal-canonical-main-2026-07-19
-contract_repair_status: OUT09_REVIEW_ACCESS_STABILITY_AND_PLAYBACK_SAFETY_REPAIR_PASSED
-current_slice: OUT-09
-phase: accepted_internal_canonical_main
-canonical_status: out09_accepted_internal_canonical_main
-active_branch: main
-verified_implementation_head: branch_head_after_acceptance_closure_push
-source_branch_tip: 17436ad482f5e10db12b1461ec3caee18ae932d3
-closure_branch: main
-remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
+state_revision: out10-no-eligible-local-third-source-decision-ready-2026-07-19
+contract_repair_status: not_applicable_no_out10_candidate
+current_slice: OUT-10
+phase: source_inventory_decision_ready
+canonical_status: no_eligible_local_third_source_decision_ready
+active_branch: codex/out-10-third-source-short-portfolio-expansion-v0
+verified_implementation_head: branch_head_after_out10_inventory_decision_push
+source_branch_tip: 663c6e6f19d1f176b96bc04c90993b00925b039c
+closure_branch: null
+remote_resume_contract: fetch_then_switch_codex_out10_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: branch_head_after_acceptance_closure_push
-sync_audit_status: out09_acceptance_closure_fast_forwarded_to_main
+sync_audit_head: branch_head_after_out10_inventory_decision_push
+sync_audit_status: out10_decision_branch_only_main_unchanged
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-09 accepted internal canonical closure
+current_title: OUT-10 no eligible local third source decision ready
 human_entrypoint: null
 portable_entrypoint: null
 review_open_command: null
 review_server_restart_command: null
-machine_readback: episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_readback.json
+machine_readback: docs/output_layer/out10_third_source_inventory_receipt.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none_out09_accepted_internal
-review_status: accepted_internal
-review_scope: exact candidate_01の字幕音声一致、短cue切替と可読性、manual-safe初期状態、foreground access継続、終端区切りをinternal review用途として受入済み。
-reviewed_at: 2026-07-19 JST
+decision_required: provide_eligible_local_real_source_or_authorize_one_bounded_external_acquisition
+review_status: no_candidate_generated
+review_scope: bounded inventory 5件とdistinct source 3件のpreflight結果を確認し、第三のreal sourceを供給するか外部取得を明示承認する。
+reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: accepted_same_machine_internal_review_evidence
-portable_local_artifact_available: false
-cross_machine_resume_class: tracked_builder_docs_portable_ignored_review_payload_same_machine_only
-cross_host_resume_status: tracked_acceptance_is_canonical_local_package_not_portable
+local_artifact_role: tracked_out10_inventory_decision_receipt_no_media_candidate
+portable_local_artifact_available: true
+cross_machine_resume_class: tracked_inventory_receipt_portable_no_out10_media_candidate
+cross_host_resume_status: decision_receipt_portable_candidate_media_absent
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: kronii-61c06f75-out09-second-source-repeatability-v0
+evidence_revision: out10-bounded-local-inventory-5-preflight-3-v0
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
-local_artifact_evidence_receipt: episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_manifest.json
-local_package_requirement: not_required_to_preserve_tracked_out09_acceptance
+local_artifact_evidence_receipt: docs/output_layer/out10_third_source_inventory_receipt.json
+local_package_requirement: eligible_third_real_source_required_before_package_generation
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
@@ -60,75 +60,75 @@ production_subtitle_design_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-19
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: http://127.0.0.1:8072/index.html
+last_verified_host_entrypoint: null
 historical_last_verified_host_entrypoint: null
-pause_reason: null
+pause_reason: no_eligible_local_third_source
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: accepted_internal_exact_sha
-user_feedback_overall: expected_internal_review_result_with_source_specific_blur_mosaic_observation
-content_selection_status: accepted_internal
-subtitle_presentation_timing_status: accepted_internal_exact_sha
-endpoint_status: accepted_internal_complete_boundary
-reviewed_by_human: true
+human_review_decision: not_applicable_no_out10_candidate
+user_feedback_overall: null
+content_selection_status: no_eligible_local_third_source
+subtitle_presentation_timing_status: not_started_no_candidate
+endpoint_status: not_started_no_candidate
+reviewed_by_human: false
 human_review_pending: false
-acceptance_granted: true
+acceptance_granted: false
 batch_acceptance: null
-candidate_01_acceptance: accepted_internal
+candidate_01_acceptance: null
 candidate_02_acceptance: null
-accepted_candidate_ids: [candidate_01]
+accepted_candidate_ids: []
 winner: null
-subtitle_debt_acceptance_scope: current_exact_sha_short_cues_accepted_internal_only
+subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: stopped_after_accepted_internal_closure
+review_server_status: not_started_no_candidate
 next_review_due: null
-next_action: OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSIONをdata-only successorとして保持し、別sourceでの実装承認が得られるまで実装しない。
-active_artifact: clip-out09-second-source-short-repeatability-v0-001
-current_review_component: second_source_candidate_01
+next_action: provenance付き第三real local sourceを供給するか、一つのbounded external acquisitionを明示承認する。条件を満たすまでrenderしない。
+active_artifact: clip-out10-third-source-short-portfolio-expansion-v0-001
+current_review_component: out10_source_inventory_decision
 target_candidate_count: 1
 minimum_candidate_count: 1
-actual_candidate_count: 1
-candidate_01_semantic_duration_seconds: 33.320
-candidate_01_media_duration_seconds: 33.333008
-candidate_01_subtitle_count: 27
-candidate_01_sha256: b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
-candidate_01_initial_predecessor_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
-candidate_01_failed_repair_predecessor_sha256: 3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916
-candidate_01_failed_repair_reason: unreadable_native_caption_and_blurred_caption_duplication
+actual_candidate_count: 0
+candidate_01_semantic_duration_seconds: null
+candidate_01_media_duration_seconds: null
+candidate_01_subtitle_count: null
+candidate_01_sha256: null
+out09_candidate_01_initial_predecessor_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
+out09_candidate_01_failed_repair_predecessor_sha256: 3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916
+out09_candidate_01_failed_repair_reason: unreadable_native_caption_and_blurred_caption_duplication
 candidate_02_semantic_duration_seconds: null
 candidate_02_media_duration_seconds: null
 candidate_02_subtitle_count: null
 candidate_02_sha256: null
-source_provider_id: D4i4fjs9PWc
-source_provider_id_different_from_out08: true
-source_video_sha256: 61c06f75cf914deb0f5cc358c9a2405e2206166b10724533aff9c478f49fd938
-source_audio_sha256: b33b3521e495edf13675b91bbbd6b89642ea28e46cd38555e77862cd6315f81b
-source_video_resolution: 640x360
-source_caption_provider: youtube_subtitles
-source_caption_review_status: needs_review
-candidate_plan_sha256: 569ba9d193348d76ee368dde32ebd7c00c485a03792b4728562efec452b00c7e
-candidate_manifest_self_integrity: 50ff14e5ee9ffae0ab1cb31f33a584c346026d7674c360546302e10de24e62ff
-render_execution_count: 1
-corrective_pass_count: 1
+source_provider_id: null
+source_provider_id_different_from_out08: null
+source_video_sha256: null
+source_audio_sha256: null
+source_video_resolution: null
+source_caption_provider: null
+source_caption_review_status: null
+candidate_plan_sha256: null
+candidate_manifest_self_integrity: null
+render_execution_count: 0
+corrective_pass_count: 0
 additional_autonomous_repair_count: 0
-build_elapsed_seconds: 32.904
-outer_elapsed_seconds: 33.498
-subtitle_display_authority: generated_short_cue_overlay_from_source_json3
-subtitle_timing_authority: youtube_json3_event_and_token_offsets
-additional_subtitle_burn_in: true
-source_native_caption_pixels_suppressed: true
-caption_free_crop_pixels: 0,0,640,286
-native_caption_band_pixels: 0,286,640,74
+build_elapsed_seconds: null
+outer_elapsed_seconds: null
+subtitle_display_authority: null
+subtitle_timing_authority: null
+additional_subtitle_burn_in: false
+source_native_caption_pixels_suppressed: false
+caption_free_crop_pixels: null
+native_caption_band_pixels: null
 full_source_blur_fallback_allowed: false
 additional_blur_or_frosted_caption_surface: false
-endpoint_source_seconds: 64.480
-endpoint_last_caption_seconds: 64.360
-endpoint_last_speech_seconds: 64.362812
-quality_debt: source_resolution_640x360_accepted_internal_but_production_image_quality_unaccepted
+endpoint_source_seconds: null
+endpoint_last_caption_seconds: null
+endpoint_last_speech_seconds: null
+quality_debt: eligible_third_real_source_absent_from_local_inventory
 known_unrelated_test_failure: tests/test_vertical_short_candidate.py::test_out06_reviewed_japanese_break_hints_are_measured_and_semantic
 known_unrelated_test_failure_2: tests/test_complete_narrative_short.py::test_out06_reviewed_wraps_are_repaired_in_package_readback
 known_unrelated_test_failure_scope: same_two_failures_on_origin_main_29a1a519_and_out09_branch_17436ad_same_toolchain
@@ -138,17 +138,26 @@ default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d4
 source_specific_caption_suppression_observation: source_specific_caption_band_suppression_observed_acceptable_not_generalized
 source_specific_caption_suppression_design_acceptance: false
 out10_successor_candidate: OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION
-out10_implementation_status: data_only_not_implemented
+out10_implementation_status: stopped_no_eligible_local_third_source
+out10_stop_state: NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY
+out10_inventory_receipt: docs/output_layer/out10_third_source_inventory_receipt.json
+out10_inventory_count: 5
+out10_distinct_source_preflight_count: 3
+out10_eligible_source_count: 0
+out10_external_acquisition_required: true
+out10_external_acquisition_authorized: false
+out10_candidate_generated: false
+out10_portfolio_scorecard_status: not_created_no_third_source_candidate
 h1_successor_data_only: true
 navigation_frame_role: representative_navigation_only_not_thumbnail_acceptance
 out08_cut009_final_cut_decision: reject
 out08_cut009_usage: fully_excluded_no_source_time_overlap
 authority_mutated: false
-media_readback: H264_AAC_1080x1920_30fps_yuv420p_faststart_full_decode_passed_duration_33_333008
-blackdetect_readback: event_0_at_d0_5_pix_th0_10
-silencedetect_readback: event_0_at_minus50dB_d1_0
-browser_readback: clean_url_paused_muted_currentTime0_default_and_mobile_no_overflow_manual_play_advanced_close_reopen_reset_qa_exact_route_muted_then_paused_console_clean_http200_range206
-http_range_readback: 206_partial_content_passed
+media_readback: not_applicable_no_out10_candidate
+blackdetect_readback: not_applicable_no_out10_candidate
+silencedetect_readback: not_applicable_no_out10_candidate
+browser_readback: not_applicable_no_out10_candidate
+http_range_readback: not_applicable_no_out10_candidate
 current_baseline_acceptance: accepted_internal
 accepted_baseline_sha256: b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 recommended_cover_path: null
@@ -203,7 +212,7 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: branch_head_after_out09_acceptance_fast_forward
+canonical_main_head: 663c6e6f19d1f176b96bc04c90993b00925b039c
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
@@ -270,6 +279,29 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-19 OUT-10 No Eligible Local Third Source
+
+OUT-10はClipPipeGen内のlocal inventoryを5件まで列挙し、OUT-08/09 accepted baselineを除く
+3 distinct sourceを詳細preflightした。適格な第三のreal sourceは0件であり、状態を
+`NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY`とする。
+
+| 候補 | exact evidence | blocker |
+|---|---|---|
+| OUT-01b / OUT-01e共有video | SHA `68a10aa7...ddd6`、14.0秒、640x360、H.264/AAC、decode可能 | tracked historyがsynthetic local inputと明記。OUT-01eも同一video byteとsynthetic TTS由来transcriptを使用 |
+| INT-02e MDN T-Rex audio | SHA `ea500e8d...62b1`、2.07425秒、PCM mono、decode可能 | video、speech transcript、12秒以上の区間がない |
+| OUT-01a smoke video | SHA `f3032285...0f3d`、2.5秒、160x90、H.264/AAC、decode可能 | synthetic、短すぎる、transcriptなし |
+
+synthetic fixture、OUT-08/09の別区間、外部downloadへ逃げず、source/slice/renderを選ばなかった。
+OUT-10 candidate、ASS/SRT、manifest、review page、3-source portfolio scorecardは存在せず、
+`human_review_pending=false`はreview対象がないことを意味する。OUT-08/09のaccepted authority、
+media、ignored packageは変更していない。
+
+machine-readable evidenceは
+`docs/output_layer/out10_third_source_inventory_receipt.json`、人間向け契約は
+`docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md`。再開には、provenance、video/audio、
+実transcript authority、12〜60秒の閉じた区間を持つ第三real local sourceの供給、または一つの
+bounded external acquisitionへの明示承認が必要である。
 
 ## 2026-07-19 OUT-09 Accepted Internal Canonical Closure
 

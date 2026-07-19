@@ -1,0 +1,162 @@
+{
+  "schema_id": "clippipegen.out10.source_inventory_receipt.v1",
+  "artifact_id": "clip-out10-third-source-short-portfolio-expansion-v0-001",
+  "state": "NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY",
+  "generated_at": "2026-07-19",
+  "base_revision": "663c6e6f19d1f176b96bc04c90993b00925b039c",
+  "branch": "codex/out-10-third-source-short-portfolio-expansion-v0",
+  "scope": {
+    "repository": "ClipPipeGen",
+    "inventory_limit": 5,
+    "inventory_count": 5,
+    "distinct_source_preflight_limit": 3,
+    "distinct_source_preflight_count": 3,
+    "slice_limit_per_source": 2,
+    "render_target_count": 1,
+    "render_execution_count": 0
+  },
+  "accepted_baselines": [
+    {
+      "slice": "OUT-08",
+      "recording_identity": "youtube:7J5aS_pcBj4",
+      "status": "accepted_internal_canonical_main",
+      "inventory_disposition": "excluded_existing_baseline"
+    },
+    {
+      "slice": "OUT-09",
+      "recording_identity": "youtube:D4i4fjs9PWc",
+      "status": "accepted_internal_canonical_main",
+      "inventory_disposition": "excluded_existing_baseline"
+    }
+  ],
+  "inventory": [
+    {
+      "rank": 1,
+      "identity": "youtube:7J5aS_pcBj4",
+      "episode": "jp_pilot01_hololive_bancho_20260525",
+      "eligibility": "fail",
+      "preflight": "not_run_existing_out08_baseline",
+      "blockers": ["same_recording_identity_as_out08"]
+    },
+    {
+      "rank": 2,
+      "identity": "youtube:D4i4fjs9PWc",
+      "episode": "holoen01_kronii_wisdomteeth_out09_20260718",
+      "eligibility": "fail",
+      "preflight": "not_run_existing_out09_baseline",
+      "blockers": ["same_recording_identity_as_out09"]
+    },
+    {
+      "rank": 3,
+      "identity": "synthetic_local_fixture:out01b_long_local_input:68a10aa7ba513831d4dfc7bf00714dde62cf9d2b31a756e6be662d755f52ddd6",
+      "episodes": [
+        "out01b_long_local_render_smoke_20260513",
+        "out01e_real_transcript_subtitle_smoke_20260516"
+      ],
+      "eligibility": "fail",
+      "preflight": "completed",
+      "evidence_grade": "A_local_machine_receipt_hash_ffprobe_plus_tracked_provenance",
+      "source": {
+        "path": "episodes/out01e_real_transcript_subtitle_smoke_20260516/materials/src_video_out01e_local/source_video.mp4",
+        "sha256": "68a10aa7ba513831d4dfc7bf00714dde62cf9d2b31a756e6be662d755f52ddd6",
+        "duration_seconds": 14.0,
+        "resolution": "640x360",
+        "fps": 24.0,
+        "video_streams": 1,
+        "audio_streams": 1,
+        "full_decode": "passed"
+      },
+      "transcript": {
+        "provider": "vosk",
+        "source_audio_kind": "synthetic_local_tts",
+        "duration_seconds": 9.8028125,
+        "segment_count": 1,
+        "human_acceptance": false
+      },
+      "rights_status": "pending",
+      "blockers": [
+        "synthetic_fixture_not_real_recording",
+        "same_video_bytes_reused_by_two_smoke_episodes",
+        "no_12_to_60_second_closed_real_speech_slice",
+        "below_720p_preference"
+      ],
+      "external_acquisition_required": true
+    },
+    {
+      "rank": 4,
+      "identity": "url:https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
+      "episode": "int02e_operator_smoke_20260512",
+      "eligibility": "fail",
+      "preflight": "completed",
+      "evidence_grade": "A_local_machine_receipt_hash_ffprobe",
+      "source": {
+        "path": "episodes/int02e_operator_smoke_20260512/materials/src_audio_ytdlp_001/source.wav",
+        "sha256": "ea500e8d9d05d0e16ebb415dff6fa6e8257c719741489abfb08ae49ef4c162b1",
+        "duration_seconds": 2.07425,
+        "audio_streams": 1,
+        "video_streams": 0,
+        "full_decode": "passed"
+      },
+      "transcript": null,
+      "rights_status": "pending",
+      "blockers": [
+        "duration_below_12_seconds",
+        "video_absent",
+        "speech_transcript_absent",
+        "no_vertical_composition_evidence"
+      ],
+      "external_acquisition_required": true
+    },
+    {
+      "rank": 5,
+      "identity": "synthetic_local_fixture:out01a_hardened_input:f303228500d56b920ca10e5000c9af0031dc7b16dd312e51c3005e2bc8a30f3d",
+      "episode": "out01a_hardened_smoke_20260513",
+      "eligibility": "fail",
+      "preflight": "completed",
+      "evidence_grade": "A_local_machine_receipt_hash_ffprobe_plus_tracked_provenance",
+      "source": {
+        "path": "episodes/out01a_hardened_smoke_20260513/materials/src_video_out01a_hardened/source_video.mp4",
+        "sha256": "f303228500d56b920ca10e5000c9af0031dc7b16dd312e51c3005e2bc8a30f3d",
+        "duration_seconds": 2.5,
+        "resolution": "160x90",
+        "fps": 15.0,
+        "video_streams": 1,
+        "audio_streams": 1,
+        "full_decode": "passed"
+      },
+      "transcript": null,
+      "rights_status": "pending",
+      "blockers": [
+        "synthetic_fixture_not_real_recording",
+        "duration_below_12_seconds",
+        "speech_transcript_absent",
+        "resolution_insufficient_for_requested_real_short"
+      ],
+      "external_acquisition_required": true
+    }
+  ],
+  "selected_source": null,
+  "selected_slice": null,
+  "candidate_media": null,
+  "portfolio_scorecard": {
+    "status": "not_created_no_third_source_candidate",
+    "reason": "A three-source scorecard would imply an OUT-10 source and candidate that do not exist."
+  },
+  "decision": {
+    "eligible_local_third_source_count": 0,
+    "external_acquisition_required": true,
+    "external_acquisition_authorized": false,
+    "required_next_input": "Provide an eligible local real source with provenance, video, audio, transcript authority, and a closed 12-60 second interval, or explicitly authorize one bounded external acquisition.",
+    "constraints_not_relaxed": true
+  },
+  "closed_gates": {
+    "rights_approval": false,
+    "production_render_acceptance": false,
+    "production_subtitle_design_acceptance": false,
+    "production_image_quality_acceptance": false,
+    "thumbnail_acceptance": false,
+    "public_or_publishing_acceptance": false,
+    "upload_or_oauth_attempted": false,
+    "cross_machine_portability": false
+  }
+}

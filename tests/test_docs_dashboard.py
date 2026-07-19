@@ -287,7 +287,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out09_artifact = "clip-out09-second-source-short-repeatability-v0-001"
+    current_out10_artifact = "clip-out10-third-source-short-portfolio-expansion-v0-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -347,14 +347,14 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_out09_artifact}" in text
+            assert f"active_artifact: {current_out10_artifact}" in text
             assert "local_artifact_available: true" in text
             assert "human_entrypoint: null" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_out09_artifact}" in text
+            assert f"active_artifact: {current_out10_artifact}" in text
             assert (
                 "historical_source_host_out06_artifact: "
                 f"{current_out06_artifact}" in text
@@ -1616,20 +1616,20 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["canonical_main_head"] == (
-        "branch_head_after_out09_acceptance_fast_forward"
+        "663c6e6f19d1f176b96bc04c90993b00925b039c"
     )
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-09 accepted internal exact SHA "
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "out09_accepted_internal_canonical_main"
+        "no_eligible_local_third_source_decision_ready"
     )
     assert status["current_focus"]["review_status"] == (
-        "accepted_internal"
+        "no_candidate_generated"
     )
     assert status["current_focus"]["decision_required"] == (
-        "none_out09_accepted_internal"
+        "provide_eligible_local_real_source_or_authorize_one_bounded_external_acquisition"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         ""
@@ -1637,12 +1637,11 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["human_entrypoint"] == ""
     assert status["current_focus"]["review_open_command"] == ""
     assert status["current_focus"]["machine_readback"] == (
-        "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/"
-        "out09_second_source_short_repeatability/candidate_readback.json"
+        "docs/output_layer/out10_third_source_inventory_receipt.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
-    assert status["current_focus"]["portable_local_artifact_available"] == "false"
+    assert status["current_focus"]["portable_local_artifact_available"] == "true"
     assert status["current_focus"]["portable_entrypoint"] == ""
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1651,26 +1650,24 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "stopped_after_accepted_internal_closure"
+        "not_started_no_candidate"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
-    assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "http://127.0.0.1:8072/index.html"
-    )
+    assert status["current_focus"]["last_verified_host_entrypoint"] == ""
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
-    assert status["current_focus"]["pause_reason"] == ""
+    assert status["current_focus"]["pause_reason"] == "no_eligible_local_third_source"
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
     current_surfaces = [
         item
         for item in status["open_surfaces"]
-        if item["label"] == "OUT-08 Current Focus"
+        if item["label"] == "OUT-10 Current Focus"
     ]
     assert current_surfaces == []
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
+        "tracked_inventory_receipt_portable_no_out10_media_candidate"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (
@@ -1681,8 +1678,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out09-second-source-short-repeatability-v0-001"
+        "clip-out10-third-source-short-portfolio-expansion-v0-001"
     )
+    assert "clip-out10-third-source-short-portfolio-expansion-v0-001" in artifact_ids
     assert "clip-out09-second-source-short-repeatability-v0-001" in artifact_ids
     assert "clip-out08-real-unused-range-short-minibatch-v0-001" in artifact_ids
     assert "clip-out07-shorts-poster-frame-direction-proof-v0-001" in artifact_ids

@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out09_and_keeps_out07_rebuild_contract_parked() -> None:
+def test_runtime_points_to_out10_inventory_stop_and_keeps_out07_rebuild_contract_parked() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: null" in runtime
@@ -239,41 +239,46 @@ def test_runtime_points_to_out09_and_keeps_out07_rebuild_contract_parked() -> No
     )
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
-    assert "portable_local_artifact_available: false" in runtime
+    assert "portable_local_artifact_available: true" in runtime
     assert "human_entrypoint: null" in runtime
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_builder_docs_portable_ignored_review_payload_same_machine_only"
+        "tracked_inventory_receipt_portable_no_out10_media_candidate"
         in runtime
     )
-    assert "health: OUT09_ACCEPTED_INTERNAL_CANONICAL_MAIN" in runtime
+    assert "health: NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY" in runtime
+    assert "current_slice: OUT-10" in runtime
+    assert "out10_inventory_count: 5" in runtime
+    assert "out10_distinct_source_preflight_count: 3" in runtime
+    assert "out10_eligible_source_count: 0" in runtime
+    assert "out10_external_acquisition_required: true" in runtime
+    assert "out10_external_acquisition_authorized: false" in runtime
+    assert "out10_candidate_generated: false" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
     assert "human_review_pending: false" in runtime
-    assert "acceptance_granted: true" in runtime
+    assert "acceptance_granted: false" in runtime
     assert "batch_acceptance: null" in runtime
     assert (
         "candidate_01_acceptance: "
-        "accepted_internal"
+        "null"
         in runtime
     )
     assert (
         "review_status: "
-        "accepted_internal"
+        "no_candidate_generated"
         in runtime
     )
     assert (
-        "subtitle_display_authority: generated_short_cue_overlay_from_source_json3"
+        "subtitle_display_authority: null"
         in runtime
     )
-    assert "additional_subtitle_burn_in: true" in runtime
-    assert "source_native_caption_pixels_suppressed: true" in runtime
+    assert "additional_subtitle_burn_in: false" in runtime
+    assert "source_native_caption_pixels_suppressed: false" in runtime
     assert "full_source_blur_fallback_allowed: false" in runtime
     assert "additional_blur_or_frosted_caption_surface: false" in runtime
     assert (
-        "candidate_01_sha256: "
-        "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
-        in runtime
+        "candidate_01_sha256: null" in runtime
     )
     assert "candidate_02_acceptance: null" in runtime
     assert "optional_recovery_merged: false" in runtime
@@ -284,3 +289,28 @@ def test_runtime_points_to_out09_and_keeps_out07_rebuild_contract_parked() -> No
     assert "out07_final_thumbnail_system_acceptance: false" in runtime
     assert "out07_additional_thumbnail_iteration: prohibited" in runtime
     assert "out07_revisit_after_real_short_count: 3_to_5" in runtime
+
+
+def test_out10_inventory_receipt_stops_without_fabricating_a_candidate() -> None:
+    path = (
+        ROOT
+        / "docs"
+        / "output_layer"
+        / "out10_third_source_inventory_receipt.json"
+    )
+    receipt = json.loads(path.read_text(encoding="utf-8"))
+    assert receipt["state"] == "NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY"
+    assert receipt["scope"]["inventory_count"] == 5
+    assert receipt["scope"]["distinct_source_preflight_count"] == 3
+    assert receipt["scope"]["render_execution_count"] == 0
+    assert len(receipt["inventory"]) == 5
+    assert sum(item["preflight"] == "completed" for item in receipt["inventory"]) == 3
+    assert receipt["decision"]["eligible_local_third_source_count"] == 0
+    assert receipt["decision"]["external_acquisition_required"] is True
+    assert receipt["decision"]["external_acquisition_authorized"] is False
+    assert receipt["selected_source"] is None
+    assert receipt["selected_slice"] is None
+    assert receipt["candidate_media"] is None
+    assert receipt["portfolio_scorecard"]["status"] == (
+        "not_created_no_third_source_candidate"
+    )

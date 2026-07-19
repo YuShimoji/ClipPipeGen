@@ -10,14 +10,18 @@ unchanged opening plus authoritative `cut_003` as one complete same-machine
 seekability findings repaired while rights, production, subtitle-design, public,
 and publishing gates remain closed. OUT-07 is the parked, viable but noncanonical
 cover predecessor. OUT-08 is the closed accepted-internal two-candidate baseline.
-OUT-09 is the current human-review slice: one declarative vertical candidate from
+OUT-09 is the closed accepted-internal second-source slice: one declarative vertical candidate from
 a different real source/episode. A second bounded presentation repair removes
 source-native caption pixels from foreground and background, uses a caption-free
 canvas, and burns 27 short JSON3-timed cues while preserving range and endpoint.
+OUT-10 is the current decision-ready stop: bounded local inventory found no eligible
+third real source, so no candidate or portfolio scorecard was generated.
 
 Start here when resuming from another terminal:
 
-- `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` - active second-source caption-presentation repair, three-generation lineage, caption-free crop, JSON3 short-cue authority, media/mobile/browser evidence, exactly one human question, and closed gates.
+- `OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` - active bounded-inventory stop, three detailed preflights, exact blockers, restart decision, and closed gates.
+- `out10_third_source_inventory_receipt.json` - machine-readable 5-entry inventory, 3-source preflight, hashes, evidence grades, and external-acquisition decision.
+- `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` - closed accepted-internal second-source lineage, caption-free crop, JSON3 short-cue authority, media/mobile/browser evidence, and closed gates.
 - `OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` - closed accepted-internal target-2/actual-2 baseline, exact unused-range authority, media/browser evidence, and closed gates.
 - `OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md` - parked OUT-07 closure, historical Thank semantic proxy, unchanged strict exact-baseline route, and closed external actions.
 - `OUT_07_SHORTS_POSTER_REFERENCE_CORPUS.json` - tracked public URLs and structural annotations only; third-party pixels remain ignored locally.
@@ -98,10 +102,19 @@ render path. The current ignored package has one 33.320-second H.264/AAC
 `0,0,640,286`, excluding the lower 74px native-caption band. The video burns 27
 one-to-six-word JSON3 event/token-timed cues on an opaque plate; full-source blur
 fallback and frosted caption surfaces are prohibited. The package includes
-10-point frame QA, manifest/readback, and a single-video Range-capable review page. Human review is
-pending; production, rights, public, publishing, thumbnail, and portability gates
+10-point frame QA, manifest/readback, and a single-video Range-capable review page. Human review
+accepted the exact repaired MP4 for internal use; production, rights, public, publishing, thumbnail, and portability gates
 remain closed. See `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` for exact hashes,
 commands, browser evidence, and the three-generation repair lineage.
+
+OUT-10 inspected no more than five local inventory entries and detailed no more
+than three distinct non-baseline sources. The only 12-second-class video was an
+OUT-01 synthetic fixture reused byte-for-byte by OUT-01b and OUT-01e; the other
+preflights were a 2.07425-second audio-only smoke and a 2.5-second synthetic
+video. It therefore emitted only a tracked decision receipt and contract. No
+OUT-10 episode package, render, caption sidecars, review server, or scorecard
+exists. Resume only after an eligible local real source is supplied or one
+bounded external acquisition is explicitly authorized.
 
 Generated files:
 
