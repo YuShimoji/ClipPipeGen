@@ -35,6 +35,41 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
     transcript = episode / "transcript_source_captions.json"
     edit_pack = episode / "edit_pack.json"
     receipt = root / "docs" / "output_layer" / "out10_external_receipt.json"
+    candidate_end = 27.711
+    predecessor_end = out10.PREDECESSOR_SOURCE_END_SECONDS
+    bounds = [round(predecessor_end * index / 15, 3) for index in range(16)]
+    bounds.append(candidate_end)
+    caption_events = []
+    transcript_segments = []
+    planned_subtitles = []
+    for index, (start, end) in enumerate(zip(bounds, bounds[1:]), start=1):
+        text = f"公式字幕{index:02d}"
+        caption_events.append(
+            {
+                "tStartMs": int(round(start * 1000)),
+                "dDurationMs": int(round((end - start) * 1000)),
+                "segs": [{"utf8": text}],
+            }
+        )
+        segment_id = f"seg_{index:06d}"
+        transcript_segments.append(
+            {
+                "id": segment_id,
+                "start_seconds": start,
+                "end_seconds": end,
+                "text": text,
+            }
+        )
+        planned_subtitles.append(
+            {
+                "id": f"out10_cue_{index:03d}",
+                "source_start_seconds": start,
+                "source_end_seconds": end,
+                "text": text,
+                "source_segment_id": segment_id,
+                "caption_event_index": index - 1,
+            }
+        )
     _write_json(
         rights,
         {
@@ -67,20 +102,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
     )
     _write_json(
         captions,
-        {
-            "events": [
-                {
-                    "tStartMs": 0,
-                    "dDurationMs": 6000,
-                    "segs": [{"utf8": "導入の字幕"}],
-                },
-                {
-                    "tStartMs": 6000,
-                    "dDurationMs": 6000,
-                    "segs": [{"utf8": "着地の字幕"}],
-                },
-            ]
-        },
+        {"events": caption_events},
     )
     _write_json(
         transcript,
@@ -91,20 +113,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                 "real_transcript": True,
             },
             "review": {"status": "needs_review"},
-            "segments": [
-                {
-                    "id": "seg_000001",
-                    "start_seconds": 0.0,
-                    "end_seconds": 6.0,
-                    "text": "導入の字幕",
-                },
-                {
-                    "id": "seg_000002",
-                    "start_seconds": 6.0,
-                    "end_seconds": 12.0,
-                    "text": "着地の字幕",
-                },
-            ],
+            "segments": transcript_segments,
         },
     )
     _write_json(
@@ -115,7 +124,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                 {
                     "id": "cut_001",
                     "start_seconds": 0.0,
-                    "end_seconds": 12.0,
+                    "end_seconds": candidate_end,
                     "context_check": {"status": "passed"},
                 }
             ],
@@ -212,37 +221,51 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             "candidate": {
                 "candidate_id": "candidate_01",
                 "source_start_seconds": 0.0,
-                "source_end_seconds": 12.0,
-                "duration_seconds": 12.0,
+                "source_end_seconds": candidate_end,
+                "duration_seconds": candidate_end,
                 "authority_cut_id": "cut_001",
                 "candidate_count_considered": 1,
                 "start_basis": "opening",
                 "end_basis": "closed event",
-                "next_scene_transition_seconds": 12.1,
+                "next_scene_transition_seconds": 27.733,
                 "rationale": "setup to payoff",
                 "narrative_arc": {
                     "setup": "setup",
                     "development": "development",
                     "payoff": "payoff",
                 },
-                "subtitles": [
+                "subtitles": planned_subtitles,
+            },
+            "endpoint_repair": {
+                "predecessor_state": out10.PREDECESSOR_STATE,
+                "predecessor_video_sha256": out10.PREDECESSOR_VIDEO_SHA256,
+                "predecessor_source_end_seconds": predecessor_end,
+                "predecessor_caption_cue_count": 15,
+                "lineage_reason": out10.LINEAGE_REASON,
+                "inherited_pass": [
+                    "content_and_tempo",
+                    "subtitle_audio_sync",
+                    "subtitle_readability",
+                    "neutral_matte_composition",
+                    "safe_review_route",
+                ],
+                "probe_candidates": [
                     {
-                        "id": "out10_cue_001",
-                        "source_start_seconds": 0.0,
-                        "source_end_seconds": 6.0,
-                        "text": "導入の字幕",
-                        "source_segment_id": "seg_000001",
-                        "caption_event_index": 0,
+                        "source_seconds": predecessor_end,
+                        "status": "rejected_active_telop_motion",
                     },
                     {
-                        "id": "out10_cue_002",
-                        "source_start_seconds": 6.0,
-                        "source_end_seconds": 12.0,
-                        "text": "着地の字幕",
-                        "source_segment_id": "seg_000002",
-                        "caption_event_index": 1,
+                        "source_seconds": candidate_end,
+                        "status": "selected",
                     },
                 ],
+                "selection_basis": "caption, pose, and shot boundary complete",
+            },
+            "portfolio_subtitle_differentiation_debt": {
+                "status": "deferred",
+                "current_white_style_approved_as_general_standard": False,
+                "speaker_identity_inference_allowed": False,
+                "revisit_condition": "after_3_to_5_accepted_real_shorts_or_explicit_production_subtitle_design_gate",
             },
             "review_questions": [out10.REVIEW_QUESTION],
             "boundaries": {
@@ -336,7 +359,14 @@ def test_builds_third_source_package_and_scorecard(tmp_path: Path) -> None:
     assert readback["state"] == out10.STATE
     assert readback["source_difference"]["all_distinct"] is True
     assert readback["candidate"]["human_review_pending"] is True
-    assert readback["subtitle"]["count"] == 2
+    assert readback["subtitle"]["count"] == 16
+    assert readback["repair_lineage"]["predecessor_video_sha256"] == (
+        out10.PREDECESSOR_VIDEO_SHA256
+    )
+    assert readback["endpoint_repair"]["additional_caption_cue_count"] == 1
+    assert readback["portfolio_subtitle_differentiation_debt"]["status"] == (
+        "deferred"
+    )
     scorecard = json.loads(
         (fixture["output"] / "source_portfolio_scorecard.json").read_text(
             encoding="utf-8"
@@ -350,6 +380,7 @@ def test_builds_third_source_package_and_scorecard(tmp_path: Path) -> None:
     html = (fixture["output"] / "index.html").read_text(encoding="utf-8")
     assert html.count("data-review-question=") == 1
     assert "autoplay" not in html.lower()
+    assert out10.REVIEW_QUESTION in html
 
 
 def test_rejects_predecessor_recording_identity(tmp_path: Path) -> None:
@@ -358,6 +389,28 @@ def test_rejects_predecessor_recording_identity(tmp_path: Path) -> None:
     plan["source_identity"]["provider_id"] = out10.OUT09_PROVIDER_ID
     _write_json(fixture["plan"], plan)
     with pytest.raises(out10.ThirdSourceShortPortfolioError, match="not distinct"):
+        out10.build_third_source_short_portfolio(
+            episode_dir=fixture["episode"],
+            output_dir=fixture["output"],
+            candidate_plan_input_path=fixture["plan"],
+            base_dir=fixture["root"],
+            render_executor=_fake_render,
+            navigation_executor=_fake_navigation,
+            signal_qa_executor=_fake_signal_qa,
+        )
+
+
+def test_rejects_endpoint_repair_without_exact_predecessor_hash(
+    tmp_path: Path,
+) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["endpoint_repair"]["predecessor_video_sha256"] = "0" * 64
+    _write_json(fixture["plan"], plan)
+    with pytest.raises(
+        out10.ThirdSourceShortPortfolioError,
+        match="endpoint repair authority is incomplete",
+    ):
         out10.build_third_source_short_portfolio(
             episode_dir=fixture["episode"],
             output_dir=fixture["output"],

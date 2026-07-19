@@ -1,157 +1,150 @@
-# 監修AI向け現状報告 — OUT-10 third-source Short human review ready
+# 監修AI向け現状報告 — OUT-10 endpoint bounded repair review ready
 
-更新日: 2026-07-19
+更新日: 2026-07-20
 
 対象: ClipPipeGen / `codex/out-10-third-source-short-portfolio-expansion-v0`
 
-状態: `OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD`
+状態: `OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY`
 
 ## 結論
 
-前回の`NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY`に対して与えられたDecision Aを消費し、
-一つのbounded external acquisitionを完了した。探索対象は公式hololive channelの公開YouTube動画に
-限定し、metadata 5件、詳細preflight 3件、media download 1件、候補1本の上限を守った。
+人間観測で合格した内容・テンポ、字幕/音声同期、字幕可読性、neutral matte構図、安全なreview
+routeを継承し、早すぎた終端だけを修復した。source、開始点、主題、冒頭・中盤、字幕style、
+音量、artifact IDは不変である。
 
-選んだrecordingは `TlnviOwLRmk`。OUT-08 `7J5aS_pcBj4`とOUT-09 `D4i4fjs9PWc`の
-accepted authorityとは異なる。冒頭 `0.000–20.304s`と公式日本語caption 15 eventを固定し、
-1回のrenderで1080x1920 / 20.333333秒の候補、manifest、frame QA、browser-safe review page、
-3-source scorecardを生成した。補正renderは使っていない。
+旧MP4 `9c930f82...9884` / source end `20.304s`は、最後のtelopと動作が始まる地点で
+切れていたため未受理predecessorとした。旧終端から最大12秒先までをframe/audio/captionで比較し、
+`27.711s`を最初の自然な区切りとして選択した。ここではoperation-declaration caption/音声と
+thumb-up poseが完了し、約0.022秒後の`27.733s`で次shotへ切り替わる。
 
-技術検証は通ったが、一本のShortとしての内容・テンポ・字幕可読性・composition・終端は人間未確認。
-したがって現在地はinternal human review readyであり、accepted、production-ready、rights-cleared、
-public-readyではない。
+新候補はMP4 SHA `3651a14f...9884`、semantic 27.711s、media 27.733333s、45 official JA cue。
+full render 1回、corrective 0回。現在はexact new SHAへのhuman review待ちであり、accepted、
+production-ready、rights-cleared、public-readyではない。
 
-## Authorityと取得境界
+## 変更前後
 
-| 対象 | 固定した証拠 | 現在の効力 | 明示的な限界 |
+| 比較軸 | predecessor | endpoint repair | 効果 |
 |---|---|---|---|
-| official source | `https://www.youtube.com/watch?v=TlnviOwLRmk`、channel ID `UCJFZiqLMntJufDCHc6bQixg` | 第三recording identityと公開状態をanonymous metadataで確認 | rights approvalや二次利用許可の法的判断ではない |
-| source video | SHA `8cbb98eeaa62f539fc0a72c7e587bc961f47cb254a1aaabdb11bba7001c4a3a4`、1920x1080、116.517732秒 | local render inputをbyte単位で固定 | ignored local mediaでcross-machine portableではない |
-| source audio | SHA `159b95ffbe2cfe7c39923fa14fe4637e432683a58a0a22fcf141b8afe81f56c7` | downloaded videoから既存local-media-audio経路で導出 | 別のnetwork media downloadではない |
-| official caption | JA JSON3 SHA `fa9fe66e8a9b5302a66faa7ea256d3e5b500bd0eb5047e9d451d6ee00bc34d21` | candidate 15 cueのtext/timing authority | human transcript acceptanceやproduction subtitle designではない |
-| acquisition receipt | `docs/output_layer/out10_external_source_acquisition_receipt.json` | 5/3/1の探索上限、選択理由、hash、tool warningをtracked化 | media byte自体は含まない |
+| source identity | `TlnviOwLRmk` | 同一 | recording driftなし |
+| source start | 0.000s | 0.000s | 冒頭・中盤再編集なし |
+| source end | 20.304s | 27.711s | telop/発話/動作を完了 |
+| media duration | 20.333333s | 27.733333s | 7.4秒だけ実映像・実音声を延長 |
+| subtitles | 15 official JA cue | 45 cue | 既存15不変、必要な30 cueだけ追加 |
+| composition | neutral matte/no crop/no blur | 同一 | 合格済み構図を維持 |
+| MP4 SHA | `9c930f82...9884` | `3651a14f...9884` | acceptance継承なし、新SHAへ判断をbind |
+| status | endpoint too early / unaccepted | human review pending | MUST-FIXの客観検証完了 |
 
-login、cookies、OAuth、DRM、geo/age/anti-bot回避、mirror/reupload、third-party download serviceは
-一切使っていない。source acquisitionとcandidate builderを分離し、builderはURL fetchを行わない。
+旧SHAのlineage reasonは
+`superseded_predecessor_endpoint_too_early_active_telop_motion`。
+旧候補にacceptanceは記録していない。
 
-## Bounded selection
+## Endpoint evidence
 
-| 順位 | video ID | preflight | 採否と理由 |
+| probe | caption/audio | visual state | 判断 |
 |---:|---|---|---|
-| 1 | `TlnviOwLRmk` | public/not-live、official JA caption、max 1440p、video/audio | 採択。冒頭診察micro-sceneが20.304秒で自然に閉じ、全景保持で9:16化可能 |
-| 2 | `23qdzlX4m3Y` | public/not-live、official JA caption、video/audio | 非採択。酩酊premiseがあり、このbounded sliceではeditorial sensitivityが相対的に高い |
-| 3 | `BP7H7bASFek` | public/not-live、official JA caption、video/audio | 非採択。multi-location survival場面で短い自然終端とcomposition負荷が高い |
+| 20.304s | golf line終了 | impact beatとtelop/actionが未完 | reject |
+| 22.840s | scream系列終了 | 膝telop説明が続く | reject |
+| 24.308s | 膝line終了 | BAUBAU reaction開始 | reject |
+| 25.242s | BAUBAU終了 | foreground進入と「急患発生」開始 | reject |
+| 26.310s | emergency line終了 | thumb-up motionとoperation line継続 | reject |
+| 27.711s | operation line/音声終了 | thumb-up pose完成、次shot 27.733s | selected |
 
-残りmetadata 2件は上限どおり詳細preflightへ進めなかった。popularity最大化や無制限探索ではなく、
-最初のeligibleで編集上の危険が低い候補を選んだ。
+27.711sより先は次の検査dialogueへ入り、27.711sより前はcaptionまたは動作が未完だった。
+したがって、別topicへ踏み込みすぎずvisual completionも満たす最初の境界である。
+freeze、fade、black frame、end card、logo、新transitionは使っていない。
 
-## Candidateの設計
+## Caption authority
 
-source inspectionでは、左右に意味のある複数キャラクターとnative name labelが存在した。
-center cropは端の人物を失い、source由来blurは文字をcanvasへ複製する。このsourceには
-OUT-09のcaption-band crop / blur policyをコピーせず、全1920x1080 frameをneutral matte
-`0x0D1624`上へfitした。
+追加範囲は`20.304–27.711s`、official JSON3 event index 15–44、
+`seg_000016–seg_000045`の30 cue。最後は
+`オペを執り行いますよ！！` / `26.310–27.711s`。
 
-| 設計点 | 選択 | workflowへの効果 | 残る判断 |
-|---|---|---|---|
-| foreground | full-source 16:9 fit、cropなし | 全キャラクターとname labelを保持 | matte余白を含む見栄えはhuman review対象 |
-| background | neutral solid matte、source-derived=false | blurによる文字/輪郭の重複を防止 | 共通defaultには昇格しない |
-| dialogue caption | official JA event 15 cueをforeground外下部へburn-in | native labelと追加字幕を分離 | 可読性と切替テンポはhuman review対象 |
-| endpoint | source 20.304s、次scene transition前 | 台詞が閉じた位置で停止 | Shortとしての終わり感はhuman review対象 |
+短い反復scream eventも公式event timingのまま連続表示し、speaker identityを推測していない。
+ASS/SRT/readbackは45 cueで一致し、既存15 cueの本文・時間・白styleに変更はない。
 
-このpolicyを既存shared rendererへparameterとして追加し、default routeとOUT-09挙動は維持した。
-OUT-10 builderはdistinct source identity、acquisition receipt、ledger、official caption、plan hash、
-closed gateをfail-closedで検証する。
-
-## 成果物とexact identity
+## Exact artifact
 
 package:
 `episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/`
 
-| artifact | exact evidence | 用途 |
-|---|---|---|
-| `candidate_01.mp4` | SHA `9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f`、11,138,772 bytes | human review対象 |
-| ASS / SRT | 15 cue、SHA `3f66101b...fa05` / `e755bfcc...a06d` | subtitle authorityの可視化と外部readback |
-| frame QA | SHA `1b606ed7...fa08`、10 sample | 全景・字幕・終端を静止画確認 |
-| navigation frame | SHA `387033fd...3219` | review導線のみ。thumbnailではない |
-| plan snapshot | SHA `ad2beb3d...2deb8` | source/hash/range/policyをrender前入力へ固定 |
-| readback | SHA `a1c69b31...992b` | media/audio/signal/composition/review boundary |
-| manifest | 13 payload、self SHA `c34f39934ab670e5d272bc43bc854936d567e999d940af0a935294bfd8d7abf2` | packageのself-integrity |
-| 3-source scorecard | JSON SHA `9f985a0a...f6a7` + HTML | OUT-08/09/10を並べ、欠測値をunknownで保持 |
+| artifact | identity |
+|---|---|
+| candidate MP4 | `3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884` / 15,508,592 bytes |
+| ASS / SRT | `83885682...7a03` / `27d6bf5b...b892` |
+| frame QA | `49991a27...aef1` / 11 sample |
+| plan | `32192926...55cb` |
+| readback | `834584c0...0933` |
+| manifest | 13 payload / self `59441786...465a` |
+| scorecard | `b4008ad5...168a` |
 
-起動コマンド:
+3-source scorecardはOUT-10のmedia identity、duration、caption count、endpoint statusだけ更新した。
+OUT-08/09のaccepted factsは変更せず、winner、production readiness、白字幕の一般標準を
+宣言していない。
+
+## Validation
+
+| 検証 | 実測 | 限界 |
+|---|---|---|
+| render | 1 full / 0 corrective / 60.279s | 人間acceptanceではない |
+| media | H.264/AAC、1080x1920、30fps、yuv420p、full decode/faststart pass | production encoding acceptanceではない |
+| loudness | -13.87 LUFS / -1.31 dBTP | production mix gateではない |
+| final 3s audio | RMS -13.75dB、peak -1.50dB、NaN/Inf 0、silence 0 | 聴感の人間確認はreview questionへ残す |
+| signal | black/silence event 0 | 機械検出 |
+| final frames | 24.711〜27.611sを7 sample | caption/action/pose completion確認 |
+| manifest | self true、13/13 payload hash一致 | same-machine ignored package |
+| HTTP | page 200、Range 206、0-1023/15508592 | localhost transport |
+| desktop | paused/muted/time0、readyState4、overflow false | physical device proofではない |
+| mobile | 375x812、video 328.84x584.63、overflow false | responsive browser proof |
+| QA | muted playback約1.07s後pause、media error 0 | clean URLはQA queryなし |
+| console | warning/error 0 | browser runtime観測 |
+
+## portfolio_subtitle_differentiation_debt
+
+全字幕が白でspeakerを識別しにくい点はdeferred。今回は終端だけがscopeであり、話者別色分け、
+speaker badge、字幕位置分け、speaker identity推定を実装していない。
+現行白styleを一般標準として承認しない。
+
+再検討条件:
+
+- accepted real Shortsが3〜5本揃いportfolio比較を行う時
+- production subtitle-design gateが明示的に開始された時
+
+## 人間判断
+
+review入口:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out10_hololive_secret_clinic_20260719\review\out10_third_source_short_portfolio\open_preview.ps1 -Serve -Port 8073
 ```
 
-clean URLは `http://127.0.0.1:8073/index.html`。serverはreview時だけ前景で維持する。検証後は
-停止済みで、port 8073 listener 0を確認した。
+clean URL: `http://127.0.0.1:8073/index.html`
 
-## 検証結果
+質問は一つだけ:
 
-| 検証面 | 実測結果 | 判定境界 |
-|---|---|---|
-| render budget | execution 1、corrective 0、build 35.604秒 | 契約上限内 |
-| media | H.264 High/AAC、1080x1920、30fps、yuv420p、20.333333秒、full decode/faststart pass | 技術的再生性のみ |
-| loudness | input -18.50 LUFS/-0.32 dBTP、output -13.93 LUFS/-1.48 dBTP | production mix acceptanceではない |
-| signal | blackdetect 0、silencedetect 0 | 長い黒/無音の機械検出なし |
-| caption | ASS/SRT/readback 15 cue一致 | 意味/可読性の人間確認は未了 |
-| frame | 10/10 extracted、全景と終端を目視 | motion/tempo acceptanceではない |
-| manifest | payload 13とself-integrity pass | ignored packageの同一性を固定 |
-| HTTP | page 200、Range 206、Content-Range `bytes 0-1023/11138772` | localhost transport proof |
-| browser desktop | 1280px、1 video、paused/muted/time 0、readyState 4、overflow false | autoplayなし |
-| browser mobile | 375x812、doc width 360、video 329x585、overflow false | physical device proofではない |
-| browser QA route | muted playbackが約1.01秒進みpause、media errorなし | clean human URLにはQA queryを残さない |
-| console | warning/error 0 | browser runtimeの観測 |
-| tests | OUT-10/OUT-09/neutral-matte route pass | 既知OUT-06 CP932 wrap failure 1件は本変更外 |
+> 最後のテロップや動きが途中で切れず、一本のShortとして自然に終わるようになったか。既に合格していた字幕・音声・構図に明確な回帰があれば併せて教えてください。
 
-## 3-source scorecardの読み方
+回答は新SHAへbindする。human reviewを飛び越える次実装は起動しない。
 
-OUT-08/09/10を同じJSON/HTMLに並べたが、過去packageに存在しない測定値は推測せずunknownとした。
-このscorecardで証明できるのは、三つのdistinct recordingに対して異なるsource conditionを
-記録し、candidate identityとcomposition decisionを比較できることまでである。
+## 次に推奨する入口
 
-証明していないもの:
+| 入口 | 解く摩擦 | 必要条件 | 次に可能になること |
+|---|---|---|---|
+| Advance | endpoint acceptance不在 | exact new SHAへの肯定回答 | OUT-10 accepted internal closure |
+| Report regression | 合格済み面の回帰 | 字幕・音声・構図の具体的観測 | 同じSHAへdefectを記録し、再実装前にscope判断 |
+| Audit later | 字幕speaker差分のdebt | 3〜5本acceptedまたはproduction subtitle gate | 推測なしのspeaker differentiation比較 |
 
-- 三sourceに共通するproduction-grade自動crop/blur policy
-- production subtitle design / mix / image quality
-- thumbnail systemの再現性
-- rights clearanceやpublic release readiness
-- cross-machine package portability
+最遠の安全目標は、まず新SHAのhuman gateを閉じること。その後にのみOUT-10 closureと3-source
+portfolio比較を確定し、accepted real Shortsが3〜5本揃った時点で字幕/thumbnail systemの比較へ進む。
 
-## 人間判断
+## Not Done / 閉じたgate
 
-質問は一つに固定する。
-
-> 一本のShortとして内容とテンポが成立しているか。字幕と音声、字幕の可読性、crop・blur・matteによる重要内容や元字幕の扱い、最後の終わり方に明確な違和感があれば教えてください。
-
-回答はexact MP4 SHA `9c930f82...bb2f`に対するaccept / bounded repair / rejectとして記録する。
-現時点は`human_review_pending=true`、`acceptance_granted=false`。
-
-## 今後を最も先まで進める条件付き目標
-
-| 入口 | 解くbottleneck | 必要条件 | 到達可能になる次状態 | 停止条件 |
-|---|---|---|---|---|
-| Advance | 第三sourceのcreative acceptance不在 | exact candidateへの人間回答 | OUT-10 accepted internal closure、3-source portfolioの確定 | 違和感が一つでも具体化されたらacceptしない |
-| Repair | 字幕/音声/composition/endpointの局所欠陥 | defect、保持範囲、再render許可を限定 | 新SHAのcorrective candidateと差分review | source変更、権利判断、広い再編集が必要なら再承認 |
-| Audit | scorecardの比較可能性とunknownの整理 | OUT-10 reviewと分離した分析 | shared input validationとsource-specific policyの境界を固定 | 欠測値を推測で埋めない |
-| Explore | thumbnail directionの単発proxy依存 | accepted real Shortが3〜5本 | 複数実例によるthumbnail方向比較 | 本数不足の間はOUT-07をcanonical/default化しない |
-
-最遠の安全目標は、(1) exact OUT-10 candidateのhuman gateを閉じ、(2) accepted 3-source evidenceから
-共通化できるpreflight/manifest/readbackと人間に残すcomposition判断を分離し、(3) 実Short 3〜5本が
-揃った時点でthumbnail探索を再開すること。その先のproduction/public releaseはrightsとowner判断を
-別gateで取得した後にのみ計画する。
-
-## 閉じたgate
-
+- human acceptance
 - rights approval
 - production render/subtitle design/image quality acceptance
 - thumbnail acceptance
 - public/publishing/upload/OAuth/visibility/made-for-kids
 - cross-machine media portability
-- main merge / canonical promotion
+- scorecard winner
+- main merge / PR
 
-drift監査では、個別sourceに対するneutral matteを一般ruleへ昇格せず、docsだけで完了扱いせず実装・
-render・browser evidenceまで接続した。単発artifactの次consumerはhuman review、scorecardの次consumerは
-OUT-10受理後のportfolio auditと明確である。
+shared renderer、OUT-08/09 package、OUT-06 wrap debt、tracked mediaには触れていない。

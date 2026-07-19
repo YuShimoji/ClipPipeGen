@@ -7,7 +7,8 @@ follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
 current artifact, then use an artifact-specific launcher. OUT-10 is currently a
-same-machine review package with one third-source candidate and a 3-source scorecard.
+same-machine endpoint-repair review package with one third-source candidate and
+a 3-source scorecard.
 OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
 baseline evidence. OUT-07 is parked; its Thank native Shorts-cover
 semantic direction proxy below is historical local evidence, not an active
@@ -24,23 +25,26 @@ opened by the root launcher.
 
 | Field | Value |
 |---|---|
-| title | OUT-10 Third-Source Short Portfolio Expansion v0 — human review package |
-| purpose | Verify a third distinct real source through one bounded external acquisition, produce one 12–60 second vertical Short, and expose an honest OUT-08/09/10 scorecard without generalizing source-specific composition rules. |
+| title | OUT-10 Third-Source Short Portfolio Expansion v0 — endpoint bounded repair review package |
+| purpose | Preserve the passed content/subtitle/audio/composition of the third-source Short and repair only the user-observed early endpoint, while retaining exact predecessor lineage and an honest OUT-08/09/10 scorecard. |
 | storage class | Tracked builder/CLI/tests/acquisition receipt/contract plus one ignored same-machine package. Source media, official captions, plan, MP4/ASS/SRT/JPG/readback/manifest/page/scorecard remain under ignored `episodes/`. |
 | repo_relative_path | `src/integrations/render/third_source_short_portfolio.py`; `src/cli/build_third_source_short_portfolio.py`; `docs/output_layer/out10_external_source_acquisition_receipt.json`; `docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` |
 | local_artifact_path | `episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/` |
-| state | `OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD` |
+| state | `OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY` |
 | bounded_acquisition | Official hololive public YouTube only: metadata 5, detailed preflight 3, media download 1, selected candidate 1. No login/cookies/OAuth/DRM/geo/age/bot bypass or third-party downloader. |
 | selected_source | YouTube `TlnviOwLRmk`, distinct from OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc`; source video SHA `8cbb98eeaa62f539fc0a72c7e587bc961f47cb254a1aaabdb11bba7001c4a3a4`; locally derived audio SHA `159b95ffbe2cfe7c39923fa14fe4637e432683a58a0a22fcf141b8afe81f56c7`. |
-| selected_slice | Source `0.000–20.304s`; 15 exact official Japanese JSON3 events; welcome-to-exit consultation micro-scene ending before the next scene transition. |
+| selected_slice | Source `0.000–27.711s`; start/topic/middle unchanged. Endpoint selected after official operation-declaration caption and thumb-up pose complete, approximately 0.022s before the next shot. |
 | composition | Full 1920x1080 source fit on `0x0D1624` neutral matte; crop/blur/source-derived background/native-caption suppression all false. Multiple left/right characters and native name labels remain visible. |
-| candidate | H.264/AAC 1080x1920 30fps yuv420p, semantic 20.304s/media 20.333333s, 15 burn-in cues, SHA `9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f`; render 1, corrective pass 0. |
-| candidate_manifest | `candidate_manifest.json`; 13 payload files; self-integrity SHA `c34f39934ab670e5d272bc43bc854936d567e999d940af0a935294bfd8d7abf2`. |
-| portfolio_scorecard | `source_portfolio_scorecard.json` plus `source_portfolio_comparison.html`; three distinct source rows, with unavailable predecessor metrics kept unknown rather than invented. |
-| preview_url | clean `http://127.0.0.1:8073/index.html`; server is intentionally stopped after validation. |
+| candidate | H.264/AAC 1080x1920 30fps yuv420p, semantic 27.711s/media 27.733333s, 45 burn-in cues, SHA `3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884`; endpoint-repair render 1, corrective pass 0. |
+| predecessor | SHA `9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f`, source end 20.304s, lineage `superseded_predecessor_endpoint_too_early_active_telop_motion`, acceptance false. |
+| captions | Existing 15 official JA cues unchanged; 30 official cues added through 27.711s. ASS `83885682...7a03`, SRT `27d6bf5b...b892`. |
+| candidate_manifest | `candidate_manifest.json`; 13 payload files; self-integrity SHA `59441786bce520c3c17d4a8ebd000985b14654bddd33dd69d0512754ded4465a`. |
+| portfolio_scorecard | `source_portfolio_scorecard.json` plus `source_portfolio_comparison.html`; OUT-10 media identity/endpoint updated, OUT-08/09 unchanged, winner false. |
+| preview_url | clean `http://127.0.0.1:8073/index.html`; exact-artifact foreground server verified active. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out10_hololive_secret_clinic_20260719\review\out10_third_source_short_portfolio\open_preview.ps1 -Serve -Port 8073` |
-| validation | Full decode/faststart passed; output -13.93 LUFS/-1.48 dBTP; black/silence events 0; 10 frame samples; page 200, Range 206; desktop/mobile no overflow; clean URL paused/muted and QA route played then paused; console warning/error 0. |
-| decision_required | Review the exact candidate as one Short for content/tempo, subtitle/audio/readability, composition handling, and endpoint. Accept/repair/reject must bind to the exact MP4 SHA. |
+| validation | Full decode/faststart passed; output -13.87 LUFS/-1.31 dBTP; black/silence events 0; final-3-second frame sequence passed; page 200, Range 206; desktop/mobile no overflow; clean URL paused/muted and QA route played then paused; console/media error 0. |
+| subtitle_debt | `portfolio_subtitle_differentiation_debt=deferred`; white style is not a general standard. Revisit after 3–5 accepted real Shorts or an explicit production subtitle-design gate. |
+| decision_required | Review only whether the endpoint now completes naturally and whether the already-passed subtitle/audio/composition regressed. Bind the answer to the exact new MP4 SHA. |
 | protected_predecessors | OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc` accepted authority/media/packages are unchanged. |
 
 Boundary flags:

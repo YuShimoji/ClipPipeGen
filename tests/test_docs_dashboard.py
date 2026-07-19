@@ -1623,11 +1623,11 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "third_distinct_external_source_short_review_ready"
+        "endpoint_bounded_repair_review_ready"
     )
     assert status["current_focus"]["review_status"] == "pending_human_review"
     assert status["current_focus"]["decision_required"] == (
-        "review_exact_out10_candidate_accept_repair_or_reject"
+        "review_exact_out10_endpoint_repair_candidate_accept_or_report_regression"
     )
     assert status["current_focus"]["next_review_action_type"] == (
         ""
@@ -1653,7 +1653,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "stopped_after_validation_restart_on_demand"
+        "foreground_active_verified_exact_artifact_preserve_owner"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
@@ -1663,7 +1663,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
     assert status["current_focus"]["pause_reason"] == (
-        "awaiting_exact_candidate_human_review"
+        "awaiting_exact_endpoint_repair_human_review"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""

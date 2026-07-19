@@ -3,36 +3,36 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD
-progress_pct: 85
-last_touched: 2026-07-19
-state_revision: out10-third-distinct-external-source-short-review-ready-2026-07-19
-contract_repair_status: not_applicable_first_render_passed
+health: OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY
+progress_pct: 90
+last_touched: 2026-07-20
+state_revision: out10-endpoint-bounded-repair-review-ready-2026-07-20
+contract_repair_status: endpoint_bounded_repair_rendered_human_pending
 current_slice: OUT-10
 phase: human_review_ready
-canonical_status: third_distinct_external_source_short_review_ready
+canonical_status: endpoint_bounded_repair_review_ready
 active_branch: codex/out-10-third-source-short-portfolio-expansion-v0
-verified_implementation_head: branch_head_containing_out10_review_package_contract
-source_branch_tip: 8be2ffed791a64a8428b8d252a36061d759f5df3
+verified_implementation_head: branch_head_containing_out10_endpoint_repair_contract
+source_branch_tip: d047b6c31a5512193e751d9563907f2d277628b8
 closure_branch: null
 remote_resume_contract: fetch_then_switch_codex_out10_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: branch_head_containing_out10_review_package_contract
-sync_audit_status: out10_review_branch_only_main_unchanged
+sync_audit_head: branch_head_containing_out10_endpoint_repair_contract
+sync_audit_status: out10_endpoint_repair_branch_only_main_unchanged
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-10 third distinct source Short and 3-source scorecard review ready
+current_title: OUT-10 endpoint bounded repair review ready
 human_entrypoint: http://127.0.0.1:8073/index.html
 portable_entrypoint: null
 review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out10_hololive_secret_clinic_20260719\review\out10_third_source_short_portfolio\open_preview.ps1 -Serve -Port 8073
 review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out10_hololive_secret_clinic_20260719\review\out10_third_source_short_portfolio\serve_preview.ps1 -Port 8073
 machine_readback: episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/candidate_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_exact_out10_candidate_accept_repair_or_reject
+decision_required: review_exact_out10_endpoint_repair_candidate_accept_or_report_regression
 review_status: pending_human_review
-review_scope: 一本のShortとして内容とテンポが成立しているか。字幕と音声、字幕の可読性、crop・blur・matteによる重要内容や元字幕の扱い、最後の終わり方に明確な違和感があれば教えてください。
+review_scope: 最後のテロップや動きが途中で切れず、一本のShortとして自然に終わるようになったか。既に合格していた字幕・音声・構図に明確な回帰があれば併せて教えてください。
 reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
@@ -46,7 +46,7 @@ optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out10-external-5-metadata-3-preflight-1-download-1-render-v0
+evidence_revision: out10-endpoint-20.304-to-27.711-one-repair-render-v0
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
@@ -59,11 +59,11 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-19
+last_verified_at: 2026-07-20
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8073/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: awaiting_exact_candidate_human_review
+pause_reason: awaiting_exact_endpoint_repair_human_review
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
@@ -72,9 +72,9 @@ historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
 human_review_decision: pending
 user_feedback_overall: null
-content_selection_status: assistant_selected_bounded_external_source_and_closed_micro_scene
-subtitle_presentation_timing_status: machine_and_frame_qa_passed_human_pending
-endpoint_status: machine_and_frame_qa_passed_human_pending
+content_selection_status: inherited_pass_no_beginning_or_middle_reedit
+subtitle_presentation_timing_status: inherited_pass_plus_30_official_cues_machine_pass_human_regression_check_pending
+endpoint_status: repaired_to_first_complete_caption_pose_and_shot_boundary_human_pending
 reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
@@ -85,18 +85,24 @@ accepted_candidate_ids: []
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: stopped_after_validation_restart_on_demand
+review_server_status: foreground_active_verified_exact_artifact_preserve_owner
 next_review_due: null
-next_action: exact MP4を一問でhuman reviewし、accept / bounded repair / rejectを同一hashへ結ぶ。
+next_action: exact endpoint repair MP4を一問でhuman reviewし、acceptまたは明確な回帰を同一hashへ結ぶ。
 active_artifact: clip-out10-third-source-short-portfolio-expansion-v0-001
-current_review_component: out10_candidate_and_3_source_scorecard
+current_review_component: out10_endpoint_bounded_repair_candidate
 target_candidate_count: 1
 minimum_candidate_count: 1
 actual_candidate_count: 1
-candidate_01_semantic_duration_seconds: 20.304
-candidate_01_media_duration_seconds: 20.333333
-candidate_01_subtitle_count: 15
-candidate_01_sha256: 9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f
+candidate_01_semantic_duration_seconds: 27.711
+candidate_01_media_duration_seconds: 27.733333
+candidate_01_subtitle_count: 45
+candidate_01_sha256: 3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884
+out10_candidate_01_endpoint_too_early_predecessor_sha256: 9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f
+out10_candidate_01_endpoint_too_early_predecessor_source_end_seconds: 20.304
+out10_candidate_01_endpoint_too_early_predecessor_reason: superseded_predecessor_endpoint_too_early_active_telop_motion
+out10_endpoint_extension_seconds: 7.407
+out10_endpoint_next_shot_seconds: 27.733333
+out10_endpoint_additional_caption_cue_count: 30
 out09_candidate_01_initial_predecessor_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
 out09_candidate_01_failed_repair_predecessor_sha256: 3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916
 out09_candidate_01_failed_repair_reason: unreadable_native_caption_and_blurred_caption_duplication
@@ -112,12 +118,12 @@ source_audio_sha256: 159b95ffbe2cfe7c39923fa14fe4637e432683a58a0a22fcf141b8afe81
 source_video_resolution: 1920x1080
 source_caption_provider: youtube_subtitles_official_ja_json3
 source_caption_review_status: imported_unreviewed_human_acceptance_not_claimed
-candidate_plan_sha256: ad2beb3d3e00bd5e07e92ecfd5d00e98bb91c05d619680c8cc3484bc732deb8
-candidate_manifest_self_integrity: c34f39934ab670e5d272bc43bc854936d567e999d940af0a935294bfd8d7abf2
+candidate_plan_sha256: 3219292698ba47bb695537d0b1af86f02520c91f23271cf407e19e9a20ff55cb
+candidate_manifest_self_integrity: 59441786bce520c3c17d4a8ebd000985b14654bddd33dd69d0512754ded4465a
 render_execution_count: 1
 corrective_pass_count: 0
 additional_autonomous_repair_count: 0
-build_elapsed_seconds: 35.604
+build_elapsed_seconds: 60.279
 outer_elapsed_seconds: null
 subtitle_display_authority: official_json3_event_text_and_timing
 subtitle_timing_authority: official_json3_event_timing
@@ -127,10 +133,14 @@ caption_free_crop_pixels: full_1920x1080_source_frame
 native_caption_band_pixels: not_observed_dialogue_caption_band
 full_source_blur_fallback_allowed: false
 additional_blur_or_frosted_caption_surface: false
-endpoint_source_seconds: 20.304
-endpoint_last_caption_seconds: 20.304
-endpoint_last_speech_seconds: not_independently_measured_official_caption_end_used
-quality_debt: human_creative_review_pending_for_content_tempo_readability_composition_endpoint
+endpoint_source_seconds: 27.711
+endpoint_last_caption_seconds: 27.711
+endpoint_last_speech_seconds: official_caption_and_audio_phrase_end_27.711
+quality_debt: portfolio_subtitle_differentiation_debt
+portfolio_subtitle_differentiation_debt: deferred
+portfolio_subtitle_differentiation_current_white_style_general_standard: false
+portfolio_subtitle_differentiation_speaker_identity_inference_allowed: false
+portfolio_subtitle_differentiation_revisit_condition: after_3_to_5_accepted_real_shorts_or_explicit_production_subtitle_design_gate
 known_unrelated_test_failure: tests/test_vertical_short_candidate.py::test_out06_reviewed_japanese_break_hints_are_measured_and_semantic
 known_unrelated_test_failure_2: tests/test_complete_narrative_short.py::test_out06_reviewed_wraps_are_repaired_in_package_readback
 known_unrelated_test_failure_scope: same_two_failures_on_origin_main_29a1a519_and_out09_branch_17436ad_same_toolchain
@@ -140,7 +150,7 @@ default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d4
 source_specific_caption_suppression_observation: source_specific_caption_band_suppression_observed_acceptable_not_generalized
 source_specific_caption_suppression_design_acceptance: false
 out10_successor_candidate: OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION
-out10_implementation_status: review_ready
+out10_implementation_status: endpoint_bounded_repair_review_ready
 out10_stop_state: null
 out10_inventory_receipt: docs/output_layer/out10_external_source_acquisition_receipt.json
 out10_inventory_count: 5
@@ -149,7 +159,7 @@ out10_eligible_source_count: 1
 out10_external_acquisition_required: false
 out10_external_acquisition_authorized: true
 out10_candidate_generated: true
-out10_portfolio_scorecard_status: created_with_three_distinct_source_rows
+out10_portfolio_scorecard_status: updated_out10_media_identity_and_endpoint_only_no_winner
 h1_successor_data_only: false
 navigation_frame_role: representative_navigation_only_not_thumbnail_acceptance
 out08_cut009_final_cut_decision: reject
@@ -159,7 +169,7 @@ media_readback: passed_h264_aac_1080x1920_30fps_full_decode_faststart
 blackdetect_readback: passed_zero_events
 silencedetect_readback: passed_zero_events
 browser_readback: passed_desktop_mobile_safe_initial_state_qa_playback_zero_console_errors
-http_range_readback: passed_206_bytes_0_1023_of_11138772
+http_range_readback: passed_206_bytes_0_1023_of_15508592
 current_baseline_acceptance: accepted_internal
 accepted_baseline_sha256: b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 recommended_cover_path: null
@@ -281,6 +291,41 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-20 OUT-10 Endpoint Bounded Repair Review Ready
+
+人間観測で、旧MP4 `9c930f82...9884`は内容・テンポ・字幕同期・可読性・neutral matte構図・
+安全なreview routeは合格した一方、source `20.304s`で表示中テロップと映像動作が完了する前に
+切れた印象が確定した。旧候補を
+`superseded_predecessor_endpoint_too_early_active_telop_motion`として未受理lineageへ残し、
+冒頭・中盤・字幕style・音量・構図を変えず、終端だけを`27.711s`へ延長した。
+
+| endpoint候補 | 観測 | 判断 |
+|---:|---|---|
+| 20.304s | impact/telop/actionがこれから始まる | reject predecessor |
+| 22.840s | screamは終わるが膝telop説明が続く | reject |
+| 24.308s | 膝line完了と同時にBAUBAU reaction開始 | reject |
+| 25.242s | foreground進入と「急患発生」が開始 | reject |
+| 26.310s | thumb-up motionとoperation captionが継続 | reject |
+| 27.711s | operation caption/音声、thumb-up poseが完了。次shotは約27.733s | selected |
+
+新MP4はSHA
+`3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884`、semantic
+`27.711s`、media `27.733333s`、45 official JA cue（既存15不変＋追加30）。render 1、
+corrective 0である。H.264/AAC 1080x1920 30fps、full decode/faststart、black/silence 0、
+最終3秒の0.5秒刻み＋0.1秒前frame QA、ASS/SRT 45、manifest 13 payload/self-integrity、
+HTTP 200/Range 206、desktop/mobile safe initial state、QA muted playback、console/media error 0を確認した。
+
+全白字幕で話者識別が弱い点は`portfolio_subtitle_differentiation_debt`としてdeferred。
+今回、色分け・badge・位置分け・speaker推定は行わず、現白styleを一般標準として承認しない。
+再検討は3〜5本のaccepted real Shorts比較後、またはproduction subtitle-design gate明示開始時だけ。
+
+人間への一問:
+
+> 最後のテロップや動きが途中で切れず、一本のShortとして自然に終わるようになったか。既に合格していた字幕・音声・構図に明確な回帰があれば併せて教えてください。
+
+回答を新exact SHAへbindするまで`human_review_pending=true`、`acceptance_granted=false`。
+rights、production、thumbnail、public/publishing、main統合は閉じたままである。
 
 ## 2026-07-19 OUT-10 Third Distinct External Source Review Ready
 

@@ -54,7 +54,15 @@ from src.integrations.render.vertical_short_candidate import (
 ARTIFACT_ID = "clip-out10-third-source-short-portfolio-expansion-v0-001"
 SCHEMA_VERSION = "clippipegen.out10.third_source_short_portfolio.v0"
 PLAN_SCHEMA_VERSION = "clippipegen.out10.candidate_plan_input.v0"
-STATE = "OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD"
+STATE = "OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY"
+PREDECESSOR_STATE = (
+    "OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD"
+)
+PREDECESSOR_VIDEO_SHA256 = (
+    "9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f"
+)
+PREDECESSOR_SOURCE_END_SECONDS = 20.304
+LINEAGE_REASON = "superseded_predecessor_endpoint_too_early_active_telop_motion"
 OUTPUT_PREFIX = "out10_"
 OUT08_PROVIDER_ID = "7J5aS_pcBj4"
 OUT09_PROVIDER_ID = "D4i4fjs9PWc"
@@ -66,8 +74,8 @@ OUT09_CANDIDATE_HASH = (
     "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
 )
 REVIEW_QUESTION = (
-    "一本のShortとして内容とテンポが成立しているか。字幕と音声、字幕の可読性、"
-    "crop・blur・matteによる重要内容や元字幕の扱い、最後の終わり方に明確な違和感があれば教えてください。"
+    "最後のテロップや動きが途中で切れず、一本のShortとして自然に終わるようになったか。"
+    "既に合格していた字幕・音声・構図に明確な回帰があれば併せて教えてください。"
 )
 REVIEW_HOST = "127.0.0.1"
 REVIEW_PORT = 8073
@@ -259,6 +267,11 @@ def build_third_source_short_portfolio(
             "materials": authority["materials"],
             "transcript_authority": normalized["transcript_authority"],
             "selection_authority": normalized["selection_authority"],
+            "repair_lineage": normalized["repair_lineage"],
+            "endpoint_repair": normalized["endpoint_repair"],
+            "portfolio_subtitle_differentiation_debt": normalized[
+                "portfolio_subtitle_differentiation_debt"
+            ],
             "candidate": {
                 "candidate_id": normalized["candidate_id"],
                 "source_start_seconds": normalized["source_start_seconds"],
@@ -268,6 +281,10 @@ def build_third_source_short_portfolio(
                 "source_segment_ids": normalized["source_segment_ids"],
                 "rationale": normalized["rationale"],
                 "narrative_arc": normalized["narrative_arc"],
+                "predecessor_source_end_seconds": PREDECESSOR_SOURCE_END_SECONDS,
+                "endpoint_extension_seconds": normalized["endpoint_repair"][
+                    "extension_seconds"
+                ],
                 "human_review_pending": True,
                 "acceptance_granted": False,
             },
@@ -366,6 +383,16 @@ def build_third_source_short_portfolio(
             "state": STATE,
             "episode_id": episode.name,
             "candidate_video_sha256": video_sha256,
+            "candidate_lineage": normalized["repair_lineage"],
+            "endpoint_repair": {
+                "source_end_seconds": normalized["source_end_seconds"],
+                "extension_seconds": normalized["endpoint_repair"][
+                    "extension_seconds"
+                ],
+                "additional_caption_cue_count": normalized["endpoint_repair"][
+                    "additional_caption_cue_count"
+                ],
+            },
             "files": files,
             "file_count": len(files),
             "closed_gates": normalized["boundaries"],
@@ -550,6 +577,74 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         raise ThirdSourceShortPortfolioError("candidate duration is outside 12-60 seconds")
     if abs(duration - _number(candidate.get("duration_seconds"), "candidate duration")) > TIME_TOLERANCE_SECONDS:
         raise ThirdSourceShortPortfolioError("candidate duration does not match source range")
+
+    endpoint_repair = (
+        plan.get("endpoint_repair")
+        if isinstance(plan.get("endpoint_repair"), dict)
+        else {}
+    )
+    extension = round(end - PREDECESSOR_SOURCE_END_SECONDS, 6)
+    probes = endpoint_repair.get("probe_candidates")
+    inherited_pass = endpoint_repair.get("inherited_pass")
+    if (
+        endpoint_repair.get("predecessor_state") != PREDECESSOR_STATE
+        or endpoint_repair.get("predecessor_video_sha256")
+        != PREDECESSOR_VIDEO_SHA256
+        or abs(
+            _number(
+                endpoint_repair.get("predecessor_source_end_seconds"),
+                "predecessor source end",
+            )
+            - PREDECESSOR_SOURCE_END_SECONDS
+        )
+        > TIME_TOLERANCE_SECONDS
+        or endpoint_repair.get("lineage_reason") != LINEAGE_REASON
+        or extension <= 0
+        or extension > 12.0 + TIME_TOLERANCE_SECONDS
+        or not isinstance(probes, list)
+        or len(probes) < 2
+        or not isinstance(inherited_pass, list)
+        or inherited_pass
+        != [
+            "content_and_tempo",
+            "subtitle_audio_sync",
+            "subtitle_readability",
+            "neutral_matte_composition",
+            "safe_review_route",
+        ]
+    ):
+        raise ThirdSourceShortPortfolioError(
+            "endpoint repair authority is incomplete"
+        )
+    selected_probes = [
+        item
+        for item in probes
+        if isinstance(item, dict) and item.get("status") == "selected"
+    ]
+    if (
+        len(selected_probes) != 1
+        or abs(
+            _number(selected_probes[0].get("source_seconds"), "selected probe")
+            - end
+        )
+        > TIME_TOLERANCE_SECONDS
+    ):
+        raise ThirdSourceShortPortfolioError(
+            "endpoint repair selected probe does not match candidate end"
+        )
+
+    subtitle_debt = plan.get("portfolio_subtitle_differentiation_debt")
+    if not isinstance(subtitle_debt, dict) or (
+        subtitle_debt.get("status") != "deferred"
+        or subtitle_debt.get("current_white_style_approved_as_general_standard")
+        is not False
+        or subtitle_debt.get("speaker_identity_inference_allowed") is not False
+        or subtitle_debt.get("revisit_condition")
+        != "after_3_to_5_accepted_real_shorts_or_explicit_production_subtitle_design_gate"
+    ):
+        raise ThirdSourceShortPortfolioError(
+            "portfolio subtitle differentiation debt is incomplete"
+        )
     cut_id = str(candidate.get("authority_cut_id") or "")
     cut = cuts.get(cut_id)
     if (
@@ -618,6 +713,14 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         previous_end = source_end
     if end - previous_end > 0.15 + TIME_TOLERANCE_SECONDS:
         raise ThirdSourceShortPortfolioError("last official caption leaves an unsafe trailing gap")
+    predecessor_cue_count = int(
+        endpoint_repair.get("predecessor_caption_cue_count") or 0
+    )
+    additional_cue_count = len(semantic) - predecessor_cue_count
+    if predecessor_cue_count != 15 or additional_cue_count <= 0:
+        raise ThirdSourceShortPortfolioError(
+            "endpoint repair caption lineage is incomplete"
+        )
 
     composition = plan.get("composition_policy") if isinstance(plan.get("composition_policy"), dict) else {}
     if (
@@ -651,15 +754,16 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         (label, max(0.1, min(duration - 0.1, round(seconds, 3))))
         for label, seconds in (
             ("start", 0.25),
-            ("early_a", duration * 0.10),
-            ("early_b", duration * 0.20),
-            ("mid_a", duration * 0.35),
-            ("mid_b", duration * 0.50),
-            ("late_a", duration * 0.65),
-            ("late_b", duration * 0.78),
-            ("endpoint_setup", duration * 0.88),
-            ("endpoint_caption", duration * 0.94),
-            ("end", duration - 0.25),
+            ("early", duration * 0.15),
+            ("mid", duration * 0.50),
+            ("late", duration * 0.75),
+            ("final_3_0", duration - 3.0),
+            ("final_2_5", duration - 2.5),
+            ("final_2_0", duration - 2.0),
+            ("final_1_5", duration - 1.5),
+            ("final_1_0", duration - 1.0),
+            ("final_0_5", duration - 0.5),
+            ("final_0_1", duration - 0.1),
         )
     )
     return {
@@ -712,6 +816,29 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "next_scene_transition_seconds": candidate.get("next_scene_transition_seconds"),
             "candidate_count_considered": int(candidate.get("candidate_count_considered") or 1),
         },
+        "repair_lineage": {
+            "predecessor_state": PREDECESSOR_STATE,
+            "predecessor_video_sha256": PREDECESSOR_VIDEO_SHA256,
+            "predecessor_source_end_seconds": PREDECESSOR_SOURCE_END_SECONDS,
+            "lineage_reason": LINEAGE_REASON,
+            "predecessor_acceptance_granted": False,
+        },
+        "endpoint_repair": {
+            "probe_window_start_seconds": PREDECESSOR_SOURCE_END_SECONDS,
+            "probe_window_end_seconds": round(
+                PREDECESSOR_SOURCE_END_SECONDS + 12.0, 3
+            ),
+            "selected_source_end_seconds": end,
+            "extension_seconds": extension,
+            "probe_candidates": list(probes),
+            "selection_basis": str(
+                endpoint_repair.get("selection_basis") or ""
+            ),
+            "predecessor_caption_cue_count": predecessor_cue_count,
+            "additional_caption_cue_count": additional_cue_count,
+            "final_caption_end_seconds": previous_end,
+        },
+        "portfolio_subtitle_differentiation_debt": dict(subtitle_debt),
         "boundaries": expected_boundaries,
     }
 
@@ -792,12 +919,19 @@ def _build_scorecard(
                 "review_status": "human_review_pending",
                 "human_review_pending": True,
                 "composition": "full_16_9_fit_neutral_matte_no_blur_no_crop",
+                "endpoint_status": "bounded_repair_human_review_pending",
+                "endpoint_source_seconds": normalized["source_end_seconds"],
+                "superseded_predecessor_sha256": PREDECESSOR_VIDEO_SHA256,
             },
         ],
         "all_recording_identities_distinct": True,
         "production_repeatability_claimed": False,
         "rights_or_publication_acceptance_claimed": False,
         "out10_acceptance_granted": False,
+        "winner_selected": False,
+        "portfolio_subtitle_differentiation_debt": normalized[
+            "portfolio_subtitle_differentiation_debt"
+        ],
     }
 
 
@@ -847,9 +981,9 @@ def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="clippipegen-artifact-id" content="{ARTIFACT_ID}"><meta name="clippipegen-video-sha256" content="{escape(readback['video']['sha256'])}">
-<title>OUT-10 third-source Short review</title><style>
+<title>OUT-10 endpoint repair review</title><style>
 :root{{color-scheme:dark;font-family:"Yu Gothic UI","Noto Sans JP",sans-serif;background:#06101d;color:#eff7ff}}*{{box-sizing:border-box}}body{{margin:0;overflow-x:hidden}}main{{width:min(960px,100%);margin:auto;padding:22px;overflow-wrap:anywhere}}section,details{{margin-top:18px;padding:16px;border:1px solid #30445f;border-radius:14px;background:#0d1a2c}}video{{display:block;width:auto;height:min(76vh,820px);max-width:100%;aspect-ratio:9/16;margin:18px auto;background:#000}}code{{color:#9fe7ff}}.boundary{{color:#ffd166}}table{{width:100%;border-collapse:collapse}}th,td{{padding:8px;border-bottom:1px solid #30445f;text-align:left}}@media(max-width:620px){{main{{padding:14px}}video{{height:min(72vh,700px)}}table{{font-size:.82rem}}}}
-</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback['video']['sha256'])}"><main><h1>OUT-10 third-source Short review</h1>
+</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback['video']['sha256'])}"><main><h1>OUT-10 endpoint bounded repair review</h1>
 <p><code>{escape(readback['source_identity']['provider_id'])}</code> / source {candidate['source_start_seconds']:.3f}–{candidate['source_end_seconds']:.3f}s / {candidate['duration_seconds']:.3f}s</p>
 <p class="boundary">rights=pending / human review pending / production・public・publishing未承認</p>
 <p id="playback-safety-note">初期状態は停止・ミュートです。音声確認時は手動で再生・解除してください（音量上限25%）。</p>
@@ -857,7 +991,7 @@ def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
 <script>(()=>{{const video=document.getElementById("candidate-video");const maximumVolume={INITIAL_VOLUME_CEILING:.2f};const exactMutedQaRoute=window.location.search==="?qa-playback=1"&&window.location.hash==="";video.defaultMuted=true;video.muted=true;video.volume=exactMutedQaRoute?0:maximumVolume;window.__clipPipeReviewQa={{exactRoute:exactMutedQaRoute,completed:false,error:null}};video.addEventListener("volumechange",()=>{{if(video.volume>maximumVolume)video.volume=maximumVolume;}});const run=async()=>{{video.defaultMuted=true;video.muted=true;video.volume=0;try{{await video.play();window.setTimeout(()=>{{video.pause();window.__clipPipeReviewQa.completed=true;}},1200);}}catch(error){{video.pause();window.__clipPipeReviewQa.error=error&&error.name?error.name:"play_failed";window.__clipPipeReviewQa.completed=true;}}}};if(exactMutedQaRoute){{if(video.readyState>=2)window.queueMicrotask(run);else video.addEventListener("canplay",run,{{once:true}});}}}})();</script>
 <section><h2>今回の確認</h2><ol><li data-review-question="1">{question}</li></ol></section>
 <section><h2>3-source scorecard</h2><table><thead><tr><th>slot</th><th>recording</th><th>duration(s)</th><th>subtitle(s)</th><th>status</th></tr></thead><tbody>{rows}</tbody></table><p><a href="source_portfolio_comparison.html">比較説明を開く</a> / <a href="source_portfolio_scorecard.json">JSONを開く</a></p></section>
-<details open><summary>構成と境界</summary><p>{escape(str(candidate['rationale']))}</p><p>全16:9 foregroundを保持し、source-derived blurもcenter cropも使わず、neutral matteへfit。元映像のname labelは保持し、dialogue subtitleは公式JSON3 eventから別canvas位置へburn-in。</p><p>navigation frameは識別用でありthumbnail候補ではありません。</p></details>
+<details open><summary>終端修復・構成・境界</summary><p>{escape(str(candidate['rationale']))}</p><p>旧終端 {PREDECESSOR_SOURCE_END_SECONDS:.3f}s / MP4 <code>{PREDECESSOR_VIDEO_SHA256}</code> は、テロップと動作が途中で切れたため未受理のpredecessorとして保持。新終端は {candidate['source_end_seconds']:.3f}sで、最後の公式captionとthumb-up poseが完了し、直後のshot changeより前で閉じます。</p><p>全16:9 foregroundを保持し、source-derived blurもcenter cropも使わず、neutral matteへfit。元映像のname labelは保持し、dialogue subtitleは公式JSON3 eventから別canvas位置へburn-in。</p><p>全白字幕は一般標準として承認せず、speaker differentiationは3〜5本のaccepted real Shorts比較後またはproduction subtitle-design gate開始時に再検討します。navigation frameは識別用でありthumbnail候補ではありません。</p></details>
 </main></body></html>"""
 
 

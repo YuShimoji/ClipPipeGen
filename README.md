@@ -9,11 +9,13 @@
 OUT-10 note: bounded external acquisition の承認後、公式 hololive channel の公開動画を
 metadata 5件・詳細preflight 3件・media download 1件の上限内で比較し、OUT-08
 `7J5aS_pcBj4` / OUT-09 `D4i4fjs9PWc` と異なる `TlnviOwLRmk` を第三sourceとして登録した。
-公式日本語JSON3の冒頭15 cueと `0.000–20.304s` の自然に閉じた診察場面から、
-1080x1920 / 20.333秒のinternal review候補を1回renderした。複数の左右キャラクターと
+公式日本語JSON3と `0.000–27.711s` の診察・impact場面から、
+1080x1920 / 27.733秒のinternal review候補をendpoint-onlyで再renderした。複数の左右キャラクターと
 source-native name labelを守るため、center cropやsource由来blurを使わず、16:9全景を
-neutral matte上にfitしている。exact MP4 SHAは `9c930f82...bb2f`、3-source scorecardと
-localhost review packageは同一マシンにあり、現在はhuman review pending。rights、production、
+neutral matte上にfitしている。旧MP4 `9c930f82...bb2f`は早すぎる終端として未受理lineageに残し、
+新exact MP4 SHA `3651a14f...9884`、45 official JA cue、3-source scorecardとlocalhost review
+packageを同一マシンに保持している。現在はendpoint repairのhuman review pending。全白字幕の
+speaker differentiationはdeferredで一般標準ではない。rights、production、
 thumbnail、public/publishing gateは閉じたまま。詳細は
 [docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md](docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md)。
 

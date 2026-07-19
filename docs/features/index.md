@@ -6,11 +6,11 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-10`
 - artifact: `clip-out10-third-source-short-portfolio-expansion-v0-001`
-- state: `OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD`
+- state: `OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY`
 
 - canonical main: `663c6e6f19d1f176b96bc04c90993b00925b039c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `third_distinct_external_source_short_review_ready`
+- canonical status: `endpoint_bounded_repair_review_ready`
 - review status: `pending_human_review`
 - remote code complete: `true`
 - local artifact available: `true`
@@ -23,18 +23,18 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `http://127.0.0.1:8073/index.html`
-- pause reason: `awaiting_exact_candidate_human_review`
+- pause reason: `awaiting_exact_endpoint_repair_human_review`
 - accepted baseline recovery: ``
 - cover review status: ``
 - cross-machine resume: `tracked_code_docs_receipt_only_media_package_same_machine`
 - active rebuild contract: ``
-- evidence revision: `out10-external-5-metadata-3-preflight-1-download-1-render-v0`
+- evidence revision: `out10-endpoint-20.304-to-27.711-one-repair-render-v0`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `review_exact_out10_candidate_accept_repair_or_reject`
+- decision required: `review_exact_out10_endpoint_repair_candidate_accept_or_report_regression`
 - next review: ``
 
 ## Feature Table
