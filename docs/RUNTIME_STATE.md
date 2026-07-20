@@ -3,40 +3,40 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT11_FIVE_SOURCE_COMBINED_REVIEW_READY
-progress_pct: 94
-last_touched: 2026-07-20
-state_revision: out11-five-source-combined-review-ready-2026-07-20
-contract_repair_status: out10_final_response_repaired_out11_three_candidate_review_built
+health: OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY
+progress_pct: 95
+last_touched: 2026-07-21
+state_revision: out11-human-review-two-repair-combined-review-ready-2026-07-21
+contract_repair_status: source04_accepted_exact_bytes_out10_source05_repaired_two_candidate_review_built
 current_slice: OUT-11
 phase: human_review_ready
-canonical_status: five_source_combined_review_ready
+canonical_status: repaired_two_candidate_combined_review_ready
 active_branch: codex/out-11-five-source-short-portfolio-wave-v0
-verified_implementation_head: branch_head_containing_out11_five_source_review_contract
-source_branch_tip: 93c7dde74d2f349d3e8f139a70a9f871ffb3381c
+verified_implementation_head: branch_head_after_push
+source_branch_tip: branch_head_after_push
 closure_branch: null
 remote_resume_contract: fetch_then_switch_codex_out11_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: branch_head_containing_out11_five_source_review_contract
-sync_audit_status: out11_branch_only_main_unchanged
+sync_audit_head: branch_head_after_push
+sync_audit_status: out11_repair_branch_only_main_unchanged
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-11 five-source portfolio combined review ready
+current_title: OUT-11 repaired OUT-10 and SOURCE-05 combined review ready
 human_entrypoint: http://127.0.0.1:8074/index.html
 portable_entrypoint: null
 review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\open_preview.ps1 -Serve
 review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\serve_preview.ps1
 machine_readback: episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/review_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: answer_one_combined_question_for_exact_out10_source04_source05_hashes
-review_status: pending_human_review
-review_scope: OUT-10は最後のセリフまで自然に完結したか。第4・第5候補はそれぞれ一本のShortとして内容・テンポ・字幕・音声・構図・終端が成立しているか。候補ごとに明確な違和感があれば自由に教えてください。
+decision_required: review_exact_repaired_out10_and_source05_once
+review_status: pending_human_review_for_two_repairs
+review_scope: 修復後OUT-10は新しい診察場面の反応と台詞まで自然に閉じたか。修復後SOURCE-05はカード列から最終タイトルまでの音声・映像・終端が一つの単位として成立したか。二本それぞれに明確な違和感があれば自由に教えてください。
 reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_same_machine_three_video_review_package_and_5_source_scorecard
+local_artifact_role: ignored_same_machine_two_video_review_one_accepted_receipt_and_5_source_scorecard
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_receipt_only_media_package_same_machine
 cross_host_resume_status: code_and_receipt_portable_candidate_media_absent_on_other_host
@@ -46,7 +46,7 @@ optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out11-five-source-combined-three-video-review-v0
+evidence_revision: out11-human-review-repair-two-video-review-v1
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
@@ -63,57 +63,56 @@ last_verified_at: 2026-07-20
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8074/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: awaiting_exact_three_candidate_combined_human_review
+pause_reason: awaiting_exact_two_repair_candidate_combined_human_review
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending_combined_three_candidate_freeform
+human_review_decision: source04_accepted_out10_source05_repairs_pending_freeform
 user_feedback_overall: null
-content_selection_status: out10_final_response_repaired_source04_source05_candidates_machine_ready_human_pending
-subtitle_presentation_timing_status: source_specific_authorities_machine_pass_human_readability_pending
-endpoint_status: all_three_endpoint_evidence_bound_human_semantic_review_pending
+content_selection_status: source04_accepted_exact_bytes_out10_source05_repaired_machine_ready_human_pending
+subtitle_presentation_timing_status: source_specific_authorities_machine_pass_source05_semantics_unclaimed
+endpoint_status: source04_accepted_out10_source05_repair_evidence_bound_human_semantic_review_pending
 reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
 batch_acceptance: null
 candidate_01_acceptance: pending
-candidate_02_acceptance: null
-accepted_candidate_ids: []
+candidate_02_acceptance: pending
+accepted_candidate_ids: [source04_candidate_01]
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: validation_listener_stopped_restart_with_canonical_foreground_command
 next_review_due: null
-next_action: exact三本を上から順に一度だけ確認し、統合質問への自由記述を同じ三SHAへ結ぶ。
-active_artifact: clip-out11-five-source-short-portfolio-wave-v0-001
-current_review_component: out11_combined_out10_source04_source05_review
-target_candidate_count: 3
-minimum_candidate_count: 3
-actual_candidate_count: 3
-candidate_01_semantic_duration_seconds: 30.014
-candidate_01_media_duration_seconds: 30.033333
-candidate_01_subtitle_count: 46
-candidate_01_sha256: a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2
+next_action: 修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。
+active_artifact: clip-out11-five-source-short-portfolio-wave-v0-002
+current_review_component: out11_combined_repaired_out10_source05_review_with_source04_accepted_receipt
+target_candidate_count: 2
+minimum_candidate_count: 2
+actual_candidate_count: 2
+candidate_01_semantic_duration_seconds: 34.785
+candidate_01_media_duration_seconds: 34.8
+candidate_01_subtitle_count: 50
+candidate_01_sha256: 62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd
 out10_candidate_01_endpoint_too_early_predecessor_sha256: 9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f
 out10_candidate_01_endpoint_too_early_predecessor_source_end_seconds: 20.304
 out10_candidate_01_endpoint_too_early_predecessor_reason: superseded_predecessor_endpoint_too_early_active_telop_motion
-out10_endpoint_extension_seconds: 2.303
-out10_endpoint_next_shot_seconds: 30.033333
-out10_endpoint_additional_caption_cue_count: 1
+out10_human_review_predecessor_sha256: a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2
+out10_human_review_predecessor_source_end_seconds: 30.014
+out10_human_review_predecessor_reason: superseded_human_review_new_examination_scene_did_not_naturally_close
+out10_endpoint_extension_seconds: 4.771
+out10_endpoint_next_shot_seconds: 34.8
+out10_endpoint_additional_caption_cue_count: 4
 out09_candidate_01_initial_predecessor_sha256: 300ee360e0b14c04345dec8df0d6ffd6b2eba85e655624ef7eb338426679e0c9
 out09_candidate_01_failed_repair_predecessor_sha256: 3e7ef9d883cd10660b6aa95bdf9af364e076c3594b27c73c7ad065ad85a92916
 out09_candidate_01_failed_repair_reason: unreadable_native_caption_and_blurred_caption_duplication
-candidate_02_semantic_duration_seconds: 18.5
-candidate_02_media_duration_seconds: 18.5
-candidate_02_subtitle_count: 7
-candidate_02_sha256: 465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524
-candidate_03_semantic_duration_seconds: 15.064
-candidate_03_media_duration_seconds: 15.033333
-candidate_03_subtitle_count: 3
-candidate_03_sha256: 370850c5222b70d944f7ba879849f33a2b448edae355e4e41dc35977bf22b578
+candidate_02_semantic_duration_seconds: 58.057
+candidate_02_media_duration_seconds: 58.0
+candidate_02_subtitle_count: 0
+candidate_02_sha256: b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969
 source_provider_id: TlnviOwLRmk
 source_provider_id_different_from_out08: true
 source_provider_id_different_from_out09: true
@@ -125,23 +124,30 @@ source_caption_review_status: imported_unreviewed_human_acceptance_not_claimed
 out11_source04_provider_id: PQ54uUV41-k
 out11_source04_selected_range_seconds: 0.000-18.500
 out11_source04_mp4_sha256: 465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524
+out11_source04_mp4_byte_size: 8523260
+out11_source04_human_acceptance_status: accepted_internal_exact_bytes_2026_07_21
+out11_source04_media_copied_into_active_review: false
 out11_source04_render_count: 2
 out11_source04_corrective_render_count: 1
 out11_source05_provider_id: gUwJBRUIWow
-out11_source05_selected_range_seconds: 202.586-217.650
-out11_source05_mp4_sha256: 370850c5222b70d944f7ba879849f33a2b448edae355e4e41dc35977bf22b578
-out11_source05_render_count: 1
+out11_source05_selected_range_seconds: 202.586-260.643
+out11_source05_mp4_sha256: b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969
+out11_source05_human_review_predecessor_sha256: 370850c5222b70d944f7ba879849f33a2b448edae355e4e41dc35977bf22b578
+out11_source05_human_review_predecessor_reason: abrupt_after_new_screen_and_previous_lyric_or_music_unit_claim_unsupported
+out11_source05_caption_authority_usage: timed_text_landmarks_only_not_speech_singing_or_lyric_proof
+out11_source05_render_count: 2
 out11_source05_corrective_render_count: 0
 out11_scorecard_row_count: 5
-out11_review_media_count: 3
+out11_review_media_count: 2
+out11_accepted_receipt_count: 1
 out11_review_question_count: 1
-out11_combined_manifest_self_sha256: b690230e944bcd6f3df4e5ec6fa8b0877831db16544a9fefb3ef08de08666a0c
-candidate_plan_sha256: 3219292698ba47bb695537d0b1af86f02520c91f23271cf407e19e9a20ff55cb
-candidate_manifest_self_integrity: b690230e944bcd6f3df4e5ec6fa8b0877831db16544a9fefb3ef08de08666a0c
-render_execution_count: 4
-corrective_pass_count: 1
+out11_combined_manifest_self_sha256: 58276967cb2328f3a8b9ea8813bb85a4847f84e26e8bd465206c56d3e87da7bd
+candidate_plan_sha256: 05d2b44ac61352a0908f771e5fb48a0c0c9f12965467ce2a84ceed7219c17c91
+candidate_manifest_self_integrity: 58276967cb2328f3a8b9ea8813bb85a4847f84e26e8bd465206c56d3e87da7bd
+repair_render_execution_count: 2
+repair_corrective_pass_count: 0
 additional_autonomous_repair_count: 0
-build_elapsed_seconds: 60.279
+build_elapsed_seconds: source_repairs_measured_individually_combined_builder_not_timed
 outer_elapsed_seconds: null
 subtitle_display_authority: official_json3_event_text_and_timing
 subtitle_timing_authority: official_json3_event_timing
@@ -151,9 +157,9 @@ caption_free_crop_pixels: full_1920x1080_source_frame
 native_caption_band_pixels: not_observed_dialogue_caption_band
 full_source_blur_fallback_allowed: false
 additional_blur_or_frosted_caption_surface: false
-endpoint_source_seconds: 30.014
-endpoint_last_caption_seconds: 30.014
-endpoint_last_speech_seconds: official_final_response_phrase_end_30.014
+endpoint_source_seconds: 34.785
+endpoint_last_caption_seconds: 34.785
+endpoint_last_speech_seconds: official_consciousness_check_punchline_end_34.785
 quality_debt: portfolio_subtitle_differentiation_debt
 portfolio_subtitle_differentiation_debt: five_source_scorecard_exposes_source_specific_debt_no_universal_policy_selected
 portfolio_subtitle_differentiation_current_white_style_general_standard: false
@@ -163,14 +169,14 @@ known_unrelated_test_failure: null
 known_unrelated_test_failure_2: null
 known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
 known_unrelated_test_failure_owner: none_current
-current_full_suite_status: 579_passed
+current_full_suite_status: 580_passed
 current_full_suite_command: uvx --with Pillow pytest -q
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
 source_specific_caption_suppression_observation: source_specific_caption_band_suppression_observed_acceptable_not_generalized
 source_specific_caption_suppression_design_acceptance: false
 out10_successor_candidate: OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION
-out10_implementation_status: final_utterance_endpoint_repair_ready_inside_out11_combined_review
+out10_implementation_status: human_review_semantic_endpoint_repair_ready_inside_out11_two_candidate_review
 out10_stop_state: null
 out10_inventory_receipt: docs/output_layer/out10_external_source_acquisition_receipt.json
 out10_inventory_count: 5
@@ -189,7 +195,7 @@ media_readback: passed_h264_aac_1080x1920_30fps_full_decode_faststart
 blackdetect_readback: passed_zero_events
 silencedetect_readback: passed_zero_events
 browser_readback: passed_desktop_mobile_safe_initial_state_exclusive_playback_zero_console_errors
-http_range_readback: passed_page_200_and_all_three_videos_206
+http_range_readback: passed_page_200_and_both_repair_videos_206
 current_baseline_acceptance: accepted_internal
 accepted_baseline_sha256: b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 recommended_cover_path: null
@@ -312,33 +318,29 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## 2026-07-20 OUT-11 Five-Source Combined Review Ready
+## 2026-07-21 OUT-11 Human-Review Repairs Combined Review Ready
 
-OUT-10は27.711s predecessorの直後に続く最終返答をofficial caption/audio authorityに沿って
-30.014sまで含め、MP4 `a53d0416...134f2`へ更新した。第4source
-`youtube:PQ54uUV41-k`は0.000–18.500sのいたずらcold open、第5source
-`youtube:gUwJBRUIWow`は202.586–217.650sのofficial ID lyric phraseとして生成した。
+旧exact三候補への人間判断を記録した。SOURCE-04 `465d732c...16524`は問題なしとして
+8,523,260 bytesを一切変更せずaccepted receiptへ移し、active reviewから動画を外した。
+OUT-10旧`a53d0416...134f2`は意識確認場面が未完、SOURCE-05旧`370850c5...b578`は新画面直後に
+停止し、歌唱・歌詞・音楽句の説明も知覚証拠で支えられないため未受理lineageに残した。
 
-| review slot | exact SHA | machine state | 次の人間判断 |
+| active review slot | exact SHA | source range / machine state | 次の人間判断 |
 |---|---|---|---|
-| OUT-10 | `a53d0416...134f2` | final response / 46 cue / decode・faststart pass | 最後のセリフまで自然に完結したか |
-| SOURCE-04 | `465d732c...16524` | 7 cue / caption-clear tail / 2 render・1 corrective | prank beat、字幕、音声、構図、終端 |
-| SOURCE-05 | `370850c5...b578` | native baked lyrics / 1 render・0 corrective | 音楽句、native lyric、動き、終端 |
+| OUT-10 | `62d4b45b...97cdd` | `0.000–34.785s` / 50 cue / decode・faststart・containment pass | 意識確認・患者反応・最終台詞まで自然に閉じたか |
+| SOURCE-05 | `b4a01413...a4969` | `202.586–260.643s` / source EOF / decode・faststart・signal pass | カード列からtitle/credit終端が一つのaudio-visual unitか |
 
-OUT-08/09はaccepted context onlyとして5-source scorecardへ置き、review mediaには含めない。
-combined artifact `clip-out11-five-source-short-portfolio-wave-v0-001`は三本のsource packageを
-readback/manifest/self-hash/MP4 hash/byte sizeでbindし、同一byteをpackage内へコピーした。
+OUT-08/09/SOURCE-04はaccepted context only。combined artifact
+`clip-out11-five-source-short-portfolio-wave-v0-002`は修復二本だけをexact byte copyし、SOURCE-04は
+readback/manifest受領証だけを保持する。5-source scorecardは5行、active media 2、receipt 1。
 
-localhost `127.0.0.1:8074`でpage 200、三MP4 Range 206、desktop/mobile overflowなし、
-三本初期paused/muted/currentTime 0、exclusive playback、console/media error 0を確認した。
-検証serverは停止済み。rights、production、thumbnail、public/publishing、winner、共通字幕/crop/
-speaker-color policy、main統合は未承認である。
+localhost `127.0.0.1:8074`でpage 200、両MP4 Range 206、desktop/mobile overflowなし、clean
+URLで両方paused/muted/currentTime 0、明示QA queryだけmuted再生、exclusive playback、
+console/media error 0を確認した。検証browser/serverは停止済み。
 
-Pillow依存を明示した全repository suiteは579 passed。過去に記録されていたOUT-06の
-環境依存wrap failure二件もこの環境では再現しなかった。
-
-次の一手は一問のcombined human reviewだけ。自由記述をexact三SHAへbindするまで、候補別accept、
-bounded repair、rejectのいずれも記録しない。
+次の一手は一問のcombined human reviewだけ。二本への自由記述を各新SHAへbindするまで、
+候補別accept、bounded repair、rejectを記録しない。rights、production、thumbnail、winner、
+public/publishing、共通字幕/crop/speaker-color policy、main統合は未承認。
 
 ## 2026-07-20 OUT-10 Endpoint Bounded Repair Review Ready (predecessor)
 

@@ -1,9 +1,10 @@
-"""Build the OUT-11 five-source scorecard and combined three-video review.
+"""Build the OUT-11 five-source scorecard and bounded repair review.
 
-The builder is intentionally media-agnostic.  It consumes three already-built,
-hash-bound candidate packages and five data-driven scorecard rows.  It does not
-render, fetch, select a winner, or grant rights, production, or publication
-acceptance.
+The builder is intentionally media-agnostic.  It consumes already-built,
+hash-bound repair candidates, accepted candidate receipts, and five data-driven
+scorecard rows.  Accepted receipts are validated without copying their media
+into the active review.  The builder does not render, fetch, select a winner,
+or grant rights, production, or publication acceptance.
 """
 
 from __future__ import annotations
@@ -18,19 +19,20 @@ from pathlib import Path
 from typing import Any
 
 
-ARTIFACT_ID = "clip-out11-five-source-short-portfolio-wave-v0-001"
-STATE = "OUT11_FIVE_SOURCE_SHORT_PORTFOLIO_COMBINED_REVIEW_READY"
-SCHEMA_VERSION = "clippipegen.out11.five_source_short_portfolio.v0"
-CONFIG_SCHEMA_VERSION = "clippipegen.out11.five_source_short_portfolio_input.v0"
+ARTIFACT_ID = "clip-out11-five-source-short-portfolio-wave-v0-002"
+STATE = "OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY"
+SCHEMA_VERSION = "clippipegen.out11.five_source_short_portfolio.v1"
+CONFIG_SCHEMA_VERSION = "clippipegen.out11.five_source_short_portfolio_input.v1"
 REVIEW_HOST = "127.0.0.1"
 REVIEW_PORT = 8074
 INITIAL_VOLUME_CEILING = 0.25
 REVIEW_QUESTION = (
-    "OUT-10は最後のセリフまで自然に完結したか。"
-    "第4・第5候補はそれぞれ一本のShortとして内容・テンポ・字幕・音声・構図・終端が成立しているか。"
-    "候補ごとに明確な違和感があれば自由に教えてください。"
+    "修復後OUT-10は新しい診察場面の反応と台詞まで自然に閉じたか。"
+    "修復後SOURCE-05はカード列から最終タイトルまでの音声・映像・終端が一つの単位として成立したか。"
+    "二本それぞれに明確な違和感があれば自由に教えてください。"
 )
-EXPECTED_REVIEW_ROLES = ("out10", "source04", "source05")
+EXPECTED_REVIEW_ROLES = ("out10", "source05")
+EXPECTED_ACCEPTED_RECEIPT_ROLES = ("source04",)
 SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 SHA256 = re.compile(r"[0-9a-f]{64}")
 REQUIRED_SCORECARD_COLUMNS = (
@@ -112,7 +114,14 @@ def build_five_source_short_portfolio(
             stage=stage,
             candidates=normalized["review_candidates"],
         )
-        scorecard = _build_scorecard(normalized["scorecard_rows"])
+        copied_receipts = _copy_accepted_receipts(
+            stage=stage,
+            receipts=normalized["accepted_candidate_receipts"],
+        )
+        scorecard = _build_scorecard(
+            normalized["scorecard_rows"],
+            review_media_count=len(copied_candidates),
+        )
         _write_json(stage / "five_source_scorecard.json", scorecard)
 
         review_access = _review_access_contract(output=output, root=root)
@@ -123,10 +132,11 @@ def build_five_source_short_portfolio(
             "review_question": REVIEW_QUESTION,
             "review_question_count": 1,
             "review_candidates": copied_candidates,
+            "accepted_candidate_receipts": copied_receipts,
             "scorecard": {
                 "package_relative_path": "five_source_scorecard.json",
                 "row_count": 5,
-                "review_media_count": 3,
+                "review_media_count": len(copied_candidates),
                 "accepted_context_only_slots": list(
                     normalized["accepted_context_only_slots"]
                 ),
@@ -143,6 +153,7 @@ def build_five_source_short_portfolio(
                     "source_package_manifest_validation",
                     "exact_mp4_hash_and_size_validation",
                     "package_contained_byte_copy",
+                    "accepted_media_receipt_without_replay_copy",
                     "five_row_scorecard_contract",
                     "safe_review_playback_initialization",
                 ],
@@ -198,7 +209,17 @@ def build_five_source_short_portfolio(
                         "self_sha256"
                     ],
                 }
-                for item in copied_candidates
+                for item in [*copied_candidates, *copied_receipts]
+            ],
+            "accepted_candidate_receipts": [
+                {
+                    "role": item["role"],
+                    "portfolio_slot": item["portfolio_slot"],
+                    "source_video_sha256": item["video"]["sha256"],
+                    "source_video_byte_size": item["video"]["byte_size"],
+                    "media_copied_into_review": False,
+                }
+                for item in copied_receipts
             ],
             "files": files,
             "file_count": len(files),
@@ -208,8 +229,8 @@ def build_five_source_short_portfolio(
                 "sha256": None,
             },
         }
-        manifest["manifest_self_integrity"]["sha256"] = (
-            _canonical_manifest_self_hash(manifest)
+        manifest["manifest_self_integrity"]["sha256"] = _canonical_manifest_self_hash(
+            manifest
         )
         _write_json(stage / "review_manifest.json", manifest)
         _validate_staged_package(stage=stage, readback=readback, manifest=manifest)
@@ -243,16 +264,29 @@ def _normalize_config(*, config: dict[str, Any], root: Path) -> dict[str, Any]:
         raise FiveSourceShortPortfolioError("combined review question is not exact")
 
     raw_candidates = config.get("review_candidates")
-    if not isinstance(raw_candidates, list) or len(raw_candidates) != 3:
-        raise FiveSourceShortPortfolioError("exactly three review candidates are required")
+    if not isinstance(raw_candidates, list) or len(raw_candidates) != 2:
+        raise FiveSourceShortPortfolioError(
+            "exactly two repair review candidates are required"
+        )
     candidates = [
         _load_candidate_binding(raw=item, root=root, expected_role=role)
         for role, item in zip(EXPECTED_REVIEW_ROLES, raw_candidates, strict=True)
     ]
-    identities = [item["video_identity"] for item in candidates]
+    raw_receipts = config.get("accepted_candidate_receipts")
+    if not isinstance(raw_receipts, list) or len(raw_receipts) != 1:
+        raise FiveSourceShortPortfolioError(
+            "exactly one accepted candidate receipt is required"
+        )
+    receipts = [
+        _load_candidate_binding(raw=item, root=root, expected_role=role)
+        for role, item in zip(
+            EXPECTED_ACCEPTED_RECEIPT_ROLES, raw_receipts, strict=True
+        )
+    ]
+    identities = [item["video_identity"] for item in [*candidates, *receipts]]
     if len(set(identities)) != 3:
         raise FiveSourceShortPortfolioError(
-            "review candidate recording identities must be distinct"
+            "review and accepted-receipt recording identities must be distinct"
         )
 
     rows = config.get("scorecard_rows")
@@ -264,12 +298,12 @@ def _normalize_config(*, config: dict[str, Any], root: Path) -> dict[str, Any]:
         raise FiveSourceShortPortfolioError("scorecard slots must be unique")
 
     accepted_slots = config.get("accepted_context_only_slots")
-    if not isinstance(accepted_slots, list) or len(accepted_slots) != 2:
+    if not isinstance(accepted_slots, list) or len(accepted_slots) != 3:
         raise FiveSourceShortPortfolioError(
-            "exactly two accepted context-only slots are required"
+            "exactly three accepted context-only slots are required"
         )
     accepted = tuple(str(item) for item in accepted_slots)
-    if len(set(accepted)) != 2 or any(slot not in slots for slot in accepted):
+    if len(set(accepted)) != 3 or any(slot not in slots for slot in accepted):
         raise FiveSourceShortPortfolioError(
             "accepted context-only slots do not match scorecard"
         )
@@ -284,7 +318,7 @@ def _normalize_config(*, config: dict[str, Any], root: Path) -> dict[str, Any]:
     candidate_slots = {item["portfolio_slot"] for item in candidates}
     if candidate_slots != set(slots) - set(accepted):
         raise FiveSourceShortPortfolioError(
-            "review candidates must cover the three non-context scorecard rows"
+            "review candidates must cover the two non-context scorecard rows"
         )
     for item in candidates:
         row = rows_by_slot[item["portfolio_slot"]]
@@ -314,6 +348,27 @@ def _normalize_config(*, config: dict[str, Any], root: Path) -> dict[str, Any]:
             raise FiveSourceShortPortfolioError(
                 f"scorecard duration mismatch: {item['role']}"
             )
+    receipt_slots = {item["portfolio_slot"] for item in receipts}
+    if receipt_slots != {"SOURCE-04"} or not receipt_slots.issubset(set(accepted)):
+        raise FiveSourceShortPortfolioError(
+            "accepted receipt must bind the accepted SOURCE-04 scorecard row"
+        )
+    for item in receipts:
+        row = rows_by_slot[item["portfolio_slot"]]
+        if (
+            row["human_acceptance_status"] != "accepted_internal"
+            or row["mp4_sha256"] != item["video_sha256"]
+            or row["video_identity"] != item["video_identity"]
+            or row["episode_identity"] != item["episode_identity"]
+            or abs(
+                _number(row["selected_duration_seconds"], "selected duration")
+                - item["duration_seconds"]
+            )
+            > 0.05
+        ):
+            raise FiveSourceShortPortfolioError(
+                f"accepted receipt scorecard binding mismatch: {item['role']}"
+            )
 
     boundaries = config.get("boundaries")
     expected_boundaries = {
@@ -334,6 +389,7 @@ def _normalize_config(*, config: dict[str, Any], root: Path) -> dict[str, Any]:
         raise FiveSourceShortPortfolioError("OUT-11 gates are not closed")
     return {
         "review_candidates": candidates,
+        "accepted_candidate_receipts": receipts,
         "scorecard_rows": normalized_rows,
         "accepted_context_only_slots": accepted,
         "boundaries": expected_boundaries,
@@ -356,9 +412,7 @@ def _load_candidate_binding(
     manifest_relative = _safe_relative_file(
         raw.get("manifest_relative_path"), "source manifest"
     )
-    video_relative = _safe_relative_file(
-        raw.get("video_relative_path"), "source video"
-    )
+    video_relative = _safe_relative_file(raw.get("video_relative_path"), "source video")
     readback_path = (package / readback_relative).resolve()
     manifest_path = (package / manifest_relative).resolve()
     video_path = (package / video_relative).resolve()
@@ -407,7 +461,10 @@ def _load_candidate_binding(
 
     expected_hash = _sha_value(raw.get("video_sha256"), "video SHA-256")
     expected_size = _positive_int(raw.get("video_byte_size"), "video byte size")
-    if _sha256(video_path) != expected_hash or video_path.stat().st_size != expected_size:
+    if (
+        _sha256(video_path) != expected_hash
+        or video_path.stat().st_size != expected_size
+    ):
         raise FiveSourceShortPortfolioError(
             f"source MP4 hash/size mismatch: {expected_role}"
         )
@@ -444,17 +501,29 @@ def _load_candidate_binding(
             f"source readback video identity mismatch: {expected_role}"
         )
     duration = _readback_duration(readback)
+    source_start_seconds, source_end_seconds = _readback_interval(readback)
     title = str(raw.get("title") or "").strip()
+    content_summary = str(raw.get("content_summary") or "").strip()
+    review_checkpoint = str(raw.get("review_checkpoint") or "").strip()
     portfolio_slot = str(raw.get("portfolio_slot") or "").strip()
     video_identity = str(raw.get("video_identity") or "").strip()
     episode_identity = str(readback.get("episode_id") or "").strip()
-    if not title or not portfolio_slot or not video_identity or not episode_identity:
+    if (
+        not title
+        or not content_summary
+        or not review_checkpoint
+        or not portfolio_slot
+        or not video_identity
+        or not episode_identity
+    ):
         raise FiveSourceShortPortfolioError(
             f"candidate label/identity is incomplete: {expected_role}"
         )
     return {
         "role": expected_role,
         "title": title,
+        "content_summary": content_summary,
+        "review_checkpoint": review_checkpoint,
         "portfolio_slot": portfolio_slot,
         "video_identity": video_identity,
         "source_artifact_id": source_artifact,
@@ -466,6 +535,8 @@ def _load_candidate_binding(
         "video_sha256": expected_hash,
         "video_byte_size": expected_size,
         "duration_seconds": duration,
+        "source_start_seconds": source_start_seconds,
+        "source_end_seconds": source_end_seconds,
         "source_manifest_self_sha256": declared_self,
         "readback_sha256": expected_readback_sha,
         "manifest_sha256": expected_manifest_sha,
@@ -499,10 +570,10 @@ def _validate_source_manifest(
         path = (package / relative).resolve()
         _require_within(path, package, "source manifest payload")
         _require_file(path, f"source manifest payload {name}")
-        if (
-            _sha256(path) != _sha_value(row.get("sha256"), "payload SHA-256")
-            or path.stat().st_size
-            != _positive_int(row.get("byte_size"), "payload byte size")
+        if _sha256(path) != _sha_value(
+            row.get("sha256"), "payload SHA-256"
+        ) or path.stat().st_size != _positive_int(
+            row.get("byte_size"), "payload byte size"
         ):
             raise FiveSourceShortPortfolioError(
                 f"source manifest payload hash/size mismatch: {role}/{name}"
@@ -536,25 +607,25 @@ def _validate_scorecard_row(raw: Any) -> dict[str, Any]:
     if _positive_or_zero_int(row["render_count"], "render count") < 0:
         raise AssertionError("unreachable")
     if (
-        _positive_or_zero_int(
-            row["corrective_render_count"], "corrective render count"
-        )
+        _positive_or_zero_int(row["corrective_render_count"], "corrective render count")
         < 0
     ):
         raise AssertionError("unreachable")
     return row
 
 
-def _build_scorecard(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def _build_scorecard(
+    rows: list[dict[str, Any]], *, review_media_count: int
+) -> dict[str, Any]:
     return {
-        "schema_version": "clippipegen.out11.five_source_scorecard.v0",
+        "schema_version": "clippipegen.out11.five_source_scorecard.v1",
         "artifact_id": ARTIFACT_ID,
         "state": STATE,
         "comparison_scope": "five_distinct_real_sources_internal_evidence_only",
         "columns": list(REQUIRED_SCORECARD_COLUMNS),
         "rows": rows,
         "row_count": 5,
-        "review_media_count": 3,
+        "review_media_count": review_media_count,
         "winner_selected": False,
         "production_readiness_claimed": False,
         "universal_crop_claimed": False,
@@ -592,11 +663,15 @@ def _copy_candidate_packages(
             {
                 "role": role,
                 "title": item["title"],
+                "content_summary": item["content_summary"],
+                "review_checkpoint": item["review_checkpoint"],
                 "portfolio_slot": item["portfolio_slot"],
                 "video_identity": item["video_identity"],
                 "source_artifact_id": item["source_artifact_id"],
                 "source_state": item["source_state"],
                 "duration_seconds": item["duration_seconds"],
+                "source_start_seconds": item["source_start_seconds"],
+                "source_end_seconds": item["source_end_seconds"],
                 "video": {
                     "package_relative_path": video_relative.as_posix(),
                     "sha256": item["video_sha256"],
@@ -616,8 +691,62 @@ def _copy_candidate_packages(
     return copied
 
 
+def _copy_accepted_receipts(
+    *, stage: Path, receipts: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    copied: list[dict[str, Any]] = []
+    for item in receipts:
+        role = item["role"]
+        readback_relative = (
+            Path("evidence") / "accepted" / role / "source_readback.json"
+        )
+        manifest_relative = (
+            Path("evidence") / "accepted" / role / "source_manifest.json"
+        )
+        (stage / readback_relative).parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(item["readback_path"], stage / readback_relative)
+        shutil.copyfile(item["manifest_path"], stage / manifest_relative)
+        copied.append(
+            {
+                "role": role,
+                "title": item["title"],
+                "content_summary": item["content_summary"],
+                "review_checkpoint": item["review_checkpoint"],
+                "portfolio_slot": item["portfolio_slot"],
+                "video_identity": item["video_identity"],
+                "source_artifact_id": item["source_artifact_id"],
+                "source_state": item["source_state"],
+                "duration_seconds": item["duration_seconds"],
+                "source_start_seconds": item["source_start_seconds"],
+                "source_end_seconds": item["source_end_seconds"],
+                "video": {
+                    "package_relative_path": None,
+                    "sha256": item["video_sha256"],
+                    "byte_size": item["video_byte_size"],
+                    "media_copied_into_review": False,
+                },
+                "source_readback": {
+                    "package_relative_path": readback_relative.as_posix(),
+                    "sha256": _sha256(stage / readback_relative),
+                },
+                "source_manifest": {
+                    "package_relative_path": manifest_relative.as_posix(),
+                    "sha256": _sha256(stage / manifest_relative),
+                    "self_sha256": item["source_manifest_self_sha256"],
+                },
+            }
+        )
+    return copied
+
+
 def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
-    sections = "".join(_render_candidate_section(item) for item in readback["review_candidates"])
+    sections = "".join(
+        _render_candidate_section(item) for item in readback["review_candidates"]
+    )
+    accepted_receipts = "".join(
+        _render_accepted_receipt(item)
+        for item in readback["accepted_candidate_receipts"]
+    )
     context_rows = "".join(
         "<tr>"
         f"<td>{escape(str(row['portfolio_slot']))}</td>"
@@ -635,12 +764,13 @@ def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
 <meta name="clippipegen-artifact-id" content="{ARTIFACT_ID}"><title>OUT-11 five-source Short portfolio</title><style>
 :root{{color-scheme:dark;font-family:"Yu Gothic UI","Noto Sans JP",sans-serif;background:#06101d;color:#eff7ff}}*{{box-sizing:border-box}}html,body{{margin:0;max-width:100%;overflow-x:hidden}}main{{width:min(980px,100%);margin:auto;padding:24px;overflow-wrap:anywhere}}section,details{{margin:22px 0;padding:18px;border:1px solid #30445f;border-radius:14px;background:#0d1a2c}}.candidate{{margin-top:38px}}video{{display:block;width:auto;height:min(74vh,810px);max-width:100%;aspect-ratio:9/16;margin:18px auto;background:#000}}code{{color:#9fe7ff;word-break:break-all}}.boundary{{color:#ffd166}}.table-wrap{{max-width:100%;overflow-x:auto}}table{{width:100%;min-width:760px;border-collapse:collapse}}th,td{{padding:9px;border-bottom:1px solid #30445f;text-align:left;vertical-align:top}}details:not([open])>*:not(summary){{display:none}}@media(max-width:620px){{main{{padding:14px}}section,details{{padding:14px}}video{{height:min(70vh,690px)}}}}
 </style></head><body data-artifact-id="{ARTIFACT_ID}"><main><h1>OUT-11 five-source Short portfolio</h1>
-<p>OUT-08/09はaccepted internalの文脈だけを継承し、再視聴・再受理の対象にしません。以下の3本を上から順に確認してください。</p>
+<p>OUT-08/09はaccepted internalの文脈だけを継承します。SOURCE-04は人間レビューで合格したexact bytesを受領記録だけに固定し、再視聴を要求しません。以下の修復二本を順に確認してください。</p>
 <p class="boundary">初期停止・ミュート・currentTime 0 / 自動再生なし / 音量上限25% / rights pending / production・thumbnail・public/publishing未承認</p>
+{accepted_receipts}
 {sections}
 <section><h2>今回の一回の確認</h2><p data-review-question="1">{question}</p></section>
 <details><summary>5-source scorecard（証拠・負債を表示）</summary><div class="table-wrap"><table><thead><tr><th>slot</th><th>video</th><th>language</th><th>duration</th><th>composition</th><th>human status</th></tr></thead><tbody>{context_rows}</tbody></table></div><p><a href="five_source_scorecard.json">全必須列を含むJSON</a></p></details>
-<script>(()=>{{const maximumVolume={INITIAL_VOLUME_CEILING:.2f};const videos=Array.from(document.querySelectorAll("video[data-review-video]"));window.__clipPipeCombinedReview={{videoCount:videos.length,initializationComplete:false,playEvents:[]}};for(const video of videos){{video.defaultMuted=true;video.muted=true;video.pause();try{{video.currentTime=0;}}catch(_error){{}}video.volume=maximumVolume;video.addEventListener("loadedmetadata",()=>{{video.pause();if(video.currentTime!==0)video.currentTime=0;}},{{once:true}});video.addEventListener("volumechange",()=>{{if(video.volume>maximumVolume)video.volume=maximumVolume;}});video.addEventListener("play",()=>{{for(const other of videos){{if(other!==video)other.pause();}}window.__clipPipeCombinedReview.playEvents.push(video.id);}});}}window.__clipPipeCombinedReview.initializationComplete=true;}})();</script>
+<script>(()=>{{const maximumVolume={INITIAL_VOLUME_CEILING:.2f};const videos=Array.from(document.querySelectorAll("video[data-review-video]"));const query=new URLSearchParams(window.location.search);window.__clipPipeCombinedReview={{videoCount:videos.length,initializationComplete:false,playEvents:[],qaPlayback:query.get("qa-playback")==="1"}};for(const video of videos){{video.defaultMuted=true;video.muted=true;video.pause();try{{video.currentTime=0;}}catch(_error){{}}video.volume=maximumVolume;video.addEventListener("loadedmetadata",()=>{{video.pause();if(video.currentTime!==0)video.currentTime=0;}},{{once:true}});video.addEventListener("volumechange",()=>{{if(video.volume>maximumVolume)video.volume=maximumVolume;}});video.addEventListener("play",()=>{{for(const other of videos){{if(other!==video)other.pause();}}window.__clipPipeCombinedReview.playEvents.push(video.id);}});}}window.__clipPipeCombinedReview.initializationComplete=true;if(window.__clipPipeCombinedReview.qaPlayback&&videos.length){{const qaVideo=videos[0];const startQaPlayback=()=>{{qaVideo.muted=true;qaVideo.play().catch(()=>{{}});}};if(qaVideo.readyState>=2)startQaPlayback();else qaVideo.addEventListener("canplay",startQaPlayback,{{once:true}});}}}})();</script>
 </main></body></html>"""
 
 
@@ -652,14 +782,37 @@ def _render_candidate_section(item: dict[str, Any]) -> str:
     return (
         f'<section class="candidate" data-candidate-role="{role}">'
         f"<h2>{escape(item['portfolio_slot'])} — {escape(item['title'])}</h2>"
-        f"<p>{escape(item['video_identity'])} / {item['duration_seconds']:.3f}s</p>"
+        f'<p data-source-range="{item["source_start_seconds"]:.3f}-{item["source_end_seconds"]:.3f}">'
+        f"確認順: {escape(item['portfolio_slot'])} / source "
+        f"{item['source_start_seconds']:.3f}s–{item['source_end_seconds']:.3f}s "
+        f"({item['duration_seconds']:.3f}s) / {escape(item['video_identity'])}</p>"
+        f"<p><strong>内容:</strong> {escape(item['content_summary'])}</p>"
+        f"<p><strong>確認点:</strong> {escape(item['review_checkpoint'])}</p>"
         f'<p>exact MP4 SHA-256: <code data-video-sha256="{escape(video["sha256"])}">{escape(video["sha256"])}</code></p>'
         f'<video id="video-{role}" data-review-video="{role}" controls playsinline muted preload="metadata" '
         f'src="{escape(video["package_relative_path"])}?v={escape(video["sha256"][:16])}"></video>'
         "<details><summary>この候補の機械証拠</summary>"
         f'<p><a href="{escape(readback["package_relative_path"])}">source readback</a> / '
         f'<a href="{escape(manifest["package_relative_path"])}">source manifest</a></p>'
-        f'<p>source artifact <code>{escape(item["source_artifact_id"])}</code> / state <code>{escape(item["source_state"])}</code> / byte size {video["byte_size"]}</p>'
+        f"<p>source artifact <code>{escape(item['source_artifact_id'])}</code> / state <code>{escape(item['source_state'])}</code> / byte size {video['byte_size']}</p>"
+        "</details></section>"
+    )
+
+
+def _render_accepted_receipt(item: dict[str, Any]) -> str:
+    video = item["video"]
+    readback = item["source_readback"]
+    manifest = item["source_manifest"]
+    return (
+        '<section class="accepted-receipt" data-accepted-receipt="source04">'
+        f"<h2>{escape(item['portfolio_slot'])} — 合格済み受領記録</h2>"
+        f"<p>{escape(item['title'])} / {escape(item['video_identity'])} / "
+        f"{item['duration_seconds']:.3f}s</p>"
+        f'<p>保持するexact MP4 SHA-256: <code data-accepted-video-sha256="{escape(video["sha256"])}">{escape(video["sha256"])}</code> / {video["byte_size"]} bytes</p>'
+        "<p>このレビュー面へMP4は複製していません。再生・再受理は不要です。</p>"
+        "<details><summary>合格時の機械証拠</summary>"
+        f'<p><a href="{escape(readback["package_relative_path"])}">source readback</a> / '
+        f'<a href="{escape(manifest["package_relative_path"])}">source manifest</a></p>'
         "</details></section>"
     )
 
@@ -687,6 +840,7 @@ def _review_access_contract(*, output: Path, root: Path) -> dict[str, Any]:
         "initial_current_time_seconds": 0,
         "maximum_volume": INITIAL_VOLUME_CEILING,
         "single_video_playback": True,
+        "qa_muted_playback_query": "?qa-playback=1",
         "storage_restore": False,
     }
 
@@ -727,7 +881,7 @@ do {
         return
     }
 } while ([DateTime]::UtcNow -lt $deadline)
-throw "The foreground review server did not pass its identity and three-video Range gate."
+throw "The foreground review server did not pass its identity and two-video Range gate."
 """
     return template.replace("__DEFAULT_PORT__", str(default_port))
 
@@ -735,9 +889,9 @@ throw "The foreground review server did not pass its identity and three-video Ra
 def _serve_script(
     *, candidates: list[dict[str, Any]], default_port: int = REVIEW_PORT
 ) -> str:
-    if len(candidates) != 3:
+    if len(candidates) != 2:
         raise FiveSourceShortPortfolioError(
-            "server helper requires exactly three candidates"
+            "server helper requires exactly two candidates"
         )
     expected_rows = "\n".join(
         "    @{ Name = '"
@@ -766,7 +920,7 @@ function Confirm-ReviewPackage {
     }
     $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
     if ($manifest.artifact_id -ne $expectedArtifact) { throw "Review manifest artifact identity mismatch." }
-    if (@($manifest.candidate_videos).Count -ne 3) { throw "Review manifest must bind exactly three videos." }
+    if (@($manifest.candidate_videos).Count -ne __VIDEO_COUNT__) { throw "Review manifest video count mismatch." }
     $index = Get-Content -LiteralPath $indexPath -Raw
     if (-not $index.Contains($expectedArtifact)) { throw "Review index artifact identity mismatch." }
     foreach ($expected in $expectedVideos) {
@@ -840,29 +994,36 @@ try {
         template.replace("__DEFAULT_PORT__", str(default_port))
         .replace("__ARTIFACT_ID__", ARTIFACT_ID)
         .replace("__EXPECTED_VIDEOS__", expected_rows)
+        .replace("__VIDEO_COUNT__", str(len(candidates)))
     )
 
 
 def _validate_staged_package(
     *, stage: Path, readback: dict[str, Any], manifest: dict[str, Any]
 ) -> None:
-    required = (
+    required = [
         "index.html",
         "open_preview.ps1",
         "serve_preview.ps1",
         "review_readback.json",
         "review_manifest.json",
         "five_source_scorecard.json",
-        "candidates/out10.mp4",
-        "candidates/source04.mp4",
-        "candidates/source05.mp4",
-        "evidence/out10/source_readback.json",
-        "evidence/out10/source_manifest.json",
-        "evidence/source04/source_readback.json",
-        "evidence/source04/source_manifest.json",
-        "evidence/source05/source_readback.json",
-        "evidence/source05/source_manifest.json",
-    )
+    ]
+    for item in readback["review_candidates"]:
+        required.extend(
+            [
+                item["video"]["package_relative_path"],
+                item["source_readback"]["package_relative_path"],
+                item["source_manifest"]["package_relative_path"],
+            ]
+        )
+    for item in readback["accepted_candidate_receipts"]:
+        required.extend(
+            [
+                item["source_readback"]["package_relative_path"],
+                item["source_manifest"]["package_relative_path"],
+            ]
+        )
     for name in required:
         _require_file(stage / name, f"staged package file {name}")
     if _read_json(stage / "review_readback.json", "staged readback") != readback:
@@ -870,10 +1031,9 @@ def _validate_staged_package(
     parsed_manifest = _read_json(stage / "review_manifest.json", "staged manifest")
     if parsed_manifest != manifest:
         raise FiveSourceShortPortfolioError("staged manifest parse mismatch")
-    if (
-        (parsed_manifest.get("manifest_self_integrity") or {}).get("sha256")
-        != _canonical_manifest_self_hash(parsed_manifest)
-    ):
+    if (parsed_manifest.get("manifest_self_integrity") or {}).get(
+        "sha256"
+    ) != _canonical_manifest_self_hash(parsed_manifest):
         raise FiveSourceShortPortfolioError("review manifest self-integrity mismatch")
     payload_names: set[str] = set()
     for row in parsed_manifest.get("files") or []:
@@ -886,9 +1046,8 @@ def _validate_staged_package(
         payload_names.add(name)
         path = stage / relative
         _require_file(path, f"review manifest payload {name}")
-        if (
-            _sha256(path) != row.get("sha256")
-            or path.stat().st_size != int(row.get("byte_size") or -1)
+        if _sha256(path) != row.get("sha256") or path.stat().st_size != int(
+            row.get("byte_size") or -1
         ):
             raise FiveSourceShortPortfolioError(
                 f"review manifest payload hash/size mismatch: {name}"
@@ -901,19 +1060,25 @@ def _validate_staged_package(
     if payload_names != expected_payloads:
         raise FiveSourceShortPortfolioError("review manifest coverage is incomplete")
     html = (stage / "index.html").read_text(encoding="utf-8")
-    if html.count("<video ") != 3 or html.count("data-review-question=") != 1:
-        raise FiveSourceShortPortfolioError("review page must have three videos and one question")
+    if html.count("<video ") != 2 or html.count("data-review-question=") != 1:
+        raise FiveSourceShortPortfolioError(
+            "review page must have two videos and one question"
+        )
     if (
         re.search(r"\bautoplay\b", html, flags=re.IGNORECASE)
         or "localStorage" in html
         or "sessionStorage" in html
     ):
         raise FiveSourceShortPortfolioError("review page violates playback safety")
-    if html.count("data-review-video=") != 3 or "other.pause()" not in html:
-        raise FiveSourceShortPortfolioError("single-video playback control is incomplete")
+    if html.count("data-review-video=") != 2 or "other.pause()" not in html:
+        raise FiveSourceShortPortfolioError(
+            "single-video playback control is incomplete"
+        )
+    if html.count("data-accepted-receipt=") != 1:
+        raise FiveSourceShortPortfolioError("accepted receipt is missing")
     server = (stage / "serve_preview.ps1").read_text(encoding="utf-8")
-    if server.count("@{ Name = 'candidates/") != 3:
-        raise FiveSourceShortPortfolioError("server does not bind all three videos")
+    if server.count("@{ Name = 'candidates/") != 2:
+        raise FiveSourceShortPortfolioError("server does not bind both videos")
     if "Stop-Process" in server or "taskkill" in server.lower():
         raise FiveSourceShortPortfolioError("server must not kill a port owner")
 
@@ -949,6 +1114,18 @@ def _readback_duration(readback: dict[str, Any]) -> float:
     raise FiveSourceShortPortfolioError("source readback duration is missing")
 
 
+def _readback_interval(readback: dict[str, Any]) -> tuple[float, float]:
+    candidate = readback.get("candidate")
+    if not isinstance(candidate, dict):
+        raise FiveSourceShortPortfolioError("source readback candidate is missing")
+    start = _number(candidate.get("source_start_seconds"), "candidate source start")
+    end = _number(candidate.get("source_end_seconds"), "candidate source end")
+    duration = _readback_duration(readback)
+    if start < 0 or end <= start or abs((end - start) - duration) > 0.05:
+        raise FiveSourceShortPortfolioError("source readback interval is inconsistent")
+    return start, end
+
+
 def _canonical_manifest_self_hash(manifest: dict[str, Any]) -> str:
     clone = json.loads(json.dumps(manifest))
     integrity = clone.get("manifest_self_integrity")
@@ -956,17 +1133,17 @@ def _canonical_manifest_self_hash(manifest: dict[str, Any]) -> str:
         raise FiveSourceShortPortfolioError("manifest self-integrity block is missing")
     integrity["sha256"] = None
     return hashlib.sha256(
-        json.dumps(clone, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode(
-            "utf-8"
-        )
+        json.dumps(
+            clone, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
     ).hexdigest()
 
 
 def _payload_sha256(value: Any) -> str:
     return hashlib.sha256(
-        json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode(
-            "utf-8"
-        )
+        json.dumps(
+            value, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
     ).hexdigest()
 
 

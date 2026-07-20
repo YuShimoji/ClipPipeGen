@@ -36,7 +36,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
     transcript = episode / "transcript_source_captions.json"
     edit_pack = episode / "edit_pack.json"
     receipt = root / "docs" / "output_layer" / "out10_external_receipt.json"
-    candidate_end = 30.014
+    candidate_end = 34.785
     predecessor_end = out10.PREDECESSOR_SOURCE_END_SECONDS
     bounds = [
         round(
@@ -45,7 +45,8 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
         )
         for index in range(out10.PREDECESSOR_CAPTION_CUE_COUNT + 1)
     ]
-    bounds.append(candidate_end)
+    bounds.extend([31.749, 32.783, 33.584, candidate_end])
+    endpoint_bounds = [*bounds, 36.653, 38.655, 40.19, 42.793]
     caption_events = []
     transcript_segments = []
     planned_subtitles = []
@@ -165,7 +166,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             "identity": "youtube:THIRD123456",
             "sha256": out10._sha256(video),
             "expected_sha256": out10._sha256(video),
-            "duration_seconds": 40.0,
+            "duration_seconds": 50.0,
             "frame_rate": 30.0,
         },
         "source_start_seconds": 0.0,
@@ -188,7 +189,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                     "end_seconds": end,
                 }
                 for index, (start, end) in enumerate(
-                    zip(bounds, bounds[1:]),
+                    zip(endpoint_bounds, endpoint_bounds[1:]),
                     start=1,
                 )
             ],
@@ -202,8 +203,8 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             "candidate_limit": 12,
         },
         "observations": [
-            {"kind": "shot_transition", "time_seconds": 30.033333},
-            {"kind": "high_motion", "time_seconds": candidate_end},
+            {"kind": "low_motion", "time_seconds": 34.75},
+            {"kind": "shot_transition", "time_seconds": 34.8},
         ],
     }
     preflight = endpoint.build_endpoint_preflight(endpoint_spec)
@@ -211,7 +212,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
         preflight,
         {
             "preflight_sha256": endpoint.payload_sha256(preflight),
-            "selected_candidate_id": "endpoint-002",
+            "selected_candidate_id": "endpoint-005",
             "selected_end_seconds": candidate_end,
             "agent_observation": {
                 "last_utterance": "complete",
@@ -223,7 +224,19 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                     {
                         "candidate_id": "endpoint-001",
                         "reason": "the response utterance has only just started",
-                    }
+                    },
+                    {
+                        "candidate_id": "endpoint-002",
+                        "reason": "the consciousness check remains active",
+                    },
+                    {
+                        "candidate_id": "endpoint-003",
+                        "reason": "the patient response remains incomplete",
+                    },
+                    {
+                        "candidate_id": "endpoint-004",
+                        "reason": "the final punchline has not completed",
+                    },
                 ],
             },
         },
@@ -340,7 +353,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             "candidate_count_considered": 1,
             "start_basis": "opening",
             "end_basis": "closed event",
-            "next_scene_transition_seconds": 30.033333,
+            "next_scene_transition_seconds": 34.8,
             "rationale": "setup to complete response payoff",
             "narrative_arc": {
                 "setup": "setup",
@@ -363,7 +376,7 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
                 "lineage_reason": out10.EARLIER_LINEAGE_REASON,
             },
             "inherited_pass": [
-                "content_and_tempo",
+                "intro_and_topic",
                 "subtitle_audio_sync",
                 "subtitle_readability",
                 "neutral_matte_composition",
@@ -484,11 +497,11 @@ def test_builds_third_source_package_and_scorecard(tmp_path: Path) -> None:
     assert readback["state"] == out10.STATE
     assert readback["source_difference"]["all_distinct"] is True
     assert readback["candidate"]["human_review_pending"] is True
-    assert readback["subtitle"]["count"] == 46
+    assert readback["subtitle"]["count"] == 50
     assert readback["repair_lineage"]["predecessor_video_sha256"] == (
         out10.PREDECESSOR_VIDEO_SHA256
     )
-    assert readback["endpoint_repair"]["additional_caption_cue_count"] == 1
+    assert readback["endpoint_repair"]["additional_caption_cue_count"] == 4
     assert readback["portfolio_subtitle_differentiation_debt"]["status"] == ("deferred")
     scorecard = json.loads(
         (fixture["output"] / "source_portfolio_scorecard.json").read_text(

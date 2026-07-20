@@ -229,13 +229,14 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contract_parked() -> None:
+def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contract_parked() -> (
+    None
+):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: null" in runtime
     assert (
-        "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json"
-        in runtime
+        "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
@@ -244,10 +245,9 @@ def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contrac
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_receipt_only_media_package_same_machine"
-        in runtime
+        "tracked_code_docs_receipt_only_media_package_same_machine" in runtime
     )
-    assert "health: OUT11_FIVE_SOURCE_COMBINED_REVIEW_READY" in runtime
+    assert "health: OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY" in runtime
     assert "current_slice: OUT-11" in runtime
     assert "out10_inventory_count: 5" in runtime
     assert "out10_distinct_source_preflight_count: 3" in runtime
@@ -256,46 +256,33 @@ def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contrac
     assert "out10_external_acquisition_authorized: true" in runtime
     assert "out10_candidate_generated: true" in runtime
     assert "out11_scorecard_row_count: 5" in runtime
-    assert "out11_review_media_count: 3" in runtime
+    assert "out11_review_media_count: 2" in runtime
+    assert "out11_accepted_receipt_count: 1" in runtime
     assert "out11_review_question_count: 1" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
     assert "human_review_pending: true" in runtime
     assert "acceptance_granted: false" in runtime
     assert "batch_acceptance: null" in runtime
-    assert (
-        "candidate_01_acceptance: "
-        "pending"
-        in runtime
-    )
-    assert (
-        "review_status: "
-        "pending_human_review"
-        in runtime
-    )
-    assert (
-        "subtitle_display_authority: official_json3_event_text_and_timing"
-        in runtime
-    )
+    assert "candidate_01_acceptance: pending" in runtime
+    assert "review_status: pending_human_review_for_two_repairs" in runtime
+    assert "subtitle_display_authority: official_json3_event_text_and_timing" in runtime
     assert "additional_subtitle_burn_in: true" in runtime
     assert "source_native_caption_pixels_suppressed: false" in runtime
     assert "full_source_blur_fallback_allowed: false" in runtime
     assert "additional_blur_or_frosted_caption_surface: false" in runtime
     assert (
         "candidate_01_sha256: "
-        "a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2"
-        in runtime
+        "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd" in runtime
     )
     assert (
         "candidate_02_sha256: "
-        "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524"
-        in runtime
+        "b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969" in runtime
     )
     assert (
-        "candidate_03_sha256: "
-        "370850c5222b70d944f7ba879849f33a2b448edae355e4e41dc35977bf22b578"
-        in runtime
+        "out11_source04_mp4_sha256: "
+        "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524" in runtime
     )
-    assert "candidate_02_acceptance: null" in runtime
+    assert "candidate_02_acceptance: pending" in runtime
     assert "optional_recovery_merged: false" in runtime
     assert "out07_selection_status: deferred" in runtime
     assert "out07_canonical_pattern: false" in runtime
@@ -307,12 +294,7 @@ def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contrac
 
 
 def test_out10_inventory_receipt_stops_without_fabricating_a_candidate() -> None:
-    path = (
-        ROOT
-        / "docs"
-        / "output_layer"
-        / "out10_third_source_inventory_receipt.json"
-    )
+    path = ROOT / "docs" / "output_layer" / "out10_third_source_inventory_receipt.json"
     receipt = json.loads(path.read_text(encoding="utf-8"))
     assert receipt["state"] == "NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY"
     assert receipt["scope"]["inventory_count"] == 5

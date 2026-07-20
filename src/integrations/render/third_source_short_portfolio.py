@@ -59,21 +59,21 @@ from src.integrations.render.vertical_short_candidate import (
 ARTIFACT_ID = "clip-out10-third-source-short-portfolio-expansion-v0-001"
 SCHEMA_VERSION = "clippipegen.out10.third_source_short_portfolio.v0"
 PLAN_SCHEMA_VERSION = "clippipegen.out10.candidate_plan_input.v0"
-STATE = "OUT10_FINAL_UTTERANCE_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW"
-PREDECESSOR_STATE = "OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY"
+STATE = "OUT10_HUMAN_REVIEW_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW"
+PREDECESSOR_STATE = "OUT10_FINAL_UTTERANCE_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW"
 PREDECESSOR_VIDEO_SHA256 = (
+    "a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2"
+)
+PREDECESSOR_SOURCE_END_SECONDS = 30.014
+PREDECESSOR_CAPTION_CUE_COUNT = 46
+LINEAGE_REASON = "superseded_human_review_new_examination_scene_did_not_naturally_close"
+EARLIER_PREDECESSOR_VIDEO_SHA256 = (
     "3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884"
 )
-PREDECESSOR_SOURCE_END_SECONDS = 27.711
-PREDECESSOR_CAPTION_CUE_COUNT = 45
-LINEAGE_REASON = (
+EARLIER_PREDECESSOR_SOURCE_END_SECONDS = 27.711
+EARLIER_LINEAGE_REASON = (
     "superseded_predecessor_last_utterance_incomplete_after_first_endpoint_repair"
 )
-EARLIER_PREDECESSOR_VIDEO_SHA256 = (
-    "9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f"
-)
-EARLIER_PREDECESSOR_SOURCE_END_SECONDS = 20.304
-EARLIER_LINEAGE_REASON = "superseded_predecessor_endpoint_too_early_active_telop_motion"
 OUTPUT_PREFIX = "out10_"
 OUT08_PROVIDER_ID = "7J5aS_pcBj4"
 OUT09_PROVIDER_ID = "D4i4fjs9PWc"
@@ -85,8 +85,8 @@ OUT09_CANDIDATE_HASH = (
     "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
 )
 REVIEW_QUESTION = (
-    "OUT-10は最後のセリフまで自然に完結したか。"
-    "既に合格していた字幕・音声・構図に明確な回帰があれば併せて教えてください。"
+    "OUT-10は新しい診察場面の意識確認・反応・台詞まで自然に完結したか。"
+    "維持した導入・字幕・音声・構図に明確な回帰があれば併せて教えてください。"
 )
 REVIEW_HOST = "127.0.0.1"
 REVIEW_PORT = 8073
@@ -830,7 +830,7 @@ def _normalize_plan(
         or not isinstance(inherited_pass, list)
         or inherited_pass
         != [
-            "content_and_tempo",
+            "intro_and_topic",
             "subtitle_audio_sync",
             "subtitle_readability",
             "neutral_matte_composition",
@@ -1246,9 +1246,9 @@ def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="clippipegen-artifact-id" content="{ARTIFACT_ID}"><meta name="clippipegen-video-sha256" content="{escape(readback["video"]["sha256"])}">
-<title>OUT-10 final utterance endpoint repair</title><style>
+<title>OUT-10 human-review endpoint repair</title><style>
 :root{{color-scheme:dark;font-family:"Yu Gothic UI","Noto Sans JP",sans-serif;background:#06101d;color:#eff7ff}}*{{box-sizing:border-box}}body{{margin:0;overflow-x:hidden}}main{{width:min(960px,100%);margin:auto;padding:22px;overflow-wrap:anywhere}}section,details{{margin-top:18px;padding:16px;border:1px solid #30445f;border-radius:14px;background:#0d1a2c}}video{{display:block;width:auto;height:min(76vh,820px);max-width:100%;aspect-ratio:9/16;margin:18px auto;background:#000}}code{{color:#9fe7ff}}.boundary{{color:#ffd166}}table{{width:100%;border-collapse:collapse}}th,td{{padding:8px;border-bottom:1px solid #30445f;text-align:left}}@media(max-width:620px){{main{{padding:14px}}video{{height:min(72vh,700px)}}table{{font-size:.82rem}}}}
-</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback["video"]["sha256"])}"><main><h1>OUT-10 final utterance endpoint repair</h1>
+</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback["video"]["sha256"])}"><main><h1>OUT-10 human-review endpoint repair</h1>
 <p><code>{escape(readback["source_identity"]["provider_id"])}</code> / source {candidate["source_start_seconds"]:.3f}–{candidate["source_end_seconds"]:.3f}s / {candidate["duration_seconds"]:.3f}s</p>
 <p class="boundary">rights=pending / human review pending / production・public・publishing未承認</p>
 <p id="playback-safety-note">初期状態は停止・ミュートです。音声確認時は手動で再生・解除してください（音量上限25%）。</p>
@@ -1256,7 +1256,7 @@ def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
 <script>(()=>{{const video=document.getElementById("candidate-video");const maximumVolume={INITIAL_VOLUME_CEILING:.2f};const exactMutedQaRoute=window.location.search==="?qa-playback=1"&&window.location.hash==="";video.defaultMuted=true;video.muted=true;video.volume=exactMutedQaRoute?0:maximumVolume;window.__clipPipeReviewQa={{exactRoute:exactMutedQaRoute,completed:false,error:null}};video.addEventListener("volumechange",()=>{{if(video.volume>maximumVolume)video.volume=maximumVolume;}});const run=async()=>{{video.defaultMuted=true;video.muted=true;video.volume=0;try{{await video.play();window.setTimeout(()=>{{video.pause();window.__clipPipeReviewQa.completed=true;}},1200);}}catch(error){{video.pause();window.__clipPipeReviewQa.error=error&&error.name?error.name:"play_failed";window.__clipPipeReviewQa.completed=true;}}}};if(exactMutedQaRoute){{if(video.readyState>=2)window.queueMicrotask(run);else video.addEventListener("canplay",run,{{once:true}});}}}})();</script>
 <section><h2>今回の確認</h2><ol><li data-review-question="1">{question}</li></ol></section>
 <section><h2>3-source scorecard</h2><table><thead><tr><th>slot</th><th>recording</th><th>duration(s)</th><th>subtitle(s)</th><th>status</th></tr></thead><tbody>{rows}</tbody></table><p><a href="source_portfolio_comparison.html">比較説明を開く</a> / <a href="source_portfolio_scorecard.json">JSONを開く</a></p></section>
-<details open><summary>終端修復・構成・境界</summary><p>{escape(str(candidate["rationale"]))}</p><p>旧終端 {PREDECESSOR_SOURCE_END_SECONDS:.3f}s / MP4 <code>{PREDECESSOR_VIDEO_SHA256}</code> は、直後に始まる応答発話を言い切る前に切れたため未受理のpredecessorとして保持。新終端は {candidate["source_end_seconds"]:.3f}sで、公式response cueと実音声の語尾、患者reaction shotが完了し、約0.019秒後の次shotより前で閉じます。</p><p><a href="endpoint_preflight.json">endpoint preflight</a> / <a href="endpoint_selection.json">Agent selection</a> / <a href="endpoint_contact_sheet.jpg">endpoint contact sheet</a> / <a href="endpoint_waveform.png">endpoint waveform</a></p><p>全16:9 foregroundを保持し、source-derived blurもcenter cropも使わず、neutral matteへfit。元映像のname labelは保持し、dialogue subtitleは公式JSON3 eventから別canvas位置へburn-in。</p><p>全白字幕は一般標準として承認せず、speaker differentiationは3〜5本のaccepted real Shorts比較後またはproduction subtitle-design gate開始時に再検討します。navigation frameは識別用でありthumbnail候補ではありません。</p></details>
+<details open><summary>終端修復・構成・境界</summary><p>{escape(str(candidate["rationale"]))}</p><p>旧終端 {PREDECESSOR_SOURCE_END_SECONDS:.3f}s / MP4 <code>{PREDECESSOR_VIDEO_SHA256}</code> は、人間レビューで新しい診察場面が閉じていないと判定された未受理predecessorです。新終端は {candidate["source_end_seconds"]:.3f}sで、意識確認、患者反応、最後の台詞とリアクション表示が完了し、34.800sから始まる別キャラクター紹介は含めません。</p><p><a href="endpoint_preflight.json">endpoint preflight</a> / <a href="endpoint_selection.json">Agent selection</a> / <a href="endpoint_contact_sheet.jpg">endpoint contact sheet</a> / <a href="endpoint_waveform.png">endpoint waveform</a></p><p>全16:9 foregroundを保持し、source-derived blurもcenter cropも使わず、neutral matteへfit。元映像のname labelは保持し、dialogue subtitleは公式JSON3 eventから別canvas位置へburn-in。</p><p>全白字幕は一般標準として承認せず、speaker differentiationはproduction subtitle-design gate開始時に別途検討します。navigation frameは識別用でありthumbnail候補ではありません。</p></details>
 </main></body></html>"""
 
 

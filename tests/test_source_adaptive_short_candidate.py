@@ -20,7 +20,11 @@ def _write_json(path: Path, payload: dict) -> None:
 
 def _fixture(tmp_path: Path, *, native: bool = False) -> dict[str, Path]:
     root = tmp_path
-    episode = root / "episodes" / ("official_source_native" if native else "official_source_overlay")
+    episode = (
+        root
+        / "episodes"
+        / ("official_source_native" if native else "official_source_overlay")
+    )
     video = episode / "materials" / "video_01" / "source.mp4"
     audio = episode / "materials" / "audio_01" / "source.m4a"
     video.parent.mkdir(parents=True)
@@ -38,9 +42,7 @@ def _fixture(tmp_path: Path, *, native: bool = False) -> dict[str, Path]:
     _write_json(
         rights,
         {
-            "source_video": {
-                "url": f"https://www.youtube.com/watch?v={provider_id}"
-            },
+            "source_video": {"url": f"https://www.youtube.com/watch?v={provider_id}"},
             "compliance_check": {"status": "pending"},
         },
     )
@@ -150,7 +152,13 @@ def _fixture(tmp_path: Path, *, native: bool = False) -> dict[str, Path]:
     _write_json(preflight_path, preflight)
     _write_json(selection_path, selection)
     evidence_manifest = endpoint_dir / "endpoint_evidence_manifest.json"
-    evidence_files = [preflight_path, selection_path, contact, waveform, candidate_contact]
+    evidence_files = [
+        preflight_path,
+        selection_path,
+        contact,
+        waveform,
+        candidate_contact,
+    ]
     evidence_payload = {
         "schema_version": "clippipegen.endpoint_evidence_manifest.v0",
         "source_identity": identity,
@@ -296,7 +304,9 @@ def _fixture(tmp_path: Path, *, native: bool = False) -> dict[str, Path]:
 
 
 def _fake_render(**kwargs) -> dict:
-    assert kwargs["composition_policy"]["mode"] == vertical.NEUTRAL_MATTE_BACKGROUND_POLICY
+    assert (
+        kwargs["composition_policy"]["mode"] == vertical.NEUTRAL_MATTE_BACKGROUND_POLICY
+    )
     assert kwargs["timeline"][0]["source_start_seconds"] == 5.0
     Path(kwargs["video_path"]).write_bytes(b"source-adaptive-candidate")
     Path(kwargs["frame_sheet_path"]).write_bytes(b"source-adaptive-frames")
@@ -359,7 +369,9 @@ def _build(fixture: dict[str, Path]) -> dict:
     )
 
 
-def test_builds_source_specific_overlay_package_with_self_integrity(tmp_path: Path) -> None:
+def test_builds_source_specific_overlay_package_with_self_integrity(
+    tmp_path: Path,
+) -> None:
     fixture = _fixture(tmp_path)
     result = _build(fixture)
     readback = result["readback"]
@@ -385,7 +397,9 @@ def test_builds_source_specific_overlay_package_with_self_integrity(tmp_path: Pa
     )
 
 
-def test_builds_native_baked_mode_without_overlay_double_display(tmp_path: Path) -> None:
+def test_builds_native_baked_mode_without_overlay_double_display(
+    tmp_path: Path,
+) -> None:
     fixture = _fixture(tmp_path, native=True)
     readback = _build(fixture)["readback"]
     assert readback["source_identity"]["provider_id"] == "SOURCE_NATIVE"
@@ -394,6 +408,39 @@ def test_builds_native_baked_mode_without_overlay_double_display(tmp_path: Path)
     assert (fixture["output"] / "official_captions.json3").is_file()
     assert not (fixture["output"] / "candidate_subtitles.ass").exists()
     assert not (fixture["output"] / "candidate_subtitles.srt").exists()
+
+
+def test_same_source_repair_lineage_is_bound_into_readback_and_manifest(
+    tmp_path: Path,
+) -> None:
+    fixture = _fixture(tmp_path, native=True)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    lineage = {
+        "predecessor_video_sha256": "a" * 64,
+        "predecessor_video_byte_size": 4096,
+        "predecessor_source_start_seconds": 5.0,
+        "predecessor_source_end_seconds": 12.0,
+        "predecessor_reason": "human review found an abrupt endpoint",
+        "human_decision": "bounded_same_source_interval_repair_required",
+    }
+    plan["repair_lineage"] = lineage
+    plan.pop("endpoint_binding")
+    preflight = json.loads(fixture["preflight"].read_text(encoding="utf-8"))
+    selection = json.loads(fixture["selection"].read_text(encoding="utf-8"))
+    _write_json(
+        fixture["plan"], endpoint.bind_builder_input(plan, preflight, selection)
+    )
+
+    readback = _build(fixture)["readback"]
+    manifest = json.loads(
+        (fixture["output"] / "candidate_manifest.json").read_text(encoding="utf-8")
+    )
+
+    assert readback["repair_lineage"] == lineage
+    assert manifest["repair_lineage"] == lineage
+    assert manifest["manifest_self_integrity"]["sha256"] == (
+        source_candidate._canonical_manifest_self_hash(manifest)
+    )
 
 
 def test_rejects_tampered_endpoint_binding_before_render(tmp_path: Path) -> None:
@@ -427,7 +474,9 @@ def test_rejects_native_and_overlay_conflict_before_render(tmp_path: Path) -> No
     plan["caption_policy"]["native_captions_visible"] = True
     preflight = json.loads(fixture["preflight"].read_text(encoding="utf-8"))
     selection = json.loads(fixture["selection"].read_text(encoding="utf-8"))
-    _write_json(fixture["plan"], endpoint.bind_builder_input(plan, preflight, selection))
+    _write_json(
+        fixture["plan"], endpoint.bind_builder_input(plan, preflight, selection)
+    )
 
     def _must_not_render(**_kwargs) -> dict:
         raise AssertionError("renderer must not run")

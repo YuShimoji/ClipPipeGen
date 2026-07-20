@@ -1,59 +1,57 @@
-# OUT-10 Third-Source Portfolio Expansion — final utterance endpoint repair
+# OUT-10 Third-Source Portfolio Expansion — human-review endpoint repair
 
-更新日: 2026-07-20
+更新日: 2026-07-21
 
-## Outcome
+## 到達状態
 
-OUT-10は第三distinct source `youtube:TlnviOwLRmk` の同じ冒頭・内容・字幕style・音量方針・
-neutral matte構図を維持し、最後の返答だけが未完だった終端を source `30.014s` まで延長した。
-stateは `OUT10_FINAL_UTTERANCE_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW`。
+第三distinct source `youtube:TlnviOwLRmk` の成立済み導入・主題・字幕style・音量方針・
+neutral matte構図を維持し、人間レビューで未完と判定された終端だけを修復した。stateは
+`OUT10_HUMAN_REVIEW_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW`。
 
-人間観測済みの27.711s predecessorは、operation宣言までは完了していたが、その直後から始まる
-患者の返答「先生…いけません…打撲です」を含めていなかった。これは
-`superseded_predecessor_final_response_incomplete` として未受理lineageに残す。
+旧exact MP4 `a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2`
+（16,821,370 bytes、source `0.000–30.014s`）は、導入自体は成立していたが、直後に始まる
+意識確認場面が途中で終わり、自然なsemantic closureになっていなかった。この人間判断を
+`superseded_human_review_new_examination_scene_did_not_naturally_close`としてlineageへ固定した。
 
-## Endpoint comparison
+## 終端の選択
 
-| 境界 | 観測 | 判断 |
+| 境界 | 実内容 | 判断 |
 |---:|---|---|
-| 27.711s | 先生側のoperation宣言が完了し、患者の返答が開始する直前 | predecessor; 最終発話不完全 |
-| 30.014s | official response cueと音声の最後の音節が完了 | selected |
-| 30.033s | 次のshotと無関係な検査dialogueが開始 | 含めない |
+| 30.014s | 「意識確認、開始」が始まり、新しい診察反応が進行中 | 旧候補の未完終端 |
+| 31.749–33.584s | 「大丈夫ですか」「息してますか」と患者反応が継続 | 途中なので採用しない |
+| 34.785s | 「ゴッドハンドやね」のパンチラインと反応が完了 | selected |
+| 34.800s | 別キャラクター紹介のvisual/dialogueが開始 | 含めない |
 
-selected rangeは `0.000–30.014s`、semantic duration 30.014s、media duration
-30.033333s、official JA cue 46。既存45 cueとstyleを変えず、最後の1 cueだけをauthorityに従って
-含めた。
+selected rangeは`0.000–34.785s`、semantic duration 34.785s、media duration 34.800s。
+旧46 cueを変えず、同じofficial JA JSON3 authorityから4 cueを追加して計50 cueとした。
 
 ## Exact package
 
 package:
 `episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/`
 
-| artifact | identity |
+| artifact | exact identity |
 |---|---|
-| candidate MP4 | SHA `a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2`; 16,821,370 bytes |
-| readback | SHA `6d3111b7597ac181ae0dc4aa6b9eed76e7865d804388acd475487a343437613b` |
-| manifest | file SHA `e27118cc55cc9969feaca3fe9ef595e494fab8c149f3f3386d535b23ae866d6b`; self SHA `2bb1e3abdc303eb65fe300b51afd134a717bea232e00027f57abf409ef0d60cb` |
-| endpoint preflight | file SHA `b9ee96edf7edbe4d125fda072b0bd3e8fa59c02cd94e743555a99af2498cc4df` |
-| endpoint selection | file SHA `b16b9ee5fc78e534026fb6f5d187243f19f9c814ad4d789d45f1371955f250eb` |
-| endpoint evidence manifest | file SHA `195ff30b408ea3a14a52c6d9fec1d7fc4d00b0b0a654b3bdfc981c93ec1fb8ee`; self SHA `f9248f7d4bec7925292e6d8147dd1e12635a9470d5c38036e356e03a71b16585` |
+| candidate MP4 | SHA `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`; 19,319,488 bytes |
+| readback | SHA `77e6c578580d66349b8a94ec5bbadef8d1ca42e3d7fde7faee5debfd35175c53` |
+| manifest | file SHA `093d7355c16df01aafb099c24a643183c13a11263ba9d9ebc6d1dfc041d71e80`; self SHA `e1113ae94d7586de2b1f251c38d4479484c0cb67b31bdfd260bd1ed116d4abc2` |
+| endpoint evidence | preflight payload SHA `774ac9df...60406`; selection SHA `de1424bf...15f5`; evidence manifest file SHA `937b142d...3b2c` |
 
-## Validation
+## 検証
 
-- H.264/AAC、1080x1920、30fps、yuv420p、full decode / faststart pass。
-- black/silence critical signal QA pass。
-- ASS/SRT/readbackは46 cue、final cue end 30.014sで一致。
+- 修復renderは事前観測後の1回だけ。corrective pass 0、build 149.147秒。
+- H.264/AAC、1080x1920、30fps、yuv420p、full decode、faststart pass。
+- `-13.79 LUFS / -1.45 dBTP`、blackdetect 0、silencedetect 0。
+- subtitle containmentは50 cueすべてpass、最大3行、最終cue end 34.785s。
 - full 1920x1080 fit、neutral matte `0x0D1624`、crop/blur/source-derived backgroundなし。
-- candidate package全payloadとmanifest self-integrity一致。
-- combined packageへコピー後もexact SHA / byte size一致。
-- 最終3秒contact sheetでは最後の返答字幕が末尾まで表示され、waveformにも音声欠落なし。
+- 最終6秒contact sheetで意識確認から最終パンチラインへの連続動作、waveformで終端までの
+  音声継続を確認した。別sceneの先頭を数frame付加して区切りにしていない。
+- package全payload hashとmanifest self-integrity、OUT-11へのexact byte copyが一致。
 
-## Human gate
+## 残る人間判断と閉じたgate
 
-OUT-10単独reviewは閉じ、OUT-11統合reviewの先頭に同じexact MP4を載せる。質問は、最後の
-セリフまで一本のShortとして自然に完結したか。肯定・修復・rejectは上記exact SHAにだけbindする。
-
-## Closed gates / Not Done
+OUT-11統合reviewで、意識確認・患者反応・最終台詞まで自然に閉じ、成立済みの導入・字幕・
+音声・構図に回帰がないかだけを確認する。回答は新SHAにのみbindする。
 
 human acceptance、rights、production render/subtitle/image quality、thumbnail、winner、
 public/publishing/upload/OAuth、cross-machine portability、main統合は未承認。

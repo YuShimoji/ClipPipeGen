@@ -246,6 +246,7 @@ def build_source_adaptive_short_candidate(
                 "human_review_pending": True,
                 "acceptance_granted": False,
             },
+            "repair_lineage": normalized["repair_lineage"],
             "endpoint_preflight": {
                 "preflight_sha256": _endpoint_payload_sha256(
                     authority["endpoint_preflight"]
@@ -331,6 +332,7 @@ def build_source_adaptive_short_candidate(
             "source_identity": normalized["source_identity"]["identity"],
             "candidate_video_sha256": video_sha256,
             "caption_mode": normalized["caption_mode"],
+            "repair_lineage": normalized["repair_lineage"],
             "files": files,
             "file_count": len(files),
             "closed_gates": normalized["boundaries"],
@@ -674,6 +676,29 @@ def _normalize_plan(
     review_question = str(plan.get("review_question") or "").strip()
     if not review_question:
         raise SourceAdaptiveShortCandidateError("review question is missing")
+    repair_lineage = plan.get("repair_lineage")
+    if repair_lineage is not None:
+        if not isinstance(repair_lineage, dict):
+            raise SourceAdaptiveShortCandidateError("repair lineage must be an object")
+        predecessor_sha = str(repair_lineage.get("predecessor_video_sha256") or "")
+        predecessor_reason = str(repair_lineage.get("predecessor_reason") or "").strip()
+        if (
+            not re.fullmatch(r"[0-9a-f]{64}", predecessor_sha)
+            or int(repair_lineage.get("predecessor_video_byte_size") or 0) <= 0
+            or _number(
+                repair_lineage.get("predecessor_source_end_seconds"),
+                "predecessor source end",
+            )
+            <= _number(
+                repair_lineage.get("predecessor_source_start_seconds"),
+                "predecessor source start",
+            )
+            or not predecessor_reason
+            or repair_lineage.get("human_decision")
+            != "bounded_same_source_interval_repair_required"
+        ):
+            raise SourceAdaptiveShortCandidateError("repair lineage is incomplete")
+        repair_lineage = dict(repair_lineage)
     return {
         "artifact_id": str(plan["artifact_id"]),
         "source_identity": {**source_identity, "official_channel": True},
@@ -682,6 +707,7 @@ def _normalize_plan(
         "source_end_seconds": end,
         "duration_seconds": duration,
         "rationale": str(candidate.get("rationale") or "").strip(),
+        "repair_lineage": repair_lineage,
         "caption_mode": mode,
         "semantic_subtitles": semantic,
         "composition_policy": dict(composition),

@@ -42,7 +42,11 @@ def _source_package(
         "state": state,
         "episode_id": f"fixture-{portfolio_slot.lower()}",
         "source_identity": {"identity": video_identity},
-        "candidate": {"duration_seconds": duration},
+        "candidate": {
+            "source_start_seconds": 0.0,
+            "source_end_seconds": duration,
+            "duration_seconds": duration,
+        },
         "video": {
             "package_relative_path": "candidate_01.mp4",
             "sha256": video_sha,
@@ -77,8 +81,8 @@ def _source_package(
             "sha256": None,
         },
     }
-    manifest["manifest_self_integrity"]["sha256"] = (
-        out11._canonical_manifest_self_hash(manifest)
+    manifest["manifest_self_integrity"]["sha256"] = out11._canonical_manifest_self_hash(
+        manifest
     )
     manifest_path = package / "candidate_manifest.json"
     _write_json(manifest_path, manifest)
@@ -89,6 +93,8 @@ def _source_package(
             "source04": "Fourth real source",
             "source05": "Fifth real source",
         }[role],
+        "content_summary": f"Fixture content for {portfolio_slot}",
+        "review_checkpoint": f"Fixture checkpoint for {portfolio_slot}",
         "portfolio_slot": portfolio_slot,
         "video_identity": video_identity,
         "source_artifact_id": artifact_id,
@@ -147,32 +153,31 @@ def _scorecard_row(
 
 
 def _fixture(tmp_path: Path) -> tuple[Path, Path, dict[str, Any]]:
-    candidates = [
-        _source_package(
-            tmp_path,
-            role="out10",
-            artifact_id="clip-out10-test",
-            state="OUT10_FINAL_UTTERANCE_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW",
-            video_identity="youtube:TlnviOwLRmk",
-            duration=30.014,
-        ),
-        _source_package(
-            tmp_path,
-            role="source04",
-            artifact_id="clip-source04-test",
-            state="SOURCE_ADAPTIVE_SHORT_REVIEW_READY",
-            video_identity="youtube:PQ54uUV41-k",
-            duration=22.4,
-        ),
-        _source_package(
-            tmp_path,
-            role="source05",
-            artifact_id="clip-source05-test",
-            state="SOURCE_ADAPTIVE_SHORT_REVIEW_READY",
-            video_identity="youtube:gUwJBRUIWow",
-            duration=34.8,
-        ),
-    ]
+    out10 = _source_package(
+        tmp_path,
+        role="out10",
+        artifact_id="clip-out10-test",
+        state="OUT10_HUMAN_REVIEW_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW",
+        video_identity="youtube:TlnviOwLRmk",
+        duration=34.785,
+    )
+    source04 = _source_package(
+        tmp_path,
+        role="source04",
+        artifact_id="clip-source04-test",
+        state="SOURCE_ADAPTIVE_SHORT_REVIEW_READY",
+        video_identity="youtube:PQ54uUV41-k",
+        duration=22.4,
+    )
+    source05 = _source_package(
+        tmp_path,
+        role="source05",
+        artifact_id="clip-source05-test",
+        state="SOURCE_ADAPTIVE_SHORT_REVIEW_READY",
+        video_identity="youtube:gUwJBRUIWow",
+        duration=58.057,
+    )
+    candidates = [out10, source05]
     context08 = _scorecard_row(
         slot="OUT-08",
         video_identity="youtube:7J5aS_pcBj4",
@@ -190,14 +195,18 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path, dict[str, Any]]:
         render_count=1,
     )
     rows = [context08, context09]
-    for item in candidates:
+    for item in [out10, source04, source05]:
         rows.append(
             _scorecard_row(
                 slot=item["portfolio_slot"],
                 video_identity=item["video_identity"],
                 duration=item["duration"],
                 mp4_sha256=item["video_sha256"],
-                human_status="human_review_pending",
+                human_status=(
+                    "accepted_internal"
+                    if item["role"] == "source04"
+                    else "human_review_pending"
+                ),
                 render_count=1,
             )
         )
@@ -207,8 +216,9 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path, dict[str, Any]]:
         "artifact_id": out11.ARTIFACT_ID,
         "state": out11.STATE,
         "review_question": out11.REVIEW_QUESTION,
-        "accepted_context_only_slots": ["OUT-08", "OUT-09"],
+        "accepted_context_only_slots": ["OUT-08", "OUT-09", "SOURCE-04"],
         "review_candidates": candidates,
+        "accepted_candidate_receipts": [source04],
         "scorecard_rows": rows,
         "boundaries": {
             "rights_acceptance": False,
@@ -235,7 +245,7 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path, dict[str, Any]]:
     return config_path, output, config
 
 
-def test_builds_package_contained_three_video_review_and_five_rows(
+def test_builds_two_video_repair_review_with_accepted_source04_receipt(
     tmp_path: Path,
 ) -> None:
     config_path, output, config = _fixture(tmp_path)
@@ -249,13 +259,17 @@ def test_builds_package_contained_three_video_review_and_five_rows(
     assert result["artifact_id"] == out11.ARTIFACT_ID
     assert result["state"] == out11.STATE
     readback = json.loads((output / "review_readback.json").read_text("utf-8"))
-    scorecard = json.loads(
-        (output / "five_source_scorecard.json").read_text("utf-8")
-    )
+    scorecard = json.loads((output / "five_source_scorecard.json").read_text("utf-8"))
     manifest = json.loads((output / "review_manifest.json").read_text("utf-8"))
     assert readback["review_question"] == out11.REVIEW_QUESTION
     assert readback["review_question_count"] == 1
-    assert len(readback["review_candidates"]) == 3
+    assert len(readback["review_candidates"]) == 2
+    assert len(readback["accepted_candidate_receipts"]) == 1
+    assert readback["accepted_candidate_receipts"][0]["role"] == "source04"
+    assert (
+        readback["accepted_candidate_receipts"][0]["video"]["media_copied_into_review"]
+        is False
+    )
     assert scorecard["row_count"] == 5
     assert len(scorecard["rows"]) == 5
     assert scorecard["columns"] == list(out11.REQUIRED_SCORECARD_COLUMNS)
@@ -264,7 +278,7 @@ def test_builds_package_contained_three_video_review_and_five_rows(
     assert manifest["manifest_self_integrity"]["sha256"] == (
         out11._canonical_manifest_self_hash(manifest)
     )
-    assert len(manifest["candidate_videos"]) == 3
+    assert len(manifest["candidate_videos"]) == 2
 
     for item in config["review_candidates"]:
         copied = output / "candidates" / f"{item['role']}.mp4"
@@ -272,10 +286,9 @@ def test_builds_package_contained_three_video_review_and_five_rows(
         assert copied.read_bytes() == source.read_bytes()
         assert out11._sha256(copied) == item["video_sha256"]
         assert copied.stat().st_size == item["video_byte_size"]
+    assert not (output / "candidates" / "source04.mp4").exists()
 
-    manifest_payloads = {
-        row["package_relative_path"] for row in manifest["files"]
-    }
+    manifest_payloads = {row["package_relative_path"] for row in manifest["files"]}
     actual_payloads = {
         path.relative_to(output).as_posix()
         for path in output.rglob("*")
@@ -293,23 +306,28 @@ def test_review_html_is_linear_safe_and_evidence_is_folded(tmp_path: Path) -> No
     )
 
     html = (output / "index.html").read_text("utf-8")
-    assert html.count("<video ") == 3
+    assert html.count("<video ") == 2
     assert html.count("data-review-question=") == 1
     assert out11.REVIEW_QUESTION in html
     assert "autoplay" not in html.lower()
     assert "localStorage" not in html
     assert "sessionStorage" not in html
-    assert html.count(" controls playsinline muted preload=\"metadata\"") == 3
+    assert html.count(' controls playsinline muted preload="metadata"') == 2
     assert "video.currentTime=0" in html
     assert "other.pause()" in html
     assert "const maximumVolume=0.25" in html
+    assert 'query.get("qa-playback")==="1"' in html
+    assert 'addEventListener("canplay",startQaPlayback' in html
+    assert "qaVideo.muted=true" in html
     assert html.count("<details>") == 4
+    assert html.count("data-source-range=") == 2
+    assert html.count("data-accepted-receipt=") == 1
     assert "<details open" not in html
     for path in (output / "candidates").glob("*.mp4"):
         assert out11._sha256(path) in html
 
 
-def test_server_binds_hash_and_size_for_all_three_videos(tmp_path: Path) -> None:
+def test_server_binds_hash_and_size_for_both_repair_videos(tmp_path: Path) -> None:
     config_path, output, config = _fixture(tmp_path)
     out11.build_five_source_short_portfolio(
         config_path=config_path,
@@ -320,7 +338,7 @@ def test_server_binds_hash_and_size_for_all_three_videos(tmp_path: Path) -> None
     server = (output / "serve_preview.ps1").read_text("utf-8")
     opener = (output / "open_preview.ps1").read_text("utf-8")
     assert "[int]$Port = 8074" in server
-    assert server.count("@{ Name = 'candidates/") == 3
+    assert server.count("@{ Name = 'candidates/") == 2
     assert "$request.AddRange(0, $rangeEnd)" in server
     assert "[int]$range.StatusCode -ne 206" in server
     assert "No process was stopped" in server
@@ -335,10 +353,8 @@ def test_server_binds_hash_and_size_for_all_three_videos(tmp_path: Path) -> None
 
 def test_source_mp4_tamper_is_rejected_before_copy(tmp_path: Path) -> None:
     config_path, output, config = _fixture(tmp_path)
-    source04 = config["review_candidates"][1]
-    source_video = (
-        tmp_path / source04["package_dir"] / source04["video_relative_path"]
-    )
+    source04 = config["accepted_candidate_receipts"][0]
+    source_video = tmp_path / source04["package_dir"] / source04["video_relative_path"]
     source_video.write_bytes(source_video.read_bytes() + b"tamper")
 
     with pytest.raises(
@@ -355,10 +371,10 @@ def test_source_mp4_tamper_is_rejected_before_copy(tmp_path: Path) -> None:
 
 def test_source_manifest_self_hash_tamper_is_rejected(tmp_path: Path) -> None:
     config_path, output, config = _fixture(tmp_path)
-    source05 = config["review_candidates"][2]
-    manifest_path = tmp_path / source05["package_dir"] / source05[
-        "manifest_relative_path"
-    ]
+    source05 = config["review_candidates"][1]
+    manifest_path = (
+        tmp_path / source05["package_dir"] / source05["manifest_relative_path"]
+    )
     manifest = json.loads(manifest_path.read_text("utf-8"))
     manifest["tampered_note"] = True
     _write_json(manifest_path, manifest)

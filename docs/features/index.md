@@ -5,13 +5,13 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 ## Current Focus
 
 - feature: `OUT-11`
-- artifact: `clip-out11-five-source-short-portfolio-wave-v0-001`
-- state: `OUT11_FIVE_SOURCE_COMBINED_REVIEW_READY`
+- artifact: `clip-out11-five-source-short-portfolio-wave-v0-002`
+- state: `OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY`
 
 - canonical main: `663c6e6f19d1f176b96bc04c90993b00925b039c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `five_source_combined_review_ready`
-- review status: `pending_human_review`
+- canonical status: `repaired_two_candidate_combined_review_ready`
+- review status: `pending_human_review_for_two_repairs`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -23,18 +23,18 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `http://127.0.0.1:8074/index.html`
-- pause reason: `awaiting_exact_three_candidate_combined_human_review`
+- pause reason: `awaiting_exact_two_repair_candidate_combined_human_review`
 - accepted baseline recovery: ``
 - cover review status: ``
 - cross-machine resume: `tracked_code_docs_receipt_only_media_package_same_machine`
 - active rebuild contract: ``
-- evidence revision: `out11-five-source-combined-three-video-review-v0`
+- evidence revision: `out11-human-review-repair-two-video-review-v1`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `answer_one_combined_question_for_exact_out10_source04_source05_hashes`
+- decision required: `review_exact_repaired_out10_and_source05_once`
 - next review: ``
 
 ## Feature Table

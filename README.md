@@ -6,19 +6,21 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-11 note: OUT-10の最終返答をsource `30.014s`まで含めるendpoint修復後、公式公開動画から
-第4source `PQ54uUV41-k` と第5source `gUwJBRUIWow` を取得し、それぞれのofficial caption / native
-baked lyric /画面構成を観測してsource-adaptive Shortを生成した。OUT-08/09はaccepted contextだけ、
-OUT-10/04/05はhuman review pendingとして5-source scorecardへ記録した。review面は未判断三本だけを
-一列に置き、初期停止・mute・時刻0・音量上限25%・排他的再生・質問一件を保証する。
-exact SHAはOUT-10 `a53d0416...134f2`、SOURCE-04 `465d732c...16524`、SOURCE-05
-`370850c5...b578`。winner、共通crop/字幕/speaker-color policy、rights、production、thumbnail、
-public/publishingは未承認。詳細は
+OUT-11 note: 人間レビューでSOURCE-04 `465d732c...16524`は問題なしと確定し、MP4を一切
+変更せずaccepted receiptへ移した。OUT-10は新しい診察場面を途中で切っていた
+`a53d0416...134f2`から、意識確認・患者反応・「ゴッドハンドやね」が閉じるsource `34.785s`、
+SHA `62d4b45b...97cdd`へendpointだけを修復した。SOURCE-05は旧`370850c5...b578`の
+画面切替直後終了と未確認の歌唱・歌詞説明を退け、同一recordingの`202.586–260.643s`を
+source EOFまで収めたSHA `b4a01413...a4969`へ修復した。5-source scorecardはOUT-08/09/04を
+accepted context、OUT-10/05をhuman review pendingとして区別し、review面の動画は修復二本だけ。
+winner、共通crop/字幕/speaker-color policy、rights、production、thumbnail、public/publishingは
+未承認。詳細は
 [docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md](docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md)。
 
-OUT-10 note: 27.711s predecessorは先生側の宣言までは完了していたが、患者の最終返答を含めて
-いなかった。official response cueの最後までsource `30.014s`へ延長し、46 cue、media
-30.033333s、exact MP4 `a53d0416...134f2`としてOUT-11 combined reviewの先頭へ固定した。
+OUT-10 note: 30.014s predecessorは導入を維持したが、その直後に始まる意識確認場面を閉じず、
+人間レビューで未受理となった。終端だけをsource `34.785s`へ延長し、50 cue、media 34.800s、
+exact MP4 `62d4b45b...97cdd`としてOUT-11の修復二本reviewの先頭へ固定した。34.800sから始まる
+別キャラクター紹介は含めていない。
 詳細は
 [docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md](docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md)。
 

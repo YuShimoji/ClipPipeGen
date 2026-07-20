@@ -7,8 +7,8 @@ follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
 current artifact, then use an artifact-specific launcher. OUT-11 is currently a
-same-machine combined review package with three pending candidates and a five-source
-scorecard. OUT-10 is retained as the repaired first candidate in that combined review.
+same-machine combined review package with two repaired candidates, one accepted
+SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
 OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
 baseline evidence. OUT-07 is parked; its Thank native Shorts-cover
 semantic direction proxy below is historical local evidence, not an active
@@ -21,23 +21,24 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
-## `clip-out11-five-source-short-portfolio-wave-v0-001`
+## `clip-out11-five-source-short-portfolio-wave-v0-002`
 
 | Field | Value |
 |---|---|
-| title | OUT-11 Five-Source Short Portfolio Wave 01 — combined three-candidate human review |
-| purpose | Add fourth and fifth distinct official real sources, preserve OUT-08/09 as accepted context only, and present OUT-10/04/05 in one hash-bound review without choosing a winner or production policy. |
+| title | OUT-11 Five-Source Short Portfolio Wave 01 — human-review repairs combined review |
+| purpose | Bind the first combined human review to its exact hashes, retain SOURCE-04 exact bytes as an accepted receipt, and present only repaired OUT-10/SOURCE-05 for one final hash-bound review without choosing a winner or production policy. |
 | storage class | Tracked generic builders/CLI/tests/docs plus ignored same-machine source and combined packages under `episodes/`. No media is tracked or portable across clones. |
 | repo_relative_path | `src/integrations/render/source_adaptive_short_candidate.py`; `src/integrations/render/five_source_short_portfolio.py`; related CLI modules; `docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md` |
 | local_artifact_path | `episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/` |
-| state | `OUT11_FIVE_SOURCE_SHORT_PORTFOLIO_COMBINED_REVIEW_READY`; human review pending; acceptance false. |
-| review_candidates | OUT-10 `youtube:TlnviOwLRmk` SHA `a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2`; SOURCE-04 `youtube:PQ54uUV41-k` SHA `465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524`; SOURCE-05 `youtube:gUwJBRUIWow` SHA `370850c5222b70d944f7ba879849f33a2b448edae355e4e41dc35977bf22b578`. |
-| scorecard | Five rows: OUT-08/09 `accepted_internal` context only; OUT-10/04/05 `human_review_pending`; winner and universal production policies false. SHA `a40c7e84f66a60384c8b7aecd94730934f0a42b71aeae7a0a2769bdaad837678`. |
-| combined_manifest | 14 payload files; file SHA `b47f62e76033e0f7e46437baaf803db940f94a3668c4c13f07eff1ae2752baa1`; self-integrity SHA `b690230e944bcd6f3df4e5ec6fa8b0877831db16544a9fefb3ef08de08666a0c`. |
+| state | `OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY`; repaired OUT-10/SOURCE-05 human review pending; acceptance false. |
+| review_candidates | OUT-10 `youtube:TlnviOwLRmk`, `0.000–34.785s`, SHA `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`; SOURCE-05 `youtube:gUwJBRUIWow`, `202.586–260.643s`, SHA `b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969`. |
+| accepted_receipt | SOURCE-04 `youtube:PQ54uUV41-k` remains SHA `465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524`, 8,523,260 bytes, `accepted_internal`; no MP4 is copied into the active review. |
+| scorecard | Five rows: OUT-08/09/SOURCE-04 `accepted_internal` context only; OUT-10/SOURCE-05 `human_review_pending`; winner and universal production policies false. SHA `4b388531fb3093fd10449d7722656d2ea8dcae8bf9e4d0783d0b63f61ed0d2c9`. |
+| combined_manifest | 13 payload files; file SHA `e72de3fe092aafb72aa7dd59208c2c07e715c307ce9aac92ada61ae8e632a390`; self-integrity SHA `58276967cb2328f3a8b9ea8813bb85a4847f84e26e8bd465206c56d3e87da7bd`. |
 | preview_url | clean `http://127.0.0.1:8074/index.html`; validation listener stopped after browser/HTTP QA. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\open_preview.ps1 -Serve` |
-| validation | All three exact byte copies; full decode/faststart/signal pass; page 200; three Range 206; desktop/mobile no overflow; initial paused/muted/time0; exclusive playback; console/media error 0; final-three-second frame/audio evidence inspected. |
-| decision_required | Answer the one combined freeform question for the exact three hashes. Do not reopen OUT-08/09 or infer rights, winner, production, thumbnail, public, publishing, or universal subtitle/crop policy. |
+| validation | Two repaired exact byte copies; SOURCE-04 receipt without MP4 copy; full decode/faststart/signal pass; page 200; two Range 206; desktop/mobile no overflow; clean URL paused/muted/time0; explicit QA query muted playback; exclusive playback; console/media error 0; final-six-second frame/audio evidence inspected. |
+| decision_required | Answer the one combined freeform question for the exact repaired OUT-10/SOURCE-05 hashes. Do not reopen OUT-08/09/SOURCE-04 or infer speech/lyrics, rights, winner, production, thumbnail, public, publishing, or universal subtitle/crop policy. |
 
 Boundary flags remain false or pending:
 
@@ -58,26 +59,26 @@ Boundary flags remain false or pending:
 
 | Field | Value |
 |---|---|
-| title | OUT-10 Third-Source Short Portfolio Expansion v0 — final utterance endpoint repair |
-| purpose | Preserve the third-source Short and include the complete final official response after the 27.711s predecessor, then hand the exact repaired candidate to OUT-11 combined review. |
+| title | OUT-10 Third-Source Short Portfolio Expansion v0 — human-review semantic endpoint repair |
+| purpose | Preserve the accepted intro/topic/subtitle/audio/composition and extend only the endpoint through the complete consciousness-check scene after the 30.014s human-rejected predecessor. |
 | storage class | Tracked builder/CLI/tests/acquisition receipt/contract plus one ignored same-machine package. Source media, official captions, plan, MP4/ASS/SRT/JPG/readback/manifest/page/scorecard remain under ignored `episodes/`. |
 | repo_relative_path | `src/integrations/render/third_source_short_portfolio.py`; `src/cli/build_third_source_short_portfolio.py`; `docs/output_layer/out10_external_source_acquisition_receipt.json`; `docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` |
 | local_artifact_path | `episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/` |
-| state | `OUT10_FINAL_UTTERANCE_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW` |
+| state | `OUT10_HUMAN_REVIEW_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW` |
 | bounded_acquisition | Official hololive public YouTube only: metadata 5, detailed preflight 3, media download 1, selected candidate 1. No login/cookies/OAuth/DRM/geo/age/bot bypass or third-party downloader. |
 | selected_source | YouTube `TlnviOwLRmk`, distinct from OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc`; source video SHA `8cbb98eeaa62f539fc0a72c7e587bc961f47cb254a1aaabdb11bba7001c4a3a4`; locally derived audio SHA `159b95ffbe2cfe7c39923fa14fe4637e432683a58a0a22fcf141b8afe81f56c7`. |
-| selected_slice | Source `0.000–30.014s`; start/topic/middle unchanged. The official final response completes at 30.014s; unrelated next shot/dialogue begins at 30.033s. |
+| selected_slice | Source `0.000–34.785s`; intro/topic/middle unchanged. The consciousness check, patient reaction, and final punchline complete at 34.785s; a different character-introduction scene begins at 34.800s. |
 | composition | Full 1920x1080 source fit on `0x0D1624` neutral matte; crop/blur/source-derived background/native-caption suppression all false. Multiple left/right characters and native name labels remain visible. |
-| candidate | H.264/AAC 1080x1920 30fps yuv420p, semantic 30.014s/media 30.033333s, 46 burn-in cues, SHA `a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2`; final-response render 1, corrective pass 0. |
-| predecessor | SHA `3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884`, source end 27.711s, lineage `superseded_predecessor_final_response_incomplete`, acceptance false. |
-| captions | Existing 45 official JA cues unchanged; one official response cue added through 30.014s. |
-| candidate_manifest | `candidate_manifest.json`; file SHA `e27118cc55cc9969feaca3fe9ef595e494fab8c149f3f3386d535b23ae866d6b`; self-integrity SHA `2bb1e3abdc303eb65fe300b51afd134a717bea232e00027f57abf409ef0d60cb`. |
+| candidate | H.264/AAC 1080x1920 30fps yuv420p, semantic 34.785s/media 34.800s, 50 burn-in cues, SHA `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`; human-review repair render 1, corrective pass 0. |
+| predecessor | SHA `a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2`, source end 30.014s, lineage `superseded_human_review_new_examination_scene_did_not_naturally_close`, acceptance false. Earlier 27.711s lineage remains nested evidence. |
+| captions | Existing 46 official JA cues unchanged; four official dialogue cues added through 34.785s. |
+| candidate_manifest | `candidate_manifest.json`; file SHA `093d7355c16df01aafb099c24a643183c13a11263ba9d9ebc6d1dfc041d71e80`; self-integrity SHA `e1113ae94d7586de2b1f251c38d4479484c0cb67b31bdfd260bd1ed116d4abc2`. |
 | portfolio_scorecard | Superseded by OUT-11 five-source scorecard; OUT-10 is its first pending review row and winner remains false. |
 | preview_url | Reviewed through the OUT-11 combined clean URL `http://127.0.0.1:8074/index.html`. |
 | open_command | Use the OUT-11 combined review launcher above; do not open a separate intermediate review loop. |
-| validation | Full decode/faststart/signal passed; 46-cue containment passed; final-response endpoint evidence/selection/manifest hashes bind the source mapping; exact bytes verified again inside OUT-11 combined package. |
+| validation | Full decode/faststart/signal passed; 50-cue containment passed; human-review endpoint evidence/selection/manifest hashes bind the source mapping; final six-second frame/audio evidence inspected; exact bytes verified again inside OUT-11 combined package. |
 | subtitle_debt | `portfolio_subtitle_differentiation_debt=deferred`; white style is not a general standard. Revisit after 3–5 accepted real Shorts or an explicit production subtitle-design gate. |
-| decision_required | Review in the OUT-11 combined surface whether the final utterance now completes naturally. Bind the answer only to exact SHA `a53d0416...134f2`. |
+| decision_required | Review in the OUT-11 combined surface whether the complete consciousness-check scene now closes naturally. Bind the answer only to exact SHA `62d4b45b...97cdd`. |
 | protected_predecessors | OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc` accepted authority/media/packages are unchanged. |
 
 Boundary flags:

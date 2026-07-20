@@ -287,7 +287,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out11_artifact = "clip-out11-five-source-short-portfolio-wave-v0-001"
+    current_out11_artifact = "clip-out11-five-source-short-portfolio-wave-v0-002"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -1623,15 +1623,15 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "five_source_combined_review_ready"
+        "repaired_two_candidate_combined_review_ready"
     )
-    assert status["current_focus"]["review_status"] == "pending_human_review"
+    assert status["current_focus"]["review_status"] == (
+        "pending_human_review_for_two_repairs"
+    )
     assert status["current_focus"]["decision_required"] == (
-        "answer_one_combined_question_for_exact_out10_source04_source05_hashes"
+        "review_exact_repaired_out10_and_source05_once"
     )
-    assert status["current_focus"]["next_review_action_type"] == (
-        ""
-    )
+    assert status["current_focus"]["next_review_action_type"] == ("")
     assert status["current_focus"]["human_entrypoint"] == (
         "http://127.0.0.1:8074/index.html"
     )
@@ -1663,7 +1663,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
     assert status["current_focus"]["pause_reason"] == (
-        "awaiting_exact_three_candidate_combined_human_review"
+        "awaiting_exact_two_repair_candidate_combined_human_review"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
@@ -1692,9 +1692,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out11-five-source-short-portfolio-wave-v0-001"
+        "clip-out11-five-source-short-portfolio-wave-v0-002"
     )
-    assert "clip-out11-five-source-short-portfolio-wave-v0-001" in artifact_ids
+    assert "clip-out11-five-source-short-portfolio-wave-v0-002" in artifact_ids
     assert "clip-out10-third-source-short-portfolio-expansion-v0-001" in artifact_ids
     assert "clip-out09-second-source-short-repeatability-v0-001" in artifact_ids
     assert "clip-out08-real-unused-range-short-minibatch-v0-001" in artifact_ids
