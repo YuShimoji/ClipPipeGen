@@ -8,6 +8,18 @@ last_touched: 2026-07-21
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-21 — OUT-10 / OUT-11 exact acceptance closure
+
+添付実行契約に含まれる人間判断を、同一マシンの実媒体から再取得した完全SHA、bytes、durationへ
+bindした。OUT-10 `62d4b45b...97cdd`は発話直後の軽い切断感をsource-specific debtとして許容し、
+延長による次scene侵入を避けるため再修復しない。SOURCE-05 `b4a01413...a4969`はsource EOFまで
+切断感なしのBGM・映像中心PV候補として受理するが、歌唱・歌詞・話者は未確認のままにする。
+
+closure順はOUT-10、OUT-11。5 sourceはaccepted internal、winnerなし。Short追加生成・endpoint修復・
+再レビューを閉じ、OUT-12 one-command real video automationへ進む。rights、production、thumbnail、
+public/publishingは別gate。根拠: `docs/output_layer/out11_human_acceptance_receipt.json` + live media hash/probe +
+`docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md`。
+
 ## 2026-07-21 — OUT-11修復レビュー待ちをremote再開境界として固定
 
 検証済み実装head `249b3308b0d8a1cc8b75d37a245d717322859133`では、初回人間レビューを

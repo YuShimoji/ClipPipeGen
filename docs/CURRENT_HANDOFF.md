@@ -3,27 +3,27 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY
-progress_pct: 95
+health: OUT11_ACCEPTED_INTERNAL_CLOSED_OUT12_READY
+progress_pct: 100
 last_touched: 2026-07-21
 current_slice: OUT-11
-phase: human_review_ready
-canonical_status: repaired_two_candidate_combined_review_ready
+phase: accepted_internal_closed
+canonical_status: accepted_all_internal_no_winner
 active_branch: codex/out-11-five-source-short-portfolio-wave-v0
 verified_implementation_head: 249b3308b0d8a1cc8b75d37a245d717322859133
 source_branch_tip: branch_head_after_push
-closure_branch: null
+closure_branch: codex/out-11-five-source-short-portfolio-wave-v0
 remote_resume_contract: fetch_then_switch_codex_out11_branch_then_read_this_file
-current_title: OUT-11 repaired OUT-10 and SOURCE-05 combined review ready
-human_entrypoint: http://127.0.0.1:8074/index.html
+current_title: OUT-11 exact repaired candidates accepted; OUT-12 ready
+human_entrypoint: null
 portable_entrypoint: null
 review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\open_preview.ps1 -Serve
 review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\serve_preview.ps1
-decision_required: review_exact_repaired_out10_and_source05_once
-review_status: pending_human_review_for_two_repairs
+decision_required: null
+review_status: accepted_all_internal_no_winner
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_same_machine_two_video_review_one_accepted_receipt_and_five_source_scorecard
+local_artifact_role: ignored_same_machine_historical_review_media_with_tracked_acceptance_receipt
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_only_media_packages_same_machine
 rights_approval: pending
@@ -32,11 +32,11 @@ production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 thumbnail_acceptance: false
 public_or_publishing_acceptance: false
-human_review_pending: true
-acceptance_granted: false
+human_review_pending: false
+acceptance_granted: true
 winner_selected: false
 portfolio_subtitle_differentiation_debt: open_for_later_system_review_not_decided_here
-next_action: 修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ
+next_action: OUT-11 closure HEADからOUT-12 one-command real video automation v1を実装する
 active_artifact: clip-out11-five-source-short-portfolio-wave-v0-002
 canonical_main_head: 663c6e6f19d1f176b96bc04c90993b00925b039c
 source_of_truth: true
@@ -50,6 +50,15 @@ handoff_sync_verified_at: 2026-07-21T04:12:53+09:00
 # Current Handoff - ClipPipeGen
 
 ## 現在地
+
+添付された実行契約に含まれる最終人間判断を、実媒体から再取得した完全SHA・bytes・durationへ
+bindした。OUT-10 `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`
+は、発話直後の軽い切断感をsource-specific debtとして残しつつ、次scene侵入を避けるShort候補として
+受理した。SOURCE-05 `b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969`
+はsource EOFまで切断感なしとして受理した。歌唱・歌詞・話者は確認済みにしていない。
+
+正本receiptは`docs/output_layer/out11_human_acceptance_receipt.json`。論理closure順はOUT-10、
+OUT-11であり、追加Short修復・再render・再レビューは閉じた。次のactive workはOUT-12である。
 
 2026-07-21の人間レビューを旧exact SHAへ記録し、SOURCE-04は問題なしとしてexact bytesを
 accepted receiptへ移した。OUT-10は診察場面を閉じる34.785sまで終端だけを延長し、SOURCE-05は

@@ -3,18 +3,18 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY
-progress_pct: 95
+health: OUT11_ACCEPTED_INTERNAL_CLOSED_OUT12_READY
+progress_pct: 100
 last_touched: 2026-07-21
-state_revision: out11-human-review-two-repair-combined-review-ready-2026-07-21
-contract_repair_status: source04_accepted_exact_bytes_out10_source05_repaired_two_candidate_review_built
+state_revision: out11-exact-two-repair-acceptance-closed-2026-07-21
+contract_repair_status: source04_out10_source05_exact_acceptance_bound_short_repair_loop_closed
 current_slice: OUT-11
-phase: human_review_ready
-canonical_status: repaired_two_candidate_combined_review_ready
+phase: accepted_internal_closed
+canonical_status: accepted_all_internal_no_winner
 active_branch: codex/out-11-five-source-short-portfolio-wave-v0
 verified_implementation_head: 249b3308b0d8a1cc8b75d37a245d717322859133
 source_branch_tip: branch_head_after_push
-closure_branch: null
+closure_branch: codex/out-11-five-source-short-portfolio-wave-v0
 remote_resume_contract: fetch_then_switch_codex_out11_branch_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 249b3308b0d8a1cc8b75d37a245d717322859133
@@ -23,20 +23,20 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-11 repaired OUT-10 and SOURCE-05 combined review ready
-human_entrypoint: http://127.0.0.1:8074/index.html
+current_title: OUT-11 exact repaired candidates accepted and Short detour closed
+human_entrypoint: null
 portable_entrypoint: null
 review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\open_preview.ps1 -Serve
 review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\serve_preview.ps1
 machine_readback: episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/review_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: review_exact_repaired_out10_and_source05_once
-review_status: pending_human_review_for_two_repairs
-review_scope: 修復後OUT-10は新しい診察場面の反応と台詞まで自然に閉じたか。修復後SOURCE-05はカード列から最終タイトルまでの音声・映像・終端が一つの単位として成立したか。二本それぞれに明確な違和感があれば自由に教えてください。
-reviewed_at: null
+decision_required: null
+review_status: accepted_all_internal_no_winner
+review_scope: exact acceptance recorded; no additional Short review or repair
+reviewed_at: 2026-07-21
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_same_machine_two_video_review_one_accepted_receipt_and_5_source_scorecard
+local_artifact_role: ignored_same_machine_historical_review_media_with_tracked_acceptance_receipt
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_receipt_only_media_package_same_machine
 cross_host_resume_status: code_and_receipt_portable_candidate_media_absent_on_other_host
@@ -46,12 +46,12 @@ optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out11-human-review-repair-two-video-review-v1
+evidence_revision: out11-human-acceptance-closure-v1
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
 local_artifact_evidence_receipt: docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md
-local_package_requirement: present_same_machine_human_review_pending
+local_package_requirement: historical_same_machine_evidence_not_required_to_reopen_acceptance
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
@@ -63,31 +63,31 @@ last_verified_at: 2026-07-21
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8074/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: awaiting_exact_two_repair_candidate_combined_human_review
+pause_reason: null
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: source04_accepted_out10_source05_repairs_pending_freeform
-user_feedback_overall: null
-content_selection_status: source04_accepted_exact_bytes_out10_source05_repaired_machine_ready_human_pending
+human_review_decision: source04_out10_source05_accepted_internal_exact_bytes_no_winner
+user_feedback_overall: accept_out10_with_light_cut_debt_accept_source05_to_eof_no_cut_feel
+content_selection_status: five_source_portfolio_accepted_internal_short_detour_closed
 subtitle_presentation_timing_status: source_specific_authorities_machine_pass_source05_semantics_unclaimed
-endpoint_status: source04_accepted_out10_source05_repair_evidence_bound_human_semantic_review_pending
-reviewed_by_human: false
-human_review_pending: true
-acceptance_granted: false
-batch_acceptance: null
-candidate_01_acceptance: pending
-candidate_02_acceptance: pending
-accepted_candidate_ids: [source04_candidate_01]
+endpoint_status: out10_accepted_with_source_specific_debt_source05_accepted_at_source_eof
+reviewed_by_human: true
+human_review_pending: false
+acceptance_granted: true
+batch_acceptance: accepted_all_internal_no_winner
+candidate_01_acceptance: accepted_internal_with_source_specific_debt
+candidate_02_acceptance: accepted_internal
+accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_candidate_01]
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: validation_listener_stopped_restart_with_canonical_foreground_command
 next_review_due: null
-next_action: 修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。
+next_action: OUT-12 one-command real video automation v1をOUT-11 closure HEADから実装する。
 active_artifact: clip-out11-five-source-short-portfolio-wave-v0-002
 current_review_component: out11_combined_repaired_out10_source05_review_with_source04_accepted_receipt
 target_candidate_count: 2
@@ -176,7 +176,7 @@ default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d4
 source_specific_caption_suppression_observation: source_specific_caption_band_suppression_observed_acceptable_not_generalized
 source_specific_caption_suppression_design_acceptance: false
 out10_successor_candidate: OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION
-out10_implementation_status: human_review_semantic_endpoint_repair_ready_inside_out11_two_candidate_review
+out10_implementation_status: accepted_internal_with_source_specific_endpoint_debt_closed
 out10_stop_state: null
 out10_inventory_receipt: docs/output_layer/out10_external_source_acquisition_receipt.json
 out10_inventory_count: 5

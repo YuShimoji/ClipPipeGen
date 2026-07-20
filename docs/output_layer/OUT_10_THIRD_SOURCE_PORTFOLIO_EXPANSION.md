@@ -5,8 +5,8 @@
 ## 到達状態
 
 第三distinct source `youtube:TlnviOwLRmk` の成立済み導入・主題・字幕style・音量方針・
-neutral matte構図を維持し、人間レビューで未完と判定された終端だけを修復した。stateは
-`OUT10_HUMAN_REVIEW_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW`。
+neutral matte構図を維持し、人間レビューで未完と判定された終端だけを修復した。最終exact MP4は
+2026-07-21に`accepted_internal_with_source_specific_debt`として受理され、OUT-10を閉じた。
 
 旧exact MP4 `a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2`
 （16,821,370 bytes、source `0.000–30.014s`）は、導入自体は成立していたが、直後に始まる
@@ -48,10 +48,12 @@ package:
   音声継続を確認した。別sceneの先頭を数frame付加して区切りにしていない。
 - package全payload hashとmanifest self-integrity、OUT-11へのexact byte copyが一致。
 
-## 残る人間判断と閉じたgate
+## 最終人間判断と閉じたgate
 
-OUT-11統合reviewで、意識確認・患者反応・最終台詞まで自然に閉じ、成立済みの導入・字幕・
-音声・構図に回帰がないかだけを確認する。回答は新SHAにのみbindする。
+完全SHA `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`、
+19,319,488 bytes、media 34.800sへ「発話直後のため軽い切断感は残るが、延長すると次sceneへ
+掛かるためShort候補として受理」をbindした。このdebtはsource固有であり、再修復しない。
+receiptは`docs/output_layer/out11_human_acceptance_receipt.json`。
 
-human acceptance、rights、production render/subtitle/image quality、thumbnail、winner、
-public/publishing/upload/OAuth、cross-machine portability、main統合は未承認。
+rights、production render/subtitle/image quality、thumbnail、winner、public/publishing/upload/OAuth、
+cross-machine portabilityは未承認。

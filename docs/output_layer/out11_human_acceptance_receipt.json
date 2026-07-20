@@ -1,0 +1,64 @@
+{
+  "schema_version": "clippipegen.out11.human_acceptance_receipt.v1",
+  "artifact_id": "clip-out11-five-source-short-portfolio-wave-v0-002",
+  "recorded_at": "2026-07-21",
+  "decision_source": "user_attached_execution_prompt",
+  "closure_order": [
+    "OUT-10",
+    "OUT-11"
+  ],
+  "candidates": [
+    {
+      "portfolio_slot": "OUT-10",
+      "source_identity": "youtube:TlnviOwLRmk",
+      "source_start_seconds": 0.0,
+      "source_end_seconds": 34.785,
+      "semantic_duration_seconds": 34.785,
+      "media_duration_seconds": 34.8,
+      "media_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd",
+      "media_byte_size": 19319488,
+      "status": "accepted_internal_with_source_specific_debt",
+      "human_judgment": "発話直後のため軽い切断感は残るが、延長すると次sceneへ掛かるためShort候補として受理する。",
+      "source_specific_debt": "light_post_utterance_cut_feel_accepted_to_avoid_next_scene_intrusion",
+      "repair_reopened": false
+    },
+    {
+      "portfolio_slot": "SOURCE-05",
+      "source_identity": "youtube:gUwJBRUIWow",
+      "source_start_seconds": 202.586,
+      "source_end_seconds": 260.643,
+      "semantic_duration_seconds": 58.057,
+      "media_duration_seconds": 58.0,
+      "media_sha256": "b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969",
+      "media_byte_size": 20469323,
+      "status": "accepted_internal",
+      "human_judgment": "約58秒でsource終端まで流れ、終端の切断感はない。BGM・映像中心のPV候補として受理する。",
+      "unconfirmed_semantics": [
+        "singing",
+        "lyrics",
+        "speaker_identity"
+      ],
+      "repair_reopened": false
+    }
+  ],
+  "source_04_receipt": {
+    "source_identity": "youtube:PQ54uUV41-k",
+    "media_sha256": "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524",
+    "media_byte_size": 8523260,
+    "status": "accepted_internal_exact_bytes_2026_07_21",
+    "media_copied_into_combined_review": false
+  },
+  "portfolio_status": "accepted_all_internal_no_winner",
+  "human_review_pending": false,
+  "acceptance_granted": true,
+  "winner_selected": false,
+  "closed_gates": {
+    "rights_approval": false,
+    "production_acceptance": false,
+    "production_subtitle_design_acceptance": false,
+    "production_image_quality_acceptance": false,
+    "thumbnail_acceptance": false,
+    "public_or_publishing_acceptance": false,
+    "upload_attempted": false
+  }
+}

@@ -30,21 +30,21 @@ opened by the root launcher.
 | storage class | Tracked generic builders/CLI/tests/docs plus ignored same-machine source and combined packages under `episodes/`. No media is tracked or portable across clones. |
 | repo_relative_path | `src/integrations/render/source_adaptive_short_candidate.py`; `src/integrations/render/five_source_short_portfolio.py`; related CLI modules; `docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md` |
 | local_artifact_path | `episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/` |
-| state | `OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY`; repaired OUT-10/SOURCE-05 human review pending; acceptance false. |
+| state | `OUT11_ACCEPTED_INTERNAL_CLOSED`; repaired OUT-10/SOURCE-05 exact bytes accepted; winner false. |
 | review_candidates | OUT-10 `youtube:TlnviOwLRmk`, `0.000–34.785s`, SHA `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`; SOURCE-05 `youtube:gUwJBRUIWow`, `202.586–260.643s`, SHA `b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969`. |
 | accepted_receipt | SOURCE-04 `youtube:PQ54uUV41-k` remains SHA `465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524`, 8,523,260 bytes, `accepted_internal`; no MP4 is copied into the active review. |
-| scorecard | Five rows: OUT-08/09/SOURCE-04 `accepted_internal` context only; OUT-10/SOURCE-05 `human_review_pending`; winner and universal production policies false. SHA `4b388531fb3093fd10449d7722656d2ea8dcae8bf9e4d0783d0b63f61ed0d2c9`. |
+| scorecard | Five rows accepted internal; OUT-10 keeps a source-specific light endpoint debt and SOURCE-05 keeps singing/lyrics/speaker unconfirmed; winner and universal production policies false. Historical scorecard SHA `4b388531fb3093fd10449d7722656d2ea8dcae8bf9e4d0783d0b63f61ed0d2c9`. |
 | combined_manifest | 13 payload files; file SHA `e72de3fe092aafb72aa7dd59208c2c07e715c307ce9aac92ada61ae8e632a390`; self-integrity SHA `58276967cb2328f3a8b9ea8813bb85a4847f84e26e8bd465206c56d3e87da7bd`. |
 | preview_url | clean `http://127.0.0.1:8074/index.html`; validation listener stopped after browser/HTTP QA. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\open_preview.ps1 -Serve` |
 | validation | Two repaired exact byte copies; SOURCE-04 receipt without MP4 copy; full decode/faststart/signal pass; page 200; two Range 206; desktop/mobile no overflow; clean URL paused/muted/time0; explicit QA query muted playback; exclusive playback; console/media error 0; final-six-second frame/audio evidence inspected. |
-| decision_required | Answer the one combined freeform question for the exact repaired OUT-10/SOURCE-05 hashes. Do not reopen OUT-08/09/SOURCE-04 or infer speech/lyrics, rights, winner, production, thumbnail, public, publishing, or universal subtitle/crop policy. |
+| decision_required | None. Acceptance receipt: `docs/output_layer/out11_human_acceptance_receipt.json`. Do not reopen Short repair or infer speech/lyrics, rights, winner, production, thumbnail, public, publishing, or universal subtitle/crop policy. |
 
 Boundary flags remain false or pending:
 
 - `internal_review_only=true`
-- `human_review_pending=true`
-- `acceptance_granted=false`
+- `human_review_pending=false`
+- `acceptance_granted=true`
 - `winner_selected=false`
 - `rights_status=pending`
 - `production_acceptance=false`
@@ -64,7 +64,7 @@ Boundary flags remain false or pending:
 | storage class | Tracked builder/CLI/tests/acquisition receipt/contract plus one ignored same-machine package. Source media, official captions, plan, MP4/ASS/SRT/JPG/readback/manifest/page/scorecard remain under ignored `episodes/`. |
 | repo_relative_path | `src/integrations/render/third_source_short_portfolio.py`; `src/cli/build_third_source_short_portfolio.py`; `docs/output_layer/out10_external_source_acquisition_receipt.json`; `docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` |
 | local_artifact_path | `episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/` |
-| state | `OUT10_HUMAN_REVIEW_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW` |
+| state | `OUT10_ACCEPTED_INTERNAL_WITH_SOURCE_SPECIFIC_DEBT_CLOSED` |
 | bounded_acquisition | Official hololive public YouTube only: metadata 5, detailed preflight 3, media download 1, selected candidate 1. No login/cookies/OAuth/DRM/geo/age/bot bypass or third-party downloader. |
 | selected_source | YouTube `TlnviOwLRmk`, distinct from OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc`; source video SHA `8cbb98eeaa62f539fc0a72c7e587bc961f47cb254a1aaabdb11bba7001c4a3a4`; locally derived audio SHA `159b95ffbe2cfe7c39923fa14fe4637e432683a58a0a22fcf141b8afe81f56c7`. |
 | selected_slice | Source `0.000–34.785s`; intro/topic/middle unchanged. The consciousness check, patient reaction, and final punchline complete at 34.785s; a different character-introduction scene begins at 34.800s. |
@@ -78,7 +78,7 @@ Boundary flags remain false or pending:
 | open_command | Use the OUT-11 combined review launcher above; do not open a separate intermediate review loop. |
 | validation | Full decode/faststart/signal passed; 50-cue containment passed; human-review endpoint evidence/selection/manifest hashes bind the source mapping; final six-second frame/audio evidence inspected; exact bytes verified again inside OUT-11 combined package. |
 | subtitle_debt | `portfolio_subtitle_differentiation_debt=deferred`; white style is not a general standard. Revisit after 3–5 accepted real Shorts or an explicit production subtitle-design gate. |
-| decision_required | Review in the OUT-11 combined surface whether the complete consciousness-check scene now closes naturally. Bind the answer only to exact SHA `62d4b45b...97cdd`. |
+| decision_required | None. Exact SHA `62d4b45b...97cdd` accepted with the recorded light post-utterance cut debt; do not re-repair. |
 | protected_predecessors | OUT-08 `7J5aS_pcBj4` and OUT-09 `D4i4fjs9PWc` accepted authority/media/packages are unchanged. |
 
 Boundary flags:

@@ -2,9 +2,23 @@
 
 更新日: 2026-07-21
 
-状態: `OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY`
+状態: `OUT11_ACCEPTED_INTERNAL_CLOSED`
 
 artifact: `clip-out11-five-source-short-portfolio-wave-v0-002`
+
+## 2026-07-21 exact acceptance closure
+
+修復後OUT-10は完全SHA `62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd`、
+19,319,488 bytes、media 34.800sへ人間判断をbindした。発話直後の軽い切断感は残るが、延長で
+次sceneへ侵入するためShort用途で受理し、source-specific debtとして閉じた。
+
+修復後SOURCE-05は完全SHA `b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969`、
+20,469,323 bytes、media 58.000sへ、source EOFまで切断感なし、BGM・映像中心のPV候補として
+受理した判断をbindした。歌唱、歌詞、話者は確認済みとしない。
+
+OUT-10 closureを先、OUT-11 closureを後とする。5 sourceは`accepted_all_internal_no_winner`。
+追加Short修復、再render、再レビューは閉じた。正本receiptは
+`docs/output_layer/out11_human_acceptance_receipt.json`。
 
 ## 目的と今回の判断反映
 
