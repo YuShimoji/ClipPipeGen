@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from src.cli import main as cli_main
+from src.integrations.render import endpoint_preflight as endpoint
 from src.integrations.render import third_source_short_portfolio as out10
 from src.integrations.render import vertical_short_candidate as vertical
 
@@ -35,9 +36,15 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
     transcript = episode / "transcript_source_captions.json"
     edit_pack = episode / "edit_pack.json"
     receipt = root / "docs" / "output_layer" / "out10_external_receipt.json"
-    candidate_end = 27.711
+    candidate_end = 30.014
     predecessor_end = out10.PREDECESSOR_SOURCE_END_SECONDS
-    bounds = [round(predecessor_end * index / 15, 3) for index in range(16)]
+    bounds = [
+        round(
+            predecessor_end * index / out10.PREDECESSOR_CAPTION_CUE_COUNT,
+            3,
+        )
+        for index in range(out10.PREDECESSOR_CAPTION_CUE_COUNT + 1)
+    ]
     bounds.append(candidate_end)
     caption_events = []
     transcript_segments = []
@@ -146,6 +153,111 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
             },
         },
     )
+    endpoint_dir = episode / "inspection" / "endpoint"
+    endpoint_dir.mkdir(parents=True)
+    contact_sheet = endpoint_dir / "endpoint_contact_sheet.jpg"
+    waveform = endpoint_dir / "endpoint_waveform.png"
+    contact_sheet.write_bytes(b"endpoint-contact-sheet")
+    waveform.write_bytes(b"endpoint-waveform")
+    endpoint_spec = {
+        "source": {
+            "media_path": video.relative_to(root).as_posix(),
+            "identity": "youtube:THIRD123456",
+            "sha256": out10._sha256(video),
+            "expected_sha256": out10._sha256(video),
+            "duration_seconds": 40.0,
+            "frame_rate": 30.0,
+        },
+        "source_start_seconds": 0.0,
+        "proposed_end_seconds": candidate_end,
+        "search_range": {
+            "start_seconds": predecessor_end,
+            "end_seconds": predecessor_end + 12.0,
+        },
+        "caption_track": {
+            "authority": "official_json3",
+            "expected_authority": "official_json3",
+            "source_identity": "youtube:THIRD123456",
+            "source_media_sha256": out10._sha256(video),
+            "mapping_complete": True,
+            "mapping_gaps": [],
+            "cues": [
+                {
+                    "cue_id": f"event_{index:03d}",
+                    "start_seconds": start,
+                    "end_seconds": end,
+                }
+                for index, (start, end) in enumerate(
+                    zip(bounds, bounds[1:]),
+                    start=1,
+                )
+            ],
+        },
+        "probe_status": {"frame_ok": True, "audio_ok": True},
+        "limits": {
+            "min_duration_seconds": 12.0,
+            "max_duration_seconds": 60.0,
+            "repair_max_extension_seconds": 12.0,
+            "caption_guard_seconds": 0.0,
+            "candidate_limit": 12,
+        },
+        "observations": [
+            {"kind": "shot_transition", "time_seconds": 30.033333},
+            {"kind": "high_motion", "time_seconds": candidate_end},
+        ],
+    }
+    preflight = endpoint.build_endpoint_preflight(endpoint_spec)
+    selection = endpoint.build_endpoint_selection(
+        preflight,
+        {
+            "preflight_sha256": endpoint.payload_sha256(preflight),
+            "selected_candidate_id": "endpoint-002",
+            "selected_end_seconds": candidate_end,
+            "agent_observation": {
+                "last_utterance": "complete",
+                "audio": "complete",
+                "telop_action_transition": "complete",
+                "topic_closure": "complete",
+                "unrelated_topic": "not_overrun",
+                "earlier_candidate_rejections": [
+                    {
+                        "candidate_id": "endpoint-001",
+                        "reason": "the response utterance has only just started",
+                    }
+                ],
+            },
+        },
+    )
+    preflight_path = endpoint_dir / "endpoint_preflight.json"
+    selection_path = endpoint_dir / "endpoint_selection.json"
+    _write_json(preflight_path, preflight)
+    _write_json(selection_path, selection)
+    evidence_manifest = endpoint_dir / "endpoint_evidence_manifest.json"
+    evidence_files = [preflight_path, selection_path, contact_sheet, waveform]
+    evidence_payload = {
+        "schema_version": "clippipegen.endpoint_evidence_manifest.v0",
+        "source_identity": "youtube:THIRD123456",
+        "source_media_sha256": out10._sha256(video),
+        "selected_end_seconds": candidate_end,
+        "selection_state": "ready_for_render",
+        "files": [
+            {
+                "path": path.name,
+                "sha256": out10._sha256(path),
+                "byte_size": path.stat().st_size,
+            }
+            for path in evidence_files
+        ],
+        "file_count": len(evidence_files),
+        "manifest_self_integrity": {
+            "algorithm": "sha256-canonical-json-self-null",
+            "sha256": None,
+        },
+    }
+    evidence_payload["manifest_self_integrity"]["sha256"] = (
+        out10._canonical_manifest_self_hash(evidence_payload)
+    )
+    _write_json(evidence_manifest, evidence_payload)
     roles = {
         "rights_manifest": rights,
         "material_ledger": ledger,
@@ -153,141 +265,154 @@ def _fixture(tmp_path: Path) -> dict[str, Path]:
         "authoritative_transcript": transcript,
         "edit_pack": edit_pack,
         "source_selection_receipt": receipt,
+        "endpoint_preflight": preflight_path,
+        "endpoint_selection": selection_path,
+        "endpoint_evidence_manifest": evidence_manifest,
     }
     plan = episode / "out10_candidate_plan_input.json"
-    _write_json(
-        plan,
-        {
-            "schema_version": out10.PLAN_SCHEMA_VERSION,
-            "artifact_id": out10.ARTIFACT_ID,
-            "episode_id": episode.name,
-            "source_identity": {
-                "platform": "youtube",
-                "provider_id": "THIRD123456",
-                "url": "https://www.youtube.com/watch?v=THIRD123456",
-                "title": "third source",
-                "channel": "official channel",
-                "channel_id": "UCJFZiqLMntJufDCHc6bQixg",
-                "official_channel": True,
-                "channel_verified": True,
+    plan_payload = {
+        "schema_version": out10.PLAN_SCHEMA_VERSION,
+        "artifact_id": out10.ARTIFACT_ID,
+        "episode_id": episode.name,
+        "source_identity": {
+            "platform": "youtube",
+            "provider_id": "THIRD123456",
+            "url": "https://www.youtube.com/watch?v=THIRD123456",
+            "title": "third source",
+            "channel": "official channel",
+            "channel_id": "UCJFZiqLMntJufDCHc6bQixg",
+            "official_channel": True,
+            "channel_verified": True,
+        },
+        "external_acquisition": {
+            "authorized": True,
+            "anonymous": True,
+            "metadata_candidate_count": 5,
+            "detailed_preflight_count": 3,
+            "media_download_count": 1,
+            "cookie_or_login_used": False,
+            "bypass_used": False,
+            "alternate_candidate_download_on_failure": False,
+            "source_audio_derived_locally": True,
+        },
+        "materials": {
+            "source_video": {
+                "material_id": "video_01",
+                "sha256": out10._sha256(video),
             },
-            "external_acquisition": {
-                "authorized": True,
-                "anonymous": True,
-                "metadata_candidate_count": 5,
-                "detailed_preflight_count": 3,
-                "media_download_count": 1,
-                "cookie_or_login_used": False,
-                "bypass_used": False,
-                "alternate_candidate_download_on_failure": False,
-                "source_audio_derived_locally": True,
-            },
-            "materials": {
-                "source_video": {
-                    "material_id": "video_01",
-                    "sha256": out10._sha256(video),
-                },
-                "source_audio": {
-                    "material_id": "audio_01",
-                    "sha256": out10._sha256(audio),
-                },
-            },
-            "expected_inputs": [
-                {
-                    "role": role,
-                    "path": path.relative_to(root).as_posix(),
-                    "sha256": out10._sha256(path),
-                }
-                for role, path in roles.items()
-            ],
-            "composition_policy": {
-                "mode": vertical.NEUTRAL_MATTE_BACKGROUND_POLICY,
-                "source_frame_pixels": {"width": 1920, "height": 1080},
-                "foreground_source_crop_pixels": {
-                    "x": 0,
-                    "y": 0,
-                    "width": 1920,
-                    "height": 1080,
-                },
-                "matte_color": "0x0D1624",
-                "source_derived_background": False,
-                "blur_applied": False,
-                "crop_applied": False,
-                "source_native_caption_pixels_suppressed": False,
-                "additional_blur_or_frosted_caption_surface": False,
-                "full_source_blur_fallback_allowed": False,
-                "important_content_preserved": True,
-            },
-            "candidate": {
-                "candidate_id": "candidate_01",
-                "source_start_seconds": 0.0,
-                "source_end_seconds": candidate_end,
-                "duration_seconds": candidate_end,
-                "authority_cut_id": "cut_001",
-                "candidate_count_considered": 1,
-                "start_basis": "opening",
-                "end_basis": "closed event",
-                "next_scene_transition_seconds": 27.733,
-                "rationale": "setup to payoff",
-                "narrative_arc": {
-                    "setup": "setup",
-                    "development": "development",
-                    "payoff": "payoff",
-                },
-                "subtitles": planned_subtitles,
-            },
-            "endpoint_repair": {
-                "predecessor_state": out10.PREDECESSOR_STATE,
-                "predecessor_video_sha256": out10.PREDECESSOR_VIDEO_SHA256,
-                "predecessor_source_end_seconds": predecessor_end,
-                "predecessor_caption_cue_count": 15,
-                "lineage_reason": out10.LINEAGE_REASON,
-                "inherited_pass": [
-                    "content_and_tempo",
-                    "subtitle_audio_sync",
-                    "subtitle_readability",
-                    "neutral_matte_composition",
-                    "safe_review_route",
-                ],
-                "probe_candidates": [
-                    {
-                        "source_seconds": predecessor_end,
-                        "status": "rejected_active_telop_motion",
-                    },
-                    {
-                        "source_seconds": candidate_end,
-                        "status": "selected",
-                    },
-                ],
-                "selection_basis": "caption, pose, and shot boundary complete",
-            },
-            "portfolio_subtitle_differentiation_debt": {
-                "status": "deferred",
-                "current_white_style_approved_as_general_standard": False,
-                "speaker_identity_inference_allowed": False,
-                "revisit_condition": "after_3_to_5_accepted_real_shorts_or_explicit_production_subtitle_design_gate",
-            },
-            "review_questions": [out10.REVIEW_QUESTION],
-            "boundaries": {
-                "rights_status": "pending",
-                "production_candidate": False,
-                "production_acceptance": False,
-                "production_subtitle_design_acceptance": False,
-                "production_image_quality_acceptance": False,
-                "thumbnail_acceptance": False,
-                "public_or_publishing_acceptance": False,
-                "publish_or_upload_attempted": False,
-                "cross_machine_portability": False,
-                "human_review_pending": True,
-                "acceptance_granted": False,
+            "source_audio": {
+                "material_id": "audio_01",
+                "sha256": out10._sha256(audio),
             },
         },
+        "expected_inputs": [
+            {
+                "role": role,
+                "path": path.relative_to(root).as_posix(),
+                "sha256": out10._sha256(path),
+            }
+            for role, path in roles.items()
+        ],
+        "composition_policy": {
+            "mode": vertical.NEUTRAL_MATTE_BACKGROUND_POLICY,
+            "source_frame_pixels": {"width": 1920, "height": 1080},
+            "foreground_source_crop_pixels": {
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080,
+            },
+            "matte_color": "0x0D1624",
+            "source_derived_background": False,
+            "blur_applied": False,
+            "crop_applied": False,
+            "source_native_caption_pixels_suppressed": False,
+            "additional_blur_or_frosted_caption_surface": False,
+            "full_source_blur_fallback_allowed": False,
+            "important_content_preserved": True,
+        },
+        "candidate": {
+            "candidate_id": "candidate_01",
+            "source_start_seconds": 0.0,
+            "source_end_seconds": candidate_end,
+            "duration_seconds": candidate_end,
+            "authority_cut_id": "cut_001",
+            "candidate_count_considered": 1,
+            "start_basis": "opening",
+            "end_basis": "closed event",
+            "next_scene_transition_seconds": 30.033333,
+            "rationale": "setup to complete response payoff",
+            "narrative_arc": {
+                "setup": "setup",
+                "development": "development",
+                "payoff": "payoff",
+            },
+            "subtitles": planned_subtitles,
+        },
+        "endpoint_repair": {
+            "predecessor_state": out10.PREDECESSOR_STATE,
+            "predecessor_video_sha256": out10.PREDECESSOR_VIDEO_SHA256,
+            "predecessor_source_end_seconds": predecessor_end,
+            "predecessor_caption_cue_count": (out10.PREDECESSOR_CAPTION_CUE_COUNT),
+            "lineage_reason": out10.LINEAGE_REASON,
+            "earlier_lineage": {
+                "predecessor_video_sha256": (out10.EARLIER_PREDECESSOR_VIDEO_SHA256),
+                "predecessor_source_end_seconds": (
+                    out10.EARLIER_PREDECESSOR_SOURCE_END_SECONDS
+                ),
+                "lineage_reason": out10.EARLIER_LINEAGE_REASON,
+            },
+            "inherited_pass": [
+                "content_and_tempo",
+                "subtitle_audio_sync",
+                "subtitle_readability",
+                "neutral_matte_composition",
+                "safe_review_route",
+            ],
+            "probe_candidates": [
+                {
+                    "source_seconds": predecessor_end,
+                    "status": "rejected_active_telop_motion",
+                },
+                {
+                    "source_seconds": candidate_end,
+                    "status": "selected",
+                },
+            ],
+            "selection_basis": "caption, pose, and shot boundary complete",
+        },
+        "portfolio_subtitle_differentiation_debt": {
+            "status": "deferred",
+            "current_white_style_approved_as_general_standard": False,
+            "speaker_identity_inference_allowed": False,
+            "revisit_condition": "after_3_to_5_accepted_real_shorts_or_explicit_production_subtitle_design_gate",
+        },
+        "review_questions": [out10.REVIEW_QUESTION],
+        "boundaries": {
+            "rights_status": "pending",
+            "production_candidate": False,
+            "production_acceptance": False,
+            "production_subtitle_design_acceptance": False,
+            "production_image_quality_acceptance": False,
+            "thumbnail_acceptance": False,
+            "public_or_publishing_acceptance": False,
+            "publish_or_upload_attempted": False,
+            "cross_machine_portability": False,
+            "human_review_pending": True,
+            "acceptance_granted": False,
+        },
+    }
+    _write_json(
+        plan,
+        endpoint.bind_builder_input(plan_payload, preflight, selection),
     )
     return {
         "root": root,
         "episode": episode,
         "output": review / "out10_third_source_portfolio",
         "plan": plan,
+        "preflight": preflight_path,
+        "selection": selection_path,
     }
 
 
@@ -315,8 +440,8 @@ def _fake_render(**kwargs) -> dict:
         "full_decode": {"status": "passed", "exit_code": 0, "stderr_empty": True},
         "faststart": {"status": "passed", "moov_before_mdat": True},
         "source_probe": {
-            "video": {"width": 1920, "height": 1080, "duration_seconds": 20},
-            "audio": {"duration_seconds": 20},
+            "video": {"width": 1920, "height": 1080, "duration_seconds": 40},
+            "audio": {"duration_seconds": 40},
         },
         "composition_policy": kwargs["composition_policy"],
         "audio": {
@@ -359,14 +484,12 @@ def test_builds_third_source_package_and_scorecard(tmp_path: Path) -> None:
     assert readback["state"] == out10.STATE
     assert readback["source_difference"]["all_distinct"] is True
     assert readback["candidate"]["human_review_pending"] is True
-    assert readback["subtitle"]["count"] == 16
+    assert readback["subtitle"]["count"] == 46
     assert readback["repair_lineage"]["predecessor_video_sha256"] == (
         out10.PREDECESSOR_VIDEO_SHA256
     )
     assert readback["endpoint_repair"]["additional_caption_cue_count"] == 1
-    assert readback["portfolio_subtitle_differentiation_debt"]["status"] == (
-        "deferred"
-    )
+    assert readback["portfolio_subtitle_differentiation_debt"]["status"] == ("deferred")
     scorecard = json.loads(
         (fixture["output"] / "source_portfolio_scorecard.json").read_text(
             encoding="utf-8"
@@ -387,7 +510,14 @@ def test_rejects_predecessor_recording_identity(tmp_path: Path) -> None:
     fixture = _fixture(tmp_path)
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
     plan["source_identity"]["provider_id"] = out10.OUT09_PROVIDER_ID
-    _write_json(fixture["plan"], plan)
+    _write_json(
+        fixture["plan"],
+        endpoint.bind_builder_input(
+            plan,
+            json.loads(fixture["preflight"].read_text(encoding="utf-8")),
+            json.loads(fixture["selection"].read_text(encoding="utf-8")),
+        ),
+    )
     with pytest.raises(out10.ThirdSourceShortPortfolioError, match="not distinct"):
         out10.build_third_source_short_portfolio(
             episode_dir=fixture["episode"],
@@ -406,7 +536,14 @@ def test_rejects_endpoint_repair_without_exact_predecessor_hash(
     fixture = _fixture(tmp_path)
     plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
     plan["endpoint_repair"]["predecessor_video_sha256"] = "0" * 64
-    _write_json(fixture["plan"], plan)
+    _write_json(
+        fixture["plan"],
+        endpoint.bind_builder_input(
+            plan,
+            json.loads(fixture["preflight"].read_text(encoding="utf-8")),
+            json.loads(fixture["selection"].read_text(encoding="utf-8")),
+        ),
+    )
     with pytest.raises(
         out10.ThirdSourceShortPortfolioError,
         match="endpoint repair authority is incomplete",
@@ -417,6 +554,30 @@ def test_rejects_endpoint_repair_without_exact_predecessor_hash(
             candidate_plan_input_path=fixture["plan"],
             base_dir=fixture["root"],
             render_executor=_fake_render,
+            navigation_executor=_fake_navigation,
+            signal_qa_executor=_fake_signal_qa,
+        )
+
+
+def test_rejects_tampered_endpoint_binding_before_render(tmp_path: Path) -> None:
+    fixture = _fixture(tmp_path)
+    plan = json.loads(fixture["plan"].read_text(encoding="utf-8"))
+    plan["endpoint_binding"]["selection_sha256"] = "0" * 64
+    _write_json(fixture["plan"], plan)
+
+    def _render_must_not_run(**_kwargs) -> dict:
+        raise AssertionError("render executor must not run")
+
+    with pytest.raises(
+        out10.ThirdSourceShortPortfolioError,
+        match="endpoint is not ready for render",
+    ):
+        out10.build_third_source_short_portfolio(
+            episode_dir=fixture["episode"],
+            output_dir=fixture["output"],
+            candidate_plan_input_path=fixture["plan"],
+            base_dir=fixture["root"],
+            render_executor=_render_must_not_run,
             navigation_executor=_fake_navigation,
             signal_qa_executor=_fake_signal_qa,
         )

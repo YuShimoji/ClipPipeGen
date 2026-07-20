@@ -25,6 +25,11 @@ from src.integrations.render.editorial_sequence import (
     EditorialSequenceError,
     _material_readback,
 )
+from src.integrations.render.endpoint_preflight import (
+    EndpointPreflightError,
+    payload_sha256 as _endpoint_payload_sha256,
+    require_ready_for_render,
+)
 from src.integrations.render.real_unused_range_short_minibatch import (
     _extract_navigation_frame,
 )
@@ -54,15 +59,21 @@ from src.integrations.render.vertical_short_candidate import (
 ARTIFACT_ID = "clip-out10-third-source-short-portfolio-expansion-v0-001"
 SCHEMA_VERSION = "clippipegen.out10.third_source_short_portfolio.v0"
 PLAN_SCHEMA_VERSION = "clippipegen.out10.candidate_plan_input.v0"
-STATE = "OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY"
-PREDECESSOR_STATE = (
-    "OUT10_THIRD_DISTINCT_EXTERNAL_SOURCE_SHORT_REVIEW_READY_WITH_3_SOURCE_SCORECARD"
-)
+STATE = "OUT10_FINAL_UTTERANCE_ENDPOINT_REPAIR_READY_FOR_COMBINED_REVIEW"
+PREDECESSOR_STATE = "OUT10_ENDPOINT_BOUNDED_REPAIR_REVIEW_READY"
 PREDECESSOR_VIDEO_SHA256 = (
+    "3651a14f408d9c5935399007d750a42d349d6c672dd0a80071be6cbcb53d9884"
+)
+PREDECESSOR_SOURCE_END_SECONDS = 27.711
+PREDECESSOR_CAPTION_CUE_COUNT = 45
+LINEAGE_REASON = (
+    "superseded_predecessor_last_utterance_incomplete_after_first_endpoint_repair"
+)
+EARLIER_PREDECESSOR_VIDEO_SHA256 = (
     "9c930f82a2447bbdbae8db477d30d46dd5ad3a7710109dd0cba7117686a4bb2f"
 )
-PREDECESSOR_SOURCE_END_SECONDS = 20.304
-LINEAGE_REASON = "superseded_predecessor_endpoint_too_early_active_telop_motion"
+EARLIER_PREDECESSOR_SOURCE_END_SECONDS = 20.304
+EARLIER_LINEAGE_REASON = "superseded_predecessor_endpoint_too_early_active_telop_motion"
 OUTPUT_PREFIX = "out10_"
 OUT08_PROVIDER_ID = "7J5aS_pcBj4"
 OUT09_PROVIDER_ID = "D4i4fjs9PWc"
@@ -74,7 +85,7 @@ OUT09_CANDIDATE_HASH = (
     "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
 )
 REVIEW_QUESTION = (
-    "最後のテロップや動きが途中で切れず、一本のShortとして自然に終わるようになったか。"
+    "OUT-10は最後のセリフまで自然に完結したか。"
     "既に合格していた字幕・音声・構図に明確な回帰があれば併せて教えてください。"
 )
 REVIEW_HOST = "127.0.0.1"
@@ -91,6 +102,9 @@ REQUIRED_INPUT_ROLES = {
     "authoritative_transcript",
     "edit_pack",
     "source_selection_receipt",
+    "endpoint_preflight",
+    "endpoint_selection",
+    "endpoint_evidence_manifest",
 }
 
 RenderExecutor = Callable[..., dict[str, Any]]
@@ -129,6 +143,14 @@ def build_third_source_short_portfolio(
 
     plan = _read_json(plan_path, "candidate plan input")
     authority = _load_authority(root=root, episode=episode, plan=plan)
+    try:
+        require_ready_for_render(
+            plan,
+            authority["endpoint_preflight"],
+            authority["endpoint_selection"],
+        )
+    except EndpointPreflightError as exc:
+        raise ThirdSourceShortPortfolioError(str(exc)) from exc
     normalized = _normalize_plan(plan=plan, authority=authority)
 
     review_dir = output.parent
@@ -144,6 +166,10 @@ def build_third_source_short_portfolio(
         shutil.copyfile(
             authority["source_selection_receipt_path"],
             stage / "source_selection_receipt.json",
+        )
+        endpoint_evidence = _copy_endpoint_evidence(
+            stage=stage,
+            authority=authority,
         )
 
         ass_path = stage / "candidate_01_subtitles.ass"
@@ -215,9 +241,7 @@ def build_third_source_short_portfolio(
             runner=runner,
         )
         if signal_qa.get("status") != "passed":
-            raise ThirdSourceShortPortfolioError(
-                "black/silence QA did not pass"
-            )
+            raise ThirdSourceShortPortfolioError("black/silence QA did not pass")
 
         _cleanup_internal_directory(work, expected_parent=stage)
         elapsed = round(time.monotonic() - started, 3)
@@ -269,6 +293,20 @@ def build_third_source_short_portfolio(
             "selection_authority": normalized["selection_authority"],
             "repair_lineage": normalized["repair_lineage"],
             "endpoint_repair": normalized["endpoint_repair"],
+            "endpoint_preflight": {
+                "state": authority["endpoint_preflight"]["state"],
+                "payload_sha256": _endpoint_payload_sha256(
+                    authority["endpoint_preflight"]
+                ),
+                "selection_state": authority["endpoint_selection"]["state"],
+                "selection_sha256": _endpoint_payload_sha256(
+                    authority["endpoint_selection"]
+                ),
+                "selected_candidate": authority["endpoint_selection"][
+                    "selected_candidate"
+                ],
+                "evidence": endpoint_evidence,
+            },
             "portfolio_subtitle_differentiation_debt": normalized[
                 "portfolio_subtitle_differentiation_debt"
             ],
@@ -386,12 +424,16 @@ def build_third_source_short_portfolio(
             "candidate_lineage": normalized["repair_lineage"],
             "endpoint_repair": {
                 "source_end_seconds": normalized["source_end_seconds"],
-                "extension_seconds": normalized["endpoint_repair"][
-                    "extension_seconds"
-                ],
+                "extension_seconds": normalized["endpoint_repair"]["extension_seconds"],
                 "additional_caption_cue_count": normalized["endpoint_repair"][
                     "additional_caption_cue_count"
                 ],
+                "preflight_sha256": _endpoint_payload_sha256(
+                    authority["endpoint_preflight"]
+                ),
+                "selection_sha256": _endpoint_payload_sha256(
+                    authority["endpoint_selection"]
+                ),
             },
             "files": files,
             "file_count": len(files),
@@ -401,8 +443,8 @@ def build_third_source_short_portfolio(
                 "sha256": None,
             },
         }
-        manifest["manifest_self_integrity"]["sha256"] = (
-            _canonical_manifest_self_hash(manifest)
+        manifest["manifest_self_integrity"]["sha256"] = _canonical_manifest_self_hash(
+            manifest
         )
         _write_json(stage / "candidate_manifest.json", manifest)
         _validate_staged_package(stage, readback, manifest)
@@ -415,7 +457,9 @@ def build_third_source_short_portfolio(
         if backup is not None and backup.exists():
             _cleanup_internal_directory(backup, expected_parent=review_dir)
 
-    final_readback = _read_json(output / "candidate_readback.json", "candidate readback")
+    final_readback = _read_json(
+        output / "candidate_readback.json", "candidate readback"
+    )
     return {
         "artifact_id": ARTIFACT_ID,
         "output_dir": output,
@@ -427,7 +471,9 @@ def build_third_source_short_portfolio(
     }
 
 
-def _load_authority(*, root: Path, episode: Path, plan: dict[str, Any]) -> dict[str, Any]:
+def _load_authority(
+    *, root: Path, episode: Path, plan: dict[str, Any]
+) -> dict[str, Any]:
     if plan.get("schema_version") != PLAN_SCHEMA_VERSION:
         raise ThirdSourceShortPortfolioError("unsupported candidate plan schema")
     if plan.get("artifact_id") != ARTIFACT_ID:
@@ -456,7 +502,12 @@ def _load_authority(*, root: Path, episode: Path, plan: dict[str, Any]) -> dict[
             raise ThirdSourceShortPortfolioError(f"input hash mismatch: {role}")
         paths[role] = path
         integrity.append(
-            {"role": role, "path": _relative(path, root), "sha256": actual, "verified": True}
+            {
+                "role": role,
+                "path": _relative(path, root),
+                "sha256": actual,
+                "verified": True,
+            }
         )
     if set(paths) != REQUIRED_INPUT_ROLES:
         missing = sorted(REQUIRED_INPUT_ROLES - set(paths))
@@ -472,31 +523,53 @@ def _load_authority(*, root: Path, episode: Path, plan: dict[str, Any]) -> dict[
     try:
         video = _material_readback(
             ledger,
-            material_id=str((materials.get("source_video") or {}).get("material_id") or ""),
+            material_id=str(
+                (materials.get("source_video") or {}).get("material_id") or ""
+            ),
             expected_kind="source_video",
             root=root,
             episode=episode,
         )
         audio = _material_readback(
             ledger,
-            material_id=str((materials.get("source_audio") or {}).get("material_id") or ""),
+            material_id=str(
+                (materials.get("source_audio") or {}).get("material_id") or ""
+            ),
             expected_kind="source_audio",
             root=root,
             episode=episode,
         )
     except EditorialSequenceError as exc:
         raise ThirdSourceShortPortfolioError(str(exc)) from exc
-    if video["sha256"] != str((materials.get("source_video") or {}).get("sha256") or ""):
+    if video["sha256"] != str(
+        (materials.get("source_video") or {}).get("sha256") or ""
+    ):
         raise ThirdSourceShortPortfolioError("source video plan hash mismatch")
-    if audio["sha256"] != str((materials.get("source_audio") or {}).get("sha256") or ""):
+    if audio["sha256"] != str(
+        (materials.get("source_audio") or {}).get("sha256") or ""
+    ):
         raise ThirdSourceShortPortfolioError("source audio plan hash mismatch")
     return {
         "rights": rights,
         "ledger": ledger,
         "captions": _read_json(paths["source_caption_track"], "source caption track"),
-        "transcript": _read_json(paths["authoritative_transcript"], "authoritative transcript"),
+        "transcript": _read_json(
+            paths["authoritative_transcript"], "authoritative transcript"
+        ),
         "edit_pack": _read_json(paths["edit_pack"], "edit pack"),
-        "selection_receipt": _read_json(paths["source_selection_receipt"], "source selection receipt"),
+        "selection_receipt": _read_json(
+            paths["source_selection_receipt"], "source selection receipt"
+        ),
+        "endpoint_preflight": _read_json(
+            paths["endpoint_preflight"], "endpoint preflight"
+        ),
+        "endpoint_selection": _read_json(
+            paths["endpoint_selection"], "endpoint selection"
+        ),
+        "endpoint_evidence_manifest": _read_json(
+            paths["endpoint_evidence_manifest"], "endpoint evidence manifest"
+        ),
+        "endpoint_evidence_manifest_path": paths["endpoint_evidence_manifest"],
         "source_selection_receipt_path": paths["source_selection_receipt"],
         "source_video_path": _resolved(root, Path(video["file_path"])),
         "source_audio_path": _resolved(root, Path(audio["file_path"])),
@@ -505,23 +578,135 @@ def _load_authority(*, root: Path, episode: Path, plan: dict[str, Any]) -> dict[
     }
 
 
-def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[str, Any]:
-    identity = plan.get("source_identity") if isinstance(plan.get("source_identity"), dict) else {}
+def _copy_endpoint_evidence(
+    *,
+    stage: Path,
+    authority: dict[str, Any],
+) -> list[dict[str, Any]]:
+    manifest = authority["endpoint_evidence_manifest"]
+    expected_source_identity = str(
+        ((authority["endpoint_preflight"].get("input") or {}).get("source") or {}).get(
+            "identity"
+        )
+        or ""
+    )
+    if (
+        manifest.get("schema_version") != "clippipegen.endpoint_evidence_manifest.v0"
+        or not expected_source_identity
+        or manifest.get("source_identity") != expected_source_identity
+        or manifest.get("source_media_sha256")
+        != authority["materials"]["source_video"]["sha256"]
+        or abs(
+            _number(
+                manifest.get("selected_end_seconds"),
+                "endpoint evidence selected end",
+            )
+            - float(
+                authority["endpoint_selection"]["selected_candidate"]["end_seconds"]
+            )
+        )
+        > TIME_TOLERANCE_SECONDS
+        or manifest.get("selection_state") != "ready_for_render"
+        or (manifest.get("manifest_self_integrity") or {}).get("sha256")
+        != _canonical_manifest_self_hash(manifest)
+    ):
+        raise ThirdSourceShortPortfolioError("endpoint evidence manifest is incomplete")
+    rows = manifest.get("files")
+    if not isinstance(rows, list) or manifest.get("file_count") != len(rows):
+        raise ThirdSourceShortPortfolioError(
+            "endpoint evidence manifest file list is invalid"
+        )
+    manifest_dir = authority["endpoint_evidence_manifest_path"].parent.resolve()
+    copied: list[dict[str, Any]] = []
+    names: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ThirdSourceShortPortfolioError(
+                "endpoint evidence manifest contains an invalid row"
+            )
+        relative = Path(str(row.get("path") or ""))
+        if relative.is_absolute() or len(relative.parts) != 1:
+            raise ThirdSourceShortPortfolioError(
+                "endpoint evidence file path is not package-local"
+            )
+        name = relative.name
+        _safe_identifier(name, "endpoint evidence file")
+        if name in names:
+            raise ThirdSourceShortPortfolioError("endpoint evidence file is duplicated")
+        names.add(name)
+        source = (manifest_dir / relative).resolve()
+        _require_within(source, manifest_dir, "endpoint evidence file")
+        _require_file(source, "endpoint evidence file")
+        actual = _sha256(source)
+        if actual != str(
+            row.get("sha256") or ""
+        ).lower() or source.stat().st_size != int(row.get("byte_size") or -1):
+            raise ThirdSourceShortPortfolioError(
+                f"endpoint evidence payload mismatch: {name}"
+            )
+        shutil.copyfile(source, stage / name)
+        copied.append(
+            {
+                "package_relative_path": name,
+                "sha256": actual,
+                "byte_size": source.stat().st_size,
+            }
+        )
+    required = {
+        "endpoint_preflight.json",
+        "endpoint_selection.json",
+        "endpoint_contact_sheet.jpg",
+        "endpoint_waveform.png",
+    }
+    if not required.issubset(names):
+        raise ThirdSourceShortPortfolioError(
+            "endpoint evidence required payloads are missing"
+        )
+    shutil.copyfile(
+        authority["endpoint_evidence_manifest_path"],
+        stage / "endpoint_evidence_manifest.json",
+    )
+    copied.append(
+        {
+            "package_relative_path": "endpoint_evidence_manifest.json",
+            "sha256": _sha256(authority["endpoint_evidence_manifest_path"]),
+            "byte_size": authority["endpoint_evidence_manifest_path"].stat().st_size,
+        }
+    )
+    return copied
+
+
+def _normalize_plan(
+    *, plan: dict[str, Any], authority: dict[str, Any]
+) -> dict[str, Any]:
+    identity = (
+        plan.get("source_identity")
+        if isinstance(plan.get("source_identity"), dict)
+        else {}
+    )
     provider_id = str(identity.get("provider_id") or "")
     if provider_id in {OUT08_PROVIDER_ID, OUT09_PROVIDER_ID} or not provider_id:
-        raise ThirdSourceShortPortfolioError("third source recording identity is not distinct")
+        raise ThirdSourceShortPortfolioError(
+            "third source recording identity is not distinct"
+        )
     if (
         identity.get("platform") != "youtube"
         or identity.get("channel_id") != "UCJFZiqLMntJufDCHc6bQixg"
         or identity.get("official_channel") is not True
         or identity.get("channel_verified") is not True
     ):
-        raise ThirdSourceShortPortfolioError("official public channel identity is incomplete")
+        raise ThirdSourceShortPortfolioError(
+            "official public channel identity is incomplete"
+        )
     rights_source = authority["rights"].get("source_video") or {}
     if provider_id not in str(rights_source.get("url") or ""):
         raise ThirdSourceShortPortfolioError("rights snapshot source identity mismatch")
 
-    acquisition = plan.get("external_acquisition") if isinstance(plan.get("external_acquisition"), dict) else {}
+    acquisition = (
+        plan.get("external_acquisition")
+        if isinstance(plan.get("external_acquisition"), dict)
+        else {}
+    )
     expected_acquisition = {
         "authorized": True,
         "anonymous": True,
@@ -533,8 +718,12 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         "alternate_candidate_download_on_failure": False,
         "source_audio_derived_locally": True,
     }
-    if any(acquisition.get(key) != value for key, value in expected_acquisition.items()):
-        raise ThirdSourceShortPortfolioError("bounded external acquisition receipt is incomplete")
+    if any(
+        acquisition.get(key) != value for key, value in expected_acquisition.items()
+    ):
+        raise ThirdSourceShortPortfolioError(
+            "bounded external acquisition receipt is incomplete"
+        )
     receipt = authority["selection_receipt"]
     if (
         receipt.get("artifact_id") != ARTIFACT_ID
@@ -544,7 +733,9 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         or (receipt.get("scope") or {}).get("detailed_preflight_count") != 3
         or (receipt.get("scope") or {}).get("media_download_count") != 1
     ):
-        raise ThirdSourceShortPortfolioError("source selection receipt does not bind the selected source")
+        raise ThirdSourceShortPortfolioError(
+            "source selection receipt does not bind the selected source"
+        )
 
     transcript = authority["transcript"]
     stt = transcript.get("stt") if isinstance(transcript.get("stt"), dict) else {}
@@ -554,7 +745,9 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         or stt.get("real_transcript") is not True
         or (transcript.get("review") or {}).get("status") != "needs_review"
     ):
-        raise ThirdSourceShortPortfolioError("official subtitle transcript authority is incomplete")
+        raise ThirdSourceShortPortfolioError(
+            "official subtitle transcript authority is incomplete"
+        )
     segments = {
         str(item.get("id") or ""): item
         for item in transcript.get("segments") or []
@@ -574,22 +767,41 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     end = _number(candidate.get("source_end_seconds"), "candidate source end")
     duration = round(end - start, 6)
     if not MIN_DURATION_SECONDS <= duration <= MAX_DURATION_SECONDS:
-        raise ThirdSourceShortPortfolioError("candidate duration is outside 12-60 seconds")
-    if abs(duration - _number(candidate.get("duration_seconds"), "candidate duration")) > TIME_TOLERANCE_SECONDS:
-        raise ThirdSourceShortPortfolioError("candidate duration does not match source range")
+        raise ThirdSourceShortPortfolioError(
+            "candidate duration is outside 12-60 seconds"
+        )
+    if (
+        abs(duration - _number(candidate.get("duration_seconds"), "candidate duration"))
+        > TIME_TOLERANCE_SECONDS
+    ):
+        raise ThirdSourceShortPortfolioError(
+            "candidate duration does not match source range"
+        )
 
     endpoint_repair = (
         plan.get("endpoint_repair")
         if isinstance(plan.get("endpoint_repair"), dict)
         else {}
     )
+    endpoint_preflight = authority["endpoint_preflight"]
+    endpoint_selection = authority["endpoint_selection"]
+    selected_endpoint = endpoint_selection.get("selected_candidate") or {}
+    if (
+        abs(_number(selected_endpoint.get("end_seconds"), "selected endpoint") - end)
+        > TIME_TOLERANCE_SECONDS
+        or (endpoint_preflight.get("input") or {}).get("source", {}).get("sha256")
+        != authority["materials"]["source_video"]["sha256"]
+    ):
+        raise ThirdSourceShortPortfolioError(
+            "endpoint preflight selection does not match builder authority"
+        )
     extension = round(end - PREDECESSOR_SOURCE_END_SECONDS, 6)
     probes = endpoint_repair.get("probe_candidates")
     inherited_pass = endpoint_repair.get("inherited_pass")
+    earlier_lineage = endpoint_repair.get("earlier_lineage")
     if (
         endpoint_repair.get("predecessor_state") != PREDECESSOR_STATE
-        or endpoint_repair.get("predecessor_video_sha256")
-        != PREDECESSOR_VIDEO_SHA256
+        or endpoint_repair.get("predecessor_video_sha256") != PREDECESSOR_VIDEO_SHA256
         or abs(
             _number(
                 endpoint_repair.get("predecessor_source_end_seconds"),
@@ -599,6 +811,18 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         )
         > TIME_TOLERANCE_SECONDS
         or endpoint_repair.get("lineage_reason") != LINEAGE_REASON
+        or not isinstance(earlier_lineage, dict)
+        or earlier_lineage.get("predecessor_video_sha256")
+        != EARLIER_PREDECESSOR_VIDEO_SHA256
+        or abs(
+            _number(
+                earlier_lineage.get("predecessor_source_end_seconds"),
+                "earlier predecessor source end",
+            )
+            - EARLIER_PREDECESSOR_SOURCE_END_SECONDS
+        )
+        > TIME_TOLERANCE_SECONDS
+        or earlier_lineage.get("lineage_reason") != EARLIER_LINEAGE_REASON
         or extension <= 0
         or extension > 12.0 + TIME_TOLERANCE_SECONDS
         or not isinstance(probes, list)
@@ -613,9 +837,7 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "safe_review_route",
         ]
     ):
-        raise ThirdSourceShortPortfolioError(
-            "endpoint repair authority is incomplete"
-        )
+        raise ThirdSourceShortPortfolioError("endpoint repair authority is incomplete")
     selected_probes = [
         item
         for item in probes
@@ -624,8 +846,7 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     if (
         len(selected_probes) != 1
         or abs(
-            _number(selected_probes[0].get("source_seconds"), "selected probe")
-            - end
+            _number(selected_probes[0].get("source_seconds"), "selected probe") - end
         )
         > TIME_TOLERANCE_SECONDS
     ):
@@ -657,7 +878,11 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         raise ThirdSourceShortPortfolioError("candidate cut authority is incomplete")
 
     captions = _caption_event_index(authority["captions"])
-    raw_subtitles = candidate.get("subtitles") if isinstance(candidate.get("subtitles"), list) else []
+    raw_subtitles = (
+        candidate.get("subtitles")
+        if isinstance(candidate.get("subtitles"), list)
+        else []
+    )
     if not raw_subtitles:
         raise ThirdSourceShortPortfolioError("candidate subtitles are missing")
     semantic: list[dict[str, Any]] = []
@@ -673,7 +898,9 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         event_index = int(raw.get("caption_event_index", -1))
         event = captions.get(event_index)
         if segment is None or event is None:
-            raise ThirdSourceShortPortfolioError(f"subtitle authority is missing: {subtitle_id}")
+            raise ThirdSourceShortPortfolioError(
+                f"subtitle authority is missing: {subtitle_id}"
+            )
         source_start = _number(raw.get("source_start_seconds"), "subtitle source start")
         source_end = _number(raw.get("source_end_seconds"), "subtitle source end")
         text = str(raw.get("text") or "").strip()
@@ -688,10 +915,20 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             raise ThirdSourceShortPortfolioError(
                 f"subtitle is not exact official JSON3 event authority: {subtitle_id}"
             )
-        if source_start < start - TIME_TOLERANCE_SECONDS or source_end > end + TIME_TOLERANCE_SECONDS:
-            raise ThirdSourceShortPortfolioError(f"subtitle leaves candidate: {subtitle_id}")
-        if source_start < previous_end - TIME_TOLERANCE_SECONDS or source_start - previous_end > 0.15:
-            raise ThirdSourceShortPortfolioError(f"subtitle timing gap/overlap is unsafe: {subtitle_id}")
+        if (
+            source_start < start - TIME_TOLERANCE_SECONDS
+            or source_end > end + TIME_TOLERANCE_SECONDS
+        ):
+            raise ThirdSourceShortPortfolioError(
+                f"subtitle leaves candidate: {subtitle_id}"
+            )
+        if (
+            source_start < previous_end - TIME_TOLERANCE_SECONDS
+            or source_start - previous_end > 0.15
+        ):
+            raise ThirdSourceShortPortfolioError(
+                f"subtitle timing gap/overlap is unsafe: {subtitle_id}"
+            )
         semantic.append(
             {
                 "id": subtitle_id,
@@ -712,17 +949,26 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         used_segments.append(segment_id)
         previous_end = source_end
     if end - previous_end > 0.15 + TIME_TOLERANCE_SECONDS:
-        raise ThirdSourceShortPortfolioError("last official caption leaves an unsafe trailing gap")
+        raise ThirdSourceShortPortfolioError(
+            "last official caption leaves an unsafe trailing gap"
+        )
     predecessor_cue_count = int(
         endpoint_repair.get("predecessor_caption_cue_count") or 0
     )
     additional_cue_count = len(semantic) - predecessor_cue_count
-    if predecessor_cue_count != 15 or additional_cue_count <= 0:
+    if (
+        predecessor_cue_count != PREDECESSOR_CAPTION_CUE_COUNT
+        or additional_cue_count <= 0
+    ):
         raise ThirdSourceShortPortfolioError(
             "endpoint repair caption lineage is incomplete"
         )
 
-    composition = plan.get("composition_policy") if isinstance(plan.get("composition_policy"), dict) else {}
+    composition = (
+        plan.get("composition_policy")
+        if isinstance(plan.get("composition_policy"), dict)
+        else {}
+    )
     if (
         composition.get("mode") != NEUTRAL_MATTE_BACKGROUND_POLICY
         or composition.get("source_frame_pixels") != {"width": 1920, "height": 1080}
@@ -730,8 +976,12 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         != {"x": 0, "y": 0, "width": 1920, "height": 1080}
         or composition.get("important_content_preserved") is not True
     ):
-        raise ThirdSourceShortPortfolioError("full-source neutral matte policy is incomplete")
-    boundaries = plan.get("boundaries") if isinstance(plan.get("boundaries"), dict) else {}
+        raise ThirdSourceShortPortfolioError(
+            "full-source neutral matte policy is incomplete"
+        )
+    boundaries = (
+        plan.get("boundaries") if isinstance(plan.get("boundaries"), dict) else {}
+    )
     expected_boundaries = {
         "rights_status": "pending",
         "production_candidate": False,
@@ -748,7 +998,9 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
     if any(boundaries.get(key) != value for key, value in expected_boundaries.items()):
         raise ThirdSourceShortPortfolioError("candidate boundaries are not closed")
     if plan.get("review_questions") != [REVIEW_QUESTION]:
-        raise ThirdSourceShortPortfolioError("OUT-10 requires the exact single review question")
+        raise ThirdSourceShortPortfolioError(
+            "OUT-10 requires the exact single review question"
+        )
 
     samples = tuple(
         (label, max(0.1, min(duration - 0.1, round(seconds, 3))))
@@ -770,11 +1022,16 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
         "source_identity": dict(identity),
         "external_acquisition": expected_acquisition,
         "source_selection": {
-            "selected_rank": (authority["selection_receipt"].get("selected_source") or {}).get("rank"),
+            "selected_rank": (
+                authority["selection_receipt"].get("selected_source") or {}
+            ).get("rank"),
             "provider_id": provider_id,
             "selection_receipt_state": authority["selection_receipt"]["state"],
             "rejected_preflight_provider_ids": list(
-                (authority["selection_receipt"].get("decision") or {}).get("rejected_preflight_provider_ids") or []
+                (authority["selection_receipt"].get("decision") or {}).get(
+                    "rejected_preflight_provider_ids"
+                )
+                or []
             ),
         },
         "candidate_id": candidate_id,
@@ -813,8 +1070,12 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "candidate_within_context_passed_cut": True,
             "start_basis": str(candidate.get("start_basis") or ""),
             "end_basis": str(candidate.get("end_basis") or ""),
-            "next_scene_transition_seconds": candidate.get("next_scene_transition_seconds"),
-            "candidate_count_considered": int(candidate.get("candidate_count_considered") or 1),
+            "next_scene_transition_seconds": candidate.get(
+                "next_scene_transition_seconds"
+            ),
+            "candidate_count_considered": int(
+                candidate.get("candidate_count_considered") or 1
+            ),
         },
         "repair_lineage": {
             "predecessor_state": PREDECESSOR_STATE,
@@ -822,21 +1083,21 @@ def _normalize_plan(*, plan: dict[str, Any], authority: dict[str, Any]) -> dict[
             "predecessor_source_end_seconds": PREDECESSOR_SOURCE_END_SECONDS,
             "lineage_reason": LINEAGE_REASON,
             "predecessor_acceptance_granted": False,
+            "earlier_lineage": dict(earlier_lineage),
         },
         "endpoint_repair": {
             "probe_window_start_seconds": PREDECESSOR_SOURCE_END_SECONDS,
-            "probe_window_end_seconds": round(
-                PREDECESSOR_SOURCE_END_SECONDS + 12.0, 3
-            ),
+            "probe_window_end_seconds": round(PREDECESSOR_SOURCE_END_SECONDS + 12.0, 3),
             "selected_source_end_seconds": end,
             "extension_seconds": extension,
             "probe_candidates": list(probes),
-            "selection_basis": str(
-                endpoint_repair.get("selection_basis") or ""
-            ),
+            "selection_basis": str(endpoint_repair.get("selection_basis") or ""),
             "predecessor_caption_cue_count": predecessor_cue_count,
             "additional_caption_cue_count": additional_cue_count,
             "final_caption_end_seconds": previous_end,
+            "preflight_sha256": _endpoint_payload_sha256(endpoint_preflight),
+            "selection_sha256": _endpoint_payload_sha256(endpoint_selection),
+            "selection_warnings": list(endpoint_selection.get("warnings") or []),
         },
         "portfolio_subtitle_differentiation_debt": dict(subtitle_debt),
         "boundaries": expected_boundaries,
@@ -854,7 +1115,11 @@ def _caption_event_index(payload: dict[str, Any]) -> dict[int, dict[str, Any]]:
         start_ms = event.get("tStartMs")
         duration_ms = event.get("dDurationMs")
         segs = event.get("segs")
-        if not isinstance(start_ms, (int, float)) or not isinstance(duration_ms, (int, float)) or not isinstance(segs, list):
+        if (
+            not isinstance(start_ms, (int, float))
+            or not isinstance(duration_ms, (int, float))
+            or not isinstance(segs, list)
+        ):
             continue
         text = "".join(
             str(item.get("utf8") or "") for item in segs if isinstance(item, dict)
@@ -919,7 +1184,7 @@ def _build_scorecard(
                 "review_status": "human_review_pending",
                 "human_review_pending": True,
                 "composition": "full_16_9_fit_neutral_matte_no_blur_no_crop",
-                "endpoint_status": "bounded_repair_human_review_pending",
+                "endpoint_status": "final_utterance_repair_ready_for_combined_review",
                 "endpoint_source_seconds": normalized["source_end_seconds"],
                 "superseded_predecessor_sha256": PREDECESSOR_VIDEO_SHA256,
             },
@@ -980,18 +1245,18 @@ def _render_html(readback: dict[str, Any], scorecard: dict[str, Any]) -> str:
     question = escape(REVIEW_QUESTION)
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="clippipegen-artifact-id" content="{ARTIFACT_ID}"><meta name="clippipegen-video-sha256" content="{escape(readback['video']['sha256'])}">
-<title>OUT-10 endpoint repair review</title><style>
+<meta name="clippipegen-artifact-id" content="{ARTIFACT_ID}"><meta name="clippipegen-video-sha256" content="{escape(readback["video"]["sha256"])}">
+<title>OUT-10 final utterance endpoint repair</title><style>
 :root{{color-scheme:dark;font-family:"Yu Gothic UI","Noto Sans JP",sans-serif;background:#06101d;color:#eff7ff}}*{{box-sizing:border-box}}body{{margin:0;overflow-x:hidden}}main{{width:min(960px,100%);margin:auto;padding:22px;overflow-wrap:anywhere}}section,details{{margin-top:18px;padding:16px;border:1px solid #30445f;border-radius:14px;background:#0d1a2c}}video{{display:block;width:auto;height:min(76vh,820px);max-width:100%;aspect-ratio:9/16;margin:18px auto;background:#000}}code{{color:#9fe7ff}}.boundary{{color:#ffd166}}table{{width:100%;border-collapse:collapse}}th,td{{padding:8px;border-bottom:1px solid #30445f;text-align:left}}@media(max-width:620px){{main{{padding:14px}}video{{height:min(72vh,700px)}}table{{font-size:.82rem}}}}
-</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback['video']['sha256'])}"><main><h1>OUT-10 endpoint bounded repair review</h1>
-<p><code>{escape(readback['source_identity']['provider_id'])}</code> / source {candidate['source_start_seconds']:.3f}–{candidate['source_end_seconds']:.3f}s / {candidate['duration_seconds']:.3f}s</p>
+</style></head><body data-artifact-id="{ARTIFACT_ID}" data-video-sha256="{escape(readback["video"]["sha256"])}"><main><h1>OUT-10 final utterance endpoint repair</h1>
+<p><code>{escape(readback["source_identity"]["provider_id"])}</code> / source {candidate["source_start_seconds"]:.3f}–{candidate["source_end_seconds"]:.3f}s / {candidate["duration_seconds"]:.3f}s</p>
 <p class="boundary">rights=pending / human review pending / production・public・publishing未承認</p>
 <p id="playback-safety-note">初期状態は停止・ミュートです。音声確認時は手動で再生・解除してください（音量上限25%）。</p>
-<video id="candidate-video" controls playsinline muted preload="metadata" poster="{escape(readback['navigation_frame']['package_relative_path'])}?v={escape(readback['navigation_frame']['sha256'][:16])}" src="{escape(readback['video']['package_relative_path'])}?v={escape(readback['video']['sha256'][:16])}"></video>
+<video id="candidate-video" controls playsinline muted preload="metadata" poster="{escape(readback["navigation_frame"]["package_relative_path"])}?v={escape(readback["navigation_frame"]["sha256"][:16])}" src="{escape(readback["video"]["package_relative_path"])}?v={escape(readback["video"]["sha256"][:16])}"></video>
 <script>(()=>{{const video=document.getElementById("candidate-video");const maximumVolume={INITIAL_VOLUME_CEILING:.2f};const exactMutedQaRoute=window.location.search==="?qa-playback=1"&&window.location.hash==="";video.defaultMuted=true;video.muted=true;video.volume=exactMutedQaRoute?0:maximumVolume;window.__clipPipeReviewQa={{exactRoute:exactMutedQaRoute,completed:false,error:null}};video.addEventListener("volumechange",()=>{{if(video.volume>maximumVolume)video.volume=maximumVolume;}});const run=async()=>{{video.defaultMuted=true;video.muted=true;video.volume=0;try{{await video.play();window.setTimeout(()=>{{video.pause();window.__clipPipeReviewQa.completed=true;}},1200);}}catch(error){{video.pause();window.__clipPipeReviewQa.error=error&&error.name?error.name:"play_failed";window.__clipPipeReviewQa.completed=true;}}}};if(exactMutedQaRoute){{if(video.readyState>=2)window.queueMicrotask(run);else video.addEventListener("canplay",run,{{once:true}});}}}})();</script>
 <section><h2>今回の確認</h2><ol><li data-review-question="1">{question}</li></ol></section>
 <section><h2>3-source scorecard</h2><table><thead><tr><th>slot</th><th>recording</th><th>duration(s)</th><th>subtitle(s)</th><th>status</th></tr></thead><tbody>{rows}</tbody></table><p><a href="source_portfolio_comparison.html">比較説明を開く</a> / <a href="source_portfolio_scorecard.json">JSONを開く</a></p></section>
-<details open><summary>終端修復・構成・境界</summary><p>{escape(str(candidate['rationale']))}</p><p>旧終端 {PREDECESSOR_SOURCE_END_SECONDS:.3f}s / MP4 <code>{PREDECESSOR_VIDEO_SHA256}</code> は、テロップと動作が途中で切れたため未受理のpredecessorとして保持。新終端は {candidate['source_end_seconds']:.3f}sで、最後の公式captionとthumb-up poseが完了し、直後のshot changeより前で閉じます。</p><p>全16:9 foregroundを保持し、source-derived blurもcenter cropも使わず、neutral matteへfit。元映像のname labelは保持し、dialogue subtitleは公式JSON3 eventから別canvas位置へburn-in。</p><p>全白字幕は一般標準として承認せず、speaker differentiationは3〜5本のaccepted real Shorts比較後またはproduction subtitle-design gate開始時に再検討します。navigation frameは識別用でありthumbnail候補ではありません。</p></details>
+<details open><summary>終端修復・構成・境界</summary><p>{escape(str(candidate["rationale"]))}</p><p>旧終端 {PREDECESSOR_SOURCE_END_SECONDS:.3f}s / MP4 <code>{PREDECESSOR_VIDEO_SHA256}</code> は、直後に始まる応答発話を言い切る前に切れたため未受理のpredecessorとして保持。新終端は {candidate["source_end_seconds"]:.3f}sで、公式response cueと実音声の語尾、患者reaction shotが完了し、約0.019秒後の次shotより前で閉じます。</p><p><a href="endpoint_preflight.json">endpoint preflight</a> / <a href="endpoint_selection.json">Agent selection</a> / <a href="endpoint_contact_sheet.jpg">endpoint contact sheet</a> / <a href="endpoint_waveform.png">endpoint waveform</a></p><p>全16:9 foregroundを保持し、source-derived blurもcenter cropも使わず、neutral matteへfit。元映像のname labelは保持し、dialogue subtitleは公式JSON3 eventから別canvas位置へburn-in。</p><p>全白字幕は一般標準として承認せず、speaker differentiationは3〜5本のaccepted real Shorts比較後またはproduction subtitle-design gate開始時に再検討します。navigation frameは識別用でありthumbnail候補ではありません。</p></details>
 </main></body></html>"""
 
 
@@ -1025,6 +1290,11 @@ def _validate_staged_package(
         "source_selection_receipt.json",
         "candidate_readback.json",
         "candidate_manifest.json",
+        "endpoint_preflight.json",
+        "endpoint_selection.json",
+        "endpoint_evidence_manifest.json",
+        "endpoint_contact_sheet.jpg",
+        "endpoint_waveform.png",
         "source_portfolio_scorecard.json",
         "source_portfolio_comparison.html",
         "index.html",
@@ -1036,12 +1306,39 @@ def _validate_staged_package(
     if (stage / ".work").exists():
         raise ThirdSourceShortPortfolioError("internal work directory remained")
     if _read_json(stage / "candidate_readback.json", "staged readback") != readback:
-        raise ThirdSourceShortPortfolioError("staged readback did not parse consistently")
+        raise ThirdSourceShortPortfolioError(
+            "staged readback did not parse consistently"
+        )
     parsed_manifest = _read_json(stage / "candidate_manifest.json", "staged manifest")
     if parsed_manifest != manifest:
-        raise ThirdSourceShortPortfolioError("staged manifest did not parse consistently")
-    if parsed_manifest["manifest_self_integrity"]["sha256"] != _canonical_manifest_self_hash(parsed_manifest):
+        raise ThirdSourceShortPortfolioError(
+            "staged manifest did not parse consistently"
+        )
+    if parsed_manifest["manifest_self_integrity"][
+        "sha256"
+    ] != _canonical_manifest_self_hash(parsed_manifest):
         raise ThirdSourceShortPortfolioError("manifest self-integrity mismatch")
+    payload_names: set[str] = set()
+    for row in parsed_manifest.get("files") or []:
+        if not isinstance(row, dict):
+            raise ThirdSourceShortPortfolioError("manifest payload row is invalid")
+        name = str(row.get("package_relative_path") or "")
+        if name in payload_names:
+            raise ThirdSourceShortPortfolioError("manifest payload is duplicated")
+        payload_names.add(name)
+        payload = stage / name
+        _require_file(payload, f"manifest payload {name}")
+        if _sha256(payload) != str(
+            row.get("sha256") or ""
+        ) or payload.stat().st_size != int(row.get("byte_size") or -1):
+            raise ThirdSourceShortPortfolioError(
+                f"manifest payload hash mismatch: {name}"
+            )
+    expected_payloads = {item.name for item in stage.iterdir() if item.is_file()} - {
+        "candidate_manifest.json"
+    }
+    if payload_names != expected_payloads:
+        raise ThirdSourceShortPortfolioError("manifest payload coverage is incomplete")
     html = (stage / "index.html").read_text(encoding="utf-8")
     if html.count("<video ") != 1 or html.count("data-review-question=") != 1:
         raise ThirdSourceShortPortfolioError("review page surface is invalid")
