@@ -3,10 +3,29 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-19
+last_touched: 2026-07-21
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-21 — OUT-11修復レビュー待ちをremote再開境界として固定
+
+検証済み実装head `249b3308b0d8a1cc8b75d37a245d717322859133`では、初回人間レビューを
+旧candidate identityへbindし、SOURCE-04を同じSHA `465d732c...16524`の
+`accepted_internal` receiptへ移した。OUT-10は`0.000–34.785s`、SHA
+`62d4b45b...97cdd`へ、SOURCE-05は`202.586–260.643s`、SHA
+`b4a01413...a4969`へ修復済みだが、二本の新bytesはまだ人間未受理である。
+
+このhandoffでは、OUT-09を指していた`project-context`、`decision-log`、`idea-ledger`と、
+HUB-01を先頭に出していた長期`HANDOFF.md`の入口をOUT-11へ同期する。これはdocsの再開契約を
+current runtimeへ合わせる変更で、candidate acceptance、winner、rights、production、thumbnail、
+public/publishing、main mergeを新たに承認しない。
+
+remote branchは`codex/out-11-five-source-short-portfolio-wave-v0`。tracked code/docs/testsとexact
+identityはGitで別端末へ渡すが、ignored `episodes/`内のMP4・QA・localhost packageは同一マシン
+限定証拠のまま。別端末で映像レビューが必要な場合は、承認済みtransport方針または既存契約に
+沿う再生成を別途行い、Gitへmediaを追加しない。根拠: `docs/RUNTIME_STATE.md` current capsule +
+`docs/CURRENT_HANDOFF.md` + `docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md` + live Git parity。
 
 ## 2026-07-19 — OUT-09 exact candidateをaccepted_internalとしてcanonical mainへ閉じる
 

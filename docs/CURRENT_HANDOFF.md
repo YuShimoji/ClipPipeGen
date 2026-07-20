@@ -10,7 +10,7 @@ current_slice: OUT-11
 phase: human_review_ready
 canonical_status: repaired_two_candidate_combined_review_ready
 active_branch: codex/out-11-five-source-short-portfolio-wave-v0
-verified_implementation_head: branch_head_after_push
+verified_implementation_head: 249b3308b0d8a1cc8b75d37a245d717322859133
 source_branch_tip: branch_head_after_push
 closure_branch: null
 remote_resume_contract: fetch_then_switch_codex_out11_branch_then_read_this_file
@@ -43,6 +43,8 @@ source_of_truth: true
 owner_lane: output_video_cross_source_portfolio
 related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md, docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
 upstream_parity: 0 0
+handoff_base_head: 249b3308b0d8a1cc8b75d37a245d717322859133
+handoff_sync_verified_at: 2026-07-21T04:12:53+09:00
 ---
 
 # Current Handoff - ClipPipeGen
@@ -56,6 +58,36 @@ native lyric、歌唱、歌詞、音楽句という未確認の説明はcurrent 
 
 現在の唯一の判断面は、修復後OUT-10と修復後SOURCE-05を順に並べたlocalhostレビューである。
 SOURCE-04は合格済み受領証だけを表示し、動画は統合packageへ複製せず、再視聴を求めない。
+
+## 別端末での即時再開
+
+```powershell
+git fetch --prune origin
+git switch codex/out-11-five-source-short-portfolio-wave-v0
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count 'HEAD...@{u}'
+git ls-files episodes
+```
+
+期待値はupstream parity `0 0`、tracked `episodes/` 0件。実装検証の基準headは
+`249b3308b0d8a1cc8b75d37a245d717322859133`で、この後のhandoff doc commitはbranch tipから
+取得する。次に`README.md`、`docs/RUNTIME_STATE.md`、本ファイルを読む。別端末へGitで渡るのは
+code、tests、docs、exact SHA、判断契約までであり、MP4/QA/localhost packageは渡らない。
+人間判断が未着なら`human_review_pending`と未承認gateを変更しない。
+
+## Handoff同期時の読み戻し
+
+2026-07-21 JSTに次を再確認した。
+
+| 検証 | 結果 | 引き継ぎ上の意味 |
+|---|---|---|
+| `git fetch --prune origin` / upstream比較 | handoff base `249b3308...59133`で`0 0`、`origin/main`より6 commit先行 | OUT-11 branchだけがactive。mainは変更しない |
+| `uvx --with Pillow pytest -q` | 580 passed | tracked Python実装とdocs contractはgreen |
+| `npm ls --depth=0` / `npm run smoke` / `npm run smoke:electron` | Electron `42.0.0`、両smoke OK | 現在のNode依存とGUI起動contractを確認 |
+| docs dashboard再生成 / JSON parse / `git diff --check` | pass、再生成は冪等 | project context、decision、idea、handoffがdashboardへ反映 |
+| local OUT-11 package | package存在。OUT-10 `62d4b45b...97cdd`、SOURCE-05 `b4a01413...a4969`、readback `4e616091...b406`、scorecard `4b388531...d2c9`、manifest `e72de3fe...a390`が一致 | same-machine human review evidenceを保持 |
+| cleanup boundary | protected R3 `human_preview_session/`存在、`git ls-files episodes` 0件 | active/local reviewを削除せずpublic Git hygieneを維持 |
 
 ## Exact review package
 

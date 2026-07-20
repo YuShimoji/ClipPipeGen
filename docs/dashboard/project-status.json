@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-20",
+  "generated_at": "2026-07-21",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -66,7 +66,7 @@
     "local_verified_host": "DESKTOP-H53P1T4",
     "local_artifact_evidence_receipt": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
     "handoff": "docs/CURRENT_HANDOFF.md",
-    "last_verified_at": "2026-07-20",
+    "last_verified_at": "2026-07-21",
     "decision_required": "review_exact_repaired_out10_and_source05_once",
     "next_review_action_type": "",
     "next_action": "修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。",
@@ -2796,13 +2796,13 @@
         "phase": "human_review_ready",
         "canonical_status": "repaired_two_candidate_combined_review_ready",
         "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
-        "verified_implementation_head": "branch_head_after_push",
+        "verified_implementation_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
         "source_branch_tip": "branch_head_after_push",
         "closure_branch": "",
         "remote_resume_contract": "fetch_then_switch_codex_out11_branch_then_read_current_handoff",
         "upstream_parity": "0 0",
-        "sync_audit_head": "branch_head_after_push",
-        "sync_audit_status": "out11_repair_branch_only_main_unchanged",
+        "sync_audit_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
+        "sync_audit_status": "out11_handoff_docs_full_validation_passed_branch_only_main_unchanged",
         "sync_audit_live_out08_package": "historical_accepted_package_untouched",
         "sync_audit_live_out09_package": "access_only_repair_present_manifest_and_video_hashes_match",
         "sync_audit_live_r3_reviewability": "review_ready",
@@ -2843,7 +2843,7 @@
         "production_subtitle_design_acceptance": "false",
         "production_image_quality_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "last_verified_at": "2026-07-20",
+        "last_verified_at": "2026-07-21",
         "last_verified_host_local_artifact_available": "true",
         "last_verified_host_entrypoint": "http://127.0.0.1:8074/index.html",
         "historical_last_verified_host_entrypoint": "",
@@ -3291,7 +3291,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 131,
+      "line_count": 163,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3304,7 +3304,7 @@
         "phase": "human_review_ready",
         "canonical_status": "repaired_two_candidate_combined_review_ready",
         "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
-        "verified_implementation_head": "branch_head_after_push",
+        "verified_implementation_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
         "source_branch_tip": "branch_head_after_push",
         "closure_branch": "",
         "remote_resume_contract": "fetch_then_switch_codex_out11_branch_then_read_this_file",
@@ -3336,7 +3336,9 @@
         "source_of_truth": "true",
         "owner_lane": "output_video_cross_source_portfolio",
         "related": "docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md, docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json",
-        "upstream_parity": "0 0"
+        "upstream_parity": "0 0",
+        "handoff_base_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
+        "handoff_sync_verified_at": "2026-07-21T04:12:53+09:00"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3344,7 +3346,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 16,
+      "boundary_term_count": 17,
       "status": "active"
     },
     {
@@ -3364,13 +3366,13 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 151,
+      "line_count": 170,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
         "type": "durable_decision_log",
         "status": "current",
-        "last_touched": "2026-07-19"
+        "last_touched": "2026-07-21"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3378,7 +3380,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 35,
+      "boundary_term_count": 41,
       "status": "current"
     },
     {
@@ -3426,7 +3428,7 @@
     {
       "path": "docs/HANDOFF.md",
       "title": "ClipPipeGen Handoff",
-      "line_count": 1510,
+      "line_count": 1545,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3434,7 +3436,7 @@
         "next": true,
         "constraints_risks": false
       },
-      "boundary_term_count": 342,
+      "boundary_term_count": 347,
       "status": "contains_done_history"
     },
     {
@@ -3454,13 +3456,13 @@
     {
       "path": "docs/idea-ledger.md",
       "title": "Idea Ledger - ClipPipeGen",
-      "line_count": 41,
+      "line_count": 40,
       "metadata": {
         "id": "idea-ledger",
         "title": "Idea Ledger - ClipPipeGen",
         "type": "durable_idea_ledger",
         "status": "current",
-        "last_touched": "2026-07-19"
+        "last_touched": "2026-07-21"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3468,7 +3470,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 30,
+      "boundary_term_count": 24,
       "status": "current"
     },
     {
@@ -3558,19 +3560,21 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 63,
+      "line_count": 81,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
-        "last_touched": "2026-07-19",
-        "current_slice": "OUT-09",
-        "active_branch": "main",
-        "source_branch_tip": "17436ad482f5e10db12b1461ec3caee18ae932d3",
+        "last_touched": "2026-07-21",
+        "current_slice": "OUT-11",
+        "phase": "human_review_ready",
+        "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
+        "verified_implementation_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
+        "source_branch_tip": "branch_tip_after_handoff_push",
         "upstream_parity": "0 0",
-        "health": "OUT09_ACCEPTED_INTERNAL_CANONICAL_MAIN",
-        "contract_repair_status": "OUT09_REVIEW_ACCESS_STABILITY_AND_PLAYBACK_SAFETY_REPAIR_PASSED"
+        "health": "OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY",
+        "contract_repair_status": "source04_accepted_exact_bytes_out10_source05_repaired_two_candidate_review_built"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3578,7 +3582,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 16,
+      "boundary_term_count": 13,
       "status": "current"
     },
     {
@@ -3694,7 +3698,7 @@
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
       "title": "監修AI向け現状報告 — OUT-11 human-review repairs ready",
-      "line_count": 113,
+      "line_count": 122,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3849,7 +3853,7 @@
       {
         "type": "over_guarded",
         "path": "docs/decision-log.md",
-        "detail": "Boundary terms appear 35 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 41 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3861,13 +3865,13 @@
       {
         "type": "stale",
         "path": "docs/HANDOFF.md",
-        "detail": "Long active doc (1510 lines) is likely carrying history.",
+        "detail": "Long active doc (1545 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/HANDOFF.md",
-        "detail": "Boundary terms appear 342 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 347 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3879,7 +3883,7 @@
       {
         "type": "over_guarded",
         "path": "docs/idea-ledger.md",
-        "detail": "Boundary terms appear 30 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 24 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

@@ -3,39 +3,38 @@ id: idea-ledger
 title: Idea Ledger - ClipPipeGen
 type: durable_idea_ledger
 status: current
-last_touched: 2026-07-19
+last_touched: 2026-07-21
 ---
 
 # Idea Ledger - ClipPipeGen
 
-OUT-09はexact SHA `b6b90a4b...73da50`を`accepted_internal`として閉じた。ここでは次に
-進められる高シグナルの入口だけを保持し、proposalを承認済み実装と混同しない。主経路は
-第三sourceを加えて比較可能なportfolioを作り、production/public gateを一つずつ開くことである。
+OUT-08/09とSOURCE-04はexact candidateを`accepted_internal`として保持し、OUT-10とSOURCE-05は
+bounded repair後の人間レビュー待ちである。ここでは、現在の判断を飛び越えずに別のbottleneckを
+解く入口だけを保持する。proposalを実装済み・承認済み状態へ自動昇格させない。
 
 | 段階 | 目的 / workflowへの効果 | 必要条件 | 現在状態 | owner / 次の動き |
 |---|---|---|---|---|
-| G0: OUT-09 canonical closure | exact user acceptance、媒体identity、回帰比較をmainへ統合 | exact SHA、base-vs-branch、targeted tests、ff-only | 完了。`accepted_internal`、source-specific suppressionは非一般化 | Agent: canonical mainを維持 |
-| G1: OUT-10 third-source portfolio expansion | 単一caption方式への過適合を減らし、三つ目のsourceで比較軸を作る | explicit slice approval、distinct source、12〜60秒、9:16、共通schema | `OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION` data-only / 未実装 | Supervisor/User: sourceと実装を承認。Agent: 承認後に最低1本生成 |
-| G2: 3〜5本 portfolio / failure taxonomy | caption authority、crop/matte/blur、cue密度、解像度、render時間、人間結果をsource横断で比較 | G1成功、合計3〜5本のreal Shorts evidence | proposal | Agent: source別scorecardと失敗分類を提案。Supervisor: 一般化してよい規則だけを選ぶ |
-| G3: output/subtitle limitation lift | internal acceptanceからproduction render・subtitle designへ進むための欠落証拠を閉じる | G2で再現性、明示的production slice、exact acceptance question | production acceptanceはfalse | Supervisor/User: gateを限定。Agent: render pathと字幕designを別々に検証 |
-| G4: rights/material-use clearance | 一つの候補をproduction検討可能にし、技術成功と利用許可を接続する | source identity、rights判断owner、利用条件・制限の明示 | `rights=pending` | Human rights owner: 判断。Agent: readback/receiptを更新し、他gateを推測で開かない |
-| G5: thumbnail system revisit | OUT-07の一例を3〜5本の実例と比較し、偶然でないcover選択contractを作る | G2 portfolio、複数比較方向、独立したthumbnail review | OUT-07は`PARK_PROVISIONAL_USABLE`、追加iteration禁止 | Supervisor/User: 再開判断。Agent: canonical化前に比較とlineageを証明 |
-| G6: private/unlisted delivery integration | approved candidateを安全なvisibility既定値、dry-run、receipt、rollback付きで外部deliveryへ渡す | G3・G4・G5の必要gate、OAuth/credentials/paymentの別承認 | PB/YouTube integrationは未実装 | Supervisor/User: private/unlisted scopeを承認。Agent: metadata、upload、thumbnail、visibilityを分離実装 |
-| G7: operator cockpit end-to-end | source intakeからreview/decision/deliveryまでをGUI/CLIで再開可能にし、手作業のartifact探索を減らす | 安定したG1〜G6 contract、episode_pack、portable/private artifact方針 | read-only/action GUIと各CLIは点在、完全統合は未実装 | Agent: consumer-first vertical sliceを提案。Human: destructive/public actionだけ明示確認 |
-| G8: repeatable multi-episode production-assist loop | 複数source・複数episodeでtraceable artifact、判断receipt、rollback、公開handoffを再現する | G7、運用metrics、retention/privacy、rights/public acceptance model | 長期north-star proposal | Supervisor: KPIとstop条件を定義。Agent: 公開判断を自動化せず、判断材料と実行境界を接着 |
+| G0: accepted context保持 | OUT-08/09/SOURCE-04の判断を再利用し、再レビュー摩擦を増やさない | exact SHAとreceiptを不変にする | 完了。SOURCE-04 MP4はcombined packageへ再copyしない | Agent: lineage維持 |
+| G1: OUT-10 / SOURCE-05 repair review | 終端欠陥を直した新bytesの意味的自然さを確定 | 同じページで二本を一度確認し候補別自由記述 | `human_review_pending`、winnerなし | Human owner: accept / 違和感 / rejectを返す。Agent: exact SHAへbind |
+| G2: OUT-10 / OUT-11 closure順 | branch差分を安全にmainへ統合可能な単位へ閉じる | G1で二本accept、tracked tests green、監修承認 | 未開始 | Supervisor/User: OUT-10先、OUT-11後の順序を承認。Agent: ff-only計画 |
+| G3: 5-source failure taxonomy | source固有のmatte/crop/caption/text保持と一般化可能な規則を分ける | G1完了、5-source scorecard、人間結果 | 比較証拠あり、共通policy未選定 | Agent: speaker/歌詞推測なしで差分表。Human: 一般化対象を選ぶ |
+| G4: production subtitle/render gate | internal candidateからproduction品質へ進む証拠不足を閉じる | G3、明示production slice、exact acceptance question | production acceptance false | Human owner: subtitle designとrenderを別々に判断 |
+| G5: rights/material-use clearance | 技術成功と利用許可を接続する | source identity、rights owner、利用条件・制限 | `rights=pending` | Rights owner: 判断。Agent: receipt/readbackだけ更新 |
+| G6: thumbnail system revisit | OUT-07一例を複数sourceで比較し偶然でないcover contractを作る | accepted portfolio、複数方向、独立thumbnail review | OUT-07は`PARK_PROVISIONAL_USABLE` | Supervisor/User: 再開判断。Agent: canonical化前に比較 |
+| G7: private/unlisted delivery | 承認済みcandidateをrollback付きで外部deliveryへ渡す | G4/G5/G6の必要gate、OAuth/credentialsの別承認 | YouTube integration未実装 | Supervisor/User: scope承認。Agent: metadata/upload/visibilityを分離 |
+| G8: portable artifact strategy | 別端末で同じmedia reviewを再現し手作業探索を減らす | private storage、transport、retention、rollback方針 | Gitはcode/docsのみ。mediaはsame-machine | Human owner: private artifact方針を承認。Agent:承認後に実装提案 |
+| G9: operator cockpit end-to-end | source intakeからreview/decision/deliveryまで一つの再開面にする | G1〜G8の安定contract | read-only/action GUIとCLIが点在 | Agent: consumer-first vertical sliceを提案 |
 
-## 近い代替入口
+## 次の取っ掛かり
 
-- **Advance**: OUT-10を承認し、第三sourceでpipeline再現性を直接検証する。最も
-  product gapを縮める推奨経路。
-- **Audit**: OUT-09のblur/mosaicを共通デザインへ誤一般化しない。OUT-10でcaption bandや
-  crop conflict条件が変わった時だけ比較scorecardへ昇格する。
-- **Explore**: parked recovery proofをepisode共通handoffへ一般化する。ただしprivate
-  storage / transport / retention / rollback方針の明示承認がある場合だけで、OUT-08
-  closure条件には戻さない。
-- **Excise**: `RUNTIME_STATE.md`の長いhistorical sectionと
-  `FEATURE_REGISTRY.md`のmojibakeを別docs-health sliceで整理する。current product
-  decisionを変えず、one-pass re-entryの摩擦だけを下げる。
+- **Advance**: 修復二本を一度だけ見て候補別の自由記述を返す。OUT-10/11 closure計画へ進む唯一の
+  直接入口。
+- **Verify**: SOURCE-05に具体的違和感がある場合、時点とaudio/visual/endpointのどれかを示す。
+  同じrecording内の再修復かpark/rejectを、歌詞推定なしで選べる。
+- **Audit**: 二本受理後に5-sourceの字幕・構図差を比較する。internal acceptanceをproduction
+  subtitle designへ広げず、source固有処理の誤一般化を防ぐ。
+- **Explore**: cross-machine media reviewが必要ならprivate artifact戦略を別sliceで設計する。
+  `episodes/`をGit追跡する案は、明示承認なしには採らない。
 
-rights、production render、production subtitle design/image quality、thumbnail、public/
-publishing、upload/OAuth/visibility/made-for-kidsは、OUT-09 internal acceptanceから開かない。
+rights、production render/subtitle/image quality、thumbnail、winner、public/publishing、
+upload/OAuth/visibility/made-for-kidsは、現在のhuman review pendingから開かない。

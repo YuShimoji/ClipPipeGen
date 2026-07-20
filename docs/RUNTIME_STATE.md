@@ -12,13 +12,13 @@ current_slice: OUT-11
 phase: human_review_ready
 canonical_status: repaired_two_candidate_combined_review_ready
 active_branch: codex/out-11-five-source-short-portfolio-wave-v0
-verified_implementation_head: branch_head_after_push
+verified_implementation_head: 249b3308b0d8a1cc8b75d37a245d717322859133
 source_branch_tip: branch_head_after_push
 closure_branch: null
 remote_resume_contract: fetch_then_switch_codex_out11_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: branch_head_after_push
-sync_audit_status: out11_repair_branch_only_main_unchanged
+sync_audit_head: 249b3308b0d8a1cc8b75d37a245d717322859133
+sync_audit_status: out11_handoff_docs_full_validation_passed_branch_only_main_unchanged
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
@@ -59,7 +59,7 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-20
+last_verified_at: 2026-07-21
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8074/index.html
 historical_last_verified_host_entrypoint: null

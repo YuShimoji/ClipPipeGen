@@ -6,6 +6,12 @@ branch: `codex/out-11-five-source-short-portfolio-wave-v0`
 
 状態: `OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY`
 
+remote再開境界: 検証済み実装head
+`249b3308b0d8a1cc8b75d37a245d717322859133`を基準に、active branch
+`codex/out-11-five-source-short-portfolio-wave-v0`へhandoff docsを同期する。別端末ではfetch、
+branch switch、ff-only pull後に`docs/CURRENT_HANDOFF.md`を読む。Gitでportableなのはcode/docs/tests、
+exact identity、判断契約までで、ignored `episodes/`のmedia/QA/review packageは同一マシン限定である。
+
 ## 到達した状態
 
 OUT-11初回combined reviewの人間観測を、当時のOUT-10・SOURCE-04・SOURCE-05 exact SHAへ
@@ -77,8 +83,11 @@ horizontal overflowなし、二mediaはreadyState 4/error null。clean URLは両
 currentTime 0、明示`?qa-playback=1`だけ先頭をmuted再生し、SOURCE-05再生時にOUT-10がpauseした。
 console warning/error 0。QA後にbrowser tabとserverを停止し、port 8074 listener 0を確認した。
 
-code validationは`uvx --with Pillow pytest -q`が580 passed。changed-scope Ruff、dashboard JSON
-parse、`git diff --check`もpassし、`git ls-files episodes`は0件である。
+code validationは`uvx --with Pillow pytest -q`が580 passed。`npm ls --depth=0`はElectron
+`42.0.0`を読み戻し、通常GUI smokeとElectron smokeもpass。changed-scope Ruff、dashboard JSON
+parse、docs dashboard再生成、`git diff --check`もpassし、`git ls-files episodes`は0件である。
+同一マシンpackageの二MP4、readback、scorecard、manifestも上記exact SHAと再一致し、cleanup保護対象の
+R3 `human_preview_session/`を保持した。
 
 ## Code・authority変更
 

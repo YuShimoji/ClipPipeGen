@@ -1,10 +1,45 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-07-08 JST
+Last updated: 2026-07-21 JST
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
+
+## Immediate Resume Capsule - 2026-07-21 OUT-11 repaired two-candidate review
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git switch codex/out-11-five-source-short-portfolio-wave-v0
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count 'HEAD...@{u}'
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected tracked state after pulling this handoff:
+
+- Branch: `codex/out-11-five-source-short-portfolio-wave-v0`
+- Upstream: `origin/codex/out-11-five-source-short-portfolio-wave-v0`
+- `HEAD...@{u}`: `0 0`
+- `git ls-files episodes`: empty
+- Verified implementation base: `249b3308b0d8a1cc8b75d37a245d717322859133`
+- Active artifact contract: `clip-out11-five-source-short-portfolio-wave-v0-002`
+- Current entry: `docs/CURRENT_HANDOFF.md`
+
+OUT-11の現在状態は、SOURCE-04をexact bytes不変の`accepted_internal` receiptとして保持し、
+修復後OUT-10 SHA `62d4b45b...97cdd`と修復後SOURCE-05 SHA `b4a01413...a4969`だけを
+一回の人間レビューへ出す段階。二本とも`human_review_pending`で、winner、rights、production、
+thumbnail、public/publishingは未承認である。
+
+`episodes/`内のMP4、contact sheet、waveform、localhost packageはignored same-machine evidenceで、
+別端末のGit checkoutには現れない。別端末ではtracked code/docs/testsとexact identityから即再開し、
+映像自体が必要なら承認済みprivate transport方針または既存contractに沿う再生成を別途行う。
+詳細と一回の質問は`docs/CURRENT_HANDOFF.md`を正本とする。以下の過去capsuleは履歴であり、
+current branchやnext actionとして使わない。
 
 ## Immediate Resume Capsule - 2026-07-08 HUB-01 External Source Registry
 
