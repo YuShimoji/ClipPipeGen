@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out10_inventory_stop_and_keeps_out07_rebuild_contract_parked() -> None:
+def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contract_parked() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
     assert "active_rebuild_contract: null" in runtime
@@ -239,46 +239,61 @@ def test_runtime_points_to_out10_inventory_stop_and_keeps_out07_rebuild_contract
     )
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
-    assert "portable_local_artifact_available: true" in runtime
-    assert "human_entrypoint: null" in runtime
+    assert "portable_local_artifact_available: false" in runtime
+    assert "human_entrypoint: http://127.0.0.1:8074/index.html" in runtime
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_inventory_receipt_portable_no_out10_media_candidate"
+        "tracked_code_docs_receipt_only_media_package_same_machine"
         in runtime
     )
-    assert "health: NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY" in runtime
-    assert "current_slice: OUT-10" in runtime
+    assert "health: OUT11_FIVE_SOURCE_COMBINED_REVIEW_READY" in runtime
+    assert "current_slice: OUT-11" in runtime
     assert "out10_inventory_count: 5" in runtime
     assert "out10_distinct_source_preflight_count: 3" in runtime
-    assert "out10_eligible_source_count: 0" in runtime
-    assert "out10_external_acquisition_required: true" in runtime
-    assert "out10_external_acquisition_authorized: false" in runtime
-    assert "out10_candidate_generated: false" in runtime
+    assert "out10_eligible_source_count: 1" in runtime
+    assert "out10_external_acquisition_required: false" in runtime
+    assert "out10_external_acquisition_authorized: true" in runtime
+    assert "out10_candidate_generated: true" in runtime
+    assert "out11_scorecard_row_count: 5" in runtime
+    assert "out11_review_media_count: 3" in runtime
+    assert "out11_review_question_count: 1" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
-    assert "human_review_pending: false" in runtime
+    assert "human_review_pending: true" in runtime
     assert "acceptance_granted: false" in runtime
     assert "batch_acceptance: null" in runtime
     assert (
         "candidate_01_acceptance: "
-        "null"
+        "pending"
         in runtime
     )
     assert (
         "review_status: "
-        "no_candidate_generated"
+        "pending_human_review"
         in runtime
     )
     assert (
-        "subtitle_display_authority: null"
+        "subtitle_display_authority: official_json3_event_text_and_timing"
         in runtime
     )
-    assert "additional_subtitle_burn_in: false" in runtime
+    assert "additional_subtitle_burn_in: true" in runtime
     assert "source_native_caption_pixels_suppressed: false" in runtime
     assert "full_source_blur_fallback_allowed: false" in runtime
     assert "additional_blur_or_frosted_caption_surface: false" in runtime
     assert (
-        "candidate_01_sha256: null" in runtime
+        "candidate_01_sha256: "
+        "a53d0416e17dcc682fa172ca47c7dd268a9dff2cf926bd3c44c6f5a2711134f2"
+        in runtime
+    )
+    assert (
+        "candidate_02_sha256: "
+        "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524"
+        in runtime
+    )
+    assert (
+        "candidate_03_sha256: "
+        "370850c5222b70d944f7ba879849f33a2b448edae355e4e41dc35977bf22b578"
+        in runtime
     )
     assert "candidate_02_acceptance: null" in runtime
     assert "optional_recovery_merged: false" in runtime

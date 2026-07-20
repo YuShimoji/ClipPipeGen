@@ -125,7 +125,10 @@ REVIEWED_LINE_BREAK_HINTS: dict[str, dict[str, Any]] = {
     },
     "sub_029": {
         "reason": "out06_user_feedback_wrap_repair_2026_07_12",
-        "preferred_lines": [["ありがとうございますー！"], ["ありがとう", "ございますー！"]],
+        "preferred_lines": [
+            ["ありがとうございますー！"],
+            ["ありがとう", "ございますー！"],
+        ],
         "forbidden_boundaries": ["ありがとうご|ざいます"],
     },
 }
@@ -155,7 +158,9 @@ def build_vertical_short_candidate(
     _require_within(episode, root, "episode directory")
     _validate_output_directory(episode, output)
     _validate_predecessor_path(episode, predecessor_path)
-    _reject_overlap(output, predecessor_path, "output directory must not overlap predecessor")
+    _reject_overlap(
+        output, predecessor_path, "output directory must not overlap predecessor"
+    )
 
     predecessor = _read_json(predecessor_path, "OUT-04 predecessor readback")
     predecessor_info = _validate_predecessor(
@@ -181,7 +186,9 @@ def build_vertical_short_candidate(
 
     protected_paths = _protected_paths(episode)
     for protected in protected_paths.values():
-        _reject_overlap(output, protected, "output directory must not overlap protected evidence")
+        _reject_overlap(
+            output, protected, "output directory must not overlap protected evidence"
+        )
     protected_before = {
         label: _tree_digest(path, root=root) for label, path in protected_paths.items()
     }
@@ -224,7 +231,8 @@ def build_vertical_short_candidate(
         _write_text(srt_path, _render_srt(subtitle_items))
         _write_text(
             reframe_plan_path,
-            json.dumps(reframe_plan, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            json.dumps(reframe_plan, ensure_ascii=False, indent=2, sort_keys=True)
+            + "\n",
         )
         _validate_ass_visible_content(ass_path)
 
@@ -249,13 +257,20 @@ def build_vertical_short_candidate(
         _cleanup_internal_directory(work, expected_parent=stage)
 
         protected_after_render = {
-            label: _tree_digest(path, root=root) for label, path in protected_paths.items()
+            label: _tree_digest(path, root=root)
+            for label, path in protected_paths.items()
         }
         if protected_after_render != protected_before:
-            raise VerticalShortCandidateError("protected evidence changed during render")
-        source_hashes_after = {_relative(path, root): _sha256(path) for path in input_paths}
+            raise VerticalShortCandidateError(
+                "protected evidence changed during render"
+            )
+        source_hashes_after = {
+            _relative(path, root): _sha256(path) for path in input_paths
+        }
         if source_hashes_after != source_hashes_before:
-            raise VerticalShortCandidateError("source or predecessor input changed during render")
+            raise VerticalShortCandidateError(
+                "source or predecessor input changed during render"
+            )
 
         rights_status = predecessor_info["rights_status"]
         final_paths = {
@@ -267,7 +282,9 @@ def build_vertical_short_candidate(
             "index": output / index_path.name,
             "open": output / open_path.name,
             "serve": output / serve_path.name,
-            "reframe_comparison_contact_sheet": output / "assets" / compare_sheet_path.name,
+            "reframe_comparison_contact_sheet": output
+            / "assets"
+            / compare_sheet_path.name,
             "frame_qa_contact_sheet": output / "assets" / frame_sheet_path.name,
         }
         readback = _candidate_readback(
@@ -345,7 +362,9 @@ def _validate_predecessor(
     if predecessor.get("artifact_id") != EXPECTED_OUT04_ARTIFACT_ID:
         raise VerticalShortCandidateError("unexpected OUT-04 predecessor artifact")
     if tuple(predecessor.get("ordered_cut_ids") or ()) != EXPECTED_CUT_IDS:
-        raise VerticalShortCandidateError("OUT-04 cut order must remain cut_001 -> cut_002")
+        raise VerticalShortCandidateError(
+            "OUT-04 cut order must remain cut_001 -> cut_002"
+        )
     _assert_close(
         predecessor.get("expected_duration_seconds"),
         EXPECTED_DURATION_SECONDS,
@@ -353,7 +372,9 @@ def _validate_predecessor(
     )
     timeline = predecessor.get("timeline")
     if not isinstance(timeline, list) or len(timeline) != 2:
-        raise VerticalShortCandidateError("OUT-04 timeline must contain exactly two cuts")
+        raise VerticalShortCandidateError(
+            "OUT-04 timeline must contain exactly two cuts"
+        )
     expected_ranges = (
         ("cut_001", 2.453, 9.293, 0.000, 6.840, "sequence_start"),
         ("cut_002", 12.329, 17.167, 6.840, 11.678, "hard_cut"),
@@ -361,7 +382,9 @@ def _validate_predecessor(
     for item, expected in zip(timeline, expected_ranges, strict=True):
         cut_id, src_start, src_end, seq_start, seq_end, transition = expected
         if item.get("id") != cut_id or item.get("transition_in") != transition:
-            raise VerticalShortCandidateError("OUT-04 timeline identity/transition changed")
+            raise VerticalShortCandidateError(
+                "OUT-04 timeline identity/transition changed"
+            )
         for field, value in (
             ("source_start_seconds", src_start),
             ("source_end_seconds", src_end),
@@ -369,24 +392,36 @@ def _validate_predecessor(
             ("sequence_end_seconds", seq_end),
         ):
             _assert_close(item.get(field), value, f"{cut_id}.{field}")
-    _assert_close(timeline[1].get("sequence_start_seconds"), EXPECTED_BOUNDARY_SECONDS, "boundary")
+    _assert_close(
+        timeline[1].get("sequence_start_seconds"), EXPECTED_BOUNDARY_SECONDS, "boundary"
+    )
 
     subtitles = predecessor.get("subtitles")
     if not isinstance(subtitles, list) or len(subtitles) != 9:
-        raise VerticalShortCandidateError("OUT-04 predecessor must contain nine subtitles")
+        raise VerticalShortCandidateError(
+            "OUT-04 predecessor must contain nine subtitles"
+        )
     if _subtitle_semantic_hash(subtitles) != expected_subtitle_semantic_sha256:
         raise VerticalShortCandidateError("OUT-04 subtitle timing/text hash changed")
     _validate_predecessor_subtitle_ranges(subtitles, timeline)
 
-    render = predecessor.get("render") if isinstance(predecessor.get("render"), dict) else {}
+    render = (
+        predecessor.get("render") if isinstance(predecessor.get("render"), dict) else {}
+    )
     predecessor_video_path = _resolved(root, Path(str(render.get("output_path") or "")))
     _require_file(predecessor_video_path, "OUT-04 predecessor video")
-    _require_within(predecessor_video_path, predecessor_path.parent, "OUT-04 predecessor video")
+    _require_within(
+        predecessor_video_path, predecessor_path.parent, "OUT-04 predecessor video"
+    )
     actual_video_hash = _sha256(predecessor_video_path)
     if actual_video_hash != str(render.get("output_sha256") or ""):
-        raise VerticalShortCandidateError("OUT-04 predecessor video/readback hash mismatch")
+        raise VerticalShortCandidateError(
+            "OUT-04 predecessor video/readback hash mismatch"
+        )
     if actual_video_hash != expected_video_sha256:
-        raise VerticalShortCandidateError("accepted OUT-04 predecessor video hash changed")
+        raise VerticalShortCandidateError(
+            "accepted OUT-04 predecessor video hash changed"
+        )
 
     input_paths: list[Path] = []
     for label, entry in (predecessor.get("input_artifacts") or {}).items():
@@ -432,9 +467,13 @@ def _validate_predecessor(
         if material["sha256"] != str(predecessor_material.get("sha256") or ""):
             raise VerticalShortCandidateError(f"source {kind} hash changed from OUT-04")
 
-    rights_status = str((predecessor.get("boundaries") or {}).get("rights_status") or "unknown")
+    rights_status = str(
+        (predecessor.get("boundaries") or {}).get("rights_status") or "unknown"
+    )
     if rights_status != "pending":
-        raise VerticalShortCandidateError("OUT-05 requires the accepted pending-rights baseline")
+        raise VerticalShortCandidateError(
+            "OUT-05 requires the accepted pending-rights baseline"
+        )
     return {
         "readback_sha256": actual_readback_hash,
         "video_sha256": actual_video_hash,
@@ -523,9 +562,7 @@ def _build_subtitle_presentation(
             ),
             "source_type": str(item.get("source_type") or ""),
             "source_segment_ids": list(item.get("source_segment_ids") or []),
-            "json3_timing_authority": dict(
-                item.get("json3_timing_authority") or {}
-            ),
+            "json3_timing_authority": dict(item.get("json3_timing_authority") or {}),
         }
         for item in predecessor_subtitles
     ]
@@ -589,7 +626,9 @@ def _apply_vertical_balanced_wrap(
 
     updated: list[dict[str, Any]] = []
     for item in items:
-        original_lines = list(item.get("wrapped_lines") or [str(item.get("text") or "")])
+        original_lines = list(
+            item.get("wrapped_lines") or [str(item.get("text") or "")]
+        )
         balance = _balanced_vertical_lines(
             str(item.get("text") or ""),
             layout=layout,
@@ -660,7 +699,9 @@ def _balanced_vertical_lines(
     ):
         try:
             font = subtitle_style_spike._load_font(str(font_file), font_size)
-            image = subtitle_style_spike.Image.new("RGB", (FRAME_WIDTH, FRAME_HEIGHT), (0, 0, 0))
+            image = subtitle_style_spike.Image.new(
+                "RGB", (FRAME_WIDTH, FRAME_HEIGHT), (0, 0, 0)
+            )
             draw = subtitle_style_spike.ImageDraw.Draw(image)
 
             def measure(line: str) -> float:
@@ -696,7 +737,8 @@ def _balanced_vertical_lines(
             "measured_widths": [round(value, 3) for value in widths],
             "break_indices": _break_indices_for_lines(source, lines),
             "score": 0.0,
-            "short_final_tail": len(lines) > 1 and _content_character_count(lines[-1]) < 4,
+            "short_final_tail": len(lines) > 1
+            and _content_character_count(lines[-1]) < 4,
             "line_break_hint": hint_readback,
             "production_typography_readiness_claimed": False,
         }
@@ -932,20 +974,30 @@ def _validate_subtitle_containment(
         start = float(item["display_start_seconds"])
         end = float(item["display_end_seconds"])
         if start < -0.001 or end > expected_duration + 0.001 or end <= start:
-            raise VerticalShortCandidateError(f"subtitle timing is outside candidate: {item['subtitle_id']}")
+            raise VerticalShortCandidateError(
+                f"subtitle timing is outside candidate: {item['subtitle_id']}"
+            )
         if start + 0.001 < previous_end:
-            raise VerticalShortCandidateError(f"subtitle overlap remains after replacement: {item['subtitle_id']}")
+            raise VerticalShortCandidateError(
+                f"subtitle overlap remains after replacement: {item['subtitle_id']}"
+            )
         previous_end = end
         line_count = int(item.get("wrapped_line_count") or 1)
         if line_count > 3:
-            raise VerticalShortCandidateError(f"subtitle exceeds three-line safe envelope: {item['subtitle_id']}")
+            raise VerticalShortCandidateError(
+                f"subtitle exceeds three-line safe envelope: {item['subtitle_id']}"
+            )
         estimated_top = int(layout["values"]["bottom_center_y"]) - (
             int(layout["values"]["line_height"]) * line_count
         )
         if estimated_top < int(safe["top"]):
-            raise VerticalShortCandidateError(f"subtitle exceeds vertical safe envelope: {item['subtitle_id']}")
+            raise VerticalShortCandidateError(
+                f"subtitle exceeds vertical safe envelope: {item['subtitle_id']}"
+            )
         if item.get("suspicious_tail_line_present") is True:
-            raise VerticalShortCandidateError(f"subtitle has suspicious wrapped tail: {item['subtitle_id']}")
+            raise VerticalShortCandidateError(
+                f"subtitle has suspicious wrapped tail: {item['subtitle_id']}"
+            )
         checks.append(
             {
                 "subtitle_id": item["subtitle_id"],
@@ -966,7 +1018,9 @@ def _validate_subtitle_containment(
         "subtitle_count": len(checks),
         "all_inside_timeline": True,
         "all_inside_vertical_safe_envelope": True,
-        "maximum_line_count": max((item["wrapped_line_count"] for item in checks), default=0),
+        "maximum_line_count": max(
+            (item["wrapped_line_count"] for item in checks), default=0
+        ),
         "checks": checks,
     }
 
@@ -993,7 +1047,11 @@ def _build_reframe_plan(predecessor: dict[str, Any]) -> dict[str, Any]:
         "schema_version": "clippipegen.out05.reframe_plan.v0",
         "artifact_id": ARTIFACT_ID,
         "source_frame": {"width": 1920, "height": 1080, "aspect_ratio": "16:9"},
-        "output_frame": {"width": FRAME_WIDTH, "height": FRAME_HEIGHT, "aspect_ratio": "9:16"},
+        "output_frame": {
+            "width": FRAME_WIDTH,
+            "height": FRAME_HEIGHT,
+            "aspect_ratio": "9:16",
+        },
         "comparison_scope": "still_frame_specimens_only_no_three_full_video_renders",
         "comparison_frame_sources": [
             {"cut_id": "cut_001", "source_seconds": 5.453},
@@ -1044,17 +1102,26 @@ def _build_reframe_plan(predecessor: dict[str, Any]) -> dict[str, Any]:
 
 def _validate_reframe_plan(plan: dict[str, Any]) -> None:
     if tuple(item.get("id") for item in plan.get("options") or []) != REFRAME_OPTIONS:
-        raise VerticalShortCandidateError("reframe comparison must contain the three bounded options")
+        raise VerticalShortCandidateError(
+            "reframe comparison must contain the three bounded options"
+        )
     if plan.get("selected_option") != SELECTED_REFRAME:
-        raise VerticalShortCandidateError("OUT-05 selected reframe must be full fit plus source-derived canvas")
+        raise VerticalShortCandidateError(
+            "OUT-05 selected reframe must be full fit plus source-derived canvas"
+        )
     output = plan.get("output_frame") or {}
     if (output.get("width"), output.get("height")) != (FRAME_WIDTH, FRAME_HEIGHT):
         raise VerticalShortCandidateError("OUT-05 output frame must be 1080x1920")
     preserved = plan.get("timeline_preserved") or {}
     if tuple(preserved.get("ordered_cut_ids") or ()) != EXPECTED_CUT_IDS:
         raise VerticalShortCandidateError("reframe plan changed the accepted cut order")
-    if preserved.get("new_cut_added") is not False or preserved.get("transition_added") is not False:
-        raise VerticalShortCandidateError("reframe plan must not add cuts or transitions")
+    if (
+        preserved.get("new_cut_added") is not False
+        or preserved.get("transition_added") is not False
+    ):
+        raise VerticalShortCandidateError(
+            "reframe plan must not add cuts or transitions"
+        )
 
 
 def _candidate_readback(
@@ -1096,7 +1163,9 @@ def _candidate_readback(
         },
         "predecessor": {
             "artifact_id": predecessor["artifact_id"],
-            "readback_path": _relative(_resolved(root, Path(predecessor["machine_readback"])), root),
+            "readback_path": _relative(
+                _resolved(root, Path(predecessor["machine_readback"])), root
+            ),
             "readback_sha256": predecessor_info["readback_sha256"],
             "video_sha256": predecessor_info["video_sha256"],
             "accepted_scope": "OUT-04 internal editorial representative sequence only",
@@ -1122,8 +1191,12 @@ def _candidate_readback(
             "lead_candidate": ED10W_CANDIDATE2_BADGE_PRESSURE_ID,
             "fallback_reference": ED10W_CANDIDATE0_BASELINE_ID,
             "font_family": subtitle_layout["diagnostic_ass_style"].get("font_name"),
-            "font_file": subtitle_layout["diagnostic_ass_style"].get("resolved_font_file"),
-            "font_file_status": subtitle_layout["diagnostic_ass_style"].get("font_file_status"),
+            "font_file": subtitle_layout["diagnostic_ass_style"].get(
+                "resolved_font_file"
+            ),
+            "font_file_status": subtitle_layout["diagnostic_ass_style"].get(
+                "font_file_status"
+            ),
             "stable_body_text_color": True,
             "layout": subtitle_layout,
             "selector": selector_readback,
@@ -1144,8 +1217,12 @@ def _candidate_readback(
             "pixel_format": "yuv420p",
         },
         "quality_assurance": {
-            "reframe_comparison": _relative(final_paths["reframe_comparison_contact_sheet"], root),
-            "frame_contact_sheet": _relative(final_paths["frame_qa_contact_sheet"], root),
+            "reframe_comparison": _relative(
+                final_paths["reframe_comparison_contact_sheet"], root
+            ),
+            "frame_contact_sheet": _relative(
+                final_paths["frame_qa_contact_sheet"], root
+            ),
             "frame_samples": render_result["frame_samples"],
             "browser_required": True,
             "browser_result": "pending_external_browser_validation",
@@ -1266,10 +1343,7 @@ def render_vertical_sequence_assets(
         timeline=timeline,
         runner=runner,
     )
-    normalize = (
-        abs(float(input_measurement["integrated_lufs"]) - (-14.0)) > 3.0
-        or float(input_measurement["true_peak_dbtp"]) > -1.0
-    )
+    normalize = _should_normalize_loudness(input_measurement)
     if normalize:
         normalization_filter = _normalization_filter(input_measurement)
         decision = "normalize_clear_loudness_gap_to_internal_candidate_target"
@@ -1295,28 +1369,41 @@ def render_vertical_sequence_assets(
             source_video_path=source_video_path,
             source_audio_path=source_audio_path,
             ass_path=ass_path,
-            font_file=Path(str(subtitle_layout["diagnostic_ass_style"].get("resolved_font_file") or "")),
+            font_file=Path(
+                str(
+                    subtitle_layout["diagnostic_ass_style"].get("resolved_font_file")
+                    or ""
+                )
+            ),
             timeline=timeline,
             output_path=video_path,
             video_codec=codec,
             audio_filter=normalization_filter,
             composition_policy=composition_policy,
         )
-        result = _run_command(command, runner=runner, timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS)
-        status = "passed" if result.returncode == 0 and video_path.is_file() else "failed"
+        result = _run_command(
+            command, runner=runner, timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS
+        )
+        status = (
+            "passed" if result.returncode == 0 and video_path.is_file() else "failed"
+        )
         attempts.append(
             {
                 "video_codec": codec,
                 "status": status,
                 "exit_code": result.returncode,
-                "stderr_sha256": hashlib.sha256((result.stderr or "").encode("utf-8")).hexdigest(),
+                "stderr_sha256": hashlib.sha256(
+                    (result.stderr or "").encode("utf-8")
+                ).hexdigest(),
             }
         )
         if status == "passed":
             selected_codec = codec
             break
     if selected_codec is None:
-        raise VerticalShortCandidateError("FFmpeg vertical render failed for all H.264 profiles")
+        raise VerticalShortCandidateError(
+            "FFmpeg vertical render failed for all H.264 profiles"
+        )
 
     try:
         output_probe = ffmpeg_tiny.probe_media(
@@ -1327,7 +1414,9 @@ def render_vertical_sequence_assets(
             runner=runner,
         ).metadata
     except ffmpeg_tiny.TinyRenderError as exc:
-        raise VerticalShortCandidateError(f"vertical candidate probe failed: {exc}") from exc
+        raise VerticalShortCandidateError(
+            f"vertical candidate probe failed: {exc}"
+        ) from exc
     details = _probe_output_details(
         ffprobe_path=resolved_ffprobe,
         input_path=video_path,
@@ -1336,9 +1425,13 @@ def render_vertical_sequence_assets(
     output_probe.update(details)
     faststart = _faststart_readback(video_path)
     if output_probe.get("pixel_format") != "yuv420p":
-        raise VerticalShortCandidateError("vertical candidate pixel format must be yuv420p")
+        raise VerticalShortCandidateError(
+            "vertical candidate pixel format must be yuv420p"
+        )
     if faststart.get("status") != "passed":
-        raise VerticalShortCandidateError("vertical candidate must place moov before mdat")
+        raise VerticalShortCandidateError(
+            "vertical candidate must place moov before mdat"
+        )
 
     decode_command = [
         resolved_ffmpeg,
@@ -1418,9 +1511,13 @@ def _validate_source_probe(
         raise VerticalShortCandidateError("source audio stream is missing")
     maximum_end = max(float(item["source_end_seconds"]) for item in timeline)
     if float(video.get("duration_seconds") or 0.0) + 0.05 < maximum_end:
-        raise VerticalShortCandidateError("source video does not contain accepted timeline")
+        raise VerticalShortCandidateError(
+            "source video does not contain accepted timeline"
+        )
     if float(audio.get("duration_seconds") or 0.0) + 0.05 < maximum_end:
-        raise VerticalShortCandidateError("source audio does not contain accepted timeline")
+        raise VerticalShortCandidateError(
+            "source audio does not contain accepted timeline"
+        )
 
 
 def _measure_loudness(
@@ -1476,7 +1573,9 @@ def _measure_loudness(
             "target_offset_lu": float(payload["target_offset"]),
         }
     except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
-        raise VerticalShortCandidateError(f"invalid audio loudness JSON: {exc}") from exc
+        raise VerticalShortCandidateError(
+            f"invalid audio loudness JSON: {exc}"
+        ) from exc
 
 
 def _normalization_filter(measurement: dict[str, float]) -> str:
@@ -1489,6 +1588,14 @@ def _normalization_filter(measurement: dict[str, float]) -> str:
         f"offset={measurement['target_offset_lu']}:"
         "linear=false:print_format=summary"
     )
+
+
+def _should_normalize_loudness(measurement: dict[str, float]) -> bool:
+    """Keep the pass-through window strictly inside the final QA window."""
+
+    integrated = float(measurement["integrated_lufs"])
+    true_peak = float(measurement["true_peak_dbtp"])
+    return integrated < -15.25 or integrated > -12.75 or true_peak > -1.0
 
 
 def _vertical_render_command(
@@ -1780,9 +1887,7 @@ def _validated_pixel_rectangle(
     if not isinstance(value, dict):
         raise VerticalShortCandidateError(f"{label} is missing")
     try:
-        rectangle = {
-            key: int(value[key]) for key in ("x", "y", "width", "height")
-        }
+        rectangle = {key: int(value[key]) for key in ("x", "y", "width", "height")}
     except (KeyError, TypeError, ValueError) as exc:
         raise VerticalShortCandidateError(f"{label} is invalid") from exc
     if (
@@ -1800,11 +1905,10 @@ def _validated_pixel_rectangle(
 
 
 def _rectangles_overlap(left: dict[str, int], right: dict[str, int]) -> bool:
-    return (
-        max(left["x"], right["x"])
-        < min(left["x"] + left["width"], right["x"] + right["width"])
-        and max(left["y"], right["y"])
-        < min(left["y"] + left["height"], right["y"] + right["height"])
+    return max(left["x"], right["x"]) < min(
+        left["x"] + left["width"], right["x"] + right["width"]
+    ) and max(left["y"], right["y"]) < min(
+        left["y"] + left["height"], right["y"] + right["height"]
     )
 
 
@@ -1845,7 +1949,9 @@ def _render_reframe_comparison_sheet(
                 timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS,
             )
             if result.returncode != 0 or not frame.is_file():
-                raise VerticalShortCandidateError(f"reframe specimen failed: {cut_id}/{option}")
+                raise VerticalShortCandidateError(
+                    f"reframe specimen failed: {cut_id}/{option}"
+                )
             frames.append(frame)
     _tile_images(
         ffmpeg_path=ffmpeg_path,
@@ -1989,14 +2095,18 @@ def _probe_output_details(
         "json",
         str(input_path),
     ]
-    result = _run_command(command, runner=runner, timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS)
+    result = _run_command(
+        command, runner=runner, timeout=ffmpeg_tiny.COMMAND_TIMEOUT_SECONDS
+    )
     if result.returncode != 0:
         raise VerticalShortCandidateError("output pixel-format probe failed")
     try:
         payload = json.loads(result.stdout or "{}")
         stream = (payload.get("streams") or [{}])[0]
     except (json.JSONDecodeError, IndexError, TypeError) as exc:
-        raise VerticalShortCandidateError(f"invalid output detail probe: {exc}") from exc
+        raise VerticalShortCandidateError(
+            f"invalid output detail probe: {exc}"
+        ) from exc
     return {
         "pixel_format": stream.get("pix_fmt"),
         "video_profile": stream.get("profile"),
@@ -2032,7 +2142,9 @@ def _run_command(
             timeout=timeout,
         )
     except (OSError, subprocess.SubprocessError) as exc:
-        raise VerticalShortCandidateError(f"external render command failed: {exc}") from exc
+        raise VerticalShortCandidateError(
+            f"external render command failed: {exc}"
+        ) from exc
 
 
 def _escape_filter_path(path: Path) -> str:
@@ -2073,10 +2185,14 @@ def _validate_ass_visible_content(
         )
     forbidden = ("SPK", "DIAGNOSTIC", "TECHNICAL", "PLACEHOLDER")
     if any(token in line.upper() for token in forbidden for line in event_lines):
-        raise VerticalShortCandidateError("ASS contains a visible placeholder/technical label")
+        raise VerticalShortCandidateError(
+            "ASS contains a visible placeholder/technical label"
+        )
     flattened = text.replace(r"\N", "").replace(" ", "")
     if not all(value.replace(" ", "") in flattened for value in required_texts):
-        raise VerticalShortCandidateError("ASS lost expected UTF-8 Japanese subtitle text")
+        raise VerticalShortCandidateError(
+            "ASS lost expected UTF-8 Japanese subtitle text"
+        )
 
 
 def validate_ass_visible_content(
@@ -2102,31 +2218,52 @@ def _validate_render_result(
 ) -> None:
     _require_file(video_path, "vertical candidate video")
     media = result.get("media") if isinstance(result.get("media"), dict) else {}
-    counts = media.get("stream_counts") if isinstance(media.get("stream_counts"), dict) else {}
+    counts = (
+        media.get("stream_counts")
+        if isinstance(media.get("stream_counts"), dict)
+        else {}
+    )
     if int(counts.get("video") or 0) != 1 or int(counts.get("audio") or 0) != 1:
-        raise VerticalShortCandidateError("vertical candidate must have one video and one audio stream")
+        raise VerticalShortCandidateError(
+            "vertical candidate must have one video and one audio stream"
+        )
     if str(media.get("video_codec") or "").lower() != "h264":
-        raise VerticalShortCandidateError("vertical candidate video codec must be H.264")
+        raise VerticalShortCandidateError(
+            "vertical candidate video codec must be H.264"
+        )
     if str(media.get("audio_codec") or "").lower() != "aac":
         raise VerticalShortCandidateError("vertical candidate audio codec must be AAC")
     if (int(media.get("width") or 0), int(media.get("height") or 0)) != (
         FRAME_WIDTH,
         FRAME_HEIGHT,
     ):
-        raise VerticalShortCandidateError("vertical candidate resolution must be 1080x1920")
+        raise VerticalShortCandidateError(
+            "vertical candidate resolution must be 1080x1920"
+        )
     if abs(float(media.get("fps") or 0.0) - FRAME_RATE) > 0.01:
         raise VerticalShortCandidateError("vertical candidate frame rate must be 30fps")
-    if abs(float(media.get("duration_seconds") or 0.0) - expected_duration) > OUTPUT_DURATION_TOLERANCE_SECONDS:
-        raise VerticalShortCandidateError("vertical candidate duration changed from authority")
+    if (
+        abs(float(media.get("duration_seconds") or 0.0) - expected_duration)
+        > OUTPUT_DURATION_TOLERANCE_SECONDS
+    ):
+        raise VerticalShortCandidateError(
+            "vertical candidate duration changed from authority"
+        )
     if result.get("full_decode", {}).get("status") != "passed":
         raise VerticalShortCandidateError("vertical candidate full decode did not pass")
     final_audio = result.get("audio", {}).get("output_measurement", {})
     if float(final_audio.get("integrated_lufs") or -999.0) < -15.5:
-        raise VerticalShortCandidateError("vertical candidate audio remained materially below target")
+        raise VerticalShortCandidateError(
+            "vertical candidate audio remained materially below target"
+        )
     if float(final_audio.get("integrated_lufs") or 999.0) > -12.5:
-        raise VerticalShortCandidateError("vertical candidate audio exceeded loudness window")
+        raise VerticalShortCandidateError(
+            "vertical candidate audio exceeded loudness window"
+        )
     if float(final_audio.get("true_peak_dbtp") or 999.0) > -1.0:
-        raise VerticalShortCandidateError("vertical candidate true peak exceeds -1 dBTP")
+        raise VerticalShortCandidateError(
+            "vertical candidate true peak exceeds -1 dBTP"
+        )
 
 
 def validate_vertical_render_result(
@@ -2160,10 +2297,14 @@ def _validate_staged_bundle(stage: Path, readback: dict[str, Any]) -> None:
     for path in required:
         _require_file(path, f"staged bundle file {path.name}")
     if (stage / ".work").exists():
-        raise VerticalShortCandidateError("internal work directory remained in staged bundle")
+        raise VerticalShortCandidateError(
+            "internal work directory remained in staged bundle"
+        )
     parsed = _read_json(stage / "candidate_readback.json", "staged candidate readback")
     if parsed.get("artifact_id") != readback.get("artifact_id"):
-        raise VerticalShortCandidateError("staged candidate readback does not parse consistently")
+        raise VerticalShortCandidateError(
+            "staged candidate readback does not parse consistently"
+        )
     html = (stage / "index.html").read_text(encoding="utf-8")
     if html.count("<video ") != 1:
         raise VerticalShortCandidateError("review page must contain exactly one video")
@@ -2172,8 +2313,12 @@ def _validate_staged_bundle(stage: Path, readback: dict[str, Any]) -> None:
 def _atomic_promote(stage: Path, output: Path) -> Path | None:
     review_dir = output.parent
     _require_within(stage, review_dir, "staging directory")
-    if stage.parent != review_dir or not stage.name.startswith(f".{output.name}.staging-"):
-        raise VerticalShortCandidateError("invalid staging directory for atomic promotion")
+    if stage.parent != review_dir or not stage.name.startswith(
+        f".{output.name}.staging-"
+    ):
+        raise VerticalShortCandidateError(
+            "invalid staging directory for atomic promotion"
+        )
     backup: Path | None = None
     if output.exists():
         backup = review_dir / f".{output.name}.backup-{uuid.uuid4().hex}"
@@ -2190,9 +2335,13 @@ def _atomic_promote(stage: Path, output: Path) -> Path | None:
 def _protected_paths(episode: Path) -> dict[str, Path]:
     review = episode / "review"
     paths = {
-        "human_preview_session": review / "jp_pilot01r3_cut_review" / "human_preview_session",
-        "out03_real_local_selected_cut_proof": review / "out03_real_local_selected_cut_proof",
-        "out04_editorial_representative_sequence": review / "out04_editorial_representative_sequence",
+        "human_preview_session": review
+        / "jp_pilot01r3_cut_review"
+        / "human_preview_session",
+        "out03_real_local_selected_cut_proof": review
+        / "out03_real_local_selected_cut_proof",
+        "out04_editorial_representative_sequence": review
+        / "out04_editorial_representative_sequence",
     }
     for label, path in paths.items():
         _require_directory(path, f"protected {label}")
@@ -2205,7 +2354,12 @@ def _tree_digest(path: Path, *, root: Path) -> dict[str, Any]:
         relative = file_path.relative_to(path).as_posix()
         rows.append(f"{relative}\t{_sha256(file_path)}")
     digest = hashlib.sha256("\n".join(rows).encode("utf-8")).hexdigest()
-    return {"path": _relative(path, root), "file_count": len(rows), "sha256": digest, "unchanged": True}
+    return {
+        "path": _relative(path, root),
+        "file_count": len(rows),
+        "sha256": digest,
+        "unchanged": True,
+    }
 
 
 def _validate_predecessor_subtitle_ranges(
@@ -2226,7 +2380,9 @@ def _validate_predecessor_subtitle_ranges(
         end = float(item.get("sequence_end_seconds") or 0.0)
         cut_start, cut_end = cut_ranges[cut_id]
         if start < cut_start - 0.001 or end > cut_end + 0.001 or end <= start:
-            raise VerticalShortCandidateError(f"predecessor subtitle crosses its cut: {item.get('id')}")
+            raise VerticalShortCandidateError(
+                f"predecessor subtitle crosses its cut: {item.get('id')}"
+            )
 
 
 def _subtitle_semantic_hash(subtitles: list[dict[str, Any]]) -> str:
@@ -2241,22 +2397,32 @@ def _subtitle_semantic_hash(subtitles: list[dict[str, Any]]) -> str:
 def _validate_output_directory(episode: Path, output: Path) -> None:
     review = (episode / "review").resolve()
     if output.parent != review:
-        raise VerticalShortCandidateError("output directory must be a direct episode/review child")
+        raise VerticalShortCandidateError(
+            "output directory must be a direct episode/review child"
+        )
     if not output.name.startswith(OUTPUT_NAME_PREFIX):
-        raise VerticalShortCandidateError("output directory name must start with out05_")
+        raise VerticalShortCandidateError(
+            "output directory name must start with out05_"
+        )
     _safe_identifier(output.name, "output directory name")
 
 
 def _validate_predecessor_path(episode: Path, path: Path) -> None:
-    expected_parent = (episode / "review" / "out04_editorial_representative_sequence").resolve()
+    expected_parent = (
+        episode / "review" / "out04_editorial_representative_sequence"
+    ).resolve()
     if path.parent != expected_parent or path.name != "sequence_readback.json":
-        raise VerticalShortCandidateError("predecessor must be the retained OUT-04 sequence readback")
+        raise VerticalShortCandidateError(
+            "predecessor must be the retained OUT-04 sequence readback"
+        )
 
 
 def _reject_overlap(output: Path, input_path: Path, message: str) -> None:
     output_resolved = output.resolve()
     input_resolved = input_path.resolve()
-    if _is_relative_to(output_resolved, input_resolved) or _is_relative_to(input_resolved, output_resolved):
+    if _is_relative_to(output_resolved, input_resolved) or _is_relative_to(
+        input_resolved, output_resolved
+    ):
         raise VerticalShortCandidateError(message)
 
 
@@ -2275,7 +2441,9 @@ def _render_html(readback: dict[str, Any]) -> str:
     media = render["media"]
     audio = readback["audio"]
     output_audio = audio["output_measurement"]
-    questions = "".join(f"<li>{escape(question)}</li>" for question in readback["review_questions"])
+    questions = "".join(
+        f"<li>{escape(question)}</li>" for question in readback["review_questions"]
+    )
     subtitle_rows = "".join(
         "<tr>"
         f"<td><code>{escape(item['subtitle_id'])}</code></td>"
@@ -2312,9 +2480,9 @@ code {{ color:#bae6fd; }} .gate {{ color:#fbbf24; }} li {{ margin:.55rem 0; }}
 </details>
 <details><summary>字幕の改行と安全域</summary><table><thead><tr><th>ID</th><th>時間</th><th>表示</th></tr></thead><tbody>{subtitle_rows}</tbody></table></details>
 <details><summary>probe・音声・出典</summary>
-<p>Video: <code>{escape(str(media['video_codec']))}</code> / {media['width']}x{media['height']} / {media['fps']}fps / {media['duration_seconds']:.3f}s / yuv420p / faststart</p>
-<p>Audio: <code>{escape(str(media['audio_codec']))}</code>; input {audio['input_measurement']['integrated_lufs']:.2f} LUFS / {audio['input_measurement']['true_peak_dbtp']:.2f} dBTP; output {output_audio['integrated_lufs']:.2f} LUFS / {output_audio['true_peak_dbtp']:.2f} dBTP.</p>
-<p>OUT-04 SHA-256: <code>{escape(readback['predecessor']['video_sha256'])}</code></p>
+<p>Video: <code>{escape(str(media["video_codec"]))}</code> / {media["width"]}x{media["height"]} / {media["fps"]}fps / {media["duration_seconds"]:.3f}s / yuv420p / faststart</p>
+<p>Audio: <code>{escape(str(media["audio_codec"]))}</code>; input {audio["input_measurement"]["integrated_lufs"]:.2f} LUFS / {audio["input_measurement"]["true_peak_dbtp"]:.2f} dBTP; output {output_audio["integrated_lufs"]:.2f} LUFS / {output_audio["true_peak_dbtp"]:.2f} dBTP.</p>
+<p>OUT-04 SHA-256: <code>{escape(readback["predecessor"]["video_sha256"])}</code></p>
 </details>
 <details><summary>閉じたゲート</summary><p class="gate">internal_review_only=true / vertical_format_candidate=true / production_candidate=false / production_acceptance=false / production_subtitle_design_acceptance=false / rights=pending / public_ready=false / publishing=false / publish_attempted=false</p></details>
 </main></body></html>"""
@@ -2412,13 +2580,17 @@ def _write_text(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
-def _assert_close(value: Any, expected: float, label: str, tolerance: float = 0.001) -> None:
+def _assert_close(
+    value: Any, expected: float, label: str, tolerance: float = 0.001
+) -> None:
     try:
         actual = float(value)
     except (TypeError, ValueError) as exc:
         raise VerticalShortCandidateError(f"{label} is not numeric") from exc
     if abs(actual - expected) > tolerance:
-        raise VerticalShortCandidateError(f"{label} changed: expected {expected:.3f}, got {actual:.3f}")
+        raise VerticalShortCandidateError(
+            f"{label} changed: expected {expected:.3f}, got {actual:.3f}"
+        )
 
 
 def _srt_time(seconds: float) -> str:

@@ -51,6 +51,11 @@ Subcommands:
     build-second-source-short-repeatability OUT-09: declarative second-source vertical review candidate.
     repair-second-source-review-access OUT-09: access-only stable manual-safe review repair.
     build-third-source-short-portfolio OUT-10: third-source neutral-matte candidate + 3-source scorecard.
+    build-endpoint-preflight Source-neutral mechanical endpoint candidates + Agent selection.
+    build-endpoint-evidence-manifest Hash package-local endpoint evidence and self-integrity.
+    bind-source-adaptive-candidate-plan Hash/hydrate/bind an OUT-11 candidate plan.
+    build-source-adaptive-short-candidate Build one endpoint-bound real-source OUT-11 candidate.
+    build-five-source-short-portfolio Build the OUT-11 combined review and 5-source scorecard.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
     reconstitute-out07-review OUT-07: current media revision -> baseline-first combined poster review.
@@ -82,6 +87,11 @@ from . import (
     build_real_unused_range_short_minibatch,
     build_second_source_short_repeatability,
     build_third_source_short_portfolio,
+    build_endpoint_preflight,
+    build_endpoint_evidence_manifest,
+    bind_source_adaptive_candidate_plan,
+    build_source_adaptive_short_candidate,
+    build_five_source_short_portfolio,
     build_vertical_short_candidate,
     build_chapter_revision_board,
     build_content_candidate_dashboard,
@@ -182,6 +192,11 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-real-unused-range-short-minibatch": build_real_unused_range_short_minibatch.run,
     "build-second-source-short-repeatability": build_second_source_short_repeatability.run,
     "build-third-source-short-portfolio": build_third_source_short_portfolio.run,
+    "build-endpoint-preflight": build_endpoint_preflight.run,
+    "build-endpoint-evidence-manifest": build_endpoint_evidence_manifest.run,
+    "bind-source-adaptive-candidate-plan": bind_source_adaptive_candidate_plan.run,
+    "build-source-adaptive-short-candidate": build_source_adaptive_short_candidate.run,
+    "build-five-source-short-portfolio": build_five_source_short_portfolio.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-shorts-poster-frame-proof": build_shorts_poster_frame_proof.run,

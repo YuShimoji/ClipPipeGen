@@ -18,8 +18,39 @@ SUBTITLES = [
     ("sub_006", "cut_001", 4.838, 6.072, "体育館裏で待ってます！！"),
     ("sub_007", "cut_001", 6.072, 6.840, "なんて？？"),
     ("sub_008", "cut_002", 6.840, 8.809, "ふっふっふ😏 呼び出してやったぞ😏"),
-    ("sub_009", "cut_002", 8.809, 11.678, "ホロライブの番長として、 団長を倒してやる！！"),
+    (
+        "sub_009",
+        "cut_002",
+        8.809,
+        11.678,
+        "ホロライブの番長として、 団長を倒してやる！！",
+    ),
 ]
+
+
+@pytest.mark.parametrize(
+    ("integrated_lufs", "true_peak_dbtp", "expected"),
+    [
+        (-16.61, -2.79, True),
+        (-14.0, -2.0, False),
+        (-12.6, -2.0, True),
+        (-14.0, -0.9, True),
+    ],
+)
+def test_loudness_normalization_window_matches_final_qa(
+    integrated_lufs: float,
+    true_peak_dbtp: float,
+    expected: bool,
+) -> None:
+    assert (
+        vsc._should_normalize_loudness(
+            {
+                "integrated_lufs": integrated_lufs,
+                "true_peak_dbtp": true_peak_dbtp,
+            }
+        )
+        is expected
+    )
 
 
 def _write_json(path: Path, payload: dict) -> None:
@@ -72,7 +103,9 @@ def _fixture(tmp_path: Path) -> dict[str, Path | str]:
         "transcript": episode / "transcript.json",
         "material_ledger": episode / "material_ledger.json",
         "rights_manifest": episode / "rights_manifest.json",
-        "cut_decisions": review / "jp_pilot01r3_cut_review" / "cut_decision_packet.json",
+        "cut_decisions": review
+        / "jp_pilot01r3_cut_review"
+        / "cut_decision_packet.json",
     }
     _write_json(paths["edit_pack"], {"episode_id": "episode_001"})
     _write_json(paths["transcript"], {"segments": []})
@@ -107,12 +140,16 @@ def _fixture(tmp_path: Path) -> dict[str, Path | str]:
             "source_type": "imported_subtitle_track",
             "source_segment_ids": [f"seg_{index:06d}"],
         }
-        for index, (subtitle_id, cut_id, start, end, text) in enumerate(SUBTITLES, start=1)
+        for index, (subtitle_id, cut_id, start, end, text) in enumerate(
+            SUBTITLES, start=1
+        )
     ]
     predecessor = {
         "artifact_id": vsc.EXPECTED_OUT04_ARTIFACT_ID,
         "episode_id": "episode_001",
-        "machine_readback": (out04 / "sequence_readback.json").relative_to(tmp_path).as_posix(),
+        "machine_readback": (out04 / "sequence_readback.json")
+        .relative_to(tmp_path)
+        .as_posix(),
         "ordered_cut_ids": list(vsc.EXPECTED_CUT_IDS),
         "expected_duration_seconds": vsc.EXPECTED_DURATION_SECONDS,
         "timeline": timeline,
@@ -240,12 +277,18 @@ def test_output_directory_rejects_unsafe_name(tmp_path: Path, name: str) -> None
 def test_output_directory_rejects_traversal(tmp_path: Path) -> None:
     episode = tmp_path / "episode"
     (episode / "review").mkdir(parents=True)
-    with pytest.raises(vsc.VerticalShortCandidateError, match="direct episode/review child"):
-        vsc._validate_output_directory(episode, (episode / "review" / ".." / "out05_bad").resolve())
+    with pytest.raises(
+        vsc.VerticalShortCandidateError, match="direct episode/review child"
+    ):
+        vsc._validate_output_directory(
+            episode, (episode / "review" / ".." / "out05_bad").resolve()
+        )
 
 
 def test_overlap_and_protected_overwrite_are_rejected(tmp_path: Path) -> None:
-    protected = tmp_path / "episode" / "review" / "out04_editorial_representative_sequence"
+    protected = (
+        tmp_path / "episode" / "review" / "out04_editorial_representative_sequence"
+    )
     protected.mkdir(parents=True)
     readback = protected / "sequence_readback.json"
     readback.write_text("{}")
@@ -282,12 +325,54 @@ def test_subtitle_containment_wrap_and_safe_envelope() -> None:
 
 def test_out06_reviewed_japanese_break_hints_are_measured_and_semantic() -> None:
     reviewed = [
-        ("sub_013", "cut_003", 14.181, 15.549, "なんで来なかったんすか！！", ["なんで", "来なかった", "んすか！！"]),
-        ("sub_014", "cut_003", 15.549, 16.450, "ずっと待ってたんすよ！！", ["ずっと", "待ってたんすよ！！"]),
-        ("sub_019", "cut_003", 21.855, 23.924, "はじめの勝ちってことでいいですね？", ["はじめの勝ちって", "ことでいいですね？"]),
-        ("sub_024", "cut_003", 28.228, 30.797, "団長、ちなみに、他の番長知ってますか？", ["団長、ちなみに、", "他の番長", "知ってますか？"]),
-        ("sub_028", "cut_003", 36.570, 38.071, "マリンならあっちにいたよ", ["マリンなら", "あっちにいたよ"]),
-        ("sub_029", "cut_003", 38.071, 38.638, "ありがとうございますー！", ["ありがとう", "ございますー！"]),
+        (
+            "sub_013",
+            "cut_003",
+            14.181,
+            15.549,
+            "なんで来なかったんすか！！",
+            ["なんで", "来なかった", "んすか！！"],
+        ),
+        (
+            "sub_014",
+            "cut_003",
+            15.549,
+            16.450,
+            "ずっと待ってたんすよ！！",
+            ["ずっと", "待ってたんすよ！！"],
+        ),
+        (
+            "sub_019",
+            "cut_003",
+            21.855,
+            23.924,
+            "はじめの勝ちってことでいいですね？",
+            ["はじめの勝ちって", "ことでいいですね？"],
+        ),
+        (
+            "sub_024",
+            "cut_003",
+            28.228,
+            30.797,
+            "団長、ちなみに、他の番長知ってますか？",
+            ["団長、ちなみに、", "他の番長", "知ってますか？"],
+        ),
+        (
+            "sub_028",
+            "cut_003",
+            36.570,
+            38.071,
+            "マリンならあっちにいたよ",
+            ["マリンなら", "あっちにいたよ"],
+        ),
+        (
+            "sub_029",
+            "cut_003",
+            38.071,
+            38.638,
+            "ありがとうございますー！",
+            ["ありがとう", "ございますー！"],
+        ),
     ]
     predecessor = [
         {
@@ -351,17 +436,27 @@ def test_ass_utf8_escaping_and_no_visible_placeholder(tmp_path: Path) -> None:
     assert _ass_text("日本語{字幕}\\path\n次") == "日本語\\{字幕\\}\\\\path\\N次"
     fixture = _fixture(tmp_path)
     _build(fixture)
-    ass = (fixture["output"] / "vertical_short_subtitles.ass").read_text(encoding="utf-8")
+    ass = (fixture["output"] / "vertical_short_subtitles.ass").read_text(
+        encoding="utf-8"
+    )
     events = [line for line in ass.splitlines() if line.startswith("Dialogue:")]
     assert len(events) == 9
-    assert all("SPK" not in line and "DIAGNOSTIC" not in line.upper() for line in events)
+    assert all(
+        "SPK" not in line and "DIAGNOSTIC" not in line.upper() for line in events
+    )
     assert "もしもし？" in ass
 
 
 def test_font_fallback_status_is_read_back(monkeypatch: pytest.MonkeyPatch) -> None:
     original = vsc._diagnostic_ass_style_for_candidate(vsc.ED10L_KEIFONT_CANDIDATE_ID)
-    fallback = {**original, "resolved_font_file": None, "font_file_status": "test_fallback"}
-    monkeypatch.setattr(vsc, "_diagnostic_ass_style_for_candidate", lambda _candidate: fallback)
+    fallback = {
+        **original,
+        "resolved_font_file": None,
+        "font_file_status": "test_fallback",
+    }
+    monkeypatch.setattr(
+        vsc, "_diagnostic_ass_style_for_candidate", lambda _candidate: fallback
+    )
     predecessor = [
         {
             "id": subtitle_id,
@@ -387,7 +482,10 @@ def test_reframe_plan_validation_and_full_fit_selection() -> None:
     )
     vsc._validate_reframe_plan(plan)
     assert plan["selected_option"] == vsc.SELECTED_REFRAME
-    assert plan["comparison_scope"] == "still_frame_specimens_only_no_three_full_video_renders"
+    assert (
+        plan["comparison_scope"]
+        == "still_frame_specimens_only_no_three_full_video_renders"
+    )
     plan["timeline_preserved"]["new_cut_added"] = True
     with pytest.raises(vsc.VerticalShortCandidateError, match="must not add cuts"):
         vsc._validate_reframe_plan(plan)

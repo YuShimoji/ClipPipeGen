@@ -6,17 +6,20 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-10 note: bounded external acquisition の承認後、公式 hololive channel の公開動画を
-metadata 5件・詳細preflight 3件・media download 1件の上限内で比較し、OUT-08
-`7J5aS_pcBj4` / OUT-09 `D4i4fjs9PWc` と異なる `TlnviOwLRmk` を第三sourceとして登録した。
-公式日本語JSON3と `0.000–27.711s` の診察・impact場面から、
-1080x1920 / 27.733秒のinternal review候補をendpoint-onlyで再renderした。複数の左右キャラクターと
-source-native name labelを守るため、center cropやsource由来blurを使わず、16:9全景を
-neutral matte上にfitしている。旧MP4 `9c930f82...bb2f`は早すぎる終端として未受理lineageに残し、
-新exact MP4 SHA `3651a14f...9884`、45 official JA cue、3-source scorecardとlocalhost review
-packageを同一マシンに保持している。現在はendpoint repairのhuman review pending。全白字幕の
-speaker differentiationはdeferredで一般標準ではない。rights、production、
-thumbnail、public/publishing gateは閉じたまま。詳細は
+OUT-11 note: OUT-10の最終返答をsource `30.014s`まで含めるendpoint修復後、公式公開動画から
+第4source `PQ54uUV41-k` と第5source `gUwJBRUIWow` を取得し、それぞれのofficial caption / native
+baked lyric /画面構成を観測してsource-adaptive Shortを生成した。OUT-08/09はaccepted contextだけ、
+OUT-10/04/05はhuman review pendingとして5-source scorecardへ記録した。review面は未判断三本だけを
+一列に置き、初期停止・mute・時刻0・音量上限25%・排他的再生・質問一件を保証する。
+exact SHAはOUT-10 `a53d0416...134f2`、SOURCE-04 `465d732c...16524`、SOURCE-05
+`370850c5...b578`。winner、共通crop/字幕/speaker-color policy、rights、production、thumbnail、
+public/publishingは未承認。詳細は
+[docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md](docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md)。
+
+OUT-10 note: 27.711s predecessorは先生側の宣言までは完了していたが、患者の最終返答を含めて
+いなかった。official response cueの最後までsource `30.014s`へ延長し、46 cue、media
+30.033333s、exact MP4 `a53d0416...134f2`としてOUT-11 combined reviewの先頭へ固定した。
+詳細は
 [docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md](docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md)。
 
 OUT-09 note: OUT-08と異なる実source `D4i4fjs9PWc` / episodeから生成した候補へ、
