@@ -3,55 +3,55 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT11_ACCEPTED_INTERNAL_CLOSED_OUT12_READY
+health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
 progress_pct: 100
 last_touched: 2026-07-21
-state_revision: out11-exact-two-repair-acceptance-closed-2026-07-21
-contract_repair_status: source04_out10_source05_exact_acceptance_bound_short_repair_loop_closed
-current_slice: OUT-11
-phase: accepted_internal_closed
-canonical_status: accepted_all_internal_no_winner
-active_branch: codex/out-11-five-source-short-portfolio-wave-v0
-verified_implementation_head: 249b3308b0d8a1cc8b75d37a245d717322859133
+state_revision: out12-one-command-real-video-automation-operational-2026-07-21
+contract_repair_status: out11_exact_acceptance_closed_out12_real_long_form_route_validated
+current_slice: OUT-12
+phase: internal_automation_operational
+canonical_status: automated_real_video_pipeline_operational_v1
+active_branch: codex/out-12-one-command-real-video-automation-v1
+verified_implementation_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
 source_branch_tip: branch_head_after_push
-closure_branch: codex/out-11-five-source-short-portfolio-wave-v0
-remote_resume_contract: fetch_then_switch_codex_out11_branch_then_read_current_handoff
+closure_branch: codex/out-12-one-command-real-video-automation-v1
+remote_resume_contract: fetch_then_switch_codex_out12_branch_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: 249b3308b0d8a1cc8b75d37a245d717322859133
-sync_audit_status: out11_handoff_docs_full_validation_passed_branch_only_main_unchanged
+sync_audit_head: branch_tip_after_out12_docs_commit
+sync_audit_status: out12_real_run_validation_resume_browser_full_suite_and_docs_passed
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-11 exact repaired candidates accepted and Short detour closed
-human_entrypoint: null
+current_title: OUT-12 one-command real long-form video automation operational
+human_entrypoint: http://127.0.0.1:8075/review/index.html
 portable_entrypoint: null
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\open_preview.ps1 -Serve
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out11_five_source_short_portfolio_20260720\review\out11_five_source_short_portfolio\serve_preview.ps1
-machine_readback: episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/review_readback.json
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\serve_preview.ps1
+machine_readback: episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
 decision_required: null
-review_status: accepted_all_internal_no_winner
-review_scope: exact acceptance recorded; no additional Short review or repair
-reviewed_at: 2026-07-21
+review_status: machine_validated_internal_review_available
+review_scope: OUT-12 automation accepted; optional content inspection does not lift closed gates
+reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_same_machine_historical_review_media_with_tracked_acceptance_receipt
+local_artifact_role: ignored_same_machine_real_long_form_operational_proof_with_tracked_contract
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_receipt_only_media_package_same_machine
-cross_host_resume_status: code_and_receipt_portable_candidate_media_absent_on_other_host
+cross_machine_resume_class: tracked_code_docs_only_real_source_and_output_media_same_machine
+cross_host_resume_status: code_and_contract_portable_real_source_and_rendered_media_absent_on_other_host
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out11-human-acceptance-closure-v1
+evidence_revision: out12-one-command-real-video-automation-v1
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
-local_artifact_evidence_receipt: docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md
-local_package_requirement: historical_same_machine_evidence_not_required_to_reopen_acceptance
+local_artifact_evidence_receipt: docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md
+local_package_requirement: same_machine_source_and_output_required_for_media_reinspection_not_for_code_resume
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
@@ -61,7 +61,7 @@ production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
 last_verified_at: 2026-07-21
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: http://127.0.0.1:8074/index.html
+last_verified_host_entrypoint: http://127.0.0.1:8075/review/index.html
 historical_last_verified_host_entrypoint: null
 pause_reason: null
 exact_baseline_available: null
@@ -70,26 +70,72 @@ accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: source04_out10_source05_accepted_internal_exact_bytes_no_winner
-user_feedback_overall: accept_out10_with_light_cut_debt_accept_source05_to_eof_no_cut_feel
-content_selection_status: five_source_portfolio_accepted_internal_short_detour_closed
+human_review_decision: out11_exact_short_acceptance_preserved_out12_human_content_review_not_required
+user_feedback_overall: out11_acceptance_consumed_out12_automation_requested
+content_selection_status: source05_full_source_selected_as_only_three_minute_eligible_input
 subtitle_presentation_timing_status: source_specific_authorities_machine_pass_source05_semantics_unclaimed
 endpoint_status: out10_accepted_with_source_specific_debt_source05_accepted_at_source_eof
 reviewed_by_human: true
 human_review_pending: false
-acceptance_granted: true
-batch_acceptance: accepted_all_internal_no_winner
-candidate_01_acceptance: accepted_internal_with_source_specific_debt
-candidate_02_acceptance: accepted_internal
+acceptance_granted: false
+automation_acceptance_granted: true
+batch_acceptance: not_applicable_out12
+candidate_01_acceptance: not_applicable_out12
+candidate_02_acceptance: not_applicable_out12
 accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_candidate_01]
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: validation_listener_stopped_restart_with_canonical_foreground_command
 next_review_due: null
-next_action: OUT-12 one-command real video automation v1をOUT-11 closure HEADから実装する。
-active_artifact: clip-out11-five-source-short-portfolio-wave-v0-002
-current_review_component: out11_combined_repaired_out10_source05_review_with_source04_accepted_receipt
+next_action: OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。
+active_artifact: clip-out12-one-command-real-video-automation-v1-001
+current_review_component: out12_real_long_form_video_cut_map_validation_and_evidence
+out12_artifact_id: clip-out12-one-command-real-video-automation-v1-001
+out12_state: AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
+out12_source_identity: youtube:gUwJBRUIWow
+out12_source_sha256: 8decc04ddcd805cadb77100eb5f7cbf2dc9883a32cb42aba0ed4c216fd0037cf
+out12_source_duration_seconds: 260.643991
+out12_requested_target_duration_seconds: 300.0
+out12_source_duration_constraint: true
+out12_selection_mode: full_source_scene_boundary_partition
+out12_cut_count: 11
+out12_semantic_section_count: 3
+out12_output_duration_seconds: 260.693767
+out12_output_resolution: 1920x1080
+out12_output_video_codec: h264
+out12_output_audio_codec: aac
+out12_output_byte_size: 142789781
+out12_output_sha256: 5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584
+out12_validation_status: passed
+out12_validation_check_count: 13
+out12_mapping_coverage_ratio: 1.0
+out12_caption_cue_count: 468
+out12_caption_overlap_count: 0
+out12_integrated_lufs: -14.15
+out12_true_peak_dbtp: -1.44
+out12_max_adjacent_cut_delta_lu: 1.27
+out12_max_black_seconds: 0.7007
+out12_silence_event_count: 0
+out12_render_execution_count: 3
+out12_corrective_pass_count: 2
+out12_resume_elapsed_seconds: 2.095
+out12_resume_render_executed: false
+out12_resume_cache_hits: [content_analysis, caption_remap, render, media_validation]
+out12_manifest_self_sha256: 8c3929e22c41719ee29a565134ef128ad9a75dde7b83ab9e6cd35a526dd3c489
+out12_review_http_status: 200
+out12_review_range_status: 206
+out12_review_desktop_overflow: false
+out12_review_mobile_overflow: false
+out12_review_initial_state: paused_muted_time_zero
+out12_review_console_warning_error_count: 0
+out12_rights_status: pending_or_snapshot_only
+out12_production_acceptance: false
+out12_production_subtitle_design_acceptance: false
+out12_thumbnail_acceptance: false
+out12_winner_selected: false
+out12_public_or_publishing_acceptance: false
+out12_upload_attempted: false
 target_candidate_count: 2
 minimum_candidate_count: 2
 actual_candidate_count: 2
@@ -169,7 +215,7 @@ known_unrelated_test_failure: null
 known_unrelated_test_failure_2: null
 known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
 known_unrelated_test_failure_owner: none_current
-current_full_suite_status: 580_passed
+current_full_suite_status: 596_passed
 current_full_suite_command: uvx --with Pillow pytest -q
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
@@ -191,11 +237,11 @@ navigation_frame_role: representative_navigation_only_not_thumbnail_acceptance
 out08_cut009_final_cut_decision: reject
 out08_cut009_usage: fully_excluded_no_source_time_overlap
 authority_mutated: false
-media_readback: passed_h264_aac_1080x1920_30fps_full_decode_faststart
-blackdetect_readback: passed_zero_events
-silencedetect_readback: passed_zero_events
-browser_readback: passed_desktop_mobile_safe_initial_state_exclusive_playback_zero_console_errors
-http_range_readback: passed_page_200_and_both_repair_videos_206
+media_readback: passed_h264_aac_1920x1080_260_693767s_full_decode_faststart_monotonic_timestamps
+blackdetect_readback: passed_maximum_0_7007s_below_1_5s
+silencedetect_readback: passed_zero_events_above_1s
+browser_readback: passed_desktop_mobile_safe_initial_state_cut_seek_zero_console_errors
+http_range_readback: passed_page_200_and_final_video_206
 current_baseline_acceptance: accepted_internal
 accepted_baseline_sha256: b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 recommended_cover_path: null
@@ -318,7 +364,35 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## 2026-07-21 OUT-11 Human-Review Repairs Combined Review Ready
+## 2026-07-21 OUT-12 One-Command Real Video Automation Operational
+
+OUT-11のexact human acceptance closureを入力境界として保持し、取得済み実source一本から
+長尺MP4と検証・review packageまでを生成する`build-real-video`を実装した。3 sourceまでの
+preflightでは、3分以上を満たす唯一の候補`youtube:gUwJBRUIWow`を選択。source全長
+260.643991sをopening/development/resolutionの11 cutへscene-boundary partitionし、
+H.264/AAC 1920x1080、260.693767s、SHA
+`5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584`を生成した。
+
+全13 media checks、full decode、faststart、32,248 packetのtimestamp regression 0、AV duration
+delta 0.008767s、-14.15 LUFS / -1.44 dBTP、最大隣接cut差1.27 LU、最大black 0.7007s、
+silence event 0、468 caption timing cueのoverlap/negative/orphan 0、mapping coverage 1.0をpass。
+初回二つの失敗はAV duration差とtrue peakをcorrective passで修復し、最終実行3・corrective 2で
+閉じた。first/middle/last、全cut boundary、waveformも目視した。
+
+localhost reviewはpage 200 / MP4 Range 206、desktop 1280とmobile 390、paused/muted/time 0、
+cut seek、media error 0、console warning/error 0を確認した。mobile cut表のdocument overflowは
+表内部scrollへ修復済み。`--resume`は2.095秒でanalysis/caption/render/media validationをskipし、
+render非実行、最終SHA不変、manifest self SHA
+`8c3929e22c41719ee29a565134ef128ad9a75dde7b83ab9e6cd35a526dd3c489`を再検証した。
+
+このsliceのacceptanceはinternal automation routeに限定する。rightsはpending、production
+subtitle/design/render acceptance、thumbnail、winner、public/publishing、uploadは閉じたまま。
+source-native textを保持するが、歌唱、歌詞、話者、意味、使用許諾を推定しない。
+
+## 2026-07-21 OUT-11 Human-Review Repairs Combined Review Ready (closed predecessor)
+
+この節はOUT-11のreview-ready時点を保存した履歴で、現在の判断待ちではない。exact二本は
+その後accepted internalとなり、Short repair loopは閉じてOUT-12へ進んだ。
 
 旧exact三候補への人間判断を記録した。SOURCE-04 `465d732c...16524`は問題なしとして
 8,523,260 bytesを一切変更せずaccepted receiptへ移し、active reviewから動画を外した。

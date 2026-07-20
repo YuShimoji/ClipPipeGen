@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-11 is currently a
-same-machine combined review package with two repaired candidates, one accepted
+current artifact, then use an artifact-specific launcher. OUT-12 is currently the
+same-machine one-command real long-form video automation proof. OUT-11 is the
+closed five-source Short portfolio with two repaired candidates, one accepted
 SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
 OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
 baseline evidence. OUT-07 is parked; its Thank native Shorts-cover
@@ -20,6 +21,41 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out12-one-command-real-video-automation-v1-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-12 One-Command Real Video Automation v1 |
+| purpose | Turn one acquired real source into a chronologically traceable long-form internal MP4, validation readback, manifest, evidence, and review surface through one CLI command; prove fail-closed resume without reopening the Short detour. |
+| storage class | Tracked CLI/render integration/tests/docs plus one ignored same-machine source and output package under `episodes/`. Media is not tracked or portable across clones. |
+| repo_relative_path | `src/cli/build_real_video.py`; `src/integrations/render/real_video_pipeline.py`; `tests/test_real_video_pipeline.py`; `docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md` |
+| local_artifact_path | `episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/` |
+| state | `AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1` |
+| source | `youtube:gUwJBRUIWow`; acquired full-source MP4 SHA `8decc04ddcd805cadb77100eb5f7cbf2dc9883a32cb42aba0ed4c216fd0037cf`; 260.643991s, 1920x1080. |
+| timeline | Full-source scene-boundary partition; 11 chronological cuts; opening/development/resolution; mapping coverage 1.0. Requested 300s was source-duration constrained to the complete 260.643991s source. |
+| final_video | H.264 High/AAC, yuv420p, 1920x1080, 260.693767s, 142,789,781 bytes, SHA `5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584`. |
+| caption_authority | Existing source-native baked text only; 468 timing cues remapped for containment readback, overlap/negative/orphan 0. No lyrics, singing, speaker, or semantic claim. |
+| validation | All 13 checks passed: shipping codec/aspect/duration/start/timestamps/faststart/full decode/AV sync/loudness/cut delta/black-silence/caption containment/mapping. -14.15 LUFS, -1.44 dBTP, max adjacent cut delta 1.27 LU, max black 0.7007s, silence events 0. |
+| manifest | 14 payload rows; self-integrity SHA `8c3929e22c41719ee29a565134ef128ad9a75dde7b83ab9e6cd35a526dd3c489`. |
+| resume | Cache hits for analysis/caption/render/media validation in 2.095s; `render_executed=false`; final SHA unchanged; manifest revalidated. |
+| preview_url | `http://127.0.0.1:8075/review/index.html`; validation listener stopped after HTTP/browser QA. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\open_preview.ps1` |
+| review_evidence | first/middle/last contact sheet, all-cut boundary contact sheet, waveform, cut seek map; desktop 1280 and mobile 390 no document overflow; initial paused/muted/time0; Range 206; console/media error 0. |
+| decision_required | None for OUT-12 automation acceptance. Optional content inspection may record source-specific observations but cannot grant rights, production, subtitle-design, thumbnail, winner, public/publishing, or upload acceptance. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `automation_acceptance_granted=true`
+- `rights_status=pending`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `thumbnail_acceptance=false`
+- `winner_selected=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
 
 ## `clip-out11-five-source-short-portfolio-wave-v0-002`
 

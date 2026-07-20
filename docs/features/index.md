@@ -4,14 +4,14 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-11`
-- artifact: `clip-out11-five-source-short-portfolio-wave-v0-002`
-- state: `OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY`
+- feature: `OUT-12`
+- artifact: `clip-out12-one-command-real-video-automation-v1-001`
+- state: `OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`
 
 - canonical main: `663c6e6f19d1f176b96bc04c90993b00925b039c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `repaired_two_candidate_combined_review_ready`
-- review status: `pending_human_review_for_two_repairs`
+- canonical status: `automated_real_video_pipeline_operational_v1`
+- review status: `machine_validated_internal_review_available`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -22,25 +22,26 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `http://127.0.0.1:8074/index.html`
-- pause reason: `awaiting_exact_two_repair_candidate_combined_human_review`
+- last verified host entrypoint: `http://127.0.0.1:8075/review/index.html`
+- pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_receipt_only_media_package_same_machine`
+- cross-machine resume: `tracked_code_docs_only_real_source_and_output_media_same_machine`
 - active rebuild contract: ``
-- evidence revision: `out11-human-review-repair-two-video-review-v1`
+- evidence revision: `out12-one-command-real-video-automation-v1`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `review_exact_repaired_out10_and_source05_once`
+- decision required: ``
 - next review: ``
 
 ## Feature Table
 
 | id | title | status | health | progress_pct | active_artifact | next_action |
 |---|---|---|---|---:|---|---|
+| ED-11 | OUT-12 one-command real long-form video automation | done | stable | 100 | clip-out12-one-command-real-video-automation-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | MS-01 | material_ledger schema v1 縺ｨ CRUD CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | MS-02 | material_sidecar schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -160,4 +161,3 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-08 | Human Preview Session Bundle | done | stable | 100 | clip-human-preview-session-001 | Keep as reference unless a regression or successor lane appears. |
 | SH-09 | Docs Wiki Dashboard v1.5 | done | stable | 100 | clip-docs-dashboard-001 | Keep as reference unless a regression or successor lane appears. |
 | OUT-02 | 髻ｳ螢ｰ蜷域・・・TS・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |
-| OUT-03 | visibility 譖ｴ譁ｰ・・ublic 蛹門性繧・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

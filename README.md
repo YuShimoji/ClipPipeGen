@@ -6,6 +6,15 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+OUT-12 note: `build-real-video` で、取得済みの実 source 1本から解析、scene-boundary
+Timeline IR、caption timing remap、H.264/AAC長尺render、full decode/faststart/audio・signal・
+mapping検証、manifest、localhost review packageまでを一コマンドで生成できる。実runは
+`youtube:gUwJBRUIWow` の source全長を11 cut / 260.694s / 1920x1080へ変換し、MP4 SHA
+`5d391ffd...a584`、validation passed、resume時render非実行・同一SHAを確認した。
+これはinternal automation acceptanceであり、rights、production subtitle/design、thumbnail、
+winner、public/publishing/upload acceptanceではない。詳細は
+[docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md](docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md)。
+
 OUT-11 note: 人間レビューでSOURCE-04 `465d732c...16524`は問題なしと確定し、MP4を一切
 変更せずaccepted receiptへ移した。OUT-10は新しい診察場面を途中で切っていた
 `a53d0416...134f2`から、意識確認・患者反応・「ゴッドハンドやね」が閉じるsource `34.785s`、

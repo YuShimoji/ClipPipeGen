@@ -24,20 +24,20 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "OUT-11",
-    "artifact_id": "clip-out11-five-source-short-portfolio-wave-v0-002",
-    "state": "OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY",
-    "title": "OUT-11 repaired OUT-10 and SOURCE-05 combined review ready",
-    "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
-    "phase": "human_review_ready",
+    "feature_id": "OUT-12",
+    "artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
+    "state": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
+    "title": "OUT-12 one-command real long-form video automation operational",
+    "active_branch": "codex/out-12-one-command-real-video-automation-v1",
+    "phase": "internal_automation_operational",
     "canonical_main_head": "663c6e6f19d1f176b96bc04c90993b00925b039c",
     "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
-    "canonical_status": "repaired_two_candidate_combined_review_ready",
-    "review_status": "pending_human_review_for_two_repairs",
-    "human_entrypoint": "http://127.0.0.1:8074/index.html",
-    "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\open_preview.ps1 -Serve",
-    "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\serve_preview.ps1",
-    "machine_readback": "episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/review_readback.json",
+    "canonical_status": "automated_real_video_pipeline_operational_v1",
+    "review_status": "machine_validated_internal_review_available",
+    "human_entrypoint": "http://127.0.0.1:8075/review/index.html",
+    "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
+    "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\serve_preview.ps1",
+    "machine_readback": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json",
     "remote_code_complete": "true",
     "local_artifact_available": "true",
     "portable_local_artifact_available": "false",
@@ -50,13 +50,13 @@
     "source_byte_equivalence_claimed": "",
     "review_server_status": "validation_listener_stopped_restart_with_canonical_foreground_command",
     "last_verified_host_local_artifact_available": "true",
-    "last_verified_host_entrypoint": "http://127.0.0.1:8074/index.html",
-    "pause_reason": "awaiting_exact_two_repair_candidate_combined_human_review",
+    "last_verified_host_entrypoint": "http://127.0.0.1:8075/review/index.html",
+    "pause_reason": "",
     "accepted_baseline_recovery_status": "",
     "cover_review_status": "",
-    "cross_machine_resume_class": "tracked_code_docs_receipt_only_media_package_same_machine",
+    "cross_machine_resume_class": "tracked_code_docs_only_real_source_and_output_media_same_machine",
     "active_rebuild_contract": "",
-    "evidence_revision": "out11-human-review-repair-two-video-review-v1",
+    "evidence_revision": "out12-one-command-real-video-automation-v1",
     "accepted_baseline_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
     "recommended_cover_path": "",
     "recommended_cover_sha256": "",
@@ -64,12 +64,12 @@
     "recommended_cover_selection_status": "",
     "last_verified_host": "DESKTOP-H53P1T4",
     "local_verified_host": "DESKTOP-H53P1T4",
-    "local_artifact_evidence_receipt": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+    "local_artifact_evidence_receipt": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-21",
-    "decision_required": "review_exact_repaired_out10_and_source05_once",
+    "decision_required": "",
     "next_review_action_type": "",
-    "next_action": "修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。",
+    "next_action": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -80,10 +80,10 @@
       "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings."
     },
     {
-      "label": "OUT-11 Current Focus",
-      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\open_preview.ps1 -Serve",
-      "target": "http://127.0.0.1:8074/index.html",
-      "when_to_use": "修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。"
+      "label": "OUT-12 Current Focus",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
+      "target": "http://127.0.0.1:8075/review/index.html",
+      "when_to_use": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。"
     },
     {
       "label": "Artifacts",
@@ -341,6 +341,17 @@
     }
   ],
   "features": [
+    {
+      "id": "ED-11",
+      "title": "OUT-12 one-command real long-form video automation",
+      "status": "done",
+      "health": "stable",
+      "progress_pct": 100,
+      "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Artifact clip-out12-one-command-real-video-automation-v1-001. build-real-video takes one acquired real source or episode material identity through provenance, content analysis, chronological Timeline IR, caption timing...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
     {
       "id": "CR-01",
       "title": "rights_manifest schema v1 縺ｨ validator",
@@ -1649,28 +1660,27 @@
       "next_action": "Promote to approved only after an explicit slice decision.",
       "summary_excerpt": "譛ｪ螳溯｣・ょｿ・ｦ√↓縺ｪ縺｣縺溘ｉ provider integration 縺ｨ縺励※險ｭ險・",
       "source_path": "docs/FEATURE_REGISTRY.md"
-    },
-    {
-      "id": "OUT-03",
-      "title": "visibility 譖ｴ譁ｰ・・ublic 蛹門性繧・・",
-      "status": "proposed",
-      "health": "backlog",
-      "progress_pct": 0,
-      "active_artifact": "",
-      "next_action": "Promote to approved only after an explicit slice decision.",
-      "summary_excerpt": "譛ｪ螳溯｣・・ouTube integration 縺ｮ荳驛ｨ縺ｨ縺励※險ｭ險・",
-      "source_path": "docs/FEATURE_REGISTRY.md"
     }
   ],
   "feature_summary": {
     "feature_count": 120,
     "status_counts": {
-      "done": 107,
-      "proposed": 12,
+      "done": 108,
+      "proposed": 11,
       "approved": 1
     }
   },
   "active_artifacts": [
+    {
+      "artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
+      "title": "OUT-12 One-Command Real Video Automation v1",
+      "purpose": "Turn one acquired real source into a chronologically traceable long-form internal MP4, validation readback, manifest, evidence, and review surface through one CLI command; prove fail-closed resume without reopening the Short detour.",
+      "storage_class": "Tracked CLI/render integration/tests/docs plus one ignored same-machine source and output package under episodes/. Media is not tracked or portable across clones.",
+      "repo_relative_path": "src/cli/build_real_video.py; src/integrations/render/real_video_pipeline.py; tests/test_real_video_pipeline.py; docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+      "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
+      "review_status": "",
+      "next_action": ""
+    },
     {
       "artifact_id": "clip-out11-five-source-short-portfolio-wave-v0-002",
       "title": "OUT-11 Five-Source Short Portfolio Wave 01 — human-review repairs combined review",
@@ -2434,6 +2444,7 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-out12-one-command-real-video-automation-v1-001",
       "clip-out11-five-source-short-portfolio-wave-v0-002",
       "clip-out10-third-source-short-portfolio-expansion-v0-001",
       "clip-out09-second-source-short-repeatability-v0-001",
@@ -2511,20 +2522,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 76
+    "artifact_count": 77
   },
   "artifact_coverage": {
-    "registered_artifact_count": 76,
-    "features_with_artifact_count": 50,
+    "registered_artifact_count": 77,
+    "features_with_artifact_count": 51,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "OUT-11 current focus",
-      "artifact": "clip-out11-five-source-short-portfolio-wave-v0-002",
-      "question": "OUT-11 repaired OUT-10 and SOURCE-05 combined review ready",
-      "next_route": "修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。"
+      "item": "OUT-12 current focus",
+      "artifact": "clip-out12-one-command-real-video-automation-v1-001",
+      "question": "OUT-12 one-command real long-form video automation operational",
+      "next_route": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。"
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2753,7 +2764,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 154,
+      "line_count": 163,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2761,7 +2772,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 53,
+      "boundary_term_count": 58,
       "status": "contains_done_history"
     },
     {
@@ -2781,61 +2792,61 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 2316,
+      "line_count": 2390,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "active",
-        "health": "OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY",
-        "progress_pct": "95",
+        "health": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
+        "progress_pct": "100",
         "last_touched": "2026-07-21",
-        "state_revision": "out11-human-review-two-repair-combined-review-ready-2026-07-21",
-        "contract_repair_status": "source04_accepted_exact_bytes_out10_source05_repaired_two_candidate_review_built",
-        "current_slice": "OUT-11",
-        "phase": "human_review_ready",
-        "canonical_status": "repaired_two_candidate_combined_review_ready",
-        "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
-        "verified_implementation_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
+        "state_revision": "out12-one-command-real-video-automation-operational-2026-07-21",
+        "contract_repair_status": "out11_exact_acceptance_closed_out12_real_long_form_route_validated",
+        "current_slice": "OUT-12",
+        "phase": "internal_automation_operational",
+        "canonical_status": "automated_real_video_pipeline_operational_v1",
+        "active_branch": "codex/out-12-one-command-real-video-automation-v1",
+        "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
         "source_branch_tip": "branch_head_after_push",
-        "closure_branch": "",
-        "remote_resume_contract": "fetch_then_switch_codex_out11_branch_then_read_current_handoff",
+        "closure_branch": "codex/out-12-one-command-real-video-automation-v1",
+        "remote_resume_contract": "fetch_then_switch_codex_out12_branch_then_read_current_handoff",
         "upstream_parity": "0 0",
-        "sync_audit_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
-        "sync_audit_status": "out11_handoff_docs_full_validation_passed_branch_only_main_unchanged",
+        "sync_audit_head": "branch_tip_after_out12_docs_commit",
+        "sync_audit_status": "out12_real_run_validation_resume_browser_full_suite_and_docs_passed",
         "sync_audit_live_out08_package": "historical_accepted_package_untouched",
         "sync_audit_live_out09_package": "access_only_repair_present_manifest_and_video_hashes_match",
         "sync_audit_live_r3_reviewability": "review_ready",
         "sync_audit_report": "docs/SUPERVISOR_STATUS_REPORT.md",
-        "current_title": "OUT-11 repaired OUT-10 and SOURCE-05 combined review ready",
-        "human_entrypoint": "http://127.0.0.1:8074/index.html",
+        "current_title": "OUT-12 one-command real long-form video automation operational",
+        "human_entrypoint": "http://127.0.0.1:8075/review/index.html",
         "portable_entrypoint": "",
-        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\open_preview.ps1 -Serve",
-        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\serve_preview.ps1",
-        "machine_readback": "episodes/out11_five_source_short_portfolio_20260720/review/out11_five_source_short_portfolio/review_readback.json",
+        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
+        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\serve_preview.ps1",
+        "machine_readback": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "review_exact_repaired_out10_and_source05_once",
-        "review_status": "pending_human_review_for_two_repairs",
-        "review_scope": "修復後OUT-10は新しい診察場面の反応と台詞まで自然に閉じたか。修復後SOURCE-05はカード列から最終タイトルまでの音声・映像・終端が一つの単位として成立したか。二本それぞれに明確な違和感があれば自由に教えてください。",
+        "decision_required": "",
+        "review_status": "machine_validated_internal_review_available",
+        "review_scope": "OUT-12 automation accepted; optional content inspection does not lift closed gates",
         "reviewed_at": "",
         "remote_code_complete": "true",
         "local_artifact_available": "true",
-        "local_artifact_role": "ignored_same_machine_two_video_review_one_accepted_receipt_and_5_source_scorecard",
+        "local_artifact_role": "ignored_same_machine_real_long_form_operational_proof_with_tracked_contract",
         "portable_local_artifact_available": "false",
-        "cross_machine_resume_class": "tracked_code_docs_receipt_only_media_package_same_machine",
-        "cross_host_resume_status": "code_and_receipt_portable_candidate_media_absent_on_other_host",
+        "cross_machine_resume_class": "tracked_code_docs_only_real_source_and_output_media_same_machine",
+        "cross_host_resume_status": "code_and_contract_portable_real_source_and_rendered_media_absent_on_other_host",
         "active_rebuild_contract": "",
         "parked_predecessor_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
         "optional_recovery_branch": "codex/out-08-private-review-package-recovery-v0",
         "optional_recovery_tip": "d1f44d17e9747419f307706cad802aefdd012efd",
         "optional_recovery_status": "PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF",
         "optional_recovery_merged": "false",
-        "evidence_revision": "out11-human-review-repair-two-video-review-v1",
+        "evidence_revision": "out12-one-command-real-video-automation-v1",
         "last_verified_host": "DESKTOP-H53P1T4",
         "last_verified_host_label": "Thank",
         "local_verified_host": "DESKTOP-H53P1T4",
-        "local_artifact_evidence_receipt": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
-        "local_package_requirement": "present_same_machine_human_review_pending",
+        "local_artifact_evidence_receipt": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+        "local_package_requirement": "same_machine_source_and_output_required_for_media_reinspection_not_for_code_resume",
         "historical_fixed_input_packages": "private_only_not_required_for_out08_human_review",
         "local_reference_cache_status": "tracked_corpus_examples_only_not_canonical_design_rules",
         "rights_approval": "pending",
@@ -2845,35 +2856,81 @@
         "public_or_publishing_acceptance": "false",
         "last_verified_at": "2026-07-21",
         "last_verified_host_local_artifact_available": "true",
-        "last_verified_host_entrypoint": "http://127.0.0.1:8074/index.html",
+        "last_verified_host_entrypoint": "http://127.0.0.1:8075/review/index.html",
         "historical_last_verified_host_entrypoint": "",
-        "pause_reason": "awaiting_exact_two_repair_candidate_combined_human_review",
+        "pause_reason": "",
         "exact_baseline_available": "",
         "accepted_baseline_status": "",
         "accepted_baseline_recovery_status": "",
         "cover_direction_review_available": "",
         "historical_cover_direction_evidence_available": "true",
         "cover_direction_acceptance": "",
-        "human_review_decision": "source04_accepted_out10_source05_repairs_pending_freeform",
-        "user_feedback_overall": "",
-        "content_selection_status": "source04_accepted_exact_bytes_out10_source05_repaired_machine_ready_human_pending",
+        "human_review_decision": "out11_exact_short_acceptance_preserved_out12_human_content_review_not_required",
+        "user_feedback_overall": "out11_acceptance_consumed_out12_automation_requested",
+        "content_selection_status": "source05_full_source_selected_as_only_three_minute_eligible_input",
         "subtitle_presentation_timing_status": "source_specific_authorities_machine_pass_source05_semantics_unclaimed",
-        "endpoint_status": "source04_accepted_out10_source05_repair_evidence_bound_human_semantic_review_pending",
-        "reviewed_by_human": "false",
-        "human_review_pending": "true",
+        "endpoint_status": "out10_accepted_with_source_specific_debt_source05_accepted_at_source_eof",
+        "reviewed_by_human": "true",
+        "human_review_pending": "false",
         "acceptance_granted": "false",
-        "batch_acceptance": "",
-        "candidate_01_acceptance": "pending",
-        "candidate_02_acceptance": "pending",
-        "accepted_candidate_ids": "[source04_candidate_01]",
+        "automation_acceptance_granted": "true",
+        "batch_acceptance": "not_applicable_out12",
+        "candidate_01_acceptance": "not_applicable_out12",
+        "candidate_02_acceptance": "not_applicable_out12",
+        "accepted_candidate_ids": "[out10_candidate_01, source04_candidate_01, source05_candidate_01]",
         "winner": "",
         "subtitle_debt_acceptance_scope": "",
         "cover_review_status": "",
         "review_server_status": "validation_listener_stopped_restart_with_canonical_foreground_command",
         "next_review_due": "",
-        "next_action": "修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ。",
-        "active_artifact": "clip-out11-five-source-short-portfolio-wave-v0-002",
-        "current_review_component": "out11_combined_repaired_out10_source05_review_with_source04_accepted_receipt",
+        "next_action": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。",
+        "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
+        "current_review_component": "out12_real_long_form_video_cut_map_validation_and_evidence",
+        "out12_artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
+        "out12_state": "AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
+        "out12_source_identity": "youtube:gUwJBRUIWow",
+        "out12_source_sha256": "8decc04ddcd805cadb77100eb5f7cbf2dc9883a32cb42aba0ed4c216fd0037cf",
+        "out12_source_duration_seconds": "260.643991",
+        "out12_requested_target_duration_seconds": "300.0",
+        "out12_source_duration_constraint": "true",
+        "out12_selection_mode": "full_source_scene_boundary_partition",
+        "out12_cut_count": "11",
+        "out12_semantic_section_count": "3",
+        "out12_output_duration_seconds": "260.693767",
+        "out12_output_resolution": "1920x1080",
+        "out12_output_video_codec": "h264",
+        "out12_output_audio_codec": "aac",
+        "out12_output_byte_size": "142789781",
+        "out12_output_sha256": "5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584",
+        "out12_validation_status": "passed",
+        "out12_validation_check_count": "13",
+        "out12_mapping_coverage_ratio": "1.0",
+        "out12_caption_cue_count": "468",
+        "out12_caption_overlap_count": "0",
+        "out12_integrated_lufs": "-14.15",
+        "out12_true_peak_dbtp": "-1.44",
+        "out12_max_adjacent_cut_delta_lu": "1.27",
+        "out12_max_black_seconds": "0.7007",
+        "out12_silence_event_count": "0",
+        "out12_render_execution_count": "3",
+        "out12_corrective_pass_count": "2",
+        "out12_resume_elapsed_seconds": "2.095",
+        "out12_resume_render_executed": "false",
+        "out12_resume_cache_hits": "[content_analysis, caption_remap, render, media_validation]",
+        "out12_manifest_self_sha256": "8c3929e22c41719ee29a565134ef128ad9a75dde7b83ab9e6cd35a526dd3c489",
+        "out12_review_http_status": "200",
+        "out12_review_range_status": "206",
+        "out12_review_desktop_overflow": "false",
+        "out12_review_mobile_overflow": "false",
+        "out12_review_initial_state": "paused_muted_time_zero",
+        "out12_review_console_warning_error_count": "0",
+        "out12_rights_status": "pending_or_snapshot_only",
+        "out12_production_acceptance": "false",
+        "out12_production_subtitle_design_acceptance": "false",
+        "out12_thumbnail_acceptance": "false",
+        "out12_winner_selected": "false",
+        "out12_public_or_publishing_acceptance": "false",
+        "out12_upload_attempted": "false",
         "target_candidate_count": "2",
         "minimum_candidate_count": "2",
         "actual_candidate_count": "2",
@@ -2953,14 +3010,14 @@
         "known_unrelated_test_failure_2": "",
         "known_unrelated_test_failure_scope": "historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite",
         "known_unrelated_test_failure_owner": "none_current",
-        "current_full_suite_status": "580_passed",
+        "current_full_suite_status": "596_passed",
         "current_full_suite_command": "uvx --with Pillow pytest -q",
         "out06_base_branch_comparison": "identical_failures_branch_only_regression_false",
         "default_vertical_render_command_comparison_sha256": "a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf",
         "source_specific_caption_suppression_observation": "source_specific_caption_band_suppression_observed_acceptable_not_generalized",
         "source_specific_caption_suppression_design_acceptance": "false",
         "out10_successor_candidate": "OUT10_THIRD_SOURCE_SHORT_PORTFOLIO_EXPANSION",
-        "out10_implementation_status": "human_review_semantic_endpoint_repair_ready_inside_out11_two_candidate_review",
+        "out10_implementation_status": "accepted_internal_with_source_specific_endpoint_debt_closed",
         "out10_stop_state": "",
         "out10_inventory_receipt": "docs/output_layer/out10_external_source_acquisition_receipt.json",
         "out10_inventory_count": "5",
@@ -2975,11 +3032,11 @@
         "out08_cut009_final_cut_decision": "reject",
         "out08_cut009_usage": "fully_excluded_no_source_time_overlap",
         "authority_mutated": "false",
-        "media_readback": "passed_h264_aac_1080x1920_30fps_full_decode_faststart",
-        "blackdetect_readback": "passed_zero_events",
-        "silencedetect_readback": "passed_zero_events",
-        "browser_readback": "passed_desktop_mobile_safe_initial_state_exclusive_playback_zero_console_errors",
-        "http_range_readback": "passed_page_200_and_both_repair_videos_206",
+        "media_readback": "passed_h264_aac_1920x1080_260_693767s_full_decode_faststart_monotonic_timestamps",
+        "blackdetect_readback": "passed_maximum_0_7007s_below_1_5s",
+        "silencedetect_readback": "passed_zero_events_above_1s",
+        "browser_readback": "passed_desktop_mobile_safe_initial_state_cut_seek_zero_console_errors",
+        "http_range_readback": "passed_page_200_and_final_video_206",
         "current_baseline_acceptance": "accepted_internal",
         "accepted_baseline_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
         "recommended_cover_path": "",
@@ -3098,13 +3155,13 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 432,
+      "boundary_term_count": 454,
       "status": "active"
     },
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 191,
+      "line_count": 200,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3112,7 +3169,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 332,
+      "boundary_term_count": 337,
       "status": "in_progress"
     },
     {
@@ -3221,7 +3278,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2553,
+      "line_count": 2589,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3229,7 +3286,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 979,
+      "boundary_term_count": 994,
       "status": "reference"
     },
     {
@@ -3263,7 +3320,7 @@
     {
       "path": "docs/AUTOMATION_BOUNDARY.md",
       "title": "Automation Boundary",
-      "line_count": 148,
+      "line_count": 149,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3271,7 +3328,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 57,
+      "boundary_term_count": 64,
       "status": "reference"
     },
     {
@@ -3291,54 +3348,51 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 163,
+      "line_count": 107,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY",
-        "progress_pct": "95",
+        "health": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
+        "progress_pct": "100",
         "last_touched": "2026-07-21",
-        "current_slice": "OUT-11",
-        "phase": "human_review_ready",
-        "canonical_status": "repaired_two_candidate_combined_review_ready",
-        "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
-        "verified_implementation_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
-        "source_branch_tip": "branch_head_after_push",
-        "closure_branch": "",
-        "remote_resume_contract": "fetch_then_switch_codex_out11_branch_then_read_this_file",
-        "current_title": "OUT-11 repaired OUT-10 and SOURCE-05 combined review ready",
-        "human_entrypoint": "http://127.0.0.1:8074/index.html",
+        "current_slice": "OUT-12",
+        "phase": "internal_automation_operational",
+        "canonical_status": "automated_real_video_pipeline_operational_v1",
+        "active_branch": "codex/out-12-one-command-real-video-automation-v1",
+        "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
+        "remote_resume_contract": "fetch_then_switch_codex_out12_branch_then_read_this_file",
+        "current_title": "OUT-12 one-command real long-form automation operational",
+        "human_entrypoint": "http://127.0.0.1:8075/review/index.html",
         "portable_entrypoint": "",
-        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\open_preview.ps1 -Serve",
-        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out11_five_source_short_portfolio_20260720\\review\\out11_five_source_short_portfolio\\serve_preview.ps1",
-        "decision_required": "review_exact_repaired_out10_and_source05_once",
-        "review_status": "pending_human_review_for_two_repairs",
+        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
+        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\serve_preview.ps1",
+        "machine_readback": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json",
+        "decision_required": "",
+        "review_status": "machine_validated_internal_review_available",
         "remote_code_complete": "true",
         "local_artifact_available": "true",
-        "local_artifact_role": "ignored_same_machine_two_video_review_one_accepted_receipt_and_five_source_scorecard",
+        "local_artifact_role": "ignored_same_machine_real_long_form_operational_proof",
         "portable_local_artifact_available": "false",
-        "cross_machine_resume_class": "tracked_code_docs_only_media_packages_same_machine",
+        "cross_machine_resume_class": "tracked_code_docs_only_real_source_and_output_media_same_machine",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
         "production_image_quality_acceptance": "false",
         "thumbnail_acceptance": "false",
-        "public_or_publishing_acceptance": "false",
-        "human_review_pending": "true",
-        "acceptance_granted": "false",
         "winner_selected": "false",
-        "portfolio_subtitle_differentiation_debt": "open_for_later_system_review_not_decided_here",
-        "next_action": "修復後OUT-10とSOURCE-05を同じページで一度だけ確認し、候補別の自由記述を新exact SHAへ結ぶ",
-        "active_artifact": "clip-out11-five-source-short-portfolio-wave-v0-002",
-        "canonical_main_head": "663c6e6f19d1f176b96bc04c90993b00925b039c",
+        "public_or_publishing_acceptance": "false",
+        "human_review_pending": "false",
+        "automation_acceptance_granted": "true",
+        "next_action": "optional_content_inspection_or_next_explicitly_approved_gate_only",
+        "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
+        "canonical_main_head": "branch_tip_after_ff_only_integration",
         "source_of_truth": "true",
-        "owner_lane": "output_video_cross_source_portfolio",
-        "related": "docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md, docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json",
-        "upstream_parity": "0 0",
-        "handoff_base_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
-        "handoff_sync_verified_at": "2026-07-21T04:12:53+09:00"
+        "owner_lane": "real_video_internal_automation",
+        "related": "docs/RUNTIME_STATE.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json",
+        "upstream_parity": "pending_final_push_verification",
+        "handoff_base_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3346,7 +3400,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 17,
+      "boundary_term_count": 19,
       "status": "active"
     },
     {
@@ -3366,7 +3420,7 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 170,
+      "line_count": 202,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
@@ -3380,7 +3434,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 41,
+      "boundary_term_count": 49,
       "status": "current"
     },
     {
@@ -3484,7 +3538,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 48,
+      "boundary_term_count": 53,
       "status": "reference"
     },
     {
@@ -3767,8 +3821,8 @@
     }
   ],
   "doc_health": {
-    "finding_count": 29,
-    "finding_total": 29,
+    "finding_count": 30,
+    "finding_total": 30,
     "finding_limit": 50,
     "findings_truncated": false,
     "findings": [
@@ -3781,13 +3835,13 @@
       {
         "type": "over_guarded",
         "path": "README.md",
-        "detail": "Boundary terms appear 53 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 58 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (2316 lines) is likely carrying history.",
+        "detail": "Long active doc (2390 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3799,7 +3853,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 332 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 337 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3817,13 +3871,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2553 lines) is likely carrying history.",
+        "detail": "Long active doc (2589 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 979 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 994 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3835,13 +3889,19 @@
       {
         "type": "over_guarded",
         "path": "docs/AUTOMATION_BOUNDARY.md",
-        "detail": "Boundary terms appear 57 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 64 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "over_guarded",
         "path": "docs/CHAPTER_REVISION_LOOP.md",
         "detail": "Boundary terms appear 27 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/CURRENT_HANDOFF.md",
+        "detail": "Boundary terms appear 19 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3853,7 +3913,7 @@
       {
         "type": "over_guarded",
         "path": "docs/decision-log.md",
-        "detail": "Boundary terms appear 41 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 49 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3889,7 +3949,7 @@
       {
         "type": "over_guarded",
         "path": "docs/INVARIANTS.md",
-        "detail": "Boundary terms appear 48 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 53 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

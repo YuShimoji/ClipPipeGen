@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contract_parked() -> (
+def test_runtime_points_to_out12_real_video_and_keeps_out07_rebuild_contract_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -241,14 +241,40 @@ def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contrac
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8074/index.html" in runtime
+    assert "human_entrypoint: http://127.0.0.1:8075/review/index.html" in runtime
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_receipt_only_media_package_same_machine" in runtime
+        "tracked_code_docs_only_real_source_and_output_media_same_machine" in runtime
     )
-    assert "health: OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY" in runtime
-    assert "current_slice: OUT-11" in runtime
+    assert "health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1" in runtime
+    assert "current_slice: OUT-12" in runtime
+    assert "canonical_status: automated_real_video_pipeline_operational_v1" in runtime
+    assert "active_artifact: clip-out12-one-command-real-video-automation-v1-001" in runtime
+    assert "review_status: machine_validated_internal_review_available" in runtime
+    assert "automation_acceptance_granted: true" in runtime
+    assert "acceptance_granted: false" in runtime
+    assert "out12_source_identity: youtube:gUwJBRUIWow" in runtime
+    assert (
+        "out12_source_sha256: "
+        "8decc04ddcd805cadb77100eb5f7cbf2dc9883a32cb42aba0ed4c216fd0037cf"
+        in runtime
+    )
+    assert "out12_cut_count: 11" in runtime
+    assert "out12_output_duration_seconds: 260.693767" in runtime
+    assert (
+        "out12_output_sha256: "
+        "5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584"
+        in runtime
+    )
+    assert "out12_validation_status: passed" in runtime
+    assert "out12_mapping_coverage_ratio: 1.0" in runtime
+    assert "out12_resume_render_executed: false" in runtime
+    assert "out12_review_mobile_overflow: false" in runtime
+    assert "out12_rights_status: pending_or_snapshot_only" in runtime
+    assert "out12_production_acceptance: false" in runtime
+    assert "out12_public_or_publishing_acceptance: false" in runtime
+    # OUT-10/11 remain exact historical closure evidence.
     assert "out10_inventory_count: 5" in runtime
     assert "out10_distinct_source_preflight_count: 3" in runtime
     assert "out10_eligible_source_count: 1" in runtime
@@ -260,11 +286,6 @@ def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contrac
     assert "out11_accepted_receipt_count: 1" in runtime
     assert "out11_review_question_count: 1" in runtime
     assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
-    assert "human_review_pending: true" in runtime
-    assert "acceptance_granted: false" in runtime
-    assert "batch_acceptance: null" in runtime
-    assert "candidate_01_acceptance: pending" in runtime
-    assert "review_status: pending_human_review_for_two_repairs" in runtime
     assert "subtitle_display_authority: official_json3_event_text_and_timing" in runtime
     assert "additional_subtitle_burn_in: true" in runtime
     assert "source_native_caption_pixels_suppressed: false" in runtime
@@ -282,7 +303,6 @@ def test_runtime_points_to_out11_combined_review_and_keeps_out07_rebuild_contrac
         "out11_source04_mp4_sha256: "
         "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524" in runtime
     )
-    assert "candidate_02_acceptance: pending" in runtime
     assert "optional_recovery_merged: false" in runtime
     assert "out07_selection_status: deferred" in runtime
     assert "out07_canonical_pattern: false" in runtime

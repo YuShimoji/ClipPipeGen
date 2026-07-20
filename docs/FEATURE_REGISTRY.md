@@ -1,5 +1,14 @@
 ﻿# Feature Registry
 
+## Current slice registration
+
+| ID | Feature | State | Observable acceptance |
+|---|---|---|---|
+| **ED-11** | OUT-12 one-command real long-form video automation | done | Artifact `clip-out12-one-command-real-video-automation-v1-001`. `build-real-video` takes one acquired real source or episode material identity through provenance, content analysis, chronological Timeline IR, caption timing remap, H.264/AAC render, full validation, manifest, localhost review, and hash-verified resume. The actual `youtube:gUwJBRUIWow` run produced 11 cuts / 260.693767s / SHA `5d391ffd...a584`; all validation checks and mobile/desktop review QA passed. Rights, production subtitle/design/render acceptance, thumbnail, winner, public/publishing, and upload remain closed. |
+
+Evidence: `docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md` and
+`clip-out12-one-command-real-video-automation-v1-001` in `artifacts/ARTIFACTS.md`.
+
 蜈ｨ讖溯・繧・ID 縺ｧ邂｡逅・☆繧九ら匳骭ｲ縺輔ｌ縺ｦ縺・↑縺・ｩ溯・縺ｯ霑ｽ蜉縺励↑縺・Ａproposed` 縺ｯ繝ｦ繝ｼ繧ｶ繝ｼ謇ｿ隱榊ｾ後↓ `approved` 縺ｸ譏・ｼ縺励※縺九ｉ螳溯｣・☆繧九・
 ## ID 隕丞援
 

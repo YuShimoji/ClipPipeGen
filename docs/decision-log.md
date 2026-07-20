@@ -8,6 +8,26 @@ last_touched: 2026-07-21
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-21 — OUT-12 one-command real video automationをinternal operationalとして受理
+
+OUT-11 closure後の次sliceを、汎用framework拡張ではなく「取得済み実source一本から長尺MP4と
+検証・review packageまでを一コマンドで生成できる」という観測可能な縦糸に限定した。
+`youtube:gUwJBRUIWow`全長を11 cut / 260.693767sのH.264/AAC MP4へ生成し、exact SHA
+`5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584`、13 validation checks、
+mapping coverage 1.0、browser/HTTP QA、hash-verified resumeをpassしたため、状態を
+`AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`とする。
+
+初回runで検出したAV stream duration差とtrue peak超過は、failure evidenceを保持したうえで
+corrective passにより0.008767s / -1.44 dBTPへ修復した。mobile review表のdocument overflowと、
+Windowsでbrowserがmedia Rangeを中断した際のserver traceも、生成CSSとconnection handlingで
+修復した。これらはsource-specific manual patchではなく次runにも効くroute修復である。
+
+この受理はinternal automationに限定する。rights pending、production subtitle/design/render、
+thumbnail、winner、public/publishing、uploadはfalseのまま。caption authorityはtiming/containment
+readbackであり、歌唱・歌詞・speaker・意味を自動主張しない。根拠:
+`docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md` +
+`clip-out12-one-command-real-video-automation-v1-001` + exact machine validation/resume readback。
+
 ## 2026-07-21 — OUT-10 / OUT-11 exact acceptance closure
 
 添付実行契約に含まれる人間判断を、同一マシンの実媒体から再取得した完全SHA、bytes、durationへ
