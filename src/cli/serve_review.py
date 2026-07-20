@@ -69,7 +69,7 @@ class RangeRequestHandler(BaseHTTPRequestHandler):
                     break
                 try:
                     self.wfile.write(chunk)
-                except (BrokenPipeError, ConnectionResetError):
+                except ConnectionError:
                     # Browsers routinely cancel an in-flight media range when a
                     # review tab closes. Treat that as a completed client action,
                     # not as an operator-visible server failure.
