@@ -1618,7 +1618,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["canonical_main_head"] == (
-        "663c6e6f19d1f176b96bc04c90993b00925b039c"
+        "9879d194494cc7f462f373612d30ecfbd0c70471"
     )
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-09 accepted internal exact SHA "

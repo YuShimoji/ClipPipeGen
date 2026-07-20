@@ -9,9 +9,10 @@ last_touched: 2026-07-21
 current_slice: OUT-12
 phase: internal_automation_operational
 canonical_status: automated_real_video_pipeline_operational_v1
-active_branch: codex/out-12-one-command-real-video-automation-v1
+active_branch: main
+source_branch: codex/out-12-one-command-real-video-automation-v1
 verified_implementation_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
-remote_resume_contract: fetch_then_switch_codex_out12_branch_then_read_this_file
+remote_resume_contract: fetch_then_switch_main_then_read_this_file
 current_title: OUT-12 one-command real long-form automation operational
 human_entrypoint: http://127.0.0.1:8075/review/index.html
 portable_entrypoint: null
@@ -36,12 +37,13 @@ human_review_pending: false
 automation_acceptance_granted: true
 next_action: optional_content_inspection_or_next_explicitly_approved_gate_only
 active_artifact: clip-out12-one-command-real-video-automation-v1-001
-canonical_main_head: branch_tip_after_ff_only_integration
+canonical_main_head: 9879d194494cc7f462f373612d30ecfbd0c70471
+canonical_main_head_role: out12_integrated_code_docs_baseline_before_post_sync_receipt
 source_of_truth: true
 owner_lane: real_video_internal_automation
 related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
-upstream_parity: pending_final_push_verification
-handoff_base_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
+upstream_parity: 0 0
+handoff_base_head: 9879d194494cc7f462f373612d30ecfbd0c70471
 ---
 
 # Current Handoff - ClipPipeGen
@@ -64,7 +66,7 @@ seek、console/media error 0をpass。`--resume`は2.095秒、render非実行、
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-12-one-command-real-video-automation-v1
+git switch main
 git pull --ff-only
 git status --short --branch
 git rev-list --left-right --count 'HEAD...@{u}'

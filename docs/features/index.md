@@ -8,7 +8,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - artifact: `clip-out12-one-command-real-video-automation-v1-001`
 - state: `OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`
 
-- canonical main: `663c6e6f19d1f176b96bc04c90993b00925b039c`
+- canonical main: `9879d194494cc7f462f373612d30ecfbd0c70471`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - canonical status: `automated_real_video_pipeline_operational_v1`
 - review status: `machine_validated_internal_review_available`
