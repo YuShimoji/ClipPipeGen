@@ -35,15 +35,17 @@ winner_selected: false
 public_or_publishing_acceptance: false
 human_review_pending: false
 automation_acceptance_granted: true
-next_action: optional_content_inspection_or_next_explicitly_approved_gate_only
+next_action: choose_one_second_real_source_repeatability_or_one_explicitly_approved_gate
 active_artifact: clip-out12-one-command-real-video-automation-v1-001
-canonical_main_head: 9879d194494cc7f462f373612d30ecfbd0c70471
-canonical_main_head_role: out12_integrated_code_docs_baseline_before_post_sync_receipt
+canonical_main_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
+canonical_main_head_role: last_verified_pre_handoff_main
+remote_handoff_tip: this_commit_after_push
+handoff_sync_status: final_handoff_commit_pushed_and_parity_verified
 source_of_truth: true
 owner_lane: real_video_internal_automation
-related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
+related: docs/RUNTIME_STATE.md, docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
 upstream_parity: 0 0
-handoff_base_head: 9879d194494cc7f462f373612d30ecfbd0c70471
+handoff_base_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
 ---
 
 # Current Handoff - ClipPipeGen
@@ -77,6 +79,11 @@ tracked code/docs/testsはportableだが、実source、最終MP4、evidence、lo
 `episodes/`配下のsame-machine ignored artifactで、Gitには入らない。別hostでは同じsource bytesを
 用意するか、そこで新しいlocal artifactを生成する。
 
+判断経緯と再開順序は`docs/project-context.md`、`docs/decision-log.md`、`docs/idea-ledger.md`にも
+同期済み。handoff直前の検証済みmainは`f9cfc1194368087c49ffd98b69f880d6109cabfb`で、最終remote
+handoff tipは本commitになる。別端末では取得した`main`のHEADを正とし、古い履歴capsuleからbranchや
+next actionを復元しない。
+
 ## 実行入口
 
 ```powershell
@@ -107,3 +114,7 @@ uvx python -m src.cli.main build-real-video `
 OUT-12で受理したのはinternal real-video automation routeであり、作品内容、rights、production
 subtitle design、production render/public use、thumbnail、winner、publishing/uploadの承認ではない。
 次へ進む場合は、これらを一括で開けず、目的が明示されたgateを一つだけ別sliceで扱う。
+
+次の安全な入口は、異なる3分以上の実source一本でrepeatabilityを検証するか、rights、production
+subtitle design/render、thumbnail、private transportのいずれか一つを明示承認して開くこと。OUT-12の
+任意内容確認は可能だが、すでに閉じたautomation acceptanceを再び判断待ちへ戻さない。

@@ -14,12 +14,18 @@ OUT-09 is the closed accepted-internal second-source slice: one declarative vert
 a different real source/episode. A second bounded presentation repair removes
 source-native caption pixels from foreground and background, uses a caption-free
 canvas, and burns 27 short JSON3-timed cues while preserving range and endpoint.
-OUT-10 is the current decision-ready stop: bounded local inventory found no eligible
-third real source, so no candidate or portfolio scorecard was generated.
+OUT-10 and OUT-11 are closed accepted-internal portfolio history. OUT-12 is the
+current operational slice: one acquired real source can flow through analysis,
+chronological Timeline IR, H.264/AAC long-form render, full validation,
+hash-bound resume, and a localhost review package in one command. Rights,
+production subtitle/design/render, thumbnail, winner, public/publishing, and
+upload remain separate closed gates.
 
 Start here when resuming from another terminal:
 
-- `OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` - active bounded-inventory stop, three detailed preflights, exact blockers, restart decision, and closed gates.
+- `OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md` - current implementation, real-source run, exact output identity, validation, resume, review entrypoint, and closed gates.
+- `OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md` - closed exact five-source acceptance and source-specific debt lineage.
+- `OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md` - closed third-source candidate and endpoint-repair lineage.
 - `out10_third_source_inventory_receipt.json` - machine-readable 5-entry inventory, 3-source preflight, hashes, evidence grades, and external-acquisition decision.
 - `OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md` - closed accepted-internal second-source lineage, caption-free crop, JSON3 short-cue authority, media/mobile/browser evidence, and closed gates.
 - `OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md` - closed accepted-internal target-2/actual-2 baseline, exact unused-range authority, media/browser evidence, and closed gates.
@@ -65,7 +71,7 @@ current baseline bytes and does not inherit OUT-06 acceptance.
 
 OUT-07 retains two explicit historical routes. The strict exact route keeps Planner007's
 accepted 38.633333-second baseline SHA/size/duration, byte-copy, and acceptance-
-inheritance gates unchanged. The separate Thank semantic direction-proxy route
+inheritance gates unchanged. The historical Thank semantic direction-proxy route
 uses a known source revision plus official caption/timing authority to render
 one 1080x1920 source-frame-and-existing-subtitle direction, list/UI/4:5 previews,
 and mapped-source evidence. It does not emit the baseline video or claim byte/
@@ -87,8 +93,8 @@ and one direct-play page to a dedicated ignored `review/out08_*` package.
 Candidate 01 uses `cut_004..cut_005`; candidate 02 uses the tail of `cut_006`,
 `cut_007..cut_008`, and only the `sub_102` dependent payoff. `cut_009` remains
 rejected and is not promoted. The navigation frames are not thumbnails. Human
-review now decides whether each result is a coherent editing unit and whether
-tempo, boundary, subtitle, or audio discomfort remains. Rights, production,
+review later accepted both exact results as internal candidates; the original review criteria were coherence,
+tempo, boundary, subtitle, and audio comfort. Rights, production,
 subtitle-design, public, publishing, and upload gates stay closed.
 
 OUT-09 starts from the closed OUT-08 baseline but uses a different YouTube source

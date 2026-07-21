@@ -20,8 +20,9 @@ OUT-11 note: 人間レビューでSOURCE-04 `465d732c...16524`は問題なしと
 `a53d0416...134f2`から、意識確認・患者反応・「ゴッドハンドやね」が閉じるsource `34.785s`、
 SHA `62d4b45b...97cdd`へendpointだけを修復した。SOURCE-05は旧`370850c5...b578`の
 画面切替直後終了と未確認の歌唱・歌詞説明を退け、同一recordingの`202.586–260.643s`を
-source EOFまで収めたSHA `b4a01413...a4969`へ修復した。5-source scorecardはOUT-08/09/04を
-accepted context、OUT-10/05をhuman review pendingとして区別し、review面の動画は修復二本だけ。
+source EOFまで収めたSHA `b4a01413...a4969`へ修復した。添付契約の最終人間判断を両exact SHAへ
+bindし、5-sourceは`accepted_internal`、winnerなしとして閉じた。OUT-10の軽いsource-specific
+endpoint debtとSOURCE-05の歌唱・歌詞・話者未確認は保持するが、追加Short repair/reviewは再開しない。
 winner、共通crop/字幕/speaker-color policy、rights、production、thumbnail、public/publishingは
 未承認。詳細は
 [docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md](docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md)。

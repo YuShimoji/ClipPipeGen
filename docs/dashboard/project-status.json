@@ -30,7 +30,7 @@
     "title": "OUT-12 one-command real long-form video automation operational",
     "active_branch": "main",
     "phase": "internal_automation_operational",
-    "canonical_main_head": "9879d194494cc7f462f373612d30ecfbd0c70471",
+    "canonical_main_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
     "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
     "canonical_status": "automated_real_video_pipeline_operational_v1",
     "review_status": "machine_validated_internal_review_available",
@@ -69,7 +69,7 @@
     "last_verified_at": "2026-07-21",
     "decision_required": "",
     "next_review_action_type": "",
-    "next_action": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。",
+    "next_action": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -83,7 +83,7 @@
       "label": "OUT-12 Current Focus",
       "command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
       "target": "http://127.0.0.1:8075/review/index.html",
-      "when_to_use": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。"
+      "when_to_use": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。"
     },
     {
       "label": "Artifacts",
@@ -2535,7 +2535,7 @@
       "item": "OUT-12 current focus",
       "artifact": "clip-out12-one-command-real-video-automation-v1-001",
       "question": "OUT-12 one-command real long-form video automation operational",
-      "next_route": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。"
+      "next_route": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。"
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2764,7 +2764,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 163,
+      "line_count": 164,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2792,7 +2792,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 2392,
+      "line_count": 2394,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -2809,12 +2809,12 @@
         "active_branch": "main",
         "source_branch": "codex/out-12-one-command-real-video-automation-v1",
         "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
-        "source_branch_tip": "branch_head_after_push",
+        "source_branch_tip": "this_commit_after_push",
         "closure_branch": "codex/out-12-one-command-real-video-automation-v1",
         "remote_resume_contract": "fetch_then_switch_main_then_read_current_handoff",
         "upstream_parity": "0 0",
-        "sync_audit_head": "9879d194494cc7f462f373612d30ecfbd0c70471",
-        "sync_audit_status": "out12_main_ff_only_integrated_remote_parity_verified",
+        "sync_audit_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
+        "sync_audit_status": "out12_remote_handoff_context_refresh_preflight_clean",
         "sync_audit_live_out08_package": "historical_accepted_package_untouched",
         "sync_audit_live_out09_package": "access_only_repair_present_manifest_and_video_hashes_match",
         "sync_audit_live_r3_reviewability": "review_ready",
@@ -2884,7 +2884,7 @@
         "cover_review_status": "",
         "review_server_status": "validation_listener_stopped_restart_with_canonical_foreground_command",
         "next_review_due": "",
-        "next_action": "OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。",
+        "next_action": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。",
         "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
         "current_review_component": "out12_real_long_form_video_cut_map_validation_and_evidence",
         "out12_artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
@@ -3092,8 +3092,10 @@
         "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
         "latest_out04_review_status": "accepted",
         "latest_out04_reviewed_at": "2026-07-11 JST",
-        "canonical_main_head": "9879d194494cc7f462f373612d30ecfbd0c70471",
-        "canonical_main_head_role": "out12_integrated_code_docs_baseline_before_post_sync_receipt",
+        "canonical_main_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
+        "canonical_main_head_role": "last_verified_pre_handoff_main",
+        "remote_handoff_tip": "this_commit_after_push",
+        "handoff_sync_status": "final_handoff_commit_pushed_and_parity_verified",
         "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
         "latest_out03_real_local_selected_cut_proof_branch": "codex/out-03-real-local-selected-cut-proof-v0",
@@ -3157,7 +3159,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 454,
+      "boundary_term_count": 453,
       "status": "active"
     },
     {
@@ -3350,7 +3352,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 109,
+      "line_count": 120,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3388,15 +3390,17 @@
         "public_or_publishing_acceptance": "false",
         "human_review_pending": "false",
         "automation_acceptance_granted": "true",
-        "next_action": "optional_content_inspection_or_next_explicitly_approved_gate_only",
+        "next_action": "choose_one_second_real_source_repeatability_or_one_explicitly_approved_gate",
         "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
-        "canonical_main_head": "9879d194494cc7f462f373612d30ecfbd0c70471",
-        "canonical_main_head_role": "out12_integrated_code_docs_baseline_before_post_sync_receipt",
+        "canonical_main_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
+        "canonical_main_head_role": "last_verified_pre_handoff_main",
+        "remote_handoff_tip": "this_commit_after_push",
+        "handoff_sync_status": "final_handoff_commit_pushed_and_parity_verified",
         "source_of_truth": "true",
         "owner_lane": "real_video_internal_automation",
-        "related": "docs/RUNTIME_STATE.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json",
+        "related": "docs/RUNTIME_STATE.md, docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json",
         "upstream_parity": "0 0",
-        "handoff_base_head": "9879d194494cc7f462f373612d30ecfbd0c70471"
+        "handoff_base_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3404,7 +3408,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 19,
+      "boundary_term_count": 23,
       "status": "active"
     },
     {
@@ -3424,7 +3428,7 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 202,
+      "line_count": 216,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
@@ -3438,7 +3442,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 49,
+      "boundary_term_count": 55,
       "status": "current"
     },
     {
@@ -3486,7 +3490,7 @@
     {
       "path": "docs/HANDOFF.md",
       "title": "ClipPipeGen Handoff",
-      "line_count": 1545,
+      "line_count": 1583,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3494,7 +3498,7 @@
         "next": true,
         "constraints_risks": false
       },
-      "boundary_term_count": 347,
+      "boundary_term_count": 351,
       "status": "contains_done_history"
     },
     {
@@ -3528,7 +3532,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 24,
+      "boundary_term_count": 23,
       "status": "current"
     },
     {
@@ -3618,21 +3622,22 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 81,
+      "line_count": 103,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
         "last_touched": "2026-07-21",
-        "current_slice": "OUT-11",
-        "phase": "human_review_ready",
-        "active_branch": "codex/out-11-five-source-short-portfolio-wave-v0",
-        "verified_implementation_head": "249b3308b0d8a1cc8b75d37a245d717322859133",
-        "source_branch_tip": "branch_tip_after_handoff_push",
+        "current_slice": "OUT-12",
+        "phase": "internal_automation_operational",
+        "active_branch": "main",
+        "source_branch": "codex/out-12-one-command-real-video-automation-v1",
+        "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
+        "verified_integrated_head_before_handoff": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
+        "remote_handoff_tip": "this_commit_after_push",
         "upstream_parity": "0 0",
-        "health": "OUT11_HUMAN_REVIEW_REPAIRS_COMBINED_REVIEW_READY",
-        "contract_repair_status": "source04_accepted_exact_bytes_out10_source05_repaired_two_candidate_review_built"
+        "health": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3640,7 +3645,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 13,
+      "boundary_term_count": 17,
       "status": "current"
     },
     {
@@ -3755,8 +3760,8 @@
     },
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-      "title": "監修AI向け現状報告 — OUT-11 human-review repairs ready",
-      "line_count": 122,
+      "title": "監修AI向け現状報告 — OUT-12 operational remote handoff",
+      "line_count": 97,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3764,8 +3769,8 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 25,
-      "status": "contains_done_history"
+      "boundary_term_count": 30,
+      "status": "reference"
     },
     {
       "path": "docs/THREAD_REGISTRY.md",
@@ -3845,7 +3850,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (2392 lines) is likely carrying history.",
+        "detail": "Long active doc (2394 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3905,7 +3910,7 @@
       {
         "type": "over_guarded",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Boundary terms appear 19 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 23 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3917,7 +3922,7 @@
       {
         "type": "over_guarded",
         "path": "docs/decision-log.md",
-        "detail": "Boundary terms appear 49 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 55 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3929,13 +3934,13 @@
       {
         "type": "stale",
         "path": "docs/HANDOFF.md",
-        "detail": "Long active doc (1545 lines) is likely carrying history.",
+        "detail": "Long active doc (1583 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/HANDOFF.md",
-        "detail": "Boundary terms appear 347 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 351 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3947,7 +3952,7 @@
       {
         "type": "over_guarded",
         "path": "docs/idea-ledger.md",
-        "detail": "Boundary terms appear 24 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 23 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4001,7 +4006,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-        "detail": "Boundary terms appear 25 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 30 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

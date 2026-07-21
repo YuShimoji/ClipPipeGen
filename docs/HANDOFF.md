@@ -6,7 +6,45 @@ This file is the shortest project-local handoff for resuming from another termin
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
-## Immediate Resume Capsule - 2026-07-21 OUT-11 repaired two-candidate review
+## Immediate Resume Capsule - 2026-07-21 OUT-12 operational remote handoff
+
+Fresh terminal setup:
+
+```powershell
+git fetch --prune origin
+git switch main
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count 'HEAD...@{u}'
+git log -1 --oneline --decorate
+git ls-files episodes
+```
+
+Expected tracked state after pulling this handoff:
+
+- Branch / upstream: `main` / `origin/main`
+- `HEAD...@{u}`: `0 0`
+- `git ls-files episodes`: empty
+- Last verified pre-handoff main: `f9cfc1194368087c49ffd98b69f880d6109cabfb`
+- Verified implementation head: `a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a`
+- Active artifact contract: `clip-out12-one-command-real-video-automation-v1-001`
+- Current entry: `docs/CURRENT_HANDOFF.md`
+- Operational contract: `docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md`
+
+OUT-12は、取得済み実source `youtube:gUwJBRUIWow`から260.693767秒、1920x1080、H.264/AACの
+長尺MP4を一コマンドで生成し、11 cut、13 validation checks、mapping coverage 1.0、browser/HTTP
+QA、hash-verified resumeまでpassしたinternal operational routeである。最終MP4 SHAは
+`5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584`。
+
+tracked code/docs/testsとexact contractは別端末へ移るが、実source、最終MP4、evidence、localhost
+review packageはignored `episodes/`内のsame-machine artifactでGitには入らない。別hostでmedia確認が
+必要なら同一source bytesを再取得・再生成するか、別途承認したprivate transport gateを使う。
+
+次は異なる3分以上の実source一本でrepeatabilityを検証するか、rights、production subtitle
+design/render、thumbnail、private transportのうち明示承認されたgateを一つだけ開く。古いOUT-11
+capsuleは判断履歴であり、current branchや人間レビュー待ち状態として使わない。
+
+## Historical Resume Capsule - 2026-07-21 OUT-11 repaired two-candidate review
 
 Fresh terminal setup:
 

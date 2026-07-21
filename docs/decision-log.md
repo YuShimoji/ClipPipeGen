@@ -8,6 +8,20 @@ last_touched: 2026-07-21
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-21 — OUT-12 remote handoffをmain正本へ固定
+
+handoff更新直前の`main` / `origin/main`は
+`f9cfc1194368087c49ffd98b69f880d6109cabfb`で一致し、upstream parityは`0 0`、
+`git ls-files episodes`は0件だった。OUT-12の判断経緯、再開順序、証跡identity、未承認gateを
+`RUNTIME_STATE`、`CURRENT_HANDOFF`、`project-context`、本log、`idea-ledger`、監修報告へ同期し、
+別端末では`main`をfetch / ff-only pullしてこのtracked contextから再開する。
+
+Gitで移送するのはcode/docs/testsとexact contractまでで、実source、最終MP4、QA画像、localhost
+packageは引き続きignored `episodes/`内の同一マシン証拠である。本handoffは新しいacceptanceを
+作らず、OUT-12 internal automation acceptanceを維持する。次は異なる3分以上の実sourceによる
+repeatability、または明示承認されたrights / production subtitle design/render / thumbnail /
+private transport gateのうち一つだけを開く。
+
 ## 2026-07-21 — OUT-12 one-command real video automationをinternal operationalとして受理
 
 OUT-11 closure後の次sliceを、汎用framework拡張ではなく「取得済み実source一本から長尺MP4と

@@ -14,12 +14,12 @@ canonical_status: automated_real_video_pipeline_operational_v1
 active_branch: main
 source_branch: codex/out-12-one-command-real-video-automation-v1
 verified_implementation_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
-source_branch_tip: branch_head_after_push
+source_branch_tip: this_commit_after_push
 closure_branch: codex/out-12-one-command-real-video-automation-v1
 remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: 9879d194494cc7f462f373612d30ecfbd0c70471
-sync_audit_status: out12_main_ff_only_integrated_remote_parity_verified
+sync_audit_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
+sync_audit_status: out12_remote_handoff_context_refresh_preflight_clean
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
@@ -89,7 +89,7 @@ subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: validation_listener_stopped_restart_with_canonical_foreground_command
 next_review_due: null
-next_action: OUT-12 artifactの任意内容確認、またはrights・production subtitle design・thumbnail・public/publishingのうち明示承認された次gateだけへ進む。
+next_action: 異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。
 active_artifact: clip-out12-one-command-real-video-automation-v1-001
 current_review_component: out12_real_long_form_video_cut_map_validation_and_evidence
 out12_artifact_id: clip-out12-one-command-real-video-automation-v1-001
@@ -297,8 +297,10 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: 9879d194494cc7f462f373612d30ecfbd0c70471
-canonical_main_head_role: out12_integrated_code_docs_baseline_before_post_sync_receipt
+canonical_main_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
+canonical_main_head_role: last_verified_pre_handoff_main
+remote_handoff_tip: this_commit_after_push
+handoff_sync_status: final_handoff_commit_pushed_and_parity_verified
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
