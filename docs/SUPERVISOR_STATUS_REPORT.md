@@ -7,6 +7,28 @@
 最終handoff commitをpullした別端末は、`docs/CURRENT_HANDOFF.md`からOUT-12の実装状態、判断境界、
 次の一手を復元できる。実sourceと生成mediaだけはGitへ含めず、同一マシン証拠として保持する。
 
+## この端末での同期・開発準備
+
+2026-07-21 JSTに`main`を`b3cec5de0e7d79c0d570aa5ec4b91d5287c77eb2`から最終handoff
+commit `8faaab254320ddec03a5a3d0de1c671b9990e3e1`へfast-forwardした。取り込み後は
+`main...origin/main`、ahead / behind `0 0`、tracked worktree clean、tracked `episodes/` 0件である。
+依存とtoolchainを更新後のlockfile・実装入口に合わせ、次の結果をこの端末で再検証した。
+
+| 確認面 | この端末での結果 | 開発・監修上の意味 |
+|---|---|---|
+| JavaScript依存 | `npm ci`成功、24 packages audit、脆弱性0 | `package-lock.json`どおりのElectron開発環境 |
+| Python実装 | Python 3.11.0 / uv 0.10.0、`uvx --with Pillow pytest -q`で596 passed | 取り込んだOUT-09〜OUT-12を含む全suiteがlocal pass |
+| GUI | `npm run smoke` / `npm run smoke:electron`ともにOK | Node側とElectron起動経路が利用可能 |
+| media toolchain | FFmpeg / ffprobe 8.1.1、yt-dlp 2026.03.17を検出 | 新しい実sourceが用意されればOUT-12 routeを実行可能 |
+| CLI入口 | `python -m src.cli.main build-real-video --help`成功 | source / intake identity、resume / force、review生成の引数を解決可能 |
+| cleanup | pytest / ruff / Python cacheだけを明示パスで削除 | 保護対象previewと`node_modules`を維持したcleanな開発状態 |
+
+local artifact境界も確認した。OUT-12の`validation_readback.json`、final MP4、`review/index.html`は
+この端末には存在しないため、`127.0.0.1:8075`を現在利用可能なreview URLとしては扱わない。一方、
+保護対象のR3 `human_preview_session/index.html`は存在し、cleanup対象から除外した。したがって現在は
+**tracked codeの開発・テストは可能、OUT-12 exact mediaの再視聴だけは生成元hostまたはsource復元が必要**
+という状態であり、remote handoffのportable / same-machine境界と一致する。
+
 ## 到達した状態
 
 OUT-10 / OUT-11では5 sourceのShort候補をexact bytesへbindしてinternal acceptanceを閉じ、winnerを
