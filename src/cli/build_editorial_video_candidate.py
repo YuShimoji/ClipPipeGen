@@ -76,4 +76,3 @@ def run(argv: list[str]) -> int:
         print(f"video: {result['final_video']}")
         print(f"review: {result['review_index']}")
     return 0
-
