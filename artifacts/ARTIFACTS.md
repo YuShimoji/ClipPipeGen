@@ -58,19 +58,19 @@ Boundary flags:
 - `upload_attempted=false`
 - `episodes_tracked=false`
 
-## `clip-supervisor-sync-roadmap-20260722-001`
+## `clip-supervisor-sync-roadmap-20260722-002`
 
 | Field | Value |
 |---|---|
-| title | 2026-07-22 Remote Sync, Development Readiness, and Long-Range Goal Report |
-| purpose | Give a supervising AI one tracked surface that separates portable Git evidence from absent same-machine OUT-12 media, records current local validation, and proposes a dependency-ordered M0-M8 route from second-source repeatability through explicit public release and multi-episode operations. |
+| title | 2026-07-22 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
+| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the two-commit-ahead OUT-13 review branch, portable code evidence, available OUT-12 media, absent OUT-13 plan/package, and a dependency-ordered M0-M11 route through human editorial review, production gates, explicit public release, and multi-episode operations. |
 | storage class | Tracked Markdown report; portable Git evidence. No source or generated media included. |
 | repo_relative_path | `docs/SUPERVISOR_STATUS_REPORT.md` |
 | open_command | `Invoke-Item docs\SUPERVISOR_STATUS_REPORT.md` |
-| sync_baseline | `main` / `origin/main` at `089f45a5ba72d60c807d5ceafa3772fc8f6040f4`, ahead/behind `0 0`; `git pull --ff-only` returned `Already up to date.` on 2026-07-22 JST. |
-| validation | `npm ci` succeeded with 0 vulnerabilities; `uvx --with Pillow pytest -q` returned 596 passed; Node and Electron GUI smokes passed; `build-real-video --help` resolved; targeted docs-dashboard tests returned 24 passed; `git diff --check` remained clean after report edits. |
-| local_boundary | OUT-12 source/final/review package is absent on this host; protected R3 human preview remains local; `episodes/` stays ignored and has zero tracked files. |
-| decision_required | None to resume tracked development. The proposed M1-M8 goals remain unapproved; credentials/OAuth, rights, production, private transport, and public release each require their own explicit gate. |
+| sync_baseline | `main` was fast-forwarded from `8faaab2` to `5d6f69a`; verified OUT-13 implementation head is `c1566b3`, two commits ahead of main with sync-time upstream parity `0 0`. This report commit becomes the later handoff tip. No main merge is claimed. |
+| validation | `npm ci` succeeded with 0 vulnerabilities; Electron 42.0.0 dependency tree resolved; `uvx --with Pillow pytest -q` returned 606 passed in 147.15s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
+| local_boundary | OUT-13 source/transcript/caption/rights inputs exist but the editorial plan and final/review package are absent in this root checkout. OUT-12 final/review package exists and its live MP4 SHA matches `5d391ffd...a584`. Protected R3 preview remains local; `episodes/` has zero tracked files. |
+| decision_required | Restore access to the exact OUT-13 package or rebuild under a new hash-bound identity, then obtain human editorial review. Rights, production, private transport, credentials/OAuth, and public release remain separate explicit gates. |
 
 ## `clip-out12-one-command-real-video-automation-v1-001`
 

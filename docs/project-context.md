@@ -3,16 +3,16 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-21
-current_slice: OUT-12
-phase: internal_automation_operational
-active_branch: main
-source_branch: codex/out-12-one-command-real-video-automation-v1
-verified_implementation_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
-verified_integrated_head_before_handoff: f9cfc1194368087c49ffd98b69f880d6109cabfb
+last_touched: 2026-07-22
+current_slice: OUT-13
+phase: internal_editorial_review_ready
+active_branch: codex/out-13-editorial-video-candidate-v1
+source_branch: codex/out-13-editorial-video-candidate-v1
+verified_implementation_head: c1566b359413e4fbd5034733ac41d03d17641aaa
+base_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 remote_handoff_tip: this_commit_after_push
 upstream_parity: 0 0
-health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
+health: OUT13_CODE_VALIDATED_ARTIFACT_REVIEW_REQUIRES_RECOVERY
 ---
 
 # Project Context - ClipPipeGen
@@ -20,84 +20,76 @@ health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
 ## 現在の軸・レーン・スライス
 
 ClipPipeGenは、source acquisition、rights readback、編集authority、render、review、publishing準備を
-episode単位で接続する制作補助ツールである。現在の製品軸は「取得済み実sourceから、追跡可能な
-Timeline IR、実MP4、validation、review packageまでを一コマンドで作る」こと。担当レーンは
-`real_video_internal_automation`、現スライスはOUT-12、正本branchは`main`である。
+episode単位で接続する制作補助ツールである。OUT-12で取得済み実sourceから検証済みMP4までの
+一コマンド経路を成立させ、OUT-13では明示的なcaption/transcript evidence付きeditorial planを
+非連続cut、字幕、実MP4、review packageへ運ぶ後継経路を追加した。
+
+現在の開発レーンは`editorial_real_video_internal_review`、active branchは
+`codex/out-13-editorial-video-candidate-v1`。integration正本`main`は`5d6f69a`、active branchは
+その2 commit先`c1566b3`が検証対象implementation headで、同期時のremote parityは`0 0`だった。本報告を
+含むhandoff commitが次のremote tipになる。OUT-13をmainへmergeした事実や承認はない。
 
 再開時のauthority順は`AGENTS.md` → `README.md` → `docs/RUNTIME_STATE.md` →
-`docs/INVARIANTS.md` → `docs/AUTOMATION_BOUNDARY.md`。一画面の入口は
-`docs/CURRENT_HANDOFF.md`、詳細artifact契約は
-`docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md`に置く。
+`docs/INVARIANTS.md` → `docs/AUTOMATION_BOUNDARY.md`。一画面の実行引継ぎは
+`docs/CURRENT_HANDOFF.md`、このcheckout固有の同期・検証・目標は
+`docs/SUPERVISOR_STATUS_REPORT.md`を読む。
 
-## 最近閉じた判断
+## 最近閉じた判断と現在の未完了点
 
 | slice | 確定したこと | 明示的に確定していないこと |
 |---|---|---|
-| OUT-10 | exact SHA `62d4b45b...97cdd`を軽いsource-specific endpoint debt込みでaccepted internal | universal endpoint/caption policy |
-| OUT-11 | SOURCE-04、OUT-10、SOURCE-05をexact bytesへbindし、5-source accepted internal・winnerなしでShort repair loopを閉じた | winner、共通crop/字幕/speaker-color policy、rights、production/public use |
-| OUT-12 | `build-real-video`の実source→long-form MP4→validation→review→resume縦糸をinternal operationalとして受理 | 作品内容のhuman acceptance、rights、production subtitle/design/render、thumbnail、publishing/upload |
+| OUT-10 / OUT-11 | five-source Shortをexact bytesへbindしてaccepted internal、winnerなしで修復loopを閉じた | universal caption/crop policy、rights、production/public use |
+| OUT-12 | `build-real-video`のsource→Timeline IR→MP4→validation→review→resume縦糸をinternal operationalとして受理 | 作品内容、production subtitle/design/render、rights、thumbnail、publishing/upload |
+| OUT-13 | `build-editorial-video-candidate`、explicit plan検証、字幕presentation、19項目QA、review package生成を実装しremote branchへpush | exact MP4のhuman editorial acceptance、rights、production、main統合 |
 
-OUT-12は汎用frameworkを先行拡張せず、creator-visibleな一コマンド経路を成立させたthin sliceである。
-source-native textは保持するが、歌唱、歌詞、話者、意味、利用許諾を自動推定しない。
+OUT-13のtracked契約は、6 cut / 4 section / 122.866016s、final SHA
+`84ed7aa6...791d7e2`をsource-host実績として記録する。このroot checkoutにはsource、transcript、公式caption、
+rights snapshotはあるが、`editorial_plan_input.json`とOUT-13生成packageはない。したがってコード・テストの
+開発は可能だが、exact OUT-13 MP4の再視聴とhuman decisionは、生成host/packageへのアクセスまたは
+hash-bound planを復元した別identityの再生成まで進められない。
 
-## OUT-12 exact evidence
+## このcheckoutで確認した証拠
 
-| 面 | 現在値 | 意味 |
+| 面 | 現在値 | 再開上の意味 |
 |---|---|---|
-| artifact | `clip-out12-one-command-real-video-automation-v1-001` | current internal automation proof |
-| source | `youtube:gUwJBRUIWow`; SHA `8decc04d...d0037cf`; 260.643991s | 3分以上を満たしたpreflight唯一の候補 |
-| timeline | full-source scene partition、11 cuts、3 sections、coverage 1.0 | chronologyとsource mappingを機械追跡可能 |
-| final MP4 | 260.693767s、1920x1080、H.264/AAC、142,789,781 bytes、SHA `5d391ffd...a584` | exact internal output identity |
-| validation | 13 checks passed、full decode/faststart、timestamp regression 0、AV delta 0.008767s | shipping media plumbing pass |
-| audio/signal | -14.15 LUFS / -1.44 dBTP、max adjacent cut 1.27 LU、max black 0.7007s、silence 0 | initial AV/peak failuresをcorrective passで解消 |
-| captions | timing cue 468、overlap/negative/orphan 0、native baked text保持 | containment証拠であり意味acceptanceではない |
-| resume | 2.095s、analysis/caption/render/validation cache hit、render false、同一SHA | 高コストstageのfail-closed再利用 |
-| review | HTTP 200 / Range 206、desktop 1280 / mobile 390、paused/muted/time0、seek、console/media error 0 | same-machine operator surface pass |
-
-## Portableとlocal-onlyの境界
-
-Gitで別端末へ渡るもの:
-
-- CLI、render integration、tests、docs、exact hashes、authority/gate contract
-- OUT-10/11 acceptance receiptとOUT-12再生成・resume手順
-- dashboard、artifact registry、decision/idea/handoff state
-
-同一マシンにしか存在しないもの:
-
-- `episodes/`内のsource MP4、final MP4、contact sheets、waveform、localhost package
-- source取得済みbytesとignored failure/debug evidence
-
-`episodes/`は引き続きignoredで、tracked fileは0件を保つ。別端末はcode/contextから即再開できるが、
-同じ映像を再生するにはexact source bytesの安全な移送、または契約に沿った再取得・再生成が必要。
-mediaをGitへ追加しない。
+| Git | implementation `c1566b3`を検証、同期時parity `0 0`; `main`は`5d6f69a` | OUT-13を未mergeのreview branchとして保持 |
+| dependencies | `npm ci`成功、Electron 42.0.0、audit脆弱性0 | Node/Electron開発環境をlockfileから復元済み |
+| Python | uv Python 3.13.3、`uvx --with Pillow pytest -q`で606 passed | OUT-13追加テストを含む全suite pass |
+| GUI / CLI | Node/Electron smoke OK、OUT-13 CLI help解決 | GUIと新CLIの起動面は利用可能 |
+| toolchain | uv/uvx 0.10.7、FFmpeg/ffprobe 8.0.1、yt-dlp 2026.03.17 | source/planが揃えば再生成可能 |
+| OUT-12 local | final MP4とreadbackが存在し、SHA `5d391ffd...a584`一致 | predecessorのsame-machine evidenceは再検査可能 |
+| OUT-13 local | source系入力は存在、plan/packageは不在 | exact reviewだけが未再開。コード欠陥ではない |
+| hygiene | tracked/untracked変更0で開始、`episodes/` tracked 0、保護R3 session 28 files / 33,712,427 bytes | local evidenceと依存を消さずに開発可能 |
 
 ## 意図的に触っていない範囲
 
 - NLMYTGenを含む他repository
+- OUT-13 mediaの推測再生成、human decision template、main merge
 - rights、production subtitle/design/render、thumbnail、winner、public/publishing/upload/OAuth
-- OUT-08/09/SOURCE-04のaccepted bytesとOUT-10/11 closure
-- protected `episodes/.../human_preview_session/`と既存local review evidence
+- OUT-08〜OUT-12のaccepted/operational exact identity
+- protected `episodes/.../human_preview_session/`、`.serena/`、他worktree、credentials
 
 ## 次の安全な選択肢
 
-現在ブロッカーや必須human decisionはない。次のsliceは一つだけ選ぶ。
+現在の最短critical pathは`OUT-13 exact artifact access -> human editorial review -> passなら個別gate、
+failならsource-specific bounded repair`である。
 
-1. **Advance** — 別の3分以上real sourceで`build-real-video`を実走し、source-specific偶然でないか確認する。
-2. **Audit** — current OUT-12動画を任意内容確認し、cut/tempo/contentのsource-specific観測だけを記録する。
-3. **Verify** — rights、production subtitle design、production renderのいずれか一gateを明示開始する。
-4. **Explore** — private artifact transportを設計し、別端末でもsame bytesをreviewできるようにする。
+1. **Review** — 生成hostまたは承認済みprivate transportからexact OUT-13 packageを開き、編集構成・字幕・画面・音声を一本として判断する。
+2. **Restore** — exact packageを移せない場合、欠けたplan authorityをhash付きで復元し、新artifact identityとしてOUT-13を再生成する。
+3. **Audit** — mediaを待つ間にfailure receipt、plan validation、corrective-pass上限をコードとtestsから監査する。
+4. **Advance after acceptance** — OUT-13受理後、rights、production subtitle design、production renderのうち一gateだけを開く。
 
 ## 別端末での最短再開
 
 ```powershell
 git fetch --prune origin
-git switch main
+git switch codex/out-13-editorial-video-candidate-v1
 git pull --ff-only
 git status --short --branch
 git rev-list --left-right --count 'HEAD...@{u}'
-git log -1 --oneline --decorate
 git ls-files episodes
 ```
 
-期待値は`main`、upstream parity `0 0`、tracked `episodes/` 0件。次に
-`docs/CURRENT_HANDOFF.md`を読み、同一マシンでartifactが必要な場合だけ記載launcherを使う。
+期待値はactive branchのparity `0 0`、tracked `episodes/` 0件。次に
+`docs/CURRENT_HANDOFF.md`と`docs/SUPERVISOR_STATUS_REPORT.md`を読み、OUT-13 packageの実在を
+`Test-Path`で確認してからlauncherや`--resume`を使う。package不在時にlocalhost URLを利用可能と報告しない。

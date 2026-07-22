@@ -8,6 +8,26 @@ last_touched: 2026-07-21
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-22 — OUT-13 remote branchをcurrent development laneとして再開し、artifact不在を分離
+
+`main`は`8faaab2`から`5d6f69a`へff-onlyで更新し、同時にremoteで検出した
+`codex/out-13-editorial-video-candidate-v1`をlocal tracking branchとして再開した。active branchは
+検証対象implementation headは`c1566b3`で同期時upstream parity `0 0`、`main`より2 commit先だった。
+本報告を含むhandoff commitがその後のremote tipになる。OUT-13は未mergeのreview branchであり、
+この同期・検証はmain integrationやhuman acceptanceを新たに承認しない。
+
+依存を`npm ci`で復元し、Electron 42.0.0 / audit脆弱性0、
+`uvx --with Pillow pytest -q` 606 passed、Node/Electron smoke、OUT-13 CLI helpを確認した。tracked/untracked
+stateは開始時clean、`git ls-files episodes`は0件。したがってtracked codeは開発可能である。
+
+一方、このroot checkoutにはOUT-13 source/transcript/caption/rights入力は存在するが、
+`editorial_plan_input.json`とsource-hostのexact packageは存在しない。localhost 8076や`--resume`を
+現在利用可能とは扱わず、exact MP4 SHA `84ed7aa6...791d7e2`へのhuman editorial reviewは、生成hostへの
+アクセス、承認済みprivate transport、またはhash-bound planを用いた新identity再生成の後に行う。
+OUT-12 packageは存在し、final SHA `5d391ffd...a584`がtracked契約と一致した。根拠:
+live Git parity + full suite/GUI/CLI validation + `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` +
+root checkout artifact existence/hash readback。
+
 ## 2026-07-21 — OUT-12 remote handoffをmain正本へ固定
 
 handoff更新直前の`main` / `origin/main`は
