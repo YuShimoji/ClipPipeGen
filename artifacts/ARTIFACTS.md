@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-12 is currently the
-same-machine one-command real long-form video automation proof. OUT-11 is the
+current artifact, then use an artifact-specific launcher. OUT-13 is currently the
+same-machine caption-evidence editorial representative video. OUT-12 is its operational
+one-command real-video predecessor. OUT-11 is the
 closed five-source Short portfolio with two repaired candidates, one accepted
 SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
 OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
@@ -21,6 +22,41 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out13-editorial-video-candidate-v1-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-13 Editorial Video Candidate v1 |
+| purpose | Turn one real captioned source into an explicitly selected, chronologically traceable, clearly shortened editorial MP4 so a human can judge composition, subtitle presentation, and picture/audio quality on the same artifact. |
+| storage class | Tracked CLI/render integration/tests/docs plus one ignored same-machine source/output package under `episodes/`. No source or generated media is tracked. |
+| repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` |
+| local_artifact_path | `episodes/out13_editorial_video_candidate_20260722/review/out13_editorial_video_candidate/` |
+| state | `EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1` |
+| source | `youtube:7J5aS_pcBj4`; provider `https://www.youtube.com/watch?v=7J5aS_pcBj4`; source SHA `e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`; 164.768798s; 1920x1080. |
+| authority | Official JA JSON3 SHA `3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919`; imported transcript SHA `ef928d4e3b47e5ab522cf8292d08fefdc81fcda9c904551941158814cdfb42d6`; rights snapshot SHA `e6ea94717b3bffceaa7cda9c608d2d2ecb6a0a46233958a9113f058c73464c12`. Wording/timing/cut evidence only; speaker, lyric, singing, and rights conclusions are not inferred. |
+| editorial plan | Six non-contiguous chronological cuts across four evidence-bound sections; six omitted spans, four intentional; explicit selection/omission reasons, context, segment IDs, transitions; source utilization 0.74542; mapping coverage 1.0; no uniform sampling or arbitrary thirds. |
+| final_video | H.264 High/AAC yuv420p, 1920x1080, 122.866016s, 73,776,611 bytes, SHA `84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2`. |
+| subtitle presentation | 77 official cues; Keifont 100px / 115px line height; white body; speaker badge omitted because identity is unverified; black 8px outline / 2px shadow; 106px side margins / 92px bottom margin; maximum 2 lines; overlap/negative/orphan/overflow/violation 0. |
+| validation | Nineteen review-visible checks passed. Full decode/faststart/timestamps/A/V/source mapping/caption containment passed; -14.61 LUFS, -1.58 dBTP, maximum adjacent cut delta 0.94 LU; black and silence events 0. Desktop/mobile overflow false; clean initial paused/muted/time0; seek exact; page 200; MP4 Range 206; console/media error 0. |
+| evidence | Selected-source contact sheet, subtitle presentation contact sheet, normal/long-or-multiline/short-cue frames, all-cut boundary sheet, first/middle/last sheet, waveform, plan/readback/manifest on one video-first review page. |
+| manifest | 23 payload rows; input fingerprint `051832b95969d8d3e35709f359e82dacb719552343ad40ec39ce35381685e3d8`; self-integrity SHA `8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8`. |
+| resume | Same source/plan/settings resumed in 0.328s without render; video and manifest SHA unchanged. |
+| preview_url | `http://127.0.0.1:8076/review/index.html`; validation listener stopped after HTTP/browser QA. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\open_preview.ps1` |
+| decision_required | Internal human review may now judge editorial structure, caption presentation, and picture/audio quality. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `rights_status=pending`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `thumbnail_acceptance=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
 
 ## `clip-supervisor-sync-roadmap-20260722-001`
 

@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out12_real_video_and_keeps_out07_rebuild_contract_parked() -> (
+def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contract_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -241,19 +241,43 @@ def test_runtime_points_to_out12_real_video_and_keeps_out07_rebuild_contract_par
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8075/review/index.html" in runtime
+    assert "human_entrypoint: http://127.0.0.1:8076/review/index.html" in runtime
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_only_real_source_and_output_media_same_machine" in runtime
+        "tracked_code_docs_only_source_plan_and_output_media_same_machine" in runtime
     )
-    assert "health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1" in runtime
-    assert "current_slice: OUT-12" in runtime
-    assert "canonical_status: automated_real_video_pipeline_operational_v1" in runtime
-    assert "active_artifact: clip-out12-one-command-real-video-automation-v1-001" in runtime
-    assert "review_status: machine_validated_internal_review_available" in runtime
+    assert "health: OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1" in runtime
+    assert "current_slice: OUT-13" in runtime
+    assert "canonical_status: editorial_representative_video_reviewable_v1" in runtime
+    assert "active_artifact: clip-out13-editorial-video-candidate-v1-001" in runtime
+    assert "review_status: machine_validated_human_editorial_review_available" in runtime
     assert "automation_acceptance_granted: true" in runtime
     assert "acceptance_granted: false" in runtime
+    assert "out13_source_identity: youtube:7J5aS_pcBj4" in runtime
+    assert (
+        "out13_source_sha256: "
+        "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889"
+        in runtime
+    )
+    assert "out13_cut_count: 6" in runtime
+    assert "out13_semantic_section_count: 4" in runtime
+    assert "out13_output_duration_seconds: 122.866016" in runtime
+    assert (
+        "out13_output_sha256: "
+        "84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2"
+        in runtime
+    )
+    assert "out13_validation_status: passed" in runtime
+    assert "out13_mapping_coverage_ratio: 1.0" in runtime
+    assert "out13_resolved_font_family: Keifont" in runtime
+    assert "out13_resolved_maximum_lines: 2" in runtime
+    assert "out13_resume_render_executed: false" in runtime
+    assert "out13_review_mobile_overflow: false" in runtime
+    assert "out13_rights_status: pending_or_snapshot_only" in runtime
+    assert "out13_production_acceptance: false" in runtime
+    assert "out13_public_or_publishing_acceptance: false" in runtime
+    # OUT-12 remains the operational predecessor evidence.
     assert "out12_source_identity: youtube:gUwJBRUIWow" in runtime
     assert (
         "out12_source_sha256: "

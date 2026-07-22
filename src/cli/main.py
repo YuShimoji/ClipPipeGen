@@ -57,6 +57,7 @@ Subcommands:
     build-source-adaptive-short-candidate Build one endpoint-bound real-source OUT-11 candidate.
     build-five-source-short-portfolio Build the OUT-11 combined review and 5-source scorecard.
     build-real-video          OUT-12: one real source -> long-form MP4 + validation/review.
+    build-editorial-video-candidate OUT-13: explicit evidence plan -> editorial MP4/review.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
     reconstitute-out07-review OUT-07: current media revision -> baseline-first combined poster review.
@@ -94,6 +95,7 @@ from . import (
     build_source_adaptive_short_candidate,
     build_five_source_short_portfolio,
     build_real_video,
+    build_editorial_video_candidate,
     build_vertical_short_candidate,
     build_chapter_revision_board,
     build_content_candidate_dashboard,
@@ -200,6 +202,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-source-adaptive-short-candidate": build_source_adaptive_short_candidate.run,
     "build-five-source-short-portfolio": build_five_source_short_portfolio.run,
     "build-real-video": build_real_video.run,
+    "build-editorial-video-candidate": build_editorial_video_candidate.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-shorts-poster-frame-proof": build_shorts_poster_frame_proof.run,

@@ -286,8 +286,8 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
     )
 
 
-def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
-    current_out11_artifact = "clip-out12-one-command-real-video-automation-v1-001"
+def test_current_resume_surfaces_point_to_out13_and_historical_sources_remain_linked():
+    current_out13_artifact = "clip-out13-editorial-video-candidate-v1-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
     )
@@ -347,16 +347,16 @@ def test_ed10bc_resume_surfaces_are_current_and_ed10ba_sources_remain_linked():
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_out11_artifact}" in text
+            assert f"active_artifact: {current_out13_artifact}" in text
             assert "local_artifact_available: true" in text
             assert (
-                "human_entrypoint: http://127.0.0.1:8075/review/index.html" in text
+                "human_entrypoint: http://127.0.0.1:8076/review/index.html" in text
             )
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_out11_artifact}" in text
+            assert f"active_artifact: {current_out13_artifact}" in text
             assert (
                 "historical_source_host_out06_artifact: "
                 f"{current_out06_artifact}" in text
@@ -1618,29 +1618,31 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["canonical_main_head"] == (
-        "f9cfc1194368087c49ffd98b69f880d6109cabfb"
+        "5d6f69a64d510508a1f78ab3111a7780913a019c"
     )
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-09 accepted internal exact SHA "
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "automated_real_video_pipeline_operational_v1"
+        "editorial_representative_video_reviewable_v1"
     )
     assert status["current_focus"]["review_status"] == (
-        "machine_validated_internal_review_available"
+        "machine_validated_human_editorial_review_available"
     )
-    assert status["current_focus"]["decision_required"] == ""
+    assert status["current_focus"]["decision_required"] == (
+        "internal_editorial_composition_subtitle_picture_audio_review"
+    )
     assert status["current_focus"]["next_review_action_type"] == ("")
     assert status["current_focus"]["human_entrypoint"] == (
-        "http://127.0.0.1:8075/review/index.html"
+        "http://127.0.0.1:8076/review/index.html"
     )
     assert status["current_focus"]["review_open_command"].endswith(
-        "out12_one_command_real_video_automation\\review\\open_preview.ps1"
+        "out13_editorial_video_candidate\\review\\open_preview.ps1"
     )
     assert status["current_focus"]["machine_readback"] == (
-        "episodes/out12_source05_one_command_real_video_20260721/review/"
-        "out12_one_command_real_video_automation/validation_readback.json"
+        "episodes/out13_editorial_video_candidate_20260722/review/"
+        "out13_editorial_video_candidate/validation_readback.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
@@ -1659,7 +1661,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
     assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "http://127.0.0.1:8075/review/index.html"
+        "http://127.0.0.1:8076/review/index.html"
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
     assert status["current_focus"]["pause_reason"] == ""
@@ -1668,18 +1670,18 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     current_surfaces = [
         item
         for item in status["open_surfaces"]
-        if item["label"] == "OUT-12 Current Focus"
+        if item["label"] == "OUT-13 Current Focus"
     ]
     assert current_surfaces == [
         {
-            "label": "OUT-12 Current Focus",
+            "label": "OUT-13 Current Focus",
             "command": status["current_focus"]["review_open_command"],
-            "target": "http://127.0.0.1:8075/review/index.html",
+            "target": "http://127.0.0.1:8076/review/index.html",
             "when_to_use": status["current_focus"]["next_action"],
         }
     ]
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_code_docs_only_real_source_and_output_media_same_machine"
+        "tracked_code_docs_only_source_plan_and_output_media_same_machine"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (
@@ -1690,8 +1692,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out12-one-command-real-video-automation-v1-001"
+        "clip-out13-editorial-video-candidate-v1-001"
     )
+    assert "clip-out13-editorial-video-candidate-v1-001" in artifact_ids
     assert "clip-out12-one-command-real-video-automation-v1-001" in artifact_ids
     assert "clip-out11-five-source-short-portfolio-wave-v0-002" in artifact_ids
     assert "clip-out10-third-source-short-portfolio-expansion-v0-001" in artifact_ids

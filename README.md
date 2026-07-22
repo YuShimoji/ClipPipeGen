@@ -6,6 +6,17 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+OUT-13 note: `build-editorial-video-candidate` は、取得済みの実 source、明示的な
+editorial plan、transcript、公式 sidecar caption、rights snapshotを入力に、caption/transcript
+evidenceへ結び付いた非連続・時系列保持Timeline IRを生成する。実runは
+`youtube:7J5aS_pcBj4`の164.769s sourceから待機・反復・credits等を除き、6 cut / 4 sections /
+122.866s（利用率74.5%）のH.264/AAC 1920x1080動画を生成した。公式JA 77 cueをKeifont
+100px・8px outline・2px shadow・最大2行でburn-inし、MP4 SHA `84ed7aa6...791d7e2`、
+machine validation 19項目、desktop/mobile review、Range 206、resume同一SHAを確認済み。
+これは次のinternal editorial reviewを解放するreviewable artifactであり、rights、production
+subtitle/render、thumbnail、public/publishing/upload acceptanceではない。詳細は
+[docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md](docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md)。
+
 OUT-12 note: `build-real-video` で、取得済みの実 source 1本から解析、scene-boundary
 Timeline IR、caption timing remap、H.264/AAC長尺render、full decode/faststart/audio・signal・
 mapping検証、manifest、localhost review packageまでを一コマンドで生成できる。実runは
