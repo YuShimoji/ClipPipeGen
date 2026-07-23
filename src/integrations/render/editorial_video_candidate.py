@@ -2,18 +2,20 @@
 
 from __future__ import annotations
 
+from array import array
 import hashlib
 import json
 import math
-import os
 import re
 import shutil
 import subprocess
+import sys
 import time
 import uuid
 from html import escape
-from pathlib import Path
-from typing import Any
+from pathlib import Path, PurePosixPath
+from typing import Any, Callable
+from urllib.parse import parse_qs, urlparse
 
 from src.integrations.render import ffmpeg_tiny
 from src.integrations.render import real_video_pipeline as out12
@@ -27,18 +29,17 @@ from src.integrations.render.subtitle_overlay_visual_proof import (
 from src.integrations.render.subtitle_preset_selector import select_subtitle_preset
 from src.pipeline.transcript import validate_transcript
 
-SCHEMA_VERSION = "clippipegen.out13.editorial_video_candidate.v2"
-PLAN_SCHEMA_VERSION = "clippipegen.out13.editorial_plan.v2"
+SCHEMA_VERSION = "clippipegen.out13.editorial_video_candidate.v3"
+PLAN_SCHEMA_VERSION = "clippipegen.out13.editorial_plan.v3"
 TIMELINE_SCHEMA_VERSION = "clippipegen.timeline_ir.v1"
 SUBTITLE_READBACK_SCHEMA_VERSION = "clippipegen.out13.subtitle_presentation.v1"
-MANIFEST_SCHEMA_VERSION = "clippipegen.out13.run_manifest.v2"
-PIPELINE_VERSION = "out13-editorial-video-candidate-v2"
-# Historical default retained only so old reports/tests can identify artifact 001.
-# New CLI runs must pass an explicit immutable artifact identity.
-ARTIFACT_ID = "clip-out13-editorial-video-candidate-v1-001"
+MANIFEST_SCHEMA_VERSION = "clippipegen.out13.run_manifest.v3"
+PIPELINE_VERSION = "out13-editorial-video-candidate-v3"
 ARTIFACT_ID_PATTERN = re.compile(r"^clip-out13-editorial-video-candidate-v1-\d{3}$")
 SUPPORTED_TRANSITIONS = frozenset({"sequence_start", "hard_cut"})
-READY_STATE = "OUT13_EVIDENCE_BOUND_REVIEWABLE_ON_THANK_V1"
+READY_STATE = (
+    "OUT13_CANDIDATE_004_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
+)
 DEFAULT_REVIEW_PORT = 8076
 MIN_OUTPUT_SECONDS = 60.0
 MAX_OUTPUT_SECONDS = 180.0
@@ -46,6 +47,15 @@ MIN_SELECTED_CUTS = 3
 MIN_INTENTIONAL_OMITTED_SPANS = 2
 MAX_SOURCE_UTILIZATION_RATIO = 0.90
 EDITORIAL_FONT_SIZE_TO_FRAME_HEIGHT = 0.093
+PCM_SAMPLE_RATE_HZ = 16000
+PCM_CHANNELS = 1
+PCM_SAMPLE_WIDTH_BYTES = 2
+PCM_FRAME_SAMPLES = 320
+PCM_MAX_ALIGNMENT_FRAMES = 5
+PCM_MAX_DURATION_DELTA_SECONDS = 0.1
+PCM_MIN_FRAME_ENERGY_CORRELATION = 0.98
+PCM_MIN_RMS_RATIO = 0.9
+PCM_MAX_RMS_RATIO = 1.1
 
 
 class EditorialVideoCandidateError(Exception):
@@ -151,6 +161,8 @@ def build_editorial_video_candidate(
             transcript=transcript_payload,
             caption_track_path=caption_track,
             rights_manifest_path=rights_manifest,
+            ffmpeg_path=ffmpeg,
+            runner=runner,
         )
         timeline = build_editorial_timeline(
             plan=plan,
@@ -190,6 +202,7 @@ def build_editorial_video_candidate(
                 output_dir=output,
                 input_fingerprint=fingerprint,
                 artifact_id=artifact_id,
+                run_journal_dir=_run_journal_dir(output),
             )
             resumed["elapsed_seconds"] = round(time.monotonic() - started, 3)
             return resumed
@@ -451,6 +464,7 @@ def build_editorial_video_candidate(
         validate_run_manifest(stage, manifest, expected_artifact_id=artifact_id)
         out12.promote_output(stage=stage, output=output, force=force)
         stage = None
+        package_tree_digest = _package_tree_digest(output)
         return {
             "artifact_id": artifact_id,
             "state": READY_STATE,
@@ -476,13 +490,19 @@ def build_editorial_video_candidate(
             "manifest_sha256": manifest["manifest_self_integrity"]["sha256"],
             "resolved_font_family": style.get("resolved_font_family"),
             "resolved_font_file": style.get("resolved_font_file"),
+            "package_tree_digest": package_tree_digest,
+            "run_journal_dir": _run_journal_dir(output),
             "resume": False,
             "elapsed_seconds": round(time.monotonic() - started, 3),
         }
     except Exception as exc:
+        run_journal_dir = _run_journal_dir(output)
         failure_evidence_dir: Path | None = None
         if stage is not None and stage.exists():
-            failure_evidence_dir = output.parent / f".{output.name}.failed-{uuid.uuid4().hex}"
+            failure_evidence_dir = (
+                run_journal_dir / "failed_stages" / f"{stage.name}-{uuid.uuid4().hex}"
+            )
+            failure_evidence_dir.parent.mkdir(parents=True, exist_ok=True)
             stage.replace(failure_evidence_dir)
         error = (
             exc
@@ -492,6 +512,7 @@ def build_editorial_video_candidate(
         write_failure_state(
             artifact_id=artifact_id,
             output_dir=output,
+            run_journal_dir=run_journal_dir,
             stage=error.stage,
             message=str(error),
             input_fingerprint=fingerprint,
@@ -1350,7 +1371,7 @@ def build_run_manifest(
 ) -> dict[str, Any]:
     files = []
     for path in sorted(item for item in stage.rglob("*") if item.is_file()):
-        if path.name == "run_manifest.json" or ".render_work" in path.parts:
+        if path.relative_to(stage).as_posix() == "run_manifest.json":
             continue
         files.append(
             {
@@ -1421,6 +1442,16 @@ def build_run_manifest(
         "review": review,
         "files": files,
         "file_count": len(files),
+        "closed_file_set": {
+            "status": "passed",
+            "inventory_rule": (
+                "manifest.files is the exact recursive payload file set; "
+                "run_manifest.json is the only excluded file"
+            ),
+            "excluded_paths": ["run_manifest.json"],
+            "payload_tree_digest_algorithm": "sha256-canonical-json-path-size-sha256",
+            "payload_tree_digest_sha256": _payload_tree_digest(files),
+        },
         "closed_gates": _closed_gates(),
         "manifest_self_integrity": {
             "algorithm": "sha256-canonical-json-self-null",
@@ -1449,22 +1480,68 @@ def validate_run_manifest(
         raise EditorialVideoCandidateError(
             "run manifest identity mismatch", stage="manifest"
         )
-    rows = manifest.get("files") or []
+    rows = manifest.get("files")
+    if not isinstance(rows, list):
+        raise EditorialVideoCandidateError(
+            "run manifest files must be a list", stage="manifest"
+        )
     if manifest.get("file_count") != len(rows):
         raise EditorialVideoCandidateError(
             "run manifest file count mismatch", stage="manifest"
         )
+    declared_paths: list[str] = []
+    seen_paths: set[str] = set()
     for row in rows:
-        path = stage / str(row.get("repo_relative_path") or "")
+        if not isinstance(row, dict):
+            raise EditorialVideoCandidateError(
+                "run manifest file row must be an object", stage="manifest"
+            )
+        relative_path = _validated_manifest_path(row.get("repo_relative_path"))
+        folded_path = relative_path.casefold()
+        if folded_path in seen_paths:
+            raise EditorialVideoCandidateError(
+                f"run manifest duplicate payload path: {relative_path}",
+                stage="manifest",
+            )
+        seen_paths.add(folded_path)
+        declared_paths.append(relative_path)
+        path = stage / Path(*PurePosixPath(relative_path).parts)
+        byte_size = row.get("byte_size")
         if (
             not path.is_file()
-            or path.stat().st_size != int(row.get("byte_size") or -1)
+            or not isinstance(byte_size, int)
+            or byte_size < 0
+            or path.stat().st_size != byte_size
             or _sha256(path) != row.get("sha256")
         ):
             raise EditorialVideoCandidateError(
-                f"run manifest payload mismatch: {row.get('repo_relative_path')}",
+                f"run manifest payload mismatch: {relative_path}",
                 stage="manifest",
             )
+    actual_paths = sorted(
+        path.relative_to(stage).as_posix()
+        for path in stage.rglob("*")
+        if path.is_file()
+        and path.relative_to(stage).as_posix() != "run_manifest.json"
+    )
+    if sorted(declared_paths) != actual_paths:
+        missing = sorted(set(declared_paths) - set(actual_paths))
+        unexpected = sorted(set(actual_paths) - set(declared_paths))
+        raise EditorialVideoCandidateError(
+            "run manifest closed file set mismatch: "
+            f"missing={missing}; unexpected={unexpected}",
+            stage="manifest",
+        )
+    closed_set = manifest.get("closed_file_set") or {}
+    if (
+        closed_set.get("status") != "passed"
+        or closed_set.get("excluded_paths") != ["run_manifest.json"]
+        or closed_set.get("payload_tree_digest_sha256")
+        != _payload_tree_digest(rows)
+    ):
+        raise EditorialVideoCandidateError(
+            "run manifest closed file set contract mismatch", stage="manifest"
+        )
     if manifest.get("manifest_self_integrity", {}).get("sha256") != _manifest_self_hash(
         manifest
     ):
@@ -1474,8 +1551,14 @@ def validate_run_manifest(
 
 
 def resume_existing_output(
-    *, output_dir: Path, input_fingerprint: str, artifact_id: str
+    *,
+    output_dir: Path,
+    input_fingerprint: str,
+    artifact_id: str,
+    run_journal_dir: Path | None = None,
 ) -> dict[str, Any]:
+    journal_dir = run_journal_dir or _run_journal_dir(output_dir)
+    package_tree_digest_before = _package_tree_digest(output_dir)
     manifest_path = output_dir / "run_manifest.json"
     if not manifest_path.is_file():
         raise EditorialVideoCandidateError(
@@ -1501,6 +1584,12 @@ def resume_existing_output(
         raise EditorialVideoCandidateError(
             "resume final video SHA mismatch", stage="source_resolution"
         )
+    package_tree_digest_after = _package_tree_digest(output_dir)
+    if package_tree_digest_after != package_tree_digest_before:
+        raise EditorialVideoCandidateError(
+            "resume changed the successful package tree",
+            stage="source_resolution",
+        )
     readback = {
         "schema_version": SCHEMA_VERSION,
         "artifact_id": artifact_id,
@@ -1516,8 +1605,14 @@ def resume_existing_output(
         ],
         "final_video_sha256": manifest["final_video"]["sha256"],
         "manifest_self_sha256": manifest["manifest_self_integrity"]["sha256"],
+        "package_tree_digest_before": package_tree_digest_before,
+        "package_tree_digest_after": package_tree_digest_after,
+        "package_tree_unchanged": True,
+        "journal_scope": "external_to_successful_package",
     }
-    _write_json(output_dir / "resume_readback.json", readback)
+    journal_dir.mkdir(parents=True, exist_ok=True)
+    resume_readback_path = journal_dir / "resume_readback.json"
+    _write_json(resume_readback_path, readback)
     return {
         "artifact_id": artifact_id,
         "state": READY_STATE,
@@ -1545,6 +1640,9 @@ def resume_existing_output(
             "resolved_font_family"
         ],
         "resolved_font_file": None,
+        "package_tree_digest": package_tree_digest_after,
+        "run_journal_dir": journal_dir,
+        "resume_readback": resume_readback_path,
         "resume": True,
     }
 
@@ -1553,11 +1651,13 @@ def write_failure_state(
     *,
     artifact_id: str,
     output_dir: Path,
+    run_journal_dir: Path | None,
     stage: str,
     message: str,
     input_fingerprint: str | None,
     failure_evidence_dir: Path | None,
 ) -> None:
+    journal_dir = run_journal_dir or _run_journal_dir(output_dir)
     payload = {
         "schema_version": SCHEMA_VERSION,
         "artifact_id": artifact_id,
@@ -1571,10 +1671,17 @@ def write_failure_state(
             if failure_evidence_dir is not None
             else None
         ),
+        "output_dir": str(output_dir).replace("\\", "/"),
+        "successful_package_tree_digest": (
+            _package_tree_digest(output_dir)
+            if (output_dir / "run_manifest.json").is_file()
+            else None
+        ),
+        "journal_scope": "external_to_successful_package",
     }
     try:
-        output_dir.mkdir(parents=True, exist_ok=True)
-        _write_json(output_dir / "pipeline_failure.json", payload)
+        journal_dir.mkdir(parents=True, exist_ok=True)
+        _write_json(journal_dir / "pipeline_failure.json", payload)
     except OSError:
         pass
 
@@ -1623,6 +1730,9 @@ def _validate_authority_binding(
     transcript: dict[str, Any],
     caption_track_path: Path,
     rights_manifest_path: Path,
+    ffmpeg_path: str | Path | None = None,
+    runner: ffmpeg_tiny.Runner = subprocess.run,
+    pcm_decoder: Callable[[Path], bytes] | None = None,
 ) -> dict[str, Any]:
     if plan.get("artifact_id") != artifact_id:
         raise EditorialVideoCandidateError(
@@ -1661,6 +1771,11 @@ def _validate_authority_binding(
     )
     caption_evidence_path, caption_evidence = _read_bound_evidence(
         root, evidence.get("caption_provenance"), "caption provenance"
+    )
+    caption_identity_path, caption_identity = _read_bound_evidence(
+        root,
+        evidence.get("caption_provider_identity"),
+        "caption provider identity",
     )
     receipt_source_path = _resolved(
         root, Path(str(source_receipt.get("output_path") or ""))
@@ -1705,6 +1820,38 @@ def _validate_authority_binding(
         raise EditorialVideoCandidateError(
             "transcript source-audio lineage mismatch", stage="source_resolution"
         )
+    source_audio_material_id = str(source_audio.get("material_id") or "")
+    source_audio_material = next(
+        (
+            row
+            for row in ledger.get("materials") or []
+            if isinstance(row, dict) and row.get("id") == source_audio_material_id
+        ),
+        None,
+    )
+    if (
+        source_audio_material is None
+        or source_audio_material.get("kind") != "source_audio"
+        or source_audio_material.get("hash_sha256") != source_audio.get("sha256")
+        or _resolved(
+            root, Path(str(source_audio_material.get("file_path") or ""))
+        )
+        != source_audio_path
+    ):
+        raise EditorialVideoCandidateError(
+            "material ledger does not bind the transcript source audio",
+            stage="source_resolution",
+        )
+    audio_lineage = _verify_source_audio_lineage(
+        source_video_path=Path(resolved["source_path"]).resolve(),
+        source_video_sha256=actual["source_sha256"],
+        source_audio_path=source_audio_path,
+        source_audio_sha256=str(source_audio.get("sha256") or ""),
+        transcript_source_audio=source_audio,
+        ffmpeg_path=ffmpeg_path,
+        runner=runner,
+        pcm_decoder=pcm_decoder,
+    )
     stt = transcript.get("stt") or {}
     transcript_caption_path = _resolved(
         root, Path(str(stt.get("model") or ""))
@@ -1731,12 +1878,36 @@ def _validate_authority_binding(
 
     rights = _read_json(rights_manifest_path, "rights manifest")
     source_url = str((rights.get("source_video") or {}).get("url") or "")
-    if actual["source_identity"].partition(":")[2] not in source_url:
+    provider_id = actual["source_identity"].partition(":")[2]
+    if _youtube_provider_id(source_url) != provider_id:
         raise EditorialVideoCandidateError(
             "rights snapshot source identity mismatch", stage="source_resolution"
         )
+    caption_source_identity = caption_identity.get("source_identity") or {}
+    caption_dependency = (caption_identity.get("dependency_artifacts") or {}).get(
+        "subtitle_track"
+    ) or {}
+    caption_dependency_path = _resolved(
+        root, Path(str(caption_dependency.get("path") or ""))
+    )
+    if (
+        caption_identity.get("artifact_kind") != "non_repo_artifact_handoff"
+        or caption_source_identity.get("youtube_id") != provider_id
+        or _youtube_provider_id(
+            str(caption_source_identity.get("source_url") or "")
+        )
+        != provider_id
+        or caption_source_identity.get("transcript_provider")
+        != "youtube_subtitles"
+        or caption_dependency_path != caption_track_path.resolve()
+        or caption_dependency.get("sha256") != actual["caption_sha256"]
+    ):
+        raise EditorialVideoCandidateError(
+            "caption provenance does not bind the provider video identity",
+            stage="source_resolution",
+        )
     return {
-        "schema_version": "clippipegen.out13.authority_binding.v1",
+        "schema_version": "clippipegen.out13.authority_binding.v2",
         "status": "passed",
         "artifact_id": artifact_id,
         **actual,
@@ -1755,6 +1926,8 @@ def _validate_authority_binding(
             "canonical_schema_validation": "passed",
             "source_audio_path": _display_path(source_audio_path, root),
             "source_audio_sha256": source_audio["sha256"],
+            "source_audio_material_id": source_audio_material_id,
+            "source_video_audio_lineage": audio_lineage,
         },
         "caption": {
             "classification": classification,
@@ -1766,6 +1939,12 @@ def _validate_authority_binding(
                 caption_evidence_path, root
             ),
             "provenance_evidence_sha256": _sha256(caption_evidence_path),
+            "provider_identity_evidence_path": _display_path(
+                caption_identity_path, root
+            ),
+            "provider_identity_evidence_sha256": _sha256(caption_identity_path),
+            "provider_video_id": provider_id,
+            "provider_locator_validation": "passed",
             "official_authorship_claim": False,
             "semantic_claims": (
                 "provider timing and text only; no speaker, lyric, rights, or "
@@ -1779,6 +1958,239 @@ def _validate_authority_binding(
             "snapshot_only": True,
         },
     }
+
+
+def _verify_source_audio_lineage(
+    *,
+    source_video_path: Path,
+    source_video_sha256: str,
+    source_audio_path: Path,
+    source_audio_sha256: str,
+    transcript_source_audio: dict[str, Any],
+    ffmpeg_path: str | Path | None,
+    runner: ffmpeg_tiny.Runner,
+    pcm_decoder: Callable[[Path], bytes] | None = None,
+) -> dict[str, Any]:
+    decoder = pcm_decoder
+    if decoder is None:
+        if ffmpeg_path is None:
+            raise EditorialVideoCandidateError(
+                "source-audio lineage requires canonical PCM decode evidence",
+                stage="source_resolution",
+            )
+
+        def decoder(path: Path) -> bytes:
+            command = [
+                str(ffmpeg_path),
+                "-v",
+                "error",
+                "-i",
+                str(path),
+                "-map",
+                "0:a:0",
+                "-vn",
+                "-ac",
+                str(PCM_CHANNELS),
+                "-ar",
+                str(PCM_SAMPLE_RATE_HZ),
+                "-sample_fmt",
+                "s16",
+                "-f",
+                "s16le",
+                "-",
+            ]
+            try:
+                result = runner(
+                    command,
+                    capture_output=True,
+                    text=False,
+                    timeout=out12.COMMAND_TIMEOUT_SECONDS,
+                )
+            except (OSError, subprocess.SubprocessError, TypeError) as exc:
+                raise EditorialVideoCandidateError(
+                    f"canonical PCM decode failed before exit: {exc}",
+                    stage="source_resolution",
+                ) from exc
+            if result.returncode != 0:
+                stderr = result.stderr or b""
+                if isinstance(stderr, str):
+                    stderr = stderr.encode("utf-8")
+                digest = hashlib.sha256(stderr).hexdigest()
+                raise EditorialVideoCandidateError(
+                    "canonical PCM decode failed: "
+                    f"exit={result.returncode}; stderr_sha256={digest}",
+                    stage="source_resolution",
+                )
+            stdout = result.stdout or b""
+            return stdout.encode("utf-8") if isinstance(stdout, str) else bytes(stdout)
+
+    source_video_pcm = decoder(source_video_path)
+    source_audio_pcm = decoder(source_audio_path)
+    comparison = _compare_canonical_pcm(source_video_pcm, source_audio_pcm)
+    declared_duration = float(transcript_source_audio.get("duration_seconds") or 0.0)
+    declared_sample_rate = int(transcript_source_audio.get("sample_rate_hz") or 0)
+    declared_channels = int(transcript_source_audio.get("channels") or 0)
+    declaration_matches = (
+        declared_sample_rate == PCM_SAMPLE_RATE_HZ
+        and declared_channels == PCM_CHANNELS
+        and abs(declared_duration - comparison["source_audio_duration_seconds"])
+        <= PCM_MAX_DURATION_DELTA_SECONDS
+    )
+    if not comparison["equivalent"] or not declaration_matches:
+        raise EditorialVideoCandidateError(
+            "transcript source audio is not equivalent to the selected source video audio",
+            stage="source_resolution",
+        )
+    return {
+        "status": "passed",
+        "method": "canonical_pcm_decode_and_frame_energy_correlation",
+        "source_video_sha256": source_video_sha256,
+        "source_audio_file_sha256": source_audio_sha256,
+        "decode_contract": {
+            "audio_stream": "0:a:0",
+            "sample_format": "pcm_s16le",
+            "sample_rate_hz": PCM_SAMPLE_RATE_HZ,
+            "channels": PCM_CHANNELS,
+            "sample_width_bytes": PCM_SAMPLE_WIDTH_BYTES,
+            "frame_samples": PCM_FRAME_SAMPLES,
+            "max_alignment_frames": PCM_MAX_ALIGNMENT_FRAMES,
+        },
+        **comparison,
+        "transcript_declaration_checks": {
+            "sample_rate_hz": declared_sample_rate,
+            "channels": declared_channels,
+            "duration_seconds": declared_duration,
+            "matches_decoded_audio": declaration_matches,
+        },
+    }
+
+
+def _compare_canonical_pcm(
+    source_video_pcm: bytes, source_audio_pcm: bytes
+) -> dict[str, Any]:
+    if (
+        not source_video_pcm
+        or not source_audio_pcm
+        or len(source_video_pcm) % PCM_SAMPLE_WIDTH_BYTES
+        or len(source_audio_pcm) % PCM_SAMPLE_WIDTH_BYTES
+    ):
+        raise EditorialVideoCandidateError(
+            "canonical PCM payload is empty or malformed", stage="source_resolution"
+        )
+    video_samples = array("h")
+    video_samples.frombytes(source_video_pcm)
+    audio_samples = array("h")
+    audio_samples.frombytes(source_audio_pcm)
+    if sys.byteorder != "little":
+        video_samples.byteswap()
+        audio_samples.byteswap()
+    video_duration = len(video_samples) / PCM_SAMPLE_RATE_HZ
+    audio_duration = len(audio_samples) / PCM_SAMPLE_RATE_HZ
+    duration_delta = abs(video_duration - audio_duration)
+    video_energy = _pcm_frame_energy(video_samples)
+    audio_energy = _pcm_frame_energy(audio_samples)
+    if len(video_energy) < 2 or len(audio_energy) < 2:
+        raise EditorialVideoCandidateError(
+            "canonical PCM payload is too short for lineage comparison",
+            stage="source_resolution",
+        )
+    best_correlation = -1.0
+    best_lag = 0
+    for lag in range(-PCM_MAX_ALIGNMENT_FRAMES, PCM_MAX_ALIGNMENT_FRAMES + 1):
+        if lag >= 0:
+            left = video_energy[lag:]
+            right = audio_energy
+        else:
+            left = video_energy
+            right = audio_energy[-lag:]
+        count = min(len(left), len(right))
+        correlation = _pearson_correlation(left[:count], right[:count])
+        if correlation > best_correlation:
+            best_correlation = correlation
+            best_lag = lag
+    video_rms = math.sqrt(
+        sum(float(value) * value for value in video_samples) / len(video_samples)
+    )
+    audio_rms = math.sqrt(
+        sum(float(value) * value for value in audio_samples) / len(audio_samples)
+    )
+    rms_ratio = video_rms / audio_rms if audio_rms > 0 else 0.0
+    pcm_hashes_match = hashlib.sha256(source_video_pcm).digest() == hashlib.sha256(
+        source_audio_pcm
+    ).digest()
+    equivalent = (
+        duration_delta <= PCM_MAX_DURATION_DELTA_SECONDS
+        and (
+            pcm_hashes_match
+            or (
+                best_correlation >= PCM_MIN_FRAME_ENERGY_CORRELATION
+                and PCM_MIN_RMS_RATIO <= rms_ratio <= PCM_MAX_RMS_RATIO
+            )
+        )
+    )
+    return {
+        "source_video_pcm_sha256": hashlib.sha256(source_video_pcm).hexdigest(),
+        "source_audio_pcm_sha256": hashlib.sha256(source_audio_pcm).hexdigest(),
+        "decoded_pcm_hashes_match": pcm_hashes_match,
+        "source_video_sample_count": len(video_samples),
+        "source_audio_sample_count": len(audio_samples),
+        "source_video_duration_seconds": round(video_duration, 6),
+        "source_audio_duration_seconds": round(audio_duration, 6),
+        "duration_delta_seconds": round(duration_delta, 6),
+        "duration_check_passed": duration_delta <= PCM_MAX_DURATION_DELTA_SECONDS,
+        "frame_energy_correlation": round(best_correlation, 9),
+        "frame_energy_correlation_threshold": PCM_MIN_FRAME_ENERGY_CORRELATION,
+        "alignment_lag_frames": best_lag,
+        "alignment_lag_seconds": round(
+            best_lag * PCM_FRAME_SAMPLES / PCM_SAMPLE_RATE_HZ, 6
+        ),
+        "rms_ratio": round(rms_ratio, 9),
+        "rms_ratio_bounds": [PCM_MIN_RMS_RATIO, PCM_MAX_RMS_RATIO],
+        "equivalent": equivalent,
+    }
+
+
+def _pcm_frame_energy(samples: array[int]) -> list[float]:
+    return [
+        math.sqrt(
+            sum(float(value) * value for value in samples[offset : offset + PCM_FRAME_SAMPLES])
+            / PCM_FRAME_SAMPLES
+        )
+        for offset in range(
+            0, len(samples) - PCM_FRAME_SAMPLES + 1, PCM_FRAME_SAMPLES
+        )
+    ]
+
+
+def _pearson_correlation(left: list[float], right: list[float]) -> float:
+    if len(left) != len(right) or len(left) < 2:
+        return -1.0
+    left_mean = sum(left) / len(left)
+    right_mean = sum(right) / len(right)
+    left_centered = [value - left_mean for value in left]
+    right_centered = [value - right_mean for value in right]
+    denominator = math.sqrt(
+        sum(value * value for value in left_centered)
+        * sum(value * value for value in right_centered)
+    )
+    if denominator == 0:
+        return 1.0 if left == right else -1.0
+    return sum(
+        left_value * right_value
+        for left_value, right_value in zip(left_centered, right_centered)
+    ) / denominator
+
+
+def _youtube_provider_id(locator: str) -> str | None:
+    parsed = urlparse(locator)
+    host = parsed.netloc.casefold().split(":", maxsplit=1)[0]
+    if host in {"youtube.com", "www.youtube.com", "m.youtube.com"}:
+        provider_id = (parse_qs(parsed.query).get("v") or [None])[0]
+    elif host == "youtu.be":
+        provider_id = parsed.path.strip("/").split("/", maxsplit=1)[0] or None
+    else:
+        provider_id = None
+    return provider_id if provider_id and re.fullmatch(r"[A-Za-z0-9_-]{6,}", provider_id) else None
 
 
 def _read_bound_evidence(
@@ -1986,6 +2398,63 @@ def _closed_gates() -> dict[str, Any]:
         "public_or_publishing_acceptance": False,
         "upload_attempted": False,
     }
+
+
+def _validated_manifest_path(value: Any) -> str:
+    if not isinstance(value, str) or not value or "\\" in value:
+        raise EditorialVideoCandidateError(
+            "run manifest contains an unsafe payload path", stage="manifest"
+        )
+    path = PurePosixPath(value)
+    if (
+        path.is_absolute()
+        or value != path.as_posix()
+        or any(part in {"", ".", ".."} for part in path.parts)
+        or path.as_posix() == "run_manifest.json"
+    ):
+        raise EditorialVideoCandidateError(
+            f"run manifest contains an unsafe payload path: {value}",
+            stage="manifest",
+        )
+    return path.as_posix()
+
+
+def _payload_tree_digest(rows: list[dict[str, Any]]) -> str:
+    normalized = sorted(
+        (
+            {
+                "repo_relative_path": str(row.get("repo_relative_path") or ""),
+                "byte_size": row.get("byte_size"),
+                "sha256": row.get("sha256"),
+            }
+            for row in rows
+        ),
+        key=lambda row: row["repo_relative_path"],
+    )
+    encoded = json.dumps(
+        normalized, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _package_tree_digest(output_dir: Path) -> str:
+    if not output_dir.is_dir():
+        raise EditorialVideoCandidateError(
+            "successful package directory is missing", stage="manifest"
+        )
+    rows = [
+        {
+            "repo_relative_path": path.relative_to(output_dir).as_posix(),
+            "byte_size": path.stat().st_size,
+            "sha256": _sha256(path),
+        }
+        for path in sorted(item for item in output_dir.rglob("*") if item.is_file())
+    ]
+    return _payload_tree_digest(rows)
+
+
+def _run_journal_dir(output_dir: Path) -> Path:
+    return output_dir.parent / f"{output_dir.name}.run_journal"
 
 
 def _manifest_self_hash(manifest: dict[str, Any]) -> str:

@@ -2,6 +2,9 @@
 
 更新日: 2026-07-23 JST
 
+> **現状注記（2026-07-24）:** 本報告の OUT-13 current-state claim は superseded。
+> 現在の正本は [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) と [RUNTIME_STATE.md](RUNTIME_STATE.md)。
+
 ## 結論と監修上の現在地
 
 リモートの最新変更は安全に取り込み済みで、コード開発は継続できる。active branch

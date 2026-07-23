@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from array import array
 import json
 from pathlib import Path
 
@@ -14,6 +15,53 @@ from src.integrations.render.subtitle_overlay_visual_proof import (
     _subtitle_layout_contract,
 )
 from src.integrations.render.subtitle_preset_selector import select_subtitle_preset
+
+
+def _pcm_fixture_bytes(offset: int = 0) -> bytes:
+    samples = array("h")
+    amplitudes = [400, 1200, 3000, 800, 5000, 2000, 6500, 900, 4200, 1500]
+    for amplitude in amplitudes:
+        samples.extend([amplitude + offset] * candidate.PCM_FRAME_SAMPLES)
+    return samples.tobytes()
+
+
+def _closed_manifest(
+    root: Path,
+    *,
+    artifact_id: str = "clip-out13-editorial-video-candidate-v1-002",
+) -> dict:
+    rows = [
+        {
+            "repo_relative_path": path.relative_to(root).as_posix(),
+            "sha256": candidate._sha256(path),
+            "byte_size": path.stat().st_size,
+        }
+        for path in sorted(item for item in root.rglob("*") if item.is_file())
+        if path.name != "run_manifest.json"
+    ]
+    manifest = {
+        "schema_version": candidate.MANIFEST_SCHEMA_VERSION,
+        "artifact_id": artifact_id,
+        "state": candidate.READY_STATE,
+        "files": rows,
+        "file_count": len(rows),
+        "closed_file_set": {
+            "status": "passed",
+            "excluded_paths": ["run_manifest.json"],
+            "payload_tree_digest_sha256": candidate._payload_tree_digest(rows),
+        },
+        "manifest_self_integrity": {"sha256": None},
+    }
+    manifest["manifest_self_integrity"]["sha256"] = candidate._manifest_self_hash(
+        manifest
+    )
+    return manifest
+
+
+def _rewrite_manifest_integrity(manifest: dict) -> None:
+    manifest["manifest_self_integrity"]["sha256"] = candidate._manifest_self_hash(
+        manifest
+    )
 
 
 def _plan() -> dict:
@@ -146,13 +194,23 @@ def _authority_fixture(tmp_path: Path) -> dict:
     receipt = tmp_path / "source_receipt.json"
     ledger = tmp_path / "material_ledger.json"
     evidence = tmp_path / "caption_evidence.json"
-    source.write_bytes(b"source")
-    audio.write_bytes(b"audio")
+    provider_identity = tmp_path / "caption_provider_identity.json"
+    source.write_bytes(_pcm_fixture_bytes())
+    audio.write_bytes(_pcm_fixture_bytes())
     caption.write_text('{"events":[]}\n', encoding="utf-8")
     source_sha = candidate._sha256(source)
     audio_sha = candidate._sha256(audio)
     transcript = {
-        "source_audio": {"path": str(audio), "sha256": audio_sha},
+        "source_audio": {
+            "path": str(audio),
+            "material_id": "source-audio",
+            "sha256": audio_sha,
+            "duration_seconds": len(_pcm_fixture_bytes())
+            / candidate.PCM_SAMPLE_WIDTH_BYTES
+            / candidate.PCM_SAMPLE_RATE_HZ,
+            "sample_rate_hz": candidate.PCM_SAMPLE_RATE_HZ,
+            "channels": candidate.PCM_CHANNELS,
+        },
         "stt": {
             "provider": "youtube_subtitles",
             "engine_version": "youtube-json3",
@@ -186,8 +244,33 @@ def _authority_fixture(tmp_path: Path) -> dict:
                         "kind": "source_video",
                         "file_path": str(source),
                         "hash_sha256": source_sha,
+                    },
+                    {
+                        "id": "source-audio",
+                        "kind": "source_audio",
+                        "file_path": str(audio),
+                        "hash_sha256": audio_sha,
                     }
                 ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    provider_identity.write_text(
+        json.dumps(
+            {
+                "artifact_kind": "non_repo_artifact_handoff",
+                "source_identity": {
+                    "youtube_id": "editorial",
+                    "source_url": "https://www.youtube.com/watch?v=editorial",
+                    "transcript_provider": "youtube_subtitles",
+                },
+                "dependency_artifacts": {
+                    "subtitle_track": {
+                        "path": str(caption),
+                        "sha256": candidate._sha256(caption),
+                    }
+                },
             }
         ),
         encoding="utf-8",
@@ -229,6 +312,10 @@ def _authority_fixture(tmp_path: Path) -> dict:
                     "path": str(evidence),
                     "sha256": candidate._sha256(evidence),
                 },
+                "caption_provider_identity": {
+                    "path": str(provider_identity),
+                    "sha256": candidate._sha256(provider_identity),
+                },
             },
         },
     }
@@ -246,6 +333,7 @@ def _authority_fixture(tmp_path: Path) -> dict:
         "transcript": transcript,
         "caption_track_path": caption,
         "rights_manifest_path": rights,
+        "pcm_decoder": lambda path: path.read_bytes(),
     }
 
 
@@ -451,7 +539,7 @@ def test_cli_orchestrates_resume(monkeypatch: pytest.MonkeyPatch, tmp_path: Path
     def _fake_build(**kwargs):
         captured.update(kwargs)
         return {
-            "artifact_id": candidate.ARTIFACT_ID,
+            "artifact_id": "clip-out13-editorial-video-candidate-v1-002",
             "state": candidate.READY_STATE,
             "source_identity": "youtube:editorial",
             "duration_seconds": 75.0,
@@ -552,6 +640,7 @@ def test_manifest_self_integrity_and_resume_fingerprint(tmp_path: Path) -> None:
         manifest,
         expected_artifact_id="clip-out13-editorial-video-candidate-v1-002",
     )
+    package_digest_before = candidate._package_tree_digest(tmp_path)
     resumed = candidate.resume_existing_output(
         output_dir=tmp_path,
         input_fingerprint="d" * 64,
@@ -559,6 +648,11 @@ def test_manifest_self_integrity_and_resume_fingerprint(tmp_path: Path) -> None:
     )
 
     assert resumed["resume"] is True
+    assert resumed["package_tree_digest"] == package_digest_before
+    assert candidate._package_tree_digest(tmp_path) == package_digest_before
+    assert not (tmp_path / "resume_readback.json").exists()
+    assert resumed["resume_readback"].is_file()
+    assert resumed["resume_readback"].parent == candidate._run_journal_dir(tmp_path)
     assert resumed["video_sha256"] == candidate._sha256(
         tmp_path / "final_video.mp4"
     )
@@ -655,12 +749,219 @@ def test_manifest_rejects_cross_candidate_identity(tmp_path: Path) -> None:
         )
 
 
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        ("unexpected", "closed file set mismatch"),
+        ("nested_manifest", "closed file set mismatch"),
+        ("missing", "payload mismatch"),
+        ("altered", "payload mismatch"),
+        ("duplicate", "duplicate payload path"),
+        ("unsafe", "unsafe payload path"),
+        ("count", "file count mismatch"),
+    ],
+)
+def test_manifest_rejects_non_closed_or_unsafe_payload_sets(
+    tmp_path: Path, mutation: str, message: str
+) -> None:
+    payload = tmp_path / "payload.json"
+    payload.write_text("{}\n", encoding="utf-8")
+    manifest = _closed_manifest(tmp_path)
+    (tmp_path / "run_manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+
+    if mutation == "unexpected":
+        (tmp_path / "unexpected.txt").write_text("unexpected", encoding="utf-8")
+    elif mutation == "nested_manifest":
+        nested = tmp_path / "review" / "run_manifest.json"
+        nested.parent.mkdir()
+        nested.write_text("{}\n", encoding="utf-8")
+    elif mutation == "missing":
+        payload.unlink()
+    elif mutation == "altered":
+        payload.write_text('{"changed":true}\n', encoding="utf-8")
+    elif mutation == "duplicate":
+        manifest["files"].append(dict(manifest["files"][0]))
+        manifest["file_count"] = len(manifest["files"])
+        manifest["closed_file_set"][
+            "payload_tree_digest_sha256"
+        ] = candidate._payload_tree_digest(manifest["files"])
+        _rewrite_manifest_integrity(manifest)
+    elif mutation == "unsafe":
+        manifest["files"][0]["repo_relative_path"] = "../payload.json"
+        manifest["closed_file_set"][
+            "payload_tree_digest_sha256"
+        ] = candidate._payload_tree_digest(manifest["files"])
+        _rewrite_manifest_integrity(manifest)
+    elif mutation == "count":
+        manifest["file_count"] = 99
+        _rewrite_manifest_integrity(manifest)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match=message):
+        candidate.validate_run_manifest(
+            tmp_path,
+            manifest,
+            expected_artifact_id="clip-out13-editorial-video-candidate-v1-002",
+        )
+
+
+@pytest.mark.parametrize(
+    "requested_id",
+    [
+        "clip-out13-editorial-video-candidate-v1-002",
+        "clip-out13-editorial-video-candidate-v1-003",
+    ],
+)
+def test_successful_output_rejects_rerun_without_package_mutation(
+    tmp_path: Path, requested_id: str
+) -> None:
+    package = tmp_path / "candidate"
+    package.mkdir()
+    (package / "payload.json").write_text("{}\n", encoding="utf-8")
+    manifest = _closed_manifest(package)
+    (package / "run_manifest.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    before = candidate._package_tree_digest(package)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError):
+        candidate._validate_output_allocation(
+            output=package,
+            artifact_id=requested_id,
+            force=True,
+        )
+    candidate.write_failure_state(
+        artifact_id=requested_id,
+        output_dir=package,
+        run_journal_dir=None,
+        stage="source_resolution",
+        message="rejected allocation probe",
+        input_fingerprint=None,
+        failure_evidence_dir=None,
+    )
+
+    assert candidate._package_tree_digest(package) == before
+    assert not (package / "pipeline_failure.json").exists()
+    assert (
+        candidate._run_journal_dir(package) / "pipeline_failure.json"
+    ).is_file()
+
+
 def test_authority_binding_accepts_provider_sidecar_lineage(tmp_path: Path) -> None:
     result = candidate._validate_authority_binding(**_authority_fixture(tmp_path))
 
     assert result["status"] == "passed"
     assert result["caption"]["classification"] == "provider_json3_sidecar"
+    assert result["caption"]["provider_video_id"] == "editorial"
     assert result["caption"]["official_authorship_claim"] is False
+    assert result["transcript"]["source_video_audio_lineage"]["equivalent"] is True
+
+
+def test_out13_module_has_no_default_artifact_identity() -> None:
+    assert not hasattr(candidate, "ARTIFACT_ID")
+
+
+def test_authority_binding_rejects_source_audio_self_reference_without_derivation(
+    tmp_path: Path,
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    fixture.pop("pcm_decoder")
+
+    with pytest.raises(
+        candidate.EditorialVideoCandidateError,
+        match="requires canonical PCM decode evidence",
+    ):
+        candidate._validate_authority_binding(**fixture)
+
+
+def test_authority_binding_rejects_mismatched_source_pcm(tmp_path: Path) -> None:
+    fixture = _authority_fixture(tmp_path)
+    audio_path = tmp_path / "source.wav"
+    audio_path.write_bytes(_pcm_fixture_bytes(offset=9000))
+    audio_sha = candidate._sha256(audio_path)
+    fixture["transcript"]["source_audio"]["sha256"] = audio_sha
+    fixture["transcript_path"].write_text(
+        json.dumps(fixture["transcript"], ensure_ascii=False),
+        encoding="utf-8",
+    )
+    fixture["plan"]["authority_binding"][
+        "transcript_sha256"
+    ] = candidate._sha256(fixture["transcript_path"])
+    ledger_path = tmp_path / "material_ledger.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    ledger["materials"][1]["hash_sha256"] = audio_sha
+    ledger_path.write_text(json.dumps(ledger), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["material_ledger"][
+        "sha256"
+    ] = candidate._sha256(ledger_path)
+
+    with pytest.raises(
+        candidate.EditorialVideoCandidateError,
+        match="not equivalent",
+    ):
+        candidate._validate_authority_binding(**fixture)
+
+
+@pytest.mark.parametrize("provider_id", ["wrong-video", None])
+def test_authority_binding_rejects_wrong_or_absent_caption_provider_identity(
+    tmp_path: Path, provider_id: str | None
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    identity_path = tmp_path / "caption_provider_identity.json"
+    identity = json.loads(identity_path.read_text(encoding="utf-8"))
+    identity["source_identity"]["youtube_id"] = provider_id
+    identity["source_identity"]["source_url"] = (
+        f"https://www.youtube.com/watch?v={provider_id}" if provider_id else None
+    )
+    identity_path.write_text(json.dumps(identity), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["caption_provider_identity"][
+        "sha256"
+    ] = candidate._sha256(identity_path)
+
+    with pytest.raises(
+        candidate.EditorialVideoCandidateError,
+        match="provider video identity",
+    ):
+        candidate._validate_authority_binding(**fixture)
+
+
+def test_authority_binding_rejects_plan_only_caption_identity(
+    tmp_path: Path,
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    fixture["plan"]["authority_binding"]["provider_video_id"] = "editorial"
+    del fixture["plan"]["authority_binding"]["evidence"][
+        "caption_provider_identity"
+    ]
+
+    with pytest.raises(
+        candidate.EditorialVideoCandidateError,
+        match="requires caption provider identity",
+    ):
+        candidate._validate_authority_binding(**fixture)
+
+
+def test_authority_binding_rejects_filename_only_caption_identity(
+    tmp_path: Path,
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    identity_path = tmp_path / "caption_provider_identity.json"
+    identity = json.loads(identity_path.read_text(encoding="utf-8"))
+    identity["source_identity"].pop("youtube_id")
+    identity["source_identity"].pop("source_url")
+    identity_path.write_text(json.dumps(identity), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["caption_provider_identity"][
+        "sha256"
+    ] = candidate._sha256(identity_path)
+
+    with pytest.raises(
+        candidate.EditorialVideoCandidateError,
+        match="provider video identity",
+    ):
+        candidate._validate_authority_binding(**fixture)
 
 
 def test_authority_binding_rejects_arbitrary_official_claim(tmp_path: Path) -> None:

@@ -244,7 +244,7 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert (
         "human_entrypoint: "
         "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v003/review/index.html"
+        "out13_editorial_video_candidate_v004/review/index.html"
         in runtime
     )
     assert "portable_entrypoint: null" in runtime
@@ -254,20 +254,30 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "private_transfer_or_new_identity_build"
         in runtime
     )
-    assert "health: OUT13_EVIDENCE_BOUND_REVIEWABLE_ON_THANK_V1" in runtime
+    assert (
+        "health: "
+        "OUT13_CANDIDATE_004_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
+        in runtime
+    )
     assert "current_slice: OUT-13" in runtime
     assert (
         "canonical_status: "
-        "evidence_bound_editorial_candidate_reviewable_on_thank_v1"
+        "immutable_transitively_lineage_bound_reviewable_v1"
         in runtime
     )
-    assert "active_artifact: clip-out13-editorial-video-candidate-v1-003" in runtime
+    assert "active_artifact: clip-out13-editorial-video-candidate-v1-004" in runtime
     assert (
         "review_status: "
-        "machine_validated_worker_sample_observed_human_editorial_review_pending"
+        "machine_validated_browser_verified_worker_sample_observed_"
+        "human_editorial_review_pending"
         in runtime
     )
     assert "automation_acceptance_granted: true" in runtime
+    assert (
+        "automation_acceptance_scope: "
+        "evidence_bound_explicit_plan_rendering_only_semantic_selection_unverified"
+        in runtime
+    )
     assert "acceptance_granted: false" in runtime
     assert "out13_source_identity: youtube:7J5aS_pcBj4" in runtime
     assert (
