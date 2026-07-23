@@ -11,9 +11,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - canonical main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - canonical status: `editorial_representative_video_reviewable_v1`
-- review status: `machine_validated_human_editorial_review_available`
+- review status: `source_host_machine_validated_local_review_blocked_missing_exact_artifact`
 - remote code complete: `true`
-- local artifact available: `true`
+- local artifact available: `false`
 - portable local artifact available: `false`
 - portable entrypoint: ``
 - exact baseline available: ``
@@ -21,12 +21,12 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cover direction review available: ``
 - cover direction acceptance: ``
 - proxy classification: ``
-- last verified host local artifact available: `true`
-- last verified host entrypoint: `http://127.0.0.1:8076/review/index.html`
-- pause reason: ``
+- last verified host local artifact available: `false`
+- last verified host entrypoint: ``
+- pause reason: `missing_local_out13_exact_artifact_and_contract_matching_input_set`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_only_source_plan_and_output_media_same_machine`
+- cross-machine resume: `tracked_code_docs_only_out13_exact_inputs_plan_and_output_absent`
 - active rebuild contract: ``
 - evidence revision: `out13-editorial-video-candidate-v1`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
@@ -34,7 +34,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `internal_editorial_composition_subtitle_picture_audio_review`
+- decision required: `choose_exact_artifact_recovery_or_new_identity_rebuild_before_editorial_review`
 - next review: ``
 
 ## Feature Table

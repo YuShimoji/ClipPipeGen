@@ -348,10 +348,8 @@ def test_current_resume_surfaces_point_to_out13_and_historical_sources_remain_li
 
         if path.name == "CURRENT_HANDOFF.md":
             assert f"active_artifact: {current_out13_artifact}" in text
-            assert "local_artifact_available: true" in text
-            assert (
-                "human_entrypoint: http://127.0.0.1:8076/review/index.html" in text
-            )
+            assert "local_artifact_available: false" in text
+            assert "human_entrypoint: null" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
@@ -1628,24 +1626,17 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "editorial_representative_video_reviewable_v1"
     )
     assert status["current_focus"]["review_status"] == (
-        "machine_validated_human_editorial_review_available"
+        "source_host_machine_validated_local_review_blocked_missing_exact_artifact"
     )
     assert status["current_focus"]["decision_required"] == (
-        "internal_editorial_composition_subtitle_picture_audio_review"
+        "choose_exact_artifact_recovery_or_new_identity_rebuild_before_editorial_review"
     )
     assert status["current_focus"]["next_review_action_type"] == ("")
-    assert status["current_focus"]["human_entrypoint"] == (
-        "http://127.0.0.1:8076/review/index.html"
-    )
-    assert status["current_focus"]["review_open_command"].endswith(
-        "out13_editorial_video_candidate\\review\\open_preview.ps1"
-    )
-    assert status["current_focus"]["machine_readback"] == (
-        "episodes/out13_editorial_video_candidate_20260722/review/"
-        "out13_editorial_video_candidate/validation_readback.json"
-    )
+    assert status["current_focus"]["human_entrypoint"] == ""
+    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["machine_readback"] == ""
     assert status["current_focus"]["remote_code_complete"] == "true"
-    assert status["current_focus"]["local_artifact_available"] == "true"
+    assert status["current_focus"]["local_artifact_available"] == "false"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == ""
     assert status["current_focus"]["exact_baseline_available"] == ""
@@ -1655,16 +1646,16 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "validation_listener_stopped_restart_with_canonical_foreground_command"
+        "unavailable_missing_local_out13_package"
     )
     assert (
-        status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
+        status["current_focus"]["last_verified_host_local_artifact_available"] == "false"
     )
-    assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "http://127.0.0.1:8076/review/index.html"
-    )
+    assert status["current_focus"]["last_verified_host_entrypoint"] == ""
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
-    assert status["current_focus"]["pause_reason"] == ""
+    assert status["current_focus"]["pause_reason"] == (
+        "missing_local_out13_exact_artifact_and_contract_matching_input_set"
+    )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
     current_surfaces = [
@@ -1672,16 +1663,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         for item in status["open_surfaces"]
         if item["label"] == "OUT-13 Current Focus"
     ]
-    assert current_surfaces == [
-        {
-            "label": "OUT-13 Current Focus",
-            "command": status["current_focus"]["review_open_command"],
-            "target": "http://127.0.0.1:8076/review/index.html",
-            "when_to_use": status["current_focus"]["next_action"],
-        }
-    ]
+    assert current_surfaces == []
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_code_docs_only_source_plan_and_output_media_same_machine"
+        "tracked_code_docs_only_out13_exact_inputs_plan_and_output_absent"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (

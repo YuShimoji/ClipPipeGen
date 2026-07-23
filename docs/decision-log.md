@@ -8,7 +8,30 @@ last_touched: 2026-07-23
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-23 — `558f681`同期後のlive auditでlocal review-ready記録を撤回
+
+active branchを`2d8c4d6`からremote最新`558f681`へ`git pull --ff-only`で更新した。同期時の
+tracking parityは`0 0`、`main` / `origin/main`は`5d6f69a`、active branchはmainより4 commit先。
+`558f681`はOUT-13 local review readinessを記録していたが、同期後のcurrent rootとrepository配下
+worktreeをlive探索した結果、`editorial_plan_input.json`、OUT-13 output directory、final MP4、
+readback、launcherは存在しなかった。
+
+さらにlocal source SHA `6f78657e...6103a`、transcript SHA `4a7b4fd8...3495`、rights SHA
+`4302c4a1...bb8`はtracked OUT-13契約値と不一致で、official JA caption SHA
+`3c15535f...d169919`だけが一致した。このため、source-host receiptのfinal SHA
+`84ed7aa6...791d7e2`、0.281s resume、HTTP 200/206はhistorical evidenceとして保持する一方、
+current checkoutで利用可能とは扱わない。
+
+`npm ci`、Electron 42.0.0、final full suite 606 passed / 68.84s、Node/Electron smoke、OUT-13 CLI
+helpはpassしており、code development readinessはgreen。current next actionは、original exact
+package/input setのprivate recovery、またはSHA不一致を明示したnew plan / new artifact identityでの
+rebuildを選び、reviewable bytesを復旧してからhuman editorial reviewへ進むこと。人間判断、rights、
+production、thumbnail、publishing/uploadは代行・承認しない。
+
 ## 2026-07-23 — latest remoteをff-only同期し、OUT-13 exact local reviewをcurrent gateへ進める
+
+この節のlocal availabilityは後続の`558f681`同期後live auditでsuperseded。source-host receiptと
+portable code contractは保持するが、current checkoutの入口としては使用しない。
 
 active branch `codex/out-13-editorial-video-candidate-v1`をfetch後に`c1566b3`から`2d8c4d6`へ
 `git pull --ff-only`で更新した。同期時の追跡先parityは`0 0`、`main` / `origin/main`は`5d6f69a`、

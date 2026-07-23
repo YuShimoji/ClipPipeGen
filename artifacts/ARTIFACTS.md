@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-13 is currently the
-same-machine caption-evidence editorial representative video. OUT-12 is its operational
+current artifact, then verify an artifact-specific launcher exists before using it.
+OUT-13 is the current tracked caption-evidence editorial route, but its exact
+same-machine plan/output package is absent from this checkout. OUT-12 is its operational
 one-command real-video predecessor. OUT-11 is the
 closed five-source Short portfolio with two repaired candidates, one accepted
 SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
@@ -29,7 +30,7 @@ opened by the root launcher.
 |---|---|
 | title | OUT-13 Editorial Video Candidate v1 |
 | purpose | Turn one real captioned source into an explicitly selected, chronologically traceable, clearly shortened editorial MP4 so a human can judge composition, subtitle presentation, and picture/audio quality on the same artifact. |
-| storage class | Tracked CLI/render integration/tests/docs plus one ignored same-machine source/output package under `episodes/`. No source or generated media is tracked. |
+| storage class | Tracked CLI/render integration/tests/docs plus a historical ignored source-host package receipt. The exact OUT-13 package is absent from this checkout; no source or generated media is tracked. |
 | repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` |
 | local_artifact_path | `episodes/out13_editorial_video_candidate_20260722/review/out13_editorial_video_candidate/` |
 | state | `EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1` |
@@ -41,10 +42,11 @@ opened by the root launcher.
 | validation | Nineteen review-visible checks passed. Full decode/faststart/timestamps/A/V/source mapping/caption containment passed; -14.61 LUFS, -1.58 dBTP, maximum adjacent cut delta 0.94 LU; black and silence events 0. Desktop/mobile overflow false; clean initial paused/muted/time0; seek exact; page 200; MP4 Range 206; console/media error 0. |
 | evidence | Selected-source contact sheet, subtitle presentation contact sheet, normal/long-or-multiline/short-cue frames, all-cut boundary sheet, first/middle/last sheet, waveform, plan/readback/manifest on one video-first review page. |
 | manifest | 23 payload rows; input fingerprint `051832b95969d8d3e35709f359e82dacb719552343ad40ec39ce35381685e3d8`; self-integrity SHA `8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8`. |
-| resume | Same source/plan/settings resumed again on 2026-07-23 in 0.281s without render; video and manifest SHA unchanged. Earlier source-host readback was 0.328s. |
-| preview_url | `http://127.0.0.1:8076/review/index.html`; 2026-07-23 smoke returned page 200 and MP4 Range 206, then the validation listener was stopped. |
-| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\open_preview.ps1` |
-| decision_required | Internal human review may now judge editorial structure, caption presentation, and picture/audio quality. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+| resume | Historical source-host readback: same source/plan/settings resumed in 0.281s without render; video and manifest SHA unchanged. Current checkout cannot rerun resume because exact inputs, plan, and package are absent. |
+| preview_url | Historical source-host URL was `http://127.0.0.1:8076/review/index.html`; no current local listener or package is available. |
+| open_command | Unavailable in this checkout. Historical path was `episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\open_preview.ps1`. |
+| local availability | 2026-07-23 live audit found no OUT-13 directory, plan, final MP4, readback, or launcher under the repository. Local source/transcript/rights SHA values differ from the tracked contract; official JA caption alone matches. |
+| decision_required | Choose exact package/input recovery or a deliberately new artifact identity before human editorial review. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
 
@@ -58,19 +60,19 @@ Boundary flags:
 - `upload_attempted=false`
 - `episodes_tracked=false`
 
-## `clip-supervisor-sync-roadmap-20260723-003`
+## `clip-supervisor-sync-roadmap-20260723-004`
 
 | Field | Value |
 |---|---|
 | title | 2026-07-23 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
-| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, available same-machine exact OUT-13 media, and a dependency-ordered M0-M12 route through human editorial review, production gates, explicit public release, multi-episode operations, and quality feedback. |
+| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, missing exact local OUT-13 media/inputs, and a dependency-ordered M0-M13 route through artifact recovery, human editorial review, production gates, explicit public release, multi-episode operations, and quality feedback. |
 | storage class | Tracked Markdown report; portable Git evidence. No source or generated media included. |
 | repo_relative_path | `docs/SUPERVISOR_STATUS_REPORT.md` |
 | open_command | `Invoke-Item docs\SUPERVISOR_STATUS_REPORT.md` |
-| sync_baseline | Active branch was fast-forwarded from `c1566b3` to `2d8c4d6` with sync-time upstream parity `0 0`; `main` / `origin/main` remain `5d6f69a`; sync baseline is three commits ahead of main. This report commit becomes the later handoff tip. No main merge is claimed. |
-| validation | `npm ci` succeeded with 0 vulnerabilities; Electron 42.0.0 dependency tree resolved; CPython 3.11.0 / uv 0.10.0 / Pillow 12.3.0; `uvx --with Pillow pytest -q` returned 606 passed in 65.37s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
-| local_boundary | OUT-13 plan and 25-file / 78,180,658-byte final/review package exist in this checkout. Live MP4 SHA matches `84ed7aa6...791d7e2`; resume returned 0.281s without render; page 200 and Range 206 passed. The package remains ignored same-machine evidence, protected R3 preview remains local, and `episodes/` has zero tracked files. |
-| decision_required | Open the exact OUT-13 MP4 and bind human editorial accept / bounded repair / reject to its SHA. Rights, production, private transport, credentials/OAuth, and public release remain separate explicit gates. |
+| sync_baseline | Active branch was fast-forwarded from `2d8c4d6` to `558f681` with sync-time upstream parity `0 0`; `main` / `origin/main` remain `5d6f69a`; sync baseline is four commits ahead of main. This report commit becomes the later handoff tip. No main merge is claimed. |
+| validation | `npm ci` succeeded with 0 vulnerabilities; Electron 42.0.0 dependency tree resolved; Node 24.13.0 / npm 11.6.2; CPython 3.13.3 / uv 0.10.7 / Pillow 12.3.0; final `uvx --with Pillow pytest -q` returned 606 passed in 68.84s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
+| local_boundary | OUT-13 plan/final/review package are absent. Local source SHA `6f78657e...6103a`, transcript `4a7b4fd8...3495`, and rights `4302c4a1...bb8` differ from the tracked contract; official caption matches. Protected R3 preview remains local, and `episodes/` has zero tracked files. |
+| decision_required | Choose exact private recovery or a new-identity rebuild before binding human editorial accept / bounded repair / reject. Rights, production, credentials/OAuth, and public release remain separate explicit gates. |
 
 ## `clip-out12-one-command-real-video-automation-v1-001`
 

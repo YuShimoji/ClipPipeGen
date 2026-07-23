@@ -7,26 +7,27 @@ health: OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1
 progress_pct: 100
 last_touched: 2026-07-23
 current_slice: OUT-13
-phase: internal_editorial_review_ready
+phase: internal_editorial_review_recovery_required
 canonical_status: editorial_representative_video_reviewable_v1
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-verified_implementation_head: this_commit_after_push
+sync_baseline_head: 558f681b3778b1b9bf43f6ec72b38768e8e3da44
+verified_implementation_head: c1566b359413e4fbd5034733ac41d03d17641aaa
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_this_file
-current_title: OUT-13 caption-evidence editorial representative video review ready
-human_entrypoint: http://127.0.0.1:8076/review/index.html
+current_title: OUT-13 code green, exact local review artifact recovery required
+human_entrypoint: null
 portable_entrypoint: null
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\serve_preview.ps1
-machine_readback: episodes/out13_editorial_video_candidate_20260722/review/out13_editorial_video_candidate/validation_readback.json
-decision_required: internal_editorial_composition_subtitle_picture_audio_review
-review_status: machine_validated_human_editorial_review_available
+review_open_command: null
+review_server_restart_command: null
+machine_readback: null
+decision_required: choose_exact_artifact_recovery_or_new_identity_rebuild_before_editorial_review
+review_status: source_host_machine_validated_local_review_blocked_missing_exact_artifact
 remote_code_complete: true
-local_artifact_available: true
-local_artifact_role: ignored_same_machine_caption_evidence_editorial_video
+local_artifact_available: false
+local_artifact_role: absent_current_checkout_historical_source_host_receipt_only
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_only_source_and_output_media_same_machine
+cross_machine_resume_class: tracked_code_docs_only_out13_exact_inputs_plan_and_output_absent
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
@@ -37,12 +38,12 @@ public_or_publishing_acceptance: false
 human_review_pending: true
 automation_acceptance_granted: true
 editorial_acceptance_granted: false
-next_action: human_reviews_one_out13_mp4_for_editorial_structure_subtitle_presentation_picture_audio_then_choose_one_explicit_gate
+next_action: recover_exact_out13_package_and_matching_inputs_or_build_explicit_new_identity_then_run_human_editorial_review
 active_artifact: clip-out13-editorial-video-candidate-v1-001
 remote_handoff_tip: this_commit_after_push
 source_of_truth: true
 owner_lane: editorial_real_video_internal_review
-related: docs/RUNTIME_STATE.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, artifacts/ARTIFACTS.md, docs/AUTOMATION_BOUNDARY.md
+related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, artifacts/ARTIFACTS.md, docs/AUTOMATION_BOUNDARY.md
 upstream_parity: 0 0
 ---
 
@@ -50,63 +51,58 @@ upstream_parity: 0 0
 
 ## 現在地
 
-OUT-12の一コマンド実動画automationを基礎に、OUT-13として明示的なeditorial planを受ける
-`build-editorial-video-candidate`を追加した。planはsource identity / SHA、source in/out、output order、
-section、editorial role、選択理由、continuity/context evidence、transcript segment IDs、transition、
-omitted rangesを保持し、caption/transcript evidenceから6つの非連続範囲を時系列どおりに接続する。
-これにより、scene partitionやuniform samplingではなく、何を残し何を短縮したかを人間と機械の双方が
-同じMP4上で監査できる。
+OUT-13は、hash-boundな明示editorial planからcaption/transcript evidenceを持つ6つの非連続cutを
+時系列どおりに接続し、字幕付き実MP4、19項目validation、video-first review packageまで生成する
+実装である。source-host receiptは4 sections / 122.866016s、final SHA
+`84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2`、
+公式JA 77 cue、Keifont 100px、最大2行、machine checks passを記録する。
 
-実runは既存official hololive source `youtube:7J5aS_pcBj4`（164.768798s、1920x1080、source SHA
-`e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`）を使用した。電話での挑戦、
-二人の対戦、三人との最終戦、召喚された門番長との終結を4 section / 6 cutへ保持し、待機、移動、
-反復battle、反復叫声、credits等6範囲を除外した。finalは122.866016s、source利用率74.542%、
-H.264 High/AAC 1920x1080、73,776,611 bytes、SHA
-`84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2`。
+active branchは`codex/out-13-editorial-video-candidate-v1`。2026-07-23にremote最新`558f681`へ
+ff-only同期し、同期時upstream parityは`0 0`、`main` / `origin/main`は`5d6f69a`で一致した。
+606 Python tests、Node/Electron smoke、OUT-13 CLI helpはpassしており、tracked codeの開発は可能。
+OUT-13はmainへ未mergeで、人間の編集受理、rights、production/public gateも未承認である。
 
-公式JA JSON3 77 cueをKeifont 100px、line height 115px、white body、black 8px outline / 2px
-shadow、最大2行でburn-inした。speaker identityはcaption textから推定せずbadgeを描画していない。
-selected source framesに対話captionがないこととfinal evidenceを対比し、二重表示、safe-area overflow、
-overlap、negative duration、orphan cueはいずれも0。通常発話、長文2行、0.534s短時間cueのfinal frame
-evidenceもpackage内にある。
+## source-host receiptとこのcheckoutを分ける
 
-## artifactと検証の読み方
+| 面 | tracked source-host receipt | current checkout | 再開上の意味 |
+|---|---|---|---|
+| source | SHA `e2206cef...2d18` | SHA `6f78657e...6103a` | bytes不一致 |
+| transcript | SHA `ef928d4e...b42d6` | SHA `4a7b4fd8...3495` | bytes不一致 |
+| official JA caption | SHA `3c15535f...d169919` | 同じSHA | 一致 |
+| rights snapshot | SHA `e6ea9471...64c12` | SHA `4302c4a1...bb8` | bytes不一致 |
+| editorial plan input | 11,333 bytes、documented SHA `75289fba...cb2b` | 不在 | original fingerprintを再現できない |
+| final/review package | 25 files / 78,180,658 bytes、final SHA `84ed7aa6...791d7e2` | directoryごと不在 | review/HTTP/resume不可 |
 
-| 面 | 確定値 | 監修時の意味 |
-|---|---|---|
-| artifact | `clip-out13-editorial-video-candidate-v1-001`; `EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1` | OUT-12 operationalからhuman editorial review可能な状態へ進んだ |
-| source authority | official JSON3 SHA `3c15535f...d169919`; transcript SHA `ef928d4e...b42d6`; rights snapshot SHA `e6ea9471...64c12` | 文言/timing/cut根拠は追えるがspeaker・lyrics・rights判断は含まない |
-| timeline | 6 cuts、4 sections、6 omissions、mapping 1.0、uniform/arbitrary-thirds false | 各cutのreason/context/segment IDsをreview表から追跡できる |
-| media | 122.866016s、SHA `84ed7aa6...791d7e2`、-14.61 LUFS、-1.58 dBTP、最大cut差0.94 LU | 全体のテンポ、画面、字幕、音声を一本で判断できる |
-| validation | review-visible 19 checks pass、full decode/faststart/timestamps/A/V/black/silence/caption/mapping pass | 技術欠陥を人間の編集判断へ混ぜずに済む |
-| review | desktop/mobile overflow false、initial paused/muted/time0、seek 14.714s一致、page 200、Range 206、console/media error 0 | 単一入口を開けば探索なしでvideo→cut/omission→evidence→checksの順に確認できる |
-| resume | input fingerprint `051832b9...e3d8`; 2026-07-23再検証0.281s、renderなし、同一video/manifest SHA | 別inputの古いcacheを誤利用せず同じartifactを再開できる |
-| manifest | 23 payloads、self-integrity SHA `8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8` | package identityと各evidenceのhashを一括監査できる |
+repository rootと配下worktreeを対象に、`editorial_plan_input.json`、OUT-13 directory、final MP4、
+readback、launcherを探索したが見つからなかった。source identity名が同じでも、SHA不一致を同一inputと
+扱わない。source-hostの0.281s resume、page 200、Range 206はhistorical receiptであり、このcheckoutの
+live resultではない。
 
-## 同一マシンでレビューを開く
+## 開発環境と保持したlocal state
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\open_preview.ps1
-```
+| 面 | 2026-07-23 live result |
+|---|---|
+| Git | sync baseline `558f681`; upstream parity `0 0`; mainとの差 `0 4` |
+| Node | 24.13.0 / npm 11.6.2 / Electron 42.0.0 |
+| npm | `npm ci`成功、24 packages audit、脆弱性0 |
+| Python | CPython 3.13.3 / uv 0.10.7 / Pillow 12.3.0 |
+| tests | final `uvx --with Pillow pytest -q` → 606 passed / 68.84s |
+| smoke | `npm run smoke`、`npm run smoke:electron`、OUT-13 CLI help pass |
+| media | FFmpeg/ffprobe 8.0.1 / yt-dlp 2026.03.17 |
+| hygiene | `episodes/` 933 local files / tracked 0; R3 protected preview 28 files / 33,712,427 bytes |
+| predecessor | OUT-12 final SHA `5d391ffd...a584` live一致 |
 
-clean URLは`http://127.0.0.1:8076/review/index.html`。launcherはforeground serverを起動する。
-review終了時はそのPowerShellで`Ctrl+C`を使う。review pageは動画を先頭に置き、その下にselected timeline、
-omitted ranges、source/final evidence、waveform、machine validationを一列で提示する。cutごとの`seek`で
-該当output位置へ移動できる。
+ignored `episodes/`、`.serena`、cache、他worktreeは削除していない。broad ignored cleanupは行わない。
 
-同一inputのmanifest/fingerprintだけを高速確認する場合は次を実行する。
+## reviewを再開する前の二経路
 
-```powershell
-uvx --with Pillow python -m src.cli.main build-editorial-video-candidate `
-  --source episodes\jp_pilot01_hololive_bancho_20260525\materials\src_video_jp_pilot01\source_video.mp4 `
-  --source-identity youtube:7J5aS_pcBj4 `
-  --editorial-plan episodes\out13_editorial_video_candidate_20260722\editorial_plan_input.json `
-  --transcript episodes\jp_pilot01_hololive_bancho_20260525\transcript.json `
-  --caption-track episodes\jp_pilot01_hololive_bancho_20260525\source_subs\7J5aS_pcBj4.ja.json3 `
-  --rights-manifest episodes\jp_pilot01_hololive_bancho_20260525\rights_manifest.json `
-  --output-dir episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate `
-  --resume --review-port 8076 --format json
-```
+1. **Exact recovery** — original packageとcontract-matching source/transcript/caption/rights/planを、
+   生成hostまたは承認済みprivate transportから回収し、manifest/final hashを照合する。
+2. **New-identity rebuild** — exact packageを回収しない場合、currentまたは再取得inputへ新しい
+   editorial planをbindし、新artifact ID、input fingerprint、final SHA、旧receiptへのlineageを持たせる。
+
+どちらの経路でも、reviewable bytesが揃うまでは`http://127.0.0.1:8076/`や旧launcherを案内しない。
+new buildを旧SHAの復元と呼ばない。
 
 ## 別端末での再開
 
@@ -119,14 +115,13 @@ git rev-list --left-right --count 'HEAD...@{u}'
 git ls-files episodes
 ```
 
-tracked code/docs/testsはportableだが、source、editorial plan input、final MP4、evidence、localhost packageは
-ignored `episodes/`配下にあり、別cloneには届かない。別hostでは同一source/caption/transcript/rights/plan
-bytesを用意して実行し直す。`episodes/`をGitへ追加してportable化しない。
+期待値はactive branch parity `0 0`、tracked `episodes/` 0件。次に
+`docs/SUPERVISOR_STATUS_REPORT.md`を読み、OUT-13 pathと各input SHAをlive確認する。
+Gitでportableなのはbuilder、tests、docs、source-host receiptまでであり、ignored mediaは別cloneへ届かない。
 
 ## 次の判断
 
-最も直接的な次の動きは、一本のOUT-13 MP4について編集構成、字幕presentation、画面・音声品質を
-internal human reviewすること。受理する場合もexact video SHAへbindし、rightsやproduction利用へ
-自動昇格させない。次の実装を先に進めるなら、human reviewで見つかったsource-specificな修正、rights
-判断、production subtitle/render gateのいずれか一つだけを明示的に開く。thumbnail、publishing、uploadは
-本artifactのconsumerではなく、引き続き別gateである。
+最短critical pathは`artifact identity recovery -> human editorial review -> bounded repair（必要時） ->
+main integration -> rights / production subtitle / production renderの個別gate`。現時点のowner判断は、
+original exact packageを回収するか、旧identityと混同しないsuccessor rebuildへ進むかである。
+thumbnail、publishing、uploadは後続consumerであり、現在のrecovery gateと一括で開かない。

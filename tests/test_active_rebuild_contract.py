@@ -239,19 +239,23 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: true" in runtime
+    assert "local_artifact_available: false" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8076/review/index.html" in runtime
+    assert "human_entrypoint: null" in runtime
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_only_source_plan_and_output_media_same_machine" in runtime
+        "tracked_code_docs_only_out13_exact_inputs_plan_and_output_absent" in runtime
     )
     assert "health: OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1" in runtime
     assert "current_slice: OUT-13" in runtime
     assert "canonical_status: editorial_representative_video_reviewable_v1" in runtime
     assert "active_artifact: clip-out13-editorial-video-candidate-v1-001" in runtime
-    assert "review_status: machine_validated_human_editorial_review_available" in runtime
+    assert (
+        "review_status: "
+        "source_host_machine_validated_local_review_blocked_missing_exact_artifact"
+        in runtime
+    )
     assert "automation_acceptance_granted: true" in runtime
     assert "acceptance_granted: false" in runtime
     assert "out13_source_identity: youtube:7J5aS_pcBj4" in runtime
@@ -272,7 +276,8 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "out13_mapping_coverage_ratio: 1.0" in runtime
     assert "out13_resolved_font_family: Keifont" in runtime
     assert "out13_resolved_maximum_lines: 2" in runtime
-    assert "out13_resume_render_executed: false" in runtime
+    assert "out13_resume_render_executed: null" in runtime
+    assert "out13_historical_source_host_resume_render_executed: false" in runtime
     assert "out13_review_mobile_overflow: false" in runtime
     assert "out13_rights_status: pending_or_snapshot_only" in runtime
     assert "out13_production_acceptance: false" in runtime

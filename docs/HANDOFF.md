@@ -1,6 +1,11 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-07-21 JST
+Last updated: 2026-07-23 JST
+
+> **Current authority:** [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) and
+> [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md). This long file
+> retains older capsules; their localhost commands and host-local artifact
+> availability claims do not override the current Runtime/Handoff readback.
 
 This file is the shortest project-local handoff for resuming from another terminal. It complements `AGENTS.md`, `README.md`, and `docs/RUNTIME_STATE.md`; it does not replace them. Operator-facing restart and review responses follow `docs/OPERATOR_REVIEW_UX.md`.
 

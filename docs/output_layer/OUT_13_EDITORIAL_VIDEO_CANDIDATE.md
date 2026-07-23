@@ -69,6 +69,12 @@ passし、実renderと全後段検証まで完走した。
 
 ## 実行・再開
 
+> 2026-07-23 current-checkout note: 以下はsource-hostで成立したhistorical command contract。
+> current checkoutには`editorial_plan_input.json`とOUT-13 packageがなく、source/transcript/rights
+> SHAも上記contractと一致しない。exact recoveryまたはnew identity rebuildを行うまで、旧command、
+> localhost URL、`--resume`を現在利用可能とは扱わない。live authorityは
+> [RUNTIME_STATE.md](../RUNTIME_STATE.md)と[CURRENT_HANDOFF.md](../CURRENT_HANDOFF.md)。
+
 新規生成または入力変更後の明示再生成:
 
 ```powershell
