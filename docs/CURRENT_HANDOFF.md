@@ -5,7 +5,7 @@ type: handoff
 status: active
 health: OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1
 progress_pct: 100
-last_touched: 2026-07-22
+last_touched: 2026-07-23
 current_slice: OUT-13
 phase: internal_editorial_review_ready
 canonical_status: editorial_representative_video_reviewable_v1
@@ -80,7 +80,7 @@ evidenceもpackage内にある。
 | media | 122.866016s、SHA `84ed7aa6...791d7e2`、-14.61 LUFS、-1.58 dBTP、最大cut差0.94 LU | 全体のテンポ、画面、字幕、音声を一本で判断できる |
 | validation | review-visible 19 checks pass、full decode/faststart/timestamps/A/V/black/silence/caption/mapping pass | 技術欠陥を人間の編集判断へ混ぜずに済む |
 | review | desktop/mobile overflow false、initial paused/muted/time0、seek 14.714s一致、page 200、Range 206、console/media error 0 | 単一入口を開けば探索なしでvideo→cut/omission→evidence→checksの順に確認できる |
-| resume | input fingerprint `051832b9...e3d8`; 0.328s、renderなし、同一video/manifest SHA | 別inputの古いcacheを誤利用せず同じartifactを再開できる |
+| resume | input fingerprint `051832b9...e3d8`; 2026-07-23再検証0.281s、renderなし、同一video/manifest SHA | 別inputの古いcacheを誤利用せず同じartifactを再開できる |
 | manifest | 23 payloads、self-integrity SHA `8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8` | package identityと各evidenceのhashを一括監査できる |
 
 ## 同一マシンでレビューを開く

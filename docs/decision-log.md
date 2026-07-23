@@ -3,12 +3,33 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-21
+last_touched: 2026-07-23
 ---
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-23 — latest remoteをff-only同期し、OUT-13 exact local reviewをcurrent gateへ進める
+
+active branch `codex/out-13-editorial-video-candidate-v1`をfetch後に`c1566b3`から`2d8c4d6`へ
+`git pull --ff-only`で更新した。同期時の追跡先parityは`0 0`、`main` / `origin/main`は`5d6f69a`、
+sync baselineはmainより3 commit先だった。履歴改変、merge、mainへの統合は行っていない。
+
+依存は`npm ci`で再構築し、Electron 42.0.0、24 packages audit脆弱性0、full suite 606 passed / 65.37s、
+Node/Electron smoke、OUT-13 CLI helpを確認した。live toolchainはCPython 3.11.0、uv/uvx 0.10.0、
+Pillow 12.3.0、FFmpeg/ffprobe 8.1.1、yt-dlp 2026.03.17である。
+
+前日の別時点readbackと異なり、このcheckoutにはOUT-13 `editorial_plan_input.json`、25-fileのreview
+package、`final_video.mp4`が存在する。final SHAはtracked contractの`84ed7aa6...791d7e2`と一致し、
+`--resume`は0.281秒・`render_executed=false`・manifest SHA不変、localhost smokeはpage 200 / MP4
+Range 206だった。従ってartifact recovery goalを完了へ移し、current next actionをexact SHAに対する
+human editorial accept / bounded repair / rejectへ進める。これは人間受理、rights、production、thumbnail、
+publishing/uploadを代行・承認しない。根拠: live Git parity + full suite/GUI/CLI validation + local
+plan/package/hash/resume/HTTP readback + `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md`。
+
 ## 2026-07-22 — OUT-13 remote branchをcurrent development laneとして再開し、artifact不在を分離
+
+この節のartifact不在は当時のcheckout readbackであり、2026-07-23の同一workspace再計測でsuperseded。
+tracked portability境界は維持するが、current local availabilityは上の2026-07-23決定を正本とする。
 
 `main`は`8faaab2`から`5d6f69a`へff-onlyで更新し、同時にremoteで検出した
 `codex/out-13-editorial-video-candidate-v1`をlocal tracking branchとして再開した。active branchは

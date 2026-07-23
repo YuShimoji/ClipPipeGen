@@ -41,8 +41,8 @@ opened by the root launcher.
 | validation | Nineteen review-visible checks passed. Full decode/faststart/timestamps/A/V/source mapping/caption containment passed; -14.61 LUFS, -1.58 dBTP, maximum adjacent cut delta 0.94 LU; black and silence events 0. Desktop/mobile overflow false; clean initial paused/muted/time0; seek exact; page 200; MP4 Range 206; console/media error 0. |
 | evidence | Selected-source contact sheet, subtitle presentation contact sheet, normal/long-or-multiline/short-cue frames, all-cut boundary sheet, first/middle/last sheet, waveform, plan/readback/manifest on one video-first review page. |
 | manifest | 23 payload rows; input fingerprint `051832b95969d8d3e35709f359e82dacb719552343ad40ec39ce35381685e3d8`; self-integrity SHA `8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8`. |
-| resume | Same source/plan/settings resumed in 0.328s without render; video and manifest SHA unchanged. |
-| preview_url | `http://127.0.0.1:8076/review/index.html`; validation listener stopped after HTTP/browser QA. |
+| resume | Same source/plan/settings resumed again on 2026-07-23 in 0.281s without render; video and manifest SHA unchanged. Earlier source-host readback was 0.328s. |
+| preview_url | `http://127.0.0.1:8076/review/index.html`; 2026-07-23 smoke returned page 200 and MP4 Range 206, then the validation listener was stopped. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260722\review\out13_editorial_video_candidate\review\open_preview.ps1` |
 | decision_required | Internal human review may now judge editorial structure, caption presentation, and picture/audio quality. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
@@ -58,19 +58,19 @@ Boundary flags:
 - `upload_attempted=false`
 - `episodes_tracked=false`
 
-## `clip-supervisor-sync-roadmap-20260722-002`
+## `clip-supervisor-sync-roadmap-20260723-003`
 
 | Field | Value |
 |---|---|
-| title | 2026-07-22 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
-| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the two-commit-ahead OUT-13 review branch, portable code evidence, available OUT-12 media, absent OUT-13 plan/package, and a dependency-ordered M0-M11 route through human editorial review, production gates, explicit public release, and multi-episode operations. |
+| title | 2026-07-23 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
+| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, available same-machine exact OUT-13 media, and a dependency-ordered M0-M12 route through human editorial review, production gates, explicit public release, multi-episode operations, and quality feedback. |
 | storage class | Tracked Markdown report; portable Git evidence. No source or generated media included. |
 | repo_relative_path | `docs/SUPERVISOR_STATUS_REPORT.md` |
 | open_command | `Invoke-Item docs\SUPERVISOR_STATUS_REPORT.md` |
-| sync_baseline | `main` was fast-forwarded from `8faaab2` to `5d6f69a`; verified OUT-13 implementation head is `c1566b3`, two commits ahead of main with sync-time upstream parity `0 0`. This report commit becomes the later handoff tip. No main merge is claimed. |
-| validation | `npm ci` succeeded with 0 vulnerabilities; Electron 42.0.0 dependency tree resolved; `uvx --with Pillow pytest -q` returned 606 passed in 147.15s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
-| local_boundary | OUT-13 source/transcript/caption/rights inputs exist but the editorial plan and final/review package are absent in this root checkout. OUT-12 final/review package exists and its live MP4 SHA matches `5d391ffd...a584`. Protected R3 preview remains local; `episodes/` has zero tracked files. |
-| decision_required | Restore access to the exact OUT-13 package or rebuild under a new hash-bound identity, then obtain human editorial review. Rights, production, private transport, credentials/OAuth, and public release remain separate explicit gates. |
+| sync_baseline | Active branch was fast-forwarded from `c1566b3` to `2d8c4d6` with sync-time upstream parity `0 0`; `main` / `origin/main` remain `5d6f69a`; sync baseline is three commits ahead of main. This report commit becomes the later handoff tip. No main merge is claimed. |
+| validation | `npm ci` succeeded with 0 vulnerabilities; Electron 42.0.0 dependency tree resolved; CPython 3.11.0 / uv 0.10.0 / Pillow 12.3.0; `uvx --with Pillow pytest -q` returned 606 passed in 65.37s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
+| local_boundary | OUT-13 plan and 25-file / 78,180,658-byte final/review package exist in this checkout. Live MP4 SHA matches `84ed7aa6...791d7e2`; resume returned 0.281s without render; page 200 and Range 206 passed. The package remains ignored same-machine evidence, protected R3 preview remains local, and `episodes/` has zero tracked files. |
+| decision_required | Open the exact OUT-13 MP4 and bind human editorial accept / bounded repair / reject to its SHA. Rights, production, private transport, credentials/OAuth, and public release remain separate explicit gates. |
 
 ## `clip-out12-one-command-real-video-automation-v1-001`
 

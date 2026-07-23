@@ -5,8 +5,8 @@ type: resume_surface
 status: active
 health: OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1
 progress_pct: 100
-last_touched: 2026-07-22
-state_revision: out13-caption-evidence-editorial-video-reviewable-2026-07-22
+last_touched: 2026-07-23
+state_revision: out13-exact-local-review-ready-2026-07-23
 contract_repair_status: out12_operational_preserved_out13_explicit_editorial_route_validated
 current_slice: OUT-13
 phase: internal_editorial_review_ready
@@ -19,7 +19,8 @@ closure_branch: codex/out-13-editorial-video-candidate-v1
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-sync_audit_status: out13_branch_created_from_current_origin_main_preflight_clean
+latest_remote_sync_head: 2d8c4d6b77422c63ba27417674fe098c06072016
+sync_audit_status: out13_branch_ff_only_synced_local_exact_package_reverified
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
@@ -60,7 +61,7 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-22
+last_verified_at: 2026-07-23
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: http://127.0.0.1:8076/review/index.html
 historical_last_verified_host_entrypoint: null
@@ -133,7 +134,9 @@ out13_review_visible_check_count: 19
 out13_manifest_payload_count: 23
 out13_manifest_self_sha256: 8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8
 out13_input_fingerprint: 051832b95969d8d3e35709f359e82dacb719552343ad40ec39ce35381685e3d8
-out13_resume_elapsed_seconds: 0.328
+out13_local_package_file_count: 25
+out13_local_package_byte_size: 78180658
+out13_resume_elapsed_seconds: 0.281
 out13_resume_render_executed: false
 out13_review_http_status: 200
 out13_review_range_status: 206
@@ -441,7 +444,7 @@ negative/orphan 0。通常発話、長文2行、短時間cueのfinal frame evide
 media/plan/subtitleを合わせたreview-visible 19 checks、full decode、faststart、monotonic timestamps、A/V、
 mapping 1.0、black/silence、-14.61 LUFS / -1.58 dBTP、最大cut差0.94 LUをpass。localhostはpage 200、
 Range 206、desktop/mobile overflow false、paused/muted/time0、seek一致、console/media error 0。
-resumeは0.328s、renderなし、同一video/manifest SHA。manifestは23 payloads、self-integrity
+2026-07-23のlocal resumeは0.281s、renderなし、同一video/manifest SHA。manifestは23 payloads、self-integrity
 `8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8`。
 
 次は単一review入口からexact MP4の編集構成、字幕presentation、画面・音声品質をinternal human review

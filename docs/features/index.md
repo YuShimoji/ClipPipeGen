@@ -4,14 +4,14 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-12`
-- artifact: `clip-out12-one-command-real-video-automation-v1-001`
-- state: `OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`
+- feature: `OUT-13`
+- artifact: `clip-out13-editorial-video-candidate-v1-001`
+- state: `OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1`
 
-- canonical main: `f9cfc1194368087c49ffd98b69f880d6109cabfb`
+- canonical main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `automated_real_video_pipeline_operational_v1`
-- review status: `machine_validated_internal_review_available`
+- canonical status: `editorial_representative_video_reviewable_v1`
+- review status: `machine_validated_human_editorial_review_available`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -22,19 +22,19 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `http://127.0.0.1:8075/review/index.html`
+- last verified host entrypoint: `http://127.0.0.1:8076/review/index.html`
 - pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_only_real_source_and_output_media_same_machine`
+- cross-machine resume: `tracked_code_docs_only_source_plan_and_output_media_same_machine`
 - active rebuild contract: ``
-- evidence revision: `out12-one-command-real-video-automation-v1`
+- evidence revision: `out13-editorial-video-candidate-v1`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: ``
+- decision required: `internal_editorial_composition_subtitle_picture_audio_review`
 - next review: ``
 
 ## Feature Table

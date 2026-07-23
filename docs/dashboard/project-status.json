@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-21",
+  "generated_at": "2026-07-23",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -24,20 +24,20 @@
     "boundary_policy": "Production/public/rights caveats belong in Constraints / Risks instead of being repeated as the opening sentence of every doc."
   },
   "current_focus": {
-    "feature_id": "OUT-12",
-    "artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
-    "state": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
-    "title": "OUT-12 one-command real long-form video automation operational",
-    "active_branch": "main",
-    "phase": "internal_automation_operational",
-    "canonical_main_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
+    "feature_id": "OUT-13",
+    "artifact_id": "clip-out13-editorial-video-candidate-v1-001",
+    "state": "OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1",
+    "title": "OUT-13 caption-evidence editorial representative video review ready",
+    "active_branch": "codex/out-13-editorial-video-candidate-v1",
+    "phase": "internal_editorial_review_ready",
+    "canonical_main_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
     "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
-    "canonical_status": "automated_real_video_pipeline_operational_v1",
-    "review_status": "machine_validated_internal_review_available",
-    "human_entrypoint": "http://127.0.0.1:8075/review/index.html",
-    "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
-    "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\serve_preview.ps1",
-    "machine_readback": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json",
+    "canonical_status": "editorial_representative_video_reviewable_v1",
+    "review_status": "machine_validated_human_editorial_review_available",
+    "human_entrypoint": "http://127.0.0.1:8076/review/index.html",
+    "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\open_preview.ps1",
+    "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\serve_preview.ps1",
+    "machine_readback": "episodes/out13_editorial_video_candidate_20260722/review/out13_editorial_video_candidate/validation_readback.json",
     "remote_code_complete": "true",
     "local_artifact_available": "true",
     "portable_local_artifact_available": "false",
@@ -50,13 +50,13 @@
     "source_byte_equivalence_claimed": "",
     "review_server_status": "validation_listener_stopped_restart_with_canonical_foreground_command",
     "last_verified_host_local_artifact_available": "true",
-    "last_verified_host_entrypoint": "http://127.0.0.1:8075/review/index.html",
+    "last_verified_host_entrypoint": "http://127.0.0.1:8076/review/index.html",
     "pause_reason": "",
     "accepted_baseline_recovery_status": "",
     "cover_review_status": "",
-    "cross_machine_resume_class": "tracked_code_docs_only_real_source_and_output_media_same_machine",
+    "cross_machine_resume_class": "tracked_code_docs_only_source_plan_and_output_media_same_machine",
     "active_rebuild_contract": "",
-    "evidence_revision": "out12-one-command-real-video-automation-v1",
+    "evidence_revision": "out13-editorial-video-candidate-v1",
     "accepted_baseline_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
     "recommended_cover_path": "",
     "recommended_cover_sha256": "",
@@ -64,12 +64,12 @@
     "recommended_cover_selection_status": "",
     "last_verified_host": "DESKTOP-H53P1T4",
     "local_verified_host": "DESKTOP-H53P1T4",
-    "local_artifact_evidence_receipt": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+    "local_artifact_evidence_receipt": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
     "handoff": "docs/CURRENT_HANDOFF.md",
-    "last_verified_at": "2026-07-21",
-    "decision_required": "",
+    "last_verified_at": "2026-07-23",
+    "decision_required": "internal_editorial_composition_subtitle_picture_audio_review",
     "next_review_action_type": "",
-    "next_action": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。",
+    "next_action": "OUT-13のexact MP4一本を編集構成・字幕presentation・画面・音声のinternal human reviewで判断し、受理後はrightsまたはproduction subtitle/renderの明示gateを一つだけ開く。",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -80,10 +80,10 @@
       "when_to_use": "Start here for current focus, feature progress, active artifacts, and doc-health findings."
     },
     {
-      "label": "OUT-12 Current Focus",
-      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
-      "target": "http://127.0.0.1:8075/review/index.html",
-      "when_to_use": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。"
+      "label": "OUT-13 Current Focus",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\open_preview.ps1",
+      "target": "http://127.0.0.1:8076/review/index.html",
+      "when_to_use": "OUT-13のexact MP4一本を編集構成・字幕presentation・画面・音声のinternal human reviewで判断し、受理後はrightsまたはproduction subtitle/renderの明示gateを一つだけ開く。"
     },
     {
       "label": "Artifacts",
@@ -1672,6 +1672,26 @@
   },
   "active_artifacts": [
     {
+      "artifact_id": "clip-out13-editorial-video-candidate-v1-001",
+      "title": "OUT-13 Editorial Video Candidate v1",
+      "purpose": "Turn one real captioned source into an explicitly selected, chronologically traceable, clearly shortened editorial MP4 so a human can judge composition, subtitle presentation, and picture/audio quality on the same artifact.",
+      "storage_class": "Tracked CLI/render integration/tests/docs plus one ignored same-machine source/output package under episodes/. No source or generated media is tracked.",
+      "repo_relative_path": "src/cli/build_editorial_video_candidate.py; src/integrations/render/editorial_video_candidate.py; tests/test_editorial_video_candidate.py; docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+      "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\open_preview.ps1",
+      "review_status": "",
+      "next_action": ""
+    },
+    {
+      "artifact_id": "clip-supervisor-sync-roadmap-20260723-003",
+      "title": "2026-07-23 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report",
+      "purpose": "Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, available same-machine exact OUT-13 media, and a dependency-ordered M0-M12 route through human editorial review, production gates, explicit public release, multi-episode operations, and quality feedback.",
+      "storage_class": "Tracked Markdown report; portable Git evidence. No source or generated media included.",
+      "repo_relative_path": "docs/SUPERVISOR_STATUS_REPORT.md",
+      "open_command": "Invoke-Item docs\\SUPERVISOR_STATUS_REPORT.md",
+      "review_status": "",
+      "next_action": ""
+    },
+    {
       "artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
       "title": "OUT-12 One-Command Real Video Automation v1",
       "purpose": "Turn one acquired real source into a chronologically traceable long-form internal MP4, validation readback, manifest, evidence, and review surface through one CLI command; prove fail-closed resume without reopening the Short detour.",
@@ -2444,6 +2464,8 @@
   ],
   "artifact_summary": {
     "artifact_ids": [
+      "clip-out13-editorial-video-candidate-v1-001",
+      "clip-supervisor-sync-roadmap-20260723-003",
       "clip-out12-one-command-real-video-automation-v1-001",
       "clip-out11-five-source-short-portfolio-wave-v0-002",
       "clip-out10-third-source-short-portfolio-expansion-v0-001",
@@ -2522,20 +2544,20 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 77
+    "artifact_count": 79
   },
   "artifact_coverage": {
-    "registered_artifact_count": 77,
+    "registered_artifact_count": 79,
     "features_with_artifact_count": 51,
     "current_focus_artifact_registered": true,
     "missing_registered_artifact_mentions": []
   },
   "next_review_items": [
     {
-      "item": "OUT-12 current focus",
-      "artifact": "clip-out12-one-command-real-video-automation-v1-001",
-      "question": "OUT-12 one-command real long-form video automation operational",
-      "next_route": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。"
+      "item": "OUT-13 current focus",
+      "artifact": "clip-out13-editorial-video-candidate-v1-001",
+      "question": "OUT-13 caption-evidence editorial representative video review ready",
+      "next_route": "OUT-13のexact MP4一本を編集構成・字幕presentation・画面・音声のinternal human reviewで判断し、受理後はrightsまたはproduction subtitle/renderの明示gateを一つだけ開く。"
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2764,7 +2786,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 164,
+      "line_count": 175,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2772,7 +2794,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 58,
+      "boundary_term_count": 63,
       "status": "contains_done_history"
     },
     {
@@ -2792,62 +2814,63 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 2394,
+      "line_count": 2477,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "active",
-        "health": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
+        "health": "OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1",
         "progress_pct": "100",
-        "last_touched": "2026-07-21",
-        "state_revision": "out12-one-command-real-video-automation-operational-2026-07-21",
-        "contract_repair_status": "out11_exact_acceptance_closed_out12_real_long_form_route_validated",
-        "current_slice": "OUT-12",
-        "phase": "internal_automation_operational",
-        "canonical_status": "automated_real_video_pipeline_operational_v1",
-        "active_branch": "main",
-        "source_branch": "codex/out-12-one-command-real-video-automation-v1",
-        "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
+        "last_touched": "2026-07-23",
+        "state_revision": "out13-exact-local-review-ready-2026-07-23",
+        "contract_repair_status": "out12_operational_preserved_out13_explicit_editorial_route_validated",
+        "current_slice": "OUT-13",
+        "phase": "internal_editorial_review_ready",
+        "canonical_status": "editorial_representative_video_reviewable_v1",
+        "active_branch": "codex/out-13-editorial-video-candidate-v1",
+        "source_branch": "codex/out-13-editorial-video-candidate-v1",
+        "verified_implementation_head": "this_commit_after_push",
         "source_branch_tip": "this_commit_after_push",
-        "closure_branch": "codex/out-12-one-command-real-video-automation-v1",
-        "remote_resume_contract": "fetch_then_switch_main_then_read_current_handoff",
+        "closure_branch": "codex/out-13-editorial-video-candidate-v1",
+        "remote_resume_contract": "fetch_then_switch_codex_out_13_branch_then_read_current_handoff",
         "upstream_parity": "0 0",
-        "sync_audit_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
-        "sync_audit_status": "out12_remote_handoff_context_refresh_preflight_clean",
+        "sync_audit_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
+        "latest_remote_sync_head": "2d8c4d6b77422c63ba27417674fe098c06072016",
+        "sync_audit_status": "out13_branch_ff_only_synced_local_exact_package_reverified",
         "sync_audit_live_out08_package": "historical_accepted_package_untouched",
         "sync_audit_live_out09_package": "access_only_repair_present_manifest_and_video_hashes_match",
         "sync_audit_live_r3_reviewability": "review_ready",
         "sync_audit_report": "docs/SUPERVISOR_STATUS_REPORT.md",
-        "current_title": "OUT-12 one-command real long-form video automation operational",
-        "human_entrypoint": "http://127.0.0.1:8075/review/index.html",
+        "current_title": "OUT-13 caption-evidence editorial representative video review ready",
+        "human_entrypoint": "http://127.0.0.1:8076/review/index.html",
         "portable_entrypoint": "",
-        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
-        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\serve_preview.ps1",
-        "machine_readback": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json",
+        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\open_preview.ps1",
+        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\serve_preview.ps1",
+        "machine_readback": "episodes/out13_editorial_video_candidate_20260722/review/out13_editorial_video_candidate/validation_readback.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "",
-        "review_status": "machine_validated_internal_review_available",
-        "review_scope": "OUT-12 automation accepted; optional content inspection does not lift closed gates",
+        "decision_required": "internal_editorial_composition_subtitle_picture_audio_review",
+        "review_status": "machine_validated_human_editorial_review_available",
+        "review_scope": "OUT-13 exact MP4 internal editorial review; does not lift rights production thumbnail public publishing or upload gates",
         "reviewed_at": "",
         "remote_code_complete": "true",
         "local_artifact_available": "true",
-        "local_artifact_role": "ignored_same_machine_real_long_form_operational_proof_with_tracked_contract",
+        "local_artifact_role": "ignored_same_machine_caption_evidence_editorial_video_with_tracked_contract",
         "portable_local_artifact_available": "false",
-        "cross_machine_resume_class": "tracked_code_docs_only_real_source_and_output_media_same_machine",
-        "cross_host_resume_status": "code_and_contract_portable_real_source_and_rendered_media_absent_on_other_host",
+        "cross_machine_resume_class": "tracked_code_docs_only_source_plan_and_output_media_same_machine",
+        "cross_host_resume_status": "code_and_contract_portable_source_plan_and_rendered_media_absent_on_other_host",
         "active_rebuild_contract": "",
         "parked_predecessor_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
         "optional_recovery_branch": "codex/out-08-private-review-package-recovery-v0",
         "optional_recovery_tip": "d1f44d17e9747419f307706cad802aefdd012efd",
         "optional_recovery_status": "PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF",
         "optional_recovery_merged": "false",
-        "evidence_revision": "out12-one-command-real-video-automation-v1",
+        "evidence_revision": "out13-editorial-video-candidate-v1",
         "last_verified_host": "DESKTOP-H53P1T4",
         "last_verified_host_label": "Thank",
         "local_verified_host": "DESKTOP-H53P1T4",
-        "local_artifact_evidence_receipt": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
-        "local_package_requirement": "same_machine_source_and_output_required_for_media_reinspection_not_for_code_resume",
+        "local_artifact_evidence_receipt": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+        "local_package_requirement": "same_machine_source_plan_and_output_required_for_media_reinspection_not_for_code_resume",
         "historical_fixed_input_packages": "private_only_not_required_for_out08_human_review",
         "local_reference_cache_status": "tracked_corpus_examples_only_not_canonical_design_rules",
         "rights_approval": "pending",
@@ -2855,9 +2878,9 @@
         "production_subtitle_design_acceptance": "false",
         "production_image_quality_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "last_verified_at": "2026-07-21",
+        "last_verified_at": "2026-07-23",
         "last_verified_host_local_artifact_available": "true",
-        "last_verified_host_entrypoint": "http://127.0.0.1:8075/review/index.html",
+        "last_verified_host_entrypoint": "http://127.0.0.1:8076/review/index.html",
         "historical_last_verified_host_entrypoint": "",
         "pause_reason": "",
         "exact_baseline_available": "",
@@ -2866,13 +2889,13 @@
         "cover_direction_review_available": "",
         "historical_cover_direction_evidence_available": "true",
         "cover_direction_acceptance": "",
-        "human_review_decision": "out11_exact_short_acceptance_preserved_out12_human_content_review_not_required",
-        "user_feedback_overall": "out11_acceptance_consumed_out12_automation_requested",
-        "content_selection_status": "source05_full_source_selected_as_only_three_minute_eligible_input",
-        "subtitle_presentation_timing_status": "source_specific_authorities_machine_pass_source05_semantics_unclaimed",
-        "endpoint_status": "out10_accepted_with_source_specific_debt_source05_accepted_at_source_eof",
+        "human_review_decision": "pending_out13_exact_mp4_editorial_review",
+        "user_feedback_overall": "out13_mission_requested_and_machine_completed_human_editorial_review_not_yet_consumed",
+        "content_selection_status": "jp_pilot01_caption_evidence_explicit_noncontiguous_plan_rendered",
+        "subtitle_presentation_timing_status": "official_json3_77_cues_keifont_two_line_safe_area_pass",
+        "endpoint_status": "caption_evidenced_gatekeeper_resolution_closes_before_credits",
         "reviewed_by_human": "true",
-        "human_review_pending": "false",
+        "human_review_pending": "true",
         "acceptance_granted": "false",
         "automation_acceptance_granted": "true",
         "batch_acceptance": "not_applicable_out12",
@@ -2884,9 +2907,67 @@
         "cover_review_status": "",
         "review_server_status": "validation_listener_stopped_restart_with_canonical_foreground_command",
         "next_review_due": "",
-        "next_action": "異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。",
-        "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
-        "current_review_component": "out12_real_long_form_video_cut_map_validation_and_evidence",
+        "next_action": "OUT-13のexact MP4一本を編集構成・字幕presentation・画面・音声のinternal human reviewで判断し、受理後はrightsまたはproduction subtitle/renderの明示gateを一つだけ開く。",
+        "active_artifact": "clip-out13-editorial-video-candidate-v1-001",
+        "current_review_component": "out13_explicit_editorial_plan_video_subtitle_and_av_evidence",
+        "out13_artifact_id": "clip-out13-editorial-video-candidate-v1-001",
+        "out13_state": "EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1",
+        "out13_source_identity": "youtube:7J5aS_pcBj4",
+        "out13_source_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
+        "out13_source_duration_seconds": "164.768798",
+        "out13_source_resolution": "1920x1080",
+        "out13_selection_mode": "explicit_caption_evidence_editorial_plan",
+        "out13_cut_count": "6",
+        "out13_semantic_section_count": "4",
+        "out13_omitted_span_count": "6",
+        "out13_intentional_omitted_span_count": "4",
+        "out13_output_duration_seconds": "122.866016",
+        "out13_source_utilization_ratio": "0.74542",
+        "out13_mapping_coverage_ratio": "1.0",
+        "out13_output_resolution": "1920x1080",
+        "out13_output_video_codec": "h264",
+        "out13_output_audio_codec": "aac",
+        "out13_output_byte_size": "73776611",
+        "out13_output_sha256": "84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2",
+        "out13_caption_authority": "official_ja_json3_sidecar",
+        "out13_caption_cue_count": "77",
+        "out13_caption_overlap_count": "0",
+        "out13_caption_negative_duration_count": "0",
+        "out13_caption_orphan_count": "0",
+        "out13_resolved_font_family": "Keifont",
+        "out13_resolved_font_size_pixels": "100",
+        "out13_resolved_line_height_pixels": "115",
+        "out13_resolved_outline_pixels": "8",
+        "out13_resolved_shadow_pixels": "2",
+        "out13_resolved_maximum_lines": "2",
+        "out13_subtitle_overflow_count": "0",
+        "out13_integrated_lufs": "-14.61",
+        "out13_true_peak_dbtp": "-1.58",
+        "out13_max_adjacent_cut_delta_lu": "0.94",
+        "out13_black_event_count": "0",
+        "out13_silence_event_count": "0",
+        "out13_validation_status": "passed",
+        "out13_review_visible_check_count": "19",
+        "out13_manifest_payload_count": "23",
+        "out13_manifest_self_sha256": "8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8",
+        "out13_input_fingerprint": "051832b95969d8d3e35709f359e82dacb719552343ad40ec39ce35381685e3d8",
+        "out13_local_package_file_count": "25",
+        "out13_local_package_byte_size": "78180658",
+        "out13_resume_elapsed_seconds": "0.281",
+        "out13_resume_render_executed": "false",
+        "out13_review_http_status": "200",
+        "out13_review_range_status": "206",
+        "out13_review_desktop_overflow": "false",
+        "out13_review_mobile_overflow": "false",
+        "out13_review_initial_state": "paused_muted_time_zero",
+        "out13_review_seek_seconds": "14.714",
+        "out13_review_console_warning_error_count": "0",
+        "out13_rights_status": "pending_or_snapshot_only",
+        "out13_production_acceptance": "false",
+        "out13_production_subtitle_design_acceptance": "false",
+        "out13_thumbnail_acceptance": "false",
+        "out13_public_or_publishing_acceptance": "false",
+        "out13_upload_attempted": "false",
         "out12_artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
         "out12_state": "AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
         "out12_source_identity": "youtube:gUwJBRUIWow",
@@ -3092,8 +3173,8 @@
         "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
         "latest_out04_review_status": "accepted",
         "latest_out04_reviewed_at": "2026-07-11 JST",
-        "canonical_main_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
-        "canonical_main_head_role": "last_verified_pre_handoff_main",
+        "canonical_main_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
+        "canonical_main_head_role": "out13_branch_base_from_current_origin_main",
         "remote_handoff_tip": "this_commit_after_push",
         "handoff_sync_status": "final_handoff_commit_pushed_and_parity_verified",
         "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
@@ -3159,7 +3240,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 453,
+      "boundary_term_count": 464,
       "status": "active"
     },
     {
@@ -3282,7 +3363,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 2589,
+      "line_count": 2639,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3290,7 +3371,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 994,
+      "boundary_term_count": 1010,
       "status": "reference"
     },
     {
@@ -3324,7 +3405,7 @@
     {
       "path": "docs/AUTOMATION_BOUNDARY.md",
       "title": "Automation Boundary",
-      "line_count": 149,
+      "line_count": 150,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3332,7 +3413,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 64,
+      "boundary_term_count": 70,
       "status": "reference"
     },
     {
@@ -3352,35 +3433,36 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 120,
+      "line_count": 132,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1",
+        "health": "OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1",
         "progress_pct": "100",
-        "last_touched": "2026-07-21",
-        "current_slice": "OUT-12",
-        "phase": "internal_automation_operational",
-        "canonical_status": "automated_real_video_pipeline_operational_v1",
-        "active_branch": "main",
-        "source_branch": "codex/out-12-one-command-real-video-automation-v1",
-        "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
-        "remote_resume_contract": "fetch_then_switch_main_then_read_this_file",
-        "current_title": "OUT-12 one-command real long-form automation operational",
-        "human_entrypoint": "http://127.0.0.1:8075/review/index.html",
+        "last_touched": "2026-07-23",
+        "current_slice": "OUT-13",
+        "phase": "internal_editorial_review_ready",
+        "canonical_status": "editorial_representative_video_reviewable_v1",
+        "active_branch": "codex/out-13-editorial-video-candidate-v1",
+        "source_branch": "codex/out-13-editorial-video-candidate-v1",
+        "base_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
+        "verified_implementation_head": "this_commit_after_push",
+        "remote_resume_contract": "fetch_then_switch_codex_out_13_branch_then_read_this_file",
+        "current_title": "OUT-13 caption-evidence editorial representative video review ready",
+        "human_entrypoint": "http://127.0.0.1:8076/review/index.html",
         "portable_entrypoint": "",
-        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
-        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\serve_preview.ps1",
-        "machine_readback": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json",
-        "decision_required": "",
-        "review_status": "machine_validated_internal_review_available",
+        "review_open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\open_preview.ps1",
+        "review_server_restart_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260722\\review\\out13_editorial_video_candidate\\review\\serve_preview.ps1",
+        "machine_readback": "episodes/out13_editorial_video_candidate_20260722/review/out13_editorial_video_candidate/validation_readback.json",
+        "decision_required": "internal_editorial_composition_subtitle_picture_audio_review",
+        "review_status": "machine_validated_human_editorial_review_available",
         "remote_code_complete": "true",
         "local_artifact_available": "true",
-        "local_artifact_role": "ignored_same_machine_real_long_form_operational_proof",
+        "local_artifact_role": "ignored_same_machine_caption_evidence_editorial_video",
         "portable_local_artifact_available": "false",
-        "cross_machine_resume_class": "tracked_code_docs_only_real_source_and_output_media_same_machine",
+        "cross_machine_resume_class": "tracked_code_docs_only_source_and_output_media_same_machine",
         "rights_approval": "pending",
         "production_acceptance": "false",
         "production_subtitle_design_acceptance": "false",
@@ -3388,19 +3470,16 @@
         "thumbnail_acceptance": "false",
         "winner_selected": "false",
         "public_or_publishing_acceptance": "false",
-        "human_review_pending": "false",
+        "human_review_pending": "true",
         "automation_acceptance_granted": "true",
-        "next_action": "choose_one_second_real_source_repeatability_or_one_explicitly_approved_gate",
-        "active_artifact": "clip-out12-one-command-real-video-automation-v1-001",
-        "canonical_main_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
-        "canonical_main_head_role": "last_verified_pre_handoff_main",
+        "editorial_acceptance_granted": "false",
+        "next_action": "human_reviews_one_out13_mp4_for_editorial_structure_subtitle_presentation_picture_audio_then_choose_one_explicit_gate",
+        "active_artifact": "clip-out13-editorial-video-candidate-v1-001",
         "remote_handoff_tip": "this_commit_after_push",
-        "handoff_sync_status": "final_handoff_commit_pushed_and_parity_verified",
         "source_of_truth": "true",
-        "owner_lane": "real_video_internal_automation",
-        "related": "docs/RUNTIME_STATE.md, docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json",
-        "upstream_parity": "0 0",
-        "handoff_base_head": "f9cfc1194368087c49ffd98b69f880d6109cabfb"
+        "owner_lane": "editorial_real_video_internal_review",
+        "related": "docs/RUNTIME_STATE.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, artifacts/ARTIFACTS.md, docs/AUTOMATION_BOUNDARY.md",
+        "upstream_parity": "0 0"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3408,7 +3487,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 23,
+      "boundary_term_count": 22,
       "status": "active"
     },
     {
@@ -3428,13 +3507,13 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 216,
+      "line_count": 257,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
         "type": "durable_decision_log",
         "status": "current",
-        "last_touched": "2026-07-21"
+        "last_touched": "2026-07-23"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3442,7 +3521,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 55,
+      "boundary_term_count": 63,
       "status": "current"
     },
     {
@@ -3518,13 +3597,13 @@
     {
       "path": "docs/idea-ledger.md",
       "title": "Idea Ledger - ClipPipeGen",
-      "line_count": 40,
+      "line_count": 44,
       "metadata": {
         "id": "idea-ledger",
         "title": "Idea Ledger - ClipPipeGen",
         "type": "durable_idea_ledger",
         "status": "current",
-        "last_touched": "2026-07-21"
+        "last_touched": "2026-07-23"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3532,7 +3611,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 23,
+      "boundary_term_count": 26,
       "status": "current"
     },
     {
@@ -3622,22 +3701,23 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 103,
+      "line_count": 97,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
-        "last_touched": "2026-07-21",
-        "current_slice": "OUT-12",
-        "phase": "internal_automation_operational",
-        "active_branch": "main",
-        "source_branch": "codex/out-12-one-command-real-video-automation-v1",
-        "verified_implementation_head": "a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a",
-        "verified_integrated_head_before_handoff": "f9cfc1194368087c49ffd98b69f880d6109cabfb",
+        "last_touched": "2026-07-23",
+        "current_slice": "OUT-13",
+        "phase": "internal_editorial_review_ready",
+        "active_branch": "codex/out-13-editorial-video-candidate-v1",
+        "source_branch": "codex/out-13-editorial-video-candidate-v1",
+        "verified_implementation_head": "c1566b359413e4fbd5034733ac41d03d17641aaa",
+        "sync_baseline_head": "2d8c4d6b77422c63ba27417674fe098c06072016",
+        "base_main_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
         "remote_handoff_tip": "this_commit_after_push",
         "upstream_parity": "0 0",
-        "health": "OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1"
+        "health": "OUT13_LOCAL_EXACT_REVIEW_READY_HUMAN_DECISION_PENDING"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3645,7 +3725,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 17,
+      "boundary_term_count": 22,
       "status": "current"
     },
     {
@@ -3760,8 +3840,8 @@
     },
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-      "title": "監修AI向け現状報告 — OUT-12 operational remote handoff",
-      "line_count": 97,
+      "title": "監修AI向け現状報告 — 2026-07-23 OUT-13同期・開発準備・長期目標",
+      "line_count": 159,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3769,7 +3849,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 30,
+      "boundary_term_count": 40,
       "status": "reference"
     },
     {
@@ -3830,8 +3910,8 @@
     }
   ],
   "doc_health": {
-    "finding_count": 30,
-    "finding_total": 30,
+    "finding_count": 31,
+    "finding_total": 31,
     "finding_limit": 50,
     "findings_truncated": false,
     "findings": [
@@ -3844,13 +3924,13 @@
       {
         "type": "over_guarded",
         "path": "README.md",
-        "detail": "Boundary terms appear 58 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 63 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (2394 lines) is likely carrying history.",
+        "detail": "Long active doc (2477 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -3880,13 +3960,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (2589 lines) is likely carrying history.",
+        "detail": "Long active doc (2639 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 994 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 1010 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3898,7 +3978,7 @@
       {
         "type": "over_guarded",
         "path": "docs/AUTOMATION_BOUNDARY.md",
-        "detail": "Boundary terms appear 64 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 70 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3910,7 +3990,7 @@
       {
         "type": "over_guarded",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Boundary terms appear 23 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 22 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3922,7 +4002,7 @@
       {
         "type": "over_guarded",
         "path": "docs/decision-log.md",
-        "detail": "Boundary terms appear 55 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 63 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3952,7 +4032,7 @@
       {
         "type": "over_guarded",
         "path": "docs/idea-ledger.md",
-        "detail": "Boundary terms appear 23 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 26 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -3977,6 +4057,12 @@
         "type": "over_guarded",
         "path": "docs/PREVIEW_PACK.md",
         "detail": "Boundary terms appear 44 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/project-context.md",
+        "detail": "Boundary terms appear 22 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4006,7 +4092,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-        "detail": "Boundary terms appear 30 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 40 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
