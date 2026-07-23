@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from array import array
+from datetime import datetime, timezone
 import hashlib
 import json
 import math
@@ -10,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 import uuid
 from html import escape
@@ -17,6 +19,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any, Callable
 from urllib.parse import parse_qs, urlparse
 
+from src.integrations.asset_fetch import yt_dlp_video
 from src.integrations.render import ffmpeg_tiny
 from src.integrations.render import real_video_pipeline as out12
 from src.integrations.render.subtitle_overlay_visual_proof import (
@@ -29,16 +32,16 @@ from src.integrations.render.subtitle_overlay_visual_proof import (
 from src.integrations.render.subtitle_preset_selector import select_subtitle_preset
 from src.pipeline.transcript import validate_transcript
 
-SCHEMA_VERSION = "clippipegen.out13.editorial_video_candidate.v3"
-PLAN_SCHEMA_VERSION = "clippipegen.out13.editorial_plan.v3"
+SCHEMA_VERSION = "clippipegen.out13.editorial_video_candidate.v4"
+PLAN_SCHEMA_VERSION = "clippipegen.out13.editorial_plan.v4"
 TIMELINE_SCHEMA_VERSION = "clippipegen.timeline_ir.v1"
 SUBTITLE_READBACK_SCHEMA_VERSION = "clippipegen.out13.subtitle_presentation.v1"
-MANIFEST_SCHEMA_VERSION = "clippipegen.out13.run_manifest.v3"
-PIPELINE_VERSION = "out13-editorial-video-candidate-v3"
+MANIFEST_SCHEMA_VERSION = "clippipegen.out13.run_manifest.v4"
+PIPELINE_VERSION = "out13-editorial-video-candidate-v4"
 ARTIFACT_ID_PATTERN = re.compile(r"^clip-out13-editorial-video-candidate-v1-\d{3}$")
 SUPPORTED_TRANSITIONS = frozenset({"sequence_start", "hard_cut"})
 READY_STATE = (
-    "OUT13_CANDIDATE_004_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
+    "OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
 )
 DEFAULT_REVIEW_PORT = 8076
 MIN_OUTPUT_SECONDS = 60.0
@@ -53,9 +56,14 @@ PCM_SAMPLE_WIDTH_BYTES = 2
 PCM_FRAME_SAMPLES = 320
 PCM_MAX_ALIGNMENT_FRAMES = 5
 PCM_MAX_DURATION_DELTA_SECONDS = 0.1
-PCM_MIN_FRAME_ENERGY_CORRELATION = 0.98
-PCM_MIN_RMS_RATIO = 0.9
-PCM_MAX_RMS_RATIO = 1.1
+PCM_FINE_LAG_SEARCH_SAMPLES = PCM_FRAME_SAMPLES
+PCM_FINE_LAG_MAX_POINTS = 8192
+PCM_MIN_WAVEFORM_SIMILARITY = 0.90
+PCM_MAX_GAIN_ALIGNED_NRMSE = 0.45
+PCM_MIN_COVERAGE_RATIO = 0.999
+PCM_MIN_GAIN_RATIO = 0.8
+PCM_MAX_GAIN_RATIO = 1.2
+YOUTUBE_PROVIDER_ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{11}$")
 
 
 class EditorialVideoCandidateError(Exception):
@@ -89,6 +97,7 @@ def build_editorial_video_candidate(
     started = time.monotonic()
     root = (base_dir or Path.cwd()).resolve()
     output = _resolved(root, output_dir)
+    run_journal_dir = _validated_run_journal_dir(output)
     stage: Path | None = None
     fingerprint: str | None = None
     current_stage = "source_resolution"
@@ -202,7 +211,7 @@ def build_editorial_video_candidate(
                 output_dir=output,
                 input_fingerprint=fingerprint,
                 artifact_id=artifact_id,
-                run_journal_dir=_run_journal_dir(output),
+                run_journal_dir=run_journal_dir,
             )
             resumed["elapsed_seconds"] = round(time.monotonic() - started, 3)
             return resumed
@@ -462,8 +471,9 @@ def build_editorial_video_candidate(
         )
         _write_json(stage / "run_manifest.json", manifest)
         validate_run_manifest(stage, manifest, expected_artifact_id=artifact_id)
-        out12.promote_output(stage=stage, output=output, force=force)
+        _promote_output_immutable(stage=stage, output=output)
         stage = None
+        validate_run_manifest(output, manifest, expected_artifact_id=artifact_id)
         package_tree_digest = _package_tree_digest(output)
         return {
             "artifact_id": artifact_id,
@@ -491,12 +501,11 @@ def build_editorial_video_candidate(
             "resolved_font_family": style.get("resolved_font_family"),
             "resolved_font_file": style.get("resolved_font_file"),
             "package_tree_digest": package_tree_digest,
-            "run_journal_dir": _run_journal_dir(output),
+            "run_journal_dir": run_journal_dir,
             "resume": False,
             "elapsed_seconds": round(time.monotonic() - started, 3),
         }
     except Exception as exc:
-        run_journal_dir = _run_journal_dir(output)
         failure_evidence_dir: Path | None = None
         if stage is not None and stage.exists():
             failure_evidence_dir = (
@@ -1369,6 +1378,7 @@ def build_run_manifest(
     plan_sha256: str,
     transcript_sha256: str,
 ) -> dict[str, Any]:
+    _validate_payload_tree_no_links(stage)
     files = []
     for path in sorted(item for item in stage.rglob("*") if item.is_file()):
         if path.relative_to(stage).as_posix() == "run_manifest.json":
@@ -1468,6 +1478,7 @@ def validate_run_manifest(
     *,
     expected_artifact_id: str,
 ) -> None:
+    _validate_payload_tree_no_links(stage)
     if manifest.get("schema_version") != MANIFEST_SCHEMA_VERSION:
         raise EditorialVideoCandidateError(
             "run manifest schema mismatch", stage="manifest"
@@ -1506,6 +1517,7 @@ def validate_run_manifest(
         seen_paths.add(folded_path)
         declared_paths.append(relative_path)
         path = stage / Path(*PurePosixPath(relative_path).parts)
+        _validate_payload_target(stage, path, relative_path)
         byte_size = row.get("byte_size")
         if (
             not path.is_file()
@@ -1557,7 +1569,7 @@ def resume_existing_output(
     artifact_id: str,
     run_journal_dir: Path | None = None,
 ) -> dict[str, Any]:
-    journal_dir = run_journal_dir or _run_journal_dir(output_dir)
+    journal_dir = _validated_run_journal_dir(output_dir, requested=run_journal_dir)
     package_tree_digest_before = _package_tree_digest(output_dir)
     manifest_path = output_dir / "run_manifest.json"
     if not manifest_path.is_file():
@@ -1657,7 +1669,7 @@ def write_failure_state(
     input_fingerprint: str | None,
     failure_evidence_dir: Path | None,
 ) -> None:
-    journal_dir = run_journal_dir or _run_journal_dir(output_dir)
+    journal_dir = _validated_run_journal_dir(output_dir, requested=run_journal_dir)
     payload = {
         "schema_version": SCHEMA_VERSION,
         "artifact_id": artifact_id,
@@ -1700,24 +1712,40 @@ def _validate_output_allocation(
     if not output.exists():
         return
     manifest_path = output / "run_manifest.json"
-    if manifest_path.is_file():
-        manifest = _read_json(manifest_path, "existing run manifest")
-        existing_id = str(manifest.get("artifact_id") or "")
-        if existing_id != artifact_id:
-            raise EditorialVideoCandidateError(
-                "output belongs to a different immutable candidate identity",
-                stage="source_resolution",
-            )
-        if manifest.get("state") == READY_STATE:
-            raise EditorialVideoCandidateError(
-                "successful candidate output is immutable; allocate the next identity",
-                stage="source_resolution",
-            )
-    if not force:
+    if manifest_path.exists() or manifest_path.is_symlink():
         raise EditorialVideoCandidateError(
-            "output directory already exists; use --resume or allocate a new identity",
+            "manifest-bearing candidate output is immutable regardless of schema, "
+            "state, identity, or parseability; allocate the next identity",
             stage="source_resolution",
         )
+    raise EditorialVideoCandidateError(
+        "output directory is already occupied; allocate a new identity",
+        stage="source_resolution",
+    )
+
+
+def _promote_output_immutable(*, stage: Path, output: Path) -> None:
+    """Publish a validated stage without replacing any existing path."""
+
+    try:
+        output.mkdir()
+    except FileExistsError as exc:
+        raise EditorialVideoCandidateError(
+            "output allocation was claimed before promotion; no files were replaced",
+            stage="manifest",
+        ) from exc
+    try:
+        children = sorted(
+            stage.iterdir(),
+            key=lambda path: (path.name == "run_manifest.json", path.name),
+        )
+        for child in children:
+            child.replace(output / child.name)
+        stage.rmdir()
+    except OSError as exc:
+        raise EditorialVideoCandidateError(
+            f"immutable output promotion failed closed: {exc}", stage="manifest"
+        ) from exc
 
 
 def _validate_authority_binding(
@@ -1752,6 +1780,14 @@ def _validate_authority_binding(
         if rights_manifest_path.is_file()
         else None,
     }
+    if not re.fullmatch(
+        rf"youtube:{YOUTUBE_PROVIDER_ID_PATTERN.pattern[1:-1]}",
+        str(actual["source_identity"] or ""),
+    ):
+        raise EditorialVideoCandidateError(
+            "source identity must use the exact youtube:VIDEO_ID namespace",
+            stage="source_resolution",
+        )
     if not rights_manifest_path.is_file() or resolved.get("rights_sha256") is None:
         raise EditorialVideoCandidateError(
             "rights manifest is required and must parse", stage="source_resolution"
@@ -1772,10 +1808,15 @@ def _validate_authority_binding(
     caption_evidence_path, caption_evidence = _read_bound_evidence(
         root, evidence.get("caption_provenance"), "caption provenance"
     )
-    caption_identity_path, caption_identity = _read_bound_evidence(
+    caption_receipt_path, caption_receipt = _read_bound_evidence(
         root,
-        evidence.get("caption_provider_identity"),
-        "caption provider identity",
+        evidence.get("caption_acquisition_receipt"),
+        "caption acquisition receipt",
+    )
+    source_audio_receipt_path, source_audio_receipt = _read_bound_evidence(
+        root,
+        evidence.get("source_audio_receipt"),
+        "source audio receipt",
     )
     receipt_source_path = _resolved(
         root, Path(str(source_receipt.get("output_path") or ""))
@@ -1820,6 +1861,13 @@ def _validate_authority_binding(
         raise EditorialVideoCandidateError(
             "transcript source-audio lineage mismatch", stage="source_resolution"
         )
+    _validate_source_audio_receipt(
+        root=root,
+        receipt_path=source_audio_receipt_path,
+        receipt=source_audio_receipt,
+        source_audio_path=source_audio_path,
+        source_audio_sha256=str(source_audio.get("sha256") or ""),
+    )
     source_audio_material_id = str(source_audio.get("material_id") or "")
     source_audio_material = next(
         (
@@ -1883,31 +1931,16 @@ def _validate_authority_binding(
         raise EditorialVideoCandidateError(
             "rights snapshot source identity mismatch", stage="source_resolution"
         )
-    caption_source_identity = caption_identity.get("source_identity") or {}
-    caption_dependency = (caption_identity.get("dependency_artifacts") or {}).get(
-        "subtitle_track"
-    ) or {}
-    caption_dependency_path = _resolved(
-        root, Path(str(caption_dependency.get("path") or ""))
+    caption_receipt_result = _validate_caption_acquisition_receipt(
+        root=root,
+        receipt_path=caption_receipt_path,
+        receipt=caption_receipt,
+        caption_track_path=caption_track_path,
+        caption_sha256=actual["caption_sha256"],
+        source_identity=actual["source_identity"],
     )
-    if (
-        caption_identity.get("artifact_kind") != "non_repo_artifact_handoff"
-        or caption_source_identity.get("youtube_id") != provider_id
-        or _youtube_provider_id(
-            str(caption_source_identity.get("source_url") or "")
-        )
-        != provider_id
-        or caption_source_identity.get("transcript_provider")
-        != "youtube_subtitles"
-        or caption_dependency_path != caption_track_path.resolve()
-        or caption_dependency.get("sha256") != actual["caption_sha256"]
-    ):
-        raise EditorialVideoCandidateError(
-            "caption provenance does not bind the provider video identity",
-            stage="source_resolution",
-        )
     return {
-        "schema_version": "clippipegen.out13.authority_binding.v2",
+        "schema_version": "clippipegen.out13.authority_binding.v3",
         "status": "passed",
         "artifact_id": artifact_id,
         **actual,
@@ -1927,6 +1960,10 @@ def _validate_authority_binding(
             "source_audio_path": _display_path(source_audio_path, root),
             "source_audio_sha256": source_audio["sha256"],
             "source_audio_material_id": source_audio_material_id,
+            "source_audio_receipt_path": _display_path(
+                source_audio_receipt_path, root
+            ),
+            "source_audio_receipt_sha256": _sha256(source_audio_receipt_path),
             "source_video_audio_lineage": audio_lineage,
         },
         "caption": {
@@ -1939,10 +1976,14 @@ def _validate_authority_binding(
                 caption_evidence_path, root
             ),
             "provenance_evidence_sha256": _sha256(caption_evidence_path),
-            "provider_identity_evidence_path": _display_path(
-                caption_identity_path, root
+            "acquisition_verification_receipt_path": _display_path(
+                caption_receipt_path, root
             ),
-            "provider_identity_evidence_sha256": _sha256(caption_identity_path),
+            "acquisition_verification_receipt_sha256": _sha256(
+                caption_receipt_path
+            ),
+            "acquisition_verification_method": caption_receipt_result["method"],
+            "acquisition_verification_result": caption_receipt_result["result"],
             "provider_video_id": provider_id,
             "provider_locator_validation": "passed",
             "official_authorship_claim": False,
@@ -1957,6 +1998,272 @@ def _validate_authority_binding(
             "status": str((rights.get("compliance_check") or {}).get("status") or "unknown"),
             "snapshot_only": True,
         },
+    }
+
+
+def _validate_source_audio_receipt(
+    *,
+    root: Path,
+    receipt_path: Path,
+    receipt: dict[str, Any],
+    source_audio_path: Path,
+    source_audio_sha256: str,
+) -> None:
+    output_path = _resolved(root, Path(str(receipt.get("output_path") or "")))
+    output_rows = receipt.get("outputs") or []
+    matching_output = next(
+        (
+            row
+            for row in output_rows
+            if isinstance(row, dict)
+            and _resolved(root, Path(str(row.get("path") or "")))
+            == source_audio_path.resolve()
+        ),
+        None,
+    )
+    tools = {
+        str(row.get("name") or "")
+        for row in receipt.get("tools") or []
+        if isinstance(row, dict) and str(row.get("version") or "").strip()
+    }
+    commands = receipt.get("commands") or []
+    if (
+        receipt.get("mode") != "yt-dlp-audio"
+        or receipt.get("provider") != "yt-dlp"
+        or output_path != source_audio_path.resolve()
+        or receipt.get("sha256") != source_audio_sha256
+        or receipt.get("byte_size") != source_audio_path.stat().st_size
+        or matching_output is None
+        or matching_output.get("sha256") != source_audio_sha256
+        or matching_output.get("byte_size") != source_audio_path.stat().st_size
+        or not {"yt-dlp", "ffmpeg"}.issubset(tools)
+        or len(commands) < 2
+        or any(
+            not isinstance(row, dict) or row.get("exit_code") != 0
+            for row in commands
+        )
+    ):
+        raise EditorialVideoCandidateError(
+            f"source audio receipt does not bind acquisition bytes: {receipt_path}",
+            stage="source_resolution",
+        )
+
+
+def _validate_caption_acquisition_receipt(
+    *,
+    root: Path,
+    receipt_path: Path,
+    receipt: dict[str, Any],
+    caption_track_path: Path,
+    caption_sha256: str,
+    source_identity: str,
+) -> dict[str, Any]:
+    provider_id = source_identity.partition(":")[2]
+    provider = receipt.get("provider") or {}
+    acquisition = receipt.get("acquisition") or {}
+    local = receipt.get("local_caption") or {}
+    result = receipt.get("result") or {}
+    method = acquisition.get("method") or {}
+    local_path = _resolved(root, Path(str(local.get("path") or "")))
+    if (
+        receipt.get("schema_version")
+        != "clippipegen.caption_acquisition_verification.v1"
+        or receipt.get("receipt_kind") != "caption_acquisition_verification"
+        or receipt.get("status") != "passed"
+        or receipt.get("source_identity") != source_identity
+        or provider.get("name") != "youtube"
+        or provider.get("video_id") != provider_id
+        or not YOUTUBE_PROVIDER_ID_PATTERN.fullmatch(str(provider_id or ""))
+        or _youtube_provider_id(str(provider.get("locator") or "")) != provider_id
+        or acquisition.get("language") != "ja"
+        or acquisition.get("format") != "json3"
+        or method.get("name") != "yt_dlp_anonymous_subtitle_sha256_v1"
+        or method.get("anonymous") is not True
+        or method.get("credentials_used") is not False
+        or method.get("cookies_used") is not False
+        or method.get("oauth_used") is not False
+        or method.get("mfa_used") is not False
+        or method.get("exit_code") != 0
+        or not str(method.get("tool") or "").strip()
+        or not str(method.get("tool_version") or "").strip()
+        or local_path != caption_track_path.resolve()
+        or local.get("sha256") != caption_sha256
+        or local.get("byte_size") != caption_track_path.stat().st_size
+        or acquisition.get("retrieved_sha256") != caption_sha256
+        or acquisition.get("retrieved_byte_size") != caption_track_path.stat().st_size
+        or result.get("status") != "passed"
+        or result.get("provider_identity_verified") is not True
+        or result.get("exact_caption_bytes_verified") is not True
+        or result.get("official_authorship_claim") is not False
+    ):
+        raise EditorialVideoCandidateError(
+            f"caption acquisition receipt is not a trusted provider lineage root: {receipt_path}",
+            stage="source_resolution",
+        )
+    return {
+        "method": str(method["name"]),
+        "result": "provider_identity_and_exact_caption_bytes_verified",
+    }
+
+
+def write_caption_acquisition_verification_receipt(
+    *,
+    root: Path,
+    source_identity: str,
+    provider_locator: str,
+    caption_track_path: Path,
+    output_path: Path,
+    language: str = "ja",
+    yt_dlp_path: str | Path | None = None,
+    runner: ffmpeg_tiny.Runner = subprocess.run,
+) -> dict[str, Any]:
+    """Verify provider caption bytes anonymously and write a project-local receipt."""
+
+    root = root.resolve()
+    caption_track = _resolved(root, caption_track_path)
+    receipt_path = _resolved(root, output_path)
+    provider_id = source_identity.partition(":")[2]
+    if (
+        not re.fullmatch(
+            rf"youtube:{YOUTUBE_PROVIDER_ID_PATTERN.pattern[1:-1]}", source_identity
+        )
+        or _youtube_provider_id(provider_locator) != provider_id
+        or language != "ja"
+    ):
+        raise EditorialVideoCandidateError(
+            "caption receipt requires an exact youtube:VIDEO_ID locator and ja track",
+            stage="source_resolution",
+        )
+    for path, label in (
+        (caption_track, "caption track"),
+        (receipt_path.parent, "receipt parent"),
+    ):
+        try:
+            path.relative_to(root)
+        except ValueError as exc:
+            raise EditorialVideoCandidateError(
+                f"{label} must be project-local", stage="source_resolution"
+            ) from exc
+    if not caption_track.is_file():
+        raise EditorialVideoCandidateError(
+            "caption track is missing", stage="source_resolution"
+        )
+    tool, _ = yt_dlp_video.discover_yt_dlp(yt_dlp_path=yt_dlp_path)
+    if not tool:
+        raise EditorialVideoCandidateError(
+            "yt-dlp is required for anonymous caption verification",
+            stage="source_resolution",
+        )
+    version_result = runner(
+        [str(tool), "--version"],
+        capture_output=True,
+        text=True,
+        timeout=out12.COMMAND_TIMEOUT_SECONDS,
+    )
+    if version_result.returncode != 0:
+        raise EditorialVideoCandidateError(
+            "yt-dlp version probe failed", stage="source_resolution"
+        )
+    with tempfile.TemporaryDirectory(prefix="clippipegen_out13_caption_") as temp_dir:
+        template = Path(temp_dir) / "caption.%(ext)s"
+        command = [
+            str(tool),
+            "--no-playlist",
+            "--skip-download",
+            "--write-subs",
+            "--sub-langs",
+            language,
+            "--sub-format",
+            "json3",
+            "--no-progress",
+            "--no-warnings",
+            "-o",
+            str(template),
+            provider_locator,
+        ]
+        result = runner(
+            command,
+            capture_output=True,
+            text=True,
+            timeout=out12.COMMAND_TIMEOUT_SECONDS,
+        )
+        retrieved = sorted(Path(temp_dir).glob("caption*.json3"))
+        if result.returncode != 0 or len(retrieved) != 1:
+            stderr = str(result.stderr or "").encode("utf-8")
+            raise EditorialVideoCandidateError(
+                "anonymous caption verification failed: "
+                f"exit={result.returncode}; stderr_sha256="
+                f"{hashlib.sha256(stderr).hexdigest()}",
+                stage="source_resolution",
+            )
+        retrieved_path = retrieved[0]
+        retrieved_sha256 = _sha256(retrieved_path)
+        retrieved_byte_size = retrieved_path.stat().st_size
+    caption_sha256 = _sha256(caption_track)
+    caption_byte_size = caption_track.stat().st_size
+    if (
+        retrieved_sha256 != caption_sha256
+        or retrieved_byte_size != caption_byte_size
+    ):
+        raise EditorialVideoCandidateError(
+            "provider caption bytes do not match the project-local track",
+            stage="source_resolution",
+        )
+    payload = {
+        "schema_version": "clippipegen.caption_acquisition_verification.v1",
+        "receipt_kind": "caption_acquisition_verification",
+        "status": "passed",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "source_identity": source_identity,
+        "provider": {
+            "name": "youtube",
+            "video_id": provider_id,
+            "locator": provider_locator,
+        },
+        "acquisition": {
+            "language": language,
+            "format": "json3",
+            "retrieved_sha256": retrieved_sha256,
+            "retrieved_byte_size": retrieved_byte_size,
+            "method": {
+                "name": "yt_dlp_anonymous_subtitle_sha256_v1",
+                "anonymous": True,
+                "credentials_used": False,
+                "cookies_used": False,
+                "oauth_used": False,
+                "mfa_used": False,
+                "tool": "yt-dlp",
+                "tool_version": str(version_result.stdout or "").strip(),
+                "exit_code": 0,
+                "command_contract": [
+                    "--no-playlist",
+                    "--skip-download",
+                    "--write-subs",
+                    "--sub-langs ja",
+                    "--sub-format json3",
+                    "--no-progress",
+                    "--no-warnings",
+                ],
+            },
+        },
+        "local_caption": {
+            "path": _display_path(caption_track, root),
+            "sha256": caption_sha256,
+            "byte_size": caption_byte_size,
+        },
+        "result": {
+            "status": "passed",
+            "provider_identity_verified": True,
+            "exact_caption_bytes_verified": True,
+            "official_authorship_claim": False,
+        },
+    }
+    _write_json(receipt_path, payload)
+    return {
+        "receipt_path": receipt_path,
+        "receipt_sha256": _sha256(receipt_path),
+        "caption_sha256": caption_sha256,
+        "provider_video_id": provider_id,
     }
 
 
@@ -2043,7 +2350,8 @@ def _verify_source_audio_lineage(
         )
     return {
         "status": "passed",
-        "method": "canonical_pcm_decode_and_frame_energy_correlation",
+        "lineage_class": "content_verified_exact_source_audio",
+        "method": "full_coverage_signed_pcm_waveform_identity_v1",
         "source_video_sha256": source_video_sha256,
         "source_audio_file_sha256": source_audio_sha256,
         "decode_contract": {
@@ -2054,6 +2362,8 @@ def _verify_source_audio_lineage(
             "sample_width_bytes": PCM_SAMPLE_WIDTH_BYTES,
             "frame_samples": PCM_FRAME_SAMPLES,
             "max_alignment_frames": PCM_MAX_ALIGNMENT_FRAMES,
+            "energy_envelope_role": "coarse_lag_estimation_only",
+            "decision_signal": "signed_pcm_waveform_similarity_gain_and_residual",
         },
         **comparison,
         "transcript_declaration_checks": {
@@ -2094,8 +2404,8 @@ def _compare_canonical_pcm(
             "canonical PCM payload is too short for lineage comparison",
             stage="source_resolution",
         )
-    best_correlation = -1.0
-    best_lag = 0
+    best_energy_correlation = -1.0
+    best_energy_lag = 0
     for lag in range(-PCM_MAX_ALIGNMENT_FRAMES, PCM_MAX_ALIGNMENT_FRAMES + 1):
         if lag >= 0:
             left = video_energy[lag:]
@@ -2105,28 +2415,36 @@ def _compare_canonical_pcm(
             right = audio_energy[-lag:]
         count = min(len(left), len(right))
         correlation = _pearson_correlation(left[:count], right[:count])
-        if correlation > best_correlation:
-            best_correlation = correlation
-            best_lag = lag
-    video_rms = math.sqrt(
-        sum(float(value) * value for value in video_samples) / len(video_samples)
+        if correlation > best_energy_correlation:
+            best_energy_correlation = correlation
+            best_energy_lag = lag
+    coarse_lag_samples = best_energy_lag * PCM_FRAME_SAMPLES
+    fine_lag_start = coarse_lag_samples - PCM_FINE_LAG_SEARCH_SAMPLES
+    fine_lag_end = coarse_lag_samples + PCM_FINE_LAG_SEARCH_SAMPLES
+    best_waveform_similarity = -1.0
+    best_lag_samples = coarse_lag_samples
+    for lag_samples in range(fine_lag_start, fine_lag_end + 1):
+        similarity = _sampled_signed_similarity(
+            video_samples, audio_samples, lag_samples
+        )
+        if similarity > best_waveform_similarity:
+            best_waveform_similarity = similarity
+            best_lag_samples = lag_samples
+    waveform = _signed_waveform_metrics(
+        video_samples, audio_samples, best_lag_samples
     )
-    audio_rms = math.sqrt(
-        sum(float(value) * value for value in audio_samples) / len(audio_samples)
-    )
-    rms_ratio = video_rms / audio_rms if audio_rms > 0 else 0.0
     pcm_hashes_match = hashlib.sha256(source_video_pcm).digest() == hashlib.sha256(
         source_audio_pcm
     ).digest()
     equivalent = (
         duration_delta <= PCM_MAX_DURATION_DELTA_SECONDS
-        and (
-            pcm_hashes_match
-            or (
-                best_correlation >= PCM_MIN_FRAME_ENERGY_CORRELATION
-                and PCM_MIN_RMS_RATIO <= rms_ratio <= PCM_MAX_RMS_RATIO
-            )
-        )
+        and waveform["coverage_ratio"] >= PCM_MIN_COVERAGE_RATIO
+        and waveform["signed_waveform_similarity"]
+        >= PCM_MIN_WAVEFORM_SIMILARITY
+        and PCM_MIN_GAIN_RATIO
+        <= waveform["least_squares_gain"]
+        <= PCM_MAX_GAIN_RATIO
+        and waveform["gain_aligned_nrmse"] <= PCM_MAX_GAIN_ALIGNED_NRMSE
     )
     return {
         "source_video_pcm_sha256": hashlib.sha256(source_video_pcm).hexdigest(),
@@ -2138,14 +2456,20 @@ def _compare_canonical_pcm(
         "source_audio_duration_seconds": round(audio_duration, 6),
         "duration_delta_seconds": round(duration_delta, 6),
         "duration_check_passed": duration_delta <= PCM_MAX_DURATION_DELTA_SECONDS,
-        "frame_energy_correlation": round(best_correlation, 9),
-        "frame_energy_correlation_threshold": PCM_MIN_FRAME_ENERGY_CORRELATION,
-        "alignment_lag_frames": best_lag,
-        "alignment_lag_seconds": round(
-            best_lag * PCM_FRAME_SAMPLES / PCM_SAMPLE_RATE_HZ, 6
+        "coarse_frame_energy_correlation": round(best_energy_correlation, 9),
+        "coarse_alignment_lag_frames": best_energy_lag,
+        "coarse_alignment_lag_seconds": round(
+            coarse_lag_samples / PCM_SAMPLE_RATE_HZ, 6
         ),
-        "rms_ratio": round(rms_ratio, 9),
-        "rms_ratio_bounds": [PCM_MIN_RMS_RATIO, PCM_MAX_RMS_RATIO],
+        "alignment_lag_samples": best_lag_samples,
+        "alignment_lag_seconds": round(
+            best_lag_samples / PCM_SAMPLE_RATE_HZ, 6
+        ),
+        **waveform,
+        "signed_waveform_similarity_threshold": PCM_MIN_WAVEFORM_SIMILARITY,
+        "gain_ratio_bounds": [PCM_MIN_GAIN_RATIO, PCM_MAX_GAIN_RATIO],
+        "gain_aligned_nrmse_threshold": PCM_MAX_GAIN_ALIGNED_NRMSE,
+        "coverage_ratio_threshold": PCM_MIN_COVERAGE_RATIO,
         "equivalent": equivalent,
     }
 
@@ -2160,6 +2484,76 @@ def _pcm_frame_energy(samples: array[int]) -> list[float]:
             0, len(samples) - PCM_FRAME_SAMPLES + 1, PCM_FRAME_SAMPLES
         )
     ]
+
+
+def _aligned_sample_window(
+    left: array[int], right: array[int], lag_samples: int
+) -> tuple[int, int, int]:
+    left_start = max(0, lag_samples)
+    right_start = max(0, -lag_samples)
+    count = min(len(left) - left_start, len(right) - right_start)
+    return left_start, right_start, max(0, count)
+
+
+def _sampled_signed_similarity(
+    left: array[int], right: array[int], lag_samples: int
+) -> float:
+    left_start, right_start, count = _aligned_sample_window(
+        left, right, lag_samples
+    )
+    if count < 2:
+        return -1.0
+    step = max(1, math.ceil(count / PCM_FINE_LAG_MAX_POINTS))
+    dot = 0.0
+    left_square = 0.0
+    right_square = 0.0
+    for offset in range(0, count, step):
+        left_value = float(left[left_start + offset])
+        right_value = float(right[right_start + offset])
+        dot += left_value * right_value
+        left_square += left_value * left_value
+        right_square += right_value * right_value
+    denominator = math.sqrt(left_square * right_square)
+    return dot / denominator if denominator else -1.0
+
+
+def _signed_waveform_metrics(
+    left: array[int], right: array[int], lag_samples: int
+) -> dict[str, Any]:
+    left_start, right_start, count = _aligned_sample_window(
+        left, right, lag_samples
+    )
+    if count < 2:
+        raise EditorialVideoCandidateError(
+            "canonical PCM overlap is too short for waveform comparison",
+            stage="source_resolution",
+        )
+    dot = 0.0
+    left_square = 0.0
+    right_square = 0.0
+    for offset in range(count):
+        left_value = float(left[left_start + offset])
+        right_value = float(right[right_start + offset])
+        dot += left_value * right_value
+        left_square += left_value * left_value
+        right_square += right_value * right_value
+    denominator = math.sqrt(left_square * right_square)
+    similarity = dot / denominator if denominator else -1.0
+    gain = dot / right_square if right_square else 0.0
+    residual_square = 0.0
+    for offset in range(count):
+        left_value = float(left[left_start + offset])
+        right_value = float(right[right_start + offset])
+        residual = left_value - gain * right_value
+        residual_square += residual * residual
+    nrmse = math.sqrt(residual_square / left_square) if left_square else math.inf
+    return {
+        "compared_sample_count": count,
+        "coverage_ratio": round(count / max(len(left), len(right)), 12),
+        "signed_waveform_similarity": round(similarity, 9),
+        "least_squares_gain": round(gain, 9),
+        "gain_aligned_nrmse": round(nrmse, 9),
+    }
 
 
 def _pearson_correlation(left: list[float], right: list[float]) -> float:
@@ -2190,7 +2584,11 @@ def _youtube_provider_id(locator: str) -> str | None:
         provider_id = parsed.path.strip("/").split("/", maxsplit=1)[0] or None
     else:
         provider_id = None
-    return provider_id if provider_id and re.fullmatch(r"[A-Za-z0-9_-]{6,}", provider_id) else None
+    return (
+        provider_id
+        if provider_id and YOUTUBE_PROVIDER_ID_PATTERN.fullmatch(provider_id)
+        else None
+    )
 
 
 def _read_bound_evidence(
@@ -2453,8 +2851,106 @@ def _package_tree_digest(output_dir: Path) -> str:
     return _payload_tree_digest(rows)
 
 
+def _validate_payload_tree_no_links(root: Path) -> None:
+    if _path_is_linkish(root):
+        raise EditorialVideoCandidateError(
+            "run manifest package root must not be a symlink", stage="manifest"
+        )
+    resolved_root = root.resolve(strict=True)
+    for path in root.rglob("*"):
+        if _path_is_linkish(path):
+            raise EditorialVideoCandidateError(
+                f"run manifest payload symlink is forbidden: "
+                f"{path.relative_to(root).as_posix()}",
+                stage="manifest",
+            )
+        try:
+            path.resolve(strict=True).relative_to(resolved_root)
+        except (OSError, ValueError) as exc:
+            raise EditorialVideoCandidateError(
+                f"run manifest payload target escapes package: "
+                f"{path.relative_to(root).as_posix()}",
+                stage="manifest",
+            ) from exc
+
+
+def _validate_payload_target(root: Path, path: Path, relative_path: str) -> None:
+    current = root
+    for part in PurePosixPath(relative_path).parts:
+        current = current / part
+        if _path_is_linkish(current):
+            raise EditorialVideoCandidateError(
+                f"run manifest payload symlink is forbidden: {relative_path}",
+                stage="manifest",
+            )
+    if not path.exists():
+        return
+    try:
+        path.resolve(strict=True).relative_to(root.resolve(strict=True))
+    except (OSError, ValueError) as exc:
+        raise EditorialVideoCandidateError(
+            f"run manifest payload target escapes package: {relative_path}",
+            stage="manifest",
+        ) from exc
+
+
 def _run_journal_dir(output_dir: Path) -> Path:
     return output_dir.parent / f"{output_dir.name}.run_journal"
+
+
+def _validated_run_journal_dir(
+    output_dir: Path, *, requested: Path | None = None
+) -> Path:
+    output = output_dir.resolve(strict=False)
+    expected = _run_journal_dir(output)
+    raw_requested = requested if requested is not None else expected
+    if ".." in raw_requested.parts:
+        raise EditorialVideoCandidateError(
+            "run journal aliases are forbidden", stage="source_resolution"
+        )
+    if _path_has_symlink_component(raw_requested) or _path_has_symlink_component(
+        expected
+    ):
+        raise EditorialVideoCandidateError(
+            "run journal symlink paths are forbidden", stage="source_resolution"
+        )
+    journal = raw_requested.resolve(strict=False)
+    if journal != expected.resolve(strict=False):
+        raise EditorialVideoCandidateError(
+            "run journal override must be the deterministic output sibling",
+            stage="source_resolution",
+        )
+    try:
+        journal.relative_to(output)
+    except ValueError:
+        pass
+    else:
+        raise EditorialVideoCandidateError(
+            "run journal must remain external to the candidate package",
+            stage="source_resolution",
+        )
+    if journal == output:
+        raise EditorialVideoCandidateError(
+            "run journal must not equal the candidate package",
+            stage="source_resolution",
+        )
+    return expected
+
+
+def _path_has_symlink_component(path: Path) -> bool:
+    current = path
+    while True:
+        if _path_is_linkish(current):
+            return True
+        parent = current.parent
+        if parent == current:
+            return False
+        current = parent
+
+
+def _path_is_linkish(path: Path) -> bool:
+    is_junction = getattr(path, "is_junction", None)
+    return path.is_symlink() or bool(is_junction and is_junction())
 
 
 def _manifest_self_hash(manifest: dict[str, Any]) -> str:

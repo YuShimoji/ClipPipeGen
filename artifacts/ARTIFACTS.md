@@ -7,8 +7,9 @@ follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
 current artifact, then verify an artifact-specific launcher exists before using it.
-OUT-13 candidate 004 is the current immutable, transitively lineage-bound editorial route and its exact
-ignored same-machine review package is available on Thank. Candidate 003 remains preserved technical
+OUT-13 candidate 005 is the current strongly immutable, content-lineage-bound editorial route and its exact
+ignored same-machine review package is available on Thank. Candidate 004 remains an immutable parallel
+human-review target with no inferred verdict. Candidate 003 remains preserved technical
 predecessor evidence, not an accepted or rejected candidate. Candidate 001 remains a historical
 source-host receipt and candidate 002 is an immutable superseded local rebuild. OUT-12 is its
 operational one-command real-video predecessor. OUT-11 is the
@@ -26,11 +27,48 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-out13-editorial-video-candidate-v1-005`
+
+| Field | Value |
+|---|---|
+| title | OUT-13 Strongly Immutable, Content-Lineage-Bound Editorial Video Candidate on Thank |
+| purpose | Preserve candidate 004 editorial/media bytes while making every manifest-bearing output permanently immutable, closing promotion and journal alias races, replacing energy-only audio acceptance with signed full-coverage waveform identity, and binding exact provider caption bytes to an anonymous acquisition verification receipt. |
+| storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine inputs, machine-generated caption receipt, plan, and review package. No source or generated media is tracked or portable through Git. |
+| repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` |
+| local_artifact_path | `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/` |
+| state | `OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1` |
+| source | `youtube:7J5aS_pcBj4`; SHA `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`; 35,281,366 bytes; 164.768798s; 1920x1080. |
+| authority | Source receipt `b6140ff9...e608`; material ledger `9354f88a...4110`; transcript `4a7b4fd8...3495`; source-audio receipt `a1764c8c...df3f`; decoded-video/audio PCM `48f9d946...44b8` / `f608fd1a...fcfcd`; coverage `0.999647612317`, signed similarity `0.947803984`, gain `0.943714876`, NRMSE `0.318853585`; provider JSON3 `3c15535f...9919`, provenance `e4680280...65e`, anonymous acquisition receipt `aeff5613...90e4`; rights `4302c4a1...bb8`; Keifont `d5795bdf...ed6f`; `authority_binding.status=passed`. Provider timing/text only; no official authorship, speaker, lyric, rights, production, or publication claim. |
+| editorial plan | Exact input SHA `27ef1aa9d7aa29267e43d4b9b33dc17051acbf8f5b38dc4a3b50649e1ca6dac2`; identity/schema/evidence aside, candidate 004 plan is semantically equal; seven chronological cuts across five sections; eight omitted ranges equal the source complement; utilization 0.781671; mapping coverage 1.0. |
+| final_video | Byte-identical to candidate 004: H.264 High/AAC yuv420p, 1920x1080, 128.833333s, 82,594,810 bytes, SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`. |
+| subtitle presentation | SRT, ASS, subtitle presentation readback, and all eight review evidence images are byte-identical to candidate 004. 102 provider-sidecar cues; Keifont 100px / 115px line height / 8px outline / 2px shadow / maximum 2 lines; all mapping/overflow/violation counts 0. |
+| validation | Initial generation succeeded with zero corrective render. Full A/V decode exit 0; browser page 200 / MP4 Range 206; readyState 4; 1920x1080; duration 128.833333s; four evidence images loaded; 7 cut / 8 omission / 14 seek controls; horizontal overflow false; console/media warnings or errors 0. OUT-13 targeted module: 58 passed. |
+| visual boundary | Browser and generated evidence were smoke-checked, but package `visual_observation` remains `unverified`; no human full-view verdict is inferred or recorded. |
+| manifest | Exact link-free closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `8257a15c99d04f72ec6c917b99c96a4c87d8704019ca84de8865c87ea64cc054`; input fingerprint `bbeb2514dd5094499d82fcb6999d3261dda1aaaec80daf0fbf2ff21f8e6a6a0b`; self-integrity SHA `5d7550a7815ad1e412681b4c2562b0674c808d0d67adf7aa38597a70b761d32b`. Legacy/malformed/unknown manifests, symlink/junction targets, promotion races, and journal aliases are negative-tested. |
+| resume | `render_executed=false`; five cache hits; complete package tree digest before/after `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040`; rejected allocation also left the digest unchanged. Events are external under sibling `out13_editorial_video_candidate_v005.run_journal/`. |
+| preview_url | `http://127.0.0.1:8076/review/index.html` while the artifact-specific server is running. The validation listener was stopped after QA. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1` |
+| local availability | 2026-07-24 live audit: 25 package files / 87,123,995 bytes plus 2 external journal files / 1,807 bytes available on Thank. `episodes/` remains ignored and has zero tracked files. |
+| decision_required | Human reviewer must bind accept / bounded repair / reject to exact candidate 005. Candidate 004 remains a byte-identical parallel review target with no inferred verdict. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `acceptance_granted=false`
+- `rights_status=pending`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `thumbnail_acceptance=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
+
 ## `clip-out13-editorial-video-candidate-v1-004`
 
 | Field | Value |
 |---|---|
-| title | OUT-13 Immutable, Transitively Lineage-Bound Editorial Video Candidate on Thank |
+| title | OUT-13 v3 Immutable Lineage Candidate, Retained Parallel Human-Review Target |
 | purpose | Bind an explicit chronological editorial plan to this host's exact source, transitive transcript-audio derivation, exact provider-video caption provenance, rights snapshot, and font bytes; seal the successful package as a closed immutable file set; expose one exact MP4 for human editorial review. |
 | storage class | Tracked CLI/render integration/tests/docs plus an ignored same-machine input and review package. No source or generated media is tracked or portable through Git. |
 | repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` |
@@ -48,7 +86,7 @@ opened by the root launcher.
 | preview_url | `http://127.0.0.1:8076/review/index.html` while the artifact-specific server is running. The validation listener was stopped after QA. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v004\review\open_preview.ps1` |
 | local availability | 2026-07-24 live audit: 25 package files / 87,120,417 bytes plus 2 external journal files / 1,746 bytes available on Thank. `episodes/` remains ignored and has zero tracked files. |
-| decision_required | Human reviewer must bind accept / bounded repair / reject to exact candidate 004. Evidence-bound explicit-plan rendering automation is accepted; automated semantic selection remains unverified. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+| decision_required | No verdict was inferred or recorded. Candidate 004 remains available as a parallel human-review target while candidate 005 is the active strong-contract successor. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
 

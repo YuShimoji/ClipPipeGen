@@ -244,7 +244,7 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert (
         "human_entrypoint: "
         "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v004/review/index.html"
+        "out13_editorial_video_candidate_v005/review/index.html"
         in runtime
     )
     assert "portable_entrypoint: null" in runtime
@@ -256,7 +256,7 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert (
         "health: "
-        "OUT13_CANDIDATE_004_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
+        "OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
         in runtime
     )
     assert "current_slice: OUT-13" in runtime
@@ -265,11 +265,10 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "immutable_transitively_lineage_bound_reviewable_v1"
         in runtime
     )
-    assert "active_artifact: clip-out13-editorial-video-candidate-v1-004" in runtime
+    assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
     assert (
         "review_status: "
-        "machine_validated_browser_verified_worker_sample_observed_"
-        "human_editorial_review_pending"
+        "machine_validated_browser_verified_human_editorial_review_pending"
         in runtime
     )
     assert "automation_acceptance_granted: true" in runtime

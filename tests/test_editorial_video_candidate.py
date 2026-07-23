@@ -3,6 +3,7 @@ from __future__ import annotations
 from array import array
 import json
 from pathlib import Path
+import subprocess
 
 import pytest
 
@@ -15,6 +16,21 @@ from src.integrations.render.subtitle_overlay_visual_proof import (
     _subtitle_layout_contract,
 )
 from src.integrations.render.subtitle_preset_selector import select_subtitle_preset
+
+
+def _directory_link_or_skip(link: Path, target: Path) -> None:
+    try:
+        link.symlink_to(target, target_is_directory=True)
+        return
+    except OSError:
+        result = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(link), str(target)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if result.returncode != 0:
+            pytest.skip("directory symlink/junction creation is unavailable")
 
 
 def _pcm_fixture_bytes(offset: int = 0) -> bytes:
@@ -68,8 +84,8 @@ def _plan() -> dict:
     return {
         "schema_version": candidate.PLAN_SCHEMA_VERSION,
         "source": {
-            "identity": "youtube:editorial",
-            "provider_locator": "https://www.youtube.com/watch?v=editorial",
+            "identity": "youtube:AbCdEf12345",
+            "provider_locator": "https://www.youtube.com/watch?v=AbCdEf12345",
             "sha256": "a" * 64,
             "duration_seconds": 120.0,
         },
@@ -192,9 +208,10 @@ def _authority_fixture(tmp_path: Path) -> dict:
     transcript_path = tmp_path / "transcript.json"
     rights = tmp_path / "rights.json"
     receipt = tmp_path / "source_receipt.json"
+    audio_receipt = tmp_path / "source_audio_receipt.json"
     ledger = tmp_path / "material_ledger.json"
     evidence = tmp_path / "caption_evidence.json"
-    provider_identity = tmp_path / "caption_provider_identity.json"
+    caption_receipt = tmp_path / "caption_acquisition_receipt.json"
     source.write_bytes(_pcm_fixture_bytes())
     audio.write_bytes(_pcm_fixture_bytes())
     caption.write_text('{"events":[]}\n', encoding="utf-8")
@@ -224,7 +241,7 @@ def _authority_fixture(tmp_path: Path) -> dict:
         json.dumps(
             {
                 "source_video": {
-                    "url": "https://www.youtube.com/watch?v=editorial"
+                    "url": "https://www.youtube.com/watch?v=AbCdEf12345"
                 },
                 "compliance_check": {"status": "pending"},
             }
@@ -233,6 +250,33 @@ def _authority_fixture(tmp_path: Path) -> dict:
     )
     receipt.write_text(
         json.dumps({"output_path": str(source), "sha256": source_sha}),
+        encoding="utf-8",
+    )
+    audio_receipt.write_text(
+        json.dumps(
+            {
+                "mode": "yt-dlp-audio",
+                "provider": "yt-dlp",
+                "output_path": str(audio),
+                "sha256": audio_sha,
+                "byte_size": audio.stat().st_size,
+                "tools": [
+                    {"name": "yt-dlp", "version": "test"},
+                    {"name": "ffmpeg", "version": "test"},
+                ],
+                "commands": [
+                    {"summary": "yt-dlp", "exit_code": 0},
+                    {"summary": "ffmpeg", "exit_code": 0},
+                ],
+                "outputs": [
+                    {
+                        "path": str(audio),
+                        "sha256": audio_sha,
+                        "byte_size": audio.stat().st_size,
+                    }
+                ],
+            }
+        ),
         encoding="utf-8",
     )
     ledger.write_text(
@@ -256,20 +300,45 @@ def _authority_fixture(tmp_path: Path) -> dict:
         ),
         encoding="utf-8",
     )
-    provider_identity.write_text(
+    caption_receipt.write_text(
         json.dumps(
             {
-                "artifact_kind": "non_repo_artifact_handoff",
-                "source_identity": {
-                    "youtube_id": "editorial",
-                    "source_url": "https://www.youtube.com/watch?v=editorial",
-                    "transcript_provider": "youtube_subtitles",
+                "schema_version": "clippipegen.caption_acquisition_verification.v1",
+                "receipt_kind": "caption_acquisition_verification",
+                "status": "passed",
+                "source_identity": "youtube:AbCdEf12345",
+                "provider": {
+                    "name": "youtube",
+                    "video_id": "AbCdEf12345",
+                    "locator": "https://www.youtube.com/watch?v=AbCdEf12345",
                 },
-                "dependency_artifacts": {
-                    "subtitle_track": {
-                        "path": str(caption),
-                        "sha256": candidate._sha256(caption),
-                    }
+                "acquisition": {
+                    "language": "ja",
+                    "format": "json3",
+                    "retrieved_sha256": candidate._sha256(caption),
+                    "retrieved_byte_size": caption.stat().st_size,
+                    "method": {
+                        "name": "yt_dlp_anonymous_subtitle_sha256_v1",
+                        "anonymous": True,
+                        "credentials_used": False,
+                        "cookies_used": False,
+                        "oauth_used": False,
+                        "mfa_used": False,
+                        "tool": "yt-dlp",
+                        "tool_version": "test",
+                        "exit_code": 0,
+                    },
+                },
+                "local_caption": {
+                    "path": str(caption),
+                    "sha256": candidate._sha256(caption),
+                    "byte_size": caption.stat().st_size,
+                },
+                "result": {
+                    "status": "passed",
+                    "provider_identity_verified": True,
+                    "exact_caption_bytes_verified": True,
+                    "official_authorship_claim": False,
                 },
             }
         ),
@@ -292,7 +361,7 @@ def _authority_fixture(tmp_path: Path) -> dict:
     plan = {
         "artifact_id": artifact_id,
         "authority_binding": {
-            "source_identity": "youtube:editorial",
+            "source_identity": "youtube:AbCdEf12345",
             "source_sha256": source_sha,
             "transcript_sha256": candidate._sha256(transcript_path),
             "caption_sha256": candidate._sha256(caption),
@@ -312,9 +381,13 @@ def _authority_fixture(tmp_path: Path) -> dict:
                     "path": str(evidence),
                     "sha256": candidate._sha256(evidence),
                 },
-                "caption_provider_identity": {
-                    "path": str(provider_identity),
-                    "sha256": candidate._sha256(provider_identity),
+                "caption_acquisition_receipt": {
+                    "path": str(caption_receipt),
+                    "sha256": candidate._sha256(caption_receipt),
+                },
+                "source_audio_receipt": {
+                    "path": str(audio_receipt),
+                    "sha256": candidate._sha256(audio_receipt),
                 },
             },
         },
@@ -324,7 +397,7 @@ def _authority_fixture(tmp_path: Path) -> dict:
         "plan": plan,
         "artifact_id": artifact_id,
         "resolved": {
-            "source_identity": "youtube:editorial",
+            "source_identity": "youtube:AbCdEf12345",
             "source_sha256": source_sha,
             "source_path": source,
             "rights_sha256": candidate._sha256(rights),
@@ -344,7 +417,7 @@ def test_cli_dispatch_registers_out13() -> None:
 def test_editorial_timeline_is_explicit_nonuniform_and_traceable() -> None:
     timeline = candidate.build_editorial_timeline(
         plan=_plan(),
-        source_identity="youtube:editorial",
+        source_identity="youtube:AbCdEf12345",
         source_sha256="a" * 64,
         source_duration_seconds=120.0,
         transcript=_transcript(),
@@ -372,7 +445,7 @@ def test_editorial_timeline_rejects_missing_caption_evidence() -> None:
     with pytest.raises(candidate.EditorialVideoCandidateError, match="transcript evidence"):
         candidate.build_editorial_timeline(
             plan=plan,
-            source_identity="youtube:editorial",
+            source_identity="youtube:AbCdEf12345",
             source_sha256="a" * 64,
             source_duration_seconds=120.0,
             transcript=_transcript(),
@@ -387,7 +460,7 @@ def test_editorial_filter_burns_ass_after_real_cut_concat(tmp_path: Path) -> Non
     font.write_bytes(b"font")
     timeline = candidate.build_editorial_timeline(
         plan=_plan(),
-        source_identity="youtube:editorial",
+        source_identity="youtube:AbCdEf12345",
         source_sha256="a" * 64,
         source_duration_seconds=120.0,
         transcript=_transcript(),
@@ -541,7 +614,7 @@ def test_cli_orchestrates_resume(monkeypatch: pytest.MonkeyPatch, tmp_path: Path
         return {
             "artifact_id": "clip-out13-editorial-video-candidate-v1-002",
             "state": candidate.READY_STATE,
-            "source_identity": "youtube:editorial",
+            "source_identity": "youtube:AbCdEf12345",
             "duration_seconds": 75.0,
             "cut_count": 3,
             "omitted_span_count": 2,
@@ -558,7 +631,7 @@ def test_cli_orchestrates_resume(monkeypatch: pytest.MonkeyPatch, tmp_path: Path
             "--source",
             str(tmp_path / "source.mp4"),
             "--source-identity",
-            "youtube:editorial",
+            "youtube:AbCdEf12345",
             "--editorial-plan",
             str(tmp_path / "plan.json"),
             "--transcript",
@@ -589,7 +662,7 @@ def test_manifest_self_integrity_and_resume_fingerprint(tmp_path: Path) -> None:
         stage=tmp_path,
         input_fingerprint="d" * 64,
         resolved={
-            "source_identity": "youtube:editorial",
+            "source_identity": "youtube:AbCdEf12345",
             "source_sha256": "a" * 64,
             "source_byte_size": 123,
             "caption_sha256": "b" * 64,
@@ -671,7 +744,7 @@ def test_editorial_timeline_rejects_unsupported_transition() -> None:
     with pytest.raises(candidate.EditorialVideoCandidateError, match="unsupported transition"):
         candidate.build_editorial_timeline(
             plan=plan,
-            source_identity="youtube:editorial",
+            source_identity="youtube:AbCdEf12345",
             source_sha256="a" * 64,
             source_duration_seconds=120.0,
             transcript=_transcript(),
@@ -686,7 +759,7 @@ def test_editorial_timeline_rejects_extra_or_split_evidence() -> None:
     with pytest.raises(candidate.EditorialVideoCandidateError, match="exactly match"):
         candidate.build_editorial_timeline(
             plan=plan,
-            source_identity="youtube:editorial",
+            source_identity="youtube:AbCdEf12345",
             source_sha256="a" * 64,
             source_duration_seconds=120.0,
             transcript=_transcript(),
@@ -704,7 +777,7 @@ def test_editorial_timeline_rejects_split_caption_boundary() -> None:
     with pytest.raises(candidate.EditorialVideoCandidateError, match="splits caption"):
         candidate.build_editorial_timeline(
             plan=plan,
-            source_identity="youtube:editorial",
+            source_identity="youtube:AbCdEf12345",
             source_sha256="a" * 64,
             source_duration_seconds=120.0,
             transcript=transcript,
@@ -719,7 +792,7 @@ def test_editorial_timeline_rejects_incomplete_omitted_complement() -> None:
     with pytest.raises(candidate.EditorialVideoCandidateError, match="source complement"):
         candidate.build_editorial_timeline(
             plan=plan,
-            source_identity="youtube:editorial",
+            source_identity="youtube:AbCdEf12345",
             source_sha256="a" * 64,
             source_duration_seconds=120.0,
             transcript=_transcript(),
@@ -850,14 +923,143 @@ def test_successful_output_rejects_rerun_without_package_mutation(
     ).is_file()
 
 
+@pytest.mark.parametrize(
+    ("schema_version", "state", "existing_id"),
+    [
+        (
+            "clippipegen.out13.run_manifest.v2",
+            "OUT13_EVIDENCE_BOUND_REVIEWABLE_ON_THANK_V1",
+            "clip-out13-editorial-video-candidate-v1-003",
+        ),
+        (
+            "unknown.manifest.v99",
+            "UNKNOWN_STATE",
+            "clip-out13-editorial-video-candidate-v1-002",
+        ),
+        (None, None, None),
+    ],
+)
+def test_historical_or_malformed_manifest_directory_is_permanently_immutable(
+    tmp_path: Path,
+    schema_version: str | None,
+    state: str | None,
+    existing_id: str | None,
+) -> None:
+    package = tmp_path / "historical"
+    package.mkdir()
+    (package / "payload.bin").write_bytes(b"historical")
+    manifest_path = package / "run_manifest.json"
+    if schema_version is None:
+        manifest_path.write_text("{malformed", encoding="utf-8")
+    else:
+        manifest_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": schema_version,
+                    "state": state,
+                    "artifact_id": existing_id,
+                }
+            ),
+            encoding="utf-8",
+        )
+    before = candidate._package_tree_digest(package)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="immutable"):
+        candidate._validate_output_allocation(
+            output=package,
+            artifact_id="clip-out13-editorial-video-candidate-v1-003",
+            force=True,
+        )
+
+    assert candidate._package_tree_digest(package) == before
+
+
+def test_immutable_promotion_refuses_race_without_replacing_stage_or_output(
+    tmp_path: Path,
+) -> None:
+    stage = tmp_path / ".candidate.staging"
+    output = tmp_path / "candidate"
+    stage.mkdir()
+    (stage / "payload.bin").write_bytes(b"new")
+    candidate._validate_output_allocation(
+        output=output,
+        artifact_id="clip-out13-editorial-video-candidate-v1-005",
+        force=False,
+    )
+    output.mkdir()
+    (output / "sentinel.bin").write_bytes(b"race-winner")
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="claimed"):
+        candidate._promote_output_immutable(stage=stage, output=output)
+
+    assert (output / "sentinel.bin").read_bytes() == b"race-winner"
+    assert (stage / "payload.bin").read_bytes() == b"new"
+
+
+@pytest.mark.parametrize(
+    "requested_factory",
+    [
+        lambda output: output,
+        lambda output: output / "journal",
+        lambda output: output.parent
+        / "alias"
+        / ".."
+        / f"{output.name}.run_journal",
+    ],
+)
+def test_run_journal_rejects_package_and_alias_overrides(
+    tmp_path: Path, requested_factory
+) -> None:
+    output = tmp_path / "candidate"
+    output.mkdir()
+    requested = requested_factory(output)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="run journal"):
+        candidate._validated_run_journal_dir(output, requested=requested)
+
+
+def test_run_journal_rejects_symlink_alias(tmp_path: Path) -> None:
+    output = tmp_path / "candidate"
+    output.mkdir()
+    expected = candidate._run_journal_dir(output.resolve())
+    target = tmp_path / "journal-target"
+    target.mkdir()
+    _directory_link_or_skip(expected, target)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="symlink"):
+        candidate._validated_run_journal_dir(output, requested=expected)
+
+
+def test_manifest_rejects_symlink_payload_and_external_target(tmp_path: Path) -> None:
+    package = tmp_path / "package"
+    package.mkdir()
+    external = tmp_path / "external"
+    external.mkdir()
+    (external / "payload.bin").write_bytes(b"external")
+    link = package / "external-link"
+    _directory_link_or_skip(link, external)
+    manifest = _closed_manifest(package)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="symlink"):
+        candidate.validate_run_manifest(
+            package,
+            manifest,
+            expected_artifact_id="clip-out13-editorial-video-candidate-v1-002",
+        )
+
+
 def test_authority_binding_accepts_provider_sidecar_lineage(tmp_path: Path) -> None:
     result = candidate._validate_authority_binding(**_authority_fixture(tmp_path))
 
     assert result["status"] == "passed"
     assert result["caption"]["classification"] == "provider_json3_sidecar"
-    assert result["caption"]["provider_video_id"] == "editorial"
+    assert result["caption"]["provider_video_id"] == "AbCdEf12345"
     assert result["caption"]["official_authorship_claim"] is False
     assert result["transcript"]["source_video_audio_lineage"]["equivalent"] is True
+    assert (
+        result["transcript"]["source_video_audio_lineage"]["lineage_class"]
+        == "content_verified_exact_source_audio"
+    )
 
 
 def test_out13_module_has_no_default_artifact_identity() -> None:
@@ -897,6 +1099,16 @@ def test_authority_binding_rejects_mismatched_source_pcm(tmp_path: Path) -> None
     fixture["plan"]["authority_binding"]["evidence"]["material_ledger"][
         "sha256"
     ] = candidate._sha256(ledger_path)
+    audio_receipt_path = tmp_path / "source_audio_receipt.json"
+    audio_receipt = json.loads(audio_receipt_path.read_text(encoding="utf-8"))
+    audio_receipt["sha256"] = audio_sha
+    audio_receipt["byte_size"] = audio_path.stat().st_size
+    audio_receipt["outputs"][0]["sha256"] = audio_sha
+    audio_receipt["outputs"][0]["byte_size"] = audio_path.stat().st_size
+    audio_receipt_path.write_text(json.dumps(audio_receipt), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["source_audio_receipt"][
+        "sha256"
+    ] = candidate._sha256(audio_receipt_path)
 
     with pytest.raises(
         candidate.EditorialVideoCandidateError,
@@ -905,25 +1117,25 @@ def test_authority_binding_rejects_mismatched_source_pcm(tmp_path: Path) -> None
         candidate._validate_authority_binding(**fixture)
 
 
-@pytest.mark.parametrize("provider_id", ["wrong-video", None])
-def test_authority_binding_rejects_wrong_or_absent_caption_provider_identity(
+@pytest.mark.parametrize("provider_id", ["WrongId0000", None])
+def test_authority_binding_rejects_wrong_or_absent_caption_receipt_identity(
     tmp_path: Path, provider_id: str | None
 ) -> None:
     fixture = _authority_fixture(tmp_path)
-    identity_path = tmp_path / "caption_provider_identity.json"
-    identity = json.loads(identity_path.read_text(encoding="utf-8"))
-    identity["source_identity"]["youtube_id"] = provider_id
-    identity["source_identity"]["source_url"] = (
+    receipt_path = tmp_path / "caption_acquisition_receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["provider"]["video_id"] = provider_id
+    receipt["provider"]["locator"] = (
         f"https://www.youtube.com/watch?v={provider_id}" if provider_id else None
     )
-    identity_path.write_text(json.dumps(identity), encoding="utf-8")
-    fixture["plan"]["authority_binding"]["evidence"]["caption_provider_identity"][
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["caption_acquisition_receipt"][
         "sha256"
-    ] = candidate._sha256(identity_path)
+    ] = candidate._sha256(receipt_path)
 
     with pytest.raises(
         candidate.EditorialVideoCandidateError,
-        match="provider video identity",
+        match="trusted provider lineage root",
     ):
         candidate._validate_authority_binding(**fixture)
 
@@ -932,36 +1144,168 @@ def test_authority_binding_rejects_plan_only_caption_identity(
     tmp_path: Path,
 ) -> None:
     fixture = _authority_fixture(tmp_path)
-    fixture["plan"]["authority_binding"]["provider_video_id"] = "editorial"
+    fixture["plan"]["authority_binding"]["provider_video_id"] = "AbCdEf12345"
     del fixture["plan"]["authority_binding"]["evidence"][
-        "caption_provider_identity"
+        "caption_acquisition_receipt"
     ]
 
     with pytest.raises(
         candidate.EditorialVideoCandidateError,
-        match="requires caption provider identity",
+        match="requires caption acquisition receipt",
     ):
         candidate._validate_authority_binding(**fixture)
 
 
-def test_authority_binding_rejects_filename_only_caption_identity(
+def test_authority_binding_rejects_generic_handoff_as_caption_receipt(
     tmp_path: Path,
 ) -> None:
     fixture = _authority_fixture(tmp_path)
-    identity_path = tmp_path / "caption_provider_identity.json"
-    identity = json.loads(identity_path.read_text(encoding="utf-8"))
-    identity["source_identity"].pop("youtube_id")
-    identity["source_identity"].pop("source_url")
-    identity_path.write_text(json.dumps(identity), encoding="utf-8")
-    fixture["plan"]["authority_binding"]["evidence"]["caption_provider_identity"][
+    receipt_path = tmp_path / "caption_acquisition_receipt.json"
+    receipt_path.write_text(
+        json.dumps(
+            {
+                "artifact_kind": "non_repo_artifact_handoff",
+                "source_identity": {
+                    "youtube_id": "AbCdEf12345",
+                    "source_url": "https://www.youtube.com/watch?v=AbCdEf12345",
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    fixture["plan"]["authority_binding"]["evidence"]["caption_acquisition_receipt"][
         "sha256"
-    ] = candidate._sha256(identity_path)
+    ] = candidate._sha256(receipt_path)
 
     with pytest.raises(
         candidate.EditorialVideoCandidateError,
-        match="provider video identity",
+        match="trusted provider lineage root",
     ):
         candidate._validate_authority_binding(**fixture)
+
+
+@pytest.mark.parametrize(
+    ("mutation", "value"),
+    [
+        ("retrieved_sha256", "0" * 64),
+        ("exact_caption_bytes_verified", False),
+        ("anonymous", False),
+        ("credentials_used", True),
+        ("locator", "https://www.youtube.com/watch?v=WrongId0000"),
+    ],
+)
+def test_authority_binding_rejects_untrusted_caption_receipt_fields(
+    tmp_path: Path, mutation: str, value
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    receipt_path = tmp_path / "caption_acquisition_receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if mutation == "retrieved_sha256":
+        receipt["acquisition"][mutation] = value
+    elif mutation == "exact_caption_bytes_verified":
+        receipt["result"][mutation] = value
+    elif mutation == "locator":
+        receipt["provider"][mutation] = value
+    else:
+        receipt["acquisition"]["method"][mutation] = value
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["caption_acquisition_receipt"][
+        "sha256"
+    ] = candidate._sha256(receipt_path)
+
+    with pytest.raises(
+        candidate.EditorialVideoCandidateError,
+        match="trusted provider lineage root",
+    ):
+        candidate._validate_authority_binding(**fixture)
+
+
+def test_authority_binding_rejects_invalid_source_identity_namespace(
+    tmp_path: Path,
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    fixture["resolved"]["source_identity"] = "youtube-video:AbCdEf12345"
+    fixture["plan"]["authority_binding"][
+        "source_identity"
+    ] = "youtube-video:AbCdEf12345"
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="exact youtube"):
+        candidate._validate_authority_binding(**fixture)
+
+
+def test_authority_binding_rejects_tampered_source_audio_receipt(
+    tmp_path: Path,
+) -> None:
+    fixture = _authority_fixture(tmp_path)
+    receipt_path = tmp_path / "source_audio_receipt.json"
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    receipt["commands"][0]["exit_code"] = 1
+    receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+    fixture["plan"]["authority_binding"]["evidence"]["source_audio_receipt"][
+        "sha256"
+    ] = candidate._sha256(receipt_path)
+
+    with pytest.raises(candidate.EditorialVideoCandidateError, match="acquisition bytes"):
+        candidate._validate_authority_binding(**fixture)
+
+
+def test_signed_pcm_lineage_accepts_exact_content() -> None:
+    payload = _pcm_fixture_bytes()
+    result = candidate._compare_canonical_pcm(payload, payload)
+
+    assert result["equivalent"] is True
+    assert result["signed_waveform_similarity"] == 1.0
+    assert result["coverage_ratio"] == 1.0
+
+
+def test_signed_pcm_lineage_rejects_equal_energy_different_waveform() -> None:
+    source = array("h")
+    other = array("h")
+    amplitudes = [400, 1200, 3000, 800, 5000, 2000, 6500, 900, 4200, 1500]
+    for amplitude in amplitudes:
+        source.extend([amplitude] * candidate.PCM_FRAME_SAMPLES)
+        other.extend(
+            [
+                amplitude if index % 2 == 0 else -amplitude
+                for index in range(candidate.PCM_FRAME_SAMPLES)
+            ]
+        )
+
+    result = candidate._compare_canonical_pcm(source.tobytes(), other.tobytes())
+
+    assert result["coarse_frame_energy_correlation"] == pytest.approx(1.0)
+    assert result["equivalent"] is False
+
+
+@pytest.mark.parametrize("mutation", ["polarity", "reordered", "truncated", "unrelated"])
+def test_signed_pcm_lineage_rejects_adversarial_content(mutation: str) -> None:
+    source = array("h")
+    source.frombytes(_pcm_fixture_bytes())
+    other = array("h", source)
+    if mutation == "polarity":
+        other = array("h", (-value for value in source))
+    elif mutation == "reordered":
+        frames = [
+            source[offset : offset + candidate.PCM_FRAME_SAMPLES]
+            for offset in range(0, len(source), candidate.PCM_FRAME_SAMPLES)
+        ]
+        other = array("h")
+        for frame in reversed(frames):
+            other.extend(frame)
+    elif mutation == "truncated":
+        other = array("h", source[: -2 * candidate.PCM_FRAME_SAMPLES])
+    else:
+        other = array(
+            "h",
+            (
+                7000 if index % 7 in {0, 1, 2} else -3500
+                for index in range(len(source))
+            ),
+        )
+
+    result = candidate._compare_canonical_pcm(source.tobytes(), other.tobytes())
+
+    assert result["equivalent"] is False
 
 
 def test_authority_binding_rejects_arbitrary_official_claim(tmp_path: Path) -> None:
