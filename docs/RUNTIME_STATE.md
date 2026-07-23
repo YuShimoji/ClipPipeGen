@@ -3,14 +3,14 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1
+health: OUT13_EVIDENCE_BOUND_REVIEWABLE_ON_THANK_V1
 progress_pct: 100
-last_touched: 2026-07-23
-state_revision: out13-code-green-local-artifact-recovery-required-2026-07-23
-contract_repair_status: out12_operational_preserved_out13_explicit_editorial_route_validated
+last_touched: 2026-07-24
+state_revision: out13-candidate-003-evidence-bound-reviewable-on-thank-2026-07-24
+contract_repair_status: out12_preserved_out13_v2_immutable_identity_and_authority_binding_validated
 current_slice: OUT-13
-phase: internal_editorial_review_recovery_required
-canonical_status: editorial_representative_video_reviewable_v1
+phase: human_editorial_review_pending
+canonical_status: evidence_bound_editorial_candidate_reviewable_on_thank_v1
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 verified_implementation_head: this_commit_after_push
@@ -19,41 +19,41 @@ closure_branch: codex/out-13-editorial-video-candidate-v1
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-latest_remote_sync_head: 558f681b3778b1b9bf43f6ec72b38768e8e3da44
-sync_audit_status: out13_branch_ff_only_synced_code_validated_local_exact_package_missing
+latest_remote_sync_head: da58a8212da88173d65c8b134368a57a278066e0
+sync_audit_status: out13_branch_ff_only_synced_candidate_003_built_and_validated_on_thank
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-13 code green, exact local review artifact recovery required
-human_entrypoint: null
+current_title: OUT-13 candidate 003 evidence-bound and locally reviewable on Thank
+human_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/review/index.html
 portable_entrypoint: null
-review_open_command: null
-review_server_restart_command: null
-machine_readback: null
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v003\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v003\review\serve_preview.ps1
+machine_readback: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/validation_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: choose_exact_artifact_recovery_or_new_identity_rebuild_before_editorial_review
-review_status: source_host_machine_validated_local_review_blocked_missing_exact_artifact
-review_scope: recover reviewable exact bytes before OUT-13 internal editorial review; does not lift rights production thumbnail public publishing or upload gates
+decision_required: human_editorial_accept_repair_or_reject_exact_candidate_003
+review_status: machine_validated_worker_sample_observed_human_editorial_review_pending
+review_scope: exact candidate 003 internal editorial review; does not lift rights production thumbnail public publishing or upload gates
 reviewed_at: null
 remote_code_complete: true
-local_artifact_available: false
-local_artifact_role: absent_current_checkout_historical_source_host_receipt_only
+local_artifact_available: true
+local_artifact_role: ignored_same_machine_review_candidate
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_only_out13_exact_inputs_plan_and_output_absent
-cross_host_resume_status: code_and_contract_portable_exact_source_transcript_rights_plan_and_rendered_media_absent
+cross_machine_resume_class: tracked_code_docs_portable_exact_inputs_plan_and_output_require_private_transfer_or_new_identity_build
+cross_host_resume_status: code_and_contract_portable_candidate_003_media_and_inputs_same_machine_only
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out13-editorial-video-candidate-v1
-last_verified_host: DESKTOP-H53P1T4
+evidence_revision: out13-editorial-video-candidate-v2-candidate-003
+last_verified_host: Thank
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
 local_artifact_evidence_receipt: docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md
-local_package_requirement: exact_source_transcript_caption_rights_plan_and_output_required_for_media_reinspection_not_for_code_resume
+local_package_requirement: candidate_003_exact_source_transcript_caption_rights_plan_and_output_required_for_media_reinspection_not_for_code_resume
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: pending
@@ -61,23 +61,23 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-23
-last_verified_host_local_artifact_available: false
-last_verified_host_entrypoint: null
+last_verified_at: 2026-07-24T00:19:40+09:00
+last_verified_host_local_artifact_available: true
+last_verified_host_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: missing_local_out13_exact_artifact_and_contract_matching_input_set
+pause_reason: awaiting_human_editorial_review_of_exact_candidate_003
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending_out13_exact_mp4_editorial_review
-user_feedback_overall: out13_mission_requested_and_machine_completed_human_editorial_review_not_yet_consumed
-content_selection_status: jp_pilot01_caption_evidence_explicit_noncontiguous_plan_rendered
-subtitle_presentation_timing_status: official_json3_77_cues_keifont_two_line_safe_area_pass
-endpoint_status: caption_evidenced_gatekeeper_resolution_closes_before_credits
-reviewed_by_human: true
+human_review_decision: pending_out13_candidate_003_exact_mp4_editorial_review
+user_feedback_overall: out13_evidence_bound_candidate_generated_machine_validated_human_editorial_review_not_yet_consumed
+content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
+subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
+endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
+reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
 automation_acceptance_granted: true
@@ -88,79 +88,95 @@ accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_can
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: unavailable_missing_local_out13_package
+review_server_status: validated_then_stopped_no_listener_left_running
 next_review_due: null
-next_action: OUT-13 exact package/input setをprivate recoveryするか、SHA不一致を明示したnew identity rebuildへ進み、reviewable bytesの復旧後にhuman editorial reviewを行う。
-active_artifact: clip-out13-editorial-video-candidate-v1-001
+next_action: exact candidate 003を全編視聴し、accept / repair / rejectをcandidate SHAへ記録する。repair時はcut ID・caption ID・timestampを先に固定し、003を上書きしない。
+active_artifact: clip-out13-editorial-video-candidate-v1-003
 current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
-out13_artifact_id: clip-out13-editorial-video-candidate-v1-001
-out13_state: EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1
-out13_machine_values_scope: historical_source_host_receipt_unless_local_prefix
+out13_artifact_id: clip-out13-editorial-video-candidate-v1-003
+out13_state: OUT13_EVIDENCE_BOUND_REVIEWABLE_ON_THANK_V1
+out13_machine_values_scope: live_candidate_003_on_thank
 out13_source_identity: youtube:7J5aS_pcBj4
-out13_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
+out13_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
 out13_local_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
-out13_local_source_matches_contract: false
-out13_local_transcript_sha256: 4a7b4fd805bc607773f1f3e271d961415efddcea1f3e6a72f8e6c6220333495
-out13_local_transcript_matches_contract: false
+out13_local_source_matches_contract: true
+out13_local_transcript_sha256: 4a7b4fd805bc607773f1f3e271d961415efddceae1f3e6a72f8e6c6220333495
+out13_local_transcript_matches_contract: true
 out13_local_caption_sha256: 3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919
 out13_local_caption_matches_contract: true
 out13_local_rights_sha256: 4302c4a1ecc598d80c130050ae9f36ba6701c8f5a9ba46e5f01b519f4d417bb8
-out13_local_rights_matches_contract: false
-out13_local_editorial_plan_available: false
+out13_local_rights_matches_contract: true
+out13_local_editorial_plan_available: true
+out13_local_editorial_plan_sha256: ca1aa5cd93687f3d656b18fe07d018def4ca42fd889ee900b96e49c09d423801
+out13_authority_binding_status: passed
+out13_source_receipt_sha256: b6140ff92c1f43c4bc9085ea91006291e2919ea4c2e6df86f622120971a8e608
+out13_material_ledger_sha256: 9354f88a9d6be4e3128fcf31f2f3bb1413618bb221c4b02228b977bd7f534110
+out13_transcript_source_audio_sha256: 46e4bc9e26d52ed8f83b0b4088ddcd6ddac5a873fa1bb4a440c209834f026671
+out13_caption_provenance_sha256: e46802803fbcb6d9da6a02378d40f707c742b24406557896ab16628f03af965e
 out13_source_duration_seconds: 164.768798
 out13_source_resolution: 1920x1080
 out13_selection_mode: explicit_caption_evidence_editorial_plan
-out13_cut_count: 6
-out13_semantic_section_count: 4
-out13_omitted_span_count: 6
-out13_intentional_omitted_span_count: 4
-out13_output_duration_seconds: 122.866016
-out13_source_utilization_ratio: 0.74542
+out13_cut_count: 7
+out13_semantic_section_count: 5
+out13_omitted_span_count: 8
+out13_intentional_omitted_span_count: 7
+out13_output_duration_seconds: 128.833333
+out13_timeline_duration_seconds: 128.795
+out13_source_utilization_ratio: 0.781671
 out13_mapping_coverage_ratio: 1.0
 out13_output_resolution: 1920x1080
 out13_output_video_codec: h264
 out13_output_audio_codec: aac
-out13_output_byte_size: 73776611
-out13_output_sha256: 84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2
-out13_caption_authority: official_ja_json3_sidecar
-out13_caption_cue_count: 77
+out13_output_byte_size: 82594810
+out13_output_sha256: a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5
+out13_caption_authority: provider_json3_sidecar
+out13_caption_official_authorship_claim: false
+out13_caption_cue_count: 102
 out13_caption_overlap_count: 0
 out13_caption_negative_duration_count: 0
 out13_caption_orphan_count: 0
+out13_caption_split_count: 0
+out13_caption_duplicate_count: 0
+out13_caption_missing_count: 0
+out13_caption_unexpected_count: 0
 out13_resolved_font_family: Keifont
+out13_resolved_font_sha256: d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f
 out13_resolved_font_size_pixels: 100
 out13_resolved_line_height_pixels: 115
 out13_resolved_outline_pixels: 8
 out13_resolved_shadow_pixels: 2
 out13_resolved_maximum_lines: 2
 out13_subtitle_overflow_count: 0
-out13_integrated_lufs: -14.61
-out13_true_peak_dbtp: -1.58
-out13_max_adjacent_cut_delta_lu: 0.94
+out13_integrated_lufs: -14.48
+out13_true_peak_dbtp: -1.88
+out13_max_adjacent_cut_delta_lu: 1.85
 out13_black_event_count: 0
 out13_silence_event_count: 0
 out13_validation_status: passed
-out13_review_visible_check_count: 19
-out13_manifest_payload_count: 23
-out13_manifest_self_sha256: 8f0be672d847ea7b066a6ec932790f91601fd499956987813ec7edc42b0c02e8
-out13_input_fingerprint: 051832b95969d8d3e35709f359e82dacb719552343ad40ec39ce35381685e3d8
-out13_local_package_file_count: 0
-out13_local_package_byte_size: 0
+out13_review_visible_check_count: 23
+out13_manifest_payload_count: 24
+out13_manifest_self_sha256: 3d99372c27849bcb4fc1cc3c32b60daf8f52135793e1d41f86f91e6ae9db1da1
+out13_input_fingerprint: ba82741150e6b943f3aa1763547058d3cb2f0d5e797b2788b7bcc8ff9eff2806
+out13_local_package_file_count: 26
+out13_local_package_byte_size: 87113363
 out13_historical_source_host_package_file_count: 25
 out13_historical_source_host_package_byte_size: 78180658
-out13_resume_elapsed_seconds: null
-out13_resume_render_executed: null
+out13_resume_elapsed_seconds: 7.937
+out13_resume_render_executed: false
+out13_resume_cache_hit_count: 5
 out13_historical_source_host_resume_elapsed_seconds: 0.281
 out13_historical_source_host_resume_render_executed: false
-out13_review_http_status: null
-out13_review_range_status: null
+out13_review_http_status: 200
+out13_review_range_status: 206
 out13_historical_source_host_review_http_status: 200
 out13_historical_source_host_review_range_status: 206
 out13_review_desktop_overflow: false
 out13_review_mobile_overflow: false
 out13_review_initial_state: paused_muted_time_zero
-out13_review_seek_seconds: 14.714
+out13_review_seek_seconds: 40.856
 out13_review_console_warning_error_count: 0
+out13_package_visual_observation_status: unverified
+out13_worker_sample_observation_status: sampled_frames_no_factual_visual_defect_found
 out13_rights_status: pending_or_snapshot_only
 out13_production_acceptance: false
 out13_production_subtitle_design_acceptance: false
@@ -291,8 +307,8 @@ known_unrelated_test_failure: null
 known_unrelated_test_failure_2: null
 known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
 known_unrelated_test_failure_owner: none_current
-current_full_suite_status: 606_passed
-current_full_suite_command: uvx --with Pillow pytest -q
+current_full_suite_status: 616_passed_in_332_09_seconds
+current_full_suite_command: uvx --from pytest --with Pillow pytest -q
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
 source_specific_caption_suppression_observation: source_specific_caption_band_suppression_observed_acceptable_not_generalized
@@ -442,6 +458,32 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-24 OUT-13 Candidate 003 Evidence-Bound and Reviewable on Thank
+
+- `codex/out-13-editorial-video-candidate-v1`を remote へ ff-only 同期した後、この端末に存在する
+  source / receipt / ledger / transcript / source audio / provider JSON3 / rights snapshot / font を
+  live hash で再特定した。
+- fixed `...-001` contract を historical receipt として残し、CLI 必須 `--artifact-id`、
+  immutable successful output、cross-candidate mismatch rejection、fingerprint-bound resume を
+  v2 contract として実装した。
+- plan validation は direct evidence の exact set、context 分離、transcript / caption 境界、
+  supported transition、omitted source complement を fail closed で検証する。caption readback は
+  split / duplicate / missing / unexpected / mapping coverage を含む。
+- candidate 002 は media 生成後に caption authority 表現と plan SHA readback の事実誤りを検出し、
+  package を上書きせず superseded とした。candidate 003 はそれらを訂正した successor。
+- candidate 003 は 7 cuts / 5 sections / 8 omitted ranges、102 provider cues、coverage 1.0。
+  final MP4 は 128.833333s、82,594,810 bytes、SHA `a76babda...bbb5`。full decode、
+  faststart、A/V、loudness、signal、caption、authority、subtitle presentation、editorial checks は pass。
+- resume は render 非実行、5 cache hits、final / manifest SHA 不変。review server は page 200 /
+  Range 206、desktop / mobile overflow なし、初期 paused / muted / time 0、cut seek、
+  console / media error 0 を確認して停止した。
+- Worker は first/middle/last、全 cut 前後、字幕 evidence frame を実見した。sampled frame に明白な
+  二重 dialogue caption、safe-area 越境、破綻はなかったが、package の
+  `visual_observation=unverified`は維持し、人間の全編 editorial acceptance は主張しない。
+- 次は exact candidate 003 の人間 `accept / repair / reject`。repair は finding を
+  cut ID / caption ID / timestamp へ bind し、003 を上書きしない。rights、production、
+  thumbnail、publishing、upload、public release は独立 gate のまま。
 
 ## 2026-07-23 OUT-13 Latest Sync Green, Local Exact Review Recovery Required
 

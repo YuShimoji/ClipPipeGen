@@ -7,9 +7,10 @@ follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
 current artifact, then verify an artifact-specific launcher exists before using it.
-OUT-13 is the current tracked caption-evidence editorial route, but its exact
-same-machine plan/output package is absent from this checkout. OUT-12 is its operational
-one-command real-video predecessor. OUT-11 is the
+OUT-13 candidate 003 is the current tracked caption-evidence editorial route and its exact
+ignored same-machine review package is available on Thank. Candidate 001 remains a historical
+source-host receipt and candidate 002 is an immutable superseded local rebuild. OUT-12 is its
+operational one-command real-video predecessor. OUT-11 is the
 closed five-source Short portfolio with two repaired candidates, one accepted
 SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
 OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
@@ -23,6 +24,43 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out13-editorial-video-candidate-v1-003`
+
+| Field | Value |
+|---|---|
+| title | OUT-13 Evidence-Bound Editorial Video Candidate on Thank |
+| purpose | Bind an explicit chronological editorial plan to this host's exact source, acquisition/material evidence, transcript/source audio, provider caption provenance, rights snapshot, and font bytes, then expose one immutable MP4 for human editorial review. |
+| storage class | Tracked CLI/render integration/tests/docs plus an ignored same-machine input and review package. No source or generated media is tracked or portable through Git. |
+| repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` |
+| local_artifact_path | `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/` |
+| state | `OUT13_EVIDENCE_BOUND_REVIEWABLE_ON_THANK_V1` |
+| source | `youtube:7J5aS_pcBj4`; SHA `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`; 35,281,366 bytes; 164.768798s; 1920x1080. |
+| authority | Source receipt `b6140ff9...e608`; material ledger `9354f88a...4110`; transcript `4a7b4fd8...3495`; transcript source audio `46e4bc9e...6671`; provider JSON3 `3c15535f...9919` with provenance `e4680280...65e`; rights snapshot `4302c4a1...bb8`; Keifont `d5795bdf...ed6f`; `authority_binding.status=passed`. Provider timing/text only; no official authorship, speaker, lyric, rights, production, or publication claim. |
+| editorial plan | Exact input SHA `ca1aa5cd93687f3d656b18fe07d018def4ca42fd889ee900b96e49c09d423801`; seven chronological cuts across five sections; eight omitted ranges equal the source complement; source utilization 0.781671; mapping coverage 1.0. |
+| final_video | H.264 High/AAC yuv420p, 1920x1080, 128.833333s, 82,594,810 bytes, SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`. |
+| subtitle presentation | 102 provider-sidecar cues; Keifont 100px / 115px line height / 8px outline / 2px shadow / maximum 2 lines; overlap, negative, orphan, split, duplicate, missing, unexpected, overflow, and violation counts 0; mapping coverage 1.0. |
+| validation | Full decode/faststart/timestamps/A/V/source mapping/caption containment/authority/editorial checks passed; -14.48 LUFS, -1.88 dBTP, maximum adjacent cut delta 1.85 LU; black and silence events 0. Page 200 / MP4 Range 206; desktop/mobile overflow false; initial paused/muted/time0; seek 40.856s; console/media warning or error 0. Final tracked regression suite: 616 passed in 332.09s. |
+| visual boundary | Worker inspected first/middle/last, all cut-boundary sides, and short/normal/two-line subtitle frames with no factual visual defect found in those samples. Package `visual_observation` remains `unverified`; human full-view acceptance is pending. |
+| manifest | 24 payload rows; input fingerprint `ba82741150e6b943f3aa1763547058d3cb2f0d5e797b2788b7bcc8ff9eff2806`; self-integrity SHA `3d99372c27849bcb4fc1cc3c32b60daf8f52135793e1d41f86f91e6ae9db1da1`. |
+| resume | `render_executed=false`; five cache hits; final and manifest SHA unchanged. |
+| preview_url | `http://127.0.0.1:8076/review/index.html` while the artifact-specific server is running. The validation listener was stopped after QA. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v003\review\open_preview.ps1` |
+| local availability | 2026-07-24 live audit: 26 files / 87,113,363 bytes available on Thank. `episodes/` remains ignored and has zero tracked files. |
+| decision_required | Human reviewer must bind accept / bounded repair / reject to exact candidate 003. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `acceptance_granted=false`
+- `rights_status=pending`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `thumbnail_acceptance=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
 
 ## `clip-out13-editorial-video-candidate-v1-001`
 

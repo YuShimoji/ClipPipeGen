@@ -23,6 +23,11 @@ def run(argv: list[str]) -> int:
             "single video-first review package."
         ),
     )
+    parser.add_argument(
+        "--artifact-id",
+        required=True,
+        help="Immutable OUT-13 candidate identity (for example ...-002).",
+    )
     parser.add_argument("--source", required=True, type=Path)
     parser.add_argument("--source-identity", required=True)
     parser.add_argument("--editorial-plan", required=True, type=Path)
@@ -40,6 +45,7 @@ def run(argv: list[str]) -> int:
     args = parser.parse_args(argv)
     try:
         result = build_editorial_video_candidate(
+            artifact_id=args.artifact_id,
             source_path=args.source,
             source_identity=args.source_identity,
             editorial_plan_path=args.editorial_plan,
