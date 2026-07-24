@@ -7,8 +7,10 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import math
+import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -2950,7 +2952,13 @@ def _path_has_symlink_component(path: Path) -> bool:
 
 def _path_is_linkish(path: Path) -> bool:
     is_junction = getattr(path, "is_junction", None)
-    return path.is_symlink() or bool(is_junction and is_junction())
+    if path.is_symlink() or bool(is_junction and is_junction()):
+        return True
+    try:
+        attributes = getattr(os.lstat(path), "st_file_attributes", 0)
+    except OSError:
+        return False
+    return bool(attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
 
 
 def _manifest_self_hash(manifest: dict[str, Any]) -> str:

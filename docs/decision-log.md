@@ -8,7 +8,30 @@ last_touched: 2026-07-24
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-24 — `673da5d`同期後のcurrent host auditを正本化
+
+active branchを`558f681`からremote tip`673da5d`へff-only更新し、同期直後のupstream parity
+`0 0`、`origin/main...HEAD = 0 10`、tracked / untracked cleanを確認した。
+`npm ci`、Node / Electron smoke、OUT-13 CLI helpはpass。Python full suiteでWindows junction
+検出2件を再現し、reparse-point判定を追加してfinal 654 testsをpassした。
+
+current host`DESKTOP-U9P4LKJ`にはcandidate 004 / 005 root、plan、MP4、validation、launcherがない。
+local source`e2206cef...2d18`、transcript`ef928d4e...b42d6`、rights`e6ea9471...64c12`は
+candidate 005契約と不一致で、provider JSON3`3c15535f...9919`だけ一致した。
+従って直下の「Thank端末でlocal reviewable」という節はsource-host readbackとして保持するが、
+current local availability判断としてsupersedeする。
+
+次はexact candidate 005の承認済みprivate recovery + SHA照合、または現在input authorityから
+candidate 006以降をnew identity rebuildする。review対象bytes成立前にhuman verdictを求めず、
+004 / 005を上書きしない。rights、production、thumbnail、publishing/upload、public、
+main integrationはこの同期・修復から自動で開かない。根拠: live Git parity + local
+`Test-Path` / SHA audit + full suite / GUI / CLI validation +
+`docs/SUPERVISOR_STATUS_REPORT.md`。
+
 ## 2026-07-24 — OUT-13 candidate 005 のremote同期と別端末handoffを更新
+
+この節のcandidate 005 local availabilityは上のcurrent host auditでsuperseded。
+source-host machine receiptとportable code contractとしてのみ参照する。
 
 `git fetch --prune origin` と対象branchへの `git pull --ff-only` を実行し、
 `codex/out-13-editorial-video-candidate-v1` の HEAD / upstream を

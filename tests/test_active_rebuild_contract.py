@@ -239,14 +239,9 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
     assert "remote_code_complete: true" in runtime
-    assert "local_artifact_available: true" in runtime
+    assert "local_artifact_available: false" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert (
-        "human_entrypoint: "
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/review/index.html"
-        in runtime
-    )
+    assert "human_entrypoint: null" in runtime
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
@@ -256,27 +251,15 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert (
         "health: "
-        "OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
+        "OUT13_CODE_READY_LOCAL_REVIEW_ARTIFACT_RECOVERY_REQUIRED_V1"
         in runtime
     )
     assert "current_slice: OUT-13" in runtime
-    assert (
-        "canonical_status: "
-        "immutable_transitively_lineage_bound_reviewable_v1"
-        in runtime
-    )
+    assert "canonical_status: remote_contract_green_local_review_blocked" in runtime
     assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
-    assert (
-        "review_status: "
-        "machine_validated_browser_verified_human_editorial_review_pending"
-        in runtime
-    )
+    assert "review_status: source_host_machine_receipt_only_local_review_unavailable" in runtime
     assert "automation_acceptance_granted: true" in runtime
-    assert (
-        "automation_acceptance_scope: "
-        "evidence_bound_explicit_plan_rendering_only_semantic_selection_unverified"
-        in runtime
-    )
+    assert "automation_acceptance_scope: tracked_builder_and_source_host_machine_receipt_only" in runtime
     assert "acceptance_granted: false" in runtime
     assert "out13_source_identity: youtube:7J5aS_pcBj4" in runtime
     assert (
@@ -296,9 +279,9 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "out13_mapping_coverage_ratio: 1.0" in runtime
     assert "out13_resolved_font_family: Keifont" in runtime
     assert "out13_resolved_maximum_lines: 2" in runtime
-    assert "out13_resume_render_executed: false" in runtime
+    assert "out13_resume_render_executed: null" in runtime
     assert "out13_historical_source_host_resume_render_executed: false" in runtime
-    assert "out13_review_mobile_overflow: false" in runtime
+    assert "out13_review_mobile_overflow: null" in runtime
     assert "out13_rights_status: pending_or_snapshot_only" in runtime
     assert "out13_production_acceptance: false" in runtime
     assert "out13_public_or_publishing_acceptance: false" in runtime

@@ -5,13 +5,13 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 ## Current Focus
 
 - feature: `OUT-13`
-- artifact: `clip-out13-editorial-video-candidate-v1-001`
-- state: `OUT13_EDITORIAL_REPRESENTATIVE_VIDEO_REVIEWABLE_V1`
+- artifact: `clip-out13-editorial-video-candidate-v1-005`
+- state: `OUT13_CODE_READY_LOCAL_REVIEW_ARTIFACT_RECOVERY_REQUIRED_V1`
 
 - canonical main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `editorial_representative_video_reviewable_v1`
-- review status: `source_host_machine_validated_local_review_blocked_missing_exact_artifact`
+- canonical status: `remote_contract_green_local_review_blocked`
+- review status: `source_host_machine_receipt_only_local_review_unavailable`
 - remote code complete: `true`
 - local artifact available: `false`
 - portable local artifact available: `false`
@@ -23,18 +23,18 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `false`
 - last verified host entrypoint: ``
-- pause reason: `missing_local_out13_exact_artifact_and_contract_matching_input_set`
+- pause reason: `candidate_004_and_005_exact_local_packages_absent_recovery_or_new_identity_rebuild_required`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_only_out13_exact_inputs_plan_and_output_absent`
+- cross-machine resume: `tracked_code_docs_portable_exact_inputs_plan_and_output_require_private_transfer_or_new_identity_build`
 - active rebuild contract: ``
-- evidence revision: `out13-editorial-video-candidate-v1`
+- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-source-host-receipt-current-host-recovery-required`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `choose_exact_artifact_recovery_or_new_identity_rebuild_before_editorial_review`
+- decision required: `recover_exact_candidate_005_privately_or_authorize_new_identity_rebuild_before_human_editorial_review`
 - next review: ``
 
 ## Feature Table

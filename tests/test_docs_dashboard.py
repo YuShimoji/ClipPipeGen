@@ -348,13 +348,8 @@ def test_current_resume_surfaces_point_to_out13_and_historical_sources_remain_li
 
         if path.name == "CURRENT_HANDOFF.md":
             assert f"active_artifact: {current_out13_artifact}" in text
-            assert "local_artifact_available: true" in text
-            assert (
-                "human_entrypoint: "
-                "episodes/out13_editorial_video_candidate_20260723/review/"
-                "out13_editorial_video_candidate_v005/review/index.html"
-                in text
-            )
+            assert "local_artifact_available: false" in text
+            assert "human_entrypoint: null" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
@@ -1628,31 +1623,21 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "immutable_transitively_lineage_bound_reviewable_v1"
+        "remote_contract_green_local_review_blocked"
     )
     assert status["current_focus"]["review_status"] == (
-        "machine_validated_browser_verified_human_editorial_review_pending"
+        "source_host_machine_receipt_only_local_review_unavailable"
     )
     assert status["current_focus"]["decision_required"] == (
-        "human_editorial_accept_repair_or_reject_exact_candidate_005_"
-        "candidate_004_parallel_target_retained_without_verdict"
+        "recover_exact_candidate_005_privately_or_authorize_new_identity_"
+        "rebuild_before_human_editorial_review"
     )
     assert status["current_focus"]["next_review_action_type"] == ("")
-    assert status["current_focus"]["human_entrypoint"] == (
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/review/index.html"
-    )
-    assert status["current_focus"]["review_open_command"] == (
-        "powershell -NoProfile -ExecutionPolicy Bypass -File "
-        "episodes\\out13_editorial_video_candidate_20260723\\review\\"
-        "out13_editorial_video_candidate_v005\\review\\open_preview.ps1"
-    )
-    assert status["current_focus"]["machine_readback"] == (
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/validation_readback.json"
-    )
+    assert status["current_focus"]["human_entrypoint"] == ""
+    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["machine_readback"] == ""
     assert status["current_focus"]["remote_code_complete"] == "true"
-    assert status["current_focus"]["local_artifact_available"] == "true"
+    assert status["current_focus"]["local_artifact_available"] == "false"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == ""
     assert status["current_focus"]["exact_baseline_available"] == ""
@@ -1661,20 +1646,15 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["cover_direction_acceptance"] == ""
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
-    assert status["current_focus"]["review_server_status"] == (
-        "validated_then_stopped_no_listener_left_running"
-    )
+    assert status["current_focus"]["review_server_status"] == "unavailable_current_checkout"
     assert (
-        status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
+        status["current_focus"]["last_verified_host_local_artifact_available"] == "false"
     )
-    assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/review/index.html"
-    )
-    assert status["current_focus"]["local_verified_host"] == "DESKTOP-H53P1T4"
+    assert status["current_focus"]["last_verified_host_entrypoint"] == ""
+    assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
     assert status["current_focus"]["pause_reason"] == (
-        "awaiting_human_editorial_review_of_exact_candidate_005_"
-        "candidate_004_parallel_target_retained"
+        "candidate_004_and_005_exact_local_packages_absent_recovery_or_"
+        "new_identity_rebuild_required"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
@@ -1683,21 +1663,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         for item in status["open_surfaces"]
         if item["label"] == "OUT-13 Current Focus"
     ]
-    assert current_surfaces == [
-        {
-            "label": "OUT-13 Current Focus",
-            "command": (
-                "powershell -NoProfile -ExecutionPolicy Bypass -File "
-                "episodes\\out13_editorial_video_candidate_20260723\\review\\"
-                "out13_editorial_video_candidate_v005\\review\\open_preview.ps1"
-            ),
-            "target": (
-                "episodes/out13_editorial_video_candidate_20260723/review/"
-                "out13_editorial_video_candidate_v005/review/index.html"
-            ),
-            "when_to_use": status["current_focus"]["next_action"],
-        }
-    ]
+    assert current_surfaces == []
     assert status["current_focus"]["cross_machine_resume_class"] == (
         "tracked_code_docs_portable_exact_inputs_plan_and_output_require_"
         "private_transfer_or_new_identity_build"

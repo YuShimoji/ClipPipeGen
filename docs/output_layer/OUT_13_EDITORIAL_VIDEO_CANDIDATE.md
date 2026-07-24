@@ -12,6 +12,11 @@ fail closed で束ねる v4 contract へ進んだ。active artifact は
 これは exact MP4 を人間が編集判断できる内部レビュー gate を開く状態である。rights、
 production subtitle/design/render、thumbnail、publishing、upload、public release の承認ではない。
 
+> Current-host note (2026-07-24): 以下の005 package値はsource-host machine receiptである。
+> 現在の`DESKTOP-U9P4LKJ` checkoutにはcandidate 004 / 005のplan、package、MP4、launcherがなく、
+> local review / resumeは利用できない。current availabilityとnext actionは
+> [RUNTIME_STATE.md](../RUNTIME_STATE.md)を優先する。
+
 ## v4 contract で閉じたこと
 
 | rule | previous | replacement | reason | affected consumers | migration | rollback |

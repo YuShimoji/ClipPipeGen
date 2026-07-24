@@ -7,9 +7,10 @@ follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
 current artifact, then verify an artifact-specific launcher exists before using it.
-OUT-13 candidate 005 is the current strongly immutable, content-lineage-bound editorial route and its exact
-ignored same-machine review package is available on Thank. Candidate 004 remains an immutable parallel
-human-review target with no inferred verdict. Candidate 003 remains preserved technical
+OUT-13 candidate 005 is the current strongly immutable, content-lineage-bound editorial route.
+Its exact ignored review package is recorded by the Thank source-host receipt but is absent from the
+current checkout, so recovery or a new-identity rebuild must precede human review. Candidate 004 remains
+an immutable parallel target with no inferred verdict and is also absent locally. Candidate 003 remains preserved technical
 predecessor evidence, not an accepted or rejected candidate. Candidate 001 remains a historical
 source-host receipt and candidate 002 is an immutable superseded local rebuild. OUT-12 is its
 operational one-command real-video predecessor. OUT-11 is the
@@ -46,10 +47,10 @@ opened by the root launcher.
 | visual boundary | Browser and generated evidence were smoke-checked, but package `visual_observation` remains `unverified`; no human full-view verdict is inferred or recorded. |
 | manifest | Exact link-free closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `8257a15c99d04f72ec6c917b99c96a4c87d8704019ca84de8865c87ea64cc054`; input fingerprint `bbeb2514dd5094499d82fcb6999d3261dda1aaaec80daf0fbf2ff21f8e6a6a0b`; self-integrity SHA `5d7550a7815ad1e412681b4c2562b0674c808d0d67adf7aa38597a70b761d32b`. Legacy/malformed/unknown manifests, symlink/junction targets, promotion races, and journal aliases are negative-tested. |
 | resume | `render_executed=false`; five cache hits; complete package tree digest before/after `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040`; rejected allocation also left the digest unchanged. Events are external under sibling `out13_editorial_video_candidate_v005.run_journal/`. |
-| preview_url | `http://127.0.0.1:8076/review/index.html` while the artifact-specific server is running. The validation listener was stopped after QA. |
-| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1` |
-| local availability | 2026-07-24 live audit: 25 package files / 87,123,995 bytes plus 2 external journal files / 1,807 bytes available on Thank. `episodes/` remains ignored and has zero tracked files. |
-| decision_required | Human reviewer must bind accept / bounded repair / reject to exact candidate 005. Candidate 004 remains a byte-identical parallel review target with no inferred verdict. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+| preview_url | Source-host receipt only: `http://127.0.0.1:8076/review/index.html` while its artifact-specific server is running. Unavailable in the current checkout. |
+| open_command | Source-host historical command only: `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1`. Run only after `Test-Path` and hash recovery succeed. |
+| local availability | Current `DESKTOP-U9P4LKJ` audit: package, plan, MP4, validation, and launcher absent. The 25-file / 87,123,995-byte Thank result is a source-host receipt, not current local availability. `episodes/` remains ignored and has zero tracked files. |
+| decision_required | First recover candidate 005 privately with full hash verification, or rebuild as candidate 006+ with new authority. Only then may a human bind accept / bounded repair / reject. Candidate 004/005 remain immutable; rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
 
@@ -83,9 +84,9 @@ Boundary flags:
 | visual boundary | Worker inspected first/middle/last, all cut-boundary sides, and short/normal/two-line subtitle frames with no factual visual defect found in those samples. Package `visual_observation` remains `unverified`; human full-view acceptance is pending. |
 | manifest | Exact closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `6f92c9e6578d1c1995c8d8c510a6855f2fd80cadfc4df4f309dd92f650d08256`; input fingerprint `6c63b6c0e47abed2b1217c7120ab463b3257314da36a04182dc957f1054241e0`; self-integrity SHA `a18ff55dbdce3ff949a53e7c05389f0f9b90f30b9fa3983abeea1b9d246efffa`. |
 | resume | `render_executed=false`; five cache hits; complete package tree digest before/after `970297cd1a63c56e729c98a1527ef3715bab94835c3190112d0690008aeaa829`; final and manifest SHA unchanged. Resume and rejected-allocation events are external under sibling `out13_editorial_video_candidate_v004.run_journal/`. |
-| preview_url | `http://127.0.0.1:8076/review/index.html` while the artifact-specific server is running. The validation listener was stopped after QA. |
-| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v004\review\open_preview.ps1` |
-| local availability | 2026-07-24 live audit: 25 package files / 87,120,417 bytes plus 2 external journal files / 1,746 bytes available on Thank. `episodes/` remains ignored and has zero tracked files. |
+| preview_url | Source-host receipt only: `http://127.0.0.1:8076/review/index.html` while its artifact-specific server is running. Unavailable in the current checkout. |
+| open_command | Source-host historical command only: `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v004\review\open_preview.ps1`. Run only after `Test-Path` and hash recovery succeed. |
+| local availability | Current `DESKTOP-U9P4LKJ` audit: package, plan, MP4, validation, and launcher absent. The Thank package values remain source-host receipt only. |
 | decision_required | No verdict was inferred or recorded. Candidate 004 remains available as a parallel human-review target while candidate 005 is the active strong-contract successor. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:

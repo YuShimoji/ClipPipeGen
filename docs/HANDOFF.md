@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-07-23 JST
+Last updated: 2026-07-24 JST
 
 > **Current authority:** [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) and
 > [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md). This long file
@@ -11,7 +11,24 @@ This file is the shortest project-local handoff for resuming from another termin
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
-## Immediate Resume Capsule - 2026-07-21 OUT-12 operational remote handoff
+## Immediate Resume Capsule - 2026-07-24 OUT-13 code ready / artifact recovery required
+
+```powershell
+git fetch --prune origin
+git switch codex/out-13-editorial-video-candidate-v1
+git pull --ff-only
+git status --short --branch
+git rev-list --left-right --count HEAD...origin/codex/out-13-editorial-video-candidate-v1
+git ls-files episodes
+```
+
+tracked OUT-13 v4 code / tests / docsはremote同期済みで、Node / Electron / CLI smokeと
+Python full suiteはgreen。current checkoutにはcandidate 004 / 005 package、plan、MP4、
+launcherがないため、human reviewはまだ開けない。source-host receiptを保持しつつ、
+exact private recoveryまたはcandidate 006以降のnew identity rebuildを先に選ぶ。
+詳細は`docs/CURRENT_HANDOFF.md`と`docs/SUPERVISOR_STATUS_REPORT.md`。
+
+## Historical Resume Capsule - 2026-07-21 OUT-12 operational remote handoff
 
 Fresh terminal setup:
 

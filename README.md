@@ -9,14 +9,14 @@
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
 outputを不変にし、取得済みの実 source、receipt / material ledger、明示 editorial plan、
 transcript / source audio、provider JSON3 sidecar、rights snapshot、resolved font bytesを
-fail-closedで結ぶ。Thank 上の active candidate `clip-out13-editorial-video-candidate-v1-003`は、
-`youtube:7J5aS_pcBj4`の164.769s sourceから7 cut / 5 sections / 8 omitted ranges /
-128.833s（利用率78.2%）のH.264/AAC 1920x1080動画を生成した。provider cue 102件をKeifont
-100px・8px outline・2px shadow・最大2行でburn-inし、MP4 SHA `a76babda...bbb5`、
-authority / caption-boundary / media / editorial checks、desktop/mobile review、Range 206、
-resume時render非実行・同一SHAを確認済み。provider text/timingを使うが公式著者性は主張しない。
-これは exact candidate 003 のinternal editorial reviewを解放するartifactであり、rights、
-production subtitle/render、thumbnail、public/publishing/upload acceptanceではない。詳細は
+fail-closedで結ぶ。source hostで生成された最新receiptは
+`clip-out13-editorial-video-candidate-v1-005`で、7 cut / 5 sections / 8 omitted ranges /
+128.833s（利用率78.2%）のH.264/AAC 1920x1080、MP4 SHA `a76babda...bbb5`、
+provider cue 102件、authority / caption-boundary / media / editorial checks、browser review、
+不変resumeを記録している。provider text/timingを使うが公式著者性は主張しない。
+現在のcheckoutには005のplan・package・MP4・launcherがないため、Git同期だけではhuman reviewを
+再開できない。private recoveryまたはnew identity rebuild後にexact bytesをレビューする。
+rights、production subtitle/render、thumbnail、public/publishing/upload acceptanceは別gate。詳細は
 [docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md](docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md)。
 
 OUT-12 note: `build-real-video` で、取得済みの実 source 1本から解析、scene-boundary
