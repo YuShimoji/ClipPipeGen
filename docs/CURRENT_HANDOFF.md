@@ -12,7 +12,7 @@ canonical_status: remote_contract_green_local_review_blocked
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-sync_baseline_head: 673da5d15b97b2bad21de7bd25f7d974e88d9695
+sync_baseline_head: 602ab50240bbc8cf8899314679a268942834412d
 verified_implementation_head: this_commit_after_push
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_this_file
 current_title: OUT-13 tracked implementation is development-ready; exact candidate 005 is absent from this checkout
@@ -54,14 +54,16 @@ upstream_parity: 0 0
 
 2026-07-24 に active branch
 `codex/out-13-editorial-video-candidate-v1`をremote tip
-`673da5d15b97b2bad21de7bd25f7d974e88d9695`までfast-forwardした。
-`origin/main`は`5d6f69a64d510508a1f78ab3111a7780913a019c`で、同期直後の
-`origin/main...HEAD`は`0 10`。OUT-13はmain未統合である。
+`602ab50240bbc8cf8899314679a268942834412d`でfetch / ff-only pullし、
+`Already up to date`、upstream parity`0 0`を確認した。
+`origin/main`は`5d6f69a64d510508a1f78ab3111a7780913a019c`でHEADの祖先、
+同期基準の`origin/main...HEAD`は`0 11`。mainの最新内容は含むが、OUT-13側11 commitは
+main未統合である。本報告・handoff更新を1 commitとしてpushした後のresume topologyは
+upstream parity`0 0`、`origin/main...HEAD = 0 12`になる。
 
 lockfileからNode依存を再構成し、GUI / Electron smokeとOUT-13 CLI helpを確認した。
-Python全体回帰でWindows junctionをsymlinkとして検出できない2件を再現し、
-`st_file_attributes`のreparse-point判定を追加して対象2件を修復した。最終検証値は
-監修報告とこの変更を含むcommitに記録する。
+Python全体回帰の最終post-doc runは654 passed in 60.99s。前回同期で追加した
+`st_file_attributes`のWindows reparse-point判定を含むtracked実装を再検証した。
 
 tracked実装は開発を継続できる。一方、現在の
 `DESKTOP-U9P4LKJ` checkoutにはsource-hostで作られたcandidate 004 / 005のplan、

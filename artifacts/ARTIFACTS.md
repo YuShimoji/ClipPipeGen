@@ -153,14 +153,14 @@ Boundary flags:
 
 | Field | Value |
 |---|---|
-| title | 2026-07-23 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
-| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, missing exact local OUT-13 media/inputs, and a dependency-ordered M0-M13 route through artifact recovery, human editorial review, production gates, explicit public release, multi-episode operations, and quality feedback. |
+| title | 2026-07-24 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
+| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, missing exact local OUT-13 media/inputs, and a dependency-ordered M0-M15 route through artifact recovery, human editorial review, production gates, explicit public release, multi-episode operations, policy-constrained autonomy, and sustainable portfolio operations. |
 | storage class | Tracked Markdown report; portable Git evidence. No source or generated media included. |
 | repo_relative_path | `docs/SUPERVISOR_STATUS_REPORT.md` |
 | open_command | `Invoke-Item docs\SUPERVISOR_STATUS_REPORT.md` |
-| sync_baseline | Active branch was fast-forwarded from `2d8c4d6` to `558f681` with sync-time upstream parity `0 0`; `main` / `origin/main` remain `5d6f69a`; sync baseline is four commits ahead of main. This report commit becomes the later handoff tip. No main merge is claimed. |
-| validation | `npm ci` succeeded with 0 vulnerabilities; Electron 42.0.0 dependency tree resolved; Node 24.13.0 / npm 11.6.2; CPython 3.13.3 / uv 0.10.7 / Pillow 12.3.0; final `uvx --with Pillow pytest -q` returned 606 passed in 68.84s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
-| local_boundary | OUT-13 plan/final/review package are absent. Local source SHA `6f78657e...6103a`, transcript `4a7b4fd8...3495`, and rights `4302c4a1...bb8` differ from the tracked contract; official caption matches. Protected R3 preview remains local, and `episodes/` has zero tracked files. |
+| sync_baseline | Follow-up fetch/prune and ff-only pull at `602ab50240bbc8cf8899314679a268942834412d` returned already up to date; upstream parity is `0 0`; `origin/main` remains `5d6f69a` and is an ancestor of the active branch; `origin/main...HEAD` is `0 11`. This report commit becomes the later handoff tip. No main merge is claimed. |
+| validation | `npm ci` reconstructed 23 packages and audited 24 with 0 vulnerabilities; Node 22.19.0 / npm 10.9.3 / Electron 42.0.0; CPython 3.11.0 / uv 0.10.0; final post-doc `uvx --with Pillow pytest -q` returned 654 passed in 60.99s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
+| local_boundary | OUT-13 candidate 004/005 plan/final/review packages remain absent. Local source SHA `e2206cef...2d18`, transcript `ef928d4e...b42d6`, and rights `e6ea9471...64c12` differ from candidate 005 contract values; official caption `3c15535f...9919` matches. Protected R3 preview remains local, and `episodes/` has zero tracked files. |
 | decision_required | Choose exact private recovery or a new-identity rebuild before binding human editorial accept / bounded repair / reject. Rights, production, credentials/OAuth, and public release remain separate explicit gates. |
 
 ## `clip-out12-one-command-real-video-automation-v1-001`

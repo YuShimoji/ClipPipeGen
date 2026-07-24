@@ -19,7 +19,7 @@ closure_branch: codex/out-13-editorial-video-candidate-v1
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-latest_remote_sync_head: 673da5d15b97b2bad21de7bd25f7d974e88d9695
+latest_remote_sync_head: 602ab50240bbc8cf8899314679a268942834412d
 sync_audit_status: out13_branch_ff_synced_dev_environment_green_local_candidate_005_absent
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
@@ -61,7 +61,7 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-24T11:35:25+09:00
+last_verified_at: 2026-07-24T12:53:56+09:00
 last_verified_host_local_artifact_available: false
 last_verified_host_entrypoint: null
 historical_last_verified_host_entrypoint: null
@@ -482,14 +482,16 @@ instructions.
 
 ## 2026-07-24 Remote Sync Green, Current Host Artifact Recovery Required
 
-- active branchを`558f681`からremote tip`673da5d`へff-only更新した。同期直後の
-  upstream parityは`0 0`、`origin/main...HEAD`は`0 10`、tracked / untracked worktreeはclean。
+- follow-upの`git fetch --prune origin`と`git pull --ff-only`をremote tip
+  `602ab50240bbc8cf8899314679a268942834412d`で実行し、`Already up to date`を確認した。
+  upstream parityは`0 0`、`origin/main...HEAD`は`0 11`、`origin/main`はHEADの祖先、
+  tracked / untracked worktreeはclean。報告・handoff更新の1 commitをpushした後の
+  resume topologyはupstream parity`0 0`、`origin/main...HEAD = 0 12`。
 - `npm ci`は23 packagesを復元し24 packages audit / vulnerability 0。
   Node / Electron smokeとOUT-13 CLI helpはpassした。
-- 初回full suiteは652 passed / 2 failed。Python 3.11 on Windowsでdirectory junctionが
-  `Path.is_symlink()`へ出ないため、journal aliasとmanifest payloadのreparse pointを
-  link-like targetとして先に拒否できていなかった。`os.lstat().st_file_attributes`の
-  `FILE_ATTRIBUTE_REPARSE_POINT`判定を追加し、targeted 2 testsとfinal 654 testsがpassした。
+- fresh full suiteは同期後654 passed in 65.15s、正本・dashboard更新後の最終runは
+  654 passed in 60.99s。前回同期で修復したWindows directory junction /
+  reparse-point判定を含め、Python 3.11 on Windowsでgreenを維持した。
 - current hostは`DESKTOP-U9P4LKJ`。candidate 004 / 005 root、
   `editorial_plan_input_v005.json`、review MP4、validation、launcherはいずれも不在。
   protected R3 `human_preview_session`は存在し、cleanupから保護した。

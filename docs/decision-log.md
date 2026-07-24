@@ -8,6 +8,22 @@ last_touched: 2026-07-24
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-24 — `602ab50` follow-up同期と開発開始条件を再検証
+
+active branch / upstreamが`602ab50240bbc8cf8899314679a268942834412d`で一致する状態から
+`git fetch --prune origin`と`git pull --ff-only`を実行し、追加remote差分なし、
+parity`0 0`を確認した。`origin/main`はHEADの祖先で、`origin/main...HEAD = 0 11`。
+`npm ci`は23 packagesを再構成してvulnerability 0、Node / Electron smoke、
+OUT-13 CLI help、fresh Python full suite 654 testsはすべてpassした。
+この報告・handoff更新を1 commitとしてpushした後はupstream parity`0 0`、
+`origin/main...HEAD = 0 12`がresume時の期待値になる。
+
+candidate 004 / 005 rootと005 planは引き続き不在、protected R3 previewは存在する。
+source / transcript / caption / rights SHAのlive readbackも直下のcurrent host auditと一致した。
+従ってproduct decisionは変更せず、private recoveryまたは006以降のnew identity rebuildを
+reviewより先に置く。監修向けroadmapはM0〜M15へ拡張したが、追加目標はproposalであり、
+FEATURE status、rights、production、publishing/public gateを自動承認しない。
+
 ## 2026-07-24 — `673da5d`同期後のcurrent host auditを正本化
 
 active branchを`558f681`からremote tip`673da5d`へff-only更新し、同期直後のupstream parity

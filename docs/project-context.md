@@ -9,7 +9,7 @@ phase: local_artifact_recovery_or_rebuild_required
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 verified_implementation_head: this_commit_after_push
-sync_baseline_head: 673da5d15b97b2bad21de7bd25f7d974e88d9695
+sync_baseline_head: 602ab50240bbc8cf8899314679a268942834412d
 base_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 remote_handoff_tip: this_commit_after_push
 upstream_parity: 0 0
@@ -27,8 +27,10 @@ caption/transcript evidence付きeditorial planを、非連続cut、字幕、実
 review packageへ運ぶ後継経路を追加した。
 
 active branchは`codex/out-13-editorial-video-candidate-v1`。
-2026-07-24にremote tip`673da5d`までff-only同期し、同期直後はupstream parity`0 0`、
-`origin/main...HEAD = 0 10`。OUT-13はmain未統合である。
+2026-07-24にremote tip`602ab50`でfetch / ff-only pullし、upstream parity`0 0`、
+同期基準の`origin/main...HEAD = 0 11`を確認した。`origin/main`はHEADの祖先だが、
+OUT-13側11 commitはmain未統合である。本context更新commitをpushした後のresume topologyは
+upstream parity`0 0`、`origin/main...HEAD = 0 12`。
 Node / Electron / CLI smokeとPython full suiteはgreenで、tracked実装は開発継続可能。
 
 ## 最近閉じたことと、現在の停止点

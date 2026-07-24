@@ -1,7 +1,7 @@
 {
   "schema_id": "clippipegen.docs_dashboard.v1_5",
   "schema_version": "v1.5",
-  "generated_at": "2026-07-24T11:35:25+09:00",
+  "generated_at": "2026-07-24T12:53:56+09:00",
   "project": {
     "name": "ClipPipeGen",
     "wiki_entry": "docs/index.md",
@@ -66,7 +66,7 @@
     "local_verified_host": "DESKTOP-U9P4LKJ",
     "local_artifact_evidence_receipt": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
     "handoff": "docs/CURRENT_HANDOFF.md",
-    "last_verified_at": "2026-07-24T11:35:25+09:00",
+    "last_verified_at": "2026-07-24T12:53:56+09:00",
     "decision_required": "recover_exact_candidate_005_privately_or_authorize_new_identity_rebuild_before_human_editorial_review",
     "next_review_action_type": "",
     "next_action": "candidate 005のexact inputs/plan/packageをprivate recoveryしてSHA照合するか、現在のinput authorityで006以降をnew identity rebuildする。reviewable bytes成立後にだけaccept / repair / rejectを記録する。",
@@ -1707,8 +1707,8 @@
     },
     {
       "artifact_id": "clip-supervisor-sync-roadmap-20260723-004",
-      "title": "2026-07-23 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report",
-      "purpose": "Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, missing exact local OUT-13 media/inputs, and a dependency-ordered M0-M13 route through artifact recovery, human editorial review, production gates, explicit public release, multi-episode operations, and quality feedback.",
+      "title": "2026-07-24 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report",
+      "purpose": "Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, missing exact local OUT-13 media/inputs, and a dependency-ordered M0-M15 route through artifact recovery, human editorial review, production gates, explicit public release, multi-episode operations, policy-constrained autonomy, and sustainable portfolio operations.",
       "storage_class": "Tracked Markdown report; portable Git evidence. No source or generated media included.",
       "repo_relative_path": "docs/SUPERVISOR_STATUS_REPORT.md",
       "open_command": "Invoke-Item docs\\SUPERVISOR_STATUS_REPORT.md",
@@ -2841,7 +2841,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 2642,
+      "line_count": 2644,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -2863,7 +2863,7 @@
         "remote_resume_contract": "fetch_then_switch_codex_out_13_branch_then_read_current_handoff",
         "upstream_parity": "0 0",
         "sync_audit_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
-        "latest_remote_sync_head": "673da5d15b97b2bad21de7bd25f7d974e88d9695",
+        "latest_remote_sync_head": "602ab50240bbc8cf8899314679a268942834412d",
         "sync_audit_status": "out13_branch_ff_synced_dev_environment_green_local_candidate_005_absent",
         "sync_audit_live_out08_package": "historical_accepted_package_untouched",
         "sync_audit_live_out09_package": "access_only_repair_present_manifest_and_video_hashes_match",
@@ -2905,7 +2905,7 @@
         "production_subtitle_design_acceptance": "false",
         "production_image_quality_acceptance": "false",
         "public_or_publishing_acceptance": "false",
-        "last_verified_at": "2026-07-24T11:35:25+09:00",
+        "last_verified_at": "2026-07-24T12:53:56+09:00",
         "last_verified_host_local_artifact_available": "false",
         "last_verified_host_entrypoint": "",
         "historical_last_verified_host_entrypoint": "",
@@ -3513,7 +3513,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 130,
+      "line_count": 132,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3528,7 +3528,7 @@
         "active_branch": "codex/out-13-editorial-video-candidate-v1",
         "source_branch": "codex/out-13-editorial-video-candidate-v1",
         "base_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
-        "sync_baseline_head": "673da5d15b97b2bad21de7bd25f7d974e88d9695",
+        "sync_baseline_head": "602ab50240bbc8cf8899314679a268942834412d",
         "verified_implementation_head": "this_commit_after_push",
         "remote_resume_contract": "fetch_then_switch_codex_out_13_branch_then_read_this_file",
         "current_title": "OUT-13 tracked implementation is development-ready; exact candidate 005 is absent from this checkout",
@@ -3589,7 +3589,7 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 321,
+      "line_count": 337,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
@@ -3603,7 +3603,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 78,
+      "boundary_term_count": 83,
       "status": "current"
     },
     {
@@ -3783,7 +3783,7 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 99,
+      "line_count": 101,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
@@ -3795,7 +3795,7 @@
         "active_branch": "codex/out-13-editorial-video-candidate-v1",
         "source_branch": "codex/out-13-editorial-video-candidate-v1",
         "verified_implementation_head": "this_commit_after_push",
-        "sync_baseline_head": "673da5d15b97b2bad21de7bd25f7d974e88d9695",
+        "sync_baseline_head": "602ab50240bbc8cf8899314679a268942834412d",
         "base_main_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
         "remote_handoff_tip": "this_commit_after_push",
         "upstream_parity": "0 0",
@@ -3923,7 +3923,7 @@
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
       "title": "監修AI向け現状報告 — 2026-07-24 remote同期・開発再開・長期目標提案",
-      "line_count": 184,
+      "line_count": 225,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3931,7 +3931,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 46,
+      "boundary_term_count": 59,
       "status": "reference"
     },
     {
@@ -4012,7 +4012,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (2642 lines) is likely carrying history.",
+        "detail": "Long active doc (2644 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4084,7 +4084,7 @@
       {
         "type": "over_guarded",
         "path": "docs/decision-log.md",
-        "detail": "Boundary terms appear 78 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 83 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4168,7 +4168,7 @@
       {
         "type": "over_guarded",
         "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-        "detail": "Boundary terms appear 46 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 59 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
