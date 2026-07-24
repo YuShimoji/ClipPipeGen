@@ -3,10 +3,34 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-24
+last_touched: 2026-07-25
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-25 — remote 2 commitをff-only同期し、candidate 005のlocal review-readyをlive復元
+
+開始時のactive branchは`673da5d`でtracked / untracked clean、ignored `episodes/`は保持されていた。
+`git fetch --prune origin`でremote`3964326`が2 commit先行と判明し、
+`git pull --ff-only origin codex/out-13-editorial-video-candidate-v1`で取り込んだ。
+取り込み後はupstream parity`0 0`、`origin/main...HEAD = 0 12`、
+`origin/main`はHEADの祖先である。履歴改変、merge、main統合は行っていない。
+
+remote最新のRuntime/Handoffはcandidate 005をcurrent checkout不在としていたが、
+current rootの`episodes/out13_editorial_video_candidate_20260723`にはplan、candidate 004 / 005、
+MP4、validation、launcherが存在した。source`6f78657e...103a`、
+transcript`4a7b4fd8...3495`、caption`3c15535f...9919`、
+rights`4302c4a1...7bb8`、plan`27ef1aa9...dac2`はcontractと一致した。
+candidate 005は25 files / 87,123,995 bytes、final SHA`a76babda...bbb5`、
+tree digest`ed45fd4c...040`。exact resumeはrenderなし、5 cache hits、digest前後不変、
+ephemeral serverはpage 200 / MP4 Range 206で、検証後停止した。
+
+従ってcurrent gateはprivate recovery / new identity rebuildではなく、
+exact candidate 005へのhuman editorial `accept / bounded repair / reject`とする。
+machine validationは人間全編視聴を代行しない。repair時だけcandidate 006以降を割り当て、
+004 / 005は不変のまま保持する。`episodes/`はtracked 0件を維持し、
+別hostでは同じavailabilityを推定しない。rights、production、thumbnail、
+publishing/upload/public、main integrationは独立gateのまま。
 
 ## 2026-07-24 — `602ab50` follow-up同期と開発開始条件を再検証
 

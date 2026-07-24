@@ -8,9 +8,10 @@ follow that Runtime metadata.
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
 current artifact, then verify an artifact-specific launcher exists before using it.
 OUT-13 candidate 005 is the current strongly immutable, content-lineage-bound editorial route.
-Its exact ignored review package is recorded by the Thank source-host receipt but is absent from the
-current checkout, so recovery or a new-identity rebuild must precede human review. Candidate 004 remains
-an immutable parallel target with no inferred verdict and is also absent locally. Candidate 003 remains preserved technical
+Its exact ignored review package, plan, inputs, and launcher are present in the current root and were
+reverified by hash, package-tree digest, immutable resume, and HTTP readback on 2026-07-25.
+The next gate is a human full-view verdict on the exact candidate 005 SHA. Candidate 004 remains
+an immutable local parallel target with no inferred verdict. Candidate 003 remains preserved technical
 predecessor evidence, not an accepted or rejected candidate. Candidate 001 remains a historical
 source-host receipt and candidate 002 is an immutable superseded local rebuild. OUT-12 is its
 operational one-command real-video predecessor. OUT-11 is the
@@ -47,10 +48,10 @@ opened by the root launcher.
 | visual boundary | Browser and generated evidence were smoke-checked, but package `visual_observation` remains `unverified`; no human full-view verdict is inferred or recorded. |
 | manifest | Exact link-free closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `8257a15c99d04f72ec6c917b99c96a4c87d8704019ca84de8865c87ea64cc054`; input fingerprint `bbeb2514dd5094499d82fcb6999d3261dda1aaaec80daf0fbf2ff21f8e6a6a0b`; self-integrity SHA `5d7550a7815ad1e412681b4c2562b0674c808d0d67adf7aa38597a70b761d32b`. Legacy/malformed/unknown manifests, symlink/junction targets, promotion races, and journal aliases are negative-tested. |
 | resume | `render_executed=false`; five cache hits; complete package tree digest before/after `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040`; rejected allocation also left the digest unchanged. Events are external under sibling `out13_editorial_video_candidate_v005.run_journal/`. |
-| preview_url | Source-host receipt only: `http://127.0.0.1:8076/review/index.html` while its artifact-specific server is running. Unavailable in the current checkout. |
-| open_command | Source-host historical command only: `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1`. Run only after `Test-Path` and hash recovery succeed. |
-| local availability | Current `DESKTOP-U9P4LKJ` audit: package, plan, MP4, validation, and launcher absent. The 25-file / 87,123,995-byte Thank result is a source-host receipt, not current local availability. `episodes/` remains ignored and has zero tracked files. |
-| decision_required | First recover candidate 005 privately with full hash verification, or rebuild as candidate 006+ with new authority. Only then may a human bind accept / bounded repair / reject. Candidate 004/005 remain immutable; rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+| preview_url | `http://127.0.0.1:8076/review/index.html` while its artifact-specific server is running. 2026-07-25 smoke returned page 200 and MP4 Range 206; the temporary server was then stopped. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1` |
+| local availability | Current `DESKTOP-U9P4LKJ` root: exact plan, inputs, package, MP4, validation, and launcher present. Source/transcript/caption/rights/plan hashes match the candidate 005 contract; package is 25 files / 87,123,995 bytes with tree digest `ed45fd4c...040`. `episodes/` remains ignored and has zero tracked files. |
+| decision_required | Human reviewer binds accept / bounded repair / reject to final SHA `a76babda...bbb5`. Repair allocates candidate 006+ and does not overwrite 004/005. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
 
@@ -84,9 +85,9 @@ Boundary flags:
 | visual boundary | Worker inspected first/middle/last, all cut-boundary sides, and short/normal/two-line subtitle frames with no factual visual defect found in those samples. Package `visual_observation` remains `unverified`; human full-view acceptance is pending. |
 | manifest | Exact closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `6f92c9e6578d1c1995c8d8c510a6855f2fd80cadfc4df4f309dd92f650d08256`; input fingerprint `6c63b6c0e47abed2b1217c7120ab463b3257314da36a04182dc957f1054241e0`; self-integrity SHA `a18ff55dbdce3ff949a53e7c05389f0f9b90f30b9fa3983abeea1b9d246efffa`. |
 | resume | `render_executed=false`; five cache hits; complete package tree digest before/after `970297cd1a63c56e729c98a1527ef3715bab94835c3190112d0690008aeaa829`; final and manifest SHA unchanged. Resume and rejected-allocation events are external under sibling `out13_editorial_video_candidate_v004.run_journal/`. |
-| preview_url | Source-host receipt only: `http://127.0.0.1:8076/review/index.html` while its artifact-specific server is running. Unavailable in the current checkout. |
-| open_command | Source-host historical command only: `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v004\review\open_preview.ps1`. Run only after `Test-Path` and hash recovery succeed. |
-| local availability | Current `DESKTOP-U9P4LKJ` audit: package, plan, MP4, validation, and launcher absent. The Thank package values remain source-host receipt only. |
+| preview_url | `http://127.0.0.1:8076/review/index.html` while the candidate-specific server is running; candidate 005 is the active target on the shared port. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v004\review\open_preview.ps1` |
+| local availability | Current `DESKTOP-U9P4LKJ` root retains candidate 004 as an immutable parallel local package. Candidate 005 remains the active stronger-contract target. |
 | decision_required | No verdict was inferred or recorded. Candidate 004 remains available as a parallel human-review target while candidate 005 is the active strong-contract successor. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
@@ -149,19 +150,19 @@ Boundary flags:
 - `upload_attempted=false`
 - `episodes_tracked=false`
 
-## `clip-supervisor-sync-roadmap-20260723-004`
+## `clip-supervisor-sync-roadmap-20260725-005`
 
 | Field | Value |
 |---|---|
-| title | 2026-07-24 OUT-13 Remote Sync, Development Readiness, and Long-Range Goal Report |
-| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, missing exact local OUT-13 media/inputs, and a dependency-ordered M0-M15 route through artifact recovery, human editorial review, production gates, explicit public release, multi-episode operations, policy-constrained autonomy, and sustainable portfolio operations. |
+| title | 2026-07-25 OUT-13 Remote Sync, Exact Local Review Readiness, and Long-Range Goal Report |
+| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, exact same-machine candidate 005 evidence, and a dependency-ordered M0-M15 route through human editorial review, main integration, production gates, explicit public release, multi-episode operations, policy-constrained autonomy, and sustainable portfolio operations. |
 | storage class | Tracked Markdown report; portable Git evidence. No source or generated media included. |
 | repo_relative_path | `docs/SUPERVISOR_STATUS_REPORT.md` |
 | open_command | `Invoke-Item docs\SUPERVISOR_STATUS_REPORT.md` |
-| sync_baseline | Follow-up fetch/prune and ff-only pull at `602ab50240bbc8cf8899314679a268942834412d` returned already up to date; upstream parity is `0 0`; `origin/main` remains `5d6f69a` and is an ancestor of the active branch; `origin/main...HEAD` is `0 11`. This report commit becomes the later handoff tip. No main merge is claimed. |
-| validation | `npm ci` reconstructed 23 packages and audited 24 with 0 vulnerabilities; Node 22.19.0 / npm 10.9.3 / Electron 42.0.0; CPython 3.11.0 / uv 0.10.0; final post-doc `uvx --with Pillow pytest -q` returned 654 passed in 60.99s; Node and Electron GUI smokes passed; `build-editorial-video-candidate --help` resolved. |
-| local_boundary | OUT-13 candidate 004/005 plan/final/review packages remain absent. Local source SHA `e2206cef...2d18`, transcript `ef928d4e...b42d6`, and rights `e6ea9471...64c12` differ from candidate 005 contract values; official caption `3c15535f...9919` matches. Protected R3 preview remains local, and `episodes/` has zero tracked files. |
-| decision_required | Choose exact private recovery or a new-identity rebuild before binding human editorial accept / bounded repair / reject. Rights, production, credentials/OAuth, and public release remain separate explicit gates. |
+| sync_baseline | Fetch/prune detected two remote commits over local `673da5d`; ff-only pull reached `396432635710622f6573ae15e3f0537452a6c14f`. Upstream parity is `0 0`; `origin/main` remains `5d6f69a` and is an ancestor of the active branch; `origin/main...HEAD` is `0 12`. This report commit becomes the later handoff tip. No main merge is claimed. |
+| validation | `npm ci` reconstructed 23 packages and audited 24 with 0 vulnerabilities; Node 24.13.0 / npm 11.6.2 / Electron 42.0.0; uv/uvx 0.10.7; `npm ls --depth=0`, GUI/Electron smoke, CLI help, exact candidate 005 resume, page 200 / Range 206, focused 88 tests, final full suite 654 passed in 94.36s, and post-dashboard 30 tests all passed. |
+| local_boundary | OUT-13 candidate 004/005 remain ignored same-machine evidence. Candidate 005 exact source/transcript/caption/rights/plan hashes, 25-file package, MP4 SHA, and package-tree digest match the tracked contract; `episodes/` has zero tracked files and does not transfer through Git. |
+| decision_required | Bind human editorial accept / bounded repair / reject to exact candidate 005 SHA. Rights, production, credentials/OAuth, and public release remain separate explicit gates. |
 
 ## `clip-out12-one-command-real-video-automation-v1-001`
 

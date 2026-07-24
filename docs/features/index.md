@@ -6,14 +6,14 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-13`
 - artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_CODE_READY_LOCAL_REVIEW_ARTIFACT_RECOVERY_REQUIRED_V1`
+- state: `OUT13_LOCAL_EXACT_REVIEW_READY_HUMAN_EDITORIAL_DECISION_PENDING_V1`
 
 - canonical main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `remote_contract_green_local_review_blocked`
-- review status: `source_host_machine_receipt_only_local_review_unavailable`
+- canonical status: `remote_contract_green_local_exact_review_ready`
+- review status: `machine_and_http_validated_human_editorial_review_pending`
 - remote code complete: `true`
-- local artifact available: `false`
+- local artifact available: `true`
 - portable local artifact available: `false`
 - portable entrypoint: ``
 - exact baseline available: ``
@@ -21,21 +21,21 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - cover direction review available: ``
 - cover direction acceptance: ``
 - proxy classification: ``
-- last verified host local artifact available: `false`
-- last verified host entrypoint: ``
-- pause reason: `candidate_004_and_005_exact_local_packages_absent_recovery_or_new_identity_rebuild_required`
+- last verified host local artifact available: `true`
+- last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
+- pause reason: `human_editorial_verdict_required_for_exact_candidate_005`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_portable_exact_inputs_plan_and_output_require_private_transfer_or_new_identity_build`
+- cross-machine resume: `tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_only_and_require_private_transfer_or_new_identity_build_elsewhere`
 - active rebuild contract: ``
-- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-source-host-receipt-current-host-recovery-required`
+- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-live-local-exact-review-ready`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `recover_exact_candidate_005_privately_or_authorize_new_identity_rebuild_before_human_editorial_review`
-- next review: ``
+- decision required: `human_editorial_accept_bounded_repair_or_reject_for_exact_candidate_005_sha`
+- next review: `human_full_view_candidate_005`
 
 ## Feature Table
 

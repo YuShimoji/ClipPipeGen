@@ -3,15 +3,16 @@ id: idea-ledger
 title: Idea Ledger - ClipPipeGen
 type: durable_idea_ledger
 status: current
-last_touched: 2026-07-24
+last_touched: 2026-07-25
 ---
 
 # Idea Ledger - ClipPipeGen
 
 OUT-10/11のShort portfolioはaccepted internal・winnerなしで閉じ、OUT-12の実長尺automationは
 operational、OUT-13のcaption-evidence editorial routeはcandidate 005までremote code completeかつ
-source-host receiptが成立している。current hostにはcandidate 004 / 005 packageがなく、
-tracked codeだけが開発可能なため、review前にprivate recoveryまたはnew identity rebuildが必要である。以下は別々の
+source-host receiptが成立している。2026-07-25のcurrent root再照合ではcandidate 004 / 005 packageがあり、
+candidate 005のinputs / plan / MP4 / digestもcontractと一致した。tracked codeとexact local review targetの
+双方が開発・レビュー可能で、現在のbottleneckはhuman editorial verdictである。以下は別々の
 bottleneckを解く候補であり、proposalやmachine passをhuman、rights、production、public acceptanceへ
 自動昇格させない。
 
@@ -19,9 +20,9 @@ bottleneckを解く候補であり、proposalやmachine passをhuman、rights、
 |---|---|---|---|---|
 | G0: OUT-10/11 closure保持 | accepted Shortを再修復せず比較authorityとして再利用 | exact SHAとreceipt不変 | 完了 | Agent: lineage維持 |
 | G1: OUT-12 one-command real video | source→Timeline IR→MP4→validation→review→resumeを一縦糸にする | 取得済みreal source、FFmpeg/ffprobe | 完了。SHA `5d391ffd...a584`; このcheckoutにもlocal evidenceあり | Agent: regression時だけ修復 |
-| G2: OUT-13 editorial route | explicit planとcaption evidenceを非連続cut・字幕・reviewable MP4へ運ぶ | source/caption/transcript/rights/plan | remote code complete、654 tests pass。candidate 005 MP4 SHA `a76babda...bbb5`はsource-host receipt | Agent: code contract維持 |
-| G3: artifact identity recovery | humanがOUT-13 reviewable bytesへ探索なしで到達できるようにする | source-hostのexact package、またはnew identity authority | current hostはcandidate 004 / 005 package・plan・launcher不在 | Human owner: private recovery可否。Agent: SHAとidentityを混同せず照合または再生成 |
-| G4: internal editorial acceptance | composition、subtitle presentation、picture/audioを一本で判断 | G3、exact SHA、single review entry | review target不在のためblocked。005 verdictはpendingのまま | Human reviewer: target成立後にaccept / bounded repair / rejectをSHAへbind |
+| G2: OUT-13 editorial route | explicit planとcaption evidenceを非連続cut・字幕・reviewable MP4へ運ぶ | source/caption/transcript/rights/plan | remote code complete。candidate 005 MP4 SHA `a76babda...bbb5`とexact local packageを再照合 | Agent: code contract維持 |
+| G3: artifact identity recovery | humanがOUT-13 reviewable bytesへ探索なしで到達できるようにする | exact package、plan、hash、single launcher | current hostで完了。25 files / 87,123,995 bytes、digest`ed45fd4c...040` | Agent: same-machine availabilityとGit portabilityを分離 |
+| G4: internal editorial acceptance | composition、subtitle presentation、picture/audioを一本で判断 | G3、exact SHA、single review entry | review-ready。005 verdict pending | Human reviewer: accept / bounded repair / rejectをSHAへbind |
 | G5: bounded editorial repair | reviewで特定されたsource-specific欠陥だけを直す | G4がrepair、変更対象と非対象が明示 | conditional | Agent:一回のbounded repairと再検証 |
 | G6: rights/material-use clearance | 技術成功と利用許可を接続する | source/range、権利者/ガイドラインsnapshot、判断owner | `rights=pending` | Rights owner: allow/deny/restriction receipt |
 | G7: production subtitle design | 字幕、font/license、safe area、話者表現をproduction判断へ上げる | G4、明示design gate、visual owner | closed | Human designer: exact visual receipt |
@@ -34,9 +35,9 @@ bottleneckを解く候補であり、proposalやmachine passをhuman、rights、
 
 ## 次の取っ掛かり
 
-- **Restore**: candidate 005のexact packageを使う場合、承認済みprivate transportとSHA照合を行う。
-- **Rebuild**: exact transferを選ばない場合、new plan / candidate 006以降のidentityでreview surfaceを再構成する。
-- **Review**: local target成立後にだけ全編を視聴し、final SHAへaccept / repair / rejectをbindする。
+- **Review**: current hostのcandidate 005を全編視聴し、final SHAへaccept / repair / rejectをbindする。
+- **Repair**: verdictがrepairの場合だけ、findingをcut/caption/timestampへ限定しcandidate 006以降を割り当てる。
+- **Transport**: 別host reviewが必要になった場合だけ、承認済みprivate transferと全hash照合を行う。
 - **Audit**: review結果後のbounded repair、failure/resume、main統合境界を監査する。
 - **Advance**: OUT-13受理後、rights、production subtitle design、production renderのうち一gateだけを開く。
 

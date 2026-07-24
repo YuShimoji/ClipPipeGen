@@ -1,6 +1,6 @@
 # ClipPipeGen Handoff
 
-Last updated: 2026-07-24 JST
+Last updated: 2026-07-25 JST
 
 > **Current authority:** [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) and
 > [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md). This long file
@@ -11,7 +11,7 @@ This file is the shortest project-local handoff for resuming from another termin
 
 Resume-first rule: on restart, read `docs/RUNTIME_STATE.md` and its Current Resume Capsule before using older handoff notes. Long historical closeouts now live in `docs/RUNTIME_HISTORY.md`; do not treat archived `current_slice` / `next_action` entries as current instructions.
 
-## Immediate Resume Capsule - 2026-07-24 OUT-13 code ready / artifact recovery required
+## Immediate Resume Capsule - 2026-07-25 OUT-13 exact local review ready
 
 ```powershell
 git fetch --prune origin
@@ -22,10 +22,12 @@ git rev-list --left-right --count HEAD...origin/codex/out-13-editorial-video-can
 git ls-files episodes
 ```
 
-tracked OUT-13 v4 code / tests / docsはremote同期済みで、Node / Electron / CLI smokeと
-Python full suiteはgreen。current checkoutにはcandidate 004 / 005 package、plan、MP4、
-launcherがないため、human reviewはまだ開けない。source-host receiptを保持しつつ、
-exact private recoveryまたはcandidate 006以降のnew identity rebuildを先に選ぶ。
+tracked OUT-13 v4 code / tests / docsはremote`3964326`へff-only同期済み。
+current rootにはcandidate 005のexact inputs / plan / 25-file package / MP4 / launcherがあり、
+全hash、package-tree digest、renderなしresume、page 200 / Range 206を再確認した。
+次はfinal SHA`a76babda...bbb5`の全編human editorial `accept / bounded repair / reject`。
+repairの場合だけcandidate 006以降へ進み、004 / 005を上書きしない。
+別hostでは`episodes/`がGit移送されないため、local availabilityをlive再判定する。
 詳細は`docs/CURRENT_HANDOFF.md`と`docs/SUPERVISOR_STATUS_REPORT.md`。
 
 ## Historical Resume Capsule - 2026-07-21 OUT-12 operational remote handoff

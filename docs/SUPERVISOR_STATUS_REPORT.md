@@ -1,225 +1,287 @@
-# 監修AI向け現状報告 — 2026-07-24 remote同期・開発再開・長期目標提案
+# 監修AI向け現状報告 — 2026-07-25 remote同期・exact review再開・長期目標
 
-更新日: 2026-07-24 JST
+更新日: 2026-07-25 JST
 
 対象: ClipPipeGenのみ
 
 active branch: `codex/out-13-editorial-video-candidate-v1`
 
+current exact artifact: `clip-out13-editorial-video-candidate-v1-005`
+
 ## 監修時に最初に押さえる結論
 
-2026-07-24 12:49 JSTに`git fetch --prune origin`と`git pull --ff-only`を再実行した。
-開始HEAD / upstreamはともに
-`602ab50240bbc8cf8899314679a268942834412d`で、pull結果は`Already up to date`、
-parityは`0 0`だった。`origin/main`はcurrent branchの祖先であり、同期基準HEADは
-mainより11 commit先にある。OUT-13 v4の強化実装、tests、handoff docsを含むremote tipを
-このcheckoutが取り込んでいる。本報告・handoff更新を1 commitとしてpushした後は、
-active branchはmainより12 commit先になる。
+remote最新は取り込み済みで、tracked実装と同一マシンのexact candidate 005はどちらも
+開発・レビュー可能である。
 
-Node依存はlockfileから再構成済みで、GUI / Electron smoke、OUT-13 CLI help、
-Python全体回帰をこの同期後に再実行した。最終結果は`654 passed`で、tracked codeは
-開発継続可能である。前回同期時に露呈して修復されたWindows junction / reparse-point回帰も
-同じfull suiteに含めてgreenを維持した。
+開始時のlocal HEADは`673da5d`、remoteは`3964326`で2 commit先行していた。
+`git fetch --prune origin`後にff-only pullし、upstream parity`0 0`まで同期した。
+`origin/main`は`5d6f69a`でcurrent branchの祖先、同期基準の
+`origin/main...HEAD`は`0 12`。mainの最新内容は含むが、OUT-13側12 commitはmain未統合である。
 
-ただしremote文書の「Thank端末にcandidate 005が存在する」という記録は、
-現在の`DESKTOP-U9P4LKJ` checkoutには当てはまらない。candidate 004 / 005のreview package、
-MP4、validation、launcher、candidate 005 planは不在で、現在のsource / transcript /
-rights bytesも005契約値と異なる。従ってhuman editorial reviewを直ちに開くことはできない。
-Gitでportableなのはbuilder / tests / docs / contractまでであり、次の実作業は
-exact private recoveryまたはnew identity rebuildの二択である。
+remote最新文書はcandidate 005をcurrent checkout不在としていたが、current rootのlive
+filesystemにはexact inputs、plan、25-file package、MP4、validation、launcherが存在した。
+source / transcript / caption / rights / planのSHA、final MP4 SHA、package-tree digestを
+tracked contractと照合し、完全一致を確認した。exact `--resume`はrenderを実行せず、
+5 cache hits、package digest前後一致。ephemeral localhost serverではpage 200、
+MP4 Range 206を確認し、検証後に停止した。
 
-OUT-13のmachine receiptは失われたと断定しない。source host上で成立した
-candidate 005のSHA・manifest・browser QAは履歴証拠として保持しつつ、
-このcheckoutのlive availabilityとは分離した。rights、production subtitle/render、
-thumbnail、publishing、upload、public releaseはいずれも未承認のままである。
+従って現在のbottleneckはartifact recoveryではない。人間がcandidate 005を全編視聴し、
+final SHAへ`accept` / bounded `repair` / `reject`をbindすることがcurrent gateである。
+packageの`visual_observation.status=unverified`は維持し、machine validationを人間判断へ
+昇格させない。
+
+rights、production subtitle/design/render、thumbnail、publishing、upload、public release、
+main integrationは独立gateである。technical greenやhuman editorial acceptanceから
+自動的に開かない。
 
 ## remote同期とbranch topology
 
-今回の開始時HEAD / upstreamは`602ab50`で一致していた。
-`git fetch --prune origin`後、次のff-only pullで追加差分がないことを確認した。
-
-```powershell
-git pull --ff-only
-```
-
-remote同期基準がmainの上に持つ11 commitの主な意味は次の通り。
-
-| remote変更 | workflowへの効果 | このcheckoutでの扱い |
+| 確認面 | live結果 | 意味 |
 |---|---|---|
-| immutable output / sibling journal | 成功packageをfailureやresumeで汚さない | code / testsを取得しWindows junctionも補強 |
-| signed PCM lineage | equal-energy別波形等をauthorityとして誤受理しない | tracked testsで再検証 |
-| caption acquisition receipt | provider IDとexact JSON3 bytesをplan記述だけに依存せず結ぶ | source-host receiptとして保持 |
-| closed manifest / link rejection | package外bytesの間接参照を防ぐ | Windows reparse pointも拒否するよう修復 |
-| candidate 004 / 005 handoff | exact review targetと未承認gateを別端末へ伝える | package不在をlive再判定し、handoffを訂正 |
+| pre-fetch local HEAD | `673da5d15b97b2bad21de7bd25f7d974e88d9695` | 開始時のclean baseline |
+| fetched remote tip | `396432635710622f6573ae15e3f0537452a6c14f` | remoteが2 commit先行 |
+| pull方式 | `git pull --ff-only origin codex/out-13-editorial-video-candidate-v1` | merge commitや履歴改変なし |
+| upstream parity | `0 0` | pull直後にlocal/remote一致 |
+| `origin/main...HEAD` | `0 12` | mainの欠落なし、OUT-13側12 commit未統合 |
+| main ancestry | `git merge-base --is-ancestor origin/main HEAD`成功 | current branchはmain最新を包含 |
+| tracked / untracked | 開始時clean | user-owned tracked差分なし |
+| tracked episodes | 0件 | source/mediaをGitへ追加していない |
 
-同期後のbranch / remote parityは`0 0`、`origin/main...HEAD`は`0 11`、
-`origin/main`は`5d6f69a64d510508a1f78ab3111a7780913a019c`だった。
-`git merge-base --is-ancestor origin/main HEAD`も成功しているため、mainの最新内容を落とした
-branchではない。ただしOUT-13同期基準側11 commitはmain未統合である。この報告更新を含む
-1 commitを加えた`origin/main...HEAD = 0 12`が次のremote resume topologyになる。
+今回取り込んだremote 2 commitの主な内容は、Windows junction / reparse-pointを
+link-like targetとして拒否するOUT-13 evidence contract修復と、supervisor roadmap /
+handoff更新である。current rootのartifact availabilityだけはremote文書と衝突したため、
+live hash/readbackを優先して正本を再同期した。
 
 ## worktree・依存・artifact衛生
 
-開始時のtracked / untracked worktreeはcleanだった。ignored stateを次の5種類へ分けた。
+pre-edit状態はactive-scope tracked変更なし、unrelated tracked変更なし、untrackedなし。
+ignored stateには`episodes/`、`node_modules/`、cache、retained previewが存在する。
+`episodes/`へbroad cleanupを行わず、protected R3
+`human_preview_session`とOUT-13 candidate 003 / 004 / 005を保持した。
 
-| 区分 | live確認 | 処置 |
+Node依存は、repo関連の重複npm installがないことを確認してから一度だけ`npm ci`を実行した。
+23 packagesを再構成し、24 packages audit、vulnerability 0。
+`npm ls --depth=0`はElectron 42.0.0を正常に解決した。
+
+live toolchain:
+
+| tool | version / state |
+|---|---|
+| Node | `v24.13.0` |
+| npm | `11.6.2` |
+| Electron | `42.0.0` |
+| uv / uvx | `0.10.7` |
+| FFmpeg / ffprobe | `8.0.1` |
+| Python test environment | `uvx --with Pillow`による隔離環境 |
+
+Node 24はこのcheckoutのlive実行環境であり、GUI / Electron smokeとPython回帰を
+通した結果をdevelopment-readiness evidenceとする。将来Node versionをrelease contractへ
+固定する場合は別途engines/CI方針を決める。
+
+## exact candidate 005のlive artifact packet
+
+artifact_id:
+`clip-out13-editorial-video-candidate-v1-005`
+
+repo-relative package:
+`episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/`
+
+open command:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1
+```
+
+preview URL:
+`http://127.0.0.1:8076/review/index.html`（artifact-specific server実行中のみ）
+
+| authority / output | bytes | SHA-256 / result |
+|---|---:|---|
+| source MP4 | 35,281,366 | `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a` |
+| transcript | 43,369 | `4a7b4fd805bc607773f1f3e271d961415efddceae1f3e6a72f8e6c6220333495` |
+| provider JA JSON3 | 40,303 | `3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919` |
+| rights snapshot | 2,347 | `4302c4a1ecc598d80c130050ae9f36ba6701c8f5a9ba46e5f01b519f4d417bb8` |
+| candidate 005 plan | 11,260 | `27ef1aa9d7aa29267e43d4b9b33dc17051acbf8f5b38dc4a3b50649e1ca6dac2` |
+| final MP4 | 82,594,810 | `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` |
+| package | 25 files / 87,123,995 bytes | tree digest `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040` |
+
+media / editorial machine readback:
+
+- 7 cuts / 5 semantic sections / 8 omitted ranges
+- source 164.768798s、timeline 128.795s、final media 128.833333s
+- H.264 High / AAC / yuv420p / 1920x1080
+- provider-sidecar captions 102 cues、mapping coverage 1.0
+- overlap / orphan / split / duplicate / missing / unexpected / subtitle overflow 0
+- full decode、faststart、timestamps、A/V、loudness、black/silence、caption containment pass
+- integrated loudness -14.48 LUFS、true peak -1.88 dBTP
+- black event 0、silence event 0
+- authority binding pass、rights statusはpending
+
+exact resume:
+
+- elapsed 9.173s
+- `render_executed=false`
+- cache hits: editorial plan / caption presentation / render / media validation / review package
+- manifest self SHA不変
+- package-tree digest before / after一致
+- successful package内のbytes不変
+- readbackはsibling
+  `out13_editorial_video_candidate_v005.run_journal/`にのみ更新
+
+localhost readback:
+
+- review page HTTP 200
+- MP4 Range request HTTP 206 / 1,024 bytes
+- page内artifact IDとvideo linkを確認
+- 検証用serverは停止済み、port 8076 listener残存なし
+
+初回生成時のbrowser/evidence receiptはreadyState 4、1920x1080、4 evidence images、
+7 cut / 8 omission / 14 seek controls、overflow / console / media error 0を記録している。
+今回のlive smokeはHTTP経路の再確認であり、人間の全編視聴を追加したものではない。
+
+## 実行した検証
+
+| command / check | 結果 | 判断 |
 |---|---|---|
-| active-scope tracked files | なし、remote同期後に本作業差分のみ発生 | 本commitへ集約 |
-| unrelated tracked modifications | なし | 復元不要 |
-| untracked files | なし | 削除不要 |
-| Python / pytest cache | `.pytest_cache`と11個の`__pycache__` | repo内の列挙済みpathだけを`git clean -fdX -- <paths>`で整理。test後の再生成分はdisposable |
-| retained / required ignored state | `episodes/`、`node_modules/`、`.claude/worktrees/` | 一括cleanせず保持 |
-
-`git ls-files episodes`は0件。cleanup policyで保護される
-`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/`
-は存在し、削除していない。candidate mediaをGitへ追加していない。
-
-`npm ci`は23 packagesを再構成し、24 packagesをaudit、脆弱性0。
-実行環境はNode `v22.19.0`、npm `10.9.3`、Electron `42.0.0`、
-local Python `3.11.0`、uv `0.10.0`。Python検証はproject既定どおり
-`uvx --with Pillow`で隔離環境を使った。
-
-## 検証結果と開発開始条件
-
-| command | 結果 | 判断 |
-|---|---|---|
-| `git fetch --prune origin` + `git pull --ff-only` | up to date、upstream parity `0 0` | remote tipを取り込み済み |
-| `npm ci` | 23 packages、audit 24、vulnerability 0 | lockfileからNode環境を再現可能 |
-| `npm run smoke` | `gui smoke: OK` | GUIのread-only/current wiringは起動可能 |
-| `npm run smoke:electron` | `electron smoke: OK` | Electron shellを現lockfileで起動可能 |
-| `uvx --with Pillow python -m src.cli.main build-editorial-video-candidate --help` | exit 0、必須`--artifact-id`を表示 | OUT-13 CLI contractへ到達可能 |
-| `uvx --with Pillow pytest -q` | 最終post-doc run: 654 passed in 60.99s | tracked全体回帰green |
-| local authority SHA readback | source / transcript / caption / rightsを再計算 | candidate 005との一致・不一致をlive filesystemから判定 |
-
-前回同期で閉じた2件は仕様期待の誤りではなく、Windows directory junctionが
-`Path.is_symlink()`でfalseになるruntime差だった。これによりrun journal aliasが拒否されず、
-manifest validatorも「symlink禁止」より後のpackage escapeで止まっていた。
-`os.lstat()`のWindows file attributesを読む補助判定を追加し、Python 3.11でも
-symlink / junction / other reparse pointをlink-like targetとして先に拒否する。
-今回のfresh full suiteでこの修復を含む654 testsが再度passした。最初の同期後runは
-65.15s、正本・dashboard更新後の最終runは60.99s。package immutability、
-journal isolation、external target禁止というOUT-13 v4 contract自体は変えていない。
-
-## source-host receiptと、このcheckoutの実在を分ける
-
-source hostが記録したcandidate 005は次のmachine receiptを持つ。
-
-| receipt面 | source-host記録 | acceptance境界 |
-|---|---|---|
-| identity | `clip-out13-editorial-video-candidate-v1-005` | human受理済みではない |
-| timeline | 7 cuts / 5 sections / 8 omissions / 128.795s | semantic selection受理ではない |
-| final media | 128.833333s、82,594,810 bytes、SHA `a76babda...bbb5` | production/public-readyではない |
-| caption | provider JSON3 102 cues、mapping 1.0、split/duplicate/missing 0 | 公式著者性・speaker意味は主張しない |
-| package | 25 files / 87,123,995 bytes、tree digest `ed45fd4c...040` | Git portableではない |
-| machine/browser | full validation、page 200、Range 206、overflow/error 0 | 人間全編視聴の代用ではない |
-
-現在のcheckoutを`Test-Path`とSHAで読み直した結果は次の通り。
-
-| local対象 | live result | candidate 005契約との関係 |
-|---|---|---|
-| candidate 004 / 005 root | `episodes/out13_editorial_video_candidate_20260723`自体が不在 | review / resume不可 |
-| source MP4 | 56,063,684 bytes、SHA `e2206cef...2d18` | 契約`6f78657e...6103a`と不一致 |
-| transcript | 42,735 bytes、SHA `ef928d4e...b42d6` | 契約`4a7b4fd8...3495`と不一致 |
-| provider JSON3 | 40,303 bytes、SHA `3c15535f...9919` | 契約値と一致 |
-| rights snapshot | 2,666 bytes、SHA `e6ea9471...64c12` | 契約`4302c4a1...bb8`と不一致 |
-| `editorial_plan_input_v005.json` | 不在 | 同一fingerprintを再現不可 |
-| protected R3 preview | 存在 | cleanup保護継続 |
-
-この差により、tracked docsの旧`human_entrypoint`、`review_open_command`、
-`machine_readback`はcurrent surfaceから外した。source-host receiptは
-`docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md`に残し、現在の実在を示す
-`RUNTIME_STATE` / `CURRENT_HANDOFF` / dashboardではlocal unavailableを正本とする。
+| `git fetch --prune origin` | remote 2 commit先行を検出 | stale localを発見 |
+| `git pull --ff-only ...` | `673da5d -> 3964326` fast-forward | remote最新を安全に取得 |
+| branch parity / ancestry | `0 0`、main ancestor true | branch topology正常 |
+| `npm ci` | 23 packages、audit 24、0 vulnerabilities | lockfile環境再構成可能 |
+| `npm ls --depth=0` | Electron 42.0.0正常 | dependency tree正常 |
+| `npm run smoke` | `gui smoke: OK` | GUI wiring起動可能 |
+| `npm run smoke:electron` | `electron smoke: OK` | Electron shell起動可能 |
+| OUT-13 CLI help | exit 0、必須`--artifact-id`表示 | CLI contract到達可能 |
+| exact candidate 005 `--resume` | renderなし、5 cache hits、digest不変 | immutable resume正常 |
+| localhost page / Range | 200 / 206 | review入口利用可能 |
+| dashboard generation / JSON parse | pass | Runtime current focusをUIへ反映 |
+| focused docs / OUT-13 tests | 88 passed in 17.19s | current-state contractとbuilder回帰green |
+| full Python suite | 654 passed in 94.36s、exit 0 | 最終tracked regression green |
+| `git diff --check` | exit 0。core.autocrlfによるLF→CRLF予告のみ | patch whitespace errorなし |
+| `git ls-files episodes` | 0件 | media非追跡を維持 |
 
 ## 現在のシステム到達点
 
-ClipPipeGenは既に、rights / material ledger / source acquisition / transcript /
+ClipPipeGenは、rights / material ledger / source acquisition / transcript /
 cut context / subtitle draft / NLE CSV / diagnostic render / explicit editorial plan /
-manifest / review packageをepisode単位でつなげられる。OUT-12は取得済み実source一本を
-一コマンドで長尺review packageへ運び、OUT-13は人間が定義した非連続editorial planを
-caption evidence付きで同じreviewable videoへ運ぶ。
+manifest / immutable review packageをepisode単位で接続できる。
 
-まだ製品化を止める主なbottleneckは、render機能の有無ではない。
+OUT-12は取得済み実source一本を一コマンドで長尺review packageへ運ぶ。
+OUT-13は人間が定義した非連続editorial planを、provider caption evidence、
+transitive source-audio lineage、rights snapshot、resolved font、closed manifestとともに
+同じreviewable videoへ運ぶ。candidate 005ではsuccessful package immutability、
+sibling run journal、signed PCM lineage、anonymous caption acquisition receipt、
+Windows reparse-point拒否まで成立した。
 
-1. ignored local artifactが端末を跨がず、review consumerへ届かない。
-2. human editorial verdictがexact SHAへbindされていない。
-3. rights owner receipt、production subtitle design、delivery render profileが独立に未完了。
-4. thumbnail / metadata / publishingはvideo acceptanceへ接続されていない。
-5. 複数episodeでqueue、retry、retention、品質傾向を測る運用層がない。
+進捗は一つの数字へ混ぜない。
 
-## 残る制約と不確実性
+| completion面 | 目安 | 根拠 |
+|---|---:|---|
+| OUT-13 tracked implementation | 100% | code / tests / docs / CLI contract完成 |
+| candidate 005 machine review readiness | 100% | exact package / hash / resume / HTTP確認 |
+| human editorial acceptance | 0% | 全編accept / repair / reject未記録 |
+| OUT-13 branch closure | 75% | human verdictとmain integrationが残る |
+| episode production/public loop | 約35% | rights、production design/render、thumbnail、delivery/public未完了 |
 
-| 論点 | 現時点で確定していること | まだ確定していないこと |
-|---|---|---|
-| tracked実装 | remote同期済み、依存再構成可能、654 testsとGUI/CLI smokeがgreen | main統合の採否と時期 |
-| candidate 005 | source-host receiptとexact hash群はtracked docsに残る | exact private packageの所在・回収権限 |
-| current local authority | source / transcript / rightsは005と異なり、captionだけ一致 | これを006以降のsemantic authorityに採用するか |
-| human quality | review対象bytesがcurrent hostにないため判定していない | composition / subtitle / picture / audioのaccept・repair・reject |
-| rights / production / public | いずれも未承認で、技術validationから昇格していない | owner判断、delivery仕様、公開可否 |
-| M1〜M15 | 依存順とexit evidenceをproposalとして定義 | FEATURE ID、優先度、owner、実装予算、approved遷移 |
+## 未完了gateとowner
+
+| 残作業 | 目的 / effect | 必要条件 | 現在状態 | owner / 次の動き |
+|---|---|---|---|---|
+| human editorial verdict | semantic flow、字幕提示、picture/audioをexact bytesで判断 | candidate 005全編視聴 | pending | Human reviewer: accept / bounded repair / reject |
+| bounded repair | 指摘箇所だけを後継へ反映 | verdict=repair、cut/caption/timestamp finding | conditional | Agent: candidate 006+、一回のbounded repair |
+| branch acceptance / main integration | 後続sliceをstable APIへ載せる | editorial closure、merge preflight、full regression | 未実施 | Supervisor/Agent |
+| rights decision | source/range/useの利用許可を明示 | guideline snapshot、owner判断 | pending | Rights owner |
+| production subtitle design | typography/license/safe area/speaker policy確定 | visual owner、stress evidence | closed | Designer/Reviewer |
+| production render profile | codec/color/audio/device QCをdelivery仕様化 | subtitle design、delivery targets | closed | Production owner |
+| thumbnail / metadata | accepted videoへ投稿準備を接続 | production candidate | parked /未着手 | Human + Agent |
+| private/unlisted delivery | OAuth/idempotency/rollbackを公開前に証明 | credentials明示承認、全前段gate | 未実装 | Credential owner |
+| public release | visibility変更を監査可能に閉じる | rights/production/publishing receipts | future | Human owner |
+
+## portable境界
+
+Gitで移るもの:
+
+- tracked code、tests、docs、schemas、artifact identities
+- expected SHA / manifest / package-tree digest
+- decision history、current handoff、roadmap
+
+Gitで移らないもの:
+
+- source media、transcript/audioのignored working bytes
+- plan input、final MP4、QA images、localhost package
+- sibling run journal
+
+current hostの`local_artifact_available=true`は同じrootのlive事実であり、別cloneへ自動継承しない。
+別hostで同一SHA reviewが必要なら、承認済みprivate transfer、inventory、size、全SHA、
+package-tree digest、receiver receiptを要求する。transferを選ばない場合は006以降の
+new identityで再生成し、005復元と表現しない。
 
 ## 監修AIへ提案する最遠目標
 
-以下は依存順を明示したproposalであり、FEATURE statusを自動で`approved`へ上げない。
+以下は依存順付きproposalであり、FEATURE statusを自動で`approved`へ上げない。
 各段階は前段のacceptanceを推定せず、観測可能なexit evidenceで閉じる。
 
 | 段階 | 目標 | 最小exit evidence | 解消する摩擦 / 次に可能になること |
 |---|---|---|---|
-| M0 再開基盤 | remote同期・依存・回帰・handoffをgreenにする | branch parity、lockfile install、full suite、正しいlocal availability | 別AIが誤った入口から始めない |
-| M1 Artifact Transport v1 | exact inputs / plan / packageをprivateに移送・照合できるcontract | inventory、hash、size、source-host/receiver receipt、rollback、Git非追跡 | host依存を解き同一SHA reviewが可能 |
-| M2 OUT-13 Editorial Closure | candidate 005またはnew identityを人間がaccept/repair/reject | final SHA、reviewer、timestamp、bounded findings | semantic/editorial品質をbranch acceptanceへ接続 |
-| M3 Main Integration | OUT-13 v4をmainへ統合 | merge preflight、full regression、main parity、migration note | 後続sliceが安定API上で開発可能 |
-| M4 Rights Decision Packet | source/range/useごとの利用判断をownerへ渡す | guideline snapshot、source intervals、owner allow/deny/restriction receipt | internal artifactをproduction検討へ進められる |
-| M5 Production Subtitle System | typography / license / safe area / speaker policyをproduction化 | design tokens、font license、stress set、desktop/mobile/TV human receipt | diagnostic字幕からdelivery字幕へ移行 |
-| M6 Production Render Profile | codec / color / audio / device QCをdelivery仕様へ固定 | versioned profile、deterministic render、decode/seek/color/audio QC、human acceptance | public-ready候補を技術的に生成可能 |
-| M7 Episode Acceptance Pack | M2/M4/M5/M6の独立receiptを一identityへ束ねる | immutable episode pack、gate matrix、lineage、rollback map | 「何が承認済みか」を一画面で判断可能 |
-| M8 Thumbnail + Metadata | accepted videoから比較サムネとmetadata draftを作る | 3–5 alternatives、selection receipt、title/description/tags draft | 投稿準備の手戻りを削減 |
-| M9 Private/Unlisted Delivery | OAuth / retry / idempotencyを公開前に証明 | explicit credential approval、private/unlisted upload receipt、rollback test | publishing integrationを低リスクで実証 |
-| M10 Explicit Public Release | visibility / thumbnail / metadataを明示判断で公開 | rights+production+publishing owner receipts、final confirmation、audit log | 一episodeの制作→公開loopを閉じる |
-| M11 Multi-Episode Operations | queue / resume / retry / retention / alertを複数episodeで運用 | 3–5 episode run、failure isolation、SLA/quality dashboard | 継続制作のoperator負荷を測定・削減 |
-| M12 Quality Learning Loop | acceptanceと修復をsource/preset別に分析する | structured findings、false-positive率、repair率、lead time trend | 自動化を人間判断の実績から改善 |
-| M13 Controlled Scale-out | provider / format / languageを増やす | provider adapter contract、cost/privacy/rights review、cross-source regression | 単一pilot依存から再利用可能な制作基盤へ移行 |
-| M14 Policy-Constrained Autonomy | 可逆処理の自動進行と不可逆gateのhuman approvalをpolicy化 | versioned policy、dry-run、canary、stop/rollback drill、gate owner audit | 自動化を広げてもrights/public判断を越境しない |
-| M15 Sustainable Production Platform | 品質・lead time・cost・retention・recoveryをportfolio単位で運用 | SLO、cost envelope、artifact retention、disaster recovery、四半期review | 単発成功から持続可能な制作能力へ移行 |
+| M0 Remote Resume Green | remote同期・依存・回帰・handoffをgreen化 | parity、lockfile install、smoke、full suite | 別AIが正しいbranchと正本から開始 |
+| M1 Exact Local Evidence Convergence | candidate 005のinputs / plan / package / SHAを一identityへ再照合 | inventory、全SHA、digest、resume、HTTP | artifact所在の誤判定を解消 |
+| M2 OUT-13 Editorial Closure | exact candidateを人間がaccept / repair / reject | final SHA、reviewer、timestamp、bounded findings | semantic品質をbranch acceptanceへ接続 |
+| M3 Main Integration | OUT-13 v4をmainへ統合 | merge preflight、full regression、main parity、migration note | 後続sliceがstable API上で開発可能 |
+| M4 Rights Decision Packet | source/range/useの利用判断をownerへ渡す | guideline snapshot、interval、allow/deny/restriction receipt | internal artifactをproduction検討へ進める |
+| M5 Production Subtitle System | typography / license / safe area / speaker policyをproduction化 | tokens、font license、stress set、multi-device human receipt | diagnostic字幕からdelivery字幕へ移行 |
+| M6 Production Render Profile | codec / color / audio / device QCをversioned仕様化 | deterministic render、decode/seek/color/audio QC、human acceptance | delivery candidateを再現可能に生成 |
+| M7 Episode Acceptance Pack | M2/M4/M5/M6の独立receiptを一identityへ束ねる | immutable gate matrix、lineage、rollback map | 承認済み範囲を一画面で判断 |
+| M8 Thumbnail + Metadata | accepted videoから比較サムネとmetadata draftを作る | 3–5 alternatives、selection receipt、title/description/tags | 投稿準備の手戻りを削減 |
+| M9 Artifact Transport / Retention v1 | same-machine evidenceを承認済み経路で保全・移送 | inventory、encryption/access、receiver hash、retention/expiry、restore drill | host依存とartifact紛失を削減 |
+| M10 Private/Unlisted Delivery | OAuth / retry / idempotencyを公開前に証明 | credential approval、private/unlisted receipt、rollback test | publishing integrationを低リスクで実証 |
+| M11 Explicit Public Release | visibility / thumbnail / metadataを明示判断で公開 | rights+production+publishing receipts、final confirmation、audit log | 一episodeの制作→公開loopを閉じる |
+| M12 Multi-Episode Operations | queue / resume / retry / retention / alertを複数episodeで運用 | 3–5 episode run、failure isolation、SLA/quality dashboard | 継続制作のoperator負荷を測定・削減 |
+| M13 Quality Learning Loop | acceptanceとrepairをsource/preset別に分析 | structured findings、repair率、lead time、false-positive trend | 人間判断の実績から自動化を改善 |
+| M14 Policy-Constrained Autonomy | 可逆処理の自動進行と不可逆gateのhuman approvalをpolicy化 | versioned policy、dry-run、canary、stop/rollback drill | rights/public判断を越えず自動化を拡張 |
+| M15 Sustainable Production Platform | 品質・lead time・cost・retention・recoveryをportfolio運用 | SLO、cost envelope、DR、quarterly review | 単発成功から持続可能な制作能力へ移行 |
 
-長期のNorth Starは「自動で動画を作る」ことだけではない。
+M0とM1はこのcheckoutで完了。current critical pathはM2、次にM3。
+M4〜M6はM2後に並行設計できる。M8以降を先行実装すると未受理videoへ投稿作業がぶら下がり、
+手戻りが増える。M12〜M15は一episodeのprivate/public delivery loopが閉じた後に着手する。
+
+North Starは単に動画を自動生成することではない。
 `source identity -> rights/material evidence -> editorial decision -> production assets ->
-publishing receipt`を一つのepisode lineageにし、どのgateが誰の判断で開いたかを再現できること。
-自動化率は、human reviewの探索時間、再生成回数、artifact紛失、公開前差し戻しを減らせる範囲で上げる。
+publishing receipt`を一つのepisode lineageにし、どのgateが誰の判断で開いたかを再現する。
+自動化率は、human reviewの探索時間、再生成回数、artifact紛失、公開前差し戻しを
+減らせる範囲で上げる。
 
 ## 監修AIがそのまま使える実行順
 
-1. 最初にownerへ、candidate 005のprivate recoveryを許可するか、006以降の
-   new identity rebuildへ進むかを確認する。これはprivate media access / semantic authorityに
-   関わるため、Agentが推定しない。
-2. recoveryならinventory / size / SHA / package-tree digestをreceiver側で照合する。
-   rebuildなら現source / transcript / rights / captionを新authorityとして明記し、
-   004 / 005を上書きしない。
-3. reviewable bytesが成立した後だけ、人間がfinal SHAへ
-   `accept` / bounded `repair` / `reject`を記録する。
-4. editorial closure後にmain integration preflightを行い、そこで初めてM4〜M6を
-   並行設計する。credentials、rights判断、production/public acceptanceは別owner gateに残す。
+1. `docs/CURRENT_HANDOFF.md`とこの報告を読み、current branch / upstream parityを再確認する。
+2. candidate 005 path、final SHA、package-tree digestをread-onlyで再確認する。
+3. 同一マシンでreview launcherを開き、全編を視聴する。
+4. final SHAへ`accept` / bounded `repair` / `reject`を記録する。
+5. repairならcut ID / caption ID / timestampへfindingを限定し、candidate 006+を割り当てる。
+6. acceptならbranch acceptance / main integration preflightへ進む。
+7. editorial closure後、rights packet、production subtitle system、production render profileを
+   独立ownerで並行設計する。
 
 ## 推奨する次の取っ掛かり
 
 | 入口 | 今解くbottleneck | 選ぶと次に可能になること |
 |---|---|---|
-| **Advance — private recovery** | candidate 005のexact bytesがこの端末にない | 同一SHAを維持したhuman editorial review |
-| **Explore — new identity rebuild** | recovery経路を使わない場合の停止 | 現在の入力authorityで006以降を作りreviewを再開 |
-| **Audit — Artifact Transport v1** | same-machine evidenceの再発リスク | 今後の候補を端末移動可能なreceipt付きpackageにする |
-| **Verify — main integration preflight** | branchがmainより先行したまま後続開発が積み上がる | editorial closure直後に安全にmainへ統合 |
+| **Advance — exact human review** | machine-readyだがeditorial verdict未記録 | OUT-13 branch closure |
+| **Audit — main integration preflight** | feature branchがmainより先行 | accept直後に安全にmainへ統合 |
+| **Verify — Artifact Transport v1 scope** | same-machine artifactの再発リスク | cross-host review / retentionを再現可能化 |
+| **Explore — production gate design** | rights / subtitle / render ownerとexit evidence未定 | M2後の並行実装を短縮 |
 
-優先順位は`M1またはnew identity rebuild -> M2 -> M3`。
-M4 rightsとM5/M6 productionはM2後に並行設計できるが、M8以降を先に実装すると
-未受理videoへthumbnail / publishing作業がぶら下がり、手戻りが増える。
-M11〜M15は一episodeの公開loopが閉じた後の目標であり、現在のFEATURE statusを
-自動で`approved`へ上げる根拠にはしない。
+優先順位は`Advance -> Audit`。Transportとproduction gate設計はreview待ちの間に
+read-onlyで整理できるが、candidate verdictやpublic authorityを先取りしない。
 
-## 監修AIが判断すべき現在の二択
+## 現在必要な人間判断
 
-| 選択 | 必要条件 | 長所 | 注意点 |
-|---|---|---|---|
-| candidate 005 private recovery | source hostまたは承認済み保管先へアクセスできるowner | 既存SHA・machine receiptを保ち最短でreview可能 | private media移送の明示承認とhash照合が必要 |
-| candidate 006+ rebuild | 現在のsource/transcript/rightsを新authorityとして採用し、新planを作る | source host依存を解きこの端末で再現できる | 005の復元ではなく別artifact。semantic planの再判断が必要 |
+対象はcandidate 005のexact final SHA
+`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`。
 
-どちらを選んでも004 / 005は上書きしない。review対象が成立するまでは
-human acceptance、rights、production/public readinessを進めたと報告しない。
+判断は次の三つだけでよい。
+
+- `accept`: internal editorial candidateとして閉じ、main integration preflightへ進む。
+- `bounded repair`: 直す箇所をcut/caption/timestampで示し、candidate 006+へ一回の限定修復を行う。
+- `reject`: 理由をexact SHAへbindし、別plan / identityとして再設計する。
+
+どの判断でもcandidate 004 / 005は上書きしない。rights、production、thumbnail、
+publishing/upload/publicは別判断として残す。
