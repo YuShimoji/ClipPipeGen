@@ -4,6 +4,25 @@
 対象: ClipPipeGen のみ
 Mission: `clip-edit-ready-source-packet-v1`
 
+## Git 引き渡し状態
+
+Mission 開始時は保護対象 branch
+`codex/out-13-editorial-video-candidate-v1` / HEAD
+`396432635710622f6573ae15e3f0537452a6c14f` にいたが、そこで作業を継続せず、
+current `origin/main`
+`5d6f69a64d510508a1f78ab3111a7780913a019c` から
+`codex/edit-ready-source-packet-v1` を新規作成した。開始時 tracked/untracked は clean、
+`episodes/` と `node_modules/` だけが ignored。target branch はlocal/remoteとも未作成で、
+pre-existing user changeはなかった。
+
+portable implementation、tests、contract、handoff、supervisor report は commit
+`ff3ad3ce79c8ac72b0c73be8eecae6c1044694db`
+（`feat: build provenance-bound edit-ready source packets`）にまとめ、指定どおり
+`origin/codex/edit-ready-source-packet-v1` へpushした。push後に local HEAD / upstream /
+remote refが同じ commit、ahead/behind `0 0` であることを確認した。main merge、main push、
+PR、force push、history rewrite、tag、releaseは行っていない。この節を含む最終handoff metadata
+は closure commit で同期し、remote tipはそのcommitになる。
+
 ## 今回到達した状態
 
 `origin/main` の `5d6f69a64d510508a1f78ab3111a7780913a019c` を起点に、

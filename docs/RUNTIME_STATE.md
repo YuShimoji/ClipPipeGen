@@ -13,10 +13,10 @@ phase: edit_ready_input_operational
 canonical_status: edit_ready_source_packet_operational_v1
 active_branch: codex/edit-ready-source-packet-v1
 source_branch: main
-verified_implementation_head: this_commit_after_push
-source_branch_tip: this_commit_after_push
-closure_branch: codex/out-12-one-command-real-video-automation-v1
-remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
+verified_implementation_head: ff3ad3ce79c8ac72b0c73be8eecae6c1044694db
+source_branch_tip: 5d6f69a64d510508a1f78ab3111a7780913a019c
+closure_branch: codex/edit-ready-source-packet-v1
+remote_resume_contract: fetch_then_switch_codex_edit_ready_source_packet_v1_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
 sync_audit_status: out12_remote_handoff_context_refresh_preflight_clean

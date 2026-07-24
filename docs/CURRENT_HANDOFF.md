@@ -11,8 +11,8 @@ phase: edit_ready_input_operational
 canonical_status: edit_ready_source_packet_operational_v1
 active_branch: codex/edit-ready-source-packet-v1
 source_branch: main
-verified_implementation_head: this_commit_after_push
-remote_resume_contract: fetch_then_switch_main_then_read_this_file
+verified_implementation_head: ff3ad3ce79c8ac72b0c73be8eecae6c1044694db
+remote_resume_contract: fetch_then_switch_codex_edit_ready_source_packet_v1_then_read_this_file
 current_title: provenance-bound edit-ready Source Packet operational
 human_entrypoint: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet_report.html
 portable_entrypoint: null
