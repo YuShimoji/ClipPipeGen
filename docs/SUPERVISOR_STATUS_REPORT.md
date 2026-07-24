@@ -4,9 +4,10 @@
 
 ## いま再開できる地点
 
-ローカルの tracked code/docs/tests は `codex/out-13-editorial-video-candidate-v1` にあり、
-`git fetch --prune origin` と `git pull --ff-only origin codex/out-13-editorial-video-candidate-v1` 後も
-変更はなく、HEAD と upstream は `3fdad157c09cc925a50750135e14fff5faa832f2` で一致した。worktree は clean、
+ローカルの tracked code/docs/tests は `codex/out-13-editorial-video-candidate-v1` にある。handoff開始時に
+`git fetch --prune origin` と `git pull --ff-only origin codex/out-13-editorial-video-candidate-v1` を行い、
+変更はなく、HEAD と upstream は `3fdad157c09cc925a50750135e14fff5faa832f2` で一致した。その後のdocs handoff commitが
+この報告を含むremote resume tipである。worktree は clean、
 `origin/main` は `5d6f69a64d510508a1f78ab3111a7780913a019c`、active branch は main より8 commit先である。
 OUT-13をmainへmergeした事実はない。
 
