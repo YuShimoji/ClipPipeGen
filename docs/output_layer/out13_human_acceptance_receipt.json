@@ -1,0 +1,89 @@
+{
+  "schema_version": "clippipegen.out13.human_acceptance_receipt.v1",
+  "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+  "recorded_at": "2026-07-25T02:58:58+09:00",
+  "decision_source": "user_statement_in_supervising_thread",
+  "decision_authority": "user",
+  "verdict": "accept",
+  "status": "accepted_internal_editorial_visual_review",
+  "review_context": {
+    "context_id": "out13_candidate_005_internal_full_view_editorial_visual_review_v1",
+    "scope": "internal_full_view_editorial_visual_review",
+    "procedure_source": "docs/CURRENT_HANDOFF.md",
+    "media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+    "media_byte_size": 82594810,
+    "media_duration_seconds": 128.833333,
+    "accepted_dimensions": [
+      "editorial_composition",
+      "editorial_flow",
+      "subtitle_presentation",
+      "picture_quality_for_internal_editorial_use",
+      "audio_quality_for_internal_editorial_use"
+    ]
+  },
+  "identity_separation": {
+    "media_identity": {
+      "sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+      "byte_size": 82594810,
+      "duration_seconds": 128.833333
+    },
+    "package_revision": {
+      "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+      "schema_version": "clippipegen.out13.editorial_video_candidate.v4",
+      "package_file_count": 25,
+      "package_byte_size": 87123995,
+      "package_tree_digest_sha256": "ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040",
+      "manifest_self_sha256": "5d7550a7815ad1e412681b4c2562b0674c808d0d67adf7aa38597a70b761d32b"
+    },
+    "implementation_revision": {
+      "candidate_contract_commit": "3fdad157c09cc925a50750135e14fff5faa832f2",
+      "acceptance_recording_base_head": "d753ea7bb4b48bb98da1fc16afc073d20432acb1"
+    }
+  },
+  "acceptance_inheritance": {
+    "identity_fields": [
+      "media_sha256",
+      "review_context_id",
+      "accepted_dimensions"
+    ],
+    "same_identity_inherits_acceptance": true,
+    "same_identity_human_review_pending": false,
+    "package_revision_change_alone_reopens_review": false,
+    "implementation_revision_change_alone_reopens_review": false,
+    "bounded_repair_policy": {
+      "reopen_only_changed_or_causally_affected_dimensions": true,
+      "reopen_only_affected_timestamps_when_time_bounded": true,
+      "unaffected_dimensions_inherit_acceptance": true,
+      "new_media_sha_requires_new_review_identity": true
+    }
+  },
+  "deduplicated_review_targets": [
+    {
+      "artifact_id": "clip-out13-editorial-video-candidate-v1-004",
+      "media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+      "review_context_id": "out13_candidate_005_internal_full_view_editorial_visual_review_v1",
+      "accepted_dimensions": [
+        "editorial_composition",
+        "editorial_flow",
+        "subtitle_presentation",
+        "picture_quality_for_internal_editorial_use",
+        "audio_quality_for_internal_editorial_use"
+      ],
+      "human_review_pending": false,
+      "inheritance_reason": "same_review_relevant_media_bytes_context_and_dimensions"
+    }
+  ],
+  "human_review_pending": false,
+  "acceptance_granted": true,
+  "main_integration_approved": false,
+  "closed_gates": {
+    "rights_approval": false,
+    "production_acceptance": false,
+    "production_subtitle_design_acceptance": false,
+    "production_image_quality_acceptance": false,
+    "thumbnail_acceptance": false,
+    "publishing_acceptance": false,
+    "upload_attempted": false,
+    "public_release_approval": false
+  }
+}

@@ -5,15 +5,14 @@ type: durable_context
 status: current
 last_touched: 2026-07-25
 current_slice: OUT-13
-phase: human_editorial_review_pending
+phase: main_integration_preflight_active
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: this_commit_after_push
-sync_baseline_head: 396432635710622f6573ae15e3f0537452a6c14f
+verified_implementation_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
+sync_baseline_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
 base_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-remote_handoff_tip: this_commit_after_push
 upstream_parity: 0 0
-health: OUT13_LOCAL_EXACT_REVIEW_READY_HUMAN_EDITORIAL_DECISION_PENDING_V1
+health: OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1
 ---
 
 # Project Context - ClipPipeGen
@@ -27,14 +26,14 @@ caption/transcript evidence付きeditorial planを、非連続cut、字幕、実
 review packageへ運ぶ後継経路を追加した。
 
 active branchは`codex/out-13-editorial-video-candidate-v1`。
-2026-07-25にremote tip`3964326`へff-only更新し、upstream parity`0 0`、
-`origin/main...HEAD = 0 12`、`origin/main`がHEADの祖先であることを確認した。
-OUT-13側12 commitはmain未統合で、このcontext更新commitをpushした後のresume topologyは
-upstream parity`0 0`、`origin/main...HEAD = 0 13`になる。
+2026-07-25のM3監査開始時点でremote tipは`d753ea7`、upstream parity`0 0`、
+`origin/main...HEAD = 0 13`、`origin/main`がHEADの祖先である。
+OUT-13はmain未統合で、M3がreadyでも明示承認まではmerge/pushしない。
 
 Node依存、GUI / Electron / CLI、exact candidate 005 resume、localhost page / Range、
-Python full suite 654 testsを使って開発再開性を確認した。tracked codeと同一マシンのreview targetの双方が
-利用可能で、current bottleneckは人間の全編editorial verdictである。
+Python full suite 654 testsを使って開発再開性を確認した。ユーザーはその後、exact candidate 005を
+内部の全編editorial / visual scopeでacceptした。current bottleneckは重複reviewではなく、
+branch全差分のmain-integration preflightと明示的な統合判断である。
 
 ## 最近閉じたことと現在の停止点
 
@@ -42,7 +41,7 @@ Python full suite 654 testsを使って開発再開性を確認した。tracked 
 |---|---|---|
 | OUT-10 / OUT-11 | five-source Shortをexact bytesへbindしてaccepted internal、winnerなし | universal visual policy、rights、production/public |
 | OUT-12 | source→Timeline IR→MP4→validation→review→resumeをinternal operational化 | second-source long-form repeatability、production/public |
-| OUT-13 | explicit plan、provider caption evidence、immutable package、signed PCM lineage、review builder、candidate 005 exact local revalidation | human editorial verdict、main統合、rights/production |
+| OUT-13 | explicit plan、provider caption evidence、local package preservation、signed PCM lineage、candidate 005 exact local revalidation、user internal editorial acceptance | main統合、rights/production |
 
 current identityは`clip-out13-editorial-video-candidate-v1-005`。7 cuts / 5 sections /
 8 omissions、final SHA`a76babda...bbb5`、25 files / 87,123,995 bytes、
@@ -50,8 +49,9 @@ package-tree digest`ed45fd4c...040`。source / transcript / caption / rights / p
 current hashesはtracked contractと一致し、`--resume`はrenderなし・5 cache hits・
 package digest不変で成功した。review serverはpage 200 / MP4 Range 206を確認後に停止した。
 
-artifact recoveryはcurrent hostでは完了済み。人間がexact SHAへ
-`accept` / bounded `repair` / `reject`を記録するまでeditorial acceptanceはpending。
+artifact recoveryとM2 human editorial acceptanceは完了済み。受領receiptは
+`docs/output_layer/out13_human_acceptance_receipt.json`。同じmedia SHA・review context・
+accepted dimensionsを再reviewへ戻さず、M3 main-integration preflightへ進む。
 
 ## 再開時に読む順序
 
@@ -81,8 +81,8 @@ tracked receiptの存在だけで別hostのartifact実在を推定せず、毎�
 ## 次の依存順
 
 最短critical pathは
-`exact SHA human editorial verdict -> branch acceptance -> main integration`。
-repairの場合だけ`bounded finding -> candidate 006+ -> exact SHA re-review`を挟む。
+`M3 branch preflight -> explicit integration authorization -> main integration verification`。
+将来repairが必要な場合だけ、変更・因果影響のあるdimensionとtimestampを限定して再確認する。
 
 その後、rights decision packet、production subtitle design、production render profileを
 独立gateとして閉じ、episode acceptance packへ集約する。thumbnail / metadata /

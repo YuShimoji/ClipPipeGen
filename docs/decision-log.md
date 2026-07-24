@@ -8,6 +8,27 @@ last_touched: 2026-07-25
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-25 — candidate 005のuser acceptanceを記録し、同一mediaの重複reviewを閉じる
+
+ユーザーはsupervising threadで
+`clip-out13-editorial-video-candidate-v1-005`、final MP4 SHA
+`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`へ
+`accept`を与えた。対象は従来手順による内部の全編editorial / visual reviewで、
+構成、編集フロー、字幕提示、内部用途の画質・音質に限定する。
+`docs/output_layer/out13_human_acceptance_receipt.json`へuser authority、日付、
+review context、accepted dimensions、media/package/implementation identityの分離を記録した。
+
+同じmedia SHA、同じreview context、同じaccepted dimensionsにはacceptanceを継承し、
+`human_review_pending=false`とする。candidate 004 / 005はreview-relevant media bytesが同じため、
+004へ別の全編reviewを要求しない。package revisionまたはimplementation revisionだけの変更も
+reviewを再開しない。将来のbounded repairは変更・因果影響のあるdimensionとtimestampだけを
+再確認し、影響しない判断を継承する。
+
+M2はclosed、M3 main-integration preflightを開始する。rights、production
+subtitle/design/render、production image quality、thumbnail、publishing、upload、
+public release、main integrationは未承認である。accepted mediaの再視聴やcandidate 006生成は
+現在のnext actionにしない。
+
 ## 2026-07-25 — remote 2 commitをff-only同期し、candidate 005のlocal review-readyをlive復元
 
 開始時のactive branchは`673da5d`でtracked / untracked clean、ignored `episodes/`は保持されていた。

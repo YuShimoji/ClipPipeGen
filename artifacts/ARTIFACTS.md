@@ -5,15 +5,18 @@ local files are portable across clones. Use `docs/RUNTIME_STATE.md` for the
 current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
-Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then verify an artifact-specific launcher exists before using it.
-OUT-13 candidate 005 is the current strongly immutable, content-lineage-bound editorial route.
+Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
+current focus. OUT-13 now opens the tracked acceptance receipt; its historical
+media launcher is not a scheduled review action.
+OUT-13 candidate 005 is the current accepted-internal, content-lineage-bound editorial route.
 Its exact ignored review package, plan, inputs, and launcher are present in the current root and were
-reverified by hash, package-tree digest, immutable resume, and HTTP readback on 2026-07-25.
-The next gate is a human full-view verdict on the exact candidate 005 SHA. Candidate 004 remains
-an immutable local parallel target with no inferred verdict. Candidate 003 remains preserved technical
+reverified by hash, package-tree digest, render-free resume, and HTTP readback on 2026-07-25.
+The user then accepted exact candidate 005 for the recorded internal full-view editorial/visual scope.
+The next gate is M3 main-integration preflight and explicit integration authorization. Candidate 004 has
+the same review-relevant media SHA and inherits the recorded dimensions without another full-view gate.
+Candidate 003 remains preserved technical
 predecessor evidence, not an accepted or rejected candidate. Candidate 001 remains a historical
-source-host receipt and candidate 002 is an immutable superseded local rebuild. OUT-12 is its
+source-host receipt and candidate 002 is a superseded local rebuild. OUT-12 is its
 operational one-command real-video predecessor. OUT-11 is the
 closed five-source Short portfolio with two repaired candidates, one accepted
 SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
@@ -33,10 +36,10 @@ opened by the root launcher.
 
 | Field | Value |
 |---|---|
-| title | OUT-13 Strongly Immutable, Content-Lineage-Bound Editorial Video Candidate on Thank |
-| purpose | Preserve candidate 004 editorial/media bytes while making every manifest-bearing output permanently immutable, closing promotion and journal alias races, replacing energy-only audio acceptance with signed full-coverage waveform identity, and binding exact provider caption bytes to an anonymous acquisition verification receipt. |
+| title | OUT-13 Accepted Internal Editorial Video Candidate on Thank |
+| purpose | Preserve candidate 004 editorial/media bytes through the repository's local pipeline contract, verify exact-byte/content consistency, replace energy-only audio acceptance with signed full-coverage waveform identity, bind exact provider caption bytes to an anonymous acquisition verification receipt, and retain the user's exact internal editorial acceptance. |
 | storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine inputs, machine-generated caption receipt, plan, and review package. No source or generated media is tracked or portable through Git. |
-| repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md` |
+| repo_relative_path | `src/cli/build_editorial_video_candidate.py`; `src/integrations/render/editorial_video_candidate.py`; `tests/test_editorial_video_candidate.py`; `docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md`; `docs/output_layer/out13_human_acceptance_receipt.json` |
 | local_artifact_path | `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/` |
 | state | `OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1` |
 | source | `youtube:7J5aS_pcBj4`; SHA `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`; 35,281,366 bytes; 164.768798s; 1920x1080. |
@@ -45,19 +48,19 @@ opened by the root launcher.
 | final_video | Byte-identical to candidate 004: H.264 High/AAC yuv420p, 1920x1080, 128.833333s, 82,594,810 bytes, SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`. |
 | subtitle presentation | SRT, ASS, subtitle presentation readback, and all eight review evidence images are byte-identical to candidate 004. 102 provider-sidecar cues; Keifont 100px / 115px line height / 8px outline / 2px shadow / maximum 2 lines; all mapping/overflow/violation counts 0. |
 | validation | Initial generation succeeded with zero corrective render. Full A/V decode exit 0; browser page 200 / MP4 Range 206; readyState 4; 1920x1080; duration 128.833333s; four evidence images loaded; 7 cut / 8 omission / 14 seek controls; horizontal overflow false; console/media warnings or errors 0. OUT-13 targeted module: 58 passed. |
-| visual boundary | Browser and generated evidence were smoke-checked, but package `visual_observation` remains `unverified`; no human full-view verdict is inferred or recorded. |
+| acceptance | User `accept`, recorded 2026-07-25 in `docs/output_layer/out13_human_acceptance_receipt.json`, binds SHA `a76babda...bbb5` to internal full-view editorial/visual review dimensions. The package's older machine-only `visual_observation=unverified` field remains historical package data and is not rewritten. |
 | manifest | Exact link-free closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `8257a15c99d04f72ec6c917b99c96a4c87d8704019ca84de8865c87ea64cc054`; input fingerprint `bbeb2514dd5094499d82fcb6999d3261dda1aaaec80daf0fbf2ff21f8e6a6a0b`; self-integrity SHA `5d7550a7815ad1e412681b4c2562b0674c808d0d67adf7aa38597a70b761d32b`. Legacy/malformed/unknown manifests, symlink/junction targets, promotion races, and journal aliases are negative-tested. |
 | resume | `render_executed=false`; five cache hits; complete package tree digest before/after `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040`; rejected allocation also left the digest unchanged. Events are external under sibling `out13_editorial_video_candidate_v005.run_journal/`. |
 | preview_url | `http://127.0.0.1:8076/review/index.html` while its artifact-specific server is running. 2026-07-25 smoke returned page 200 and MP4 Range 206; the temporary server was then stopped. |
-| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1` |
+| open_command | `powershell -NoProfile -Command Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json` |
 | local availability | Current `DESKTOP-U9P4LKJ` root: exact plan, inputs, package, MP4, validation, and launcher present. Source/transcript/caption/rights/plan hashes match the candidate 005 contract; package is 25 files / 87,123,995 bytes with tree digest `ed45fd4c...040`. `episodes/` remains ignored and has zero tracked files. |
-| decision_required | Human reviewer binds accept / bounded repair / reject to final SHA `a76babda...bbb5`. Repair allocates candidate 006+ and does not overwrite 004/005. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+| decision_required | M3 main-integration preflight and explicit main integration authorization. Do not reopen the same media/context/dimensions. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
 
 - `internal_review_only=true`
-- `human_review_pending=true`
-- `acceptance_granted=false`
+- `human_review_pending=false`
+- `acceptance_granted=true`
 - `rights_status=pending`
 - `production_acceptance=false`
 - `production_subtitle_design_acceptance=false`
@@ -82,19 +85,19 @@ Boundary flags:
 | final_video | H.264 High/AAC yuv420p, 1920x1080, 128.833333s, 82,594,810 bytes, SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`. |
 | subtitle presentation | 102 provider-sidecar cues; Keifont 100px / 115px line height / 8px outline / 2px shadow / maximum 2 lines; overlap, negative, orphan, split, duplicate, missing, unexpected, overflow, and violation counts 0; mapping coverage 1.0. |
 | validation | Full decode/faststart/timestamps/A/V/source mapping/caption containment/authority/editorial checks passed; -14.48 LUFS, -1.88 dBTP, maximum adjacent cut delta 1.85 LU; black and silence events 0. Page 200 / MP4 Range 206; desktop/mobile overflow false; initial paused/muted/time0; seek 40.856s; console/media warning or error 0. One full suite returned 628 passed plus 3 stale `v003` canonical-state expectation failures in 75.68s; after correcting those expectations, the affected modules returned 30 passed in 0.86s. |
-| visual boundary | Worker inspected first/middle/last, all cut-boundary sides, and short/normal/two-line subtitle frames with no factual visual defect found in those samples. Package `visual_observation` remains `unverified`; human full-view acceptance is pending. |
+| visual boundary | Worker inspected first/middle/last, all cut-boundary sides, and short/normal/two-line subtitle frames with no factual visual defect found in those samples. Package `visual_observation` remains historical machine-only data. Candidate 005's user acceptance applies to this byte-identical media for the same context/dimensions. |
 | manifest | Exact closed set of 24 payload rows plus excluded `run_manifest.json`; payload digest `6f92c9e6578d1c1995c8d8c510a6855f2fd80cadfc4df4f309dd92f650d08256`; input fingerprint `6c63b6c0e47abed2b1217c7120ab463b3257314da36a04182dc957f1054241e0`; self-integrity SHA `a18ff55dbdce3ff949a53e7c05389f0f9b90f30b9fa3983abeea1b9d246efffa`. |
 | resume | `render_executed=false`; five cache hits; complete package tree digest before/after `970297cd1a63c56e729c98a1527ef3715bab94835c3190112d0690008aeaa829`; final and manifest SHA unchanged. Resume and rejected-allocation events are external under sibling `out13_editorial_video_candidate_v004.run_journal/`. |
 | preview_url | `http://127.0.0.1:8076/review/index.html` while the candidate-specific server is running; candidate 005 is the active target on the shared port. |
-| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v004\review\open_preview.ps1` |
-| local availability | Current `DESKTOP-U9P4LKJ` root retains candidate 004 as an immutable parallel local package. Candidate 005 remains the active stronger-contract target. |
-| decision_required | No verdict was inferred or recorded. Candidate 004 remains available as a parallel human-review target while candidate 005 is the active strong-contract successor. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
+| open_command | `powershell -NoProfile -Command Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json` |
+| local availability | Current `DESKTOP-U9P4LKJ` root retains candidate 004 as a read-only parallel local package. Candidate 005 remains the active stronger-contract target. |
+| decision_required | No separate full-view verdict: candidate 004 has the same media SHA, review context, and accepted dimensions as 005, so receipt inheritance closes duplicate review. Rights, production subtitle/design/render, thumbnail, public/publishing, and upload remain closed. |
 
 Boundary flags:
 
 - `internal_review_only=true`
-- `human_review_pending=true`
-- `acceptance_granted=false`
+- `human_review_pending=false`
+- `acceptance_granted=true`
 - `rights_status=pending`
 - `production_acceptance=false`
 - `production_subtitle_design_acceptance=false`
@@ -154,15 +157,15 @@ Boundary flags:
 
 | Field | Value |
 |---|---|
-| title | 2026-07-25 OUT-13 Remote Sync, Exact Local Review Readiness, and Long-Range Goal Report |
-| purpose | Give a supervising AI one tracked surface that separates the integrated main baseline, the unmerged OUT-13 review branch, portable code evidence, exact same-machine candidate 005 evidence, and a dependency-ordered M0-M15 route through human editorial review, main integration, production gates, explicit public release, multi-episode operations, policy-constrained autonomy, and sustainable portfolio operations. |
+| title | 2026-07-25 OUT-13 M2 Closure, M3 Main-Integration Preflight, and Long-Range Goal Report |
+| purpose | Give a supervising AI one tracked surface that binds the user's exact candidate 005 internal editorial acceptance, prevents duplicate review for the same media/context/dimensions, records the `READY_FOR_EXPLICIT_MAIN_INTEGRATION` verdict, preserves unapproved gates, and orders M4-M15 through integration, production, release, and sustainable operations. |
 | storage class | Tracked Markdown report; portable Git evidence. No source or generated media included. |
 | repo_relative_path | `docs/SUPERVISOR_STATUS_REPORT.md` |
 | open_command | `Invoke-Item docs\SUPERVISOR_STATUS_REPORT.md` |
-| sync_baseline | Fetch/prune detected two remote commits over local `673da5d`; ff-only pull reached `396432635710622f6573ae15e3f0537452a6c14f`. Upstream parity is `0 0`; `origin/main` remains `5d6f69a` and is an ancestor of the active branch; `origin/main...HEAD` is `0 12`. This report commit becomes the later handoff tip. No main merge is claimed. |
-| validation | `npm ci` reconstructed 23 packages and audited 24 with 0 vulnerabilities; Node 24.13.0 / npm 11.6.2 / Electron 42.0.0; uv/uvx 0.10.7; `npm ls --depth=0`, GUI/Electron smoke, CLI help, exact candidate 005 resume, page 200 / Range 206, focused 88 tests, final full suite 654 passed in 94.36s, and post-dashboard 30 tests all passed. |
+| sync_baseline | M3 start tip `d753ea7bb4b48bb98da1fc16afc073d20432acb1`; upstream parity `0 0`; `origin/main` `5d6f69a64d510508a1f78ab3111a7780913a019c` is an ancestor; `origin/main...HEAD` was `0 13`. No main merge is claimed. |
+| validation | Current OUT-13/current-state/dashboard gate 93 passed in 13.19s on the final rerun; Python compile and diff check passed; sensitive/media scan had no matches; unchanged product implementation retains the immediately preceding 654-passed full-suite evidence at `d753ea7`. |
 | local_boundary | OUT-13 candidate 004/005 remain ignored same-machine evidence. Candidate 005 exact source/transcript/caption/rights/plan hashes, 25-file package, MP4 SHA, and package-tree digest match the tracked contract; `episodes/` has zero tracked files and does not transfer through Git. |
-| decision_required | Bind human editorial accept / bounded repair / reject to exact candidate 005 SHA. Rights, production, credentials/OAuth, and public release remain separate explicit gates. |
+| decision_required | Explicit main integration authorization. Candidate 005 internal editorial acceptance is recorded; rights, production, credentials/OAuth, publishing/upload, and public release remain separate explicit gates. |
 
 ## `clip-out12-one-command-real-video-automation-v1-001`
 

@@ -2,37 +2,44 @@
 
 ## 到達した状態
 
-OUT-13 は candidate 004 の media-reviewable bytes を保ったまま、manifest-bearing directory を
-schema / state / identity / parseability に関係なく永久に不変化し、source video から transcript
-audio、provider video identity から exact caption JSON3 までの content-sensitive lineage を
-fail closed で束ねる v4 contract へ進んだ。active artifact は
+OUT-13 は candidate 004 の media-reviewable bytes を保ったまま、manifest-bearing directoryを
+このリポジトリのローカル生成・resume・failure-reconciliation経路から上書きしないv4 contractへ
+進んだ。source videoからtranscript audio、provider video identityからexact caption JSON3までの
+content-sensitive lineageも同じcontractで検査する。active artifact は
 `clip-out13-editorial-video-candidate-v1-005`、state は
 `OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1`。
 
-これは exact MP4 を人間が編集判断できる内部レビュー gate を開く状態である。rights、
-production subtitle/design/render、thumbnail、publishing、upload、public release の承認ではない。
-
-> Current-host note (2026-07-24): 以下の005 package値はsource-host machine receiptである。
-> 現在の`DESKTOP-U9P4LKJ` checkoutにはcandidate 004 / 005のplan、package、MP4、launcherがなく、
-> local review / resumeは利用できない。current availabilityとnext actionは
-> [RUNTIME_STATE.md](../RUNTIME_STATE.md)を優先する。
+2026-07-25、ユーザーはexact MP4 SHA
+`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`を、
+従来手順による内部の全編editorial / visual reviewとして`accept`した。受領記録は
+[out13_human_acceptance_receipt.json](out13_human_acceptance_receipt.json)にあり、
+M2はclosed、M3 main-integration preflightがcurrent gateである。rights、production
+subtitle/design/render、thumbnail、publishing、upload、public releaseは未承認のまま。
 
 ## v4 contract で閉じたこと
 
 | rule | previous | replacement | reason | affected consumers | migration | rollback |
 |---|---|---|---|---|---|---|
 | artifact identity | module 固定 `...-001` | CLI 必須 `--artifact-id`、`...-NNN`形式 | 同じ ID の上書き・別入力混同を防ぐ | CLI、pipeline state、manifest、review、resume | 新規候補は新 ID を明示 | v1 package は historical receipt として読むだけ |
-| successful output | 現行 schema/state の successful directory だけ保護 | `run_manifest.json`を含む directory は malformed / unknown / legacy / same-ID / cross-ID を問わず不変。promotion は空 path の原子的 reservation 後だけ実行 | legacy candidate と promotion race の上書きを防ぐ | renderer、resume、failure reconciliation | correction は successor identity を作る | package child の修復・追記・置換はしない |
+| successful output | 現行 schema/state の successful directory だけ保護 | `run_manifest.json`を含む directory をローカルpipeline経路から変更せず、promotion は空 path の原子的 reservation 後だけ実行 | legacy candidate と promotion race によるpipeline上書きを防ぐ | renderer、resume、failure reconciliation | correction は successor identity を作る | package child の修復・追記・置換はしない |
 | journal isolation | caller が任意 journal path を渡せた | deterministic sibling だけを許し、package 自身/配下、`..` alias、symlink/junction alias を write 前に拒否 | failure/resume receipt が successful package や別 target を汚染しない | resume、failure reconciliation | sibling `.run_journal`だけを使う | override で回避しない |
 | package integrity | recursive file set と hash を検査 | symlink / junction / external target を build と validate の両方で拒否し、actual payload を package root 内 regular files に限定 | manifest 内 path が external bytes を間接参照することを防ぐ | manifest validator、resume | v4 manifest を新候補へ生成 | link を regular file としてコピーしない |
 | audio lineage | energy envelope correlation / lag / RMS が合否へ寄与 | energy envelope は coarse lag 推定だけに使い、符号付き PCM waveform similarity、正 gain、gain-aligned NRMSE、全域 coverage を合否根拠にする | equal-energy 別波形、極性反転、時間並べ替え、無関係・切詰め audio を拒否 | authority binding、manifest、review | source-audio fetch receipt と full-coverage readback を記録 | threshold を実pair向けに弱めない |
-| caption authority | generic non-repo handoff が provider identity evidence になり得た | exact `youtube:VIDEO_ID` namespace と、anonymous yt-dlp 取得の provider locator / language / format / exact local hash receipt を必須化 | plan fabricated evidence、generic handoff、別動画 caption を trust root にしない | caption readback、authority binding、review | `caption_acquisition_receipt` evidence を plan で指定 | credentials/cookies/OAuth/MFA を使わない |
+| caption authority | generic non-repo handoff が provider identity evidence になり得た | exact `youtube:VIDEO_ID` namespace と、anonymous yt-dlp 取得の provider locator / language / format / exact local hash receipt を必須化 | plan fabricated evidence、generic handoff、別動画 caption をauthority evidenceとして受け入れない | caption readback、authority binding、review | `caption_acquisition_receipt` evidence を plan で指定 | credentials/cookies/OAuth/MFA を使わない |
 | rights / font | snapshot / family 名を記録 | path/hash/source identity と resolved font file hash を固定 | silent fallback と stale snapshot を防ぐ | render、review、manifest | exact file bytes を入力 fingerprint へ追加 | fallback は拒否し新候補を作らない |
 | cut evidence | evidence ID を含める | range 内 eligible transcript ID と完全一致、context refs は別欄 | arbitrary evidence 追加と途中分割を防ぐ | plan validator、Timeline IR | v2 plan へ明示移行 | unsupported plan は render 前 failure |
 | omitted ranges | 説明付き range | sorted / non-overlap / selected range と disjoint / source complement 完全一致 | 未説明 source hole をなくす | plan validator、review | source 0–duration の補集合を列挙 | 不一致なら failure |
 | caption boundaries | containment 中心 | split / duplicate / missing / unexpected / mapping coverage まで検証 | cut 境界で字幕 evidence を壊さない | caption readback、validation | v2 readback に counts を追加 | count 非ゼロは candidate 不成立 |
 | observation claim | machine check と visual 記述が混在 | package は `visual_observation=unverified`、人間/Worker 観察は別 receipt | 未観察を観察済みにしない | review、handoff | sampled observation を文書で分離 | machine pass だけで visual acceptance しない |
 | review UI | 大きい hero、詳細が初期展開 | compact summary、details 初期閉鎖、cut 前後 seek、mobile overflow 防止 | 長尺 candidate の判断摩擦を下げる | 人間 reviewer | v2 page を使う | v1 page は historical |
+
+### local threat model
+
+保全claimの範囲は、このリポジトリが実装するローカルpipeline、通常ファイル、
+正規化path、symlink/junction拒否、manifest/file hash、package-tree digestによる
+exact-byte/content consistencyである。権限を持つ外部process、OSまたはfilesystemの侵害、
+監査範囲外の同時改変に対する一般セキュリティ保証は含めない。未実装の外部攻撃仮説は
+nonblocking debtであり、今回のM2受領またはM3統合前判定を開き直す理由にしない。
 
 `SCHEMA_VERSION`、plan、manifest、pipeline version は v4 に上がった。module-level fixed
 `ARTIFACT_ID`は除去し、現在 identity は CLI 引数と validated plan からだけ解決する。
@@ -41,7 +48,7 @@ production subtitle/design/render、thumbnail、publishing、upload、public rel
 
 | 対象 | exact result | 判断に使えること |
 |---|---|---|
-| artifact | `clip-out13-editorial-video-candidate-v1-005` | plan、media、readback、review を一つの immutable closed-package identity で参照 |
+| artifact | `clip-out13-editorial-video-candidate-v1-005` | plan、media、readback、review を一つのclosed-package identityで参照 |
 | source | `youtube:7J5aS_pcBj4`、SHA `6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a`、35,281,366 bytes、164.768798s、1920x1080 | Thank 上の receipt / ledger と一致する実 bytes |
 | authority | transcript `4a7b4fd8...3495`、provider JSON3 `3c15535f...9919`、rights `4302c4a1...bb8`、font `d5795bdf...ed6f` | source lineage と表示 bytes を監査可能。speaker / lyric / rights 適否は推定しない |
 | audio lineage | video PCM `48f9d946...44b8`、audio PCM `f608fd1a...fcfcd`、coverage `0.999647612317`、signed similarity `0.947803984`、gain `0.943714876`、NRMSE `0.318853585`、lag `0.036312s` | content-sensitive waveform、正 gain、全域 residual と source-audio fetch receipt を監査 |
@@ -51,7 +58,7 @@ production subtitle/design/render、thumbnail、publishing、upload、public rel
 | caption | provider sidecar 102 cues、split / duplicate / missing / unexpected / overlap / negative / orphan 0 | cut 境界で evidence を分割・重複・欠落させていない |
 | final MP4 | H.264 High / AAC / yuv420p、1920x1080、128.833333s、82,594,810 bytes、SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` | exact human review target |
 | manifest | 24 payload rows + excluded `run_manifest.json`、payload digest `8257a15c...c054`、fingerprint `bbeb2514...a6a0b`、self SHA `5d7550a7...d32b` | actual 25-file package の link-free closed-set integrity を検証 |
-| package | 25 files / 87,123,995 bytes、tree digest `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040` | resume と rejected allocation の前後で complete tree が不変 |
+| package | 25 files / 87,123,995 bytes、tree digest `ed45fd4c486d1945dbbe32a8bfbbb218b9f6e1ff7263e83d0cdcf34c38e93040` | 測定済みresumeとrejected allocationの前後でcomplete treeのexact-byte/content consistencyが一致 |
 
 selected source ranges は `2.453–17.167`、`22.606–24.041`、`25.109–49.566`、
 `50.868–79.163`、`81.298–94.945`、`95.345–116.467`、`116.934–142.059`。
@@ -121,14 +128,18 @@ package は `episodes/`配下の same-machine ignored artifact で、Git clone �
 - `...-004`は cut selection、sections、captions、typography、render settings を変えず、closed package
   と transitive lineage を修復した。final MP4、SRT、ASS、subtitle presentation は 003 と byte-identical。
   Timeline IR は schema version だけが変わり、編集 mapping は同一。
-- `...-004`は verdict 未記録の parallel human-review target として開始時 tree digest
-  `970297cd...829`のまま保持した。005 は同じ final MP4 / SRT / ASS / subtitle presentation を持ち、
-  strong immutability、content-sensitive audio、canonical caption receipt だけを修復する。
+- `...-004`は当時verdict未記録のparallel human-review targetとして開始時tree digest
+  `970297cd...829`のまま保持した。005は同じfinal MP4 / SRT / ASS / subtitle presentationを持ち、
+  v4 local preservation contract、content-sensitive audio、canonical caption receiptだけを修復した。
+  2026-07-25の受領は同じmedia SHA・review context・accepted dimensionsに継承されるため、
+  004へ別の全編review gateは作らない。
 
 ## 次の判断境界
 
-次の consumer は exact candidate 005 を全編視聴する人間 reviewer である。candidate 004 は
-parallel target として verdict 未記録で保持する。`accept`なら internal
-editorial acceptance だけを candidate SHA へ bindする。`repair`なら cut / caption / timestamp と
-観察事実を限定し、006 以降の successor identity で直す。`reject`なら理由と reuse 禁止範囲を残す。
-どの判断も rights、production、thumbnail、publishing、upload、public release を自動で開かない。
+次のconsumerはM3 main-integration preflightのdecision ownerである。exact candidate 005の
+internal editorial acceptanceはreceiptへbind済みで、同じmedia SHA・review context・
+accepted dimensionsを人間reviewへ戻さない。将来のbounded repairは、変えた、または
+因果的に影響するdimensionとtimestampだけを再確認し、影響しない判断は継承する。
+
+M3が`READY_FOR_EXPLICIT_MAIN_INTEGRATION`でもmain mergeは明示承認待ちである。
+rights、production、thumbnail、publishing、upload、public releaseを自動で開かない。

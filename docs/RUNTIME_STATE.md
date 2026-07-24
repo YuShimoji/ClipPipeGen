@@ -3,18 +3,16 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT13_LOCAL_EXACT_REVIEW_READY_HUMAN_EDITORIAL_DECISION_PENDING_V1
-progress_pct: 97
+health: OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1
 last_touched: 2026-07-25
-state_revision: out13-remote-synced-local-candidate-005-reverified-review-ready-2026-07-25
+state_revision: out13-candidate-005-user-accepted-m3-main-integration-preflight-active-2026-07-25
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: OUT-13
-phase: human_editorial_review_pending
-canonical_status: remote_contract_green_local_exact_review_ready
+phase: main_integration_preflight_active
+canonical_status: m2_accepted_m3_ready_for_explicit_main_integration
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: this_commit_after_push
-source_branch_tip: this_commit_after_push
+verified_implementation_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
 closure_branch: codex/out-13-editorial-video-candidate-v1
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_current_handoff
 upstream_parity: 0 0
@@ -25,17 +23,17 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-13 tracked implementation and exact candidate 005 are locally review-ready; human editorial verdict is pending
-human_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html
+current_title: OUT-13 candidate 005 is accepted for the recorded internal editorial scope; M3 is ready for explicit main integration
+human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
 portable_entrypoint: null
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out13_editorial_video_candidate_20260723\review\out13_editorial_video_candidate_v005\review\serve_preview.ps1 -Port 8076
-machine_readback: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/validation_readback.json
+review_open_command: powershell -NoProfile -Command Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json
+review_server_restart_command: null
+machine_readback: docs/output_layer/out13_human_acceptance_receipt.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: human_editorial_accept_bounded_repair_or_reject_for_exact_candidate_005_sha
-review_status: machine_and_http_validated_human_editorial_review_pending
-review_scope: composition_subtitle_presentation_picture_audio_and_editorial_flow_on_exact_candidate_005
-reviewed_at: null
+decision_required: explicit_main_integration_authorization
+review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
+review_scope: internal_full_view_editorial_visual_review
+reviewed_at: 2026-07-25
 remote_code_complete: true
 local_artifact_available: true
 local_artifact_role: active_exact_candidate_005_same_machine_review_target
@@ -48,11 +46,11 @@ optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out13-editorial-video-candidate-v4-candidate-005-live-local-exact-review-ready
+evidence_revision: out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: DESKTOP-U9P4LKJ
 local_verified_host: DESKTOP-U9P4LKJ
-local_artifact_evidence_receipt: docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md
+local_artifact_evidence_receipt: docs/output_layer/out13_human_acceptance_receipt.json
 local_package_requirement: satisfied_candidate_005_exact_source_transcript_caption_rights_receipts_plan_and_output_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
@@ -65,21 +63,31 @@ last_verified_at: 2026-07-25T00:16:31+09:00
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: human_editorial_verdict_required_for_exact_candidate_005
+pause_reason: explicit_main_integration_authorization_required
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending_accept_bounded_repair_or_reject_for_exact_candidate_005
-user_feedback_overall: exact_candidate_005_reverified_on_current_host_no_human_verdict_recorded
+human_review_decision: accept
+user_feedback_overall: candidate_005_accepted_for_recorded_internal_editorial_visual_scope
 content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
 endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
-reviewed_by_human: false
-human_review_pending: true
-acceptance_granted: false
+reviewed_by_human: true
+human_review_pending: false
+acceptance_granted: true
+editorial_acceptance_granted: true
+acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
+acceptance_review_context_id: out13_candidate_005_internal_full_view_editorial_visual_review_v1
+acceptance_media_sha256: a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5
+acceptance_dimensions: editorial_composition, editorial_flow, subtitle_presentation, picture_quality_for_internal_editorial_use, audio_quality_for_internal_editorial_use
+acceptance_inheritance_key: media_sha256 + review_context_id + accepted_dimensions
+same_review_identity_reopens_human_review: false
+bounded_repair_reopens_only_affected_dimensions_and_timestamps: true
+main_integration_approved: false
+main_integration_preflight_verdict: READY_FOR_EXPLICIT_MAIN_INTEGRATION
 automation_acceptance_granted: true
 automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
 batch_acceptance: not_applicable_out12
@@ -89,13 +97,13 @@ accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_can
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: available_stopped_after_successful_page_200_range_206_smoke
-next_review_due: human_full_view_candidate_005
-next_action: exact candidate 005を全編視聴し、final SHAへaccept / bounded repair / rejectを記録する。repairの場合だけ006以降のnew identityを割り当て、004 / 005は上書きしない。
+review_server_status: not_required_acceptance_receipt_is_current
+next_review_due: explicit_main_integration_authorization
+next_action: M3はREADY。明示的なmain integration authorizationを待ち、同一media SHA・review context・accepted dimensionsには再review gateを生成しない。
 active_artifact: clip-out13-editorial-video-candidate-v1-005
 current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
-out13_state: OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1
+out13_state: OUT13_CANDIDATE_005_ACCEPTED_INTERNAL_M2_CLOSED_M3_PREFLIGHT_ACTIVE_V1
 out13_machine_values_scope: current_checkout_live_candidate_005_exact_package_and_input_readback
 out13_source_identity: youtube:7J5aS_pcBj4
 out13_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
@@ -196,7 +204,7 @@ out13_review_mobile_overflow: null
 out13_review_initial_state: paused_muted_time_zero
 out13_review_seek_seconds: null
 out13_review_console_warning_error_count: null
-out13_package_visual_observation_status: machine_validation_passed_human_full_view_pending
+out13_package_visual_observation_status: package_machine_field_unverified_human_acceptance_recorded_in_separate_receipt
 out13_worker_sample_observation_status: sampled_frames_no_factual_visual_defect_found
 out13_rights_status: pending_or_snapshot_only
 out13_production_acceptance: false
@@ -411,7 +419,6 @@ latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
 canonical_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 canonical_main_head_role: out13_branch_base_from_current_origin_main
-remote_handoff_tip: this_commit_after_push
 handoff_sync_status: final_handoff_commit_pushed_and_parity_verified
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
@@ -480,7 +487,30 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## 2026-07-25 Remote Latest Synced, Candidate 005 Exact Local Review Ready
+## 2026-07-25 M2 Human Acceptance Recorded, M3 Preflight Active
+
+- ユーザーは supervising thread で exact artifact
+  `clip-out13-editorial-video-candidate-v1-005`、final MP4 SHA
+  `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`
+  へ `accept` を与えた。判断範囲は従来手順による内部の全編 editorial / visual
+  reviewであり、`docs/output_layer/out13_human_acceptance_receipt.json`へ user authority、
+  日付、media identity、review context、accepted dimensionsを固定した。
+- M2はclosed。`human_review_pending=false`、`editorial_acceptance_granted=true`。
+  candidate 004 / 005のfinal MP4は同じSHAであるため、同じreview contextと同じ判断次元に
+  もう一度の全編視聴を要求しない。package revisionやimplementation revisionだけの変更も
+  reviewを再開しない。
+- 将来のbounded repairは、実際に変えた、または因果的に影響する判断次元だけを再開する。
+  timestampで限定できる変更は該当intervalだけを再確認し、影響しない次元は今回の受領を継承する。
+  media SHAが変わる場合は新しいreview identityとして扱う。
+- M3 main integration preflightはbranch全差分、tracked/ignored境界、sensitive path、
+  現在状態テスト、静的検査を監査し、`READY_FOR_EXPLICIT_MAIN_INTEGRATION`と判定した。
+  current blockerはない。この状態はmain統合承認を含まず、
+  `main_integration_approved=false`を維持する。
+- rights、production subtitle/design/render、production image quality、thumbnail、
+  publishing、upload、public releaseはいずれも未承認である。内部editorial受領から
+  これらのgateを推定しない。
+
+## Historical Current-Host Recovery — 2026-07-25 Remote Latest Synced, Candidate 005 Exact Local Review Ready
 
 - active branch `codex/out-13-editorial-video-candidate-v1`をremote
   `396432635710622f6573ae15e3f0537452a6c14f`へff-only更新した。取り込み前は

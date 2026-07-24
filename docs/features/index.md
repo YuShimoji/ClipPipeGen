@@ -6,12 +6,12 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-13`
 - artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_LOCAL_EXACT_REVIEW_READY_HUMAN_EDITORIAL_DECISION_PENDING_V1`
+- state: `OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1`
 
 - canonical main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `remote_contract_green_local_exact_review_ready`
-- review status: `machine_and_http_validated_human_editorial_review_pending`
+- canonical status: `m2_accepted_m3_ready_for_explicit_main_integration`
+- review status: `accepted_internal_exact_media_sha_and_recorded_dimensions`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -23,19 +23,19 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
-- pause reason: `human_editorial_verdict_required_for_exact_candidate_005`
+- pause reason: `explicit_main_integration_authorization_required`
 - accepted baseline recovery: ``
 - cover review status: ``
 - cross-machine resume: `tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_only_and_require_private_transfer_or_new_identity_build_elsewhere`
 - active rebuild contract: ``
-- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-live-local-exact-review-ready`
+- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `human_editorial_accept_bounded_repair_or_reject_for_exact_candidate_005_sha`
-- next review: `human_full_view_candidate_005`
+- decision required: `explicit_main_integration_authorization`
+- next review: `explicit_main_integration_authorization`
 
 ## Feature Table
 

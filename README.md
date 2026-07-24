@@ -7,16 +7,19 @@
 > states unless the Runtime capsule records a later reviewed transition.
 
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
-outputを不変にし、取得済みの実 source、receipt / material ledger、明示 editorial plan、
+outputをローカルpipeline経路から上書きせず、取得済みの実 source、receipt / material ledger、明示 editorial plan、
 transcript / source audio、provider JSON3 sidecar、rights snapshot、resolved font bytesを
 fail-closedで結ぶ。source hostで生成された最新receiptは
 `clip-out13-editorial-video-candidate-v1-005`で、7 cut / 5 sections / 8 omitted ranges /
 128.833s（利用率78.2%）のH.264/AAC 1920x1080、MP4 SHA `a76babda...bbb5`、
 provider cue 102件、authority / caption-boundary / media / editorial checks、browser review、
-不変resumeを記録している。provider text/timingを使うが公式著者性は主張しない。
+renderなしresumeを記録している。provider text/timingを使うが公式著者性は主張しない。
 2026-07-25のcurrent root再照合では005のexact inputs / plan / 25-file package / MP4 /
-launcherが存在し、全hash、package-tree digest、不変resume、page 200 / Range 206が一致した。
-現在の次gateはexact SHAへのhuman editorial `accept / bounded repair / reject`である。
+launcherが存在し、全hash、package-tree digest、renderなしresume、page 200 / Range 206が一致した。
+2026-07-25、ユーザーはexact SHA `a76babda...bbb5`を従来手順の内部全編
+editorial / visual reviewとしてacceptした。受領scopeと重複review防止規則は
+[out13_human_acceptance_receipt.json](docs/output_layer/out13_human_acceptance_receipt.json)に固定済み。
+M2はclosed、現在の次gateはM3 main-integration preflightと明示的なmain統合判断である。
 ただし`episodes/`はignored same-machine evidenceで、Git同期だけでは別hostへ移らない。
 rights、production subtitle/render、thumbnail、public/publishing/upload acceptanceは別gate。詳細は
 [docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md](docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md)。

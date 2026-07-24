@@ -242,9 +242,7 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
     assert (
-        "human_entrypoint: "
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/review/index.html"
+        "human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json"
         in runtime
     )
     assert "portable_entrypoint: null" in runtime
@@ -256,14 +254,17 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert (
         "health: "
-        "OUT13_LOCAL_EXACT_REVIEW_READY_HUMAN_EDITORIAL_DECISION_PENDING_V1"
+        "OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1"
         in runtime
     )
     assert "current_slice: OUT-13" in runtime
-    assert "canonical_status: remote_contract_green_local_exact_review_ready" in runtime
+    assert (
+        "canonical_status: m2_accepted_m3_ready_for_explicit_main_integration"
+        in runtime
+    )
     assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
     assert (
-        "review_status: machine_and_http_validated_human_editorial_review_pending"
+        "review_status: accepted_internal_exact_media_sha_and_recorded_dimensions"
         in runtime
     )
     assert "automation_acceptance_granted: true" in runtime
@@ -272,7 +273,20 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback"
         in runtime
     )
-    assert "acceptance_granted: false" in runtime
+    assert "acceptance_granted: true" in runtime
+    assert "editorial_acceptance_granted: true" in runtime
+    assert "human_review_pending: false" in runtime
+    assert (
+        "acceptance_receipt: "
+        "docs/output_layer/out13_human_acceptance_receipt.json"
+        in runtime
+    )
+    assert "main_integration_approved: false" in runtime
+    assert (
+        "main_integration_preflight_verdict: READY_FOR_EXPLICIT_MAIN_INTEGRATION"
+        in runtime
+    )
+    assert "this_commit_after_push" not in runtime
     assert "out13_source_identity: youtube:7J5aS_pcBj4" in runtime
     assert (
         "out13_source_sha256: "

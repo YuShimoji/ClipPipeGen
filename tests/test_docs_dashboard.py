@@ -351,8 +351,7 @@ def test_current_resume_surfaces_point_to_out13_and_historical_sources_remain_li
             assert "local_artifact_available: true" in text
             assert (
                 "human_entrypoint: "
-                "episodes/out13_editorial_video_candidate_20260723/review/"
-                "out13_editorial_video_candidate_v005/review/index.html"
+                "docs/output_layer/out13_human_acceptance_receipt.json"
                 in text
             )
             assert "latest_out06_complete_narrative_short" not in text
@@ -1628,27 +1627,25 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "remote_contract_green_local_exact_review_ready"
+        "m2_accepted_m3_ready_for_explicit_main_integration"
     )
     assert status["current_focus"]["review_status"] == (
-        "machine_and_http_validated_human_editorial_review_pending"
+        "accepted_internal_exact_media_sha_and_recorded_dimensions"
     )
     assert status["current_focus"]["decision_required"] == (
-        "human_editorial_accept_bounded_repair_or_reject_for_exact_candidate_005_sha"
+        "explicit_main_integration_authorization"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "human_full_view_candidate_005"
+        "explicit_main_integration_authorization"
     )
     assert status["current_focus"]["human_entrypoint"] == (
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/review/index.html"
+        "docs/output_layer/out13_human_acceptance_receipt.json"
     )
     assert status["current_focus"]["review_open_command"].endswith(
-        "out13_editorial_video_candidate_v005\\review\\open_preview.ps1"
+        "docs\\output_layer\\out13_human_acceptance_receipt.json"
     )
     assert status["current_focus"]["machine_readback"] == (
-        "episodes/out13_editorial_video_candidate_20260723/review/"
-        "out13_editorial_video_candidate_v005/validation_readback.json"
+        "docs/output_layer/out13_human_acceptance_receipt.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
@@ -1661,7 +1658,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "available_stopped_after_successful_page_200_range_206_smoke"
+        "not_required_acceptance_receipt_is_current"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
@@ -1672,7 +1669,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
     assert status["current_focus"]["pause_reason"] == (
-        "human_editorial_verdict_required_for_exact_candidate_005"
+        "explicit_main_integration_authorization_required"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
@@ -1683,7 +1680,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     ]
     assert len(current_surfaces) == 1
     assert current_surfaces[0]["target"].endswith(
-        "out13_editorial_video_candidate_v005/review/index.html"
+        "docs/output_layer/out13_human_acceptance_receipt.json"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
         "tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_"
