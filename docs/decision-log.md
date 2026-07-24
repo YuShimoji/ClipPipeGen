@@ -3,10 +3,28 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-23
+last_touched: 2026-07-24
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-24 — OUT-13 candidate 005 のremote同期と別端末handoffを更新
+
+`git fetch --prune origin` と対象branchへの `git pull --ff-only` を実行し、
+`codex/out-13-editorial-video-candidate-v1` の HEAD / upstream を
+`3fdad157c09cc925a50750135e14fff5faa832f2`、parity `0 0`、worktree cleanとして確認した。
+`git ls-files episodes` は0件のまま維持し、生成mediaをGitへ追加していない。
+
+Thank端末のignored packageをlive照合した結果、candidate 005は25 files / 87,123,995 bytes、
+final MP4 SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`、
+`validation_readback.status=passed`、review launcherありである。従って状態はartifact recovery待ちではなく、
+machine/browser検証済み・human editorial review pendingとする。candidate 004はparallel targetとして保持し、
+005のacceptanceやrepairで上書きしない。
+
+別端末からGitだけで取得できるのはcode/docs/tests/contractまでで、`episodes/`のexact packageと入力はportableではない。
+exact bytesを別端末で見せる場合は承認済みprivate transferと全SHA照合、新しい候補を作る場合はnew identityとして
+別plan/input fingerprint/final SHAを記録する。rights、production、thumbnail、publishing、public、main integrationは
+この同期やmachine passから自動的に開かない。
 
 ## 2026-07-23 — `558f681`同期後のlive auditでlocal review-ready記録を撤回
 

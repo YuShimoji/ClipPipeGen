@@ -12,7 +12,7 @@ canonical_status: immutable_transitively_lineage_bound_reviewable_v1
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-sync_baseline_head: 195d9aafdebe3241b08331122ba7fdc1a7fc594e
+sync_baseline_head: 3fdad157c09cc925a50750135e14fff5faa832f2
 verified_implementation_head: this_commit_after_push
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_this_file
 current_title: OUT-13 candidate 005 is strongly immutable, content-lineage-bound, and locally reviewable on Thank
@@ -64,7 +64,7 @@ manifest、caption boundary、review package、package 非変更の fail-closed 
 
 active branch は `codex/out-13-editorial-video-candidate-v1`。開始時に remote へ
 `git pull --ff-only`を行い、HEAD / upstream は
-`195d9aafdebe3241b08331122ba7fdc1a7fc594e`で一致していた。main / origin/main は
+`3fdad157c09cc925a50750135e14fff5faa832f2`で一致していた。main / origin/main は
 `5d6f69a64d510508a1f78ab3111a7780913a019c`で一致し、OUT-13 は main 未統合である。
 この文書を含む実装 commit が push 後の再開 tip になる。
 
