@@ -6,8 +6,9 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, choose the Runtime-driven
-current artifact, then use an artifact-specific launcher. OUT-12 is currently the
-same-machine one-command real long-form video automation proof. OUT-11 is the
+current artifact, then use an artifact-specific launcher. SH-10 is currently the
+same-machine edit-ready Source Packet proof. OUT-12 remains the prior
+one-command real long-form video automation proof. OUT-11 is the
 closed five-source Short portfolio with two repaired candidates, one accepted
 SOURCE-04 receipt, and a five-source scorecard. OUT-10 is the first repaired review candidate.
 OUT-09 is closed accepted-internal canonical evidence. OUT-08 is the earlier closed accepted-internal
@@ -21,6 +22,26 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-edit-ready-source-packet-v1-001`
+
+| Field | Value |
+|---|---|
+| title | Edit-Ready Source Packet v1 |
+| purpose | Turn one URL/local source plus explicit rights and caption/real-transcript authority into a provenance-bound, integrity-checked input packet that editorial planning, Timeline IR, subtitle processing, and render consumers can read without rediscovering source authority. |
+| storage class | Tracked CLI/pipeline/tests/schema/boundary/handoff plus ignored same-machine media, receipts, sidecars, ledger, snapshots, normalized transcript, packet JSON, and passive HTML under `episodes/`. |
+| repo_relative_path | `src/cli/build_edit_ready_source_packet.py`; `src/pipeline/edit_ready_source_packet.py`; `docs/SCHEMAS/v1/edit_ready_source_packet.md` |
+| local_artifact_path | `episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/` |
+| state | `EDIT_READY_SOURCE_PACKET_OPERATIONAL_V1` |
+| source | `youtube:7J5aS_pcBj4`; SHA `e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889`; 56,063,684 bytes; 164.768798s; 1920x1080; local-media-video acquisition. |
+| authority | `official_provider_caption`; JA; 105 event/segment; 122.99 covered seconds; coverage `0.746439869`; source event ID/index retained in normalized segment notes; no semantic authorship or lyric/speaker/name inference. |
+| input_binding | fingerprint `fcd7c30b6a4b5a94c5559c94b71a22676468bed40719c75b08064e1fb2f4da87`; packet canonical integrity `4398a85882a5df253b92b371bfa791e4f046badf4ac12a877748c6b8627e0fe9`. |
+| positive_validation | Actual packet built from retained real source/caption/rights; manifest binds 11 files; packet and artifact hashes validated. |
+| negative_validation | Actual fake transcript was rejected before acquisition with `fixture_transcript_authority_forbidden`; mismatched resume returned `resume_input_fingerprint_mismatch` and left the successful packet file SHA unchanged. |
+| resume | Same input returned `resume=true`, `acquisition_executed=false`, same fingerprint/integrity/source SHA; video acquisition and audio normalization were not repeated. |
+| report | `episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet_report.html` |
+| open_command | `Invoke-Item episodes\edit_ready_source_packet_20260724\source_packet\clip-edit-ready-source-packet-v1-001\source_packet_report.html` |
+| boundaries | Rights status pending; editorial/human review, rights approval, production acceptance, public/publishing readiness, and upload remain false/pending. OUT-13 protected artifact and human-review state are unchanged. |
 
 ## `clip-supervisor-sync-roadmap-20260722-001`
 

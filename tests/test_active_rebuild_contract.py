@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out12_real_video_and_keeps_out07_rebuild_contract_parked() -> (
+def test_runtime_points_to_source_packet_and_keeps_out12_out07_evidence_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -241,19 +241,32 @@ def test_runtime_points_to_out12_real_video_and_keeps_out07_rebuild_contract_par
     assert "remote_code_complete: true" in runtime
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
-    assert "human_entrypoint: http://127.0.0.1:8075/review/index.html" in runtime
+    assert (
+        "human_entrypoint: episodes/edit_ready_source_packet_20260724/"
+        "source_packet/clip-edit-ready-source-packet-v1-001/"
+        "source_packet_report.html" in runtime
+    )
     assert "portable_entrypoint: null" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_only_real_source_and_output_media_same_machine" in runtime
+        "tracked_code_docs_only_source_media_caption_and_packet_same_machine"
+        in runtime
     )
-    assert "health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1" in runtime
-    assert "current_slice: OUT-12" in runtime
-    assert "canonical_status: automated_real_video_pipeline_operational_v1" in runtime
-    assert "active_artifact: clip-out12-one-command-real-video-automation-v1-001" in runtime
-    assert "review_status: machine_validated_internal_review_available" in runtime
+    assert "health: EDIT_READY_SOURCE_PACKET_OPERATIONAL_V1" in runtime
+    assert "current_slice: SH-10" in runtime
+    assert "canonical_status: edit_ready_source_packet_operational_v1" in runtime
+    assert "active_artifact: clip-edit-ready-source-packet-v1-001" in runtime
+    assert "review_status: machine_validated_edit_ready_input_available" in runtime
+    assert "source_packet_segment_count: 105" in runtime
+    assert "source_packet_coverage_ratio: 0.746439869" in runtime
+    assert (
+        "source_packet_integrity: "
+        "4398a85882a5df253b92b371bfa791e4f046badf4ac12a877748c6b8627e0fe9"
+        in runtime
+    )
     assert "automation_acceptance_granted: true" in runtime
     assert "acceptance_granted: false" in runtime
+    # OUT-12 remains exact historical operational evidence.
     assert "out12_source_identity: youtube:gUwJBRUIWow" in runtime
     assert (
         "out12_source_sha256: "

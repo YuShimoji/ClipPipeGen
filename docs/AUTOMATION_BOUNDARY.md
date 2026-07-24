@@ -2,7 +2,7 @@
 
 ## 2026-05-26 clarification: diagnostic processing vs production gates
 
-Local diagnostic processing is allowed while `rights_manifest.compliance_check.status` is `pending`: source fetch, transcript generation/import/review, cut generation, context checks, subtitle drafts, NLE CSV export, `render-tiny-proof`, bounded `build-editorial-sequence`, accepted-timeline `build-vertical-short-candidate`, bounded `build-complete-narrative-short`, bounded `build-real-unused-range-short-minibatch`, hash-bound endpoint preflight/evidence, bounded `build-source-adaptive-short-candidate`, combined evidence-only portfolio review, one-command internal long-form `build-real-video`, cut review packets, and evidence summaries. These operations must preserve rights status as readback and must not claim production, creative, publishing, or public-use approval.
+Local diagnostic processing is allowed while `rights_manifest.compliance_check.status` is `pending`: source fetch, provenance-bound `build-edit-ready-source-packet`, transcript generation/import/review, cut generation, context checks, subtitle drafts, NLE CSV export, `render-tiny-proof`, bounded `build-editorial-sequence`, accepted-timeline `build-vertical-short-candidate`, bounded `build-complete-narrative-short`, bounded `build-real-unused-range-short-minibatch`, hash-bound endpoint preflight/evidence, bounded `build-source-adaptive-short-candidate`, combined evidence-only portfolio review, one-command internal long-form `build-real-video`, cut review packets, and evidence summaries. These operations must preserve rights status as readback and must not claim production, creative, publishing, or public-use approval.
 
 Production/public operations are hard-gated beyond this boundary: upload, OAuth-backed publishing, visibility changes, public thumbnail setting, production render acceptance, production subtitle burn-in/design acceptance, and any public-ready claim require an explicit rights / publishing acceptance slice. Pending rights cannot be described as production-usable.
 
@@ -113,6 +113,24 @@ Production/public operations are hard-gated beyond this boundary: upload, OAuth-
 - `preview_report.html` は read-only。実行 button、GUI fetch button、編集確定 button は置かない。
 - SH-05 は rendered video preview、cut / concat、subtitle burn-in、render / encode を実装しない。
 - SH-05c GUI ingest は既存 preview pack を読むだけ。`build-local-preview-pack`、fetch、render、upload を GUI から起動しない。
+
+## SH-10 edit-ready Source Packet 境界
+
+- `build-edit-ready-source-packet` は source locator から既存 `fetch-source-video` と
+  `fetch-source-audio --mode local-media-audio` を再利用し、取得 adapter を複製しない。
+- transcript authority は provider caption、verified sidecar、verified imported
+  subtitle transcript、明示 Vosk real STT の優先順位で選ぶ。fake/fixture は authority
+  不可で、provider/STT failure を fixture success に置換しない。
+- Caption cue は timing、ordering、ID、text、source duration、language、coverage を
+  fail-closed 検証する。normalized segment は元 event/segment ID への mapping を保持し、
+  発話、話者、歌唱、歌詞、固有名詞、意味を推定しない。
+- Operational state は editorial planning、Timeline IR、subtitle processing、render
+  pipeline が入力を読めることだけを表す。human/editorial review、rights、production、
+  public/publishing、upload は別 gate のまま。
+- `--resume` は input fingerprint、packet canonical hash、artifact manifest hash が
+  一致した成功 packet だけを再利用する。異入力または破損 cache は既存成功 packet を
+  上書きせず typed blocked result を返す。
+- 契約正本は `docs/SCHEMAS/v1/edit_ready_source_packet.md`。
 
 ## NLMYTGen GUI との整合方針
 

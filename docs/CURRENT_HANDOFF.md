@@ -3,29 +3,29 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
+health: EDIT_READY_SOURCE_PACKET_OPERATIONAL_V1
 progress_pct: 100
-last_touched: 2026-07-21
-current_slice: OUT-12
-phase: internal_automation_operational
-canonical_status: automated_real_video_pipeline_operational_v1
-active_branch: main
-source_branch: codex/out-12-one-command-real-video-automation-v1
-verified_implementation_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
+last_touched: 2026-07-24
+current_slice: SH-10
+phase: edit_ready_input_operational
+canonical_status: edit_ready_source_packet_operational_v1
+active_branch: codex/edit-ready-source-packet-v1
+source_branch: main
+verified_implementation_head: this_commit_after_push
 remote_resume_contract: fetch_then_switch_main_then_read_this_file
-current_title: OUT-12 one-command real long-form automation operational
-human_entrypoint: http://127.0.0.1:8075/review/index.html
+current_title: provenance-bound edit-ready Source Packet operational
+human_entrypoint: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet_report.html
 portable_entrypoint: null
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\serve_preview.ps1
-machine_readback: episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json
+review_open_command: Invoke-Item episodes\edit_ready_source_packet_20260724\source_packet\clip-edit-ready-source-packet-v1-001\source_packet_report.html
+review_server_restart_command: null
+machine_readback: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet.json
 decision_required: null
-review_status: machine_validated_internal_review_available
+review_status: machine_validated_edit_ready_input_available
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_same_machine_real_long_form_operational_proof
+local_artifact_role: ignored_same_machine_source_packet_operational_proof
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_only_real_source_and_output_media_same_machine
+cross_machine_resume_class: tracked_code_docs_only_source_media_caption_and_packet_same_machine
 rights_approval: pending
 production_acceptance: false
 production_subtitle_design_acceptance: false
@@ -35,20 +35,60 @@ winner_selected: false
 public_or_publishing_acceptance: false
 human_review_pending: false
 automation_acceptance_granted: true
-next_action: choose_one_second_real_source_repeatability_or_one_explicitly_approved_gate
-active_artifact: clip-out12-one-command-real-video-automation-v1-001
-canonical_main_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
-canonical_main_head_role: last_verified_pre_handoff_main
+next_action: consume_the_packet_in_minimal_editorial_planning_and_timeline_ir_without_reacquisition
+active_artifact: clip-edit-ready-source-packet-v1-001
+canonical_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
+canonical_main_head_role: branch_base_current_origin_main_at_mission_start
 remote_handoff_tip: this_commit_after_push
 handoff_sync_status: final_handoff_commit_pushed_and_parity_verified
 source_of_truth: true
-owner_lane: real_video_internal_automation
-related: docs/RUNTIME_STATE.md, docs/project-context.md, docs/decision-log.md, docs/idea-ledger.md, docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md, artifacts/ARTIFACTS.md, docs/dashboard/project-status.json
+owner_lane: shared_edit_ready_input
+related: docs/RUNTIME_STATE.md, docs/SCHEMAS/v1/edit_ready_source_packet.md, docs/AUTOMATION_BOUNDARY.md, artifacts/ARTIFACTS.md, docs/SUPERVISOR_STATUS_REPORT.md
 upstream_parity: 0 0
-handoff_base_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
+handoff_base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-07-24 Edit-Ready Source Packet
+
+`build-edit-ready-source-packet` により、URL/local sourceから video/audio acquisition、
+rights snapshot、material ledger、caption/real transcript authority、normalized segments、
+consumer readiness、input fingerprint、artifact/packet integrityまでを一コマンドで結ぶ
+SH-10がoperationalになった。実証artifactは
+`episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/`
+にあり、packet JSONとpassive HTML readbackを持つ。`episodes/`はignoredでportableではない。
+
+| 確認面 | 実測値 | 次工程への意味 |
+|---|---|---|
+| source | `youtube:7J5aS_pcBj4`; SHA `e2206cef...f1889`; 164.768798s; 1920x1080 | consumerは取得元とexact bytesをpacket identityから追跡できる |
+| authority | `official_provider_caption`; JA 105 segment; 122.99s; coverage `0.746439869` | fixtureを探索せず、元event mappingを保った編集入力を読める |
+| binding | fingerprint `fcd7c30b...da87`; integrity `4398a858...0fe9` | input差・packet改変・artifact破損をfail closedにできる |
+| resume | 同一入力は`acquisition_executed=false`、異なるidentityはfingerprint mismatch | 高コスト取得を反復せず、古いcacheの誤利用を拒否する |
+| negative | 実fixture transcriptはacquisition前に`fixture_transcript_authority_forbidden` | fake evidenceを成功扱いしない |
+
+再開コマンド:
+
+```powershell
+python -m src.cli.main build-edit-ready-source-packet `
+  --packet-id clip-edit-ready-source-packet-v1-001 `
+  --episode-id edit_ready_source_packet_20260724 `
+  --source-locator episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4 `
+  --source-identity youtube:7J5aS_pcBj4 `
+  --language ja `
+  --rights-manifest episodes/jp_pilot01_hololive_bancho_20260525/rights_manifest.json `
+  --caption-track episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3 `
+  --caption-authority provider_official `
+  --caption-provider-locator youtube-caption:7J5aS_pcBj4:ja `
+  --root episodes --resume --format json
+```
+
+次の実装境界は、この packet を直接読む最小 editorial planning / Timeline IR consumer。
+source acquisitionやauthority選択をconsumer側へ複製せず、packetのready stateとintegrityを
+入口 gate にする。rightsはpending、editorial/production/public/uploadはfalse。保護対象
+OUT-13 (`codex/out-13-editorial-video-candidate-v1`,
+`clip-out13-editorial-video-candidate-v1-001`, video SHA `84ed7aa6...791d7e2`)は不変で、
+human editorial reviewもpendingのまま。
 
 ## 現在地
 

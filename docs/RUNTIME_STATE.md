@@ -3,17 +3,17 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT12_AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
+health: EDIT_READY_SOURCE_PACKET_OPERATIONAL_V1
 progress_pct: 100
-last_touched: 2026-07-21
-state_revision: out12-one-command-real-video-automation-operational-2026-07-21
-contract_repair_status: out11_exact_acceptance_closed_out12_real_long_form_route_validated
-current_slice: OUT-12
-phase: internal_automation_operational
-canonical_status: automated_real_video_pipeline_operational_v1
-active_branch: main
-source_branch: codex/out-12-one-command-real-video-automation-v1
-verified_implementation_head: a51a3fdb22ff44cb9e4528ed67c0c42d48d0d67a
+last_touched: 2026-07-24
+state_revision: sh10-edit-ready-source-packet-operational-2026-07-24
+contract_repair_status: source_intake_transcript_authority_and_integrity_bound
+current_slice: SH-10
+phase: edit_ready_input_operational
+canonical_status: edit_ready_source_packet_operational_v1
+active_branch: codex/edit-ready-source-packet-v1
+source_branch: main
+verified_implementation_head: this_commit_after_push
 source_branch_tip: this_commit_after_push
 closure_branch: codex/out-12-one-command-real-video-automation-v1
 remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
@@ -24,34 +24,34 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 sync_audit_live_r3_reviewability: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-12 one-command real long-form video automation operational
-human_entrypoint: http://127.0.0.1:8075/review/index.html
+current_title: provenance-bound edit-ready Source Packet operational
+human_entrypoint: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet_report.html
 portable_entrypoint: null
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\out12_source05_one_command_real_video_20260721\review\out12_one_command_real_video_automation\review\serve_preview.ps1
-machine_readback: episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/validation_readback.json
+review_open_command: Invoke-Item episodes\edit_ready_source_packet_20260724\source_packet\clip-edit-ready-source-packet-v1-001\source_packet_report.html
+review_server_restart_command: null
+machine_readback: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet.json
 current_handoff: docs/CURRENT_HANDOFF.md
 decision_required: null
-review_status: machine_validated_internal_review_available
-review_scope: OUT-12 automation accepted; optional content inspection does not lift closed gates
+review_status: machine_validated_edit_ready_input_available
+review_scope: packet contract accepted; content/editorial/rights/production/public gates remain closed
 reviewed_at: null
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_same_machine_real_long_form_operational_proof_with_tracked_contract
+local_artifact_role: ignored_same_machine_source_packet_operational_proof_with_tracked_contract
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_only_real_source_and_output_media_same_machine
-cross_host_resume_status: code_and_contract_portable_real_source_and_rendered_media_absent_on_other_host
+cross_machine_resume_class: tracked_code_docs_only_source_media_caption_and_packet_same_machine
+cross_host_resume_status: code_and_contract_portable_real_source_caption_and_packet_absent_on_other_host
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out12-one-command-real-video-automation-v1
+evidence_revision: edit-ready-source-packet-v1
 last_verified_host: DESKTOP-H53P1T4
 last_verified_host_label: Thank
 local_verified_host: DESKTOP-H53P1T4
-local_artifact_evidence_receipt: docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md
+local_artifact_evidence_receipt: docs/SCHEMAS/v1/edit_ready_source_packet.md
 local_package_requirement: same_machine_source_and_output_required_for_media_reinspection_not_for_code_resume
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
@@ -60,9 +60,9 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-21
+last_verified_at: 2026-07-24
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: http://127.0.0.1:8075/review/index.html
+last_verified_host_entrypoint: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet_report.html
 historical_last_verified_host_entrypoint: null
 pause_reason: null
 exact_baseline_available: null
@@ -87,11 +87,33 @@ accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_can
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: validation_listener_stopped_restart_with_canonical_foreground_command
+review_server_status: not_applicable_passive_html_readback
 next_review_due: null
-next_action: 異なる3分以上の実source一本でOUT-12 repeatabilityを検証するか、rights・production subtitle design/render・thumbnail・private transportのうち明示承認されたgateを一つだけ開く。
-active_artifact: clip-out12-one-command-real-video-automation-v1-001
-current_review_component: out12_real_long_form_video_cut_map_validation_and_evidence
+next_action: Source Packetを直接消費するeditorial planning / Timeline IRの最小contractを実装し、取得・authority選択を再実行せず一つのreal packetから編集計画へ進める。
+active_artifact: clip-edit-ready-source-packet-v1-001
+current_review_component: source_identity_transcript_authority_provenance_and_integrity
+source_packet_state: EDIT_READY_SOURCE_PACKET_OPERATIONAL_V1
+source_packet_id: clip-edit-ready-source-packet-v1-001
+source_packet_path: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet.json
+source_packet_report: episodes/edit_ready_source_packet_20260724/source_packet/clip-edit-ready-source-packet-v1-001/source_packet_report.html
+source_packet_source_identity: youtube:7J5aS_pcBj4
+source_packet_source_sha256: e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889
+source_packet_source_duration_seconds: 164.768798
+source_packet_source_resolution: 1920x1080
+source_packet_authority: official_provider_caption
+source_packet_language: ja
+source_packet_segment_count: 105
+source_packet_covered_seconds: 122.99
+source_packet_coverage_ratio: 0.746439869
+source_packet_input_fingerprint: fcd7c30b6a4b5a94c5559c94b71a22676468bed40719c75b08064e1fb2f4da87
+source_packet_integrity: 4398a85882a5df253b92b371bfa791e4f046badf4ac12a877748c6b8627e0fe9
+source_packet_resume_acquisition_executed: false
+source_packet_negative_fixture_state: EDIT_READY_SOURCE_PACKET_BLOCKED_V1
+source_packet_negative_fixture_reason: fixture_transcript_authority_forbidden
+out13_protected_branch: codex/out-13-editorial-video-candidate-v1
+out13_protected_artifact: clip-out13-editorial-video-candidate-v1-001
+out13_protected_video_sha256: 84ed7aa6fc7aa1d478d7fa8f8783e349a5ffa56a7a59dc49c30daafa0791d7e2
+out13_human_editorial_review: pending_unchanged
 out12_artifact_id: clip-out12-one-command-real-video-automation-v1-001
 out12_state: AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1
 out12_source_identity: youtube:gUwJBRUIWow
@@ -212,11 +234,11 @@ portfolio_subtitle_differentiation_debt: five_source_scorecard_exposes_source_sp
 portfolio_subtitle_differentiation_current_white_style_general_standard: false
 portfolio_subtitle_differentiation_speaker_identity_inference_allowed: false
 portfolio_subtitle_differentiation_revisit_condition: after_3_to_5_accepted_real_shorts_or_explicit_production_subtitle_design_gate
-known_unrelated_test_failure: null
+known_unrelated_test_failure: stale_out12_current_focus_expectation_in_test_active_rebuild_contract_repaired_targeted
 known_unrelated_test_failure_2: null
-known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
-known_unrelated_test_failure_owner: none_current
-current_full_suite_status: 596_passed
+known_unrelated_test_failure_scope: full_suite_observed_606_passed_1_failed_then_current_focus_expectation_updated_and_37_targeted_passed
+known_unrelated_test_failure_owner: none_after_targeted_repair
+current_full_suite_status: 606_passed_1_failed_stale_current_pointer_repaired_targeted_no_full_rerun
 current_full_suite_command: uvx --with Pillow pytest -q
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
@@ -297,8 +319,8 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: f9cfc1194368087c49ffd98b69f880d6109cabfb
-canonical_main_head_role: last_verified_pre_handoff_main
+canonical_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
+canonical_main_head_role: branch_base_current_origin_main_at_mission_start
 remote_handoff_tip: this_commit_after_push
 handoff_sync_status: final_handoff_commit_pushed_and_parity_verified
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
@@ -367,6 +389,38 @@ without requiring the reader to scan historical closeouts.
 Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
+
+## 2026-07-24 SH-10 Edit-Ready Source Packet Operational
+
+URL または local media locator から、既存の source video acquisition、audio normalization、
+material ledger、rights snapshot、provider caption または real transcript authority を一つの
+identity に結合する `build-edit-ready-source-packet` を実装した。現在の operational artifact は
+`clip-edit-ready-source-packet-v1-001`。実 local source `youtube:7J5aS_pcBj4` の
+56,063,684 bytes、164.768798秒、1920x1080、SHA
+`e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889` と、exact
+rights/caption snapshot、video/audio receipt、ledger、sidecar、normalized transcript を
+artifact manifest で結んだ。
+
+選択 authority は `official_provider_caption`。JA JSON3 の105 eventをsemantic rewriteなしで
+105 segmentへ写し、122.99秒、coverage `0.746439869`。各 segment は元 event ID/index を
+notes に残す。negative duration、ordering、duplicate ID、empty text、source duration overflow、
+language mismatch、coverage不足をfail closedにし、fake/fixture authorityとprovider/STT失敗時の
+fixture fallbackを禁止した。
+
+packet input fingerprint は
+`fcd7c30b6a4b5a94c5559c94b71a22676468bed40719c75b08064e1fb2f4da87`、canonical
+integrity は
+`4398a85882a5df253b92b371bfa791e4f046badf4ac12a877748c6b8627e0fe9`。
+同一入力 `--resume` は acquisition/audio normalize を再実行せず同一 identity を返した。
+異なる source identity の resume は `resume_input_fingerprint_mismatch` で拒否し、成功 packet
+file SHA が前後不変であることを確認。実 fixture transcript は acquisition 前に
+`fixture_transcript_authority_forbidden` でblockedとなった。
+
+この state が解放するのは `editorial_planning`、`timeline_ir_generation`、
+`subtitle_processing`、`render_pipeline` の入力読込みだけ。human/editorial acceptance、
+rights approval、production acceptance、public/publishing、upload は false/pending のまま。
+OUT-13 branch、artifact、video SHA、ignored episode は変更しておらず、human editorial review
+も pending のまま保持する。
 
 ## 2026-07-21 OUT-12 One-Command Real Video Automation Operational
 
