@@ -3,15 +3,16 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1
+health: OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1
 last_touched: 2026-07-25
-state_revision: out13-m4-main-integrated-m5-baseline-verified-m6-rights-ready-2026-07-25
+state_revision: out13-m6-rights-packet-ready-human-decision-pending-2026-07-25
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: OUT-13
-phase: integrated_main_baseline_verified
-canonical_status: m4_main_integration_complete_m5_integrated_baseline_verified
-active_branch: main
+phase: rights_decision_readiness
+canonical_status: m6_packet_prepared_rights_decision_pending
+active_branch: codex/m6-rights-decision-readiness-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
+development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
 verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
 integration_start_main_revision: 5d6f69a64d510508a1f78ab3111a7780913a019c
@@ -31,22 +32,24 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-13 accepted feature is integrated into main and M5 verified; M6 rights readiness is next
-human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
-portable_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
-review_open_command: powershell -NoProfile -Command Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json
+current_title: OUT-13 M6 rights decision packet is ready; human owner verdict is pending
+human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
+portable_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
+review_open_command: powershell -NoProfile -Command Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
 review_server_restart_command: null
-machine_readback: docs/output_layer/out13_human_acceptance_receipt.json
+machine_readback: docs/rights/out13_m6_rights_decision_readiness_packet.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: m6_rights_readiness_scope_and_owner
-review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
-review_scope: internal_full_view_editorial_visual_review
+decision_required: human_rights_owner_allow_deny_or_restrict
+review_status: rights_decision_packet_ready_owner_verdict_pending
+review_scope: m6_exact_packet_evidence_inventory_and_owner_decision_readiness
 reviewed_at: 2026-07-25
+m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
+m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: true
 local_artifact_available: true
 local_artifact_role: accepted_exact_candidate_005_same_machine_evidence
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
+cross_machine_resume_class: tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
 cross_host_resume_status: exact_candidate_005_present_on_verified_host_not_portable_through_git
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
@@ -71,7 +74,7 @@ last_verified_at: 2026-07-25T00:16:31+09:00
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: m6_rights_scope_and_owner_not_authorized
+pause_reason: human_rights_owner_verdict_and_authority_evidence_pending
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
@@ -99,7 +102,9 @@ main_integration_preflight_verdict: consumed_by_authorized_fast_forward_integrat
 main_integration_approval_consumed_by_revision: 18641fe917b084259869263e8db05d78325aa2db
 m4_main_integration_status: complete
 m5_integrated_baseline_verification_status: passed
-m6_rights_status: not_started_rights_pending
+m6_rights_status: packet_prepared_rights_decision_pending
+m6_packet_status: READY_FOR_HUMAN_RIGHTS_DECISION
+m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 automation_acceptance_granted: true
 automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
 batch_acceptance: not_applicable_out12
@@ -110,12 +115,13 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: not_required_acceptance_receipt_is_current
-next_review_due: m6_rights_readiness
-next_action: prepare_m6_rights_readiness_packet_without_starting_rights_or_production_work
+next_review_due: human_rights_owner_decision
+next_review_type: human_rights_owner_decision
+next_action: obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work
 active_artifact: clip-out13-editorial-video-candidate-v1-005
 current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
-out13_state: OUT13_ACCEPTED_FEATURE_MAIN_INTEGRATED_M5_VERIFIED_M6_RIGHTS_READY_V1
+out13_state: OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1
 out13_machine_values_scope: current_checkout_live_candidate_005_exact_package_and_input_readback
 out13_source_identity: youtube:7J5aS_pcBj4
 out13_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
@@ -218,7 +224,7 @@ out13_review_seek_seconds: null
 out13_review_console_warning_error_count: null
 out13_package_visual_observation_status: package_machine_field_unverified_human_acceptance_recorded_in_separate_receipt
 out13_worker_sample_observation_status: sampled_frames_no_factual_visual_defect_found
-out13_rights_status: pending_or_snapshot_only
+out13_rights_status: packet_prepared_rights_decision_pending
 out13_production_acceptance: false
 out13_production_subtitle_design_acceptance: false
 out13_thumbnail_acceptance: false
@@ -504,12 +510,12 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — OUT-13 Main Integrated / M4 Complete / M5 Passed
+## Current Capsule — OUT-13 M6 Packet Prepared / Human Rights Decision Pending
 
 - active slice: `OUT-13`
 - active artifact: `clip-out13-editorial-video-candidate-v1-005`
-- review status: `accepted_internal_exact_media_sha_and_recorded_dimensions`
-- portable receipt: `docs/output_layer/out13_human_acceptance_receipt.json`
+- review status: `rights_decision_packet_ready_owner_verdict_pending`
+- portable receipt: `docs/rights/out13_m6_rights_decision_readiness_packet.json`
 - local artifact role: `accepted_exact_candidate_005_same_machine_evidence`
 - main integration approval: `true`
 
@@ -535,17 +541,30 @@ instructions.
   acceptance / semantic authority / dashboard、compile/static、diff/privacy
   gateでpassした。final commit SHAは`refs/heads/main`をGit正本として解決する。
   accepted feature `18641fe`はfinal mainの祖先であり、squashや履歴改変はない。
+- M6の判断準備パケット
+  `docs/rights/out13_m6_rights_decision_readiness_packet.json`は、exact accepted media、
+  元動画の映像・音声、provider caption、transcript派生物、Keifont、生成レイヤー、
+  元動画内の追加権利懸念を、7使用区間・8除外区間と一次規約へ結び付けた。技術 provenance、
+  content observation、一次規約、permission / owner authorityを別 evidence class とし、
+  provenanceや内部editorial受領をpermissionへ昇格させない。
+- packet statusは`READY_FOR_HUMAN_RIGHTS_DECISION`。これは棚卸しと未解決事項が
+  owner判断に足る形へ局所化されたという意味で、rights approvalではない。
+  publisher/channel identity、判断者authority、全7区間のrights content observation、
+  caption textのpermission basis、exact Keifont bytesのlicense binding、allow / deny /
+  restriction verdictは未記録である。
 - rights、production subtitle/design/render、production image quality、thumbnail、
   publishing、upload、public releaseはいずれも未承認である。内部editorial受領から
   これらのgateを推定しない。
 
 ## Next Action
 
-- action: `prepare_m6_rights_readiness_packet_without_starting_rights_or_production_work`
-- authorization state: `not_started`
+- action: `obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work`
+- authorization state: `packet_prepared_owner_decision_pending`
 - owner: `Rights owner / User`
-- condition: source/range、利用条件、判断ownerを整理する準備だけを次に置く。rights approval、
-  production render、publishing、upload、releaseは開始も承認もしていない。
+- condition: exact packetを読み、判断者identityとauthority evidenceを固定したうえで、
+  列挙済みmaterialと7区間に`allow` / `deny` / `allow_with_restrictions`のいずれかを記録する。
+  verdict確定まではrights approval、production render、publishing、upload、releaseを
+  開始も承認もしない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

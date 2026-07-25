@@ -6,15 +6,21 @@ OUT-13 は candidate 004 の media-reviewable bytes を保ったまま、manifes
 このリポジトリのローカル生成・resume・failure-reconciliation経路から上書きしないv4 contractへ
 進んだ。source videoからtranscript audio、provider video identityからexact caption JSON3までの
 content-sensitive lineageも同じcontractで検査する。active artifact は
-`clip-out13-editorial-video-candidate-v1-005`、state は
-`OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1`。
+`clip-out13-editorial-video-candidate-v1-005`。M4 main integrationとM5 integrated
+baseline verificationを完了し、現在のstateは
+`OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1`である。
 
 2026-07-25、ユーザーはexact MP4 SHA
 `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`を、
 従来手順による内部の全編editorial / visual reviewとして`accept`した。受領記録は
 [out13_human_acceptance_receipt.json](out13_human_acceptance_receipt.json)にあり、
-M2はclosed、M3 main-integration preflightがcurrent gateである。rights、production
-subtitle/design/render、thumbnail、publishing、upload、public releaseは未承認のまま。
+M2はclosed。accepted feature revision
+`18641fe917b084259869263e8db05d78325aa2db`はM4でmainへ統合され、M5もpassした。
+現在のgateは
+[`out13_m6_rights_decision_readiness_packet.json`](../rights/out13_m6_rights_decision_readiness_packet.json)
+に対するhuman rights ownerの判断である。packetは
+`READY_FOR_HUMAN_RIGHTS_DECISION`だが、rights、production subtitle/design/render、
+thumbnail、publishing、upload、public releaseは未承認のまま。
 
 ## v4 contract で閉じたこと
 
@@ -136,10 +142,20 @@ package は `episodes/`配下の same-machine ignored artifact で、Git clone �
 
 ## 次の判断境界
 
-次のconsumerはM3 main-integration preflightのdecision ownerである。exact candidate 005の
-internal editorial acceptanceはreceiptへbind済みで、同じmedia SHA・review context・
-accepted dimensionsを人間reviewへ戻さない。将来のbounded repairは、変えた、または
-因果的に影響するdimensionとtimestampだけを再確認し、影響しない判断は継承する。
+次のconsumerはRights owner / Userである。M6 packetは、source映像・音声、provider
+caption text、transcript派生物、Keifont、生成レイヤー、source内の追加rights concernを、
+exact 7使用range、8除外range、一次規約、evidence class、owner記録欄へ結び付けた。
+technical provenance、content observation、primary terms、permission / owner authority、
+editorial acceptance、platform policyは互いに代替しない。
 
-M3が`READY_FOR_EXPLICIT_MAIN_INTEGRATION`でもmain mergeは明示承認待ちである。
-rights、production、thumbnail、publishing、upload、public releaseを自動で開かない。
+ownerはexact public YouTube / monetization contemplated propositionを読み、判断者identityと
+authority evidence、全7rangeのaudiovisual rights observation、caption textのpermission
+basis、Keifont exact bytesのlicense bindingを揃える。`allow`、`deny`、
+`allow_with_restrictions`のverdict、attribution、制限、decision receiptが揃うまで
+`rights_approval=pending`を維持する。
+
+exact candidate 005のinternal editorial acceptanceはreceiptへbind済みで、同じmedia SHA・
+review context・accepted dimensionsを人間reviewへ戻さない。将来のbounded repairは、
+変えた、または因果的に影響するdimensionとtimestampだけを再確認し、影響しない判断は継承する。
+rights verdictが成立しても、production、thumbnail、publishing、credentials、upload、
+public releaseを自動で開かない。

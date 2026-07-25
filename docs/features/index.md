@@ -6,16 +6,16 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-13`
 - artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1`
+- state: `OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1`
 
 - canonical main: `18641fe917b084259869263e8db05d78325aa2db`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `m4_main_integration_complete_m5_integrated_baseline_verified`
-- review status: `accepted_internal_exact_media_sha_and_recorded_dimensions`
+- canonical status: `m6_packet_prepared_rights_decision_pending`
+- review status: `rights_decision_packet_ready_owner_verdict_pending`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
-- portable entrypoint: `docs/output_layer/out13_human_acceptance_receipt.json`
+- portable entrypoint: `docs/rights/out13_m6_rights_decision_readiness_packet.json`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
@@ -23,10 +23,10 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
-- pause reason: `m6_rights_scope_and_owner_not_authorized`
+- pause reason: `human_rights_owner_verdict_and_authority_evidence_pending`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
+- cross-machine resume: `tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
 - active rebuild contract: ``
 - evidence revision: `out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
@@ -34,8 +34,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `m6_rights_readiness_scope_and_owner`
-- next review: `m6_rights_readiness`
+- decision required: `human_rights_owner_allow_deny_or_restrict`
+- next review: `human_rights_owner_decision`
 
 ## Feature Table
 

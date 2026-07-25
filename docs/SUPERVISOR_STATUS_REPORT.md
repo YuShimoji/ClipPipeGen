@@ -1,4 +1,4 @@
-# OUT-13 main 統合・baseline 検証報告
+# OUT-13 M6 権利判断準備・監修報告
 
 更新日: 2026-07-25 JST
 
@@ -6,148 +6,206 @@
 
 ## 監修時に最初に押さえる結論
 
-OUT-13 は M4 の main 統合と M5 の integrated baseline verification を完了した。
-明示 authority `clip-out13-main-integration-authorization-20260725-01` に従い、
-`origin/main` の開始点 `5d6f69a64d510508a1f78ab3111a7780913a019c` から、受領済み
-feature revision `18641fe917b084259869263e8db05d78325aa2db` までを
-fast-forward した。squash、merge commit、force、履歴改変は行っていない。
+OUT-13 は、M4 main 統合完了、M5 integrated baseline verification 通過を維持したまま、
+M6 の権利判断準備パケットを作成した。現在の正本状態は
+`m6_packet_prepared_rights_decision_pending`、packet verdict は
+`READY_FOR_HUMAN_RIGHTS_DECISION`である。
 
-M2 の人間受領は exact final MP4 SHA
-`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`
-に bind したまま維持している。受領 receipt 自体は acceptance 時点の記録なので、
-内部の `main_integration_approved=false` を書き換えない。現在の main 統合 authority と
-実行結果は `docs/RUNTIME_STATE.md` と `docs/CURRENT_HANDOFF.md` が担う。
+この verdict は、exact accepted mediaに使われた素材、使用range、一次規約、証拠class、
+不明点、owner記録欄が、一人のhuman rights ownerが判断できる形へ揃ったことだけを表す。
+rights approval、法的判断、production acceptance、thumbnail、publishing、upload、
+public release、deploymentは一つも与えていない。
 
-次の開発入口は M6 rights readiness packet の準備だけである。rights judgment、
-production subtitle/design/render、production image quality、thumbnail、publishing、
-credentials、upload、private delivery、public release、deployment は開始も承認も
-していない。
+追跡可能な判断入口は
+[`docs/rights/out13_m6_rights_decision_readiness_packet.json`](rights/out13_m6_rights_decision_readiness_packet.json)。
+現在のfeature branchは`codex/m6-rights-decision-readiness-v1`、開発開始時のmainは
+`5bd6e65318df129bebc87291c2ae733f143ed8d8`である。M4/M5で受け入れたfeature revision
+`18641fe917b084259869263e8db05d78325aa2db`と、M2のexact media SHAは変更していない。
 
-## 統合した Git identity
+## 変更していない受領identityと運用境界
 
-| 対象 | exact value | 判定 |
+| 対象 | exact identity | 今回の扱い |
 |---|---|---|
-| integration start | `5d6f69a64d510508a1f78ab3111a7780913a019c` | fetch 後の `origin/main` |
-| accepted feature | `18641fe917b084259869263e8db05d78325aa2db` | remote parity 済みの受領対象 |
-| topology before integration | `origin/main...feature = 0 15` | main 側の取りこぼしなし |
-| method | `git merge --ff-only 18641fe...` | 非破壊 fast-forward |
-| accepted tree | `c8200d46214b01f5cd074cdcd37133089d92ab00` | integrated main tree と一致 |
-| integration authority | `clip-out13-main-integration-authorization-20260725-01` | exact feature / one closure commit / one normal push |
-| final revision | `refs/heads/main` | closure commit SHA の自己参照を避け、Git を正本にする |
-| M5 verified tree | `refs/heads/main^{tree}` | closure docs と generated surfaces を含む最終 tree |
+| accepted artifact | `clip-out13-editorial-video-candidate-v1-005` | 同じ判断対象 |
+| final MP4 | SHA `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` | byte変更なし |
+| media readback | 82,594,810 bytes / 128.833333s / 1920x1080 / H.264 High + AAC | 同じM2受領対象 |
+| M2 receipt | `docs/output_layer/out13_human_acceptance_receipt.json` | historical acceptance scopeを変更しない |
+| accepted dimensions | composition、flow、subtitle presentation、内部用途のpicture/audio quality | rightsへ拡張しない |
+| accepted feature | `18641fe917b084259869263e8db05d78325aa2db` | M4/M5の祖先関係を維持 |
+| M6 baseline | `5bd6e65318df129bebc87291c2ae733f143ed8d8` | 今回feature branchの開始点 |
+| private evidence | `episodes/`配下のCandidate 003–005と素材 | ignored、same-machine、read-only |
 
-受領済み revision は最終 main の祖先でなければならず、統合後の feature tree は
-`18641fe...^{tree}` と同一である。closure 記録は product implementation を変えない
-一つの論理 commit とし、その exact SHA、push 結果、remote parity は Git readback と
-最終 handoff で報告する。
+`episodes/`はGitへ追跡せず、Candidate 003–005のplan、caption、manifest、contact sheet、
+audio、MP4、preview sessionを更新または削除しない。M6 packetはこれらのrepo-relative
+locatorとhashを参照するが、private mediaをportableだとは表現しない。
 
-## M2 artifact と判断境界
+## 実素材の棚卸し
 
-| 項目 | 記録値 | 意味 |
-|---|---|---|
-| artifact_id | `clip-out13-editorial-video-candidate-v1-005` | accepted package revision |
-| repo_relative_path | `docs/output_layer/out13_human_acceptance_receipt.json` | tracked acceptance authority |
-| open_command | `Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json` | portable receipt の確認 |
-| human entrypoint | `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html` | verified host 限定の ignored/private review surface |
-| media identity | 82,594,810 bytes / 128.833333s / 1920x1080 / H.264 High + AAC / SHA `a76bab...bbb5` | 人間判断の exact target |
-| verdict | `accept` | internal full-view editorial / visual review |
-| review context | `out13_candidate_005_internal_full_view_editorial_visual_review_v1` | receipt の判断文脈 |
-| accepted dimensions | composition、flow、subtitle presentation、内部用途の picture / audio quality | 受領が成立した範囲 |
-| receipt SHA | `a0b14cdc0d294116775c9183499309bd7ad593a6373a556c11b334d2ac04b095` | tracked receipt の exact bytes |
+M6 packetは、final mediaに入った素材と、検証だけに使った派生物を分けた。technical
+provenanceとpermissionも分離している。
 
-同じ media SHA、review context、requested dimensions なら人間 review を再開しない。
-package / implementation revision だけの変更でも再審査へ戻さない。media SHA が変わる、
-または変更が accepted dimension に因果的に影響する場合だけ、新しい identity または
-bounded review を起票する。
-
-Candidate 003、004、005 は今回 read-only とした。各 package の inventory と accepted
-MP4 SHA を統合前後で照合し、preview session、package、plan、caption、manifest、MP4 を
-更新・削除していない。`episodes/` は ignored のままで、tracked file は 0 件である。
-
-## M4 と M5 で確定したこと
-
-| 作業 | 目的 | 効果 | 現在状態 | 次の動き |
+| material | finalへの使用 | 固定したidentity / scope | readiness | ownerが閉じる点 |
 |---|---|---|---|---|
-| remote convergence | main と feature の exact ancestry を固定 | stale base や別 tip の統合を防止 | 完了 | final main parity を readback |
-| M4 fast-forward | accepted feature だけを main へ移す | 15 commits の identity と履歴を保持 | 完了 | closure commit 以外の追加変更なし |
-| canonical state repair | Runtime / Handoff / README / supervisor docs を同じ状態へ揃える | current capsule と next action を単一化 | 完了 | M6 まで status を進めない |
-| dashboard regeneration | machine-readable current focus を docs と一致させる | 監修 AI が current gate を portable に読める | 完了 | generated drift を test で拒否 |
-| M5 full validation | integrated final tree の回帰を確認 | feature 単体 green から main baseline green へ昇格 | 合格 | M6 readiness だけ提案可能 |
-| privacy / artifact boundary | private media と tracked code/docs を分離 | Git に episode media を持ち込まない | 合格 | private/artifact-store 方針の承認までは維持 |
+| source visual stream | 使用 | `youtube:7J5aS_pcBj4`、source SHA `6f78657e...103a`、7 range | `content_observation_required` | third-party character、logo、artwork、表示物、創作的変更の適合 |
+| source AAC audio | 使用 | 同じsourceの7 range | `content_observation_required` | music、voice、performance、sound recordingの別条件 |
+| normalized PCM WAV | 未使用、lineage証拠だけ | SHA `46e4bc9e...6671`、mono 16 kHz | `not_applicable` | finalへの別素材として扱わない |
+| provider caption text | 102 cueをburn-in | exact JSON3 SHA `3c15535f...9919` | `missing_permission` | text再製のpermission basisとattribution |
+| transcript derivative | 編集・mapping証拠だけ | SHA `4a7b4fd8...3495` | `not_applicable` | caption/source権利を継承し、独立許諾とはしない |
+| Keifont glyph rendering | 使用 | exact resolved font SHA `d5795bdf...ed6f` | `missing_permission` | exact bytesと一次配布・Apache 2.0資料のbinding |
+| generated cut/subtitle layers | 使用 | plan SHA `27ef1aa9...dac2`、7 cut、ASS/SRT layout | `not_applicable` | project-authored表明とunderlying素材を分離 |
+| source-embedded concerns | 使用可能性あり | 7 range内の人物/声、character、music、logo、sign、artwork等 | `content_observation_required` | 全rangeの視聴観察と第三者条件の追加 |
 
-M5 は configured Python suite、OUT-13/current-authority focused suite、dashboard
-generator、Python compile/static check、Node dependency/smoke、diff hygiene、
-accepted ancestry/tree identity、tracked media と sensitive-data scan を最終 tree に
-対して実行する。合格条件はすべて green、`git ls-files episodes` 0、accepted revision
-が final main の祖先、closure 後の worktree clean、push 後の local/main parity 0/0 である。
+source sidecarの`third_party_ip=[]`や`prohibited_assets=[]`は、技術metadataが空という
+事実にすぎない。第三者要素が存在しない証拠にはしていない。sourceがpublicであること、
+anonymous yt-dlpで取得できること、hashが一致することもpermissionではない。
 
-## canonical surface の役割
+## 使用した7区間と除外した8区間
 
-- `docs/RUNTIME_STATE.md`: live state、M4/M5 verdict、単一 next action の正本。
-- `docs/CURRENT_HANDOFF.md`: 別 terminal / 監修 AI が main から再開する最小手順。
-- `docs/output_layer/out13_human_acceptance_receipt.json`: M2 の不変な判断記録。
-- `docs/dashboard/project-status.json`: current focus の machine-readable projection。
-- `docs/RUNTIME_HISTORY.md`: M3 authority repair と M4/M5 closure の履歴。
-- `docs/decision-log.md`: integration authority、実行方式、未承認 gate の決定記録。
-- `docs/idea-ledger.md`: M6 以降を dependency order で管理する backlog。
+selected durationは128.795秒、source utilizationは0.781671、final media durationは
+128.833333秒。各rangeには映像、source音声、provider caption text、Keifont glyph、
+生成subtitle/edit layerが関係する。
 
-最終 commit SHA はその commit 自身の tree に埋め込めないため、
-`final_main_revision_locator=refs/heads/main` と
-`m5_verification_tree_locator=refs/heads/main^{tree}` を使う。handoff 時の exact SHA は
-Git readback から提示し、tracked docs に placeholder を残さない。
+| range | source秒 | output秒 | editorial purpose | 現在の限定観察 | rights observation |
+|---|---:|---:|---|---|---|
+| `cut_001` | 2.453–17.167 | 0.000–14.714 | challenge宣言 | animated character、props、source-native text/graphic | 要 |
+| `cut_002` | 22.606–24.041 | 14.714–16.149 | first encounter到着 | representative stillのみ | 要 |
+| `cut_003` | 25.109–49.566 | 16.149–40.606 | first winと次の導線 | characters、action props、background、graphic | 要 |
+| `cut_004` | 50.868–79.163 | 40.606–68.901 | second challengeとresolution | 複数characters、urban background、native graphic | 要 |
+| `cut_005` | 81.298–94.945 | 68.901–82.548 | opponentsとbattle開始 | multi-character、stylized VS presentation | 要 |
+| `cut_006` | 95.345–116.467 | 82.548–103.670 | battle escalationとsummoning | battle imagery、spellbook-like表示物/prop | 要 |
+| `cut_007` | 116.934–142.059 | 103.670–128.795 | final winとresolution | summoned opponent、characters、resolution graphic | 要 |
 
-## 未承認 gate
+全rangeで、music/sound recording、voice/performance、character/talent likeness、
+logo/sign/artwork/displayed work、provider caption textをhuman ownerまたは委任された
+qualified reviewerが確認する。contact sheetは代表静止画だけなので、音声や全時間の
+不存在を証明しない。
 
-| gate | 現在状態 | 開くために必要なもの |
+除外区間は`0.000–2.453`、`17.167–22.606`、`24.041–25.109`、
+`49.566–50.868`、`79.163–81.298`、`94.945–95.345`、
+`116.467–116.934`、`142.059–164.768798`。source 0秒から末尾までの補集合として
+記録済みで、判断対象を「元動画全部」へ曖昧に広げない。
+
+## 証拠classを分けた理由
+
+| evidence class | 判断に使えること | 単独では言えないこと |
 |---|---|---|
-| rights / material use | pending | source/range 別の条件、判断 owner、allow/deny receipt |
-| production subtitle design | false | font/license、safe area、exact visual review |
-| production render | false | delivery codec/color/audio/device QC profile |
-| production image quality | false | delivery context の visual QC と人間判断 |
-| thumbnail | false / parked | accepted video 群、比較候補、人間 selection |
-| publishing metadata | not approved | title/description/attribution/visibility decision |
-| credentials / OAuth | not authorized | user-managed credential gate |
-| upload / private delivery | not attempted | idempotency、rollback、visibility readback |
-| public release / deployment | not approved | rights、production、publishing の owner receipts |
+| technical provenance | source/hash/range/acquisition/build lineageの同一性 | 利用許可、所有、法的適合 |
+| content identity | exact audiovisual work、caption、font、generated layerの特定 | owner、permission |
+| content observation | 観察した時間・画面・音声に何が含まれるか | 所有者、契約、未観察区間の不存在 |
+| license / terms evidence | publisher/platform/font distributorが公開した条件 | exact artifactへの個別許諾、判断者authority |
+| owner representation | identityとauthorityを持つ人によるowner/project-authorship表明 | 未記録の第三者権利、別利用への拡張 |
+| permission / owner authority | 誰がどの利用をallow/deny/restrictしたか | 未列挙素材や別利用への自動拡張 |
+| attribution obligation | source、creator、license、policyのcredit条件 | underlying permission |
+| territory/platform/monetization restriction | public/visibility/地域/期間/収益化/channel条件 | underlying permission |
+| unresolved legal/policy question | 誰が何を追加判断すべきか | 法的結論 |
+| editorial acceptance | M2でどのmedia/dimensionsを受け入れたか | rights、production、publication |
+| platform policy | upload/monetization時の追加制約 | underlying contentの権利付与 |
 
-M4/M5 の技術的 green は、これらの判断または外部公開を代替しない。
+この分離により、「取得できたから使える」「内部で良い映像と判断したから公開できる」
+「規約ページがあるから許諾済み」という誤昇格をtestで拒否できる。
+
+## 一次規約と現在の利用proposition
+
+一次規約snapshotは2026-07-25にread-only取得した。packetにはURL、title、
+page/version marker、retrieval date、判断用propositionを記録し、legal conclusionや
+exact artifactへのpermissionとして扱っていない。
+
+- COVER / hololiveのDerivative Works Guidelinesは、clip固有条件、third-party IP条件、
+  source URL/titleのdescription記載、monetization条件、Content ID禁止、規約変更可能性、
+  creative modificationの適用判断をownerへ提示する。
+- Keifont一次配布ページはcommercial use、利用上の要請、upstream glyph source、
+  Apache License 2.0の記載をownerへ提示する。ただし現在のexact font bytesには、
+  配布元とlicense/NOTICEを結ぶsidecarがない。
+- YouTube Termsとmonetization policyは、他者contentへの権利がservice利用から生じないこと、
+  visual/audioのcommercial rights、reused-content reviewがpermissionと別であることを
+  ownerへ提示する。
+
+単一の保守的なintended-use propositionは次の通り。
+
+- exact accepted 128.833333秒MP4をYouTubeへpublic掲載
+- worldwide、削除まで無期限を提案
+- monetizationを検討対象とし、owner verdictを必須化
+- 7区間をchronology-preservingに編集し、provider JSON3由来日本語captionを
+  Keifontでburn-in
+- description先頭にsource URL
+  `https://www.youtube.com/watch?v=7J5aS_pcBj4`とtitle
+  `【アニメ】押忍！！ば～んちょ だじぇ！`を置く
+- Content ID登録は行わない
+- thumbnailへのframe reuse、production render、credentials、upload、visibility設定、
+  releaseは今回のpropositionから除外
+
+## Human ownerが入力すべき判断
+
+owner decision surfaceは、UI上の「権利者らしい人」を推測して埋めない。最低限、次を
+人間が記録する。
+
+1. decision makerの氏名またはrole、publisher/channelのlegal identity、個人・団体・法人の
+   publishing capacity。
+2. その人が判断できる根拠とauthority evidence locator。
+3. exact intended-use propositionに対する`allow`、`deny`、
+   `allow_with_restrictions`のいずれか。
+4. 8 material rowsと7 range rowsを全体verdictが明示的にcoverすること、または個別verdict。
+5. 全7rangeのaudiovisual rights-content observation結果。
+6. caption textのpermission basisと、Keifont exact bytesのlicense binding。
+7. attribution、channel registration、monetization、territory、duration、takedown等の制限。
+8. decision date、recorded by、authority evidence、decision receipt locator。
+
+現在値はowner identityなし、authority evidenceなし、全体verdict`undecided`。
+したがってM6はpacket preparedで止まり、rights decision completeへは進まない。
+
+## 現在のgateと残作業
+
+| gate / 作業 | 目的 | 効果 | 必要条件 | 現在状態 | 次の動き |
+|---|---|---|---|---|---|
+| M6 packet inventory | exact対象とunknownを閉じる | ownerが同じ対象を判断できる | material/range/terms/identity | 完了 | packetを不変対象としてreview |
+| owner identity | 判断主体を固定 | 誰のauthorityか監査可能 | legal identity、capacity、evidence | 未記録 | ownerが入力 |
+| full range observation | embedded concernを発見 | third-party条件を局所化 | 全7rangeの映像音声確認 | 未完了 | qualified human review |
+| caption permission | burn-in textのbasis | subtitle textの利用判断 | owner/terms/permission evidence | 未記録 | allow/deny/restrict |
+| font binding | exact glyph bytesの条件を固定 | production subtitle gateへ接続 | distribution/license/NOTICE locator | 未完了 | 証跡追加またはsuccessor media |
+| rights verdict | M6を閉じる | M7/M8を条件付きで開ける | 上記とowner receipt | `undecided` | human decision |
+| production/public gates | deliveryと外部stateを管理 | rights判断から公開を分離 | 個別owner receipts | 未開始 | M6後も別承認 |
+
+M6 packetを作ったことによるdriftはない。docsだけを増やして実装から離れる状態ではなく、
+次consumerと入力欄をRights owner / Userへ固定し、未承認のproduction/public作業を
+明確に止めるための最小tracked handoffである。
 
 ## 可能な限り先までの条件付き目標
 
-| 段階 | 目標 | exit evidence | 現在状態 / owner |
+| 段階 | 目標 | exit evidence | dependency / owner |
 |---|---|---|---|
-| M0 Remote convergence | feature を remote 最新へ同期 | feature parity 0/0、main ancestry | 完了 |
-| M1 Exact artifact convergence | plan/input/package/media を照合 | SHA、bytes、digest、HTTP/readback | 完了 |
-| M2 Internal editorial acceptance | exact media を全編判断 | user receipt、scope、dimensions | 完了 |
-| M3 Main-integration preflight | branch 全差分と境界を監査 | repaired canonical state、READY verdict | 完了 |
-| M4 Explicit main integration | accepted feature を main へ非破壊統合 | authority、fast-forward、ancestry | 完了 |
-| M5 Integrated baseline verification | final main tree を再検証 | full/focused suites、smokes、privacy、parity | 完了 |
-| M6 Rights readiness and decision | source/range ごとの判断材料を揃えて閉じる | owner、allow/deny/restriction receipt | 未着手。Rights owner / User |
-| M7 Production subtitle design | internal 字幕を delivery visual へ上げる | exact frames、font/license、safe area verdict | M6 後。Designer / User |
-| M8 Production render profile | 配信用映像音声仕様を確定 | codec/color/audio/device QC、output SHA | M6/M7 後。Production owner |
-| M9 Episode acceptance pack | M6〜M8 の独立 receipt を束ねる | lineage-complete manifest | Supervisor |
-| M10 Thumbnail and metadata | video 確定後に外装を作る | comparison set、selection、metadata draft | Human selection |
-| M11 Private publish dry-run | 外部 state を変えず contract を検証 | dry-run receipt、idempotency、rollback | Agent + credential owner |
-| M12 Private/unlisted delivery | 限定公開で end-to-end を確認 | upload receipt、visibility readback | User |
-| M13 Explicit public release | 公開判断を監査可能に閉じる | rights/production/publishing owner receipts | User final gate |
-| M14 Multi-episode operations | queue/retry/retention を複数 episode で証明 | isolation、SLO、quality trend | Operations owner |
-| M15 Policy-constrained autonomy | 反復作業を安全に委譲 | allowlist、budget、stop conditions、audit log | Supervisor / User |
+| M0 Remote convergence | remote最新と作業基準を一致 | parity、ancestry | 完了 |
+| M1 Exact artifact convergence | source/plan/package/mediaをexact照合 | SHA、digest、readback | 完了 |
+| M2 Internal editorial acceptance | exact mediaを内部判断 | human receipt、scope、dimensions | 完了 |
+| M3 Main-integration preflight | branch全差分と境界を監査 | READY verdict、authority surface | 完了 |
+| M4 Explicit main integration | accepted featureを非破壊統合 | authority、fast-forward、ancestry | 完了 |
+| M5 Integrated baseline verification | final main treeの回帰確認 | full/focused suites、privacy、parity | 完了 |
+| M6 Rights decision | packetへowner verdictをbind | identity、authority、observation、allow/deny/restrict receipt | 現在。Rights owner / User |
+| M7 Production subtitle design | delivery字幕をrights-cleared素材で確定 | exact font/license、frames、safe-area verdict | M6 allow範囲後。Designer / User |
+| M8 Production render profile | 配信用A/V仕様を確定 | codec、color、audio、device QC、output SHA | M6/M7後。Production owner |
+| M9 Episode acceptance pack | rights/editorial/production receiptを束ねる | lineage-complete manifest、no scope widening | Supervisor |
+| M10 Thumbnail candidate set | rights-cleared exact mediaから比較案を作る | multiple candidates、lineage、human selection | M9後。Creative / User |
+| M11 Publishing metadata | title/description/attributionを決める | source credit、restrictions、policy review | M9/M10後。Publisher / User |
+| M12 External-state dry-run | upload前contractを変化なしで検証 | idempotency、rollback、visibility plan | credentialなし。Agent |
+| M13 Private/unlisted delivery | 限定公開でend-to-end確認 | upload receipt、visibility readback、rollback | explicit credential/visibility authority。User |
+| M14 Public release decision | public化を個別判断 | rights/production/publishing receipts、final owner approval | User final gate |
+| M15 Multi-episode operations | 複数episodeでqueue/retry/retentionを証明 | isolation、SLO、quality/rights trend | Operations owner |
+| M16 Policy-constrained autonomy | 反復可能部分だけを安全委譲 | allowlist、budget、stop conditions、audit log | Supervisor / User |
 
-M6〜M15 は条件付き提案であり、FEATURE status や gate を自動変更しない。最短 critical
-path は `M6 rights -> M7 subtitle design -> M8 render profile -> M9 episode pack`。
-publish 系は M9 完了後も owner の明示判断を必要とする。
+critical pathは
+`M6 owner verdict -> M7 subtitle design -> M8 render profile -> M9 episode pack`。
+publish pathはM9完了後も自動で開かず、M10〜M14それぞれに人間判断を置く。
 
 ## 次に推奨する取っ掛かり
 
-- **Advance**: M6 rights readiness packet を source/range 単位で作る。判断 owner と
-  不足証跡が明確になり、rights decision を安全に起票できる。
-- **Audit**: accepted receipt、source/material ledger、rights evidence の参照整合だけを
-  read-only 監査する。制作成功と利用許可の混同を早期に検出できる。
-- **Explore**: M7 subtitle design の thin-slice exit criteria を作る。M6 を越えずに、
-  font/license と safe-area review の必要証跡を先に定義できる。
-- **Verify**: 別 checkout から `main` と current handoff を読み、private media 不在時の
-  portable re-entry を確認する。監修 AI の再開摩擦を下げられる。
+- **Advance**: Rights ownerがM6 packetのidentity、authority、全range observation、
+  verdict、restrictionを埋める。これが完了すると、許された範囲だけでM7/M8を起票できる。
+- **Audit**: 別のqualified reviewerが7rangeを映像・音声で観察し、第三者music、guest voice、
+  logo、displayed workをrange別に追加する。empty metadataを不存在証明にする危険を減らす。
+- **Verify**: Keifont exact SHAへprimary distribution、Apache 2.0、必要なNOTICEをbindingする。
+  fontを維持できるか、successor mediaが必要かをM7前に確定できる。
+- **Explore**: owner verdictを待つ間、M7/M8のexit criteriaだけをread-only設計する。
+  production作業や新media生成を始めず、次の判断後の立ち上がりを短くできる。
 
-現在は単発 artifact を統合せず完了扱いする drift を解消し、次 consumer を Rights
-owner / User に固定した。M6 scope/owner の明示 authority がない間は rights judgment や
-production work へ進めない。
+次の単一actionは
+`obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work`。
+human verdictとauthority evidenceが記録されるまで、rights approvedともM6 closedとも扱わない。

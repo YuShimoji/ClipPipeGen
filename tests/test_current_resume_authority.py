@@ -22,6 +22,10 @@ ALIGNED_FIELDS = (
     "m4_main_integration_status",
     "m5_integrated_baseline_verification_status",
     "m6_rights_status",
+    "m6_packet_status",
+    "m6_packet",
+    "decision_required",
+    "next_review_due",
     "next_action",
 )
 
@@ -167,7 +171,11 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "main_integration_approved": "true",
         "m4_main_integration_status": "complete",
         "m5_integrated_baseline_verification_status": "passed",
-        "m6_rights_status": "not_started_rights_pending",
+        "m6_rights_status": "packet_prepared_rights_decision_pending",
+        "m6_packet_status": "READY_FOR_HUMAN_RIGHTS_DECISION",
+        "m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
+        "decision_required": "human_rights_owner_allow_deny_or_restrict",
+        "next_review_due": "human_rights_owner_decision",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:

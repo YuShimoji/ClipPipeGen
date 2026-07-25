@@ -351,7 +351,7 @@ def test_current_resume_surfaces_point_to_out13_and_historical_sources_remain_li
             assert "local_artifact_available: true" in text
             assert (
                 "human_entrypoint: "
-                "docs/output_layer/out13_human_acceptance_receipt.json"
+                "docs/rights/out13_m6_rights_decision_readiness_packet.json"
                 in text
             )
             assert "latest_out06_complete_narrative_short" not in text
@@ -1627,31 +1627,31 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "m4_main_integration_complete_m5_integrated_baseline_verified"
+        "m6_packet_prepared_rights_decision_pending"
     )
     assert status["current_focus"]["review_status"] == (
-        "accepted_internal_exact_media_sha_and_recorded_dimensions"
+        "rights_decision_packet_ready_owner_verdict_pending"
     )
     assert status["current_focus"]["decision_required"] == (
-        "m6_rights_readiness_scope_and_owner"
+        "human_rights_owner_allow_deny_or_restrict"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "m6_rights_readiness"
+        "human_rights_owner_decision"
     )
     assert status["current_focus"]["human_entrypoint"] == (
-        "docs/output_layer/out13_human_acceptance_receipt.json"
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json"
     )
     assert status["current_focus"]["review_open_command"].endswith(
-        "docs\\output_layer\\out13_human_acceptance_receipt.json"
+        "docs\\rights\\out13_m6_rights_decision_readiness_packet.json"
     )
     assert status["current_focus"]["machine_readback"] == (
-        "docs/output_layer/out13_human_acceptance_receipt.json"
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == (
-        "docs/output_layer/out13_human_acceptance_receipt.json"
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json"
     )
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1671,7 +1671,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
     assert status["current_focus"]["pause_reason"] == (
-        "m6_rights_scope_and_owner_not_authorized"
+        "human_rights_owner_verdict_and_authority_evidence_pending"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
@@ -1682,10 +1682,10 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     ]
     assert len(current_surfaces) == 1
     assert current_surfaces[0]["target"].endswith(
-        "docs/output_layer/out13_human_acceptance_receipt.json"
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_acceptance_receipt_and_code_are_portable_private_media_and_"
+        "tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_"
         "generated_package_are_not"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""

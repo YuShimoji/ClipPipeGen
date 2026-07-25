@@ -242,32 +242,32 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
     assert (
-        "human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json"
+        "human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json"
         in runtime
     )
     assert (
         "portable_entrypoint: "
-        "docs/output_layer/out13_human_acceptance_receipt.json" in runtime
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json" in runtime
     )
     assert (
         "cross_machine_resume_class: "
-        "tracked_acceptance_receipt_and_code_are_portable_private_media_and_"
+        "tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_"
         "generated_package_are_not"
         in runtime
     )
     assert (
         "health: "
-        "OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1"
+        "OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1"
         in runtime
     )
     assert "current_slice: OUT-13" in runtime
     assert (
-        "canonical_status: m4_main_integration_complete_m5_integrated_baseline_verified"
+        "canonical_status: m6_packet_prepared_rights_decision_pending"
         in runtime
     )
     assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
     assert (
-        "review_status: accepted_internal_exact_media_sha_and_recorded_dimensions"
+        "review_status: rights_decision_packet_ready_owner_verdict_pending"
         in runtime
     )
     assert "automation_acceptance_granted: true" in runtime
@@ -292,7 +292,12 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert "m4_main_integration_status: complete" in runtime
     assert "m5_integrated_baseline_verification_status: passed" in runtime
-    assert "m6_rights_status: not_started_rights_pending" in runtime
+    assert "m6_rights_status: packet_prepared_rights_decision_pending" in runtime
+    assert "m6_packet_status: READY_FOR_HUMAN_RIGHTS_DECISION" in runtime
+    assert (
+        "m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json"
+        in runtime
+    )
     assert (
         "accepted_feature_revision: "
         "18641fe917b084259869263e8db05d78325aa2db"
@@ -325,7 +330,7 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "out13_resume_render_executed: false" in runtime
     assert "out13_historical_source_host_resume_render_executed: false" in runtime
     assert "out13_review_mobile_overflow: null" in runtime
-    assert "out13_rights_status: pending_or_snapshot_only" in runtime
+    assert "out13_rights_status: packet_prepared_rights_decision_pending" in runtime
     assert "out13_production_acceptance: false" in runtime
     assert "out13_public_or_publishing_acceptance: false" in runtime
     # OUT-12 remains the operational predecessor evidence.

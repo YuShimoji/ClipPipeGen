@@ -1,0 +1,954 @@
+{
+  "schema_version": "clippipegen.out13.m6_rights_decision_readiness.v1",
+  "packet_id": "clip-out13-m6-rights-decision-readiness-v1-001",
+  "packet_readiness_status": "READY_FOR_HUMAN_RIGHTS_DECISION",
+  "prepared_at": "2026-07-25",
+  "scope": "OUT-13 exact accepted Candidate 005 rights-decision readiness only",
+  "decision_boundary": {
+    "rights_approved": false,
+    "production_accepted": false,
+    "thumbnail_accepted": false,
+    "publishing_accepted": false,
+    "upload_attempted": false,
+    "public_release_accepted": false,
+    "legal_conclusion_provided": false,
+    "meaning": "This packet organizes evidence and unresolved questions for a human owner. READY_FOR_HUMAN_RIGHTS_DECISION is a packet-completeness verdict, not permission or approval."
+  },
+  "baseline": {
+    "launch_set_id": "clip-m6-rights-readiness-20260725-01",
+    "mission_id": "clip-m6-rights-decision-readiness-packet",
+    "authority_id": "clip-m6-rights-readiness-feature-push-20260725-01",
+    "main_revision_at_start": "5bd6e65318df129bebc87291c2ae733f143ed8d8",
+    "accepted_feature_revision": "18641fe917b084259869263e8db05d78325aa2db",
+    "feature_branch_locator": "refs/heads/codex/m6-rights-decision-readiness-v1",
+    "packet_revision_locator": "refs/heads/codex/m6-rights-decision-readiness-v1:docs/rights/out13_m6_rights_decision_readiness_packet.json",
+    "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+    "accepted_media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+    "accepted_media_byte_size": 82594810,
+    "accepted_media_duration_seconds": 128.833333,
+    "accepted_media_dimensions": "1920x1080",
+    "accepted_media_codecs": [
+      "H.264 High",
+      "AAC"
+    ],
+    "acceptance_receipt": "docs/output_layer/out13_human_acceptance_receipt.json",
+    "acceptance_scope": "internal full-view editorial and visual review for the recorded dimensions only"
+  },
+  "controlled_vocabularies": {
+    "evidence_classes": {
+      "technical_provenance": "Identity, lineage, hash, timestamp, acquisition, stream, range, or build evidence. It does not prove permission.",
+      "content_identity": "The exact audiovisual work, caption text, font bytes, or generated layer being considered. Identity does not establish ownership.",
+      "content_observation": "A bounded human or image-based observation of visible or audible content. It does not establish ownership or permission.",
+      "primary_terms": "Terms or guidelines published by the relevant platform, publisher, or font distributor. Applicability to this use remains an owner decision.",
+      "license_or_terms_evidence": "A primary license, guideline, or terms proposition with document identity and retrieval date. It remains separate from exact-use permission.",
+      "owner_representation": "A representation by a person with recorded identity and authority about ownership or decision capacity. No such representation is currently recorded.",
+      "permission_or_owner_authority": "A permission, license binding, or decision-maker authority record that can support an allow, deny, or restricted verdict.",
+      "attribution_obligation": "A source, creator, license, or policy credit requirement to be recorded in the final restricted or allowed use.",
+      "territorial_platform_monetization_restriction": "A territory, platform, visibility, duration, monetization, channel-registration, or takedown condition on the contemplated use.",
+      "unresolved_legal_or_policy_question": "A question that the human owner, policy owner, or qualified adviser must resolve; the packet does not provide a legal conclusion.",
+      "editorial_acceptance": "The existing internal editorial review receipt. It does not expand into rights, production, or publication approval.",
+      "platform_policy": "Platform publication or monetization policy that constrains the intended use but does not grant underlying rights."
+    },
+    "readiness_states": [
+      "evidence_complete_for_owner_decision",
+      "missing_primary_terms",
+      "missing_owner_identity",
+      "missing_permission",
+      "content_observation_required",
+      "conflicting_evidence",
+      "not_applicable"
+    ],
+    "owner_verdicts": [
+      "allow",
+      "deny",
+      "allow_with_restrictions",
+      "undecided"
+    ]
+  },
+  "intended_use_proposition": {
+    "proposition_id": "out13-public-youtube-monetization-conservative-v1",
+    "current_authorization": false,
+    "artifact": "clip-out13-editorial-video-candidate-v1-005",
+    "exact_media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+    "platform": "YouTube",
+    "visibility": "public",
+    "monetization": "contemplated_requires_owner_verdict",
+    "territory": "worldwide_proposed",
+    "term": "indefinite_until_removed_proposed",
+    "editorial_transformation": "Chronology-preserving selection of seven exact source ranges with burned-in Japanese captions derived from the provider JSON3 track and rendered with Keifont.",
+    "source_credit": {
+      "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+      "source_title": "【アニメ】押忍！！ば～んちょ だじぇ！",
+      "source_channel": "hololive ホロライブ - VTuber Group",
+      "required_in_description": true
+    },
+    "content_id_registration": false,
+    "thumbnail_reuse": "excluded_from_this_proposition",
+    "publisher_inputs_still_required": [
+      "publisher or channel legal identity",
+      "individual, group, or corporate publishing status",
+      "current channel-registration choice required by applicable clip guidelines",
+      "visibility and made-for-kids settings",
+      "any territory or duration restriction",
+      "authority evidence for the person issuing the verdict"
+    ],
+    "excluded_actions": [
+      "production subtitle redesign",
+      "production render",
+      "thumbnail creation or selection",
+      "metadata approval beyond the exact source credit proposition",
+      "credential or OAuth use",
+      "upload",
+      "private or public release",
+      "deployment"
+    ]
+  },
+  "primary_authorities": [
+    {
+      "authority_id": "cover-hololive-derivative-works-guidelines",
+      "title": "hololive production Derivative Works Guidelines",
+      "url": "https://hololivepro.com/en/terms/",
+      "publisher": "COVER Corporation",
+      "version_or_page_marker": "Japanese page revision marker: 2025-08-20",
+      "retrieved_at": "2026-07-25",
+      "evidence_class": "primary_terms",
+      "decision_propositions": [
+        "The overall derivative-work guidelines and the clip-specific guidelines both need consideration for clips.",
+        "Third-party intellectual property follows the relevant third-party terms.",
+        "Paid, members-only, or concert content is not within the ordinary clip path absent express permission.",
+        "The clip description should begin with the source URL and source title.",
+        "Monetization depends on compliance with the guidelines, platform rules, and third-party conditions.",
+        "Content ID registration is not proposed.",
+        "The guidelines may change and do not transfer COVER-owned rights.",
+        "Use with no or only minimal creative modification needs an explicit applicability assessment."
+      ],
+      "permission_granted_for_exact_artifact": false
+    },
+    {
+      "authority_id": "keifont-primary-distribution-terms",
+      "title": "ポップ体フォント「けいふぉんと！」のダウンロード",
+      "url": "https://font.sumomo.ne.jp/font_1.html",
+      "publisher": "すもももじ",
+      "version_or_page_marker": "page update marker: 2023-03-20",
+      "retrieved_at": "2026-07-25",
+      "evidence_class": "primary_terms",
+      "decision_propositions": [
+        "The primary distribution page describes commercial use as not specially restricted.",
+        "The page asks users to avoid contexts that harm the work that inspired the font.",
+        "The page identifies upstream glyph sources and owners.",
+        "The page states that the font may be used under Apache License 2.0."
+      ],
+      "exact_local_font_binding_present": false,
+      "permission_granted_for_exact_local_font_bytes": false
+    },
+    {
+      "authority_id": "youtube-terms",
+      "title": "YouTube Terms of Service",
+      "url": "https://www.youtube.com/static?template=terms",
+      "publisher": "YouTube",
+      "version_or_page_marker": "terms date marker: 2022-01-05",
+      "retrieved_at": "2026-07-25",
+      "evidence_class": "platform_policy",
+      "decision_propositions": [
+        "Service access does not itself grant rights in content uploaded by other users.",
+        "Uploading content requires the uploader to hold the necessary rights or legal entitlement.",
+        "The contemplated publication grants YouTube the platform license described in its terms."
+      ],
+      "permission_granted_for_exact_artifact": false
+    },
+    {
+      "authority_id": "youtube-channel-monetization-policies",
+      "title": "YouTube channel monetization policies",
+      "url": "https://support.google.com/youtube/answer/1311392?hl=en-EN",
+      "publisher": "YouTube Help",
+      "version_or_page_marker": "live page retrieved 2026-07-25",
+      "retrieved_at": "2026-07-25",
+      "evidence_class": "platform_policy",
+      "decision_propositions": [
+        "Reused-content review is channel-wide and separate from copyright or permission.",
+        "Monetization review considers meaningful original commentary, modification, or added value.",
+        "Permission alone does not resolve reused-content monetization review."
+      ],
+      "permission_granted_for_exact_artifact": false
+    },
+    {
+      "authority_id": "youtube-content-monetization-rights",
+      "title": "What kind of content can I monetize?",
+      "url": "https://support.google.com/youtube/answer/2490020?hl=en",
+      "publisher": "YouTube Help",
+      "version_or_page_marker": "live page retrieved 2026-07-25",
+      "retrieved_at": "2026-07-25",
+      "evidence_class": "platform_policy",
+      "decision_propositions": [
+        "Monetization requires the necessary commercial rights for the visual and audio elements.",
+        "Online availability by itself does not supply those rights.",
+        "Written permission or another rights basis may be needed depending on the material and use."
+      ],
+      "permission_granted_for_exact_artifact": false
+    }
+  ],
+  "source_identity": {
+    "provider_identity": "youtube:7J5aS_pcBj4",
+    "source_url": "https://www.youtube.com/watch?v=7J5aS_pcBj4",
+    "source_title": "【アニメ】押忍！！ば～んちょ だじぇ！",
+    "channel": "hololive ホロライブ - VTuber Group",
+    "channel_id": "UCJFZiqLMntJufDCHc6bQixg",
+    "upload_date": "2024-10-27",
+    "availability_observed_at_retrieval": "public",
+    "live_status": "not_live",
+    "duration_seconds": 164.768798,
+    "technical_identity_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+    "technical_observation_is_permission": false
+  },
+  "evidence_locators": {
+    "accepted_receipt": "docs/output_layer/out13_human_acceptance_receipt.json",
+    "candidate_root": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005",
+    "authority_binding": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/authority_binding.json",
+    "editorial_plan": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/editorial_plan.json",
+    "timeline_ir": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/timeline_ir.json",
+    "provenance_snapshot": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/provenance_snapshot.json",
+    "caption_readback": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/caption_readback.json",
+    "validation_readback": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/validation_readback.json",
+    "run_manifest": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/run_manifest.json",
+    "source_selected_ranges_contact_sheet": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/evidence/source_selected_ranges_contact_sheet.jpg",
+    "cut_boundary_contact_sheet": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/evidence/cut_boundary_contact_sheet.jpg",
+    "source_video": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/source_video.mp4",
+    "source_video_fetch_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_video_jp_pilot01/fetch_receipt.json",
+    "source_audio": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/source.wav",
+    "source_audio_fetch_receipt": "episodes/jp_pilot01_hololive_bancho_20260525/materials/src_audio_jp_pilot01/fetch_receipt.json",
+    "material_ledger": "episodes/jp_pilot01_hololive_bancho_20260525/material_ledger.json",
+    "rights_snapshot": "episodes/jp_pilot01_hololive_bancho_20260525/rights_manifest.json",
+    "provider_caption_json3": "episodes/jp_pilot01_hololive_bancho_20260525/source_subs/7J5aS_pcBj4.ja.json3",
+    "caption_provenance": "episodes/jp_pilot01_hololive_bancho_20260525/exports/jp_pilot01r3_subtitle_import/nle_export_manifest.json",
+    "caption_acquisition_receipt": "episodes/out13_editorial_video_candidate_20260723/caption_acquisition_verification_v005.json",
+    "transcript": "episodes/jp_pilot01_hololive_bancho_20260525/transcript.json",
+    "transcript_authority_snapshot": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/transcript_authority_snapshot.json"
+  },
+  "technical_hashes": {
+    "source_video_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+    "source_video_fetch_receipt_sha256": "b6140ff92c1f43c4bc9085ea91006291e2919ea4c2e6df86f622120971a8e608",
+    "normalized_source_audio_sha256": "46e4bc9e26d52ed8f83b0b4088ddcd6ddac5a873fa1bb4a440c209834f026671",
+    "source_audio_fetch_receipt_sha256": "a1764c8c1e24484725a412ac3cb2dda6f224d0a1cdaba8c2088c4d3afe99df3f",
+    "material_ledger_sha256": "9354f88a9d6be4e3128fcf31f2f3bb1413618bb221c4b02228b977bd7f534110",
+    "rights_snapshot_sha256": "4302c4a1ecc598d80c130050ae9f36ba6701c8f5a9ba46e5f01b519f4d417bb8",
+    "transcript_sha256": "4a7b4fd805bc607773f1f3e271d961415efddceae1f3e6a72f8e6c6220333495",
+    "provider_caption_sha256": "3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919",
+    "caption_provenance_sha256": "e46802803fbcb6d9da6a02378d40f707c742b24406557896ab16628f03af965e",
+    "caption_acquisition_receipt_sha256": "aeff56134d62f4018d86ee194e2dc56e00fc30e274a6da1a9c0c4cec8f2a90e4",
+    "editorial_plan_sha256": "27ef1aa9d7aa29267e43d4b9b33dc17051acbf8f5b38dc4a3b50649e1ca6dac2",
+    "resolved_keifont_sha256": "d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f",
+    "accepted_media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
+  },
+  "material_inventory": [
+    {
+      "material_id": "out13-source-visual-stream",
+      "material": "Visual stream from the public source video",
+      "incorporated_in_final_media": true,
+      "usage_scope": "All seven selected source ranges, cropped or transformed only by the recorded editorial plan and subtitle overlay.",
+      "exact_identity": "youtube:7J5aS_pcBj4 / source SHA256 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+      "technical_identity": "youtube:7J5aS_pcBj4 visual stream / source SHA256 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+      "provenance_identity": "source fetch receipt SHA256 b6140ff92c1f43c4bc9085ea91006291e2919ea4c2e6df86f622120971a8e608 and material ledger SHA256 9354f88a9d6be4e3128fcf31f2f3bb1413618bb221c4b02228b977bd7f534110",
+      "asserted_owner": null,
+      "permission_status": "not_established_owner_verdict_pending",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity",
+        "content_observation",
+        "primary_terms",
+        "license_or_terms_evidence",
+        "attribution_obligation",
+        "territorial_platform_monetization_restriction",
+        "unresolved_legal_or_policy_question",
+        "editorial_acceptance"
+      ],
+      "evidence_locators": [
+        "source_video",
+        "source_video_fetch_receipt",
+        "material_ledger",
+        "rights_snapshot",
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet",
+        "cover-hololive-derivative-works-guidelines"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "Does the exact public, monetized, worldwide proposition comply with the current clip guidelines?",
+        "Do any selected frames contain third-party characters, logos, signs, artwork, or other embedded material needing separate treatment?",
+        "Does the edit provide sufficient creative modification for the applicable guideline and platform review?"
+      ]
+    },
+    {
+      "material_id": "out13-source-audio-stream",
+      "material": "AAC source audio carried through the seven selected ranges",
+      "incorporated_in_final_media": true,
+      "usage_scope": "All audible content in the seven selected source ranges.",
+      "exact_identity": "Audio stream of source SHA256 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+      "technical_identity": "AAC audio stream of source SHA256 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+      "provenance_identity": "source fetch receipt SHA256 b6140ff92c1f43c4bc9085ea91006291e2919ea4c2e6df86f622120971a8e608 and candidate authority-binding audio readback",
+      "asserted_owner": null,
+      "permission_status": "not_established_owner_verdict_pending",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity",
+        "content_observation",
+        "primary_terms",
+        "license_or_terms_evidence",
+        "territorial_platform_monetization_restriction",
+        "unresolved_legal_or_policy_question",
+        "editorial_acceptance"
+      ],
+      "evidence_locators": [
+        "source_video",
+        "source_video_fetch_receipt",
+        "authority_binding",
+        "validation_readback",
+        "cover-hololive-derivative-works-guidelines"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "Do the selected ranges contain music, guest voices, sound recordings, or performances governed by separate terms?",
+        "Does the intended monetized use have the required commercial rights for every audible element?"
+      ]
+    },
+    {
+      "material_id": "out13-normalized-source-audio-derivative",
+      "material": "Mono 16 kHz PCM WAV used for transcript and lineage verification",
+      "incorporated_in_final_media": false,
+      "usage_scope": "Evidence-only derivative; the final media uses the source video's AAC audio ranges.",
+      "exact_identity": "SHA256 46e4bc9e26d52ed8f83b0b4088ddcd6ddac5a873fa1bb4a440c209834f026671",
+      "technical_identity": "mono 16 kHz PCM WAV SHA256 46e4bc9e26d52ed8f83b0b4088ddcd6ddac5a873fa1bb4a440c209834f026671",
+      "provenance_identity": "source-audio fetch receipt SHA256 a1764c8c1e24484725a412ac3cb2dda6f224d0a1cdaba8c2088c4d3afe99df3f and passed content-sensitive audio lineage",
+      "asserted_owner": null,
+      "permission_status": "inherits_source_rights_not_separate_final_use",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity"
+      ],
+      "evidence_locators": [
+        "source_audio",
+        "source_audio_fetch_receipt",
+        "authority_binding"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "not_applicable",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": []
+    },
+    {
+      "material_id": "out13-provider-caption-text",
+      "material": "Japanese provider JSON3 text and timing rendered as burned-in captions",
+      "incorporated_in_final_media": true,
+      "usage_scope": "102 mapped caption cues within the seven selected source ranges.",
+      "exact_identity": "youtube:7J5aS_pcBj4 ja JSON3 / SHA256 3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919",
+      "technical_identity": "youtube:7J5aS_pcBj4 ja JSON3 / SHA256 3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919",
+      "provenance_identity": "caption acquisition receipt SHA256 aeff56134d62f4018d86ee194e2dc56e00fc30e274a6da1a9c0c4cec8f2a90e4 and provenance manifest SHA256 e46802803fbcb6d9da6a02378d40f707c742b24406557896ab16628f03af965e",
+      "asserted_owner": null,
+      "permission_status": "not_established",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity",
+        "primary_terms",
+        "license_or_terms_evidence",
+        "attribution_obligation",
+        "territorial_platform_monetization_restriction",
+        "unresolved_legal_or_policy_question",
+        "editorial_acceptance"
+      ],
+      "evidence_locators": [
+        "provider_caption_json3",
+        "caption_provenance",
+        "caption_acquisition_receipt",
+        "caption_readback",
+        "cover-hololive-derivative-works-guidelines"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "missing_permission",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "Does the applicable clip permission cover reproduction of the provider caption text as burned-in text?",
+        "Is separate attribution or treatment required for the caption track?",
+        "The technical record explicitly makes no official-authorship claim; who can attest to the caption text's permission basis?"
+      ]
+    },
+    {
+      "material_id": "out13-transcript-derivative",
+      "material": "Transcript derived from the provider subtitle track",
+      "incorporated_in_final_media": false,
+      "usage_scope": "Editorial evidence and caption mapping intermediate only.",
+      "exact_identity": "SHA256 4a7b4fd805bc607773f1f3e271d961415efddceae1f3e6a72f8e6c6220333495",
+      "technical_identity": "subtitle-track transcript SHA256 4a7b4fd805bc607773f1f3e271d961415efddceae1f3e6a72f8e6c6220333495",
+      "provenance_identity": "derived from exact provider caption SHA256 3c15535f9c84ddd377ce23685ea961716b57621e9c8b5e61d3412c4b3d169919",
+      "asserted_owner": null,
+      "permission_status": "inherits_provider_caption_rights_not_separate_final_use",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity"
+      ],
+      "evidence_locators": [
+        "transcript",
+        "transcript_authority_snapshot",
+        "caption_readback"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "not_applicable",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "The transcript inherits the source-caption rights question and does not create a separate permission basis."
+      ]
+    },
+    {
+      "material_id": "out13-keifont-glyph-rendering",
+      "material": "Keifont glyph outlines rendered into the burned-in captions",
+      "incorporated_in_final_media": true,
+      "usage_scope": "All generated subtitle glyphs in the accepted final MP4.",
+      "exact_identity": "Resolved font SHA256 d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f",
+      "technical_identity": "resolved Keifont bytes SHA256 d5795bdff960c2b2ec5727ffeb79d836f8f11dac3015f6e16089a912e9cced6f",
+      "provenance_identity": "candidate authority binding records the resolved font hash; an exact acquisition and license sidecar is absent",
+      "asserted_owner": null,
+      "permission_status": "exact_byte_license_binding_missing",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity",
+        "primary_terms",
+        "license_or_terms_evidence",
+        "attribution_obligation",
+        "unresolved_legal_or_policy_question"
+      ],
+      "evidence_locators": [
+        "authority_binding",
+        "provenance_snapshot",
+        "keifont-primary-distribution-terms"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "missing_permission",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "Can the exact resolved font bytes be bound to the primary distribution and applicable Apache 2.0 materials?",
+        "Are any required license or notice files retained for the exact font bytes?",
+        "Does the contemplated clip context satisfy the distributor's stated usage conditions?"
+      ]
+    },
+    {
+      "material_id": "out13-generated-editorial-and-subtitle-layers",
+      "material": "Repository-generated cut mapping, ASS/SRT layout, subtitle wrapping, outline, shadow, and review metadata",
+      "incorporated_in_final_media": true,
+      "usage_scope": "Seven chronology-preserving cuts and the generated caption presentation.",
+      "exact_identity": "Editorial plan SHA256 27ef1aa9d7aa29267e43d4b9b33dc17051acbf8f5b38dc4a3b50649e1ca6dac2",
+      "technical_identity": "editorial plan SHA256 27ef1aa9d7aa29267e43d4b9b33dc17051acbf8f5b38dc4a3b50649e1ca6dac2 and Candidate 005 manifest",
+      "provenance_identity": "repository-generated Timeline IR, ASS/SRT layout, subtitle wrapping, outline, shadow, and review metadata",
+      "asserted_owner": null,
+      "permission_status": "project_authorship_representation_pending_underlying_rights_unresolved",
+      "evidence_classes": [
+        "technical_provenance",
+        "content_identity",
+        "unresolved_legal_or_policy_question",
+        "editorial_acceptance"
+      ],
+      "missing_evidence_classes": [
+        "owner_representation"
+      ],
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "caption_readback",
+        "validation_readback",
+        "run_manifest",
+        "accepted_receipt"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "not_applicable",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "A human owner must confirm that the repository-generated layer can be represented as project-authored; that confirmation does not resolve underlying source, caption, or font rights."
+      ]
+    },
+    {
+      "material_id": "out13-source-embedded-rights-concerns",
+      "material": "People or voices, hololive character likenesses, source-native graphics or captions, music, logos, signs, artwork, props, and other elements embedded in the source audiovisual work",
+      "incorporated_in_final_media": true,
+      "usage_scope": "Potentially present within any of the seven selected source ranges; limited contact-sheet review confirms animated character likenesses and source-native text or graphics but is not a full rights inspection.",
+      "exact_identity": "Bounded to source SHA256 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a and the seven range IDs.",
+      "technical_identity": "source SHA256 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a within cut_001 through cut_007",
+      "provenance_identity": "limited source-selected-range and cut-boundary contact sheets plus the pending rights snapshot",
+      "asserted_owner": null,
+      "permission_status": "not_established_content_observation_pending",
+      "evidence_classes": [
+        "content_identity",
+        "content_observation",
+        "primary_terms",
+        "license_or_terms_evidence",
+        "attribution_obligation",
+        "territorial_platform_monetization_restriction",
+        "unresolved_legal_or_policy_question"
+      ],
+      "evidence_locators": [
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet",
+        "rights_snapshot",
+        "cover-hololive-derivative-works-guidelines"
+      ],
+      "permission_evidence_locators": [],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "technical_provenance_is_permission_evidence": false,
+      "unresolved_questions": [
+        "A qualified human must inspect the complete selected ranges for third-party music, guest voice or likeness, logos, source-native artwork, and quoted or displayed works.",
+        "Empty third-party or prohibited-asset arrays in the technical snapshot are not evidence that no such elements exist.",
+        "If a third-party element is identified, its owner, applicable terms, and allow, deny, or restriction basis must be added before rights approval."
+      ]
+    }
+  ],
+  "source_range_inventory": [
+    {
+      "range_id": "cut_001",
+      "source_seconds": {
+        "start": 2.453,
+        "end": 17.167,
+        "duration": 14.714
+      },
+      "output_seconds": {
+        "start": 0.0,
+        "end": 14.714
+      },
+      "semantic_section": "challenge_setup",
+      "editorial_purpose": "declare_challenge",
+      "direct_transcript_segment_ids": "1-9",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative stills show animated character likenesses, props, and source-native Japanese text or graphics.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    },
+    {
+      "range_id": "cut_002",
+      "source_seconds": {
+        "start": 22.606,
+        "end": 24.041,
+        "duration": 1.435
+      },
+      "output_seconds": {
+        "start": 14.714,
+        "end": 16.149
+      },
+      "semantic_section": "first_encounter",
+      "editorial_purpose": "arrival_wait",
+      "direct_transcript_segment_ids": "10",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative still evidence is available, but this short range has not received a dedicated rights-content inspection.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    },
+    {
+      "range_id": "cut_003",
+      "source_seconds": {
+        "start": 25.109,
+        "end": 49.566,
+        "duration": 24.457
+      },
+      "output_seconds": {
+        "start": 16.149,
+        "end": 40.606
+      },
+      "semantic_section": "first_encounter",
+      "editorial_purpose": "first_win_and_next_lead",
+      "direct_transcript_segment_ids": "13-29",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative stills show animated characters, action props, backgrounds, and source-native graphics.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    },
+    {
+      "range_id": "cut_004",
+      "source_seconds": {
+        "start": 50.868,
+        "end": 79.163,
+        "duration": 28.295
+      },
+      "output_seconds": {
+        "start": 40.606,
+        "end": 68.901
+      },
+      "semantic_section": "second_encounter",
+      "editorial_purpose": "second_challenge_and_resolution",
+      "direct_transcript_segment_ids": "30-46",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative stills show multiple animated character likenesses, action props, urban backgrounds, and source-native Japanese graphics.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    },
+    {
+      "range_id": "cut_005",
+      "source_seconds": {
+        "start": 81.298,
+        "end": 94.945,
+        "duration": 13.647
+      },
+      "output_seconds": {
+        "start": 68.901,
+        "end": 82.548
+      },
+      "semantic_section": "final_confrontation",
+      "editorial_purpose": "opponents_and_battle_start",
+      "direct_transcript_segment_ids": "48-57",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative stills show a multi-character confrontation and source-native graphics, including stylized versus presentation.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    },
+    {
+      "range_id": "cut_006",
+      "source_seconds": {
+        "start": 95.345,
+        "end": 116.467,
+        "duration": 21.122
+      },
+      "output_seconds": {
+        "start": 82.548,
+        "end": 103.67
+      },
+      "semantic_section": "final_confrontation",
+      "editorial_purpose": "battle_escalation_and_summoning",
+      "direct_transcript_segment_ids": "58-68",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative stills show multiple animated characters, battle imagery, and a spellbook-like displayed work or prop.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    },
+    {
+      "range_id": "cut_007",
+      "source_seconds": {
+        "start": 116.934,
+        "end": 142.059,
+        "duration": 25.125
+      },
+      "output_seconds": {
+        "start": 103.67,
+        "end": 128.795
+      },
+      "semantic_section": "resolution",
+      "editorial_purpose": "summoned_opponent_and_final_win",
+      "direct_transcript_segment_ids": "69-105",
+      "incorporated_material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-provider-caption-text",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "limited_content_observation": "Representative stills show the summoned opponent, multiple animated character likenesses, props, and resolution graphics.",
+      "required_human_observation": [
+        "music and sound recording",
+        "voice and performance",
+        "character or talent likeness",
+        "logos, signs, artwork, and other displayed works",
+        "provider caption text"
+      ],
+      "readiness_state": "content_observation_required",
+      "owner_verdict": "undecided",
+      "evidence_locators": [
+        "editorial_plan",
+        "timeline_ir",
+        "source_selected_ranges_contact_sheet",
+        "cut_boundary_contact_sheet"
+      ]
+    }
+  ],
+  "omitted_source_ranges": [
+    {
+      "start": 0.0,
+      "end": 2.453,
+      "reason": "pre-dialogue head"
+    },
+    {
+      "start": 17.167,
+      "end": 22.606,
+      "reason": "visual or action wait"
+    },
+    {
+      "start": 24.041,
+      "end": 25.109,
+      "reason": "overlapping provider cues 11-12 bounded out"
+    },
+    {
+      "start": 49.566,
+      "end": 50.868,
+      "reason": "transition"
+    },
+    {
+      "start": 79.163,
+      "end": 81.298,
+      "reason": "bridge phrase or pause around segment 47"
+    },
+    {
+      "start": 94.945,
+      "end": 95.345,
+      "reason": "action beat"
+    },
+    {
+      "start": 116.467,
+      "end": 116.934,
+      "reason": "visual beat"
+    },
+    {
+      "start": 142.059,
+      "end": 164.768798,
+      "reason": "post-resolution tail"
+    }
+  ],
+  "evidence_class_status": {
+    "technical_provenance": {
+      "status": "available",
+      "scope": "Source, caption, transcript, font, plan, range, and final-media identities are hash- and locator-bound.",
+      "permission_effect": "none"
+    },
+    "content_identity": {
+      "status": "available",
+      "scope": "The exact source audiovisual work, caption bytes, transcript derivative, font bytes, generated layer, and seven selected ranges are identified.",
+      "ownership_effect": "none"
+    },
+    "content_observation": {
+      "status": "partial",
+      "scope": "Limited still evidence confirms animated character likenesses and source-native text or graphics; complete audiovisual rights inspection is pending.",
+      "missing_owner_action": "Observe every selected range for music, voice, performance, likeness, logo, sign, artwork, and other displayed work."
+    },
+    "license_or_terms_evidence": {
+      "status": "available_with_exact_binding_gap",
+      "scope": "Primary COVER, Keifont, and YouTube terms propositions are recorded.",
+      "missing_evidence": "The exact Keifont bytes are not yet bound to an acquisition receipt and retained license or notice materials."
+    },
+    "owner_representation": {
+      "status": "missing",
+      "scope": "No legal owner or project-authorship representation is inferred from channel metadata, uploader identity, repository authorship, or source accessibility.",
+      "missing_owner_action": "Record the decision maker, publishing identity, authority basis, and evidence locator."
+    },
+    "permission_or_owner_authority": {
+      "status": "missing",
+      "scope": "No exact-artifact allow, deny, or restricted-use authority is recorded.",
+      "missing_owner_action": "Issue and bind the owner verdict to this packet revision and exact media SHA."
+    },
+    "attribution_obligation": {
+      "status": "pending_owner_decision",
+      "scope": "The exact source URL and title are proposed for the description; caption, font, third-party, and additional credit requirements remain to be decided."
+    },
+    "territorial_platform_monetization_restriction": {
+      "status": "pending_owner_decision",
+      "scope": "Public YouTube, worldwide, indefinite-until-removed, and monetization-contemplated are the proposal; channel registration, visibility, territory, duration, monetization, and takedown restrictions remain inputs."
+    },
+    "unresolved_legal_or_policy_question": {
+      "status": "localized_not_answered",
+      "scope": "Guideline applicability, creative modification, caption reproduction, font binding, embedded third-party elements, commercial rights, and reused-content policy remain human decision questions.",
+      "legal_conclusion": false
+    }
+  },
+  "owner_decision_surface": {
+    "decision_owner": "Rights owner or user with documented authority",
+    "packet_revision_locator": "refs/heads/codex/m6-rights-decision-readiness-v1:docs/rights/out13_m6_rights_decision_readiness_packet.json",
+    "owner_identity": {
+      "decision_maker_name_or_role": null,
+      "authority_basis": null,
+      "authority_evidence_locator": null,
+      "publisher_or_channel_legal_identity": null,
+      "publishing_capacity": null,
+      "readiness_state": "missing_owner_identity"
+    },
+    "decision_subject": {
+      "intended_use_proposition_id": "out13-public-youtube-monetization-conservative-v1",
+      "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+      "exact_media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+      "material_ids": [
+        "out13-source-visual-stream",
+        "out13-source-audio-stream",
+        "out13-normalized-source-audio-derivative",
+        "out13-provider-caption-text",
+        "out13-transcript-derivative",
+        "out13-keifont-glyph-rendering",
+        "out13-generated-editorial-and-subtitle-layers",
+        "out13-source-embedded-rights-concerns"
+      ],
+      "range_ids": [
+        "cut_001",
+        "cut_002",
+        "cut_003",
+        "cut_004",
+        "cut_005",
+        "cut_006",
+        "cut_007"
+      ]
+    },
+    "required_owner_confirmations": [
+      "Confirm the decision maker's authority and attach its evidence locator.",
+      "Confirm whether the exact intended-use proposition is allowed, denied, or allowed with restrictions.",
+      "Record a verdict for every incorporated material and every selected range, or state one explicit verdict that covers the enumerated set.",
+      "Complete the full audiovisual content observation for all seven selected ranges and record any third-party or separately governed element.",
+      "Bind the exact Keifont bytes to the applicable distribution and license materials or replace the font in a new review identity.",
+      "Resolve the permission basis for reproducing the provider caption text as burned-in text.",
+      "Record required attribution, channel-registration, monetization, territory, duration, and takedown restrictions.",
+      "Keep production, credentials, upload, visibility, and release decisions separate."
+    ],
+    "available_verdicts": [
+      "allow",
+      "deny",
+      "allow_with_restrictions",
+      "undecided"
+    ],
+    "overall_owner_verdict": "undecided",
+    "material_or_range_verdicts": [],
+    "restrictions_and_attribution": [],
+    "decision_date": null,
+    "decision_recorded_by": null,
+    "decision_authority_evidence_locator": null,
+    "decision_receipt_locator": null
+  },
+  "readiness_assessment": {
+    "packet_inventory_complete": true,
+    "all_incorporated_material_classes_enumerated": true,
+    "all_selected_ranges_enumerated": true,
+    "all_omitted_ranges_enumerated": true,
+    "range_coverage_ratio": 1.0,
+    "selected_source_duration_seconds": 128.795,
+    "source_utilization_ratio": 0.781671,
+    "technical_provenance_separated_from_permission": true,
+    "primary_terms_available_for_owner_review": true,
+    "unresolved_owner_identity_localized": true,
+    "unresolved_permission_questions_localized": true,
+    "unresolved_content_observation_localized": true,
+    "conflicting_evidence_found": false,
+    "rights_approval_claimed": false,
+    "owner_verdict_recorded": false,
+    "exit": "READY_FOR_HUMAN_RIGHTS_DECISION",
+    "next_action": "obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work"
+  }
+}
