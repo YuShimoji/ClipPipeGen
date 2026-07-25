@@ -10,6 +10,7 @@ HANDOFF_PATH = ROOT / "docs" / "CURRENT_HANDOFF.md"
 ARCHIVE_MARKER = "<!-- HISTORICAL_RUNTIME_ARCHIVE_START -->"
 ALIGNED_FIELDS = (
     "current_slice",
+    "active_branch",
     "active_artifact",
     "human_entrypoint",
     "portable_entrypoint",
@@ -24,6 +25,8 @@ ALIGNED_FIELDS = (
     "m6_rights_status",
     "m6_packet_status",
     "m6_packet",
+    "final_main_revision_locator",
+    "m6_decision_binding_revision",
     "upstream_parity",
     "remote_decision_binding_available",
     "local_decision_binding_committed",
@@ -178,8 +181,13 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "m6_rights_status": "closed_deny_exact_artifact",
         "m6_packet_status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
         "m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
-        "upstream_parity": "1 0",
-        "remote_decision_binding_available": "false",
+        "active_branch": "main",
+        "final_main_revision_locator": "refs/heads/main",
+        "m6_decision_binding_revision": (
+            "097fcaad8985d4f24077da484819efb5942b9c65"
+        ),
+        "upstream_parity": "0 0",
+        "remote_decision_binding_available": "true",
         "local_decision_binding_committed": "true",
         "remote_mutation_authorized": "false",
         "decision_required": "new_successor_artifact_scope_before_new_public_use_review",
@@ -214,6 +222,30 @@ def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() 
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
     assert _authority_errors(runtime, handoff) == []
+
+
+def test_post_integration_resume_rejects_stale_feature_local_only_state() -> None:
+    runtime = RUNTIME_PATH.read_text(encoding="utf-8")
+    handoff = HANDOFF_PATH.read_text(encoding="utf-8")
+    stale_runtime = (
+        runtime.replace("active_branch: main", "active_branch: codex/stale-m6", 1)
+        .replace("upstream_parity: 0 0", "upstream_parity: 1 0", 1)
+        .replace(
+            "remote_decision_binding_available: true",
+            "remote_decision_binding_available: false",
+            1,
+        )
+    )
+
+    errors = _authority_errors(stale_runtime, handoff)
+
+    assert any(error.startswith("runtime_active_branch=") for error in errors)
+    assert any(error.startswith("runtime_upstream_parity=") for error in errors)
+    assert any(
+        error.startswith("runtime_remote_decision_binding_available=")
+        for error in errors
+    )
+    assert any(error.startswith("surface_mismatch_active_branch=") for error in errors)
 
 
 def test_duplicate_live_capsule_and_artifact_fail_semantic_authority_check() -> None:

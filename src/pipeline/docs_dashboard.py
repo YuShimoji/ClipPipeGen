@@ -129,6 +129,9 @@ def _current_focus(runtime_state: dict[str, str]) -> dict[str, Any]:
         ),
         "machine_readback": runtime_state.get("machine_readback", ""),
         "remote_code_complete": runtime_state.get("remote_code_complete", ""),
+        "remote_decision_binding_available": runtime_state.get(
+            "remote_decision_binding_available", ""
+        ),
         "local_artifact_available": runtime_state.get("local_artifact_available", ""),
         "portable_local_artifact_available": runtime_state.get(
             "portable_local_artifact_available", ""
@@ -364,6 +367,10 @@ def _current_focus_table_rows(focus: dict[str, Any]) -> str:
         ("server restart", focus.get("review_server_restart_command", "")),
         ("machine readback", focus.get("machine_readback", "")),
         ("remote code complete", focus.get("remote_code_complete", "")),
+        (
+            "remote decision binding available",
+            focus.get("remote_decision_binding_available", ""),
+        ),
         ("local artifact available", focus.get("local_artifact_available", "")),
         (
             "portable local artifact available",

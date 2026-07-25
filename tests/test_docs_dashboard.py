@@ -78,6 +78,7 @@ def test_docs_dashboard_detects_unclear_and_over_guarded_docs(tmp_path: Path):
     assert focus["review_open_command"] == "start docs\\fixture_focus.html"
     assert focus["machine_readback"] == "docs/fixture_focus.json"
     assert focus["remote_code_complete"] == "true"
+    assert focus["remote_decision_binding_available"] == "true"
     assert focus["local_artifact_available"] == "true"
     assert focus["cross_machine_resume_class"] == "reacquirable"
     assert focus["active_rebuild_contract"] == "artifacts/ACTIVE_REBUILD.json"
@@ -1569,6 +1570,7 @@ def _write_runtime_state(base: Path, **overrides: str) -> None:
         "review_server_restart_command": "fixture-restart",
         "machine_readback": "docs/fixture_focus.json",
         "remote_code_complete": "true",
+        "remote_decision_binding_available": "true",
         "local_artifact_available": "true",
         "cross_machine_resume_class": "reacquirable",
         "active_rebuild_contract": "artifacts/ACTIVE_REBUILD.json",
@@ -1619,9 +1621,8 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
-    assert status["current_focus"]["canonical_main_head"] == (
-        "18641fe917b084259869263e8db05d78325aa2db"
-    )
+    assert status["current_focus"]["active_branch"] == "main"
+    assert status["current_focus"]["canonical_main_head"] == "refs/heads/main"
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-09 accepted internal exact SHA "
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
@@ -1648,6 +1649,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "docs/rights/out13_m6_rights_decision_readiness_packet.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
+    assert status["current_focus"]["remote_decision_binding_available"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == (

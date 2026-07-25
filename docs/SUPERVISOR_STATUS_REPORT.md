@@ -1,6 +1,6 @@
-# OUT-13 M6 exact-artifact deny binding・監修報告
+# OUT-13 M6 exact-artifact deny canonical-main closure・監修報告
 
-更新日: 2026-07-25 JST
+更新日: 2026-07-26 JST
 
 対象: ClipPipeGen のみ
 
@@ -25,6 +25,13 @@ Candidate 005は削除、変更、rejectしていない。M2で受領された�
 technical provenanceを保つread-only archive evidenceへ役割を固定し、public defaultをoff、
 production / publishing / upload / release候補集合から除外した。M2の
 `human_review_pending=false`とaccepted dimensionsは維持する。
+
+deny-binding revision
+`097fcaad8985d4f24077da484819efb5942b9c65`は、authority
+`clip-m6-deny-main-integration-20260726-01`により通常fast-forwardでcanonical `main`へ
+統合され、remoteへpush済みである。live tipはtracked文書へ未来のcommit SHAを自己参照
+させず、`refs/heads/main`で解決する。現在の再開branchは`main`、remote decision
+bindingはavailable、main/upstream parityは`0 0`である。
 
 ## 判断の意味と境界
 
@@ -63,7 +70,7 @@ overall project publication verdictは`deny`だが、8 material rowsと7 range r
 
 | consumer | 現在状態 | 次に使う情報 |
 |---|---|---|
-| Runtime / Handoff | `m6_closed_deny_exact_artifact` | successor scope決定まではCandidate 005をinternal evidenceとして保持 |
+| Runtime / Handoff | `main`上の`m6_closed_deny_exact_artifact` | successor scope決定まではCandidate 005をinternal evidenceとして保持 |
 | M6 packet | deny eventとexact evidence locatorを保持 | 判断日、ユーザー指示、開始revision、artifact ID、SHA |
 | dashboard | Runtimeからclosed stateを投影 | public default off、次action |
 | M2 acceptance consumer | accepted internal dimensionsを継承 | 同一SHA/contextへの再reviewを作らない |
@@ -75,14 +82,21 @@ successorの作成、設計、spec、renderは今回のMissionに含めていな
 
 ## Git・portability・外部状態
 
-作業branchは`codex/m6-rights-decision-readiness-v1`、開始HEADは
-`dac5f7fb715cb3a7acd6c982a80cb916492e7880`、ancestor mainは
-`5bd6e65318df129bebc87291c2ae733f143ed8d8`。packetと正本文書はGit portableだが、
-Candidate media/packageは`episodes/`配下のignored same-machine evidenceでありportableではない。
-`git ls-files episodes`は0件を維持する。
+historical preparation branchは`codex/m6-rights-decision-readiness-v1`、packet準備revisionは
+`dac5f7fb715cb3a7acd6c982a80cb916492e7880`、deny-binding revisionは
+`097fcaad8985d4f24077da484819efb5942b9c65`である。`5bd6e653... -> dac5f7fb... ->
+097fcaad...`を通常fast-forwardとして`main`へ統合し、remoteからpacketをreadbackできる。
+old feature branchはhistorical evidenceであり、current resumption targetではない。
 
-このMissionはlocal commitだけを許可する。push、PR、main integration、tag、release、
-deployment、upload、publish、visibility変更、credential/OAuth操作は実行しない。
+packetと正本文書はGit portableだが、Candidate media/packageは`episodes/`配下のignored
+same-machine evidenceでありportableではない。`git ls-files episodes`は0件を維持する。
+mainへのpushは完了したが、PR、tag、release、deployment、upload、publish、visibility変更、
+credential/OAuth操作は行っていない。
+
+deny-binding作成時に実行されたconfigured full Python suiteは、post-integration
+resume reconciliationのclosure evidenceには使わない。これはprior nonblocking process
+deviationとしてのみ保持し、今回の判断根拠はfocused regressions、generated dashboard
+readback、JSON、diff、remote refに限定する。
 
 ## 受入条件
 

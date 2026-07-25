@@ -4,13 +4,13 @@ title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
 health: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
-last_touched: 2026-07-25
-state_revision: out13-m6-closed-deny-exact-artifact-2026-07-25
+last_touched: 2026-07-26
+state_revision: out13-m6-canonical-main-resume-coherent-2026-07-26
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: OUT-13
 phase: m6_closed_exact_artifact_deny
 canonical_status: m6_closed_deny_exact_artifact
-active_branch: codex/m6-rights-decision-readiness-v1
+active_branch: main
 source_branch: codex/out-13-editorial-video-candidate-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
 verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
@@ -21,10 +21,14 @@ integration_method: fast_forward_no_squash_no_history_rewrite
 integration_authority_id: clip-out13-main-integration-authorization-20260725-01
 integration_authority_consumed: true
 final_main_revision_locator: refs/heads/main
+m6_decision_binding_revision: 097fcaad8985d4f24077da484819efb5942b9c65
+m6_decision_main_integration_authority_id: clip-m6-deny-main-integration-20260726-01
+m6_decision_main_integration_authority_consumed: true
+m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: main
-remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
-upstream_parity: 1 0
+remote_resume_contract: fetch_then_switch_main_then_ff_only_pull_then_read_current_handoff
+upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 latest_remote_sync_head: e0279d513e89fac833d0c7415dc3234d00946773
 sync_audit_status: accepted_out13_feature_fast_forward_integrated_into_main_and_baseline_verified
@@ -46,7 +50,7 @@ reviewed_at: 2026-07-25
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: true
-remote_decision_binding_available: false
+remote_decision_binding_available: true
 local_decision_binding_committed: true
 remote_mutation_authorized: false
 local_artifact_available: true
@@ -448,8 +452,8 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: 18641fe917b084259869263e8db05d78325aa2db
-canonical_main_head_role: accepted_out13_fast_forward_integration_point_before_closure_record
+canonical_main_head: refs/heads/main
+canonical_main_head_role: live_non_self_referential_main_tip_locator
 handoff_sync_status: final_main_closure_tip_and_remote_parity_are_git_authority
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
@@ -569,6 +573,11 @@ instructions.
 - M6の正本状態は`M6_CLOSED_DENY_EXACT_ARTIFACT`。Candidate 005は内部editorial受領と
   technical provenanceを保持するread-only archive evidenceであり、public defaultはoff、
   production / publishing / upload / release候補集合から除外する。
+- deny-binding revision
+  `097fcaad8985d4f24077da484819efb5942b9c65`はauthority
+  `clip-m6-deny-main-integration-20260726-01`によりcanonical `main`へ通常fast-forwardされ、
+  remoteからreadback可能である。live tipは自己参照SHAを埋め込まず
+  `refs/heads/main`で解決し、再開branchは`main`、upstream parityは`0 0`とする。
 - このdenyはproject-controlled publication decisionであり、ユーザーをunderlying source
   rightsholderとは表明しない。rights approvalは`not_granted`で、infringement等の法的結論、
   source / caption / font / embedded element一般への判断、将来artifactへのdenyも含まない。

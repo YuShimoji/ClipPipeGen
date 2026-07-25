@@ -4,11 +4,11 @@ title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
 health: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
-last_touched: 2026-07-25
+last_touched: 2026-07-26
 current_slice: OUT-13
 phase: m6_closed_exact_artifact_deny
 canonical_status: m6_closed_deny_exact_artifact
-active_branch: codex/m6-rights-decision-readiness-v1
+active_branch: main
 source_branch: codex/out-13-editorial-video-candidate-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
 base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
@@ -18,8 +18,12 @@ integration_method: fast_forward_no_squash_no_history_rewrite
 integration_authority_id: clip-out13-main-integration-authorization-20260725-01
 integration_authority_consumed: true
 final_main_revision_locator: refs/heads/main
+m6_decision_binding_revision: 097fcaad8985d4f24077da484819efb5942b9c65
+m6_decision_main_integration_authority_id: clip-m6-deny-main-integration-20260726-01
+m6_decision_main_integration_authority_consumed: true
+m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
-remote_resume_contract: fetch_then_switch_main_then_read_this_file
+remote_resume_contract: fetch_then_switch_main_then_ff_only_pull_then_read_this_file
 current_title: OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained
 human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
 portable_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
@@ -29,7 +33,7 @@ machine_readback: docs/rights/out13_m6_rights_decision_readiness_packet.json
 decision_required: new_successor_artifact_scope_before_new_public_use_review
 review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved
 remote_code_complete: true
-remote_decision_binding_available: false
+remote_decision_binding_available: true
 local_decision_binding_committed: true
 remote_mutation_authorized: false
 local_artifact_available: true
@@ -78,7 +82,7 @@ active_artifact: clip-out13-editorial-video-candidate-v1-005
 source_of_truth: true
 owner_lane: rights_readiness_handoff
 related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/rights/out13_m6_rights_decision_readiness_packet.json, docs/RUNTIME_HISTORY.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, docs/output_layer/out13_human_acceptance_receipt.json, artifacts/ARTIFACTS.md
-upstream_parity: 1 0
+upstream_parity: 0 0
 ---
 
 # Current Handoff - ClipPipeGen
@@ -96,6 +100,12 @@ M5はfinal closure treeを対象に、configured full Python suite、focused OUT
 acceptance dedup / current resume authority / active state / dashboard、dashboard再生成、
 compile/static、diff/privacy境界を検証してpassした。final main commitのexact SHAは
 自己参照するtracked文書へ埋め込まず、push後の`refs/heads/main`をGit正本として解決する。
+
+deny-binding revision
+`097fcaad8985d4f24077da484819efb5942b9c65`はauthority
+`clip-m6-deny-main-integration-20260726-01`によりcanonical `main`へ通常fast-forwardされ、
+remoteへpush済みである。再開branchは`main`、live canonical tipは`refs/heads/main`、
+remote decision bindingはavailable、upstream parityは`0 0`である。
 
 今回の開発基準はmain revision
 `5bd6e65318df129bebc87291c2ae733f143ed8d8`。そこから
@@ -201,18 +211,19 @@ Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
 
 ```powershell
 git fetch --prune origin
-git switch codex/m6-rights-decision-readiness-v1
-git pull --ff-only origin codex/m6-rights-decision-readiness-v1
+git switch main
+git pull --ff-only origin main
 git status --short --branch
 git rev-list --left-right --count 'HEAD...@{upstream}'
+git merge-base --is-ancestor 097fcaad8985d4f24077da484819efb5942b9c65 HEAD
 git merge-base --is-ancestor 5bd6e65318df129bebc87291c2ae733f143ed8d8 HEAD
 git merge-base --is-ancestor 18641fe917b084259869263e8db05d78325aa2db HEAD
 git ls-files episodes
 ```
 
-deny bindingのlocal commit前はfeature/upstream parity `0 0`、commit後の期待値は
-`1 0`である。pushは今回のauthority外なので実行しない。start main
-`5bd6e65318df129bebc87291c2ae733f143ed8d8`とaccepted featureのancestry pass、
-tracked `episodes/` 0件、tracked worktree cleanである。feature branchがlocalにない
-fresh cloneでは、fetch後に`git switch --track origin/codex/m6-rights-decision-readiness-v1`
-で作成する。
+期待値はmain/upstream parity `0 0`、deny-binding revision
+`097fcaad8985d4f24077da484819efb5942b9c65`、start main
+`5bd6e65318df129bebc87291c2ae733f143ed8d8`、accepted feature
+`18641fe917b084259869263e8db05d78325aa2db`のancestry pass、tracked `episodes/` 0件、
+tracked worktree cleanである。old M6 feature branchはhistorical evidenceであり、
+current resumption targetには使わない。

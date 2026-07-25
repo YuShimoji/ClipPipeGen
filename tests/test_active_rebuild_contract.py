@@ -239,6 +239,15 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
     assert "remote_code_complete: true" in runtime
+    assert "remote_decision_binding_available: true" in runtime
+    assert "active_branch: main" in runtime
+    assert "upstream_parity: 0 0" in runtime
+    assert "final_main_revision_locator: refs/heads/main" in runtime
+    assert (
+        "m6_decision_binding_revision: "
+        "097fcaad8985d4f24077da484819efb5942b9c65"
+        in runtime
+    )
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
     assert (

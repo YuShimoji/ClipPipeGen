@@ -8,7 +8,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - artifact: `clip-out13-editorial-video-candidate-v1-005`
 - state: `OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1`
 
-- canonical main: `18641fe917b084259869263e8db05d78325aa2db`
+- canonical main: `refs/heads/main`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - canonical status: `m6_closed_deny_exact_artifact`
 - review status: `m6_closed_deny_exact_artifact_internal_evidence_preserved`

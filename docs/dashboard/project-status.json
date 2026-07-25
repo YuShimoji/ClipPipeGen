@@ -28,9 +28,9 @@
     "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
     "state": "OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1",
     "title": "OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained",
-    "active_branch": "codex/m6-rights-decision-readiness-v1",
+    "active_branch": "main",
     "phase": "m6_closed_exact_artifact_deny",
-    "canonical_main_head": "18641fe917b084259869263e8db05d78325aa2db",
+    "canonical_main_head": "refs/heads/main",
     "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
     "canonical_status": "m6_closed_deny_exact_artifact",
     "review_status": "m6_closed_deny_exact_artifact_internal_evidence_preserved",
@@ -39,6 +39,7 @@
     "review_server_restart_command": "",
     "machine_readback": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
     "remote_code_complete": "true",
+    "remote_decision_binding_available": "true",
     "local_artifact_available": "true",
     "portable_local_artifact_available": "false",
     "portable_entrypoint": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
@@ -2847,20 +2848,20 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 2791,
+      "line_count": 2800,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "active",
         "health": "OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1",
-        "last_touched": "2026-07-25",
-        "state_revision": "out13-m6-closed-deny-exact-artifact-2026-07-25",
+        "last_touched": "2026-07-26",
+        "state_revision": "out13-m6-canonical-main-resume-coherent-2026-07-26",
         "contract_repair_status": "out13_v4_preserved_windows_reparse_point_detection_added",
         "current_slice": "OUT-13",
         "phase": "m6_closed_exact_artifact_deny",
         "canonical_status": "m6_closed_deny_exact_artifact",
-        "active_branch": "codex/m6-rights-decision-readiness-v1",
+        "active_branch": "main",
         "source_branch": "codex/out-13-editorial-video-candidate-v1",
         "development_baseline_main_revision": "5bd6e65318df129bebc87291c2ae733f143ed8d8",
         "verified_implementation_head": "18641fe917b084259869263e8db05d78325aa2db",
@@ -2871,10 +2872,14 @@
         "integration_authority_id": "clip-out13-main-integration-authorization-20260725-01",
         "integration_authority_consumed": "true",
         "final_main_revision_locator": "refs/heads/main",
+        "m6_decision_binding_revision": "097fcaad8985d4f24077da484819efb5942b9c65",
+        "m6_decision_main_integration_authority_id": "clip-m6-deny-main-integration-20260726-01",
+        "m6_decision_main_integration_authority_consumed": "true",
+        "m6_decision_binding_remote_ref": "refs/heads/main",
         "m5_verification_tree_locator": "refs/heads/main^{tree}",
         "closure_branch": "main",
-        "remote_resume_contract": "fetch_then_switch_main_then_read_current_handoff",
-        "upstream_parity": "1 0",
+        "remote_resume_contract": "fetch_then_switch_main_then_ff_only_pull_then_read_current_handoff",
+        "upstream_parity": "0 0",
         "sync_audit_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
         "latest_remote_sync_head": "e0279d513e89fac833d0c7415dc3234d00946773",
         "sync_audit_status": "accepted_out13_feature_fast_forward_integrated_into_main_and_baseline_verified",
@@ -2896,7 +2901,7 @@
         "m2_review_status": "accepted_internal_exact_media_sha_and_recorded_dimensions",
         "m2_review_scope": "internal_full_view_editorial_visual_review",
         "remote_code_complete": "true",
-        "remote_decision_binding_available": "false",
+        "remote_decision_binding_available": "true",
         "local_decision_binding_committed": "true",
         "remote_mutation_authorized": "false",
         "local_artifact_available": "true",
@@ -3297,8 +3302,8 @@
         "latest_out04_editorial_representative_sequence_acceptance_commit": "48c0c58",
         "latest_out04_review_status": "accepted",
         "latest_out04_reviewed_at": "2026-07-11 JST",
-        "canonical_main_head": "18641fe917b084259869263e8db05d78325aa2db",
-        "canonical_main_head_role": "accepted_out13_fast_forward_integration_point_before_closure_record",
+        "canonical_main_head": "refs/heads/main",
+        "canonical_main_head_role": "live_non_self_referential_main_tip_locator",
         "handoff_sync_status": "final_main_closure_tip_and_remote_parity_are_git_authority",
         "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
         "latest_out03_real_local_selected_cut_proof_artifact": "clip-out03-real-local-selected-cut-proof-v0-001",
@@ -3363,7 +3368,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 530,
+      "boundary_term_count": 529,
       "status": "active"
     },
     {
@@ -3556,18 +3561,18 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 218,
+      "line_count": 229,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
         "health": "OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1",
-        "last_touched": "2026-07-25",
+        "last_touched": "2026-07-26",
         "current_slice": "OUT-13",
         "phase": "m6_closed_exact_artifact_deny",
         "canonical_status": "m6_closed_deny_exact_artifact",
-        "active_branch": "codex/m6-rights-decision-readiness-v1",
+        "active_branch": "main",
         "source_branch": "codex/out-13-editorial-video-candidate-v1",
         "development_baseline_main_revision": "5bd6e65318df129bebc87291c2ae733f143ed8d8",
         "base_head": "5d6f69a64d510508a1f78ab3111a7780913a019c",
@@ -3577,8 +3582,12 @@
         "integration_authority_id": "clip-out13-main-integration-authorization-20260725-01",
         "integration_authority_consumed": "true",
         "final_main_revision_locator": "refs/heads/main",
+        "m6_decision_binding_revision": "097fcaad8985d4f24077da484819efb5942b9c65",
+        "m6_decision_main_integration_authority_id": "clip-m6-deny-main-integration-20260726-01",
+        "m6_decision_main_integration_authority_consumed": "true",
+        "m6_decision_binding_remote_ref": "refs/heads/main",
         "m5_verification_tree_locator": "refs/heads/main^{tree}",
-        "remote_resume_contract": "fetch_then_switch_main_then_read_this_file",
+        "remote_resume_contract": "fetch_then_switch_main_then_ff_only_pull_then_read_this_file",
         "current_title": "OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained",
         "human_entrypoint": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
         "portable_entrypoint": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
@@ -3588,7 +3597,7 @@
         "decision_required": "new_successor_artifact_scope_before_new_public_use_review",
         "review_status": "m6_closed_deny_exact_artifact_internal_evidence_preserved",
         "remote_code_complete": "true",
-        "remote_decision_binding_available": "false",
+        "remote_decision_binding_available": "true",
         "local_decision_binding_committed": "true",
         "remote_mutation_authorized": "false",
         "local_artifact_available": "true",
@@ -3637,7 +3646,7 @@
         "source_of_truth": "true",
         "owner_lane": "rights_readiness_handoff",
         "related": "docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/rights/out13_m6_rights_decision_readiness_packet.json, docs/RUNTIME_HISTORY.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, docs/output_layer/out13_human_acceptance_receipt.json, artifacts/ARTIFACTS.md",
-        "upstream_parity": "1 0"
+        "upstream_parity": "0 0"
       },
       "front_sections": {
         "what_it_is": false,
@@ -3645,7 +3654,7 @@
         "next": true,
         "constraints_risks": false
       },
-      "boundary_term_count": 69,
+      "boundary_term_count": 65,
       "status": "active"
     },
     {
@@ -3997,8 +4006,8 @@
     },
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
-      "title": "OUT-13 M6 exact-artifact deny binding・監修報告",
-      "line_count": 140,
+      "title": "OUT-13 M6 exact-artifact deny canonical-main closure・監修報告",
+      "line_count": 154,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -4087,7 +4096,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (2791 lines) is likely carrying history.",
+        "detail": "Long active doc (2800 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4147,7 +4156,7 @@
       {
         "type": "over_guarded",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Boundary terms appear 69 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 65 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
