@@ -24,6 +24,10 @@ ALIGNED_FIELDS = (
     "m6_rights_status",
     "m6_packet_status",
     "m6_packet",
+    "upstream_parity",
+    "remote_decision_binding_available",
+    "local_decision_binding_committed",
+    "remote_mutation_authorized",
     "decision_required",
     "next_review_due",
     "next_action",
@@ -171,11 +175,15 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "main_integration_approved": "true",
         "m4_main_integration_status": "complete",
         "m5_integrated_baseline_verification_status": "passed",
-        "m6_rights_status": "packet_prepared_rights_decision_pending",
-        "m6_packet_status": "READY_FOR_HUMAN_RIGHTS_DECISION",
+        "m6_rights_status": "closed_deny_exact_artifact",
+        "m6_packet_status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
         "m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
-        "decision_required": "human_rights_owner_allow_deny_or_restrict",
-        "next_review_due": "human_rights_owner_decision",
+        "upstream_parity": "1 0",
+        "remote_decision_binding_available": "false",
+        "local_decision_binding_committed": "true",
+        "remote_mutation_authorized": "false",
+        "decision_required": "new_successor_artifact_scope_before_new_public_use_review",
+        "next_review_due": "successor_artifact_scope_decision",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -241,7 +249,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: accepted_exact_candidate_005_same_machine_evidence",
+        "local_artifact_role: archive_read_only_internal_evidence_only",
         "local_artifact_role: stale_review_target",
         1,
     )

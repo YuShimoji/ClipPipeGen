@@ -1627,16 +1627,16 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "m6_packet_prepared_rights_decision_pending"
+        "m6_closed_deny_exact_artifact"
     )
     assert status["current_focus"]["review_status"] == (
-        "rights_decision_packet_ready_owner_verdict_pending"
+        "m6_closed_deny_exact_artifact_internal_evidence_preserved"
     )
     assert status["current_focus"]["decision_required"] == (
-        "human_rights_owner_allow_deny_or_restrict"
+        "new_successor_artifact_scope_before_new_public_use_review"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "human_rights_owner_decision"
+        "successor_artifact_scope_decision"
     )
     assert status["current_focus"]["human_entrypoint"] == (
         "docs/rights/out13_m6_rights_decision_readiness_packet.json"
@@ -1671,7 +1671,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
     assert status["current_focus"]["pause_reason"] == (
-        "human_rights_owner_verdict_and_authority_evidence_pending"
+        "exact_candidate_005_public_and_monetized_path_closed_by_user_deny"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""

@@ -6,12 +6,12 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-13`
 - artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1`
+- state: `OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1`
 
 - canonical main: `18641fe917b084259869263e8db05d78325aa2db`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `m6_packet_prepared_rights_decision_pending`
-- review status: `rights_decision_packet_ready_owner_verdict_pending`
+- canonical status: `m6_closed_deny_exact_artifact`
+- review status: `m6_closed_deny_exact_artifact_internal_evidence_preserved`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
@@ -23,7 +23,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
-- pause reason: `human_rights_owner_verdict_and_authority_evidence_pending`
+- pause reason: `exact_candidate_005_public_and_monetized_path_closed_by_user_deny`
 - accepted baseline recovery: ``
 - cover review status: ``
 - cross-machine resume: `tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
@@ -34,8 +34,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `human_rights_owner_allow_deny_or_restrict`
-- next review: `human_rights_owner_decision`
+- decision required: `new_successor_artifact_scope_before_new_public_use_review`
+- next review: `successor_artifact_scope_decision`
 
 ## Feature Table
 

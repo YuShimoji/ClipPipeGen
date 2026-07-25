@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1
+health: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
 last_touched: 2026-07-25
-state_revision: out13-m6-rights-packet-ready-human-decision-pending-2026-07-25
+state_revision: out13-m6-closed-deny-exact-artifact-2026-07-25
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: OUT-13
-phase: rights_decision_readiness
-canonical_status: m6_packet_prepared_rights_decision_pending
+phase: m6_closed_exact_artifact_deny
+canonical_status: m6_closed_deny_exact_artifact
 active_branch: codex/m6-rights-decision-readiness-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -24,7 +24,7 @@ final_main_revision_locator: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: main
 remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
-upstream_parity: 0 0
+upstream_parity: 1 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 latest_remote_sync_head: e0279d513e89fac833d0c7415dc3234d00946773
 sync_audit_status: accepted_out13_feature_fast_forward_integrated_into_main_and_baseline_verified
@@ -32,22 +32,25 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-13 M6 rights decision packet is ready; human owner verdict is pending
+current_title: OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained
 human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
 portable_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
 review_open_command: powershell -NoProfile -Command Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
 review_server_restart_command: null
 machine_readback: docs/rights/out13_m6_rights_decision_readiness_packet.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: human_rights_owner_allow_deny_or_restrict
-review_status: rights_decision_packet_ready_owner_verdict_pending
-review_scope: m6_exact_packet_evidence_inventory_and_owner_decision_readiness
+decision_required: new_successor_artifact_scope_before_new_public_use_review
+review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved
+review_scope: exact_candidate_005_public_and_monetized_project_decision
 reviewed_at: 2026-07-25
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: true
+remote_decision_binding_available: false
+local_decision_binding_committed: true
+remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: accepted_exact_candidate_005_same_machine_evidence
+local_artifact_role: archive_read_only_internal_evidence_only
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
 cross_host_resume_status: exact_candidate_005_present_on_verified_host_not_portable_through_git
@@ -65,7 +68,16 @@ local_artifact_evidence_receipt: docs/output_layer/out13_human_acceptance_receip
 local_package_requirement: satisfied_candidate_005_exact_source_transcript_caption_rights_receipts_plan_and_output_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
-rights_approval: pending
+rights_approval: not_granted
+public_use_verdict: deny
+monetized_youtube_verdict: deny
+publication_decision: deny
+monetization_decision: deny
+m6_owner_verdict: deny
+m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
+m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
+candidate_public_default: off
+candidate_excluded_from_production_publish_upload_release_sets: true
 production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
@@ -74,7 +86,7 @@ last_verified_at: 2026-07-25T00:16:31+09:00
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: human_rights_owner_verdict_and_authority_evidence_pending
+pause_reason: exact_candidate_005_public_and_monetized_path_closed_by_user_deny
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
@@ -102,8 +114,8 @@ main_integration_preflight_verdict: consumed_by_authorized_fast_forward_integrat
 main_integration_approval_consumed_by_revision: 18641fe917b084259869263e8db05d78325aa2db
 m4_main_integration_status: complete
 m5_integrated_baseline_verification_status: passed
-m6_rights_status: packet_prepared_rights_decision_pending
-m6_packet_status: READY_FOR_HUMAN_RIGHTS_DECISION
+m6_rights_status: closed_deny_exact_artifact
+m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 automation_acceptance_granted: true
 automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
@@ -115,13 +127,14 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: not_required_acceptance_receipt_is_current
-next_review_due: human_rights_owner_decision
-next_review_type: human_rights_owner_decision
-next_action: obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work
+next_review_due: successor_artifact_scope_decision
+next_review_type: materially_distinct_successor_artifact_scope
+next_action: require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration
 active_artifact: clip-out13-editorial-video-candidate-v1-005
 current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
-out13_state: OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1
+out13_state: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
+out13_rights_status: unresolved_evidence_preserved_public_use_denied
 out13_machine_values_scope: current_checkout_live_candidate_005_exact_package_and_input_readback
 out13_source_identity: youtube:7J5aS_pcBj4
 out13_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
@@ -510,13 +523,13 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — OUT-13 M6 Packet Prepared / Human Rights Decision Pending
+## Current Capsule — OUT-13 M6 Closed / Exact Candidate 005 Public Use Denied
 
 - active slice: `OUT-13`
 - active artifact: `clip-out13-editorial-video-candidate-v1-005`
-- review status: `rights_decision_packet_ready_owner_verdict_pending`
+- review status: `m6_closed_deny_exact_artifact_internal_evidence_preserved`
 - portable receipt: `docs/rights/out13_m6_rights_decision_readiness_packet.json`
-- local artifact role: `accepted_exact_candidate_005_same_machine_evidence`
+- local artifact role: `archive_read_only_internal_evidence_only`
 - main integration approval: `true`
 
 - ユーザーは supervising thread で exact artifact
@@ -547,24 +560,34 @@ instructions.
   元動画内の追加権利懸念を、7使用区間・8除外区間と一次規約へ結び付けた。技術 provenance、
   content observation、一次規約、permission / owner authorityを別 evidence class とし、
   provenanceや内部editorial受領をpermissionへ昇格させない。
-- packet statusは`READY_FOR_HUMAN_RIGHTS_DECISION`。これは棚卸しと未解決事項が
-  owner判断に足る形へ局所化されたという意味で、rights approvalではない。
-  publisher/channel identity、判断者authority、全7区間のrights content observation、
-  caption textのpermission basis、exact Keifont bytesのlicense binding、allow / deny /
-  restriction verdictは未記録である。
+- packetは開始リビジョン
+  `dac5f7fb715cb3a7acd6c982a80cb916492e7880`で
+  `READY_FOR_HUMAN_RIGHTS_DECISION`だった。ユーザーは監修役の
+  「exact MP4の収益公開は行わず、後継版へ移る」という推奨1を選択したため、
+  exact Candidate 005 / MP4 SHAに対する`public_use_verdict=deny`、
+  `monetized_youtube_verdict=deny`をdecision historyへ固定した。
+- M6の正本状態は`M6_CLOSED_DENY_EXACT_ARTIFACT`。Candidate 005は内部editorial受領と
+  technical provenanceを保持するread-only archive evidenceであり、public defaultはoff、
+  production / publishing / upload / release候補集合から除外する。
+- このdenyはproject-controlled publication decisionであり、ユーザーをunderlying source
+  rightsholderとは表明しない。rights approvalは`not_granted`で、infringement等の法的結論、
+  source / caption / font / embedded element一般への判断、将来artifactへのdenyも含まない。
+- publisher/channel identity、全7区間のrights content observation、caption textの
+  permission basis、exact Keifont bytesのlicense bindingは未解決のまま保持する。
+  exact artifactの公開経路をdenyしたため、この経路を閉じる目的に限ってnonblockingである。
 - rights、production subtitle/design/render、production image quality、thumbnail、
   publishing、upload、public releaseはいずれも未承認である。内部editorial受領から
   これらのgateを推定しない。
 
 ## Next Action
 
-- action: `obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work`
-- authorization state: `packet_prepared_owner_decision_pending`
-- owner: `Rights owner / User`
-- condition: exact packetを読み、判断者identityとauthority evidenceを固定したうえで、
-  列挙済みmaterialと7区間に`allow` / `deny` / `allow_with_restrictions`のいずれかを記録する。
-  verdict確定まではrights approval、production render、publishing、upload、releaseを
-  開始も承認もしない。
+- action: `require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration`
+- authorization state: `m6_closed_exact_artifact_deny_successor_not_started`
+- owner: `Product owner / User`
+- condition: 新しいpublic / monetized considerationを開く場合は、Candidate 005を変更せず、
+  materially distinctなsuccessor scopeを先に判断する。新artifact identity、新しい
+  transformation / content strategy、material / range inventory、editorial review、
+  rights reviewを必須とする。このMissionではsuccessorの設計、spec、renderを開始しない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

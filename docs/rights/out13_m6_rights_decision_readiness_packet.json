@@ -1,18 +1,27 @@
 {
   "schema_version": "clippipegen.out13.m6_rights_decision_readiness.v1",
   "packet_id": "clip-out13-m6-rights-decision-readiness-v1-001",
-  "packet_readiness_status": "READY_FOR_HUMAN_RIGHTS_DECISION",
+  "packet_readiness_status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
   "prepared_at": "2026-07-25",
   "scope": "OUT-13 exact accepted Candidate 005 rights-decision readiness only",
   "decision_boundary": {
     "rights_approved": false,
+    "rights_approval": "not_granted",
+    "public_use_verdict": "deny",
+    "monetized_youtube_verdict": "deny",
+    "publication_decision": "deny",
+    "monetization_decision": "deny",
+    "exact_artifact_publication_path_closed": true,
+    "candidate_role": "archive_read_only_internal_evidence_only",
+    "public_default": "off",
+    "excluded_from_production_publish_upload_release_candidate_sets": true,
     "production_accepted": false,
     "thumbnail_accepted": false,
     "publishing_accepted": false,
     "upload_attempted": false,
     "public_release_accepted": false,
     "legal_conclusion_provided": false,
-    "meaning": "This packet organizes evidence and unresolved questions for a human owner. READY_FOR_HUMAN_RIGHTS_DECISION is a packet-completeness verdict, not permission or approval."
+    "meaning": "The user denied public use and monetized YouTube use for the exact Candidate 005 MP4. This closes only that exact-artifact publication path. It does not grant rights, provide a legal conclusion, decide underlying source/font/caption rights generally, or deny a future artifact."
   },
   "baseline": {
     "launch_set_id": "clip-m6-rights-readiness-20260725-01",
@@ -34,6 +43,76 @@
     "acceptance_receipt": "docs/output_layer/out13_human_acceptance_receipt.json",
     "acceptance_scope": "internal full-view editorial and visual review for the recorded dimensions only"
   },
+  "status_history": [
+    {
+      "status": "READY_FOR_HUMAN_RIGHTS_DECISION",
+      "recorded_revision": "dac5f7fb715cb3a7acd6c982a80cb916492e7880",
+      "packet_locator": "dac5f7fb715cb3a7acd6c982a80cb916492e7880:docs/rights/out13_m6_rights_decision_readiness_packet.json",
+      "meaning": "The exact-artifact inventory and unresolved questions were ready for a human project publication decision; no rights approval was claimed."
+    },
+    {
+      "status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
+      "decision_evidence_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0",
+      "meaning": "The exact Candidate 005 public and monetized publication path was closed by the recorded user decision while internal evidence retention and unresolved rights evidence were preserved."
+    }
+  ],
+  "decision_history": [
+    {
+      "decision_event_id": "clip-out13-m6-deny-exact-candidate-005-20260725-01",
+      "event_type": "project_publication_decision",
+      "decision_date": "2026-07-25",
+      "decision_timezone": "Asia/Tokyo",
+      "launch_set_id": "clip-m6-deny-binding-20260725-01",
+      "mission_id": "clip-m6-bind-deny-exact-candidate",
+      "starting_packet_revision": "dac5f7fb715cb3a7acd6c982a80cb916492e7880",
+      "starting_packet_locator": "dac5f7fb715cb3a7acd6c982a80cb916492e7880:docs/rights/out13_m6_rights_decision_readiness_packet.json",
+      "packet_id": "clip-out13-m6-rights-decision-readiness-v1-001",
+      "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+      "exact_media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+      "decision_capacity": "user_as_project_publication_decision_owner_not_asserted_as_underlying_source_rightsholder",
+      "supervisor_recommendation": "1. deny — exact MP4の収益公開は行わず、後継版へ移る",
+      "user_instruction": "推奨の1.で作業を継続してください。",
+      "decision_evidence_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0",
+      "public_use_verdict": "deny",
+      "monetized_youtube_verdict": "deny",
+      "publication_decision": "deny",
+      "monetization_decision": "deny",
+      "rights_approval": "not_granted",
+      "overall_owner_verdict": "deny",
+      "verdict_scope": "Only the exact Candidate 005 MP4 identified by artifact_id and SHA-256, for the packet's public YouTube and monetization-contemplated proposition.",
+      "preserved_internal_purposes": [
+        "accepted internal editorial evidence",
+        "read-only archive evidence",
+        "technical provenance and regression reference"
+      ],
+      "candidate_disposition": {
+        "role": "archive_read_only_internal_evidence_only",
+        "public_default": "off",
+        "excluded_from_candidate_sets": [
+          "production",
+          "publishing",
+          "upload",
+          "release"
+        ]
+      },
+      "unresolved_evidence_effect": "The missing permission, incomplete content observation, and exact font/caption bindings remain unresolved. They are nonblocking only because this exact-artifact public and monetized path is denied.",
+      "non_claims": [
+        "The user is not asserted to be an underlying source rightsholder.",
+        "No infringement or other legal conclusion is made.",
+        "No general verdict is made about the source, font, captions, or embedded elements.",
+        "No future or materially distinct artifact is denied."
+      ],
+      "successor_requirement": {
+        "required_before_new_public_or_monetized_consideration": true,
+        "materially_distinct_successor_required": true,
+        "new_artifact_identity_required": true,
+        "fresh_transformation_and_content_strategy_required": true,
+        "fresh_material_and_range_inventory_required": true,
+        "fresh_editorial_and_rights_review_required": true,
+        "successor_created_or_specified_by_this_event": false
+      }
+    }
+  ],
   "controlled_vocabularies": {
     "evidence_classes": {
       "technical_provenance": "Identity, lineage, hash, timestamp, acquisition, stream, range, or build evidence. It does not prove permission.",
@@ -68,6 +147,8 @@
   "intended_use_proposition": {
     "proposition_id": "out13-public-youtube-monetization-conservative-v1",
     "current_authorization": false,
+    "proposition_status": "denied_for_exact_artifact",
+    "decision_event_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0",
     "artifact": "clip-out13-editorial-video-candidate-v1-005",
     "exact_media_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
     "platform": "YouTube",
@@ -850,22 +931,22 @@
       "missing_evidence": "The exact Keifont bytes are not yet bound to an acquisition receipt and retained license or notice materials."
     },
     "owner_representation": {
-      "status": "missing",
-      "scope": "No legal owner or project-authorship representation is inferred from channel metadata, uploader identity, repository authorship, or source accessibility.",
-      "missing_owner_action": "Record the decision maker, publishing identity, authority basis, and evidence locator."
+      "status": "project_publication_decision_recorded",
+      "scope": "The user recorded a project-controlled deny for this exact Candidate 005 public and monetized publication path. No underlying source rightsholder status or general project-authorship representation is inferred.",
+      "evidence_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0"
     },
     "permission_or_owner_authority": {
-      "status": "missing",
-      "scope": "No exact-artifact allow, deny, or restricted-use authority is recorded.",
-      "missing_owner_action": "Issue and bind the owner verdict to this packet revision and exact media SHA."
+      "status": "exact_artifact_publication_deny_recorded_permission_not_established",
+      "scope": "A project publication deny is bound to the exact artifact and public/monetized proposition. Permission for the underlying materials remains unestablished and rights approval is not granted.",
+      "evidence_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0"
     },
     "attribution_obligation": {
       "status": "pending_owner_decision",
       "scope": "The exact source URL and title are proposed for the description; caption, font, third-party, and additional credit requirements remain to be decided."
     },
     "territorial_platform_monetization_restriction": {
-      "status": "pending_owner_decision",
-      "scope": "Public YouTube, worldwide, indefinite-until-removed, and monetization-contemplated are the proposal; channel registration, visibility, territory, duration, monetization, and takedown restrictions remain inputs."
+      "status": "exact_artifact_public_and_monetized_path_denied",
+      "scope": "Public YouTube and monetization are denied for the exact Candidate 005 MP4. Other platform, territory, duration, and future-artifact questions are not decided."
     },
     "unresolved_legal_or_policy_question": {
       "status": "localized_not_answered",
@@ -874,15 +955,16 @@
     }
   },
   "owner_decision_surface": {
-    "decision_owner": "Rights owner or user with documented authority",
+    "decision_owner": "User / project publication decision owner",
+    "decision_capacity": "project_publication_decision_owner_not_underlying_source_rightsholder_claim",
     "packet_revision_locator": "refs/heads/codex/m6-rights-decision-readiness-v1:docs/rights/out13_m6_rights_decision_readiness_packet.json",
     "owner_identity": {
-      "decision_maker_name_or_role": null,
-      "authority_basis": null,
-      "authority_evidence_locator": null,
+      "decision_maker_name_or_role": "User / project publication decision owner",
+      "authority_basis": "Explicit user instruction selecting the supervisor's deny recommendation for the exact Candidate 005 MP4.",
+      "authority_evidence_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0",
       "publisher_or_channel_legal_identity": null,
-      "publishing_capacity": null,
-      "readiness_state": "missing_owner_identity"
+      "publishing_capacity": "project_controlled_decision_to_withhold_exact_artifact_from_publication",
+      "readiness_state": "project_publication_deny_recorded_underlying_rightsholder_identity_not_asserted"
     },
     "decision_subject": {
       "intended_use_proposition_id": "out13-public-youtube-monetization-conservative-v1",
@@ -908,7 +990,7 @@
         "cut_007"
       ]
     },
-    "required_owner_confirmations": [
+    "historical_pre_decision_required_owner_confirmations": [
       "Confirm the decision maker's authority and attach its evidence locator.",
       "Confirm whether the exact intended-use proposition is allowed, denied, or allowed with restrictions.",
       "Record a verdict for every incorporated material and every selected range, or state one explicit verdict that covers the enumerated set.",
@@ -924,13 +1006,19 @@
       "allow_with_restrictions",
       "undecided"
     ],
-    "overall_owner_verdict": "undecided",
+    "overall_owner_verdict": "deny",
+    "public_use_verdict": "deny",
+    "monetized_youtube_verdict": "deny",
+    "publication_decision": "deny",
+    "monetization_decision": "deny",
+    "rights_approval": "not_granted",
+    "verdict_scope": "Exact Candidate 005 MP4 public use and monetized YouTube use only; underlying material verdict rows remain unresolved.",
     "material_or_range_verdicts": [],
     "restrictions_and_attribution": [],
-    "decision_date": null,
-    "decision_recorded_by": null,
-    "decision_authority_evidence_locator": null,
-    "decision_receipt_locator": null
+    "decision_date": "2026-07-25",
+    "decision_recorded_by": "User / project publication decision owner",
+    "decision_authority_evidence_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0",
+    "decision_receipt_locator": "docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0"
   },
   "readiness_assessment": {
     "packet_inventory_complete": true,
@@ -947,8 +1035,16 @@
     "unresolved_content_observation_localized": true,
     "conflicting_evidence_found": false,
     "rights_approval_claimed": false,
-    "owner_verdict_recorded": false,
-    "exit": "READY_FOR_HUMAN_RIGHTS_DECISION",
-    "next_action": "obtain_human_rights_owner_verdict_for_exact_m6_packet_without_starting_production_or_public_work"
+    "owner_verdict_recorded": true,
+    "exact_artifact_publication_path_closed": true,
+    "public_use_verdict": "deny",
+    "monetized_youtube_verdict": "deny",
+    "rights_approval": "not_granted",
+    "unresolved_evidence_preserved": true,
+    "unresolved_evidence_nonblocking_for_denied_publication_path": true,
+    "internal_editorial_acceptance_preserved": true,
+    "human_review_pending": false,
+    "exit": "M6_CLOSED_DENY_EXACT_ARTIFACT",
+    "next_action": "require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration"
   }
 }

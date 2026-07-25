@@ -8,7 +8,7 @@ OUT-13 は candidate 004 の media-reviewable bytes を保ったまま、manifes
 content-sensitive lineageも同じcontractで検査する。active artifact は
 `clip-out13-editorial-video-candidate-v1-005`。M4 main integrationとM5 integrated
 baseline verificationを完了し、現在のstateは
-`OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1`である。
+`OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1`である。
 
 2026-07-25、ユーザーはexact MP4 SHA
 `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`を、
@@ -16,11 +16,21 @@ baseline verificationを完了し、現在のstateは
 [out13_human_acceptance_receipt.json](out13_human_acceptance_receipt.json)にあり、
 M2はclosed。accepted feature revision
 `18641fe917b084259869263e8db05d78325aa2db`はM4でmainへ統合され、M5もpassした。
-現在のgateは
+M6の判断正本は
 [`out13_m6_rights_decision_readiness_packet.json`](../rights/out13_m6_rights_decision_readiness_packet.json)
-に対するhuman rights ownerの判断である。packetは
-`READY_FOR_HUMAN_RIGHTS_DECISION`だが、rights、production subtitle/design/render、
-thumbnail、publishing、upload、public releaseは未承認のまま。
+である。開始packet revision
+`dac5f7fb715cb3a7acd6c982a80cb916492e7880`に対し、ユーザーは監修役の推奨1
+「deny — exact MP4の収益公開は行わず、後継版へ移る」を選択した。
+`public_use_verdict=deny`、`monetized_youtube_verdict=deny`をexact Candidate 005 / MP4
+SHAへbindし、M6は`M6_CLOSED_DENY_EXACT_ARTIFACT`でclosedした。
+`rights_approval=not_granted`で、production subtitle/design/render、thumbnail、
+publishing、upload、public releaseは未承認のまま。
+
+Candidate 005はM2で受領されたinternal editorial evidenceとtechnical provenanceを保つ
+read-only archive evidenceである。public defaultはoffで、production / publishing /
+upload / release候補集合から除外する。source permission、全7区間のcontent observation、
+provider caption、Keifont bindingは未解決のまま保持し、deny済みpublic pathを閉じる目的に
+限ってnonblockingとする。
 
 ## v4 contract で閉じたこと
 
@@ -142,17 +152,13 @@ package は `episodes/`配下の same-machine ignored artifact で、Git clone �
 
 ## 次の判断境界
 
-次のconsumerはRights owner / Userである。M6 packetは、source映像・音声、provider
-caption text、transcript派生物、Keifont、生成レイヤー、source内の追加rights concernを、
-exact 7使用range、8除外range、一次規約、evidence class、owner記録欄へ結び付けた。
-technical provenance、content observation、primary terms、permission / owner authority、
-editorial acceptance、platform policyは互いに代替しない。
-
-ownerはexact public YouTube / monetization contemplated propositionを読み、判断者identityと
-authority evidence、全7rangeのaudiovisual rights observation、caption textのpermission
-basis、Keifont exact bytesのlicense bindingを揃える。`allow`、`deny`、
-`allow_with_restrictions`のverdict、attribution、制限、decision receiptが揃うまで
-`rights_approval=pending`を維持する。
+次のconsumerはProduct owner / Userである。single next actionは
+`require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration`。
+新しいpublic / monetized considerationを開く場合は、Candidate 005を変更せず、materially
+distinctなsuccessor scopeを先に決める。新artifact identity、新しいtransformation /
+content strategy、material / range inventory、editorial review、rights reviewを必須とする。
+このdenyをunderlying source、caption、font、embedded element一般やfuture artifactへ
+拡張しない。このMissionではsuccessorの設計、spec、renderを開始しない。
 
 exact candidate 005のinternal editorial acceptanceはreceiptへbind済みで、同じmedia SHA・
 review context・accepted dimensionsを人間reviewへ戻さない。将来のbounded repairは、

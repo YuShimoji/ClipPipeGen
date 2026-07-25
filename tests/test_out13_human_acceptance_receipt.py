@@ -142,9 +142,9 @@ def test_current_state_closes_m2_and_m4_without_opening_external_gates() -> None
         assert "main_integration_approved: true" in text
         assert "m4_main_integration_status: complete" in text
         assert "m5_integrated_baseline_verification_status: passed" in text
-        assert "m6_rights_status: packet_prepared_rights_decision_pending" in text
-        assert "m6_packet_status: READY_FOR_HUMAN_RIGHTS_DECISION" in text
-        assert "rights_approval: pending" in text
+        assert "m6_rights_status: closed_deny_exact_artifact" in text
+        assert "m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in text
+        assert "rights_approval: not_granted" in text
         assert "production_acceptance: false" in text
         assert "public_or_publishing_acceptance: false" in text
         assert "this_commit_after_push" not in text

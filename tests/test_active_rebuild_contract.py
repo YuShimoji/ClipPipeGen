@@ -257,17 +257,17 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert (
         "health: "
-        "OUT13_M6_RIGHTS_PACKET_READY_FOR_HUMAN_DECISION_V1"
+        "OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1"
         in runtime
     )
     assert "current_slice: OUT-13" in runtime
     assert (
-        "canonical_status: m6_packet_prepared_rights_decision_pending"
+        "canonical_status: m6_closed_deny_exact_artifact"
         in runtime
     )
     assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
     assert (
-        "review_status: rights_decision_packet_ready_owner_verdict_pending"
+        "review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved"
         in runtime
     )
     assert "automation_acceptance_granted: true" in runtime
@@ -292,8 +292,8 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert "m4_main_integration_status: complete" in runtime
     assert "m5_integrated_baseline_verification_status: passed" in runtime
-    assert "m6_rights_status: packet_prepared_rights_decision_pending" in runtime
-    assert "m6_packet_status: READY_FOR_HUMAN_RIGHTS_DECISION" in runtime
+    assert "m6_rights_status: closed_deny_exact_artifact" in runtime
+    assert "m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in runtime
     assert (
         "m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json"
         in runtime

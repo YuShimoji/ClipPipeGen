@@ -79,7 +79,10 @@ def _packet_errors(packet: dict) -> list[str]:
     if len(range_ids) != len(set(range_ids)):
         errors.append("duplicate_range_id")
 
-    if packet.get("packet_readiness_status") == "READY_FOR_HUMAN_RIGHTS_DECISION":
+    if packet.get("packet_readiness_status") in {
+        "READY_FOR_HUMAN_RIGHTS_DECISION",
+        "M6_CLOSED_DENY_EXACT_ARTIFACT",
+    }:
         if set(material_ids) != EXPECTED_MATERIAL_IDS:
             errors.append("ready_packet_material_inventory_incomplete")
         if set(range_ids) != set(EXPECTED_RANGES):
@@ -157,17 +160,88 @@ def _packet_errors(packet: dict) -> list[str]:
             errors.append("ready_packet_prefills_owner_verdict")
         if boundary.get("rights_approved") is not False:
             errors.append("ready_packet_claims_rights_approval")
+    if packet.get("packet_readiness_status") == "M6_CLOSED_DENY_EXACT_ARTIFACT":
+        decision_events = packet.get("decision_history", [])
+        if len(decision_events) != 1:
+            errors.append("closed_deny_requires_one_decision_event")
+            return errors
+        event = decision_events[0]
+        exact_fields = {
+            "starting_packet_revision": (
+                "dac5f7fb715cb3a7acd6c982a80cb916492e7880"
+            ),
+            "packet_id": "clip-out13-m6-rights-decision-readiness-v1-001",
+            "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+            "exact_media_sha256": (
+                "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
+            ),
+            "decision_evidence_locator": (
+                "docs/rights/out13_m6_rights_decision_readiness_packet.json"
+                "#/decision_history/0"
+            ),
+        }
+        for field, expected in exact_fields.items():
+            if event.get(field) != expected:
+                errors.append(f"closed_deny_exact_binding_mismatch={field}")
+        for field in (
+            "public_use_verdict",
+            "monetized_youtube_verdict",
+            "publication_decision",
+            "monetization_decision",
+            "overall_owner_verdict",
+        ):
+            if event.get(field) != "deny":
+                errors.append(f"closed_deny_verdict_mismatch={field}")
+        if event.get("rights_approval") != "not_granted":
+            errors.append("closed_deny_launders_rights_approval")
+        if boundary.get("rights_approved") is not False:
+            errors.append("closed_deny_claims_rights_approved")
+        if decision.get("overall_owner_verdict") != "deny":
+            errors.append("closed_deny_owner_surface_mismatch")
+        if any(row.get("owner_verdict") != "undecided" for row in materials + ranges):
+            errors.append("closed_deny_launders_material_or_range_verdict")
+        if event.get("successor_requirement", {}).get(
+            "successor_created_or_specified_by_this_event"
+        ) is not False:
+            errors.append("closed_deny_improperly_specifies_successor")
+        successor = event.get("successor_requirement", {})
+        if not all(
+            successor.get(field) is True
+            for field in (
+                "required_before_new_public_or_monetized_consideration",
+                "materially_distinct_successor_required",
+                "new_artifact_identity_required",
+                "fresh_transformation_and_content_strategy_required",
+                "fresh_material_and_range_inventory_required",
+                "fresh_editorial_and_rights_review_required",
+            )
+        ):
+            errors.append("closed_deny_generalizes_or_weakens_successor_boundary")
+        if "No future or materially distinct artifact is denied." not in event.get(
+            "non_claims", []
+        ):
+            errors.append("closed_deny_generalizes_future_artifact")
+        assessment = packet.get("readiness_assessment", {})
+        if (
+            assessment.get("internal_editorial_acceptance_preserved") is not True
+            or assessment.get("human_review_pending") is not False
+        ):
+            errors.append("closed_deny_reopens_or_drops_m2_acceptance")
+        if boundary.get("public_default") != "off":
+            errors.append("closed_deny_public_default_not_off")
+        if boundary.get("excluded_from_production_publish_upload_release_candidate_sets") is not True:
+            errors.append("closed_deny_candidate_set_exclusion_missing")
     return errors
 
 
-def test_m6_packet_is_exact_complete_and_does_not_claim_rights_approval() -> None:
+def test_m6_packet_binds_exact_deny_and_does_not_claim_rights_approval() -> None:
     packet = _packet()
 
     assert _packet_errors(packet) == []
     assert packet["schema_version"] == (
         "clippipegen.out13.m6_rights_decision_readiness.v1"
     )
-    assert packet["packet_readiness_status"] == "READY_FOR_HUMAN_RIGHTS_DECISION"
+    assert packet["packet_readiness_status"] == "M6_CLOSED_DENY_EXACT_ARTIFACT"
     assert packet["baseline"]["main_revision_at_start"] == (
         "5bd6e65318df129bebc87291c2ae733f143ed8d8"
     )
@@ -185,7 +259,10 @@ def test_m6_packet_is_exact_complete_and_does_not_claim_rights_approval() -> Non
         "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
     )
     assert packet["decision_boundary"]["rights_approved"] is False
-    assert packet["owner_decision_surface"]["overall_owner_verdict"] == "undecided"
+    assert packet["decision_boundary"]["rights_approval"] == "not_granted"
+    assert packet["decision_boundary"]["public_use_verdict"] == "deny"
+    assert packet["decision_boundary"]["monetized_youtube_verdict"] == "deny"
+    assert packet["owner_decision_surface"]["overall_owner_verdict"] == "deny"
     assert packet["readiness_assessment"]["rights_approval_claimed"] is False
     assert packet["readiness_assessment"]["technical_provenance_separated_from_permission"]
     assert set(packet["controlled_vocabularies"]["evidence_classes"]) == {
@@ -213,7 +290,7 @@ def test_m6_packet_is_exact_complete_and_does_not_claim_rights_approval() -> Non
     }
 
 
-def test_m6_packet_has_one_conservative_intended_use_and_complete_owner_surface() -> (
+def test_m6_packet_preserves_intended_use_and_records_project_decision_surface() -> (
     None
 ):
     packet = _packet()
@@ -233,8 +310,14 @@ def test_m6_packet_has_one_conservative_intended_use_and_complete_owner_surface(
         "source_channel": "hololive ホロライブ - VTuber Group",
         "required_in_description": True,
     }
-    assert owner["owner_identity"]["readiness_state"] == "missing_owner_identity"
-    assert owner["owner_identity"]["authority_evidence_locator"] is None
+    assert owner["owner_identity"]["readiness_state"] == (
+        "project_publication_deny_recorded_underlying_rightsholder_identity_not_asserted"
+    )
+    assert owner["owner_identity"]["authority_evidence_locator"] == (
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json"
+        "#/decision_history/0"
+    )
+    assert owner["owner_identity"]["publisher_or_channel_legal_identity"] is None
     assert owner["packet_revision_locator"] == (
         packet["baseline"]["packet_revision_locator"]
     )
@@ -246,7 +329,40 @@ def test_m6_packet_has_one_conservative_intended_use_and_complete_owner_surface(
         "allow_with_restrictions",
         "undecided",
     ]
-    assert owner["decision_receipt_locator"] is None
+    assert owner["decision_receipt_locator"] == (
+        "docs/rights/out13_m6_rights_decision_readiness_packet.json"
+        "#/decision_history/0"
+    )
+
+
+def test_m6_decision_history_preserves_ready_state_and_exact_user_evidence() -> None:
+    packet = _packet()
+    event = packet["decision_history"][0]
+
+    assert packet["status_history"][0] == {
+        "status": "READY_FOR_HUMAN_RIGHTS_DECISION",
+        "recorded_revision": "dac5f7fb715cb3a7acd6c982a80cb916492e7880",
+        "packet_locator": (
+            "dac5f7fb715cb3a7acd6c982a80cb916492e7880:"
+            "docs/rights/out13_m6_rights_decision_readiness_packet.json"
+        ),
+        "meaning": (
+            "The exact-artifact inventory and unresolved questions were ready for "
+            "a human project publication decision; no rights approval was claimed."
+        ),
+    }
+    assert event["supervisor_recommendation"] == (
+        "1. deny — exact MP4の収益公開は行わず、後継版へ移る"
+    )
+    assert event["user_instruction"] == "推奨の1.で作業を継続してください。"
+    assert event["decision_capacity"] == (
+        "user_as_project_publication_decision_owner_not_asserted_as_"
+        "underlying_source_rightsholder"
+    )
+    assert event["successor_requirement"]["materially_distinct_successor_required"]
+    assert event["successor_requirement"]["new_artifact_identity_required"]
+    assert not event["successor_requirement"]["successor_created_or_specified_by_this_event"]
+    assert len(event["non_claims"]) == 4
 
 
 def test_m6_packet_covers_exact_selected_and_omitted_source_ranges() -> None:
@@ -276,7 +392,7 @@ def test_m6_packet_covers_exact_selected_and_omitted_source_ranges() -> None:
     assert packet["readiness_assessment"]["selected_source_duration_seconds"] == 128.795
 
 
-def test_ready_packet_fails_semantics_when_material_or_range_is_removed() -> None:
+def test_closed_packet_fails_semantics_when_material_or_range_is_removed() -> None:
     packet = _packet()
     missing_material = copy.deepcopy(packet)
     missing_material["material_inventory"].pop()
@@ -306,8 +422,55 @@ def test_rights_approval_requires_owner_authority_evidence() -> None:
     invalid = copy.deepcopy(packet)
     invalid["decision_boundary"]["rights_approved"] = True
 
-    assert "rights_approval_without_authority" in _packet_errors(invalid)
-    assert "ready_packet_claims_rights_approval" in _packet_errors(invalid)
+    assert "closed_deny_claims_rights_approved" in _packet_errors(invalid)
+
+
+def test_closed_deny_rejects_permission_laundering_and_scope_widening() -> None:
+    packet = _packet()
+    rights_laundered = copy.deepcopy(packet)
+    rights_laundered["decision_history"][0]["rights_approval"] = "granted"
+    row_laundered = copy.deepcopy(packet)
+    row_laundered["material_inventory"][0]["owner_verdict"] = "deny"
+    successor_widened = copy.deepcopy(packet)
+    successor_widened["decision_history"][0]["successor_requirement"][
+        "successor_created_or_specified_by_this_event"
+    ] = True
+    future_generalized = copy.deepcopy(packet)
+    future_generalized["decision_history"][0]["non_claims"].remove(
+        "No future or materially distinct artifact is denied."
+    )
+    m2_reopened = copy.deepcopy(packet)
+    m2_reopened["readiness_assessment"]["human_review_pending"] = True
+
+    assert "closed_deny_launders_rights_approval" in _packet_errors(rights_laundered)
+    assert "closed_deny_launders_material_or_range_verdict" in _packet_errors(
+        row_laundered
+    )
+    assert "closed_deny_improperly_specifies_successor" in _packet_errors(
+        successor_widened
+    )
+    assert "closed_deny_generalizes_future_artifact" in _packet_errors(
+        future_generalized
+    )
+    assert "closed_deny_reopens_or_drops_m2_acceptance" in _packet_errors(m2_reopened)
+
+
+def test_closed_deny_rejects_any_exact_identity_or_evidence_drift() -> None:
+    packet = _packet()
+    fields = (
+        "starting_packet_revision",
+        "packet_id",
+        "artifact_id",
+        "exact_media_sha256",
+        "decision_evidence_locator",
+    )
+
+    for field in fields:
+        drifted = copy.deepcopy(packet)
+        drifted["decision_history"][0][field] = "drifted"
+        assert f"closed_deny_exact_binding_mismatch={field}" in _packet_errors(
+            drifted
+        )
 
 
 def test_rights_ready_or_approved_claim_fails_when_inventory_is_incomplete() -> None:
@@ -336,8 +499,8 @@ def test_runtime_handoff_and_packet_agree_on_m6_decision_state() -> None:
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
     for text in (runtime, handoff):
-        assert "canonical_status: m6_packet_prepared_rights_decision_pending" in text
-        assert "m6_rights_status: packet_prepared_rights_decision_pending" in text
+        assert "canonical_status: m6_closed_deny_exact_artifact" in text
+        assert "m6_rights_status: closed_deny_exact_artifact" in text
         assert (
             f"m6_packet_status: {packet['packet_readiness_status']}" in text
         )
@@ -346,6 +509,8 @@ def test_runtime_handoff_and_packet_agree_on_m6_decision_state() -> None:
             "out13_m6_rights_decision_readiness_packet.json"
             in text
         )
-        assert "rights_approval: pending" in text
+        assert "rights_approval: not_granted" in text
+        assert "public_use_verdict: deny" in text
+        assert "monetized_youtube_verdict: deny" in text
         assert "production_acceptance: false" in text
         assert "public_or_publishing_acceptance: false" in text
