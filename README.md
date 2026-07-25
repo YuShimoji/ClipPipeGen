@@ -19,7 +19,10 @@ launcherが存在し、全hash、package-tree digest、renderなしresume、page
 2026-07-25、ユーザーはexact SHA `a76babda...bbb5`を従来手順の内部全編
 editorial / visual reviewとしてacceptした。受領scopeと重複review防止規則は
 [out13_human_acceptance_receipt.json](docs/output_layer/out13_human_acceptance_receipt.json)に固定済み。
-M2はclosed、現在の次gateはM3 main-integration preflightと明示的なmain統合判断である。
+M2はclosed。accepted feature revision
+`18641fe917b084259869263e8db05d78325aa2db`はmainへfast-forward統合され、
+M4 complete / M5 integrated-baseline verification passedとなった。現在の次gateは
+M6 rights readinessであり、rights判断やproduction workはまだ開始していない。
 ただし`episodes/`はignored same-machine evidenceで、Git同期だけでは別hostへ移らない。
 rights、production subtitle/render、thumbnail、public/publishing/upload acceptanceは別gate。詳細は
 [docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md](docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md)。
@@ -151,8 +154,9 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`へ
 記録された内部editorial / visual reviewで受領済みで、M2はclosed。
 tracked receiptとcode/docsは別端末へ持ち運べるが、`episodes/`内のprivate mediaと
-generated packageはGitでは移動しない。M3はcanonical runtime authorityを再検査済みで、
-main integrationは明示承認待ちである。
+generated packageはGitでは移動しない。M3 readinessはaccepted feature revision
+`18641fe917b084259869263e8db05d78325aa2db`で閉じ、M4 main integrationと
+M5 integrated-baseline verificationを完了した。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
 MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
@@ -167,9 +171,9 @@ transcriptを既存downstreamへ戻す入口であり、transcript approvalは
 edit / render / publish / production acceptanceではない。
 
 直近のnext actionは、同一media SHA・review context・accepted dimensionsを再reviewへ
-戻さず、OUT-13 feature branchのmain integrationを明示判断すること。rights、
+戻さず、M6 rights readiness packetの必要項目を整理すること。rights approval、
 production render/subtitle design/image quality、thumbnail、Publishing / OAuth、
-upload、public releaseは独立した未承認gateのままである。
+upload、public releaseは開始しておらず、独立した未承認gateのままである。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

@@ -257,12 +257,12 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     )
     assert (
         "health: "
-        "OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1"
+        "OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1"
         in runtime
     )
     assert "current_slice: OUT-13" in runtime
     assert (
-        "canonical_status: m2_accepted_m3_ready_for_explicit_main_integration"
+        "canonical_status: m4_main_integration_complete_m5_integrated_baseline_verified"
         in runtime
     )
     assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
@@ -284,9 +284,23 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "docs/output_layer/out13_human_acceptance_receipt.json"
         in runtime
     )
-    assert "main_integration_approved: false" in runtime
+    assert "main_integration_approved: true" in runtime
     assert (
-        "main_integration_preflight_verdict: READY_FOR_EXPLICIT_MAIN_INTEGRATION"
+        "main_integration_preflight_verdict: "
+        "consumed_by_authorized_fast_forward_integration"
+        in runtime
+    )
+    assert "m4_main_integration_status: complete" in runtime
+    assert "m5_integrated_baseline_verification_status: passed" in runtime
+    assert "m6_rights_status: not_started_rights_pending" in runtime
+    assert (
+        "accepted_feature_revision: "
+        "18641fe917b084259869263e8db05d78325aa2db"
+        in runtime
+    )
+    assert (
+        "integrated_main_revision: "
+        "18641fe917b084259869263e8db05d78325aa2db"
         in runtime
     )
     assert "this_commit_after_push" not in runtime

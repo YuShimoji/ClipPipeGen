@@ -8,6 +8,31 @@ last_touched: 2026-07-25
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-25 — exact accepted OUT-13をmainへfast-forward統合し、M5 baselineを閉じる
+
+supervising authority
+`clip-out13-main-integration-authorization-20260725-01`は、exact accepted feature revision
+`18641fe917b084259869263e8db05d78325aa2db`を`main`へ統合する一回の権限を与えた。
+fetch後もorigin/mainは`5d6f69a64d510508a1f78ab3111a7780913a019c`、
+featureはexact `18641fe`、topologyは`0/15`、merge-baseはorigin/mainだったため、
+local mainをff-only同期してからaccepted revisionへfast-forwardした。
+squash、merge commit、force、履歴改変、PRは使っていない。
+
+統合直後のmain treeはaccepted feature treeと同一で、accepted revisionはmainの祖先。
+その後、Runtime/Handoff/README/history/statusをM4 complete / M5 passedへ同期し、
+configured full suite、focused OUT-13 / acceptance / semantic authority / dashboard、
+dashboard再生成、compile/static、diff/privacy境界をfinal closure treeで確認した。
+`main_integration_approved=true`はこのexact integrationに消費済みで、新しいmedia reviewや
+Candidate 006を作らない。受領receipt内の`main_integration_approved=false`は
+M2受領時点のscopeとして不変に保つ。
+
+次の状態はM6 rights readiness。source/range、利用条件snapshot、判断owner、
+allow/deny/restriction receiptの必要項目を整理できるが、rights approval、
+production subtitle/design/render、thumbnail、publishing、upload、release、
+deploymentは未承認・未開始のまま。根拠:
+`docs/RUNTIME_STATE.md` + `docs/CURRENT_HANDOFF.md` +
+`docs/SUPERVISOR_STATUS_REPORT.md`。
+
 ## 2026-07-25 — candidate 005のuser acceptanceを記録し、同一mediaの重複reviewを閉じる
 
 ユーザーはsupervising threadで

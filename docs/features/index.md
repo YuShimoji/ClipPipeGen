@@ -6,11 +6,11 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `OUT-13`
 - artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1`
+- state: `OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1`
 
-- canonical main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
+- canonical main: `18641fe917b084259869263e8db05d78325aa2db`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `m2_accepted_m3_ready_for_explicit_main_integration`
+- canonical status: `m4_main_integration_complete_m5_integrated_baseline_verified`
 - review status: `accepted_internal_exact_media_sha_and_recorded_dimensions`
 - remote code complete: `true`
 - local artifact available: `true`
@@ -23,7 +23,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
-- pause reason: `explicit_main_integration_authorization_required`
+- pause reason: `m6_rights_scope_and_owner_not_authorized`
 - accepted baseline recovery: ``
 - cover review status: ``
 - cross-machine resume: `tracked_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
@@ -34,8 +34,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `explicit_main_integration_authorization`
-- next review: `explicit_main_integration_authorization`
+- decision required: `m6_rights_readiness_scope_and_owner`
+- next review: `m6_rights_readiness`
 
 ## Feature Table
 

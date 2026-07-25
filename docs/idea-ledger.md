@@ -13,7 +13,8 @@ operational、OUT-13のcaption-evidence editorial routeはcandidate 005までrem
 source-host receiptが成立している。2026-07-25のcurrent root再照合ではcandidate 004 / 005 packageがあり、
 candidate 005のinputs / plan / MP4 / digestもcontractと一致した。tracked codeとexact local review targetの
 双方が開発可能で、ユーザーはexact candidate 005を内部の全編editorial / visual scopeでacceptした。
-現在のbottleneckはM3 main-integration preflightと明示的な統合判断である。以下は別々の
+accepted revision`18641fe`はmainへfast-forward統合され、M4/M5も完了した。
+現在のbottleneckはM6 rights readinessのscopeと判断ownerである。以下は別々の
 bottleneckを解く候補であり、proposalやmachine passをhuman、rights、production、public acceptanceへ
 自動昇格させない。
 
@@ -24,7 +25,7 @@ bottleneckを解く候補であり、proposalやmachine passをhuman、rights、
 | G2: OUT-13 editorial route | explicit planとcaption evidenceを非連続cut・字幕・reviewable MP4へ運ぶ | source/caption/transcript/rights/plan | remote code complete。candidate 005 MP4 SHA `a76babda...bbb5`とexact local packageを再照合 | Agent: code contract維持 |
 | G3: artifact identity recovery | humanがOUT-13 reviewable bytesへ探索なしで到達できるようにする | exact package、plan、hash、single launcher | current hostで完了。25 files / 87,123,995 bytes、digest`ed45fd4c...040` | Agent: same-machine availabilityとGit portabilityを分離 |
 | G4: internal editorial acceptance | composition、subtitle presentation、picture/audioを一本で判断 | G3、exact SHA、single review entry | 完了。receiptは`out13_human_acceptance_receipt.json` | Agent:同じmedia/context/dimensionsを再reviewへ戻さない |
-| G5: main integration | accepted branchをmainへ安全に接続し、clone可能な開発基線にする | branch全差分preflight、明示統合承認 | preflight active、main未承認 | Agent/Supervisor: verdict後に明示判断 |
+| G5: main integration | accepted branchをmainへ安全に接続し、clone可能な開発基線にする | branch全差分preflight、明示統合承認 | 完了。`18641fe`をfast-forward統合しM5 pass | Agent: main baseline維持 |
 | G5R: bounded editorial repair | 将来の実変更で影響する判断だけを再確認する | changed/causally affected dimensionとtimestampが明示 | conditional | Agent:影響範囲だけを新identityで修復・再検証 |
 | G6: rights/material-use clearance | 技術成功と利用許可を接続する | source/range、権利者/ガイドラインsnapshot、判断owner | `rights=pending` | Rights owner: allow/deny/restriction receipt |
 | G7: production subtitle design | 字幕、font/license、safe area、話者表現をproduction判断へ上げる | G4、明示design gate、visual owner | closed | Human designer: exact visual receipt |
@@ -37,14 +38,14 @@ bottleneckを解く候補であり、proposalやmachine passをhuman、rights、
 
 ## 次の取っ掛かり
 
-- **Advance**: M3 branch差分監査を閉じ、readyなら明示的なmain統合判断へ渡す。
-- **Verify**: integration承認後だけmainへ取り込み、main側のtargeted/full gateとremote parityを再確認する。
+- **Advance**: M6 rights readiness packetのsource/range、snapshot、判断ownerを整理する。
+- **Verify**: main baselineのaccepted feature ancestry、full/focused gate、remote parityを維持する。
 - **Audit**: rights/source-rangeの判断packetを作り、技術受領と利用許可を分離して閉じる。
 - **Explore**: production subtitle designかproduction render profileの一方を、明示gateとしてthin slice化する。
 - **Repair**: 将来mediaが変わる場合だけ、影響dimension/timestampを限定しnew identityへ進む。
 
 OUT-12 second-source repeatability debtは消えていない。OUT-13は別sourceを使うが別CLI・別目的であり、
-OUT-12 long-form routeの3分以上second-source repeatability passとしては数えない。現在はOUT-13
-M3とmain統合判断を先に閉じ、その後のproduct gateと並べて再優先順位付けする。
+OUT-12 long-form routeの3分以上second-source repeatability passとしては数えない。OUT-13の
+M4/M5を閉じた現在は、M6 rights readinessと残るproduct gateを並べて再優先順位付けする。
 
 依存順と各段階の最小証拠は`docs/SUPERVISOR_STATUS_REPORT.md`のportable境界・未完了gate・先へ進む順序を参照する。

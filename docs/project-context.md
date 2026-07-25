@@ -5,14 +5,14 @@ type: durable_context
 status: current
 last_touched: 2026-07-25
 current_slice: OUT-13
-phase: main_integration_preflight_active
-active_branch: codex/out-13-editorial-video-candidate-v1
+phase: integrated_main_baseline_verified
+active_branch: main
 source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
-sync_baseline_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
+verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
+sync_baseline_head: 18641fe917b084259869263e8db05d78325aa2db
 base_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 upstream_parity: 0 0
-health: OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1
+health: OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1
 ---
 
 # Project Context - ClipPipeGen
@@ -25,15 +25,17 @@ publishing準備をepisode単位で接続する制作補助ツールである。
 caption/transcript evidence付きeditorial planを、非連続cut、字幕、実MP4、
 review packageへ運ぶ後継経路を追加した。
 
-active branchは`codex/out-13-editorial-video-candidate-v1`。
-2026-07-25のM3監査開始時点でremote tipは`d753ea7`、upstream parity`0 0`、
-`origin/main...HEAD = 0 13`、`origin/main`がHEADの祖先である。
-OUT-13はmain未統合で、M3がreadyでも明示承認まではmerge/pushしない。
+accepted feature branchは`codex/out-13-editorial-video-candidate-v1`、exact revisionは
+`18641fe917b084259869263e8db05d78325aa2db`。start main
+`5d6f69a64d510508a1f78ab3111a7780913a019c`から15 commitを
+fast-forwardし、M4 main integrationを完了した。squash、merge commit、force、
+履歴改変はなく、現在のactive branchは`main`である。
 
-Node依存、GUI / Electron / CLI、exact candidate 005 resume、localhost page / Range、
-Python full suite 654 testsを使って開発再開性を確認した。ユーザーはその後、exact candidate 005を
-内部の全編editorial / visual scopeでacceptした。current bottleneckは重複reviewではなく、
-branch全差分のmain-integration preflightと明示的な統合判断である。
+exact candidate 005の内部全編editorial / visual acceptanceは継承したまま、
+integrated main treeでconfigured full Python suite、focused OUT-13 / acceptance /
+semantic authority / dashboard、GUI/CLI smoke、compile/static、diff/privacy境界を確認し、
+M5 integrated baseline verificationをpassした。current bottleneckは重複reviewや
+main integrationではなく、M6 rights readinessのscopeと判断ownerを整理することである。
 
 ## 最近閉じたことと現在の停止点
 
@@ -41,7 +43,7 @@ branch全差分のmain-integration preflightと明示的な統合判断である
 |---|---|---|
 | OUT-10 / OUT-11 | five-source Shortをexact bytesへbindしてaccepted internal、winnerなし | universal visual policy、rights、production/public |
 | OUT-12 | source→Timeline IR→MP4→validation→review→resumeをinternal operational化 | second-source long-form repeatability、production/public |
-| OUT-13 | explicit plan、provider caption evidence、local package preservation、signed PCM lineage、candidate 005 exact local revalidation、user internal editorial acceptance | main統合、rights/production |
+| OUT-13 | explicit plan、provider caption evidence、candidate 005 acceptance、M4 main integration、M5 baseline verification | rights/production |
 
 current identityは`clip-out13-editorial-video-candidate-v1-005`。7 cuts / 5 sections /
 8 omissions、final SHA`a76babda...bbb5`、25 files / 87,123,995 bytes、
@@ -49,9 +51,10 @@ package-tree digest`ed45fd4c...040`。source / transcript / caption / rights / p
 current hashesはtracked contractと一致し、`--resume`はrenderなし・5 cache hits・
 package digest不変で成功した。review serverはpage 200 / MP4 Range 206を確認後に停止した。
 
-artifact recoveryとM2 human editorial acceptanceは完了済み。受領receiptは
+artifact recovery、M2 human editorial acceptance、M3 readiness、M4 main integration、
+M5 integrated baseline verificationは完了済み。受領receiptは
 `docs/output_layer/out13_human_acceptance_receipt.json`。同じmedia SHA・review context・
-accepted dimensionsを再reviewへ戻さず、M3 main-integration preflightへ進む。
+accepted dimensionsを再reviewへ戻さず、次はM6 rights readinessだけを準備する。
 
 ## 再開時に読む順序
 
@@ -80,11 +83,12 @@ tracked receiptの存在だけで別hostのartifact実在を推定せず、毎�
 
 ## 次の依存順
 
-最短critical pathは
-`M3 branch preflight -> explicit integration authorization -> main integration verification`。
+完了したcritical pathは
+`M3 branch preflight -> explicit integration authorization -> M4 integration -> M5 verification`。
 将来repairが必要な場合だけ、変更・因果影響のあるdimensionとtimestampを限定して再確認する。
 
-その後、rights decision packet、production subtitle design、production render profileを
+次はrights decision packetの準備条件を整理し、その後production subtitle design、
+production render profileを
 独立gateとして閉じ、episode acceptance packへ集約する。thumbnail / metadata /
 private delivery / public releaseはその後に接続する。複数episode運用、品質学習、
 policy-constrained autonomy、持続可能なproduction platformまでの長期段階とexit evidenceは
@@ -94,13 +98,15 @@ policy-constrained autonomy、持続可能なproduction platformまでの長期�
 
 ```powershell
 git fetch --prune origin
-git switch codex/out-13-editorial-video-candidate-v1
-git pull --ff-only
+git switch main
+git pull --ff-only origin main
 git status --short --branch
-git rev-list --left-right --count HEAD...origin/codex/out-13-editorial-video-candidate-v1
+git rev-list --left-right --count 'HEAD...@{upstream}'
+git merge-base --is-ancestor 18641fe917b084259869263e8db05d78325aa2db HEAD
 git ls-files episodes
 ```
 
-期待値はbranch parity`0 0`、tracked`episodes/` 0件。その後にcandidate path、
+期待値はmain parity`0 0`、accepted feature ancestry pass、tracked`episodes/` 0件。
+その後にcandidate path、
 inputs、plan、package、MP4を`Test-Path` / SHAでlive判定する。package不在の端末では
 launcherを利用可能と報告しない。

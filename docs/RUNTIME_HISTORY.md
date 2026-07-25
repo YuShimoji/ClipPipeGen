@@ -6,6 +6,25 @@ The active resume surface is docs/RUNTIME_STATE.md.
 Historical sections preserve old wording for traceability.
 
 ---
+## OUT-13 M4/M5 Main Integration Closure - 2026-07-25 JST
+
+- start main: `5d6f69a64d510508a1f78ab3111a7780913a019c`
+- accepted feature: `18641fe917b084259869263e8db05d78325aa2db`
+- authority: `clip-out13-main-integration-authorization-20260725-01`
+- integration: fast-forward、15 commits、squash/merge commit/force/history rewriteなし
+- ancestry: accepted featureはfinal mainの祖先
+- M4: complete
+- M5: configured full suite、focused OUT-13 / acceptance / semantic authority /
+  dashboard、dashboard regeneration、compile/static、diff/privacy gateをfinal closure
+  treeでpass
+- M2: exact media acceptanceと`human_review_pending=false`を継承
+- next: M6 rights readiness。rights decisionとproduction/public workは未開始
+
+final closure commitのexact SHAはtracked文書内で自己参照せず、push後の
+`refs/heads/main`をGit正本とする。受領receiptはM2時点のscopeを保持し、
+main integration locatorを追記するための書換えを行っていない。
+
+---
 ## OUT-13 Canonical Runtime Repair Archive Index - 2026-07-25 JST
 
 `docs/RUNTIME_STATE.md`のOUT-13 frontmatterの後ろでlive authorityのように見えていた

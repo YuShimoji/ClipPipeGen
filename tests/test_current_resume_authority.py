@@ -16,6 +16,12 @@ ALIGNED_FIELDS = (
     "local_artifact_role",
     "cross_machine_resume_class",
     "review_status",
+    "accepted_feature_revision",
+    "integrated_main_revision",
+    "main_integration_approved",
+    "m4_main_integration_status",
+    "m5_integrated_baseline_verification_status",
+    "m6_rights_status",
     "next_action",
 )
 
@@ -155,6 +161,18 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
     if not runtime.get("active_artifact", "").startswith("clip-out13-"):
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
+    expected_runtime_values = {
+        "accepted_feature_revision": "18641fe917b084259869263e8db05d78325aa2db",
+        "integrated_main_revision": "18641fe917b084259869263e8db05d78325aa2db",
+        "main_integration_approved": "true",
+        "m4_main_integration_status": "complete",
+        "m5_integrated_baseline_verification_status": "passed",
+        "m6_rights_status": "not_started_rights_pending",
+    }
+    for field, expected in expected_runtime_values.items():
+        if runtime.get(field, "") != expected:
+            errors.append(f"runtime_{field}={runtime.get(field, '')}!={expected}")
+
     for field in ALIGNED_FIELDS:
         if runtime.get(field, "") != handoff.get(field, ""):
             errors.append(
@@ -224,6 +242,22 @@ def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() ->
 
     assert any(
         error.startswith("surface_mismatch_local_artifact_role=") for error in errors
+    )
+
+
+def test_runtime_handoff_m5_status_disagreement_fails_semantic_check() -> None:
+    runtime = RUNTIME_PATH.read_text(encoding="utf-8")
+    handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
+        "m5_integrated_baseline_verification_status: passed",
+        "m5_integrated_baseline_verification_status: failed",
+        1,
+    )
+
+    errors = _authority_errors(runtime, handoff)
+
+    assert any(
+        error.startswith("surface_mismatch_m5_integrated_baseline_verification_status=")
+        for error in errors
     )
 
 

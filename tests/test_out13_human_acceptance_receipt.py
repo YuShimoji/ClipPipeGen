@@ -127,7 +127,7 @@ def test_future_bounded_repair_reopens_only_affected_dimension_and_timestamps() 
     }
 
 
-def test_current_state_closes_m2_without_opening_external_gates() -> None:
+def test_current_state_closes_m2_and_m4_without_opening_external_gates() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
     handoff = (ROOT / "docs" / "CURRENT_HANDOFF.md").read_text(encoding="utf-8")
 
@@ -139,7 +139,10 @@ def test_current_state_closes_m2_without_opening_external_gates() -> None:
             "docs/output_layer/out13_human_acceptance_receipt.json"
             in text
         )
-        assert "main_integration_approved: false" in text
+        assert "main_integration_approved: true" in text
+        assert "m4_main_integration_status: complete" in text
+        assert "m5_integrated_baseline_verification_status: passed" in text
+        assert "m6_rights_status: not_started_rights_pending" in text
         assert "rights_approval: pending" in text
         assert "production_acceptance: false" in text
         assert "public_or_publishing_acceptance: false" in text

@@ -3,34 +3,42 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1
+health: OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1
 last_touched: 2026-07-25
-state_revision: out13-candidate-005-m2-closed-canonical-runtime-repair-m3-rechecked-2026-07-25
+state_revision: out13-m4-main-integrated-m5-baseline-verified-m6-rights-ready-2026-07-25
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: OUT-13
-phase: main_integration_preflight_active
-canonical_status: m2_accepted_m3_ready_for_explicit_main_integration
-active_branch: codex/out-13-editorial-video-candidate-v1
+phase: integrated_main_baseline_verified
+canonical_status: m4_main_integration_complete_m5_integrated_baseline_verified
+active_branch: main
 source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: e0279d513e89fac833d0c7415dc3234d00946773
-closure_branch: codex/out-13-editorial-video-candidate-v1
-remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_current_handoff
+verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
+accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
+integration_start_main_revision: 5d6f69a64d510508a1f78ab3111a7780913a019c
+integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
+integration_method: fast_forward_no_squash_no_history_rewrite
+integration_authority_id: clip-out13-main-integration-authorization-20260725-01
+integration_authority_consumed: true
+final_main_revision_locator: refs/heads/main
+m5_verification_tree_locator: refs/heads/main^{tree}
+closure_branch: main
+remote_resume_contract: fetch_then_switch_main_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 latest_remote_sync_head: e0279d513e89fac833d0c7415dc3234d00946773
-sync_audit_status: out13_branch_remote_parity_confirmed_candidate_005_exact_receipt_and_local_evidence_preserved
+sync_audit_status: accepted_out13_feature_fast_forward_integrated_into_main_and_baseline_verified
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-13 candidate 005 is accepted for the recorded internal editorial scope; M3 is ready for explicit main integration
+current_title: OUT-13 accepted feature is integrated into main and M5 verified; M6 rights readiness is next
 human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
 portable_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
 review_open_command: powershell -NoProfile -Command Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json
 review_server_restart_command: null
 machine_readback: docs/output_layer/out13_human_acceptance_receipt.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: explicit_main_integration_authorization
+decision_required: m6_rights_readiness_scope_and_owner
 review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 review_scope: internal_full_view_editorial_visual_review
 reviewed_at: 2026-07-25
@@ -63,7 +71,7 @@ last_verified_at: 2026-07-25T00:16:31+09:00
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: explicit_main_integration_authorization_required
+pause_reason: m6_rights_scope_and_owner_not_authorized
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
@@ -86,8 +94,12 @@ acceptance_dimensions: editorial_composition, editorial_flow, subtitle_presentat
 acceptance_inheritance_key: media_sha256 + review_context_id + accepted_dimensions
 same_review_identity_reopens_human_review: false
 bounded_repair_reopens_only_affected_dimensions_and_timestamps: true
-main_integration_approved: false
-main_integration_preflight_verdict: READY_FOR_EXPLICIT_MAIN_INTEGRATION
+main_integration_approved: true
+main_integration_preflight_verdict: consumed_by_authorized_fast_forward_integration
+main_integration_approval_consumed_by_revision: 18641fe917b084259869263e8db05d78325aa2db
+m4_main_integration_status: complete
+m5_integrated_baseline_verification_status: passed
+m6_rights_status: not_started_rights_pending
 automation_acceptance_granted: true
 automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
 batch_acceptance: not_applicable_out12
@@ -98,12 +110,12 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: not_required_acceptance_receipt_is_current
-next_review_due: explicit_main_integration_authorization
-next_action: request_explicit_main_integration_authorization_without_reopening_human_review
+next_review_due: m6_rights_readiness
+next_action: prepare_m6_rights_readiness_packet_without_starting_rights_or_production_work
 active_artifact: clip-out13-editorial-video-candidate-v1-005
 current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
-out13_state: OUT13_CANDIDATE_005_ACCEPTED_INTERNAL_M2_CLOSED_M3_PREFLIGHT_ACTIVE_V1
+out13_state: OUT13_ACCEPTED_FEATURE_MAIN_INTEGRATED_M5_VERIFIED_M6_RIGHTS_READY_V1
 out13_machine_values_scope: current_checkout_live_candidate_005_exact_package_and_input_readback
 out13_source_identity: youtube:7J5aS_pcBj4
 out13_source_sha256: 6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a
@@ -336,7 +348,7 @@ known_unrelated_test_failure: null
 known_unrelated_test_failure_2: null
 known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
 known_unrelated_test_failure_owner: none_current
-current_full_suite_status: 654_passed_after_windows_reparse_point_fix
+current_full_suite_status: m5_integrated_main_full_suite_passed
 current_full_suite_command: uvx --with Pillow pytest -q
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
@@ -417,9 +429,9 @@ latest_out04_editorial_representative_sequence_implementation_commit: b9c785f
 latest_out04_editorial_representative_sequence_acceptance_commit: 48c0c58
 latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
-canonical_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-canonical_main_head_role: out13_branch_base_from_current_origin_main
-handoff_sync_status: final_feature_tip_and_remote_parity_are_git_authority
+canonical_main_head: 18641fe917b084259869263e8db05d78325aa2db
+canonical_main_head_role: accepted_out13_fast_forward_integration_point_before_closure_record
+handoff_sync_status: final_main_closure_tip_and_remote_parity_are_git_authority
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
@@ -474,7 +486,7 @@ source_internal_review_observation_readback: clip-ed10at-internal-review-observa
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
-owner_lane: editorial_acceptance_and_main_integration_preflight
+owner_lane: rights_readiness_handoff
 related: docs/THREAD_REGISTRY.md, docs/output_layer/OUT_02_HANDOFF.md, docs/output_layer/video_output_gap_log.json, docs/output_layer/local_fixture_output_proof/proof_manifest.json, docs/output_layer/local_fixture_output_proof/proof_readback.json, docs/output_layer/local_fixture_output_proof/proof_timeline.html, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/index.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
@@ -492,14 +504,14 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — OUT-13 Candidate 005 / M2 Closed / M3 Rechecked
+## Current Capsule — OUT-13 Main Integrated / M4 Complete / M5 Passed
 
 - active slice: `OUT-13`
 - active artifact: `clip-out13-editorial-video-candidate-v1-005`
 - review status: `accepted_internal_exact_media_sha_and_recorded_dimensions`
 - portable receipt: `docs/output_layer/out13_human_acceptance_receipt.json`
 - local artifact role: `accepted_exact_candidate_005_same_machine_evidence`
-- main integration approval: `false`
+- main integration approval: `true`
 
 - ユーザーは supervising thread で exact artifact
   `clip-out13-editorial-video-candidate-v1-005`、final MP4 SHA
@@ -514,20 +526,26 @@ instructions.
 - 将来のbounded repairは、実際に変えた、または因果的に影響する判断次元だけを再開する。
   timestampで限定できる変更は該当intervalだけを再確認し、影響しない次元は今回の受領を継承する。
   media SHAが変わる場合は新しいreview identityとして扱う。
-- M3 main integration preflightはbranch全差分、tracked/ignored境界、sensitive path、
-  現在状態テスト、静的検査を監査し、`READY_FOR_EXPLICIT_MAIN_INTEGRATION`と判定した。
-  current blockerはない。この状態はmain統合承認を含まず、
-  `main_integration_approved=false`を維持する。
+- M3はaccepted feature revision
+  `18641fe917b084259869263e8db05d78325aa2db`で
+  `READY_FOR_EXPLICIT_MAIN_INTEGRATION`として閉じた。authority
+  `clip-out13-main-integration-authorization-20260725-01`をexact revisionの
+  fast-forward統合に一回だけ消費し、M4をcompleteとした。
+- M5はfinal main closure treeに対するfull suite、focused OUT-13 /
+  acceptance / semantic authority / dashboard、compile/static、diff/privacy
+  gateでpassした。final commit SHAは`refs/heads/main`をGit正本として解決する。
+  accepted feature `18641fe`はfinal mainの祖先であり、squashや履歴改変はない。
 - rights、production subtitle/design/render、production image quality、thumbnail、
   publishing、upload、public releaseはいずれも未承認である。内部editorial受領から
   これらのgateを推定しない。
 
 ## Next Action
 
-- action: `request_explicit_main_integration_authorization_without_reopening_human_review`
-- authorization state: `pending`
-- owner: `User / Supervisor`
-- condition: M3の`READY_FOR_EXPLICIT_MAIN_INTEGRATION`は技術判定であり、mainへのmerge/pushを許可しない。
+- action: `prepare_m6_rights_readiness_packet_without_starting_rights_or_production_work`
+- authorization state: `not_started`
+- owner: `Rights owner / User`
+- condition: source/range、利用条件、判断ownerを整理する準備だけを次に置く。rights approval、
+  production render、publishing、upload、releaseは開始も承認もしていない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

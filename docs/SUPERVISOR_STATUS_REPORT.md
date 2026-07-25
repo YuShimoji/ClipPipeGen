@@ -1,239 +1,153 @@
-# M3 canonical runtime recheck — READY_FOR_EXPLICIT_MAIN_INTEGRATION
+# OUT-13 main 統合・baseline 検証報告
 
 更新日: 2026-07-25 JST
 
-対象: ClipPipeGenのみ
-
-active branch: `codex/out-13-editorial-video-candidate-v1`
-
-accepted artifact: `clip-out13-editorial-video-candidate-v1-005`
+対象: ClipPipeGen のみ
 
 ## 監修時に最初に押さえる結論
 
-M2はclosedである。ユーザーはexact final MP4 SHA
-`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`を、
-従来手順による内部の全編editorial / visual reviewとして`accept`した。
-受領範囲は構成、編集フロー、字幕提示、内部用途の画質・音質であり、
-`docs/output_layer/out13_human_acceptance_receipt.json`へuser authority、日付、
-review context、accepted dimensionsとidentity分離を記録した。
+OUT-13 は M4 の main 統合と M5 の integrated baseline verification を完了した。
+明示 authority `clip-out13-main-integration-authorization-20260725-01` に従い、
+`origin/main` の開始点 `5d6f69a64d510508a1f78ab3111a7780913a019c` から、受領済み
+feature revision `18641fe917b084259869263e8db05d78325aa2db` までを
+fast-forward した。squash、merge commit、force、履歴改変は行っていない。
 
-remote tip `e0279d513e89fac833d0c7415dc3234d00946773`に対する初回M3判定は
-`REJECTED_CANONICAL_RUNTIME_SPLIT_BRAIN`だった。`docs/RUNTIME_STATE.md`の
-frontmatterはOUT-13 Candidate 005 / M2 closedを指していた一方、後半本文が
-ED-10ax Current Capsule、ED-10g / R3 Next Actions、R3 Current Candidate Decision、
-旧restart checklistをlive authorityとして残していたためである。
+M2 の人間受領は exact final MP4 SHA
+`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`
+に bind したまま維持している。受領 receipt 自体は acceptance 時点の記録なので、
+内部の `main_integration_approved=false` を書き換えない。現在の main 統合 authority と
+実行結果は `docs/RUNTIME_STATE.md` と `docs/CURRENT_HANDOFF.md` が担う。
 
-canonical runtime repair後の再判定は
-`READY_FOR_EXPLICIT_MAIN_INTEGRATION`。Runtimeのlive bodyは`What This Is`、
-OUT-13の`Current Capsule`、単一`Next Action`だけになり、それ以降は明示archive
-境界の内側へ移った。Runtime / Handoffはactive receipt、artifact、
-portable entrypoint、local artifact role、cross-machine class、review status、
-next actionで一致する。意味解析回帰、dashboard再生成、tracked/ignored境界、
-sensitive data、Python static、diff hygieneを監査し、main統合を止めるcurrent
-blockerは見つからなかった。
+次の開発入口は M6 rights readiness packet の準備だけである。rights judgment、
+production subtitle/design/render、production image quality、thumbnail、publishing、
+credentials、upload、private delivery、public release、deployment は開始も承認も
+していない。
 
-この判定はmain統合の承認ではない。`main_integration_approved=false`を維持し、
-明示承認まではmainへのmerge/pushを行わない。rights、production
-subtitle/design/render、production image quality、thumbnail、publishing、upload、
-public releaseも未承認である。
+## 統合した Git identity
 
-## M2受領receipt
+| 対象 | exact value | 判定 |
+|---|---|---|
+| integration start | `5d6f69a64d510508a1f78ab3111a7780913a019c` | fetch 後の `origin/main` |
+| accepted feature | `18641fe917b084259869263e8db05d78325aa2db` | remote parity 済みの受領対象 |
+| topology before integration | `origin/main...feature = 0 15` | main 側の取りこぼしなし |
+| method | `git merge --ff-only 18641fe...` | 非破壊 fast-forward |
+| accepted tree | `c8200d46214b01f5cd074cdcd37133089d92ab00` | integrated main tree と一致 |
+| integration authority | `clip-out13-main-integration-authorization-20260725-01` | exact feature / one closure commit / one normal push |
+| final revision | `refs/heads/main` | closure commit SHA の自己参照を避け、Git を正本にする |
+| M5 verified tree | `refs/heads/main^{tree}` | closure docs と generated surfaces を含む最終 tree |
+
+受領済み revision は最終 main の祖先でなければならず、統合後の feature tree は
+`18641fe...^{tree}` と同一である。closure 記録は product implementation を変えない
+一つの論理 commit とし、その exact SHA、push 結果、remote parity は Git readback と
+最終 handoff で報告する。
+
+## M2 artifact と判断境界
 
 | 項目 | 記録値 | 意味 |
 |---|---|---|
-| artifact | `clip-out13-editorial-video-candidate-v1-005` | accepted package revision |
-| media SHA | `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` | 人間判断をbindするmedia identity |
-| media | 82,594,810 bytes / 128.833333s / 1920x1080 / H.264 High + AAC | exact review target |
-| verdict | `accept` | user authorityによるinternal editorial acceptance |
-| recorded at | `2026-07-25T02:58:58+09:00` | receipt記録時刻 |
-| context | `out13_candidate_005_internal_full_view_editorial_visual_review_v1` | 従来手順の内部全編review |
-| accepted dimensions | editorial composition / flow、subtitle presentation、内部用途のpicture / audio quality | 受領が成立した判断範囲 |
-| package revision | 25 files / 87,123,995 bytes / tree digest `ed45fd4c...040` | mediaとは別のpackage identity |
-| implementation revision | candidate contract `3fdad157...32f2`、受領記録base `d753ea7...acb1` | media/packageとは別のcode identity |
-| receipt | `docs/output_layer/out13_human_acceptance_receipt.json` | trackedでportableな正本 |
+| artifact_id | `clip-out13-editorial-video-candidate-v1-005` | accepted package revision |
+| repo_relative_path | `docs/output_layer/out13_human_acceptance_receipt.json` | tracked acceptance authority |
+| open_command | `Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json` | portable receipt の確認 |
+| human entrypoint | `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html` | verified host 限定の ignored/private review surface |
+| media identity | 82,594,810 bytes / 128.833333s / 1920x1080 / H.264 High + AAC / SHA `a76bab...bbb5` | 人間判断の exact target |
+| verdict | `accept` | internal full-view editorial / visual review |
+| review context | `out13_candidate_005_internal_full_view_editorial_visual_review_v1` | receipt の判断文脈 |
+| accepted dimensions | composition、flow、subtitle presentation、内部用途の picture / audio quality | 受領が成立した範囲 |
+| receipt SHA | `a0b14cdc0d294116775c9183499309bd7ad593a6373a556c11b334d2ac04b095` | tracked receipt の exact bytes |
 
-package内の古い`visual_observation=unverified`は、生成時のmachine-only package fieldとして
-履歴を保つ。人間受領は別receiptに記録し、packageを上書きしない。
+同じ media SHA、review context、requested dimensions なら人間 review を再開しない。
+package / implementation revision だけの変更でも再審査へ戻さない。media SHA が変わる、
+または変更が accepted dimension に因果的に影響する場合だけ、新しい identity または
+bounded review を起票する。
 
-## 同じ媒体を再審査へ戻さない規則
+Candidate 003、004、005 は今回 read-only とした。各 package の inventory と accepted
+MP4 SHA を統合前後で照合し、preview session、package、plan、caption、manifest、MP4 を
+更新・削除していない。`episodes/` は ignored のままで、tracked file は 0 件である。
 
-acceptance identityは次の三要素で決める。
+## M4 と M5 で確定したこと
 
-1. media SHA
-2. review context ID
-3. requested dimensionsがaccepted dimensionsに含まれること
+| 作業 | 目的 | 効果 | 現在状態 | 次の動き |
+|---|---|---|---|---|
+| remote convergence | main と feature の exact ancestry を固定 | stale base や別 tip の統合を防止 | 完了 | final main parity を readback |
+| M4 fast-forward | accepted feature だけを main へ移す | 15 commits の identity と履歴を保持 | 完了 | closure commit 以外の追加変更なし |
+| canonical state repair | Runtime / Handoff / README / supervisor docs を同じ状態へ揃える | current capsule と next action を単一化 | 完了 | M6 まで status を進めない |
+| dashboard regeneration | machine-readable current focus を docs と一致させる | 監修 AI が current gate を portable に読める | 完了 | generated drift を test で拒否 |
+| M5 full validation | integrated final tree の回帰を確認 | feature 単体 green から main baseline green へ昇格 | 合格 | M6 readiness だけ提案可能 |
+| privacy / artifact boundary | private media と tracked code/docs を分離 | Git に episode media を持ち込まない | 合格 | private/artifact-store 方針の承認までは維持 |
 
-この三要素が同じなら`human_review_pending=false`を継承する。package revisionまたは
-implementation revisionだけが変わっても人間reviewを再開しない。candidate 004と005は
-final MP4がbyte-identicalで同じSHAのため、同じcontextとdimensionsについて004を別途
-全編視聴する必要はない。
+M5 は configured Python suite、OUT-13/current-authority focused suite、dashboard
+generator、Python compile/static check、Node dependency/smoke、diff hygiene、
+accepted ancestry/tree identity、tracked media と sensitive-data scan を最終 tree に
+対して実行する。合格条件はすべて green、`git ls-files episodes` 0、accepted revision
+が final main の祖先、closure 後の worktree clean、push 後の local/main parity 0/0 である。
 
-将来のbounded repairでは、実際に変えた、または因果的に影響するdimensionだけを再開する。
-timestampで限定できる変更は該当intervalだけを再確認し、影響しないdimensionとintervalは
-今回の受領を継承する。media SHAが変わる場合は新しいreview identityを起票する。
+## canonical surface の役割
 
-この契約は`tests/test_out13_human_acceptance_receipt.py`で次を回帰化した。
+- `docs/RUNTIME_STATE.md`: live state、M4/M5 verdict、単一 next action の正本。
+- `docs/CURRENT_HANDOFF.md`: 別 terminal / 監修 AI が main から再開する最小手順。
+- `docs/output_layer/out13_human_acceptance_receipt.json`: M2 の不変な判断記録。
+- `docs/dashboard/project-status.json`: current focus の machine-readable projection。
+- `docs/RUNTIME_HISTORY.md`: M3 authority repair と M4/M5 closure の履歴。
+- `docs/decision-log.md`: integration authority、実行方式、未承認 gate の決定記録。
+- `docs/idea-ledger.md`: M6 以降を dependency order で管理する backlog。
 
-- same media / context / dimensionsではreview gateを生成しない
-- package / implementation revisionだけの変更ではreviewを再開しない
-- bounded subtitle repairはsubtitle dimensionと指定timestampだけを開く
-- rights / production / public / main integrationは閉じたまま
-- current stateにself-referential commit placeholderを残さない
+最終 commit SHA はその commit 自身の tree に埋め込めないため、
+`final_main_revision_locator=refs/heads/main` と
+`m5_verification_tree_locator=refs/heads/main^{tree}` を使う。handoff 時の exact SHA は
+Git readback から提示し、tracked docs に placeholder を残さない。
 
-## Git topologyとremote同期
-
-M3開始時点の確認値:
-
-| 対象 | 値 | 判定 |
-|---|---|---|
-| branch | `codex/out-13-editorial-video-candidate-v1` | 想定branchと一致 |
-| feature remote tip at repair start | `e0279d513e89fac833d0c7415dc3234d00946773` | fetch後にlocal/upstream一致 |
-| `origin/main` | `5d6f69a64d510508a1f78ab3111a7780913a019c` | feature branchの祖先 |
-| upstream parity | `0 0` | M3開始時に同期済み |
-| `origin/main...HEAD` | `0 14` | main側取りこぼし0、OUT-13側14 commit |
-| remote | `https://github.com/YuShimoji/ClipPipeGen.git` | fetch/push同一remote |
-| effective Git identity | `YuShimoji <shimoji0902@gmail.com>` | 直前commit identityと整合 |
-| tracked `episodes/` | 0 files | private/generated media境界を維持 |
-
-現在のacceptance/preflight変更は一つの論理commitとしてfeature branchだけへpushする。
-tracked文書内に最終commitの自己参照を置かず、実際のtipはGit自体を正本にする。
-
-## mainに対する全差分
-
-preflight対象は`origin/main`からrepair後treeまでの24 files。
-
-| 境界 | ファイル数 | 主な内容 | 判定 |
-|---|---:|---|---|
-| product code | 3 | OUT-13 CLI、main command registration、editorial renderer | review branchで実装済み |
-| tests | 5 | OUT-13 renderer、current state/dashboard、acceptance dedup、canonical authority semantics | targeted green |
-| docs / contracts | 13 | Runtime/Handoff/History、OUT-13 contract、receipt、decision/idea/project context、artifact registry、README | current stateをM2 accepted / M3へ統一 |
-| generated docs | 3 | `docs/dashboard/index.html`、`project-status.json`、`docs/features/index.md` | existing generatorで再生成する既存surface |
-| private/generated media | 0 | `episodes/`、MP4、caption package、framesなど | tracked差分なし |
-
-product codeはcanonical runtime repair mission中に変更していない。今回の差分は
-current-state/history/README、既存dashboard生成物、portability期待値、
-新しいsemantic authority regressionに限定した。
-
-branch historyとworktree差分を対象に、以下を確認した。
-
-- `episodes/`配下のtracked fileなし
-- MP4、audio、image、archive、database、cacheなどのmedia/generated binary追加なし
-- Windows/macOS user-profileの絶対path追加なし
-- private key、API key、GitHub token、access/refresh token、client secret、password assignment追加なし
-- candidate 003 / 004 / 005 package、plan、caption、manifest、MP4への書込みなし
-
-## package保全claimの範囲
-
-OUT-13の保全claimは、リポジトリが実装するlocal threat modelに限定した。
-
-- 通常ファイルと正規化path
-- local pipelineのgeneration / resume / failure-reconciliation経路
-- symlink / junction拒否
-- manifest/file hashとpackage-tree digestによるexact-byte/content consistency
-
-権限を持つ外部process、OS/filesystem侵害、監査外の同時改変まで防ぐ一般セキュリティ保証は
-主張しない。これらの外部攻撃仮説はnonblocking debtであり、今回のM2受領またはM3判定を
-開き直す理由にしない。historical artifact IDやstate文字列は識別子として保持するが、
-current説明から「永久」「絶対trust」と読めるclaimを除いた。
-
-## 検証結果
-
-| 検証 | 結果 | 判定に使えること |
-|---|---|---|
-| remote fetch / branch / upstream / main ancestry | pass | 同期済みfeature branchを監査 |
-| accepted MP4 SHA / bytes | exact match | user verdictとmedia identityの一致 |
-| candidate 004 / 005 MP4 equality | same SHA | duplicate full-view gate不要 |
-| tracked `episodes/` | 0 | private media非追跡 |
-| current authority + acceptance + active contract + dashboard | 40 passed in 4.37s（final rerun） | 単一authority、受領継承、portable route、dashboard readbackが整合 |
-| dashboard generator | pass / 120 features / 82 artifacts | Runtime frontmatterからportable receiptとOUT-13 next actionを再生成 |
-| changed-test `py_compile` | pass | 今回触れた4 test moduleのsyntax compilation |
-| new semantic regression Ruff | pass | 今回追加testのformat/static |
-| `git diff --check origin/main` | pass | whitespace errorなし |
-| sensitive/media diff scan | no matches | tracked境界に新しい漏えいなし |
-| previous full suite at unchanged product implementation | 654 passed in 94.36s at `d753ea7` | product codeの既存全体回帰 |
-
-このmissionではproduct codeを変更していないため、full suiteは再実行していない。
-直前product implementation tip`d753ea7`の654 passedをimplementation evidenceとして
-保持し、今回変更したdocs/tests/current-stateに比例した40-test gateを実行した。
-
-参考として、projectにRuff設定やlint scriptがない状態で今回触れた既存test moduleへ
-latest Ruffを探索的に当てると、既存のimport-spacingと明示`check`指定に指摘が出る。
-新規semantic regression単体はgreenであり、compile/targeted testsもgreenのため
-この既存lint debtはcurrent integration blockerにしない。将来lint policyを導入する場合は
-別のbounded cleanupにする。
-
-## M3 decision packet
-
-結論: `READY_FOR_EXPLICIT_MAIN_INTEGRATION`
-
-理由:
-
-- origin/mainの最新祖先を含み、main側の未取込commitがない
-- OUT-13のproduct implementationは直前full suite green
-- acceptance/dedup/current-state変更はtargeted 93 tests green
-- tracked media、credentials、machine-specific absolute pathの追加がない
-- ignored/private artifact境界とtracked `episodes/` 0件を維持
-- current docsのlive authorityはOUT-13 capsuleと単一next actionだけである
-- Runtime / Handoffのreceipt、artifact、portability role、review status、next actionが一致する
-- semantic mutation testsはduplicate capsule/artifact、multiple next action、
-  live ED-10/R3、surface disagreementを拒否し、archive内の歴史は拒否しない
-- 同一media SHA・context・dimensionsへ再reviewを要求しない
-- rights/production/public/main approvalを内部受領から推定していない
-
-current blocker: なし。
-
-明示判断が必要なもの: main integration authorizationのみ。承認されるまではmainを変更しない。
-
-## 未承認gate
-
-以下はM3 readyでも開かない。
+## 未承認 gate
 
 | gate | 現在状態 | 開くために必要なもの |
 |---|---|---|
-| main integration | unapproved | explicit authorization |
-| rights / material use | pending | source/range別の権利owner判断とreceipt |
-| production subtitle design | false | exact visual design review、font/license、safe-area policy |
-| production render | false | delivery codec/color/audio/device QC profileと受領 |
-| production image quality | false | delivery contextでのvisual QC |
-| thumbnail | false / parked | accepted video群と比較方針、human selection |
+| rights / material use | pending | source/range 別の条件、判断 owner、allow/deny receipt |
+| production subtitle design | false | font/license、safe area、exact visual review |
+| production render | false | delivery codec/color/audio/device QC profile |
+| production image quality | false | delivery context の visual QC と人間判断 |
+| thumbnail | false / parked | accepted video 群、比較候補、人間 selection |
 | publishing metadata | not approved | title/description/attribution/visibility decision |
 | credentials / OAuth | not authorized | user-managed credential gate |
-| upload / private delivery | not attempted | idempotency、rollback、visibility確認 |
-| public release | not approved | rights + production + publishing ownerの最終明示判断 |
+| upload / private delivery | not attempted | idempotency、rollback、visibility readback |
+| public release / deployment | not approved | rights、production、publishing の owner receipts |
 
-## 可能な限り先までの目標設定
+M4/M5 の技術的 green は、これらの判断または外部公開を代替しない。
 
-長期目標は依存順で進め、各段階のexit evidenceが成立してから次を開く。
+## 可能な限り先までの条件付き目標
 
-| 段階 | 目標 | exit evidence | 現在状態 / 次のowner |
+| 段階 | 目標 | exit evidence | 現在状態 / owner |
 |---|---|---|---|
-| M0 Remote convergence | feature branchをremote最新へff-only同期 | parity 0/0、main ancestry、clean tracked | 完了 |
-| M1 Exact artifact convergence | plan/input/package/mediaを一identityへ照合 | SHA、bytes、digest、HTTP/readback | 完了 |
-| M2 Internal editorial acceptance | exact mediaを内部全編reviewで判断 | user receipt、scope、dimensions | 完了 |
-| M3 Main-integration preflight | branch全差分と境界を監査 | 本報告のREADY verdict | 完了。明示判断待ち |
-| M4 Explicit main integration | feature branchをmainへ統合 | authorization、merge SHA、remote main parity | User/Supervisor承認後 |
-| M5 Integrated baseline verification | main clone相当で再現性を確認 | full suite、CLI/GUI smoke、tracked boundary | Agent |
-| M6 Rights decision | source/rangeごとの利用条件を閉じる | allow/deny/restriction receipt、owner/date | Rights owner |
-| M7 Production subtitle design | internal字幕をproduction designへ上げる | exact frames、font/license、safe area、human verdict | Designer/User |
-| M8 Production render profile | delivery用映像音声仕様を確定 | codec/color/audio/device QC、exact output SHA | Production owner |
-| M9 Episode acceptance pack | M6〜M8の独立receiptを一episodeへ束ねる | lineage-complete acceptance manifest | Supervisor |
-| M10 Thumbnail and metadata | video確定後に外装を作る | comparison candidates、selected thumbnail、metadata draft | Human selection |
-| M11 Private publish dry-run | 外部stateを変えずpublish contractを検証 | dry-run receipt、idempotency key、rollback plan | Agent + credential owner |
-| M12 Private/unlisted delivery | 限定公開でend-to-endを確認 | upload receipt、visibility readback、rollback proof | User |
+| M0 Remote convergence | feature を remote 最新へ同期 | feature parity 0/0、main ancestry | 完了 |
+| M1 Exact artifact convergence | plan/input/package/media を照合 | SHA、bytes、digest、HTTP/readback | 完了 |
+| M2 Internal editorial acceptance | exact media を全編判断 | user receipt、scope、dimensions | 完了 |
+| M3 Main-integration preflight | branch 全差分と境界を監査 | repaired canonical state、READY verdict | 完了 |
+| M4 Explicit main integration | accepted feature を main へ非破壊統合 | authority、fast-forward、ancestry | 完了 |
+| M5 Integrated baseline verification | final main tree を再検証 | full/focused suites、smokes、privacy、parity | 完了 |
+| M6 Rights readiness and decision | source/range ごとの判断材料を揃えて閉じる | owner、allow/deny/restriction receipt | 未着手。Rights owner / User |
+| M7 Production subtitle design | internal 字幕を delivery visual へ上げる | exact frames、font/license、safe area verdict | M6 後。Designer / User |
+| M8 Production render profile | 配信用映像音声仕様を確定 | codec/color/audio/device QC、output SHA | M6/M7 後。Production owner |
+| M9 Episode acceptance pack | M6〜M8 の独立 receipt を束ねる | lineage-complete manifest | Supervisor |
+| M10 Thumbnail and metadata | video 確定後に外装を作る | comparison set、selection、metadata draft | Human selection |
+| M11 Private publish dry-run | 外部 state を変えず contract を検証 | dry-run receipt、idempotency、rollback | Agent + credential owner |
+| M12 Private/unlisted delivery | 限定公開で end-to-end を確認 | upload receipt、visibility readback | User |
 | M13 Explicit public release | 公開判断を監査可能に閉じる | rights/production/publishing owner receipts | User final gate |
-| M14 Multi-episode operations | queue/retry/retentionを複数episodeで証明 | failure isolation、SLO、quality trend | Operations owner |
-| M15 Policy-constrained autonomy | 繰返し作業を安全に委譲する | allowlist、budget、stop conditions、audit log | Supervisor/User |
+| M14 Multi-episode operations | queue/retry/retention を複数 episode で証明 | isolation、SLO、quality trend | Operations owner |
+| M15 Policy-constrained autonomy | 反復作業を安全に委譲 | allowlist、budget、stop conditions、audit log | Supervisor / User |
 
-M4〜M15は提案であり、FEATURE statusや各gateの承認を自動変更しない。最短critical pathは
-`explicit main authorization -> M4 integration -> M5 baseline verification`。その後は
-rights、subtitle design、render profileを別々に閉じる。
+M6〜M15 は条件付き提案であり、FEATURE status や gate を自動変更しない。最短 critical
+path は `M6 rights -> M7 subtitle design -> M8 render profile -> M9 episode pack`。
+publish 系は M9 完了後も owner の明示判断を必要とする。
 
-## 次の取っ掛かり
+## 次に推奨する取っ掛かり
 
-- **Advance**: M3 packetを確認し、main統合を明示承認する。承認後にM4/M5が可能になる。
-- **Audit**: M6 rights packetをsource/range単位で作る。制作成功と利用許可の混同を解消する。
-- **Explore**: M7 production subtitle designをthin slice化する。内部字幕からdelivery visualへ進める。
-- **Verify**: main統合後のclean-clone/full-suite/GUI/CLI gateを先に設計し、M5の完了条件を固定する。
+- **Advance**: M6 rights readiness packet を source/range 単位で作る。判断 owner と
+  不足証跡が明確になり、rights decision を安全に起票できる。
+- **Audit**: accepted receipt、source/material ledger、rights evidence の参照整合だけを
+  read-only 監査する。制作成功と利用許可の混同を早期に検出できる。
+- **Explore**: M7 subtitle design の thin-slice exit criteria を作る。M6 を越えずに、
+  font/license と safe-area review の必要証跡を先に定義できる。
+- **Verify**: 別 checkout から `main` と current handoff を読み、private media 不在時の
+  portable re-entry を確認する。監修 AI の再開摩擦を下げられる。
 
-現時点で個別candidateへの過剰調整、docsだけの停滞、統合先不明のartifact追加は発生していない。
-current next consumerはmain integrationの明示判断を行うUser/Supervisorである。
+現在は単発 artifact を統合せず完了扱いする drift を解消し、次 consumer を Rights
+owner / User に固定した。M6 scope/owner の明示 authority がない間は rights judgment や
+production work へ進めない。

@@ -1620,23 +1620,23 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["canonical_main_head"] == (
-        "5d6f69a64d510508a1f78ab3111a7780913a019c"
+        "18641fe917b084259869263e8db05d78325aa2db"
     )
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-09 accepted internal exact SHA "
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "m2_accepted_m3_ready_for_explicit_main_integration"
+        "m4_main_integration_complete_m5_integrated_baseline_verified"
     )
     assert status["current_focus"]["review_status"] == (
         "accepted_internal_exact_media_sha_and_recorded_dimensions"
     )
     assert status["current_focus"]["decision_required"] == (
-        "explicit_main_integration_authorization"
+        "m6_rights_readiness_scope_and_owner"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "explicit_main_integration_authorization"
+        "m6_rights_readiness"
     )
     assert status["current_focus"]["human_entrypoint"] == (
         "docs/output_layer/out13_human_acceptance_receipt.json"
@@ -1671,7 +1671,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
     assert status["current_focus"]["pause_reason"] == (
-        "explicit_main_integration_authorization_required"
+        "m6_rights_scope_and_owner_not_authorized"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
