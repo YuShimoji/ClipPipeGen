@@ -11,8 +11,8 @@ canonical_status: m2_accepted_m3_ready_for_explicit_main_integration
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
 base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-sync_baseline_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
-verified_implementation_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
+sync_baseline_head: e0279d513e89fac833d0c7415dc3234d00946773
+verified_implementation_head: e0279d513e89fac833d0c7415dc3234d00946773
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_this_file
 current_title: OUT-13 candidate 005 is accepted for the recorded internal editorial scope; M3 is ready for explicit main integration
 human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json

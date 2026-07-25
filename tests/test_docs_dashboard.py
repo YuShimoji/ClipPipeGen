@@ -1650,7 +1650,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
-    assert status["current_focus"]["portable_entrypoint"] == ""
+    assert status["current_focus"]["portable_entrypoint"] == (
+        "docs/output_layer/out13_human_acceptance_receipt.json"
+    )
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
     assert status["current_focus"]["cover_direction_review_available"] == ""
@@ -1683,8 +1685,8 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "docs/output_layer/out13_human_acceptance_receipt.json"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_"
-        "only_and_require_private_transfer_or_new_identity_build_elsewhere"
+        "tracked_acceptance_receipt_and_code_are_portable_private_media_and_"
+        "generated_package_are_not"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (

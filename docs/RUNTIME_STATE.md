@@ -5,27 +5,27 @@ type: resume_surface
 status: active
 health: OUT13_M2_ACCEPTED_M3_READY_FOR_EXPLICIT_MAIN_INTEGRATION_V1
 last_touched: 2026-07-25
-state_revision: out13-candidate-005-user-accepted-m3-main-integration-preflight-active-2026-07-25
+state_revision: out13-candidate-005-m2-closed-canonical-runtime-repair-m3-rechecked-2026-07-25
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: OUT-13
 phase: main_integration_preflight_active
 canonical_status: m2_accepted_m3_ready_for_explicit_main_integration
 active_branch: codex/out-13-editorial-video-candidate-v1
 source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: d753ea7bb4b48bb98da1fc16afc073d20432acb1
+verified_implementation_head: e0279d513e89fac833d0c7415dc3234d00946773
 closure_branch: codex/out-13-editorial-video-candidate-v1
 remote_resume_contract: fetch_then_switch_codex_out_13_branch_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-latest_remote_sync_head: 396432635710622f6573ae15e3f0537452a6c14f
-sync_audit_status: out13_branch_ff_synced_dev_environment_green_local_candidate_005_exact_review_ready
+latest_remote_sync_head: e0279d513e89fac833d0c7415dc3234d00946773
+sync_audit_status: out13_branch_remote_parity_confirmed_candidate_005_exact_receipt_and_local_evidence_preserved
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
-sync_audit_live_r3_reviewability: review_ready
+historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
 current_title: OUT-13 candidate 005 is accepted for the recorded internal editorial scope; M3 is ready for explicit main integration
 human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
-portable_entrypoint: null
+portable_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json
 review_open_command: powershell -NoProfile -Command Invoke-Item docs\output_layer\out13_human_acceptance_receipt.json
 review_server_restart_command: null
 machine_readback: docs/output_layer/out13_human_acceptance_receipt.json
@@ -36,9 +36,9 @@ review_scope: internal_full_view_editorial_visual_review
 reviewed_at: 2026-07-25
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: active_exact_candidate_005_same_machine_review_target
+local_artifact_role: accepted_exact_candidate_005_same_machine_evidence
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_only_and_require_private_transfer_or_new_identity_build_elsewhere
+cross_machine_resume_class: tracked_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
 cross_host_resume_status: exact_candidate_005_present_on_verified_host_not_portable_through_git
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
@@ -99,7 +99,7 @@ subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: not_required_acceptance_receipt_is_current
 next_review_due: explicit_main_integration_authorization
-next_action: M3はREADY。明示的なmain integration authorizationを待ち、同一media SHA・review context・accepted dimensionsには再review gateを生成しない。
+next_action: request_explicit_main_integration_authorization_without_reopening_human_review
 active_artifact: clip-out13-editorial-video-candidate-v1-005
 current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
@@ -419,7 +419,7 @@ latest_out04_review_status: accepted
 latest_out04_reviewed_at: 2026-07-11 JST
 canonical_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 canonical_main_head_role: out13_branch_base_from_current_origin_main
-handoff_sync_status: final_handoff_commit_pushed_and_parity_verified
+handoff_sync_status: final_feature_tip_and_remote_parity_are_git_authority
 canonical_main_baseline: OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50
 latest_out03_real_local_selected_cut_proof_artifact: clip-out03-real-local-selected-cut-proof-v0-001
 latest_out03_real_local_selected_cut_proof_branch: codex/out-03-real-local-selected-cut-proof-v0
@@ -474,11 +474,16 @@ source_internal_review_observation_readback: clip-ed10at-internal-review-observa
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
-owner_lane: shared_infra
+owner_lane: editorial_acceptance_and_main_integration_preflight
 related: docs/THREAD_REGISTRY.md, docs/output_layer/OUT_02_HANDOFF.md, docs/output_layer/video_output_gap_log.json, docs/output_layer/local_fixture_output_proof/proof_manifest.json, docs/output_layer/local_fixture_output_proof/proof_readback.json, docs/output_layer/local_fixture_output_proof/proof_timeline.html, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/index.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
 # Runtime State - ClipPipeGen
+
+## What This Is
+
+このファイルはClipPipeGenの再開authorityである。live authorityはfrontmatterと、
+archive markerより前の`Current Capsule` / `Next Action`だけに限定する。
 
 This file is the active resume surface. It should answer "where are we now?"
 without requiring the reader to scan historical closeouts.
@@ -487,7 +492,14 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## 2026-07-25 M2 Human Acceptance Recorded, M3 Preflight Active
+## Current Capsule — OUT-13 Candidate 005 / M2 Closed / M3 Rechecked
+
+- active slice: `OUT-13`
+- active artifact: `clip-out13-editorial-video-candidate-v1-005`
+- review status: `accepted_internal_exact_media_sha_and_recorded_dimensions`
+- portable receipt: `docs/output_layer/out13_human_acceptance_receipt.json`
+- local artifact role: `accepted_exact_candidate_005_same_machine_evidence`
+- main integration approval: `false`
 
 - ユーザーは supervising thread で exact artifact
   `clip-out13-editorial-video-candidate-v1-005`、final MP4 SHA
@@ -509,6 +521,22 @@ instructions.
 - rights、production subtitle/design/render、production image quality、thumbnail、
   publishing、upload、public releaseはいずれも未承認である。内部editorial受領から
   これらのgateを推定しない。
+
+## Next Action
+
+- action: `request_explicit_main_integration_authorization_without_reopening_human_review`
+- authorization state: `pending`
+- owner: `User / Supervisor`
+- condition: M3の`READY_FOR_EXPLICIT_MAIN_INTEGRATION`は技術判定であり、mainへのmerge/pushを許可しない。
+
+<!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
+
+## Historical Runtime Archive
+
+ここからファイル末尾までは過去時点の事実と判断を保持するarchiveであり、再開指示ではない。
+後続節に残る日付、artifact、候補判定、手順は、その時点の履歴としてのみ読む。現在の
+`current_slice`、current artifact、next action、restart authorityは上のfrontmatter、
+`Current Capsule`、`Next Action`と[CURRENT_HANDOFF.md](CURRENT_HANDOFF.md)だけが担う。
 
 ## Historical Current-Host Recovery — 2026-07-25 Remote Latest Synced, Candidate 005 Exact Local Review Ready
 
@@ -1367,7 +1395,7 @@ Thank v2 review path, but it is not the active content-planning entry point.
 Production/public/rights/publishing/monetization and micro-scene acceptance
 remain false or pending unless a later explicit decision opens those gates.
 
-## Current EWS-05 Human OK Fetch-Prep Ready Package v0
+## Archived EWS-05 Human OK Fetch-Prep Ready Package v0 Checkpoint
 
 EWS-05 checkpoint, 2026-07-08 JST:
 `clip-ews05-human-ok-fetch-prep-ready-package-v0-001` is the active tracked
@@ -1390,7 +1418,7 @@ It preserves `fetch_authorized=false`, `media_downloaded=false`,
 worker did not open the source URL. The next useful move is to explicitly
 decide whether a separate private/local fetch smoke slice is allowed.
 
-## Current EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0
+## Archived EWS-04 Source Fetch-Prep Planner / Decision-Gated Local Plan v0 Checkpoint
 
 EWS-04 checkpoint, 2026-07-08 JST:
 `clip-ews04-source-fetch-prep-planner-v0-001` is the active tracked local
@@ -1418,7 +1446,7 @@ upload, approve rights, or mark anything public/production ready. The next
 useful move is to review the resulting plan and explicitly choose whether a
 later private/local fetch smoke slice is allowed.
 
-## Current ED-10bc Thank V2 Open Command Repair Readback
+## Archived ED-10bc Thank V2 Open Command Repair Readback Checkpoint
 
 ED-10bc checkpoint, 2026-07-01 JST:
 `clip-ed10bc-thank-v2-open-command-repair-readback-001` is the active tracked
@@ -1445,7 +1473,7 @@ create v3, screenshot capture, final-render-path stage-4, timing/audio-first
 work, stage-7, tracked `episodes/` media, or production/public/rights/
 publishing/monetization or micro-scene approval from this readback.
 
-## Current ED-10bb Thank ED-10ba V2 Local Access Recovery Readback
+## Archived ED-10bb Thank ED-10ba V2 Local Access Recovery Readback Checkpoint
 
 ED-10bb checkpoint, 2026-07-01 JST:
 `clip-ed10bb-thank-ed10ba-v2-local-access-recovery-readback-001` is the active
@@ -1473,7 +1501,7 @@ Keep all
 production/public/rights/publishing/monetization, screenshot capture,
 final-render-path stage-4, and stage-7 gates closed.
 
-## Current ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment
+## Archived ED-10ba Representative Micro-Scene V2 Cut Window / Review Purpose Alignment Checkpoint
 
 ED-10ba checkpoint, 2026-06-30 JST:
 `clip-ed10ba-representative-micro-scene-v2-cut-window-and-review-purpose-alignment-001`
@@ -1497,7 +1525,7 @@ would reduce friction. Use
 `scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1`
 for access. Do not ask the user now and do not treat the specimen as approval.
 
-## Current ED-10az Observation Readback and V2 Route Decision
+## Archived ED-10az Observation Readback and V2 Route Decision Checkpoint
 
 ED-10az checkpoint, 2026-06-30 JST:
 `clip-ed10az-observation-readback-and-v2-route-decision-001` consumes the
@@ -1521,7 +1549,7 @@ replay, media, screenshot, tracked `episodes/` artifact, v2 specimen, or
 stage-7 normalizer, and grants no production/public/rights/publishing/
 monetization or micro-scene approval.
 
-## Current ED-10ay Thank ED-10au Local Access Recovery
+## Archived ED-10ay Thank ED-10au Local Access Recovery Checkpoint
 
 ED-10ay checkpoint, 2026-06-30 JST:
 `clip-ed10ay-thank-ed10au-local-access-recovery-readback-001` records the
@@ -1546,7 +1574,7 @@ change ED-10au into a v2 specimen. It creates no screenshot capture, no
 stage-7 normalizer, no tracked media, and no production/public/rights/
 publishing/monetization approval.
 
-## Current ED-10ax Review-Frame Clarification Surface
+## Archived ED-10ax Review-Frame Clarification Surface Checkpoint
 
 ED-10ax checkpoint, 2026-06-29 JST:
 `clip-ed10ax-review-frame-clarification-surface-001` is the active tracked
@@ -1568,7 +1596,7 @@ player-UI risk, `representative-micro-scene-v2` only after confirmed
 source/scene mismatch, and `final-render-path-stage-4` only for a concrete
 render-path gap.
 
-## Current ED-10aw Grill-me Adoption Readback and Review-Frame Clarification Plan
+## Archived ED-10aw Grill-me Adoption Readback and Review-Frame Clarification Plan Checkpoint
 
 ED-10aw checkpoint, 2026-06-29 JST:
 `clip-ed10aw-grill-me-adoption-readback-and-review-frame-clarification-plan-001`
@@ -1593,7 +1621,7 @@ mismatch, and open `final-render-path-stage-4` only for a concrete render-path
 gap. ED-10aw creates no render, media, screenshot, `episodes/` tracking,
 stage-7 normalizer, user review request, or approval.
 
-## Current ED-10av Micro-Scene Observation Frame Readback
+## Archived ED-10av Micro-Scene Observation Frame Readback Checkpoint
 
 ED-10av checkpoint, 2026-06-29 JST:
 `clip-ed10av-micro-scene-observation-frame-readback-001` is the source tracked
@@ -1641,7 +1669,7 @@ tracked media enters Git, `episodes/` remains untracked, stage-7 is not used,
 and production subtitle design, production render, creative use, rights,
 publishing, monetization, and public use stay false or pending.
 
-## Current ED-10at Internal Review Observation Readback
+## Archived ED-10at Internal Review Observation Readback Checkpoint
 
 ED-10at checkpoint, 2026-06-29 JST:
 `clip-ed10at-internal-review-observation-readback-001` is a source tracked
@@ -1663,7 +1691,7 @@ The previous ED-10ak/ED-10af-only anchor was stale checkout drift: after
 fetching current `origin/main`, ED-10as and ED-10ar are present and are the
 authority source chain for ED-10at.
 
-## Current ED-10ar Access Recovery Readback
+## Archived ED-10ar Access Recovery Readback Checkpoint
 
 2026-06-29 JST access recovery checkpoint:
 the older expected ED-10ar stage-6 freeform request Markdown/JSON pair is
@@ -1684,22 +1712,20 @@ sheet plus ED-10ar internal review package. A later agent should update stale
 stage-6 freeform-request files from `62a1581` only if a future instruction asks
 for that repair explicitly. Do not proceed to stage-7 from this checkpoint.
 
-## Current ED-10as Internal Review Access Sheet Fullpath
+## Archived ED-10as Internal Review Access Sheet Fullpath Checkpoint
 
 ED-10as checkpoint, 2026-06-28 JST: `clip-ed10as-internal-review-access-sheet-fullpath-001` is a source tracked access sheet. It consumes ED-10ar and records exact current-host full paths for the ignored MP4, ASS, and local manifest, plus `scripts/operator/open_internal_review_video_candidate.ps1`. It creates no render, replay, or media, tracks no `episodes/` files, asks for no user decision now, and keeps production/public/rights/publishing/monetization gates false or pending. Later observation, if requested, stays freeform with at most three look-for points.
 
-## What This Is
+## Archived ED-10ax Resume Capsule Context
 
-This is the current resume capsule for ClipPipeGen. It is not the full
-history; it is the first page to read when deciding what artifact is active,
-what human judgement has already been consumed, and which narrow route can move
-next.
+This was the resume capsule for ClipPipeGen at the ED-10ax checkpoint. It is
+retained to show which artifact was active then, what human judgement had been
+consumed, and which narrow route was available at that time.
 
-Older closeouts stay below as temporary notes or in
-[RUNTIME_HISTORY.md](RUNTIME_HISTORY.md). The capsule below is authoritative
-for restart decisions.
+The OUT-13 capsule above supersedes this wording. This archived capsule is not
+authoritative for restart decisions.
 
-## Current Capsule
+## Archived ED-10ax Capsule
 
 Active artifact: `clip-ed10ax-review-frame-clarification-surface-001`
 
@@ -2322,7 +2348,7 @@ This audit/proof chain is not production subtitle design acceptance and does
 not lift production render, creative, rights, publishing, upload, or public-use
 gates.
 
-## Next
+## Archived ED-10ax Continuation List
 
 1. Continue from
    `clip-ed10au-representative-micro-scene-internal-review-specimen-001` when
@@ -2502,10 +2528,11 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 Detailed historical resume notes were moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md)
 on 2026-06-17 JST under `Archived Runtime Resume Notes - 2026-06-17`.
-This page keeps the current capsule, current read order, candidate decision,
-source identity, boundaries, next actions, and restart checklist.
+The sections below preserve the former capsule, read order, candidate decision,
+source identity, boundaries, next actions, and restart checklist as historical
+wording only. They do not compete with the OUT-13 authority above.
 
-## What To Read First
+## Archived R3 Read Order
 
 When this same-machine workspace has the ignored R3 reports and visual proof
 artifacts, `status-episode` reports `review_ready`. Use the review reports in
@@ -2562,9 +2589,9 @@ the operator to the HTML report as if review is ready. Read these instead:
 Git alone does not contain `episodes/` artifacts, source media, render outputs,
 or R3 review reports.
 
-## Current Candidate Decision
+## Archived R3 Candidate Decision
 
-The current cut decision packet classifies the 9 R3 cuts into:
+The cut decision packet at that historical checkpoint classified the 9 R3 cuts into:
 
 - `keep`: `cut_001`, `cut_002`, `cut_003`
 - `needs_adjustment`: `cut_004`, `cut_005`, `cut_006`, `cut_007`, `cut_008`
@@ -2619,7 +2646,7 @@ Review focus:
 - R3 final cut review creates candidate seeds only; it does not make a
   production candidate.
 
-## Next Actions
+## Archived ED-10g / R3 Next Actions
 
 1. Advance: ED-10g small-adjustment diagnostic overlay proof route
    - `small_adjustment` and the follow-up choice of
@@ -2685,7 +2712,7 @@ step.
 - Non-repo artifact recovery and handoff boundary:
   [NON_REPO_ARTIFACT_HANDOFF.md](NON_REPO_ARTIFACT_HANDOFF.md)
 
-## Restart Checklist
+## Archived R3 Restart Checklist
 
 1. Check whether the R3 review artifacts exist in the ignored `episodes/`
    directory.

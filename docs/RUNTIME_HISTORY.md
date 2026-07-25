@@ -6,6 +6,20 @@ The active resume surface is docs/RUNTIME_STATE.md.
 Historical sections preserve old wording for traceability.
 
 ---
+## OUT-13 Canonical Runtime Repair Archive Index - 2026-07-25 JST
+
+`docs/RUNTIME_STATE.md`のOUT-13 frontmatterの後ろでlive authorityのように見えていた
+ED-10ax capsule、ED-10g / R3 next actions、R3 candidate decision、restart checklistを
+historical archive境界の内側へ戻した。変更前のexact snapshotはGit object
+`e0279d513e89fac833d0c7415dc3234d00946773:docs/RUNTIME_STATE.md`に保持される。
+
+判断内容は書き換えていない。ED-10 / R3のartifact factsとoperator guidanceは、
+`docs/style_intent/`、`docs/SUBTITLE_STYLE_INTENT_REGISTRY.md`、
+`docs/FEATURE_REGISTRY.md`、`artifacts/ARTIFACTS.md`および本archiveの既存節から
+追跡できる。現在のrestart authorityはOUT-13 Candidate 005 / M2 closed /
+explicit main integration authorization pendingだけである。
+
+---
 ## Archived Runtime Resume Notes - 2026-06-17 JST
 
 Moved from `docs/RUNTIME_STATE.md` during current-capsule cleanup. These notes

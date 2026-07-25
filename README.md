@@ -146,11 +146,30 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 / MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5 では、source audio / source video 取得、real STT transcript、cut / context / subtitle draft、NLE CSV export、diagnostic render、real transcript subtitle burn-in、JP-STT-01 / HoloEN-01 / JP-Pilot-01 の実素材 pilot、ED-09 transcript review / correction workflow、ED-10 official subtitle track import、JP-Pilot-01R corrected rerun、JP-Pilot-01R2 review coverage + cut narrowing、JP-Pilot-01R3 official-caption rerun まで実装済み。
+現在のactive sliceは`OUT-13`。exact artifact
+`clip-out13-editorial-video-candidate-v1-005`は、final MP4 SHA
+`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`へ
+記録された内部editorial / visual reviewで受領済みで、M2はclosed。
+tracked receiptとcode/docsは別端末へ持ち運べるが、`episodes/`内のprivate mediaと
+generated packageはGitでは移動しない。M3はcanonical runtime authorityを再検査済みで、
+main integrationは明示承認待ちである。
 
-現在の中核パイプラインは `source media -> material_ledger / receipt -> transcript.json -> edit_pack.json -> subtitles -> diagnostic render -> NLE CSV` まで通る。`review-transcript` は補正済み transcript を既存 downstream に戻す入口であり、transcript approval は edit / render / publish / production acceptance ではない。
+実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
+MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
+real STT transcript、cut / context / subtitle draft、NLE CSV export、diagnostic render、
+real transcript subtitle burn-in、JP-STT-01 / HoloEN-01 / JP-Pilot-01の実素材pilot、
+ED-09 transcript review / correction workflow、ED-10 official subtitle track import、
+JP-Pilot-01R corrected rerun、JP-Pilot-01R2 review coverage + cut narrowing、
+JP-Pilot-01R3 official-caption rerunまで実装済み。中核パイプラインは
+`source media -> material_ledger / receipt -> transcript.json -> edit_pack.json ->
+subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は補正済み
+transcriptを既存downstreamへ戻す入口であり、transcript approvalは
+edit / render / publish / production acceptanceではない。
 
-GUI fetch/render button、production render、production subtitle design、FCPXML / Resolve XML、STT 品質 acceptance、GUI transcript correction surface、Publishing / OAuth はまだ未実装。次の推奨は JP-Pilot R3 の current reviewability/readback を parser-first で確認し、代表字幕デザイン review、final render-path output review、editorial representative-sequence review、rights/material-use clearance のどれか 1 つを narrow slice として選ぶこと。公式字幕が無い素材を優先する場合は STT provider comparison を先に切る。
+直近のnext actionは、同一media SHA・review context・accepted dimensionsを再reviewへ
+戻さず、OUT-13 feature branchのmain integrationを明示判断すること。rights、
+production render/subtitle design/image quality、thumbnail、Publishing / OAuth、
+upload、public releaseは独立した未承認gateのままである。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

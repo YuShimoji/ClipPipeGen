@@ -15,7 +15,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
-- portable entrypoint: ``
+- portable entrypoint: `docs/output_layer/out13_human_acceptance_receipt.json`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
@@ -26,7 +26,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - pause reason: `explicit_main_integration_authorization_required`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_only_and_require_private_transfer_or_new_identity_build_elsewhere`
+- cross-machine resume: `tracked_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
 - active rebuild contract: ``
 - evidence revision: `out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`

@@ -245,11 +245,14 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "human_entrypoint: docs/output_layer/out13_human_acceptance_receipt.json"
         in runtime
     )
-    assert "portable_entrypoint: null" in runtime
+    assert (
+        "portable_entrypoint: "
+        "docs/output_layer/out13_human_acceptance_receipt.json" in runtime
+    )
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_portable_exact_inputs_plan_and_output_are_same_machine_"
-        "only_and_require_private_transfer_or_new_identity_build_elsewhere"
+        "tracked_acceptance_receipt_and_code_are_portable_private_media_and_"
+        "generated_package_are_not"
         in runtime
     )
     assert (

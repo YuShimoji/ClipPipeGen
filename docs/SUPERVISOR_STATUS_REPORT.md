@@ -1,4 +1,4 @@
-# M2 closure / M3 verdict — READY_FOR_EXPLICIT_MAIN_INTEGRATION
+# M3 canonical runtime recheck — READY_FOR_EXPLICIT_MAIN_INTEGRATION
 
 更新日: 2026-07-25 JST
 
@@ -17,10 +17,20 @@ M2はclosedである。ユーザーはexact final MP4 SHA
 `docs/output_layer/out13_human_acceptance_receipt.json`へuser authority、日付、
 review context、accepted dimensionsとidentity分離を記録した。
 
-M3 main-integration preflightの実判定は
-`READY_FOR_EXPLICIT_MAIN_INTEGRATION`。feature branch全差分、tracked/ignored境界、
-sensitive data、現在状態とOUT-13回帰、Python static、diff hygieneを監査し、
-main統合を止めるcurrent blockerは見つからなかった。
+remote tip `e0279d513e89fac833d0c7415dc3234d00946773`に対する初回M3判定は
+`REJECTED_CANONICAL_RUNTIME_SPLIT_BRAIN`だった。`docs/RUNTIME_STATE.md`の
+frontmatterはOUT-13 Candidate 005 / M2 closedを指していた一方、後半本文が
+ED-10ax Current Capsule、ED-10g / R3 Next Actions、R3 Current Candidate Decision、
+旧restart checklistをlive authorityとして残していたためである。
+
+canonical runtime repair後の再判定は
+`READY_FOR_EXPLICIT_MAIN_INTEGRATION`。Runtimeのlive bodyは`What This Is`、
+OUT-13の`Current Capsule`、単一`Next Action`だけになり、それ以降は明示archive
+境界の内側へ移った。Runtime / Handoffはactive receipt、artifact、
+portable entrypoint、local artifact role、cross-machine class、review status、
+next actionで一致する。意味解析回帰、dashboard再生成、tracked/ignored境界、
+sensitive data、Python static、diff hygieneを監査し、main統合を止めるcurrent
+blockerは見つからなかった。
 
 この判定はmain統合の承認ではない。`main_integration_approved=false`を維持し、
 明示承認まではmainへのmerge/pushを行わない。rights、production
@@ -77,10 +87,10 @@ M3開始時点の確認値:
 | 対象 | 値 | 判定 |
 |---|---|---|
 | branch | `codex/out-13-editorial-video-candidate-v1` | 想定branchと一致 |
-| feature remote tip | `d753ea7bb4b48bb98da1fc16afc073d20432acb1` | fetch後にlocal/upstream一致 |
+| feature remote tip at repair start | `e0279d513e89fac833d0c7415dc3234d00946773` | fetch後にlocal/upstream一致 |
 | `origin/main` | `5d6f69a64d510508a1f78ab3111a7780913a019c` | feature branchの祖先 |
 | upstream parity | `0 0` | M3開始時に同期済み |
-| `origin/main...HEAD` | `0 13` | main側取りこぼし0、OUT-13側13 commit |
+| `origin/main...HEAD` | `0 14` | main側取りこぼし0、OUT-13側14 commit |
 | remote | `https://github.com/YuShimoji/ClipPipeGen.git` | fetch/push同一remote |
 | effective Git identity | `YuShimoji <shimoji0902@gmail.com>` | 直前commit identityと整合 |
 | tracked `episodes/` | 0 files | private/generated media境界を維持 |
@@ -90,18 +100,19 @@ tracked文書内に最終commitの自己参照を置かず、実際のtipはGit�
 
 ## mainに対する全差分
 
-preflight対象は`origin/main`から現在treeまでの22 files。
+preflight対象は`origin/main`からrepair後treeまでの24 files。
 
 | 境界 | ファイル数 | 主な内容 | 判定 |
 |---|---:|---|---|
 | product code | 3 | OUT-13 CLI、main command registration、editorial renderer | review branchで実装済み |
-| tests | 4 | OUT-13 renderer、current state/dashboard、acceptance dedup | targeted green |
-| docs / contracts | 13 | Runtime/Handoff、OUT-13 contract、receipt、decision/idea/project context、artifact registry | current stateをM2 accepted / M3へ統一 |
-| generated docs | 2 | `docs/dashboard/index.html`、`project-status.json` | existing generatorで再生成する既存surface |
+| tests | 5 | OUT-13 renderer、current state/dashboard、acceptance dedup、canonical authority semantics | targeted green |
+| docs / contracts | 13 | Runtime/Handoff/History、OUT-13 contract、receipt、decision/idea/project context、artifact registry、README | current stateをM2 accepted / M3へ統一 |
+| generated docs | 3 | `docs/dashboard/index.html`、`project-status.json`、`docs/features/index.md` | existing generatorで再生成する既存surface |
 | private/generated media | 0 | `episodes/`、MP4、caption package、framesなど | tracked差分なし |
 
-product codeはM2 closure mission中に変更していない。受領記録、current-state docs、
-既存テスト期待値、新しいdedup regressionだけを追加した。
+product codeはcanonical runtime repair mission中に変更していない。今回の差分は
+current-state/history/README、既存dashboard生成物、portability期待値、
+新しいsemantic authority regressionに限定した。
 
 branch historyとworktree差分を対象に、以下を確認した。
 
@@ -133,23 +144,23 @@ current説明から「永久」「絶対trust」と読めるclaimを除いた。
 | accepted MP4 SHA / bytes | exact match | user verdictとmedia identityの一致 |
 | candidate 004 / 005 MP4 equality | same SHA | duplicate full-view gate不要 |
 | tracked `episodes/` | 0 | private media非追跡 |
-| focused OUT-13 + current state + dashboard | 93 passed in 13.19s（final rerun） | renderer既存contractと新receipt/current stateが整合 |
-| acceptance/current-state subset | 35 passed in 0.91s（post-dashboard final rerun） | dedupとdashboard routeを最終確認 |
-| `python -m compileall -q src tests` | pass | Python syntax/import compilation |
-| new acceptance test Ruff | pass | 今回追加testのformat/static |
+| current authority + acceptance + active contract + dashboard | 40 passed in 4.37s（final rerun） | 単一authority、受領継承、portable route、dashboard readbackが整合 |
+| dashboard generator | pass / 120 features / 82 artifacts | Runtime frontmatterからportable receiptとOUT-13 next actionを再生成 |
+| changed-test `py_compile` | pass | 今回触れた4 test moduleのsyntax compilation |
+| new semantic regression Ruff | pass | 今回追加testのformat/static |
 | `git diff --check origin/main` | pass | whitespace errorなし |
 | sensitive/media diff scan | no matches | tracked境界に新しい漏えいなし |
 | previous full suite at unchanged product implementation | 654 passed in 94.36s at `d753ea7` | product codeの既存全体回帰 |
 
 このmissionではproduct codeを変更していないため、full suiteは再実行していない。
-直前tip`d753ea7`の654 passedをimplementation evidenceとして保持し、今回変更した
-docs/tests/current-stateに比例した93-test gateを実行した。
+直前product implementation tip`d753ea7`の654 passedをimplementation evidenceとして
+保持し、今回変更したdocs/tests/current-stateに比例した40-test gateを実行した。
 
-参考として、projectにRuff設定やlint scriptがない状態でlatest Ruffをbranch全Python差分へ
-探索的に当てると、今回追加test以外の既存branch code/testsに15件のimport-order、
-typing import、broad exception、冗長cast、explicit `check`指定の指摘が出る。
-これは定義済みCI gateではなく、compile/full/targeted testsはgreenであるため
-current integration blockerにはしない。将来lint policyを導入する場合は別のbounded cleanupにする。
+参考として、projectにRuff設定やlint scriptがない状態で今回触れた既存test moduleへ
+latest Ruffを探索的に当てると、既存のimport-spacingと明示`check`指定に指摘が出る。
+新規semantic regression単体はgreenであり、compile/targeted testsもgreenのため
+この既存lint debtはcurrent integration blockerにしない。将来lint policyを導入する場合は
+別のbounded cleanupにする。
 
 ## M3 decision packet
 
@@ -162,7 +173,11 @@ current integration blockerにはしない。将来lint policyを導入する場
 - acceptance/dedup/current-state変更はtargeted 93 tests green
 - tracked media、credentials、machine-specific absolute pathの追加がない
 - ignored/private artifact境界とtracked `episodes/` 0件を維持
-- current docsはM2 accepted / M3 preflightへ統一され、同一media再reviewを要求しない
+- current docsのlive authorityはOUT-13 capsuleと単一next actionだけである
+- Runtime / Handoffのreceipt、artifact、portability role、review status、next actionが一致する
+- semantic mutation testsはduplicate capsule/artifact、multiple next action、
+  live ED-10/R3、surface disagreementを拒否し、archive内の歴史は拒否しない
+- 同一media SHA・context・dimensionsへ再reviewを要求しない
 - rights/production/public/main approvalを内部受領から推定していない
 
 current blocker: なし。
