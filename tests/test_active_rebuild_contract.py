@@ -229,7 +229,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contract_parked() -> (
+def test_runtime_points_to_out14_and_keeps_out13_out07_evidence_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -238,11 +238,15 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert (
         "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
-    assert "remote_code_complete: true" in runtime
-    assert "remote_decision_binding_available: true" in runtime
-    assert "active_branch: main" in runtime
-    assert "upstream_parity: 0 0" in runtime
-    assert "final_main_revision_locator: refs/heads/main" in runtime
+    assert "remote_code_complete: false" in runtime
+    assert "remote_decision_binding_available: false" in runtime
+    assert "active_branch: codex/out14-push-microarc-real-stream-v1" in runtime
+    assert "upstream_parity: 0 1" in runtime
+    assert (
+        "final_main_revision_locator: "
+        "refs/heads/codex/out14-push-microarc-real-stream-v1"
+        in runtime
+    )
     assert (
         "m6_decision_binding_revision: "
         "097fcaad8985d4f24077da484819efb5942b9c65"
@@ -251,70 +255,63 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
     assert (
-        "human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json"
+        "human_entrypoint: episodes/out14_push_microarc_real_stream_20260726/"
+        "artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html"
         in runtime
     )
     assert (
         "portable_entrypoint: "
-        "docs/rights/out13_m6_rights_decision_readiness_packet.json" in runtime
-    )
-    assert (
-        "cross_machine_resume_class: "
-        "tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_"
-        "generated_package_are_not"
+        "docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md"
         in runtime
     )
     assert (
         "health: "
-        "OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1"
+        "OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW"
         in runtime
     )
-    assert "current_slice: OUT-13" in runtime
+    assert "current_slice: OUT-14" in runtime
     assert (
-        "canonical_status: m6_closed_deny_exact_artifact"
+        "canonical_status: out14_push_microarc_real_stream_ready_for_human_review"
         in runtime
     )
-    assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
+    assert "active_artifact: clip-out14-push-microarc-stream-v1-001" in runtime
+    assert "review_status: ready_for_human_review" in runtime
     assert (
-        "review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved"
+        "development_baseline_main_revision: "
+        "edb782acd1e06aca46e0a5d10295ea52f30ad5c7"
         in runtime
     )
     assert "automation_acceptance_granted: true" in runtime
     assert (
         "automation_acceptance_scope: "
-        "tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback"
+        "out14_builder_exact_source_plan_caption_receipts_render_validation_resume_and_"
+        "http_readback"
         in runtime
     )
-    assert "acceptance_granted: true" in runtime
-    assert "editorial_acceptance_granted: true" in runtime
-    assert "human_review_pending: false" in runtime
+    assert "acceptance_granted: false" in runtime
+    assert "editorial_acceptance_granted: false" in runtime
+    assert "human_review_pending: true" in runtime
+    assert "acceptance_receipt: null" in runtime
+    assert "main_integration_approved: false" in runtime
+    assert "main_integration_preflight_verdict: not_started" in runtime
+    assert "m4_main_integration_status: not_applicable_out14" in runtime
+    assert "m5_integrated_baseline_verification_status: not_applicable_out14" in runtime
+    assert "out14_profile: PUSH_MICROARC" in runtime
+    assert "out14_source_identity: youtube:rltNvZ_FY8Q" in runtime
+    assert "out14_media_cut_count: 1" in runtime
+    assert "out14_semantic_role_count: 5" in runtime
+    assert "out14_caption_cue_count: 178" in runtime
+    assert "out14_creator_context_count: 0" in runtime
     assert (
-        "acceptance_receipt: "
-        "docs/output_layer/out13_human_acceptance_receipt.json"
+        "out14_output_sha256: "
+        "1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f"
         in runtime
     )
-    assert "main_integration_approved: true" in runtime
-    assert (
-        "main_integration_preflight_verdict: "
-        "consumed_by_authorized_fast_forward_integration"
-        in runtime
-    )
-    assert "m4_main_integration_status: complete" in runtime
-    assert "m5_integrated_baseline_verification_status: passed" in runtime
+    # OUT-13 M6 remains preserved historical exact-artifact evidence.
     assert "m6_rights_status: closed_deny_exact_artifact" in runtime
     assert "m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in runtime
     assert (
         "m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json"
-        in runtime
-    )
-    assert (
-        "accepted_feature_revision: "
-        "18641fe917b084259869263e8db05d78325aa2db"
-        in runtime
-    )
-    assert (
-        "integrated_main_revision: "
-        "18641fe917b084259869263e8db05d78325aa2db"
         in runtime
     )
     assert "this_commit_after_push" not in runtime

@@ -6,6 +6,20 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+OUT-14 note: `build-push-microarc-stream` は、完了済み公開配信1本から、
+発端・必要背景・展開・着地・余韻を持つ自然な5–15分 `PUSH_MICROARC`を作る。
+実 artifact `clip-out14-push-microarc-stream-v1-001`は
+`youtube:rltNvZ_FY8Q` の786.36–1487.52秒を一つの連続cutとして保持し、
+701.166667秒、H.264/AAC、1920x1080、SHA `1db41c4f...d07f`。
+source/video/audio/caption receipts、ledger、rights snapshot、plan、178 provider-auto
+caption cues、5 semantic roles、2 omissions、creator context 0、full media validation、
+manifest、localhost review、renderなしresumeを一 packageへ閉じた。
+取得sourceは640x360で、出力はLanczos upscale。provider自動字幕は逐語 transcript や
+公式著者字幕ではなく、人間の言語校正を要する。状態は
+`OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`で、rights、production、
+YPP、thumbnail、Shorts、public/publishing/uploadは閉じたまま。詳細は
+[OUT_14_PUSH_MICROARC_REAL_STREAM.md](docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md)。
+
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
 outputをローカルpipeline経路から上書きせず、取得済みの実 source、receipt / material ledger、明示 editorial plan、
 transcript / source audio、provider JSON3 sidecar、rights snapshot、resolved font bytesを
@@ -21,8 +35,8 @@ editorial / visual reviewとしてacceptした。受領scopeと重複review防�
 [out13_human_acceptance_receipt.json](docs/output_layer/out13_human_acceptance_receipt.json)に固定済み。
 M2はclosed。accepted feature revision
 `18641fe917b084259869263e8db05d78325aa2db`はmainへfast-forward統合され、
-M4 complete / M5 integrated-baseline verification passedとなった。現在の次gateは
-M6 rights readinessであり、rights判断やproduction workはまだ開始していない。
+M4 complete / M5 integrated-baseline verification passedとなった。M6はexact
+Candidate 005のpublic/monetized useをdenyしてclosedし、内部証跡はread-onlyで保持する。
 ただし`episodes/`はignored same-machine evidenceで、Git同期だけでは別hostへ移らない。
 rights、production subtitle/render、thumbnail、public/publishing/upload acceptanceは別gate。詳細は
 [docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md](docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md)。
@@ -149,14 +163,13 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`OUT-13`。exact artifact
-`clip-out13-editorial-video-candidate-v1-005`は、final MP4 SHA
-`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`へ
-記録された内部editorial / visual reviewで受領済みで、M2はclosed。
-tracked receiptとcode/docsは別端末へ持ち運べるが、`episodes/`内のprivate mediaと
-generated packageはGitでは移動しない。M3 readinessはaccepted feature revision
-`18641fe917b084259869263e8db05d78325aa2db`で閉じ、M4 main integrationと
-M5 integrated-baseline verificationを完了した。
+現在のactive sliceは`OUT-14`。exact artifact
+`clip-out14-push-microarc-stream-v1-001`はmachine validation済みで、
+内部editorial / visual / language human review待ち。final MP4 SHAは
+`1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`。
+tracked code/docsはbranchに残るが、`episodes/`内のsource・receipt・generated packageは
+ignored same-machine evidenceで、Gitでは別端末へ移動しない。OUT-13 Candidate 005と
+そのM2/M6証跡は変更していない。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
 MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
@@ -170,10 +183,11 @@ subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は�
 transcriptを既存downstreamへ戻す入口であり、transcript approvalは
 edit / render / publish / production acceptanceではない。
 
-直近のnext actionは、同一media SHA・review context・accepted dimensionsを再reviewへ
-戻さず、M6 rights readiness packetの必要項目を整理すること。rights approval、
-production render/subtitle design/image quality、thumbnail、Publishing / OAuth、
-upload、public releaseは開始しておらず、独立した未承認gateのままである。
+直近のnext actionはexact OUT-14 MP4を全編開き、開始・結びの自然さ、葬儀を含む
+premiseの編集適切性、provider自動字幕の言語精度を
+`accept / bounded_repair / reject`で記録すること。rights approval、production
+render/subtitle design/image quality、YPP、thumbnail、Publishing / OAuth、upload、
+public releaseは開始しておらず、独立した未承認gateのままである。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

@@ -7,13 +7,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pytest
-
 from src.cli import fetch_source_video
 from src.integrations.asset_fetch import source_video, yt_dlp_video
 from src.pipeline.material_ledger import load_ledger
 from src.pipeline.rights_manifest import build_skeleton, save_rights_manifest
-
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -40,6 +37,7 @@ def _run_cli(args: list[str]) -> subprocess.CompletedProcess[str]:
         cwd=str(REPO_ROOT),
         capture_output=True,
         text=True,
+        check=False,
     )
 
 
@@ -143,7 +141,9 @@ def test_fetch_source_video_local_media_creates_sidecar_receipt_and_ledger(
     assert sidecar["source"]["retrieval_method"] == "asset_fetch_local_media_video"
     assert sidecar["source"]["local_path"] == str(source_path)
     assert sidecar["media_metadata"]["video_codec"] == "h264"
-    assert "not production/creative/publish acceptance" in " | ".join(sidecar["warnings"])
+    assert "not production/creative/publish acceptance" in " | ".join(
+        sidecar["warnings"]
+    )
 
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     assert receipt["mode"] == "local-media-video"
@@ -269,7 +269,9 @@ def _fake_ffprobe_runner(
     assert text is True
     assert timeout > 0
     if "-version" in args:
-        return subprocess.CompletedProcess(args, 0, stdout="ffprobe version test\n", stderr="")
+        return subprocess.CompletedProcess(
+            args, 0, stdout="ffprobe version test\n", stderr=""
+        )
     return subprocess.CompletedProcess(
         args,
         0,
@@ -492,9 +494,13 @@ def test_fetch_source_video_yt_dlp_video_creates_artifacts(
         yt_dlp_path,
         ffprobe_path,
         format_selector,
+        impersonate_target,
+        downloader,
     ):
         assert source_url == "https://www.youtube.com/watch?v=VIDEO&sig=secret"
         assert format_selector == yt_dlp_video.DEFAULT_FORMAT_SELECTOR
+        assert impersonate_target is None
+        assert downloader is None
         out_dir = Path(output_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
         produced = out_dir / "source_video.mp4"
@@ -654,7 +660,11 @@ def test_fetch_source_video_yt_dlp_video_passes_with_rights_pending(
         yt_dlp_path,
         ffprobe_path,
         format_selector,
+        impersonate_target,
+        downloader,
     ):
+        assert impersonate_target is None
+        assert downloader is None
         out_dir = Path(output_dir)
         out_dir.mkdir(parents=True, exist_ok=True)
         produced = out_dir / "source_video.mp4"
@@ -691,9 +701,7 @@ def test_fetch_source_video_yt_dlp_video_passes_with_rights_pending(
     )
     assert receipt["rights_snapshot"]["compliance_status_at_fetch"] == "pending"
     assert receipt["rights_snapshot"]["hard_gate"] is False
-    assert any(
-        "rights status at fetch is pending" in w for w in receipt["warnings"]
-    )
+    assert any("rights status at fetch is pending" in w for w in receipt["warnings"])
 
 
 def test_fetch_source_video_yt_dlp_video_unsupported_container_no_writes(
@@ -744,6 +752,8 @@ def test_fetch_source_video_help_exposes_yt_dlp_video_options():
     assert "local-media-video" in help_text
     assert "--source-url" in help_text
     assert "--format-selector" in help_text
+    assert "--impersonate-target" in help_text
+    assert "--yt-dlp-downloader" in help_text
     assert "--yt-dlp-path" in help_text
     assert "--ffprobe-path" in help_text
     assert "render" not in help_text

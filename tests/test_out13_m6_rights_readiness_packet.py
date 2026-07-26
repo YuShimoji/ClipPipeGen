@@ -493,13 +493,17 @@ def test_rights_ready_or_approved_claim_fails_when_inventory_is_incomplete() -> 
     )
 
 
-def test_runtime_handoff_and_packet_agree_on_m6_decision_state() -> None:
+def test_runtime_handoff_preserve_m6_decision_under_out14_current_state() -> None:
     packet = _packet()
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
     for text in (runtime, handoff):
-        assert "canonical_status: m6_closed_deny_exact_artifact" in text
+        assert (
+            "canonical_status: "
+            "out14_push_microarc_real_stream_ready_for_human_review"
+            in text
+        )
         assert "m6_rights_status: closed_deny_exact_artifact" in text
         assert (
             f"m6_packet_status: {packet['packet_readiness_status']}" in text
@@ -510,7 +514,8 @@ def test_runtime_handoff_and_packet_agree_on_m6_decision_state() -> None:
             in text
         )
         assert "rights_approval: not_granted" in text
-        assert "public_use_verdict: deny" in text
-        assert "monetized_youtube_verdict: deny" in text
+        assert "m6_owner_verdict: deny" in text
+        assert "public_use_verdict: not_evaluated_for_out14" in text
+        assert "monetized_youtube_verdict: not_evaluated_for_out14" in text
         assert "production_acceptance: false" in text
         assert "public_or_publishing_acceptance: false" in text

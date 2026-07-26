@@ -42,9 +42,7 @@ MANIFEST_SCHEMA_VERSION = "clippipegen.out13.run_manifest.v4"
 PIPELINE_VERSION = "out13-editorial-video-candidate-v4"
 ARTIFACT_ID_PATTERN = re.compile(r"^clip-out13-editorial-video-candidate-v1-\d{3}$")
 SUPPORTED_TRANSITIONS = frozenset({"sequence_start", "hard_cut"})
-READY_STATE = (
-    "OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
-)
+READY_STATE = "OUT13_CANDIDATE_005_IMMUTABLE_TRANSITIVELY_LINEAGE_BOUND_REVIEWABLE_V1"
 DEFAULT_REVIEW_PORT = 8076
 MIN_OUTPUT_SECONDS = 60.0
 MAX_OUTPUT_SECONDS = 180.0
@@ -148,7 +146,10 @@ def build_editorial_video_candidate(
         source_probe = out12.probe_media_detail(
             resolved["source_path"], ffprobe_path=ffprobe, runner=runner
         )
-        if source_probe["video_stream_count"] != 1 or source_probe["audio_stream_count"] != 1:
+        if (
+            source_probe["video_stream_count"] != 1
+            or source_probe["audio_stream_count"] != 1
+        ):
             raise EditorialVideoCandidateError(
                 "source must contain exactly one primary video and audio stream",
                 stage=current_stage,
@@ -245,7 +246,9 @@ def build_editorial_video_candidate(
                     "path": _display_path(transcript, root),
                     "sha256": _sha256(transcript),
                     "engine": (transcript_payload.get("stt") or {}).get("engine"),
-                    "selected_segment_count": len(_selected_transcript_segments(timeline)),
+                    "selected_segment_count": len(
+                        _selected_transcript_segments(timeline)
+                    ),
                 },
                 "rights": resolved["rights"],
                 "authority_binding": authority_binding,
@@ -369,7 +372,11 @@ def build_editorial_video_candidate(
             runner=runner,
         )
         validation["schema_version"] = SCHEMA_VERSION
-        validation["state"] = READY_STATE if validation["status"] == "passed" else "OUT13_VALIDATION_FAILED"
+        validation["state"] = (
+            READY_STATE
+            if validation["status"] == "passed"
+            else "OUT13_VALIDATION_FAILED"
+        )
         validation["render"] = render
         validation["input_fingerprint"] = fingerprint
         validation["caption_validation"].update(
@@ -378,9 +385,7 @@ def build_editorial_video_candidate(
                     "split_at_cut_boundary_count"
                 ],
                 "duplicate_cue_count": caption_readback["duplicate_cue_count"],
-                "mapping_coverage_ratio": caption_readback[
-                    "mapping_coverage_ratio"
-                ],
+                "mapping_coverage_ratio": caption_readback["mapping_coverage_ratio"],
             }
         )
         validation["authority_binding"] = {
@@ -408,9 +413,12 @@ def build_editorial_video_candidate(
             "caption_evidence_bound": all(
                 bool(cut.get("transcript_segment_ids")) for cut in timeline["cuts"]
             ),
-            "caption_boundary_integrity": caption_readback["split_at_cut_boundary_count"]
+            "caption_boundary_integrity": caption_readback[
+                "split_at_cut_boundary_count"
+            ]
             == 0,
-            "caption_mapping_complete": caption_readback["mapping_coverage_ratio"] == 1.0,
+            "caption_mapping_complete": caption_readback["mapping_coverage_ratio"]
+            == 1.0,
             "duplicate_cues": caption_readback["duplicate_cue_count"] == 0,
             "authority_binding": authority_binding["status"] == "passed",
             "subtitle_presentation": subtitle_readback["status"] == "passed",
@@ -540,13 +548,25 @@ def build_editorial_timeline(
     source_duration_seconds: float,
     transcript: dict[str, Any],
     caption_events: list[dict[str, Any]],
+    plan_schema_version: str = PLAN_SCHEMA_VERSION,
+    profile_schema_version: str = SCHEMA_VERSION,
+    min_output_seconds: float = MIN_OUTPUT_SECONDS,
+    max_output_seconds: float = MAX_OUTPUT_SECONDS,
+    min_selected_cuts: int = MIN_SELECTED_CUTS,
+    min_intentional_omitted_spans: int = MIN_INTENTIONAL_OMITTED_SPANS,
+    max_source_utilization_ratio: float = MAX_SOURCE_UTILIZATION_RATIO,
+    min_semantic_section_count: int = 3,
+    selection_mode: str = "explicit_caption_evidence_editorial_plan",
 ) -> dict[str, Any]:
-    if plan.get("schema_version") != PLAN_SCHEMA_VERSION:
+    if plan.get("schema_version") != plan_schema_version:
         raise EditorialVideoCandidateError(
             "editorial plan schema mismatch", stage="timeline_selection"
         )
     source = plan.get("source") or {}
-    if source.get("identity") != source_identity or source.get("sha256") != source_sha256:
+    if (
+        source.get("identity") != source_identity
+        or source.get("sha256") != source_sha256
+    ):
         raise EditorialVideoCandidateError(
             "editorial plan source identity or SHA does not match input",
             stage="timeline_selection",
@@ -563,9 +583,9 @@ def build_editorial_timeline(
         if isinstance(row, dict) and row.get("id")
     }
     cuts_in = plan.get("cuts") or []
-    if not isinstance(cuts_in, list) or len(cuts_in) < MIN_SELECTED_CUTS:
+    if not isinstance(cuts_in, list) or len(cuts_in) < min_selected_cuts:
         raise EditorialVideoCandidateError(
-            "editorial plan requires at least three selected cuts",
+            f"editorial plan requires at least {min_selected_cuts} selected cut(s)",
             stage="timeline_selection",
         )
     cuts: list[dict[str, Any]] = []
@@ -579,7 +599,11 @@ def build_editorial_timeline(
             )
         start = float(row.get("source_in_seconds") or 0.0)
         end = float(row.get("source_out_seconds") or 0.0)
-        if start < previous_source_end - 0.001 or end <= start or end > source_duration_seconds + 0.05:
+        if (
+            start < previous_source_end - 0.001
+            or end <= start
+            or end > source_duration_seconds + 0.05
+        ):
             raise EditorialVideoCandidateError(
                 f"invalid chronological range for cut {order}",
                 stage="timeline_selection",
@@ -587,7 +611,9 @@ def build_editorial_timeline(
         segment_ids = [
             str(value) for value in row.get("direct_evidence_segment_ids") or []
         ]
-        if not segment_ids or any(value not in transcript_rows for value in segment_ids):
+        if not segment_ids or any(
+            value not in transcript_rows for value in segment_ids
+        ):
             raise EditorialVideoCandidateError(
                 f"cut {order} has missing direct transcript evidence",
                 stage="timeline_selection",
@@ -622,9 +648,7 @@ def build_editorial_timeline(
                 stage="timeline_selection",
             )
         context = row.get("context_evidence") or {}
-        context_segment_ids = [
-            str(value) for value in context.get("segment_ids") or []
-        ]
+        context_segment_ids = [str(value) for value in context.get("segment_ids") or []]
         if (
             not str(row.get("section") or "").strip()
             or not str(row.get("selection_reason") or "").strip()
@@ -637,9 +661,11 @@ def build_editorial_timeline(
                 stage="timeline_selection",
             )
         transition = str(row.get("transition") or "")
-        if transition not in SUPPORTED_TRANSITIONS or (
-            order == 1 and transition != "sequence_start"
-        ) or (order > 1 and transition != "hard_cut"):
+        if (
+            transition not in SUPPORTED_TRANSITIONS
+            or (order == 1 and transition != "sequence_start")
+            or (order > 1 and transition != "hard_cut")
+        ):
             raise EditorialVideoCandidateError(
                 f"unsupported transition for cut {order}: {transition or '<missing>'}",
                 stage="timeline_selection",
@@ -687,13 +713,14 @@ def build_editorial_timeline(
         )
         output_cursor = output_end
         previous_source_end = end
-    if not MIN_OUTPUT_SECONDS <= output_cursor <= MAX_OUTPUT_SECONDS:
+    if not min_output_seconds <= output_cursor <= max_output_seconds:
         raise EditorialVideoCandidateError(
-            "editorial output duration must be between 60 and 180 seconds",
+            "editorial output duration must be between "
+            f"{min_output_seconds:g} and {max_output_seconds:g} seconds",
             stage="timeline_selection",
         )
     utilization = output_cursor / source_duration_seconds
-    if utilization > MAX_SOURCE_UTILIZATION_RATIO:
+    if utilization > max_source_utilization_ratio:
         raise EditorialVideoCandidateError(
             "editorial output is not clearly shorter than the source",
             stage="timeline_selection",
@@ -705,14 +732,16 @@ def build_editorial_timeline(
         transcript_rows=transcript_rows,
     )
     intentional = [row for row in omitted if row.get("intentional_editorial_omission")]
-    if len(intentional) < MIN_INTENTIONAL_OMITTED_SPANS:
+    if len(intentional) < min_intentional_omitted_spans:
         raise EditorialVideoCandidateError(
-            "editorial plan requires at least two intentional omitted spans",
+            "editorial plan requires at least "
+            f"{min_intentional_omitted_spans} intentional omitted span(s)",
             stage="timeline_selection",
         )
-    if len({cut["section"] for cut in cuts}) < 3:
+    if len({cut["section"] for cut in cuts}) < min_semantic_section_count:
         raise EditorialVideoCandidateError(
-            "editorial plan requires at least three evidence-bound sections",
+            "editorial plan requires at least "
+            f"{min_semantic_section_count} evidence-bound section(s)",
             stage="timeline_selection",
         )
     if not caption_events:
@@ -721,13 +750,13 @@ def build_editorial_timeline(
         )
     timeline = {
         "schema_version": TIMELINE_SCHEMA_VERSION,
-        "out13_schema_version": SCHEMA_VERSION,
+        "profile_schema_version": profile_schema_version,
         "source_identity": source_identity,
         "source_sha256": source_sha256,
         "source_duration_seconds": round(source_duration_seconds, 6),
         "output_duration_seconds": round(output_cursor, 6),
         "source_utilization_ratio": round(utilization, 6),
-        "selection_mode": "explicit_caption_evidence_editorial_plan",
+        "selection_mode": selection_mode,
         "chronology_preserved": True,
         "causal_order_preserved": True,
         "uniform_sampling_used": False,
@@ -738,6 +767,8 @@ def build_editorial_timeline(
         "omitted_ranges": omitted,
         "cuts": cuts,
     }
+    if profile_schema_version == SCHEMA_VERSION:
+        timeline["out13_schema_version"] = SCHEMA_VERSION
     out12.validate_timeline_ir(timeline)
     return timeline
 
@@ -843,7 +874,11 @@ def build_subtitle_presentation_readback(
 ) -> dict[str, Any]:
     values = layout["values"]
     style = layout["diagnostic_ass_style"]
-    safe_width = int(layout["frame"]["width"]) - int(values["margin_l"]) - int(values["margin_r"])
+    safe_width = (
+        int(layout["frame"]["width"])
+        - int(values["margin_l"])
+        - int(values["margin_r"])
+    )
     rows = []
     violations = []
     for item in presentation_items:
@@ -861,7 +896,9 @@ def build_subtitle_presentation_readback(
             or 0.0
         )
         line_count = int(item.get("wrapped_line_count") or 1)
-        duration = float(item["display_end_seconds"]) - float(item["display_start_seconds"])
+        duration = float(item["display_end_seconds"]) - float(
+            item["display_start_seconds"]
+        )
         row = {
             "subtitle_id": item["subtitle_id"],
             "display_start_seconds": item["display_start_seconds"],
@@ -947,9 +984,7 @@ def build_subtitle_presentation_readback(
                 "provider sidecar line breaks are normalized to spaces before "
                 "measured wrapping; wording and timing remain unchanged"
             ),
-            "selector_token": selector["style_tokens"][
-                "safe_area_line_break_behavior"
-            ],
+            "selector_token": selector["style_tokens"]["safe_area_line_break_behavior"],
             "maximum_lines": max(
                 (int(row["wrapped_line_count"]) for row in rows), default=0
             ),
@@ -995,9 +1030,15 @@ def _editorial_subtitle_layout_contract(
     values.update(
         {
             "font_size": font_size,
-            "line_height": int(round(font_size * float(ratios["line_height_to_font_size"]))),
-            "badge_width": int(round(font_size * float(ratios["badge_width_to_font_size"]))),
-            "badge_height": int(round(font_size * float(ratios["badge_height_to_font_size"]))),
+            "line_height": int(
+                round(font_size * float(ratios["line_height_to_font_size"]))
+            ),
+            "badge_width": int(
+                round(font_size * float(ratios["badge_width_to_font_size"]))
+            ),
+            "badge_height": int(
+                round(font_size * float(ratios["badge_height_to_font_size"]))
+            ),
             "badge_font_size": int(
                 round(font_size * float(ratios["badge_font_size_to_font_size"]))
             ),
@@ -1028,12 +1069,18 @@ def render_editorial_timeline(
     font_file: Path,
     ffmpeg_path: str,
     runner: ffmpeg_tiny.Runner,
+    output_width: int | None = None,
+    output_height: int | None = None,
 ) -> dict[str, Any]:
     work = video_path.parent / ".render_work"
     work.mkdir()
     filter_path = work / "filter_complex.txt"
     filter_text = render_editorial_filter_complex(
-        cuts=cuts, ass_path=ass_path, font_file=font_file
+        cuts=cuts,
+        ass_path=ass_path,
+        font_file=font_file,
+        output_width=output_width,
+        output_height=output_height,
     )
     _write_text(filter_path, filter_text)
     attempts = []
@@ -1107,7 +1154,12 @@ def render_editorial_timeline(
 
 
 def render_editorial_filter_complex(
-    *, cuts: list[dict[str, Any]], ass_path: Path, font_file: Path
+    *,
+    cuts: list[dict[str, Any]],
+    ass_path: Path,
+    font_file: Path,
+    output_width: int | None = None,
+    output_height: int | None = None,
 ) -> str:
     filters: list[str] = []
     concat_inputs: list[str] = []
@@ -1121,13 +1173,19 @@ def render_editorial_filter_complex(
             f"[0:a:0]atrim=start={start}:end={end},asetpts=PTS-STARTPTS[a{index}]"
         )
         concat_inputs.extend((f"[v{index}]", f"[a{index}]"))
-    filters.append(
-        f"{''.join(concat_inputs)}concat=n={len(cuts)}:v=1:a=1[vcat][acat]"
-    )
+    filters.append(f"{''.join(concat_inputs)}concat=n={len(cuts)}:v=1:a=1[vcat][acat]")
     ass_filter = f"ass=filename='{_escape_filter_path(ass_path)}'"
     if font_file.is_file():
         ass_filter += f":fontsdir='{_escape_filter_path(font_file.parent)}'"
-    filters.append(f"[vcat]{ass_filter},format=yuv420p[vout]")
+    scale_filter = ""
+    if output_width is not None or output_height is not None:
+        if not output_width or not output_height:
+            raise EditorialVideoCandidateError(
+                "output_width and output_height must be provided together",
+                stage="render",
+            )
+        scale_filter = f"scale={int(output_width)}:{int(output_height)}:flags=lanczos,"
+    filters.append(f"[vcat]{scale_filter}{ass_filter},format=yuv420p[vout]")
     filters.append("[acat]loudnorm=I=-15:TP=-2.0:LRA=11[aout]")
     return ";\n".join(filters) + "\n"
 
@@ -1256,7 +1314,7 @@ def build_review_package(
 
 
 def select_subtitle_evidence_samples(
-    subtitle_readback: dict[str, Any]
+    subtitle_readback: dict[str, Any],
 ) -> list[dict[str, Any]]:
     rows = list(subtitle_readback.get("items") or [])
     if not rows:
@@ -1282,7 +1340,11 @@ def select_subtitle_evidence_samples(
         key=lambda row: float(row.get("duration_seconds") or 0.0),
         default=rows[0],
     )
-    selected = [("normal_dialogue", normal), ("multiline_or_long", multiline), ("short_cue", short)]
+    selected = [
+        ("normal_dialogue", normal),
+        ("multiline_or_long", multiline),
+        ("short_cue", short),
+    ]
     return [
         {
             "role": role,
@@ -1318,8 +1380,8 @@ def render_review_html(
         f"<td>{float(cut['output_in_seconds']):.3f}–{float(cut['output_out_seconds']):.3f}</td>"
         f"<td>{escape(str(cut['selection_reason']))}</td>"
         f"<td>{escape(', '.join(cut['transcript_segment_ids']))}</td>"
-        f"<td><button type=\"button\" data-seek=\"{max(0.0, float(cut['output_in_seconds']) - 0.25):.3f}\">before</button> "
-        f"<button type=\"button\" data-seek=\"{min(float(timeline['output_duration_seconds']), float(cut['output_in_seconds']) + 0.25):.3f}\">after</button></td>"
+        f'<td><button type="button" data-seek="{max(0.0, float(cut["output_in_seconds"]) - 0.25):.3f}">before</button> '
+        f'<button type="button" data-seek="{min(float(timeline["output_duration_seconds"]), float(cut["output_in_seconds"]) + 0.25):.3f}">after</button></td>'
         "</tr>"
         for cut in timeline["cuts"]
     )
@@ -1354,9 +1416,9 @@ def render_review_html(
 <style>*{{box-sizing:border-box}}html,body{{max-width:100%;overflow-x:hidden}}body{{margin:0;background:#080d18;color:#e7eef9;font-family:system-ui,sans-serif}}main{{max-width:1180px;margin:auto;padding:24px}}.summary{{background:#111a2d;border:1px solid #293957;border-radius:12px;padding:16px}}video{{display:block;width:100%;max-height:72vh;background:#000;border-radius:10px}}.metrics{{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin:16px 0}}.metric{{background:#15223a;padding:12px;border-radius:10px}}.table-wrap{{width:100%;overflow-x:auto}}table{{width:100%;border-collapse:collapse;min-width:900px}}th,td{{padding:9px;border-bottom:1px solid #334155;text-align:left;vertical-align:top}}small{{color:#9fb0c8}}code{{overflow-wrap:anywhere}}img{{width:100%;height:auto;margin-top:12px;border-radius:10px}}button{{padding:7px 12px}}details{{margin-top:18px}}.gate{{color:#f6c177}}@media(max-width:520px){{main{{padding:12px}}h1{{font-size:1.35rem}}}}</style></head>
 <body><main><section class="summary"><p>OUT-13 · EDITORIAL REPRESENTATIVE VIDEO</p><h1>編集構成・字幕presentation・画面/音声品質を同一MP4で判断</h1>
 <video id="finalVideo" controls muted preload="metadata" playsinline src="../final_video.mp4"></video>
-<div class="metrics"><div class="metric">source<br><strong>{float(review_readback['source_duration_seconds']):.3f}s</strong></div><div class="metric">output<br><strong>{float(review_readback['output_duration_seconds']):.3f}s</strong></div><div class="metric">utilization<br><strong>{float(review_readback['source_utilization_ratio'])*100:.1f}%</strong></div><div class="metric">cuts / omissions<br><strong>{timeline['cut_count']} / {len(timeline['omitted_ranges'])}</strong></div></div>
-<p>candidate <code>{escape(review_readback['artifact_id'])}</code><br>source <code>{escape(resolved['source_identity'])}</code> · source SHA <code>{escape(resolved['source_sha256'])}</code><br>plan SHA <code>{escape(review_readback['editorial_plan_sha256'])}</code><br>output SHA <code>{escape(validation['media']['sha256'])}</code> · {int(validation['media']['byte_size'])} bytes</p>
-<p>caption authority: {escape(caption_authority['classification'])} / {escape(caption_authority['provider'])}; rights: {escape(authority['rights']['status'])} snapshot; visual observation: {escape(observation['status'])}; style: {escape(style)}</p></section>
+<div class="metrics"><div class="metric">source<br><strong>{float(review_readback["source_duration_seconds"]):.3f}s</strong></div><div class="metric">output<br><strong>{float(review_readback["output_duration_seconds"]):.3f}s</strong></div><div class="metric">utilization<br><strong>{float(review_readback["source_utilization_ratio"]) * 100:.1f}%</strong></div><div class="metric">cuts / omissions<br><strong>{timeline["cut_count"]} / {len(timeline["omitted_ranges"])}</strong></div></div>
+<p>candidate <code>{escape(review_readback["artifact_id"])}</code><br>source <code>{escape(resolved["source_identity"])}</code> · source SHA <code>{escape(resolved["source_sha256"])}</code><br>plan SHA <code>{escape(review_readback["editorial_plan_sha256"])}</code><br>output SHA <code>{escape(validation["media"]["sha256"])}</code> · {int(validation["media"]["byte_size"])} bytes</p>
+<p>caption authority: {escape(caption_authority["classification"])} / {escape(caption_authority["provider"])}; rights: {escape(authority["rights"]["status"])} snapshot; visual observation: {escape(observation["status"])}; style: {escape(style)}</p></section>
 <h2>Selected editorial timeline</h2><div class="table-wrap"><table><thead><tr><th>cut</th><th>section / role</th><th>source</th><th>output</th><th>reason</th><th>evidence</th><th></th></tr></thead><tbody>{cut_rows}</tbody></table></div>
 <h2>Omitted source ranges</h2><div class="table-wrap"><table><thead><tr><th>id</th><th>source</th><th>duration</th><th>reason</th></tr></thead><tbody>{omitted_rows}</tbody></table></div>
 <details><summary>字幕・映像証拠</summary><p>上: source selected ranges。下: burn-in後の通常発話、長文/複数行、短時間cue。視覚判断は machine validation と分離され、現時点では unverified。</p><img src="evidence/source_selected_ranges_contact_sheet.jpg" alt="source selected ranges"><img src="evidence/subtitle_presentation_contact_sheet.jpg" alt="subtitle presentation evidence"><img src="evidence/cut_boundary_contact_sheet.jpg" alt="cut boundary evidence"><img src="evidence/waveform.png" alt="waveform"></details>
@@ -1428,9 +1490,7 @@ def build_run_manifest(
                 "typography_decoration_candidate_id"
             ],
             "resolved_font_family": subtitle_readback["resolved_font_family"],
-            "resolved_font_file_sha256": subtitle_readback[
-                "resolved_font_file_sha256"
-            ],
+            "resolved_font_file_sha256": subtitle_readback["resolved_font_file_sha256"],
             "outline_shadow": subtitle_readback["outline_shadow"],
             "safe_area": subtitle_readback["safe_area"],
             "line_break": subtitle_readback["line_break"],
@@ -1535,8 +1595,7 @@ def validate_run_manifest(
     actual_paths = sorted(
         path.relative_to(stage).as_posix()
         for path in stage.rglob("*")
-        if path.is_file()
-        and path.relative_to(stage).as_posix() != "run_manifest.json"
+        if path.is_file() and path.relative_to(stage).as_posix() != "run_manifest.json"
     )
     if sorted(declared_paths) != actual_paths:
         missing = sorted(set(declared_paths) - set(actual_paths))
@@ -1550,8 +1609,7 @@ def validate_run_manifest(
     if (
         closed_set.get("status") != "passed"
         or closed_set.get("excluded_paths") != ["run_manifest.json"]
-        or closed_set.get("payload_tree_digest_sha256")
-        != _payload_tree_digest(rows)
+        or closed_set.get("payload_tree_digest_sha256") != _payload_tree_digest(rows)
     ):
         raise EditorialVideoCandidateError(
             "run manifest closed file set contract mismatch", stage="manifest"
@@ -1590,9 +1648,7 @@ def resume_existing_output(
             "resume fingerprint mismatch; refusing stale output reuse",
             stage="source_resolution",
         )
-    validate_run_manifest(
-        output_dir, manifest, expected_artifact_id=artifact_id
-    )
+    validate_run_manifest(output_dir, manifest, expected_artifact_id=artifact_id)
     final_video = output_dir / "final_video.mp4"
     if _sha256(final_video) != manifest["final_video"]["sha256"]:
         raise EditorialVideoCandidateError(
@@ -1708,9 +1764,7 @@ def _validate_artifact_id(artifact_id: str) -> None:
         )
 
 
-def _validate_output_allocation(
-    *, output: Path, artifact_id: str, force: bool
-) -> None:
+def _validate_output_allocation(*, output: Path, artifact_id: str, force: bool) -> None:
     if not output.exists():
         return
     manifest_path = output / "run_manifest.json"
@@ -1853,13 +1907,10 @@ def _validate_authority_binding(
         )
 
     source_audio = transcript.get("source_audio") or {}
-    source_audio_path = _resolved(
-        root, Path(str(source_audio.get("path") or ""))
-    )
-    if (
-        not source_audio_path.is_file()
-        or _sha256(source_audio_path) != source_audio.get("sha256")
-    ):
+    source_audio_path = _resolved(root, Path(str(source_audio.get("path") or "")))
+    if not source_audio_path.is_file() or _sha256(
+        source_audio_path
+    ) != source_audio.get("sha256"):
         raise EditorialVideoCandidateError(
             "transcript source-audio lineage mismatch", stage="source_resolution"
         )
@@ -1883,9 +1934,7 @@ def _validate_authority_binding(
         source_audio_material is None
         or source_audio_material.get("kind") != "source_audio"
         or source_audio_material.get("hash_sha256") != source_audio.get("sha256")
-        or _resolved(
-            root, Path(str(source_audio_material.get("file_path") or ""))
-        )
+        or _resolved(root, Path(str(source_audio_material.get("file_path") or "")))
         != source_audio_path
     ):
         raise EditorialVideoCandidateError(
@@ -1903,9 +1952,7 @@ def _validate_authority_binding(
         pcm_decoder=pcm_decoder,
     )
     stt = transcript.get("stt") or {}
-    transcript_caption_path = _resolved(
-        root, Path(str(stt.get("model") or ""))
-    )
+    transcript_caption_path = _resolved(root, Path(str(stt.get("model") or "")))
     exported_transcript = (caption_evidence.get("source_refs") or {}).get(
         "transcript"
     ) or {}
@@ -1962,9 +2009,7 @@ def _validate_authority_binding(
             "source_audio_path": _display_path(source_audio_path, root),
             "source_audio_sha256": source_audio["sha256"],
             "source_audio_material_id": source_audio_material_id,
-            "source_audio_receipt_path": _display_path(
-                source_audio_receipt_path, root
-            ),
+            "source_audio_receipt_path": _display_path(source_audio_receipt_path, root),
             "source_audio_receipt_sha256": _sha256(source_audio_receipt_path),
             "source_video_audio_lineage": audio_lineage,
         },
@@ -1974,16 +2019,12 @@ def _validate_authority_binding(
             "format": "youtube-json3",
             "track_path": _display_path(caption_track_path, root),
             "track_sha256": actual["caption_sha256"],
-            "provenance_evidence_path": _display_path(
-                caption_evidence_path, root
-            ),
+            "provenance_evidence_path": _display_path(caption_evidence_path, root),
             "provenance_evidence_sha256": _sha256(caption_evidence_path),
             "acquisition_verification_receipt_path": _display_path(
                 caption_receipt_path, root
             ),
-            "acquisition_verification_receipt_sha256": _sha256(
-                caption_receipt_path
-            ),
+            "acquisition_verification_receipt_sha256": _sha256(caption_receipt_path),
             "acquisition_verification_method": caption_receipt_result["method"],
             "acquisition_verification_result": caption_receipt_result["result"],
             "provider_video_id": provider_id,
@@ -1997,7 +2038,9 @@ def _validate_authority_binding(
         "rights": {
             "path": _display_path(rights_manifest_path, root),
             "sha256": actual["rights_sha256"],
-            "status": str((rights.get("compliance_check") or {}).get("status") or "unknown"),
+            "status": str(
+                (rights.get("compliance_check") or {}).get("status") or "unknown"
+            ),
             "snapshot_only": True,
         },
     }
@@ -2041,8 +2084,7 @@ def _validate_source_audio_receipt(
         or not {"yt-dlp", "ffmpeg"}.issubset(tools)
         or len(commands) < 2
         or any(
-            not isinstance(row, dict) or row.get("exit_code") != 0
-            for row in commands
+            not isinstance(row, dict) or row.get("exit_code") != 0 for row in commands
         )
     ):
         raise EditorialVideoCandidateError(
@@ -2203,10 +2245,7 @@ def write_caption_acquisition_verification_receipt(
         retrieved_byte_size = retrieved_path.stat().st_size
     caption_sha256 = _sha256(caption_track)
     caption_byte_size = caption_track.stat().st_size
-    if (
-        retrieved_sha256 != caption_sha256
-        or retrieved_byte_size != caption_byte_size
-    ):
+    if retrieved_sha256 != caption_sha256 or retrieved_byte_size != caption_byte_size:
         raise EditorialVideoCandidateError(
             "provider caption bytes do not match the project-local track",
             stage="source_resolution",
@@ -2432,20 +2471,16 @@ def _compare_canonical_pcm(
         if similarity > best_waveform_similarity:
             best_waveform_similarity = similarity
             best_lag_samples = lag_samples
-    waveform = _signed_waveform_metrics(
-        video_samples, audio_samples, best_lag_samples
+    waveform = _signed_waveform_metrics(video_samples, audio_samples, best_lag_samples)
+    pcm_hashes_match = (
+        hashlib.sha256(source_video_pcm).digest()
+        == hashlib.sha256(source_audio_pcm).digest()
     )
-    pcm_hashes_match = hashlib.sha256(source_video_pcm).digest() == hashlib.sha256(
-        source_audio_pcm
-    ).digest()
     equivalent = (
         duration_delta <= PCM_MAX_DURATION_DELTA_SECONDS
         and waveform["coverage_ratio"] >= PCM_MIN_COVERAGE_RATIO
-        and waveform["signed_waveform_similarity"]
-        >= PCM_MIN_WAVEFORM_SIMILARITY
-        and PCM_MIN_GAIN_RATIO
-        <= waveform["least_squares_gain"]
-        <= PCM_MAX_GAIN_RATIO
+        and waveform["signed_waveform_similarity"] >= PCM_MIN_WAVEFORM_SIMILARITY
+        and PCM_MIN_GAIN_RATIO <= waveform["least_squares_gain"] <= PCM_MAX_GAIN_RATIO
         and waveform["gain_aligned_nrmse"] <= PCM_MAX_GAIN_ALIGNED_NRMSE
     )
     return {
@@ -2464,9 +2499,7 @@ def _compare_canonical_pcm(
             coarse_lag_samples / PCM_SAMPLE_RATE_HZ, 6
         ),
         "alignment_lag_samples": best_lag_samples,
-        "alignment_lag_seconds": round(
-            best_lag_samples / PCM_SAMPLE_RATE_HZ, 6
-        ),
+        "alignment_lag_seconds": round(best_lag_samples / PCM_SAMPLE_RATE_HZ, 6),
         **waveform,
         "signed_waveform_similarity_threshold": PCM_MIN_WAVEFORM_SIMILARITY,
         "gain_ratio_bounds": [PCM_MIN_GAIN_RATIO, PCM_MAX_GAIN_RATIO],
@@ -2479,12 +2512,13 @@ def _compare_canonical_pcm(
 def _pcm_frame_energy(samples: array[int]) -> list[float]:
     return [
         math.sqrt(
-            sum(float(value) * value for value in samples[offset : offset + PCM_FRAME_SAMPLES])
+            sum(
+                float(value) * value
+                for value in samples[offset : offset + PCM_FRAME_SAMPLES]
+            )
             / PCM_FRAME_SAMPLES
         )
-        for offset in range(
-            0, len(samples) - PCM_FRAME_SAMPLES + 1, PCM_FRAME_SAMPLES
-        )
+        for offset in range(0, len(samples) - PCM_FRAME_SAMPLES + 1, PCM_FRAME_SAMPLES)
     ]
 
 
@@ -2500,9 +2534,7 @@ def _aligned_sample_window(
 def _sampled_signed_similarity(
     left: array[int], right: array[int], lag_samples: int
 ) -> float:
-    left_start, right_start, count = _aligned_sample_window(
-        left, right, lag_samples
-    )
+    left_start, right_start, count = _aligned_sample_window(left, right, lag_samples)
     if count < 2:
         return -1.0
     step = max(1, math.ceil(count / PCM_FINE_LAG_MAX_POINTS))
@@ -2522,9 +2554,7 @@ def _sampled_signed_similarity(
 def _signed_waveform_metrics(
     left: array[int], right: array[int], lag_samples: int
 ) -> dict[str, Any]:
-    left_start, right_start, count = _aligned_sample_window(
-        left, right, lag_samples
-    )
+    left_start, right_start, count = _aligned_sample_window(left, right, lag_samples)
     if count < 2:
         raise EditorialVideoCandidateError(
             "canonical PCM overlap is too short for waveform comparison",
@@ -2571,10 +2601,13 @@ def _pearson_correlation(left: list[float], right: list[float]) -> float:
     )
     if denominator == 0:
         return 1.0 if left == right else -1.0
-    return sum(
-        left_value * right_value
-        for left_value, right_value in zip(left_centered, right_centered)
-    ) / denominator
+    return (
+        sum(
+            left_value * right_value
+            for left_value, right_value in zip(left_centered, right_centered)
+        )
+        / denominator
+    )
 
 
 def _youtube_provider_id(locator: str) -> str | None:

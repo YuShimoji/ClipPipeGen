@@ -1,4 +1,182 @@
-# OUT-13 M6 exact-artifact deny canonical-main closure・監修報告
+# OUT-14 Push Micro-Arc real stream・監修引継ぎ報告
+
+更新日: 2026-07-26 JST
+
+対象: ClipPipeGen のみ
+
+## 監修時に最初に押さえる結論
+
+`clip-out14-push-microarc-stream-v1-001`は
+`OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`。実在する完了済み公開配信
+`youtube:rltNvZ_FY8Q`から、一週間の不在理由、帰省・葬儀の背景、地元と家族の具体話、
+「帰れて良かった」という結びまでを、一つの連続した701.166667秒のmicro-arcにした。
+
+機械的には source/acquisition/caption authority、Timeline IR、字幕mapping、H.264/AAC
+1920x1080、full decode、audio/signal、manifest閉集合、resume、localhost page/Rangeが
+green。final MP4 SHAは
+`1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`。
+人間によるeditorial / visual / language acceptanceは未実施である。
+
+## Git と保存境界
+
+| 対象 | 観測・実施 | 現在状態 |
+|---|---|---|
+| remote baseline | `git fetch --prune origin`後、`origin/main` exact `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`を確認 | OUT-14開始点として固定 |
+| isolated development | `codex/out14-push-microarc-real-stream-v1`をexact mainから別worktreeへ作成 | tracked変更はこのbranchだけ |
+| active worktree | 元の`codex/s1-two-source-common-context-probe-v1` worktreeは開始時clean、HEAD/upstream `9656f58e...` | read-only境界。変更しない |
+| remote mutation | push / PR / merge / main integration | 未実施・未承認 |
+| media storage | source、receipt、plan、MP4、review packageは`episodes/`配下 | ignored、`git ls-files episodes` 0を維持 |
+| preserved evidence | Candidate 005、M2、M6、S1 rejected two-source probe | 内容とidentityを変更しない |
+
+このbranchは最終的に一つのlocal commitへ閉じる。commitしてもupstreamへpushせず、
+remote `origin/main`は変わらない。private mediaとgenerated packageはGit cloneでは
+別hostへ移動しない。
+
+## portfolio reset と今回実装した範囲
+
+出力delivery contractをsource countから分離し、次の三つを正本へ置いた。
+これはcodec・解像度・縦横比のvideo profileではない。
+
+| profile | 解く視聴体験 | このスライス |
+|---|---|---|
+| `PUSH_MICROARC` | 一つの出来事を発端から余韻まで短編として届ける。通常5–15分 | 実装し、実artifactを生成 |
+| `EVENT_STACK_RECAP` | 一つのevent期間のbeatとstate changeを積み上げる。通常9–30分 | 登録のみ。未実装 |
+| `CATALOG_TOPIC_FEATURE` | 複数の独立話題を章立てで整理・比較する。通常15–45分 | 登録のみ。未実装 |
+
+OUT-14 runの属性は`push / free_talk / solo / single_talent / ja`。delivery lane、
+collaboration、talent scope、language、content classを別軸にしたため、将来のprofile routerが
+「N-sourceだからcatalog」のような誤った分類をしない。
+
+active quarantineは`two_source_forced_alternation_common_context_v1`、
+`unrelated_context_official_anime_interleave_v1`、
+`shorts_attention_reset_as_longform_default_v1`。rejected two-source probeを
+開始候補・修復対象・美容調整対象にしていない。
+
+## source と取得
+
+選定sourceは大空スバルの
+`【#生スバル】おはすば！：FREE TALK【ホロライブ/大空スバル】`。
+provider infoは`was_live=true`、`live_status=was_live`、`availability=public`、
+release `2026-07-25T01:02:27Z`。concert、song、members-only、第三者game IPを避けた。
+
+既存yt-dlp 2026.03.17のnative transportは0-byte partのまま停止したため、boundedに停止し、
+project-local ignored tool directoryへyt-dlp 2026.07.04 + curl-cffiを置いた。
+`fetch-source-video`へ任意の`--impersonate-target`と`--yt-dlp-downloader`を追加し、
+`Chrome-133:Macos-15` / `ffmpeg` / progressive format 18で85.934秒の取得に成功した。
+global toolやcredentialは変更していない。
+
+| receipt | SHA / 値 |
+|---|---|
+| source MP4 | `5e026c94...d240`; 244,453,290 bytes; 4848.047891s; 640x360 H.264/AAC |
+| video acquisition receipt | `7c8e32e6...9426` |
+| normalized PCM audio receipt | `b3fdc3ae...e905`; WAV `449e22aa...1c83` |
+| material ledger | `ba864bde...dcac` |
+| provider info | `3d99dc0e...d32` |
+| provider auto caption | `011d8a82...739`; `ja-orig` JSON3 |
+| anonymous caption receipt | `59101758...9d3`; cookies/OAuth false |
+| rights snapshot | `7336b78b...8d7`; compliance pending |
+
+provider自動字幕は選定とtimingの証拠。公式著者字幕、逐語 transcript、話者同定、
+permissionの根拠にはしていない。
+
+## episode plan と成果物
+
+source 786.36–1487.52秒を一続きで使い、前後を2つのintentional omissionとして完全に
+source complementへした。semantic roleは意味の確認点で、映像上の汎用章ラベルや
+不要なjump cutではない。
+
+| role | source range | 編集上の役割 |
+|---|---:|---|
+| hook / inciting situation | 786.36–826.92 | 一週間の不在から帰省を明かす |
+| necessary context | 826.92–958.32 | 祖母の逝去と葬儀という背景 |
+| development / escalation | 958.32–1200.00 | 田舎の人・動物・環境の具体話 |
+| payoff / resolution | 1200.00–1410.12 | 家族とのやり取りとハロハロの出来事 |
+| completing aftermath | 1410.12–1487.52 | 後日談から「帰れて良かった」へ着地 |
+
+source冒頭で本人がpremiseを説明するためcreator contextは0件。省略理由と
+source-caption / creator-context別namespaceをreadbackした。
+
+finalはH.264 High / AAC / yuv420p / 1920x1080 / 30fps、701.166667秒、
+157,691,184 bytes。取得source 640x360をLanczosで拡大し、native 1080pとは主張しない。
+metadata draftはsource URLを1行目、exact source titleを2行目に置き、非公式編集・
+非endorsementを明記した。
+
+## 検証結果
+
+| 観点 | 結果 | 意味 |
+|---|---|---|
+| focused regressions | acquisition 21 passed、OUT-13/14近接回帰 86 passed、single-cut修正後 81 passed | 新profileと既存profileの最小回帰 |
+| media | full decode exit 0、faststart、53,901 packets / regressions 0、A/V start delta 0 | 再生・timestamp整合 |
+| audio/signal | -15.0 LUFS、-1.19 dBTP、black 0、silence 0 | 技術異常なし |
+| captions | 178 cues、overlap/negative/orphan 0、mapping coverage 1.0 | timing/container整合。言語正確性は含まない |
+| manifest | 29 payload rows、payload tree `ac8c6253...4d03`、self-integrity `f0da343f...b403` | package閉集合 |
+| complete package | 30 files / 162,017,845 bytes、tree `7fae710b...b8fa` | exact local review identity |
+| resume | 2.822秒、renderなし、同一SHA | 再入可能 |
+| localhost | page 200、MP4 Range 206 / 1024 bytes | video-first browser delivery |
+
+成功runの内訳はsource/plan 0.808秒、caption 0.036秒、render 231.839秒、
+validation 165.352秒、review package 101.475秒、pre-manifest 499.617秒。
+最初のrunは単一cutにinternal boundaryがないため既存helperのsampleが空になり、
+`contact sheet has no samples`でfail-closedした。単一cutでは選定区間endpointsを証拠化する
+限定修正後に成功し、失敗stagingを成功packageへ昇格させていない。
+
+## 代表フレームの技術観察
+
+first/middle/last、source selected range、通常・2行・短時間字幕frameを実際に開いた。
+sample範囲では字幕の画面外clipping、source字幕との二重表示、破損frameは見つからなかった。
+2行字幕は大きく下部に置かれるが画面内に収まる。
+
+ただし、自動字幕の短時間sampleには`ない方がいいって言われて、猿 / み`のような
+不自然な語分割があり、0.834秒で読むには負荷が高い。この点はmachine validationの失敗ではなく、
+human language/editorial reviewの具体的な確認項目である。
+
+## 人間の判断パケット
+
+exact SHA `1db41c4f...d07f`を全編開き、次を判断する。
+
+1. 786.36秒の開始が自然で、1487.52秒の余韻までで一話が閉じるか。
+2. 葬儀を含む個人的内容をこのpremiseで扱う編集判断が適切か。
+3. 178 provider-auto cuesを公開品質へ近づける言語校正がどこまで必要か。
+
+選択肢は`accept / bounded_repair / reject`。acceptは内部editorial/visual/language scopeだけ。
+bounded repairはaffected timestamp/caption/layoutだけを新identityにする。rejectはこのexact
+artifactの内部候補役を閉じる。どの選択もrights、production、YPP、thumbnail、Shorts、
+upload、publication、visibilityを開かない。
+
+## 今後の条件付き目標
+
+| 目標 | 可能になること | 開始条件 | gate |
+|---|---|---|---|
+| O14-H1 exact human receipt | PUSH profileの人間評価を再利用可能にする | 現package全編レビュー | exact SHA/context/dimensionsにbind |
+| O14-H2 bounded repair | 字幕・boundaryの実欠陥だけを直す | H1=`bounded_repair` | affected dimensions再review |
+| O14-P1 profile rubric | delivery intentで比較できる | PUSH receipt | 未実装profileを生成済みと書かない |
+| O15 Event-stack specimen | event recapの因果・state changeを検証 | event boundary一次証拠 | aftermathまでの人間評価 |
+| O16 Catalog specimen | 章立て型の異なるbottleneckを検証 | 適格な複数話題source | chapter relationの人間評価 |
+| O17 delivery-contract router | source countとdelivery intentを分離して自動選択 | 三contractのspecimen | fail-closed routing tests |
+| O18 reproducibility/security | 別hostで再構成可能にする | 採用profile方向 | fresh clone own install、dependency/security audit |
+| O19 rights/production decision | exact release candidateの可否を判断 | owner/territory/platform/素材権利確定 | 独立approval receipts |
+| O20 authorized release loop | 公開と測定を安全に行う | O19明示承認とcredentials | upload/publication/rollback receipts |
+
+H1がrejectならH2を飛ばし、理由をprofile rubricへ戻す。rights/public gateが閉じたままでも、
+O15–O18のlocal internal specimenとreproducibilityは進められる。
+
+## 次に推奨する取っ掛かり
+
+| 入口 | 解く摩擦 | 次に可能になること |
+|---|---|---|
+| **Advance** | exact MP4の判断待ち | acceptならportfolio比較、bounded repairなら限定修正へ進む |
+| **Audit** | 自動字幕の言語不確実性 | cue単位の修正量と公開品質までの距離が分かる |
+| **Explore** | PUSHだけでは比較不能 | CatalogまたはEvent-stackの最小source候補をread-only選定できる |
+| **Verify** | ignored artifactの別host非可搬性 | fresh-clone再現要件とprivate artifact store要件を定義できる |
+
+## 実行していないこと
+
+`EVENT_STACK_RECAP`生成、`CATALOG_TOPIC_FEATURE`生成、generic N-source profile、
+generated image、thumbnail、Shorts derivative、push、PR、merge、main integration、
+upload、publication、visibility changeは行っていない。真の停止条件は発生していない。
+現在残るのは人間の編集・言語判断と、明示承認が必要なrights/production/public gateである。
+
+# Historical — OUT-13 M6 exact-artifact deny canonical-main closure
 
 更新日: 2026-07-26 JST
 

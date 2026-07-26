@@ -4,10 +4,12 @@
 
 | ID | Feature | State | Observable acceptance |
 |---|---|---|---|
+| **ED-12** | OUT-14 delivery-lane portfolio reset / Push Micro-Arc real stream | done | `build-push-microarc-stream` binds one completed public stream, source/video/audio/caption receipts, ledger, rights snapshot, and explicit five-role plan into one continuous 5–15 minute micro-arc package. Actual artifact `clip-out14-push-microarc-stream-v1-001`: `youtube:rltNvZ_FY8Q`, 701.166667s, 1 cut, 5 roles, 2 omissions, 178 provider-auto caption cues, creator context 0, H.264/AAC 1920x1080 SHA `1db41c4f...d07f`; full media/manifest/resume/HTTP checks passed. Human editorial/visual/language review remains pending. `EVENT_STACK_RECAP` (normally 9–30m) and `CATALOG_TOPIC_FEATURE` (normally 15–45m) are registered only, not implemented. Push/catalog is a delivery-lane axis, not a codec/layout video-profile axis. Rights, production, YPP, thumbnail, Shorts, public/publishing/upload remain closed. |
 | **ED-11** | OUT-12 one-command real long-form video automation | done | Artifact `clip-out12-one-command-real-video-automation-v1-001`. `build-real-video` takes one acquired real source or episode material identity through provenance, content analysis, chronological Timeline IR, caption timing remap, H.264/AAC render, full validation, manifest, localhost review, and hash-verified resume. The actual `youtube:gUwJBRUIWow` run produced 11 cuts / 260.693767s / SHA `5d391ffd...a584`; all validation checks and mobile/desktop review QA passed. Rights, production subtitle/design/render acceptance, thumbnail, winner, public/publishing, and upload remain closed. |
 
-Evidence: `docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md` and
-`clip-out12-one-command-real-video-automation-v1-001` in `artifacts/ARTIFACTS.md`.
+Evidence: `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md`,
+`docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md`, and their
+artifact entries in `artifacts/ARTIFACTS.md`.
 
 蜈ｨ讖溯・繧・ID 縺ｧ邂｡逅・☆繧九ら匳骭ｲ縺輔ｌ縺ｦ縺・↑縺・ｩ溯・縺ｯ霑ｽ蜉縺励↑縺・Ａproposed` 縺ｯ繝ｦ繝ｼ繧ｶ繝ｼ謇ｿ隱榊ｾ後↓ `approved` 縺ｸ譏・ｼ縺励※縺九ｉ螳溯｣・☆繧九・
 ## ID 隕丞援

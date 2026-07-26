@@ -1403,6 +1403,10 @@ def build_review_package(
     boundary_samples = []
     for value in boundary_times:
         boundary_samples.extend((max(0.0, value - 0.12), min(duration - 0.02, value + 0.12)))
+    boundary_mode = "internal_cut_transitions"
+    if not boundary_samples:
+        boundary_samples = [0.5, max(0.5, duration - 0.5)]
+        boundary_mode = "single_selected_range_endpoints"
     boundary_contact = evidence / "cut_boundary_contact_sheet.jpg"
     render_contact_sheet(
         video_path=stage / "final_video.mp4",
@@ -1443,6 +1447,7 @@ def build_review_package(
         "clean_url": f"http://127.0.0.1:{review_port}/review/index.html",
         "first_middle_last_contact_sheet": "review/evidence/first_middle_last_contact_sheet.jpg",
         "cut_boundary_contact_sheet": "review/evidence/cut_boundary_contact_sheet.jpg",
+        "cut_boundary_contact_sheet_mode": boundary_mode,
         "waveform": "review/evidence/waveform.png",
     }
 

@@ -4,43 +4,44 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-13`
-- artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1`
+- feature: `OUT-14`
+- artifact: `clip-out14-push-microarc-stream-v1-001`
+- state: `OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`
 
-- canonical main: `refs/heads/main`
-- canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `m6_closed_deny_exact_artifact`
-- review status: `m6_closed_deny_exact_artifact_internal_evidence_preserved`
-- remote code complete: `true`
+- canonical main: `refs/remotes/origin/main`
+- canonical baseline: `OUT-14 development baseline exact SHA edb782acd1e06aca46e0a5d10295ea52f30ad5c7`
+- canonical status: `out14_push_microarc_real_stream_ready_for_human_review`
+- review status: `ready_for_human_review`
+- remote code complete: `false`
 - local artifact available: `true`
 - portable local artifact available: `false`
-- portable entrypoint: `docs/rights/out13_m6_rights_decision_readiness_packet.json`
+- portable entrypoint: `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
-- pause reason: `exact_candidate_005_public_and_monetized_path_closed_by_user_deny`
+- last verified host entrypoint: `episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html`
+- pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
+- cross-machine resume: `tracked_out14_code_and_docs_are_portable_ignored_source_receipts_plan_and_package_are_not`
 - active rebuild contract: ``
-- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready`
-- accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
+- evidence revision: `out14-push-microarc-stream-v1-001-machine-validated-human-pending`
+- accepted baseline SHA-256: ``
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `new_successor_artifact_scope_before_new_public_use_review`
-- next review: `successor_artifact_scope_decision`
+- decision required: `exact_out14_artifact_internal_editorial_visual_language_verdict`
+- next review: `now`
 
 ## Feature Table
 
 | id | title | status | health | progress_pct | active_artifact | next_action |
 |---|---|---|---|---:|---|---|
+| ED-12 | OUT-14 delivery-lane portfolio reset / Push Micro-Arc real stream | done | stable | 100 | clip-out14-push-microarc-stream-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | ED-11 | OUT-12 one-command real long-form video automation | done | stable | 100 | clip-out12-one-command-real-video-automation-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | MS-01 | material_ledger schema v1 縺ｨ CRUD CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -160,4 +161,3 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-07 | Operator Review UX contract | done | blocked | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-08 | Human Preview Session Bundle | done | stable | 100 | clip-human-preview-session-001 | Keep as reference unless a regression or successor lane appears. |
 | SH-09 | Docs Wiki Dashboard v1.5 | done | stable | 100 | clip-docs-dashboard-001 | Keep as reference unless a regression or successor lane appears. |
-| OUT-02 | 髻ｳ螢ｰ蜷域・・・TS・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

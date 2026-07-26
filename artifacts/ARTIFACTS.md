@@ -6,9 +6,11 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. OUT-13 now opens the tracked acceptance receipt; its historical
-media launcher is not a scheduled review action.
-OUT-13 candidate 005 is the current accepted-internal, content-lineage-bound editorial route.
+current focus. OUT-14 is the current exact local media review target. Its ignored
+same-machine package is opened through the artifact-specific launcher or server;
+the tracked portable contract is `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md`.
+OUT-13 candidate 005 remains accepted-internal archived evidence and its historical
+media launcher is not the current scheduled review action.
 Its exact ignored review package, plan, inputs, and launcher are present in the current root and were
 reverified by hash, package-tree digest, render-free resume, and HTTP readback on 2026-07-25.
 The user then accepted exact candidate 005 for the recorded internal full-view editorial/visual scope.
@@ -31,6 +33,45 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-out14-push-microarc-stream-v1-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-14 Push Micro-Arc Real Completed Stream v1 |
+| purpose | Prove the first delivery-intent portfolio profile by turning one actual completed public talent free-talk stream into one natural, chronology-preserving micro-arc with source/caption authority, full media validation, and an exact video-first human-review identity. |
+| storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine source, receipts, plan, and immutable package under `episodes/`. No source or generated media is tracked or portable through Git. |
+| repo_relative_path | `src/cli/build_push_microarc_stream.py`; `src/integrations/render/push_microarc_stream.py`; generalized support in `editorial_video_candidate.py` / `real_video_pipeline.py`; acquisition options in `fetch_source_video.py` / `yt_dlp_video.py`; `tests/test_push_microarc_stream.py`; `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md` |
+| local_artifact_path | `episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/` |
+| state | `OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW` |
+| source | `youtube:rltNvZ_FY8Q`; `【#生スバル】おはすば！：FREE TALK【ホロライブ/大空スバル】`; public completed stream; source SHA `5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240`; 244,453,290 bytes; 4848.047891s; acquired 640x360 H.264/AAC. |
+| acquisition | Project-local yt-dlp 2026.07.04 with explicit impersonation/downloader options acquired progressive format 18 anonymously after native transport attempts stalled. Video receipt `7c8e32e...9426`; normalized audio receipt `b3fdc3ae...e905`; ledger `ba864bde...dcac`; info `3d99dc0e...d32`; caption receipt `59101758...9d3`; cookies/OAuth false. |
+| plan | SHA `a6ca06ab12e3a888962950e84a3bcdb5a2c53143ed2fffcfb0e2714081d1fc78`; profile `PUSH_MICROARC`; premise binds one weekly-absence/countryside-return episode; source 786.36–1487.52s; one continuous cut; five ordered roles; two exact-complement intentional omissions; no generic section labels. |
+| captions/context | YouTube `ja-orig` automatic JSON3 SHA `011d8a82...739`, 178 selected cues. Selection/timing evidence only; authoritative-transcript and speaker claims false. Creator context 0 because the selected opening explains the premise; separate namespaces and omission reason recorded. |
+| final_video | H.264 High/AAC yuv420p, 1920x1080, 30fps, 701.166667s, 157,691,184 bytes, SHA `1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`. Source 640x360 is Lanczos-upscaled; no native-1080p claim. |
+| validation | Passed shipping codec, native aspect, duration delta 0.006667s, full decode, faststart, 53,901 monotonic packets, A/V start delta 0, -15.0 LUFS, -1.19 dBTP, black/silence events 0, caption overlap/negative/orphan 0, mapping 1.0, all editorial checks. Focused OUT-13/14 and acquisition regressions passed. |
+| visual observation | First/middle/last and normal/multiline/short subtitle evidence were opened. No sampled clipping or double display was found. Automatic caption language remains unaccepted; a 0.834s short cue visibly wraps an awkward `猿み`, requiring human language review. |
+| manifest | 29 payload rows plus excluded `run_manifest.json`; payload digest `ac8c625320a95df39dfdddc1f67fba3edfcf793ea322886979d0144e9dfd4d03`; manifest self-integrity `f0da343f9d2108fb2ca7b66b0896f497776890efd63a1956a241d1d6117ab403`; complete package tree `7fae710b980e3b1bc72c3108c32f6533967f71d702f3f79435d13e604777b8fa`; 30 files / 162,017,845 bytes. |
+| timing/resume | Successful run: source/plan 0.808s, captions 0.036s, render 231.839s, validation 165.352s, review package 101.475s, pre-manifest total 499.617s. Same-input resume validated the immutable package in 2.822s without render. |
+| preview_url | `http://127.0.0.1:8078/review/index.html` while the artifact-specific server runs. Live smoke returned page 200 and MP4 Range 206; server then stopped. |
+| open_command | `powershell -NoProfile -File episodes\out14_push_microarc_real_stream_20260726\artifacts\clip-out14-push-microarc-stream-v1-001\review\open_preview.ps1` |
+| decision_required | Human full-view `accept / bounded_repair / reject` bound to exact final SHA and internal editorial/visual/language scope. Rights, production, YPP, thumbnail, Shorts, public/publishing, upload, and visibility remain closed. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `editorial_acceptance_granted=false`
+- `rights_status=pending`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `ypp_eligibility=not_evaluated`
+- `thumbnail_generated=false`
+- `shorts_derivative_generated=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+- `visibility_changed=false`
+- `episodes_tracked=false`
 
 ## `clip-out13-editorial-video-candidate-v1-005`
 

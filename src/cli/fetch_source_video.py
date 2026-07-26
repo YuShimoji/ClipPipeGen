@@ -44,6 +44,21 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--ffprobe-path")
     parser.add_argument("--yt-dlp-path")
     parser.add_argument(
+        "--impersonate-target",
+        help=(
+            "Optional yt-dlp impersonation target for anonymous public-media "
+            "acquisition when the installed yt-dlp transport supports it."
+        ),
+    )
+    parser.add_argument(
+        "--yt-dlp-downloader",
+        choices=("native", "ffmpeg"),
+        help=(
+            "Optional yt-dlp downloader selection. Use ffmpeg when the native "
+            "transport cannot start an anonymous public-media transfer."
+        ),
+    )
+    parser.add_argument(
         "--format-selector",
         default=yt_dlp_video.DEFAULT_FORMAT_SELECTOR,
         help=(
@@ -80,6 +95,8 @@ def run(argv: list[str]) -> int:
         ffprobe_path=args.ffprobe_path,
         yt_dlp_path=args.yt_dlp_path,
         format_selector=args.format_selector,
+        impersonate_target=args.impersonate_target,
+        downloader=args.yt_dlp_downloader,
         will_write=not args.dry_run,
     )
 
@@ -132,6 +149,8 @@ def run(argv: list[str]) -> int:
                 yt_dlp_path=args.yt_dlp_path,
                 ffprobe_path=args.ffprobe_path,
                 format_selector=args.format_selector,
+                impersonate_target=args.impersonate_target,
+                downloader=args.yt_dlp_downloader,
             )
     except (LedgerError, ValueError, source_video.SourceVideoError) as exc:
         print(f"fetch-source-video failed: {exc}", file=sys.stderr)
@@ -160,6 +179,10 @@ def _mode_arg_error(args: argparse.Namespace) -> str | None:
             return "--mode local-media-video does not accept --source-url"
         if args.yt_dlp_path:
             return "--yt-dlp-path is only valid when --mode yt-dlp-video"
+        if args.impersonate_target:
+            return "--impersonate-target is only valid when --mode yt-dlp-video"
+        if args.yt_dlp_downloader:
+            return "--yt-dlp-downloader is only valid when --mode yt-dlp-video"
         return None
     if args.mode == "yt-dlp-video":
         if not args.source_url:
@@ -214,6 +237,8 @@ def _preflight(
     ffprobe_path: str | None,
     yt_dlp_path: str | None,
     format_selector: str,
+    impersonate_target: str | None,
+    downloader: str | None,
     will_write: bool,
 ) -> dict[str, Any]:
     material_dir = paths["material_dir"]
@@ -230,6 +255,8 @@ def _preflight(
             yt_dlp_path=yt_dlp_path,
             ffprobe_path=ffprobe_path,
             format_selector=format_selector,
+            impersonate_target=impersonate_target,
+            downloader=downloader,
         ).to_dict()
         output_path_display = (
             _display_path(material_dir, Path.cwd())
@@ -244,6 +271,8 @@ def _preflight(
         "source_path": source_path,
         "source_path_exists": Path(source_path).exists() if source_path else None,
         "format_selector": format_selector if mode == "yt-dlp-video" else None,
+        "impersonate_target": (impersonate_target if mode == "yt-dlp-video" else None),
+        "yt_dlp_downloader": downloader if mode == "yt-dlp-video" else None,
         "allowed_containers": (
             list(yt_dlp_video.ALLOWED_CONTAINERS) if mode == "yt-dlp-video" else None
         ),
@@ -380,6 +409,8 @@ def _execute_yt_dlp_video(
     yt_dlp_path: str | None,
     ffprobe_path: str | None,
     format_selector: str,
+    impersonate_target: str | None,
+    downloader: str | None,
 ) -> dict[str, Any]:
     rights = load_rights_manifest(paths["rights_manifest"])
     compliance = rights.get("compliance_check") or {}
@@ -404,6 +435,8 @@ def _execute_yt_dlp_video(
         yt_dlp_path=yt_dlp_path,
         ffprobe_path=ffprobe_path,
         format_selector=format_selector,
+        impersonate_target=impersonate_target,
+        downloader=downloader,
     )
     video_path = result.output_path
     asset_hash = compute_sha256(video_path)
@@ -769,8 +802,13 @@ def _warnings_for_rights(rights_status: str, warnings: list[str]) -> list[str]:
         out.append(
             f"rights status at fetch is {rights_status}; user review required before production/publishing"
         )
-    if "source video acquisition is not production/creative/publish acceptance" not in out:
-        out.append("source video acquisition is not production/creative/publish acceptance")
+    if (
+        "source video acquisition is not production/creative/publish acceptance"
+        not in out
+    ):
+        out.append(
+            "source video acquisition is not production/creative/publish acceptance"
+        )
     return out
 
 

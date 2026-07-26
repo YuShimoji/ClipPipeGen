@@ -80,7 +80,9 @@ def _parse_live_sections(text: str) -> tuple[dict[str, str], list[Section]]:
     matches = list(re.finditer(r"(?m)^## (?P<title>.+?)\r?$", active_body))
     sections: list[Section] = []
     for index, match in enumerate(matches):
-        end = matches[index + 1].start() if index + 1 < len(matches) else len(active_body)
+        end = (
+            matches[index + 1].start() if index + 1 < len(matches) else len(active_body)
+        )
         sections.append(
             Section(
                 title=match.group("title").strip(),
@@ -113,7 +115,9 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         if section.title.lower().startswith("current capsule")
     ]
     next_sections = [
-        section for section in sections if section.title.lower().startswith("next action")
+        section
+        for section in sections
+        if section.title.lower().startswith("next action")
     ]
     if len(capsule_sections) != 1:
         errors.append(f"live_current_capsule_count={len(capsule_sections)}")
@@ -138,23 +142,22 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
             "main integration approval",
         ):
             if len(fields.get(key, [])) != 1:
-                errors.append(f"capsule_{key.replace(' ', '_')}_count={len(fields.get(key, []))}")
+                errors.append(
+                    f"capsule_{key.replace(' ', '_')}_count={len(fields.get(key, []))}"
+                )
         expected_capsule_values = {
             "active slice": runtime.get("current_slice", ""),
             "active artifact": runtime.get("active_artifact", ""),
             "review status": runtime.get("review_status", ""),
             "portable receipt": runtime.get("portable_entrypoint", ""),
             "local artifact role": runtime.get("local_artifact_role", ""),
-            "main integration approval": runtime.get(
-                "main_integration_approved", ""
-            ),
+            "main integration approval": runtime.get("main_integration_approved", ""),
         }
         for key, expected in expected_capsule_values.items():
             values = fields.get(key, [])
             if len(values) == 1 and values[0] != expected:
                 errors.append(
-                    f"capsule_{key.replace(' ', '_')}_mismatch="
-                    f"{values[0]}!={expected}"
+                    f"capsule_{key.replace(' ', '_')}_mismatch={values[0]}!={expected}"
                 )
 
     if len(next_sections) == 1:
@@ -167,31 +170,33 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
                 f"next_action_mismatch={actions[0]}!={runtime.get('next_action', '')}"
             )
 
-    if runtime.get("current_slice") != "OUT-13":
+    if runtime.get("current_slice") != "OUT-14":
         errors.append(f"runtime_current_slice={runtime.get('current_slice', '')}")
-    if not runtime.get("active_artifact", "").startswith("clip-out13-"):
+    if not runtime.get("active_artifact", "").startswith("clip-out14-push-microarc-"):
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
     expected_runtime_values = {
-        "accepted_feature_revision": "18641fe917b084259869263e8db05d78325aa2db",
-        "integrated_main_revision": "18641fe917b084259869263e8db05d78325aa2db",
-        "main_integration_approved": "true",
-        "m4_main_integration_status": "complete",
-        "m5_integrated_baseline_verification_status": "passed",
+        "accepted_feature_revision": "",
+        "integrated_main_revision": "",
+        "main_integration_approved": "false",
+        "m4_main_integration_status": "not_applicable_out14",
+        "m5_integrated_baseline_verification_status": "not_applicable_out14",
         "m6_rights_status": "closed_deny_exact_artifact",
         "m6_packet_status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
         "m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
-        "active_branch": "main",
-        "final_main_revision_locator": "refs/heads/main",
-        "m6_decision_binding_revision": (
-            "097fcaad8985d4f24077da484819efb5942b9c65"
+        "active_branch": "codex/out14-push-microarc-real-stream-v1",
+        "final_main_revision_locator": (
+            "refs/heads/codex/out14-push-microarc-real-stream-v1"
         ),
-        "upstream_parity": "0 0",
-        "remote_decision_binding_available": "true",
-        "local_decision_binding_committed": "true",
+        "m6_decision_binding_revision": ("097fcaad8985d4f24077da484819efb5942b9c65"),
+        "upstream_parity": "0 1",
+        "remote_decision_binding_available": "false",
+        "local_decision_binding_committed": "false",
         "remote_mutation_authorized": "false",
-        "decision_required": "new_successor_artifact_scope_before_new_public_use_review",
-        "next_review_due": "successor_artifact_scope_decision",
+        "decision_required": (
+            "exact_out14_artifact_internal_editorial_visual_language_verdict"
+        ),
+        "next_review_due": "now",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -215,24 +220,26 @@ def _insert_before_archive(runtime_text: str, addition: str) -> str:
     )
 
 
-def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() -> (
-    None
-):
+def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
     assert _authority_errors(runtime, handoff) == []
 
 
-def test_post_integration_resume_rejects_stale_feature_local_only_state() -> None:
+def test_out14_resume_rejects_stale_branch_or_remote_state() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
-        runtime.replace("active_branch: main", "active_branch: codex/stale-m6", 1)
-        .replace("upstream_parity: 0 0", "upstream_parity: 1 0", 1)
+        runtime.replace(
+            "active_branch: codex/out14-push-microarc-real-stream-v1",
+            "active_branch: codex/stale-out14",
+            1,
+        )
+        .replace("upstream_parity: 0 1", "upstream_parity: 1 0", 1)
         .replace(
-            "remote_decision_binding_available: true",
             "remote_decision_binding_available: false",
+            "remote_decision_binding_available: true",
             1,
         )
     )
@@ -281,7 +288,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: archive_read_only_internal_evidence_only",
+        "local_artifact_role: exact_internal_human_review_target",
         "local_artifact_role: stale_review_target",
         1,
     )
@@ -296,7 +303,7 @@ def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() ->
 def test_runtime_handoff_m5_status_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "m5_integrated_baseline_verification_status: passed",
+        "m5_integrated_baseline_verification_status: not_applicable_out14",
         "m5_integrated_baseline_verification_status: failed",
         1,
     )
@@ -312,7 +319,9 @@ def test_runtime_handoff_m5_status_disagreement_fails_semantic_check() -> None:
 def test_archived_legacy_sections_do_not_enter_live_semantics() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
-    archived_fixture = runtime + """
+    archived_fixture = (
+        runtime
+        + """
 
 ## Current Capsule — historical fixture
 
@@ -323,5 +332,6 @@ def test_archived_legacy_sections_do_not_enter_live_semantics() -> None:
 
 - action: `historical_only`
 """
+    )
 
     assert _authority_errors(archived_fixture, handoff) == []

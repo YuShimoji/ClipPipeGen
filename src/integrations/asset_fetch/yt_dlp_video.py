@@ -14,9 +14,10 @@ import os
 import re
 import shutil
 import subprocess
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Mapping, Protocol
+from typing import Any, Protocol
 
 from . import ffmpeg_audio
 from . import source_video as source_video_adapter
@@ -30,9 +31,7 @@ COMMAND_TIMEOUT_SECONDS = 1800
 VERSION_TIMEOUT_SECONDS = 15
 
 ALLOWED_CONTAINERS: tuple[str, ...] = ("mp4", "mkv", "webm")
-DEFAULT_FORMAT_SELECTOR = (
-    "best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best"
-)
+DEFAULT_FORMAT_SELECTOR = "best[ext=mp4]/best[ext=mkv]/best[ext=webm]/best"
 OUTPUT_BASENAME = "source_video"
 OUTPUT_TEMPLATE_SUFFIX = "source_video.%(ext)s"
 CHOSEN_FORMAT_SEPARATOR = "\t"
@@ -66,8 +65,7 @@ class Runner(Protocol):
         capture_output: bool,
         text: bool,
         timeout: int,
-    ) -> subprocess.CompletedProcess[str]:
-        ...
+    ) -> subprocess.CompletedProcess[str]: ...
 
 
 @dataclass(frozen=True)
@@ -80,6 +78,8 @@ class YtDlpVideoPlan:
     output_dir: str
     output_template: str
     format_selector: str
+    impersonate_target: str | None
+    downloader: str | None
     allowed_containers: tuple[str, ...]
     yt_dlp_command: list[str] | None
     yt_dlp_command_summary: str | None
@@ -95,6 +95,8 @@ class YtDlpVideoPlan:
             "output_dir": self.output_dir,
             "output_template": self.output_template,
             "format_selector": self.format_selector,
+            "impersonate_target": self.impersonate_target,
+            "downloader": self.downloader,
             "allowed_containers": list(self.allowed_containers),
             "yt_dlp_command": _scrub_command_for_readback(self.yt_dlp_command),
             "yt_dlp_command_summary": self.yt_dlp_command_summary,
@@ -154,6 +156,8 @@ def build_plan(
     yt_dlp_path: str | Path | None = None,
     ffprobe_path: str | Path | None = None,
     format_selector: str = DEFAULT_FORMAT_SELECTOR,
+    impersonate_target: str | None = None,
+    downloader: str | None = None,
     allowed_containers: tuple[str, ...] = ALLOWED_CONTAINERS,
     env: Mapping[str, str] | None = None,
 ) -> YtDlpVideoPlan:
@@ -171,9 +175,7 @@ def build_plan(
         "ffprobe metadata readback only; this does not render or encode video",
     ]
     if resolved_ytdlp is None:
-        warnings.append(
-            f"yt-dlp not found via --yt-dlp-path, {YTDLP_ENV_VAR}, or PATH"
-        )
+        warnings.append(f"yt-dlp not found via --yt-dlp-path, {YTDLP_ENV_VAR}, or PATH")
     if resolved_ffprobe is None:
         warnings.append(
             "ffprobe not found via --ffprobe-path, "
@@ -190,6 +192,8 @@ def build_plan(
             output_dir=output_dir_display,
             output_template=output_template,
             format_selector=format_selector,
+            impersonate_target=impersonate_target,
+            downloader=downloader,
             allowed_containers=tuple(allowed_containers),
             yt_dlp_command=None,
             yt_dlp_command_summary=None,
@@ -200,6 +204,8 @@ def build_plan(
         source_url,
         output_template,
         format_selector,
+        impersonate_target=impersonate_target,
+        downloader=downloader,
     )
     return YtDlpVideoPlan(
         yt_dlp_path=resolved_ytdlp,
@@ -210,6 +216,8 @@ def build_plan(
         output_dir=output_dir_display,
         output_template=output_template,
         format_selector=format_selector,
+        impersonate_target=impersonate_target,
+        downloader=downloader,
         allowed_containers=tuple(allowed_containers),
         yt_dlp_command=command,
         yt_dlp_command_summary=_command_summary(command),
@@ -224,6 +232,8 @@ def fetch_url_video(
     yt_dlp_path: str | Path | None = None,
     ffprobe_path: str | Path | None = None,
     format_selector: str = DEFAULT_FORMAT_SELECTOR,
+    impersonate_target: str | None = None,
+    downloader: str | None = None,
     allowed_containers: tuple[str, ...] = ALLOWED_CONTAINERS,
     runner: Runner = subprocess.run,
     env: Mapping[str, str] | None = None,
@@ -237,6 +247,8 @@ def fetch_url_video(
         yt_dlp_path=yt_dlp_path,
         ffprobe_path=ffprobe_path,
         format_selector=format_selector,
+        impersonate_target=impersonate_target,
+        downloader=downloader,
         allowed_containers=allowed_containers,
         env=env,
     )
@@ -262,6 +274,8 @@ def fetch_url_video(
         source_url,
         output_template,
         format_selector,
+        impersonate_target=impersonate_target,
+        downloader=downloader,
     )
 
     try:
@@ -390,19 +404,31 @@ def _download_command(
     source_url: str,
     output_template: str,
     format_selector: str,
+    *,
+    impersonate_target: str | None = None,
+    downloader: str | None = None,
 ) -> list[str]:
-    return [
+    command = [
         yt_dlp_path,
         "--no-playlist",
         "--no-progress",
-        "-f",
-        format_selector,
-        "--print",
-        CHOSEN_FORMAT_PRINT_TEMPLATE,
-        "-o",
-        output_template,
-        source_url,
     ]
+    if impersonate_target:
+        command.extend(["--impersonate", impersonate_target])
+    if downloader:
+        command.extend(["--downloader", downloader])
+    command.extend(
+        [
+            "-f",
+            format_selector,
+            "--print",
+            CHOSEN_FORMAT_PRINT_TEMPLATE,
+            "-o",
+            output_template,
+            source_url,
+        ]
+    )
+    return command
 
 
 def _existing_source_video_files(out_dir: Path) -> list[Path]:
@@ -480,9 +506,7 @@ def _scrub_command_for_readback(command: list[str] | None) -> list[str] | None:
     if command is None:
         return None
     return [
-        scrub_url_for_readback(p) or ""
-        if re.match(r"https?://", p)
-        else p
+        scrub_url_for_readback(p) or "" if re.match(r"https?://", p) else p
         for p in command
     ]
 

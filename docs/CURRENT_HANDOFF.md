@@ -3,48 +3,48 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
+health: OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW
 last_touched: 2026-07-26
-current_slice: OUT-13
-phase: m6_closed_exact_artifact_deny
-canonical_status: m6_closed_deny_exact_artifact
-active_branch: main
-source_branch: codex/out-13-editorial-video-candidate-v1
-development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
-base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
-integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
-integration_method: fast_forward_no_squash_no_history_rewrite
-integration_authority_id: clip-out13-main-integration-authorization-20260725-01
-integration_authority_consumed: true
-final_main_revision_locator: refs/heads/main
+current_slice: OUT-14
+phase: exact_artifact_human_review_pending
+canonical_status: out14_push_microarc_real_stream_ready_for_human_review
+active_branch: codex/out14-push-microarc-real-stream-v1
+source_branch: origin/main
+development_baseline_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+base_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+accepted_feature_revision: null
+integrated_main_revision: null
+integration_method: not_started
+integration_authority_id: null
+integration_authority_consumed: false
+final_main_revision_locator: refs/heads/codex/out14-push-microarc-real-stream-v1
 m6_decision_binding_revision: 097fcaad8985d4f24077da484819efb5942b9c65
 m6_decision_main_integration_authority_id: clip-m6-deny-main-integration-20260726-01
 m6_decision_main_integration_authority_consumed: true
 m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
-remote_resume_contract: fetch_then_switch_main_then_ff_only_pull_then_read_this_file
-current_title: OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained
-human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
-portable_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
-review_open_command: powershell -NoProfile -Command Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
-review_server_restart_command: null
-machine_readback: docs/rights/out13_m6_rights_decision_readiness_packet.json
-decision_required: new_successor_artifact_scope_before_new_public_use_review
-review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved
-remote_code_complete: true
-remote_decision_binding_available: true
-local_decision_binding_committed: true
+remote_resume_contract: fetch_then_switch_branch_then_read_this_file
+current_title: OUT-14 Push Micro-Arc real stream package ready for exact-artifact human review
+human_entrypoint: episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html
+portable_entrypoint: docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md
+review_open_command: powershell -NoProfile -File episodes\out14_push_microarc_real_stream_20260726\artifacts\clip-out14-push-microarc-stream-v1-001\review\open_preview.ps1
+review_server_restart_command: uvx python -m src.cli.serve_review --root episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001 --port 8078
+machine_readback: episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/run_manifest.json
+decision_required: exact_out14_artifact_internal_editorial_visual_language_verdict
+review_status: ready_for_human_review
+remote_code_complete: false
+remote_decision_binding_available: false
+local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: archive_read_only_internal_evidence_only
+local_artifact_role: exact_internal_human_review_target
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
+cross_machine_resume_class: tracked_out14_code_and_docs_are_portable_ignored_source_receipts_plan_and_package_are_not
 rights_approval: not_granted
-public_use_verdict: deny
-monetized_youtube_verdict: deny
-publication_decision: deny
-monetization_decision: deny
+public_use_verdict: not_evaluated_for_out14
+monetized_youtube_verdict: not_evaluated_for_out14
+publication_decision: not_authorized
+monetization_decision: not_evaluated
 m6_owner_verdict: deny
 m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
 m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
@@ -56,38 +56,69 @@ production_image_quality_acceptance: false
 thumbnail_acceptance: false
 winner_selected: false
 public_or_publishing_acceptance: false
-human_review_pending: false
+human_review_pending: true
 automation_acceptance_granted: true
-automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
-editorial_acceptance_granted: true
-acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
-acceptance_review_context_id: out13_candidate_005_internal_full_view_editorial_visual_review_v1
-acceptance_media_sha256: a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5
-acceptance_dimensions: editorial_composition, editorial_flow, subtitle_presentation, picture_quality_for_internal_editorial_use, audio_quality_for_internal_editorial_use
+automation_acceptance_scope: out14_builder_exact_source_plan_caption_receipts_render_validation_resume_and_http_readback
+editorial_acceptance_granted: false
+acceptance_receipt: null
+acceptance_review_context_id: out14_push_microarc_exact_media_full_view_editorial_visual_language_review_v1
+acceptance_media_sha256: 1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f
+acceptance_dimensions: pending_editorial_composition, pending_boundary_naturalness, pending_subtitle_language_accuracy, pending_picture_and_audio_internal_use
 same_review_identity_reopens_human_review: false
 bounded_repair_reopens_only_affected_dimensions_and_timestamps: true
-main_integration_approved: true
-main_integration_preflight_verdict: consumed_by_authorized_fast_forward_integration
-main_integration_approval_consumed_by_revision: 18641fe917b084259869263e8db05d78325aa2db
-m4_main_integration_status: complete
-m5_integrated_baseline_verification_status: passed
+main_integration_approved: false
+main_integration_preflight_verdict: not_started
+main_integration_approval_consumed_by_revision: null
+m4_main_integration_status: not_applicable_out14
+m5_integrated_baseline_verification_status: not_applicable_out14
 m6_rights_status: closed_deny_exact_artifact
 m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
-next_review_due: successor_artifact_scope_decision
-next_review_type: materially_distinct_successor_artifact_scope
-pause_reason: exact_candidate_005_public_and_monetized_path_closed_by_user_deny
-next_action: require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration
-active_artifact: clip-out13-editorial-video-candidate-v1-005
+next_review_due: now
+next_review_type: exact_out14_full_view_editorial_visual_language_review
+pause_reason: null
+next_action: open_exact_out14_review_and_record_accept_bounded_repair_or_reject_without_expanding_rights_or_publication_scope
+active_artifact: clip-out14-push-microarc-stream-v1-001
 source_of_truth: true
-owner_lane: rights_readiness_handoff
-related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/rights/out13_m6_rights_decision_readiness_packet.json, docs/RUNTIME_HISTORY.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, docs/output_layer/out13_human_acceptance_receipt.json, artifacts/ARTIFACTS.md
-upstream_parity: 0 0
+owner_lane: human_editorial_visual_language_review
+related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, docs/rights/out13_m6_rights_decision_readiness_packet.json, artifacts/ARTIFACTS.md
+upstream_parity: 0 1
 ---
 
 # Current Handoff - ClipPipeGen
 
-## M6はexact Candidate 005 denyでclosed
+## OUT-14 は exact artifact の human review 待ち
+
+remote `origin/main` exact revision
+`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`から隔離 branch
+`codex/out14-push-microarc-real-stream-v1`を作り、active worktreeを変更せずに
+`clip-out14-push-microarc-stream-v1-001`を生成した。tracked implementation と docs は
+この branch の単一 local commitに閉じ、push、PR、merge、main integration、upload、
+publication、visibility changeは行わない。
+
+source は `youtube:rltNvZ_FY8Q`、大空スバルの公開済み free-talk archive。
+4848.047891秒の source から 786.36–1487.52秒を一つの連続 range として採用し、
+701.166667秒の H.264/AAC 1920x1080 MP4を作った。映像 SHAは
+`1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`。
+取得 source は640x360で、出力はLanczos upscaleである。native 1080pとは扱わない。
+
+plan は `PUSH_MICROARC` profile、1 media cut、2 intentional omitted ranges、
+hook / context / development / payoff / aftermath の5役割、provider自動字幕178 cue、
+creator context 0件を持つ。字幕はselection evidenceで、逐語 transcript、
+公式著者字幕、話者同定ではない。
+
+full decode、faststart、timestamp、A/V sync、mapping 1.0、-15.0 LUFS、
+black/silence 0、caption containment、manifest閉集合がpassした。同一入力resumeは
+2.822秒で再レンダーせずpass。localhostはreview page 200、MP4 Range 206。
+代表フレームでは文字切れや二重表示は見つからなかったが、0.834秒cueの
+「猿み」のような自動字幕由来の不自然な分割があり、言語校正はhuman gateである。
+
+次の一手は exact SHA の全編を開き、`accept / bounded_repair / reject`の一つを
+内部editorial/visual/language scopeへbindすること。acceptでもrights、production、
+YPP、thumbnail、Shorts、upload、publicationは開かない。bounded repairなら変更した
+timestamp/caption/layoutだけを新review identityにする。
+
+## 過去の OUT-13 M6 closed deny
 
 OUT-13のaccepted feature revision
 `18641fe917b084259869263e8db05d78325aa2db`は、start main

@@ -10,7 +10,6 @@ import pytest
 
 from src.integrations.asset_fetch import yt_dlp_video
 
-
 _FFPROBE_VIDEO_PAYLOAD = {
     "format": {
         "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
@@ -103,21 +102,35 @@ def test_build_plan_includes_format_selector_and_print_marker(tmp_path: Path):
     assert plan.output_template.endswith("/source_video.%(ext)s")
 
 
+def test_build_plan_places_anonymous_impersonation_before_format_selection(
+    tmp_path: Path,
+):
+    plan = yt_dlp_video.build_plan(
+        source_url="https://www.youtube.com/watch?v=AAA",
+        output_dir=tmp_path,
+        yt_dlp_path="C:/bin/yt-dlp.exe",
+        ffprobe_path="C:/bin/ffprobe.exe",
+        impersonate_target="Chrome-133:Macos-15",
+        downloader="ffmpeg",
+    )
+
+    command = plan.yt_dlp_command
+    assert command is not None
+    impersonate_index = command.index("--impersonate")
+    assert command[impersonate_index + 1] == "Chrome-133:Macos-15"
+    assert impersonate_index < command.index("-f")
+    downloader_index = command.index("--downloader")
+    assert command[downloader_index + 1] == "ffmpeg"
+    assert downloader_index < command.index("-f")
+    assert plan.to_dict()["impersonate_target"] == "Chrome-133:Macos-15"
+    assert plan.to_dict()["downloader"] == "ffmpeg"
+
+
 def test_fetch_url_video_success_writes_mp4_and_reads_metadata(tmp_path: Path):
     out_dir = tmp_path / "materials" / "src_video_yt"
-    chosen_line = "\t".join(
-        [
-            yt_dlp_video.CHOSEN_FORMAT_MARKER,
-            "299",
-            "mp4",
-            "avc1.640028",
-            "mp4a.40.2",
-            "1280",
-            "720",
-            "29.97",
-            "1234567",
-            "1080p",
-        ]
+    chosen_line = (
+        f"{yt_dlp_video.CHOSEN_FORMAT_MARKER}\t299\tmp4\tavc1.640028\t"
+        "mp4a.40.2\t1280\t720\t29.97\t1234567\t1080p"
     )
 
     def runner(args, *, capture_output, text, timeout):
@@ -176,7 +189,9 @@ def test_fetch_url_video_success_writes_mp4_and_reads_metadata(tmp_path: Path):
     assert result.chosen_format["format_note"] == "1080p"
     assert result.metadata["video_codec"] == "h264"
     assert result.metadata["resolution"] == "1280x720"
-    assert any("not production/creative/publish acceptance" in w for w in result.warnings)
+    assert any(
+        "not production/creative/publish acceptance" in w for w in result.warnings
+    )
     assert result.stderr_digest["algorithm"] == "sha256"
 
 
@@ -185,7 +200,9 @@ def test_fetch_url_video_rejects_unsupported_container_and_cleans_up(tmp_path: P
 
     def runner(args, *, capture_output, text, timeout):
         if args == ["fake-ytdlp", "--version"]:
-            return subprocess.CompletedProcess(args, 0, stdout="2026.05.01\n", stderr="")
+            return subprocess.CompletedProcess(
+                args, 0, stdout="2026.05.01\n", stderr=""
+            )
         if args[0] == "fake-ytdlp":
             template = args[args.index("-o") + 1]
             produced = Path(template.replace("%(ext)s", "flv"))
@@ -212,7 +229,9 @@ def test_fetch_url_video_cleans_up_on_ytdlp_failure(tmp_path: Path):
 
     def runner(args, *, capture_output, text, timeout):
         if args == ["fake-ytdlp", "--version"]:
-            return subprocess.CompletedProcess(args, 0, stdout="2026.05.01\n", stderr="")
+            return subprocess.CompletedProcess(
+                args, 0, stdout="2026.05.01\n", stderr=""
+            )
         if args[0] == "fake-ytdlp":
             template = args[args.index("-o") + 1]
             partial = Path(template.replace("%(ext)s", "mp4"))
@@ -246,7 +265,9 @@ def test_fetch_url_video_cleans_up_on_probe_failure(tmp_path: Path):
 
     def runner(args, *, capture_output, text, timeout):
         if args == ["fake-ytdlp", "--version"]:
-            return subprocess.CompletedProcess(args, 0, stdout="2026.05.01\n", stderr="")
+            return subprocess.CompletedProcess(
+                args, 0, stdout="2026.05.01\n", stderr=""
+            )
         if args[0] == "fake-ytdlp":
             template = args[args.index("-o") + 1]
             produced = Path(template.replace("%(ext)s", "mkv"))
@@ -295,7 +316,9 @@ def test_fetch_url_video_refuses_to_overwrite_existing_source_video(tmp_path: Pa
 
     def runner(args, *, capture_output, text, timeout):
         if args == ["fake-ytdlp", "--version"]:
-            return subprocess.CompletedProcess(args, 0, stdout="2026.05.01\n", stderr="")
+            return subprocess.CompletedProcess(
+                args, 0, stdout="2026.05.01\n", stderr=""
+            )
         raise AssertionError(
             "fetch_url_video must refuse to call yt-dlp when source_video.* exists"
         )
