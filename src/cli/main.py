@@ -59,6 +59,7 @@ Subcommands:
     build-real-video          OUT-12: one real source -> long-form MP4 + validation/review.
     build-editorial-video-candidate OUT-13: explicit evidence plan -> editorial MP4/review.
     build-push-microarc-stream OUT-14: one completed stream -> closed 5-15m micro-arc.
+    build-push-microarc-editorial-v2 OUT-14: candidate-ranked actual-audio editorial reconstruction.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
     reconstitute-out07-review OUT-07: current media revision -> baseline-first combined poster review.
@@ -109,6 +110,7 @@ from . import (
     build_operator_proxy_decision_handoff,
     build_out07_direction_proxy,
     build_output_layer_gap_report,
+    build_push_microarc_editorial_v2,
     build_push_microarc_stream,
     build_real_unused_range_short_minibatch,
     build_real_video,
@@ -206,6 +208,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-real-video": build_real_video.run,
     "build-editorial-video-candidate": build_editorial_video_candidate.run,
     "build-push-microarc-stream": build_push_microarc_stream.run,
+    "build-push-microarc-editorial-v2": build_push_microarc_editorial_v2.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
     "build-shorts-poster-frame-proof": build_shorts_poster_frame_proof.run,

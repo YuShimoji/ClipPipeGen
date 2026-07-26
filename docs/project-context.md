@@ -3,21 +3,39 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-25
-current_slice: OUT-13
-phase: integrated_main_baseline_verified
-active_branch: main
-source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
-sync_baseline_head: 18641fe917b084259869263e8db05d78325aa2db
-base_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-upstream_parity: 0 0
-health: OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1
+last_touched: 2026-07-27
+current_slice: OUT-14
+phase: exact_v2_artifact_human_review_pending
+active_branch: codex/out14-push-microarc-editorial-v2
+source_branch: exact-base-30b4891399ad474b624518f7dcb76591b68c8bef
+verified_implementation_head: refs/heads/codex/out14-push-microarc-editorial-v2
+sync_baseline_head: 30b4891399ad474b624518f7dcb76591b68c8bef
+base_main_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+upstream_parity: not_configured_local_only
+health: OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW
 ---
 
 # Project Context - ClipPipeGen
 
-## 現在の軸
+## 2026-07-27 現在の軸
+
+OUT-14 v1はtechnical passを保存したままhuman editorial rejectとなった。
+current artifactはv2
+`clip-out14-push-microarc-editorial-v2-001`、final SHA
+`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`。
+3 stream / 9 candidateのselectorからDiscordプロフィール通知episodeを選び、
+actual-audio transcript、8 cut、4 telop、title 3案、actual-frame thumbnail rough、
+full media validation、localhost reviewまで接続した。
+
+現在のbottleneckはexact v2 human review。rights readinessやproductionへは進んでいない。
+v1 quarantine、v2 technical evidence、human decision、rights/production/public gateを
+別identityで管理する。
+
+詳細は`docs/CURRENT_HANDOFF.md`と`docs/SUPERVISOR_STATUS_REPORT.md`。
+
+## OUT-13までの既存軸
+
+### OUT-13時点の軸
 
 ClipPipeGenは、source acquisition、rights readback、編集authority、render、review、
 publishing準備をepisode単位で接続する制作補助ツールである。OUT-12で取得済み実sourceから

@@ -1,0 +1,59 @@
+{
+  "schema_version": "clippipegen.out14.human_editorial_decision.v1",
+  "record_mode": "append_only_events",
+  "artifact_id": "clip-out14-push-microarc-stream-v1-001",
+  "v1_final_video_sha256": "1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f",
+  "v1_source_identity": "youtube:rltNvZ_FY8Q",
+  "v1_source_sha256": "5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240",
+  "events": [
+    {
+      "event_id": "out14-v1-human-editorial-rejection-20260727-01",
+      "recorded_at": "2026-07-27T01:05:23+09:00",
+      "evidence_origin": "direct_user_human_review",
+      "technical_dimension": {
+        "status": "preserved_as_passed_evidence",
+        "passed_scope": [
+          "source acquisition and provenance",
+          "source-range reverse mapping",
+          "render and decode",
+          "A/V integrity",
+          "local review delivery"
+        ],
+        "claim_boundary": "technical validity does not imply editorial acceptance"
+      },
+      "editorial_dimension": {
+        "status": "rejected",
+        "canonical": false,
+        "default_candidate": false,
+        "release_candidate": false,
+        "archive_reachability": "preserve_exact_artifact_and_review_package",
+        "feedback": [
+          "配信の連続11分を字幕付きで抜いただけに見える",
+          "複数のepisodeがあるのに可視の区切りテロップがない",
+          "字幕が全体的に発話より遅い",
+          "出力03:18付近の「猿と喧嘩」は誤認識・不適切分割",
+          "直後の「そんなこと／あるみたいな。」は一つの意味単位として扱うべき",
+          "出力04:40以降の「アライグマ」周辺は誤認識",
+          "[いきをのむ音]等の非発話annotationをviewer-facing字幕へ出さない",
+          "タイトルのtone/registerは内容と衝突しない範囲で維持可能",
+          "葬式を主要語・クリック誘因にしない",
+          "実source frame由来のthumbnail roughをreview補助として導入する"
+        ],
+        "unmentioned_regions": "not_accepted",
+        "human_full_cue_correction_requested": false
+      }
+    }
+  ],
+  "quarantine": {
+    "quarantine_id": "out14-contiguous-auto-caption-unstructured-v1",
+    "status": "ACTIVE",
+    "target_scope": "OUT-14 PUSH_MICROARC viewer-facing editorial candidate",
+    "signatures": [
+      "long_single_contiguous_excerpt",
+      "multiple_episode_boundaries_not_visible",
+      "provider_auto_caption_display_without_semantic_and_sync_correction",
+      "family_death_or_funeral_as_primary_promotional_hook"
+    ],
+    "cosmetic_fix_is_not_escape": true
+  }
+}

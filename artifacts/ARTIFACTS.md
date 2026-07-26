@@ -6,15 +6,19 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. OUT-14 is the current exact local media review target. Its ignored
-same-machine package is opened through the artifact-specific launcher or server;
-the tracked portable contract is `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md`.
+current focus. OUT-14 editorial reconstruction v2 is the current exact local media
+review target. Its ignored same-machine package is opened through the artifact-specific
+launcher or server; the tracked portable contract is
+`docs/output_layer/OUT_14_PUSH_MICROARC_EDITORIAL_V2.md`.
+The v1 package remains reachable technical evidence, but its human editorial verdict is
+rejected and quarantine `out14-contiguous-auto-caption-unstructured-v1` is active.
 OUT-13 candidate 005 remains accepted-internal archived evidence and its historical
 media launcher is not the current scheduled review action.
 Its exact ignored review package, plan, inputs, and launcher are present in the current root and were
 reverified by hash, package-tree digest, render-free resume, and HTTP readback on 2026-07-25.
 The user then accepted exact candidate 005 for the recorded internal full-view editorial/visual scope.
-The next gate is M3 main-integration preflight and explicit integration authorization. Candidate 004 has
+Historical M3-M5 integration completed and M6 later closed with deny for that exact rights packet;
+those are archived lineage, not the current next action. Candidate 004 has
 the same review-relevant media SHA and inherits the recorded dimensions without another full-view gate.
 Candidate 003 remains preserved technical
 predecessor evidence, not an accepted or rejected candidate. Candidate 001 remains a historical
@@ -34,7 +38,45 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
-## `clip-out14-push-microarc-stream-v1-001`
+## `clip-out14-push-microarc-editorial-v2-001`
+
+| Field | Value |
+|---|---|
+| title | OUT-14 Push Micro-Arc Editorial Reconstruction v2 |
+| purpose | Replace the human-rejected contiguous v1 construction with a fresh, competitively selected, actual-audio-bound episode reconstruction that has visible structure, exact timing evidence, title alternatives, and an actual-source-frame thumbnail rough. |
+| storage class | Tracked CLI/render integration/tests/docs plus ignored local source, ASR evidence, selection, receipts, and immutable review package under `episodes/`. No source or generated media is tracked or portable through Git. |
+| repo_relative_path | `src/cli/build_push_microarc_editorial_v2.py`; `src/integrations/render/push_microarc_editorial_v2.py`; `tests/test_push_microarc_editorial_v2.py`; `docs/output_layer/OUT_14_PUSH_MICROARC_EDITORIAL_V2.md`; `docs/output_layer/OUT_14_V1_HUMAN_EDITORIAL_DECISION.json` |
+| local_artifact_path | `episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/` |
+| state | `OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW` |
+| v1 decision | Exact v1 SHA `1db41c4f...d07f` technical evidence preserved; human editorial rejected; canonical/default/release candidate false; active quarantine retained. |
+| selection | 3 stream identities, 9 episode candidates, score-before hard gates, 11 competitive observations. C3 Discord notification episode selected at 93/100; v1 overlap 0. |
+| source | `youtube:rltNvZ_FY8Q`; anonymous formats `399+251`; 1920x1080/60 AV1/Opus window; 642.001s; 97,061,823 bytes; SHA `335e9a131fae06b716bd7ac479e914fb849be117b15c4b412c9b4c565fef264e`; cookies/OAuth/credentials false. |
+| clock | Selected window time zero measured at provider 2268.03s by normalized 200Hz PCM cross-correlation 0.859306 against protected source audio; requested-origin delta +30ms. |
+| editorial | 8 chronological cuts / 406.55s. Setup, red-card context, work impact, profile escalation, notification reveal, apology, aftermath, ending warning. Four creator telops remain separate from speech provenance. |
+| captions | Actual-audio faster-whisper small word timing with contextual term correction; provider JSON3 is immutable discovery provenance only. 142 cues, 24 anchors, rendered median 0ms / absolute p95 0ms, viewer-facing non-speech annotations 0, presentation violations 0. |
+| title / rough | Working title plus two alternatives. Actual-source-frame rough at 1280x720 and 320x180 with `全スタッフに通知`; publication thumbnail acceptance false. |
+| final_video | H.264/AAC yuv420p, 1920x1080, 406.55s, 405,217,162 bytes, SHA `8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`. |
+| validation | 13/13 media checks passed: full decode, faststart, monotonic timestamps, A/V, -14.93 LUFS, -1.85 dBTP, maximum adjacent cut delta 0.82 LU, black/silence, caption containment, mapping. |
+| manifest/package | 29 payload rows plus excluded manifest; manifest SHA `774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9`; closed package 30 files / 408,275,872 bytes. |
+| preview_url | `http://127.0.0.1:8081/review/index.html` while the artifact server runs. Smoke returned page 200 and MP4 Range 206 / 1024 bytes; server then stopped. |
+| open_command | `powershell -NoProfile -File episodes\out14_push_microarc_editorial_v2_20260727\artifacts\clip-out14-push-microarc-editorial-v2-001\review\open_preview.ps1` |
+| decision_required | Human `accept / bounded_repair / reject` bound to exact final SHA for editorial, language, telop, title, and thumbnail-rough scope. Rights, font/license, production, YPP, upload, publication, and visibility remain closed. |
+
+Boundary flags:
+
+- `internal_review_only=true`
+- `human_review_pending=true`
+- `editorial_acceptance_granted=false`
+- `rights_approval=false`
+- `production_acceptance=false`
+- `production_subtitle_design_acceptance=false`
+- `thumbnail_acceptance=false`
+- `public_or_publishing_acceptance=false`
+- `upload_attempted=false`
+- `visibility_changed=false`
+- `episodes_tracked=false`
+
+## `clip-out14-push-microarc-stream-v1-001` — human-rejected predecessor
 
 | Field | Value |
 |---|---|

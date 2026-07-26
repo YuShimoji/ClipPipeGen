@@ -3,10 +3,33 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-25
+last_touched: 2026-07-27
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-27 — OUT-14 v1 human rejectを保存し、v2を別identityで再構成する
+
+exact v1 final SHA `1db41c4f...d07f`はsource/mapping/render/decode/A/V/local reviewの
+technical evidenceとして保持する。人間editorial verdictは`rejected`。
+`docs/output_layer/OUT_14_V1_HUMAN_EDITORIAL_DECISION.json`へappend-only eventとして記録し、
+unmentioned regionをaccept扱いにしない。
+
+active quarantineは`out14-contiguous-auto-caption-unstructured-v1`。
+long contiguous excerpt、不可視episode boundary、provider-auto viewer caption、
+funeral/death primary hookをsignatureにし、cosmetic fixだけでは脱出できない。
+v1をcanonical/default/release candidateへ戻さない。
+
+v2では3 public completed streamから9 candidateを作り、hard gate後100点rubricで
+C3 Discordプロフィール通知episodeを93点で選択した。v1 span overlapは0。
+anonymous 1080p60 source窓、actual-audio transcript、word timing、8 cut、4 telop、
+title 3案、actual-frame roughを使用した。
+
+final v2 SHAは
+`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`。
+stateは`OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW`。
+technical greenをhuman editorial、rights、production、YPP、publicationへ昇格しない。
+次はこのSHAの`accept / bounded_repair / reject`だけ。
 
 ## 2026-07-25 — exact accepted OUT-13をmainへfast-forward統合し、M5 baselineを閉じる
 

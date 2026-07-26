@@ -3,81 +3,81 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW
-last_touched: 2026-07-26
-state_revision: out14-push-microarc-real-stream-review-ready-2026-07-26
-contract_repair_status: one_cut_review_endpoint_evidence_and_authenticated_acquisition_options_added
+health: OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW
+last_touched: 2026-07-27
+state_revision: out14-push-microarc-editorial-v2-review-ready-2026-07-27
+contract_repair_status: editorial_v2_reconstructed_and_machine_validated_human_review_pending
 current_slice: OUT-14
-phase: exact_artifact_human_review_pending
-canonical_status: out14_push_microarc_real_stream_ready_for_human_review
-active_branch: codex/out14-push-microarc-real-stream-v1
+phase: exact_v2_artifact_human_editorial_review_pending
+canonical_status: out14_push_microarc_editorial_v2_ready_for_human_review
+active_branch: codex/out14-push-microarc-editorial-v2
 source_branch: origin/main
 development_baseline_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-verified_implementation_head: refs/heads/codex/out14-push-microarc-real-stream-v1
+verified_implementation_head: refs/heads/codex/out14-push-microarc-editorial-v2
 accepted_feature_revision: null
 integration_start_main_revision: null
 integrated_main_revision: null
 integration_method: not_started
 integration_authority_id: null
 integration_authority_consumed: false
-final_main_revision_locator: refs/heads/codex/out14-push-microarc-real-stream-v1
+final_main_revision_locator: refs/heads/codex/out14-push-microarc-editorial-v2
 m6_decision_binding_revision: 097fcaad8985d4f24077da484819efb5942b9c65
 m6_decision_main_integration_authority_id: clip-m6-deny-main-integration-20260726-01
 m6_decision_main_integration_authority_consumed: true
 m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
-closure_branch: codex/out14-push-microarc-real-stream-v1
+closure_branch: codex/out14-push-microarc-editorial-v2
 remote_resume_contract: fetch_then_switch_branch_then_read_current_handoff
-upstream_parity: 0 1
+upstream_parity: 1 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
 latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-sync_audit_status: origin_main_exact_baseline_verified_isolated_out14_branch_local_only
+sync_audit_status: origin_main_fetched_exact_mission_base_verified_isolated_v2_branch_local_only
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-14 Push Micro-Arc real stream package ready for exact-artifact human review
-human_entrypoint: episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html
-portable_entrypoint: docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md
-review_open_command: powershell -NoProfile -File episodes\out14_push_microarc_real_stream_20260726\artifacts\clip-out14-push-microarc-stream-v1-001\review\open_preview.ps1
-review_server_restart_command: uvx python -m src.cli.serve_review --root episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001 --port 8078
-machine_readback: episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/run_manifest.json
+current_title: OUT-14 Push Micro-Arc editorial reconstruction v2 ready for exact-artifact human review
+human_entrypoint: episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/review/index.html
+portable_entrypoint: docs/output_layer/OUT_14_PUSH_MICROARC_EDITORIAL_V2.md
+review_open_command: powershell -NoProfile -File episodes\out14_push_microarc_editorial_v2_20260727\artifacts\clip-out14-push-microarc-editorial-v2-001\review\open_preview.ps1
+review_server_restart_command: uv run python -m src.cli.serve_review --root episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001 --port 8081
+machine_readback: episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/run_manifest.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: exact_out14_artifact_internal_editorial_visual_language_verdict
+decision_required: exact_v2_editorial_language_telop_title_thumbnail_rough_verdict
 review_status: ready_for_human_review
-review_scope: exact_out14_full_view_editorial_visual_language_review
+review_scope: exact_v2_full_view_editorial_language_telop_title_thumbnail_rough_review
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: false
 remote_decision_binding_available: false
-local_decision_binding_committed: false
+local_decision_binding_committed: true
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: exact_internal_human_review_target
+local_artifact_role: exact_v2_internal_human_review_target
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_out14_code_and_docs_are_portable_ignored_source_receipts_plan_and_package_are_not
-cross_host_resume_status: exact_candidate_005_present_on_verified_host_not_portable_through_git
+cross_machine_resume_class: tracked_v2_code_and_docs_are_portable_ignored_source_asr_receipts_and_package_are_not
+cross_host_resume_status: exact_v2_artifact_present_on_verified_host_not_portable_through_git
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out14-push-microarc-stream-v1-001-machine-validated-human-pending
+evidence_revision: out14-push-microarc-editorial-v2-001-machine-validated-human-pending
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: DESKTOP-U9P4LKJ
 local_verified_host: DESKTOP-U9P4LKJ
-local_artifact_evidence_receipt: episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/run_manifest.json
-local_package_requirement: satisfied_out14_exact_source_info_video_audio_caption_receipts_ledger_rights_plan_and_output_hashes_match
+local_artifact_evidence_receipt: episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/run_manifest.json
+local_package_requirement: satisfied_v2_exact_source_asr_selection_timeline_caption_telop_thumbnail_validation_and_output_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: not_granted
-public_use_verdict: not_evaluated_for_out14
-monetized_youtube_verdict: not_evaluated_for_out14
+public_use_verdict: not_evaluated_for_out14_v2
+monetized_youtube_verdict: not_evaluated_for_out14_v2
 publication_decision: not_authorized
 monetization_decision: not_evaluated
-m6_owner_verdict: deny
+m6_owner_verdict: historical_v1_only_not_requested_for_v2
 m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
 m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
 candidate_public_default: off
@@ -86,9 +86,9 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-26T22:25:15+09:00
+last_verified_at: 2026-07-27
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html
+last_verified_host_entrypoint: episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/review/index.html
 historical_last_verified_host_entrypoint: null
 pause_reason: null
 exact_baseline_available: null
@@ -98,18 +98,18 @@ cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
 human_review_decision: pending
-user_feedback_overall: pending_exact_out14_full_view_review
-content_selection_status: one_continuous_public_free_talk_microarc_five_semantic_roles_rendered
-subtitle_presentation_timing_status: provider_auto_json3_178_cues_machine_pass_human_language_review_pending
-endpoint_status: source_786_36_to_1487_52_natural_boundary_human_review_pending
+user_feedback_overall: pending_exact_out14_v2_full_view_review
+content_selection_status: three_stream_nine_candidate_scan_selected_93_point_discord_microarc_eight_chronological_cuts
+subtitle_presentation_timing_status: actual_audio_canonical_transcript_142_cues_machine_pass_human_language_review_pending
+endpoint_status: eight_selected_ranges_opening_and_ending_boundaries_human_review_pending
 reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
 editorial_acceptance_granted: false
 acceptance_receipt: null
-acceptance_review_context_id: out14_push_microarc_exact_media_full_view_editorial_visual_language_review_v1
-acceptance_media_sha256: 1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f
-acceptance_dimensions: pending_editorial_composition, pending_boundary_naturalness, pending_subtitle_language_accuracy, pending_picture_and_audio_internal_use
+acceptance_review_context_id: out14_push_microarc_editorial_v2_exact_media_full_view_editorial_language_telop_title_thumbnail_review
+acceptance_media_sha256: 8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414
+acceptance_dimensions: pending_editorial_composition, pending_language_accuracy, pending_telop_fit, pending_title_and_thumbnail_rough, pending_picture_and_audio_internal_use
 acceptance_inheritance_key: media_sha256 + review_context_id + accepted_dimensions
 same_review_identity_reopens_human_review: false
 bounded_repair_reopens_only_affected_dimensions_and_timestamps: true
@@ -118,11 +118,11 @@ main_integration_preflight_verdict: not_started
 main_integration_approval_consumed_by_revision: null
 m4_main_integration_status: not_applicable_out14
 m5_integrated_baseline_verification_status: not_applicable_out14
-m6_rights_status: closed_deny_exact_artifact
-m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
+m6_rights_status: not_evaluated_for_v2
+m6_packet_status: historical_v1_decision_not_inherited_by_v2
 m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 automation_acceptance_granted: true
-automation_acceptance_scope: out14_builder_exact_source_plan_caption_receipts_render_validation_resume_and_http_readback
+automation_acceptance_scope: out14_v2_selection_actual_audio_transcript_timeline_caption_telop_thumbnail_render_validation_resume_and_http_readback
 batch_acceptance: not_applicable_out12
 candidate_01_acceptance: not_applicable_out12
 candidate_02_acceptance: not_applicable_out12
@@ -132,50 +132,52 @@ subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_after_page_200_and_mp4_range_206
 next_review_due: now
-next_review_type: exact_out14_full_view_editorial_visual_language_review
-next_action: open_exact_out14_review_and_record_accept_bounded_repair_or_reject_without_expanding_rights_or_publication_scope
-active_artifact: clip-out14-push-microarc-stream-v1-001
-current_review_component: out14_push_microarc_video_subtitle_semantic_arc_and_av_evidence
-out14_artifact_id: clip-out14-push-microarc-stream-v1-001
-out14_state: OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW
+next_review_type: exact_out14_v2_full_view_editorial_language_telop_title_thumbnail_rough_review
+next_action: open_exact_v2_review_and_record_accept_bounded_repair_or_reject_for_this_sha_only
+active_artifact: clip-out14-push-microarc-editorial-v2-001
+active_artifact_manifest_sha256: 774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9
+active_artifact_manifest_self_integrity: e03996ef478b30440e8e7a4163d6cc7258ff9ec7564490e52eb371194e22af1d
+current_review_component: out14_v2_editorial_reconstruction_language_telop_title_thumbnail_and_av_evidence
+out14_artifact_id: clip-out14-push-microarc-editorial-v2-001
+out14_state: OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW
 out14_profile: PUSH_MICROARC
 out14_source_identity: youtube:rltNvZ_FY8Q
-out14_source_sha256: 5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240
-out14_source_duration_seconds: 4848.047891
-out14_source_resolution: 640x360
-out14_source_status: public_completed_stream_archive
-out14_selected_source_in_seconds: 786.36
-out14_selected_source_out_seconds: 1487.52
-out14_timeline_duration_seconds: 701.16
-out14_output_duration_seconds: 701.166667
-out14_source_utilization_ratio: 0.144627
-out14_media_cut_count: 1
-out14_semantic_role_count: 5
+out14_source_sha256: 335e9a131fae06b716bd7ac479e914fb849be117b15c4b412c9b4c565fef264e
+out14_source_duration_seconds: 642.001
+out14_source_resolution: 1920x1080
+out14_source_status: public_completed_stream_archive_local_hd_window
+out14_selected_source_in_seconds: 2276.48
+out14_selected_source_out_seconds: 2906.40
+out14_timeline_duration_seconds: 406.55
+out14_output_duration_seconds: 406.55
+out14_source_utilization_ratio: 0.6454
+out14_media_cut_count: 8
+out14_semantic_role_count: 8
 out14_omitted_span_count: 2
-out14_caption_cue_count: 178
-out14_caption_authority: provider_automatic_caption_selection_evidence_not_authoritative
-out14_creator_context_count: 0
+out14_caption_cue_count: 142
+out14_caption_authority: actual_audio_canonical_transcript_provider_caption_provenance_only
+out14_creator_context_count: 4
 out14_output_resolution: 1920x1080
-out14_upscale_from_source: 640x360_lanczos
+out14_upscale_from_source: none
 out14_output_video_codec: h264_high
 out14_output_audio_codec: aac
-out14_output_byte_size: 157691184
-out14_output_sha256: 1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f
-out14_plan_sha256: a6ca06ab12e3a888962950e84a3bcdb5a2c53143ed2fffcfb0e2714081d1fc78
-out14_caption_sha256: 011d8a823b040a03cafad8f6251409d50feb2ab659ca66527b98b5dc9f452739
-out14_caption_receipt_sha256: 5910175825f6a90a001251884a680d30499d417d8042a580a6112d2c0af299d3
-out14_manifest_self_integrity: f0da343f9d2108fb2ca7b66b0896f497776890efd63a1956a241d1d6117ab403
-out14_payload_tree_digest: ac8c625320a95df39dfdddc1f67fba3edfcf793ea322886979d0144e9dfd4d03
-out14_complete_package_tree_digest: 7fae710b980e3b1bc72c3108c32f6533967f71d702f3f79435d13e604777b8fa
+out14_output_byte_size: 405217162
+out14_output_sha256: 8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414
+out14_plan_sha256: 05ef88f55777eb48449b7e3cd6dcd1438524f9f2a25fbc0175807b638412b78b
+out14_caption_sha256: 853b345beba4aed7fd66ebb615ef3731201fdfb4be9f67666b7a78e09884887f
+out14_caption_receipt_sha256: c11e1114a3fa6144af836f7dd6144071c666c6b0f165ea28bb7dc314d4c58183
+out14_manifest_self_integrity: e03996ef478b30440e8e7a4163d6cc7258ff9ec7564490e52eb371194e22af1d
+out14_payload_tree_digest: manifest_closed_set_29_payload_files
+out14_complete_package_tree_digest: manifest_plus_29_payload_files_30_total
 out14_mapping_coverage_ratio: 1.0
 out14_full_decode_status: passed
-out14_loudness_lufs: -15.0
-out14_true_peak_dbtp: -1.19
+out14_loudness_lufs: -14.93
+out14_true_peak_dbtp: -1.85
 out14_black_event_count: 0
 out14_silence_event_count: 0
 out14_review_http_status: page_200_mp4_range_206
-out14_resume_status: passed_no_render_elapsed_2_822_seconds
-out14_human_language_review_observation: automatic_caption_contains_awkward_short_cue_wrapping_such_as_sarum_i
+out14_resume_status: passed_exact_pre_rendered_failed_artifact_recovery_and_manifest_closed_set_revalidation
+out14_human_language_review_observation: actual_audio_transcript_and_lexical_cue_merge_machine_pass_human_language_review_pending
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
 out13_state: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
 out13_rights_status: unresolved_evidence_preserved_public_use_denied
@@ -567,52 +569,51 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — OUT-14 Push Micro-Arc Ready for Human Review
+## Current Capsule — OUT-14 Push Micro-Arc Editorial Reconstruction v2
 
 - active slice: `OUT-14`
-- active artifact: `clip-out14-push-microarc-stream-v1-001`
-- review status: `ready_for_human_review`
-- portable receipt: `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md`
-- active branch: `codex/out14-push-microarc-real-stream-v1`
-- exact base: `origin/main@edb782acd1e06aca46e0a5d10295ea52f30ad5c7`
-- state: `OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`
-- local artifact role: `exact_internal_human_review_target`
-- main integration approval: `false`
+- active artifact: `clip-out14-push-microarc-editorial-v2-001`
+- state: `OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW`
+- exact final SHA: `8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`
+- portable receipt: `docs/output_layer/OUT_14_PUSH_MICROARC_EDITORIAL_V2.md`
+- active branch: `codex/out14-push-microarc-editorial-v2`
+- exact mission base: `30b4891399ad474b624518f7dcb76591b68c8bef`
+- latest fetched `origin/main`: `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`
+- remote mutation: push / PR / merge はすべて未実施
 
-- source `youtube:rltNvZ_FY8Q` は公開完了 free-talk archive。4848.047891秒から
-  786.36–1487.52秒を一つの連続 range として選び、701.166667秒の H.264/AAC
-  1920x1080 MP4を生成した。source SHAは`5e026c94...d240`、final SHAは
-  `1db41c4f...d07f`。取得source 640x360をLanczos upscaleしており、native 1080pとは
-  扱わない。
-- delivery profileは`PUSH_MICROARC`。一週間の不在理由、帰省・葬儀の背景、
-  地元と家族の具体話、帰れて良かったという結びを、1 media cut / 5 semantic roles /
-  2 intentional omissionsとして保持する。`CATALOG_TOPIC_FEATURE`と
-  `EVENT_STACK_RECAP`は登録のみで、生成していない。
-- provider自動字幕178 cueをsidecar、SRT、ASS、readbackへ分離した。公式著者字幕、
-  逐語 transcript、話者同定の主張はしない。sourceがpremiseを直接説明するため
-  creator contextは0件で、別namespaceと省略理由を記録した。
-- full decode、faststart、timestamp、A/V sync、mapping 1.0、-15.0 LUFS、
-  -1.19 dBTP、black/silence 0、caption containment、manifest閉集合がpass。
-  packageは30 files / 162,017,845 bytes。payload treeは`ac8c6253...4d03`、
-  manifest self-integrityは`f0da343f...b403`、complete package treeは
-  `7fae710b...b8fa`。
-- 同一入力`--resume`は2.822秒で再レンダーなし。localhostはpage 200、
-  MP4 Range 206。代表画像で文字切れ・二重表示は見つからない一方、0.834秒cueの
-  「猿み」のような自動字幕由来の不自然な分割があり、言語校正はhuman gate。
-- Candidate 005、M2、M6、S1 two-source probeは変更していない。Candidate 005の
-  public/monetized denyはexact identityに残り、OUT-14へ継承しない。
-- rights、production subtitle/design/render、YPP、thumbnail、Shorts、publishing、
-  upload、public releaseは未承認。技術greenから推定しない。
+3 stream / 9 candidate を比較し、hard gateを通過したDiscordプロフィール変更の
+micro-arcを93/100で選んだ。v1の連続rangeと既知誤認箇所を除外し、
+`youtube:rltNvZ_FY8Q`の時系列を維持した8 cut、406.55秒のH.264/AAC
+1920x1080 MP4へ再構成した。sourceは1920x1080のローカルHD windowで、
+SHAは`335e9a131fae06b716bd7ac479e914fb849be117b15c4b412c9b4c565fef264e`。
+
+字幕authorityはactual audioから生成したcanonical transcriptで、provider captionは
+出典照合用provenanceに限定した。142 cue、24 timing anchor、non-speech insertion 0。
+4本のcreator telop、working title + 2 alternative、source-frame thumbnail rough
+1280x720 / 320x180をreview packageへ分離している。
+
+full decode、faststart、monotonic timestamp、A/V、black/silence、caption containment、
+timeline mapping、manifest閉集合を含む13/13 validationを通過した。音量は-14.93 LUFS、
+true peakは-1.85 dBTP。packageはrun manifestを含む30 files /
+408,275,872 bytesで、manifest self-integrityは
+`e03996ef478b30440e8e7a4163d6cc7258ff9ec7564490e52eb371194e22af1d`。
+localhost smokeはpage 200 / MP4 Range 206。
+
+v1 final SHA `1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`
+はtechnical passの履歴として保存する。人間editorial verdictは`rejected`で、
+`out14-contiguous-auto-caption-unstructured-v1`をactive quarantineに置く。
+v1をcanonical、default、release candidateへ戻さない。Candidate 005、M2、M6、
+S1 two-source probe、mainは変更していない。
 
 ## Next Action
 
-- action: `open_exact_out14_review_and_record_accept_bounded_repair_or_reject_without_expanding_rights_or_publication_scope`
+- action: `open_exact_v2_review_and_record_accept_bounded_repair_or_reject_for_this_sha_only`
 - authorization state: `local_internal_review_only`
-- owner: `Human editorial / visual / language reviewer`
-- condition: exact final SHA `1db41c4f...d07f`を全編視聴し、開始・結びの自然さ、
-  葬儀を含むpremiseの編集適切性、provider自動字幕の言語精度を判断する。
-  `accept`でもrights/public gateは開かない。`bounded_repair`なら影響した
-  timestamp/caption/layoutだけを新review identityにする。
+- owner: `Human editorial / language / telop / title / thumbnail reviewer`
+- condition: exact final SHA `8fe9105c...3414`を全編視聴し、8 cutの因果と間、
+  actual-audio字幕の言語精度、4 telopの主張範囲、working titleとthumbnail roughを判断する。
+  `accept`でもrights、production、YPP、publishing、upload、public releaseは開かない。
+  `bounded_repair`は新しいmedia SHAとreview identityを発行し、影響範囲を再検証する。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

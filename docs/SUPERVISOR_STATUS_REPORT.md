@@ -1,332 +1,242 @@
-# OUT-14 Push Micro-Arc real stream・監修引継ぎ報告
+# OUT-14 Push Micro-Arc Editorial Reconstruction v2・監修引継ぎ報告
 
-更新日: 2026-07-26 JST
-
+更新日: 2026-07-27 JST
 対象: ClipPipeGen のみ
+mission: `CPG-OUT14-PUSH-MICROARC-EDITORIAL-RECONSTRUCTION-V2`
 
-## 監修時に最初に押さえる結論
+## 現在の結論
 
-`clip-out14-push-microarc-stream-v1-001`は
-`OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`。実在する完了済み公開配信
-`youtube:rltNvZ_FY8Q`から、一週間の不在理由、帰省・葬儀の背景、地元と家族の具体話、
-「帰れて良かった」という結びまでを、一つの連続した701.166667秒のmicro-arcにした。
+`clip-out14-push-microarc-editorial-v2-001`は
+`OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW`。
+final MP4 SHAは
+`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`、
+406.55秒、1920x1080 H.264/AAC。Discordプロフィール変更が全体通知になった出来事を
+8 cutで因果順に再構成し、actual-audio transcript 142 cue、構成telop 4本、
+title 3案、実source frame thumbnail roughを一つのreview packageへ束ねた。
 
-機械的には source/acquisition/caption authority、Timeline IR、字幕mapping、H.264/AAC
-1920x1080、full decode、audio/signal、manifest閉集合、resume、localhost page/Rangeが
-green。final MP4 SHAは
-`1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`。
-人間によるeditorial / visual / language acceptanceは未実施である。
+機械検証と代表フレーム目視はgreen。人間による全編editorial / language /
+title / thumbnail rough acceptanceは未実施。rights、production subtitle/font、
+production render、YPP、upload、publication、visibilityは閉じたまま。
 
-## Git と保存境界
+## remote同期と作業境界
 
-| 対象 | 観測・実施 | 現在状態 |
+| 対象 | 実施内容 | 現在状態 |
 |---|---|---|
-| remote baseline | `git fetch --prune origin`後、`origin/main` exact `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`を確認 | OUT-14開始点として固定 |
-| isolated development | `codex/out14-push-microarc-real-stream-v1`をexact mainから別worktreeへ作成 | tracked変更はこのbranchだけ |
-| active worktree | 元の`codex/s1-two-source-common-context-probe-v1` worktreeは開始時clean、HEAD/upstream `9656f58e...` | read-only境界。変更しない |
-| remote mutation | push / PR / merge / main integration | 未実施・未承認 |
-| media storage | source、receipt、plan、MP4、review packageは`episodes/`配下 | ignored、`git ls-files episodes` 0を維持 |
-| preserved evidence | Candidate 005、M2、M6、S1 rejected two-source probe | 内容とidentityを変更しない |
+| fetch | `git fetch --prune origin` | `origin/main` exact `edb782acd1e06aca46e0a5d10295ea52f30ad5c7` |
+| exact base | mission指定 `30b4891399ad474b624518f7dcb76591b68c8bef` | object存在、origin/mainの1 commit先 |
+| isolated worktree | branch `codex/out14-push-microarc-editorial-v2` | requested pathで開発 |
+| original checkout | v1 exact base worktree | 開始時clean、書込みなし |
+| remote mutation | push / PR / merge | 未実施・未承認 |
+| media | `episodes/out14_push_microarc_editorial_v2_20260727/` | ignored local evidence、tracked 0 |
+| protected evidence | v1、S1、Candidate 003/004/005、M2、M6 | 開始・終了SHA一致、上書きなし |
 
-このbranchは最終的に一つのlocal commitへ閉じる。commitしてもupstreamへpushせず、
-remote `origin/main`は変わらない。private mediaとgenerated packageはGit cloneでは
-別hostへ移動しない。
+private mediaはローカルだけに存在する。tracked code/docsだけでは別hostでexact MP4を
+再現できない。fresh-clone reproducibilityは別gateであり、今回のsame-host successから推定しない。
 
-## portfolio reset と今回実装した範囲
+終了時の保存照合は次のとおり。
 
-出力delivery contractをsource countから分離し、次の三つを正本へ置いた。
-これはcodec・解像度・縦横比のvideo profileではない。
-
-| profile | 解く視聴体験 | このスライス |
+| protected identity | 終了時SHA-256 | 判定 |
 |---|---|---|
-| `PUSH_MICROARC` | 一つの出来事を発端から余韻まで短編として届ける。通常5–15分 | 実装し、実artifactを生成 |
-| `EVENT_STACK_RECAP` | 一つのevent期間のbeatとstate changeを積み上げる。通常9–30分 | 登録のみ。未実装 |
-| `CATALOG_TOPIC_FEATURE` | 複数の独立話題を章立てで整理・比較する。通常15–45分 | 登録のみ。未実装 |
+| v1 final MP4 | `1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f` | 開始値一致 |
+| v1 manifest | `73233c19726c4f02672630167793f437dbff6dd81a0d361ab942b8ce20d8bff4` | 開始値一致 |
+| v1 source | `5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240` | 開始値一致 |
+| S1 final MP4 | `dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be` | contract値一致 |
+| Candidate 003 / 004 / 005 final MP4 | `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` | 3件とも開始値一致 |
+| M2 acceptance receipt | `881036c3b90303d0147223a974ebf9e8e7f471d3d9155f9fc11279c72d733a95` | tracked diff 0 |
+| M6 decision packet | `1e9570c5598203df6367bbb62b4b916c16c04c058a7e144837fb1b352292d355` | tracked diff 0 |
 
-OUT-14 runの属性は`push / free_talk / solo / single_talent / ja`。delivery lane、
-collaboration、talent scope、language、content classを別軸にしたため、将来のprofile routerが
-「N-sourceだからcatalog」のような誤った分類をしない。
+## v1 の人間判断をどう保存したか
 
-active quarantineは`two_source_forced_alternation_common_context_v1`、
-`unrelated_context_official_anime_interleave_v1`、
-`shorts_attention_reset_as_longform_default_v1`。rejected two-source probeを
-開始候補・修復対象・美容調整対象にしていない。
+v1 final SHA `1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`
+のtechnical passは履歴として保持した。同じexact identityに対する人間判断は`rejected`。
 
-## source と取得
-
-選定sourceは大空スバルの
-`【#生スバル】おはすば！：FREE TALK【ホロライブ/大空スバル】`。
-provider infoは`was_live=true`、`live_status=was_live`、`availability=public`、
-release `2026-07-25T01:02:27Z`。concert、song、members-only、第三者game IPを避けた。
-
-既存yt-dlp 2026.03.17のnative transportは0-byte partのまま停止したため、boundedに停止し、
-project-local ignored tool directoryへyt-dlp 2026.07.04 + curl-cffiを置いた。
-`fetch-source-video`へ任意の`--impersonate-target`と`--yt-dlp-downloader`を追加し、
-`Chrome-133:Macos-15` / `ffmpeg` / progressive format 18で85.934秒の取得に成功した。
-global toolやcredentialは変更していない。
-
-| receipt | SHA / 値 |
+| 指摘 | v2での処理 |
 |---|---|
-| source MP4 | `5e026c94...d240`; 244,453,290 bytes; 4848.047891s; 640x360 H.264/AAC |
-| video acquisition receipt | `7c8e32e6...9426` |
-| normalized PCM audio receipt | `b3fdc3ae...e905`; WAV `449e22aa...1c83` |
-| material ledger | `ba864bde...dcac` |
-| provider info | `3d99dc0e...d32` |
-| provider auto caption | `011d8a82...739`; `ja-orig` JSON3 |
-| anonymous caption receipt | `59101758...9d3`; cookies/OAuth false |
-| rights snapshot | `7336b78b...8d7`; compliance pending |
+| 連続11分の字幕付き抜粋に見える | 8つの意味cutと4本の可視telopへ再構成 |
+| episode境界が見えない | setup / escalation / notification / endingをcreator telopで表示 |
+| 字幕が遅い | actual-audio word timingからdeterministic mapping、24 anchorで検証 |
+| 「猿と喧嘩」「アライグマ」誤認 | v1 source span overlap 0、既知2 locusをreadbackで完全除外 |
+| 非発話annotation | viewer-facing count 0をgate化 |
+| funeral/deathの主要hook回避 | C1をhard-gate reject、active quarantineへ固定 |
+| source-frame thumbnail rough | 1280x720と320x180をactual selected bytesから生成 |
 
-provider自動字幕は選定とtimingの証拠。公式著者字幕、逐語 transcript、話者同定、
-permissionの根拠にはしていない。
+decision recordは
+`docs/output_layer/OUT_14_V1_HUMAN_EDITORIAL_DECISION.json`。
+quarantine `out14-contiguous-auto-caption-unstructured-v1`は`ACTIVE`。
+cosmetic changeだけではquarantineを脱出できない。
 
-## episode plan と成果物
+## 候補探索と競合確認
 
-source 786.36–1487.52秒を一続きで使い、前後を2つのintentional omissionとして完全に
-source complementへした。semantic roleは意味の確認点で、映像上の汎用章ラベルや
-不要なjump cutではない。
+3本のpublic completed streamを匿名でreconし、9 episode candidateを作成した。
+one-sentence premise、closed causal arc、sensitivity、quarantine、chronology、
+anonymous source、actual-audio transcript feasibilityをscore前hard gateにした。
+hard-gate passだけを100点rubricで比較した。
 
-| role | source range | 編集上の役割 |
-|---|---:|---|
-| hook / inciting situation | 786.36–826.92 | 一週間の不在から帰省を明かす |
-| necessary context | 826.92–958.32 | 祖母の逝去と葬儀という背景 |
-| development / escalation | 958.32–1200.00 | 田舎の人・動物・環境の具体話 |
-| payoff / resolution | 1200.00–1410.12 | 家族とのやり取りとハロハロの出来事 |
-| completing aftermath | 1410.12–1487.52 | 後日談から「帰れて良かった」へ着地 |
+| candidate | 話題 | score / gate | 結果 |
+|---|---|---:|---|
+| C1 | v1帰省・葬儀・動物 | sensitivity/quarantine fail | reject |
+| C2 | お化け屋敷 | 79 | coverage過密 |
+| C3 | Discordプロフィール通知 | 93 | selected |
+| C4 | 夏祭り | 79 | coverage過密 |
+| C5 | ホテルの出来事 | 87 |既存coverageが強い |
+| C6 | 家族・先生の謎解き | 75 | hook/payoff理解が弱い |
+| C7 | ジェットスキー | 88 | strong clipsが占有 |
+| C8 | 巨大スイカ | 70 | causal payoffが薄い |
+| C9 | ニコ関連 | sensitivity/closed payoff fail | reject |
 
-source冒頭で本人がpremiseを説明するためcreator contextは0件。省略理由と
-source-caption / creator-context別namespaceをreadbackした。
+競合recordは11件。各URL、title、channel、公開日、duration、views、likes、
+comments、channel scale、same/adjacent分類を保存した。starting locatorの19件という値は
+operator-suppliedで、live endpoint 403のためlive-confirmedへ昇格していない。
 
-finalはH.264 High / AAC / yuv420p / 1920x1080 / 30fps、701.166667秒、
-157,691,184 bytes。取得source 640x360をLanczosで拡大し、native 1080pとは主張しない。
-metadata draftはsource URLを1行目、exact source titleを2行目に置き、非公式編集・
-非endorsementを明記した。
+## source と時刻原点
 
-## 検証結果
+selected sourceは`youtube:rltNvZ_FY8Q`。匿名format inventoryで1080p60を確認し、
+format `399+251`を選択した。取得窓はprovider 2268–2910秒、
+1920x1080/60 AV1 + Opus、642.001秒、97,061,823 bytes、
+SHA `335e9a131fae06b716bd7ac479e914fb849be117b15c4b412c9b4c565fef264e`。
+cookies、OAuth、credentialは使っていない。
 
-| 観点 | 結果 | 意味 |
-|---|---|---|
-| focused regressions | acquisition 21 passed、OUT-13/14近接回帰 86 passed、single-cut修正後 81 passed | 新profileと既存profileの最小回帰 |
-| media | full decode exit 0、faststart、53,901 packets / regressions 0、A/V start delta 0 | 再生・timestamp整合 |
-| audio/signal | -15.0 LUFS、-1.19 dBTP、black 0、silence 0 | 技術異常なし |
-| captions | 178 cues、overlap/negative/orphan 0、mapping coverage 1.0 | timing/container整合。言語正確性は含まない |
-| manifest | 29 payload rows、payload tree `ac8c6253...4d03`、self-integrity `f0da343f...b403` | package閉集合 |
-| complete package | 30 files / 162,017,845 bytes、tree `7fae710b...b8fa` | exact local review identity |
-| resume | 2.822秒、renderなし、同一SHA | 再入可能 |
-| localhost | page 200、MP4 Range 206 / 1024 bytes | video-first browser delivery |
+窓の0秒がprovider 2268秒と一致することを、protected v1 source audioの2250–2295秒と
+selected窓冒頭24秒を200Hz mono PCMにしてnormalized cross-correlationで測定した。
+最大相関0.859306、絶対開始2268.03秒、要求との差+30ms。renderの
+`source_media_offset_seconds`へ2268.03を使用した。
 
-成功runの内訳はsource/plan 0.808秒、caption 0.036秒、render 231.839秒、
-validation 165.352秒、review package 101.475秒、pre-manifest 499.617秒。
-最初のrunは単一cutにinternal boundaryがないため既存helperのsampleが空になり、
-`contact sheet has no samples`でfail-closedした。単一cutでは選定区間endpointsを証拠化する
-限定修正後に成功し、失敗stagingを成功packageへ昇格させていない。
+## actual-audio transcript と字幕
 
-## 代表フレームの技術観察
+selected actual audioをfaster-whisper 1.2.1 / small / CPU int8 / word timestampsで処理。
+provider JSON3は候補発見・比較仮説・provenanceに限定し、viewer-facing authorityにしていない。
+Discord、おかゆ、遊戯王、みこめっと、みこち、すいちゃん、蒙古タンメン、
+プロフィール、ステータス等の明白な固有語・system termを文脈校正した。
 
-first/middle/last、source selected range、通常・2行・短時間字幕frameを実際に開いた。
-sample範囲では字幕の画面外clipping、source字幕との二重表示、破損frameは見つからなかった。
-2行字幕は大きく下部に置かれるが画面内に収まる。
+単語時刻でcut境界を越える語を除外し、最大16文字のcueへ再構成。固有語は不可分単位として
+mergeしてからcue分割する。初回目視で見つけた`Discor / d`分割を回帰テスト化し、
+最終実フレームでは`Discordってさぁ使ってる`が一行に収まった。
 
-ただし、自動字幕の短時間sampleには`ない方がいいって言われて、猿 / み`のような
-不自然な語分割があり、0.834秒で読むには負荷が高い。この点はmachine validationの失敗ではなく、
-human language/editorial reviewの具体的な確認項目である。
+| timing gate | 結果 |
+|---|---:|
+| anchors | 24 / required 24、各section 3 |
+| rendered median signed onset error | 0.0ms |
+| rendered absolute p95 | 0.0ms |
+| provider diagnostic median | -210.5ms、authorityなし |
+| viewer-facing non-speech annotation | 0 |
+| presentation | 142 cue、overflow/3-line/overlap/negative/orphan 0 |
 
-## 人間の判断パケット
+0msは人間が全語の音素開始を再採点した値ではなく、actual-audio ASR word onsetを
+deterministic cut offsetへ運んだmapping error。言語・知覚acceptanceは人間gateに残る。
 
-exact SHA `1db41c4f...d07f`を全編開き、次を判断する。
+## 構成、title、thumbnail
 
-1. 786.36秒の開始が自然で、1487.52秒の余韻までで一話が閉じるか。
-2. 葬儀を含む個人的内容をこのpremiseで扱う編集判断が適切か。
-3. 178 provider-auto cuesを公開品質へ近づける言語校正がどこまで必要か。
+selected cutsはprovider clockで
+2276.48–2326.76、2392.92–2457.80、2468.88–2521.44、
+2556.20–2632.48、2645.20–2737.28、2775.40–2806.00、
+2841.24–2861.00、2886.32–2906.40秒。chronologyは変更していない。
 
-選択肢は`accept / bounded_repair / reject`。acceptは内部editorial/visual/language scopeだけ。
-bounded repairはaffected timestamp/caption/layoutだけを新identityにする。rejectはこのexact
-artifactの内部候補役を閉じる。どの選択もrights、production、YPP、thumbnail、Shorts、
-upload、publication、visibilityを開かない。
+editorial telopは
+`Discordのプロフィールを変えた朝`、
+`遊びで変え続けた結果`、
+`変更通知が届いていた`、
+`変更は全体通知される`。
+speechとは別namespace・別provenance。
 
-## 今後の条件付き目標
+working title:
+`Discordのプロフィールを遊びで変えたら、全スタッフに通知が飛んでいた`
 
-| 目標 | 可能になること | 開始条件 | gate |
-|---|---|---|---|
-| O14-H1 exact human receipt | PUSH profileの人間評価を再利用可能にする | 現package全編レビュー | exact SHA/context/dimensionsにbind |
-| O14-H2 bounded repair | 字幕・boundaryの実欠陥だけを直す | H1=`bounded_repair` | affected dimensions再review |
-| O14-P1 profile rubric | delivery intentで比較できる | PUSH receipt | 未実装profileを生成済みと書かない |
-| O15 Event-stack specimen | event recapの因果・state changeを検証 | event boundary一次証拠 | aftermathまでの人間評価 |
-| O16 Catalog specimen | 章立て型の異なるbottleneckを検証 | 適格な複数話題source | chapter relationの人間評価 |
-| O17 delivery-contract router | source countとdelivery intentを分離して自動選択 | 三contractのspecimen | fail-closed routing tests |
-| O18 reproducibility/security | 別hostで再構成可能にする | 採用profile方向 | fresh clone own install、dependency/security audit |
-| O19 rights/production decision | exact release candidateの可否を判断 | owner/territory/platform/素材権利確定 | 独立approval receipts |
-| O20 authorized release loop | 公開と測定を安全に行う | O19明示承認とcredentials | upload/publication/rollback receipts |
+alternatives:
 
-H1がrejectならH2を飛ばし、理由をprofile rubricへ戻す。rights/public gateが閉じたままでも、
-O15–O18のlocal internal specimenとreproducibilityは進められる。
+- `おかゆとプロフィールをいじった結果、通知先に戦慄するスバル`
+- `「蒙古タンメン スバル」が全スタッフに共有された朝`
 
-## 次に推奨する取っ掛かり
+thumbnail roughはprovider 2688.44秒のactual source frameへ
+`全スタッフに通知`を重ねたreview補助。1280x720 SHA
+`d0edde1236f8b254c1fe9588d1f656aef057f1baba603be55239d20c3170c3ce`、
+320x180 SHA
+`5bfa59b17320350b4286fb63f68e4427d2a6badc691cfcef960dcd01fb3e822e`。
+generated imageではなく、publication thumbnail acceptanceも未判定。
 
-| 入口 | 解く摩擦 | 次に可能になること |
-|---|---|---|
-| **Advance** | exact MP4の判断待ち | acceptならportfolio比較、bounded repairなら限定修正へ進む |
-| **Audit** | 自動字幕の言語不確実性 | cue単位の修正量と公開品質までの距離が分かる |
-| **Explore** | PUSHだけでは比較不能 | CatalogまたはEvent-stackの最小source候補をread-only選定できる |
-| **Verify** | ignored artifactの別host非可搬性 | fresh-clone再現要件とprivate artifact store要件を定義できる |
+## 最終メディアとreview package
 
-## 実行していないこと
-
-`EVENT_STACK_RECAP`生成、`CATALOG_TOPIC_FEATURE`生成、generic N-source profile、
-generated image、thumbnail、Shorts derivative、push、PR、merge、main integration、
-upload、publication、visibility changeは行っていない。真の停止条件は発生していない。
-現在残るのは人間の編集・言語判断と、明示承認が必要なrights/production/public gateである。
-
-# Historical — OUT-13 M6 exact-artifact deny canonical-main closure
-
-更新日: 2026-07-26 JST
-
-対象: ClipPipeGen のみ
-
-## 監修時に最初に押さえる結論
-
-OUT-13 M6 は `M6_CLOSED_DENY_EXACT_ARTIFACT` でclosedした。ユーザーは監修役の
-推奨1「deny — exact MP4の収益公開は行わず、後継版へ移る」を選択し、project publication
-decision ownerとして、次のexact identityだけにdenyを与えた。
-
-| 判断軸 | bindした値 |
+| 検証 | 結果 |
 |---|---|
-| packet | `clip-out13-m6-rights-decision-readiness-v1-001` |
-| starting packet revision | `dac5f7fb715cb3a7acd6c982a80cb916492e7880` |
-| artifact | `clip-out13-editorial-video-candidate-v1-005` |
-| exact MP4 SHA-256 | `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` |
-| public use | `deny` |
-| monetized YouTube use | `deny` |
-| rights approval | `not_granted` |
-| durable evidence | `docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0` |
+| final media | H.264/AAC yuv420p、1920x1080、406.55秒、405,217,162 bytes |
+| exact video SHA | `8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414` |
+| full media checks | 13 / 13 pass |
+| audio | -14.93 LUFS、-1.85 dBTP、最大隣接cut差0.82 LU |
+| decode/signal | full decode、faststart、monotonic timestamp、A/V、black/silence pass |
+| manifest | 29 payload rows、manifest SHA `774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9` |
+| package | manifest閉集合 30 files / 408,275,872 bytes |
+| localhost | page 200、MP4 Range 206 / 1024 bytes |
+| page order | title → actual-frame thumbnail rough → full video |
 
-Candidate 005は削除、変更、rejectしていない。M2で受領された内部editorial evidenceと
-technical provenanceを保つread-only archive evidenceへ役割を固定し、public defaultをoff、
-production / publishing / upload / release候補集合から除外した。M2の
-`human_review_pending=false`とaccepted dimensionsは維持する。
+レビュー:
+`episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/review/index.html`
 
-deny-binding revision
-`097fcaad8985d4f24077da484819efb5942b9c65`は、authority
-`clip-m6-deny-main-integration-20260726-01`により通常fast-forwardでcanonical `main`へ
-統合され、remoteへpush済みである。live tipはtracked文書へ未来のcommit SHAを自己参照
-させず、`refs/heads/main`で解決する。現在の再開branchは`main`、remote decision
-bindingはavailable、main/upstream parityは`0 0`である。
+## 実装回帰と最終読戻し
 
-## 判断の意味と境界
+| command / check | actual result |
+|---|---|
+| `uvx ruff check`（変更したCLI、renderer、test） | all checks passed |
+| `uvx --from pytest pytest -q tests/test_push_microarc_editorial_v2.py tests/test_push_microarc_stream.py tests/test_editorial_video_candidate.py` | 76 passed in 17.16s |
+| bundled Python `compileall -q src tests` | pass |
+| promoted package `_validate_manifest` | closed set pass、29 payload rows + manifest、30 files |
+| localhost readback | page 200 / `text/html`、MP4 Range 206 / 1024 bytes / `video/mp4` |
+| representative visual inspection | opening、first/middle/last、全cut境界両側、8 selected-range代表、ending、320 thumbnailを確認。破損frame、字幕二重表示、telop/字幕衝突、英単語内分割なし |
 
-今回のdenyは、Candidate 005のexact MP4をpublicかつ収益化検討対象として使う経路を閉じる
-project-controlled decisionである。ユーザーを元動画、caption、font、音楽、人物、埋込み要素の
-rightsholderとは表明しない。infringementその他の法的結論、素材一般のallow/deny、
-将来artifactへのdenyも含まない。
+このworktreeにはproject dependency manifestがなく、最初の`uv run ruff/pytest`は
+program not foundで起動しなかった。test failureではない。tool-isolatedな`uvx`で同じ
+対象を再実行し、上記の最終結果を得た。
 
-このため、次の二つを同時に正本へ残した。
+## 回復過程から残す知見
 
-- exact Candidate 005のpublic / monetized pathはclosedであり、現在のproductionやreleaseへ
-  戻してはならない。
-- source permission、全7区間のcontent observation、provider captionの再製根拠、exact Keifont
-  bytesのlicense/NOTICE bindingは未解決であり、rights approvalへ昇格させてはならない。
+最初の字幕presentationは一部3行となりfail-closed。word-timed chunkへ直した。
+完成レンダー後の検査を一度operator側から停止したため、そのMP4をexact failed artifact identity内で
+SHA/size照合し、same-volume hardlinkで検査だけ再開できる回復経路とtestを追加した。
+その回復packageは技術greenだったが、実フレームで英単語分割と強すぎる終盤telopを見つけたため採用せず、
+原因を修正して全render/validationを再実施した。最終SHAは上記`8fe9105c...53414`だけ。
 
-未解決証拠は、deny済み経路を閉じる目的に限ってnonblockingである。Candidate 005を公開へ戻す
-ための免除ではなく、将来successorへ自動継承できる権利判断でもない。
+## 監修判断パケット
 
-## 変更していないidentityと既存受領
+監修役はこのSHAを全編確認し、次を一つのreceiptへ記録する。
 
-| 対象 | 現在の扱い | 変更有無 |
-|---|---|---|
-| Candidate 005 media bytes | exact SHAのinternal evidence | 変更なし |
-| M2 acceptance receipt | composition、flow、subtitle presentation、内部用途のpicture/audio quality | 変更なし |
-| `human_review_pending` | `false` | 維持 |
-| M4 main integration | `complete` | 維持 |
-| M5 integrated baseline verification | `passed` | 維持 |
-| Candidate 003–005 private package | `episodes/`配下のsame-machine ignored evidence | 変更・削除なし |
-| rights material/range rows | permission/content observation不足を保持 | individual verdictは`undecided`のまま |
+1. 8 cut / 406.55秒のsetup→escalation→notification→apology→warningが自然か。
+2. actual-audio字幕の聞き取り、固有語、false startの扱い、表示時間が妥当か。
+3. 4 telopが理解を助け、内容を誇張しないか。
+4. title 3案のpromiseとtoneが実内容に一致するか。
+5. actual-frame thumbnail roughの焦点と短文が妥当か。
 
-overall project publication verdictは`deny`だが、8 material rowsと7 range rowsの
-`owner_verdict=undecided`は意図的に維持した。これは「素材ごとのrightsholder判断が済んだ」
-という誤読を防ぐためである。
+結果は`accept / bounded_repair / reject`。unmentioned dimensionsをaccept扱いにしない。
+bounded repairはaffected timestamp/dimensionだけを新SHAへ開く。
 
-## 正本とconsumerの状態
+## 可能な限り先へ進める条件付き目標
 
-| consumer | 現在状態 | 次に使う情報 |
-|---|---|---|
-| Runtime / Handoff | `main`上の`m6_closed_deny_exact_artifact` | successor scope決定まではCandidate 005をinternal evidenceとして保持 |
-| M6 packet | deny eventとexact evidence locatorを保持 | 判断日、ユーザー指示、開始revision、artifact ID、SHA |
-| dashboard | Runtimeからclosed stateを投影 | public default off、次action |
-| M2 acceptance consumer | accepted internal dimensionsを継承 | 同一SHA/contextへの再reviewを作らない |
-| future successor lane | 未開始 | 新identityとmaterially distinct scopeを先に決める |
-
-現在のsingle next actionは
-`require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration`。
-successorの作成、設計、spec、renderは今回のMissionに含めていない。
-
-## Git・portability・外部状態
-
-historical preparation branchは`codex/m6-rights-decision-readiness-v1`、packet準備revisionは
-`dac5f7fb715cb3a7acd6c982a80cb916492e7880`、deny-binding revisionは
-`097fcaad8985d4f24077da484819efb5942b9c65`である。`5bd6e653... -> dac5f7fb... ->
-097fcaad...`を通常fast-forwardとして`main`へ統合し、remoteからpacketをreadbackできる。
-old feature branchはhistorical evidenceであり、current resumption targetではない。
-
-packetと正本文書はGit portableだが、Candidate media/packageは`episodes/`配下のignored
-same-machine evidenceでありportableではない。`git ls-files episodes`は0件を維持する。
-mainへのpushは完了したが、PR、tag、release、deployment、upload、publish、visibility変更、
-credential/OAuth操作は行っていない。
-
-deny-binding作成時に実行されたconfigured full Python suiteは、post-integration
-resume reconciliationのclosure evidenceには使わない。これはprior nonblocking process
-deviationとしてのみ保持し、今回の判断根拠はfocused regressions、generated dashboard
-readback、JSON、diff、remote refに限定する。
-
-## 受入条件
-
-closed stateを正しいと扱うためのmust-pass条件は次の通り。
-
-1. decision eventが開始packet revision、packet ID、Candidate ID、exact MP4 SHA、日付、
-   user evidence locatorへ結び付く。
-2. public useとmonetized YouTube useだけがdenyで、rights approvalは`not_granted`。
-3. Candidate 005はinternal evidenceとして保持され、production / publish / upload /
-   release候補から除外される。
-4. M2 acceptanceと`human_review_pending=false`が変わらない。
-5. individual material/rangeの未解決状態がallow/clearedへ変換されない。
-6. 将来artifact、underlying sources、font、captions、embedded elementsへdenyを一般化しない。
-7. Runtime、Handoff、OUT-13 live capsule、dashboard、focused testsが同じcanonical stateと
-   single next actionを示す。
-8. media、receipt、application code、remote stateを変更しない。
-
-## 今後の条件付き目標
-
-denyにより従来の `M6 -> M7 production subtitle -> M8 render` という直線は閉じた。
-今後はsuccessorを起票するかどうかの判断から再開する。
-
-| 段階 | 目標 | 開始条件 | exit evidence |
+| 段階 | 目的と効果 | 開始条件 | 完了証拠 / owner |
 |---|---|---|---|
-| S0 Successor scope decision | public / monetized considerationを再開する価値と方針を決める | ユーザーの明示判断 | materially distinct scope、禁止継承、owner |
-| S1 New identity allocation | Candidate 005と混同しない新artifactを割り当てる | S0承認 | new artifact ID、input boundary |
-| S2 Transformation/content strategy | 何をどう変えて公開適合を目指すか決める | S1 | source/material/range strategy、excluded paths |
-| S3 Fresh rights inventory | successorで実際に使う素材だけを再棚卸し | S2 | material/range/terms/unknowns packet |
-| S4 Internal editorial review | exact successor mediaの構成・視聴品質を判断 | render可能な実体 | exact SHAにbindしたreceipt |
-| S5 Rights/publication decision | successorのexact intended useを人間が判断 | S3/S4 | allow/deny/restrict evidence。rightsと公開を分離 |
-| S6 Production design/render | 許された素材と条件でdelivery仕様を確定 | S5 allow範囲 | subtitle/font/license、codec/audio/device QC |
-| S7 Episode acceptance pack | lineageと判断receiptを一つに束ねる | S6 | no-scope-widening manifest |
-| S8 Thumbnail/metadata | rights-cleared素材でhuman choiceを作る | S7 | selected candidate、source credit、restrictions |
-| S9 External-state dry-run | upload前契約を変化なしで確認 | S8 | idempotency、rollback、visibility plan |
-| S10 Private/unlisted delivery | 明示authority下で限定導通 | credential/visibility承認 | upload receipt、readback、rollback |
-| S11 Public release decision | public化を個別判断 | 全receiptと最終owner approval | explicit release decision |
-| S12 Operations | 複数episodeの再現性と監査を確立 | 成功例と失敗例 | isolation、SLO、retention、rights trend |
+| G0 | v1 reject/quarantine保存 | 完了 | exact decision JSON / Agent |
+| G1 | v2候補・競合selector | 完了 | 3 streams、9 candidates、11 observations、93/100 / Agent |
+| G2 | actual-audio字幕・timing | 完了 | 24 anchors、142 cue、非発話0 / Agent |
+| G3 | visible structure/title/thumb rough | 完了 | 4 telop、3 title、2 rough / Agent |
+| G4 | exact v2 human review | 現在可能 | SHA-bound verdict / Human editorial owner |
+| G5 | bounded repair | G4=`bounded_repair` | affected-only new identityと再review / Agent + Human |
+| G6 | Factory Contract v2抽出 | G4がacceptまたは修復収束 | candidate card、ASR/align、timeline/telop/thumb policyを再利用可能にする / Supervisor |
+| G7 | second real episode repeatability | G6の最小contract | 別episodeで同じ選定・字幕・review gateを通す / Agent |
+| G8 | third real episodeとquality trend | G7 pass | 3 episodeの失敗分類、latency、repair率 / Supervisor |
+| G9 | rights/material-use判断 | exact accepted artifact、owner、platform、territory | allow/deny/restriction receipt / Rights owner |
+| G10 | production subtitle/font | G4 accept、font licenseとdesign owner | device/safe-area/language receipt / Designer |
+| G11 | production render/device/audio QC | G9/G10の必要条件 | delivery profile、color/audio/device receipt / Production owner |
+| G12 | title/thumbnail/metadata acceptance | final video lock | exact creative receipt / Editorial/marketing owner |
+| G13 | private/unlisted delivery | G9–G12、credentials明示承認 | OAuth/idempotency/rollback receipt / Account owner |
+| G14 | explicit public release | private delivery確認、全owner承認 | publication/visibility receipt / Human owner |
+| G15 | multi-episode operations | 3+ accepted episode、contract安定 | queue/retry/retention/quality/cost observability / Supervisor |
+| G16 | policy-constrained autonomy | G15の監査データ | 自動停止条件、budget、quality drift、manual override / Owner |
 
-S0が承認されるまではS1以降を開始しない。Candidate 005をsuccessorのように改名したり、
-同じSHAへ別のpublic reviewを付けたりして閉鎖判断を迂回しない。
+G4がrejectならG5を飛ばし、理由をG6のcontract設計へ戻す。rights/public gateが閉じたままでも
+G6–G8のinternal repeatabilityは進められる。G9以降は技術greenから自動的に開かない。
 
-## 次に推奨する取っ掛かり
+## 次の取っ掛かり
 
-- **Advance**: successor scope decisionだけを行う。公開経路を再開する価値、変える素材、
-  transformationの差分を決めると、新identity allocationを安全に起票できる。
-- **Audit**: packet、Runtime、Handoff、dashboardのdeny projectionをread-onlyで監査する。
-  closed stateのdriftやCandidate 005のcandidate-set再混入を早期に検出できる。
-- **Excise**: 将来のproduction/publish selectorがCandidate 005を参照する場合の拒否条件を、
-  successor Missionで実装候補として切り出す。今回はapplication codeを変更しない。
-- **Explore**: rights riskを下げるmaterial strategyを複数案だけ比較する。実素材取得、
-  license research、spec、renderはS0承認後に限定する。
+- **Advance**: exact v2を全編reviewし、G4 receiptを作る。これが最短のbottleneck解消。
+- **Audit**: 監修前に142 cueの低confidence箇所だけを抽出し、全編判断の確認点を減らす。
+- **Explore**: G6 Factory Contract v2のschema境界だけを設計し、4本目のrenderへ先走らない。
+- **Verify**: protected hashes、Git clean、tracked episode 0、local review availabilityを再確認する。
 
-現在のdrift監査では、docsだけを増やして実装に戻れない状態ではなく、deny decisionのconsumer
-投影とnegative testが今回の成果物である。一方、successorの具体化は未承認なので意図的に
-先送りしている。
+drift観察では、v1への個別美容調整、docsだけの完了扱い、4本目のtopic renderは回避した。
+次consumerはG4 human editorial ownerで明確。production/public判断はまだconsumerを移していない。
