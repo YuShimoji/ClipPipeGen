@@ -1,242 +1,331 @@
-# OUT-14 Push Micro-Arc Editorial Reconstruction v2・監修引継ぎ報告
+# OUT-14 Editorial Presentation Reconstruction v3・監修引継ぎ報告
 
 更新日: 2026-07-27 JST
-対象: ClipPipeGen のみ
-mission: `CPG-OUT14-PUSH-MICROARC-EDITORIAL-RECONSTRUCTION-V2`
+
+Scope: ClipPipeGen only
+
+mission: `CPG-OUT14-EDITORIAL-PRESENTATION-RECONSTRUCTION-V3`
+attempt: `1`
 
 ## 現在の結論
 
-`clip-out14-push-microarc-editorial-v2-001`は
-`OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW`。
-final MP4 SHAは
-`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`、
-406.55秒、1920x1080 H.264/AAC。Discordプロフィール変更が全体通知になった出来事を
-8 cutで因果順に再構成し、actual-audio transcript 142 cue、構成telop 4本、
-title 3案、実source frame thumbnail roughを一つのreview packageへ束ねた。
+`clip-out14-push-microarc-editorial-v3-001`は
+`OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW`。
 
-機械検証と代表フレーム目視はgreen。人間による全編editorial / language /
-title / thumbnail rough acceptanceは未実施。rights、production subtitle/font、
-production render、YPP、upload、publication、visibilityは閉じたまま。
+exact final MP4 SHAは
+`fddae5a6688671ad301b1c1dcecd978a50865dd1fb5d678a6d55db1f3c18e9be`、
+406.55秒、1920×1080、H.264 Main / AAC。exact manifest file SHAは
+`99bb99349b7896a4667358fd14f9c08557d356971823f07a254f2fd35bbace72`。
 
-## remote同期と作業境界
+v2で成立していたepisode、selected source、8 cut、working title、知覚同期を保護し、
+viewer-facingでrejectされたthumbnail、日本語分節、引用人物、笑い、cut grammar、
+explanation treatmentを新しいv3へ再構成した。full render後に一度全編再生し、
+全ledger監査で同型の分節欠陥を追加検出したため、42内部境界を原因層で修復して
+再probe・再render・再decode・再全編再生まで完了した。
 
-| 対象 | 実施内容 | 現在状態 |
+machine evidenceが証明するのはconstruction、traceability、media integrity、
+bounded timing、viewer-facing完走だけ。human editorial acceptance、rights、YPP、
+production、thumbnail acceptance、publication、upload、visibilityは閉じたまま。
+
+## repository、remote、preservation
+
+| 対象 | live確認と操作 | 終了状態 |
 |---|---|---|
-| fetch | `git fetch --prune origin` | `origin/main` exact `edb782acd1e06aca46e0a5d10295ea52f30ad5c7` |
-| exact base | mission指定 `30b4891399ad474b624518f7dcb76591b68c8bef` | object存在、origin/mainの1 commit先 |
-| isolated worktree | branch `codex/out14-push-microarc-editorial-v2` | requested pathで開発 |
-| original checkout | v1 exact base worktree | 開始時clean、書込みなし |
-| remote mutation | push / PR / merge | 未実施・未承認 |
-| media | `episodes/out14_push_microarc_editorial_v2_20260727/` | ignored local evidence、tracked 0 |
-| protected evidence | v1、S1、Candidate 003/004/005、M2、M6 | 開始・終了SHA一致、上書きなし |
+| repository | `YuShimoji/ClipPipeGen`のisolated worktree | 他repoを読書きしていない |
+| exact start | `fab5d5a3369fe4d5defab265fa715201c3f8b0cf` | mission指定と一致 |
+| `origin/main` | fetch後 `edb782acd1e06aca46e0a5d10295ea52f30ad5c7` | merge / rebaseなし |
+| branch | `codex/out14-editorial-presentation-v3` | 新branch再作成なし |
+| worktree | `ClipPipeGen-out14-editorial-presentation-v3` | 既存mission worktreeを継続 |
+| external effect | push / PR / merge / tag / deploy / upload / publication | 0 |
+| private media | `episodes/out14_push_microarc_editorial_v3_20260727/` | ignored、tracked 0 |
+| temporary work | probe/master/audio/旧V3候補 | 正式package確定後に削除 |
 
-private mediaはローカルだけに存在する。tracked code/docsだけでは別hostでexact MP4を
-再現できない。fresh-clone reproducibilityは別gateであり、今回のsame-host successから推定しない。
+exact v2はread-onlyで使用した。
 
-終了時の保存照合は次のとおり。
-
-| protected identity | 終了時SHA-256 | 判定 |
-|---|---|---|
-| v1 final MP4 | `1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f` | 開始値一致 |
-| v1 manifest | `73233c19726c4f02672630167793f437dbff6dd81a0d361ab942b8ce20d8bff4` | 開始値一致 |
-| v1 source | `5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240` | 開始値一致 |
-| S1 final MP4 | `dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be` | contract値一致 |
-| Candidate 003 / 004 / 005 final MP4 | `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` | 3件とも開始値一致 |
-| M2 acceptance receipt | `881036c3b90303d0147223a974ebf9e8e7f471d3d9155f9fc11279c72d733a95` | tracked diff 0 |
-| M6 decision packet | `1e9570c5598203df6367bbb62b4b916c16c04c058a7e144837fb1b352292d355` | tracked diff 0 |
-
-## v1 の人間判断をどう保存したか
-
-v1 final SHA `1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f`
-のtechnical passは履歴として保持した。同じexact identityに対する人間判断は`rejected`。
-
-| 指摘 | v2での処理 |
+| protected v2 identity | 開始／終了照合 |
 |---|---|
-| 連続11分の字幕付き抜粋に見える | 8つの意味cutと4本の可視telopへ再構成 |
-| episode境界が見えない | setup / escalation / notification / endingをcreator telopで表示 |
-| 字幕が遅い | actual-audio word timingからdeterministic mapping、24 anchorで検証 |
-| 「猿と喧嘩」「アライグマ」誤認 | v1 source span overlap 0、既知2 locusをreadbackで完全除外 |
-| 非発話annotation | viewer-facing count 0をgate化 |
-| funeral/deathの主要hook回避 | C1をhard-gate reject、active quarantineへ固定 |
-| source-frame thumbnail rough | 1280x720と320x180をactual selected bytesから生成 |
+| artifact | `clip-out14-push-microarc-editorial-v2-001` |
+| final MP4 | `8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414` |
+| manifest | `774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9` |
+| rejected thumbnail | `d0edde1236f8b254c1fe9588d1f656aef057f1baba603be55239d20c3170c3ce` |
+| selected source | `335e9a131fae06b716bd7ac479e914fb849be117b15c4b412c9b4c565fef264e` |
+| complete artifact inventory | 30 files、attempt-start/end path-size-hash snapshot一致 |
 
-decision recordは
-`docs/output_layer/OUT_14_V1_HUMAN_EDITORIAL_DECISION.json`。
-quarantine `out14-contiguous-auto-caption-unstructured-v1`は`ACTIVE`。
-cosmetic changeだけではquarantineを脱出できない。
+v1/v2 artifact、source、manifest、review page、decision recordへのwriteは0。
+元worktree、origin/main、他branch、user workをstash/reset/restoreしていない。
 
-## 候補探索と競合確認
+## human decisionとACTIVE quarantine
 
-3本のpublic completed streamを匿名でreconし、9 episode candidateを作成した。
-one-sentence premise、closed causal arc、sensitivity、quarantine、chronology、
-anonymous source、actual-audio transcript feasibilityをscore前hard gateにした。
-hard-gate passだけを100点rubricで比較した。
+v2 verdictはexact MP4とrejected thumbnailへ束縛した。
+accepted dimensionは`subtitle_perceptual_timing_improvement_only`。
+line break、editorial hierarchy、quote treatment、laughter、transition、
+explanation、thumbnailは`BLOCK_CURRENT`。working title、episode selection、rights、
+YPP、publication、未指摘箇所をaccepted扱いしていない。
 
-| candidate | 話題 | score / gate | 結果 |
-|---|---|---:|---|
-| C1 | v1帰省・葬儀・動物 | sensitivity/quarantine fail | reject |
-| C2 | お化け屋敷 | 79 | coverage過密 |
-| C3 | Discordプロフィール通知 | 93 | selected |
-| C4 | 夏祭り | 79 | coverage過密 |
-| C5 | ホテルの出来事 | 87 |既存coverageが強い |
-| C6 | 家族・先生の謎解き | 75 | hook/payoff理解が弱い |
-| C7 | ジェットスキー | 88 | strong clipsが占有 |
-| C8 | 巨大スイカ | 70 | causal payoffが薄い |
-| C9 | ニコ関連 | sensitivity/closed payoff fail | reject |
+| quarantine | v2 signature | v3でmaterially異なる点 |
+|---|---|---|
+| `out14-v2-source-screenshot-single-hook-thumbnail-v1` | raw SS、英文面、single consequence、全幅暗色帯 | source crop＋subject separation＋setup/consequence二意味単位 |
+| `out14-v2-flat-caption-pass-through-v1` | uniform speech、mechanical split、quote同型、laughter空白 | 5 role hierarchy、42境界統合、quote 100%、laughter 5件 |
+| `out14-v2-naked-cut-black-card-v1` | naked jump、full-black explanation | 8 boundary原因分類、material bridge 2、source-anchored panel |
 
-競合recordは11件。各URL、title、channel、公開日、duration、views、likes、
-comments、channel scale、same/adjacent分類を保存した。starting locatorの19件という値は
-operator-suppliedで、live endpoint 403のためlive-confirmedへ昇格していない。
+これらはv2 exact identityに対してACTIVEのまま。v3を技術greenにしたことは、
+quarantineの解除やv2 acceptedへの書換えではない。
 
-## source と時刻原点
+## 生成前actual-surface観測
 
-selected sourceは`youtube:rltNvZ_FY8Q`。匿名format inventoryで1080p60を確認し、
-format `399+251`を選択した。取得窓はprovider 2268–2910秒、
-1920x1080/60 AV1 + Opus、642.001秒、97,061,823 bytes、
-SHA `335e9a131fae06b716bd7ac479e914fb849be117b15c4b412c9b4c565fef264e`。
-cookies、OAuth、credentialは使っていない。
+最初のdirection-generating mutationは
+`docs/research/OUT14_EDITORIAL_V3_DESIGN_BASIS.md`。
+signatureは`CPG-OUT14-V3-DIRSIG-20260727-A`。
 
-窓の0秒がprovider 2268秒と一致することを、protected v1 source audioの2250–2295秒と
-selected窓冒頭24秒を200Hz mono PCMにしてnormalized cross-correlationで測定した。
-最大相関0.859306、絶対開始2268.03秒、要求との差+30ms。renderの
-`source_media_offset_seconds`へ2268.03を使用した。
+mission専用のfresh temporary user-data-dirをIncognitoで起動し、extensions、
+sync、cacheを無効化、全件signed-outで観測した。通常のDefault profile、
+保存cookie、Google/YouTube login、履歴、Home、おすすめ、既存拡張を使っていない。
 
-## actual-audio transcript と字幕
+| 観測範囲 | 数 | actual surface |
+|---|---:|---|
+| channels | 4 | 複数channelを横断し一つをcanonical化しない |
+| videos | 9 | 320×180 thumbnail＋actual decoded timestamps |
+| same/adjacent premise | 1以上 | Discord全体通知の公開例を含む |
+| multi-person / quote | 2以上 | identity cue、speech balloon、speaker colorの構造だけ観測 |
+| laughter | 2以上 | `(笑)`相当ではなく`w/ｗｗｗ`等のrole変化を観測 |
+| transition/explanation | 2以上 | semantic cut、result graphic、section changeを観測 |
 
-selected actual audioをfaster-whisper 1.2.1 / small / CPU int8 / word timestampsで処理。
-provider JSON3は候補発見・比較仮説・provenanceに限定し、viewer-facing authorityにしていない。
-Discord、おかゆ、遊戯王、みこめっと、みこち、すいちゃん、蒙古タンメン、
-プロフィール、ステータス等の明白な固有語・system termを文脈校正した。
+URL、channel、title、checked_at、timestamp、viewport/zoom、profile mode、
+account state、surface、限界を記録した。競合画像、映像、音声、字幕、title copy、
+layoutは保存、download、複製、近似模倣していない。
 
-単語時刻でcut境界を越える語を除外し、最大16文字のcueへ再構成。固有語は不可分単位として
-mergeしてからcue分割する。初回目視で見つけた`Discor / d`分割を回帰テスト化し、
-最終実フレームでは`Discordってさぁ使ってる`が一行に収まった。
+Mission Chromeだけを終了し、mission temp profileも削除した。
+起動前から存在した13件のChrome processは終了も変更もしていない。
+既存profile、OS/既定ブラウザー設定にも触れていない。
 
-| timing gate | 結果 |
+## predeclared directionと実装
+
+生成前に次を固定した。
+
+1. thumbnailはsetup「遊びのプロフィール変更」とconsequence「全スタッフへ到達」を
+   単独で伝える。reaction-ledはrunner-up。
+2. viewer textをnormal speech、quoted speech、laughter/reaction、
+   punchline、creator explanationへ分離する。
+3. narrating Subaruとquoted identityを混同せず、paraphraseを本人live speechにしない。
+4. 全8 boundaryを原因分類し、2:48 / 6:27を無標識のまま残さない。
+5. v2 timingをbaselineにし、layout-only cueの時刻を変えない。
+6. review順をthumbnail decision sizes→full video→changed probesにする。
+
+実装は次の3 tracked pathへ閉じた。
+
+- `src/integrations/render/push_microarc_editorial_v3.py`
+- `src/cli/build_push_microarc_editorial_v3.py`
+- `tests/test_push_microarc_editorial_v3.py`
+
+exact v2/source/design signature preflight、staging build、fail-closed pending state、
+full-view finalizeを一つのmission-local pathへ接続した。generic editing framework、
+Factory Contract一般化、新episode探索には広げていない。
+
+## thumbnail再構成
+
+notification reveal、strong reaction、apology、ending warningの4時点からcontact sheetを作成。
+各source timestamp、frame SHA、crop、用途をledgerへ保存した。
+
+selectedはnotification reveal frameを背景に、左のcreator panelと
+`遊びでプロフィール変更 / 全スタッフに / 届いてた`を主従2階層で構成した。
+raw screenshot全面構成、全幅半透明黒帯、外部portrait、AI生成画像は使っていない。
+
+| output | SHA-256 | self-review |
+|---|---|---|
+| selected 1280×720 | `e6e6bbca25319108ae5f4c356953c2d1fa1814937ebeb90a138b1f03e7133988` | zoom確認用 |
+| selected 320×180 | `80a9847fc3377f722ff87e3071fe35754c7806d4f372941b6d7e77ebc52d6f59` | setup/consequence保持 |
+| selected 160×90 | `167917be436092f29ad8fcd2ba15b4acaad6d9e7875b8291d6a0910296090528` | subject/text保持 |
+| runner-up 320×180 | `6ea5fa71fbb60bf45b73983edb03cdae05de2c4dcaf06718bdf669525d73a708` | reaction-led比較 |
+
+duration badge simulationのcritical overlapは0。
+external/generated assetは0。titleを隠してもpremiseを概ね説明でき、
+titleと同じ文章を機械反復していない。publication thumbnail acceptanceは未判定。
+
+## 日本語分節の原因層修復
+
+最初の実装は0:15の`なん / か最近`を12.64→12.72秒へ修復したが、
+初回full playback後の全142 cue ledger監査で
+`レッドカ / ード`、`メンバ / ー`、`恐れない / でください`、
+`いき / なり`、`す / いません`等の同型境界を追加検出した。
+
+既知locusだけのliteral replacementを止め、31 phrase groupで42内部境界を統合し、
+未完の1文字fragment 1件をviewer-facingから抑制した。canonical text/orderと
+group外側のword-timed intervalはtraceableなまま。quote eventは統合対象外。
+
+| QA | 結果 |
 |---|---:|
-| anchors | 24 / required 24、各section 3 |
-| rendered median signed onset error | 0.0ms |
-| rendered absolute p95 | 0.0ms |
-| provider diagnostic median | -210.5ms、authorityなし |
-| viewer-facing non-speech annotation | 0 |
-| presentation | 142 cue、overflow/3-line/overlap/negative/orphan 0 |
+| canonical / viewer cues | 142 / 99 |
+| within-word split | 0 |
+| isolated single character | 0 |
+| dangling particle / auxiliary / short predicate | 0 |
+| kinsoku line-break violation | 0 |
+| 3-line / overdense | 0 / 0 |
+| changed timing median / p95 absolute | 80ms / 80ms |
+| systematic late bias | false |
 
-0msは人間が全語の音素開始を再採点した値ではなく、actual-audio ASR word onsetを
-deterministic cut offsetへ運んだmapping error。言語・知覚acceptanceは人間gateに残る。
+実rasterで0:15と追加6時点をcontact sheet化し、全件2行以内、
+重大なface/source-UI collisionなしを目視した。
 
-## 構成、title、thumbnail
+## speaker、quote、laughter
 
-selected cutsはprovider clockで
-2276.48–2326.76、2392.92–2457.80、2468.88–2521.44、
-2556.20–2632.48、2645.20–2737.28、2775.40–2806.00、
-2841.24–2861.00、2886.32–2906.40秒。chronologyは変更していない。
+narrating speakerは全件`大空スバル`。verified quoteは次の5 event。
 
-editorial telopは
-`Discordのプロフィールを変えた朝`、
-`遊びで変え続けた結果`、
-`変更通知が届いていた`、
-`変更は全体通知される`。
-speechとは別namespace・別provenance。
+| event | quoted identity | evidence | treatment |
+|---|---|---|---|
+| `speech_0018` | 猫又おかゆ | 直前attribution＋canonical quote | name cue＋purple quote |
+| `speech_0100/0101` | 星街すいせい | `すいちゃんから`直後の連続quote | name cue＋blue accent |
+| `speech_0107` | さくらみこ | `みこち`直後のcanonical quote | name cue＋pink accent |
+| `speech_0113` | 星街すいせい | `すいちゃん`直後のquote | same verified role |
 
-working title:
-`Discordのプロフィールを遊びで変えたら、全スタッフに通知が飛んでいた`
+distinct treatment coverage 1.0、identity不明をverbatim装飾した件数0、
+external portrait 0。paraphraseはnormal speechに残した。
 
-alternatives:
+actual viewer-facing audio 406.55秒とbounded windowsを監査した。
 
-- `おかゆとプロフィールをいじった結果、通知先に戦慄するスバル`
-- `「蒙古タンメン スバル」が全スタッフに共有された朝`
+| intensity | events | marker | motion |
+|---|---|---|---|
+| mild | 2 | `(笑)` | none |
+| strong / sustained | 3 | `ｗｗｗ` | deterministic 1–4px |
 
-thumbnail roughはprovider 2688.44秒のactual source frameへ
-`全スタッフに通知`を重ねたreview補助。1280x720 SHA
-`d0edde1236f8b254c1fe9588d1f656aef057f1baba603be55239d20c3170c3ce`、
-320x180 SHA
-`5bfa59b17320350b4286fb63f68e4427d2a6badc691cfcef960dcd01fb3e822e`。
-generated imageではなく、publication thumbnail acceptanceも未判定。
+strong seedsは`21455 / 30620 / 37890`。unhandled required 0、
+provider annotation leak 0、全画面jitter・通常字幕jitter・非決定randomは0。
 
-## 最終メディアとreview package
+## cut、explanation、audio
 
-| 検証 | 結果 |
+全8 cut startにsource ranges、v2/v3 output、audio/visual state、decision、理由、
+前後5秒のinspection windowを保存した。
+
+| output | classification | treatment |
+|---:|---|---|
+| 0.00 | sequence start | premise tag |
+| 50.28 | same-scene omission | 40ms microfade＋context accent |
+| 115.16 | semantic beat | 40ms microfade＋work tag |
+| 167.72 | time jump | 40ms microfade＋cyan directional bridge |
+| 244.00 | semantic beat | 40ms microfade＋notification reveal |
+| 336.08 | semantic beat | 40ms microfade＋apology tag |
+| 366.68 | same-scene omission | 40ms microfade＋aftermath marker |
+| 386.44 | explanation/ending | 40ms microfade＋source-anchored panel |
+
+全cutへ同じvisual fadeを適用していない。2:48と6:27のactual probeはdecode pass。
+6:27後はsource footageを視覚錨に
+`注意｜プロフィール変更は全体通知 / 設定変更の通知先を確認`をcompact表示し、
+full black＋white text signatureを消した。
+
+全cut black 0。0.5秒freeze 1件は383.967–384.467秒のsource holdで、
+386.44秒のjoin前。修復前後のAAC stream SHAは
+`fe046c95d81b5e3b1a6488c954f50d2197eae7072acc31b072f754ffa0baee79`
+で一致した。したがってsample-level join auditの最大0.07254
+（threshold 0.08）をfinalへ束縛できる。
+
+## probe、full render、self-review
+
+probe r1は6:27 explanationにliteral escapeが出る問題と、
+2:48 bridgeが弱い問題を検出し、r2で修復。
+
+初回formal renderと406.55秒full playback後、全ledgerとの照合で同型分節残存を発見。
+r3でfull-ledger groupingを実装し、r4で
+`恐れないでください / いきなり / いってんの`をline-wrap protected phraseへ追加。
+追加6時点contact sheetを目視してからformal rerenderした。
+
+final review pageで0→406.55秒を速度1.0、volume 1、mute falseで再生。
+8 checkpointsすべて`readyState:4`、stallなし、終端`ended:true`。
+opening、quote、mild/strong laughter、全cut、2:48、6:27、explanation、payoff、
+endingはcontinuous playbackとrepresentative probeの組合せで確認した。
+
+## 最終mediaと検証
+
+| 検証 | actual result |
 |---|---|
-| final media | H.264/AAC yuv420p、1920x1080、406.55秒、405,217,162 bytes |
-| exact video SHA | `8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414` |
-| full media checks | 13 / 13 pass |
-| audio | -14.93 LUFS、-1.85 dBTP、最大隣接cut差0.82 LU |
-| decode/signal | full decode、faststart、monotonic timestamp、A/V、black/silence pass |
-| manifest | 29 payload rows、manifest SHA `774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9` |
-| package | manifest閉集合 30 files / 408,275,872 bytes |
-| localhost | page 200、MP4 Range 206 / 1024 bytes |
-| page order | title → actual-frame thumbnail rough → full video |
+| final media | H.264 Main / AAC LC、1920×1080/60、406.55秒 |
+| video/audio start | 0 / 0 |
+| video/audio duration | 406.550 / 406.545秒 |
+| full decode | pass、stderr error 0 |
+| faststart | `moov` offset 36 < `mdat` offset 650491 |
+| loudness / peak | -14.9 LUFS / -1.7 dBFS |
+| silence / black | 0 / 0 |
+| probe decode | 9 / 9 pass |
+| manifest | 47 payload、closed-set pass |
+| full viewer playback | 406.55秒、8 checkpoints、ended true |
 
-レビュー:
-`episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/review/index.html`
+focused/nearest regression:
 
-## 実装回帰と最終読戻し
-
-| command / check | actual result |
+| command | result |
 |---|---|
-| `uvx ruff check`（変更したCLI、renderer、test） | all checks passed |
-| `uvx --from pytest pytest -q tests/test_push_microarc_editorial_v2.py tests/test_push_microarc_stream.py tests/test_editorial_video_candidate.py` | 76 passed in 17.16s |
-| bundled Python `compileall -q src tests` | pass |
-| promoted package `_validate_manifest` | closed set pass、29 payload rows + manifest、30 files |
-| localhost readback | page 200 / `text/html`、MP4 Range 206 / 1024 bytes / `video/mp4` |
-| representative visual inspection | opening、first/middle/last、全cut境界両側、8 selected-range代表、ending、320 thumbnailを確認。破損frame、字幕二重表示、telop/字幕衝突、英単語内分割なし |
+| `pytest tests/test_push_microarc_editorial_v3.py tests/test_push_microarc_editorial_v2.py -q` | 21 passed |
+| `pytest -q` with the repository-required Pillow dependency | 706 passed |
+| `ruff check` on V3 renderer/CLI/test | all checks passed |
+| bundled Python `compileall -q` on V3 renderer/CLI/test | pass |
+| `git diff --check` | pass |
+| changed-diff private path/secret/token scan | secret 0。boundary記述のcookie文字だけ |
+| `git ls-files episodes` | 0 |
+| changed media extension scan | 0 |
 
-このworktreeにはproject dependency manifestがなく、最初の`uv run ruff/pytest`は
-program not foundで起動しなかった。test failureではない。tool-isolatedな`uvx`で同じ
-対象を再実行し、上記の最終結果を得た。
-
-## 回復過程から残す知見
-
-最初の字幕presentationは一部3行となりfail-closed。word-timed chunkへ直した。
-完成レンダー後の検査を一度operator側から停止したため、そのMP4をexact failed artifact identity内で
-SHA/size照合し、same-volume hardlinkで検査だけ再開できる回復経路とtestを追加した。
-その回復packageは技術greenだったが、実フレームで英単語分割と強すぎる終盤telopを見つけたため採用せず、
-原因を修正して全render/validationを再実施した。最終SHAは上記`8fe9105c...53414`だけ。
+bare `uv run --with pytest`は既知のPillow未注入で2 moduleのcollection停止となるため、
+既存repository contractどおり`--with pillow`を追加して全706件を完走した。
+旧OUT-14 authorityを固定していた8 assertionは、v3のRuntime/Handoff/artifact registryと
+一致するよう更新し、current authorityの不一致を検出するnegative testは維持した。
 
 ## 監修判断パケット
 
-監修役はこのSHAを全編確認し、次を一つのreceiptへ記録する。
+次のhuman reviewはexact v3全体について、残る重大問題の有無を判断する。
+全字幕の再校正や全cutのチェックリスト入力は不要。
 
-1. 8 cut / 406.55秒のsetup→escalation→notification→apology→warningが自然か。
-2. actual-audio字幕の聞き取り、固有語、false startの扱い、表示時間が妥当か。
-3. 4 telopが理解を助け、内容を誇張しないか。
-4. title 3案のpromiseとtoneが実内容に一致するか。
-5. actual-frame thumbnail roughの焦点と短文が妥当か。
+1. 6分46秒の因果、間、role hierarchyが一話として自然か。
+2. 99 viewer-facing cueの言語精度と読みやすさに重大問題が残るか。
+3. quote/laughter/transition/explanationが理解を助け、過剰演出になっていないか。
+4. selected thumbnailがtitleなしでもsetup＋consequenceを伝えるか。
+5. working titleのpromiseと最終video/thumbnailが一致するか。
 
-結果は`accept / bounded_repair / reject`。unmentioned dimensionsをaccept扱いにしない。
-bounded repairはaffected timestamp/dimensionだけを新SHAへ開く。
+結果は`accept / bounded_repair / reject`の一つをexact SHAへ束縛する。
+`accept`はinternal editorial scopeだけ。`bounded_repair`は影響dimension/timestampだけを
+新SHAへ開く。`reject`はv3 candidateを閉じる。いずれもrights/public gateを開かない。
 
-## 可能な限り先へ進める条件付き目標
+## 条件付き長期目標
 
-| 段階 | 目的と効果 | 開始条件 | 完了証拠 / owner |
+技術greenから自動で先の権限へ進まず、各gateのownerとreceiptを明示する。
+
+| 段階 | 目的と可能になること | 開始条件 | 完了証拠 / owner |
 |---|---|---|---|
-| G0 | v1 reject/quarantine保存 | 完了 | exact decision JSON / Agent |
-| G1 | v2候補・競合selector | 完了 | 3 streams、9 candidates、11 observations、93/100 / Agent |
-| G2 | actual-audio字幕・timing | 完了 | 24 anchors、142 cue、非発話0 / Agent |
-| G3 | visible structure/title/thumb rough | 完了 | 4 telop、3 title、2 rough / Agent |
-| G4 | exact v2 human review | 現在可能 | SHA-bound verdict / Human editorial owner |
-| G5 | bounded repair | G4=`bounded_repair` | affected-only new identityと再review / Agent + Human |
-| G6 | Factory Contract v2抽出 | G4がacceptまたは修復収束 | candidate card、ASR/align、timeline/telop/thumb policyを再利用可能にする / Supervisor |
-| G7 | second real episode repeatability | G6の最小contract | 別episodeで同じ選定・字幕・review gateを通す / Agent |
-| G8 | third real episodeとquality trend | G7 pass | 3 episodeの失敗分類、latency、repair率 / Supervisor |
-| G9 | rights/material-use判断 | exact accepted artifact、owner、platform、territory | allow/deny/restriction receipt / Rights owner |
-| G10 | production subtitle/font | G4 accept、font licenseとdesign owner | device/safe-area/language receipt / Designer |
-| G11 | production render/device/audio QC | G9/G10の必要条件 | delivery profile、color/audio/device receipt / Production owner |
-| G12 | title/thumbnail/metadata acceptance | final video lock | exact creative receipt / Editorial/marketing owner |
-| G13 | private/unlisted delivery | G9–G12、credentials明示承認 | OAuth/idempotency/rollback receipt / Account owner |
-| G14 | explicit public release | private delivery確認、全owner承認 | publication/visibility receipt / Human owner |
-| G15 | multi-episode operations | 3+ accepted episode、contract安定 | queue/retry/retention/quality/cost observability / Supervisor |
-| G16 | policy-constrained autonomy | G15の監査データ | 自動停止条件、budget、quality drift、manual override / Owner |
+| G0 | v2 decision/quarantine保存 | 完了 | exact v2 locator / Agent |
+| G1 | v3 presentation reconstruction | 完了 | exact v3 package / Agent |
+| G2 | exact v3 overall review | 現在可能 | SHA-bound verdict / Human editorial owner |
+| G3 | affected-only repair | G2=`bounded_repair` | new SHA＋affected probes＋re-review / Agent＋Human |
+| G4 | internal editorial lock | G2 acceptまたはG3収束 | accepted dimensions receipt / Human |
+| G5 | mission-specific contract抽出 | G4 | selector以外のpresentation stop条件を文書化 / Supervisor |
+| G6 | second accepted episode repeat | G5最小contract | 別episodeで同gate通過 / Agent |
+| G7 | third accepted episode trend | G6 | 3 episodeのrepair率・失敗分類・latency / Supervisor |
+| G8 | rights/material-use decision | exact accepted media、platform、territory | allow/deny/restriction receipt / Rights owner |
+| G9 | production subtitle/font lock | G4＋font/license/design owner | safe-area/device/language receipt / Designer |
+| G10 | production render/audio/device QC | G8/G9の必要条件 | delivery profileとQC receipt / Production owner |
+| G11 | title/thumbnail/metadata acceptance | final video lock | exact creative receipt / Editorial/marketing |
+| G12 | private/unlisted delivery rehearsal | G8–G11＋credential authority | idempotency/rollback receipt / Account owner |
+| G13 | explicit private delivery | G12 pass＋明示承認 | remote object identity / Account owner |
+| G14 | explicit public release | private確認＋全owner承認 | publication/visibility receipt / Human owner |
+| G15 | multi-episode operations | 3+ accepted episode＋contract安定 | queue/retry/retention/quality/cost telemetry |
+| G16 | policy-constrained autonomy | G15監査データ | stop条件、budget、quality drift、manual override |
 
-G4がrejectならG5を飛ばし、理由をG6のcontract設計へ戻す。rights/public gateが閉じたままでも
-G6–G8のinternal repeatabilityは進められる。G9以降は技術greenから自動的に開かない。
+G2がrejectならG3を飛ばし、理由をG5のstop条件へ戻す。
+rights/public gateが閉じたままでもG5–G7のinternal repeatabilityは可能。
+G8以降は別ownerの明示receiptなしに開始しない。
 
 ## 次の取っ掛かり
 
-- **Advance**: exact v2を全編reviewし、G4 receiptを作る。これが最短のbottleneck解消。
-- **Audit**: 監修前に142 cueの低confidence箇所だけを抽出し、全編判断の確認点を減らす。
-- **Explore**: G6 Factory Contract v2のschema境界だけを設計し、4本目のrenderへ先走らない。
-- **Verify**: protected hashes、Git clean、tracked episode 0、local review availabilityを再確認する。
+- **Advance**: exact v3を全編reviewしG2 verdictを束縛する。現在の唯一の主要bottleneck。
+- **Audit**: 監修役が指摘した重大箇所だけをtimestamp付きで絞り、G3の影響範囲を閉じる。
+- **Explore**: G4後に限り、今回のpresentation stop条件をmission-specific contractへ抽出する。
+- **Verify**: review前にfinal SHA、manifest SHA、localhost Range、protected v2 hashを再読戻しする。
 
-drift観察では、v1への個別美容調整、docsだけの完了扱い、4本目のtopic renderは回避した。
-次consumerはG4 human editorial ownerで明確。production/public判断はまだconsumerを移していない。
+drift監査では、新episode探索、Factory Contract一般化、競合style模倣、
+production/public作業への先走りは発生していない。次consumerはhuman editorial ownerで明確。
+
+## 非blockerの既存文書debt
+
+dashboard v1.5の再生成は成功しcurrent v3を向いたが、既存wiki全体には
+`stale / over_guarded / unclear`分類の30 findingが残る。これはexact v3の
+再生・判断を妨げず、今回のartifactへ便乗して広範囲に直さない。
+
+| 残作業 | 目的と効果 | 必要条件 | 状態 / owner | 次の動き |
+|---|---|---|---|---|
+| 長大な`docs/HANDOFF.md`の縮約 | current authorityとの競合を減らす | v3 human verdict後も履歴locatorを失わない移送計画 | nonblocking / Documentation owner | 短いpointer化とhistory archiveを別sliceで行う |
+| Artifact Registryのv1.5 front sections | current / next / constraintsを先頭で読めるようにする | 既存85 entryを壊さないgenerator test | nonblocking / Documentation owner | `What This Is / Current State / Next / Constraints`を追加 |
+| Feature Registryの可読性 | 120 featureの探索摩擦を下げる | authority rowを複製しない生成方式 | long-range / Tooling owner | feature page生成をproposalとして検証 |

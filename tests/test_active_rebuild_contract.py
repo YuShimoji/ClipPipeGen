@@ -240,11 +240,11 @@ def test_runtime_points_to_out14_and_keeps_out13_out07_evidence_parked() -> (
     )
     assert "remote_code_complete: false" in runtime
     assert "remote_decision_binding_available: false" in runtime
-    assert "active_branch: codex/out14-push-microarc-real-stream-v1" in runtime
-    assert "upstream_parity: 0 1" in runtime
+    assert "active_branch: codex/out14-editorial-presentation-v3" in runtime
+    assert "upstream_parity: not_configured_local_only" in runtime
     assert (
         "final_main_revision_locator: "
-        "refs/heads/codex/out14-push-microarc-real-stream-v1"
+        "refs/heads/codex/out14-editorial-presentation-v3"
         in runtime
     )
     assert (
@@ -255,26 +255,22 @@ def test_runtime_points_to_out14_and_keeps_out13_out07_evidence_parked() -> (
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
     assert (
-        "human_entrypoint: episodes/out14_push_microarc_real_stream_20260726/"
-        "artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html"
+        "human_entrypoint: episodes/out14_push_microarc_editorial_v3_20260727/"
+        "artifacts/clip-out14-push-microarc-editorial-v3-001/review/index.html"
         in runtime
     )
-    assert (
-        "portable_entrypoint: "
-        "docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md"
-        in runtime
-    )
+    assert "portable_entrypoint: docs/SUPERVISOR_STATUS_REPORT.md" in runtime
     assert (
         "health: "
-        "OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW"
+        "OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW"
         in runtime
     )
     assert "current_slice: OUT-14" in runtime
     assert (
-        "canonical_status: out14_push_microarc_real_stream_ready_for_human_review"
+        "canonical_status: out14_editorial_v3_ready_for_human_review"
         in runtime
     )
-    assert "active_artifact: clip-out14-push-microarc-stream-v1-001" in runtime
+    assert "active_artifact: clip-out14-push-microarc-editorial-v3-001" in runtime
     assert "review_status: ready_for_human_review" in runtime
     assert (
         "development_baseline_main_revision: "
@@ -284,8 +280,8 @@ def test_runtime_points_to_out14_and_keeps_out13_out07_evidence_parked() -> (
     assert "automation_acceptance_granted: true" in runtime
     assert (
         "automation_acceptance_scope: "
-        "out14_builder_exact_source_plan_caption_receipts_render_validation_resume_and_"
-        "http_readback"
+        "out14_v3_exact_reference_pre_generation_basis_segmentation_roles_laughter_"
+        "transitions_thumbnail_render_decode_full_view_and_http_readback"
         in runtime
     )
     assert "acceptance_granted: false" in runtime
@@ -298,13 +294,15 @@ def test_runtime_points_to_out14_and_keeps_out13_out07_evidence_parked() -> (
     assert "m5_integrated_baseline_verification_status: not_applicable_out14" in runtime
     assert "out14_profile: PUSH_MICROARC" in runtime
     assert "out14_source_identity: youtube:rltNvZ_FY8Q" in runtime
-    assert "out14_media_cut_count: 1" in runtime
-    assert "out14_semantic_role_count: 5" in runtime
-    assert "out14_caption_cue_count: 178" in runtime
-    assert "out14_creator_context_count: 0" in runtime
+    assert "out14_media_cut_count: 8" in runtime
+    assert "out14_semantic_role_count: 8" in runtime
+    assert "out14_caption_cue_count: 99" in runtime
+    assert "out14_canonical_caption_cue_count: 142" in runtime
+    assert "out14_merged_internal_caption_boundary_count: 42" in runtime
+    assert "out14_creator_context_count: 8" in runtime
     assert (
         "out14_output_sha256: "
-        "1db41c4f0f36b45ff5cdbf4c681a69054e75478bb4d925a666d223d454c4d07f"
+        "fddae5a6688671ad301b1c1dcecd978a50865dd1fb5d678a6d55db1f3c18e9be"
         in runtime
     )
     # OUT-13 M6 remains preserved historical exact-artifact evidence.

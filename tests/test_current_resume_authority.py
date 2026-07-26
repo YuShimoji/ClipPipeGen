@@ -184,17 +184,17 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "m6_rights_status": "closed_deny_exact_artifact",
         "m6_packet_status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
         "m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
-        "active_branch": "codex/out14-push-microarc-real-stream-v1",
+        "active_branch": "codex/out14-editorial-presentation-v3",
         "final_main_revision_locator": (
-            "refs/heads/codex/out14-push-microarc-real-stream-v1"
+            "refs/heads/codex/out14-editorial-presentation-v3"
         ),
         "m6_decision_binding_revision": ("097fcaad8985d4f24077da484819efb5942b9c65"),
-        "upstream_parity": "0 1",
+        "upstream_parity": "not_configured_local_only",
         "remote_decision_binding_available": "false",
-        "local_decision_binding_committed": "false",
+        "local_decision_binding_committed": "true",
         "remote_mutation_authorized": "false",
         "decision_required": (
-            "exact_out14_artifact_internal_editorial_visual_language_verdict"
+            "exact_v3_overall_editorial_quality_and_remaining_major_issue_verdict"
         ),
         "next_review_due": "now",
     }
@@ -232,11 +232,15 @@ def test_out14_resume_rejects_stale_branch_or_remote_state() -> None:
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
         runtime.replace(
-            "active_branch: codex/out14-push-microarc-real-stream-v1",
+            "active_branch: codex/out14-editorial-presentation-v3",
             "active_branch: codex/stale-out14",
             1,
         )
-        .replace("upstream_parity: 0 1", "upstream_parity: 1 0", 1)
+        .replace(
+            "upstream_parity: not_configured_local_only",
+            "upstream_parity: 1 0",
+            1,
+        )
         .replace(
             "remote_decision_binding_available: false",
             "remote_decision_binding_available: true",
@@ -288,7 +292,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: exact_internal_human_review_target",
+        "local_artifact_role: exact_v3_internal_human_review_target",
         "local_artifact_role: stale_review_target",
         1,
     )

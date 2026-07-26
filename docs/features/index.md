@@ -5,36 +5,36 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 ## Current Focus
 
 - feature: `OUT-14`
-- artifact: `clip-out14-push-microarc-stream-v1-001`
-- state: `OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`
+- artifact: `clip-out14-push-microarc-editorial-v3-001`
+- state: `OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW`
 
 - canonical main: `refs/remotes/origin/main`
 - canonical baseline: `OUT-14 development baseline exact SHA edb782acd1e06aca46e0a5d10295ea52f30ad5c7`
-- canonical status: `out14_push_microarc_real_stream_ready_for_human_review`
+- canonical status: `out14_editorial_v3_ready_for_human_review`
 - review status: `ready_for_human_review`
 - remote code complete: `false`
 - local artifact available: `true`
 - portable local artifact available: `false`
-- portable entrypoint: `docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md`
+- portable entrypoint: `docs/SUPERVISOR_STATUS_REPORT.md`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `episodes/out14_push_microarc_real_stream_20260726/artifacts/clip-out14-push-microarc-stream-v1-001/review/index.html`
+- last verified host entrypoint: `episodes/out14_push_microarc_editorial_v3_20260727/artifacts/clip-out14-push-microarc-editorial-v3-001/review/index.html`
 - pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_out14_code_and_docs_are_portable_ignored_source_receipts_plan_and_package_are_not`
+- cross-machine resume: `tracked_v3_code_and_docs_are_portable_ignored_source_v2_reference_and_package_are_not`
 - active rebuild contract: ``
-- evidence revision: `out14-push-microarc-stream-v1-001-machine-validated-human-pending`
+- evidence revision: `out14-editorial-v3-001-full-view-machine-validated-human-pending`
 - accepted baseline SHA-256: ``
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `exact_out14_artifact_internal_editorial_visual_language_verdict`
+- decision required: `exact_v3_overall_editorial_quality_and_remaining_major_issue_verdict`
 - next review: `now`
 
 ## Feature Table

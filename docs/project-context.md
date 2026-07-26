@@ -5,19 +5,40 @@ type: durable_context
 status: current
 last_touched: 2026-07-27
 current_slice: OUT-14
-phase: exact_v2_artifact_human_review_pending
-active_branch: codex/out14-push-microarc-editorial-v2
-source_branch: exact-base-30b4891399ad474b624518f7dcb76591b68c8bef
-verified_implementation_head: refs/heads/codex/out14-push-microarc-editorial-v2
-sync_baseline_head: 30b4891399ad474b624518f7dcb76591b68c8bef
+phase: exact_v3_artifact_human_editorial_review_pending
+active_branch: codex/out14-editorial-presentation-v3
+source_branch: codex/out14-push-microarc-editorial-v2
+verified_implementation_head: refs/heads/codex/out14-editorial-presentation-v3
+sync_baseline_head: fab5d5a3369fe4d5defab265fa715201c3f8b0cf
 base_main_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 upstream_parity: not_configured_local_only
-health: OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW
+health: OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW
 ---
 
 # Project Context - ClipPipeGen
 
 ## 2026-07-27 現在の軸
+
+exact v2 human reviewはsubtitle perceptual timing improvementだけを認め、
+thumbnail、speaker-role presentation、laughter、material transition、
+source-anchored explanationへbounded repairを要求した。v2 bytesとtechnical evidenceを
+不変に保ち、`codex/out14-editorial-presentation-v3`で
+`clip-out14-push-microarc-editorial-v3-001`を構築した。
+
+生成前design basisとpredeclared direction signatureは
+`docs/research/OUT14_EDITORIAL_V3_DESIGN_BASIS.md`に固定済み。
+public example観測は4チャンネル・9本、fresh temporary signed-out profileで完了し、
+競合surfaceを保存していない。role-aware subtitle、quote/laughter ledger、
+8-boundary transition map、thumbnail再構成、probe、full render、全編self-reviewを接続し、
+初回全編読戻しで見つけた同型分節を42境界の原因層修復へ戻した。正式再render後の
+406.55秒全編再生はendedまで完走し、final SHAは
+`fddae5a6688671ad301b1c1dcecd978a50865dd1fb5d678a6d55db1f3c18e9be`。
+
+成功してもstateは`OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW`。
+human editorial、rights、YPP、production、publication、thumbnail acceptance、
+upload、visibilityはclosed gateのまま。
+
+## v2保存状態
 
 OUT-14 v1はtechnical passを保存したままhuman editorial rejectとなった。
 current artifactはv2
@@ -27,7 +48,9 @@ current artifactはv2
 actual-audio transcript、8 cut、4 telop、title 3案、actual-frame thumbnail rough、
 full media validation、localhost reviewまで接続した。
 
-現在のbottleneckはexact v2 human review。rights readinessやproductionへは進んでいない。
+v2時点のbottleneckはexact v2 human reviewだった。現在のbottleneckはexact v3全体の
+編集品質と言語精度、title / thumbnail promise、残存重大問題についてのhuman verdict。
+rights readinessやproductionへは進んでいない。
 v1 quarantine、v2 technical evidence、human decision、rights/production/public gateを
 別identityで管理する。
 

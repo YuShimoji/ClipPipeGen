@@ -8,6 +8,58 @@ last_touched: 2026-07-27
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-27 — OUT-14 v2のhuman verdictをbounded v3再構成へ変換する
+
+exact v2 artifact `clip-out14-push-microarc-editorial-v2-001`、final MP4 SHA
+`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`、
+manifest SHA
+`774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9`
+はtechnical evidenceとして不変に保持する。v2へのhuman verdictは
+subtitle perceptual timing improvementだけを認め、production acceptance、
+thumbnail acceptance、unmentioned regionsのacceptanceを与えていない。
+
+v3はepisode、premise、source、working titleを継承し、別artifact
+`clip-out14-push-microarc-editorial-v3-001`としてpresentationを再構成する。
+原因所有の修復対象は次のとおり。
+
+- `~00:15`の`なん / か最近`を含むphrase内分断と、同型の孤立助詞・短いtail
+- narrating Subaruと、証拠付きquoted identity、paraphrase、creator explanationの未分離
+- actual laughterを空欄にしたpresentation
+- `~02:48`と`~06:27`を含むmaterial cutの未表示
+- `~06:27`後のfull black＋white text explanation
+- rejected thumbnail rough
+
+active quarantineは次の3件。cosmetic changeだけでは脱出扱いにしない。
+
+1. `out14-v2-source-screenshot-single-hook-thumbnail-v1`
+2. `out14-v2-flat-caption-pass-through-v1`
+3. `out14-v2-naked-cut-black-card-v1`
+
+生成前directionは
+`docs/research/OUT14_EDITORIAL_V3_DESIGN_BASIS.md`の
+`CPG-OUT14-V3-DIRSIG-20260727-A`で固定した。4チャンネル・9本を、
+fresh temporary Incognito、extensions/sync/cache disabled、signed-outで
+actual-surface観測した。競合surfaceは保存せず、Default profile、
+ログイン、Home、おすすめ欄を根拠にしていない。
+
+v3の成功状態は
+`OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW`に限定する。technical greenを
+human editorial acceptance、rights、YPP、production、publication、
+thumbnail acceptance、upload、visibility changeへ昇格しない。
+
+実装後の初回全編再生と全ledger照合では、既知の`なん／か`だけでなく、
+`レッドカ／ード`、`メンバ／ー`、`す／いません`等の同型分節を検出した。
+READY claimを固定せず、31 phrase groupで42内部境界を統合し、未完fragment 1件を
+viewer-facingから抑制した。r3/r4 probe、正式再render、full decode、
+406.55秒の全編再生をやり直し、語中分断、孤立文字、dangling particle /
+auxiliary / short predicate、禁則、3行、過密はすべて0となった。
+
+確定v3 final SHAは
+`fddae5a6688671ad301b1c1dcecd978a50865dd1fb5d678a6d55db1f3c18e9be`、
+manifest file SHAは
+`99bb99349b7896a4667358fd14f9c08557d356971823f07a254f2fd35bbace72`。
+このexact identityだけを次のhuman overall editorial reviewへ渡す。
+
 ## 2026-07-27 — OUT-14 v1 human rejectを保存し、v2を別identityで再構成する
 
 exact v1 final SHA `1db41c4f...d07f`はsource/mapping/render/decode/A/V/local reviewの

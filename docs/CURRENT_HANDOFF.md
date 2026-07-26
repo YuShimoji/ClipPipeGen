@@ -3,115 +3,173 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: OUT14_PUSH_MICROARC_EDITORIAL_V2_READY_FOR_HUMAN_REVIEW
+health: OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW
 last_touched: 2026-07-27
 current_slice: OUT-14
-phase: exact_v2_artifact_human_editorial_review_pending
-active_branch: codex/out14-push-microarc-editorial-v2
-exact_branch_base: 30b4891399ad474b624518f7dcb76591b68c8bef
-active_artifact: clip-out14-push-microarc-editorial-v2-001
-acceptance_media_sha256: 8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414
+phase: exact_v3_artifact_human_editorial_review_pending
+canonical_status: out14_editorial_v3_ready_for_human_review
+active_branch: codex/out14-editorial-presentation-v3
+exact_branch_base: fab5d5a3369fe4d5defab265fa715201c3f8b0cf
+active_artifact: clip-out14-push-microarc-editorial-v3-001
+human_entrypoint: episodes/out14_push_microarc_editorial_v3_20260727/artifacts/clip-out14-push-microarc-editorial-v3-001/review/index.html
+portable_entrypoint: docs/SUPERVISOR_STATUS_REPORT.md
+local_artifact_available: true
+local_artifact_role: exact_v3_internal_human_review_target
+portable_local_artifact_available: false
+cross_machine_resume_class: tracked_v3_code_and_docs_are_portable_ignored_source_v2_reference_and_package_are_not
+review_status: ready_for_human_review
+acceptance_media_sha256: fddae5a6688671ad301b1c1dcecd978a50865dd1fb5d678a6d55db1f3c18e9be
 human_review_pending: true
 editorial_acceptance_granted: false
-rights_approval: false
+acceptance_receipt: null
+rights_approval: not_granted
 production_acceptance: false
 public_or_publishing_acceptance: false
+accepted_feature_revision: null
+integrated_main_revision: null
+main_integration_approved: false
+m4_main_integration_status: not_applicable_out14
+m5_integrated_baseline_verification_status: not_applicable_out14
+m6_rights_status: closed_deny_exact_artifact
+m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
+m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
+m6_owner_verdict: deny
+public_use_verdict: not_evaluated_for_out14
+monetized_youtube_verdict: not_evaluated_for_out14
+out14_v3_rights_status: not_evaluated
+historical_out13_artifact: clip-out13-editorial-video-candidate-v1-005
+final_main_revision_locator: refs/heads/codex/out14-editorial-presentation-v3
+m6_decision_binding_revision: 097fcaad8985d4f24077da484819efb5942b9c65
+upstream_parity: not_configured_local_only
+remote_decision_binding_available: false
+local_decision_binding_committed: true
 remote_mutation_authorized: false
 source_of_truth: true
-owner_lane: human_editorial_language_title_thumbnail_review
-next_action: review_exact_v2_artifact_and_bind_one_verdict_to_exact_sha
+owner_lane: human_overall_editorial_quality_review
+decision_required: exact_v3_overall_editorial_quality_and_remaining_major_issue_verdict
+next_review_due: now
+next_action: open_exact_v3_review_and_record_accept_bounded_repair_or_reject_for_this_sha_only
 ---
 
 # Current Handoff - ClipPipeGen
 
-## 監修役が最初に確認するもの
+## 監修役が最初に開くもの
 
-レビュー対象は
-`episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001/review/index.html`。
-起動は次のどちらか。
-
-```powershell
-powershell -NoProfile -File episodes\out14_push_microarc_editorial_v2_20260727\artifacts\clip-out14-push-microarc-editorial-v2-001\review\open_preview.ps1
-```
+対象は
+`episodes/out14_push_microarc_editorial_v3_20260727/artifacts/clip-out14-push-microarc-editorial-v3-001/review/index.html`。
+レビューserverを再起動する場合は、このworktreeで次を実行する。
 
 ```powershell
 uv run python -m src.cli.serve_review `
-  --root episodes/out14_push_microarc_editorial_v2_20260727/artifacts/clip-out14-push-microarc-editorial-v2-001 `
-  --port 8081
+  --root episodes/out14_push_microarc_editorial_v3_20260727/artifacts/clip-out14-push-microarc-editorial-v3-001 `
+  --port 8082
 ```
 
-server実行中のURLは`http://127.0.0.1:8081/review/index.html`。
-確認済みのfinal MP4 SHAは
-`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`、
-manifest SHAは
-`774351a7fc55839e05e58276280570a27ac1fd0aa7fa78283cdcf79f5d8634a9`。
+URLは`http://127.0.0.1:8082/review/index.html`。
+final MP4 SHAは
+`fddae5a6688671ad301b1c1dcecd978a50865dd1fb5d678a6d55db1f3c18e9be`、
+manifest file SHAは
+`99bb99349b7896a4667358fd14f9c08557d356971823f07a254f2fd35bbace72`、
+manifest self-integrityは
+`5f1ee7c2da681dbb4bd73c88ac58f1b85b42cfe2776e788add6fe0bca2ec70d7`。
 
-## なぜ v2 になったか
+review pageはworking title、selected 320×180 / 160×90、runner-up、
+full video、changed-locus probesの順。監修役へ全cue・全cutの採点表入力は要求しない。
+全体的な編集品質と残存する重大問題だけを判断対象にする。
 
-v1はsource取得、reverse mapping、render/decode、A/V、localhost deliveryには成功したが、
-人間のeditorial reviewで「連続11分の字幕付き抜粋」「episode境界が見えない」
-「字幕が発話より遅い」「猿と喧嘩・アライグマ等の誤認」「非発話annotation表示」と判定された。
-技術greenを消さず、editorial rejectionを
-`docs/output_layer/OUT_14_V1_HUMAN_EDITORIAL_DECISION.json`へappend-onlyで固定した。
-v1はarchive reachableだがcanonical/default/release candidateではない。
+## v2 human decisionから何を変えたか
 
-v2は3 stream identityから9 episode candidateを作り、hard gate後の100点rubricで比較した。
-selected C3は93点。v1 span overlap 0で、Discordプロフィールをおかゆと変更し、
-通知がスタッフや外部フレンドへ届いたと知って謝罪・注意へ閉じる因果を選んだ。
-11件の競合観測をselection recordと分離保存した。
+v2 final SHA
+`8fe9105c72645acbb21357f10107e0266e19d1bebe18c30a68bd7e59b5853414`
+はtechnical evidenceとして保存した。v2 verdictがacceptedにしたのはsubtitleの
+perceptual timing improvementだけであり、production、thumbnail、未指摘箇所を
+accepted扱いしていない。
 
-## exact artifact の中身
-
-| 観点 | 確定値 | 監修への意味 |
+| v2でBLOCKされた原因 | v3の処理 | 読戻し |
 |---|---|---|
-| source | anonymous `399+251`、1920x1080/60、AV1/Opus、642.001秒窓 | native HD。cookies/OAuth/credentialなし |
-| 時刻原点 | protected v1音声との200Hz相関0.859306、2268.03秒、要求との差+30ms | local sourceとprovider clockのずれを測定 |
-| 構成 | 8 chronological cuts、406.55秒 | setup→変更→通知判明→謝罪→注意 |
-| 字幕 | actual-audio faster-whisper small、手動固有語校正、142 cue | provider JSON3はdiscovery provenanceのみ |
-| timing | 24 anchors、median 0ms、absolute p95 0ms、非発話表示0 | deterministic cut mappingの機械証明 |
-| visual structure | creator-authored telop 4本、speech provenanceと分離 | episodeの段階を画面で追える |
-| title | working 1案 + alternative 2案 | funeral/death hookを使わない |
-| thumbnail rough | actual source frame、1280x720 + 320x180 | review補助。publication acceptance未判定 |
-| media | H.264/AAC 1920x1080、405,217,162 bytes | full decode、A/V、音量、signal green |
+| raw source screenshot＋single hook thumbnail | notification revealを主素材にsetup＋consequenceを二階層化 | 1280 / 320 / 160、badge overlap 0 |
+| mechanical cue split | full 142 cueを監査しphrase-internal boundary 42件を99 cueへ統合 | 語中・孤立・助詞等・禁則・3行・過密すべて0 |
+| quoteを通常speechと同型表示 | narrating Subaru / verified quote / paraphrase / explanationを分離 | verified quote 5件、distinct coverage 100% |
+| laughterを空白化 | actual-audio eventをmild 2 / strong 3へ分類 | unhandled 0、strong 3件だけbounded motion |
+| 2:48 / 6:27のnaked cut | 8 boundaryを原因分類しmaterial bridgeを追加 | unmarked material cut 0 |
+| 6:27後の黒地白文字 | source footageを錨にcompact explanation panelへ統合 | full-black signature消失 |
 
-working titleは
-`Discordのプロフィールを遊びで変えたら、全スタッフに通知が飛んでいた`。
-thumbnail roughの短文は`全スタッフに通知`。320x180でも主要文字を読めることを目視した。
+ACTIVE quarantineは次の3件で、v2 exact identityへ束縛したまま。
 
-## 検証と目視
+1. `out14-v2-source-screenshot-single-hook-thumbnail-v1`
+2. `out14-v2-flat-caption-pass-through-v1`
+3. `out14-v2-naked-cut-black-card-v1`
 
-全13 media checkがpass。duration 406.55秒、-14.93 LUFS、-1.85 dBTP、
-隣接cut最大音量差0.82 LU、black/silence 0、full decode pass。
-subtitle presentationは142 cue、3行超過・overlap・negative・orphan 0。
-冒頭0.5秒は前置きだけを表示し、2.75秒の`Discordってさぁ使ってる`は英単語内で
-折り返さない実フレームを確認した。終盤telopは
-`変更は全体通知される`へ限定し、過剰な謝罪主体を主張しない。
+v1/v2 artifact、source、manifest、review package、decision recordは上書きしていない。
+v2は30 files、final / manifest / rejected thumbnail / sourceのexact SHAを再照合した。
 
-review pageはtitle→thumbnail rough→videoの順で、page 200、MP4 Range 206 / 1024 bytes。
-temporary serverは確認後に停止済み。
+## 生成前design basis
+
+最初のdirection-generating mutationとして
+`docs/research/OUT14_EDITORIAL_V3_DESIGN_BASIS.md`を作成し、
+`CPG-OUT14-V3-DIRSIG-20260727-A`を固定した。
+
+fresh temporary Incognito、signed-out、extensions/sync/cache disabledで、
+4チャンネル・9本を320×180 thumbnailとactual decoded timestampで観測した。
+同一題材、複数人物／引用、笑い、section transitionを含む。
+Default profile、cookie、Google/YouTube login、Home、おすすめ、競合asset保存、
+download、like、comment、subscribeは使用していない。
+
+採用したのは、役割を同型にしない、material jumpを知覚可能にする、
+thumbnailをsetup＋consequenceにする、という構造だけ。
+公開例のcopy、色、portrait、layout、motion、speech balloonは複製していない。
+
+## 実装とbounded repair
+
+新しいrendererはexact v2/source/design signatureをpreflightし、
+role-aware ASS、quote/laughter ledger、8-boundary transition map、
+thumbnail compositor、review packageを一回のstaging buildへ接続する。
+build直後は`FULL_VIEW_SELF_REVIEW_PENDING`でfail-closedにし、
+viewer-facing full playback完走後だけREADYへ昇格する。
+
+probe r1で6:27 explanationのliteral escapeと弱い2:48 bridgeを発見し、r2で修復した。
+初回full playback後の全ledger監査で、既知の`なん／か`以外にも
+`レッドカ／ード`、`メンバ／ー`、`す／いません`等の同型境界が残ることを検出した。
+この時点でREADY claimを固定せず、31 phrase group、42 internal boundary、
+1 incomplete fragment suppressionへ原因層を修正し、r3/r4 probe、
+full rerender、full decode、2回目の406.55秒full playbackまで実施した。
+
+0:15 locusはv2 boundary 12.64秒からcanonical word end 12.72秒へ移動。
+changed timing median / p95は80ms、systematic late biasなし。
+これはdeterministic mapping errorであり、人間のperceptual accuracyを自動証明しない。
+
+## exact artifact
+
+| 項目 | 確定値 |
+|---|---|
+| artifact | `clip-out14-push-microarc-editorial-v3-001` |
+| video | H.264 Main / AAC、1920×1080、60fps、406.55秒 |
+| bytes / SHA | 404,376,920 / `fddae5a6…e9be` |
+| caption | canonical 142 → viewer-facing 99、merged boundary 42 |
+| quote | 5 verified、coverage 1.0、portrait 0 |
+| laughter | 5 events、mild 2 / strong 3、provider leak 0 |
+| transitions | 8 classified、material bridge 2、unmarked 0 |
+| thumbnail | selected 1280 / 320 / 160、runner-up 320、external/generated 0 |
+| package | 47 payload＋manifest、closed-set pass |
+| full playback | 406.55秒、8 checkpoints、ended true、speed 1、volume 1、mute false |
+
+full decode、faststart、A/V start 0、video/audio duration差5ms、-14.9 LUFS、
+true peak -1.7 dBFS、silence 0、全cut black 0、9 probe decodeを確認した。
+repository-required Pillowを注入したfull suiteは706 passed。
+6:23.967–6:24.467の0.5秒freezeはsource内holdで、6:26.44のcut boundary前。
+修復前後AAC stream SHAは一致し、audio join最大sample jump 0.07254
+（threshold 0.08）の検査結果をexact audioへ継承できる。
 
 ## 人間が閉じる判断
 
-1. 6分46秒の因果と8 cutが、一話として自然に見えるか。
-2. actual-audio字幕の語句・間・可読性に、公開品質へ向けた修正箇所があるか。
-3. 4本のtelopが説明過多にならず、構成理解を助けるか。
-4. working title / alternative 2案のpromiseが内容と一致するか。
-5. source-frame thumbnail roughの焦点と短文が妥当か。
+監修役はexact v3を全編確認し、次のどれか一つをこのSHAへ束縛する。
 
-`accept`はこのSHAの内部editorial/language/title/rough scopeだけ。
-`bounded_repair`は影響timestampとdimensionを限定した新identityを作る。
-`reject`はv2を閉じる。いずれもrights、production、YPP、upload、publication、
-visibilityを開かない。
+- `accept`: internal editorial / language / title / thumbnail scopeだけを受理する。
+- `bounded_repair`: 重大問題のdimensionとtimestampを限定して修復する。
+- `reject`: v3を内部candidateとして閉じる。
 
-## Git と再入
+どの結果でもrights、YPP、production、upload、publication、visibilityは開かない。
+rights以降へ進むには、exact accepted media、利用範囲、platform、territoryを束縛した
+別owner receiptが必要。push / PR / mergeも今回のauthority外で未実施。
 
-branch `codex/out14-push-microarc-editorial-v2`はexact base
-`30b4891399ad474b624518f7dcb76591b68c8bef`から作成。
-開始時fetch後の`origin/main`は`edb782a...7c7`で、baseはその1 commit先。
-元v1 checkout、S1、Candidate 003/004/005、M2、M6はread-onlyで終了時再hash済み。
-開始時のexact SHAとすべて一致し、両protected checkoutのtracked statusもclean。
-push / PR / mergeはこのhandoffの権限外。
-
-詳細な技術証跡と条件付き長期目標は
-`docs/SUPERVISOR_STATUS_REPORT.md`、portable contractは
-`docs/output_layer/OUT_14_PUSH_MICROARC_EDITORIAL_V2.md`。
+詳細な監修報告と条件付き長期目標は`docs/SUPERVISOR_STATUS_REPORT.md`。

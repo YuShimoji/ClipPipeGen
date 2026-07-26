@@ -288,7 +288,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_current_resume_surfaces_point_to_out14_and_historical_sources_remain_linked():
-    current_out14_artifact = "clip-out14-push-microarc-stream-v1-001"
+    current_out14_artifact = "clip-out14-push-microarc-editorial-v3-001"
     historical_out13_artifact = "clip-out13-editorial-video-candidate-v1-005"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
@@ -353,8 +353,8 @@ def test_current_resume_surfaces_point_to_out14_and_historical_sources_remain_li
             assert "local_artifact_available: true" in text
             assert (
                 "human_entrypoint: "
-                "episodes/out14_push_microarc_real_stream_20260726/artifacts/"
-                "clip-out14-push-microarc-stream-v1-001/review/index.html"
+                "episodes/out14_push_microarc_editorial_v3_20260727/artifacts/"
+                "clip-out14-push-microarc-editorial-v3-001/review/index.html"
                 in text
             )
             assert historical_out13_artifact in text
@@ -1626,7 +1626,7 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["active_branch"] == (
-        "codex/out14-push-microarc-real-stream-v1"
+        "codex/out14-editorial-presentation-v3"
     )
     assert status["current_focus"]["canonical_main_head"] == (
         "refs/remotes/origin/main"
@@ -1636,30 +1636,30 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
         "edb782acd1e06aca46e0a5d10295ea52f30ad5c7"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "out14_push_microarc_real_stream_ready_for_human_review"
+        "out14_editorial_v3_ready_for_human_review"
     )
     assert status["current_focus"]["review_status"] == "ready_for_human_review"
     assert status["current_focus"]["decision_required"] == (
-        "exact_out14_artifact_internal_editorial_visual_language_verdict"
+        "exact_v3_overall_editorial_quality_and_remaining_major_issue_verdict"
     )
     assert status["current_focus"]["next_review_action_type"] == "now"
     assert status["current_focus"]["human_entrypoint"] == (
-        "episodes/out14_push_microarc_real_stream_20260726/artifacts/"
-        "clip-out14-push-microarc-stream-v1-001/review/index.html"
+        "episodes/out14_push_microarc_editorial_v3_20260727/artifacts/"
+        "clip-out14-push-microarc-editorial-v3-001/review/index.html"
     )
     assert status["current_focus"]["review_open_command"].endswith(
         "review\\open_preview.ps1"
     )
     assert status["current_focus"]["machine_readback"] == (
-        "episodes/out14_push_microarc_real_stream_20260726/artifacts/"
-        "clip-out14-push-microarc-stream-v1-001/run_manifest.json"
+        "episodes/out14_push_microarc_editorial_v3_20260727/artifacts/"
+        "clip-out14-push-microarc-editorial-v3-001/run_manifest.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "false"
     assert status["current_focus"]["remote_decision_binding_available"] == "false"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == (
-        "docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md"
+        "docs/SUPERVISOR_STATUS_REPORT.md"
     )
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1668,14 +1668,14 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "stopped_after_page_200_and_mp4_range_206"
+        "active_local_port_8082_after_full_view_pass"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
     )
     assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "episodes/out14_push_microarc_real_stream_20260726/artifacts/"
-        "clip-out14-push-microarc-stream-v1-001/review/index.html"
+        "episodes/out14_push_microarc_editorial_v3_20260727/artifacts/"
+        "clip-out14-push-microarc-editorial-v3-001/review/index.html"
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
     assert status["current_focus"]["pause_reason"] == ""
@@ -1688,10 +1688,10 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     ]
     assert len(current_surfaces) == 1
     assert current_surfaces[0]["target"].endswith(
-        "clip-out14-push-microarc-stream-v1-001/review/index.html"
+        "clip-out14-push-microarc-editorial-v3-001/review/index.html"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_out14_code_and_docs_are_portable_ignored_source_receipts_plan_and_"
+        "tracked_v3_code_and_docs_are_portable_ignored_source_v2_reference_and_"
         "package_are_not"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
@@ -1701,8 +1701,9 @@ def test_artifact_registry_records_content_planning_and_ed10ah_sources():
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-out14-push-microarc-stream-v1-001"
+        "clip-out14-push-microarc-editorial-v3-001"
     )
+    assert "clip-out14-push-microarc-editorial-v3-001" in artifact_ids
     assert "clip-out14-push-microarc-stream-v1-001" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-005" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-004" in artifact_ids

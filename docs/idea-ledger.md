@@ -8,24 +8,28 @@ last_touched: 2026-07-27
 
 # Idea Ledger - ClipPipeGen
 
-現在のbottleneckは`clip-out14-push-microarc-editorial-v2-001`のexact human review。
-v1のtechnical successとeditorial rejectionは分離して保存済みで、v2は別episode、
-actual-audio transcript、可視構成、title/thumbnail roughまで進んだ。
-次の価値は4本目を作ることではなく、v2の人間判断を得て再利用可能な
-Factory Contract v2へ抽出することにある。
+現在のbottleneckは`clip-out14-push-microarc-editorial-v3-001`のexact human review。
+v1のtechnical success/editorial rejection、v2の限定acceptとpresentation reject、
+v3の原因所有repairは別identityで保存済み。v3は4チャンネル・9本の生成前観測、
+role-aware字幕、quote/laughter、8 cut grammar、source-anchored explanation、
+thumbnail再構成、全編再生、bounded repairまで到達した。
+次の価値は4本目を作ることではなく、このexact v3の人間判断を得てから、
+今回の停止条件をmission-specific contractへ抽出することにある。
 
 | 方向 | workflowへの効果 | 必要条件 | 現在状態 | 次の動き |
 |---|---|---|---|---|
-| G4 exact review | v2の構成・字幕・telop・title・roughを判断可能にする | exact SHAとlocalhost package | ready | Human: accept / bounded_repair / reject |
-| G5 bounded repair | 実欠陥だけを直し全編やり直しを避ける | affected timestamp/dimension | conditional | Agent: new identity、限定再検証 |
-| G6 Factory Contract v2 | candidate→actual audio→timeline→reviewを再利用可能にする | G4収束 | proposed | Supervisor: schemaと停止条件を抽出 |
-| G7 second episode | 一回限りの成功かを判定 | G6最小contract | proposed | Agent: 別episodeでrepeat |
-| G8 third episode/trend | repair率とquality driftを観測 | G7 pass | proposed | Supervisor: 3本比較 |
-| G9 rights | 技術成果と利用可否を接続 | exact accepted artifact、owner/platform/territory | closed | Rights owner: receipt |
-| G10 production subtitle/font | diagnostic字幕をdelivery designへ上げる | G4 accept、font/license | closed | Designer: device/safe-area receipt |
-| G11 production render | delivery codec/audio/device QCを閉じる | G9/G10 | closed | Production owner |
-| G12 title/thumb/metadata | creative promiseをexact videoへ固定 | final video lock | closed | Editorial owner |
-| G13 private delivery | 公開前のauth/idempotency/rollbackを証明 | G9–G12、credentials approval | closed | Account owner |
+| G2 exact v3 review | 全体編集、言語、title、thumbnail、重大問題を判断可能にする | exact SHAとlocalhost package | ready | Human: accept / bounded_repair / reject |
+| G3 affected-only repair | 実欠陥だけを新SHAへ開き、受理済み範囲を反復しない | affected timestamp/dimension | conditional | Agent＋Human: 限定修復と再review |
+| G4 internal editorial lock | exact mediaと受理dimensionを後工程へ固定 | G2 acceptまたはG3収束 | proposed | Human: SHA-bound receipt |
+| G5 mission-specific contract | presentationの停止条件を再利用可能にする | G4 | proposed | Supervisor: schemaと停止条件を抽出 |
+| G6 second accepted episode | 一回限りの成功かを判定 | G5最小contract | proposed | Agent: 別episodeでrepeat |
+| G7 third episode/trend | repair率とquality driftを観測 | G6 pass | proposed | Supervisor: 3本比較 |
+| G8 rights | 技術成果と利用可否を接続 | exact accepted artifact、owner/platform/territory | closed | Rights owner: receipt |
+| G9 production subtitle/font | internal字幕をdelivery designへ上げる | G4、font/license | closed | Designer: device/safe-area receipt |
+| G10 production render | delivery codec/audio/device QCを閉じる | G8/G9 | closed | Production owner |
+| G11 title/thumb/metadata | creative promiseをexact videoへ固定 | final video lock | closed | Editorial owner |
+| G12 private rehearsal | 公開前のauth/idempotency/rollbackを証明 | G8–G11、credential authority | closed | Account owner |
+| G13 private delivery | remote object identityを確定 | G12 pass、明示承認 | closed | Account owner |
 | G14 public release | 公開を監査可能にする | private proof、全owner approval | future gate | Human owner |
 | G15 operations | queue/retry/retention/quality/costを扱う | 3+ accepted episode | long-range | Supervisor |
 | G16 constrained autonomy | 自動停止・drift・budgetを運用する | G15 observations | long-range | Owner |
@@ -40,9 +44,9 @@ Factory Contract v2へ抽出することにある。
 
 ## 次の取っ掛かり
 
-- **Advance**: G4 exact human review。
-- **Audit**: low-confidence cueとtitle/rough promiseの確認点を短いdecision packetにする。
-- **Explore**: G6 Factory Contract v2を候補schema、alignment、telop、thumbnail、停止条件へ分解する。
-- **Verify**: protected SHA、tracked episode 0、Git clean、HTTP 200/206を維持する。
+- **Advance**: G2 exact v3 human review。現在の唯一の主要bottleneckを閉じる。
+- **Audit**: 重大指摘がある場合だけtimestampとdimensionへ絞り、G3の影響範囲を閉じる。
+- **Explore**: G4後にG5をsegmentation、role、transition、thumbnail、停止条件へ分解する。
+- **Verify**: v3/v2 SHA、tracked episode 0、Git状態、HTTP 200/206をreview前に読戻す。
 
 長期依存とowner境界は`docs/SUPERVISOR_STATUS_REPORT.md`を正本とする。

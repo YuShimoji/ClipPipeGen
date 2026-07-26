@@ -501,7 +501,7 @@ def test_runtime_handoff_preserve_m6_decision_under_out14_current_state() -> Non
     for text in (runtime, handoff):
         assert (
             "canonical_status: "
-            "out14_push_microarc_real_stream_ready_for_human_review"
+            "out14_editorial_v3_ready_for_human_review"
             in text
         )
         assert "m6_rights_status: closed_deny_exact_artifact" in text

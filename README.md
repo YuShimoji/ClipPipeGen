@@ -6,19 +6,18 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-OUT-14 note: `build-push-microarc-stream` は、完了済み公開配信1本から、
-発端・必要背景・展開・着地・余韻を持つ自然な5–15分 `PUSH_MICROARC`を作る。
-実 artifact `clip-out14-push-microarc-stream-v1-001`は
-`youtube:rltNvZ_FY8Q` の786.36–1487.52秒を一つの連続cutとして保持し、
-701.166667秒、H.264/AAC、1920x1080、SHA `1db41c4f...d07f`。
-source/video/audio/caption receipts、ledger、rights snapshot、plan、178 provider-auto
-caption cues、5 semantic roles、2 omissions、creator context 0、full media validation、
-manifest、localhost review、renderなしresumeを一 packageへ閉じた。
-取得sourceは640x360で、出力はLanczos upscale。provider自動字幕は逐語 transcript や
-公式著者字幕ではなく、人間の言語校正を要する。状態は
-`OUT14_PUSH_MICROARC_REAL_STREAM_READY_FOR_HUMAN_REVIEW`で、rights、production、
-YPP、thumbnail、Shorts、public/publishing/uploadは閉じたまま。詳細は
-[OUT_14_PUSH_MICROARC_REAL_STREAM.md](docs/output_layer/OUT_14_PUSH_MICROARC_REAL_STREAM.md)。
+OUT-14 current note: exact v2の限定human verdictから、presentation欠陥だけを
+別identityへ再構成した`clip-out14-push-microarc-editorial-v3-001`が
+`OUT14_EDITORIAL_V3_READY_FOR_HUMAN_REVIEW`。生成前にfresh signed-out surfaceで
+4チャンネル・9本を観測し、role-aware字幕、verified quote、actual laughter、
+全8 cutの原因分類、source-anchored explanation、setup＋consequence thumbnailを実装した。
+初回全編再生後のledger監査で残った同型分節を原因層へ戻し、canonical 142 cueから
+viewer-facing 99 cueへ42内部境界を統合。再render、full decode、406.55秒の
+全編再生を完了した。final MP4 SHAは`fddae5a6...e9be`。
+次はexact v3全体の`accept / bounded_repair / reject`だけであり、rights、production、
+YPP、publication、upload、visibilityは閉じたまま。詳細は
+[CURRENT_HANDOFF.md](docs/CURRENT_HANDOFF.md)と
+[SUPERVISOR_STATUS_REPORT.md](docs/SUPERVISOR_STATUS_REPORT.md)。
 
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
 outputをローカルpipeline経路から上書きせず、取得済みの実 source、receipt / material ledger、明示 editorial plan、
