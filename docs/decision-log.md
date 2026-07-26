@@ -3,10 +3,39 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-25
+last_touched: 2026-07-26
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-26 — materially distinctなtwo-source successorをS4 review待ちとして正本化
+
+remote最新`origin/main`
+`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`を完全に含むbranch
+`codex/s1-two-source-common-context-probe-v1`に、implementation revision
+`a3771bc59cd58b05c00a570e1074118ace3dc15a`が存在する。これはOUT-13 Candidate 005を
+改名・修復・再公開候補化するものではなく、新identity
+`clip-s1-two-source-common-context-probe-v1-001`へ取得済み実source二本、別question/thesis、
+別range inventory、別MP4を割り当てるmaterially distinct successor probeである。
+
+exact local packageは19 payload files、final MP4 93,331,608 bytes / 98.896s、
+SHA`dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`、
+tree digest`a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`。
+6 cuts、各source 3 cuts、5 switches、60 caption cues、3 creator commentary eventsを持つ。
+manifest closed set、16 media/evidence checks、focused 12 tests、full 689 tests、GUI/Electron
+smokeはpassした。
+
+machine passはcommon-contextの意味判断を代行しない。current stateを
+`S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW`、next actionを
+`obtain_s4_human_common_context_verdict_on_exact_probe`とする。S4は中心問いの理解可能性、
+二sourceの相互深化、attribution/context、commentary/caption分離だけを
+`accept / bounded repair / reject`で判断する。
+
+rightsは`not_granted`、production/public/monetized/uploadはfalse。OUT-13 Candidate 005は
+`M6_CLOSED_DENY_EXACT_ARTIFACT`のread-only archive evidenceを維持し、そのinternal
+acceptanceやpublic denyをS1へ継承しない。根拠:
+`docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md` +
+exact local manifest/hash readback + `docs/CURRENT_HANDOFF.md`。
 
 ## 2026-07-25 — exact accepted OUT-13をmainへfast-forward統合し、M5 baselineを閉じる
 

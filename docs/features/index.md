@@ -4,43 +4,44 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `OUT-13`
-- artifact: `clip-out13-editorial-video-candidate-v1-005`
-- state: `OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1`
+- feature: `ED-12`
+- artifact: `clip-s1-two-source-common-context-probe-v1-001`
+- state: `S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW`
 
 - canonical main: `refs/heads/main`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `m6_closed_deny_exact_artifact`
-- review status: `m6_closed_deny_exact_artifact_internal_evidence_preserved`
+- canonical status: `s1_s3_common_context_probe_ready_for_s4_human_review`
+- review status: `s4_human_review_pending`
 - remote code complete: `true`
 - local artifact available: `true`
 - portable local artifact available: `false`
-- portable entrypoint: `docs/rights/out13_m6_rights_decision_readiness_packet.json`
+- portable entrypoint: `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
 - cover direction acceptance: ``
 - proxy classification: ``
 - last verified host local artifact available: `true`
-- last verified host entrypoint: `episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html`
-- pause reason: `exact_candidate_005_public_and_monetized_path_closed_by_user_deny`
+- last verified host entrypoint: `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html`
+- pause reason: `s4_human_common_context_review_required`
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not`
+- cross-machine resume: `tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not`
 - active rebuild contract: ``
-- evidence revision: `out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready`
+- evidence revision: `s1-two-source-common-context-probe-v1-exact-package`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `new_successor_artifact_scope_before_new_public_use_review`
-- next review: `successor_artifact_scope_decision`
+- decision required: `s4_human_common_context_verdict`
+- next review: `s4_human_common_context_review`
 
 ## Feature Table
 
 | id | title | status | health | progress_pct | active_artifact | next_action |
 |---|---|---|---|---:|---|---|
+| ED-12 | S1 two-source common-context probe | in_progress | active | 70 | clip-s1-two-source-common-context-probe-v1-001 | Finish current acceptance/readback and update artifact registry. |
 | ED-11 | OUT-12 one-command real long-form video automation | done | stable | 100 | clip-out12-one-command-real-video-automation-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | MS-01 | material_ledger schema v1 縺ｨ CRUD CLI | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -160,4 +161,3 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-07 | Operator Review UX contract | done | blocked | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-08 | Human Preview Session Bundle | done | stable | 100 | clip-human-preview-session-001 | Keep as reference unless a regression or successor lane appears. |
 | SH-09 | Docs Wiki Dashboard v1.5 | done | stable | 100 | clip-docs-dashboard-001 | Keep as reference unless a regression or successor lane appears. |
-| OUT-02 | 髻ｳ螢ｰ蜷域・・・TS・・ | proposed | backlog | 0 |  | Promote to approved only after an explicit slice decision. |

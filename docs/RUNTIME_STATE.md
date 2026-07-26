@@ -3,15 +3,15 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
+health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
 last_touched: 2026-07-26
-state_revision: out13-m6-canonical-main-resume-coherent-2026-07-26
+state_revision: s1-common-context-probe-handoff-2026-07-26
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
-current_slice: OUT-13
-phase: m6_closed_exact_artifact_deny
-canonical_status: m6_closed_deny_exact_artifact
-active_branch: main
-source_branch: codex/out-13-editorial-video-candidate-v1
+current_slice: ED-12
+phase: s1_s3_probe_built_s4_human_review_pending
+canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
+active_branch: codex/s1-two-source-common-context-probe-v1
+source_branch: codex/s1-two-source-common-context-probe-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
 verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
@@ -26,57 +26,57 @@ m6_decision_main_integration_authority_id: clip-m6-deny-main-integration-2026072
 m6_decision_main_integration_authority_consumed: true
 m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
-closure_branch: main
-remote_resume_contract: fetch_then_switch_main_then_ff_only_pull_then_read_current_handoff
+closure_branch: null
+remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
 upstream_parity: 0 0
 sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-latest_remote_sync_head: e0279d513e89fac833d0c7415dc3234d00946773
-sync_audit_status: accepted_out13_feature_fast_forward_integrated_into_main_and_baseline_verified
+latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+sync_audit_status: origin_main_current_branch_contains_remote_baseline_one_local_successor_commit
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained
-human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
-portable_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
-review_open_command: powershell -NoProfile -Command Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
-review_server_restart_command: null
-machine_readback: docs/rights/out13_m6_rights_decision_readiness_packet.json
+current_title: S1 two-source common-context probe ready for S4 human review
+human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
+portable_entrypoint: docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\serve_preview.ps1
+machine_readback: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/validation_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: new_successor_artifact_scope_before_new_public_use_review
-review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved
-review_scope: exact_candidate_005_public_and_monetized_project_decision
-reviewed_at: 2026-07-25
+decision_required: s4_human_common_context_verdict
+review_status: s4_human_review_pending
+review_scope: exact_s1_two_source_common_context_probe
+reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: true
-remote_decision_binding_available: true
-local_decision_binding_committed: true
+remote_decision_binding_available: false
+local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: archive_read_only_internal_evidence_only
+local_artifact_role: active_s4_review_target_same_machine_only
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
-cross_host_resume_status: exact_candidate_005_present_on_verified_host_not_portable_through_git
+cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
+cross_host_resume_status: exact_s1_package_present_on_verified_host_not_portable_through_git
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: out13-editorial-video-candidate-v4-candidate-005-user-accepted-m3-ready
+evidence_revision: s1-two-source-common-context-probe-v1-exact-package
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: DESKTOP-U9P4LKJ
 local_verified_host: DESKTOP-U9P4LKJ
-local_artifact_evidence_receipt: docs/output_layer/out13_human_acceptance_receipt.json
-local_package_requirement: satisfied_candidate_005_exact_source_transcript_caption_rights_receipts_plan_and_output_hashes_match
+local_artifact_evidence_receipt: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/run_manifest.json
+local_package_requirement: satisfied_exact_two_source_plan_design_basis_manifest_and_output_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: not_granted
-public_use_verdict: deny
-monetized_youtube_verdict: deny
-publication_decision: deny
-monetization_decision: deny
+public_use_verdict: not_considered_s1
+monetized_youtube_verdict: not_considered_s1
+publication_decision: not_considered_s1
+monetization_decision: not_considered_s1
 m6_owner_verdict: deny
 m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
 m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
@@ -86,43 +86,43 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-25T00:16:31+09:00
+last_verified_at: 2026-07-26T20:05:59+09:00
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html
+last_verified_host_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: exact_candidate_005_public_and_monetized_path_closed_by_user_deny
+pause_reason: s4_human_common_context_review_required
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: accept
-user_feedback_overall: candidate_005_accepted_for_recorded_internal_editorial_visual_scope
+human_review_decision: pending
+user_feedback_overall: pending_s4_exact_probe_review
 content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
 endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
-reviewed_by_human: true
-human_review_pending: false
-acceptance_granted: true
-editorial_acceptance_granted: true
-acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
-acceptance_review_context_id: out13_candidate_005_internal_full_view_editorial_visual_review_v1
-acceptance_media_sha256: a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5
-acceptance_dimensions: editorial_composition, editorial_flow, subtitle_presentation, picture_quality_for_internal_editorial_use, audio_quality_for_internal_editorial_use
-acceptance_inheritance_key: media_sha256 + review_context_id + accepted_dimensions
+reviewed_by_human: false
+human_review_pending: true
+acceptance_granted: false
+editorial_acceptance_granted: false
+acceptance_receipt: null
+acceptance_review_context_id: null
+acceptance_media_sha256: null
+acceptance_dimensions: null
+acceptance_inheritance_key: null
 same_review_identity_reopens_human_review: false
 bounded_repair_reopens_only_affected_dimensions_and_timestamps: true
-main_integration_approved: true
-main_integration_preflight_verdict: consumed_by_authorized_fast_forward_integration
-main_integration_approval_consumed_by_revision: 18641fe917b084259869263e8db05d78325aa2db
-m4_main_integration_status: complete
-m5_integrated_baseline_verification_status: passed
+main_integration_approved: false
+main_integration_preflight_verdict: not_requested_for_s1
+main_integration_approval_consumed_by_revision: null
+m4_main_integration_status: not_started_for_s1
+m5_integrated_baseline_verification_status: not_applicable_until_s1_integration
 m6_rights_status: closed_deny_exact_artifact
 m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
-automation_acceptance_granted: true
-automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
+automation_acceptance_granted: false
+automation_acceptance_scope: machine_validated_internal_probe_human_s4_pending
 batch_acceptance: not_applicable_out12
 candidate_01_acceptance: not_applicable_out12
 candidate_02_acceptance: not_applicable_out12
@@ -130,12 +130,66 @@ accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_can
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: not_required_acceptance_receipt_is_current
-next_review_due: successor_artifact_scope_decision
-next_review_type: materially_distinct_successor_artifact_scope
-next_action: require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration
-active_artifact: clip-out13-editorial-video-candidate-v1-005
-current_review_component: out13_explicit_editorial_plan_video_subtitle_and_av_evidence
+review_server_status: stopped_restart_command_available
+next_review_due: s4_human_common_context_review
+next_review_type: exact_probe_common_context_review
+next_action: obtain_s4_human_common_context_verdict_on_exact_probe
+active_artifact: clip-s1-two-source-common-context-probe-v1-001
+current_review_component: s1_two_source_argumentative_timeline_caption_commentary_and_provenance
+base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+artifact_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
+artifact_output_byte_size: 93331608
+artifact_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
+artifact_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
+artifact_file_count: 19
+artifact_duration_seconds: 98.896
+artifact_source_count: 2
+artifact_cut_count: 6
+artifact_source_switch_count: 5
+artifact_caption_cue_count: 60
+artifact_commentary_count: 3
+public_use: false
+monetized_use: false
+upload_attempted: false
+s1_implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+s1_base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+s1_artifact_id: clip-s1-two-source-common-context-probe-v1-001
+s1_state: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
+s1_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
+s1_output_byte_size: 93331608
+s1_output_duration_seconds: 98.896
+s1_package_file_count: 19
+s1_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
+s1_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
+s1_source_count: 2
+s1_cut_count: 6
+s1_source_switch_count: 5
+s1_caption_cue_count: 60
+s1_commentary_count: 3
+s1_validation_status: passed
+s1_human_review_pending: true
+s1_rights_approval: not_granted
+s1_production_acceptance: false
+s1_public_use: false
+s1_monetized_use: false
+s1_upload_attempted: false
+package_validation_status: passed
+s1_review_http_status: 200
+s1_review_range_status: 206
+full_suite_status: passed_689
+out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
+out13_human_review_pending: false
+out13_editorial_acceptance_granted: true
+out13_acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
+out13_main_integration_approved: true
+out13_m4_main_integration_status: complete
+out13_m5_integrated_baseline_verification_status: passed
+out13_m6_rights_status: closed_deny_exact_artifact
+out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
+out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
+out13_public_use_verdict: deny
+out13_monetized_youtube_verdict: deny
 out13_artifact_id: clip-out13-editorial-video-candidate-v1-005
 out13_state: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
 out13_rights_status: unresolved_evidence_preserved_public_use_denied
@@ -371,7 +425,7 @@ known_unrelated_test_failure: null
 known_unrelated_test_failure_2: null
 known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
 known_unrelated_test_failure_owner: none_current
-current_full_suite_status: m5_integrated_main_full_suite_passed
+current_full_suite_status: s1_branch_full_suite_689_passed
 current_full_suite_command: uvx --with Pillow pytest -q
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
@@ -527,76 +581,49 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — OUT-13 M6 Closed / Exact Candidate 005 Public Use Denied
+## Current Capsule — ED-12 / S1 Ready for S4 Human Review
 
-- active slice: `OUT-13`
-- active artifact: `clip-out13-editorial-video-candidate-v1-005`
-- review status: `m6_closed_deny_exact_artifact_internal_evidence_preserved`
-- portable receipt: `docs/rights/out13_m6_rights_decision_readiness_packet.json`
-- local artifact role: `archive_read_only_internal_evidence_only`
-- main integration approval: `true`
+- active slice: `ED-12`
+- active artifact: `clip-s1-two-source-common-context-probe-v1-001`
+- review status: `s4_human_review_pending`
+- portable receipt: `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
+- local artifact role: `active_s4_review_target_same_machine_only`
+- human review pending: `true`
 
-- ユーザーは supervising thread で exact artifact
-  `clip-out13-editorial-video-candidate-v1-005`、final MP4 SHA
-  `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`
-  へ `accept` を与えた。判断範囲は従来手順による内部の全編 editorial / visual
-  reviewであり、`docs/output_layer/out13_human_acceptance_receipt.json`へ user authority、
-  日付、media identity、review context、accepted dimensionsを固定した。
-- M2はclosed。`human_review_pending=false`、`editorial_acceptance_granted=true`。
-  candidate 004 / 005のfinal MP4は同じSHAであるため、同じreview contextと同じ判断次元に
-  もう一度の全編視聴を要求しない。package revisionやimplementation revisionだけの変更も
-  reviewを再開しない。
-- 将来のbounded repairは、実際に変えた、または因果的に影響する判断次元だけを再開する。
-  timestampで限定できる変更は該当intervalだけを再確認し、影響しない次元は今回の受領を継承する。
-  media SHAが変わる場合は新しいreview identityとして扱う。
-- M3はaccepted feature revision
-  `18641fe917b084259869263e8db05d78325aa2db`で
-  `READY_FOR_EXPLICIT_MAIN_INTEGRATION`として閉じた。authority
-  `clip-out13-main-integration-authorization-20260725-01`をexact revisionの
-  fast-forward統合に一回だけ消費し、M4をcompleteとした。
-- M5はfinal main closure treeに対するfull suite、focused OUT-13 /
-  acceptance / semantic authority / dashboard、compile/static、diff/privacy
-  gateでpassした。final commit SHAは`refs/heads/main`をGit正本として解決する。
-  accepted feature `18641fe`はfinal mainの祖先であり、squashや履歴改変はない。
-- M6の判断準備パケット
-  `docs/rights/out13_m6_rights_decision_readiness_packet.json`は、exact accepted media、
-  元動画の映像・音声、provider caption、transcript派生物、Keifont、生成レイヤー、
-  元動画内の追加権利懸念を、7使用区間・8除外区間と一次規約へ結び付けた。技術 provenance、
-  content observation、一次規約、permission / owner authorityを別 evidence class とし、
-  provenanceや内部editorial受領をpermissionへ昇格させない。
-- packetは開始リビジョン
-  `dac5f7fb715cb3a7acd6c982a80cb916492e7880`で
-  `READY_FOR_HUMAN_RIGHTS_DECISION`だった。ユーザーは監修役の
-  「exact MP4の収益公開は行わず、後継版へ移る」という推奨1を選択したため、
-  exact Candidate 005 / MP4 SHAに対する`public_use_verdict=deny`、
-  `monetized_youtube_verdict=deny`をdecision historyへ固定した。
-- M6の正本状態は`M6_CLOSED_DENY_EXACT_ARTIFACT`。Candidate 005は内部editorial受領と
-  technical provenanceを保持するread-only archive evidenceであり、public defaultはoff、
-  production / publishing / upload / release候補集合から除外する。
-- deny-binding revision
-  `097fcaad8985d4f24077da484819efb5942b9c65`はauthority
-  `clip-m6-deny-main-integration-20260726-01`によりcanonical `main`へ通常fast-forwardされ、
-  remoteからreadback可能である。live tipは自己参照SHAを埋め込まず
-  `refs/heads/main`で解決し、再開branchは`main`、upstream parityは`0 0`とする。
-- このdenyはproject-controlled publication decisionであり、ユーザーをunderlying source
-  rightsholderとは表明しない。rights approvalは`not_granted`で、infringement等の法的結論、
-  source / caption / font / embedded element一般への判断、将来artifactへのdenyも含まない。
-- publisher/channel identity、全7区間のrights content observation、caption textの
-  permission basis、exact Keifont bytesのlicense bindingは未解決のまま保持する。
-  exact artifactの公開経路をdenyしたため、この経路を閉じる目的に限ってnonblockingである。
-- rights、production subtitle/design/render、production image quality、thumbnail、
-  publishing、upload、public releaseはいずれも未承認である。内部editorial受領から
-  これらのgateを推定しない。
+- remote latest`origin/main`は
+  `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`。current branch
+  `codex/s1-two-source-common-context-probe-v1`はmainを完全に含み、implementation
+  `a3771bc59cd58b05c00a570e1074118ace3dc15a`で一commit先行する。
+- S1はOUT-13 Candidate 005を変更・改名・再公開候補化しない。新artifact、二つの実source、
+  新しいeditorial question/thesis、range inventory、MP4 SHAを持つmaterially distinct probe。
+- exact local packageは19 payload files、final MP4 93,331,608 bytes / 98.896s、
+  SHA`dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`、
+  tree digest`a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`。
+- timelineは6 cuts、各source 3 cuts、5 source switches。source caption 60 cuesと
+  creator-authored commentary 3 eventsを別provenance trackとして保持する。
+- manifest closed set、16 media/evidence checks、focused 12 tests、full 689 tests、
+  GUI/Electron smoke、review page 200 / MP4 Range 206はpass。確認用serverは停止済み。
+  machine passは二sourceが一つの論として成立するという
+  意味判断を代行しない。
+- 同一マシンのS4 entrypointは
+  `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html`。
+  `episodes/`はignoredなので、Gitだけの別端末ではreview-readyを推定しない。
+- OUT-13 Candidate 005は`M6_CLOSED_DENY_EXACT_ARTIFACT`のread-only archive evidenceを維持。
+  そのinternal acceptanceやpublic denyをS1へ継承しない。
+- S1は`human_review_pending=true`、`rights_approval=not_granted`、
+  `production_acceptance=false`、`public_use=false`、`monetized_use=false`、
+  `upload_attempted=false`。
 
 ## Next Action
 
-- action: `require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration`
-- authorization state: `m6_closed_exact_artifact_deny_successor_not_started`
-- owner: `Product owner / User`
-- condition: 新しいpublic / monetized considerationを開く場合は、Candidate 005を変更せず、
-  materially distinctなsuccessor scopeを先に判断する。新artifact identity、新しい
-  transformation / content strategy、material / range inventory、editorial review、
-  rights reviewを必須とする。このMissionではsuccessorの設計、spec、renderを開始しない。
+- action: `obtain_s4_human_common_context_verdict_on_exact_probe`
+- authorization state: `s1_s3_machine_complete_s4_human_decision_pending`
+- owner: `Product owner / User / Supervisor`
+- condition: exact MP4を全編視聴し、中心問いの理解可能性、二sourceの相互深化、
+  attribution/context、commentaryとsource captionの分離を
+  `accept / bounded repair / reject`で判断する。acceptでもrights、production、
+  thumbnail、publishing、upload、public releaseは開かない。repair時はsuccessful
+  packageを上書きせずnew identityを作る。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

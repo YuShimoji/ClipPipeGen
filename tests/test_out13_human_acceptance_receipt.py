@@ -127,26 +127,26 @@ def test_future_bounded_repair_reopens_only_affected_dimension_and_timestamps() 
     }
 
 
-def test_current_state_closes_m2_and_m4_without_opening_external_gates() -> None:
+def test_out13_predecessor_closure_survives_s1_without_opening_external_gates() -> None:
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
     handoff = (ROOT / "docs" / "CURRENT_HANDOFF.md").read_text(encoding="utf-8")
 
     for text in (runtime, handoff):
-        assert "human_review_pending: false" in text
-        assert "editorial_acceptance_granted: true" in text
+        assert "out13_human_review_pending: false" in text
+        assert "out13_editorial_acceptance_granted: true" in text
         assert (
-            "acceptance_receipt: "
+            "out13_acceptance_receipt: "
             "docs/output_layer/out13_human_acceptance_receipt.json"
             in text
         )
-        assert "main_integration_approved: true" in text
-        assert "m4_main_integration_status: complete" in text
-        assert "m5_integrated_baseline_verification_status: passed" in text
-        assert "m6_rights_status: closed_deny_exact_artifact" in text
-        assert "m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in text
+        assert "out13_main_integration_approved: true" in text
+        assert "out13_m4_main_integration_status: complete" in text
+        assert "out13_m5_integrated_baseline_verification_status: passed" in text
+        assert "out13_m6_rights_status: closed_deny_exact_artifact" in text
+        assert "out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in text
         assert "rights_approval: not_granted" in text
         assert "production_acceptance: false" in text
-        assert "public_or_publishing_acceptance: false" in text
+        assert "public_use: false" in text
         assert "this_commit_after_push" not in text
 
 

@@ -17,20 +17,21 @@ ALIGNED_FIELDS = (
     "local_artifact_role",
     "cross_machine_resume_class",
     "review_status",
-    "accepted_feature_revision",
-    "integrated_main_revision",
-    "main_integration_approved",
-    "m4_main_integration_status",
-    "m5_integrated_baseline_verification_status",
-    "m6_rights_status",
-    "m6_packet_status",
-    "m6_packet",
-    "final_main_revision_locator",
-    "m6_decision_binding_revision",
+    "base_main_revision",
+    "implementation_revision",
+    "artifact_output_sha256",
+    "artifact_package_tree_digest_sha256",
+    "artifact_manifest_self_sha256",
+    "package_validation_status",
+    "full_suite_status",
+    "human_review_pending",
+    "rights_approval",
+    "production_acceptance",
+    "public_use",
+    "monetized_use",
+    "upload_attempted",
     "upstream_parity",
-    "remote_decision_binding_available",
-    "local_decision_binding_committed",
-    "remote_mutation_authorized",
+    "remote_code_complete",
     "decision_required",
     "next_review_due",
     "next_action",
@@ -135,7 +136,7 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
             "review status",
             "portable receipt",
             "local artifact role",
-            "main integration approval",
+            "human review pending",
         ):
             if len(fields.get(key, [])) != 1:
                 errors.append(f"capsule_{key.replace(' ', '_')}_count={len(fields.get(key, []))}")
@@ -145,9 +146,7 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
             "review status": runtime.get("review_status", ""),
             "portable receipt": runtime.get("portable_entrypoint", ""),
             "local artifact role": runtime.get("local_artifact_role", ""),
-            "main integration approval": runtime.get(
-                "main_integration_approved", ""
-            ),
+            "human review pending": runtime.get("human_review_pending", ""),
         }
         for key, expected in expected_capsule_values.items():
             values = fields.get(key, [])
@@ -167,31 +166,36 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
                 f"next_action_mismatch={actions[0]}!={runtime.get('next_action', '')}"
             )
 
-    if runtime.get("current_slice") != "OUT-13":
+    if runtime.get("current_slice") != "ED-12":
         errors.append(f"runtime_current_slice={runtime.get('current_slice', '')}")
-    if not runtime.get("active_artifact", "").startswith("clip-out13-"):
+    if runtime.get("active_artifact") != "clip-s1-two-source-common-context-probe-v1-001":
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
     expected_runtime_values = {
-        "accepted_feature_revision": "18641fe917b084259869263e8db05d78325aa2db",
-        "integrated_main_revision": "18641fe917b084259869263e8db05d78325aa2db",
-        "main_integration_approved": "true",
-        "m4_main_integration_status": "complete",
-        "m5_integrated_baseline_verification_status": "passed",
-        "m6_rights_status": "closed_deny_exact_artifact",
-        "m6_packet_status": "M6_CLOSED_DENY_EXACT_ARTIFACT",
-        "m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
-        "active_branch": "main",
-        "final_main_revision_locator": "refs/heads/main",
-        "m6_decision_binding_revision": (
-            "097fcaad8985d4f24077da484819efb5942b9c65"
+        "active_branch": "codex/s1-two-source-common-context-probe-v1",
+        "base_main_revision": "edb782acd1e06aca46e0a5d10295ea52f30ad5c7",
+        "implementation_revision": "a3771bc59cd58b05c00a570e1074118ace3dc15a",
+        "artifact_output_sha256": (
+            "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
         ),
+        "artifact_package_tree_digest_sha256": (
+            "a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a"
+        ),
+        "artifact_manifest_self_sha256": (
+            "8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301"
+        ),
+        "package_validation_status": "passed",
+        "full_suite_status": "passed_689",
+        "human_review_pending": "true",
+        "rights_approval": "not_granted",
+        "production_acceptance": "false",
+        "public_use": "false",
+        "monetized_use": "false",
+        "upload_attempted": "false",
         "upstream_parity": "0 0",
-        "remote_decision_binding_available": "true",
-        "local_decision_binding_committed": "true",
-        "remote_mutation_authorized": "false",
-        "decision_required": "new_successor_artifact_scope_before_new_public_use_review",
-        "next_review_due": "successor_artifact_scope_decision",
+        "remote_code_complete": "true",
+        "decision_required": "s4_human_common_context_verdict",
+        "next_review_due": "s4_human_common_context_review",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -224,15 +228,19 @@ def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() 
     assert _authority_errors(runtime, handoff) == []
 
 
-def test_post_integration_resume_rejects_stale_feature_local_only_state() -> None:
+def test_s1_resume_rejects_stale_local_only_state() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
-        runtime.replace("active_branch: main", "active_branch: codex/stale-m6", 1)
+        runtime.replace(
+            "active_branch: codex/s1-two-source-common-context-probe-v1",
+            "active_branch: codex/stale-s1",
+            1,
+        )
         .replace("upstream_parity: 0 0", "upstream_parity: 1 0", 1)
         .replace(
-            "remote_decision_binding_available: true",
-            "remote_decision_binding_available: false",
+            "remote_code_complete: true",
+            "remote_code_complete: false",
             1,
         )
     )
@@ -242,7 +250,7 @@ def test_post_integration_resume_rejects_stale_feature_local_only_state() -> Non
     assert any(error.startswith("runtime_active_branch=") for error in errors)
     assert any(error.startswith("runtime_upstream_parity=") for error in errors)
     assert any(
-        error.startswith("runtime_remote_decision_binding_available=")
+        error.startswith("runtime_remote_code_complete=")
         for error in errors
     )
     assert any(error.startswith("surface_mismatch_active_branch=") for error in errors)
@@ -281,7 +289,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: archive_read_only_internal_evidence_only",
+        "local_artifact_role: active_s4_review_target_same_machine_only",
         "local_artifact_role: stale_review_target",
         1,
     )
@@ -293,18 +301,18 @@ def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() ->
     )
 
 
-def test_runtime_handoff_m5_status_disagreement_fails_semantic_check() -> None:
+def test_runtime_handoff_package_status_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "m5_integrated_baseline_verification_status: passed",
-        "m5_integrated_baseline_verification_status: failed",
+        "package_validation_status: passed",
+        "package_validation_status: failed",
         1,
     )
 
     errors = _authority_errors(runtime, handoff)
 
     assert any(
-        error.startswith("surface_mismatch_m5_integrated_baseline_verification_status=")
+        error.startswith("surface_mismatch_package_validation_status=")
         for error in errors
     )
 

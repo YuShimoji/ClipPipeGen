@@ -3,49 +3,41 @@ id: idea-ledger
 title: Idea Ledger - ClipPipeGen
 type: durable_idea_ledger
 status: current
-last_touched: 2026-07-25
+last_touched: 2026-07-26
 ---
 
 # Idea Ledger - ClipPipeGen
 
-OUT-10/11のShort portfolioはaccepted internal・winnerなしで閉じ、OUT-12の実長尺automationは
-operational、OUT-13のcaption-evidence editorial routeはcandidate 005までremote code completeかつ
-source-host receiptが成立している。2026-07-25のcurrent root再照合ではcandidate 004 / 005 packageがあり、
-candidate 005のinputs / plan / MP4 / digestもcontractと一致した。tracked codeとexact local review targetの
-双方が開発可能で、ユーザーはexact candidate 005を内部の全編editorial / visual scopeでacceptした。
-accepted revision`18641fe`はmainへfast-forward統合され、M4/M5も完了した。
-現在のbottleneckはM6 rights readinessのscopeと判断ownerである。以下は別々の
-bottleneckを解く候補であり、proposalやmachine passをhuman、rights、production、public acceptanceへ
-自動昇格させない。
+ED-12 / S1のtwo-source common-context probeはtracked implementationとsame-machine exact
+packageまで到達した。現在はS4 human review pending。以下は違うbottleneckを解く候補であり、
+人間判断、rights、production、public acceptanceへ自動昇格しない。
 
-| 段階 | 目的 / workflowへの効果 | 必要条件 | 現在状態 | owner / 次の動き |
+| 段階 | 目的 / 効果 | 必要条件 | 現在状態 | owner / 次の動き |
 |---|---|---|---|---|
-| G0: OUT-10/11 closure保持 | accepted Shortを再修復せず比較authorityとして再利用 | exact SHAとreceipt不変 | 完了 | Agent: lineage維持 |
-| G1: OUT-12 one-command real video | source→Timeline IR→MP4→validation→review→resumeを一縦糸にする | 取得済みreal source、FFmpeg/ffprobe | 完了。SHA `5d391ffd...a584`; このcheckoutにもlocal evidenceあり | Agent: regression時だけ修復 |
-| G2: OUT-13 editorial route | explicit planとcaption evidenceを非連続cut・字幕・reviewable MP4へ運ぶ | source/caption/transcript/rights/plan | remote code complete。candidate 005 MP4 SHA `a76babda...bbb5`とexact local packageを再照合 | Agent: code contract維持 |
-| G3: artifact identity recovery | humanがOUT-13 reviewable bytesへ探索なしで到達できるようにする | exact package、plan、hash、single launcher | current hostで完了。25 files / 87,123,995 bytes、digest`ed45fd4c...040` | Agent: same-machine availabilityとGit portabilityを分離 |
-| G4: internal editorial acceptance | composition、subtitle presentation、picture/audioを一本で判断 | G3、exact SHA、single review entry | 完了。receiptは`out13_human_acceptance_receipt.json` | Agent:同じmedia/context/dimensionsを再reviewへ戻さない |
-| G5: main integration | accepted branchをmainへ安全に接続し、clone可能な開発基線にする | branch全差分preflight、明示統合承認 | 完了。`18641fe`をfast-forward統合しM5 pass | Agent: main baseline維持 |
-| G5R: bounded editorial repair | 将来の実変更で影響する判断だけを再確認する | changed/causally affected dimensionとtimestampが明示 | conditional | Agent:影響範囲だけを新identityで修復・再検証 |
-| G6: rights/material-use clearance | 技術成功と利用許可を接続する | source/range、権利者/ガイドラインsnapshot、判断owner | `rights=pending` | Rights owner: allow/deny/restriction receipt |
-| G7: production subtitle design | 字幕、font/license、safe area、話者表現をproduction判断へ上げる | G4、明示design gate、visual owner | closed | Human designer: exact visual receipt |
-| G8: production render acceptance | internal H.264/AACをdelivery仕様へ上げる | G7、delivery/device/color/audio QC仕様 | closed | Supervisor/User: profileとacceptanceを承認 |
-| G9: production candidate convergence | G6〜G8の独立receiptを一episode identityへ束ねる | 各gateの個別結果、episode pack contract | proposed | Supervisor: receipt集約として承認 |
-| G10: thumbnail + metadata | video確定後の手戻りを減らし非公開delivery準備へ接続 | 複数accepted output、thumbnail再開判断 | thumbnailはpark、metadata未着手 | Human/Agent:別sliceで比較とdraft |
-| G11: private/unlisted delivery | public化せずOAuth/idempotency/rollbackを証明 | G6〜G10、credentials明示承認 | 未実装・要承認 | Human owner: credential/visibility gate |
-| G12: explicit public release | 制作・権利・公開判断を監査可能に閉じる | private delivery、全owner receipt、rollback | future gate | Human owner:公開直前の明示判断 |
-| G13: multi-episode operations | queue/retry/retention/quality trendで継続運用する | G2〜G12のcontract安定、複数episode evidence | long-range proposed | Agent:失敗隔離のthin orchestrationから提案 |
+| G0 OUT-13 archive保持 | deny済みexact artifactを再混入させない | Candidate 005 identity不変 | 完了 | Agent: negative boundary維持 |
+| G1 S1 identity / strategy | materially distinct successorを明示する | new identity、二source、new thesis | 完了 | Agent: contract維持 |
+| G2 evidence-bound plan | cut/commentaryをdirect evidenceへ戻す | media/caption/rights hash | 完了 | Agent: provenance維持 |
+| G3 reviewable package | exact MP4とvideo-first pageを作る | FFmpeg、immutable empty output | 完了 | Agent: package hash維持 |
+| G4 human common-context review | 二sourceが一つの論として成立するか判断 | exact SHA、全編視聴 | pending | User/Supervisor: accept / bounded repair / reject |
+| G5 bounded closure | verdictをidentityへbindする | G4回答 | proposed | Agent: receipt、必要ならnew identity |
+| G6 second-pair repeatability | 一例の偶然成功を減らす | G5 accept、別pair | proposed | User:実施価値判断、Agent:thin slice |
+| G7 fresh rights inventory | 実際に使う二source/rangeだけ棚卸し | G5 acceptまたは対象確定 | closed | Rights owner: material/range packet |
+| G8 production subtitle design | caption/commentary/attributionをdelivery仕様へ上げる | rights条件、design owner | closed | Human designer: exact visual receipt |
+| G9 production render | codec/audio/device/QCをdelivery profileへ上げる | G7/G8 | closed | Supervisor/User: profile acceptance |
+| G10 episode acceptance pack | lineageと判断receiptを一束にする | G5/G7/G8/G9 | proposed | Agent: no-scope-widening manifest |
+| G11 thumbnail / metadata | rights-cleared素材で非公開delivery準備 | G10 | parked | Human/Agent:比較・draft |
+| G12 external-state dry-run | upload前にidempotency/rollbackを検証 | G10/G11、no credentials | future | Agent: read-only plan |
+| G13 private delivery | public化せず限定導通 | credential/visibility明示承認 | future gate | Human owner |
+| G14 public release | 最終公開判断を監査可能にする | 全receipt、release owner | future gate | Human owner |
+| G15 operations | queue/retry/retention/quality trend | 複数episode evidence | long-range | Agent: failure isolationから提案 |
 
 ## 次の取っ掛かり
 
-- **Advance**: M6 rights readiness packetのsource/range、snapshot、判断ownerを整理する。
-- **Verify**: main baselineのaccepted feature ancestry、full/focused gate、remote parityを維持する。
-- **Audit**: rights/source-rangeの判断packetを作り、技術受領と利用許可を分離して閉じる。
-- **Explore**: production subtitle designかproduction render profileの一方を、明示gateとしてthin slice化する。
-- **Repair**: 将来mediaが変わる場合だけ、影響dimension/timestampを限定しnew identityへ進む。
+- **Advance**: exact S1 MP4をS4の四問だけでreviewし、意味判断のbottleneckを閉じる。
+- **Verify**: remote branch parity、package hash、manifest closed setを再確認し、別端末handoffを強くする。
+- **Audit**: two sourceの使用rangeとrights unknownをread-only棚卸しし、S4とpermission判断を分離する。
+- **Explore**: S4後のsecond-pair候補を比較する。取得・render・generic framework化はまだ行わない。
 
-OUT-12 second-source repeatability debtは消えていない。OUT-13は別sourceを使うが別CLI・別目的であり、
-OUT-12 long-form routeの3分以上second-source repeatability passとしては数えない。OUT-13の
-M4/M5を閉じた現在は、M6 rights readinessと残るproduct gateを並べて再優先順位付けする。
-
-依存順と各段階の最小証拠は`docs/SUPERVISOR_STATUS_REPORT.md`のportable境界・未完了gate・先へ進む順序を参照する。
+保留debtは、OUT-12 long-form routeのsecond-source repeatability、S1のsecond-pair
+repeatability、caption/commentaryのproduction design、二source各rangeのrights observation。
+優先順位はS4 verdict後に再評価する。

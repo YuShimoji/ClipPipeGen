@@ -1,4 +1,4 @@
-# OUT-13 M6 exact-artifact deny canonical-main closure・監修報告
+# ED-12 / S1 two-source common-context probe・監修報告
 
 更新日: 2026-07-26 JST
 
@@ -6,149 +6,156 @@
 
 ## 監修時に最初に押さえる結論
 
-OUT-13 M6 は `M6_CLOSED_DENY_EXACT_ARTIFACT` でclosedした。ユーザーは監修役の
-推奨1「deny — exact MP4の収益公開は行わず、後継版へ移る」を選択し、project publication
-decision ownerとして、次のexact identityだけにdenyを与えた。
+remote最新`origin/main`は`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`でlocal mainと一致。
+current branch`codex/s1-two-source-common-context-probe-v1`はそのmainを完全に含み、
+implementation revision`a3771bc59cd58b05c00a570e1074118ace3dc15a`で1 commit先行している。
 
-| 判断軸 | bindした値 |
+このcommitは、OUT-13 Candidate 005を変更・改名せず、新artifact
+`clip-s1-two-source-common-context-probe-v1-001`を実装した。取得済み実source二本をexact
+hashとdirect caption evidenceへbindし、creator-authored thesis/commentaryを別provenance
+trackとして一つの98.896秒timelineへ組み立てる。code/packageの技術検証はgreen。
+現在のsingle bottleneckはS4 human common-context reviewである。
+
+| 監修軸 | current readback |
 |---|---|
-| packet | `clip-out13-m6-rights-decision-readiness-v1-001` |
-| starting packet revision | `dac5f7fb715cb3a7acd6c982a80cb916492e7880` |
-| artifact | `clip-out13-editorial-video-candidate-v1-005` |
-| exact MP4 SHA-256 | `a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5` |
-| public use | `deny` |
-| monetized YouTube use | `deny` |
-| rights approval | `not_granted` |
-| durable evidence | `docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0` |
+| branch | `codex/s1-two-source-common-context-probe-v1` |
+| base remote main | `edb782acd1e06aca46e0a5d10295ea52f30ad5c7` |
+| implementation | `a3771bc59cd58b05c00a570e1074118ace3dc15a` |
+| artifact | `clip-s1-two-source-common-context-probe-v1-001` |
+| exact MP4 SHA-256 | `dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be` |
+| package tree digest | `a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a` |
+| state | `S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW` |
+| review | `human_review_pending=true` |
+| rights/public | `not_granted` / `false` |
 
-Candidate 005は削除、変更、rejectしていない。M2で受領された内部editorial evidenceと
-technical provenanceを保つread-only archive evidenceへ役割を固定し、public defaultをoff、
-production / publishing / upload / release候補集合から除外した。M2の
-`human_review_pending=false`とaccepted dimensionsは維持する。
+進捗は、current successor sliceのengineeringで
+`[█████████░] 90%`（実装・実artifact・machine gate完了、S4未完）、
+production/public delivery全体で
+`[███░░░░░░░] 30%`（rights/design/render/delivery/releaseは未開始）と見積もる。
+これはテスト件数を製品完成度へ置き換えた数字ではなく、残るgateのownerとexit evidenceに基づく。
 
-deny-binding revision
-`097fcaad8985d4f24077da484819efb5942b9c65`は、authority
-`clip-m6-deny-main-integration-20260726-01`により通常fast-forwardでcanonical `main`へ
-統合され、remoteへpush済みである。live tipはtracked文書へ未来のcommit SHAを自己参照
-させず、`refs/heads/main`で解決する。現在の再開branchは`main`、remote decision
-bindingはavailable、main/upstream parityは`0 0`である。
+## remote同期と開発可能性
 
-## 判断の意味と境界
+開始時のprimary checkoutはtracked/untracked clean。protected R3 preview、OUT-13 package、
+S1 package、cache/node_modulesをignored stateとして分類した。`git fetch --prune origin`後、
+main parityは`0 0`、current branchは`origin/main...HEAD = 0 1`。remoteに同名branchはまだ
+なかったため、mainへ切り戻したりmergeしたりせず、local successor commitを保持した。
 
-今回のdenyは、Candidate 005のexact MP4をpublicかつ収益化検討対象として使う経路を閉じる
-project-controlled decisionである。ユーザーを元動画、caption、font、音楽、人物、埋込み要素の
-rightsholderとは表明しない。infringementその他の法的結論、素材一般のallow/deny、
-将来artifactへのdenyも含まない。
+依存とgate:
 
-このため、次の二つを同時に正本へ残した。
-
-- exact Candidate 005のpublic / monetized pathはclosedであり、現在のproductionやreleaseへ
-  戻してはならない。
-- source permission、全7区間のcontent observation、provider captionの再製根拠、exact Keifont
-  bytesのlicense/NOTICE bindingは未解決であり、rights approvalへ昇格させてはならない。
-
-未解決証拠は、deny済み経路を閉じる目的に限ってnonblockingである。Candidate 005を公開へ戻す
-ための免除ではなく、将来successorへ自動継承できる権利判断でもない。
-
-## 変更していないidentityと既存受領
-
-| 対象 | 現在の扱い | 変更有無 |
+| 検証 | 結果 | 解釈 |
 |---|---|---|
-| Candidate 005 media bytes | exact SHAのinternal evidence | 変更なし |
-| M2 acceptance receipt | composition、flow、subtitle presentation、内部用途のpicture/audio quality | 変更なし |
-| `human_review_pending` | `false` | 維持 |
-| M4 main integration | `complete` | 維持 |
-| M5 integrated baseline verification | `passed` | 維持 |
-| Candidate 003–005 private package | `episodes/`配下のsame-machine ignored evidence | 変更・削除なし |
-| rights material/range rows | permission/content observation不足を保持 | individual verdictは`undecided`のまま |
+| `npm ci` | 23 packages、audit 0 vulnerabilities | GUI依存を再構築 |
+| GUI smoke | pass | Node側読込経路が動作 |
+| Electron smoke | pass、Electron 42.0.0 | desktop entryが起動可能 |
+| S1 focused | 12 passed | identity、chronology、mapping、provenance、immutabilityを確認 |
+| full Python suite | 689 passed / 95.01s | current HEADの既存機能を含む回帰なし |
+| CLI help | pass | subcommand dispatchが利用可能 |
+| package manifest | pass | 19-file closed setとself-integrityが一致 |
+| review server | page 200 / MP4 Range 206 | browser向け入口とbyte-range配信を確認後、server停止 |
+| Git/privacy | `git diff --check` pass、tracked `episodes/` 0 | private mediaをGitへ追加していない |
 
-overall project publication verdictは`deny`だが、8 material rowsと7 range rowsの
-`owner_verdict=undecided`は意図的に維持した。これは「素材ごとのrightsholder判断が済んだ」
-という誤読を防ぐためである。
+したがって、tracked codeの開発再開と同一マシンS4 reviewの双方が可能。別端末では
+Gitだけでignored source media/review packageが移らないため、code development-readyと
+artifact review-readyを分けて報告する。
 
-## 正本とconsumerの状態
+## 実装された縦糸
 
-| consumer | 現在状態 | 次に使う情報 |
+source pairは次の二本。
+
+| source | identity | direct evidence上の役割 |
 |---|---|---|
-| Runtime / Handoff | `main`上の`m6_closed_deny_exact_artifact` | successor scope決定まではCandidate 005をinternal evidenceとして保持 |
-| M6 packet | deny eventとexact evidence locatorを保持 | 判断日、ユーザー指示、開始revision、artifact ID、SHA |
-| dashboard | Runtimeからclosed stateを投影 | public default off、次action |
-| M2 acceptance consumer | accepted internal dimensionsを継承 | 同一SHA/contextへの再reviewを作らない |
-| future successor lane | 未開始 | 新identityとmaterially distinct scopeを先に決める |
+| SOURCE-04 | `youtube:PQ54uUV41-k` | 困りごとに対し医者・魔法使い・科学者を試し、頼れる人不在へ進む |
+| 秘密の診察室 | `youtube:TlnviOwLRmk` | 軽い症状が役割遊び、急患、オペ、過剰処置へエスカレートする |
 
-現在のsingle next actionは
-`require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration`。
-successorの作成、設計、spec、renderは今回のMissionに含めていない。
+中心問いは「助けを求める状況は、なぜ自信満々だが適合しない解決策の連鎖で悪化するのか？」。
+working thesisはcreator-authored synthesisと明記され、source captionの発話事実と混同しない。
 
-## Git・portability・外部状態
+timelineは6 cuts、各source 3 cuts、5 switches、98.896秒。source内時系列、continuous output
+clock、one cut / one source/input/range mappingを維持する。60 caption cuesは下部、
+3 commentary eventsは上部compact band、source labelは左上。hard cut以外のtransition、
+PiP、split screen、BGM、SFX、generated imageryは使わない。
 
-historical preparation branchは`codex/m6-rights-decision-readiness-v1`、packet準備revisionは
-`dac5f7fb715cb3a7acd6c982a80cb916492e7880`、deny-binding revisionは
-`097fcaad8985d4f24077da484819efb5942b9c65`である。`5bd6e653... -> dac5f7fb... ->
-097fcaad...`を通常fast-forwardとして`main`へ統合し、remoteからpacketをreadbackできる。
-old feature branchはhistorical evidenceであり、current resumption targetではない。
+machine validationはstream/codec/resolution/duration/timestamp/A-V delta/faststart/full decode/
+loudness/source-switch loudness/black-silence/source mapping/both-source decode/caption containment/
+commentary containment/provenance separationの16項目をpass。integrated loudnessは-14.85 LUFS、
+true peakは-1.31 dBTP、最大隣接cut差は3.38 LU、black/silence eventは0。
 
-packetと正本文書はGit portableだが、Candidate media/packageは`episodes/`配下のignored
-same-machine evidenceでありportableではない。`git ls-files episodes`は0件を維持する。
-mainへのpushは完了したが、PR、tag、release、deployment、upload、publish、visibility変更、
-credential/OAuth操作は行っていない。
+代表contact sheetとcommentary contact sheetを監査時に開き、sample上の明白な欠落、
+frame外caption/commentary、source label欠損は見つからなかった。これはsample observationであり、
+全編の意味的S4 acceptanceではない。packageの`visual_observation.status=unverified`は変更していない。
 
-deny-binding作成時に実行されたconfigured full Python suiteは、post-integration
-resume reconciliationのclosure evidenceには使わない。これはprior nonblocking process
-deviationとしてのみ保持し、今回の判断根拠はfocused regressions、generated dashboard
-readback、JSON、diff、remote refに限定する。
+## S4で必要な人間判断
 
-## 受入条件
+技術greenが答えられない四問をexact SHAへbindする。
 
-closed stateを正しいと扱うためのmust-pass条件は次の通り。
+1. 中心問いが前知識なしでも理解可能か。
+2. 二sourceが単なる交互配置を越えて、互いの意味を変化・深化させるか。
+3. attribution/contextが正直で、sourceの意味を過剰に一般化していないか。
+4. commentaryが関係を明確にし、source captionとの区別が知覚できるか。
 
-1. decision eventが開始packet revision、packet ID、Candidate ID、exact MP4 SHA、日付、
-   user evidence locatorへ結び付く。
-2. public useとmonetized YouTube useだけがdenyで、rights approvalは`not_granted`。
-3. Candidate 005はinternal evidenceとして保持され、production / publish / upload /
-   release候補から除外される。
-4. M2 acceptanceと`human_review_pending=false`が変わらない。
-5. individual material/rangeの未解決状態がallow/clearedへ変換されない。
-6. 将来artifact、underlying sources、font、captions、embedded elementsへdenyを一般化しない。
-7. Runtime、Handoff、OUT-13 live capsule、dashboard、focused testsが同じcanonical stateと
-   single next actionを示す。
-8. media、receipt、application code、remote stateを変更しない。
+回答は`accept / bounded repair / reject`。acceptでもrights/production/publicは開かない。
+bounded repairは変える次元とtimestampを限定し、successful packageを上書きせずnew identityへ出す。
+rejectはこのpair/thesis/directionを閉じるが、基盤コードやsource一般への否定には拡張しない。
 
-## 今後の条件付き目標
+同一マシンの入口:
 
-denyにより従来の `M6 -> M7 production subtitle -> M8 render` という直線は閉じた。
-今後はsuccessorを起票するかどうかの判断から再開する。
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
+```
 
-| 段階 | 目標 | 開始条件 | exit evidence |
-|---|---|---|---|
-| S0 Successor scope decision | public / monetized considerationを再開する価値と方針を決める | ユーザーの明示判断 | materially distinct scope、禁止継承、owner |
-| S1 New identity allocation | Candidate 005と混同しない新artifactを割り当てる | S0承認 | new artifact ID、input boundary |
-| S2 Transformation/content strategy | 何をどう変えて公開適合を目指すか決める | S1 | source/material/range strategy、excluded paths |
-| S3 Fresh rights inventory | successorで実際に使う素材だけを再棚卸し | S2 | material/range/terms/unknowns packet |
-| S4 Internal editorial review | exact successor mediaの構成・視聴品質を判断 | render可能な実体 | exact SHAにbindしたreceipt |
-| S5 Rights/publication decision | successorのexact intended useを人間が判断 | S3/S4 | allow/deny/restrict evidence。rightsと公開を分離 |
-| S6 Production design/render | 許された素材と条件でdelivery仕様を確定 | S5 allow範囲 | subtitle/font/license、codec/audio/device QC |
-| S7 Episode acceptance pack | lineageと判断receiptを一つに束ねる | S6 | no-scope-widening manifest |
-| S8 Thumbnail/metadata | rights-cleared素材でhuman choiceを作る | S7 | selected candidate、source credit、restrictions |
-| S9 External-state dry-run | upload前契約を変化なしで確認 | S8 | idempotency、rollback、visibility plan |
-| S10 Private/unlisted delivery | 明示authority下で限定導通 | credential/visibility承認 | upload receipt、readback、rollback |
-| S11 Public release decision | public化を個別判断 | 全receiptと最終owner approval | explicit release decision |
-| S12 Operations | 複数episodeの再現性と監査を確立 | 成功例と失敗例 | isolation、SLO、retention、rights trend |
+## OUT-13との関係
 
-S0が承認されるまではS1以降を開始しない。Candidate 005をsuccessorのように改名したり、
-同じSHAへ別のpublic reviewを付けたりして閉鎖判断を迂回しない。
+OUT-13 Candidate 005は`M6_CLOSED_DENY_EXACT_ARTIFACT`のまま。内部editorial acceptanceと
+technical provenanceを保持するread-only archive evidenceであり、public/monetized/
+production/publish/upload/release候補へ戻さない。
+
+S1は別artifact ID、二source、別question/thesis、別range inventory、別MP4 SHAを持つ。
+したがってCandidate 005 denyの改名迂回ではない。一方、S1もrights approvalを得ておらず、
+public/monetized/production/uploadはfalse。OUT-13のacceptanceやdenyをS1へ自動継承しない。
+
+## portable境界
+
+| 対象 | portability | 現在の役割 |
+|---|---|---|
+| CLI/render/tests/docs | Git portable | 開発・再検証 |
+| artifact ID/hash/contract | Git portable | exact identity handoff |
+| source media/caption local inputs | non-portable | same-machine build evidence |
+| final MP4/review page/evidence JPEG | non-portable | same-machine S4 target |
+| OUT-13 Candidate 005 | non-portable archive | deny済みpredecessor evidence |
+
+`episodes/`はignoredかつtracked 0件。protected R3 previewも保持している。
+
+## 先へ進む条件付き目標
+
+| 段階 | 目標 | 開始条件 | exit evidence | owner |
+|---|---|---|---|---|
+| S4 Common-context review | 論としての成立を判断 | exact S1 package | SHA-bound verdictと四問回答 | User/Supervisor |
+| S5 Bounded closure | accept/repair/rejectを正本化 | S4回答 | receipt、必要ならnew identity | Agent |
+| S6 Second-pair repeatability | 一例の偶然成功を減らす | S5 accept + 実施承認 | 別pairの成功/失敗証拠 | Product owner |
+| S7 Fresh rights inventory | 使用二source/rangeだけ再棚卸し | S5 acceptまたは対象固定 | material/range/terms/unknowns packet | Rights owner |
+| S8 Rights/publication decision | intended useを人間が判断 | S7 + exact use proposition | allow/deny/restrictとpublication decisionを分離 | Rights/Public owner |
+| S9 Production subtitle design | caption/commentary/attributionをdelivery仕様化 | S8のallow範囲 | font/license/safe-area/visual receipt | Designer |
+| S10 Production render profile | codec/audio/device/color/QCを確定 | S9 | delivery manifestとdevice QC | Production owner |
+| S11 Episode acceptance pack | lineageと全receiptを一束化 | S5/S8/S9/S10 | no-scope-widening manifest | Supervisor |
+| S12 Thumbnail/metadata | rights-cleared素材でhuman choice | S11 | selected candidate、credit、restrictions | Human/Agent |
+| S13 External-state dry-run | 変更前にidempotency/rollbackを証明 | S12、credential未使用 | upload plan、rollback、visibility plan | Agent |
+| S14 Private/unlisted delivery | 限定公開で導通 | credential/visibility明示承認 | upload receipt、readback、rollback | Human owner |
+| S15 Public release decision | public化を個別判断 | 全receipt + final owner | explicit release decision | Human owner |
+| S16 Multi-episode operations | queue/retry/retentionを安定化 | 成功例・失敗例複数 | failure isolation、SLO、retention evidence | Agent/Operator |
+| S17 Quality feedback loop | 人間判断を次planへ安全に反映 | S16 | dimension-specific trend、no silent policy promotion | Supervisor |
+| S18 Sustainable platform | rights/quality/costを継続監査 | S16/S17 | audit cadence、owner map、rollback drills | Product owner |
+
+generic N-source architectureはS6前に作らない。二source routeが一度通っただけでは、source数を
+抽象化する根拠が不足する。公開価値を急ぐ場合もS7/S8を飛ばさない。
 
 ## 次に推奨する取っ掛かり
 
-- **Advance**: successor scope decisionだけを行う。公開経路を再開する価値、変える素材、
-  transformationの差分を決めると、新identity allocationを安全に起票できる。
-- **Audit**: packet、Runtime、Handoff、dashboardのdeny projectionをread-onlyで監査する。
-  closed stateのdriftやCandidate 005のcandidate-set再混入を早期に検出できる。
-- **Excise**: 将来のproduction/publish selectorがCandidate 005を参照する場合の拒否条件を、
-  successor Missionで実装候補として切り出す。今回はapplication codeを変更しない。
-- **Explore**: rights riskを下げるmaterial strategyを複数案だけ比較する。実素材取得、
-  license research、spec、renderはS0承認後に限定する。
+- **Advance**: S4四問に限定してexact videoをreviewする。意味判断が閉じるとS5へ進める。
+- **Verify**: remote branch parityとpackage SHAを再確認する。別端末のcode-ready handoffが強くなる。
+- **Audit**: source/range rights unknownをread-onlyで表にする。S4とpermission判断を混ぜずにS7準備ができる。
+- **Explore**: S4後のsecond-pair候補だけを比較する。取得・render・framework化は開始しない。
 
-現在のdrift監査では、docsだけを増やして実装に戻れない状態ではなく、deny decisionのconsumer
-投影とnegative testが今回の成果物である。一方、successorの具体化は未承認なので意図的に
-先送りしている。
+今回のdrift監査では、実装なしにdocsだけ増えている状態ではない。current implementationと
+exact packageが存在し、docsの主目的はstale OUT-13 next actionをlive S1へ合わせること。
+残るリスクは、人間のS4 verdictがまだなく、一例からgeneric architectureへ広げる誘惑がある点。

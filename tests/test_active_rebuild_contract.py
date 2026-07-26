@@ -4,7 +4,6 @@ import json
 import re
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "artifacts" / "ACTIVE_REBUILD.json"
 EXPECTED_BASELINE_SHA256 = (
@@ -229,7 +228,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contract_parked() -> (
+def test_runtime_points_to_s1_and_keeps_out13_and_out07_predecessors_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -239,74 +238,74 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
         "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
     assert "remote_code_complete: true" in runtime
-    assert "remote_decision_binding_available: true" in runtime
-    assert "active_branch: main" in runtime
+    assert "remote_decision_binding_available: false" in runtime
+    assert "active_branch: codex/s1-two-source-common-context-probe-v1" in runtime
     assert "upstream_parity: 0 0" in runtime
-    assert "final_main_revision_locator: refs/heads/main" in runtime
     assert (
-        "m6_decision_binding_revision: "
-        "097fcaad8985d4f24077da484819efb5942b9c65"
+        "base_main_revision: "
+        "edb782acd1e06aca46e0a5d10295ea52f30ad5c7"
         in runtime
     )
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: false" in runtime
     assert (
-        "human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json"
+        "human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/"
+        "review/clip_s1_two_source_common_context_probe_v001/review/index.html"
         in runtime
     )
     assert (
         "portable_entrypoint: "
-        "docs/rights/out13_m6_rights_decision_readiness_packet.json" in runtime
+        "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md" in runtime
     )
     assert (
         "cross_machine_resume_class: "
-        "tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_"
-        "generated_package_are_not"
+        "tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_"
+        "review_package_are_not"
         in runtime
     )
     assert (
         "health: "
-        "OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1"
+        "S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW"
         in runtime
     )
-    assert "current_slice: OUT-13" in runtime
+    assert "current_slice: ED-12" in runtime
     assert (
-        "canonical_status: m6_closed_deny_exact_artifact"
+        "canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review"
         in runtime
     )
-    assert "active_artifact: clip-out13-editorial-video-candidate-v1-005" in runtime
+    assert "active_artifact: clip-s1-two-source-common-context-probe-v1-001" in runtime
     assert (
-        "review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved"
+        "review_status: s4_human_review_pending"
         in runtime
     )
-    assert "automation_acceptance_granted: true" in runtime
+    assert "automation_acceptance_granted: false" in runtime
     assert (
         "automation_acceptance_scope: "
-        "tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback"
+        "machine_validated_internal_probe_human_s4_pending"
         in runtime
     )
-    assert "acceptance_granted: true" in runtime
-    assert "editorial_acceptance_granted: true" in runtime
-    assert "human_review_pending: false" in runtime
+    assert "acceptance_granted: false" in runtime
+    assert "editorial_acceptance_granted: false" in runtime
+    assert "human_review_pending: true" in runtime
     assert (
-        "acceptance_receipt: "
-        "docs/output_layer/out13_human_acceptance_receipt.json"
+        "artifact_output_sha256: "
+        "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
         in runtime
     )
-    assert "main_integration_approved: true" in runtime
+    assert "main_integration_approved: false" in runtime
     assert (
         "main_integration_preflight_verdict: "
-        "consumed_by_authorized_fast_forward_integration"
+        "not_requested_for_s1"
         in runtime
     )
-    assert "m4_main_integration_status: complete" in runtime
-    assert "m5_integrated_baseline_verification_status: passed" in runtime
-    assert "m6_rights_status: closed_deny_exact_artifact" in runtime
-    assert "m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in runtime
-    assert (
-        "m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json"
-        in runtime
-    )
+    assert "out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive" in runtime
+    assert "out13_human_review_pending: false" in runtime
+    assert "out13_editorial_acceptance_granted: true" in runtime
+    assert "out13_main_integration_approved: true" in runtime
+    assert "out13_m4_main_integration_status: complete" in runtime
+    assert "out13_m5_integrated_baseline_verification_status: passed" in runtime
+    assert "out13_m6_rights_status: closed_deny_exact_artifact" in runtime
+    assert "out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in runtime
     assert (
         "accepted_feature_revision: "
         "18641fe917b084259869263e8db05d78325aa2db"

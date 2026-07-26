@@ -493,24 +493,27 @@ def test_rights_ready_or_approved_claim_fails_when_inventory_is_incomplete() -> 
     )
 
 
-def test_runtime_handoff_and_packet_agree_on_m6_decision_state() -> None:
+def test_runtime_handoff_preserve_packet_agreement_as_out13_predecessor_state() -> None:
     packet = _packet()
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
 
     for text in (runtime, handoff):
-        assert "canonical_status: m6_closed_deny_exact_artifact" in text
-        assert "m6_rights_status: closed_deny_exact_artifact" in text
         assert (
-            f"m6_packet_status: {packet['packet_readiness_status']}" in text
+            "out13_predecessor_status: "
+            "m6_closed_deny_exact_artifact_read_only_archive" in text
+        )
+        assert "out13_m6_rights_status: closed_deny_exact_artifact" in text
+        assert (
+            f"out13_m6_packet_status: {packet['packet_readiness_status']}" in text
         )
         assert (
-            "m6_packet: docs/rights/"
+            "out13_m6_packet: docs/rights/"
             "out13_m6_rights_decision_readiness_packet.json"
             in text
         )
         assert "rights_approval: not_granted" in text
-        assert "public_use_verdict: deny" in text
-        assert "monetized_youtube_verdict: deny" in text
+        assert "out13_public_use_verdict: deny" in text
+        assert "out13_monetized_youtube_verdict: deny" in text
         assert "production_acceptance: false" in text
-        assert "public_or_publishing_acceptance: false" in text
+        assert "public_use: false" in text

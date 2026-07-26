@@ -3,227 +3,171 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: OUT13_M6_CLOSED_DENY_EXACT_ARTIFACT_V1
+health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
 last_touched: 2026-07-26
-current_slice: OUT-13
-phase: m6_closed_exact_artifact_deny
-canonical_status: m6_closed_deny_exact_artifact
-active_branch: main
-source_branch: codex/out-13-editorial-video-candidate-v1
-development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
-base_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
-integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
-integration_method: fast_forward_no_squash_no_history_rewrite
-integration_authority_id: clip-out13-main-integration-authorization-20260725-01
-integration_authority_consumed: true
-final_main_revision_locator: refs/heads/main
-m6_decision_binding_revision: 097fcaad8985d4f24077da484819efb5942b9c65
-m6_decision_main_integration_authority_id: clip-m6-deny-main-integration-20260726-01
-m6_decision_main_integration_authority_consumed: true
-m6_decision_binding_remote_ref: refs/heads/main
-m5_verification_tree_locator: refs/heads/main^{tree}
-remote_resume_contract: fetch_then_switch_main_then_ff_only_pull_then_read_this_file
-current_title: OUT-13 M6 closed deny for exact Candidate 005; internal evidence retained
-human_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
-portable_entrypoint: docs/rights/out13_m6_rights_decision_readiness_packet.json
-review_open_command: powershell -NoProfile -Command Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
-review_server_restart_command: null
-machine_readback: docs/rights/out13_m6_rights_decision_readiness_packet.json
-decision_required: new_successor_artifact_scope_before_new_public_use_review
-review_status: m6_closed_deny_exact_artifact_internal_evidence_preserved
+current_slice: ED-12
+phase: s1_s3_probe_built_s4_human_review_pending
+canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
+active_branch: codex/s1-two-source-common-context-probe-v1
+upstream_branch: origin/codex/s1-two-source-common-context-probe-v1
+base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
+current_title: S1 two-source common-context probe ready for S4 human review
+human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
+portable_entrypoint: docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\serve_preview.ps1
+machine_readback: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/validation_readback.json
+decision_required: s4_human_common_context_verdict
+review_status: s4_human_review_pending
 remote_code_complete: true
-remote_decision_binding_available: true
-local_decision_binding_committed: true
-remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: archive_read_only_internal_evidence_only
+local_artifact_role: active_s4_review_target_same_machine_only
 portable_local_artifact_available: false
-cross_machine_resume_class: tracked_m6_packet_acceptance_receipt_and_code_are_portable_private_media_and_generated_package_are_not
+cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
+active_artifact: clip-s1-two-source-common-context-probe-v1-001
+artifact_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
+artifact_output_byte_size: 93331608
+artifact_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
+artifact_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
+artifact_file_count: 19
+artifact_duration_seconds: 98.896
+artifact_source_count: 2
+artifact_cut_count: 6
+artifact_source_switch_count: 5
+artifact_caption_cue_count: 60
+artifact_commentary_count: 3
+package_validation_status: passed
+s1_review_http_status: 200
+s1_review_range_status: 206
+full_suite_status: passed_689
+human_review_pending: true
 rights_approval: not_granted
-public_use_verdict: deny
-monetized_youtube_verdict: deny
-publication_decision: deny
-monetization_decision: deny
-m6_owner_verdict: deny
-m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
-m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
-candidate_public_default: off
-candidate_excluded_from_production_publish_upload_release_sets: true
 production_acceptance: false
-production_subtitle_design_acceptance: false
-production_image_quality_acceptance: false
-thumbnail_acceptance: false
-winner_selected: false
-public_or_publishing_acceptance: false
-human_review_pending: false
-automation_acceptance_granted: true
-automation_acceptance_scope: tracked_builder_plus_current_host_exact_resume_package_hash_and_http_readback
-editorial_acceptance_granted: true
-acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
-acceptance_review_context_id: out13_candidate_005_internal_full_view_editorial_visual_review_v1
-acceptance_media_sha256: a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5
-acceptance_dimensions: editorial_composition, editorial_flow, subtitle_presentation, picture_quality_for_internal_editorial_use, audio_quality_for_internal_editorial_use
-same_review_identity_reopens_human_review: false
-bounded_repair_reopens_only_affected_dimensions_and_timestamps: true
-main_integration_approved: true
-main_integration_preflight_verdict: consumed_by_authorized_fast_forward_integration
-main_integration_approval_consumed_by_revision: 18641fe917b084259869263e8db05d78325aa2db
-m4_main_integration_status: complete
-m5_integrated_baseline_verification_status: passed
-m6_rights_status: closed_deny_exact_artifact
-m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
-m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
-next_review_due: successor_artifact_scope_decision
-next_review_type: materially_distinct_successor_artifact_scope
-pause_reason: exact_candidate_005_public_and_monetized_path_closed_by_user_deny
-next_action: require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration
-active_artifact: clip-out13-editorial-video-candidate-v1-005
-source_of_truth: true
-owner_lane: rights_readiness_handoff
-related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/rights/out13_m6_rights_decision_readiness_packet.json, docs/RUNTIME_HISTORY.md, docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md, docs/output_layer/out13_human_acceptance_receipt.json, artifacts/ARTIFACTS.md
+public_use: false
+monetized_use: false
+upload_attempted: false
+out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
+out13_human_review_pending: false
+out13_editorial_acceptance_granted: true
+out13_acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
+out13_main_integration_approved: true
+out13_m4_main_integration_status: complete
+out13_m5_integrated_baseline_verification_status: passed
+out13_m6_rights_status: closed_deny_exact_artifact
+out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
+out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
+out13_public_use_verdict: deny
+out13_monetized_youtube_verdict: deny
+next_review_due: s4_human_common_context_review
+next_action: obtain_s4_human_common_context_verdict_on_exact_probe
+current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 0 0
+source_of_truth: true
+owner_lane: editing_review_handoff
+related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
 
-## M6はexact Candidate 005 denyでclosed
+## 現在地
 
-OUT-13のaccepted feature revision
-`18641fe917b084259869263e8db05d78325aa2db`は、start main
-`5d6f69a64d510508a1f78ab3111a7780913a019c`の直系15 commitとして、
-authority `clip-out13-main-integration-authorization-20260725-01`に基づき
-`main`へfast-forward統合された。squash、merge commit、force、履歴改変はない。
-accepted feature commitはfinal mainの祖先で、統合直後のtreeはaccepted feature treeと同一だった。
+`origin/main`の最新`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`を基点に、
+branch`codex/s1-two-source-common-context-probe-v1`で、materially distinctなsuccessor
+probeを実装した。implementation revisionは
+`a3771bc59cd58b05c00a570e1074118ace3dc15a`。OUT-13 Candidate 005を改名・再利用せず、
+新artifact`clip-s1-two-source-common-context-probe-v1-001`を割り当てている。
 
-M5はfinal closure treeを対象に、configured full Python suite、focused OUT-13 /
-acceptance dedup / current resume authority / active state / dashboard、dashboard再生成、
-compile/static、diff/privacy境界を検証してpassした。final main commitのexact SHAは
-自己参照するtracked文書へ埋め込まず、push後の`refs/heads/main`をGit正本として解決する。
+このsliceは、取得済み実source二本をexact media / caption / transcript / rights hashへ
+bindし、source captionとcreator-authored commentaryを分離した98.896秒のargumentative
+timelineを作る。generic N-source framework、public candidate、production renderではない。
 
-deny-binding revision
-`097fcaad8985d4f24077da484819efb5942b9c65`はauthority
-`clip-m6-deny-main-integration-20260726-01`によりcanonical `main`へ通常fast-forwardされ、
-remoteへpush済みである。再開branchは`main`、live canonical tipは`refs/heads/main`、
-remote decision bindingはavailable、upstream parityは`0 0`である。
+## 実装と成果物
 
-今回の開発基準はmain revision
-`5bd6e65318df129bebc87291c2ae733f143ed8d8`。そこから
-`codex/m6-rights-decision-readiness-v1`を作り、M6 packet
-`docs/rights/out13_m6_rights_decision_readiness_packet.json`を追跡可能な判断面として
-準備した。開始packet revision
-`dac5f7fb715cb3a7acd6c982a80cb916492e7880`は
-`READY_FOR_HUMAN_RIGHTS_DECISION`だった。
-
-ユーザーは監修役の推奨1「deny — exact MP4の収益公開は行わず、後継版へ移る」を選択した。
-この判断をCandidate
-`clip-out13-editorial-video-candidate-v1-005`とexact MP4 SHA
-`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`
-へbindした。現在のpacket statusは`M6_CLOSED_DENY_EXACT_ARTIFACT`、
-`public_use_verdict=deny`、`monetized_youtube_verdict=deny`、
-`rights_approval=not_granted`である。
-
-denyの主体はproject publication decision ownerとしてのユーザーである。underlying source
-rightsholderとは表明せず、infringement等の法的結論、source / caption / font /
-source-embedded elements一般への判断、future artifactへのdenyには拡張しない。
-
-## M2受領はそのまま継承
-
-accepted artifactは`clip-out13-editorial-video-candidate-v1-005`、exact final MP4 SHAは
-`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`、
-review contextは
-`out13_candidate_005_internal_full_view_editorial_visual_review_v1`である。
-構成、編集フロー、字幕提示、内部用途の画質・音質というaccepted dimensionsは変更していない。
-`human_review_pending=false`を維持し、同じmedia/context/dimensionsへ再reviewを作らない。
-
-受領時点のreceipt内`main_integration_approved=false`は、M2がmain承認を含まなかったという
-historical factとして変更しない。今回のmain承認と消費記録はRuntime/Handoff/監修報告へ分離し、
-artifact受領scopeを広げない。
-
-## Artifactとportable境界
-
-| 対象 | 現在の役割 | Git portability |
+| 対象 | 現在状態 | 監修上の意味 |
 |---|---|---|
-| acceptance receipt | M2のexact identityと判断scope | portable |
-| main code/docs/tests | M4/M5 integrated baseline | portable |
-| M6 rights packet | exact deny event、material/range/terms/unknowns | portable |
-| Candidate 005 package/media | read-only internal evidence、public default off | non-portable |
-| production / publish / upload / release candidate role | Candidate 005を除外 | closed for exact artifact |
+| tracked implementation | CLI、bounded renderer、12 focused tests、artifact contract doc | 別端末へGitで移送可能 |
+| ignored review package | 19 payload files、93,331,608-byte MP4、review page | 同一マシンだけでS4視聴可能 |
+| source pair | `youtube:PQ54uUV41-k` + `youtube:TlnviOwLRmk` | 既存在庫からcaption evidenceが最も狭く共通問いを支える二本 |
+| timeline | 6 cuts、各source 3 cuts、5 source switches、60 caption cues、3 commentary events | source内時系列とcontinuous output clockを維持 |
+| machine validation | 16 checks pass、full decode、faststart、mapping、caption/commentary containment | 技術的reviewabilityは成立 |
+| human state | `human_review_pending=true` | 二素材が一つの論として成立するかは未判断 |
 
-`episodes/`はignoredかつtracked 0件を維持する。Candidate 003–005のplan、caption、
-manifest、image、audio、MP4は変更しない。private mediaがGit cloneへ移らないことは
-既知のboundaryであり、M5 failureではない。
+exact MP4 SHAは
+`dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`。
+package-tree digestは
+`a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`、
+manifest self-integrityは
+`8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301`。
 
-## M6 deny後も保持する未解決証拠
+## 検証済み開発基線
 
-| 判断対象 | packetへ固定した内容 | 現在の不足 | deny後の扱い |
-|---|---|---|---|
-| source visual | source SHA、7使用range、限定contact-sheet観察 | 全rangeの第三者要素確認 | 未解決のまま保存。exact public path closureにはnonblocking |
-| source audio | 同じ7rangeのAAC音声、技術lineage | music、voice、performanceの権利分類 | 未解決のまま保存。permissionへ昇格させない |
-| provider caption | exact JSON3 SHA、102 cue、burn-in利用 | caption text再製のpermission basis | 未解決のまま保存 |
-| Keifont | finalに使ったexact font SHA、一次配布条件 | exact bytesとlicense/NOTICEのbinding | 未解決のまま保存 |
-| generated layers | 7 cut、字幕layout、outline/shadow、review metadata | project-authored representation | underlying素材と分離した証拠として保存 |
-| source-embedded elements | character likeness、source-native text/graphicを限定観察 | music、guest voice、logo、displayed workの全編確認 | 未解決のまま保存 |
+- `git fetch --prune origin`: pass。`main`と`origin/main`は`edb782a`で一致。
+- current branch topology: `origin/main...HEAD = 0 1`。remote mainを完全に含む。
+- `npm ci`: 23 packages、24 packages audited、vulnerability 0。
+- `npm run smoke`: pass。
+- `npm run smoke:electron`: pass。Electron 42.0.0。
+- `uvx --with Pillow pytest -q tests/test_common_context_probe.py`: 12 passed。
+- `uvx --with Pillow pytest -q`: 689 passed。
+- artifact manifest再検証: pass。
+- ephemeral review server: page 200 / MP4 Range 206。確認後停止。
+- `build-common-context-probe --help`: pass。
+- tracked/untracked worktree: clean before handoff edits。
+- `git ls-files episodes`: 0件。
 
-使用propositionは、accepted 128.833333秒MP4をYouTubeでpublic、worldwide、
-monetization contemplatedとして扱う保守的な単一案である。source URL/titleをdescription
-先頭へ置き、Content ID登録はせず、thumbnail reuseは今回の判断外とした。publisher/channelの
-法的identity、channel registration、visibility、territory、duration、判断者authorityは未入力である。
+protected
+`episodes/jp_pilot01_hololive_bancho_20260525/review/jp_pilot01r3_cut_review/human_preview_session/`
+とOUT-13 Candidate 005、S1 packageはいずれも削除・変更していない。
 
-技術provenance、限定content observation、一次規約、permission / owner authority、
-内部editorial受領、platform policyを別classにした。sourceがpublic、hashが一致、
-captionをanonymous取得できた、M2で映像がacceptedという事実は、いずれもpermissionを
-意味しない。
+## S4で人間が判断すること
 
-## closed stateと独立gate
+S4は次の四点だけをexact SHAへbindする。
 
-- rights approval: `not_granted`
-- M6 state: `M6_CLOSED_DENY_EXACT_ARTIFACT`
-- exact artifact public-use verdict: `deny`
-- exact artifact monetized-YouTube verdict: `deny`
-- project publication decision evidence: packet `decision_history/0`
-- underlying rightsholder identity / permission authority: 未記録
-- full seven-range rights content observation: 未完了
-- provider caption permission basis: 未記録
-- exact Keifont distribution/license binding: 未記録
-- production subtitle/design/render acceptance: `false`
-- production image quality acceptance: `false`
-- thumbnail acceptance: `false`
-- publishing / upload / public release: 未承認・未実行
-- credentials / OAuth / visibility / deployment: 未承認・未実行
+1. 中心問いが98.896秒の流れだけで理解できるか。
+2. 二sourceが隣接しているだけでなく、互いの意味を変化・深化させるか。
+3. source attributionとcontextが誤解を生まないか。
+4. creator commentaryが関係を明確にし、source captionと混同されないか。
 
-## Next Action
+`accept / bounded repair / reject`のいずれでも、rights、production、thumbnail、publishing、
+upload、public releaseは開かない。repair時はartifactを上書きせずnew identityを割り当てる。
 
-次の一手は
-`require_materially_distinct_successor_artifact_before_any_new_public_or_monetized_consideration`。
-新しいpublic / monetized considerationを開く場合は、Candidate 005を変更せず、
-materially distinctなsuccessor scopeを先にユーザーが決める。新artifact identity、新しい
-transformation / content strategy、material / range inventory、editorial review、
-rights reviewが必要である。このMissionではsuccessorの作成、設計、spec、renderを開始しない。
-
-packet確認:
+同一マシンでの入口:
 
 ```powershell
-Invoke-Item docs\rights\out13_m6_rights_decision_readiness_packet.json
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
 ```
 
-## mainからの再開
+file openが不安定な場合:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\serve_preview.ps1
+```
+
+## OUT-13から継承する境界
+
+OUT-13 Candidate 005は`M6_CLOSED_DENY_EXACT_ARTIFACT`のread-only archive evidence。
+S1は別source pair、別thesis、別timeline、別identityであり、Candidate 005のpublic denyを
+迂回する改名ではない。OUT-13のinternal editorial acceptanceもS1へ継承しない。
+
+S1のrightsは`not_granted`、production/public/monetized/uploadはfalse。
+sourceがpublic、captionが取得可能、hashが一致、machine validationがgreenという事実を
+permissionへ昇格させない。
+
+## 別端末での再開
 
 ```powershell
 git fetch --prune origin
-git switch main
-git pull --ff-only origin main
+git switch codex/s1-two-source-common-context-probe-v1
+git pull --ff-only
 git status --short --branch
 git rev-list --left-right --count 'HEAD...@{upstream}'
-git merge-base --is-ancestor 097fcaad8985d4f24077da484819efb5942b9c65 HEAD
-git merge-base --is-ancestor 5bd6e65318df129bebc87291c2ae733f143ed8d8 HEAD
-git merge-base --is-ancestor 18641fe917b084259869263e8db05d78325aa2db HEAD
+git merge-base --is-ancestor edb782acd1e06aca46e0a5d10295ea52f30ad5c7 HEAD
 git ls-files episodes
+uvx --with Pillow pytest -q tests/test_common_context_probe.py
 ```
 
-期待値はmain/upstream parity `0 0`、deny-binding revision
-`097fcaad8985d4f24077da484819efb5942b9c65`、start main
-`5bd6e65318df129bebc87291c2ae733f143ed8d8`、accepted feature
-`18641fe917b084259869263e8db05d78325aa2db`のancestry pass、tracked `episodes/` 0件、
-tracked worktree cleanである。old M6 feature branchはhistorical evidenceであり、
-current resumption targetには使わない。
+期待値はupstream parity`0 0`、base main ancestry pass、tracked`episodes/` 0件。
+Gitだけで取得した端末ではignored source mediaとreview packageがないため、S4視聴可能とは
+報告しない。最初に`Test-Path`とSHAを確認する。

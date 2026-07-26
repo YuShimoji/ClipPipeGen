@@ -6,14 +6,14 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. OUT-13 now opens the tracked acceptance receipt; its historical
-media launcher is not a scheduled review action.
-OUT-13 candidate 005 is the current accepted-internal, content-lineage-bound editorial route.
-Its exact ignored review package, plan, inputs, and launcher are present in the current root and were
-reverified by hash, package-tree digest, render-free resume, and HTTP readback on 2026-07-25.
-The user then accepted exact candidate 005 for the recorded internal full-view editorial/visual scope.
-The next gate is M3 main-integration preflight and explicit integration authorization. Candidate 004 has
-the same review-relevant media SHA and inherits the recorded dimensions without another full-view gate.
+current focus. ED-12 / S1 is the active review target: one exact two-source
+common-context probe with machine validation complete and S4 human review
+pending. Its review package is ignored same-machine evidence. Git carries the
+implementation, tests, contract, identity, and handoff, not the source media or
+final MP4.
+OUT-13 candidate 005 remains accepted-internal read-only archive evidence whose
+public/monetized path was denied at M6. Candidate 004 has
+the same review-relevant media SHA and inherits the recorded internal dimensions without another full-view gate.
 Candidate 003 remains preserved technical
 predecessor evidence, not an accepted or rejected candidate. Candidate 001 remains a historical
 source-host receipt and candidate 002 is a superseded local rebuild. OUT-12 is its
@@ -31,6 +31,41 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-s1-two-source-common-context-probe-v1-001`
+
+| Field | Value |
+|---|---|
+| title | ED-12 / S1 Two-Source Common-Context Internal Probe v1 |
+| purpose | Test whether two acquired real sources can form one evidence-grounded argumentative timeline while keeping source caption, creator-authored synthesis/commentary, attribution, range rights, and cut mapping separately inspectable. |
+| storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine source inputs, MP4, evidence frames, and review page. No source or generated media is portable through Git. |
+| repo_relative_path | `src/cli/build_common_context_probe.py`; `src/integrations/render/common_context_probe.py`; `tests/test_common_context_probe.py`; `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md` |
+| local_artifact_path | `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/` |
+| state | `S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW` |
+| implementation | Branch `codex/s1-two-source-common-context-probe-v1`; revision `a3771bc59cd58b05c00a570e1074118ace3dc15a`; base main `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`. |
+| source pair | `youtube:PQ54uUV41-k` / media SHA `f3aa118f...09d63`; `youtube:TlnviOwLRmk` / media SHA `8cbb98ee...a3a4`. Both rights snapshots remain `pending`. |
+| editorial plan | Question: why a request for help worsens through confident but mismatched solutions. Creator-authored thesis; 6 cuts, each source contributes 3, 5 source switches, source chronology preserved, continuous output clock. |
+| final_video | H.264/AAC yuv420p, 1920x1080, expected timeline 98.896s, 93,331,608 bytes, SHA `dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`. |
+| caption/commentary | 60 source-caption cues in a lower two-line track; 3 creator commentary events in an upper compact band; source attribution at upper left; provenance tracks remain separate. |
+| validation | 16/16 checks passed: stream/codec/resolution/duration/timestamps/A-V delta/faststart/full decode/loudness/source-switch delta/black-silence/mapping/both sources/caption/commentary/provenance separation. -14.85 LUFS, -1.31 dBTP, maximum adjacent cut delta 3.38 LU, black/silence events 0. Focused tests 12 passed; full suite 689 passed; review page 200 / MP4 Range 206, server stopped after verification. |
+| manifest | 19 payload rows; closed file set passed; input fingerprint `8e9956a2...e127`; payload tree digest `a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`; self-integrity SHA `8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301`. |
+| preview_url | Local file entry at `review/index.html`; localhost fallback is supplied by the artifact-specific `serve_preview.ps1`. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1` |
+| local availability | Present on the verified host. Manifest/hash validation passed on 2026-07-26. `episodes/` remains ignored and tracked 0. |
+| decision_required | S4 human verdict on question clarity, mutual source deepening, honest attribution/context, and commentary/caption separation: `accept / bounded repair / reject`. |
+| next_action | `obtain_s4_human_common_context_verdict_on_exact_probe`. Accept does not grant rights, production, public/monetized use, or upload. Repair must allocate a new identity. |
+
+Boundary flags:
+
+- `human_review_pending=true`
+- `internal_probe_only=true`
+- `rights_approval=not_granted`
+- `production_acceptance=false`
+- `public_use=false`
+- `monetized_use=false`
+- `upload_attempted=false`
+- `generic_n_source_architecture=false`
+- `episodes_tracked=false`
 
 ## `clip-out13-editorial-video-candidate-v1-005`
 

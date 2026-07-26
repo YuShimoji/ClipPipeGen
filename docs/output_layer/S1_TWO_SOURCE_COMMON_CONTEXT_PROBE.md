@@ -66,6 +66,29 @@ self-integrity を持つ。review は MP4 を最初に表示し、問い、仮�
 argument relation、source caption と creator commentary の provenance、range rights、
 seek control を後続で示す。
 
+### 2026-07-26 live package readback
+
+| 項目 | 値 |
+|---|---|
+| state | `S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW` |
+| final MP4 | 93,331,608 bytes / expected timeline 98.896s / SHA `dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be` |
+| closed payload | 19 files / tree digest `a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a` |
+| manifest self-integrity | `8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301` |
+| input fingerprint | `8e9956a21906cb406c28e54041af04288ea9d8db146d032d04fc3940f606e127` |
+| timeline | 6 cuts / 5 source switches / 60 caption cues / 3 commentary events |
+| machine gate | 16 checks passed; focused 12 tests; repository full suite 689 passed |
+| review server | page 200 / final MP4 Range 206、確認後停止 |
+| human gate | `human_review_pending=true`; S4未実施 |
+
+同一マシンの入口:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
+```
+
+tracked contractは別端末へ移るが、上のsource media / MP4 / review pageは`episodes/`配下の
+ignored evidenceであり、Git cloneだけでは移らない。
+
 ## CLI
 
 ```powershell

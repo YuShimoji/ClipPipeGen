@@ -3,16 +3,13 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-25
-current_slice: OUT-13
-phase: integrated_main_baseline_verified
-active_branch: main
-source_branch: codex/out-13-editorial-video-candidate-v1
-verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
-sync_baseline_head: 18641fe917b084259869263e8db05d78325aa2db
-base_main_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
-upstream_parity: 0 0
-health: OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1
+last_touched: 2026-07-26
+current_slice: ED-12
+phase: s1_s3_probe_built_s4_human_review_pending
+active_branch: codex/s1-two-source-common-context-probe-v1
+base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
 ---
 
 # Project Context - ClipPipeGen
@@ -20,43 +17,48 @@ health: OUT13_M4_MAIN_INTEGRATED_M5_BASELINE_VERIFIED_M6_RIGHTS_READY_V1
 ## 現在の軸
 
 ClipPipeGenは、source acquisition、rights readback、編集authority、render、review、
-publishing準備をepisode単位で接続する制作補助ツールである。OUT-12で取得済み実sourceから
-検証済み長尺MP4までの一コマンド経路を成立させ、OUT-13では明示的な
-caption/transcript evidence付きeditorial planを、非連続cut、字幕、実MP4、
-review packageへ運ぶ後継経路を追加した。
+publishing準備をepisode単位で接続する制作補助ツールである。OUT-12で一source長尺route、
+OUT-13でcaption-evidence付き非連続editorial routeを成立させた。OUT-13 Candidate 005は
+内部editorial受領後、public / monetized pathをdenyしてread-only archive evidenceになった。
 
-accepted feature branchは`codex/out-13-editorial-video-candidate-v1`、exact revisionは
-`18641fe917b084259869263e8db05d78325aa2db`。start main
-`5d6f69a64d510508a1f78ab3111a7780913a019c`から15 commitを
-fast-forwardし、M4 main integrationを完了した。squash、merge commit、force、
-履歴改変はなく、現在のactive branchは`main`である。
+現在のED-12 / S1は、OUT-13を公開候補へ戻す作業ではない。別identity
+`clip-s1-two-source-common-context-probe-v1-001`へ、取得済み実source二本、direct caption
+evidence、creator-authored thesis/commentary、range rights readbackを結び、一つの論として
+レビューできるbounded successor probeを作る。
 
-exact candidate 005の内部全編editorial / visual acceptanceは継承したまま、
-integrated main treeでconfigured full Python suite、focused OUT-13 / acceptance /
-semantic authority / dashboard、GUI/CLI smoke、compile/static、diff/privacy境界を確認し、
-M5 integrated baseline verificationをpassした。current bottleneckは重複reviewや
-main integrationではなく、M6 rights readinessのscopeと判断ownerを整理することである。
+## 到達済みの停止点
 
-## 最近閉じたことと現在の停止点
-
-| slice | 閉じた範囲 | 残っている境界 |
+| 項目 | 状態 | 何が可能になったか |
 |---|---|---|
-| OUT-10 / OUT-11 | five-source Shortをexact bytesへbindしてaccepted internal、winnerなし | universal visual policy、rights、production/public |
-| OUT-12 | source→Timeline IR→MP4→validation→review→resumeをinternal operational化 | second-source long-form repeatability、production/public |
-| OUT-13 | explicit plan、provider caption evidence、candidate 005 acceptance、M4 main integration、M5 baseline verification | rights/production |
+| remote baseline | `main` / `origin/main` = `edb782a` | 最新canonical deny状態を継承 |
+| implementation | `a3771bc`、branchはmainより1 commit先 | CLI、renderer、tests、contractを再開可能 |
+| exact package | MP4 SHA `dc621bfe...f95be`、19 files | 同一マシンでS4全編review可能 |
+| machine validation | 16/16 checks、focused 12、full 689 | code/packageの技術基線はgreen |
+| human decision | pending | 二source共通文脈の意味判断が現在のbottleneck |
+| rights / production / public | closed | 技術greenから許諾・公開を推定しない |
 
-current identityは`clip-out13-editorial-video-candidate-v1-005`。7 cuts / 5 sections /
-8 omissions、final SHA`a76babda...bbb5`、25 files / 87,123,995 bytes、
-package-tree digest`ed45fd4c...040`。source / transcript / caption / rights / planの
-current hashesはtracked contractと一致し、`--resume`はrenderなし・5 cache hits・
-package digest不変で成功した。review serverはpage 200 / MP4 Range 206を確認後に停止した。
+timelineは6 cut、各source 3 cut、5 source switches、98.896秒。caption 60 cueとcreator
+commentary 3 eventを別provenance trackに置く。source内時系列、continuous output clock、
+cut-to-source mappingを保持する。
 
-artifact recovery、M2 human editorial acceptance、M3 readiness、M4 main integration、
-M5 integrated baseline verificationは完了済み。受領receiptは
-`docs/output_layer/out13_human_acceptance_receipt.json`。同じmedia SHA・review context・
-accepted dimensionsを再reviewへ戻さず、次はM6 rights readinessだけを準備する。
+## 最終成果物像
 
-## 再開時に読む順序
+短期の完成像は、S4 verdictがexact MP4 SHAへbindされ、acceptなら内部two-source
+argumentative-editing patternとして一例が閉じること。repairなら変えた次元だけをnew identityで
+再確認すること。rejectなら、このpair/thesis/directionを再利用しないこと。
+
+中長期の完成像は、複数sourceの意味的関係を証拠へ戻せる編集計画、明示rights判断、
+production subtitle/render、episode acceptance、private delivery、明示public releaseまでを、
+各ownerのreceiptを混ぜずに接続する制作系である。generic frameworkは二つ目の成功例と
+一つの失敗例が揃うまで先に作らない。
+
+## 現在の最大gap
+
+machine validationは「正しく二本をrenderした」ことを示す。現在まだ示していないのは
+「二本を交互に置くことで中心問いが深まり、commentaryが過剰説明になっていない」こと。
+この意味判断がS4であり、コード追加より先に人間がexact artifactを評価する。
+
+## 再開順
 
 1. `AGENTS.md`
 2. `README.md`
@@ -65,48 +67,27 @@ accepted dimensionsを再reviewへ戻さず、次はM6 rights readinessだけを
 5. `docs/AUTOMATION_BOUNDARY.md`
 6. `docs/CURRENT_HANDOFF.md`
 7. `docs/SUPERVISOR_STATUS_REPORT.md`
+8. `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
 
-candidate contractと実行経路は
-`docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md`で確認する。
-tracked receiptの存在だけで別hostのartifact実在を推定せず、毎回`Test-Path`とhashで照合する。
+同一マシンではS1 package、manifest、MP4 SHAをlive照合する。別端末ではGitに含まれない
+`episodes/`を利用可能と推定しない。
 
 ## 守る境界
 
 - `episodes/`はignoredかつtracked 0件を維持する。
 - protected R3 `human_preview_session`をcleanupしない。
-- candidate 004 / 005を上書きしない。
+- OUT-13 Candidate 003–005とS1 successful packageを上書きしない。
 - NLMYTGenを含む他repositoryのfileを読まない・書かない。
-- rights、production subtitle/design/render、thumbnail、public/publishing/uploadを
-  machine validationやhuman editorial acceptanceから推定しない。
+- human S4 verdictをagentのsample frame観察やmachine validationで代替しない。
+- rights、production subtitle/design/render、thumbnail、publishing、upload、public releaseを
+  S4 editorial verdictから推定しない。
 - credentials / OAuth / visibility変更は別sliceと明示承認なしに実行しない。
-- current hostの`local_artifact_available=true`をGit-only別hostへ自動継承しない。
 
 ## 次の依存順
 
-完了したcritical pathは
-`M3 branch preflight -> explicit integration authorization -> M4 integration -> M5 verification`。
-将来repairが必要な場合だけ、変更・因果影響のあるdimensionとtimestampを限定して再確認する。
+`S4 human common-context review -> S5 bounded closure -> S6 fresh rights inventory ->
+S7 rights/publication decision -> S8 production design -> S9 delivery render ->
+S10 episode acceptance`が近接critical path。second-pair repeatabilityとexternal deliveryは、
+最初のS4/S5結果を踏まえて独立gateとして起票する。
 
-次はrights decision packetの準備条件を整理し、その後production subtitle design、
-production render profileを
-独立gateとして閉じ、episode acceptance packへ集約する。thumbnail / metadata /
-private delivery / public releaseはその後に接続する。複数episode運用、品質学習、
-policy-constrained autonomy、持続可能なproduction platformまでの長期段階とexit evidenceは
-`docs/SUPERVISOR_STATUS_REPORT.md`を正本とする。
-
-## 別端末での最短確認
-
-```powershell
-git fetch --prune origin
-git switch main
-git pull --ff-only origin main
-git status --short --branch
-git rev-list --left-right --count 'HEAD...@{upstream}'
-git merge-base --is-ancestor 18641fe917b084259869263e8db05d78325aa2db HEAD
-git ls-files episodes
-```
-
-期待値はmain parity`0 0`、accepted feature ancestry pass、tracked`episodes/` 0件。
-その後にcandidate path、
-inputs、plan、package、MP4を`Test-Path` / SHAでlive判定する。package不在の端末では
-launcherを利用可能と報告しない。
+長期exit evidenceと条件分岐は`docs/SUPERVISOR_STATUS_REPORT.md`を正本とする。

@@ -6,6 +6,16 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+ED-12 / S1 note: `build-common-context-probe`は、取得済み実source二本だけをexact
+media/caption/transcript/rights hashへbindし、source captionとcreator-authored commentaryを
+別provenance trackとして一つのargumentative timelineへ運ぶ。current artifactは
+`clip-s1-two-source-common-context-probe-v1-001`、6 cuts / 5 source switches /
+98.896s、MP4 SHA`dc621bfe...f95be`。manifest/media validationとfull 689 testsはpassしている。
+現在は`S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW`で、二sourceが一つの論として
+成立するかは人間未判断。rights、production、public/monetized use、uploadは閉じたまま。
+詳細は
+[S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md](docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md)。
+
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
 outputをローカルpipeline経路から上書きせず、取得済みの実 source、receipt / material ledger、明示 editorial plan、
 transcript / source audio、provider JSON3 sidecar、rights snapshot、resolved font bytesを
@@ -21,8 +31,8 @@ editorial / visual reviewとしてacceptした。受領scopeと重複review防�
 [out13_human_acceptance_receipt.json](docs/output_layer/out13_human_acceptance_receipt.json)に固定済み。
 M2はclosed。accepted feature revision
 `18641fe917b084259869263e8db05d78325aa2db`はmainへfast-forward統合され、
-M4 complete / M5 integrated-baseline verification passedとなった。現在の次gateは
-M6 rights readinessであり、rights判断やproduction workはまだ開始していない。
+M4 complete / M5 integrated-baseline verification passedとなった。その後M6で
+exact Candidate 005のpublic/monetized pathをdenyし、read-only archive evidenceとして閉じた。
 ただし`episodes/`はignored same-machine evidenceで、Git同期だけでは別hostへ移らない。
 rights、production subtitle/render、thumbnail、public/publishing/upload acceptanceは別gate。詳細は
 [docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md](docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md)。
@@ -149,14 +159,12 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`OUT-13`。exact artifact
-`clip-out13-editorial-video-candidate-v1-005`は、final MP4 SHA
-`a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5`へ
-記録された内部editorial / visual reviewで受領済みで、M2はclosed。
-tracked receiptとcode/docsは別端末へ持ち運べるが、`episodes/`内のprivate mediaと
-generated packageはGitでは移動しない。M3 readinessはaccepted feature revision
-`18641fe917b084259869263e8db05d78325aa2db`で閉じ、M4 main integrationと
-M5 integrated-baseline verificationを完了した。
+現在のactive sliceは`ED-12`。OUT-13のdeny後にmaterially distinctなsuccessorとして、
+二つの実sourceを一つのcommon-context argumentへ組むbounded probeを実装した。
+tracked implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`、
+exact local artifactは`clip-s1-two-source-common-context-probe-v1-001`。
+code/docs/testsは別端末へ持ち運べるが、`episodes/`内のsource mediaとreview packageは
+Gitでは移動しない。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
 MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
@@ -170,8 +178,8 @@ subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は�
 transcriptを既存downstreamへ戻す入口であり、transcript approvalは
 edit / render / publish / production acceptanceではない。
 
-直近のnext actionは、同一media SHA・review context・accepted dimensionsを再reviewへ
-戻さず、M6 rights readiness packetの必要項目を整理すること。rights approval、
+直近のnext actionは、exact S1 MP4をS4の四問で全編reviewし、
+`accept / bounded repair / reject`をidentityへbindすること。rights approval、
 production render/subtitle design/image quality、thumbnail、Publishing / OAuth、
 upload、public releaseは開始しておらず、独立した未承認gateのままである。
 
