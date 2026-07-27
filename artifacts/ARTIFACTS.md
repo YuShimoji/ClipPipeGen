@@ -6,11 +6,12 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. ED-12 / S1 is the active review target: one exact two-source
-common-context probe with machine validation complete and S4 human review
-pending. Its review package is ignored same-machine evidence. Git carries the
-implementation, tests, contract, identity, and handoff, not the source media or
-final MP4.
+current focus. ED-12 / S1のactive review targetは、2026-07-18と2026-07-25の
+大空スバル通常配信だけを使うconcept-first digestで、machine validation complete /
+human editorial review pending。review packageはignored same-machine evidenceであり、
+Gitが運ぶのはimplementation、tests、contract、identity、handoffだけで、source mediaや
+final MP4ではない。旧common-context probeはrejected/superseded historical evidenceで、
+active/default/accepted exposureから外れている。
 OUT-13 candidate 005 remains accepted-internal read-only archive evidence whose
 public/monetized path was denied at M6. Candidate 004 has
 the same review-relevant media SHA and inherits the recorded internal dimensions without another full-view gate.
@@ -32,6 +33,44 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`
+
+| Field | Value |
+|---|---|
+| title | 大空スバルの2026-07-18〜2026-07-25「おはスバ」ドラゴンボール初見キャッチアップ |
+| purpose | 人物・日付・具体topic・viewer benefitをopeningで宣言し、通常配信二本から初読の読みやすさと一週後の原作／ゲーム比較による人物・危機感の更新を低注意でも追えるchronological digestとして提示する。 |
+| storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine exact source inputs, final MP4, contact sheet, browser evidence and portable review page. Source media and generated package remain untracked. |
+| repo_relative_path | `src/cli/build_persona_led_stream_digest.py`; `src/integrations/render/persona_led_stream_digest.py`; `tests/test_persona_led_stream_digest.py`; `docs/output_layer/S1_PERSONA_LED_SUBARU_DIGEST.md` |
+| local_artifact_path | `episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/` |
+| state | `PERSONA_LED_ORDINARY_STREAM_S1_CANDIDATE_READY_FOR_HUMAN_REVIEW` |
+| source pair | `youtube:ib3DwHDI71Q` / 2026-07-18 / SHA `cf6a010a26c1a159b902bb5412f952086c365ce7e73d3775ee5a25aaaa11d353`; `youtube:rltNvZ_FY8Q` / 2026-07-25 / SHA `5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240`. Both are ordinary archived livestreams, not official-animation or fixture material. |
+| acquisition authority | `CPG-AUTH-20260728-IB3DWH-PRIVATE-ACQUISITION-01` was used only for anonymous exact-target acquisition of `youtube:ib3DwHDI71Q`. One completed acquisition; no Cookie/login/OAuth/credential/membership access. `youtube:rltNvZ_FY8Q` was exact-byte read-only reuse with no network acquisition. |
+| processing boundary | Both source-specific snapshots state `local_private_review_only`, underlying rights `pending_or_unverified`, public/monetized use `not_authorized`, rights clearance/approval false. The snapshots are not rights clearance. |
+| editorial plan | Predeclared direction SHA `e4823530...f5bd`; 7 chronological cuts; 4 from 7/18 and 3 from 7/25; one source switch. Every adjacent point is same-topic continuation or a visible date/topic change; abstract-only transitions 0. |
+| final_video | H.264 High/AAC LC yuv420p, 1920x1080, 30fps, 187.920s, 54,881,314 bytes, SHA `ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`. |
+| validation | Exact source/receipt/ledger/snapshot binding, ordinary-stream/fixture exclusion, concept binding, chronology, all transitions explicit, stream/codecs/resolution/duration, private gates, independent manifest validation, ffprobe and full non-audible decode passed. Focused nearest regressions: 27 passed. |
+| manifest | 12 payload rows plus manifest; closed file set passed; payload tree digest `0c5e96f5a020d6828082917b4c2ab2be291d9ddcb9871735c0f4a908c20a9e21`; self-integrity SHA `659897fef35965ede7c514767021522a903e41c0e24701ce2f796809dafd020f`. |
+| browser | Wide 1440×1000 and narrow 390×844 actual-content inspection: outer overflow false, console/page errors 0, video paused/muted/time-zero/autoplay absent/readyState 4. Opening and all seven transition frames were inspected muted. Page 200 / MP4 Range 206; listener stopped. |
+| preview_url | Relative portable entry `review/index.html`; localhost fallback is supplied by `review/serve_preview.ps1`. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_persona_led_subaru_digest_20260728\artifacts\clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001\review\open_preview.ps1` |
+| local availability | Same-machine ignored package is present and validated. `episodes/` remains ignored and tracked 0. Git-only clones must not infer local reviewability. |
+| decision_required | Human editorial review of the exact MP4 for promise clarity, low-attention continuity, proximal context and two-week digest coherence. Machine validation is evidence, not creative acceptance. |
+
+Boundary flags:
+
+- `private_review_only=true`
+- `human_review_pending=true`
+- `editorial_acceptance=false`
+- `active_candidate=true`
+- `default_candidate=false`
+- `rights_approval=not_granted`
+- `production_acceptance=false`
+- `public_use=false`
+- `monetized_use=false`
+- `publication_approval=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
+
 ## `clip-s1-two-source-common-context-probe-v1-001`
 
 | Field | Value |
@@ -41,7 +80,7 @@ opened by the root launcher.
 | storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine source inputs, MP4, evidence frames, and review page. No source or generated media is portable through Git. |
 | repo_relative_path | `src/cli/build_common_context_probe.py`; `src/integrations/render/common_context_probe.py`; `tests/test_common_context_probe.py`; `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md` |
 | local_artifact_path | `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/` |
-| state | `S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW` |
+| state | `rejected_superseded_historical_evidence` |
 | implementation | Branch `codex/s1-two-source-common-context-probe-v1`; revision `a3771bc59cd58b05c00a570e1074118ace3dc15a`; base main `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`. |
 | source pair | `youtube:PQ54uUV41-k` / media SHA `f3aa118f...09d63`; `youtube:TlnviOwLRmk` / media SHA `8cbb98ee...a3a4`. Both rights snapshots remain `pending`. |
 | editorial plan | Question: why a request for help worsens through confident but mismatched solutions. Creator-authored thesis; 6 cuts, each source contributes 3, 5 source switches, source chronology preserved, continuous output clock. |
@@ -51,14 +90,21 @@ opened by the root launcher.
 | manifest | 19 payload rows; closed file set passed; input fingerprint `8e9956a2...e127`; payload tree digest `a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`; self-integrity SHA `8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301`. |
 | preview_url | Local file entry at `review/index.html`; localhost fallback is supplied by the artifact-specific `serve_preview.ps1`. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1` |
-| local availability | Present on the verified host. Manifest/hash validation passed on 2026-07-26. `episodes/` remains ignored and tracked 0. |
-| decision_required | S4 human verdict on question clarity, mutual source deepening, honest attribution/context, and commentary/caption separation: `accept / bounded repair / reject`. |
-| next_action | `obtain_s4_human_common_context_verdict_on_exact_probe`. Accept does not grant rights, production, public/monetized use, or upload. Repair must allocate a new identity. |
+| local availability | Historical same-machine package preserved. Manifest/hash validation passed on 2026-07-26. `episodes/` remains ignored and tracked 0. It is not active/default/accepted exposure. |
+| decision | Human verdict on exact bound HEAD `bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471`: `reject / BLOCK_CURRENT / superseded / not bounded_repair`. The quarantined signature is official-animation material plus abstract similarity without a concrete concept before viewing, which placed excessive reconstruction demand on low-attention viewers. |
+| next_action | Historical evidence only. Use successor identity `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`; do not repair, overwrite, reactivate, or inherit technical pass as editorial acceptance. |
 
 Boundary flags:
 
-- `human_review_pending=true`
+- `human_review_pending=false`
 - `internal_probe_only=true`
+- `editorial_acceptance=false`
+- `active_candidate=false`
+- `default_candidate=false`
+- `verdict=reject`
+- `decision_effect=BLOCK_CURRENT`
+- `verdict_state=superseded`
+- `repair_class=not_bounded_repair`
 - `rights_approval=not_granted`
 - `production_acceptance=false`
 - `public_use=false`

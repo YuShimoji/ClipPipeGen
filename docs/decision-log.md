@@ -3,10 +3,55 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-27
+last_touched: 2026-07-28
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-28 — 旧common-context probeをrejectし、persona-led通常配信digestへ置換
+
+exact bound HEAD
+`bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471`の旧artifact
+`clip-s1-two-source-common-context-probe-v1-001`に対するhuman verdictを
+`reject / BLOCK_CURRENT / superseded / not bounded_repair`として記録する。
+official-animation素材、無関係なsubjectsをabstract ordered-cut similarityで接続、
+concept-before-viewing不在、viewerによるthesis再構成、食事・作業中には高すぎる認知負荷、
+というsignatureを歴史証跡へ隔離した。packageは削除・上書きせず、
+active/default/accepted exposureから外す。
+
+replacementは新identity
+`clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`。
+fixed pairは通常配信`youtube:ib3DwHDI71Q`（2026-07-18）と
+`youtube:rltNvZ_FY8Q`（2026-07-25）だけで、人物、日付、ドラゴンボール初見の変化、
+短時間で追えるbenefitを7秒のopeningで宣言する。7 cutsは日付順、source switch 1回。
+全隣接点はsame-topic continuationまたはvisible date/topic changeで、
+abstract frameだけに依存するtransitionは0。
+
+authority`CPG-AUTH-20260728-IB3DWH-PRIVATE-ACQUISITION-01`は
+`youtube:ib3DwHDI71Q`のanonymous acquisitionへだけ使用した。最初のcanonical
+whole-source attemptはtimeoutになったが、adapter cleanup contract、空target、
+receipt/ledger不在、関連process不在から完了効果0を確定してから同じtargetを再開し、
+format 18で一件だけ完了した。mediaは259,391,841 bytes / 5374.049524s /
+SHA`cf6a010a26c1a159b902bb5412f952086c365ce7e73d3775ee5a25aaaa11d353`。
+Cookie、login、OAuth、credential、membership access、別source取得は0。
+7/25 mediaは既存exact bytes
+SHA`5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240`
+と既存receipt/ledgerのread-only reuseで、network acquisitionは行わない。
+
+final MP4は54,881,314 bytes / 187.920s /
+SHA`ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`。
+12 payloadのclosed manifest、self-integrity
+`659897fef35965ede7c514767021522a903e41c0e24701ce2f796809dafd020f`、
+ffprobe、full non-audible decode、focused 27 tests、wide/narrow muted browser、
+page 200 / Range 206をpassした。browser/listenerは停止済み。
+
+観測結果はtechnical reviewabilityを示すだけで、decision effectは
+`PERSONA_LED_ORDINARY_STREAM_S1_CANDIDATE_READY_FOR_HUMAN_REVIEW`への移行。
+editorial acceptance、rights clearance/approval、production、public/monetized use、
+publication、upload、releaseは開かない。source-specific processing snapshotは
+`local_private_review_only`の処理範囲であり、rights clearanceではない。根拠:
+`docs/output_layer/S1_PERSONA_LED_SUBARU_DIGEST.md` +
+exact ignored local package + `docs/CURRENT_HANDOFF.md`。
 
 ## 2026-07-27 — S1 tracking parityを再確認し、parallel OUT-14 v3を統合しない
 

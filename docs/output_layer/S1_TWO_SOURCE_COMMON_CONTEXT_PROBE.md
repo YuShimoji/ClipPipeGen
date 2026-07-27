@@ -1,5 +1,20 @@
 # S1 Two-Source Common-Context Probe v1
 
+## 2026-07-28 判定 — rejected / superseded
+
+exact artifact `clip-s1-two-source-common-context-probe-v1-001` は、bound HEAD
+`bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471` に対して人間判定
+`reject / BLOCK_CURRENT / superseded / not bounded_repair` を受けた。package は履歴証跡として
+保持するが、active/default/accepted candidate ではない。
+
+quarantine 対象は、official-animation material、互いに無関係な subject を抽象的な
+ordered-cut similarity で接続する構成、視聴前に具体 concept が示されないこと、editorial
+thesis の再構成を viewer に要求すること、食事中・作業中の視聴には認知負荷が高いこと。
+これは技術的 integrity を取り消す判断ではなく、product direction を置換する判断である。
+successor は ordinary stream、named member、explicit date/topic scope、concept-first、
+chronological/sectioned digest、low-attention viewing を満たす別 identity
+`clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001` として扱う。
+
 ## 到達点
 
 `build-common-context-probe` は、取得済みの実 source 2 本だけを exact media / caption /

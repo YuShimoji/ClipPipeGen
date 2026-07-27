@@ -159,12 +159,19 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`ED-12`。OUT-13のdeny後にmaterially distinctなsuccessorとして、
-二つの実sourceを一つのcommon-context argumentへ組むbounded probeを実装した。
-tracked implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`、
-exact local artifactは`clip-s1-two-source-common-context-probe-v1-001`。
-code/docs/testsは別端末へ持ち運べるが、`episodes/`内のsource mediaとreview packageは
-Gitでは移動しない。
+現在のactive sliceは`ED-12`。旧
+`clip-s1-two-source-common-context-probe-v1-001`は
+`reject / BLOCK_CURRENT / superseded / not bounded_repair`として歴史証跡へ隔離し、
+active/default/accepted exposureから外した。後継は通常配信だけを使う
+`clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`で、大空スバル、
+2026-07-18→2026-07-25、ドラゴンボール初見の変化、短時間で追える内容をopeningで
+宣言してから、7 cutを時系列で提示する。
+
+exact local MP4は187.920秒、SHA
+`ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`。
+machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceは
+pending。code/docs/testsは別端末へ持ち運べる一方、`episodes/`内のsource mediaと
+review packageはGitでは移動しない。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
 MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
@@ -178,10 +185,11 @@ subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は�
 transcriptを既存downstreamへ戻す入口であり、transcript approvalは
 edit / render / publish / production acceptanceではない。
 
-直近のnext actionは、exact S1 MP4をS4の四問で全編reviewし、
-`accept / bounded repair / reject`をidentityへbindすること。rights approval、
-production render/subtitle design/image quality、thumbnail、Publishing / OAuth、
-upload、public releaseは開始しておらず、独立した未承認gateのままである。
+直近のnext actionは、このexact S1 MP4についてconcept-first promiseの理解可能性、
+低注意でのtopic回復、各cutのproximal context、二週の変化が一つのdigestとして
+成立するかを全編reviewし、`accept / bounded repair / reject`をidentityへbindすること。
+rights approval、production render/subtitle design/image quality、thumbnail、
+Publishing / OAuth、upload、public releaseは開始しておらず、独立した未承認gateのまま。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

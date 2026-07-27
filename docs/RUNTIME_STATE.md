@@ -3,17 +3,20 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
-last_touched: 2026-07-27
-state_revision: s1-common-context-probe-sync-readback-2026-07-27
+health: PERSONA_LED_ORDINARY_STREAM_S1_CANDIDATE_READY_FOR_HUMAN_REVIEW
+last_touched: 2026-07-28
+state_revision: s1-persona-led-subaru-digest-v1-local-review-ready-2026-07-28
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-12
-phase: s1_s3_probe_built_s4_human_review_pending
-canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
-active_branch: codex/s1-two-source-common-context-probe-v1
-source_branch: codex/s1-two-source-common-context-probe-v1
+phase: persona_led_ordinary_stream_digest_built_human_editorial_review_pending
+canonical_status: persona_led_ordinary_stream_s1_candidate_ready_for_human_review
+active_branch: codex/s1-persona-led-subaru-digest-v1
+source_branch: codex/s1-persona-led-subaru-digest-v1
+mission_base_branch: codex/s1-two-source-common-context-probe-v1
+mission_base_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
-verified_implementation_head: a3771bc59cd58b05c00a570e1074118ace3dc15a
+verified_implementation_head: commit_containing_this_document
+current_head_locator: refs/heads/codex/s1-persona-led-subaru-digest-v1
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
 integration_start_main_revision: 5d6f69a64d510508a1f78ab3111a7780913a019c
 integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
@@ -27,13 +30,13 @@ m6_decision_main_integration_authority_consumed: true
 m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: null
-remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
-upstream_parity: 0 0
-sync_audit_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
-latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-sync_observed_tracking_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
-sync_audit_status: sync_input_tracking_parity_zero_handoff_pushed_to_tracking_ref
-remote_handoff_status: pushed_verify_current_ref_on_resume
+remote_resume_contract: local_only_branch_read_current_handoff_and_verify_same_machine_ignored_package
+upstream_parity: no_upstream_local_only
+sync_audit_head: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
+latest_remote_sync_head: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
+sync_observed_tracking_head: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
+sync_audit_status: exact_mission_base_fetch_and_parity_zero_local_successor_branch
+remote_handoff_status: local_only_no_push_authorized
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 parallel_branch_relation: divergent_exact_review_lanes_no_merge_or_acceptance_inheritance
@@ -41,25 +44,25 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: S1 two-source common-context probe ready for S4 human review
-human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
-portable_entrypoint: docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\serve_preview.ps1
-machine_readback: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/validation_readback.json
+current_title: S1 persona-led Subaru two-week Dragon Ball digest ready for human review
+human_entrypoint: episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/review/index.html
+portable_entrypoint: docs/output_layer/S1_PERSONA_LED_SUBARU_DIGEST.md
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_persona_led_subaru_digest_20260728\artifacts\clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_persona_led_subaru_digest_20260728\artifacts\clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001\review\serve_preview.ps1
+machine_readback: episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/media_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: s4_human_common_context_verdict
-review_status: s4_human_review_pending
-review_scope: exact_s1_two_source_common_context_probe
+decision_required: human_editorial_verdict_on_exact_persona_led_digest
+review_status: human_editorial_review_pending
+review_scope: exact_s1_persona_led_subaru_digest
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
-remote_code_complete: true
+remote_code_complete: false
 remote_decision_binding_available: false
-local_decision_binding_committed: false
+local_decision_binding_committed: true
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: active_s4_review_target_same_machine_only
+local_artifact_role: active_private_human_review_target_same_machine_only
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
 cross_host_resume_status: exact_s1_package_present_on_verified_host_not_portable_through_git
@@ -69,19 +72,19 @@ optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: s1-two-source-common-context-probe-v1-exact-package
+evidence_revision: s1-persona-led-subaru-digest-v1-exact-package
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: DESKTOP-U9P4LKJ
 local_verified_host: DESKTOP-U9P4LKJ
-local_artifact_evidence_receipt: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/run_manifest.json
-local_package_requirement: satisfied_exact_two_source_plan_design_basis_manifest_and_output_hashes_match
+local_artifact_evidence_receipt: episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/run_manifest.json
+local_package_requirement: satisfied_exact_two_ordinary_stream_direction_plan_provenance_manifest_and_output_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: not_granted
-public_use_verdict: not_considered_s1
-monetized_youtube_verdict: not_considered_s1
-publication_decision: not_considered_s1
-monetization_decision: not_considered_s1
+public_use_verdict: not_authorized
+monetized_youtube_verdict: not_authorized
+publication_decision: not_authorized
+monetization_decision: not_authorized
 m6_owner_verdict: deny
 m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
 m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
@@ -91,11 +94,11 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-27T20:10:59+09:00
+last_verified_at: 2026-07-28T04:00:00+09:00
 last_verified_host_local_artifact_available: true
-last_verified_host_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
+last_verified_host_entrypoint: episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: s4_human_common_context_review_required
+pause_reason: exact_persona_led_digest_human_editorial_review_required
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
@@ -103,10 +106,10 @@ cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
 human_review_decision: pending
-user_feedback_overall: pending_s4_exact_probe_review
-content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
-subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
-endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
+user_feedback_overall: pending_exact_persona_led_digest_review
+content_selection_status: exact_two_ordinary_stream_provider_caption_evidence_seven_cut_plan_rendered
+subtitle_presentation_timing_status: provider_json3_59_selected_cues_meiryo_two_line_overlay
+endpoint_status: cut_007_closes_on_piccolo_context_update
 reviewed_by_human: false
 human_review_pending: true
 acceptance_granted: false
@@ -127,7 +130,7 @@ m6_rights_status: closed_deny_exact_artifact
 m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 automation_acceptance_granted: false
-automation_acceptance_scope: machine_validated_internal_probe_human_s4_pending
+automation_acceptance_scope: machine_validated_persona_led_digest_human_editorial_review_pending
 batch_acceptance: not_applicable_out12
 candidate_01_acceptance: not_applicable_out12
 candidate_02_acceptance: not_applicable_out12
@@ -136,42 +139,43 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_restart_command_available
-next_review_due: s4_human_common_context_review
-next_review_type: exact_probe_common_context_review
-next_action: obtain_s4_human_common_context_verdict_on_exact_probe
-active_artifact: clip-s1-two-source-common-context-probe-v1-001
-current_review_component: s1_two_source_argumentative_timeline_caption_commentary_and_provenance
+next_review_due: exact_persona_led_digest_human_editorial_review
+next_review_type: exact_concept_first_low_attention_digest_review
+next_action: obtain_human_editorial_verdict_on_exact_persona_led_digest
+active_artifact: clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001
+current_review_component: concept_first_opening_seven_cut_chronological_digest_and_provenance
 base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
-artifact_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
-artifact_output_byte_size: 93331608
-artifact_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
-artifact_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
-artifact_file_count: 19
-artifact_duration_seconds: 98.896
+implementation_revision: commit_containing_this_document
+implementation_revision_locator: refs/heads/codex/s1-persona-led-subaru-digest-v1
+artifact_output_sha256: ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c
+artifact_output_byte_size: 54881314
+artifact_package_tree_digest_sha256: 0c5e96f5a020d6828082917b4c2ab2be291d9ddcb9871735c0f4a908c20a9e21
+artifact_manifest_self_sha256: 659897fef35965ede7c514767021522a903e41c0e24701ce2f796809dafd020f
+artifact_file_count: 12
+artifact_duration_seconds: 187.92
 artifact_source_count: 2
-artifact_cut_count: 6
-artifact_source_switch_count: 5
-artifact_caption_cue_count: 60
-artifact_commentary_count: 3
+artifact_cut_count: 7
+artifact_source_switch_count: 1
+artifact_caption_cue_count: 59
+artifact_commentary_count: 0
 public_use: false
 monetized_use: false
 upload_attempted: false
-s1_implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
-s1_base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-s1_artifact_id: clip-s1-two-source-common-context-probe-v1-001
-s1_state: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
-s1_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
-s1_output_byte_size: 93331608
-s1_output_duration_seconds: 98.896
-s1_package_file_count: 19
-s1_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
-s1_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
+s1_implementation_revision: commit_containing_this_document
+s1_base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
+s1_artifact_id: clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001
+s1_state: PERSONA_LED_ORDINARY_STREAM_S1_CANDIDATE_READY_FOR_HUMAN_REVIEW
+s1_output_sha256: ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c
+s1_output_byte_size: 54881314
+s1_output_duration_seconds: 187.92
+s1_package_file_count: 12
+s1_package_tree_digest_sha256: 0c5e96f5a020d6828082917b4c2ab2be291d9ddcb9871735c0f4a908c20a9e21
+s1_manifest_self_sha256: 659897fef35965ede7c514767021522a903e41c0e24701ce2f796809dafd020f
 s1_source_count: 2
-s1_cut_count: 6
-s1_source_switch_count: 5
-s1_caption_cue_count: 60
-s1_commentary_count: 3
+s1_cut_count: 7
+s1_source_switch_count: 1
+s1_caption_cue_count: 59
+s1_commentary_count: 0
 s1_validation_status: passed
 s1_human_review_pending: true
 s1_rights_approval: not_granted
@@ -182,7 +186,18 @@ s1_upload_attempted: false
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-full_suite_status: passed_689
+s1_review_wide_overflow: false
+s1_review_narrow_overflow: false
+s1_review_initial_state: paused_muted_time_zero_autoplay_absent
+s1_review_console_page_error_count: 0
+full_suite_status: not_run_by_mission_authority_focused_27_passed
+rejected_predecessor_artifact: clip-s1-two-source-common-context-probe-v1-001
+rejected_predecessor_bound_head: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
+rejected_predecessor_verdict: reject
+rejected_predecessor_decision_effect: BLOCK_CURRENT
+rejected_predecessor_verdict_state: superseded
+rejected_predecessor_repair_class: not_bounded_repair
+rejected_predecessor_active_default_accepted: false
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
 out13_editorial_acceptance_granted: true
@@ -430,8 +445,8 @@ known_unrelated_test_failure: null
 known_unrelated_test_failure_2: null
 known_unrelated_test_failure_scope: historical_out06_environment_sensitive_failures_not_reproduced_in_current_pillow_enabled_full_suite
 known_unrelated_test_failure_owner: none_current
-current_full_suite_status: s1_branch_full_suite_689_passed
-current_full_suite_command: uvx --with Pillow pytest -q
+current_full_suite_status: not_run_by_mission_authority_focused_27_passed
+current_full_suite_command: not_applicable
 out06_base_branch_comparison: identical_failures_branch_only_regression_false
 default_vertical_render_command_comparison_sha256: a863ee1ae56f9d23bcd73000043d48a7e606c49418593f7df930cd7556d37ebf
 source_specific_caption_suppression_observation: source_specific_caption_band_suppression_observed_acceptable_not_generalized
@@ -586,54 +601,64 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-12 / S1 Ready for S4 Human Review
+## Current Capsule — ED-12 / Persona-Led Ordinary-Stream Digest
 
 - active slice: `ED-12`
-- active artifact: `clip-s1-two-source-common-context-probe-v1-001`
-- review status: `s4_human_review_pending`
-- portable receipt: `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
-- local artifact role: `active_s4_review_target_same_machine_only`
+- active artifact: `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`
+- state: `PERSONA_LED_ORDINARY_STREAM_S1_CANDIDATE_READY_FOR_HUMAN_REVIEW`
+- review status: `human_editorial_review_pending`
+- portable receipt: `docs/output_layer/S1_PERSONA_LED_SUBARU_DIGEST.md`
+- local artifact role: `active_private_human_review_target_same_machine_only`
 - human review pending: `true`
 
-- remote latest`origin/main`は
-  `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`。current branch
-  `codex/s1-two-source-common-context-probe-v1`のHEAD / upstreamは
-  `9656f58e55136c4d4a32f758d65484f9610c6feb`で一致し、mainを完全に含む2 commit先。
-  implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`。
-- parallel remote branch`origin/codex/out14-editorial-presentation-v3`は
-  `06975b0e5edab2faed585fd7f5e82d9c699ec235`。S1とはmain後に2対3 commitで分岐した
-  別exact-review laneであり、今回merge、acceptance継承、active artifact切替を行っていない。
-- S1はOUT-13 Candidate 005を変更・改名・再公開候補化しない。新artifact、二つの実source、
-  新しいeditorial question/thesis、range inventory、MP4 SHAを持つmaterially distinct probe。
-- exact local packageは19 payload files、final MP4 93,331,608 bytes / 98.896s、
-  SHA`dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`、
-  tree digest`a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`。
-- timelineは6 cuts、各source 3 cuts、5 source switches。source caption 60 cuesと
-  creator-authored commentary 3 eventsを別provenance trackとして保持する。
-- 2026-07-27の再読戻しでmanifest closed set、focused 12 tests、GUI/Electron smoke、
-  review page 200 / MP4 Range 206を再確認した。full 689 testsと16 media/evidence checksは
-  package構築時のpassを保持し、今回のdocs-only同期では再実行していない。確認用serverは停止済み。
-  machine passは二sourceが一つの論として成立するという
-  意味判断を代行しない。
-- 同一マシンのS4 entrypointは
-  `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html`。
-  `episodes/`はignoredなので、Gitだけの別端末ではreview-readyを推定しない。
-- OUT-13 Candidate 005は`M6_CLOSED_DENY_EXACT_ARTIFACT`のread-only archive evidenceを維持。
-  そのinternal acceptanceやpublic denyをS1へ継承しない。
-- S1は`human_review_pending=true`、`rights_approval=not_granted`、
+- exact baseはbranch`codex/s1-two-source-common-context-probe-v1` /
+  `bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471` / upstream parity`0 0` /
+  clean。isolated branch`codex/s1-persona-led-subaru-digest-v1`で実装し、
+  push / PR / mergeは行っていない。implementationはこの文書を含むlocal commitへbindする。
+- 旧`clip-s1-two-source-common-context-probe-v1-001`は
+  `reject / BLOCK_CURRENT / superseded / not bounded_repair`。
+  official-animation、abstract similarity、concept-before-viewing不在、viewerによるthesis再構成、
+  low-attentionに高すぎる負荷というsignatureを歴史証跡へ隔離し、
+  active/default/accepted exposureから外した。packageは削除・上書きしていない。
+- replacementは通常配信`youtube:ib3DwHDI71Q`（2026-07-18）と
+  `youtube:rltNvZ_FY8Q`（2026-07-25）だけを使う。openingで大空スバル、日付、
+  ドラゴンボール初見の変化、短時間で追えるbenefitを宣言する。
+- 7/18 sourceはauthority
+  `CPG-AUTH-20260728-IB3DWH-PRIVATE-ACQUISITION-01`のexact targetとして
+  anonymous acquisition 1件を完了。SHA
+  `cf6a010a26c1a159b902bb5412f952086c365ce7e73d3775ee5a25aaaa11d353`。
+  Cookie/login/OAuth/credential/membership accessと別source取得は0。
+  7/25 sourceは既存exact media SHA
+  `5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240`
+  と既存provenanceのread-only reuse。
+- timelineは7 cuts、日付順、source switch 1回。隣接点は3 same-topic continuationsと
+  3 explicit topic changesで、opening-to-first-cutもconcept-first markerを持つ。
+  provider automatic-caption cuesは59。official authorshipは主張しない。
+- exact local packageは12 payload files＋manifest。final MP4は54,881,314 bytes /
+  187.920s / SHA
+  `ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`。
+  tree digest`0c5e96f5...a9e21`、manifest self-integrity`659897fe...020f`。
+- manifest、ffprobe、full non-audible decode、focused 27 tests、wide/narrow muted browser、
+  page 200 / MP4 Range 206はpass。outer overflowとconsole/page errorsは0。
+  openingと全7 cut開始点をpaused/mutedでseekした。browser/listenerは停止済み。
+- 同一マシンのentrypointは
+  `episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/review/index.html`。
+  `episodes/`はignored / tracked 0なので、Gitだけの別端末でreview-readyを推定しない。
+- processing snapshotは`local_private_review_only`とunderlying rights
+  `pending_or_unverified`を分離する。rights clearance/approvalではない。
   `production_acceptance=false`、`public_use=false`、`monetized_use=false`、
-  `upload_attempted=false`。
+  `publication_approval=false`、`upload_attempted=false`。
 
 ## Next Action
 
-- action: `obtain_s4_human_common_context_verdict_on_exact_probe`
-- authorization state: `s1_s3_machine_complete_s4_human_decision_pending`
+- action: `obtain_human_editorial_verdict_on_exact_persona_led_digest`
+- authorization state: `machine_complete_human_editorial_decision_pending`
 - owner: `Product owner / User / Supervisor`
-- condition: exact MP4を全編視聴し、中心問いの理解可能性、二sourceの相互深化、
-  attribution/context、commentaryとsource captionの分離を
-  `accept / bounded repair / reject`で判断する。acceptでもrights、production、
-  thumbnail、publishing、upload、public releaseは開かない。repair時はsuccessful
-  packageを上書きせずnew identityを作る。
+- condition: exact SHAのMP4を全編視聴し、opening promiseの理解可能性、食事・作業中の
+  topic回復、各cutのproximal context、二週の変化が一つのdigestとして成立するかを
+  `accept / bounded repair / reject`で判断する。machine passをcreative acceptanceに
+  昇格しない。acceptでもrights、production、thumbnail、publishing、upload、public
+  releaseは開かない。repair時はsuccessful packageを上書きせずnew identityを作る。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 
