@@ -2860,7 +2860,7 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 2836,
+      "line_count": 2837,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
@@ -2894,8 +2894,9 @@
         "upstream_parity": "0 0",
         "sync_audit_head": "9656f58e55136c4d4a32f758d65484f9610c6feb",
         "latest_remote_sync_head": "edb782acd1e06aca46e0a5d10295ea52f30ad5c7",
-        "latest_tracking_branch_head": "9656f58e55136c4d4a32f758d65484f9610c6feb",
-        "sync_audit_status": "tracking_branch_parity_zero_current_branch_contains_origin_main_two_commits",
+        "sync_observed_tracking_head": "9656f58e55136c4d4a32f758d65484f9610c6feb",
+        "sync_audit_status": "sync_input_tracking_parity_zero_handoff_pushed_to_tracking_ref",
+        "remote_handoff_status": "pushed_verify_current_ref_on_resume",
         "parallel_remote_review_branch": "origin/codex/out14-editorial-presentation-v3",
         "parallel_remote_review_revision": "06975b0e5edab2faed585fd7f5e82d9c699ec235",
         "parallel_branch_relation": "divergent_exact_review_lanes_no_merge_or_acceptance_inheritance",
@@ -3631,7 +3632,7 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 197,
+      "line_count": 199,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
@@ -3649,6 +3650,7 @@
         "implementation_revision": "a3771bc59cd58b05c00a570e1074118ace3dc15a",
         "sync_observed_head": "9656f58e55136c4d4a32f758d65484f9610c6feb",
         "current_head_locator": "refs/heads/codex/s1-two-source-common-context-probe-v1",
+        "remote_handoff_status": "pushed_verify_current_ref_on_resume",
         "parallel_remote_review_branch": "origin/codex/out14-editorial-presentation-v3",
         "parallel_remote_review_revision": "06975b0e5edab2faed585fd7f5e82d9c699ec235",
         "remote_resume_contract": "fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file",
@@ -4065,7 +4067,7 @@
     {
       "path": "docs/SUPERVISOR_STATUS_REPORT.md",
       "title": "ED-12 / S1 two-source common-context probe・監修報告",
-      "line_count": 171,
+      "line_count": 173,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -4154,7 +4156,7 @@
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (2836 lines) is likely carrying history.",
+        "detail": "Long active doc (2837 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

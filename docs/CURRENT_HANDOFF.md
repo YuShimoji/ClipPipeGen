@@ -15,6 +15,7 @@ latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
 sync_observed_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
 current_head_locator: refs/heads/codex/s1-two-source-common-context-probe-v1
+remote_handoff_status: pushed_verify_current_ref_on_resume
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
@@ -78,7 +79,7 @@ related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_la
 
 ## 2026-07-27同期読戻し
 
-`git fetch --prune origin`後もcurrent branch / upstreamは
+同期監査開始時、`git fetch --prune origin`後のcurrent branch / upstreamは
 `9656f58e55136c4d4a32f758d65484f9610c6feb`で一致し、parityは`0 0`。
 `origin/main...HEAD`は`0 2`で、fast-forward pull対象はなかった。tracked / untrackedはclean、
 進行中Git operationは0。ignoredのprotected R3 preview、S1 package、OUT-13 archive、
@@ -93,6 +94,7 @@ parallel remote branch`origin/codex/out14-editorial-presentation-v3`は
 `06975b0e5edab2faed585fd7f5e82d9c699ec235`。S1とは`origin/main`後に分岐した
 別artifact / 別human-review laneであり、今回merge、active artifact切替、
 acceptance継承を行っていない。current authorityとnext actionはS1 S4のまま。
+この同期報告自身のpush後HEADは`current_head_locator`とupstream refをfetchして読戻す。
 
 ## 現在地
 

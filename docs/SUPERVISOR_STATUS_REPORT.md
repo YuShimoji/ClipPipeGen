@@ -8,9 +8,11 @@
 
 remote最新`origin/main`は`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`でlocal mainと一致。
 current branch`codex/s1-two-source-common-context-probe-v1`はそのmainを完全に含み、
-HEAD / upstream
+同期監査開始時のHEAD / upstreamは
 `9656f58e55136c4d4a32f758d65484f9610c6feb`でparity`0 0`。mainより2 commit先で、
-implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`。
+implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`。本報告commit後の
+remote exact HEADは`refs/remotes/origin/codex/s1-two-source-common-context-probe-v1`
+をfetchして読戻す。
 
 このcommitは、OUT-13 Candidate 005を変更・改名せず、新artifact
 `clip-s1-two-source-common-context-probe-v1-001`を実装した。取得済み実source二本をexact
@@ -21,7 +23,7 @@ trackとして一つの98.896秒timelineへ組み立てる。code/packageの技�
 | 監修軸 | current readback |
 |---|---|
 | branch | `codex/s1-two-source-common-context-probe-v1` |
-| repository HEAD / upstream | `9656f58e...c6feb` / parity `0 0` |
+| sync input HEAD / upstream | `9656f58e...c6feb` / parity `0 0` |
 | base remote main | `edb782acd1e06aca46e0a5d10295ea52f30ad5c7` |
 | implementation | `a3771bc59cd58b05c00a570e1074118ace3dc15a` |
 | artifact | `clip-s1-two-source-common-context-probe-v1-001` |
