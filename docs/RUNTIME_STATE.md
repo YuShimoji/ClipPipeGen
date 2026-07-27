@@ -4,8 +4,8 @@ title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
 health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
-last_touched: 2026-07-26
-state_revision: s1-common-context-probe-handoff-2026-07-26
+last_touched: 2026-07-27
+state_revision: s1-common-context-probe-sync-readback-2026-07-27
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-12
 phase: s1_s3_probe_built_s4_human_review_pending
@@ -13,7 +13,7 @@ canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
 active_branch: codex/s1-two-source-common-context-probe-v1
 source_branch: codex/s1-two-source-common-context-probe-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
-verified_implementation_head: 18641fe917b084259869263e8db05d78325aa2db
+verified_implementation_head: a3771bc59cd58b05c00a570e1074118ace3dc15a
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
 integration_start_main_revision: 5d6f69a64d510508a1f78ab3111a7780913a019c
 integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
@@ -29,9 +29,13 @@ m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: null
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
 upstream_parity: 0 0
-sync_audit_head: 5d6f69a64d510508a1f78ab3111a7780913a019c
+sync_audit_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
 latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-sync_audit_status: origin_main_current_branch_contains_remote_baseline_one_local_successor_commit
+latest_tracking_branch_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
+sync_audit_status: tracking_branch_parity_zero_current_branch_contains_origin_main_two_commits
+parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
+parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
+parallel_branch_relation: divergent_exact_review_lanes_no_merge_or_acceptance_inheritance
 sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
@@ -86,7 +90,7 @@ production_acceptance: false
 production_subtitle_design_acceptance: false
 production_image_quality_acceptance: false
 public_or_publishing_acceptance: false
-last_verified_at: 2026-07-26T20:05:59+09:00
+last_verified_at: 2026-07-27T20:10:59+09:00
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
 historical_last_verified_host_entrypoint: null
@@ -563,7 +567,7 @@ source_internal_review_observation_readback: clip-ed10at-internal-review-observa
 source_internal_review_access_sheet: clip-ed10as-internal-review-access-sheet-fullpath-001
 source_internal_review_package: clip-ed10ar-internal-review-video-candidate-package-001
 source_of_truth: true
-owner_lane: rights_readiness_handoff
+owner_lane: editing_review_handoff
 related: docs/THREAD_REGISTRY.md, docs/output_layer/OUT_02_HANDOFF.md, docs/output_layer/video_output_gap_log.json, docs/output_layer/local_fixture_output_proof/proof_manifest.json, docs/output_layer/local_fixture_output_proof/proof_readback.json, docs/output_layer/local_fixture_output_proof/proof_timeline.html, docs/integration/int01_parallel_lane_aggregation_report.json, docs/integration/int01_parallel_lane_aggregation_report.md, docs/external_sources/external_source_registry.json, docs/triage/safety_overcapture_report.json, docs/index.md, docs/dashboard/project-status.json, docs/content_planning/episode_workspace_plan.json, docs/content_planning/automation_contract.json, docs/content_planning/source_identity_human_ok_decision.json, docs/content_planning/source_fetch_prep_ready_package.json, docs/content_planning/source_fetch_prep_ready_package.md, src/cli/main.py, src/pipeline/episode_workspace.py, src/cli/inspect_episode_workspace.py, src/cli/prepare_source_identity_decision.py, src/cli/record_source_identity_decision.py, src/cli/plan_source_fetch_prep.py, docs/SUBTITLE_STYLE_INTENT_REGISTRY.md, docs/SUBTITLE_PRESENTATION_CONTRACT.md, docs/style_intent/thank-v2-open-command-repair-readback.json, docs/style_intent/thank-v2-open-command-repair-readback.md, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.json, docs/style_intent/thank-ed10ba-v2-local-access-recovery-readback.md, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.json, docs/style_intent/representative-micro-scene-v2-cut-window-and-review-purpose-alignment.md, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.json, docs/style_intent/ed10az-observation-readback-and-v2-route-decision.md, docs/style_intent/thank-ed10au-local-access-recovery-readback.json, docs/style_intent/thank-ed10au-local-access-recovery-readback.md, docs/style_intent/review-frame-clarification-surface.json, docs/style_intent/review-frame-clarification-surface.md, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.json, docs/style_intent/grill-me-adoption-readback-and-ed10aw-review-frame-clarification-plan.md, docs/style_intent/micro-scene-observation-frame-readback.json, docs/style_intent/micro-scene-observation-frame-readback.md, docs/style_intent/representative-micro-scene-internal-review-specimen.json, docs/style_intent/representative-micro-scene-internal-review-specimen.md, docs/style_intent/internal-review-video-observation-readback.json, docs/style_intent/internal-review-video-observation-readback.md, docs/style_intent/internal-review-video-candidate-access-sheet.json, docs/style_intent/internal-review-video-candidate-access-sheet.md, docs/style_intent/internal-review-video-candidate-package.json, docs/style_intent/internal-review-video-candidate-package.md, scripts/operator/open_representative_micro_scene_v2_cut_window_review_purpose_alignment.ps1, scripts/operator/open_representative_micro_scene_internal_review_specimen.ps1, scripts/operator/open_internal_review_video_candidate.ps1, artifacts/ARTIFACTS.md
 ---
 
@@ -592,8 +596,12 @@ instructions.
 
 - remote latest`origin/main`は
   `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`。current branch
-  `codex/s1-two-source-common-context-probe-v1`はmainを完全に含み、implementation
-  `a3771bc59cd58b05c00a570e1074118ace3dc15a`で一commit先行する。
+  `codex/s1-two-source-common-context-probe-v1`のHEAD / upstreamは
+  `9656f58e55136c4d4a32f758d65484f9610c6feb`で一致し、mainを完全に含む2 commit先。
+  implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`。
+- parallel remote branch`origin/codex/out14-editorial-presentation-v3`は
+  `06975b0e5edab2faed585fd7f5e82d9c699ec235`。S1とはmain後に2対3 commitで分岐した
+  別exact-review laneであり、今回merge、acceptance継承、active artifact切替を行っていない。
 - S1はOUT-13 Candidate 005を変更・改名・再公開候補化しない。新artifact、二つの実source、
   新しいeditorial question/thesis、range inventory、MP4 SHAを持つmaterially distinct probe。
 - exact local packageは19 payload files、final MP4 93,331,608 bytes / 98.896s、
@@ -601,8 +609,9 @@ instructions.
   tree digest`a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`。
 - timelineは6 cuts、各source 3 cuts、5 source switches。source caption 60 cuesと
   creator-authored commentary 3 eventsを別provenance trackとして保持する。
-- manifest closed set、16 media/evidence checks、focused 12 tests、full 689 tests、
-  GUI/Electron smoke、review page 200 / MP4 Range 206はpass。確認用serverは停止済み。
+- 2026-07-27の再読戻しでmanifest closed set、focused 12 tests、GUI/Electron smoke、
+  review page 200 / MP4 Range 206を再確認した。full 689 testsと16 media/evidence checksは
+  package構築時のpassを保持し、今回のdocs-only同期では再実行していない。確認用serverは停止済み。
   machine passは二sourceが一つの論として成立するという
   意味判断を代行しない。
 - 同一マシンのS4 entrypointは

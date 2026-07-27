@@ -4,7 +4,7 @@ title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
 health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
-last_touched: 2026-07-26
+last_touched: 2026-07-27
 current_slice: ED-12
 phase: s1_s3_probe_built_s4_human_review_pending
 canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
@@ -13,6 +13,10 @@ upstream_branch: origin/codex/s1-two-source-common-context-probe-v1
 base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+sync_observed_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
+current_head_locator: refs/heads/codex/s1-two-source-common-context-probe-v1
+parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
+parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
 current_title: S1 two-source common-context probe ready for S4 human review
 human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
@@ -72,6 +76,24 @@ related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_la
 
 # Current Handoff - ClipPipeGen
 
+## 2026-07-27同期読戻し
+
+`git fetch --prune origin`後もcurrent branch / upstreamは
+`9656f58e55136c4d4a32f758d65484f9610c6feb`で一致し、parityは`0 0`。
+`origin/main...HEAD`は`0 2`で、fast-forward pull対象はなかった。tracked / untrackedはclean、
+進行中Git operationは0。ignoredのprotected R3 preview、S1 package、OUT-13 archive、
+`.serena/`、`.claude/worktrees/`にはwrite/cleanupを行っていない。
+
+same-machine S1 packageはmanifest closed set、final SHA
+`dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`、
+20 total files（19 payload＋manifest）が一致した。focused 12 tests、GUI smoke、
+Electron smoke、ephemeral review page 200 / MP4 Range 206を再確認し、serverは停止した。
+
+parallel remote branch`origin/codex/out14-editorial-presentation-v3`は
+`06975b0e5edab2faed585fd7f5e82d9c699ec235`。S1とは`origin/main`後に分岐した
+別artifact / 別human-review laneであり、今回merge、active artifact切替、
+acceptance継承を行っていない。current authorityとnext actionはS1 S4のまま。
+
 ## 現在地
 
 `origin/main`の最新`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`を基点に、
@@ -105,14 +127,16 @@ manifest self-integrityは
 ## 検証済み開発基線
 
 - `git fetch --prune origin`: pass。`main`と`origin/main`は`edb782a`で一致。
-- current branch topology: `origin/main...HEAD = 0 1`。remote mainを完全に含む。
+- current branch topology: `origin/main...HEAD = 0 2`、tracking upstream parity `0 0`。
+  remote mainを完全に含む。
 - `npm ci`: 23 packages、24 packages audited、vulnerability 0。
 - `npm run smoke`: pass。
 - `npm run smoke:electron`: pass。Electron 42.0.0。
-- `uvx --with Pillow pytest -q tests/test_common_context_probe.py`: 12 passed。
+- `uv run --with pytest --with pillow python -m pytest tests/test_common_context_probe.py -q`:
+  2026-07-27再実行で12 passed。
 - `uvx --with Pillow pytest -q`: 689 passed。
-- artifact manifest再検証: pass。
-- ephemeral review server: page 200 / MP4 Range 206。確認後停止。
+- artifact manifest再検証: 2026-07-27 pass、19 payload＋manifest。
+- ephemeral review server: 2026-07-27 page 200 / MP4 Range 206。確認後停止。
 - `build-common-context-probe --help`: pass。
 - tracked/untracked worktree: clean before handoff edits。
 - `git ls-files episodes`: 0件。

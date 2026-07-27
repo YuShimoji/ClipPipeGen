@@ -3,10 +3,28 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-26
+last_touched: 2026-07-27
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-27 — S1 tracking parityを再確認し、parallel OUT-14 v3を統合しない
+
+primary checkoutはbranch`codex/s1-two-source-common-context-probe-v1`、HEAD
+`9656f58e55136c4d4a32f758d65484f9610c6feb`でtracked / untracked clean、進行中Git operation 0。
+`git fetch --prune origin`後もupstreamは同一HEAD、parity`0 0`、`origin/main...HEAD`は`0 2`。
+behind-only updateはなく、pull / merge / rebase / stash / restore / cleanを行わない。
+
+remoteのparallel branch`origin/codex/out14-editorial-presentation-v3`は
+`06975b0e5edab2faed585fd7f5e82d9c699ec235`で、S1とは`origin/main`後に2対3 commitで分岐する。
+これは別artifact、別presentation、別exact human-review gateであり、S1へmergeせず、
+active artifact、next action、acceptanceを相互継承しない。current authorityは
+S1 S4 human common-context reviewを維持する。
+
+same-machine S1 packageはmanifest closed set、final SHA`dc621bfe...f95be`、
+focused 12 tests、GUI/Electron smoke、review page 200 / MP4 Range 206を再確認した。
+full 689 testsはpackage構築時のpassを保持し、docs-only同期では反復しない。
+rights、production、thumbnail、publishing、upload、public releaseは閉じたまま。
 
 ## 2026-07-26 — materially distinctなtwo-source successorをS4 review待ちとして正本化
 

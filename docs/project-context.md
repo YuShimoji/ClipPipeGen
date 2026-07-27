@@ -3,12 +3,14 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-26
+last_touched: 2026-07-27
 current_slice: ED-12
 phase: s1_s3_probe_built_s4_human_review_pending
 active_branch: codex/s1-two-source-common-context-probe-v1
 base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+sync_observed_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
+upstream_parity: 0 0
 health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
 ---
 
@@ -31,7 +33,7 @@ evidence、creator-authored thesis/commentary、range rights readbackを結び�
 | 項目 | 状態 | 何が可能になったか |
 |---|---|---|
 | remote baseline | `main` / `origin/main` = `edb782a` | 最新canonical deny状態を継承 |
-| implementation | `a3771bc`、branchはmainより1 commit先 | CLI、renderer、tests、contractを再開可能 |
+| repository / implementation | `9656f58` / `a3771bc`、branchはmainより2 commit先、upstream parity 0 0 | CLI、renderer、tests、handoffを再開可能 |
 | exact package | MP4 SHA `dc621bfe...f95be`、19 files | 同一マシンでS4全編review可能 |
 | machine validation | 16/16 checks、focused 12、full 689 | code/packageの技術基線はgreen |
 | human decision | pending | 二source共通文脈の意味判断が現在のbottleneck |

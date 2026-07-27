@@ -1,6 +1,6 @@
 # ED-12 / S1 two-source common-context probe・監修報告
 
-更新日: 2026-07-26 JST
+更新日: 2026-07-27 JST
 
 対象: ClipPipeGen のみ
 
@@ -8,7 +8,9 @@
 
 remote最新`origin/main`は`edb782acd1e06aca46e0a5d10295ea52f30ad5c7`でlocal mainと一致。
 current branch`codex/s1-two-source-common-context-probe-v1`はそのmainを完全に含み、
-implementation revision`a3771bc59cd58b05c00a570e1074118ace3dc15a`で1 commit先行している。
+HEAD / upstream
+`9656f58e55136c4d4a32f758d65484f9610c6feb`でparity`0 0`。mainより2 commit先で、
+implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`。
 
 このcommitは、OUT-13 Candidate 005を変更・改名せず、新artifact
 `clip-s1-two-source-common-context-probe-v1-001`を実装した。取得済み実source二本をexact
@@ -19,6 +21,7 @@ trackとして一つの98.896秒timelineへ組み立てる。code/packageの技�
 | 監修軸 | current readback |
 |---|---|
 | branch | `codex/s1-two-source-common-context-probe-v1` |
+| repository HEAD / upstream | `9656f58e...c6feb` / parity `0 0` |
 | base remote main | `edb782acd1e06aca46e0a5d10295ea52f30ad5c7` |
 | implementation | `a3771bc59cd58b05c00a570e1074118ace3dc15a` |
 | artifact | `clip-s1-two-source-common-context-probe-v1-001` |
@@ -36,10 +39,17 @@ production/public delivery全体で
 
 ## remote同期と開発可能性
 
-開始時のprimary checkoutはtracked/untracked clean。protected R3 preview、OUT-13 package、
-S1 package、cache/node_modulesをignored stateとして分類した。`git fetch --prune origin`後、
-main parityは`0 0`、current branchは`origin/main...HEAD = 0 1`。remoteに同名branchはまだ
-なかったため、mainへ切り戻したりmergeしたりせず、local successor commitを保持した。
+2026-07-27のprimary checkoutはtracked/untracked cleanで、進行中Git operationは0。
+protected R3 preview、OUT-13 package、S1 package、`.claude/worktrees/`、`.serena/`、
+cache/node_modules/`_tmp`をignored stateとして分類した。`git fetch --prune origin`後、
+current branchはupstream parity`0 0`、`origin/main...HEAD = 0 2`。behind-onlyではないため
+pullは不要で、mainへのswitch、stash、restore、clean、rebase、mergeは行っていない。
+
+remoteにはparallel
+`origin/codex/out14-editorial-presentation-v3@06975b0e5edab2faed585fd7f5e82d9c699ec235`
+も存在する。S1とは`origin/main`後に2対3 commitで分岐し、別artifactと別human-review gateを
+持つため、今回統合しない。S1のcurrent authorityをv3へ上書きせず、どちらのhuman acceptanceも
+他方へ継承しない。
 
 依存とgate:
 
@@ -48,11 +58,11 @@ main parityは`0 0`、current branchは`origin/main...HEAD = 0 1`。remoteに同
 | `npm ci` | 23 packages、audit 0 vulnerabilities | GUI依存を再構築 |
 | GUI smoke | pass | Node側読込経路が動作 |
 | Electron smoke | pass、Electron 42.0.0 | desktop entryが起動可能 |
-| S1 focused | 12 passed | identity、chronology、mapping、provenance、immutabilityを確認 |
-| full Python suite | 689 passed / 95.01s | current HEADの既存機能を含む回帰なし |
+| S1 focused | 2026-07-27再実行、12 passed | identity、chronology、mapping、provenance、immutabilityを確認 |
+| full Python suite | package構築時689 passed / 95.01s、今回未反復 | current implementationの既存回帰証跡を保持 |
 | CLI help | pass | subcommand dispatchが利用可能 |
-| package manifest | pass | 19-file closed setとself-integrityが一致 |
-| review server | page 200 / MP4 Range 206 | browser向け入口とbyte-range配信を確認後、server停止 |
+| package manifest | 2026-07-27再検証pass | 19 payload＋manifest、self-integrity一致 |
+| review server | 2026-07-27 page 200 / MP4 Range 206 | browser向け入口とbyte-range配信を確認後、server停止 |
 | Git/privacy | `git diff --check` pass、tracked `episodes/` 0 | private mediaをGitへ追加していない |
 
 したがって、tracked codeの開発再開と同一マシンS4 reviewの双方が可能。別端末では
