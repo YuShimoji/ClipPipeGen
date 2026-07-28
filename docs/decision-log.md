@@ -3,10 +3,20 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-28
+last_touched: 2026-07-29
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-07-29 — S2 evidence-linked comparisonをlocal human-review targetとして固定
+
+exact start `codex/s1-persona-led-subaru-digest-v1` / `40fe3fbdf13631948d03641e33325e7f01ed9e56`からisolated local branch `codex/s2-evidence-linked-comparison-v1`を作り、取得済み二sourceと既存provenanceだけをread-only reuseした。新規acquisition、network access、credential/OAuthは0。S1 artifact `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman review pendingのまま変更せず、S2へacceptanceを継承しない。
+
+S2は`build-evidence-linked-comparison`、comparison direction/plan IR、two-panel renderer、validation、manifest、private review packageを追加した。active artifact `clip-s2-subaru-evidence-linked-comparison-v1-002`は、thesis「7月18日の第一印象と、7月25日の理解更新を並べて見る」の下で3 beatすべてに二sourceを同時表示する。各beatはprimary quote、paired evidence、exact range、visible source/date label、foreground audio owner一件を持ち、参照側audioはmuteする。
+
+final MP4は7,829,406 bytes / 63.466667s / SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。12 payloadのtree digestは`ea2e6cb359325210ed2e1f267d5f3a0b9f6ca22d31b229cbe8b569a24b508090`、manifest self-integrityは`4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479`。v001でfavicon 404を検出し、review HTMLへdata faviconを加えたv002をactive identityにした。MP4 bytesは変えていない。manifest/full decode/focused regressions、wide/narrow browser、opening・3 transition・3 comparison beatのactual frame inspection、page 200 / Range 206はpass。browser/listenerは停止した。
+
+Campaign HorizonはED-13 comparison、ED-14 synchronized multi-participant camera director、ED-15 event-centered reaction compiler、ED-16 held-out genre variation proofとする。comparison / multi-camera / reaction benchmark名はstaged scenarioで、source/rights availabilityを主張しない。decision effectは`EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW`。次はexact MP4へhuman `accept / bounded repair / reject`をbindする。rights、production、public/monetized use、publication、uploadは開かない。mission authorityに従いlocal commit一件だけを作り、push / PR / merge / tag / release / deploy / upload / publicationは行わない。
 
 ## 2026-07-28 — persona-led S1のtracked実装をremote再開可能にする
 

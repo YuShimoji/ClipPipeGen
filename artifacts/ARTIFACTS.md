@@ -5,13 +5,7 @@ local files are portable across clones. Use `docs/RUNTIME_STATE.md` for the
 current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
-Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. ED-12 / S1のactive review targetは、2026-07-18と2026-07-25の
-大空スバル通常配信だけを使うconcept-first digestで、machine validation complete /
-human editorial review pending。review packageはignored same-machine evidenceであり、
-Gitが運ぶのはimplementation、tests、contract、identity、handoffだけで、source mediaや
-final MP4ではない。旧common-context probeはrejected/superseded historical evidenceで、
-active/default/accepted exposureから外れている。
+Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven current focus. ED-13 / S2のactive review targetは、2026-07-18と2026-07-25の大空スバル通常配信を同じframeで比較するevidence-linked explainer。machine validation complete / human editorial review pending。review packageはignored same-machine evidenceで、Gitが運ぶのはimplementation、tests、contract、identity、handoffだけであり、source mediaやfinal MP4ではない。S1 persona-led digestは未受理のまま保存されたpredecessorで、S2は変更・再受理・acceptance継承をしていない。
 OUT-13 candidate 005 remains accepted-internal read-only archive evidence whose
 public/monetized path was denied at M6. Candidate 004 has
 the same review-relevant media SHA and inherits the recorded internal dimensions without another full-view gate.
@@ -32,6 +26,42 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-s2-subaru-evidence-linked-comparison-v1-002`
+
+| Field | Value |
+|---|---|
+| title | 大空スバル 2026-07-18 / 2026-07-25 evidence-linked comparison |
+| purpose | 「7月18日の第一印象と、7月25日の理解更新を並べて見る」という問いへ、primary quoteとpaired evidenceを同一frame・exact rangeで結び、比較を短時間で追えるかhuman reviewする。 |
+| storage class | Tracked CLI/render integration/tests/docs plus ignored same-machine exact reused inputs, final MP4, contact sheet and portable review page. Source media and generated package remain untracked. |
+| repo_relative_path | `src/cli/build_evidence_linked_comparison.py`; `src/integrations/render/evidence_linked_comparison.py`; `tests/test_evidence_linked_comparison.py`; `docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md` |
+| local_artifact_path | `episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/` |
+| state | `EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW` |
+| source pair | `youtube:ib3DwHDI71Q` / 2026-07-18 / SHA `cf6a010a26c1a159b902bb5412f952086c365ce7e73d3775ee5a25aaaa11d353`; `youtube:rltNvZ_FY8Q` / 2026-07-25 / SHA `5e026c94f40acd0dfc32a5ab610300a7bccbe3cd66441a7d9cc703cc7b83d240`. S1 exact bytes/provenanceのlocal reuseのみ。新規acquisition/network 0。 |
+| comparison | 3 beats。各beatは両sourceをconcurrent panelsへ表示し、primary quote一件、paired evidence一件、visible source/date label、creator-authored proposition、foreground audio owner一件を持つ。参照側audioはmute。 |
+| final_video | H.264/AAC、yuv420p、1920x1080、63.466667s、7,829,406 bytes、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`. |
+| validation | Direction/plan/source/provenance/audio-owner/closed-set validation、ffprobe、full non-audible decode、focused S2とS1 regression、wide/narrow browser、opening・全3 transition・全3 comparison beatのactual frame inspectionがpassed。page 200 / MP4 Range 206、console error 0、listener stopped。 |
+| manifest | 12 payload rows plus manifest; tree digest `ea2e6cb359325210ed2e1f267d5f3a0b9f6ca22d31b229cbe8b569a24b508090`; self-integrity SHA `4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479`. |
+| preview_url | Relative portable entry `review/index.html`; localhost fallback is supplied by `review/serve_preview.ps1`. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s2_evidence_linked_comparison_20260729\artifacts\clip-s2-subaru-evidence-linked-comparison-v1-002\review\open_preview.ps1` |
+| local availability | Same-machine ignored package is present and validated. `episodes/` remains ignored and tracked 0. Git-only clones must not infer local reviewability. |
+| predecessor | v001はbrowser QAでfavicon 404を検出したbounded predecessor。v002はdata faviconを持ち、MP4 bytes/SHAは同一。v001をactive扱いしない。 |
+| decision_required | Exact MP4へのhuman editorial `accept / bounded repair / reject`。同時二画面、quote/support関係、audio-owner切替、三段の理解更新を判断する。 |
+
+Boundary flags:
+
+- `private_review_only=true`
+- `human_review_pending=true`
+- `editorial_acceptance=false`
+- `active_candidate=true`
+- `default_candidate=false`
+- `rights_approval=not_granted`
+- `production_acceptance=false`
+- `public_use=false`
+- `monetized_use=false`
+- `publication_approval=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
 
 ## `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`
 

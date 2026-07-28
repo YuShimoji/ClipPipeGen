@@ -4,11 +4,22 @@
 
 | ID | Feature | State | Observable acceptance |
 |---|---|---|---|
-| **ED-12** | S1 two-source common-context probe | in_progress | Tracked implementation `a3771bc` adds `build-common-context-probe`, a bounded two-source renderer, exact evidence/provenance/manifest contracts, and 12 focused tests. Same-machine artifact `clip-s1-two-source-common-context-probe-v1-001` is 6 cuts / 98.896s / SHA `dc621bfe...f95be`; 16 machine checks and the 689-test full suite pass. Exit remains S4 human review of coherence, mutual deepening, attribution/context, and commentary/caption separation. Rights, production, public/monetized use, and upload remain closed. |
+| **ED-13** | S2 evidence-linked comparison explainer | in_progress | `build-evidence-linked-comparison`、comparison IR/validator、two-panel renderer、private review packageを実装。exact artifact `clip-s2-subaru-evidence-linked-comparison-v1-002`は2 sources / 3 beats / 63.466667s / SHA `a959dc50...72d00f`。manifest/full decode/focused regressions/browser actual-frame QAはpass。exitはexact MP4へのhuman `accept / bounded repair / reject`。rights、production、public/monetized use、uploadはclosed。 |
+| **ED-12** | S1 persona-led ordinary-stream digest | in_progress | `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman review pendingのpreserved predecessor。S2はsource/packageを変更せず、acceptanceを継承・再判定しない。 |
 | **ED-11** | OUT-12 one-command real long-form video automation | done | Artifact `clip-out12-one-command-real-video-automation-v1-001`. `build-real-video` takes one acquired real source or episode material identity through provenance, content analysis, chronological Timeline IR, caption timing remap, H.264/AAC render, full validation, manifest, localhost review, and hash-verified resume. The actual `youtube:gUwJBRUIWow` run produced 11 cuts / 260.693767s / SHA `5d391ffd...a584`; all validation checks and mobile/desktop review QA passed. Rights, production subtitle/design/render acceptance, thumbnail, winner, public/publishing, and upload remain closed. |
 
-Current evidence: `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md` and
-`clip-s1-two-source-common-context-probe-v1-001` in `artifacts/ARTIFACTS.md`.
+Current evidence: `docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md` and `clip-s2-subaru-evidence-linked-comparison-v1-002` in `artifacts/ARTIFACTS.md`.
+
+## Campaign Horizon
+
+| ID | Stage | State | Benchmark family and gate |
+|---|---|---|---|
+| ED-13 | evidence-linked comparison explainer | in_progress | すばるかエレンか / みこちかスバルか / みこちかGACKTかローランドか。current proofは二source一例、human verdict pending |
+| ED-14 | synchronized multi-participant camera director | proposed | ホロナルド / 7 Days to Die / Minecraft。source/rights availability未確認のstaged scenario |
+| ED-15 | event-centered reaction compiler | proposed | ホロライブラジコン企画 / カードショップシミュレーター高額カード反応 / ドラゴンボール名場面反応。source/rights availability未確認のstaged scenario |
+| ED-16 | held-out genre variation proof | proposed | comparison / multi-camera / reactionからheld-outを選び過適合を検証。ED-13〜15のreview evidenceが必要 |
+
+benchmark名は方向検証用で、source acquisition authority、rights、production/public useを示さない。
 
 蜈ｨ讖溯・繧・ID 縺ｧ邂｡逅・☆繧九ら匳骭ｲ縺輔ｌ縺ｦ縺・↑縺・ｩ溯・縺ｯ霑ｽ蜉縺励↑縺・Ａproposed` 縺ｯ繝ｦ繝ｼ繧ｶ繝ｼ謇ｿ隱榊ｾ後↓ `approved` 縺ｸ譏・ｼ縺励※縺九ｉ螳溯｣・☆繧九・
 ## ID 隕丞援

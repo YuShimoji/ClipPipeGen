@@ -6,15 +6,7 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
-ED-12 / S1 note: `build-common-context-probe`は、取得済み実source二本だけをexact
-media/caption/transcript/rights hashへbindし、source captionとcreator-authored commentaryを
-別provenance trackとして一つのargumentative timelineへ運ぶ。current artifactは
-`clip-s1-two-source-common-context-probe-v1-001`、6 cuts / 5 source switches /
-98.896s、MP4 SHA`dc621bfe...f95be`。manifest/media validationとfull 689 testsはpassしている。
-現在は`S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW`で、二sourceが一つの論として
-成立するかは人間未判断。rights、production、public/monetized use、uploadは閉じたまま。
-詳細は
-[S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md](docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md)。
+ED-13 / S2 note: `build-evidence-linked-comparison`は、取得済み通常配信二本をexact media / caption / receipt / ledger / rights snapshotへbindし、primary quoteとpaired evidenceを同じframeで比較する。current artifactは`clip-s2-subaru-evidence-linked-comparison-v1-002`、3 comparison beats / 63.466667s、MP4 SHA `a959dc50...72d00f`。各beatのforeground audio ownerは一つで、参照側はmute。manifest/full decode/focused regressions/wide-narrow browser/全transitionとbeatの実frame inspectionはpassし、human editorial reviewはpending。S1 persona-led digestは未受理のまま保存し、S2から変更・再受理・acceptance継承をしていない。rights、production、public/monetized use、uploadは閉じたまま。詳細は[S2_EVIDENCE_LINKED_COMPARISON.md](docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md)。
 
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
 outputをローカルpipeline経路から上書きせず、取得済みの実 source、receipt / material ledger、明示 editorial plan、
@@ -159,40 +151,15 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`ED-12`。旧
-`clip-s1-two-source-common-context-probe-v1-001`は
-`reject / BLOCK_CURRENT / superseded / not bounded_repair`として歴史証跡へ隔離し、
-active/default/accepted exposureから外した。後継は通常配信だけを使う
-`clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`で、大空スバル、
-2026-07-18→2026-07-25、ドラゴンボール初見の変化、短時間で追える内容をopeningで
-宣言してから、7 cutを時系列で提示する。
+現在のactive sliceは`ED-13`。S1 persona-led digestのexact source二本をread-only reuseし、「7月18日の第一印象と、7月25日の理解更新を並べて見る」という一つの問いへ、3つのprimary quote / paired evidence beatを同時二画面で結ぶ。active artifactは`clip-s2-subaru-evidence-linked-comparison-v1-002`。
 
-exact local MP4は187.920秒、SHA
-`ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`。
-machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceは
-pending。実装revision
-`c10e99d6444b8270e3173dfbe004b2dc1ea84976`は
-`origin/codex/s1-persona-led-subaru-digest-v1`へpush済みで、readbackとupstream
-parity`0 0`を確認した。code/docs/testsとartifact identityは別端末へ持ち運べる一方、
-`episodes/`内のsource mediaとreview packageはGitでは移動しない。
+exact local MP4は63.466667秒、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。各beatはvisible source/date label、exact source range、creator-authored proposition、foreground audio owner一件を持つ。machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceはpending。branchは`codex/s2-evidence-linked-comparison-v1`、start revisionは`40fe3fbdf13631948d03641e33325e7f01ed9e56`、upstreamなしのlocal-onlyで、mission authorityによりpushしていない。`episodes/`内のsource mediaとreview packageはGitでは移動しない。
 
-実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
-MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
-real STT transcript、cut / context / subtitle draft、NLE CSV export、diagnostic render、
-real transcript subtitle burn-in、JP-STT-01 / HoloEN-01 / JP-Pilot-01の実素材pilot、
-ED-09 transcript review / correction workflow、ED-10 official subtitle track import、
-JP-Pilot-01R corrected rerun、JP-Pilot-01R2 review coverage + cut narrowing、
-JP-Pilot-01R3 official-caption rerunまで実装済み。中核パイプラインは
-`source media -> material_ledger / receipt -> transcript.json -> edit_pack.json ->
-subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は補正済み
-transcriptを既存downstreamへ戻す入口であり、transcript approvalは
-edit / render / publish / production acceptanceではない。
+S1 artifact `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman review pendingのまま保存され、S2はそれをaccept/rejectせず、source/packageも変更していない。新規acquisition、network access、credential/OAuthは0。
 
-直近のnext actionは、このexact S1 MP4についてconcept-first promiseの理解可能性、
-低注意でのtopic回復、各cutのproximal context、二週の変化が一つのdigestとして
-成立するかを全編reviewし、`accept / bounded repair / reject`をidentityへbindすること。
-rights approval、production render/subtitle design/image quality、thumbnail、
-Publishing / OAuth、upload、public releaseは開始しておらず、独立した未承認gateのまま。
+Campaign Horizonは、ED-13 evidence-linked comparison explainer、ED-14 synchronized multi-participant camera director、ED-15 event-centered reaction compiler、ED-16 held-out genre variation proofの順。comparison / multi-camera / reactionのbenchmark名は方向検証用のstaged scenarioで、source/rights availabilityを主張しない。
+
+直近のnext actionは、このexact S2 MP4について同時二画面が比較を速めるか、primary quoteとpaired evidenceの関係、audio ownerの切替、3 beatの理解更新が一つの論として成立するかを全編reviewし、`accept / bounded repair / reject`をidentityへbindすること。rights approval、production render/subtitle design/image quality、thumbnail、Publishing / OAuth、upload、public releaseは独立した未承認gateのまま。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

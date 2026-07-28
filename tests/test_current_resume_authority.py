@@ -166,36 +166,36 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
                 f"next_action_mismatch={actions[0]}!={runtime.get('next_action', '')}"
             )
 
-    if runtime.get("current_slice") != "ED-12":
+    if runtime.get("current_slice") != "ED-13":
         errors.append(f"runtime_current_slice={runtime.get('current_slice', '')}")
-    if runtime.get("active_artifact") != "clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001":
+    if runtime.get("active_artifact") != "clip-s2-subaru-evidence-linked-comparison-v1-002":
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
     expected_runtime_values = {
-        "active_branch": "codex/s1-persona-led-subaru-digest-v1",
-        "base_main_revision": "edb782acd1e06aca46e0a5d10295ea52f30ad5c7",
-        "implementation_revision": "c10e99d6444b8270e3173dfbe004b2dc1ea84976",
+        "active_branch": "codex/s2-evidence-linked-comparison-v1",
+        "base_main_revision": "40fe3fbdf13631948d03641e33325e7f01ed9e56",
+        "implementation_revision": "commit_containing_this_document",
         "artifact_output_sha256": (
-            "ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c"
+            "a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f"
         ),
         "artifact_package_tree_digest_sha256": (
-            "0c5e96f5a020d6828082917b4c2ab2be291d9ddcb9871735c0f4a908c20a9e21"
+            "ea2e6cb359325210ed2e1f267d5f3a0b9f6ca22d31b229cbe8b569a24b508090"
         ),
         "artifact_manifest_self_sha256": (
-            "659897fef35965ede7c514767021522a903e41c0e24701ce2f796809dafd020f"
+            "4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479"
         ),
         "package_validation_status": "passed",
-        "full_suite_status": "not_run_by_mission_authority_focused_27_passed",
+        "full_suite_status": "not_run_by_mission_authority_focused_15_passed",
         "human_review_pending": "true",
         "rights_approval": "not_granted",
         "production_acceptance": "false",
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_parity": "0 0",
-        "remote_code_complete": "true",
-        "decision_required": "human_editorial_verdict_on_exact_persona_led_digest",
-        "next_review_due": "exact_persona_led_digest_human_editorial_review",
+        "upstream_parity": "no_upstream_local_only",
+        "remote_code_complete": "false",
+        "decision_required": "human_editorial_verdict_on_exact_evidence_linked_comparison",
+        "next_review_due": "exact_evidence_linked_comparison_human_review",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -228,19 +228,23 @@ def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() 
     assert _authority_errors(runtime, handoff) == []
 
 
-def test_s1_resume_rejects_stale_local_only_state() -> None:
+def test_s2_resume_rejects_stale_local_only_state() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
         runtime.replace(
-            "active_branch: codex/s1-persona-led-subaru-digest-v1",
-            "active_branch: codex/stale-s1",
+            "active_branch: codex/s2-evidence-linked-comparison-v1",
+            "active_branch: codex/stale-s2",
             1,
         )
-        .replace("upstream_parity: 0 0", "upstream_parity: 1 0", 1)
         .replace(
-            "remote_code_complete: true",
+            "upstream_parity: no_upstream_local_only",
+            "upstream_parity: 1 0",
+            1,
+        )
+        .replace(
             "remote_code_complete: false",
+            "remote_code_complete: true",
             1,
         )
     )

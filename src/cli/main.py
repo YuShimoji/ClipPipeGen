@@ -99,6 +99,7 @@ from . import (
     build_real_video,
     build_editorial_video_candidate,
     build_common_context_probe,
+    build_evidence_linked_comparison,
     build_persona_led_stream_digest,
     build_vertical_short_candidate,
     build_chapter_revision_board,
@@ -208,6 +209,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-real-video": build_real_video.run,
     "build-editorial-video-candidate": build_editorial_video_candidate.run,
     "build-common-context-probe": build_common_context_probe.run,
+    "build-evidence-linked-comparison": build_evidence_linked_comparison.run,
     "build-persona-led-stream-digest": build_persona_led_stream_digest.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
@@ -226,7 +228,6 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-local-preview-pack": build_local_preview_pack.run,
 }
 
-
 def main(argv: list[str] | None = None) -> int:
     args = list(argv if argv is not None else sys.argv[1:])
     if not args or args[0] in ("-h", "--help"):
@@ -244,7 +245,13 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _print_help() -> None:
-    print(__doc__ or "")
+    help_text = __doc__ or ""
+    if "build-evidence-linked-comparison" not in help_text:
+        help_text += (
+            "\n    build-evidence-linked-comparison "
+            "S2: local sources -> concurrent evidence comparison.\n"
+        )
+    print(help_text)
 
 
 if __name__ == "__main__":

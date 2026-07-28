@@ -312,7 +312,9 @@ def test_registry_quarantines_rejected_predecessor_and_routes_successor() -> Non
     assert "default_candidate=false" in predecessor_section
     assert "`reject / BLOCK_CURRENT / superseded / not bounded_repair`" in predecessor
     assert "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471" in predecessor
-    assert f"active_artifact: {digest.ARTIFACT_ID}" in runtime
+    assert f"s1_predecessor_artifact: {digest.ARTIFACT_ID}" in runtime
+    assert f"active_artifact: {digest.ARTIFACT_ID}" not in runtime
+    assert "active_artifact: clip-s2-subaru-evidence-linked-comparison-v1-002" in runtime
     assert (
         "rejected_predecessor_artifact: "
         "clip-s1-two-source-common-context-probe-v1-001"
