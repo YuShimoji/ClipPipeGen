@@ -9,13 +9,17 @@ current_slice: ED-12
 phase: persona_led_ordinary_stream_digest_built_human_editorial_review_pending
 canonical_status: persona_led_ordinary_stream_s1_candidate_ready_for_human_review
 active_branch: codex/s1-persona-led-subaru-digest-v1
-upstream_branch: null
+upstream_branch: origin/codex/s1-persona-led-subaru-digest-v1
 mission_base_branch: codex/s1-two-source-common-context-probe-v1
 mission_base_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
-implementation_revision: commit_containing_this_document
-current_head_locator: refs/heads/codex/s1-persona-led-subaru-digest-v1
-remote_handoff_status: local_only_no_push_authorized
-remote_resume_contract: same_machine_local_branch_and_ignored_package_only
+base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+implementation_revision: c10e99d6444b8270e3173dfbe004b2dc1ea84976
+current_head_locator: refs/remotes/origin/codex/s1-persona-led-subaru-digest-v1
+remote_handoff_status: pushed_verify_current_ref_on_resume
+remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file_and_verify_ignored_package_separately
+upstream_parity: 0 0
+remote_code_complete: true
+remote_decision_binding_available: true
 current_title: S1 persona-led Subaru two-week Dragon Ball digest ready for human review
 human_entrypoint: episodes/s1_persona_led_subaru_digest_20260728/artifacts/clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001/review/index.html
 portable_entrypoint: docs/output_layer/S1_PERSONA_LED_SUBARU_DIGEST.md
@@ -47,7 +51,7 @@ s1_review_narrow_overflow: false
 s1_review_console_page_error_count: 0
 s1_review_initial_state: paused_muted_time_zero_autoplay_absent
 focused_test_status: 27_passed
-full_suite_status: not_run_by_mission_authority
+full_suite_status: not_run_by_mission_authority_focused_27_passed
 human_review_pending: true
 rights_approval: not_granted
 production_acceptance: false
@@ -78,8 +82,13 @@ HEAD`bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471`をfetch後に確認し、upstream
 `0 0`、clean、進行中Git operation 0からisolated worktree
 `ClipPipeGen-s1-persona-led-subaru-digest-v1`とbranch
 `codex/s1-persona-led-subaru-digest-v1`を作った。OUT-14 worktreeは読み取りだけで、
-stash/reset/clean/rebase/mergeを行っていない。今回のbranchはlocal-onlyでupstreamなし。
-push / PR / merge / tag / release / deploy / upload / publicationは認可されておらず、未実施。
+stash/reset/clean/rebase/mergeを行っていない。implementation
+`c10e99d6444b8270e3173dfbe004b2dc1ea84976`を
+`origin/codex/s1-persona-led-subaru-digest-v1`へnormal pushし、fetch後のremote
+readbackが同一SHA、upstream parityが`0 0`であることを確認した。
+tracked code/docs/testsとartifact identityはremoteから再開できる。
+ignoredのsource media / review packageはpushしておらず、同一マシン限定のまま。
+PR / merge / tag / release / deploy / upload / publicationは行っていない。
 
 current artifactは
 `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`。

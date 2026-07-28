@@ -168,24 +168,24 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
 
     if runtime.get("current_slice") != "ED-12":
         errors.append(f"runtime_current_slice={runtime.get('current_slice', '')}")
-    if runtime.get("active_artifact") != "clip-s1-two-source-common-context-probe-v1-001":
+    if runtime.get("active_artifact") != "clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001":
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
     expected_runtime_values = {
-        "active_branch": "codex/s1-two-source-common-context-probe-v1",
+        "active_branch": "codex/s1-persona-led-subaru-digest-v1",
         "base_main_revision": "edb782acd1e06aca46e0a5d10295ea52f30ad5c7",
-        "implementation_revision": "a3771bc59cd58b05c00a570e1074118ace3dc15a",
+        "implementation_revision": "c10e99d6444b8270e3173dfbe004b2dc1ea84976",
         "artifact_output_sha256": (
-            "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
+            "ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c"
         ),
         "artifact_package_tree_digest_sha256": (
-            "a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a"
+            "0c5e96f5a020d6828082917b4c2ab2be291d9ddcb9871735c0f4a908c20a9e21"
         ),
         "artifact_manifest_self_sha256": (
-            "8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301"
+            "659897fef35965ede7c514767021522a903e41c0e24701ce2f796809dafd020f"
         ),
         "package_validation_status": "passed",
-        "full_suite_status": "passed_689",
+        "full_suite_status": "not_run_by_mission_authority_focused_27_passed",
         "human_review_pending": "true",
         "rights_approval": "not_granted",
         "production_acceptance": "false",
@@ -194,8 +194,8 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "upload_attempted": "false",
         "upstream_parity": "0 0",
         "remote_code_complete": "true",
-        "decision_required": "s4_human_common_context_verdict",
-        "next_review_due": "s4_human_common_context_review",
+        "decision_required": "human_editorial_verdict_on_exact_persona_led_digest",
+        "next_review_due": "exact_persona_led_digest_human_editorial_review",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -233,7 +233,7 @@ def test_s1_resume_rejects_stale_local_only_state() -> None:
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
         runtime.replace(
-            "active_branch: codex/s1-two-source-common-context-probe-v1",
+            "active_branch: codex/s1-persona-led-subaru-digest-v1",
             "active_branch: codex/stale-s1",
             1,
         )
@@ -289,7 +289,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: active_s4_review_target_same_machine_only",
+        "local_artifact_role: active_private_human_review_target_same_machine_only",
         "local_artifact_role: stale_review_target",
         1,
     )

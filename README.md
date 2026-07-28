@@ -170,8 +170,11 @@ active/default/accepted exposureから外した。後継は通常配信だけを
 exact local MP4は187.920秒、SHA
 `ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`。
 machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceは
-pending。code/docs/testsは別端末へ持ち運べる一方、`episodes/`内のsource mediaと
-review packageはGitでは移動しない。
+pending。実装revision
+`c10e99d6444b8270e3173dfbe004b2dc1ea84976`は
+`origin/codex/s1-persona-led-subaru-digest-v1`へpush済みで、readbackとupstream
+parity`0 0`を確認した。code/docs/testsとartifact identityは別端末へ持ち運べる一方、
+`episodes/`内のsource mediaとreview packageはGitでは移動しない。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
 MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、

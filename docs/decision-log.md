@@ -8,6 +8,25 @@ last_touched: 2026-07-28
 
 # Decision Log - ClipPipeGen
 
+## 2026-07-28 — persona-led S1のtracked実装をremote再開可能にする
+
+検証済みimplementation
+`c10e99d6444b8270e3173dfbe004b2dc1ea84976`を
+`origin/codex/s1-persona-led-subaru-digest-v1`へnormal pushした。fetch後のremote
+readbackは同一SHA、upstream parityは`0 0`。これによりtracked code/docs/testsと
+exact artifact identityはbranchから再開できる。基底側4 commitsは既存remote branch
+`origin/codex/s1-two-source-common-context-probe-v1`の
+`bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471`まで既に存在し、新規公開した未公開実装は
+今回の1 commitだけである。
+
+`episodes/`内のsource media、MP4、review packageはignoredかつtracked 0件を維持し、
+pushしていない。別端末はpackage availabilityを推定せず、同一マシンのhuman reviewは
+exact MP4 SHA
+`ca2cf751dfab68e56e4322208f7b6c677a8247fec10cf86813fd3cf80a24e76c`
+へbindする。remote syncはhuman editorial acceptance、rights、production、public /
+monetized use、publication、upload、releaseを開かない。PR / merge / tag / release /
+deploy / upload / publicationは行っていない。
+
 ## 2026-07-28 — 旧common-context probeをrejectし、persona-led通常配信digestへ置換
 
 exact bound HEAD
