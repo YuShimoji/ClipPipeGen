@@ -11,6 +11,10 @@ ARCHIVE_MARKER = "<!-- HISTORICAL_RUNTIME_ARCHIVE_START -->"
 ALIGNED_FIELDS = (
     "current_slice",
     "active_branch",
+    "upstream_branch",
+    "remote_tracking_ref",
+    "remote_handoff_status",
+    "local_upstream_configuration",
     "active_artifact",
     "human_entrypoint",
     "portable_entrypoint",
@@ -174,7 +178,7 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
     expected_runtime_values = {
         "active_branch": "codex/s2-evidence-linked-comparison-v1",
         "base_main_revision": "40fe3fbdf13631948d03641e33325e7f01ed9e56",
-        "implementation_revision": "commit_containing_this_document",
+        "implementation_revision": "3e6ebb9947e7f87520a974a63bc2139d42317c0f",
         "artifact_output_sha256": (
             "a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f"
         ),
@@ -185,15 +189,19 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
             "4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479"
         ),
         "package_validation_status": "passed",
-        "full_suite_status": "not_run_by_mission_authority_focused_15_passed",
+        "full_suite_status": "not_run_focused_15_passed_and_artifact_revalidated",
         "human_review_pending": "true",
         "rights_approval": "not_granted",
         "production_acceptance": "false",
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_parity": "no_upstream_local_only",
-        "remote_code_complete": "false",
+        "upstream_branch": "",
+        "remote_tracking_ref": "origin/codex/s2-evidence-linked-comparison-v1",
+        "remote_handoff_status": "pushed_and_fetch_readback_verified",
+        "local_upstream_configuration": "unavailable_git_common_config_write_denied",
+        "upstream_parity": "local_upstream_not_configured_remote_tracking_ref_parity_0_0",
+        "remote_code_complete": "true",
         "decision_required": "human_editorial_verdict_on_exact_evidence_linked_comparison",
         "next_review_due": "exact_evidence_linked_comparison_human_review",
     }
@@ -228,7 +236,7 @@ def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() 
     assert _authority_errors(runtime, handoff) == []
 
 
-def test_s2_resume_rejects_stale_local_only_state() -> None:
+def test_s2_resume_rejects_stale_remote_sync_state() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
@@ -238,13 +246,13 @@ def test_s2_resume_rejects_stale_local_only_state() -> None:
             1,
         )
         .replace(
+            "upstream_parity: local_upstream_not_configured_remote_tracking_ref_parity_0_0",
             "upstream_parity: no_upstream_local_only",
-            "upstream_parity: 1 0",
             1,
         )
         .replace(
-            "remote_code_complete: false",
             "remote_code_complete: true",
+            "remote_code_complete: false",
             1,
         )
     )
