@@ -4,8 +4,8 @@ title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
 health: EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW
-last_touched: 2026-07-29
-state_revision: s2-evidence-linked-comparison-v1-remote-synced-review-ready-2026-07-29
+last_touched: 2026-07-31
+state_revision: s2-evidence-linked-comparison-decision-recorder-ready-2026-07-31
 current_slice: ED-13
 phase: evidence_linked_comparison_built_human_editorial_review_pending
 canonical_status: evidence_linked_multi_source_comparison_artifact_ready_for_human_review
@@ -25,6 +25,9 @@ remote_handoff_status: pushed_and_fetch_readback_verified
 remote_mutation_authority: one_time_normal_push_consumed_by_repository_progress_delegation_2026_07_29
 additional_remote_mutation_authorized: false
 local_upstream_configuration: unavailable_git_common_config_write_denied
+decision_recorder_revision: commit_containing_this_document
+decision_recording_status: exact_artifact_bound_cli_ready_human_input_pending
+decision_receipt_available: false
 current_title: S2 evidence-linked Subaru two-week comparison ready for human review
 human_entrypoint: episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html
 portable_entrypoint: docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md
@@ -48,7 +51,8 @@ artifact_beat_count: 3
 artifact_concurrent_source_panels: true
 artifact_foreground_audio_owner_per_beat: 1
 package_validation_status: passed
-full_suite_status: not_run_focused_15_passed_and_artifact_revalidated
+focused_test_status: decision_recorder_and_s2_s1_contracts_20_passed
+full_suite_status: not_run_focused_20_passed_decision_recorder_and_s2_s1_contracts
 browser_validation_status: wide_narrow_actual_content_passed_console_errors_zero_page_200_range_206
 review_server_status: stopped_restart_command_available
 human_review_pending: true
@@ -113,6 +117,7 @@ instructions.
 - thesisは「7月18日の第一印象と、7月25日の理解更新を並べて見る」。3 beatすべてで二sourceを同時表示し、primary quoteとpaired evidenceをexact rangeへbindする。各beatのforeground audio ownerは一つだけで、参照側audioはmuteする。
 - exact local packageは12 payload files＋manifest。final MP4は7,829,406 bytes / 63.466667s / SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。tree digest`ea2e6cb3...8090`、manifest self-integrity`4eda3d7f...5479`。
 - 2026-07-29の同期前再検証でfocused S2/S1/current-authority testsは`15 passed in 32.68s`。manifest 12 payload、tree digest、self-integrity、final MP4 SHA/sizeを再照合し、ffprobeとfull non-audible decodeもpassした。既存のwide/narrow muted browser、page 200 / MP4 Range 206 evidenceも保持する。outer overflowとconsole/page errorsは0。opening、全3 transition、各comparison beatをpaused/mutedでseekし、両panelに実source frameがあることを確認済み。browser/listenerは停止済み。
+- 2026-07-31に`record-evidence-linked-comparison-decision`を追加した。これは人間が明示したverdictだけをclosed manifest、MP4 SHA、manifest self-integrity、4 review dimensionsへbindし、receiptをartifact package外へexclusive atomic writeする。`accept`の推定、package mutation、既存receipt上書き、rights / production / thumbnail / publishing / public / upload gateの開放は行わない。decision recorder＋S2/S1 artifact contract＋current authorityのfocused testsは20件pass。実際のdecision input/receiptはまだ存在しない。
 - 同一マシンのentrypointは`episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html`。`episodes/`はignored / tracked 0なので、Gitだけの別端末でreview-readyを推定しない。
 - processing snapshotは`local_private_review_only`とunderlying rights `pending_or_unverified`を分離する。rights clearance/approvalではない。`production_acceptance=false`、`public_use=false`、`monetized_use=false`、`publication_approval=false`、`upload_attempted=false`。
 - Campaign HorizonはED-13 comparison、ED-14 synchronized multi-participant camera director、ED-15 event-centered reaction compiler、ED-16 held-out genre variation proofの順。ED-14以降とbenchmark名はstaged scenarioであり、source/rights availabilityを主張しない。
@@ -122,7 +127,7 @@ instructions.
 - action: `obtain_human_editorial_verdict_on_exact_evidence_linked_comparison`
 - authorization state: `machine_complete_human_editorial_decision_pending`
 - owner: `Product owner / User / Supervisor`
-- condition: exact SHAのMP4を全編視聴し、二source同時表示が比較を速めるか、primary quoteとpaired evidenceの関係が誤解なく読めるか、audio ownerの切替と3つの理解更新が一つの論になるかを`accept / bounded repair / reject`で判断する。machine passをcreative acceptanceに昇格しない。acceptでもrights、production、thumbnail、publishing、upload、public releaseは開かない。repair時はsuccessful packageを上書きせずnew identityを作る。
+- condition: exact SHAのMP4を全編視聴し、二source同時表示が比較を速めるか、primary quoteとpaired evidenceの関係が誤解なく読めるか、audio ownerの切替と3つの理解更新が一つの論になるかを`accept / bounded repair / reject`で判断する。その明示JSONを`record-evidence-linked-comparison-decision`でdry-run検証後、exact receiptへ記録する。machine passをcreative acceptanceに昇格しない。acceptでもrights、production、thumbnail、publishing、upload、public releaseは開かない。repair時はsuccessful packageを上書きせずnew identityを作る。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

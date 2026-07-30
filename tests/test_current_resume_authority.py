@@ -15,6 +15,8 @@ ALIGNED_FIELDS = (
     "remote_tracking_ref",
     "remote_handoff_status",
     "local_upstream_configuration",
+    "decision_recording_status",
+    "decision_receipt_available",
     "active_artifact",
     "human_entrypoint",
     "portable_entrypoint",
@@ -27,6 +29,7 @@ ALIGNED_FIELDS = (
     "artifact_package_tree_digest_sha256",
     "artifact_manifest_self_sha256",
     "package_validation_status",
+    "focused_test_status",
     "full_suite_status",
     "human_review_pending",
     "rights_approval",
@@ -189,7 +192,12 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
             "4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479"
         ),
         "package_validation_status": "passed",
-        "full_suite_status": "not_run_focused_15_passed_and_artifact_revalidated",
+        "focused_test_status": (
+            "decision_recorder_and_s2_s1_contracts_20_passed"
+        ),
+        "full_suite_status": (
+            "not_run_focused_20_passed_decision_recorder_and_s2_s1_contracts"
+        ),
         "human_review_pending": "true",
         "rights_approval": "not_granted",
         "production_acceptance": "false",
@@ -200,6 +208,10 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "remote_tracking_ref": "origin/codex/s2-evidence-linked-comparison-v1",
         "remote_handoff_status": "pushed_and_fetch_readback_verified",
         "local_upstream_configuration": "unavailable_git_common_config_write_denied",
+        "decision_recording_status": (
+            "exact_artifact_bound_cli_ready_human_input_pending"
+        ),
+        "decision_receipt_available": "false",
         "upstream_parity": "local_upstream_not_configured_remote_tracking_ref_parity_0_0",
         "remote_code_complete": "true",
         "decision_required": "human_editorial_verdict_on_exact_evidence_linked_comparison",

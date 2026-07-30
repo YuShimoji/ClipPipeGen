@@ -4,7 +4,7 @@ title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
 health: EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW
-last_touched: 2026-07-29
+last_touched: 2026-07-31
 current_slice: ED-13
 phase: evidence_linked_comparison_built_human_editorial_review_pending
 canonical_status: evidence_linked_multi_source_comparison_artifact_ready_for_human_review
@@ -22,6 +22,9 @@ remote_code_complete: true
 remote_mutation_authority: one_time_normal_push_consumed_by_repository_progress_delegation_2026_07_29
 additional_remote_mutation_authorized: false
 local_upstream_configuration: unavailable_git_common_config_write_denied
+decision_recorder_revision: commit_containing_this_document
+decision_recording_status: exact_artifact_bound_cli_ready_human_input_pending
+decision_receipt_available: false
 current_title: S2 evidence-linked Subaru two-week comparison ready for human review
 human_entrypoint: episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html
 portable_entrypoint: docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md
@@ -44,8 +47,8 @@ artifact_duration_seconds: 63.466667
 artifact_source_count: 2
 artifact_beat_count: 3
 package_validation_status: passed
-focused_test_status: 15_passed
-full_suite_status: not_run_focused_15_passed_and_artifact_revalidated
+focused_test_status: decision_recorder_and_s2_s1_contracts_20_passed
+full_suite_status: not_run_focused_20_passed_decision_recorder_and_s2_s1_contracts
 human_review_pending: true
 rights_approval: not_granted
 production_acceptance: false
@@ -95,6 +98,7 @@ receipt、ledger、provider caption、processing snapshot、identity bindingもS
 - MP4: H.264/AAC、1920×1080、63.466667s、7,829,406 bytes、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`
 - package: 12 payload files＋manifest、tree digest `ea2e6cb359325210ed2e1f267d5f3a0b9f6ca22d31b229cbe8b569a24b508090`、self-integrity `4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479`
 - machine: 2026-07-29再検証でfocused S2/S1/current-authority tests `15 passed in 32.68s`。manifest 12 payload、tree digest、self-integrity、MP4 SHA/size、ffprobe、full non-audible decodeがpass
+- decision recording: 2026-07-31に`record-evidence-linked-comparison-decision`を追加。人間が明示したverdictだけをclosed manifest、MP4 SHA、manifest self-integrity、4 review dimensionsへbindし、artifact package外の未使用pathへexclusive atomic writeする。既存receiptは上書きしない。decision recorder＋S2/S1 artifact contract＋current authorityのfocused testsは20件pass。実decision input/receiptは未作成
 - browser: wide 1440×1000、narrow 390×844でoverflowなし。muted / paused / time zero / autoplay absent、console error 0。opening、3 transition、3 comparison beatをseekし、両panelのactual source frameを確認。page 200 / MP4 Range 206。browser/listener停止済み
 - portability: `episodes/`はignored / tracked 0。Gitだけの別hostへsource mediaやreview packageが移るとは主張しない
 
@@ -111,4 +115,4 @@ benchmark名は方向検証用のstaged scenarioであり、source取得可否�
 
 ## 次の判断
 
-ownerはProduct owner / User / Supervisor。exact MP4 SHAへ`accept / bounded repair / reject`をbindし、二source同時表示が比較を速めるか、quote/supportの関係、audio-owner切替、3 beatの理解更新が一つの論として成立するかを判断する。machine greenはeditorial acceptanceではない。acceptでもrights、production subtitle/render/image quality、thumbnail、publishing、upload、public/monetized useは開かない。
+ownerはProduct owner / User / Supervisor。exact MP4 SHAへ`accept / bounded repair / reject`をbindし、二source同時表示が比較を速めるか、quote/supportの関係、audio-owner切替、3 beatの理解更新が一つの論として成立するかを判断する。明示JSONは`record-evidence-linked-comparison-decision`でdry-run後にreceipt化できるが、CLIはverdictを生成しない。machine greenはeditorial acceptanceではない。acceptでもrights、production subtitle/render/image quality、thumbnail、publishing、upload、public/monetized useは開かない。

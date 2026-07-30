@@ -153,7 +153,9 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 現在のactive sliceは`ED-13`。S1 persona-led digestのexact source二本をread-only reuseし、「7月18日の第一印象と、7月25日の理解更新を並べて見る」という一つの問いへ、3つのprimary quote / paired evidence beatを同時二画面で結ぶ。active artifactは`clip-s2-subaru-evidence-linked-comparison-v1-002`。
 
-exact local MP4は63.466667秒、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。各beatはvisible source/date label、exact source range、creator-authored proposition、foreground audio owner一件を持つ。machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceはpending。branchは`codex/s2-evidence-linked-comparison-v1`、start revisionは`40fe3fbdf13631948d03641e33325e7f01ed9e56`、upstreamなしのlocal-onlyで、mission authorityによりpushしていない。`episodes/`内のsource mediaとreview packageはGitでは移動しない。
+exact local MP4は63.466667秒、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。各beatはvisible source/date label、exact source range、creator-authored proposition、foreground audio owner一件を持つ。machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceはpending。branchは`codex/s2-evidence-linked-comparison-v1`で、tracked code/docs/testsは`origin/codex/s2-evidence-linked-comparison-v1`へ同期済み。Git common configの書込み制限によりlocal upstreamは未設定なので、remote比較には同remote tracking refを明示する。`episodes/`内のsource mediaとreview packageはGitでは移動しない。
+
+`record-evidence-linked-comparison-decision`は、人間が記入した`accept / bounded_repair / reject`だけをclosed manifest、exact MP4 SHA、manifest self-integrity、4 review dimensionsへfail-closedでbindする。判断自体は生成せず、artifact packageも変更せず、rights、production、thumbnail、publishing、public/upload gateを開かない。
 
 S1 artifact `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman review pendingのまま保存され、S2はそれをaccept/rejectせず、source/packageも変更していない。新規acquisition、network access、credential/OAuthは0。
 

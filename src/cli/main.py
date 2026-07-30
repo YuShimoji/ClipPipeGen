@@ -59,6 +59,7 @@ Subcommands:
     build-real-video          OUT-12: one real source -> long-form MP4 + validation/review.
     build-editorial-video-candidate OUT-13: explicit evidence plan -> editorial MP4/review.
     build-common-context-probe S1: two real sources -> evidence-bound argumentative probe.
+    record-evidence-linked-comparison-decision S2: bind exact human verdict.
     build-persona-led-stream-digest S1: fixed Subaru stream pair -> concept-first digest.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
@@ -142,6 +143,7 @@ from . import (
     prepare_source_identity_decision,
     register_material,
     render_tiny_proof,
+    record_evidence_linked_comparison_decision,
     record_source_identity_decision,
     repair_second_source_review_access,
     resolve_episode_seed_sources,
@@ -210,6 +212,9 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-editorial-video-candidate": build_editorial_video_candidate.run,
     "build-common-context-probe": build_common_context_probe.run,
     "build-evidence-linked-comparison": build_evidence_linked_comparison.run,
+    "record-evidence-linked-comparison-decision": (
+        record_evidence_linked_comparison_decision.run
+    ),
     "build-persona-led-stream-digest": build_persona_led_stream_digest.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,

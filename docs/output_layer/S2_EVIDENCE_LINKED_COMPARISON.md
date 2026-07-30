@@ -102,3 +102,32 @@ ownerはProduct owner / User / Supervisor。exact MP4 SHAへ
 machine validationはeditorial acceptanceではない。acceptでもrights、production
 subtitle/render/image quality、thumbnail、publishing、upload、public/monetized useは
 独立gateのまま。
+
+## Decision recording contract
+
+`record-evidence-linked-comparison-decision`は上の人間判断を代行せず、明示済みJSONを
+exact artifactへbindする。入力はartifact id、MP4 SHA、manifest self SHA、timezone付き
+reviewed_at、全編視聴確認、summaryと次の4 dimensionを必須とする。
+
+- `concurrent_panels_speed_comparison`
+- `quote_evidence_clarity`
+- `foreground_audio_transitions`
+- `thesis_coherence`
+
+dimension値は`pass / needs_repair / fail`。`accept`は全件passかつrepair instructionなし、
+`bounded_repair`は一件以上のneeds_repair、failなし、具体的repair instruction必須、
+`reject`は一件以上のfailかつrepair instructionなしでなければ記録しない。
+
+```powershell
+uv run python -m src.cli.main record-evidence-linked-comparison-decision `
+  --artifact-dir episodes\s2_evidence_linked_comparison_20260729\artifacts\clip-s2-subaru-evidence-linked-comparison-v1-002 `
+  --decision <human-decision.json> `
+  --output <decision-receipt.json> `
+  --dry-run `
+  --format json
+```
+
+dry-runが通った同じ入力から`--dry-run`だけを外して記録する。receiptはclosed artifact
+packageの外にある未使用pathへexclusive writeし、既存pathは常に拒否する。訂正時も既存
+receiptを上書きせず新しいpathを使う。記録後もrights、production、
+thumbnail、publishing、public/monetized use、uploadはすべて閉じたまま。
