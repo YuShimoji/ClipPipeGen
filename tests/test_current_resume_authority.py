@@ -15,6 +15,7 @@ ALIGNED_FIELDS = (
     "remote_tracking_ref",
     "remote_handoff_status",
     "local_upstream_configuration",
+    "decision_recorder_revision",
     "decision_recording_status",
     "decision_receipt_available",
     "active_artifact",
@@ -208,6 +209,9 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "remote_tracking_ref": "origin/codex/s2-evidence-linked-comparison-v1",
         "remote_handoff_status": "pushed_and_fetch_readback_verified",
         "local_upstream_configuration": "unavailable_git_common_config_write_denied",
+        "decision_recorder_revision": (
+            "536458105e22b1ece5cdef1d83b39a88678d9266"
+        ),
         "decision_recording_status": (
             "exact_artifact_bound_cli_ready_human_input_pending"
         ),
